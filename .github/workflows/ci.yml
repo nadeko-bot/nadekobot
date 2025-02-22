@@ -55,13 +55,13 @@ jobs:
         dotnet publish -c Release -r ${{ matrix.runtime }} \
           --self-contained \
           -p:Version=${{ github.ref_name }} \
-          -o nadekobot-${{ matrix.runtime }} src/NadekoBot/NadekoBot.csproj
+          -o nadeko-${{ matrix.runtime }} src/NadekoBot/NadekoBot.csproj
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: platform-build-${{ matrix.runtime }}
-        path: nadekobot-${{ matrix.runtime }}
+        name: nadeko-${{ matrix.runtime }}
+        path: nadeko-${{ matrix.runtime }}/**
   
   create-release:
     name: Create Release
@@ -73,7 +73,7 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: 'platform-build-*'
+          pattern: 'nadeko-*'
           path: artifacts
 
       - name: Create archives
@@ -118,7 +118,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
