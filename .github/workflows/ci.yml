@@ -61,7 +61,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nadeko-${{ matrix.runtime }}
-        path: nadeko-${{ matrix.runtime }}/**
+        path: nadeko-${{ matrix.runtime }}
   
   create-release:
     name: Create Release
