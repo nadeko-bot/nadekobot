@@ -60,7 +60,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: nadekobot-${{ matrix.runtime }}
+        name: platform-build-${{ matrix.runtime }}
         path: nadekobot-${{ matrix.runtime }}
   
   create-release:
@@ -73,6 +73,7 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
+          pattern: 'platform-build-*'
           path: artifacts
 
       - name: Create archives
