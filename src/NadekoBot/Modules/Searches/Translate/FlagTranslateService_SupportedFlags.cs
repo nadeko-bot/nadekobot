@@ -1,0 +1,81 @@
+﻿namespace NadekoBot.Modules.Searches;
+
+public partial class FlagTranslateService
+{
+    private const string COUNTRIES = """
+                                     CN zh
+                                     IN hi
+                                     US en
+                                     ID id
+                                     PK ur
+                                     BR pt
+                                     NG ha
+                                     BD bn
+                                     RU ru
+                                     JP ja
+                                     MX es
+                                     PH tl
+                                     VN vi
+                                     EG ar
+                                     ET am
+                                     DE de
+                                     IR fa
+                                     TR tr
+                                     TH th
+                                     FR fr
+                                     CD fr
+                                     MM my
+                                     UG en
+                                     MZ pt
+                                     ZA zu
+                                     CO es
+                                     BG bg
+                                     HR hr
+                                     MY ms
+                                     NL nl
+                                     RO ro
+                                     CZ cs
+                                     GR el
+                                     SK sk
+                                     PT pt
+                                     KR ko
+                                     IT it
+                                     ES es
+                                     RS sr
+                                     TN ar
+                                     PL pl
+                                     SD ar
+                                     CM fr
+                                     SN fr
+                                     ML fr
+                                     NE ha
+                                     BI fr
+                                     AO pt
+                                     AF ps
+                                     MA ar
+                                     DZ ar 
+                                     GB en
+                                     AR es
+                                     ZW ny
+                                     KE sw
+                                     GH en
+                                     SA ar
+                                     IL he
+                                     IQ ar
+                                     UA ua
+                                     LY ar
+                                     KW ar
+                                     OM ar
+                                     YE ar
+                                     AL sq
+                                     AE ar
+                                     AU en
+                                     NZ en
+                                     KZ kz
+                                     NO no
+                                     SE sv
+                                     DK da
+                                     FI fi
+                                     HU hu
+                                     """;
+}

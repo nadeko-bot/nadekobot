@@ -1,0 +1,82 @@
+# DO NOT CHANGE
+version: 5
+# Hangman related settings (.hangman command)
+hangman:
+  # The amount of currency awarded to the winner of a hangman game
+  currencyReward: 0
+# Trivia related settings (.t command)
+trivia:
+  # The amount of currency awarded to the winner of the trivia game.
+  currencyReward: 0
+  # Users won't be able to start trivia games which have
+  # a smaller win requirement than the one specified by this setting.
+  minimumWinReq: 1
+# List of responses for the .8ball command. A random one will be selected every time
+eightBallResponses:
+  - Most definitely yes.
+  - For sure.
+  - Totally!
+  - Of course!
+  - As I see it, yes.
+  - My sources say yes.
+  - Yes.
+  - Most likely.
+  - Perhaps...
+  - Maybe...
+  - Hm, not sure.
+  - It is uncertain.
+  - Ask me again later.
+  - Don't count on it.
+  - Probably not.
+  - Very doubtful.
+  - Most likely no.
+  - Nope.
+  - No.
+  - My sources say no.
+  - Don't even think about it.
+  - Definitely no.
+  - NO - It may cause disease contraction!
+# List of animals which will be used for the animal race game (.race)
+raceAnimals:
+  - icon: "🐼"
+    name: Panda
+  - icon: "🐻"
+    name: Bear
+  - icon: "🐧"
+    name: Pengu
+  - icon: "🐨"
+    name: Koala
+  - icon: "🐬"
+    name: Dolphin
+  - icon: "🐞"
+    name: Ladybird
+  - icon: "🦀"
+    name: Crab
+  - icon: "🦄"
+    name: Unicorn
+# Which chatbot API should bot use.
+# 'cleverbot' - bot will use Cleverbot API.
+# 'openai' - bot will use OpenAi API
+chatBot: OpenAi
+chatGpt:
+  # Url to any openai api compatible url.
+  # Make sure to modify the modelName appropriately
+  # DO NOT add /v1/chat/completions suffix to the url
+  apiUrl: https://api.groq.com/openai
+  # Which GPT Model should bot use.
+  # gpt-3.5-turbo - cheapest
+  # gpt-4o - more expensive, higher quality
+  # 
+  # If you are using another openai compatible api, you may use any of the models supported by that api
+  modelName: llama-3.3-70b-versatile
+  # How should the chatbot behave, what's its personality?
+  # This will be sent as a system message.
+  # Usage of this counts towards the max tokens.
+  personalityPrompt: You are a chat bot willing to have a conversation with anyone about anything.
+  # The maximum number of messages in a conversation that can be remembered.
+  # This will increase the number of tokens used.
+  chatHistory: 5
+  # The maximum number of tokens to use per OpenAi API call
+  maxTokens: 100
+  # The minimum number of tokens to use per GPT API call, such that chat history is removed to make room.
+  minTokens: 30

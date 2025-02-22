@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option csharp_namespace = "NadekoBot.GrpcApi";
+
+import "google/protobuf/empty.proto";
+
+package ncanvas;
+
+service GrpcNCanvas {
+  rpc GetCanvas(google.protobuf.Empty) returns (CanvasReply);
+  rpc GetPixel(GetPixelRequest) returns (GetPixelReply);
+  rpc SetPixel(SetPixelRequest) returns (SetPixelReply);
+}
+
+message CanvasReply {
+  repeated uint32 pixels = 1;
+  int32 width = 2;
+  int32 height = 3;
+}
+
+message GetPixelRequest {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message GetPixelReply {
+  string color = 1;
+  uint32 packedColor = 2;
+  int32 positionX = 3;
+  int32 positionY = 4;
+  int64 price = 5;
+  string text = 6;
+  string position = 7;
+}
+
+message SetPixelRequest {
+  string position = 1;
+  string color = 2;
+  string text = 3;
+  int64 price = 4;
+}
+
+message SetPixelReply {
+  string error = 1;
+  bool success = 2;
+  optional GetPixelReply pixel = 3;
+}

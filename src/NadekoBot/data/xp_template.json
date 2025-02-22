@@ -1,0 +1,145 @@
+{
+  "Version": 2,
+  "output_size": {
+    "X": 800,
+    "Y": 392
+  },
+  "User": {
+    "Name": {
+      "Color": "ffffffff",
+      "Show": true,
+      "FontSize": 50,
+      "Pos": {
+        "X": 105,
+        "Y": 25
+      }
+    },
+    "Icon": {
+      "Show": true,
+      "Pos": {
+        "X": 14,
+        "Y": 14
+      },
+      "Size": {
+        "X": 72,
+        "Y": 71
+      }
+    },
+    "GlobalLevel": {
+      "Color": "ffffffff",
+      "Show": true,
+      "FontSize": 45,
+      "Pos": {
+        "X": 47,
+        "Y": 160
+      }
+    },
+    "GuildLevel": {
+      "Color": "ffffffff",
+      "Show": true,
+      "FontSize": 45,
+      "Pos": {
+        "X": 47,
+        "Y": 308
+      }
+    },
+    "GlobalRank": {
+      "Color": "ffffffff",
+      "Show": true,
+      "FontSize": 30,
+      "Pos": {
+        "X": 148,
+        "Y": 179
+      }
+    },
+    "GuildRank": {
+      "Color": "ffffffff",
+      "Show": true,
+      "FontSize": 30,
+      "Pos": {
+        "X": 148,
+        "Y": 326
+      }
+    },
+    "Xp": {
+      "Bar": {
+        "Show": true,
+        "Global": {
+          "Color": "00000095",
+          "PointA": {
+            "X": 321,
+            "Y": 104
+          },
+          "PointB": {
+            "X": 286,
+            "Y": 235
+          },
+          "Length": 450,
+          "Direction": 3
+        },
+        "Guild": {
+          "Color": "00000095",
+          "PointA": {
+            "X": 282,
+            "Y": 248
+          },
+          "PointB": {
+            "X": 247,
+            "Y": 379
+          },
+          "Length": 450,
+          "Direction": 3
+        }
+      },
+      "Global": {
+        "Color": "ffffffff",
+        "Show": true,
+        "FontSize": 50,
+        "Pos": {
+          "X": 528,
+          "Y": 170
+        }
+      },
+      "Guild": {
+        "Color": "ffffffff",
+        "Show": true,
+        "FontSize": 50,
+        "Pos": {
+          "X": 490,
+          "Y": 313
+        }
+      },
+      "Awarded": {
+        "Color": "ffffffff",
+        "Show": true,
+        "FontSize": 25,
+        "Pos": {
+          "X": 450,
+          "Y": 345
+        }
+      }
+    }
+  },
+  "Club": {
+    "Icon": {
+      "Show": true,
+      "Pos": {
+        "X": 722,
+        "Y": 25
+      },
+      "Size": {
+        "X": 45,
+        "Y": 45
+      }
+    },
+    "Name": {
+      "Color": "ffffffff",
+      "Show": true,
+      "FontSize": 35,
+      "Pos": {
+        "X": 650,
+        "Y": 55
+      }
+    }
+  }
+}

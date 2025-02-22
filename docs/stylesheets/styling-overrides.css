@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+
+/* general styling changes */
+
+.md-typeset * { 
+	letter-spacing: 0 !important;
+}
+
+.md-header__topic {
+	font-family: 'Noto Sans';
+	font-weight: 700 !important;
+}
+
+label[for="__toc"] {
+	text-transform: uppercase;
+}
+
+@media screen and (min-width: 76.25em) {
+	label[for="__drawer"] {
+		text-transform: uppercase;
+	}
+}
+
+.md-source__facts {
+	margin-top: 4px;
+}
+
+.md-source__fact {
+	display: inline-flex;
+	align-items: center;
+}
+
+@media screen and (max-width: 76.1875em) {
+	label[for="__drawer"] {
+		font-family: 'Noto Sans';
+		font-weight: 700 !important;
+	}
+}
+
+.md-typeset h1, h2, h3, h4, h5, h6 {
+	font-weight: 600 !important;
+	color: var(--md-default-fg-color);
+	width: 87%;
+}
+
+.md-header__title, .md-header__nav-title {
+	margin-left: 8px !important;
+}
+
+.md-search__form input {
+	padding-left: 44px;
+	font-size: 16px;
+}
+
+.md-search__form .md-search__icon {
+	display: flex;
+	place-items: center;
+}
+
+.md-search__form .md-search__icon svg {
+	height: 20px;
+	width: 20px;
+}
+
+.md-button {
+	border-radius: 4px !important;
+}
+
+.md-button:hover {
+	filter: brightness(110%);
+}
+
+.md-button:active {
+	transform: translateY(1px);
+}
+
+.md-button {
+	display: inline-flex !important;
+	place-items: center !important;
+	font-weight: 500 !important;
+	margin-right: 8px;
+	margin-bottom: 8px;
+}
+
+.md-button span {
+	height: auto !important;
+}
+
+.md-button span svg {
+	height: 24px;
+	width: 24px;
+	margin: 0px 8px;
+}
+
+.color--primary {
+	color: var(--md-primary-fg-color) !important;
+}
+
+.color--accent {
+	color: var(--md-accent-fg-color) !important;
+}
+
+.md-header {
+	box-shadow: none !important;
+}
+
+.md-main__inner {
+	margin-top: 0.5rem;
+}
+
+hr+h1, hr+h2, hr+h3, hr+h4, hr+h5, hr+h6 {
+	margin-top: 0px !important;
+}
+
+.md-sidebar {
+	top: 0px !important;
+}
+
+.admonition * {
+	font-size: .75rem;
+}

@@ -1,0 +1,14 @@
+# Ignore all files
+*
+
+# Don't ignore nugetconfig
+!./NuGet.Config
+
+# Don't ignore src projects
+!src/**
+!docker-entrypoint.sh
+
+# ignore bin and obj folders in projects
+src/**/bin/*
+src/**/obj/*
+src/NadekoBot/data/creds.yml

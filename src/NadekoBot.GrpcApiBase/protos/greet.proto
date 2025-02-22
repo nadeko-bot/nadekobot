@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "NadekoBot.GrpcApi";
+
+package greet;
+
+service GrpcGreet {
+  rpc GetGreetSettings (GetGreetRequest) returns (GrpcGreetSettings);
+  rpc UpdateGreet (UpdateGreetRequest) returns (UpdateGreetReply);
+  rpc TestGreet (TestGreetRequest) returns (TestGreetReply);
+}
+
+message GrpcGreetSettings {
+  string channelId = 1;
+  string message = 2;
+  bool isEnabled = 3;
+  GrpcGreetType type = 4;
+}
+
+message GetGreetRequest {
+  uint64 guildId = 1;
+  GrpcGreetType type = 2;
+}
+
+message UpdateGreetRequest {
+  uint64 guildId = 1;
+  GrpcGreetSettings settings = 2;
+}
+
+enum GrpcGreetType {
+  Greet = 0;
+  GreetDm = 1;
+  Bye = 2;
+  Boost = 3;
+}
+
+message UpdateGreetReply {
+  bool Success = 1;
+}
+
+message TestGreetRequest {
+  uint64 guildId = 1;
+  uint64 channelId = 2;
+  uint64 userId = 3;
+  GrpcGreetType type = 4;
+}
+
+message TestGreetReply {
+  bool success = 1;
+  string error = 2;
+}

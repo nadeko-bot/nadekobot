@@ -1,0 +1,314 @@
+[
+  {
+    "Name": "Ace of Spades",
+    "Description": "An ace of spades from a standard card deck. No matter where you store it on your body, you will always be able to find it in your right sleeve afterwards."
+  },
+  {
+    "Name": "Arrow of Euarere",
+    "Description": "A silver arrow, suspended on a string. It always points to the person holding the string."
+  },
+  {
+    "Name": "Amulet of Extra Amulet Slot",
+    "Description": "This amulet allows you to gain the benefit from two magical amulets rather than one. It cannot be further enchanted."
+  },
+  {
+    "Name": "Amulet of Feather Fall",
+    "Description": "When worn, this amulet turns into a feather and falls to the ground."
+  },
+  {
+    "Name": "Anti-Matches",
+    "Description": "A box of matches. Striking one will make it begin to drip water from the tip while the match shrivels away. The amount of water a match releases is about enough to fill a tablespoon."
+  },
+  {
+    "Name": "The Artist's Bludgeon",
+    "Description": "Inanimate objects hit with this bludgeon will receive no damage; they will however change color."
+  },
+  {
+    "Name": "Attentive Guardsman's Pike",
+    "Description": "These ornate and deadly-looking ceremonial pikes are reach weapons and appear to weigh at least 20 lbs, not counting the weight of the fluttering banners that can be unfurled for parade use. Constructed of shadowstuff, they weigh one pound, and inflict only a single point of damage on an attack, being almost entirely for show, although they also have the unique property of remaining in place when set (although unable to support more than 20 lbs), allowing a 'resting his eyes' guardsman to prop it up and leave it standing under its own power, while his hand sags off of it."
+  },
+  {
+    "Name": "Attentive Guardsman's Tabard",
+    "Description": "A dozen of these tabards were fashioned for palace guardsmen in the Empire of Sard, 250 miles from the nearest enemy. The bearer is placed under a glamour that causes him to appear alert and awake, even if his eyes are closed and he is snoring lightly."
+  },
+  {
+    "Name": "Axe of Big Numbers",
+    "Description": "This axe shouts \"Big numbers baby, come on!\" whenever it is swung, but always deals 1 damage or less."
+  },
+  {
+    "Name": "Axe of Empathy",
+    "Description": "Every time you hit something with this +5 greataxe, you get dealt an equal amount of damage. Both you and the thing you hit are then healed the amount of damage dealt by the axe, even if either are dead. The Axe hopes you have learned your lesson."
+  },
+  {
+    "Name": "Axe of Pain",
+    "Description": "The axe is always moaning and groaning with pain."
+  },
+  {
+    "Name": "Baby Oil",
+    "Description": "An aphrodisiac made from the finest mashed babies. Strangely unpopular in the upper planes, the judgmental prudes."
+  },
+  {
+    "Name": "Bag of Faerie Gold",
+    "Description": "This sack appears to be full of gold coins and jewels. When one attempts to spend them, however, the glamour on them soon vanishes, revealing them to be nothing but leaves and pebbles. Obviously, most shopkeepers will not be happy about this, and no amount of 'we didn't know, I swear!' will change their mind."
+  },
+  {
+    "Name": "Bag of Holding",
+    "Description": "This item functions as a normal backpack, however when attempting to retrieve an item, a calm female voice tells them there is a wait time of 4d10 minutes before they can retrieve their item (actual time is stated time plus 6d6 additional minutes). During this wait, the bag plays either annoying muzak or advertisements for the bag's creator's other products/services. Upon attempting to retrieve an item, there is a chance that the wrong item is retrieved, or that the intended item is simply missing. Obtaining the original item requires an additional 4d10+6d6 minutes and has only a 5% chance of success."
+  },
+  {
+    "Name": "Bag of Holding (Alternate)",
+    "Description": "This sack needs a hug!"
+  },
+  {
+    "Name": "Bag of Trading",
+    "Description": "You can take one thing out of the bag for each object you put in the bag. However, you have no control over what you get, and there are no trade-backs. Past research seems to imply there's some sort of correlation to what gets you what, but it's extremely convoluted and far from understood."
+  },
+  {
+    "Name": "Bag of Trick",
+    "Description": "This bag operates like a Bag of Tricks, except it only works once a week and produces a rat each time itis used."
+  },
+  {
+    "Name": "Bag of Unholding",
+    "Description": "Quite a large backpack but even the smallest item doesn't fit."
+  },
+  {
+    "Name": "Bagpipe of Stealth",
+    "Description": "Grants the user invisibility as long as it is being played."
+  },
+  {
+    "Name": "Ball of Eyes",
+    "Description": "A snow-globe filled with miniature eyeballs. When shaken, it grants the user a blurry, jittery vision of some future event."
+  },
+  {
+    "Name": "Banana Walkie-Talkies",
+    "Description": "There exist two, and only two, of these items in the world. One of which is possessed by a cranky and lonely half-orc. It appears to be an innocuous wooden banana with a coat of faded yellow paint. When an end (doesn't matter which one) is placed against your ear, you can hear a ringing followed by a *click* and a half-orc yelling at you for waking him up at this ungodly hour. If you drop the banana or \"hang up,\" the call ends. If you stay and listen, the half-orc will yell at you, call out obscenities, and start going on about his daily problems and mishaps in his love life. Every so often (2% chance/day), the banana will ring while you are sleeping and the half-orc will want to talk to you about his problems."
+  },
+  {
+    "Name": "Barrel of Holding",
+    "Description": "This large wooden barrel measuring &#8730;(12/&#960;) feet in diameter and 5 feet in height can hold up to 15 cubic feet of matter."
+  },
+  {
+    "Name": "Beam Sword of Severed Nerves",
+    "Description": "A beam sword. It cannot cut anything but nerve strings. Will pass through any other material leaving no harm."
+  },
+  {
+    "Name": "Belt of Pants",
+    "Description": "This belt creates illusory pants on the wearer. The wearer can suppress the illusion at will"
+  },
+  {
+    "Name": "Belt of Tightening",
+    "Description": "Every time you put this belt on, all of your clothes permanently shrink a fraction of a millimeter. The effect is compound."
+  },
+  {
+    "Name": "Belt of Unbathed Breath",
+    "Description": "When worn around the waist, allows the user to breathe underwater. Does not function when wet."
+  },
+  {
+    "Name": "Boogie Skeleton",
+    "Description": "This pile of bones is small, such as one that might be obtained from a bird or a toad, though it can look as though it came from any creature. When a song is sung or played in the vicinity of the skeleton, it begins to dance appropriately. As soon as the music stops, it collapses into the pile of bones again. The skeleton, when dancing, can be no larger than Diminutive."
+  },
+  {
+    "Name": "Book of Canon",
+    "Description": "A book that automatically transforms into a copy of the sacred text of any religion, translated into the language the user is most familiar with."
+  },
+  {
+    "Name": "Book of Confusion",
+    "Description": "The letters in this book always appear to be upside down, even if viewed from different directions at the same time. The book is a bad novel about zombies."
+  },
+  {
+    "Name": "Book of Curses",
+    "Description": "When opened, the book verbally berates anyone in the immediate vicinity, calling into question their combat ability, intellect, personal hygiene, lineage and profession of their mothers, and other delightful insults. Once closed the book continues shouting (although it is muffled) until placed inside a bag or some other similar container for 1d4+1 minutes and ignored. Replying to the book in any other way causes the insults to get louder and more childish the more time you spend replying to it."
+  },
+  {
+    "Name": "Book of Exalted Deeds",
+    "Description": "Contains a listing of some of the finest houses ever sold and the specifics of the titles to the properties."
+  },
+  {
+    "Name": "Boots of Levitation",
+    "Description": "These boots levitate a few inches off the ground when not worn."
+  },
+  {
+    "Name": "Boots of Stylishness",
+    "Description": "Knee high black boots that are always clean and shiny. They never take in water, thus feet are always dry."
+  },
+  {
+    "Name": "Boots of Walking",
+    "Description": "The wearer of the boots cannot run, nor can he take a double move action, and takes a -5 to Tumble checks. These boots are made for walkin', and that's just what they'll do."
+  },
+  {
+    "Name": "Bottle of Air",
+    "Description": "It's a bottle. Full of air. Congratulations."
+  },
+  {
+    "Name": "Bottomless Beer Mug",
+    "Description": "Any liquid poured into this mug treats the bottom as incorporeal, but solid objects don't"
+  },
+  {
+    "Name": "Bowl of Comfortable Warmth",
+    "Description": "Any liquid in the bowl will feel comfortably warm, so icy cold water will feel like it's a bit over room temperature. Do note, however, that it's still icy cold water, it just feels warmer."
+  },
+  {
+    "Name": "Breastplate of Secret Detection",
+    "Description": "If the wearer of this breastplate gains a piece of information that is somehow connected to the concealment of a hidden conspiracy or plot, a live and still wet red herring forms on the inside of the armor."
+  },
+  {
+    "Name": "Bullying Gloves",
+    "Description": "At random intervals, these gloves instil the wearer with a near-irresistible urge to hit themselves."
+  },
+  {
+    "Name": "Bunyan’s Belt",
+    "Description": "When worn, causes an enormous, bushy black beard to appear on the wearer’s face."
+  },
+  {
+    "Name": "Cape of Resistance",
+    "Description": "When this item is placed on any living thing it somehow manages to fall off, untie itself, slip past the owner’s neck entirely, or otherwise avoid being worn."
+  },
+  {
+    "Name": "Case of the Litigator",
+    "Description": "Translates any document placed in the case into legal jargon; non-reversible. Does not confer the ability to understand legal jargon."
+  },
+  {
+    "Name": "Cat of Schrodinger",
+    "Description": "When this cat is not being observed in any way it is both dead and alive. When something observes it, it suddenly becomes either dead or alive with a 50% chance of either."
+  },
+  {
+    "Name": "Chair of Steadiness",
+    "Description": "This chair can be moved but cannot be tipped over by anything less than a DC 35 Strength check."
+  },
+  {
+    "Name": "Charles",
+    "Description": "This small, unremarkable figurine of a gnome refuses to be called anything but Charles. No other name will leave the lips of the speaker. It has no other powers."
+  },
+  {
+    "Name": "Chime of Interruption",
+    "Description": "This instrument can be struck once every round, which takes a standard action. On any round the chime is activated the user may ready one action without spending an action to do so."
+  },
+  {
+    "Name": "Chime of Opening",
+    "Description": "Commonly affixed to or near doors, when pressed it emits a sound on the interior of the owner’s home to let them know guests have arrived."
+  },
+  {
+    "Name": "Chime of Opening (Alternate)",
+    "Description": "When struck against a solid surface, this chime emits a loud click, and opens along its length, to reveal a tiny compartment adequate to conceal a single 'smoke' worth of pipeweed or a blowgun needle. When the compartment is closed, it is seamless and can be detected only with a DC 20 Search check. If hit with an instrument such as a small mallet, it chimes."
+  },
+  {
+    "Name": "Cloak of Billowing",
+    "Description": "This black and silver cloak will always billow dramatically behind the wearer, it has no other effects."
+  },
+  {
+    "Name": "Cloak of Displacement, Minor",
+    "Description": "This item appears to be a normal cloak, but when worn by a character its magical properties distort and warp reality. When any attack is made against the wearer the cloak has a 20% chance of falling off, no matter how it is secured."
+  },
+  {
+    "Name": "Compacting hammer",
+    "Description": "The force imparted by it is multiplied, but is spread around the surface of a struck object facing inward."
+  },
+  {
+    "Name": "Cymbal of Symbols",
+    "Description": "This musical instrument enables the user to comprehend dead languages, but only while they are deafened by noise."
+  },
+  {
+    "Name": "Dagger of Told Secrets",
+    "Description": "A simple-looking dagger. If used to backstab someone to death, it will whisper your most embarrassing secret to that person."
+  },
+  {
+    "Name": "Dagger of Untold Secrets",
+    "Description": "A simple looking dagger. If used to backstab someone to death, it will whisper the most embarrassing secret of that person to you."
+  },
+  {
+    "Name": "Decanter of Endless Sorrow",
+    "Description": "A pewter flask that produces limitless alcohol when held to their lips by someone who is troubled. It gets them drunk but they never feel any better."
+  },
+  {
+    "Name": "Diadem of Brothaurity",
+    "Description": "When wearing this headpiece, you are as elegant and well-spoken as a famous diplomat or regent, but you can't stop calling everyone bro."
+  },
+  {
+    "Name": "Enchanted Book of Collected Stories",
+    "Description": "Opening this will cause miniature creatures/people to pour out and preform a chapter from the book much like a theater."
+  },
+  {
+    "Name": "Fade to Black Belt",
+    "Description": "The wearer of this belt will be unable to remember any sexual encounter begun while they were wearing the belt."
+  },
+  {
+    "Name": "Focusing Ring",
+    "Description": "The digit on which this ring is worn can be viewed in extremely high definition from a great distance."
+  },
+  {
+    "Name": "Gloves of Tinkering",
+    "Description": "Wearing the gloves will make you able to almost repair any broken item. However, you will always end up with pieces from the item that don't seem to fit anywhere."
+  },
+  {
+    "Name": "Greater Staff of Random Summoning",
+    "Description": "Summons a random creature at a random place. You could be summoning a giant Ogre on the other side of the globe for all you know."
+  },
+  {
+    "Name": "Hoarder's Wand",
+    "Description": "Does nothing but for some reason you think it might be important later in your quest."
+  },
+  {
+    "Name": "Hood of Offensive Facades",
+    "Description": "This hood will change your identity in the eyes of others to the appearance of the person they most personally dislike."
+  },
+  {
+    "Name": "Hood Of Worrisome Facades",
+    "Description": "This hood will change your identity in the eyes of others, however the identity used will be random."
+  },
+  {
+    "Name": "Indestructible Notebook of Memories",
+    "Description": "This otherwise normal notepad of normal notepad size cannot be damaged or destroyed, and anything written in it cannot be obscured or defaced. It also has unlimited pages despite its finite size. However, the data it holds only lasts as long as the writer independently remembers it, and decays in exact proportion to the relevant memories. Remember who and when, but not where? Then the words describing the location in that particular entry are the only ones gone."
+  },
+  {
+    "Name": "Intransigent Rod",
+    "Description": "When the button on this artifact is pressed in, the holder's opinions solidify and they become impossible to convince."
+  },
+  {
+    "Name": "Lunchbox of Delicious Unfulfillment",
+    "Description": "This lunchbox will hold whatever food you desire. However you will never get full and the food will deliver no nourishment."
+  },
+  {
+    "Name": "The Mattress of Poverty",
+    "Description": "No matter how you fluff this gorgeous, thick, mattress, you will always sleep on the thin part of it."
+  },
+  {
+    "Name": "Mug O' Dissatisfaction",
+    "Description": "A mug that always produces a steaming hot cup of coffee or tea when tapped on the bottom. It conjures the opposite of what the tapper prefers, so if you like tea you get coffee and vice versa. Handing the full mug to another person will make the drink in it transform to the opposite of that persons preferences."
+  },
+  {
+    "Name": "Murder Dagger",
+    "Description": "All damage it would deal is instead replaced by the target being harassed by crows for that many hours."
+  },
+  {
+    "Name": "Needle Of Learned Compromise",
+    "Description": "This needle will create beautiful tattoos of any design, however they hurt a tiny bit more. When used to sew it is entirely normal."
+  },
+  {
+    "Name": "Portable Dark Tavern Corner",
+    "Description": "Consisting of two wooden boards connected by a hinge, this artifact draws those nearby into assuming it is a perfect spot to conduct seedy business."
+  },
+  {
+    "Name": "Ring of First Impression",
+    "Description": "Wearing the ring will make you able to perform a perfect handshake with the hand wearing it."
+  },
+  {
+    "Name": "Sack of Hive Eggs",
+    "Description": "Crushing one of the numerous tiny eggs will cause the thoughts of everybody in the proximity to merge. Everybody can hear what you think and you can hear everybody."
+  },
+  {
+    "Name": "Shoes of the Restless Traveler",
+    "Description": "These shoes allow their user to run for miles without feeling fatigue, but if they try to do anything else with it (walk, sit down, jump), they will instantly trip"
+  },
+  {
+    "Name": "Sword of Parrying",
+    "Description": "Parries every attack, swinging it yourself will force it to \"parry\" your opponents weapon/attack even though he/she/it is defenseless."
+  },
+  {
+    "Name": "Vorpal Grindstone",
+    "Description": "It can \"sharpen\" any object to become vorpal. Any object."
+  },
+  {
+    "Name": "The Water Hat",
+    "Description": "A small red hat, when worn, causes water to pour from the wearer's fingers at the speed "
+  }
+]

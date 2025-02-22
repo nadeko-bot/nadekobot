@@ -1,0 +1,390 @@
+- word: Afghanistan
+  imageUrl: https://cdn.nadeko.bot/flags/af-flag.gif
+- word: Albania
+  imageUrl: https://cdn.nadeko.bot/flags/al-flag.gif
+- word: Algeria
+  imageUrl: https://cdn.nadeko.bot/flags/ag-flag.gif
+- word: Andorra
+  imageUrl: https://cdn.nadeko.bot/flags/an-flag.gif
+- word: Angola
+  imageUrl: https://cdn.nadeko.bot/flags/ao-flag.gif
+- word: Antigua and Barbuda
+  imageUrl: https://cdn.nadeko.bot/flags/ac-flag.gif
+- word: Argentina
+  imageUrl: https://cdn.nadeko.bot/flags/ar-flag.gif
+- word: Armenia
+  imageUrl: https://cdn.nadeko.bot/flags/am-flag.gif
+- word: Australia
+  imageUrl: https://cdn.nadeko.bot/flags/as-flag.gif
+- word: Austria
+  imageUrl: https://cdn.nadeko.bot/flags/au-flag.gif
+- word: Azerbaijan
+  imageUrl: https://cdn.nadeko.bot/flags/aj-flag.gif
+- word: Bahamas
+  imageUrl: https://cdn.nadeko.bot/flags/bf-flag.gif
+- word: Bahrain
+  imageUrl: https://cdn.nadeko.bot/flags/ba-flag.gif
+- word: Bangladesh
+  imageUrl: https://cdn.nadeko.bot/flags/bg-flag.gif
+- word: Barbados
+  imageUrl: https://cdn.nadeko.bot/flags/bb-flag.gif
+- word: Belarus
+  imageUrl: https://cdn.nadeko.bot/flags/bo-flag.gif
+- word: Belgium
+  imageUrl: https://cdn.nadeko.bot/flags/be-flag.gif
+- word: Belize
+  imageUrl: https://cdn.nadeko.bot/flags/bh-flag.gif
+- word: Benin
+  imageUrl: https://cdn.nadeko.bot/flags/bn-flag.gif
+- word: Bhutan
+  imageUrl: https://cdn.nadeko.bot/flags/bt-flag.gif
+- word: Bolivia
+  imageUrl: https://cdn.nadeko.bot/flags/bl-flag.gif
+- word: Bosnia and Herzegovina
+  imageUrl: https://cdn.nadeko.bot/flags/bk-flag.gif
+- word: Botswana
+  imageUrl: https://cdn.nadeko.bot/flags/bc-flag.gif
+- word: Brazil
+  imageUrl: https://cdn.nadeko.bot/flags/br-flag.gif
+- word: Brunei
+  imageUrl: https://cdn.nadeko.bot/flags/bx-flag.gif
+- word: Bulgaria
+  imageUrl: https://cdn.nadeko.bot/flags/bu-flag.gif
+- word: Burkina Faso
+  imageUrl: https://cdn.nadeko.bot/flags/uv-flag.gif
+- word: Burundi
+  imageUrl: https://cdn.nadeko.bot/flags/by-flag.gif
+- word: Ivory Coast
+  imageUrl: https://cdn.nadeko.bot/flags/iv-flag.gif
+- word: Cabo Verde
+  imageUrl: https://cdn.nadeko.bot/flags/cv-flag.gif
+- word: Cambodia
+  imageUrl: https://cdn.nadeko.bot/flags/cb-flag.gif
+- word: Cameroon
+  imageUrl: https://cdn.nadeko.bot/flags/cm-flag.gif
+- word: Canada
+  imageUrl: https://cdn.nadeko.bot/flags/ca-flag.gif
+- word: Central African Republic
+  imageUrl: https://cdn.nadeko.bot/flags/ct-flag.gif
+- word: Chad
+  imageUrl: https://cdn.nadeko.bot/flags/cd-flag.gif
+- word: Chile
+  imageUrl: https://cdn.nadeko.bot/flags/ci-flag.gif
+- word: China
+  imageUrl: https://cdn.nadeko.bot/flags/ch-flag.gif
+- word: Colombia
+  imageUrl: https://cdn.nadeko.bot/flags/co-flag.gif
+- word: Comoros
+  imageUrl: https://cdn.nadeko.bot/flags/cn-flag.gif
+- word: Congo
+  imageUrl: https://cdn.nadeko.bot/flags/cg-flag.gif
+- word: Costa Rica
+  imageUrl: https://cdn.nadeko.bot/flags/cs-flag.gif
+- word: Croatia
+  imageUrl: https://cdn.nadeko.bot/flags/hr-flag.gif
+- word: Cuba
+  imageUrl: https://cdn.nadeko.bot/flags/cu-flag.gif
+- word: Cyprus
+  imageUrl: https://cdn.nadeko.bot/flags/cy-flag.gif
+- word: Czechia
+  imageUrl: https://cdn.nadeko.bot/flags/ez-flag.gif
+- word: Denmark
+  imageUrl: https://cdn.nadeko.bot/flags/da-flag.gif
+- word: Djibouti
+  imageUrl: https://cdn.nadeko.bot/flags/dj-flag.gif
+- word: Dominica
+  imageUrl: https://cdn.nadeko.bot/flags/do-flag.gif
+- word: Dominican Republic
+  imageUrl: https://cdn.nadeko.bot/flags/dr-flag.gif
+- word: Democratic People's Republic of Korea
+  imageUrl: https://cdn.nadeko.bot/flags/kn-flag.gif
+- word: Democratic Republic of the Congo
+  imageUrl: https://cdn.nadeko.bot/flags/congo-flag.gif
+- word: Ecuador
+  imageUrl: https://cdn.nadeko.bot/flags/ec-flag.gif
+- word: Egypt
+  imageUrl: https://cdn.nadeko.bot/flags/eg-flag.gif
+- word: El Salvador
+  imageUrl: https://cdn.nadeko.bot/flags/es-flag.gif
+- word: Equatorial Guinea
+  imageUrl: https://cdn.nadeko.bot/flags/ek-flag.gif
+- word: Eritrea
+  imageUrl: https://cdn.nadeko.bot/flags/er-flag.gif
+- word: Estonia
+  imageUrl: https://cdn.nadeko.bot/flags/en-flag.gif
+- word: Eswatini
+  imageUrl: https://cdn.nadeko.bot/flags/wz-flag.gif
+- word: Ethiopia
+  imageUrl: https://cdn.nadeko.bot/flags/et-flag.gif
+- word: Fiji
+  imageUrl: https://cdn.nadeko.bot/flags/fj-flag.gif
+- word: Finland
+  imageUrl: https://cdn.nadeko.bot/flags/fi-flag.gif
+- word: France
+  imageUrl: https://cdn.nadeko.bot/flags/fr-flag.gif
+- word: Gabon
+  imageUrl: https://cdn.nadeko.bot/flags/gb-flag.gif
+- word: Gambia
+  imageUrl: https://cdn.nadeko.bot/flags/ga-flag.gif
+- word: Georgia
+  imageUrl: https://cdn.nadeko.bot/flags/gg-flag.gif
+- word: Germany
+  imageUrl: https://cdn.nadeko.bot/flags/gm-flag.gif
+- word: Ghana
+  imageUrl: https://cdn.nadeko.bot/flags/gh-flag.gif
+- word: Greece
+  imageUrl: https://cdn.nadeko.bot/flags/gr-flag.gif
+- word: Grenada
+  imageUrl: https://cdn.nadeko.bot/flags/gj-flag.gif
+- word: Guatemala
+  imageUrl: https://cdn.nadeko.bot/flags/gt-flag.gif
+- word: Guinea
+  imageUrl: https://cdn.nadeko.bot/flags/gv-flag.gif
+- word: Guinea Bissau
+  imageUrl: https://cdn.nadeko.bot/flags/pu-flag.gif
+- word: Guyana
+  imageUrl: https://cdn.nadeko.bot/flags/gy-flag.gif
+- word: Haiti
+  imageUrl: https://cdn.nadeko.bot/flags/ha-flag.gif
+- word: Vatican
+  imageUrl: https://cdn.nadeko.bot/flags/vt-flag.gif
+- word: Honduras
+  imageUrl: https://cdn.nadeko.bot/flags/ho-flag.gif
+- word: Hungary
+  imageUrl: https://cdn.nadeko.bot/flags/hu-flag.gif
+- word: Iceland
+  imageUrl: https://cdn.nadeko.bot/flags/ic-flag.gif
+- word: India
+  imageUrl: https://cdn.nadeko.bot/flags/in-flag.gif
+- word: Indonesia
+  imageUrl: https://cdn.nadeko.bot/flags/id-flag.gif
+- word: Iran
+  imageUrl: https://cdn.nadeko.bot/flags/ir-flag.gif
+- word: Iraq
+  imageUrl: https://cdn.nadeko.bot/flags/iz-flag.gif
+- word: Ireland
+  imageUrl: https://cdn.nadeko.bot/flags/ei-flag.gif
+- word: Israel
+  imageUrl: https://cdn.nadeko.bot/flags/is-flag.gif
+- word: Italy
+  imageUrl: https://cdn.nadeko.bot/flags/it-flag.gif
+- word: Jamaica
+  imageUrl: https://cdn.nadeko.bot/flags/jm-flag.gif
+- word: Japan
+  imageUrl: https://cdn.nadeko.bot/flags/ja-flag.gif
+- word: Jordan
+  imageUrl: https://cdn.nadeko.bot/flags/jo-flag.gif
+- word: Kazakhstan
+  imageUrl: https://cdn.nadeko.bot/flags/kz-flag.gif
+- word: Kenya
+  imageUrl: https://cdn.nadeko.bot/flags/ke-flag.gif
+- word: Kiribati
+  imageUrl: https://cdn.nadeko.bot/flags/kr-flag.gif
+- word: Kuwait
+  imageUrl: https://cdn.nadeko.bot/flags/ku-flag.gif
+- word: Kyrgyzstan
+  imageUrl: https://cdn.nadeko.bot/flags/kg-flag.gif
+- word: Lao People's Democratic Republic
+  imageUrl: https://cdn.nadeko.bot/flags/la-flag.gif
+- word: Latvia
+  imageUrl: https://cdn.nadeko.bot/flags/lg-flag.gif
+- word: Lebanon
+  imageUrl: https://cdn.nadeko.bot/flags/le-flag.gif
+- word: Lesotho
+  imageUrl: https://cdn.nadeko.bot/flags/lt-flag.gif
+- word: Liberia
+  imageUrl: https://cdn.nadeko.bot/flags/li-flag.gif
+- word: Libya
+  imageUrl: https://cdn.nadeko.bot/flags/ly-flag.gif
+- word: Liechtenstein
+  imageUrl: https://cdn.nadeko.bot/flags/ls-flag.gif
+- word: Lithuania
+  imageUrl: https://cdn.nadeko.bot/flags/lh-flag.gif
+- word: Luxembourg
+  imageUrl: https://cdn.nadeko.bot/flags/lu-flag.gif
+- word: Madagascar
+  imageUrl: https://cdn.nadeko.bot/flags/ma-flag.gif
+- word: Malawi
+  imageUrl: https://cdn.nadeko.bot/flags/mi-flag.gif
+- word: Malaysia
+  imageUrl: https://cdn.nadeko.bot/flags/my-flag.gif
+- word: Maldives
+  imageUrl: https://cdn.nadeko.bot/flags/mv-flag.gif
+- word: Mali
+  imageUrl: https://cdn.nadeko.bot/flags/ml-flag.gif
+- word: Malta
+  imageUrl: https://cdn.nadeko.bot/flags/mt-flag.gif
+- word: Marshall Islands
+  imageUrl: https://cdn.nadeko.bot/flags/rm-flag.gif
+- word: Mauritania
+  imageUrl: https://cdn.nadeko.bot/flags/mr-flag.gif
+- word: Mauritius
+  imageUrl: https://cdn.nadeko.bot/flags/mp-flag.gif
+- word: Mexico
+  imageUrl: https://cdn.nadeko.bot/flags/mx-flag.gif
+- word: Micronesia
+  imageUrl: https://cdn.nadeko.bot/flags/fm-flag.gif
+- word: Moldova
+  imageUrl: https://cdn.nadeko.bot/flags/md-flag.gif
+- word: Monaco
+  imageUrl: https://cdn.nadeko.bot/flags/mn-flag.gif
+- word: Mongolia
+  imageUrl: https://cdn.nadeko.bot/flags/mg-flag.gif
+- word: Montenegro
+  imageUrl: https://cdn.nadeko.bot/flags/mj-flag.gif
+- word: Morocco
+  imageUrl: https://cdn.nadeko.bot/flags/mo-flag.gif
+- word: Mozambique
+  imageUrl: https://cdn.nadeko.bot/flags/mz-flag.gif
+- word: Myanmar
+  imageUrl: https://cdn.nadeko.bot/flags/bm-flag.gif
+- word: Namibia
+  imageUrl: https://cdn.nadeko.bot/flags/wa-flag.gif
+- word: Nauru
+  imageUrl: https://cdn.nadeko.bot/flags/nr-flag.gif
+- word: Nepal
+  imageUrl: https://cdn.nadeko.bot/flags/np-flag.gif
+- word: Netherlands
+  imageUrl: https://cdn.nadeko.bot/flags/nl-flag.gif
+- word: New Zealand
+  imageUrl: https://cdn.nadeko.bot/flags/nz-flag.gif
+- word: Nicaragua
+  imageUrl: https://cdn.nadeko.bot/flags/nu-flag.gif
+- word: Niger
+  imageUrl: https://cdn.nadeko.bot/flags/ng-flag.gif
+- word: Nigeria
+  imageUrl: https://cdn.nadeko.bot/flags/ni-flag.gif
+- word: North Macedonia
+  imageUrl: https://cdn.nadeko.bot/flags/mk-flag.gif
+- word: Norway
+  imageUrl: https://cdn.nadeko.bot/flags/no-flag.gif
+- word: Oman
+  imageUrl: https://cdn.nadeko.bot/flags/mu-flag.gif
+- word: Pakistan
+  imageUrl: https://cdn.nadeko.bot/flags/pk-flag.gif
+- word: Palau
+  imageUrl: https://cdn.nadeko.bot/flags/ps-flag.gif
+- word: Panama
+  imageUrl: https://cdn.nadeko.bot/flags/pm-flag.gif
+- word: Papua New Guinea
+  imageUrl: https://cdn.nadeko.bot/flags/pp-flag.gif
+- word: Paraguay
+  imageUrl: https://cdn.nadeko.bot/flags/pa-flag.gif
+- word: Peru
+  imageUrl: https://cdn.nadeko.bot/flags/pe-flag.gif
+- word: Philippines
+  imageUrl: https://cdn.nadeko.bot/flags/rp-flag.gif
+- word: Poland
+  imageUrl: https://cdn.nadeko.bot/flags/pl-flag.gif
+- word: Portugal
+  imageUrl: https://cdn.nadeko.bot/flags/po-flag.gif
+- word: Qatar
+  imageUrl: https://cdn.nadeko.bot/flags/qa-flag.gif
+- word: Romania
+  imageUrl: https://cdn.nadeko.bot/flags/ro-flag.gif
+- word: Russian Federation
+  imageUrl: https://cdn.nadeko.bot/flags/rs-flag.gif
+- word: Rwanda
+  imageUrl: https://cdn.nadeko.bot/flags/rw-flag.gif
+- word: Saint Kitts and Nevis
+  imageUrl: https://cdn.nadeko.bot/flags/sc-flag.gif
+- word: Saint Lucia
+  imageUrl: https://cdn.nadeko.bot/flags/st-flag.gif
+- word: Samoa
+  imageUrl: https://cdn.nadeko.bot/flags/ws-flag.gif
+- word: San Marino
+  imageUrl: https://cdn.nadeko.bot/flags/sm-flag.gif
+- word: Sao Tome and Principe
+  imageUrl: https://cdn.nadeko.bot/flags/tp-flag.gif
+- word: Saudi Arabia
+  imageUrl: https://cdn.nadeko.bot/flags/sa-flag.gif
+- word: Senegal
+  imageUrl: https://cdn.nadeko.bot/flags/sg-flag.gif
+- word: Serbia
+  imageUrl: https://cdn.nadeko.bot/flags/ri-flag.gif
+- word: Seychelles
+  imageUrl: https://cdn.nadeko.bot/flags/se-flag.gif
+- word: Sierra Leone
+  imageUrl: https://cdn.nadeko.bot/flags/sl-flag.gif
+- word: Singapore
+  imageUrl: https://cdn.nadeko.bot/flags/sn-flag.gif
+- word: Slovakia
+  imageUrl: https://cdn.nadeko.bot/flags/lo-flag.gif
+- word: Slovenia
+  imageUrl: https://cdn.nadeko.bot/flags/si-flag.gif
+- word: Solomon Islands
+  imageUrl: https://cdn.nadeko.bot/flags/bp-flag.gif
+- word: Somalia
+  imageUrl: https://cdn.nadeko.bot/flags/so-flag.gif
+- word: South Africa
+  imageUrl: https://cdn.nadeko.bot/flags/sf-flag.gif
+- word: Republic of Korea
+  imageUrl: https://cdn.nadeko.bot/flags/ks-flag.gif
+- word: South Sudan
+  imageUrl: https://cdn.nadeko.bot/flags/od-flag.gif
+- word: Spain
+  imageUrl: https://cdn.nadeko.bot/flags/sp-flag.gif
+- word: Sri Lanka
+  imageUrl: https://cdn.nadeko.bot/flags/ce-flag.gif
+- word: Saint Vincent and the Grenadines
+  imageUrl: https://cdn.nadeko.bot/flags/vc-flag.gif
+- word: Palestine
+  imageUrl: https://cdn.nadeko.bot/flags/palestine-flag.gif
+- word: Sudan
+  imageUrl: https://cdn.nadeko.bot/flags/su-flag.gif
+- word: Suriname
+  imageUrl: https://cdn.nadeko.bot/flags/ns-flag.gif
+- word: Sweden
+  imageUrl: https://cdn.nadeko.bot/flags/sw-flag.gif
+- word: Switzerland
+  imageUrl: https://cdn.nadeko.bot/flags/sz-flag.gif
+- word: Syrian Arab Republic
+  imageUrl: https://cdn.nadeko.bot/flags/sy-flag.gif
+- word: Tajikistan
+  imageUrl: https://cdn.nadeko.bot/flags/ti-flag.gif
+- word: United Republic of Tanzania
+  imageUrl: https://cdn.nadeko.bot/flags/tz-flag.gif
+- word: Thailand
+  imageUrl: https://cdn.nadeko.bot/flags/th-flag.gif
+- word: Timor-Leste
+  imageUrl: https://cdn.nadeko.bot/flags/tt-flag.gif
+- word: Togo
+  imageUrl: https://cdn.nadeko.bot/flags/to-flag.gif
+- word: Tonga
+  imageUrl: https://cdn.nadeko.bot/flags/tn-flag.gif
+- word: Trinidad and Tobago
+  imageUrl: https://cdn.nadeko.bot/flags/td-flag.gif
+- word: Tunisia
+  imageUrl: https://cdn.nadeko.bot/flags/ts-flag.gif
+- word: Turkey
+  imageUrl: https://cdn.nadeko.bot/flags/tu-flag.gif
+- word: Turkmenistan
+  imageUrl: https://cdn.nadeko.bot/flags/tx-flag.gif
+- word: Tuvalu
+  imageUrl: https://cdn.nadeko.bot/flags/tv-flag.gif
+- word: United Arab Emirates
+  imageUrl: https://cdn.nadeko.bot/flags/ae-flag.gif
+- word: United Kingdom
+  imageUrl: https://cdn.nadeko.bot/flags/uk-flag.gif
+- word: United States Of America
+  imageUrl: https://cdn.nadeko.bot/flags/us-flag.gif
+- word: Uganda
+  imageUrl: https://cdn.nadeko.bot/flags/ug-flag.gif
+- word: Ukraine
+  imageUrl: https://cdn.nadeko.bot/flags/up-flag.gif
+- word: Uruguay
+  imageUrl: https://cdn.nadeko.bot/flags/uy-flag.gif
+- word: Uzbekistan
+  imageUrl: https://cdn.nadeko.bot/flags/uz-flag.gif
+- word: Vanuatu
+  imageUrl: https://cdn.nadeko.bot/flags/nh-flag.gif
+- word: Venezuela
+  imageUrl: https://cdn.nadeko.bot/flags/ve-flag.gif
+- word: Viet Nam
+  imageUrl: https://cdn.nadeko.bot/flags/vm-flag.gif
+- word: Yemen
+  imageUrl: https://cdn.nadeko.bot/flags/ym-flag.gif
+- word: Zambia
+  imageUrl: https://cdn.nadeko.bot/flags/za-flag.gif
+- word: Zimbabwe
+  imageUrl: https://cdn.nadeko.bot/flags/zi-flag.gif

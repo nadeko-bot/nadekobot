@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+option csharp_namespace = "NadekoBot.GrpcApi";
+
+import "google/protobuf/empty.proto";
+
+package other;
+
+service GrpcOther {
+  rpc BotOnGuild(BotOnGuildRequest) returns (BotOnGuildReply);
+  rpc GetTextChannels(GetTextChannelsRequest) returns (GetTextChannelsReply);
+  rpc GetRoles(GetRolesRequest) returns (GetRolesReply);
+
+  rpc GetCurrencyLb(GetLbRequest) returns (CurrencyLbReply);
+  rpc GetXpLb(GetLbRequest) returns (XpLbReply);
+  rpc GetWaifuLb(GetLbRequest) returns (WaifuLbReply);
+
+  rpc GetShardStats(google.protobuf.Empty) returns (stream ShardStatsReply);
+  rpc GetCommandFeed(google.protobuf.Empty) returns (stream CommandFeedEntry);
+  rpc GetServerInfo(ServerInfoRequest) returns (GetServerInfoReply);
+}
+
+message CommandFeedEntry {
+  string command = 1;
+}
+
+message GetRolesRequest {
+  uint64 guildId = 1;
+}
+
+message GetRolesReply {
+  repeated RoleReply roles = 1;
+}
+
+message BotOnGuildRequest {
+  uint64 guildId = 1;
+}
+
+message BotOnGuildReply {
+  bool success = 1;
+}
+
+message ShardStatsReply {
+  int32 id = 1;
+  string status = 2;
+
+  int32 guildCount = 3;
+  string uptime = 4;
+  int64 commands = 5;
+}
+
+message GetTextChannelsRequest{
+  uint64 guildId = 1;
+}
+
+message GetTextChannelsReply {
+  repeated TextChannelReply textChannels = 1;
+}
+
+message TextChannelReply {
+  uint64 id = 1;
+  string name = 2;
+}
+
+message CurrencyLbReply {
+  repeated CurrencyLbEntryReply entries = 1;
+}
+
+message CurrencyLbEntryReply {
+  string user = 1;
+  uint64 userId = 2;
+  int64 amount = 3;
+  string avatar = 4;
+}
+
+message GetLbRequest {
+  int32 page = 1;
+  int32 perPage = 2;
+}
+
+message XpLbReply {
+  repeated XpLbEntryReply entries = 1;
+}
+
+message XpLbEntryReply {
+  string user = 1;
+  uint64 userId = 2;
+  int64 totalXp = 3;
+  int64 level = 4;
+}
+
+message WaifuLbReply {
+  repeated WaifuLbEntry entries = 1;
+}
+
+message WaifuLbEntry {
+  string user = 1;
+  string claimedBy = 2;
+  int64 value = 3;
+  bool isMutual = 4;
+}
+
+message ServerInfoRequest {
+  uint64 guildId = 1;
+}
+
+message GetServerInfoReply {
+  uint64 id = 1;
+  string name = 2;
+  string iconUrl = 3;
+  uint64 ownerId = 4;
+  string ownerName = 5;
+  repeated RoleReply roles = 6;
+  repeated EmojiReply emojis = 7;
+  repeated string features = 8;
+  int32 textChannels = 9;
+  int32 voiceChannels = 10;
+  int32 memberCount = 11;
+  int64 createdAt = 12;
+}
+
+message RoleReply {
+  uint64 id = 1;
+  string name = 2;
+  string iconUrl = 3;
+  string color = 4;
+}
+
+message EmojiReply {
+  string name = 1;
+  string url = 2;
+  string code = 3;
+}
+
+message ChannelReply {
+  uint64 id = 1;
+  string name = 2;
+  ChannelType type = 3;
+}
+
+enum ChannelType {
+  Text = 0;
+  Voice = 1;
+}

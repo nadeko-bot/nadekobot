@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+option csharp_namespace = "NadekoBot.GrpcApi";
+
+import "google/protobuf/timestamp.proto";
+
+package fin;
+
+service GrpcFin {
+  rpc GetTransactions(GetTransactionsRequest) returns (GetTransactionsReply);
+  rpc GetHoldings(GetHoldingsRequest) returns (GetHoldingsReply);
+  rpc Withdraw(WithdrawRequest) returns (WithdrawReply);
+  rpc Deposit(DepositRequest) returns (DepositReply);
+}
+
+message GetTransactionsRequest {
+  int32 page = 1;
+  uint64 userId = 2;
+}
+
+message GetTransactionsReply {
+  repeated TransactionReply transactions = 1;
+  int32 total = 2;
+}
+
+message TransactionReply {
+  int64 amount = 1;
+  string note = 2;
+  string type = 3;
+  string extra = 4;
+  google.protobuf.Timestamp timestamp = 5;
+  string id = 6;
+}
+
+message GetHoldingsRequest {
+  uint64 userId = 1;
+}
+
+message GetHoldingsReply {
+  int64 cash = 1;
+  int64 bank = 2;
+}
+
+message WithdrawRequest {
+  uint64 userId = 1;
+  int64 amount = 2;
+}
+
+message WithdrawReply {
+  bool success = 1;
+}
+
+message DepositRequest {
+  uint64 userId = 1;
+  int64 amount = 2;
+}
+
+message DepositReply {
+  bool success = 1;
+}

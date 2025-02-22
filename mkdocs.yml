@@ -1,0 +1,97 @@
+site_name: 'NadekoBot'
+site_url: 'https://nadeko.bot'
+repo_url: 'https://gitlab.com/Kwoth/nadekobot'
+site_author: 'Kwoth'
+
+theme:
+    name: material
+    custom_dir: docs/overrides
+    palette:
+          - media: "(prefers-color-scheme: light)"
+            scheme: default
+            primary: blue
+            accent: light blue
+            toggle:
+                icon: material/weather-sunny
+                name: Switch to dark mode
+          - media: "(prefers-color-scheme: dark)"
+            scheme: dark
+            primary: blue
+            accent: light blue
+            toggle:
+                icon: material/weather-night
+                name: Switch to light mode
+    features:
+        - navigation.instant
+        - navigation.expand
+        - navigation.top
+    font:
+        text: Source Sans Pro
+        code: Source Code Pro
+    logo: assets/favicon.png
+    favicon: assets/favicon.png
+    icon:
+        repo: custom/gitlab
+
+extra:
+  homepage: https://nadeko.bot
+
+extra_css:
+  - stylesheets/styling-overrides.css
+  - stylesheets/theme.css
+
+plugins:
+    - git-revision-date-localized:
+        type: date
+    - search
+
+markdown_extensions:
+    - attr_list
+    - codehilite:
+        guess_lang: false
+    - toc:
+        permalink: true
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - pymdownx.betterem:
+        smart_enable: all
+    - admonition
+    - meta
+    - footnotes
+    - pymdownx.details
+    - pymdownx.inlinehilite
+    - pymdownx.superfences
+    - pymdownx.blocks.tab:
+        alternate_style: true
+    - pymdownx.snippets
+    - pymdownx.emoji:
+        emoji_index: !!python/name:material.extensions.emoji.twemoji
+        emoji_generator: !!python/name:material.extensions.emoji.to_svg
+        options:
+            custom_icons:
+                - docs/overrides/.icons
+
+nav:
+    - Home: index.md
+    - Guides:
+        - Windows Guide: guides/windows-guide.md
+        - Linux Guide: guides/linux-guide.md
+        - OSX Guide: guides/osx-guide.md
+        - Windows Guide (from source): guides/windows-source-guide.md
+        - Docker Guide (unsupported): guides/docker-guide.md
+    - Commands:
+        - Readme: commands-readme.md
+        - Commands List: https://nadeko.bot/commands
+    - Features Explained:
+        - Basic Creds: creds-guide.md
+        - Advanced Creds: jsons-explained.md
+        - Permissions System: permissions-system.md
+        - Custom Reactions: custom-reactions.md
+        - Placeholders: placeholders.md
+        - Config: config-guide.md
+        - Medusa System:
+            - medusa/getting-started.md
+            - medusa/creating-a-medusa.md
+            - medusa/snek-lifecycle.md
+    - Contribution Guide: contribution-guide.md
+    - Donate: donate.md

@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+option csharp_namespace = "NadekoBot.GrpcApi";
+
+package warn;
+
+service GrpcWarn {
+  rpc GetWarnSettings (WarnSettingsRequest) returns (WarnSettingsReply);
+
+  rpc SetWarnExpiry(SetWarnExpiryRequest) returns (SetWarnExpiryReply);
+  rpc AddWarnp (AddWarnpRequest) returns (AddWarnpReply);
+  rpc DeleteWarnp (DeleteWarnpRequest) returns (DeleteWarnpReply);
+
+  rpc GetLatestWarnings(GetLatestWarningsRequest) returns (GetLatestWarningsReply);
+  rpc GetUserWarnings(GetUserWarningsRequest) returns (GetUserWarningsReply);
+
+  rpc ForgiveWarning(ForgiveWarningRequest) returns (ForgiveWarningReply);
+  rpc DeleteWarning(ForgiveWarningRequest) returns (ForgiveWarningReply);
+
+}
+message WarnSettingsRequest {
+  uint64 guildId = 1;
+}
+
+message WarnPunishment {
+  int32 threshold = 1;
+  string action = 2;
+  int32 duration = 3;
+  string role = 4;
+}
+
+message WarnSettingsReply {
+  repeated WarnPunishment punishments = 1;
+  int32 expiryDays = 2;
+  bool deleteOnExpire = 3;
+}
+
+message AddWarnpRequest {
+  uint64 guildId = 1;
+  WarnPunishment punishment = 2;
+}
+
+message AddWarnpReply {
+  bool success = 1;
+}
+
+message DeleteWarnpRequest {
+  uint64 guildId = 1;
+  int32 threshold = 2;
+}
+
+message DeleteWarnpReply {
+  bool success = 1;
+}
+
+message GetUserWarningsRequest {
+  uint64 guildId = 1;
+  string user = 2;
+  int32 page = 3;
+}
+
+message GetUserWarningsReply {
+  repeated Warning warnings = 1;
+  int32 totalCount = 2;
+}
+
+message Warning {
+  string id = 1;
+  string reason = 2;
+  int64 timestamp = 3;
+  int64 weight = 4;
+  bool forgiven = 5;
+  string forgivenBy = 6;
+  string user = 7;
+  uint64 userId = 8;
+  string moderator = 9;
+}
+
+message ForgiveWarningRequest {
+  uint64 guildId = 1;
+  string warnId = 2;
+  string modName = 3;
+}
+
+message ForgiveWarningReply {
+  bool success = 1;
+}
+
+message SetWarnExpiryRequest {
+  uint64 guildId = 1;
+  int32 expiryDays = 2;
+  bool deleteOnExpire = 3;
+}
+
+message SetWarnExpiryReply {
+  bool success = 1;
+}
+
+message GetLatestWarningsRequest {
+  uint64 guildId = 1;
+  int32 page = 2;
+}
+
+message GetLatestWarningsReply {
+  repeated Warning warnings = 1;
+  int32 totalCount = 2;
+}

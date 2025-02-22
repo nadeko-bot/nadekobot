@@ -1,0 +1,12 @@
+# total number of shards
+TotalShards: 3
+# How often do shards ping their state back to the coordinator
+RecheckIntervalMs: 5000
+# Command to run the shard
+ShardStartCommand: dotnet
+# Arguments to run the shard
+# {0} = shard id
+# {1} = total number of shards
+ShardStartArgs: run -p "..\NadekoBot\NadekoBot.csproj" --no-build -- {0} {1}
+# How long does it take for the shard to be forcefully restarted once it stops reporting its state
+UnresponsiveSec: 30

@@ -1,0 +1,166 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ v6 ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ v6 ]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  REGISTRY: ghcr.io
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Test
+      run: dotnet test -c Release --verbosity normal
+
+  build:
+    name: Build Package
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime: [linux-x64, linux-arm64, win-x64, win-arm64, osx-x64, osx-arm64]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Publish
+      run: |
+        dotnet publish -c Release -r ${{ matrix.runtime }} \
+          --self-contained \
+          -p:Version=${{ github.ref_name }} \
+          -o nadekobot-${{ matrix.runtime }} src/NadekoBot/NadekoBot.csproj
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: nadekobot-${{ matrix.runtime }}
+        path: nadekobot-${{ matrix.runtime }}
+  
+  create-release:
+    name: Create Release
+    needs:
+      - build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create archives
+        run: |
+          cd artifacts
+          for dir in */; do
+            runtime="${dir%/}"
+            if [[ "$runtime" == *"win"* ]]; then
+              zip -r "$runtime.zip" "$runtime"
+            else
+              tar -czf "$runtime.tar.gz" "$runtime"
+            fi
+          done
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: Release ${{ github.ref_name }}
+          body: |
+            [Changelog](https://github.com/nadeko-bot/nadekobot/blob/v6/CHANGELOG.md)
+            
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/*.zip
+            artifacts/*.tar.gz
+  
+  docker:
+    name: Build and Push Docker image
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: .
+          tags: ghcr.io/nadeko-bot/nadekobot:latest,ghcr.io/nadeko-bot/nadekobot:v6,ghcr.io/nadeko-bot/nadekobot:${{ github.ref_name }}
+  
+  publish-medusa-package:
+    name: Publish Medusa Package
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Set version
+      run: |
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          echo "MEDUSA_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        else
+          LAST_TAG=$(git describe --tags --abbrev=0)
+          echo "MEDUSA_VERSION=${LAST_TAG}-alpha${GITHUB_SHA::7}" >> $GITHUB_ENV
+        fi
+
+    - name: Pack and Push
+      working-directory: src/Nadeko.Medusa
+      run: |
+        dotnet pack -c Release /p:Version=${{ env.MEDUSA_VERSION }} -o bin/Release/packed
+        dotnet nuget push bin/Release/packed/*.nupkg --source https://www.myget.org/F/nadeko/api/v2/package --api-key ${{ secrets.MYGET_API_KEY }}
+      continue-on-error: true

@@ -1,0 +1,4956 @@
+h:
+  desc: |-
+    Shows help for a single command.
+    Command help contains instructions on how to use the command with examples and a list of parameters.
+    DMs you helpful links if no parameters are specified.
+  ex:
+    - '{0}cmds'
+    - ''
+  params:
+    - com:
+        desc: "The command that help is being requested for."
+    - fail:
+        desc: "Fallback parameter if the command is not found."
+gencmdlist:
+  desc: Generates a json of the commands list and sends it to the chat.
+  ex:
+    - ''
+  params:
+    - { }
+donate:
+  desc: Provides instructions for helping the project financially.
+  ex:
+    - ''
+  params:
+    - { }
+modules:
+  desc: |-
+    List all of the bot's modules.
+    Each module contains commands that you can use.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The page number to display in the list of modules."
+commands:
+  desc: |-
+    List all of the bot's commands in the specified module.
+    You can either specify the full name or only the first few letters of the module name.
+    Specifying no module will show the list of modules instead.
+  ex:
+    - Admin
+    - Admin --view 1
+    - ''
+  params:
+    - module:
+        desc: "The name of the module to retrieve commands from."
+      params:
+        desc: "How to display the list of commands."
+greetdel:
+  desc: Sets the time it takes (in seconds) for greet messages to be auto-deleted. Set it to `0` to disable automatic deletion.
+  ex:
+    - 0
+    - 30
+  params:
+    - timer:
+        desc: "The amount of seconds before greeting messages are automatically deleted."
+greet:
+  desc: Toggles announcements on the current channel when someone joins the server.
+  ex:
+    - ''
+  params:
+    - { }
+greetmsg:
+  desc: |-
+    Sets a new join announcement message which will be shown in the current channel.
+    Using this command with no message will show the current greet message.  
+    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://eb.nadeko.bot/)
+  ex:
+    - Welcome, %user.mention%.
+  params:
+    - text:
+        desc: "The new announcement message to be displayed when a user joins the server."
+bye:
+  desc: Toggles announcements on the current channel when someone leaves the server.
+  ex:
+    - ''
+  params:
+    - { }
+byemsg:
+  desc: |-
+    Sets a new leave announcement message which will be shown in the current channel. 
+    Using this command with no message will show the current bye message. 
+    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://eb.nadeko.bot/)
+  ex:
+    - '%user.name% has left.'
+  params:
+    - text:
+        desc: "The new announcement message to be displayed when a user leaves the server."
+byedel:
+  desc: Sets the time it takes (in seconds) for bye messages to be auto-deleted. Set it to `0` to disable automatic deletion.
+  ex:
+    - 0
+    - 30
+  params:
+    - timer:
+        desc: "The amount of seconds before goodbye messages are automatically deleted."
+greetdm:
+  desc: Toggles whether greet messages will be sent in a DM (This is separate from `{0}greet` - you can have both, one or neither enabled).
+  ex:
+    - ''
+  params:
+    - { }
+greettest:
+  desc: Sends the greet message in the current channel as if you just joined the server. You can optionally specify a different user.
+  ex:
+    - ''
+    - '@SomeoneElse'
+  params:
+    - user:
+        desc: "The user to impersonate when sending the greeting, defaulting to yourself if not specified."
+boosttest:
+  desc: |-
+    Sends the boost message in the current channel as if you just boosted the server.
+    You can optionally specify a different user.
+  ex:
+    - ''
+    - '@SomeoneElse'
+  params:
+    - user:
+        desc: "The user to impersonate when sending the boost message, defaulting to yourself if not specified."
+greetdmtest:
+  desc: Sends the greet direct message to you as if you just joined the server. You can optionally specify a different user.
+  ex:
+    - ''
+    - '@SomeoneElse'
+  params:
+    - user:
+        desc: "The recipient of the greeting, defaulting to yourself if not specified."
+byetest:
+  desc: Sends the bye message in the current channel as if you just left the server. You can optionally specify a different user.
+  ex:
+    - ''
+    - '@SomeoneElse'
+  params:
+    - user:
+        desc: "The user to impersonate when sending the farewell, defaulting to yourself if not specified."
+boost:
+  desc: Toggles announcements on the current channel when someone boosts the server.
+  ex:
+    - ''
+  params:
+    - { }
+boostmsg:
+  desc: |-
+    Sets a new boost announcement message which will be shown in the current channel. 
+    Using this command with no message will show the current boost message. 
+    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://docs.nadeko.bot/en/latest/embeds/)
+  ex:
+    - '%user.mention% has boosted the server!!!'
+  params:
+    - text:
+        desc: "The new announcement message to be displayed when a user boosts the server."
+boostdel:
+  desc: Sets the time it takes (in seconds) for boost messages to be auto-deleted. Set it to `0` to disable automatic deletion.
+  ex:
+    - 0
+    - 30
+  params:
+    - timer:
+        desc: "The amount of seconds before boost messages are automatically deleted."
+logserver:
+  desc: Enables or Disables ALL log events. If enabled, all log events will log to this channel.
+  ex:
+    - enable
+    - disable
+  params:
+    - action:
+        desc: "The type of action to take."
+logignore:
+  desc: Toggles whether the `{0}log` and `{0}logserver` commands ignore the specified channel or user. Provide no arguments to see the list of currently ignored users and channels.
+  ex:
+    - ''
+    - '@SomeUser'
+    - '#some-channel'
+  params:
+    - { }
+    - target:
+        desc: "The channel to ignore."
+    - target:
+        desc: "The user to ignore."
+repeatlist:
+  desc: Lists currently repeating messages and their indexes.
+  ex:
+    - ''
+  params:
+    - { }
+repeatremove:
+  desc: Removes a repeating message by index. Use `{0}replst` to see indexes.
+  ex:
+    - 2
+  params:
+    - index:
+        desc: "The index of the repeating message to be removed."
+repeatinvoke:
+  desc: Immediately post the repeat message on a certain index and restarts its timer.
+  ex:
+    - 1
+  params:
+    - index:
+        desc: "The index of the repeating message to post."
+repeat:
+  desc: |-
+    Repeat a message once per specified time increment in the current channel. 
+    You can specify a different channel as the first argument instead.
+    You can also specify time of day for the message to be repeated daily (make sure you've set your server's `{0}timezone`). 
+    If you specify time of day, you can still override the default daily interval with your own interval. 
+    You can have up to 5 repeating messages on one server in total.
+  ex:
+    - Hello there
+    - '#other-channel hello there'
+    - '1h5m Hello @erryone'
+    - '10:00 Daily have a nice day! This will execute once every 24h.'
+    - '#other-channel 10:00 Daily have a nice day! This will execute once every 24h.'
+    - '21:00 30m Starting at 21 and every 30 minutes after that i will send this message!'
+  params:
+    - message:
+        desc: "The text to be repeated."
+    - channel:
+        desc: "The channel where the message will be repeated."
+      message:
+        desc: "The text to be repeated."
+    - interval:
+        desc: "The amount of time between each repetition."
+      message:
+        desc: "The text to be repeated."
+    - channel:
+        desc: "The channel where the message will be sent."
+      interval:
+        desc: "The amount of time between each repetition."
+      message:
+        desc: "The text to be repeated."
+    - timeOfDay:
+        desc: "The time at which the message should begin being repeated."
+      message:
+        desc: "The text to be repeated."
+    - channel:
+        desc: "The channel where the message will be repeated."
+      timeOfDay:
+        desc: "The time at which the message should begin being repeated."
+      message:
+        desc: "The text to be repeated."
+    - timeOfDay:
+        desc: "The time at which the message should begin being repeated."
+      interval:
+        desc: "The amount of time between each repetition."
+      message:
+        desc: "The text to be repeated."
+    - channel:
+        desc: "The channel where the message will be repeated."
+      timeOfDay:
+        desc: "The time at which the message should begin being repeated."
+      interval:
+        desc: "The amount of time between each repetition."
+      message:
+        desc: "The text to be repeated."
+repeatredundant:
+  desc: |-
+    Specify repeater's index (Use `{0}replst` to see indexes) to toggle whether the message should be reposted if the last message in the channel is the same repeater's message.
+    This is useful if you want to remind everyone to be nice every so often, but don't want to have the bot spam the channel. This is NOT useful if you want to periodically ping someone.
+  ex:
+    - 1
+  params:
+    - index:
+        desc: "The index of the repeating message to modify."
+repeatskip:
+  desc: |-
+    Specify a repeater's ID to toggle whether the next trigger of the repeater will be skipped.
+    This setting is not stored in the database and will get reset if the bot is restarted.
+  ex:
+    - 3
+  params:
+    - index:
+        desc: "The index of the repeating message to skip."
+rotateplaying:
+  desc: Toggles rotation of playing status of the dynamic strings you previously specified.
+  ex:
+    - ''
+  params:
+    - { }
+addplaying:
+  desc: Adds a specified string to the list of playing strings to rotate. You have to pick either `Playing`, `Watching` or `Listening` as the first parameter.
+  ex:
+    - Playing with you
+    - Watching you sleep
+  params:
+    - statusType:
+        desc: "The type of status, allowed values are `Playing`, `Watching`, or `Listening`."
+      status:
+        desc: "The status text."
+    - status:
+        desc: "The status text."
+listplaying:
+  desc: Lists all playing statuses and their indexes.
+  ex:
+    - ''
+  params:
+    - { }
+removeplaying:
+  desc: Removes a playing status by index. Use `{0}lipl` to see indexes.
+  ex:
+    - ''
+  params:
+    - index:
+        desc: "The index of the playing string to be removed."
+vcrolelist:
+  desc: Shows a list of currently set voice channel roles.
+  ex:
+    - ''
+  params:
+    - { }
+vcrole:
+  desc: Sets or resets a role which will be given to users who join the voice channel you're in when you run this command. Provide no role name to disable. You must be in a voice channel to run this command.
+  ex:
+    - SomeRole
+    - ''
+  params:
+    - role:
+        desc: "The role to assign to users who join the voice channel."
+vcrolerm:
+  desc: Removes any `{0}vcrole` associated with the specified channel ID. This is useful if your vcrole has been enabled on a VC which has been deleted.
+  ex:
+    - 123123123123123
+  params:
+    - vcId:
+        desc: "The voice channel ID to remove the vcrole from."
+saradd:
+  desc: Adds a role to the list of self-assignable roles. You can also specify a group. If 'Exclusive self-assignable roles' feature is enabled (`{0}tesar`), users will be able to pick one role per group.
+  ex:
+    - Gamer
+    - 1 Alliance
+    - 1 Horde
+  params:
+    - role:
+        desc: "The role that can be assigned by the user."
+    - group:
+        desc: "The ID of a group that the designated role should belong to."
+      role:
+        desc: "The role that can be assigned by the user."
+sarremove:
+  desc: Removes a specified role from the list of self-assignable roles.
+  ex:
+    - Gamer
+    - Alliance
+    - Horde
+  params:
+    - role:
+        desc: "The role to remove from the list of self-assignable roles."
+sarlist:
+  desc: Lists self-assignable roles. Shows 20 roles per page.
+  ex:
+    - ''
+    - 2
+  params:
+    - page:
+        desc: "The page number to show."
+sarautodelete:
+  desc: Toggles the automatic deletion of the user's message and Nadeko's confirmations for `{0}iam` and `{0}iamn` commands.
+  ex:
+    - ''
+  params:
+    - { }
+sargroupname:
+  desc: Sets a self assignable role group name. Provide no name to remove.
+  ex:
+    - 1 Faction
+    - 2
+  params:
+    - group:
+        desc: "The group number"
+      name:
+        desc: "The optional name to assign, clears the name if no name is provided."
+sargroupdelete:
+  desc: "Deletes a self-assignable role group"
+  ex:
+    - 0
+  params:
+    - group:
+        desc: "The number of the group to delete."
+sarexclusive:
+  desc: |-
+    Toggles the sar group as exclusive.
+    While enabled, users can only have one self-assignable role from that group.
+  ex:
+    - '1'
+  params:
+    - group:
+        desc: "The number of the group to set exclusive."
+sarrolelevelreq:
+  desc: Set a level requirement on a self-assignable role.
+  ex:
+    - 5 SomeRole
+  params:
+    - level:
+        desc: "The minimum level required for the role."
+      role:
+        desc: "The role that must be assigned before the user can assign this one."
+sargrouprolereq:
+  desc: Set a role that users have to have in order to assign a self-assignable role from the specified group.
+  ex:
+    - 1 SomeRole
+  params:
+    - group:
+        desc: "The group number."
+      role:
+        desc: "The role that is required."
+iam:
+  desc: Adds a role to you that you choose. Role must be on the list of self-assignable roles.
+  ex:
+    - Gamer
+  params:
+    - role:
+        desc: "The role to assign."
+iamnot:
+  desc: Removes a specified role from you. Role must be on the list of self-assignable roles.
+  ex:
+    - Gamer
+  params:
+    - role:
+        desc: "The role to remove."
+expradd:
+  desc: 'Add an expression with a trigger and a response. Bot will post a response whenever someone types the trigger word.  Running this command in a server requires the Administrator permission. Running this command in DM is Bot Owner only and adds a new global expression. Guide [here](<https://nadekobot.readthedocs.io/en/latest/custom-reactions/>)'
+  ex:
+    - '"hello" Hi there %user.mention%'
+  params:
+    - trigger:
+        desc: "The trigger word or phrase (phrase must be in quotes)."
+      response:
+        desc: "The text of the message that shows up when a user types the trigger word or phrase."
+expraddserver:
+  desc: 'Add an expression with a trigger and a response in this server. Bot will post a response whenever someone types the trigger word. This command is useful if you want to lower the permission requirement for managing expressions by using `{0}dpo`. Guide [here](<https://nadekobot.readthedocs.io/en/latest/custom-reactions/>).'
+  ex:
+    - '"hello" Hi there %user.mention%'
+  params:
+    - trigger:
+        desc: "The trigger word or phrase (phrase must be in quotes)."
+      response:
+        desc: "The text of the message that shows up when a user types the trigger word or phrase."
+exprlist:
+  desc: |-
+    Lists global or server expressions (20 expressions per page).
+    Running the command in DM will list global expressions, while running it in a server will list server expressions.
+    Shows enabled settings, followed by id, followed by the trigger.
+    **Settings:** 
+    • 🗯️ Triggered if trigger matches any phrase (`{0}h exca`)
+    • ✉️ Response will be DMed (`{0}h exdm`)
+    • ❌ Trigger message will be deleted (`{0}h exad`)
+  ex:
+    - 1
+  params:
+    - page:
+        desc: "The number of pages to display in the list."
+exprshow:
+  desc: Shows an expression's response on a given ID.
+  ex:
+    - 1
+  params:
+    - id:
+        desc: "The expression ID to show."
+exprdelete:
+  desc: Deletes an expression by index. If ran in DM, it is bot owner only and deletes a global expression. Running this command in a server requires the Administrator permission and deletes a server expression.
+  ex:
+    - 5
+  params:
+    - id:
+        desc: "The ID of the expression to delete."
+exprdeleteserver:
+  desc: Deletes an expression on a specific index on this server. This command is useful if you want to lower the permission requirement for managing expressions by using `{0}dpo`.
+  ex:
+    - 5c
+  params:
+    - id:
+        desc: "The ID of the expression to delete."
+exprclear:
+  desc: Deletes all expression on this server.
+  ex:
+    - ''
+  params:
+    - { }
+fwclear:
+  desc: Deletes all filtered words on this server.
+  ex:
+    - ''
+  params:
+    - { }
+filterlist:
+  desc: Lists invite and link filter channels and status.
+  ex:
+    - ''
+  params:
+    - { }
+aliasesclear:
+  desc: Deletes all aliases on this server.
+  ex:
+    - ''
+  params:
+    - { }
+autoassignrole:
+  desc: |-
+    Toggles the role which will be assigned to every user who joins the server.
+    You can run this command multiple times to add multiple roles (up to 3).
+    Specifying the role that is already added will remove that role from the list.
+    Provide no parameters to list current roles.
+  ex:
+    - ''
+    - RoleName
+  params:
+    - role:
+        desc: "The role assigned to new users, determining their permissions and access rights within the server."
+    - { }
+leave:
+  desc: Makes Nadeko leave the server. Either server name or server ID is required.
+  ex:
+    - 123123123331
+  params:
+    - guildStr:
+        desc: "The name of the server where Nadeko should leave."
+slowmode:
+  desc: Toggles slowmode on the current channel with the specified amount of time. Provide no parameters to disable.
+  ex:
+    - ''
+    - 27s
+    - 3h15m5s
+  params:
+    - time:
+        desc: "The duration for which the slowmode should be enabled."
+delmsgoncmd:
+  desc: "Toggles the automatic deletion of the user's successful command message to prevent chat flood. You can use it either as a server toggle, channel whitelist, or channel blacklist, as channel option has 3 settings: Enable (always do it on this channel), Disable (never do it on this channel), and Inherit (respect server setting). Use `list` parameter to see the current states."
+  ex:
+    - ''
+    - channel enable
+    - ch inherit
+    - list
+  params:
+    - _:
+        desc: "The word 'list'"
+    - _:
+        desc: "The word 'server'"
+    - _:
+        desc: "The word 'channel'"
+      s:
+        desc: "The state to set. One of 'enable', 'disable', or 'inherit'."
+      ch:
+        desc: "Channel in which to set"
+    - _:
+        desc: "The word 'channel'"
+      s:
+        desc: "The state to set. One of 'enable', 'disable', or 'inherit'."
+      chId:
+        desc: "Optional channel id. If omitted, defaults to the current channel."
+restart:
+  desc: Restarts the bot. Might not work.
+  ex:
+    - ''
+  params:
+    - { }
+setrole:
+  desc: Gives a role to a user. The role you specify has to be lower in the role hierarchy than your highest role.
+  ex:
+    - '@User Guest'
+  params:
+    - targetUser:
+        desc: "The user being given the new role, which must have a lower rank than the assistant's highest role."
+      roleToAdd:
+        desc: "The role that is being added grants specific permissions and access rights to the user."
+removerole:
+  desc: Removes a role from a user. The role you specify has to be lower in the role hierarchy than your highest role.
+  ex:
+    - '@User Admin'
+  params:
+    - targetUser:
+        desc: "The user account being modified or checked for role eligibility."
+      roleToRemove:
+        desc: "The role being removed from the user's set of assigned roles."
+renamerole:
+  desc: Renames a role. The role you specify has to be lower in the role hierarchy than your highest role.
+  ex:
+    - '"First role" SecondRole'
+  params:
+    - roleToEdit:
+        desc: "The role being edited or updated."
+      newname:
+        desc: "The name for the new role."
+removeallroles:
+  desc: Removes all roles which are lower than your highest role in the role hierarchy from the user you specify.
+  ex:
+    - '@User'
+  params:
+    - user:
+        desc: "The user whose roles will be updated to reflect the new role hierarchy."
+rolehoist:
+  desc: Toggles whether this role is displayed in the sidebar or not. The role you specify has to be lower in the role hierarchy than your highest role.
+  ex:
+    - Guests
+    - Space Wizards
+  params:
+    - role:
+        desc: "The role that determines the visibility of the sidebar."
+createrole:
+  desc: Creates a role with a given name.
+  ex:
+    - Awesome Role
+  params:
+    - roleName:
+        desc: "The name of the new role being created."
+deleterole:
+  desc: Deletes a role with a given name.
+  ex:
+    - Awesome Role
+  params:
+    - role:
+        desc: "The role being deleted, as identified by its id."
+rolecolor:
+  desc: Set a role's color using its hex value. Provide no color in order to see the hex value of the color of the specified role. The role you specify has to be lower in the role hierarchy than your highest role.
+  ex:
+    - Admin
+    - ffba55 Admin
+  params:
+    - role:
+        desc: "The role that will have its color set or retrieved."
+    - color:
+        desc: "The color used for the role's text and background."
+      role:
+        desc: "The role that will have its color set or retrieved."
+ban:
+  desc: Bans a user by ID or name with an optional message. You can specify a time string before the user name to ban the user temporarily.
+  ex:
+    - '@Someone Get out!'
+    - '"Some Guy#1234" Your behaviour is toxic.'
+    - 1d12h @Someone Come back when u chill
+  params:
+    - time:
+        desc: "The duration of the temporary ban."
+      user:
+        desc: "The user being banned, either by ID or name, and potentially temporarily."
+      msg:
+        desc: "The reason for the ban is provided in this message."
+    - time:
+        desc: "The duration of the temporary ban."
+      userId:
+        desc: "The id of the user being banned."
+      msg:
+        desc: "The reason for the ban is provided in this message."
+    - userId:
+        desc: "The id of the user being banned."
+      msg:
+        desc: "The reason for the ban is provided in this message."
+    - user:
+        desc: "The user being banned, either by ID or name, and potentially temporarily."
+      msg:
+        desc: "The reason for the ban is provided in this message."
+softban:
+  desc: Bans and then unbans a user by ID or name with an optional message.
+  ex:
+    - '@Someone Get out!'
+    - '"Some Guy#1234" Your behaviour is toxic.'
+  params:
+    - user:
+        desc: "The user being banned and then unbanned."
+      msg:
+        desc: "The reason for the ban is described in this string."
+    - userId:
+        desc: "The id of the user being banned and then unbanned."
+      msg:
+        desc: "The reason for the ban is described in this string."
+kick:
+  desc: Kicks a mentioned user.
+  ex:
+    - '@Someone Get out!'
+    - '"Some Guy#1234" Your behaviour is toxic.'
+  params:
+    - user:
+        desc: "The user being kicked from the guild."
+      msg:
+        desc: "The message to display when kicking the user."
+    - userId:
+        desc: "The ID of the user being kicked from the chat."
+      msg:
+        desc: "The message to display when kicking the user."
+timeout:
+  desc: Times the user out for the specified amount of time. You may optionally specify a reason, which will be sent to the user.
+  ex:
+    - '@Someone 3h Shut up!'
+    - '@Someone 1h30m'
+  params:
+    - globalUser:
+        desc: "The user's account or identity that is being timed out."
+      time:
+        desc: "The duration of the timeout period."
+      msg:
+        desc: "The brief message explaining why the user was timed out."
+mute:
+  desc: Mutes a mentioned user both from speaking and chatting. You can also specify time string for how long the user should be muted. You can optionally specify a reason.
+  ex:
+    - '@Someone'
+    - '@Someone too noisy'
+    - 1h30m @Someone
+    - 1h30m @Someone too noisy
+  params:
+    - target:
+        desc: "The user to whom the mute action is being applied."
+      reason:
+        desc: "The optional reason provided helps to explain why the user was muted."
+    - time:
+        desc: "The duration of the mute period."
+      user:
+        desc: "The user to whom the mute action is being applied."
+      reason:
+        desc: "The optional reason provided helps to explain why the user was muted."
+voiceunmute:
+  desc: Gives a previously voice-muted user a permission to speak.
+  ex:
+    - '@Someguy'
+  params:
+    - user:
+        desc: "The user who was previously muted is now able to participate in the conversation again."
+      reason:
+        desc: "The reason for the user's previous mute."
+deafen:
+  desc: Deafens mentioned user or users.
+  ex:
+    - '"@Someguy"'
+    - '"@Someguy" "@Someguy"'
+  params:
+    - users:
+        desc: "The list of users to be affected by the deafening action."
+undeafen:
+  desc: Undeafens mentioned user or users.
+  ex:
+    - '"@Someguy"'
+    - '"@Someguy" "@Someguy"'
+  params:
+    - users:
+        desc: "The list of users to undeafen."
+delvoichanl:
+  desc: Deletes a voice channel with a given name.
+  ex:
+    - VoiceChannelName
+  params:
+    - voiceChannel:
+        desc: "The voice channel being deleted."
+creatvoichanl:
+  desc: Creates a new voice channel with a given name.
+  ex:
+    - VoiceChannelName
+  params:
+    - channelName:
+        desc: "The name of the new voice channel being created."
+deltxtchanl:
+  desc: Deletes a text channel with a given name.
+  ex:
+    - TextChannelName
+  params:
+    - toDelete:
+        desc: "The channel to be deleted, specified by its object reference."
+creatxtchanl:
+  desc: Creates a new text channel with a given name.
+  ex:
+    - TextChannelName
+  params:
+    - channelName:
+        desc: "The name of the new channel to be created."
+settopic:
+  desc: Sets a topic on the current channel.
+  ex:
+    - My new topic
+  params:
+    - topic:
+        desc: "The new topic for discussion on the channel."
+setchanlname:
+  desc: Changes the name of the current channel.
+  ex:
+    - NewName
+  params:
+    - name:
+        desc: "The new name for the channel."
+prune:
+  desc: "`{0}prune` removes all Nadeko's messages in the last 100 messages. `{0}prune X` removes last `X` number of messages from the channel (up to 100). `{0}prune @Someone` removes all Someone's messages in the last 100 messages. `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the channel."
+  ex:
+    - ''
+    - -s
+    - 5
+    - 5 --safe
+    - '@Someone'
+    - '@Someone --safe'
+    - '@Someone X'
+    - '@Someone X -s'
+  params:
+    - params:
+        desc: "The list of users, channels or message counts to be removed from the conversation history."
+    - count:
+        desc: "The number of messages to remove from the channel or user's messages."
+      params:
+        desc: "The list of users, channels or message counts to be removed from the conversation history."
+    - user:
+        desc: "The user whose messages are to be removed from the channel."
+      count:
+        desc: "The number of messages to remove from the channel or user's messages."
+      params:
+        desc: "The list of users, channels or message counts to be removed from the conversation history."
+    - userId:
+        desc: "The ID of a user to filter messages by."
+      count:
+        desc: "The number of messages to remove from the channel or user's messages."
+      params:
+        desc: "The list of users, channels or message counts to be removed from the conversation history."
+prunecancel:
+  desc: Cancels an active prune if there is any.
+  ex:
+    - ''
+  params:
+    - { }
+die:
+  desc: Shuts the bot down.
+  ex:
+    - ''
+  params:
+    - graceful:
+        desc: "The option to perform a controlled shutdown, allowing for any necessary cleanup or notifications before termination."
+setname:
+  desc: Gives the bot a new name.
+  ex:
+    - BotName
+  params:
+    - newName:
+        desc: "The new name given to the bot."
+setnick:
+  desc: Changes the nickname of the bot on this server. You can also target other users to change their nickname.
+  ex:
+    - BotNickname
+    - '@SomeUser New Nickname'
+  params:
+    - newNick:
+        desc: "The new nickname to be displayed for the bot or targeted user."
+    - gu:
+        desc: "The guild user that is being targeted for a nickname change."
+      newNick:
+        desc: "The new nickname to be displayed for the bot or targeted user."
+setavatar:
+  desc: Sets a new avatar image for the NadekoBot. Parameter is a direct link to an image.
+  ex:
+    - https://i.imgur.com/xTG3a1I.jpg
+  params:
+    - img:
+        desc: "The URL of the image file to be displayed as the bot's avatar."
+setbanner:
+  desc: Sets a new banner image for the NadekoBot. Parameter is a direct link to an image. Supports gifs.
+  ex:
+    - https://i.imgur.com/xTG3a1I.jpg
+  params:
+    - img:
+        desc: "The URL of the image file to be displayed as the bot's banner."
+setactivity:
+  desc: Sets the bots game status to a Custom, Playing, Listening, or Watching status.
+  ex:
+    - Just chilling
+    - Playing with snakes
+    - Listening music
+  params:
+    - type:
+        desc: "The activity type determines whether the bot is engaged in a game, listening to audio, or watching a video."
+      game:
+        desc: "The current state of the bot's activity in the game."
+setserverbanner:
+  desc: Sets a new banner image for the current server. Parameter is a direct link to an image.
+  ex:
+    - https://i.imgur.com/xTG3a1I.jpg
+  params:
+    - img:
+        desc: "The URL of the image file to be displayed as the bot's banner."
+setservericon:
+  desc: Sets a new icon image for the current server. Parameter is a direct link to an image.
+  ex:
+    - https://i.imgur.com/xTG3a1I.jpg
+  params:
+    - img:
+        desc: "The URL of the image file to be displayed as the bot's banner."
+send:
+  desc: |-
+    Sends a message to a channel or user.
+    You can write "channel" (literally word 'channel') first followed by the channel id or channel mention, or
+    You can write "user" (literally word 'user') first followed by the user id or user mention.
+    After either one of those, specify the message to be sent.
+    This command can only be used by the Bot Owner.
+  ex:
+    - channel 123123123132312 Stop spamming commands plz
+    - user 1231231232132 I can see in the console what you're doing.
+  params:
+    - to:
+        desc: "The destination where the message will be sent, such as a specific channel or individual user."
+      id:
+        desc: "The identifier of the recipient, either a channel or a user."
+      text:
+        desc: "The recipient's preferred format for the message, such as plain text or formatted text with images and links."
+savechat:
+  desc: Saves a number of messages to a text file and sends it to you.
+  ex:
+    - 150
+  params:
+    - cnt:
+        desc: "The number of messages to be saved."
+remind:
+  desc: |-
+    Sets a reminder which will be sent to you or to the targeted channel after certain amount of time (max 2 months).
+    First parameter is `me` / `here` / 'channelname'
+    Second parameter is time in a descending order (mo>w>d>h>m) example: 1w5d3h10m.
+    Third parameter is a (multiword) message.
+    Requires ManageMessages server permission if you're targeting a different channel.
+  ex:
+    - me 1d5h Do something
+    - '#general 1m Start now!'
+  params:
+    - meorhere:
+        desc: "The enum value of 'me' if the user wants to be reminded, or 'here' if the user wants to be reminded in the current channel."
+      remindString:
+        desc: "The reminder duration and message to be sent. The message must start with a short time string in the form of 5d1h30m for example."
+    - channel:
+        desc: "The name of the channel to send the reminder to, or 'here' for the current channel."
+      remindString:
+        desc: "The reminder message to be sent."
+reminddelete:
+  desc: "Deletes a reminder on the specified index. You can specify 'server' option if you're an Administrator, and you want to delete a reminder on this server created by someone else. "
+  ex:
+    - 3
+    - server 2
+  params:
+    - _:
+        desc: "The server where the reminder was created or is stored."
+      index:
+        desc: "The index of the reminder to be deleted."
+    - index:
+        desc: "The index of the reminder to be deleted."
+remindlist:
+  desc: Lists all reminders you created. You can specify 'server' option if you're an Administrator to list all reminders created on this server. Paginated.
+  ex:
+    - 1
+    - server 2
+  params:
+    - _:
+        desc: "The server where the reminders are stored or being retrieved from."
+      page:
+        desc: "The number of the page to display in the result set."
+    - page:
+        desc: "The number of the page to display in the result set."
+serverinfo:
+  desc: Shows info about the server with the specified ID. The bot has to be on that server. If no server is supplied, it defaults to current one.
+  ex:
+    - 123123132233
+  params:
+    - guildId:
+        desc: "The ID of a server for which to retrieve information."
+    - { }
+channelinfo:
+  desc: Shows info about the channel. If no channel is supplied, it defaults to current one.
+  ex:
+    - '#some-channel'
+  params:
+    - channel:
+        desc: "The channel where the information will be retrieved from or displayed in."
+roleinfo:
+  desc: Shows info about the specified role.
+  ex:
+    - Gamers
+  params:
+    - role:
+        desc: "The type of user account associated with the role."
+userinfo:
+  desc: Shows info about the user. If no user is supplied, it defaults a user running the command.
+  ex:
+    - '@SomeUser'
+  params:
+    - usr:
+        desc: "The guild user that the information is being retrieved for."
+whosplaying:
+  desc: Shows a list of users who are playing the specified game.
+  ex:
+    - Overwatch
+  params:
+    - game:
+        desc: "The name of the game being played by the users."
+inrole:
+  desc: Lists every person from the specified role on this server. You can specify a page before the role to jump to that page. Provide no role to list users who have no roles
+  ex:
+    - RoleName
+    - 5 RoleName
+    - ''
+  params:
+    - page:
+        desc: "The starting page number for the result set."
+      role:
+        desc: "The type of user or group being targeted for listing."
+    - role:
+        desc: "The type of user or group being targeted for listing."
+checkperms:
+  desc: Checks yours or bot's user-specific permissions on this channel.
+  ex:
+    - me
+    - bot
+  params:
+    - who:
+        desc: "The identity of the entity whose permissions are being checked."
+stats:
+  desc: Shows some basic stats for Nadeko.
+  ex:
+    - ''
+  params:
+    - { }
+userid:
+  desc: Shows user ID.
+  ex:
+    - ''
+    - '@Someone'
+  params:
+    - target:
+        desc: "The guild the user is a member of."
+channelid:
+  desc: Shows current channel ID.
+  ex:
+    - ''
+  params:
+    - { }
+serverid:
+  desc: Shows current server ID.
+  ex:
+    - ''
+  params:
+    - { }
+roles:
+  desc: List roles on this server or roles of a user if specified. Paginated, 20 roles per page.
+  ex:
+    - 2
+    - '@Someone'
+  params:
+    - target:
+        desc: "The guild or user for which to list the roles."
+      page:
+        desc: "The page number for the list of roles to be displayed."
+    - page:
+        desc: "The page number for the list of roles to be displayed."
+channeltopic:
+  desc: Sends current channel's topic as a message.
+  ex:
+    - ''
+  params:
+    - channel:
+        desc: "The channel where the topic is retrieved from."
+chnlfilterinv:
+  desc: Toggles automatic deletion of invites posted in the channel. Does not negate the `{0}srvrfilterinv` enabled setting. Does not affect users with the Administrator permission.
+  ex:
+    - ''
+  params:
+    - { }
+srvrfilterinv:
+  desc: Toggles automatic deletion of invites posted in the server. Does not affect users with the Administrator permission.
+  ex:
+    - ''
+  params:
+    - { }
+chnlfilterlin:
+  desc: Toggles automatic deletion of links posted in the channel. Does not negate the `{0}srvrfilterlin` enabled setting. Does not affect users with the Administrator permission.
+  ex:
+    - ''
+  params:
+    - { }
+srvrfilterlin:
+  desc: Toggles automatic deletion of links posted in the server. Does not affect users with the Administrator permission.
+  ex:
+    - ''
+  params:
+    - { }
+chnlfilterwords:
+  desc: Toggles automatic deletion of messages containing filtered words on the channel. Does not negate the `{0}srvrfilterwords` enabled setting. Does not affect users with the Administrator permission.
+  ex:
+    - ''
+  params:
+    - { }
+filterword:
+  desc: Adds or removes (if it exists) a word from the list of filtered words. Use`{0}sfw` or `{0}cfw` to toggle filtering.
+  ex:
+    - poop
+  params:
+    - word:
+        desc: "The word to be added or removed from the list of filtered words."
+srvrfilterwords:
+  desc: Toggles automatic deletion of messages containing filtered words on the server. Does not affect users with the Administrator permission.
+  ex:
+    - ''
+  params:
+    - { }
+lstfilterwords:
+  desc: Shows a list of filtered words.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The current page number in the list of filtered words."
+permrole:
+  desc: Sets a role which can change permissions. Supply no parameters to see the current one. Type 'reset' instead of the role name to reset the currently set permission role. Users with the Administrator server permissions can use permission commands regardless of whether they have the specified role. There is no default permission role.
+  ex:
+    - Some Role
+    - reset
+  params:
+    - role:
+        desc: "The role that a user must have to change permissions."
+    - _:
+        desc: "The role that users must have to execute certain permission commands."
+verbose:
+  desc: Toggles or sets whether to show when a command/module is blocked.
+  ex:
+    - ''
+    - true
+  params:
+    - action:
+        desc: "The permission required for the action to proceed."
+srvrmdl:
+  desc: Sets a module's permission at the server level.
+  ex:
+    - ModuleName enable
+  params:
+    - module:
+        desc: "The type of module or content repository information being set for server-level permissions."
+      action:
+        desc: "The type of permission action to perform, such as granting or revoking access."
+srvrcmd:
+  desc: Sets a command's permission at the server level.
+  ex:
+    - '"command name" disable'
+  params:
+    - command:
+        desc: "The type of command or expression being set, such as a specific SQL query or system function."
+      action:
+        desc: "The type of action to take on the permission, such as granting or revoking access."
+rolemdl:
+  desc: Sets a module's permission at the role level.
+  ex:
+    - ModuleName enable MyRole
+  params:
+    - module:
+        desc: "The type of content or resource being managed by the module."
+      action:
+        desc: "The type of action that can be performed by users with this role."
+      role:
+        desc: "The role that determines the permissions for the module."
+rolecmd:
+  desc: Sets a command's permission at the role level.
+  ex:
+    - '"command name" disable MyRole'
+  params:
+    - command:
+        desc: "The command or expression that is being set as a permission for a specific role."
+      action:
+        desc: "The type of action to take on the permission, such as granting or denying access."
+      role:
+        desc: "The role that determines who can use this command."
+chnlmdl:
+  desc: Sets a module's permission at the channel level.
+  ex:
+    - ModuleName enable SomeChannel
+  params:
+    - module:
+        desc: "The type of entity being set as a permission for the channel."
+      action:
+        desc: "The type of permission action to take on the channel."
+      chnl:
+        desc: "The channel where the permission is being set for the module."
+chnlcmd:
+  desc: Sets a command's permission at the channel level.
+  ex:
+    - '"command name" enable SomeChannel'
+  params:
+    - command:
+        desc: "The type of command or expression being set for the channel's permissions."
+      action:
+        desc: "The type of permission action to take on the channel."
+      chnl:
+        desc: "The channel where the command's permission is being set."
+usrmdl:
+  desc: Sets a module's permission at the user level.
+  ex:
+    - ModuleName enable SomeUsername
+  params:
+    - module:
+        desc: "The type of module or content reference information being set for the user's permissions."
+      action:
+        desc: "The type of permission action to take on the module, such as granting or revoking access."
+      user:
+        desc: "The user who owns the guild and is being granted or denied access to the module's features."
+usrcmd:
+  desc: Sets a command's permission at the user level.
+  ex:
+    - '"command name" enable SomeUsername'
+  params:
+    - command:
+        desc: "The type of command or expression being set for the specified user."
+      action:
+        desc: "The type of action to take on the permission, such as granting or revoking access."
+      user:
+        desc: "The user who owns the guild or has the specified role can execute the command."
+allsrvrmdls:
+  desc: Enable or disable all modules for your server.
+  ex:
+    - '[enable/disable]'
+  params:
+    - action:
+        desc: "The type of action to take on the enabled/disabled modules, such as enable or disable."
+allchnlmdls:
+  desc: Enable or disable all modules in a specified channel.
+  ex:
+    - 'enable #SomeChannel'
+  params:
+    - action:
+        desc: "The type of permission action to apply to the module, such as granting or revoking access."
+      chnl:
+        desc: "The channel where the operation is being performed on the modules."
+allrolemdls:
+  desc: Enable or disable all modules for a specific role.
+  ex:
+    - '[enable/disable] MyRole'
+  params:
+    - action:
+        desc: "The type of permission action to perform, such as granting or revoking access."
+      role:
+        desc: "The role that the operation is being performed on."
+userblacklist:
+  desc: |-
+    Either [add]s or [rem]oves a user or users specified by a Mention or an ID from a blacklist.
+    Specify no argument or a page number to list blacklisted users.
+  ex:
+    - add @SomeUser @SomeUser2 @SomeUser3
+    - rem 12312312313
+    - ''
+    - 4
+  params:
+    - page:
+        desc: "The page number for pagination of the listed blacklisted users."
+    - action:
+        desc: "The type of operation to perform on the user, either adding or removing them from the blacklist."
+      id:
+        desc: "The id of the user to be added, removed, or listed."
+    - action:
+        desc: "The type of operation to perform on the user, either adding or removing them from the blacklist."
+      usr:
+        desc: "The ID of the user to be added, removed, or listed."
+channelblacklist:
+  desc: |-
+    Either [add]s or [rem]oves a channel or channels specified an ID from a blacklist.
+    Specify no argument or a page number to list blacklisted channels.
+  ex:
+    - add 12312312312 66666666666
+    - rem 12312312312
+    - ''
+    - 3
+  params:
+    - page:
+        desc: "The page number for pagination of the blacklisted channels list."
+    - action:
+        desc: "The type of operation to perform on the channel, either adding it to the blacklist or removing it from it."
+      id:
+        desc: "The id of the channel being added, removed, or listed."
+serverblacklist:
+  desc: |-
+    Either [add]s or [rem]oves a server, or servers specified by an ID from a blacklist.
+    Specify no argument or a page number to list blacklisted servers.
+  ex:
+    - add 12312321312
+    - rem 12312321312
+    - ''
+    - 2
+  params:
+    - page:
+        desc: "The page number for pagination of the blacklist listing."
+    - action:
+        desc: "The type of operation to perform on the server(s). It can be either adding or removing them from the blacklist."
+      id:
+        desc: "The id of the server being added, removed, or listed."
+    - action:
+        desc: "The type of operation to perform on the server(s). It can be either adding or removing them from the blacklist."
+      guild:
+        desc: "The guild for which the server blacklist is being managed."
+cmdcooldown:
+  desc: Sets a cooldown, in seconds, for a command or an expression which will be applied per user. Set it to 0 to remove the cooldown. Supports a special command `cleverbot:response` which can be used limit how often users can talk to cleverbot
+  ex:
+    - .h 5
+    - .pat 30
+  params:
+    - command:
+        desc: "The response string from CleverBot, used to generate a conversation with the user."
+      secs:
+        desc: "The time, in seconds, after which the user is allowed to use the command again."
+    - command:
+        desc: "The command or expression that is being cooled down, allowing for control over when it can be executed again."
+      secs:
+        desc: "The time, in seconds, after which the user is allowed to use the command again."
+allcmdcooldowns:
+  desc: Shows a list of all commands and their respective cooldowns.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of the page to display in the list of command cooldowns."
+quoteadd:
+  desc: Adds a new quote with the specified name and message.
+  ex:
+    - sayhi Hi
+  params:
+    - keyword:
+        desc: "The name of the quote used to retrieve the quote."
+      text:
+        desc: "The message of the quote."
+quoteedit:
+  desc: Edits a quote with the specified ID.
+  ex:
+    - 55 This is the new response.
+  params:
+    - quoteId:
+        desc: "The ID of the quote being edited."
+      text:
+        desc: "The new message of the quote."
+quoteprint:
+  desc: Prints a random quote with a specified name.
+  ex:
+    - abc
+  params:
+    - keyword:
+        desc: "The author or origin of the quote being printed."
+quoteshow:
+  desc: Shows information about a quote with the specified ID.
+  ex:
+    - 123
+  params:
+    - quoteId:
+        desc: "The id of the quote being queried."
+quotesearch:
+  desc: 'Shows a random quote given a search query. Partially matches in several ways: 1) Only content of any quote, 2) only by author, 3) keyword and content, 3) or keyword and author'
+  ex:
+    - '"find this long text"'
+    - AuthorName
+    - keyword some text
+    - keyword AuthorName
+  params:
+    - textOrAuthor:
+        desc: "The search term to find a matching quote."
+    - keyword:
+        desc: "The search term to look for in the quote's content."
+      textOrAuthor:
+        desc: "The search term to find a matching quote."
+quoteid:
+  desc: -|
+    Displays the quote with the specified ID number.
+  ex:
+    - 123456
+  params:
+    - quoteId:
+        desc: "The id of the quote to be displayed."
+quotedelete:
+  desc: Deletes a quote with the specified ID. You have to either have the Manage Messages permission or be the creator of the quote to delete it.
+  ex:
+    - 123456
+  params:
+    - quoteId:
+        desc: "The id of the quote being deleted."
+quotedeleteauthor:
+  desc: Deletes all quotes by the specified author. If the author is not you, then ManageMessage server permission is required.
+  ex:
+    - '@QuoteSpammer'
+  params:
+    - user:
+        desc: "The user whose quotes are to be deleted."
+    - userId:
+        desc: "The ID of the user whose quotes are to be deleted."
+draw:
+  desc: Draws a card from this server's deck. You can draw up to 10 cards by supplying a number of cards to draw.
+  ex:
+    - ''
+    - 5
+  params:
+    - num:
+        desc: "The number of cards to be drawn from the deck."
+drawnew:
+  desc: Draws a card from the NEW deck of cards. You can draw up to 10 cards by supplying a number of cards to draw.
+  ex:
+    - ''
+    - 5
+  params:
+    - num:
+        desc: "The number of cards to be drawn from the new deck."
+playlistshuffle:
+  desc: Shuffles the current playlist.
+  ex:
+    - ''
+  params:
+    - { }
+flip:
+  desc: Flips coin(s) - heads or tails, and shows an image.
+  ex:
+    - ''
+    - 3
+  params:
+    - count:
+        desc: "The number of times the coin is flipped."
+betflip:
+  desc: |-
+    Bet on the coin flip.
+    The result can be heads or tails.
+    Guessing correctly rewards you with 1.95x of the currency you've bet (rounded up).
+    Multiplier can be changed by the bot owner.
+    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.
+  ex:
+    - 5 heads
+    - 3 t
+  params:
+    - amount:
+        desc: "The amount of money to be wagered on the bet."
+      guess:
+        desc: "The user's prediction about whether the next coin flip will result in heads or tails."
+roll:
+  desc: Rolls 0-100. If you supply a number `X` it rolls up to 30 normal dice. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`. `Y` can be a letter 'F' if you want to roll fate dice instead of dnd.
+  ex:
+    - ''
+    - 7
+    - 3d5
+    - 5dF
+  params:
+    - { }
+    - num:
+        desc: "The number of sides on the dice being rolled."
+    - arg:
+        desc: "The input string specifies the type of dice roll or the number of dice to roll, allowing users to customize their random outcome."
+rolluo:
+  desc: Rolls `X` normal dice (up to 30) unordered. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`.
+  ex:
+    - ''
+    - 7
+    - 3d5
+  params:
+    - num:
+        desc: "The number of sides on the dice being rolled."
+    - arg:
+        desc: "The number of sides on the dice to be rolled."
+nroll:
+  desc: Rolls in a given range. If you specify just one number instead of the range, it will roll from 0 to that number.
+  ex:
+    - 5
+    - 5-15
+  params:
+    - range:
+        desc: "The minimum and maximum values for the random number generation process."
+race:
+  desc: Starts a new animal race.
+  ex:
+    - ''
+  params:
+    - params:
+        desc: "The list of commands or actions for the animals in the race."
+joinrace:
+  desc: Joins a new race. You can specify an amount of currency for betting (optional). You will get YourBet*(participants-1) back if you win.
+  ex:
+    - ''
+    - 5
+  params:
+    - amount:
+        desc: "The amount to be wagered on the race."
+nunchi:
+  desc: Creates or joins an existing nunchi game. Users have to count up by 1 from the starting number shown by the bot. If someone makes a mistake (types an incorrect number, or repeats the same number) they are out of the game and a new round starts without them.  Minimum 3 users required.
+  ex:
+    - ''
+  params:
+    - { }
+connect4:
+  desc: Creates or joins an existing connect4 game. 2 players are required for the game. Objective of the game is to get 4 of your pieces next to each other in a vertical, horizontal or diagonal line. You can specify a bet when you create a game and only users who bet the same amount will be able to join your game.
+  ex:
+    - ''
+  params:
+    - params:
+        desc: "The list of command-line arguments passed by the user to customize the game setup or behavior."
+raffle:
+  desc: Prints a name and ID of a random online user from the server, or from the online user in the specified role.
+  ex:
+    - ''
+    - RoleName
+  params:
+    - role:
+        desc: "The role of the online user to be selected from."
+raffleany:
+  desc: Prints a name and ID of a random user from the server, or from the specified role.
+  ex:
+    - ''
+    - ' RoleName'
+  params:
+    - role:
+        desc: "The role that determines which users are eligible for selection."
+give:
+  desc: Give someone a certain amount of currency. You can specify the reason after the mention.
+  ex:
+    - 1 @Someone
+    - 5 @CootGurl Ur so pwetty
+  params:
+    - amount:
+        desc: "The total value of the gift being bestowed."
+      receiver:
+        desc: "The user receiving the currency, such as a gift or reward."
+      msg:
+        desc: "The message explaining why you're giving them the currency."
+    - amount:
+        desc: "The total value of the gift being bestowed."
+      receiver:
+        desc: "The user receiving the currency, such as a gift or reward."
+award:
+  desc: Awards someone a certain amount of currency. You can specify the reason after the Username. You can also specify a role name to award currency to all users in a role.
+  ex:
+    - 100 @person
+    - 5 Role Of Gamblers
+  params:
+    - amount:
+        desc: "The amount of currency being awarded."
+      usr:
+        desc: "The user or guild member being awarded the currency."
+      msg:
+        desc: "The message describing why the user is being awarded the currency."
+    - amount:
+        desc: "The amount of currency being awarded."
+      usr:
+        desc: "The user or guild member being awarded the currency."
+    - amount:
+        desc: "The amount of currency being awarded."
+      usrId:
+        desc: "The ID of the user to whom the currency is being awarded."
+      msg:
+        desc: "The message describing why the user is being awarded the currency."
+    - amount:
+        desc: "The amount of currency being awarded."
+      role:
+        desc: "The role for which to award currency to all members."
+take:
+  desc: Takes the specified amount of currency from someone. You can specify a role instead to take the specified amount of currency from all users in the role.
+  ex:
+    - 1 @Someone
+    - 50 SomeRole
+  params:
+    - amount:
+        desc: "The total value of the funds being withdrawn."
+      role:
+        desc: "The role of the person or group from whom the currency is being taken."
+    - amount:
+        desc: "The total value of the funds being withdrawn."
+      user:
+        desc: "The user or guild member being affected by the currency removal."
+    - amount:
+        desc: "The total value of the funds being withdrawn."
+      usrId:
+        desc: "The ID of the user whose funds are being taken."
+betroll:
+  desc: |-
+    Bets the specified amount of currency and rolls a dice.
+    Rolling over 65 yields x2 of your currency, over 90 - x4 and 100 x10.
+    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.
+  ex:
+    - 5
+  params:
+    - amount:
+        desc: "The amount to be wagered on the roll of the dice."
+luckyladder:
+  desc:
+    Bets the specified amount of currency on the lucky ladder.
+    You can stop on one of many different multipliers.
+    The won amount is rounded down to the nearest whole number.
+    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.
+  ex:
+    - 10
+  params:
+    - amount:
+        desc: "The total value of the bet being placed."
+leaderboard:
+  desc: |-
+    Displays the bot's currency leaderboard, or in other words, the richest users.
+    Specifying -c flag will show only users who are in this server.
+    Paginated with 10 users per page.
+  ex:
+    - ''
+    - '-c'
+  params:
+    - params:
+        desc: "Optional -c flag"
+    - page:
+        desc: "The page number to display."
+      params:
+        desc: "Optional -c flag."
+trivia:
+  desc: |-
+    Starts a game of trivia.
+    First player to get to 10 points wins by default.
+    30 seconds per question.
+  ex:
+    - ''
+    - --timeout 5 -p -w 3 -q 10
+  params:
+    - params:
+        desc: "Options. --timeout <number>, --pokemon, --win <number> --question <number>"
+tl:
+  desc: Shows a current trivia leaderboard.
+  ex:
+    - ''
+  params:
+    - { }
+tq:
+  desc: Quits current trivia after current question.
+  ex:
+    - ''
+  params:
+    - { }
+typestart:
+  desc: Starts a typing contest.
+  ex:
+    - ''
+  params:
+    - params:
+        desc: "The list of words or phrases for the contestants to type."
+typestop:
+  desc: Stops a typing contest on the current channel.
+  ex:
+    - ''
+  params:
+    - { }
+typeadd:
+  desc: Adds a new article to the typing contest.
+  ex:
+    - wordswords
+  params:
+    - text:
+        desc: "The title or name of the article being added."
+pick:
+  desc: Picks the currency planted in this channel. If the plant has a password, you need to specify it.
+  ex:
+    - ''
+    - passwd
+  params:
+    - pass:
+        desc: "The password required for accessing the plant's contents."
+plant:
+  desc: Spend an amount of currency to plant it in this channel. Default is 1. You can specify the password after the amount. Password has to be alphanumeric and it will be trimmed down to 10 characters if it's longer.
+  ex:
+    - 5
+    - 10 meow
+  params:
+    - amount:
+        desc: "The number of units or quantity of something being planted."
+      pass:
+        desc: "The password for secure planting of the item in this channel."
+gencurrency:
+  desc: Toggles currency generation on this channel. Every posted message will have chance to spawn currency. Chance is specified by the Bot Owner. (default is 2%)
+  ex:
+    - ''
+  params:
+    - { }
+gencurlist:
+  desc: Shows the list of server and channel ids where gc is enabled. Paginated with 9 per page.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The current page number for pagination."
+choose:
+  desc: Chooses a thing from a list of things. Separate items with a semicolon ;
+  ex:
+    - Get up;Sleep;Sleep more
+  params:
+    - list:
+        desc: "The items separated by ;"
+rps:
+  desc: |-
+    Play a game of Rocket-Paperclip-Scissors with Nadeko.
+    You can bet on it. Winning awards you 1.95x of the bet.
+    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.
+  ex:
+    - r 100
+    - scissors
+  params:
+    - pick:
+        desc: "The user's chosen move in the game, such as rock, paper or scissors."
+      amount:
+        desc: "Optional amount of currency to be wagered on the outcome of the game."
+next:
+  desc: Goes to the next song in the queue. You have to be in the same voice channel as the bot
+  ex:
+    - ''
+  params:
+    - { }
+play:
+  desc: |-
+    Queues up and plays a song or video based on a search query, song name, artist name or youtube link.
+    If no parameters are specified, it will skip the current song.
+    If you specify a song number, it will jump to that song.
+    If you specify a search query, acts as a `{0}q` command
+    **You must be in a voice channel**.
+  ex:
+    - ''
+    - 5
+    - Dream Of Venice
+  params:
+    - { }
+    - index:
+        desc: "The index of the desired song or search result to navigate to."
+    - query:
+        desc: "The search query is used to find and play songs matching the specified criteria."
+stop:
+  desc: Stops the music and preserves the current song index. Stays in the channel.
+  ex:
+    - ''
+  params:
+    - { }
+destroy:
+  desc: Completely stops the music and unbinds the bot from the channel. (may cause weird behaviour)
+  ex:
+    - ''
+  params:
+    - { }
+pause:
+  desc: Pauses or Unpauses the song.
+  ex:
+    - ''
+  params:
+    - { }
+queue:
+  desc: |-
+    Queues up and plays a song or video based on a search query, song name, artist name, search query or youtube link.
+    Bot will join your voice channel. 
+    **You must be in a voice channel**.
+  ex:
+    - Dream Of Venice
+  params:
+    - query:
+        desc: "The search term used to identify the song to be queued."
+queuenext:
+  desc: Works the same as `{0}queue` command, except it enqueues the new song after the current one. **You must be in a voice channel**.
+  ex:
+    - Dream Of Venice
+  params:
+    - query:
+        desc: "The title or name of the next song to be played."
+queuesearch:
+  desc: Search for top 5 youtube song result using keywords, and type the index of the song to play that song. Bot will join your voice channel. **You must be in a voice channel**.
+  ex:
+    - Dream Of Venice
+  params:
+    - query:
+        desc: "The search query used to find relevant YouTube songs."
+listqueue:
+  desc: Lists 10 currently queued songs per page. Default page is 1.
+  ex:
+    - ''
+    - 2
+  params:
+    - { }
+    - page:
+        desc: "The current page number for the song queue listing."
+nowplaying:
+  desc: Shows the song that the bot is currently playing.
+  ex:
+    - ''
+  params:
+    - { }
+volume:
+  desc: Sets the music playback volume (0-100%). Persistent server setting. Default 100
+  ex:
+    - 50
+  params:
+    - vol:
+        desc: "The level at which the music is played back."
+playlist:
+  desc: Queues up to 500 songs from a youtube playlist specified by a link, or keywords.
+  ex:
+    - <youtube_playlist_link>
+  params:
+    - playlistQuery:
+        desc: "The search query used to find the YouTube playlist."
+localplaylist:
+  desc: Queues all songs from a directory.
+  ex:
+    - C:/music/classical
+  params:
+    - dirPath:
+        desc: "The path to the directory containing the songs to be queued."
+radio:
+  desc: 'Queues a radio stream from a link. It can be a direct mp3 radio stream, .m3u, .pls .asx or .xspf (Usage Video: <https://streamable.com/al54>)'
+  ex:
+    - radio link here
+  params:
+    - radioLink:
+        desc: "The URL of the radio station to be played."
+local:
+  desc: Queues a local file by specifying a full path.
+  ex:
+    - C:/music/mysong.mp3
+  params:
+    - path:
+        desc: "The directory or location where the file is stored."
+join:
+  desc: Makes the bot join your voice channel.
+  ex:
+    - ''
+  params:
+    - { }
+trackremove:
+  desc: "Remove a song by its # in the queue, or 'all' (or provide no parameter) to remove all songs from the queue."
+  ex:
+    - 5
+    - all
+    - ''
+  params:
+    - index:
+        desc: "The position of the song to be removed from the playlist."
+    - _:
+        desc: "The number of items to be removed from the list."
+trackmove:
+  desc: Moves a song from one position to another.
+  ex:
+    - 5 3
+  params:
+    - from:
+        desc: "The starting position of the song in the playlist."
+      to:
+        desc: "The destination index in the playlist where the song should be moved."
+queuerepeat:
+  desc: |-
+    Sets music player repeat strategy for this server.
+    - `n` / `no` - player will stop once it reaches the end of the queue
+    - `s` / `song` - player will repeat current song
+    - `q` / `queue` or empty - player will repeat entire music queue
+  ex:
+    - ''
+    - n
+    - song
+  params:
+    - type:
+        desc: "The type of repeat strategy to be set."
+save:
+  desc: Saves a playlist under a certain name. Playlist name must be no longer than 20 characters and must not contain dashes.
+  ex:
+    - classical1
+  params:
+    - name:
+        desc: "The name provided is used to uniquely identify the saved playlist."
+streamrole:
+  desc: Sets a role which is monitored for streamers (FromRole), and a role to add if a user from 'FromRole' is streaming (AddRole). When a user from 'FromRole' starts streaming, they will receive an 'AddRole'. You can only have 1 Stream Role per server. Provide no parameters to disable
+  ex:
+    - '"Eligible Streamers" "Featured Streams"'
+  params:
+    - fromRole:
+        desc: "The role of users being monitored for streamer status."
+      addRole:
+        desc: "The role to be added to users when they start streaming."
+    - { }
+load:
+  desc: Loads a saved playlist using its ID. Use `{0}pls` to list all saved playlists and `{0}save` to save new ones.
+  ex:
+    - 5
+  params:
+    - id:
+        desc: "The id of the playlist to be loaded."
+playlists:
+  desc: Lists all playlists. Paginated, 20 per page.
+  ex:
+    - 1
+  params:
+    - num:
+        desc: "The number of pages to retrieve."
+playlistshow:
+  desc: Lists all songs in a playlist specified by its id. Paginated, 20 per page.
+  ex:
+    - 1
+  params:
+    - id:
+        desc: "The id of the playlist to retrieve songs from."
+      page:
+        desc: "The current page number for the pagination."
+deleteplaylist:
+  desc: Deletes a saved playlist using its id. Works only if you made it or if you are the bot owner.
+  ex:
+    - 5
+  params:
+    - id:
+        desc: "The identifier for the playlist to be deleted."
+queueautoplay:
+  desc: Toggles autoplay - When the song is finished, automatically queue a related Youtube song. (Works only for Youtube songs)
+  ex:
+    - ''
+  params:
+    - { }
+streamadd:
+  desc: Notifies this channel when the stream on the specified URL goes online or offline. Offline notifications will only show if you enable `{0}streamoff`. Maximum 10 per server.
+  ex:
+    - twitch.tv/someguy
+  params:
+    - link:
+        desc: "The URL of a live streaming service that triggers the notification."
+streamsclear:
+  desc: Removes all followed streams on this server.
+  ex:
+    - ''
+  params:
+    - { }
+streamremove:
+  desc: Stops following the stream on the specified index. (use `{0}stl` to see indexes)
+  ex:
+    - 2
+  params:
+    - index:
+        desc: "The index at which to stop following the stream."
+streamlist:
+  desc: Lists all streams you are following on this server and their respective indexes.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of the page to retrieve from the list of followed streams."
+streamoffline:
+  desc: Toggles whether the bot will also notify when added streams go offline.
+  ex:
+    - ''
+  params:
+    - { }
+streamonlinedelete:
+  desc: Toggles whether the bot will delete stream online message when the stream goes offline.
+  ex:
+    - ''
+  params:
+    - { }
+streammessage:
+  desc: Sets the message which will show when the stream on the specified index comes online. You can use %user% and %platform% placeholders.
+  ex:
+    - 1 Hey @erryone %user% is back online on %platform%!1!!
+  params:
+    - index:
+        desc: "The index of the stream to set the coming online message for."
+      message:
+        desc: "The text to be displayed in the stream's online status message."
+streammessageall:
+  desc: Sets the message which will show when any of the currently followed streams comes online. This does not apply to the streams which get added afterwards. You can use %user% and %platform% placeholders.
+  ex:
+    - Hey @erryone %user% is back online!1!!
+  params:
+    - message:
+        desc: "The text that appears in the notification when a streamer goes live."
+streamcheck:
+  desc: Retrieves information about a stream.
+  ex:
+    - https://twitch.tv/somedude
+  params:
+    - url:
+        desc: "The URL of the stream being checked."
+convert:
+  desc: Convert quantities. Use `{0}convertlist` to see supported dimensions and currencies.
+  ex:
+    - m km 1000
+  params:
+    - origin:
+        desc: "The location or source from which the quantity originates."
+      target:
+        desc: "The target unit or currency for the conversion."
+      value:
+        desc: "The value to be converted."
+convertlist:
+  desc: List of the convertible dimensions and currencies.
+  ex:
+    - ''
+  params:
+    - { }
+wowjoke:
+  desc: Get one of penultimate WoW jokes.
+  ex:
+    - ''
+  params:
+    - { }
+calculate:
+  desc: Evaluate a mathematical expression.
+  ex:
+    - 1+1
+  params:
+    - expression:
+        desc: "The input string represents the mathematical formula to be evaluated."
+osu:
+  desc: Shows osu! stats for a player.
+  ex:
+    - Name
+    - Name taiko
+  params:
+    - user:
+        desc: "The username of the player whose osu! stats are being retrieved."
+      mode:
+        desc: "The type of game mode to display statistics for, such as 'osu' or 'taiko'."
+gatari:
+  desc: Shows osu!gatari stats for a player.
+  ex:
+    - Name
+    - Name ctb
+  params:
+    - user:
+        desc: "The username of the player whose osu!gatari stats are being retrieved."
+      mode:
+        desc: "The type of game mode to display statistics for, such as 'osu' or 'taiko'."
+osu5:
+  desc: Displays a user's top 5 plays.
+  ex:
+    - Name
+  params:
+    - user:
+        desc: "The username of the player whose top 5 plays are being displayed."
+      mode:
+        desc: "The type of game mode to display the top 5 plays for, such as \"osu\", \"taiko\", or \"ctb\"."
+pokemon:
+  desc: Searches for a pokemon.
+  ex:
+    - Sylveon
+  params:
+    - pokemon:
+        desc: "The name of the Pokémon to search for."
+pokemonability:
+  desc: Searches for a pokemon ability.
+  ex:
+    - overgrow
+  params:
+    - ability:
+        desc: "The type of the Pokémon's special power or trait that can be used in battle."
+weather:
+  desc: Shows current weather data for the specified city.
+  ex:
+    - Moscow, RU
+  params:
+    - query:
+        desc: "The name of the place or city for which to show the weather data."
+youtube:
+  desc: Searches youtubes and shows the first result
+  ex:
+    - query
+  params:
+    - query:
+        desc: "The search term or phrase to look for."
+anime:
+  desc: Queries anilist for an anime and shows the first result.
+  ex:
+    - aquarion evol
+  params:
+    - query:
+        desc: "The search term used to find a specific anime on Anilist."
+steam:
+  desc: Returns a store link for a steam game with the specified name. It doesn't work very well because bundles.
+  ex:
+    - Sakura Agent
+  params:
+    - query:
+        desc: "The name of the game to search for."
+movie:
+  desc: Queries omdb for movies or series, show first result.
+  ex:
+    - Batman vs Superman
+  params:
+    - query:
+        desc: "The title of the movie or TV series being searched for."
+manga:
+  desc: Queries anilist for a manga and shows the first result.
+  ex:
+    - Shingeki no kyojin
+  params:
+    - query:
+        desc: "The title or keywords to search for in Anilist's database."
+randomcat:
+  desc: Shows a random cat image.
+  ex:
+    - ''
+  params:
+    - { }
+randomdog:
+  desc: Shows a random dog image.
+  ex:
+    - ''
+  params:
+    - { }
+randomfood:
+  desc: Shows a random food image.
+  ex:
+    - ''
+  params:
+    - { }
+randombird:
+  desc: Shows a random bird image.
+  ex:
+    - ''
+  params:
+    - { }
+image:
+  desc: Pulls a random image using a search parameter.
+  ex:
+    - cute kitten
+  params:
+    - query:
+        desc: "The search term used to retrieve the desired image."
+lmgtfy:
+  desc: Google something for a baka.
+  ex:
+    - How to eat a banana
+  params:
+    - smh:
+        desc: "The search query to be entered into the search engine."
+google:
+  desc: Get a Google search link for some terms.
+  ex:
+    - query
+  params:
+    - query:
+        desc: "The search terms to look up on Google."
+hearthstone:
+  desc: Searches for a Hearthstone card and shows its image. Takes a while to complete.
+  ex:
+    - Ysera
+  params:
+    - name:
+        desc: "The name of the Hearthstone card to search for."
+urbandict:
+  desc: Searches Urban Dictionary for a word.
+  ex:
+    - Pineapple
+  params:
+    - query:
+        desc: "The term being searched for in the dictionary."
+catfact:
+  desc: Shows a random fact about cats.
+  ex:
+    - ''
+  params:
+    - { }
+yomama:
+  desc: Shows a random yomama joke.
+  ex:
+    - ''
+  params:
+    - { }
+randjoke:
+  desc: Shows a random joke.
+  ex:
+    - ''
+  params:
+    - { }
+chucknorris:
+  desc: Shows a random Chuck Norris joke.
+  ex:
+    - ''
+  params:
+    - { }
+magicitem:
+  desc: Shows a random magic item with its description.
+  ex:
+    - ''
+  params:
+    - { }
+wiki:
+  desc: Gives you back a wikipedia link
+  ex:
+    - query
+  params:
+    - query:
+        desc: "The search term or phrase to look up on Wikipedia."
+color:
+  desc: Shows you pictures of colors which correspond to the inputted hex values. Max 10.
+  ex:
+    - 00ff00
+    - f00 0f0 00f
+  params:
+    - colors:
+        desc: "The array of colors to display as images."
+avatar:
+  desc: Shows a mentioned person's avatar.
+  ex:
+    - '@Someone'
+  params:
+    - usr:
+        desc: "The user whose avatar is being displayed."
+banner:
+  desc: Shows a mentioned person's banner.
+  ex:
+    - '@Someone'
+  params:
+    - usr:
+        desc: "The user whose banner is being displayed."
+translate:
+  desc: Translates text from the given language to the destination language.
+  ex:
+    - en fr Hello
+  params:
+    - fromLang:
+        desc: "The source language as 'english'"
+      toLang:
+        desc: "The target language such as 'english' or 'french'"
+      text:
+        desc: "The source text to be translated."
+translangs:
+  desc: Lists the valid languages for translation.
+  ex:
+    - ''
+  params:
+    - { }
+guide:
+  desc: Sends a readme and a guide links to the channel.
+  ex:
+    - ''
+  params:
+    - { }
+calcops:
+  desc: Shows all available operations in the `{0}calc` command
+  ex:
+    - ''
+  params:
+    - { }
+quotesdeleteall:
+  desc: Deletes all quotes with the specified keyword.
+  ex:
+    - kek
+  params:
+    - keyword:
+        desc: "The keyword/trigger of the quotes to be deleted."
+greetdmmsg:
+  desc: Sets a new join announcement message which will be sent to the user who joined. Type `%user.mention%` if you want to mention the new member. Using it with no message will show the current DM greet message. You can use embed json from <https://eb.nadeko.bot> instead of a regular text, if you want the message to be embedded.
+  ex:
+    - Welcome to the server, %user.mention%
+  params:
+    - text:
+        desc: "The new join announcement message that will be sent to the user who joined."
+cash:
+  desc: |-
+    Check how much currency a person has.
+    If no argument is provided it will check your own balance.
+  ex:
+    - ''
+    - '@Someone'
+  params:
+    - userId:
+        desc: "Optional user ID of the account holder whose currency balance is being checked."
+    - user:
+        desc: "Optional ID of the person whose currency balance is being checked."
+currencytransactions:
+  desc: Shows your currency transactions on the specified page. Bot owner can see other people's transactions too.
+  ex:
+    - 2
+    - '@SomeUser 2'
+  params:
+    - page:
+        desc: "The number of pages to display in the list of currency transactions."
+    - usr:
+        desc: "The user whose transactions are being displayed."
+    - usr:
+        desc: "The user whose transactions are being displayed."
+      page:
+        desc: "The number of pages to display in the list of currency transactions."
+currencytransaction:
+  desc: Shows full details about a currency transaction with the specified ID. You can only check your own transactions.
+  ex:
+    - 3yvd
+  params:
+    - id:
+        desc: "The id of the transaction being queried."
+listperms:
+  desc: Lists whole permission chain with their indexes. You can specify an optional page number if there are a lot of permissions.
+  ex:
+    - ''
+    - 3
+  params:
+    - page:
+        desc: "The page number for pagination, allowing the retrieval of large permission chains in manageable chunks."
+allusrmdls:
+  desc: Enable or disable all modules for a specific user.
+  ex:
+    - enable @Someone
+  params:
+    - action:
+        desc: "The type of permission action to take, such as granting or revoking access."
+      user:
+        desc: "The user account that the operation is being performed on."
+moveperm:
+  desc: Moves permission from one position to another in the Permissions list.
+  ex:
+    - 2 4
+  params:
+    - from:
+        desc: "The starting index of the permission to be moved."
+      to:
+        desc: "The index at which to insert or remove the permission."
+removeperm:
+  desc: Removes a permission from a given position in the Permissions list.
+  ex:
+    - 1
+  params:
+    - index:
+        desc: "The position at which to start removing permissions."
+showemojis:
+  desc: Shows a name and a link to every SPECIAL emoji in the message.
+  ex:
+    - A message full of SPECIAL emojis
+  params:
+    - _:
+        desc: "The text containing the emojis to be processed."
+emojiadd:
+  desc: |-
+    Adds the specified emoji to this server.
+    You can specify a name before the emoji to add it under a different name.
+    You can specify a name followed by an image link to add a new emoji from an image.
+    You can omit imageUrl and instead upload the image as an attachment. 
+    Image size has to be below 256KB.
+  ex:
+    - ':someonesCustomEmoji:'
+    - 'MyEmojiName :someonesCustomEmoji:'
+    - owoNice https://cdn.discordapp.com/emojis/587930873811173386.png?size=128
+  params:
+    - name:
+        desc: "The name of the emoji or the file to be uploaded."
+      emote:
+        desc: "The type of emoji being added, such as a smiley face or a thumbs up."
+    - emote:
+        desc: "The type of emoji being added, such as a smiley face or a thumbs up."
+    - name:
+        desc: "The name of the emoji or the file to be uploaded."
+      url:
+        desc: "The URL of an image file to use as the emoji's representation."
+emojiremove:
+  desc: Removes the specified emoji or emojis from this server.
+  ex:
+    - ':eagleWarrior: :plumedArcher:'
+  params:
+    - emotes:
+        desc: "The list of emojis to be removed from the server."
+stickeradd:
+  desc: |-
+    Adds the sticker from your message to this server.
+    Send the sticker along with this command (in the same message).
+    Alternatively you can upload an image along with this command but you have to specify the name.
+    The image must be 300x300 in .png or .apng format and up to 512KB in size.
+  ex:
+    - ''
+    - name "description" tag1 tag2 tagN
+  params:
+    - name:
+        desc: "The identifier for the sticker to be added."
+      description:
+        desc: "The text that describes the sticker being added."
+      tags:
+        desc: "The list of tags associated with the sticker being added."
+deckshuffle:
+  desc: Reshuffles all cards back into the deck.
+  ex:
+    - ''
+  params:
+    - { }
+forwardmessages:
+  desc: Toggles forwarding of non-command messages sent to bot's DM to the bot owners
+  ex:
+    - ''
+  params:
+    - { }
+forwardtoall:
+  desc: Toggles whether messages will be forwarded to all bot owners or only to the first one specified in the creds.yml file
+  ex:
+    - ''
+  params:
+    - { }
+forwardtochannel:
+  desc: Toggles forwarding of non-command messages sent to bot's DM to the current channel
+  ex:
+    - ''
+  params:
+    - { }
+resetperms:
+  desc: Resets the bot's permissions module on this server to the default value.
+  ex:
+    - ''
+  params:
+    - { }
+antiraid:
+  desc: |-
+    Sets an anti-raid protection on the server.
+    
+    First parameter is number of people which will trigger the protection.
+    
+    Second parameter is a time interval in which that number of people needs to join in order to trigger the protection.
+    
+    Third parameter is punishment for those people.
+    Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut
+    You can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.
+    
+    Provide no parameters to disable.
+  ex:
+    - 5 20 Kick
+    - 7 9 Ban
+    - 10 10 Ban 6h30m
+    - ''
+  params:
+    - { }
+    - userThreshold:
+        desc: "The number of users that must join the server within a specified time interval to trigger the anti-raid protection."
+      seconds:
+        desc: "The time interval in which the specified number of people needs to join before triggering the protection."
+      action:
+        desc: "The punishment action specifies the consequence for users who trigger the anti-raid protection."
+      punishTime:
+        desc: "The time duration for which the punishment will be applied."
+    - userThreshold:
+        desc: "The number of users that must join the server within a specified time interval to trigger the anti-raid protection."
+      seconds:
+        desc: "The time interval in which the specified number of people needs to join before triggering the protection."
+      action:
+        desc: "The punishment action specifies the consequence for users who trigger the anti-raid protection."
+antispam:
+  desc: |-
+    Applies a Punishment to people who repeat the same message X times in a row.
+    Available Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut
+    You can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.
+    Max message count is 10. 
+    Provide no parameters to disable.
+  ex:
+    - 3 Mute
+    - 5 Ban
+    - 5 Ban 3h30m
+    - ''
+  params:
+    - { }
+    - messageCount:
+        desc: "The maximum number of times a user can send the same message before being punished."
+      action:
+        desc: "The type of punishment to be applied to the offender."
+      role:
+        desc: "The role to apply the punishment to."
+    - messageCount:
+        desc: "The maximum number of times a user can send the same message before being punished."
+      action:
+        desc: "The type of punishment to be applied to the offender."
+      punishTime:
+        desc: "The time period for which the punishment should be enforced."
+    - messageCount:
+        desc: "The maximum number of times a user can send the same message before being punished."
+      action:
+        desc: "The type of punishment to be applied to the offender."
+antialt:
+  desc: |-
+    Applies a punishment action to any user whose account is younger than the specified threshold. 
+    Available Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut
+    You can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.
+    Max message count is 10.
+    Provide no parameters to disable.
+  ex:
+    - 1h Ban
+    - 3d Mute 1h
+  params:
+    - { }
+    - minAge:
+        desc: "The minimum age of an account for which the punishment should be applied."
+      action:
+        desc: "The type of punishment to be applied to users with accounts younger than the specified threshold."
+      punishTime:
+        desc: "The amount of time for which the punishment should be applied."
+    - minAge:
+        desc: "The minimum age of an account for which the punishment should be applied."
+      action:
+        desc: "The type of punishment to be applied to users with accounts younger than the specified threshold."
+      role:
+        desc: "The role of the user being punished, used to determine the severity of the punishment."
+chatmute:
+  desc: Prevents a mentioned user from chatting in text channels. You can also specify time string for how long the user should be muted. You can optionally specify a reason.
+  ex:
+    - '@Someone'
+    - '@Someone stop writing'
+    - 15m @Someone
+    - 1h30m @Someone
+    - 1h @Someone chill
+  params:
+    - user:
+        desc: "The user to mute, as specified by their ID or mention."
+      reason:
+        desc: "The optional reason provided is used to explain why the user was muted."
+    - time:
+        desc: "The duration of the mute period."
+      user:
+        desc: "The user to mute, as specified by their ID or mention."
+      reason:
+        desc: "The optional reason provided is used to explain why the user was muted."
+voicemute:
+  desc: Prevents a mentioned user from speaking in voice channels. User has to be in a voice channel in order for the command to have an effect. You can also specify time string for how long the user should be muted. You can optionally specify a reason.
+  ex:
+    - '@Someone'
+    - '@Someone stop talking'
+    - 15m @Someone
+    - 1h30m @Someone
+    - 1h @Someone silence
+  params:
+    - user:
+        desc: "The user being targeted by this function, whose voice capabilities are intended to be restricted."
+      reason:
+        desc: "The optional reason provided is used to explain why the user was muted."
+    - time:
+        desc: "The duration of the silence imposed on the mentioned user."
+      user:
+        desc: "The user being targeted by this function, whose voice capabilities are intended to be restricted."
+      reason:
+        desc: "The optional reason provided is used to explain why the user was muted."
+muterole:
+  desc: Sets a name of the role which will be assigned to people who should be muted. Provide no arguments to see currently set mute role. Default is nadeko-mute.
+  ex:
+    - ''
+    - Silenced
+  params:
+    - role:
+        desc: "The role that determines whether users are muted or not."
+setstream:
+  desc: Sets the bots stream. First parameter is the twitch link, second parameter is stream name.
+  ex:
+    - TWITCHLINK Hello
+  params:
+    - url:
+        desc: "The URL of the Twitch channel's live stream page."
+      name:
+        desc: "The name of the stream being set."
+chatunmute:
+  desc: Removes a mute role previously set on a mentioned user with `{0}chatmute` which prevented him from chatting in text channels.
+  ex:
+    - '@Someone'
+  params:
+    - user:
+        desc: "The user who was previously muted and is now being unmuted."
+      reason:
+        desc: "The reason for the mute being lifted."
+unmute:
+  desc: Unmutes a mentioned user previously muted with `{0}mute` command.
+  ex:
+    - '@Someone'
+  params:
+    - user:
+        desc: "The user who was previously muted and is now being un-muted."
+      reason:
+        desc: "The reason for the mute being lifted."
+xkcd:
+  desc: Shows a XKCD comic. Specify no parameters to retrieve a random one. Number parameter will retrieve a specific comic, and "latest" will get the latest one.
+  ex:
+    - ''
+    - 1400
+    - latest
+  params:
+    - arg:
+        desc: "The URL of the desired comic or \"latest\" to retrieve the most recent one."
+    - num:
+        desc: "The number of the comic to be retrieved."
+autotranslang:
+  desc: Sets your source and target language to be used with `{0}at`. Specify no parameters to remove previously set value.
+  ex:
+    - en fr
+  params:
+    - { }
+    - fromLang:
+        desc:
+      toLang:
+        desc: "The destination language code, such as \"en\" for English or \"fr\" for French."
+autotranslate:
+  desc: Starts automatic translation of all messages by users who set their `{0}atl` in this channel. You can set "del" parameter to automatically delete all translated user messages.
+  ex:
+    - ''
+    - del
+  params:
+    - autoDelete:
+        desc: "The option to automatically remove translated messages from the chat."
+quotelist:
+  desc: Lists all quotes on the server ordered alphabetically or by ID. 15 Per page.
+  ex:
+    - 3
+    - 3 id
+  params:
+    - order:
+        desc: "The order parameter determines how the quotes are sorted and displayed, allowing users to choose between alphabetical or ID-based ordering."
+    - page:
+        desc: "The current page number for pagination."
+      order:
+        desc: "The order parameter determines how the quotes are sorted and displayed, allowing users to choose between alphabetical or ID-based ordering."
+typedel:
+  desc: Deletes a typing article given the ID.
+  ex:
+    - 3
+  params:
+    - index:
+        desc: "The identifier for the typing article to be deleted."
+typelist:
+  desc: Lists added typing articles with their IDs. 15 per page.
+  ex:
+    - ''
+    - 3
+  params:
+    - page:
+        desc: "The current page number for the list of typing articles."
+serverlist:
+  desc: Lists servers the bot is on with some basic info. 15 per page.
+  ex:
+    - 3
+  params:
+    - page:
+        desc: "The number of pages to retrieve from the server list."
+cleverbot:
+  desc: |-
+    Toggles cleverbot/chatgpt session.
+    When enabled, the bot will reply to messages starting with bot mention in the server.
+    Expressions starting with %bot.mention% won't work if cleverbot/chatgpt is enabled.
+  ex:
+    - ''
+  params:
+    - { }
+shorten:
+  desc: Attempts to shorten an URL, if it fails, returns the input URL.
+  ex:
+    - https://google.com
+  params:
+    - query:
+        desc: "The search term or identifier used to retrieve a shortened version of the URL from a database or service."
+wikia:
+  desc: Gives you back a fandom link
+  ex:
+    - mtg Vigilance
+    - mlp Dashy
+  params:
+    - target:
+        desc: "The URL or title of the fandom being linked."
+      query:
+        desc: "The search term or phrase to look for on the wiki."
+magicthegathering:
+  desc: Searches for a Magic The Gathering card.
+  ex:
+    - about face
+  params:
+    - search:
+        desc: "The query string used to search for the desired card."
+hangmanlist:
+  desc: Shows a list of hangman question categories.
+  ex:
+    - ''
+  params:
+    - { }
+hangman:
+  desc: Starts a game of hangman in the channel. You can optionally select a category `{0}hangmanlist` to see a list of available categories.
+  ex:
+    - ''
+    - movies
+  params:
+    - type:
+        desc: "The language or theme of the word to be guessed."
+hangmanstop:
+  desc: Stops the active hangman game on this channel if it exists.
+  ex:
+    - ''
+  params:
+    - { }
+acrophobia:
+  desc: Starts an Acrophobia game.
+  ex:
+    - ''
+    - -s 30
+  params:
+    - params:
+        desc: "The list of command-line arguments passed to the game, which may include options or settings for customizing the gameplay experience."
+logevents:
+  desc: Shows a list of all events you can subscribe to with `{0}log`
+  ex:
+    - ''
+  params:
+    - { }
+log:
+  desc: Toggles logging event. Disables it if it is active anywhere on the server. Enables if it isn't active. Use `{0}logevents` to see a list of all events you can subscribe to.
+  ex:
+    - userpresence
+    - userbanned
+  params:
+    - type:
+        desc: "The type of log event to toggle."
+queuefairplay:
+  desc: Triggers fairplay. The song queue will be re-ordered in a fair manner. No effect on newly added songs.
+  ex:
+    - ''
+  params:
+    - { }
+define:
+  desc: Finds a definition of a word.
+  ex:
+    - heresy
+  params:
+    - word:
+        desc: "The word being searched for."
+setstatus:
+  desc: Sets the bot's status. (Online/Idle/Dnd/Invisible)
+  ex:
+    - Idle
+  params:
+    - status:
+        desc: "The current state or mode of the bot's presence in a chat."
+invitecreate:
+  desc: Creates a new invite which has infinite max uses and never expires.
+  ex:
+    - ''
+  params:
+    - params:
+        desc: "The recipient's email addresses or usernames."
+invitelist:
+  desc: Lists all invites for this channel. Paginated with 9 per page.
+  ex:
+    - ''
+    - 3
+  params:
+    - page:
+        desc: "The page number to retrieve, starting from 1."
+      ch:
+        desc: "The channel in which the invite list is being retrieved."
+invitedelete:
+  desc: Deletes an invite on the specified index. Use `{0}invitelist` to see the list of invites.
+  ex:
+    - 2
+  params:
+    - index:
+        desc: "The index at which the invite is located in the invite list."
+antilist:
+  desc: Shows currently enabled protection features.
+  ex:
+    - ''
+  params:
+    - { }
+antispamignore:
+  desc: Toggles whether antispam ignores current channel. Antispam must be enabled.
+  ex:
+    - ''
+  params:
+    - { }
+eventstart:
+  desc: |-
+    Starts one of the events seen on public Nadeko.
+    Events: `reaction`, `gamestatus`
+  ex:
+    - reaction
+    - reaction -d 1 -a 50 --pot-size 1500
+  params:
+    - ev:
+        desc: "The type of event being started."
+      options:
+        desc: "The optional option flags for the event."
+gamblestats:
+  desc: |-
+    Shows the total stats of several gambling features.
+    Updates once an hour.
+  ex:
+    - ''
+  params:
+    - { }
+gamblestatsreset:
+  desc: |-
+    Resets the gamble stats.
+  ex:
+    - ''
+  params:
+    - { }
+slot:
+  desc: |-
+    Play Nadeko slots by placing your bet.
+    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.
+  ex:
+    - 5
+    - 'all'
+  params:
+    - amount:
+        desc: "The amount of currency to bet."
+affinity:
+  desc: Sets your affinity towards someone you want to be claimed by. Setting affinity will reduce their `{0}claim` on you by 20%. Provide no parameters to clear your affinity. 30 minutes cooldown.
+  ex:
+    - '@MyHusband'
+    - ''
+  params:
+    - user:
+        desc: "The user being targeted for a potential claim."
+waifuclaim:
+  desc: Claim a waifu for yourself by spending currency.  You must spend at least 10% more than her current value unless she set `{0}affinity` towards you.
+  ex:
+    - 50 @Himesama
+  params:
+    - amount:
+        desc: "The cost of claiming the waifu."
+      target:
+        desc: "The user to whom the claim is being made, allowing the waifu to be claimed from their collection."
+waifuclaims:
+  desc: Shows all of your currently claimed waifus.
+  ex:
+    - ''
+  params:
+    - { }
+waifureset:
+  desc: Resets your waifu stats, except current waifus.
+  ex:
+    - ''
+  params:
+    - { }
+waifutransfer:
+  desc: Transfer the ownership of one of your waifus to another user. You must pay 10%  of your waifu's value unless that waifu has affinity towards you, in which case you must pay 60% fee. Transferred waifu's price will be reduced by the fee amount.
+  ex:
+    - '@ExWaifu @NewOwner'
+  params:
+    - waifuId:
+        desc: "The ID of the waifu being transferred to a new owner."
+      newOwner:
+        desc: "The user to whom ownership of the waifu is being transferred."
+    - waifu:
+        desc: "The user to whom the ownership of the waifu is being transferred."
+      newOwner:
+        desc: "The user to whom ownership of the waifu is being transferred."
+waifugift:
+  desc: |-
+    Gift an item to a waifu user.
+    The waifu's value will be increased by the percentage of the gift's value.
+    You can optionally prefix the gift with a multiplier to gift the item that many times.
+    For example, 3xRose will give the waifu 3 roses, 10xBread will give the waifu 10 breads. Do not use plural forms.
+    Negative gifts will not show up in waifuinfo. 
+    Provide no parameters to see a list of items that you can gift.
+  ex:
+    - ''
+    - Rose @Himesama
+  params:
+    - page:
+        desc: "The number of the page to display."
+    - items:
+        desc: "The name of an item to be gifted. With an optional multiplier prefix."
+      waifu:
+        desc: "The user who is receiving the gift."
+waifulb:
+  desc: Shows top 9 waifus. You can specify another page to show other waifus.
+  ex:
+    - ''
+    - 3
+  params:
+    - page:
+        desc: "The number of the page to display."
+divorce:
+  desc: Releases your claim on a specific waifu. You will get 50% of that waifu's value back, unless that waifu has an affinity towards you, in which case they will be reimbursed instead. 6 hours cooldown.
+  ex:
+    - '@CheatingSloot'
+  params:
+    - target:
+        desc: "The ID or name of the waifu being released from your claim."
+    - target:
+        desc: "The user to release the claim on."
+    - targetId:
+        desc: "The ID of the waifu to release your claim on."
+waifuinfo:
+  desc: Shows waifu stats for a target person. Defaults to you if no user is provided.
+  ex:
+    - '@MyCrush'
+    - ''
+  params:
+    - target:
+        desc: "The user being targeted, whose waifu information will be displayed."
+    - targetId:
+        desc: "The ID of the person whose waifu stats are being displayed."
+setmusicchannel:
+  desc: Sets the current channel as the default music output channel. This will output playing, finished, paused and removed songs to that channel instead of the channel where the first song was queued in. Persistent server setting.
+  ex:
+    - ''
+  params:
+    - { }
+unsetmusicchannel:
+  desc: Bot will output playing, finished, paused and removed songs to the channel where the first song was queued in. Persistent server setting.
+  ex:
+    - ''
+  params:
+    - { }
+musicquality:
+  desc: 'Gets or sets the default music player quality. Available settings: Highest, High, Medium, Low. Default is **Highest**. Provide no argument to see current setting.'
+  ex:
+    - ''
+    - High
+    - Low
+  params:
+    - { }
+    - preset:
+        desc: "The selected preset determines the level of audio compression and processing applied to the music playback."
+stringsreload:
+  desc: Reloads localized bot strings.
+  ex:
+    - ''
+  params:
+    - { }
+shardstats:
+  desc: |-
+    Stats for shards. Paginated with 25 shards per page.
+    Format: `[status] | # [shard_id] | [last_heartbeat] | [server_count]`
+  ex:
+    - ''
+    - 2
+  params:
+    - page:
+        desc: "The number of pages to retrieve, with each page containing 25 shards."
+restartshard:
+  desc: Try (re)connecting a shard with a certain shardid when it dies. No one knows will it work. Keep an eye on the console for errors.
+  ex:
+    - 2
+  params:
+    - shardId:
+        desc: "The ID of the shard to be restarted or reconnected."
+tictactoe:
+  desc: |-
+    Starts a game of tic tac toe.
+    Another user must run the command in the same channel in order to accept the challenge.
+    Use numbers 1-9 to play.
+  ex:
+    - ''
+  params:
+    - params:
+        desc: "The coordinates for placing an X or O on the board."
+timezones:
+  desc: Lists all timezones available on the system to be used with `{0}timezone`.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of pages to retrieve from the list of available timezones."
+timezone:
+  desc: Sets this guilds timezone. This affects bot's time output in this server (logs, etc..) **Setting timezone requires Administrator server permission.**
+  ex:
+    - ''
+    - GMT Standard Time
+  params:
+    - { }
+    - id:
+        desc: "The identifier for a specific timezone region."
+languagesetdefault:
+  desc: Sets the bot's default response language. All servers which use a default locale will use this one. Setting to `default` will use the host's current culture. Provide no parameters to see currently set language.
+  ex:
+    - en-US
+    - default
+  params:
+    - { }
+    - name:
+        desc: "The code page or character encoding for the target audience."
+languageset:
+  desc: Sets this server's response language. If bot's response strings have been translated to that language, bot will use that language in this server. Reset by using `default` as the locale name. Provide no parameters to see currently set language.
+  ex:
+    - 'de-DE '
+    - default
+  params:
+    - { }
+    - name:
+        desc: "The locale name for which the response language should be set."
+languageslist:
+  desc: List of languages for which translation (or part of it) exist atm.
+  ex:
+    - ''
+  params:
+    - { }
+exprtoggleglobal:
+  desc: Toggles whether global expressions are usable on this server.
+  ex:
+    - ''
+  params:
+    - { }
+exprreact:
+  desc: Sets or resets reactions (up to 3) which will be added to the response message of the Expression with the specified ID. Provide no emojis to reset.
+  ex:
+    - "59 👍 👎 "
+    - 59 <a:nFlower:408963839191941120>
+    - 59
+  params:
+    - id:
+        desc: "The ID of the expression."
+      emojiStrs:
+        desc: "The set of emojis that can be used to react to the expression."
+exprad:
+  desc: Toggles whether the message triggering the expression will be automatically deleted.
+  ex:
+    - 59
+  params:
+    - id:
+        desc: "The ID of a message that should be affected by this toggle."
+exprat:
+  desc: Toggles whether the expression will allow extra input after the trigger. For example, with this feature enabled, expression with trigger 'hi' will also be invoked when a user types 'hi there'. This feature is automatically enabled on expressions which have '%target%' in their response.
+  ex:
+    - 59
+  params:
+    - id:
+        desc: "The ID of the expression to toggle this feature for. It determines which expression's behavior will be modified by this setting."
+exprdm:
+  desc: Toggles whether the response message of the expression will be sent as a direct message.
+  ex:
+    - 44
+  params:
+    - id:
+        desc: "The ID of the user who should receive the direct message."
+exprca:
+  desc: Toggles whether the expression will trigger if the triggering message contains the keyword (instead of only starting with it).
+  ex:
+    - 44
+  params:
+    - id:
+        desc: "The identifier of a specific keyword to be matched."
+exprsreload:
+  desc: Reloads all expressions on all shards. Use this if you've made changes to the database while the bot is running, or used `{0}deleteunusedcrnq`
+  ex:
+    - ''
+  params:
+    - { }
+exprsimport:
+  desc: Upload the file or send the raw .yml data with this command to import all expressions from the specified string or file into the current server (or as global expressions in dm)
+  ex:
+    - <upload .yml file>
+  params:
+    - input:
+        desc: "The path to a file containing YAML data or a raw YAML string to be imported."
+exprsexport:
+  desc: Exports expressions from the current server (or global expressions in DMs) into a .yml file
+  ex:
+    - ''
+  params:
+    - { }
+quotesimport:
+  desc: Upload the file or send the raw .yml data with this command to import all quotes from the specified string or file into the current server.
+  ex:
+    - <upload .yml file>
+  params:
+    - input:
+        desc: "The path to a file containing the YAML data to be imported."
+quotesexport:
+  desc: Exports quotes from the current server into a .yml file
+  ex:
+    - ''
+  params:
+    - { }
+aliaslist:
+  desc: Shows the list of currently set aliases. Paginated.
+  ex:
+    - ''
+    - 3
+  params:
+    - page:
+        desc: "The number of pages to display in the result set."
+alias:
+  desc: Create a custom alias for a certain Nadeko command. Provide no alias to remove the existing one.
+  ex:
+    - allin {0}bf all h
+  params:
+    - trigger:
+        desc: "The trigger string that will activate this custom alias."
+      mapping:
+        desc: "The name or nickname that will be used as an alternative to invoke the original command."
+warnlog:
+  desc: See a list of warnings of a certain user.
+  ex:
+    - '@Someone'
+  params:
+    - page:
+        desc: "The number of pages to display in the warning log."
+      user:
+        desc: "The guild member whose warning log is being retrieved."
+    - user:
+        desc: "The guild member whose warning log is being retrieved."
+    - page:
+        desc: "The number of pages to display in the warning log."
+      userId:
+        desc: "The ID of the user whose warning log is being retrieved."
+    - userId:
+        desc: "The ID of the user whose warning log is being retrieved."
+warnlogall:
+  desc: See a list of all warnings on the server. 15 users per page.
+  ex:
+    - ''
+    - 2
+  params:
+    - page:
+        desc: "The current page number for displaying the warning log."
+warn:
+  desc: |-
+    Warns a user with an optional reason.
+    You can specify a warning weight integer before the user. For example, 3 would mean that this warning counts as 3 warnings.
+  ex:
+    - '@Someone Very rude person'
+    - 3 @Someone Very rude person
+  params:
+    - user:
+        desc: "The user to be warned about the issue or situation."
+      reason:
+        desc: "The reason for the warning."
+    - weight:
+        desc: "The level of severity for the warning."
+      user:
+        desc: "The user to be warned about the issue or situation."
+      reason:
+        desc: "The reason for the warning."
+startupcommandadd:
+  desc: Adds a command to the list of commands which will be executed automatically in the current channel, in the order they were added in, by the bot when it startups up.
+  ex:
+    - '{0}stats'
+  params:
+    - cmdText:
+        desc: "The text of the command that should be recognized and executed when a user types it."
+autocommandadd:
+  desc: Adds a command to the list of commands which will be executed automatically every X seconds.
+  ex:
+    - 60 {0}prune 1000
+  params:
+    - interval:
+        desc: "The time period between consecutive executions of the added command."
+      cmdText:
+        desc: "The text of the command to be executed when triggered."
+startupcommandremove:
+  desc: Removes a startup command on the specified index.
+  ex:
+    - 3
+  params:
+    - index:
+        desc: "The index at which to remove the startup command from the list."
+autocommandremove:
+  desc: Removes an auto command on the specified index.
+  ex:
+    - 3
+  params:
+    - index:
+        desc: "The index at which the auto command is located in the list of commands."
+startupcommandsclear:
+  desc: Removes all startup commands.
+  ex:
+    - ''
+  params:
+    - { }
+startupcommandslist:
+  desc: Lists all startup commands in the order they will be executed in.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of items to display per page."
+autocommandslist:
+  desc: Lists all auto commands and the intervals in which they execute.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of pages to retrieve from the list of auto commands."
+unban:
+  desc: Unbans a user with the provided user#discrim or id.
+  ex:
+    - kwoth#1234
+    - 123123123
+  params:
+    - user:
+        desc: "The ID of the user being unbanned."
+    - userId:
+        desc: "The ID of the user to be unbanned."
+banmessage:
+  desc: 'Sets a ban message template which will be used when a user is banned from this server. You can use embed strings and ban-specific placeholders: %ban.mod%, %ban.user%, %ban.duration% and %ban.reason%. You can disable ban message with `{0}banmsg -`'
+  ex:
+    - "%ban.user%, you've been banned from %server.name%. Reason: %ban.reason%"
+    - '{{ "description": "%ban.user% you have been banned from %server.name% by %ban.mod%" }}'
+  params:
+    - message:
+        desc: "The custom message to be displayed when a user is banned."
+banmessagetest:
+  desc: If ban message is not disabled, bot will send you the message as if you were banned by yourself. Used for testing the ban message.
+  ex:
+    - No reason
+    - 1h Test 1 hour ban message
+  params:
+    - reason:
+        desc: "The reason why a user was banned."
+    - duration:
+        desc: "The time period during which the ban message should be sent."
+      reason:
+        desc: "The reason why a user was banned."
+banmsgreset:
+  desc: Resets ban message to default. If you want to completely disable ban messages, use `{0}banmsg -`
+  ex:
+    - ''
+  params:
+    - { }
+banprune:
+  desc: |-
+    Sets how many days of messages will be deleted when a user is banned.
+    Only works if the user is banned via the .ban command or punishment.
+    Allowed values: 0 - 7
+  ex:
+    - 3
+  params:
+    - days:
+        desc: "The number of days to retain messages for a banned user before they are automatically deleted."
+wait:
+  desc: Used only as a startup command. Waits a certain number of milliseconds before continuing the execution of the following startup commands.
+  ex:
+    - 3000
+  params:
+    - miliseconds:
+        desc: "The time period to pause for."
+warnexpire:
+  desc: Gets or sets the number of days after which the warnings will be cleared automatically. This setting works retroactively. If you want to delete the warnings instead of clearing them, you can set the `--delete` optional parameter. Provide no parameter to see currently set expiry
+  ex:
+    - ''
+    - 3
+    - 6 --delete
+  params:
+    - { }
+    - days:
+        desc: "The number of days after which expired warnings will be automatically cleared from the system."
+      params:
+        desc: "The list of command-line options or flags that can be passed to customize the behavior of the function."
+warnclear:
+  desc: Clears all warnings from a certain user. You can specify a number to clear a specific one.
+  ex:
+    - '@PoorDude 3'
+    - '@PoorDude'
+  params:
+    - user:
+        desc: "The user whose warnings are being cleared."
+      index:
+        desc: "The index of the warning to be cleared, or 0 to clear all warnings."
+    - userId:
+        desc: "The ID of the user whose warnings are being cleared."
+      index:
+        desc: "The index of the warning to be cleared, or 0 to clear all warnings."
+warndelete:
+  desc: Deletes a warning from a user by its index.
+  ex:
+    - 3
+  params:
+    - index:
+        desc: "The index of the warning to be deleted."
+warnpunishlist:
+  desc: Lists punishments for warnings.
+  ex:
+    - ''
+  params:
+    - { }
+warnpunish:
+  desc: "Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or *'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles"
+  ex:
+    - 3
+    - 5 Ban
+    - 5 Mute 2d12h
+    - 4 AddRole toxic 1h
+  params:
+    - number:
+        desc: "The number of warnings that will trigger the specified punishment."
+      _:
+        desc: "The role that will be added to the user's roles."
+      role:
+        desc: "The role that will be affected by the punishment."
+      time:
+        desc: "The duration of the temporary punishment."
+    - number:
+        desc: "The number of warnings that will trigger the specified punishment."
+      punish:
+        desc: "The type of action to take when the specified number of warnings is reached."
+      time:
+        desc: "The duration of the temporary punishment."
+    - number:
+        desc: "The number of warnings that will trigger the specified punishment."
+ping:
+  desc: Ping the bot to see if there are latency issues.
+  ex:
+    - ''
+  params:
+    - { }
+time:
+  desc: Shows the current time and timezone in the specified location.
+  ex:
+    - London, UK
+  params:
+    - query:
+        desc: "The city or region for which to display the current time and timezone."
+shop:
+  desc: Lists this server's administrators' shop. Paginated.
+  ex:
+    - ''
+    - 2
+  params:
+    - page:
+        desc: "The number of the page to retrieve from the list of administrators' shops."
+shopadd:
+  desc: |-
+    Adds an item to the shop.
+    First you begin by specifying the type of the item you wish to add.
+    Available types are role, list and command.
+    If the item is a role, specify a role id or a role name.
+    In case you're selling a command, and you need user's name, id etc, you can use the following placeholders:
+    -     `%you%` - Buyer mention
+    -     `%you.id%` - Buyer's user ID
+    -     `%you.username%` - Buyer's username
+    -     `%you.name%` - Buyer's global name
+    -     `%you.nick%` - Buyer's display name
+    90% of currency from each purchase will be received by the user who added the item to the shop. This is configurable by the bot owner
+  ex:
+    - role 1000 Rich
+    - cmd 1000 .setrole %user% Rich
+  params:
+    - _:
+        desc: "This value has to be 'cmd'"
+      price:
+        desc: "The cost at which the command is available for purchase."
+      command:
+        desc: "The full command, replacing the buyer info (if required) with some of the special %you% placeholders."
+    - _:
+        desc: "This value has to be 'list'"
+      price:
+        desc: "The cost at which the item is available for purchase."
+      role:
+        desc: "The item (text) that is being sold."
+    - _:
+        desc: "This value has to be 'role'"
+      price:
+        desc: "The cost at which the role is available for purchase."
+      name:
+        desc: "The name of the role, command, or list being added to the shop."
+shopremove:
+  desc: Removes an item from the shop by its ID.
+  ex:
+    - 1
+  params:
+    - index:
+        desc: "The position in the list of items to remove."
+shopreq:
+  desc: Sets a role which will be required to buy the item on the specified index. Specify only index to remove the requirement.
+  ex:
+    - 2 Gamers
+    - 2
+  params:
+    - itemIndex:
+        desc: "The index of an item in the inventory that must be purchased before this one can be bought."
+      role:
+        desc: "The role that must be assigned to the player in order to purchase the item."
+shopchangename:
+  desc: Change the name of a shop entry at the specified index. Only works for non-role items
+  ex:
+    - 3 Cool stuff
+  params:
+    - index:
+        desc: "The index of the shop entry to modify."
+      newName:
+        desc: "The new name given to the shop item, which will replace its original name."
+shopchangeprice:
+  desc: Change the price of a shop entry at the specified index. Specify the index of the entry, followed by the price
+  ex:
+    - 1 500
+  params:
+    - index:
+        desc: "The index of the entry to be updated with the new price."
+      price:
+        desc: "The new price for the item being updated."
+shopswap:
+  desc: Swap the index of two shop entries
+  ex:
+    - 1 5
+  params:
+    - index1:
+        desc: "The position in the list where a swap operation should take place."
+      index2:
+        desc: "The second index of the entry to swap."
+shopmove:
+  desc: Moves the shop entry from the current index to a new one
+  ex:
+    - 2 4
+  params:
+    - fromIndex:
+        desc: "The starting position in the list that contains the item to be moved."
+      toIndex:
+        desc: "The position in the list where the shop entry should be moved."
+buy:
+  desc: Buys an item from the shop on a given index. If buying items, make sure that the bot can DM you.
+  ex:
+    - 2
+  params:
+    - index:
+        desc: "The index of the item to be purchased in the shop's inventory."
+gamevoicechannel:
+  desc: Toggles game voice channel feature in the voice channel you're currently in. Users who join the game voice channel will get automatically redirected to the voice channel with the name of their current game, if it exists. Can't move users to channels that the bot has no connect permission for. One per server.
+  ex:
+    - ''
+  params:
+    - { }
+shoplistadd:
+  desc: Adds an item to the list of items for sale in the shop entry given the index. You usually want to run this command in the secret channel, so that the unique items are not leaked.
+  ex:
+    - 1 Uni-que-Steam-Key
+  params:
+    - index:
+        desc: "The position at which to insert the new item in the list of items for sale."
+      itemText:
+        desc: "The description or name of the item being added to the list."
+globalcommand:
+  desc: Toggles whether a command can be used on any server.
+  ex:
+    - '{0}stats'
+  params:
+    - cmd:
+        desc: "The command or expression being toggled."
+globalmodule:
+  desc: Toggles whether a module can be used on any server.
+  ex:
+    - 'Gambling'
+  params:
+    - module:
+        desc: "The module being toggled."
+dmcommand:
+  desc: Toggles whether a command can be used in DMs.
+  ex:
+    - '{0}stats'
+  params:
+    - cmd:
+        desc: "The command or expression being toggled."
+dmmodule:
+  desc: Toggles whether a module can be used in DMs.
+  ex:
+    - 'Gambling'
+  params:
+    - module:
+        desc: "The module being toggled."
+globalpermlist:
+  desc: Lists global permissions set by the bot owner.
+  ex:
+    - ''
+  params:
+    - { }
+resetglobalperms:
+  desc: Resets global permissions set by bot owner.
+  ex:
+    - ''
+  params:
+    - { }
+prefix:
+  desc: Sets this server's prefix for all bot commands. Provide no parameters to see the current server prefix. **Setting prefix requires Administrator server permission.**
+  ex:
+    - +
+  params:
+    - { }
+    - _:
+        desc: "The default text that is prepended to all bot command names."
+      newPrefix:
+        desc: "The new prefix for all bot commands, allowing users to interact with the bot using a custom keyword."
+    - toSet:
+        desc: "The new prefix for all bot commands, allowing users to interact with the bot using a custom keyword."
+defprefix:
+  desc: Sets bot's default prefix for all bot commands. Provide no parameters to see the current default prefix. This will not change this server's current prefix.
+  ex:
+    - +
+  params:
+    - toSet:
+        desc: "The new prefix to set as the default for all bot commands."
+verboseerror:
+  desc: Toggles or sets whether the bot should print command errors when a command is incorrectly used.
+  ex:
+    - ''
+    - false
+  params:
+    - newstate:
+        desc: "The state that determines whether error messages are displayed to the user."
+streamrolekeyword:
+  desc: Sets keyword which is required in the stream's title in order for the streamrole to apply. Provide no keyword in order to reset.
+  ex:
+    - ''
+    - PUBG
+  params:
+    - keyword:
+        desc: "The keyword that must be present in a stream's title for the associated role to take effect."
+streamroleblacklist:
+  desc: Adds or removes a blacklisted user. Blacklisted users will never receive the stream role.
+  ex:
+    - add @Someone#1234
+    - rem @Someone#1234
+  params:
+    - action:
+        desc: "The type of operation to perform on the blacklisted user, either adding them to the list or removing them from it."
+      user:
+        desc: "The ID of the user who is being added or removed from the blacklist."
+streamrolewhitelist:
+  desc: Adds or removes a whitelisted user. Whitelisted users will receive the stream role even if they don't have the specified keyword in their stream title.
+  ex:
+    - add @Someone#1234
+    - rem @Someone#1234
+  params:
+    - action:
+        desc: "The type of operation to perform on the whitelist, either adding or removing a user."
+      user:
+        desc: "The user to be added or removed from the whitelist for receiving the stream role."
+config:
+  desc: |-
+    Gets or sets configuration values.
+    Provide no arguments to see the list of configs you can edit/view.
+    Provide config name to see all properties in that configuration and their values.
+    Provide config name and property name to see that property's description and value.
+    Provide config name, property name and value to set that property to the new value.
+  ex:
+    - ''
+    - bot
+    - bot color.ok
+    - bot color.ok ff0000
+  params:
+    - name:
+        desc: "The name of a specific configuration section or category. It is used as an identifier to access its properties and values."
+      prop:
+        desc: "The name of a specific configuration property or section. It is used to retrieve or modify its settings."
+      value:
+        desc: "The new value for a specific configuration property."
+configreload:
+  desc: Reloads specified configuration
+  ex:
+    - bot
+    - gambling
+  params:
+    - name:
+        desc: "The path or identifier of the configuration file or section to reload."
+experience:
+  desc: Shows your xp stats. Specify the user to show that user's stats instead.
+  ex:
+    - ''
+    - '@someguy'
+  params:
+    - user:
+        desc: "Optional name, mention or ID of the user"
+xptemplatereload:
+  desc: Reloads the xp template file. Xp template file allows you to customize the position and color of elements on the `{0}xp` card.
+  ex:
+    - ''
+  params:
+    - { }
+xpexclusionlist:
+  desc: Shows the roles and channels excluded from the XP system on this server, as well as whether the whole server is excluded.
+  ex:
+    - ''
+  params:
+    - { }
+xpexclude:
+  desc: Exclude a channel, role or current server from the xp system.
+  ex:
+    - Role Excluded-Role
+    - Server
+  params:
+    - _:
+        desc: "The ID of the server to exclude from the XP system."
+    - _:
+        desc: "The role that should not receive XP rewards."
+      role:
+        desc: "The role that should not receive XP rewards."
+    - _:
+        desc: "The ID of the channel to exclude from XP tracking."
+      channel:
+        desc: "The ID of the channel to exclude from XP tracking."
+xpleveluprewards:
+  desc: Shows currently set level up rewards.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The page number for which the level up rewards are being displayed."
+xprewsreset:
+  desc: Resets all currently set xp level up rewards.
+  ex:
+    - ''
+  params:
+    - { }
+xprolereward:
+  desc: |-
+    Add or remove a role from the user who reaches the specified level.
+    Provide no action and role name in order to remove the role reward.
+  ex:
+    - 1 rm Newbie
+    - 3 add Social
+    - 5 add Member
+    - 5
+  params:
+    - level:
+        desc: "The level at which the user should be rewarded with the role."
+    - level:
+        desc: "The level at which the user should be rewarded with the role."
+      action:
+        desc: "The type of operation to perform on the user's roles, either adding or removing one."
+      role:
+        desc: "The type of authority or privilege being granted or revoked."
+xpcurrencyreward:
+  desc: Sets a currency reward on a specified level. Provide no amount in order to remove the reward.
+  ex:
+    - 3 50
+  params:
+    - level:
+        desc: "The level at which the currency reward is set or removed."
+      amount:
+        desc: "The amount of currency to be rewarded when completing this level."
+xpleaderboard:
+  desc: Shows current server's xp leaderboard.
+  ex:
+    - ''
+  params:
+    - params:
+        desc: "The list of player names or IDs to filter the leaderboard by."
+    - page:
+        desc: "The number of pages to display in the leaderboard."
+      params:
+        desc: "The list of player names or IDs to filter the leaderboard by."
+xpgloballeaderboard:
+  desc: Shows the global xp leaderboard.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The current page number for displaying the leaderboard results."
+xpadd:
+  desc: Adds server XP to a single user or all users role on this server. This does not affect their global ranking. You can use negative values.
+  ex:
+    - 100 @Someone
+    - 500 SomeRoleName
+  params:
+    - amount:
+        desc: "The total experience points to be added."
+      role:
+        desc: "The type of account or group that the XP is being added to, such as an administrator or moderator."
+    - amount:
+        desc: "The total experience points to be added."
+      userId:
+        desc: "The ID of the player whose experience points are being modified."
+    - amount:
+        desc: "The total experience points to be added."
+      user:
+        desc: "The ID of the user whose XP is being added or modified."
+clubcreate:
+  desc: Creates a club. You must be at least level 5 and not be in the club already.
+  ex:
+    - My Brand New Club
+  params:
+    - clubName:
+        desc: "The name of the new club being created."
+clubtransfer:
+  desc: Transfers the ownership of the club to another member of the club.
+  ex:
+    - '@Someone'
+  params:
+    - newOwner:
+        desc: "The user who will take over the management of the club."
+clubinformation:
+  desc: Shows information about the club.
+  ex:
+    - My Brand New Club#23
+  params:
+    - user:
+        desc: "The identity of the person requesting the club information."
+    - clubName:
+        desc: "The name of a specific club being queried for information."
+clubapply:
+  desc: Apply to join a club. You must meet that club's minimum level requirement, and not be on its ban list.
+  ex:
+    - My Brand New Club#23
+  params:
+    - clubName:
+        desc: "The name of the club you are trying to join."
+clubaccept:
+  desc: Accept a user who applied to your club.
+  ex:
+    - user#1337
+  params:
+    - user:
+        desc: "The identity of the person being accepted into the club."
+    - userName:
+        desc: "The username of the person being accepted into the club."
+clubreject:
+  desc: Reject a user who applied to your club.
+  ex:
+    - user#1337
+  params:
+    - user:
+        desc: "The identity of the person being rejected from the club."
+    - userName:
+        desc: "The username of the user being rejected from the club."
+clubleave:
+  desc: Leaves the club you're currently in.
+  ex:
+    - ''
+  params:
+    - { }
+clubdisband:
+  desc: Disbands the club you're the owner of. This action is irreversible.
+  ex:
+    - ''
+  params:
+    - { }
+clubkick:
+  desc: Kicks the user from the club. You must be the club owner. They will be able to apply again.
+  ex:
+    - user#1337
+  params:
+    - user:
+        desc: "The current member being kicked from the club."
+    - userName:
+        desc: "The username of the user to be kicked from the club."
+clubban:
+  desc: Bans the user from the club. You must be the club owner. They will not be able to apply again.
+  ex:
+    - user#1337
+  params:
+    - user:
+        desc: "The user who is being banned."
+    - userName:
+        desc: "The username of the user to ban from the club."
+clubunban:
+  desc: Unbans the previously banned user from the club. You must be the club owner.
+  ex:
+    - user#1337
+  params:
+    - user:
+        desc: "The user who was previously banned is being restored to membership in the club."
+    - userName:
+        desc: "The username of the user being unbanned from the club."
+clubdescription:
+  desc: Sets the club description. Maximum 150 characters. Club owner only.
+  ex:
+    - This is the best club please join.
+  params:
+    - desc:
+        desc: "The brief summary of the club's purpose and activities."
+clubicon:
+  desc: Sets the club icon.
+  ex:
+    - https://i.imgur.com/htfDMfU.png
+  params:
+    - url:
+        desc: "The URL of an image file to use as the club icon."
+clubapps:
+  desc: Shows the list of users who have applied to your club. Paginated. You must be club owner to use this command.
+  ex:
+    - 2
+  params:
+    - page:
+        desc: "The number of pages to display in the result set."
+clubbans:
+  desc: Shows the list of users who have banned from your club. Paginated. You must be club owner to use this command.
+  ex:
+    - 2
+  params:
+    - page:
+        desc: "The number of pages to retrieve in the result set."
+clubleaderboard:
+  desc: Shows club rankings on the specified page.
+  ex:
+    - 2
+  params:
+    - page:
+        desc: "The page number to display, allowing users to navigate through multiple pages of club rankings."
+clubadmin:
+  desc: Assigns (or unassigns) staff role to the member of the club. Admins can ban, kick and accept applications.
+  ex:
+    - '@Someone'
+  params:
+    - toAdmin:
+        desc: "The user who is being assigned or unassigned as an admin."
+eightball:
+  desc: Ask the 8ball a yes/no question.
+  ex:
+    - Is b1nzy a nice guy?
+  params:
+    - question:
+        desc: "The user's inquiry or query that they want the 8ball to answer."
+ytuploadnotif:
+  desc: |-
+    Subscribe to a youtube channel's upload rss feed.
+    You can optionally specify a message which will be posted with an update.
+    This is just a shortcut for `.feed` with a url of the youtube channel's rss feed.
+  ex:
+    - https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow
+    - https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow New video is posted
+  params:
+    - url:
+        desc: "The URL of the YouTube channel's RSS feed to subscribe to."
+      message:
+        desc: "The text to be displayed in the notification when an upload is detected."
+    - url:
+        desc: "The URL of the YouTube channel's RSS feed to subscribe to."
+      channel:
+        desc: "The ID of the YouTube channel to subscribe to notifications for, or the text channel where updates will be posted."
+      message:
+        desc: "The text to be displayed in the notification when an upload is detected."
+feed:
+  desc: |-
+    Subscribes to a feed.
+    Bot will post an update up to once every 10 seconds.
+    You can have up to 10 feeds on one server.
+    All feeds must have unique URLs.
+    Set a channel as a second optional parameter to specify where to send the updates.
+    You can optionally specify a message after the channel name which will be posted with an update.
+  ex:
+    - https://blog.playstation.com/feed/
+    - 'https://blog.playstation.com/feed/ #updates'
+    - 'https://blog.playstation.com/feed/ #updates New playstation rss feed post!'
+  params:
+    - url:
+        desc: "The URL of the feed to subscribe to, used to retrieve new content for posting."
+      message:
+        desc: "The text to be sent in the update post."
+    - url:
+        desc: "The URL of the feed to subscribe to, used to retrieve new content for posting."
+      channel:
+        desc: "The channel where updates will be sent."
+      message:
+        desc: "The text to be sent in the update post."
+feedremove:
+  desc: Stops tracking a feed on the given index. Use `{0}feeds` command to see a list of feeds and their indexes.
+  ex:
+    - 3
+  params:
+    - index:
+        desc: "The index of the feed to stop tracking."
+feedlist:
+  desc: Shows the list of feeds you've subscribed to on this server.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of items to display per page."
+expredit:
+  desc: Edits the expression's response given its ID.
+  ex:
+    - 123 I'm a magical girl
+  params:
+    - id:
+        desc: "The id of the expression being edited."
+      message:
+        desc: "The text that will replace the original response in the expression's output."
+say:
+  desc: |-
+    Make the bot say something, or in other words, make the bot send the message.
+    You can optionally specify the channel where the bot will send the message.
+    If you omit the channel name, it will send the message in the current channel.
+    Supports [embeds](https://eb.nadeko.bot/)
+  ex:
+    - hi
+    - '#chat hi'
+  params:
+    - channel:
+        desc: "The destination where the bot will send the message."
+      message:
+        desc: "The message to be sent by the bot. It can contain rich text formatting."
+    - message:
+        desc: "The message to be sent by the bot. It can contain rich text formatting."
+sqlexec:
+  desc: Executes provided sql command and returns the number of affected rows. Dangerous.
+  ex:
+    - UPDATE DiscordUser SET CurrencyAmount=CurrencyAmount+1234
+  params:
+    - sql:
+        desc: "The SQL query string to execute, which should be carefully crafted to avoid any potential security risks."
+sqlselect:
+  desc: Executes provided sql query and returns the results. Dangerous.
+  ex:
+    - SELECT * FROM DiscordUser LIMIT 5
+  params:
+    - sql:
+        desc: "The SQL query string that is executed by the function."
+sqlselectcsv:
+  desc: Executes provided sql query and returns the results in a csv file. Dangerous.
+  ex:
+    - SELECT * FROM DiscordUser LIMIT 5
+  params:
+    - sql:
+        desc: "The SQL query string that specifies the data to be retrieved and formatted into a CSV file."
+deletewaifus:
+  desc: Deletes everything from WaifuUpdates, WaifuItem and WaifuInfo tables.
+  ex:
+    - ''
+  params:
+    - { }
+deletewaifu:
+  desc: Deletes everything from WaifuUpdates, WaifuItem and WaifuInfo tables for the specified user. Also makes specified user's waifus free.
+  ex:
+    - ''
+  params:
+    - user:
+        desc: "The ID of the user whose waifus are to be deleted and set free."
+    - userId:
+        desc: "The ID of the user whose waifus are to be deleted and set free."
+deletecurrency:
+  desc: Deletes everything from Currency and CurrencyTransactions.
+  ex:
+    - ''
+  params:
+    - { }
+deleteplaylists:
+  desc: Deletes everything from MusicPlaylists.
+  ex:
+    - ''
+  params:
+    - { }
+deletexp:
+  desc: Deletes everything from UserXpStats, Clubs and sets users' TotalXP to 0.
+  ex:
+    - ''
+  params:
+    - { }
+discordpermoverride:
+  desc: Overrides required user permissions that the command has with the specified ones. You can only use server-level permissions. This action will make the bot ignore user permission requirements which command has by default. Provide no permissions to reset to default.
+  ex:
+    - '{0}prune ManageMessages BanMembers'
+    - '{0}prune'
+  params:
+    - cmd:
+        desc: "The command or expression that this override applies to, allowing you to customize permissions for specific commands or actions within your Discord server."
+      perms:
+        desc: "The set of permissions that should be used instead of the command's default permissions."
+discordpermoverridelist:
+  desc: Lists all discord permission overrides on this server.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of the page to display in the list of permission overrides."
+discordpermoverridereset:
+  desc: Resets ALL currently set discord permission overrides on this server. This will make all commands have default discord permission requirements.
+  ex:
+    - ''
+  params:
+    - { }
+autodisconnect:
+  desc: Toggles whether the bot should disconnect from the voice channel once it's done playing all of the songs and queue repeat option is set to `none`.
+  ex:
+    - ''
+  params:
+    - { }
+timelyset:
+  desc: Sets the 'timely' currency allowance amount for users. Second parameter is period in hours, default is 24 hours.
+  ex:
+    - 100
+    - 50 12
+  params:
+    - amount:
+        desc: "The maximum amount of currency that can be spent within a given time frame."
+      period:
+        desc: "The time period within which a user's timely currency allowance can be used."
+timely:
+  desc: |-
+    Use to claim your timely currency.
+    This is usually set by the bot owners to be daily, hourly or once every 12 hours.
+    Bot owner has to specify the amount and the period on how often you can claim your currency.
+  ex:
+    - ''
+  params:
+    - { }
+timelyreset:
+  desc: Resets all user timeouts on `{0}timely` command.
+  ex:
+    - ''
+  params:
+    - { }
+crypto:
+  desc: Shows basic stats about a cryptocurrency from coinmarketcap.com. You can use either a name or an abbreviation of the currency.
+  ex:
+    - btc
+    - bitcoin
+  params:
+    - name:
+        desc: "The symbol or abbreviated name of the cryptocurrency to retrieve statistics for."
+stock:
+  desc: Shows basic information about a stock. You can use a symbol or company name
+  ex:
+    - tsla
+    - advanced micro devices
+    - amd
+  params:
+    - query:
+        desc: "The ticker symbol or company name used to retrieve the stock's information."
+massban:
+  desc: Bans multiple users at once. Specify a space separated list of IDs of users who you wish to ban.
+  ex:
+    - 123123123 3333333333 444444444
+  params:
+    - userStrings:
+        desc: "The list of user IDs to ban, provided as a comma-separated string."
+masskill:
+  desc: Specify a new-line separated list of `userid reason`. You can use Username#discrim instead of UserId. Specified users will be banned from the current server, blacklisted from the bot, and have all of their currency taken away.
+  ex:
+    - BadPerson#1234 Toxic person
+  params:
+    - people:
+        desc: "The list of user IDs or usernames to ban from the server and blacklist from the bot."
+reroadd:
+  desc: |-
+    Specify a message id, emote and a role name to have the bot assign the specified role to the user who reacts to the specified message (in this channel) with the specified emoji.
+    You can optionally specify an exclusivity group. Default is group 0 which is non-exclusive. Other groups are exclusive. Exclusive groups will let the user only have one of the roles specified in that group.
+    You can optionally specify a level requirement after a group. Users who don't meet the level requirement will not receive the role.
+    You can have up to 50 reaction roles per server in total.
+  ex:
+    - "971276352684691466 😊 gamer"
+    - "971276352684691466 😢 emo 1"
+    - "971276352684691466 🤔 philosopher 5 20"
+    - "971276352684691466 👨 normie 5 20"
+  params:
+    - messageId:
+        desc: "The ID of the message that users must react to in order to receive the specified role."
+      emoteStr:
+        desc: "The emoji used by users to react and trigger the role assignment."
+      role:
+        desc: "The role that is assigned to users who react with the specified emoji."
+      group:
+        desc: "The number of the exclusivity group."
+      levelReq:
+        desc: "The minimum amount of experience points required for a user to be eligible for the assigned role."
+rerolist:
+  desc: Lists all ReactionRole messages on this server with their message ids. Clicking/Tapping message ids will send you to that message.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of the page to retrieve, starting from 1."
+reroremove:
+  desc: Remove all reaction roles from message specified by the id
+  ex:
+    - 971276352684691466
+  params:
+    - messageId:
+        desc: "The ID of a specific message that contains reaction roles to be removed."
+rerodeleteall:
+  desc: Deletes all reaction roles on the server. This action is irreversible.
+  ex:
+    - ''
+  params:
+    - { }
+rerotransfer:
+  desc: Transfers reaction roles from one message to another by specifying their ids. If the target message has reaction roles specified already, the reaction roles will be MERGED, not overwritten.
+  ex:
+    - 971276352684691466 971427748448964628
+  params:
+    - fromMessageId:
+        desc: "The ID of the original message containing the reaction roles to be transferred."
+      toMessageId:
+        desc: "The ID of the target message where the reaction roles should be transferred."
+blackjack:
+  desc: |-
+    Start or join a blackjack game by specifying the amount you're betting. 
+    You must specify the amount you're betting. 
+    Use `{0}hit`, `{0}stand` and `{0}double` commands to play. 
+    Game is played with 4 decks. 
+    Dealer hits on soft 17 and wins draws.
+  ex:
+    - 50
+  params:
+    - amount:
+        desc: "The amount you want to bet in the blackjack game."
+hit:
+  desc: In the blackjack game, ask the dealer for an extra card.
+  ex:
+    - ''
+  params:
+    - { }
+stand:
+  desc: Finish your turn in the blackjack game.
+  ex:
+    - ''
+  params:
+    - { }
+double:
+  desc: In the blackjack game, double your bet in order to receive exactly one more card, and your turn ends.
+  ex:
+    - ''
+  params:
+    - { }
+xpreset:
+  desc: Resets specified user's XP, or the XP of all users in the server. You can't reverse this action.
+  ex:
+    - '@Someone'
+    - ''
+  params:
+    - user:
+        desc: "The ID of a specific guild member whose XP is being reset."
+    - userId:
+        desc: "The ID of a specific player whose experience points are being reset."
+    - { }
+xpshop:
+  desc: Access the xp shop (if enabled). You can purchase either xp card frames or backgrounds. You can optionally provide a page number
+  ex:
+    - bgs
+    - frames
+    - bgs 3
+  params:
+    - { }
+    - type:
+        desc: "The type of item to be purchased, such as an XP card frame or background."
+      page:
+        desc: "The page number to display in the XP shop."
+xpshopbuy:
+  desc: Buy an item from the xp shop by specifying the type and the key of the item.
+  ex:
+    - bg open_sea
+    - fr gold
+  params:
+    - type:
+        desc: "The type of item to purchase, such as a skill or a cosmetic."
+      key:
+        desc: "The id of the item being purchased."
+xpshopuse:
+  desc: Use a previously purchased item from the xp shop by specifying the type and the key of the item.
+  ex:
+    - bg synth
+    - fr default
+  params:
+    - type:
+        desc: "The type of item to be used, such as an experience point or a skill upgrade."
+      key:
+        desc: "The id of the item in the XP shop that you want to use."
+bible:
+  desc: Shows bible verse. You need to supply book name and chapter:verse
+  ex:
+    - genesis 3:19
+  params:
+    - book:
+        desc: "The name of the biblical book being referenced."
+      chapterAndVerse:
+        desc: "The reference to a specific passage in the Bible, such as 'Genesis 3:15'"
+quran:
+  desc: |-
+    Shows the text of an ayah of the Quran, as well as the recitation by Alafasy.
+    Supply surah:ayah, or ayah number. For instance, 262 or 2:255 will both get you Ayat Al Kursi
+  ex:
+    - 2:255
+    - 262
+  params:
+    - ayah:
+        desc: "The number of the ayah in the Quran, for example 2:255."
+edit:
+  desc: |-
+    Edits bot's message, you have to specify message ID and new text. You can optionally specify target channel.
+    Supports [embeds](https://eb.nadeko.bot/)
+  ex:
+    - 7479498384 Hi :^)
+    - '#other-channel 771562360594628608 New message!'
+    - '#other-channel 771562360594628608 {{"description":"hello"}}'
+  params:
+    - messageId:
+        desc: "The id of the message being edited."
+      text:
+        desc: "The new text content of the edited message."
+    - channel:
+        desc: "The target channel where the edited message will be sent or updated in."
+      messageId:
+        desc: "The id of the message being edited."
+      text:
+        desc: "The new text content of the edited message."
+delete:
+  desc: |-
+    Deletes a single message given the channel and message ID, or a message link.
+    If channel is omitted, message will be searched for in the current channel.
+    You can also specify time parameter after which the message will be deleted (up to 7 days).
+    This timer won't persist through bot restarts.
+  ex:
+    - '#chat 771562360594628608'
+    - 771562360594628608
+    - 771562360594628608 5m
+  params:
+    - messageId:
+        desc: "The id of a specific message within a channel, used to target the deletion operation."
+      time:
+        desc: "The duration after which the message should be automatically deleted."
+    - messageLink:
+        desc: "The link of the message to delete. It must be on the same server."
+      time:
+        desc: "The duration after which the message should be automatically deleted."
+    - channel:
+        desc: "The channel where the message is located or should be searched for."
+      messageId:
+        desc: "The id of a specific message within a channel, used to target the deletion operation."
+      time:
+        desc: "The duration after which the message should be automatically deleted."
+roleid:
+  desc: Shows the id of the specified role.
+  ex:
+    - Some Role
+  params:
+    - role:
+        desc: "The role that is being referenced."
+agerestricttoggle:
+  desc: Toggles whether the current channel is age-restricted.
+  ex:
+    - ''
+  params:
+    - { }
+purgeuser:
+  desc: Purge user from the database completely. This includes currency, xp, clubs that user owns, waifu info
+  ex:
+    - '@Oblivion'
+  params:
+    - userId:
+        desc: "The ID of the user to be purged from the system."
+    - user:
+        desc: "The user account being purged."
+imageonlychannel:
+  desc: "Toggles whether the channel only allows images.\nUsers who send more than a few non-image messages will be banned from using the channel. "
+  ex:
+    - ''
+  params:
+    - time:
+        desc: "The amount of time before banning users for sending non-image messages."
+linkonlychannel:
+  desc: "Toggles whether the channel only allows links.\nUsers who send more than a few non-link messages will be banned from using the channel. "
+  ex:
+    - ''
+  params:
+    - time:
+        desc: "The amount of time before a user is banned for sending non-link messages."
+coordreload:
+  desc: Reloads coordinator config
+  ex:
+    - ''
+  params:
+    - { }
+showembed:
+  desc: Prints the json equivalent of the embed of the message specified by its Id.
+  ex:
+    - 820022733172121600
+    - '#some-channel 820022733172121600'
+  params:
+    - messageId:
+        desc: "The ID of a message that contains an embed to be displayed as JSON."
+    - ch:
+        desc: "The channel where the message is located that will be used for the embed to be printed as JSON."
+      messageId:
+        desc: "The ID of a message that contains an embed to be displayed as JSON."
+deleteemptyservers:
+  desc: Deletes all servers in which the bot is the only member.
+  ex:
+    - ''
+  params:
+    - { }
+medusaload:
+  desc: |-
+    Loads a medusa with the specified name from the data/medusae/ folder.
+    Provide no name to see the list of loadable medusae.
+    Read about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)
+  ex:
+    - mycoolmedusa
+    - ''
+  params:
+    - name:
+        desc: "The name of a pre-existing medusa to load."
+medusaunload:
+  desc: |-
+    Unloads the previously loaded medusa.
+    Provide no name to see the list of unloadable medusae. 
+    Read about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)
+  ex:
+    - mycoolmedusa
+    - ''
+  params:
+    - name:
+        desc: "The name of a specific medusa to be unloaded."
+medusainfo:
+  desc: |-
+    Shows information about the specified medusa such as the author, name, description, list of sneks, number of commands etc.
+    Provide no name to see the basic information about all loaded medusae. 
+    Read about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)
+  ex:
+    - mycoolmedusa
+    - ''
+  params:
+    - name:
+        desc: "The author of the specified medusa."
+medusalist:
+  desc: |-
+    Lists all loaded and unloaded medusae.
+    Read about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)
+  ex:
+    - ''
+  params:
+    - { }
+medusasearch:
+  desc: Searches for medusae online given the search term
+  ex:
+    - shrine
+  params:
+    - { }
+bankdeposit:
+  desc: Deposits the specified amount of currency into the bank for later use.
+  ex:
+    - 50
+  params:
+    - amount:
+        desc: "The total value of funds being transferred or added to the account."
+bankwithdraw:
+  desc: Withdraws the specified amount of currency from the bank if available.
+  ex:
+    - 49
+  params:
+    - amount:
+        desc: "The amount of money to be withdrawn."
+bankbalance:
+  desc: |-
+    Shows how much currency is in your bank account.
+    This differs from your cash amount, as the cash amount is publicly available, but only you have access to your bank balance.
+    However, you have to withdraw it first in order to use it.
+    Bot Owner can also check another user's bank balance.
+  ex:
+    - ''
+    - '@User'
+  params:
+    - { }
+banktake:
+  desc: Takes the specified amount of currency from a user's bank
+  ex:
+    - 500 @MoniLaunder
+  params:
+    - amount:
+        desc: "The total value of funds being withdrawn."
+      user:
+        desc: "The account holder whose funds are being accessed."
+    - amount:
+        desc: "The total value of funds being withdrawn."
+      userId:
+        desc: "The id of the user whose account is being accessed."
+bankaward:
+  desc: Award the specified amount of currency to a user's bank
+  ex:
+    - 99999 @Bestie
+  params:
+    - amount:
+        desc: "The total value of the award being given."
+      user:
+        desc: "The user who is receiving the award."
+patron:
+  desc: Check your patronage status and command usage quota. Bot owners can check targeted user's patronage status.
+  ex:
+    - ''
+  params:
+    - { }
+    - user:
+        desc: "The ID or handle of the user whose patronage status is being checked."
+patronmessage:
+  desc: |-
+    Sends a message to all patrons of the specified tier and higher.
+    Supports [embeds](https://eb.nadeko.bot/)
+  ex:
+    - x hello
+  params:
+    - tierAndHigher:
+        desc: "The tier or level of membership that determines which patrons receive the message."
+      message:
+        desc: "The text content of the message being sent to patrons."
+eval:
+  desc: |-
+    Execute arbitrary C# code and (optionally) return a result. Several namespaces are included by default.
+    Special variables available: 
+    `self` - Instance of the command group executing the command (this)
+    `guild` - Server in which the command is executed
+    `channel` - Channel in which the command is executed
+    `user` - User executing the command
+    `ctx` - Discord.Net command context
+    `services` - Nadeko's IServiceProvider
+  ex:
+    - 123 / 4.5f
+    - await ctx.OkAsync();
+    - await ctx.Response().Confirm("uwu").SendAsync();
+  params:
+    - scriptText:
+        desc: "The code to be executed by the function."
+betdraw:
+  desc: |-
+    Bet on the card value and/or color. Specify the amount followed by your guess. 
+    You can specify `r` or `b` for red or black, and `h` or `l` for high or low.
+    You can specify only h/l or only r/b or both.
+    Returns are high but **7 always loses**.
+    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.
+  ex:
+    - 50 r
+    - 200 b l
+    - 1000 h
+    - 38 hi black
+  params:
+    - amount:
+        desc: "The stake to be wagered on the bet."
+      val:
+        desc: "The value of the card to be guessed."
+      col:
+        desc: "The color of the card to be guessed, either red or black."
+    - amount:
+        desc: "The stake to be wagered on the bet."
+      col:
+        desc: "The color to bet on, either red or black."
+      val:
+        desc: "The value of the card to be guessed."
+bettest:
+  desc: |-
+    Tests a betting command by specifying the name followed by the number of tests. Some have multiple variations.
+    See the list of all tests by specifying no parameters.
+  ex:
+    - ''
+    - betflip 1000
+    - slot 2000
+  params:
+    - { }
+    - target:
+        desc: "The type of game or wager being tested."
+      tests:
+        desc: "The number of times to repeat the test."
+threadcreate:
+  desc: Create a public thread with the specified title. You may optionally reply to a message to have it as a starting point.
+  ex:
+    - Q&A
+  params:
+    - name:
+        desc: "The title of the new thread, which will be displayed in the forum's list of threads."
+threaddelete:
+  desc: Delete a thread with the specified name in this channel. Case insensitive.
+  ex:
+    - Q&A
+  params:
+    - name:
+        desc: "The name of the thread to delete, allowing users to specify which specific conversation they want to remove from the channel."
+autopublish:
+  desc: Make the bot automatically publish all messages posted in the news channel this command was executed in.
+  ex:
+    - ''
+  params:
+    - { }
+doas:
+  desc: Execute the command as if you were the target user. Requires bot ownership and server administrator permission.
+  ex:
+    - '@Thief .give all @Admin'
+  params:
+    - user:
+        desc: "The user whose identity is being impersonated for the command execution."
+      message:
+        desc: "The command or script to execute as the target user."
+clubrename:
+  desc: Renames your club. Requires you club ownership or club-admin status.
+  ex:
+    - New cool club name
+  params:
+    - clubName:
+        desc: "The name of the new club that will replace the current one."
+cacheusers:
+  desc: Caches users of a Discord server and saves them to the database.
+  ex:
+    - ''
+    - serverId
+  params:
+    - { }
+    - guild:
+        desc: "The guild for which user data is being cached."
+stickyroles:
+  desc: Toggles whether the bot will save the leaving users' roles, and reapply them once they re-join. The roles will be stored for up to 30 days.
+  ex:
+    - ''
+  params:
+    - { }
+giveawaystart:
+  desc: Starts a giveaway. Specify the duration (between 1 minute and 30 days) followed by the prize.
+  ex:
+    - 12h We are giving away one copy of our latest album!
+    - 15m Quick giveaway for a free course!
+    - 1d Join to win 1000$!
+  params:
+    - duration:
+        desc: "The length of time for which the giveaway will be active."
+      message:
+        desc: "The description of the prize being awarded in this giveaway."
+giveawayend:
+  desc: Prematurely ends a giveaway and selects a winner. Specify the ID of the giveaway to end.
+  ex:
+    - ab3
+  params:
+    - id:
+        desc: "The identifier for the giveaway that is being terminated."
+giveawaycancel:
+  desc: Cancels a giveaway. Specify the ID of the giveaway to cancel. The winner will not be chosen.
+  ex:
+    - ab3
+  params:
+    - id:
+        desc: "The identifier for the giveaway being cancelled."
+giveawayreroll:
+  desc: Rerolls a giveaway. Specify the ID of the giveaway to reroll. This is only active within 24h after the giveaway has ended or until the bot restarts.
+  ex:
+    - cd3
+  params:
+    - id:
+        desc: "The identifier for the specific giveaway being rerolled."
+giveawaylist:
+  desc: Lists all active giveaways.
+  ex:
+    - ''
+  params:
+    - { }
+todolist:
+  desc: Lists all todos.
+  ex:
+    - ''
+  params:
+    - { }
+todoadd:
+  desc: Adds a new todo.
+  ex:
+    - I need to do this
+  params:
+    - todo:
+        desc: "The description or title of the new todo item."
+todoedit:
+  desc: Edits a todo with the specified ID.
+  ex:
+    - abc This is an updated entry
+  params:
+    - todoId:
+        desc: "The id of the todo item being edited."
+      newMessage:
+        desc: "The text of a new task description or update to an existing one."
+todocomplete:
+  desc: Marks a todo with the specified ID as done.
+  ex:
+    - 4a
+  params:
+    - todoId:
+        desc: "The id of the todo item being marked as completed."
+todouncomplete:
+  desc: Marks a todo with the specified ID as not done.
+  ex:
+    - 4a
+  params:
+    - todoId:
+        desc: "The id of the todo item being marked as not completed."
+tododelete:
+  desc: Deletes a todo with the specified ID.
+  ex:
+    - abc
+  params:
+    - todoId:
+        desc: "The id of the todo item being deleted."
+todoclear:
+  desc: Deletes all unarchived todos.
+  ex:
+    - ''
+  params:
+    - { }
+todoarchiveadd:
+  desc: Creates a new archive with the specified name using current todos.
+  ex:
+    - Day 1
+  params:
+    - name:
+        desc: "The name of the archive to be created."
+todoarchivedone:
+  desc: Creates a new archive with the specified name using only completed current todos.
+  ex:
+    - Success!
+  params:
+    - name:
+        desc: "The name of the archive to be created."
+todoarchivelist:
+  desc: Lists all archived todo lists.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: "The number of the page to retrieve from the list of archived todo lists."
+todoarchiveshow:
+  desc: Shows the archived todo list with the specified ID.
+  ex:
+    - 3c
+  params:
+    - todoId:
+        desc: "The identifier for a specific task or project that has been archived and is being retrieved."
+todoshow:
+  desc: Shows the text of the todo with the specified ID.
+  ex:
+    - 4a
+  params:
+    - todoId:
+        desc: "The id of the todo item being displayed."
+todoarchivedelete:
+  desc: Deletes the archived todo list with the specified ID.
+  ex:
+    - 99
+  params:
+    - todoId:
+        desc: "The identifier for the archived todo item to be deleted."
+cleanupguilddata:
+  desc: |-
+    Deletes data for all servers bot is no longer a member of from the database.
+    This is a highly destructive and irreversible command.
+  ex:
+    - ''
+  params:
+    - { }
+prompt:
+  desc: |-
+    Ask the bot to do something for you.
+    This will fall back to the chatbot service in case of an error.
+  ex:
+    - What's the weather like today?
+  params:
+    - query:
+        desc: "The message to send to the bot."
+honeypot:
+  desc: |-
+    Toggles honeypot on the current channel.
+    Anyone sending a message in this channel will be soft banned. (Banned and then unbanned)
+    This is useful for automatically getting rid of spam bots.
+  ex:
+    - ''
+  params:
+    - { }
+coins:
+  desc: |-
+    Shows a list of 10 crypto currencies ordered by market cap.
+    Shows their price, change in the last24h, market cap and circulating and total supply.
+    Paginated with 10 per page.
+  ex:
+    - ''
+    - '2'
+  params:
+    - page:
+        desc: "Page number to show. Starts at 1."
+afk:
+  desc: |-
+    Toggles AFK status for yourself with the specified message. 
+    If you don't provide a message it default to a generic one.
+    Anyone @ mentioning you in any server will receive the afk message.
+    This will only work if the other user's message starts with the mention.
+  ex:
+    - ''
+  params:
+    - msg:
+        desc: "The message to send when someone pings you."
+keep:
+  desc: |-
+    The current serve, won't be deleted from Nadeko's database during the purge.
+  ex:
+    - ''
+  params:
+    - { }
+leaveunkeptservers:
+  desc: |-
+    Leaves all servers whose owners didn't run .keep
+  ex:
+    - ''
+  params:
+    - shardId:
+        desc: "Shard id from which to start leaving unkept servers."
+    - delay:
+        desc: "Delay in miliseconds between leaves"
+ncanvas:
+  desc: |-
+    Shows the current nCanvas.
+    The canvas allows users to set each pixel's color and text using currency.
+  ex:
+    - ''
+  params:
+    - { }
+nczoom:
+  desc: |-
+    Zooms in on the nCanvas.
+    Bot will show the 10x10 grid with the position of each cell for use with `ncset`.
+    You can either use alphanumeric position (ex. s4u) or pixel x and y (ex. 123 123)
+  ex:
+    - 'sgu'
+    - '123 123'
+  params:
+    - position:
+        desc: "The position of the pixel to set in alphanumeric format."
+    - position:
+        desc: "The position of the pixel to set in pixel x and y format."
+ncsetpixel:
+  desc: |-
+    Sets a pixel's color and text on the nCanvas.
+    You must specify the position of the pixel to set in alphanumeric format.
+    You can obtain alphanumeric position of the pixel by using `nczoom` or `ncp <x> <y>`
+  ex:
+    - 'sgu #ff0000 Some text'
+  params:
+    - position:
+        desc: "The position of the pixel to set in alphanumeric format."
+    - color:
+        desc: "The color of the pixel to set in HEX."
+    - text:
+        desc: "The optional text to set on the pixel."
+ncsetimg:
+  desc: |-
+    Attach the image to the message sending the command to overwrite the nCanvas with it.
+    All prices and colors will be reset.
+    The image must be equal to the size of the nCanvas (default is 500x350)
+    This command is dangerous and irreversible.
+  ex:
+    - ''
+  params:
+    - { }
+ncpixel:
+  desc: |-
+    Shows the pixel at the specified position.
+    You can get pixel positions by using `nczoom`
+  ex:
+    - 'sgu'
+    - '123 123'
+  params:
+    - position:
+        desc: "The position of the pixel to retrieve in alphanumeric format."
+    - position:
+        desc: "The position of the pixel to retrieve in pixel x and y format."
+ncreset:
+  desc: |-
+    Clears the nCanvas.
+    All prices and colors will be reset.
+    This command is dangerous and irreversible.
+  ex:
+    - ''
+  params:
+    - { }
+translateflags:
+  desc: |-
+    Toggles translate flags on the current channel.
+    Reacting with a country flag will translate the message to that country's language.
+  ex:
+    - ''
+  params:
+    - { }
+betstatsreset:
+  desc: |-
+    Reset all of your Bet Stats for a fee.
+    You can alternatively reset Bet Stats for the specified game.
+  ex:
+    - ''
+    - 'game'
+  params:
+    - game:
+        desc: 'The game to reset betstats for. Omit to reset all games'
+betstats:
+  desc: |-
+    Shows the current bet stats for yourself, or the targetted user.
+    You may optionally specify the game to show stats for.
+    Supported games right now are: bf, br, bd, lula, slot, race
+  ex:
+    - ''
+    - '@someone'
+    - '@someone lula'
+    - 'bd'
+  params:
+    - { }
+    - user:
+        desc: 'The user for who to show the betstats for.'
+    - user:
+        desc: 'The user for who to show the betstats for.'
+      game:
+        desc: 'The game to show betstats for. Omit to show betstats for all games combined'
+    - game:
+        desc: 'The game to show betstats for. Omit to show betstats for all games combined'
+rakeback:
+  desc: |-
+    Try to claim any rakeback that you have available.
+    Rakeback is accumulated by betting (not by winning or losing).
+    Default rakeback is 0.05 * house edge
+    House edge is defined per game
+  ex:
+    - ''
+  params:
+    - { }
+snipe:
+  desc: |-
+    Snipe the message you replied to with this command.
+    Otherwise, if you don't reply to a message, it will snipe the last message sent in the channel (out of the last few messages) which has text or an image.
+  ex:
+    - ''
+  params:
+    - { }
+btnroleadd:
+  desc: |-
+    Adds a button role to the specified message (link or id).
+    Specify a message followed by an emote, followed by a role.
+    If the role already exists on that message, the button will be updated instead.
+    Users clicking on the button will receive the role.
+  ex:
+    - '<msglink> :thumbsup: Good Guy'
+  params:
+    - message:
+        desc: "A message link or id of the message (if id is specified, it has to be a message in this channel)"
+    - emote:
+        desc: "An emoji, custom or unicode"
+    - role:
+        desc: "The role to add once a user clicks the button"
+btnroleremove:
+  desc: |-
+    Removes a button role from the message specified by link or id.
+    Provide a message followed by a role you wish to remove.
+  ex:
+    - '<msglink> Good Guy'
+  params:
+    - message:
+        desc: "A message link or id of the message"
+    - role:
+        desc: "A role to remove"
+btnroleremoveall:
+  desc: |-
+    Removes all button roles from the message specified by link or id.
+  ex:
+    - '<msglink>'
+    - '123123123123'
+  params:
+    - message:
+        desc: "A message link or id of the message"
+btnrolelist:
+  desc: |-
+    Lists all button roles on this server.
+    One message per page.
+  ex:
+    - ''
+  params:
+    - { }
+btnroleexclusive:
+  desc: |-
+    Toggles whether button roles are exclusive or not.
+    If enabled, users can only pick one role from the buttons per message.
+    If disabled, users can pick any number of roles.
+  ex:
+    - '123123123 enable'
+    - '123123123 disable'
+  params:
+    - message:
+        desc: "A message link or id of the message"
+      enable:
+        desc: "Whether to enable or disable exclusive button roles"
+wrongsong:
+  desc: |-
+    Removes the last queued song.
+    If the queue was shuffled or fairly re-ordered the song will not be removed.
+  ex:
+    - ''
+  params:
+    - { }
+servercolorsshow:
+  desc: |-
+    Shows current Ok, Error and Pending colors for this server.
+  ex:
+    - ''
+  params:
+    - { }
+servercolorok:
+  desc: |-
+    Sets the Ok color for this server.
+  ex:
+    - '#00ff00'
+  params:
+    - color:
+        desc: "The hex of the color to set"
+servercolorerror:
+  desc: |-
+    Sets the Error color for this server.
+  ex:
+    - '#ff0000'
+  params:
+    - color:
+        desc: "The hex of the color to set"
+servercolorpending:
+  desc: |-
+    Sets the Pending/Warning color for this server.
+  ex:
+    - '#ffff00'
+  params:
+    - color:
+        desc: "The hex of the color to set"
+xplevelset:
+  desc: |-
+    Sets the level of the user you specify.
+  ex:
+    - '10 @User'
+  params:
+    - level:
+        desc: "The level to set the user to."
+    - user:
+        desc: "The user to set the level of."
+temprole:
+  desc: |-
+    Grants a user a temporary role for the specified number of time.
+    The role must exist and be lower in the role hierarchy than your highest role.
+  ex:
+    - '15m @User Jail'
+    - '7d @Newbie Trial Member'
+  params:
+    - time:
+        desc: "The time after which the role is automatically removed."
+      user:
+        desc: "The user to give the role to."
+      role:
+        desc: "The role to give to the user."
+minesweeper:
+  desc: |-
+    Creates a spoiler-based minesweeper mini game.
+    You may specify the number of mines.
+  ex:
+    - '15'
+  params:
+    - mines:
+        desc: "The number of mines to create."
+notify:
+  desc: |-
+    Sends a message to the current channel once the specified event occurs.
+    Provide no parameters to see all available events.
+  ex:
+    - 'levelup Congratulations to user %user.name% for reaching level %event.level%'
+  params:
+    - { }
+    - event:
+        desc: "The event to notify on."
+    - event:
+        desc: "The event to notify on."
+      message:
+        desc: "The message to send."
+notifylist:
+  desc: |-
+    Lists all active notifications in this server.
+  ex:
+    - ''
+  params:
+    - { }
+notifyclear:
+  desc: |-
+    Removes the specified notify event.
+  ex:
+    - 'levelup'
+  params:
+    - event:
+        desc: "The notify event to clear."
+notifyphs:
+  desc: |-
+    Lists the placeholders for a given notify event type
+  ex:
+    - 'levelup'
+  params:
+    - event:
+        desc: "The notify event to list placeholders for."
+winlb:
+  desc: |-
+    Shows the biggest wins leaderboard
+  ex:
+    - ''
+    - '5'
+  params:
+    - page:
+        desc: "The optional page to display."
+fish:
+  desc: |-
+    Attempt to catch a fish.
+    Different fish live in different places, at different times of day and in different weather.
+  ex:
+    - ''
+  params:
+    - { }
+fishlist:
+  desc: |-
+    Look at your fish catalogue.
+    Shows how many of each fish you caught and what was the highest quality.
+    For each caught fish, it also shows its required spot, time of day and weather.
+  ex:
+    - ''
+  params:
+    - { }
+    - page:
+        desc: "The optional page to display."
+fishspot:
+  desc: |-
+    Shows information about the current fish spot, weather and time.
+  ex:
+    - ''
+  params:
+    - { }

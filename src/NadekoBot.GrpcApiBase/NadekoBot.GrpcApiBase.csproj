@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.29.3" />
+        <PackageReference Include="Grpc" Version="2.46.6" />
+        <PackageReference Include="Grpc.Tools" Version="2.69.0" PrivateAssets="All" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Protobuf Include="protos/*.proto">
+            <GrpcServices>Server</GrpcServices>
+        </Protobuf>
+    </ItemGroup>
+
+</Project>

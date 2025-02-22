@@ -1,0 +1,1 @@
+﻿This is the library which is the base of any medusa.

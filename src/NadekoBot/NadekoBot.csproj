@@ -1,0 +1,138 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>true</ImplicitUsings>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <Version>6.0.0</Version>
+
+        <!-- Output/build -->
+        <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+        <OutputType>exe</OutputType>
+        <ApplicationIcon>nadeko_icon.ico</ApplicationIcon>
+        <NoWarn>CS1066;CS8981</NoWarn>
+
+        <!-- Profile-guided optimization -->
+        <TieredPGO>true</TieredPGO>
+        <DebugType>embedded</DebugType>
+
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AngleSharp" Version="1.2.0">
+            <PrivateAssets>all</PrivateAssets>
+            <Publish>True</Publish>
+        </PackageReference>
+        <PackageReference Include="CodeHollow.FeedReader" Version="1.2.6"/>
+        <PackageReference Include="CommandLineParser" Version="2.9.1"/>
+        <PackageReference Include="Discord.Net" Version="3.17.1" />
+        <PackageReference Include="CoreCLR-NCalc" Version="3.1.253" />
+        <PackageReference Include="Google.Apis.Urlshortener.v1" Version="1.41.1.138"/>
+        <PackageReference Include="Google.Apis.YouTube.v3" Version="1.68.0.3653" />
+        <PackageReference Include="Google.Apis.Customsearch.v1" Version="1.49.0.2084"/>
+        
+        <PackageReference Include="Google.Protobuf" Version="3.29.3" />
+        <PackageReference Include="Grpc" Version="2.46.6" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.69.0" PrivateAssets="All" />
+        
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0" />
+
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.1" />
+
+        <PackageReference Include="MorseCode.ITask" Version="2.0.3"/>
+        <PackageReference Include="NetEscapades.Configuration.Yaml" Version="3.1.0"/>
+
+        <!-- DI -->
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.1" />
+        <PackageReference Include="DryIoc.dll" Version="5.4.3"/>
+
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.1" />
+        <PackageReference Include="Microsoft.SyndicationFeed.ReaderWriter" Version="1.0.2"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="NonBlocking" Version="2.1.2"/>
+        <PackageReference Include="OneOf" Version="3.0.271" />
+        <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
+
+        <PackageReference Include="SixLabors.Fonts" Version="2.1.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.5" />
+        <PackageReference Include="SixLabors.Shapes" Version="1.0.0-beta0009"/>
+        <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
+        <PackageReference Include="YamlDotNet" Version="15.1.6" />
+        <PackageReference Include="SharpToken" Version="2.0.3"/>
+
+        <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
+
+
+        <!-- Db-related packages -->
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+
+        <PackageReference Include="linq2db.EntityFrameworkCore" Version="9.0.0" />
+
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.1" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
+
+        <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
+
+        <!-- Used by stream notifications -->
+        <PackageReference Include="TwitchLib.Api" Version="3.4.1" />
+
+        <!-- sqlselectcsv and stock -->
+        <PackageReference Include="CsvHelper" Version="33.0.1" />
+
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\NadekoBot.GrpcApiBase\NadekoBot.GrpcApiBase.csproj"/>
+        <ProjectReference Include="..\Nadeko.Medusa\Nadeko.Medusa.csproj"/>
+        <ProjectReference Include="..\NadekoBot.Voice\NadekoBot.Voice.csproj"/>
+        <ProjectReference Include="..\NadekoBot.Generators\NadekoBot.Generators.csproj" OutputItemType="Analyzer"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="strings\responses\responses.en-US.json"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="data/**/*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="strings/**">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Migrations/**/*.sql">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="..\NadekoBot.Coordinator\Protos\coordinator.proto">
+            <Link>_common\CoordinatorProtos\coordinator.proto</Link>
+            <GrpcServices>Client</GrpcServices>
+        </Protobuf>
+    </ItemGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'GlobalNadeko' ">
+        <!-- Define trace doesn't seem to affect the build at all so I had to remove $(DefineConstants)-->
+        <DefineTrace>false</DefineTrace>
+        <DefineConstants>GLOBAL_NADEKO</DefineConstants>
+        <NoWarn>$(NoWarn);CS1573;CS1591</NoWarn>
+        <Optimize>true</Optimize>
+        <DebugType>portable</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+</Project>

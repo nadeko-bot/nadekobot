@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+option csharp_namespace = "NadekoBot.GrpcApi";
+
+package xp;
+
+service GrpcXp {
+  rpc GetXpLb(GetXpLbRequest) returns (GetXpLbReply);
+  rpc ResetUserXp(ResetUserXpRequest) returns (ResetUserXpReply);
+
+  rpc GetXpSettings(GetXpSettingsRequest) returns (GetXpSettingsReply);
+
+  rpc AddExclusion(AddExclusionRequest) returns (AddExclusionReply);
+  rpc DeleteExclusion(DeleteExclusionRequest) returns (DeleteExclusionReply);
+
+  rpc AddReward(AddRewardRequest) returns (AddRewardReply);
+  rpc DeleteReward(DeleteRewardRequest) returns (DeleteRewardReply);
+
+  rpc SetServerExclusion(SetServerExclusionRequest) returns (SetServerExclusionReply);
+}
+
+message SetServerExclusionRequest {
+  uint64 guildId = 1;
+  bool serverExcluded = 2;
+}
+
+message SetServerExclusionReply {
+  bool success = 1;
+}
+
+message GetXpLbRequest {
+  uint64 guildId = 1;
+  int32 page = 2;
+}
+
+message GetXpLbReply {
+  repeated XpLbUserReply users = 1;
+  int32 total = 2;
+}
+
+message XpLbUserReply {
+  uint64 userId = 1;
+  string username = 2;
+  int64 xp = 3;
+  int64 level = 4;
+  int64 levelPercent = 5;
+  string avatar = 6;
+}
+
+message ResetUserXpRequest {
+  uint64 guildId = 1;
+  uint64 userId = 2;
+}
+
+message ResetUserXpReply {
+  bool success = 1;
+}
+
+message GetXpSettingsReply {
+  repeated ExclItemReply exclusions = 1;
+  repeated RewItemReply rewards = 2;
+  bool serverExcluded = 3;
+}
+
+message GetXpSettingsRequest {
+  uint64 guildId = 1;
+}
+
+message ExclItemReply {
+  string type = 1;
+  uint64 id = 2;
+  string name = 3;
+}
+
+message RewItemReply {
+  int32 level = 1;
+  string type = 2;
+  string value = 3;
+}
+
+message AddExclusionRequest {
+  uint64 guildId = 1;
+  string type = 2;
+  uint64 id = 3;
+}
+
+message AddExclusionReply {
+  bool success = 1;
+}
+
+message DeleteExclusionRequest {
+  uint64 guildId = 1;
+  string type = 2;
+  uint64 id = 3;
+}
+
+message DeleteExclusionReply {
+  bool success = 1;
+}
+
+message AddRewardRequest {
+  uint64 guildId = 1;
+  int32 level = 2;
+  string type = 3;
+  string value = 4;
+}
+
+message AddRewardReply {
+  bool success = 1;
+}
+
+message DeleteRewardRequest {
+  uint64 guildId = 1;
+  int32 level = 2;
+  string type = 3;
+}
+
+message DeleteRewardReply {
+  bool success = 1;
+}

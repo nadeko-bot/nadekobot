@@ -1,0 +1,768 @@
+[
+  {
+    "Triggers": [
+      "millimeter",
+      "millimeters",
+      "millimeter",
+      "mm"
+    ],
+    "UnitType": "length",
+    "Modifier": 0.001
+  },
+  {
+    "Triggers": [
+      "centimeter",
+      "centimeters",
+      "centimeter",
+      "cm"
+    ],
+    "UnitType": "length",
+    "Modifier": 0.01
+  },
+  {
+    "Triggers": [
+      "decimeter",
+      "decimeters",
+      "decimeter",
+      "dm"
+    ],
+    "UnitType": "length",
+    "Modifier": 0.1
+  },
+  {
+    "Triggers": [
+      "meter",
+      "meters",
+      "meter",
+      "m"
+    ],
+    "UnitType": "length",
+    "Modifier": 1.0
+  },
+  {
+    "Triggers": [
+      "kilometer",
+      "kilometers",
+      "kilometer",
+      "km"
+    ],
+    "UnitType": "length",
+    "Modifier": 1000.0
+  },
+  {
+    "Triggers": [
+      "foot",
+      "feet",
+      "foot",
+      "ft"
+    ],
+    "UnitType": "length",
+    "Modifier": 0.3048
+  },
+  {
+    "Triggers": [
+      "inch",
+      "inches",
+      "inch",
+      "in"
+    ],
+    "UnitType": "length",
+    "Modifier": 0.0254
+  },
+  {
+    "Triggers": [
+      "mile",
+      "miles",
+      "mile",
+      "mi"
+    ],
+    "UnitType": "length",
+    "Modifier": 1609.344
+  },
+  {
+    "Triggers": [
+      "yard",
+      "yards",
+      "yard",
+      "yd"
+    ],
+    "UnitType": "length",
+    "Modifier": 0.9144
+  },
+  {
+    "Triggers": [
+      "cubic foot",
+      "cubic feet",
+      "cubic foot",
+      "ft3"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.02831685
+  },
+  {
+    "Triggers": [
+      "cubic inch",
+      "cubic inches",
+      "cubic inch",
+      "in3"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.00001638706
+  },
+  {
+    "Triggers": [
+      "cubic mile",
+      "cubic miles",
+      "cubic mile",
+      "mi3"
+    ],
+    "UnitType": "volume",
+    "Modifier": 4168182000.0
+  },
+  {
+    "Triggers": [
+      "cubic yard",
+      "cubic yards",
+      "cubic yard",
+      "yd3"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.7645549
+  },
+  {
+    "Triggers": [
+      "cup",
+      "cups",
+      "cup",
+      "cup"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.0002365882
+  },
+  {
+    "Triggers": [
+      "imperial gallon",
+      "Imperial gallons",
+      "Imperial gallon",
+      "gal"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.00454609
+  },
+  {
+    "Triggers": [
+      "us gallon",
+      "US gallons",
+      "US gallon",
+      "gal"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.003785412
+  },
+  {
+    "Triggers": [
+      "milliliter",
+      "milliliters",
+      "milliliter",
+      "mL"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.000001
+  },
+  {
+    "Triggers": [
+      "liter",
+      "liters",
+      "liter",
+      "L"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.001
+  },
+  {
+    "Triggers": [
+      "imperial fluid ounce",
+      "Imperial fluid ounces",
+      "Imperial fluid ounce",
+      "fl oz"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.00002841306
+  },
+  {
+    "Triggers": [
+      "us fluid ounce",
+      "US fluid ounces",
+      "US fluid ounce",
+      "fl oz"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.00002957353
+  },
+  {
+    "Triggers": [
+      "imperial pint",
+      "Imperial pints",
+      "Imperial pint",
+      "pt"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.00056826125
+  },
+  {
+    "Triggers": [
+      "us liquid pint",
+      "US pints (liquid)",
+      "US pint (liquid)",
+      "pt"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.0004731765
+  },
+  {
+    "Triggers": [
+      "us dry pint",
+      "US pints (dry)",
+      "US pint (dry)",
+      "pt"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.0005506105
+  },
+  {
+    "Triggers": [
+      "imperial quart",
+      "Imperial quarts",
+      "Imperial quart",
+      "qt"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.00113652297
+  },
+  {
+    "Triggers": [
+      "us liquid quart",
+      "US quarts (liquid)",
+      "US quart (liquid)",
+      "qt"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.0009463529
+  },
+  {
+    "Triggers": [
+      "us dry quart",
+      "US quarts (dry)",
+      "US quart (dry)",
+      "qt"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.001101221
+  },
+  {
+    "Triggers": [
+      "tablespoon",
+      "tablespoons",
+      "tablespoon",
+      "tbsp"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.00001478676
+  },
+  {
+    "Triggers": [
+      "teaspoon",
+      "teaspoons",
+      "teaspoon",
+      "tspn"
+    ],
+    "UnitType": "volume",
+    "Modifier": 0.000004928922
+  },
+  {
+    "Triggers": [
+      "milligram",
+      "milligrams",
+      "milligram",
+      "mg"
+    ],
+    "UnitType": "weight",
+    "Modifier": 0.000001
+  },
+  {
+    "Triggers": [
+      "gram",
+      "grams",
+      "gram",
+      "g"
+    ],
+    "UnitType": "weight",
+    "Modifier": 0.001
+  },
+  {
+    "Triggers": [
+      "kilogram",
+      "kilograms",
+      "kilogram",
+      "kg"
+    ],
+    "UnitType": "weight",
+    "Modifier": 1.0
+  },
+  {
+    "Triggers": [
+      "carat",
+      "carats",
+      "carat",
+      "CD"
+    ],
+    "UnitType": "weight",
+    "Modifier": 0.00020
+  },
+  {
+    "Triggers": [
+      "grain",
+      "grains",
+      "grain",
+      "gr"
+    ],
+    "UnitType": "weight",
+    "Modifier": 0.00006479891
+  },
+  {
+    "Triggers": [
+      "ounce",
+      "ounces",
+      "ounce",
+      "oz"
+    ],
+    "UnitType": "weight",
+    "Modifier": 0.02834952
+  },
+  {
+    "Triggers": [
+      "pennyweight",
+      "pennyweights",
+      "pennyweight",
+      "dwt"
+    ],
+    "UnitType": "weight",
+    "Modifier": 0.001555174
+  },
+  {
+    "Triggers": [
+      "pound",
+      "pounds",
+      "pound",
+      "lb"
+    ],
+    "UnitType": "weight",
+    "Modifier": 0.4535924
+  },
+  {
+    "Triggers": [
+      "stone",
+      "stones",
+      "stone",
+      "st"
+    ],
+    "UnitType": "weight",
+    "Modifier": 6.35029318
+  },
+  {
+    "Triggers": [
+      "slug",
+      "slugs",
+      "slug",
+      "slug"
+    ],
+    "UnitType": "weight",
+    "Modifier": 14.59390
+  },
+  {
+    "Triggers": [
+      "metric ton",
+      "metric tons",
+      "metric ton",
+      "t"
+    ],
+    "UnitType": "weight",
+    "Modifier": 1000.0
+  },
+  {
+    "Triggers": [
+      "long ton",
+      "long tons",
+      "long ton",
+      "t"
+    ],
+    "UnitType": "weight",
+    "Modifier": 1016.047
+  },
+  {
+    "Triggers": [
+      "short ton",
+      "short tons",
+      "short ton",
+      "t"
+    ],
+    "UnitType": "weight",
+    "Modifier": 907.1847
+  },
+  {
+    "Triggers": [
+      "acre",
+      "acres",
+      "acre",
+      "acre"
+    ],
+    "UnitType": "area",
+    "Modifier": 4046.873
+  },
+  {
+    "Triggers": [
+      "are",
+      "ares",
+      "are",
+      "a"
+    ],
+    "UnitType": "area",
+    "Modifier": 100.0
+  },
+  {
+    "Triggers": [
+      "hectare",
+      "hectares",
+      "hectare",
+      "ha"
+    ],
+    "UnitType": "area",
+    "Modifier": 10000.0
+  },
+  {
+    "Triggers": [
+      "square foot",
+      "square feet",
+      "square foot",
+      "ft2"
+    ],
+    "UnitType": "area",
+    "Modifier": 0.09290304
+  },
+  {
+    "Triggers": [
+      "square meter",
+      "square meters",
+      "square meter",
+      "m2"
+    ],
+    "UnitType": "area",
+    "Modifier": 1.0
+  },
+  {
+    "Triggers": [
+      "square kilometer",
+      "square kilometers",
+      "square kilometer",
+      "km2"
+    ],
+    "UnitType": "area",
+    "Modifier": 1000000.0
+  },
+  {
+    "Triggers": [
+      "square inch",
+      "square inches",
+      "square inch",
+      "in2"
+    ],
+    "UnitType": "area",
+    "Modifier": 0.00064516
+  },
+  {
+    "Triggers": [
+      "square yard",
+      "square yards",
+      "square yard",
+      "yd2"
+    ],
+    "UnitType": "area",
+    "Modifier": 0.8361274
+  },
+  {
+    "Triggers": [
+      "square mile",
+      "square miles",
+      "square mile",
+      "mi2"
+    ],
+    "UnitType": "area",
+    "Modifier": 2589988.0
+  },
+  {
+    "Triggers": [
+      "aankadam",
+      "aankadam",
+      "aankadam",
+      "aankadam"
+    ],
+    "UnitType": "area",
+    "Modifier": 6.69
+  },
+  {
+    "Triggers": [
+      "perch",
+      "perches",
+      "perch",
+      "perch"
+    ],
+    "UnitType": "area",
+    "Modifier": 25.29
+  },
+  {
+    "Triggers": [
+      "cent",
+      "cents",
+      "cent",
+      "cent"
+    ],
+    "UnitType": "area",
+    "Modifier": 40.47
+  },
+  {
+    "Triggers": [
+      "chatak",
+      "chataks",
+      "chatak",
+      "chatak"
+    ],
+    "UnitType": "area",
+    "Modifier": 41.81
+  },
+  {
+    "Triggers": [
+      "kottah",
+      "kottah (B)",
+      "kottah (B)",
+      "kottah (B)"
+    ],
+    "UnitType": "area",
+    "Modifier": 66.89
+  },
+  {
+    "Triggers": [
+      "guntha",
+      "guntha",
+      "guntha",
+      "guntha"
+    ],
+    "UnitType": "area",
+    "Modifier": 101.17
+  },
+  {
+    "Triggers": [
+      "ground",
+      "grounds",
+      "ground",
+      "ground"
+    ],
+    "UnitType": "area",
+    "Modifier": 222.97
+  },
+  {
+    "Triggers": [
+      "marla",
+      "marla",
+      "marla",
+      "marla"
+    ],
+    "UnitType": "area",
+    "Modifier": 501.68
+  },
+  {
+    "Triggers": [
+      "rood",
+      "roods",
+      "rood",
+      "rood"
+    ],
+    "UnitType": "area",
+    "Modifier": 1011.71
+  },
+  {
+    "Triggers": [
+      "bigha I",
+      "bigha I",
+      "bigha I",
+      "bigha I"
+    ],
+    "UnitType": "area",
+    "Modifier": 1618.74
+  },
+  {
+    "Triggers": [
+      "bigha II",
+      "bigha II",
+      "bigha II",
+      "bigha II"
+    ],
+    "UnitType": "area",
+    "Modifier": 2529.29
+  },
+  {
+    "Triggers": [
+      "kanal",
+      "kanal",
+      "kanal",
+      "kanal"
+    ],
+    "UnitType": "area",
+    "Modifier": 10033.53
+  },
+  {
+    "Triggers": [
+      "biswa I",
+      "biswa I",
+      "biswa I",
+      "biswa I"
+    ],
+    "UnitType": "area",
+    "Modifier": 32374.85
+  },
+  {
+    "Triggers": [
+      "biswa II",
+      "biswa II",
+      "biswa II",
+      "biswa II"
+    ],
+    "UnitType": "area",
+    "Modifier": 50585.71
+  },
+  {
+    "Triggers": [
+      "pascal",
+      "pascal",
+      "pascal",
+      "Pa"
+    ],
+    "UnitType": "pressure",
+    "Modifier": 1.0
+  },
+  {
+    "Triggers": [
+      "torr",
+      "torr",
+      "torr",
+      "Torr"
+    ],
+    "UnitType": "pressure",
+    "Modifier": 133.3224
+  },
+  {
+    "Triggers": [
+      "bar",
+      "bars",
+      "bar",
+      "bar"
+    ],
+    "UnitType": "pressure",
+    "Modifier": 100000.0
+  },
+  {
+    "Triggers": [
+      "millibar",
+      "millibars",
+      "millibar",
+      "mb"
+    ],
+    "UnitType": "pressure",
+    "Modifier": 100.0
+  },
+  {
+    "Triggers": [
+      "psi",
+      "psi",
+      "psi",
+      "lbf/in2"
+    ],
+    "UnitType": "pressure",
+    "Modifier": 6894.757
+  },
+  {
+    "Triggers": [
+      "day",
+      "days",
+      "day",
+      "d"
+    ],
+    "UnitType": "time",
+    "Modifier": 86400.0
+  },
+  {
+    "Triggers": [
+      "hour",
+      "hours",
+      "hour",
+      "h"
+    ],
+    "UnitType": "time",
+    "Modifier": 3600.0
+  },
+  {
+    "Triggers": [
+      "minute",
+      "minutes",
+      "minute",
+      "min"
+    ],
+    "UnitType": "time",
+    "Modifier": 60.0
+  },
+  {
+    "Triggers": [
+      "second",
+      "seconds",
+      "sec",
+      "secs",
+      "s"
+    ],
+    "UnitType": "time",
+    "Modifier": 1
+  },
+  {
+    "Triggers": [
+      "year",
+      "years",
+      "year",
+      "yr"
+    ],
+    "UnitType": "time",
+    "Modifier": 31536000.0
+  },
+  {
+    "Triggers": [
+      "K",
+      "kelvin"
+    ],
+    "UnitType": "temperature",
+    "Modifier": 0.00
+  },
+  {
+    "Triggers": [
+      "F",
+      "fahrenheit"
+    ],
+    "UnitType": "temperature",
+    "Modifier": 0.00
+  },
+  {
+    "Triggers": [
+      "C",
+      "Celcius",
+      "Centigrade"
+    ],
+    "UnitType": "temperature",
+    "Modifier": 0.00
+  }
+]

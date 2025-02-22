@@ -1,0 +1,4 @@
+# DO NOT CHANGE
+version: 1
+# List of medusae automatically loaded at startup
+loaded: []

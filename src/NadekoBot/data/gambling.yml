@@ -1,0 +1,283 @@
+# DO NOT CHANGE
+version: 12
+# Currency settings
+currency:
+  # What is the emoji/character which represents the currency
+  sign: "🌸"
+  # What is the name of the currency
+  name: Nadeko Flower
+  # For how long (in days) will the transactions be kept in the database (curtrs)
+  # Set 0 to disable cleanup (keep transactions forever)
+  transactionsLifetime: 0
+# Minimum amount users can bet (>=0)
+minBet: 0
+# Maximum amount users can bet
+# Set 0 for unlimited
+maxBet: 0
+# Settings for betflip command
+betFlip:
+  # Bet multiplier if user guesses correctly
+  multiplier: 1.95
+# Settings for betroll command
+betRoll:
+  # When betroll is played, user will roll a number 0-100.
+  # This setting will describe which multiplier is used for when the roll is higher than the given number.
+  # Doesn't have to be ordered.
+  pairs:
+    - whenAbove: 99
+      multiplyBy: 10
+    - whenAbove: 90
+      multiplyBy: 4
+    - whenAbove: 64
+      multiplyBy: 2
+# Automatic currency generation settings.
+generation:
+  # when currency is generated, should it also have a random password
+  # associated with it which users have to type after the .pick command
+  # in order to get it
+  hasPassword: true
+  # Every message sent has a certain % chance to generate the currency
+  # specify the percentage here (1 being 100%, 0 being 0% - for example
+  # default is 0.02, which is 2%
+  chance: 0.02
+  # How many seconds have to pass for the next message to have a chance to spawn currency
+  genCooldown: 10
+  # Minimum amount of currency that can spawn
+  minAmount: 1
+  # Maximum amount of currency that can spawn.
+  # Set to the same value as MinAmount to always spawn the same amount
+  maxAmount: 1
+# Settings for timely command
+# (letting people claim X amount of currency every Y hours)
+timely:
+  # How much currency will the users get every time they run .timely command
+  # setting to 0 or less will disable this feature
+  amount: 120
+  # How often (in hours) can users claim currency with .timely command
+  # setting to 0 or less will disable this feature
+  cooldown: 12
+  # How will timely be protected?
+  # None, Button (users have to click the button) or Captcha (users have to type the captcha from an image)
+  protType: Captcha
+# How much will each user's owned currency decay over time.
+decay:
+  # Percentage of user's current currency which will be deducted every 24h.
+  # 0 - 1 (1 is 100%, 0.5 50%, 0 disabled)
+  percent: 0
+  # Maximum amount of user's currency that can decay at each interval. 0 for unlimited.
+  maxDecay: 0
+  # Only users who have more than this amount will have their currency decay.
+  minThreshold: 99
+  # How often, in hours, does the decay run. Default is 24 hours
+  hourInterval: 24
+# What is the bot's cut on some transactions
+botCuts:
+  # Shop sale cut percentage.
+  # Whenever a user buys something from the shop, bot will take a cut equal to this percentage.
+  # The rest goes to the user who posted the item/role/whatever to the shop.
+  # This is a good way to reduce the amount of currency in circulation therefore keeping the inflation in check.
+  # Default 0.1 (10%).
+  shopSaleCut: 0.1
+# Settings for LuckyLadder command
+luckyLadder:
+  # Self-Explanatory. Has to have 8 values, otherwise the command won't work.
+  multipliers:
+    - 2.4
+    - 1.7
+    - 1.5
+    - 1.1
+    - 0.5
+    - 0.3
+    - 0.2
+    - 0.1
+# Settings related to waifus
+waifu:
+  # Minimum price a waifu can have
+  minPrice: 50
+  multipliers:
+    # Multiplier for waifureset. Default 150.
+    # Formula (at the time of writing this):
+    # price = (waifu_price * 1.25f) + ((number_of_divorces + changes_of_heart + 2) * WaifuReset) rounded up
+    waifuReset: 150
+    # The minimum amount of currency that you have to pay
+    # in order to buy a waifu who doesn't have a crush on you.
+    # Default is 1.1
+    # Example: If a waifu is worth 100, you will have to pay at least 100 * NormalClaim currency to claim her.
+    # (100 * 1.1 = 110)
+    normalClaim: 1.1
+    # The minimum amount of currency that you have to pay
+    # in order to buy a waifu that has a crush on you.
+    # Default is 0.88
+    # Example: If a waifu is worth 100, you will have to pay at least 100 * CrushClaim currency to claim her.
+    # (100 * 0.88 = 88)
+    crushClaim: 0.88
+    # When divorcing a waifu, her new value will be her current value multiplied by this number.
+    # Default 0.75 (meaning will lose 25% of her value)
+    divorceNewValue: 0.75
+    # All gift prices will be multiplied by this number.
+    # Default 1 (meaning no effect)
+    allGiftPrices: 1.0
+    # What percentage of the value of the gift will a waifu gain when she's gifted.
+    # Default 0.95 (meaning 95%)
+    # Example: If a waifu is worth 1000, and she receives a gift worth 100, her new value will be 1095)
+    giftEffect: 0.95
+    # What percentage of the value of the gift will a waifu lose when she's gifted a gift marked as 'negative'.
+    # Default 0.5 (meaning 50%)
+    # Example: If a waifu is worth 1000, and she receives a negative gift worth 100, her new value will be 950)
+    negativeGiftEffect: 0.50
+  # Settings for periodic waifu price decay.
+  # Waifu price decays only if the waifu has no claimer.
+  decay:
+    # Unclaimed waifus will decay by this percentage (0 - 100).
+    # Default is 0 (disabled)
+    # For example if a waifu has a price of 500$, setting this value to 10 would reduce the waifu value by 10% (50$)
+    unclaimedDecayPercent: 0
+    # Claimed waifus will decay by this percentage (0 - 100).
+    # Default is 0 (disabled)
+    # For example if a waifu has a price of 500$, setting this value to 10 would reduce the waifu value by 10% (50$)
+    claimedDecayPercent: 0
+    # How often to decay waifu values, in hours
+    hourInterval: 24
+    # Minimum waifu price required for the decay to be applied.
+    # For example if this value is set to 300, any waifu with the price 300 or less will not experience decay.
+    minPrice: 300
+  # List of items available for gifting.
+  # If negative is true, gift will instead reduce waifu value.
+  items:
+    - itemEmoji: "🥔"
+      price: 5
+      name: Potato
+    - itemEmoji: "🍪"
+      price: 10
+      name: Cookie
+    - itemEmoji: "🥖"
+      price: 20
+      name: Bread
+    - itemEmoji: "🍭"
+      price: 30
+      name: Lollipop
+    - itemEmoji: "🌹"
+      price: 50
+      name: Rose
+    - itemEmoji: "🍺"
+      price: 70
+      name: Beer
+    - itemEmoji: "🌮"
+      price: 85
+      name: Taco
+    - itemEmoji: "💌"
+      price: 100
+      name: LoveLetter
+    - itemEmoji: "🥛"
+      price: 125
+      name: Milk
+    - itemEmoji: "🍕"
+      price: 150
+      name: Pizza
+    - itemEmoji: "🍫"
+      price: 200
+      name: Chocolate
+    - itemEmoji: "🍦"
+      price: 250
+      name: Icecream
+    - itemEmoji: "🍣"
+      price: 300
+      name: Sushi
+    - itemEmoji: "🍚"
+      price: 400
+      name: Rice
+    - itemEmoji: "🍉"
+      price: 500
+      name: Watermelon
+    - itemEmoji: "🍱"
+      price: 600
+      name: Bento
+    - itemEmoji: "🎟"
+      price: 800
+      name: MovieTicket
+    - itemEmoji: "🍰"
+      price: 1000
+      name: Cake
+    - itemEmoji: "📔"
+      price: 1500
+      name: Book
+    - itemEmoji: "🐱"
+      price: 2000
+      name: Cat
+    - itemEmoji: "🐶"
+      price: 2001
+      name: Dog
+    - itemEmoji: "🐼"
+      price: 2500
+      name: Panda
+    - itemEmoji: "💄"
+      price: 3000
+      name: Lipstick
+    - itemEmoji: "👛"
+      price: 3500
+      name: Purse
+    - itemEmoji: "📱"
+      price: 4000
+      name: iPhone
+    - itemEmoji: "👗"
+      price: 4500
+      name: Dress
+    - itemEmoji: "💻"
+      price: 5000
+      name: Laptop
+    - itemEmoji: "🎻"
+      price: 7500
+      name: Violin
+    - itemEmoji: "🎹"
+      price: 8000
+      name: Piano
+    - itemEmoji: "🚗"
+      price: 9000
+      name: Car
+    - itemEmoji: "💍"
+      price: 10000
+      name: Ring
+    - itemEmoji: "🛳"
+      price: 12000
+      name: Ship
+    - itemEmoji: "🏠"
+      price: 15000
+      name: House
+    - itemEmoji: "🚁"
+      price: 20000
+      name: Helicopter
+    - itemEmoji: "🚀"
+      price: 30000
+      name: Spaceship
+    - itemEmoji: "🌕"
+      price: 50000
+      name: Moon
+    - itemEmoji: "🥀"
+      price: 100
+      name: WiltedRose
+      negative: true
+    - itemEmoji: ✂️
+      price: 1000
+      name: Haircut
+      negative: true
+    - itemEmoji: "🧻"
+      price: 10000
+      name: ToiletPaper
+      negative: true
+# Amount of currency selfhosters will get PER pledged dollar CENT.
+# 1 = 100 currency per $. Used almost exclusively on public nadeko.
+patreonCurrencyPerCent: 1
+# Currency reward per vote.
+# This will work only if you've set up VotesApi and correct credentials for topgg and/or discords voting
+voteReward: 100
+# Slot config
+slots:
+  # Hex value of the color which the numbers on the slot image will have.
+  currencyFontColor: ff0000
+# Bonus config for server boosts
+boostBonus:
+  # Users will receive a bonus if they boost any of these servers
+  guildIds:
+    - 117523346618318850
+  # This bonus will be added before any other multiplier is applied to the .timely command
+  baseTimelyBonus: 50

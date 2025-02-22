@@ -1,0 +1,1 @@
+Project which contains tests. Self explanatory

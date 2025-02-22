@@ -1,0 +1,54 @@
+# DO NOT CHANGE
+version: 10
+# How much XP will the users receive per message
+textXpPerMessage: 3
+# How often can the users receive XP, in seconds
+textXpCooldown: 300
+# Amount of xp users gain from posting an image
+textXpFromImage: 3
+# Average amount of xp earned per minute in VC
+voiceXpPerMinute: 3
+# Xp Shop config
+shop:
+  # Whether the xp shop is enabled
+  # True -> Users can access the xp shop using .xpshop command
+  # False -> Users can't access the xp shop
+  isEnabled: false
+  # Which patron tier do users need in order to use the .xpshop bgs command
+  # Leave at 'None' if patron system is disabled or you don't want any restrictions
+  bgsTierRequirement: None
+  # Which patron tier do users need in order to use the .xpshop frames command
+  # Leave at 'None' if patron system is disabled or you don't want any restrictions
+  framesTierRequirement: None
+  # Frames available for sale. Keys are unique IDs.
+  # Do not change keys as they are not publicly visible. Only change properties (name, price, id)
+  # Removing a key which previously existed means that all previous purchases will also be unusable.
+  # To remove an item from the shop, but keep previous purchases, set the price to -1
+  frames:
+    default:
+      # Visible name of the item
+      name: No frame
+      # Price of the item. Set to -1 if you no longer want to sell the item but want the users to be able to keep their old purchase
+      price: 0
+      # Direct url to the .png image which will be applied to the user's XP card
+      url: ''
+      # Optional preview url which will show instead of the real URL in the shop
+      preview: 
+      # Optional description of the item
+      desc: 
+  # Backgrounds available for sale. Keys are unique IDs.
+  # Do not change keys as they are not publicly visible. Only change properties (name, price, id)
+  # Removing a key which previously existed means that all previous purchases will also be unusable.
+  # To remove an item from the shop, but keep previous purchases, set the price to -1
+  bgs:
+    default:
+      # Visible name of the item
+      name: Default Background
+      # Price of the item. Set to -1 if you no longer want to sell the item but want the users to be able to keep their old purchase
+      price: 0
+      # Direct url to the .png image which will be applied to the user's XP card
+      url: ''
+      # Optional preview url which will show instead of the real URL in the shop
+      preview: 
+      # Optional description of the item
+      desc: 

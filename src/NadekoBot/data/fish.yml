@@ -1,0 +1,43 @@
+# DO NOT CHANGE
+version: 1
+weatherSeed: "w%29';^eGE)9oWHM(aI9I;%1[.r^z2ZS7ShV,l')o(e%#\"hVzb>oxQq^`.&/7srh"
+chance:
+  fish: 80
+  trash: 15
+  nothing: 5
+starEmojis:
+  - <:emptystar:1326838565786877962>
+  - <:onestar:1326838456739168361>
+  - <:twostar:1326838508198957107>
+  - <:threestar:1326838525601251429>
+  - <:fourstar:1326838552520294462>
+spotEmojis:
+  - <:ocean:1328519734953771120>
+  - <:river:1328519754620862504>
+  - <:lake:1328315260561788989>
+  - <:swamp:1328519766083633224>
+  - <:reef:1328519744646545421>
+fish:
+  - name: Bass
+    id: 0
+    weather:
+    spot:
+    time:
+    chance: 100
+    stars: 4
+    fluff: Very common.
+    condition:
+    image: https://cdn.nadeko.bot/fish/bass.png
+    emoji: "<:bass:1328520376892002386>"
+trash:
+  - name: Plastic Bag
+    id: 1002
+    weather:
+    spot:
+    time:
+    chance: 50
+    stars: 4
+    fluff: "Trophy of your contribution to the environment."
+    condition:
+    image: https://cdn.nadeko.bot/fish/plasticbag.png
+    emoji: "<:plasticbag:1328520895454515211>"

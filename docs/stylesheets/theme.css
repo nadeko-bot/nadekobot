@@ -1,0 +1,54 @@
+[data-md-color-scheme="dark"] {
+	--md-default-fg-color: hsl(220, 10%, 100%);
+	--md-default-fg-color--light: hsl(220, 10%, 87%);
+	--md-default-fg-color--lighter: hsl(220, 10%, 54%);
+	--md-default-fg-color--lightest: hsl(220, 10%, 32%);
+	--md-default-bg-color: hsl(220, 10%, 20%);
+	--md-default-bg-color--light: hsl(220, 10%, 16%);
+	--md-default-bg-color--lighter: hsl(220, 10%, 12%);
+	--md-default-bg-color--lightest: hsl(220, 10%, 8%);
+	--md-code-fg-color: hsla(220, 10%, 86%, 1);
+	--md-code-bg-color: hsla(220, 10%, 15%, 1);
+	--md-code-hl-color: #448aff;
+	--md-code-hl-number-color: #e6695b;
+	--md-code-hl-special-color: #f06090;
+	--md-code-hl-function-color: #c973d9;
+	--md-code-hl-constant-color: #9383e2;
+	--md-code-hl-keyword-color: #6791e0;
+	--md-code-hl-string-color: #2fb170;
+	--md-code-hl-name-color: var(--md-code-fg-color);
+	--md-code-hl-operator-color: var(--md-default-fg-color--light);
+	--md-code-hl-punctuation-color: var(--md-default-fg-color--light);
+	--md-code-hl-comment-color: var(--md-default-fg-color--light);
+	--md-code-hl-generic-color: var(--md-default-fg-color--light);
+	--md-code-hl-variable-color: var(--md-default-fg-color--light);
+	--md-typeset-color: var(--md-default-fg-color);
+	--md-typeset-a-color: var(--md-primary-fg-color);
+	--md-typeset-mark-color: #448aff;
+	--md-typeset-kbd-color: hsla(220, 10%, 94%, 0.12);
+	--md-typeset-kbd-accent-color: hsla(220, 10%, 94%, 0.2);
+	--md-typeset-kbd-border-color: hsla(220, 10%, 14%, 1);
+	--md-admonition-bg-color: hsla(220, 10%, 100%, 0.025);
+	--md-footer-bg-color: hsl(220, 10%, 16%);
+	--md-footer-bg-color--dark: hsl(220, 10%, 12%);
+}
+
+[data-md-color-scheme="dark"] .md-typeset {
+	color: var(--md-default-fg-color--light);
+}
+
+[data-md-color-scheme="dark"][data-md-color-primary="black"], [data-md-color-scheme="dark"][data-md-color-primary="white"] {
+	--md-typeset-a-color: var(--md-accent-fg-color);
+}
+
+[data-md-color-scheme="dark"] .md-header {
+	background: var(--md-default-bg-color--light);
+}
+
+[data-md-color-scheme="dark"] .md-nav__item :not(.md-nav__link--active) {
+	color: var(--md-default-fg-color--light);
+}
+
+[data-md-color-scheme="dark"] .md-nav__item .md-nav__link:hover {
+	color: var(--md-primary-fg-color);
+}
