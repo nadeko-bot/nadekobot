@@ -1,3 +1,16 @@
+using System.Reflection;
+
+static string GetAppVersion()
+{
+    return Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
+}
+
+if (args.Length > 0 && args[0] == "--version")
+{
+    Console.WriteLine(GetAppVersion());
+    return;
+}
+
 var shardId = 0;
 int? totalShards = null; // 0 to read from creds.yml
 if (args.Length > 0 && args[0] != "run")
@@ -19,6 +32,5 @@ if (args.Length > 0 && args[0] != "run")
         totalShards = shardCount;
     }
 }
-
 
 await new Bot(shardId, totalShards).RunAndBlockAsync();
