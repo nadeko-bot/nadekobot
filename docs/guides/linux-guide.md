@@ -17,6 +17,7 @@
 - openSUSE Leap: 15.5, 15.6 & Tumbleweed
 - Fedora: 38, 39, 40, 41, 42
 - Arch, Artix
+- MacOS: 11+ ?
 
 ### Installation Instructions
 
@@ -52,11 +53,16 @@ Open Terminal (if you're on an installation with a window manager) and navigate 
     ```
 
     ///
+    /// tab | MacOS
+
+    ```bash
+    brew install curl
+    ```
 
 2. Download and run the **new** installer script
     ``` sh
         cd ~ && 
-        curl -L -o n-install.sh https://gitlab.com/kwoth/nadeko-bash-installer/-/raw/v6/n-install.sh && 
+        curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh && 
         bash n-install.sh
     ```
 3. Install the bot (type `1` and press enter)
@@ -74,10 +80,11 @@ Open Terminal (if you're on an installation with a window manager) and navigate 
 ##### Update Instructions
 
 1. ⚠ Stop the bot ⚠
-2. Update and run the **new** installer script `cd ~ && wget -N https://gitlab.com/kwoth/nadeko-bash-installer/-/raw/v5/n-install.sh && bash n-install.sh`
-3. Update the bot (type `2` and press enter)
-4. Run the bot (type `3` and press enter)
-5. 🎉
+2. Navigate to your bot's folder, we'll use home directory as an example
+    - `cd ~`
+3. Simply re-install the bot with a newer version by running the installer script
+    - `curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh && bash n-install.sh`
+4. Select option 1, and select a NEWER version
 
 ## Running Nadeko
 
@@ -121,45 +128,6 @@ Now check your Discord server, the bot should be online. Nadeko should now be ru
 
 To re-open the tmux session to either update, restart, or whatever, execute `tmux a -t nadeko`. *(Make sure to replace "nadeko" with your session name. If you didn't change it, leave it as it is.)*
 
-
-### Systemd
-
-Compared to using tmux, this method requires a little bit more work to set up, but has the benefit of allowing Nadeko to automatically start back up after a system reboot or the execution of the `.die` command.
-
-1. Navigate to the project's root directory
-    - Project root directory location example: `/home/user/nadekobot/`
-2. Use the following command to create a service that will be used to start Nadeko:
-
-    ```bash
-    echo "[Unit]
-    Description=NadekoBot service
-    After=network.target
-    StartLimitIntervalSec=60
-    StartLimitBurst=2
-
-    [Service]
-    Type=simple
-    User=$USER
-    WorkingDirectory=$PWD/output
-    # If you want Nadeko to be compiled prior to every startup, uncomment the lines
-    # below. Note  that it's not neccessary unless you are personally modifying the
-    # source code.
-    #ExecStartPre=/usr/bin/dotnet build ../src/NadekoBot/NadekoBot.csproj -c Release -o output/
-    ExecStart=/usr/bin/dotnet NadekoBot.dll
-    Restart=on-failure
-    RestartSec=5
-    StandardOutput=syslog
-    StandardError=syslog
-    SyslogIdentifier=NadekoBot
-
-    [Install]
-    WantedBy=multi-user.target" | sudo tee /etc/systemd/system/nadeko.service
-    ```
-
-3. Make the new service available:
-    - `sudo systemctl daemon-reload`
-4. Start Nadeko:
-    - `sudo systemctl start nadeko.service && sudo systemctl enable nadeko.service`
 
 
 ### Systemd + Script
@@ -294,13 +262,10 @@ If you are running your droplet for the first time, it will most likely ask you 
 
 **Save the new password somewhere safe.**
 
-After that, your droplet should be ready for use. [Follow the guide from the beginning](#linux-from-source) to set Nadeko up on your newly created VPS.
+After that, your droplet should be ready for use.
 
 [Linux From Source]: #linux-from-source
 [Source Update Instructions]: #source-update-instructions
-[Linux Release]: #linux-release
 [Release Update Instructions]: #release-update-instructions
 [Tmux (Preferred Method)]: #tmux-preferred-method
-[Systemd]: #systemd
-[Systemd + Script]: #systemd-script
 [Setting up Nadeko on a VPS (Digital Ocean)]: #setting-up-nadeko-on-a-linux-vps-digital-ocean-droplet

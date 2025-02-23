@@ -1,6 +1,6 @@
 # Donate
 
-Nadeko is an [open-source project][gitlab], and we rely on your help to develop the bot, pay hosting fees, maintain our website and more.
+Nadeko is an [open-source project][github], and we rely on your help to develop the bot, pay hosting fees, maintain our website and more.
 Donations go a long way in helping us keep the project alive, and we appreciate every single one of them.
 
 ## Perks
@@ -29,7 +29,7 @@ You can also donate to us through [PayPal][paypal] for one-time donations using 
 
 [![img][paypal-button]][paypal]
 
-[gitlab]: https://gitlab.com/kwoth/nadekobot
+[github]: https://github.com/nadeko-bot/nadekobot
 [discord-server]: https://discord.nadeko.bot/
 [patreon]: https://www.patreon.com/nadekobot
 [patreon-button]: ./assets/patreon.png

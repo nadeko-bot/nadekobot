@@ -24,7 +24,7 @@ In case you need any help, join our [Discord server][discord-server] where we ma
 
 ## About Nadeko
 
-NadekoBot is an [open source project][gitlab]. Any issues with the bot may be filed [here][issues].
+NadekoBot is an [open source project][github]. Any issues with the bot may be filed [here][issues].
 
 If you're unsure whether something is an issue, ask in our support server first.
 
@@ -38,6 +38,6 @@ If you're unsure whether something is an issue, ask in our support server first.
 [macos-guide]: ./guides/osx-guide.md
 [from-source-guide]: ./guides/from-source.md
 [discord-server]: https://discord.nadeko.bot/
-[gitlab]: https://gitlab.com/kwoth/nadekobot
-[issues]: https://gitlab.com/kwoth/nadekobot/issues
+[github]: https://github.com/nadeko-bot/nadekobot
+[issues]: https://github.com/nadeko-bot/nadekobot/issues
 [donate]: ./donate.md

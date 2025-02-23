@@ -55,7 +55,7 @@ Medusa system allows you to write independent medusae (known as "modules", "cogs
   
 The system itself borrows some design from the current way Nadeko's Modules are written but mostly from never-released `Ayu.Commands` system which was designed to be used for a full Nadeko v3 rewrite. 
 
-The medusa base classes used for development are open source [here](https://gitlab.com/kwoth/nadekobot/-/tree/v5/src/Nadeko.Medusa) in case you need reference, as there is no generated documentation at the moment.
+The medusa base classes used for development are open source [here](https://github.com/nadeko-bot/nadekobot/tree/v6/src/Nadeko.Medusa) in case you need reference, as there is no generated documentation at the moment.
 
 ### Term list
 
