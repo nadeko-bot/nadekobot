@@ -1,10 +1,8 @@
+using System.Reflection;
+
 static string GetAppVersion()
 {
-    return typeof(Program)
-        .Assembly
-        .GetName()
-        .Version?
-        .ToString() ?? "Unknown version";
+    return Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
 }
 
 if (args.Length > 0 && args[0] == "--version")
@@ -15,7 +13,6 @@ if (args.Length > 0 && args[0] == "--version")
 
 var shardId = 0;
 int? totalShards = null; // 0 to read from creds.yml
-
 if (args.Length > 0 && args[0] != "run")
 {
     if (!int.TryParse(args[0], out shardId))
