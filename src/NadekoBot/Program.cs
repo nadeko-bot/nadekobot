@@ -1,24 +1,47 @@
-var shardId = 0;
-int? totalShards = null; // 0 to read from creds.yml
-if (args.Length > 0 && args[0] != "run")
-{
-    if (!int.TryParse(args[0], out shardId))
-    {
-        Console.Error.WriteLine("Invalid first argument (shard id): {0}", args[0]);
-        return;
-    }
+namespace NadekoBot;
 
-    if (args.Length > 1)
+class Program
+{
+    private static string GetAppVersion()
     {
-        if (!int.TryParse(args[1], out var shardCount))
+        return typeof(Program)
+            .Assembly
+            .GetName()
+            .Version?
+            .ToString() ?? "Unknown";
+    }
+    
+    public static async Task Main(string[] args)
+    {
+        if (args.Length > 0 && args[0] == "--version")
         {
-            Console.Error.WriteLine("Invalid second argument (total shards): {0}", args[1]);
+            Console.WriteLine(GetAppVersion());
             return;
         }
 
-        totalShards = shardCount;
+        var shardId = 0;
+        int? totalShards = null; // 0 to read from creds.yml
+
+        if (args.Length > 0 && args[0] != "run")
+        {
+            if (!int.TryParse(args[0], out shardId))
+            {
+                Console.Error.WriteLine("Invalid first argument (shard id): {0}", args[0]);
+                return;
+            }
+
+            if (args.Length > 1)
+            {
+                if (!int.TryParse(args[1], out var shardCount))
+                {
+                    Console.Error.WriteLine("Invalid second argument (total shards): {0}", args[1]);
+                    return;
+                }
+
+                totalShards = shardCount;
+            }
+        }
+
+        await new Bot(shardId, totalShards).RunAndBlockAsync();
     }
 }
-
-
-await new Bot(shardId, totalShards).RunAndBlockAsync();
