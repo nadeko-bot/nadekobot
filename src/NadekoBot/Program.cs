@@ -2,7 +2,7 @@ using System.Reflection;
 
 static string GetAppVersion()
 {
-    return Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
+    return Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
 }
 
 if (args.Length > 0 && args[0] == "--version")
