@@ -9,8 +9,8 @@ public class Item
     public string MediaUrl { get; set; } = string.Empty;
     public ItemQuality Quality { get; set; }
     public bool IsUsable { get; set; }
-    public string ItemType { get; set; }
-    public string ItemSubtype { get; set; }
+    public string ItemType { get; set; } = string.Empty;
+    public string ItemSubtype { get; set; } = string.Empty;
 }
 
 public static class ItemTypes

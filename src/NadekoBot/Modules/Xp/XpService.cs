@@ -16,7 +16,6 @@ using LinqToDB.Tools;
 using Microsoft.Extensions.Caching.Memory;
 using NadekoBot.Modules.Administration;
 using NadekoBot.Modules.Patronage;
-using SixLabors.ImageSharp.Formats.Png;
 using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
 using Color = SixLabors.ImageSharp.Color;
 using Exception = System.Exception;
@@ -641,20 +640,20 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         return [];
     }
 
-    private async Task<bool> TryAddUserGainedXpAsync(ulong userId, int cdInSeconds)
+    private Task<bool> TryAddUserGainedXpAsync(ulong userId, int cdInSeconds)
     {
         if (cdInSeconds <= 0)
-            return true;
+            return Task.FromResult(true);
 
         if (_memCache.TryGetValue(userId, out _))
-            return false;
+            return Task.FromResult(false);
 
         using var entry = _memCache.CreateEntry(userId);
         entry.Value = true;
 
         entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(cdInSeconds);
 
-        return true;
+        return Task.FromResult(true);
     }
 
     public async Task<FullUserStats> GetUserStatsAsync(IGuildUser user)
