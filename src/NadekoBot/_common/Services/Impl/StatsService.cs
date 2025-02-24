@@ -7,7 +7,7 @@ namespace NadekoBot.Services;
 public sealed class StatsService : IStatsService, IReadyExecutor, INService
 {
     public static string BotVersion
-        => typeof(Bot).Assembly.GetName().Version?.ToString(3) ?? "Custom";
+        => typeof(Bot).Assembly.GetName().Version?.ToString(3) ?? "custom";
 
     public string Author
         => "Kwoth#2452";

@@ -16,7 +16,9 @@ To self-host your own Nadeko, use the guides below:
 - [:material-microsoft-windows: Windows guide][windows-guide]
 - [:material-linux: Linux guide][linux-guide]
 - [:material-apple: Mac OS guide][macos-guide]
-- [:material-microsoft-windows: Windows (from source) guide][windows-source-guide]
+- [:material-source-branch: From source guide][from-source-guide]
+- [:material-docker: Docker guide][docker-guide]
+
 
 In case you need any help, join our [Discord server][discord-server] where we may provide support.
 
@@ -33,10 +35,10 @@ If you're unsure whether something is an issue, ask in our support server first.
 [invite]: https://invite.nadeko.bot/
 [commands]: https://nadeko.bot/commands/
 [windows-guide]: ./guides/windows-guide.md
-[windows-source-guide]: ./guides/windows-source-guide.md
 [linux-guide]: ./guides/linux-guide.md
-[macos-guide]: ./guides/osx-guide.md
-[from-source-guide]: ./guides/from-source.md
+[macos-guide]: ./guides/macos-guide.md
+[docker-guide]: ./guides/docker-guide.md
+[from-source-guide]: ./guides/source-guide.md
 [discord-server]: https://discord.nadeko.bot/
 [github]: https://github.com/nadeko-bot/nadekobot
 [issues]: https://github.com/nadeko-bot/nadekobot/issues
