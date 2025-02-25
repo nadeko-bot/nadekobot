@@ -1091,12 +1091,6 @@ experience:
 xptemplatereload:
   - xptempreload
   - xptr
-xpexclusionlist:
-  - xpexclusionlist
-  - xpexl
-xpexclude:
-  - xpexclude
-  - xpex
 xpleveluprewards:
   - xplvluprewards
   - xprews
@@ -1582,3 +1576,7 @@ fishspot:
   - fishspot 
   - fisp
   - fish?
+xprate:
+  - xprate
+xpratereset:
+  - xpratereset

@@ -188,6 +188,23 @@ namespace NadekoBot.Migrations.PostgreSql
                 });
 
             migrationBuilder.CreateTable(
+                name: "channelxpconfig",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    xpamount = table.Column<int>(type: "integer", nullable: false),
+                    cooldown = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_channelxpconfig", x => x.id);
+                    table.UniqueConstraint("ak_channelxpconfig_guildid_channelid", x => new { x.guildid, x.channelid });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "commandalias",
                 columns: table => new
                 {
@@ -485,6 +502,20 @@ namespace NadekoBot.Migrations.PostgreSql
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_guildfilterconfig", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "guildxpconfig",
+                columns: table => new
+                {
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    xpamount = table.Column<int>(type: "integer", nullable: false),
+                    cooldown = table.Column<int>(type: "integer", nullable: false),
+                    xptemplateurl = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_guildxpconfig", x => x.guildid);
                 });
 
             migrationBuilder.CreateTable(
@@ -1033,7 +1064,9 @@ namespace NadekoBot.Migrations.PostgreSql
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     userid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    skill = table.Column<int>(type: "integer", nullable: false)
+                    skill = table.Column<int>(type: "integer", nullable: false),
+                    pole = table.Column<int>(type: "integer", nullable: true),
+                    bait = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2311,6 +2344,9 @@ namespace NadekoBot.Migrations.PostgreSql
                 name: "buttonrole");
 
             migrationBuilder.DropTable(
+                name: "channelxpconfig");
+
+            migrationBuilder.DropTable(
                 name: "clubapplicants");
 
             migrationBuilder.DropTable(
@@ -2375,6 +2411,9 @@ namespace NadekoBot.Migrations.PostgreSql
 
             migrationBuilder.DropTable(
                 name: "guildcolors");
+
+            migrationBuilder.DropTable(
+                name: "guildxpconfig");
 
             migrationBuilder.DropTable(
                 name: "honeypotchannels");

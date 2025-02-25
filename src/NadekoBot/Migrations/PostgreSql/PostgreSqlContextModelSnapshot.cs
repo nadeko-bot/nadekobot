@@ -3453,6 +3453,14 @@ namespace NadekoBot.Migrations.PostgreSql
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("Bait")
+                        .HasColumnType("integer")
+                        .HasColumnName("bait");
+
+                    b.Property<int?>("Pole")
+                        .HasColumnType("integer")
+                        .HasColumnName("pole");
+
                     b.Property<int>("Skill")
                         .HasColumnType("integer")
                         .HasColumnName("skill");
@@ -3469,6 +3477,65 @@ namespace NadekoBot.Migrations.PostgreSql
                         .HasDatabaseName("ix_userfishstats_userid");
 
                     b.ToTable("userfishstats", (string)null);
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Xp.ChannelXpConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("ChannelId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("channelid");
+
+                    b.Property<float>("Cooldown")
+                        .HasColumnType("real")
+                        .HasColumnName("cooldown");
+
+                    b.Property<decimal>("GuildId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("guildid");
+
+                    b.Property<int>("XpAmount")
+                        .HasColumnType("integer")
+                        .HasColumnName("xpamount");
+
+                    b.HasKey("Id")
+                        .HasName("pk_channelxpconfig");
+
+                    b.HasAlternateKey("GuildId", "ChannelId")
+                        .HasName("ak_channelxpconfig_guildid_channelid");
+
+                    b.ToTable("channelxpconfig", (string)null);
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Xp.GuildXpConfig", b =>
+                {
+                    b.Property<decimal>("GuildId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("guildid");
+
+                    b.Property<int>("Cooldown")
+                        .HasColumnType("integer")
+                        .HasColumnName("cooldown");
+
+                    b.Property<int>("XpAmount")
+                        .HasColumnType("integer")
+                        .HasColumnName("xpamount");
+
+                    b.Property<string>("XpTemplateUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("xptemplateurl");
+
+                    b.HasKey("GuildId")
+                        .HasName("pk_guildxpconfig");
+
+                    b.ToTable("guildxpconfig", (string)null);
                 });
 
             modelBuilder.Entity("NadekoBot.Services.GreetSettings", b =>

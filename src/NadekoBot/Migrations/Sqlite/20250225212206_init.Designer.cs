@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations.Sqlite
 {
     [DbContext(typeof(SqliteContext))]
-    [Migration("20250202124903_init")]
+    [Migration("20250225212206_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -2571,6 +2571,12 @@ namespace NadekoBot.Migrations.Sqlite
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("Bait")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Pole")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Skill")
                         .HasColumnType("INTEGER");
 
@@ -2583,6 +2589,51 @@ namespace NadekoBot.Migrations.Sqlite
                         .IsUnique();
 
                     b.ToTable("UserFishStats");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Xp.ChannelXpConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("Cooldown")
+                        .HasColumnType("REAL");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("XpAmount")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("GuildId", "ChannelId");
+
+                    b.ToTable("ChannelXpConfig");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Xp.GuildXpConfig", b =>
+                {
+                    b.Property<ulong>("GuildId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Cooldown")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("XpAmount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("XpTemplateUrl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("GuildId");
+
+                    b.ToTable("GuildXpConfig");
                 });
 
             modelBuilder.Entity("NadekoBot.Services.GreetSettings", b =>

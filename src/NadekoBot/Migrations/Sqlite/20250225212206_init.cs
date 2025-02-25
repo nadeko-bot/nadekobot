@@ -187,6 +187,23 @@ namespace NadekoBot.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChannelXpConfig",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    XpAmount = table.Column<int>(type: "INTEGER", nullable: false),
+                    Cooldown = table.Column<float>(type: "REAL", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChannelXpConfig", x => x.Id);
+                    table.UniqueConstraint("AK_ChannelXpConfig_GuildId_ChannelId", x => new { x.GuildId, x.ChannelId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CommandAlias",
                 columns: table => new
                 {
@@ -484,6 +501,21 @@ namespace NadekoBot.Migrations.Sqlite
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GuildFilterConfig", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GuildXpConfig",
+                columns: table => new
+                {
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    XpAmount = table.Column<int>(type: "INTEGER", nullable: false),
+                    Cooldown = table.Column<int>(type: "INTEGER", nullable: false),
+                    XpTemplateUrl = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GuildXpConfig", x => x.GuildId);
                 });
 
             migrationBuilder.CreateTable(
@@ -1035,7 +1067,9 @@ namespace NadekoBot.Migrations.Sqlite
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
-                    Skill = table.Column<int>(type: "INTEGER", nullable: false)
+                    Skill = table.Column<int>(type: "INTEGER", nullable: false),
+                    Pole = table.Column<int>(type: "INTEGER", nullable: true),
+                    Bait = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2313,6 +2347,9 @@ namespace NadekoBot.Migrations.Sqlite
                 name: "ButtonRole");
 
             migrationBuilder.DropTable(
+                name: "ChannelXpConfig");
+
+            migrationBuilder.DropTable(
                 name: "ClubApplicants");
 
             migrationBuilder.DropTable(
@@ -2377,6 +2414,9 @@ namespace NadekoBot.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "GuildColors");
+
+            migrationBuilder.DropTable(
+                name: "GuildXpConfig");
 
             migrationBuilder.DropTable(
                 name: "HoneyPotChannels");

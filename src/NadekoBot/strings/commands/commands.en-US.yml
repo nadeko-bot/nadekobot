@@ -3517,28 +3517,6 @@ xptemplatereload:
     - ''
   params:
     - { }
-xpexclusionlist:
-  desc: Shows the roles and channels excluded from the XP system on this server, as well as whether the whole server is excluded.
-  ex:
-    - ''
-  params:
-    - { }
-xpexclude:
-  desc: Exclude a channel, role or current server from the xp system.
-  ex:
-    - Role Excluded-Role
-    - Server
-  params:
-    - _:
-        desc: "The ID of the server to exclude from the XP system."
-    - _:
-        desc: "The role that should not receive XP rewards."
-      role:
-        desc: "The role that should not receive XP rewards."
-    - _:
-        desc: "The ID of the channel to exclude from XP tracking."
-      channel:
-        desc: "The ID of the channel to exclude from XP tracking."
 xpleveluprewards:
   desc: Shows currently set level up rewards.
   ex:
@@ -4954,3 +4932,34 @@ fishspot:
     - ''
   params:
     - { }
+xprate:
+  desc: |-
+    Sets the xp rate for the server or the specified channel.
+    First specify the amount, and then the cooldown in minutes.
+    Provide no parameters to see the current rates.
+  ex:
+    - ''
+    - '3 5'
+    - '#channel 50 1'
+  params:
+    - { }
+    - amount:
+        desc: "The amount of xp to give per message."
+      minutes:
+        desc: "The cooldown in minutes. Allows decimal values."
+    - channel:
+        desc: "The channel to set the rate for."
+      amount:
+        desc: "The amount of xp to give per message."
+      minutes:
+        desc: "The cooldown in minutes. Allows decimal values."
+xpratereset:
+  desc: |-
+    Resets the xp rate for the server or the specified channel.
+  ex:
+    - ''
+    - '#channel'
+  params:
+    - { }
+    - channel:
+        desc: "The channel to reset the rate for."
