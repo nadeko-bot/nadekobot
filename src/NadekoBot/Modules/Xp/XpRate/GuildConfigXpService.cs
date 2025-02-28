@@ -85,6 +85,8 @@ public class GuildConfigXpService(DbService db, ShardData shardData, XpConfigSer
                     GuildId = guildId,
                     RateType = type,
                 });
+
+        _guildRates[(type, guildId)] = new XpRate(type, amount, cooldown);
     }
 
     public async Task SetChannelXpRateAsync(ulong guildId,
@@ -119,6 +121,9 @@ public class GuildConfigXpService(DbService db, ShardData shardData, XpConfigSer
                     ChannelId = channelId,
                     RateType = type,
                 });
+
+        _channelRates.GetOrAdd(guildId, _ => new())
+            [(type, channelId)] = new XpRate(type, amount, cooldown);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -137,6 +142,9 @@ public class GuildConfigXpService(DbService db, ShardData shardData, XpConfigSer
         var deleted = await uow.GetTable<GuildXpConfig>()
             .Where(x => x.GuildId == guildId)
             .DeleteAsync();
+
+        _guildRates.TryRemove((XpRateType.Text, guildId), out _);
+
         return deleted > 0;
     }
 
@@ -146,6 +154,10 @@ public class GuildConfigXpService(DbService db, ShardData shardData, XpConfigSer
         var deleted = await uow.GetTable<ChannelXpConfig>()
             .Where(x => x.GuildId == guildId && x.ChannelId == channelId)
             .DeleteAsync();
+
+        if (_channelRates.TryGetValue(guildId, out var channelRates))
+            channelRates.TryRemove((XpRateType.Text, channelId), out _);
+
         return deleted > 0;
     }
 

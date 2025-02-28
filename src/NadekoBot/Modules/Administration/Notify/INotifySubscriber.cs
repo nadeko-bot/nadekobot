@@ -9,8 +9,11 @@ public interface INotifySubscriber
 
     void RegisterModel<T>()
         where T : struct, INotifyModel<T>;
-    
+
     NotifyModelData GetRegisteredModel(NotifyType nType);
 }
 
-public readonly record struct NotifyModelData(NotifyType Type, IReadOnlyList<string> Replacements);
+public readonly record struct NotifyModelData(
+    NotifyType Type,
+    bool SupportsOriginTarget,
+    IReadOnlyList<string> Replacements);

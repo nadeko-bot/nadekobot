@@ -74,8 +74,9 @@ Open Terminal (if you're on an installation with a window manager) and navigate 
 6. Run the installer script again
     - `bash n-install.sh`
 7. Run the bot (type `3` and press enter)
+8. Done!
 
-##### Update Instructions
+#### Update Instructions
 
 1. ⚠ Stop the bot ⚠
 2. Navigate to your bot's folder, we'll use home directory as an example

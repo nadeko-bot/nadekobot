@@ -658,7 +658,7 @@ namespace NadekoBot.Migrations.PostgreSql
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
                     type = table.Column<int>(type: "integer", nullable: false),
                     message = table.Column<string>(type: "character varying(10000)", maxLength: 10000, nullable: false)
                 },

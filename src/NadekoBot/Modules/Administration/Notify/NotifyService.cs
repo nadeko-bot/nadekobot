@@ -16,6 +16,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
     private readonly IBotCreds _creds;
     private readonly IReplacementService _repSvc;
     private readonly IPubSub _pubSub;
+
     private ConcurrentDictionary<NotifyType, ConcurrentDictionary<ulong, Notify>> _events = new();
 
     public NotifyService(
@@ -34,13 +35,12 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         _pubSub = pubSub;
     }
 
-    private void RegisterModels() {
-
+    private void RegisterModels()
+    {
         RegisterModel<LevelUpNotifyModel>();
         RegisterModel<ProtectionNotifyModel>();
         RegisterModel<AddRoleRewardNotifyModel>();
         RegisterModel<RemoveRoleRewardNotifyModel>();
-
     }
 
     public async Task OnReadyAsync()
@@ -83,7 +83,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         catch (Exception ex)
         {
             Log.Warning(ex,
-                "Unknown error occurred while trying to triger {NotifyEvent} for {NotifyModel}",
+                "Unknown error occurred while trying to trigger {NotifyEvent} for {NotifyModel}",
                 T.KeyName,
                 data);
         }
@@ -92,47 +92,68 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
     private async Task OnEvent<T>(T model)
         where T : struct, INotifyModel<T>
     {
-        if (_events.TryGetValue(T.NotifyType, out var subs))
+        if (!_events.TryGetValue(T.NotifyType, out var subs))
+            return;
+
+        // make sure the event is consumed
+        // only in the guild it was meant for
+        if (model.TryGetGuildId(out var gid))
         {
-            if (model.TryGetGuildId(out var gid))
-            {
-                if (!subs.TryGetValue(gid, out var conf))
-                    return;
-
-                await HandleNotifyEvent(conf, model);
+            if (!subs.TryGetValue(gid, out var conf))
                 return;
-            }
 
-            foreach (var key in subs.Keys.ToArray())
+            await HandleNotifyEvent(conf, model);
+            return;
+        }
+
+        // todo optimize this
+        foreach (var key in subs.Keys)
+        {
+            if (subs.TryGetValue(key, out var notif))
             {
-                if (subs.TryGetValue(key, out var notif))
+                try
                 {
-                    try
-                    {
-                        await HandleNotifyEvent(notif, model);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex,
-                            "Error occured while sending notification {NotifyEvent} to guild {GuildId}: {ErrorMessage}",
-                            T.NotifyType,
-                            key,
-                            ex.Message);
-                    }
-
-                    await Task.Delay(500);
+                    await HandleNotifyEvent(notif, model);
                 }
+                catch (Exception ex)
+                {
+                    Log.Error(ex,
+                        "Error occured while sending notification {NotifyEvent} to guild {GuildId}: {ErrorMessage}",
+                        T.NotifyType,
+                        key,
+                        ex.Message);
+                }
+
+                await Task.Delay(500);
             }
         }
     }
 
     private async Task HandleNotifyEvent<T>(Notify conf, T model)
-        where T: struct, INotifyModel<T>
+        where T : struct, INotifyModel<T>
     {
         var guild = _client.GetGuild(conf.GuildId);
-        var channel = guild?.GetTextChannel(conf.ChannelId);
 
-        if (guild is null || channel is null)
+        // bot probably left the guild, cleanup?
+        if (guild is null)
+            return;
+
+        IMessageChannel? channel;
+        // if notify channel is specified for this event, send the event to that channel
+        if (conf.ChannelId is ulong confCid)
+        {
+            channel = guild.GetTextChannel(confCid);
+        }
+        else
+        {
+            // otherwise get the origin channel of the event
+            if (!model.TryGetChannelId(out var cid))
+                return;
+
+            channel = guild.GetChannel(cid) as IMessageChannel;
+        }
+
+        if (channel is null)
             return;
 
         IUser? user = null;
@@ -164,14 +185,24 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
             .SendAsync();
     }
 
-    private static string GetPhToken(string name) => $"%event.{name}%";
+    private static string GetPhToken(string name)
+        => $"%event.{name}%";
 
-    public async Task EnableAsync(
+    public async Task<bool> EnableAsync(
         ulong guildId,
-        ulong channelId,
+        ulong? channelId,
         NotifyType nType,
         string message)
     {
+        // check if the notify type model supports null channel
+        if (channelId is null)
+        {
+            var model = GetRegisteredModel(nType);
+            if (!model.SupportsOriginTarget)
+                return false;
+        }
+
+
         await using var uow = _db.GetDbContext();
         await uow.GetTable<Notify>()
             .InsertOrUpdateAsync(() => new()
@@ -200,6 +231,8 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
             Type = nType,
             Message = message
         };
+
+        return true;
     }
 
     public async Task DisableAsync(ulong guildId, NotifyType nType)
@@ -243,11 +276,15 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
 
     // messed up big time, it was supposed to be fully extensible, but it's stored as an enum in the database already...
     private readonly ConcurrentDictionary<NotifyType, NotifyModelData> _models = new();
+
     public void RegisterModel<T>() where T : struct, INotifyModel<T>
     {
-        var data = new NotifyModelData(T.NotifyType, T.GetReplacements().Map(x => x.Name));
+        var data = new NotifyModelData(T.NotifyType,
+            T.SupportsOriginTarget,
+            T.GetReplacements().Map(x => x.Name));
         _models[T.NotifyType] = data;
     }
 
-    public NotifyModelData GetRegisteredModel(NotifyType nType) => _models[nType];
+    public NotifyModelData GetRegisteredModel(NotifyType nType)
+        => _models[nType];
 }

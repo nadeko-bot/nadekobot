@@ -8,7 +8,7 @@ public class Notify
     public int Id { get; set; }
 
     public ulong GuildId { get; set; }
-    public ulong ChannelId { get; set; }
+    public ulong? ChannelId { get; set; }
     public NotifyType Type { get; set; }
 
     [MaxLength(10_000)]

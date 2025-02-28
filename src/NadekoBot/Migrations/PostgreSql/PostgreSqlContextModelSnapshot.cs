@@ -1806,7 +1806,7 @@ namespace NadekoBot.Migrations.PostgreSql
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("ChannelId")
+                    b.Property<decimal?>("ChannelId")
                         .HasColumnType("numeric(20,0)")
                         .HasColumnName("channelid");
 

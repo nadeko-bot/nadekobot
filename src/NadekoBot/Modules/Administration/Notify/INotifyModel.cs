@@ -3,18 +3,28 @@
 namespace NadekoBot.Modules.Administration;
 
 public interface INotifyModel<T>
-    where T: struct, INotifyModel<T>
+    where T : struct, INotifyModel<T>
 {
     static abstract string KeyName { get; }
-    static abstract NotifyType NotifyType {get;}
+    static abstract NotifyType NotifyType { get; }
     static abstract IReadOnlyList<NotifyModelPlaceholderData<T>> GetReplacements();
+
+    static virtual bool SupportsOriginTarget
+        => false;
 
     public virtual bool TryGetGuildId(out ulong guildId)
     {
         guildId = 0;
+
         return false;
     }
-    
+
+    public virtual bool TryGetChannelId(out ulong channelId)
+    {
+        channelId = 0;
+        return false;
+    }
+
     public virtual bool TryGetUserId(out ulong userId)
     {
         userId = 0;

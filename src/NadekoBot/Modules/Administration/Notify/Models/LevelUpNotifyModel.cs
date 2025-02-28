@@ -4,11 +4,11 @@ namespace NadekoBot.Modules.Administration;
 
 public readonly record struct LevelUpNotifyModel(
     ulong GuildId,
-    ulong ChannelId,
+    ulong? ChannelId,
     ulong UserId,
     long Level) : INotifyModel<LevelUpNotifyModel>
 {
-    public static string KeyName 
+    public static string KeyName
         => "notify.levelup";
 
     public static NotifyType NotifyType
@@ -21,15 +21,30 @@ public readonly record struct LevelUpNotifyModel(
     {
         return
         [
-            new(PH_LEVEL, static (data, g) => data.Level.ToString() ),
-            new(PH_USER, static (data, g) => g.GetUser(data.UserId)?.ToString() ?? data.UserId.ToString() )
+            new(PH_LEVEL, static (data, g) => data.Level.ToString()),
+            new(PH_USER, static (data, g) => g.GetUser(data.UserId)?.ToString() ?? data.UserId.ToString())
         ];
     }
+
+    public static bool SupportsOriginTarget
+        => true;
 
     public readonly bool TryGetGuildId(out ulong guildId)
     {
         guildId = GuildId;
         return true;
+    }
+
+    public readonly bool TryGetChannelId(out ulong channelId)
+    {
+        if (ChannelId is ulong cid)
+        {
+            channelId = cid;
+            return true;
+        }
+
+        channelId = 0;
+        return false;
     }
 
     public readonly bool TryGetUserId(out ulong userId)

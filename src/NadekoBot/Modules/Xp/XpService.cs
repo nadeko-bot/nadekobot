@@ -155,7 +155,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
                     if (oldBatch.Contains(u))
                     {
-                        validUsers.Add(new(u, rate.Amount));
+                        validUsers.Add(new(u, rate.Amount, vc.Id));
                     }
 
                     _voiceXpBatch.Add(u);
@@ -218,13 +218,13 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                 (batch, stats) => stats)
             .ToListAsyncLinqToDB();
 
-        var userToXp = currentBatch.ToDictionary(x => x.User.Id, x => x.Xp);
+        var userToXp = currentBatch.ToDictionary(x => x.User.Id, x => x);
         foreach (var u in updated)
         {
-            if (!userToXp.TryGetValue(u.UserId, out var xpGained))
+            if (!userToXp.TryGetValue(u.UserId, out var data))
                 continue;
 
-            var oldStats = new LevelStats(u.Xp - xpGained);
+            var oldStats = new LevelStats(u.Xp - data.Xp);
             var newStats = new LevelStats(u.Xp);
 
             Log.Information("User {User} xp updated from {OldLevel} to {NewLevel}",
@@ -235,9 +235,8 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             if (oldStats.Level < newStats.Level)
             {
                 await _levelUpQueue.EnqueueAsync(NotifyUser(u.GuildId,
-                    0,
+                    data.ChannelId,
                     u.UserId,
-                    true,
                     oldStats.Level,
                     newStats.Level));
             }
@@ -246,19 +245,15 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
     private Func<Task> NotifyUser(
         ulong guildId,
-        ulong channelId,
+        ulong? channelId,
         ulong userId,
-        bool isServer,
         long oldLevel,
         long newLevel)
         => async () =>
         {
-            if (isServer)
-            {
-                await HandleRewardsInternalAsync(guildId, userId, oldLevel, newLevel);
-            }
+            await HandleRewardsInternalAsync(guildId, userId, oldLevel, newLevel);
 
-            await HandleNotifyInternalAsync(guildId, channelId, userId, isServer, newLevel);
+            await HandleNotifyInternalAsync(guildId, channelId, userId, newLevel);
         };
 
     private async Task HandleRewardsInternalAsync(
@@ -338,9 +333,8 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
     private async Task HandleNotifyInternalAsync(
         ulong guildId,
-        ulong channelId,
+        ulong? channelId,
         ulong userId,
-        bool isServer,
         long newLevel)
     {
         var guild = _client.GetGuild(guildId);
@@ -349,18 +343,15 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         if (guild is null || user is null)
             return;
 
-        if (isServer)
+        var model = new LevelUpNotifyModel()
         {
-            var model = new LevelUpNotifyModel()
-            {
-                GuildId = guildId,
-                UserId = userId,
-                ChannelId = channelId,
-                Level = newLevel
-            };
-            await _notifySub.NotifyAsync(model, true);
-            return;
-        }
+            GuildId = guildId,
+            UserId = userId,
+            ChannelId = channelId,
+            Level = newLevel
+        };
+        await _notifySub.NotifyAsync(model, true);
+        return;
     }
 
     public async Task SetCurrencyReward(ulong guildId, int level, int amount)
@@ -552,7 +543,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             if (!await TryAddUserGainedXpAsync(user.Id, rate.Cooldown))
                 return;
 
-            _usersBatch.Add(new(user, rate.Amount));
+            _usersBatch.Add(new(user, rate.Amount, gc.Id));
         });
 
         return Task.CompletedTask;
@@ -1169,7 +1160,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     }
 }
 
-public readonly record struct XpQueueEntry(IGuildUser User, long Xp)
+public readonly record struct XpQueueEntry(IGuildUser User, long Xp, ulong? ChannelId)
 {
     public bool Equals(XpQueueEntry? other)
         => other?.User == User;

@@ -12,23 +12,23 @@ public partial class Administration
         public async Task Notify()
         {
             await Response()
-                  .Paginated()
-                  .Items(Enum.GetValues<NotifyType>().DistinctBy(x => (int)x).ToList())
-                  .PageSize(5)
-                  .Page((items, page) =>
-                  {
-                      var eb = CreateEmbed()
-                               .WithOkColor()
-                               .WithTitle(GetText(strs.notify_available));
+                .Paginated()
+                .Items(Enum.GetValues<NotifyType>().DistinctBy(x => (int)x).ToList())
+                .PageSize(5)
+                .Page((items, page) =>
+                {
+                    var eb = CreateEmbed()
+                        .WithOkColor()
+                        .WithTitle(GetText(strs.notify_available));
 
-                      foreach (var item in items)
-                      {
-                          eb.AddField(item.ToString(), GetText(GetDescription(item)), false);
-                      }
+                    foreach (var item in items)
+                    {
+                        eb.AddField(item.ToString(), GetText(GetDescription(item)), false);
+                    }
 
-                      return eb;
-                  })
-                  .SendAsync();
+                    return eb;
+                })
+                .SendAsync();
         }
 
         private LocStr GetDescription(NotifyType item)
@@ -43,36 +43,56 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.Administrator)]
-        public async Task Notify(NotifyType nType, [Leftover] string? message = null)
+        public async Task Notify(NotifyType nType)
         {
-            if (string.IsNullOrWhiteSpace(message))
+            // show msg 
+            var conf = await _service.GetNotifyAsync(ctx.Guild.Id, nType);
+            if (conf is null)
             {
-                // show msg 
-                var conf = await _service.GetNotifyAsync(ctx.Guild.Id, nType);
-                if (conf is null)
-                {
-                    await Response().Confirm(strs.notify_msg_not_set).SendAsync();
-                    return;
-                }
-
-                var eb = CreateEmbed()
-                         .WithOkColor()
-                         .WithTitle(GetText(strs.notify_msg))
-                         .WithDescription(conf.Message.TrimTo(2048))
-                         .AddField(GetText(strs.notify_type), conf.Type.ToString(), true)
-                         .AddField(GetText(strs.channel),
-                             $"""
-                              <#{conf.ChannelId}>
-                              `{conf.ChannelId}`
-                              """,
-                             true);
-
-                await Response().Embed(eb).SendAsync();
+                await Response().Confirm(strs.notify_msg_not_set).SendAsync();
                 return;
             }
 
-            await _service.EnableAsync(ctx.Guild.Id, ctx.Channel.Id, nType, message);
-            await Response().Confirm(strs.notify_on($"<#{ctx.Channel.Id}>", Format.Bold(nType.ToString()))).SendAsync();
+            var outChannel = conf.ChannelId is null
+                ? """
+                  from which the event originated
+                  `origin`
+                  """
+                : $"""
+                   <#{conf.ChannelId}>
+                   `{conf.ChannelId}`
+                   """;
+            var eb = CreateEmbed()
+                .WithOkColor()
+                .WithTitle(GetText(strs.notify_msg))
+                .WithDescription(conf.Message.TrimTo(2048))
+                .AddField(GetText(strs.notify_type), conf.Type.ToString(), true)
+                .AddField(GetText(strs.channel),
+                    outChannel,
+                    true);
+
+            await Response().Embed(eb).SendAsync();
+            return;
+        }
+
+        [Cmd]
+        [UserPerm(GuildPerm.Administrator)]
+        public async Task Notify(NotifyType nType, [Leftover] string message)
+            => await NotifyInternalAsync(nType, null, message);
+
+        [Cmd]
+        [UserPerm(GuildPerm.Administrator)]
+        public async Task Notify(NotifyType nType, IMessageChannel channel, [Leftover] string message)
+            => await NotifyInternalAsync(nType, channel, message);
+
+        private async Task NotifyInternalAsync(NotifyType nType, IMessageChannel? channel, [Leftover] string message)
+        {
+            var result = await _service.EnableAsync(ctx.Guild.Id, channel?.Id, nType, message);
+
+            var outChannel = channel is null ? "origin" : $"<#{channel.Id}>";
+            await Response()
+                .Confirm(strs.notify_on(outChannel, Format.Bold(nType.ToString())))
+                .SendAsync();
         }
 
         [Cmd]
@@ -82,13 +102,12 @@ public partial class Administration
             var data = _service.GetRegisteredModel(nType);
 
             var eb = CreateEmbed()
-                     .WithOkColor()
-                     .WithTitle(GetText(strs.notify_placeholders(nType.ToString().ToLower())));
+                .WithOkColor()
+                .WithTitle(GetText(strs.notify_placeholders(nType.ToString().ToLower())));
 
             eb.WithDescription(data.Replacements.Join("\n---\n", x => $"`%event.{x}%`"));
 
             await Response().Embed(eb).SendAsync();
-
         }
 
         [Cmd]
@@ -115,8 +134,8 @@ public partial class Administration
                 sb.AppendLine(GetText(strs.notify_none));
 
             await Response()
-                  .Confirm(GetText(strs.notify_list), text: sb.ToString())
-                  .SendAsync();
+                .Confirm(GetText(strs.notify_list), text: sb.ToString())
+                .SendAsync();
         }
 
         [Cmd]

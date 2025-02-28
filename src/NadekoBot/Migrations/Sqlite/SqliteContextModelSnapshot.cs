@@ -1348,7 +1348,7 @@ namespace NadekoBot.Migrations.Sqlite
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<ulong>("ChannelId")
+                    b.Property<ulong?>("ChannelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("GuildId")

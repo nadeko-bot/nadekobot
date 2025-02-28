@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NadekoBot.Migrations.PostgreSql
 {
     [DbContext(typeof(PostgreSqlContext))]
-    [Migration("20250226215222_init")]
+    [Migration("20250228044209_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -1809,7 +1809,7 @@ namespace NadekoBot.Migrations.PostgreSql
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("ChannelId")
+                    b.Property<decimal?>("ChannelId")
                         .HasColumnType("numeric(20,0)")
                         .HasColumnName("channelid");
 
