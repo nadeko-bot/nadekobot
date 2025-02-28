@@ -2,7 +2,6 @@
 
 | Table of Contents                                   |
 | :-------------------------------------------------- |
-| [Linux From Source]                                 |
 | [Setting up Nadeko on a VPS (Digital Ocean)]        |
 
 --8<-- "docs/creds-guide.md"
@@ -267,7 +266,6 @@ If you are running your droplet for the first time, it will most likely ask you 
 
 After that, your droplet should be ready for use.
 
-[Linux From Source]: #linux-from-source  <!-- There is no such anchor on this page. -->
 [Source Update Instructions]: #source-update-instructions
 [Release Update Instructions]: #release-update-instructions
 [Tmux (Preferred Method)]: #tmux-preferred-method
