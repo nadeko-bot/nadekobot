@@ -40,8 +40,6 @@ extra_css:
   - stylesheets/theme.css
 
 plugins:
-    - git-revision-date-localized:
-        type: date
     - search
 
 markdown_extensions:
