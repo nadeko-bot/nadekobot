@@ -48,14 +48,9 @@ markdown_extensions:
         guess_lang: false
     - toc:
         permalink: true
-    - pymdownx.tasklist:
-        custom_checkbox: true
     - pymdownx.betterem:
         smart_enable: all
     - admonition
-    - meta
-    - footnotes
-    - pymdownx.details
     - pymdownx.inlinehilite
     - pymdownx.superfences
     - pymdownx.blocks.tab:
