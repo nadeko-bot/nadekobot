@@ -5,7 +5,6 @@ site_author: 'Breaker'
 
 theme:
     name: material
-    custom_dir: docs/overrides
     palette:
           - media: "(prefers-color-scheme: light)"
             scheme: default
@@ -31,7 +30,7 @@ theme:
     logo: assets/favicon.png
     favicon: assets/favicon.png
     icon:
-        repo: custom/gitlab
+        repo: material/github
 
 extra:
   homepage: https://nadeko.bot
@@ -67,9 +66,6 @@ markdown_extensions:
     - pymdownx.emoji:
         emoji_index: !!python/name:material.extensions.emoji.twemoji
         emoji_generator: !!python/name:material.extensions.emoji.to_svg
-        options:
-            custom_icons:
-                - docs/overrides/.icons
 
 nav:
     - Home: index.md
