@@ -1,9 +1,5 @@
 # Setting up NadekoBot on Linux
 
-| Table of Contents                                   |
-| :-------------------------------------------------- |
-| [Setting up Nadeko on a VPS (Digital Ocean)]        |
-
 --8<-- "docs/creds-guide.md"
 
 ### Operating System Compatibility

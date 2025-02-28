@@ -1,13 +1,5 @@
 ## Setting Up NadekoBot on Windows With the Updater
 
-| Table of Contents|
-| :-|
-| [Prerequisites](#prerequisites) |
-| [Setup](#setup) |
-| [Starting the Bot](#starting-the-bot) |
-| [Updating Nadeko](#updating-nadeko) |
-| [Manually Installing the Prerequisites from the Updater](#music-prerequisites) |
-
 <!-- There is no such anchor on this page. -->
 <!-- *Note: If you want to make changes to Nadeko's source code, please follow the [From Source](#windows-from-source) guide instead.* -->
 
