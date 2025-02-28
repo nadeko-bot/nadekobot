@@ -59,19 +59,19 @@ Open Terminal (if you're on an installation with a window manager) and navigate 
     brew install curl
     ```
 
-    ///  
-    
+    ///
+
 
 2. Download and run the **new** installer script
     ``` sh
-        cd ~ && 
-        curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh && 
+        cd ~ &&
+        curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh &&
         bash n-install.sh
     ```
 3. Install the bot (type `1` and press enter)
 4. Edit creds (type `3` and press enter)
     3.1 *ALTERNATIVELY* You can exit the installer (option `6`) and edit `nadeko/creds.yml` file yourself
-5. [Click here to follow creds guide](../../creds-guide)
+5. [Click here to follow creds guide](../creds-guide.md)
     - After you're done, you can close nano (and save the file) by inputting, in order
        - `CTRL` + `X`
        - `Y`
@@ -249,7 +249,7 @@ Assuming you have followed the link above to setup an account and a Droplet with
 
 - Download [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)
 - Download [WinSCP](https://winscp.net/eng/download.php) *(optional)*
-- [Create and invite the bot](../../creds-guide).
+- [Create and invite the bot](../creds-guide.md).
 
 #### Starting up
 
@@ -267,7 +267,7 @@ If you are running your droplet for the first time, it will most likely ask you 
 
 After that, your droplet should be ready for use.
 
-[Linux From Source]: #linux-from-source
+[Linux From Source]: #linux-from-source  <!-- There is no such anchor on this page. -->
 [Source Update Instructions]: #source-update-instructions
 [Release Update Instructions]: #release-update-instructions
 [Tmux (Preferred Method)]: #tmux-preferred-method

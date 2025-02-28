@@ -8,7 +8,8 @@
 | [Updating Nadeko](#updating-nadeko) |
 | [Manually Installing the Prerequisites from the Updater](#music-prerequisites) |
 
-*Note: If you want to make changes to Nadeko's source code, please follow the [From Source](#windows-from-source) guide instead.*
+<!-- There is no such anchor on this page. -->
+<!-- *Note: If you want to make changes to Nadeko's source code, please follow the [From Source](#windows-from-source) guide instead.* -->
 
 --8<-- "docs/creds-guide.md"
 
@@ -31,9 +32,9 @@
 - Click on **`DOWNLOAD`** at the lower right
  ![Bot Setup](https://i.imgur.com/HqAl36p.png "Bot Setup")
 - If you want to use the music module, click on **`Install`** next to **`FFMPEG`** and **`Youtube-DLP`**.
-- If any dependencies fail to install, you can temporarily disable your Windows Defender/AV until you install them. If you don't want to, then read [the last section of this guide](#Manual-Prerequisite-Installation).
+- If any dependencies fail to install, you can temporarily disable your Windows Defender/AV until you install them. If you don't want to, then read [the last section of this guide](#Manual-Prerequisite-Installation).  <!-- There is no such anchor on this page. -->
 - When installation is finished, click on **`CREDS`** to the left of **`RUN`** at the lower right.
-- Follow the guide on how to [Set up the creds.yml](../../creds-guide) file.
+- Follow the guide on how to [Set up the creds.yml](../creds-guide.md) file.
 
 #### Starting the bot
 

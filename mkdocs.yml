@@ -76,22 +76,22 @@ nav:
     - Guides:
         - Windows Guide: guides/windows-guide.md
         - Linux Guide: guides/linux-guide.md
-        - OSX Guide: guides/osx-guide.md
-        - Windows Guide (from source): guides/windows-source-guide.md
+        - macOS Guide: guides/macos-guide.md
+        - Windows Guide (from source): guides/source-guide.md
         - Docker Guide (unsupported): guides/docker-guide.md
     - Commands:
-        - Readme: commands-readme.md
+        #- Readme: commands-readme.md  # No associated markdown file.
         - Commands List: https://nadeko.bot/commands
     - Features Explained:
         - Basic Creds: creds-guide.md
         - Advanced Creds: jsons-explained.md
         - Permissions System: permissions-system.md
-        - Custom Reactions: custom-reactions.md
-        - Placeholders: placeholders.md
-        - Config: config-guide.md
+        #- Custom Reactions: custom-reactions.md  # No associated markdown file.
+        #- Placeholders: placeholders.md  # No associated markdown file.
+        #- Config: config-guide.md  # No associated markdown file.
         - Medusa System:
             - medusa/getting-started.md
             - medusa/creating-a-medusa.md
             - medusa/snek-lifecycle.md
-    - Contribution Guide: contribution-guide.md
+    #- Contribution Guide: contribution-guide.md  # No associated markdown file.
     - Donate: donate.md
