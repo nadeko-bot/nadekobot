@@ -1,5 +1,5 @@
 # DO NOT CHANGE
-version: 6
+version: 10
 coins:
   heads:
     - https://cdn.nadeko.bot/coins/heads3.png
@@ -21,7 +21,7 @@ dice:
   - https://cdn.nadeko.bot/other/dice/8.png
   - https://cdn.nadeko.bot/other/dice/9.png
 xp:
-  bg: https://cdn.nadeko.bot/other/xp/bg_k.png
+  bg: https://cdn.nadeko.bot/other/xp/bg6_mini.png
 slots:
   emojis:
     - https://cdn.nadeko.bot/slots/10.png

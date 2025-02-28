@@ -384,12 +384,9 @@ public sealed class PatronageService
 
         return user.AmountCents switch
         {
-            >= 10_000 => PatronTier.C,
-            >= 5000 => PatronTier.L,
-            >= 2000 => PatronTier.XX,
-            >= 1000 => PatronTier.X,
-            >= 500 => PatronTier.V,
-            >= 100 => PatronTier.I,
+            <= 200 => PatronTier.I,
+            <= 1_000 => PatronTier.C,
+            <= 5_000 => PatronTier.L,
             _ => PatronTier.None
         };
     }
@@ -402,12 +399,10 @@ public sealed class PatronageService
     public int PercentBonus(long amount)
         => amount switch
         {
-            >= 10_000 => 100,
-            >= 5000 => 50,
-            >= 2000 => 30,
-            >= 1000 => 20,
-            >= 500 => 10,
-            _ => 0
+            < 200 => 0,
+            < 1_000 => 10,
+            < 5_000 => 50,
+            _ => 100
         };
 
     private async Task SendWelcomeMessage(Patron patron)

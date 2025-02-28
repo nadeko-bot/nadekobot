@@ -5,13 +5,7 @@ namespace NadekoBot.Services;
 
 public class FontProvider : INService
 {
-    public FontFamily DottyFont { get; }
-
-    public FontFamily UniSans { get; }
-
     public FontFamily NotoSans { get; }
-    //public FontFamily Emojis { get; }
-
     public List<FontFamily> FallBackFonts { get; }
     private readonly FontCollection _fonts;
 
@@ -20,11 +14,8 @@ public class FontProvider : INService
         _fonts = new();
 
         NotoSans = _fonts.Add("data/fonts/NotoSans-Bold.ttf");
-        UniSans = _fonts.Add("data/fonts/Uni Sans.ttf");
 
         FallBackFonts = new();
-
-        //FallBackFonts.Add(_fonts.Install("data/fonts/OpenSansEmoji.ttf"));
 
         // try loading some emoji and jap fonts on windows as fallback fonts
         if (Environment.OSVersion.Platform == PlatformID.Win32NT)
@@ -48,7 +39,5 @@ public class FontProvider : INService
             else if (font.EndsWith(".ttc"))
                 FallBackFonts.AddRange(_fonts.AddCollection(font));
         }
-
-        DottyFont = FallBackFonts.First(x => x.Name == "dotty");
     }
 }

@@ -121,7 +121,6 @@ public static class GuildConfigExtensions
             .InsertWithOutputAsync(() => new()
             {
                 GuildId = guildId,
-                ServerExcluded = false,
             });
 
         return srs;

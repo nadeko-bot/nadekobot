@@ -97,7 +97,7 @@ public sealed class Bot : IBot
 
         await using (var uow = _db.GetDbContext())
         {
-            uow.EnsureUserCreated(bot.Id, bot.Username, bot.Discriminator, bot.AvatarId);
+            uow.EnsureUserCreated(bot.Id, bot.Username, bot.AvatarId);
         }
 
         // var svcs = new StandardKernel(new NinjectSettings()

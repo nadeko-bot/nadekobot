@@ -35,9 +35,9 @@ public class XpSvc : GrpcXp.GrpcXpBase, IGrpcSvc, INService
         if (guild is null)
             throw new RpcException(new Status(StatusCode.NotFound, "Guild not found"));
 
-        var excludedChannels = _xp.GetExcludedChannels(request.GuildId);
-        var excludedRoles = _xp.GetExcludedRoles(request.GuildId);
-        var isServerExcluded = _xp.IsServerExcluded(request.GuildId);
+        var excludedChannels = new List<ulong>();
+        var excludedRoles = new List<ulong>();
+        var isServerExcluded = false;
 
         var reply = new GetXpSettingsReply();
 
@@ -80,59 +80,6 @@ public class XpSvc : GrpcXp.GrpcXpBase, IGrpcSvc, INService
         reply.ServerExcluded = isServerExcluded;
 
         return reply;
-    }
-
-    public override async Task<AddExclusionReply> AddExclusion(AddExclusionRequest request, ServerCallContext context)
-    {
-        await Task.Yield();
-
-        var success = false;
-        var guild = _client.GetGuild(request.GuildId);
-
-        if (guild is null)
-            throw new RpcException(new Status(StatusCode.NotFound, "Guild not found"));
-
-        if (request.Type == "Role")
-        {
-            if (guild.GetRole(request.Id) is null)
-                return new()
-                {
-                    Success = false
-                };
-
-            success = await _xp.ToggleExcludeRoleAsync(request.GuildId, request.Id);
-        }
-        else if (request.Type == "Channel")
-        {
-            if (guild.GetTextChannel(request.Id) is null)
-                return new()
-                {
-                    Success = false
-                };
-
-            success = await _xp.ToggleExcludeChannelAsync(request.GuildId, request.Id);
-        }
-
-        return new()
-        {
-            Success = success
-        };
-    }
-
-    public override async Task<DeleteExclusionReply> DeleteExclusion(
-        DeleteExclusionRequest request,
-        ServerCallContext context)
-    {
-        var success = false;
-        if (request.Type == "Role")
-            success = await _xp.ToggleExcludeRoleAsync(request.GuildId, request.Id);
-        else
-            success = await _xp.ToggleExcludeChannelAsync(request.GuildId, request.Id);
-
-        return new DeleteExclusionReply
-        {
-            Success = success
-        };
     }
 
     public override async Task<AddRewardReply> AddReward(AddRewardRequest request, ServerCallContext context)
@@ -266,16 +213,5 @@ public class XpSvc : GrpcXp.GrpcXpBase, IGrpcSvc, INService
         reply.Users.AddRange(users);
 
         return reply;
-    }
-
-    public override async Task<SetServerExclusionReply> SetServerExclusion(
-        SetServerExclusionRequest request,
-        ServerCallContext context)
-    {
-        var newValue = await _xp.ToggleExcludeServerAsync(request.GuildId);
-        return new()
-        {
-            Success = newValue
-        };
     }
 }

@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations.Sqlite
 {
     [DbContext(typeof(SqliteContext))]
-    [Migration("20250202124903_init")]
+    [Migration("20250226215220_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -655,31 +655,6 @@ namespace NadekoBot.Migrations.Sqlite
                     b.HasIndex("Username");
 
                     b.ToTable("DiscordUser");
-                });
-
-            modelBuilder.Entity("NadekoBot.Db.Models.ExcludedItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("DateAdded")
-                        .HasColumnType("TEXT");
-
-                    b.Property<ulong>("ItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ItemType")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("XpSettingsId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("XpSettingsId");
-
-                    b.ToTable("ExcludedItem");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.FeedSub", b =>
@@ -2499,9 +2474,6 @@ namespace NadekoBot.Migrations.Sqlite
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("ServerExcluded")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GuildId")
@@ -2571,6 +2543,12 @@ namespace NadekoBot.Migrations.Sqlite
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("Bait")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Pole")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Skill")
                         .HasColumnType("INTEGER");
 
@@ -2583,6 +2561,62 @@ namespace NadekoBot.Migrations.Sqlite
                         .IsUnique();
 
                     b.ToTable("UserFishStats");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Xp.ChannelXpConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("Cooldown")
+                        .HasColumnType("REAL");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RateType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("XpAmount")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("GuildId", "ChannelId", "RateType");
+
+                    b.ToTable("ChannelXpConfig");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Xp.GuildXpConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("Cooldown")
+                        .HasColumnType("REAL");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RateType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("XpAmount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("XpTemplateUrl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("GuildId", "RateType");
+
+                    b.ToTable("GuildXpConfig");
                 });
 
             modelBuilder.Entity("NadekoBot.Services.GreetSettings", b =>
@@ -2750,13 +2784,6 @@ namespace NadekoBot.Migrations.Sqlite
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Club");
-                });
-
-            modelBuilder.Entity("NadekoBot.Db.Models.ExcludedItem", b =>
-                {
-                    b.HasOne("NadekoBot.Db.Models.XpSettings", null)
-                        .WithMany("ExclusionList")
-                        .HasForeignKey("XpSettingsId");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.FilterChannelId", b =>
@@ -3022,8 +3049,6 @@ namespace NadekoBot.Migrations.Sqlite
             modelBuilder.Entity("NadekoBot.Db.Models.XpSettings", b =>
                 {
                     b.Navigation("CurrencyRewards");
-
-                    b.Navigation("ExclusionList");
 
                     b.Navigation("RoleRewards");
                 });

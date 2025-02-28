@@ -1383,12 +1383,6 @@ drawnew:
   params:
     - num:
         desc: "The number of cards to be drawn from the new deck."
-playlistshuffle:
-  desc: Shuffles the current playlist.
-  ex:
-    - ''
-  params:
-    - { }
 flip:
   desc: Flips coin(s) - heads or tails, and shows an image.
   ex:
@@ -1701,6 +1695,12 @@ play:
         desc: "The index of the desired song or search result to navigate to."
     - query:
         desc: "The search query is used to find and play songs matching the specified criteria."
+queueshuffle:
+  desc: Shuffles the current playlist.
+  ex:
+    - ''
+  params:
+    - { }
 stop:
   desc: Stops the music and preserves the current song index. Stays in the channel.
   ex:
@@ -1832,13 +1832,6 @@ queuerepeat:
   params:
     - type:
         desc: "The type of repeat strategy to be set."
-save:
-  desc: Saves a playlist under a certain name. Playlist name must be no longer than 20 characters and must not contain dashes.
-  ex:
-    - classical1
-  params:
-    - name:
-        desc: "The name provided is used to uniquely identify the saved playlist."
 streamrole:
   desc: Sets a role which is monitored for streamers (FromRole), and a role to add if a user from 'FromRole' is streaming (AddRole). When a user from 'FromRole' starts streaming, they will receive an 'AddRole'. You can only have 1 Stream Role per server. Provide no parameters to disable
   ex:
@@ -1849,13 +1842,20 @@ streamrole:
       addRole:
         desc: "The role to be added to users when they start streaming."
     - { }
-load:
+playlistload:
   desc: Loads a saved playlist using its ID. Use `{0}pls` to list all saved playlists and `{0}save` to save new ones.
   ex:
     - 5
   params:
     - id:
-        desc: "The id of the playlist to be loaded."
+        desc: "The id of the playlist to be loaded."        
+playlistsave:
+  desc: Saves a playlist under a certain name. Playlist name must be no longer than 20 characters and must not contain dashes.
+  ex:
+    - classical1
+  params:
+    - name:
+        desc: "The name provided is used to uniquely identify the saved playlist."
 playlists:
   desc: Lists all playlists. Paginated, 20 per page.
   ex:
@@ -1872,8 +1872,8 @@ playlistshow:
         desc: "The id of the playlist to retrieve songs from."
       page:
         desc: "The current page number for the pagination."
-deleteplaylist:
-  desc: Deletes a saved playlist using its id. Works only if you made it or if you are the bot owner.
+playlistdelete:
+  desc: Deletes a saved playlist using its ID. Works only on playlists saved by you.
   ex:
     - 5
   params:
@@ -3517,28 +3517,6 @@ xptemplatereload:
     - ''
   params:
     - { }
-xpexclusionlist:
-  desc: Shows the roles and channels excluded from the XP system on this server, as well as whether the whole server is excluded.
-  ex:
-    - ''
-  params:
-    - { }
-xpexclude:
-  desc: Exclude a channel, role or current server from the xp system.
-  ex:
-    - Role Excluded-Role
-    - Server
-  params:
-    - _:
-        desc: "The ID of the server to exclude from the XP system."
-    - _:
-        desc: "The role that should not receive XP rewards."
-      role:
-        desc: "The role that should not receive XP rewards."
-    - _:
-        desc: "The ID of the channel to exclude from XP tracking."
-      channel:
-        desc: "The ID of the channel to exclude from XP tracking."
 xpleveluprewards:
   desc: Shows currently set level up rewards.
   ex:
@@ -4954,3 +4932,39 @@ fishspot:
     - ''
   params:
     - { }
+xprate:
+  desc: |-
+    Sets the xp rate for the server or the specified channel.
+    First specify the type, amount, and then the cooldown in minutes.
+    Provide no parameters to see the current rates.
+    Cooldown has no effect on voice xp, as any amount is gained per minute.
+  ex:
+    - ''
+    - 'text 3 5'
+    - '#channel voice 50 1'
+  params:
+    - { }
+    - type:
+        desc: "The type of rate to set. One of: text, voice or image."
+      amount:
+        desc: "The amount of xp to give per message."
+      minutes:
+        desc: "The cooldown in minutes. Allows decimal values."
+    - channel:
+        desc: "The channel to set the rate for."
+      type:
+        desc: "The type of rate to set. One of: text, voice or image."
+      amount:
+        desc: "The amount of xp to give per message."
+      minutes:
+        desc: "The cooldown in minutes. Allows decimal values."
+xpratereset:
+  desc: |-
+    Resets the xp rate for the server or the specified channel.
+  ex:
+    - ''
+    - '#channel'
+  params:
+    - { }
+    - channel:
+        desc: "The channel to reset the rate for."

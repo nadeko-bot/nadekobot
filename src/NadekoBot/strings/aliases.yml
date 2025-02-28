@@ -423,11 +423,6 @@ draw:
   - draw
 drawnew:
   - drawnew
-playlistshuffle:
-  - playlistshuffle
-  - shuffle
-  - sh
-  - plsh
 flip:
   - flip
 betflip:
@@ -528,6 +523,11 @@ queuesearch:
   - queuesearch
   - qs
   - yqs
+queueshuffle:
+  - queueshuffle
+  - qsh
+  - qshuffle
+  - shuffle
 listqueue:
   - listqueue
   - lq
@@ -538,9 +538,14 @@ volume:
   - volume
   - vol
   - defvol
-playlist:
-  - playlist
-  - pl
+playlistload:
+  - playlistload
+  - pload
+  - plload
+  - pll
+playlists:
+  - playlists
+  - pls
 localplaylist:
   - localplaylist
   - lopl
@@ -550,6 +555,9 @@ radio:
 local:
   - local
   - lo
+playlist:
+  - playlist
+  - pl
 join:
   - join
   - j
@@ -574,21 +582,20 @@ queueautoplay:
   - qap
 queuefairplay:
   - qfp
-save:
-  - save
+playlistsave:
+  - playlistsave
+  - plsave
+  - psave
 streamrole:
   - streamrole
-load:
-  - load
-playlists:
-  - playlists
-  - pls
 playlistshow:
   - playlistshow
   - plshow
-deleteplaylist:
-  - deleteplaylist
-  - delpls
+playlistdelete:
+  - playlistdelete
+  - pldel
+  - plrm
+  - pldelete
 streamadd:
   - streamadd
   - sta
@@ -1091,12 +1098,6 @@ experience:
 xptemplatereload:
   - xptempreload
   - xptr
-xpexclusionlist:
-  - xpexclusionlist
-  - xpexl
-xpexclude:
-  - xpexclude
-  - xpex
 xpleveluprewards:
   - xplvluprewards
   - xprews
@@ -1511,14 +1512,14 @@ snipe:
   - snipe
   - sn
 btnroleadd:
-  - add 
+  - add
   - a
 btnroleremove:
-  - rem 
+  - rem
   - r
-  - rm 
+  - rm
 btnroleremoveall:
-  - removeall 
+  - removeall
   - rma
 btnrolelist:
   - list
@@ -1579,6 +1580,10 @@ fishlist:
   - fil
   - fishlist
 fishspot:
-  - fishspot 
+  - fishspot
   - fisp
   - fish?
+xprate:
+  - xprate
+xpratereset:
+  - xpratereset

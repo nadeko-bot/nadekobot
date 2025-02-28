@@ -19,15 +19,14 @@ Open PowerShell (press windows button on your keyboard and type powershell, it s
 
 0. Navigate to the location where you want to install the bot
     - for example, type `cd ~/Desktop/` and press enter
-1. `git clone https://gitlab.com/kwoth/nadekobot -b v5 --depth 1`
-2. `cd nadekobot`
-3. `dotnet publish -c Release -o output/ src/NadekoBot/`
-4. `cd output`
-5. `cp creds_example.yml creds.yml`
-6. "You're done installing, you may now proceed to set up your bot's credentials by following the [#creds-guide]
+1. `git clone https://github.com/nadeko-bot/nadekobot -b v6 --depth 1`
+1. `cd nadekobot/src/NadekoBot`
+1. `dotnet build -c Release`
+1. `cp data/creds_example.yml data/creds.yml`
+1. "You're done installing, you may now proceed to set up your bot's credentials by following the [#creds-guide]
     - Once done, come back here and run the last command
-8. Run the bot `dotnet NadekoBot.dll`
-9. 🎉 Enjoy
+1. Run the bot `dotnet NadekoBot.dll`
+1. 🎉 Enjoy
 
 ##### Update Instructions
 
@@ -35,29 +34,18 @@ Open PowerShell as described above and run the following commands:
 
 1. Stop the bot
   - ⚠️ Make sure you don't have your database, credentials or any other nadekobot folder open in some application, this might prevent some of the steps from executing succesfully
-2. Navigate to your bot's folder, example:
+1. Navigate to your bot's folder, example:
     - `cd ~/Desktop/nadekobot`
-3. Pull the new version, and make sure you're on the v5 branch
-    - *⚠️ If you're on v4, you must run these commands, if not, you may skip them.*
-        - `git remote set-branches origin '*'`
-        - `git fetch -v --depth=1`
-        - `git checkout v5`
+1. Pull the new version, and make sure you're on the v6 branch
     - `git pull`
     - ⚠️ If this fails, you may want to stash or remove your code changes if you don't know how to resolve merge conflicts
-4. **Backup** old output in case your data is overwritten
+1. **Backup** old output in case your data is overwritten
     - `cp -r -fo output/ output-old`
-5. Build the bot again
-    - `dotnet publish -c Release -o output/ src/NadekoBot/`
-6. Remove old strings and aliases to avoid overwriting the updated versions of those files
-    - ⚠ If you've modified said files, back them up instead
-    - `rm output-old/data/aliases.yml`
-    - `rm -r output-old/data/strings`
-7. Copy old data, and new strings
-    - `cp -Recurse -Force .\output-old\data\ .\output\`
-    - `cp -Recurse -Force src/NadekoBot/data/strings/ output/data/`
-8. Copy creds.yml
-    - `cp output-old/creds.yml output/`
-9. Run the bot
+1. Build the bot again
+    - `dotnet run -c Release src/NadekoBot/`
+1. Copy old data, and new strings
+    - `cp -r -fo .\output-old\data\ .\output\`
+1. Run the bot
     - `cd output`
     - `dotnet NadekoBot.dll`
 

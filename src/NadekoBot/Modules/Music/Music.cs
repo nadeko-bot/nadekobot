@@ -664,7 +664,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
     [Cmd]
     [RequireContext(ContextType.Guild)]
-    public async Task PlaylistShuffle()
+    public async Task QueueShuffle()
     {
         var valid = await ValidateAsync();
         if (!valid)

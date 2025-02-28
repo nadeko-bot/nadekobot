@@ -26,10 +26,6 @@ public class ClubService : INService, IClubService
 
         await using var uow = _db.GetDbContext();
         var du = uow.GetOrCreateUser(user);
-        var xp = new LevelStats(du.TotalXp);
-
-        if (xp.Level < 5)
-            return ClubCreateResult.InsufficientLevel;
 
         if (du.ClubId is not null)
             return ClubCreateResult.AlreadyInAClub;

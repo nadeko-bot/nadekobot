@@ -39,7 +39,7 @@ public sealed class LocalTrackResolver : ILocalTrackResolver
             yield break;
         }
 
-        var files = dir.EnumerateFiles()
+        var files = dir.EnumerateFiles("*", SearchOption.AllDirectories)
                        .Where(x =>
                        {
                            if (!x.Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System)

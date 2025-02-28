@@ -15,8 +15,5 @@ public class XpSettingsEntityConfiguration : IEntityTypeConfiguration<XpSettings
         
         builder.HasMany(x => x.RoleRewards)
                .WithOne();
-
-        builder.HasMany(x => x.ExclusionList)
-               .WithOne();
     }
 }

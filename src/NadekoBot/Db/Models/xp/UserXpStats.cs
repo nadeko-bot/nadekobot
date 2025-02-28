@@ -1,4 +1,3 @@
-#nullable disable
 namespace NadekoBot.Db.Models;
 
 public class UserXpStats : DbEntity

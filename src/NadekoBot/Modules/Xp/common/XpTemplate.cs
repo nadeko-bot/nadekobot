@@ -7,25 +7,25 @@ namespace NadekoBot.Modules.Xp;
 
 public class XpTemplate
 {
-    public int Version { get; set; } = 2;
+    public int Version { get; set; } = 3;
     
     [JsonProperty("output_size")]
     public XpTemplatePos OutputSize { get; set; } = new()
     {
-        X = 800,
-        Y = 392
+        X = 500,
+        Y = 245
     };
 
     public XpTemplateUser User { get; set; } = new()
     {
         Name = new()
         {
-            FontSize = 50,
+            FontSize = 25,
             Show = true,
             Pos = new()
             {
-                X = 130,
-                Y = 17
+                X = 65,
+                Y = 8
             }
         },
         Icon = new()
@@ -33,53 +33,33 @@ public class XpTemplate
             Show = true,
             Pos = new()
             {
-                X = 14,
-                Y = 14
+                X = 11,
+                Y = 11
             },
             Size = new()
             {
-                X = 72,
-                Y = 71
+                X = 38,
+                Y = 38
             }
         },
-        GuildLevel = new()
+        Level = new()
         {
             Show = true,
-            FontSize = 45,
+            FontSize = 22,
             Pos = new()
             {
-                X = 47,
-                Y = 308
+                X = 35,
+                Y = 101
             }
         },
-        GlobalLevel = new()
+        Rank = new()
         {
             Show = true,
-            FontSize = 45,
+            FontSize = 20,
             Pos = new()
             {
-                X = 47,
-                Y = 160
-            }
-        },
-        GuildRank = new()
-        {
-            Show = true,
-            FontSize = 30,
-            Pos = new()
-            {
-                X = 148,
-                Y = 326
-            }
-        },
-        GlobalRank = new()
-        {
-            Show = true,
-            FontSize = 30,
-            Pos = new()
-            {
-                X = 148,
-                Y = 179
+                X = 100,
+                Y = 115
             }
         },
         Xp = new()
@@ -87,67 +67,31 @@ public class XpTemplate
             Bar = new()
             {
                 Show = true,
-                Global = new()
-                {
-                    Direction = XpTemplateDirection.Right,
-                    Length = 450,
-                    Color = new(0, 0, 0, 0.4f),
-                    PointA = new()
-                    {
-                        X = 321,
-                        Y = 104
-                    },
-                    PointB = new()
-                    {
-                        X = 286,
-                        Y = 235
-                    }
-                },
                 Guild = new()
                 {
                     Direction = XpTemplateDirection.Right,
-                    Length = 450,
+                    Length = 225,
                     Color = new(0, 0, 0, 0.4f),
                     PointA = new()
                     {
-                        X = 282,
-                        Y = 248
+                        X = 202,
+                        Y = 66
                     },
                     PointB = new()
                     {
-                        X = 247,
-                        Y = 379
+                        X = 180,
+                        Y = 145
                     }
-                }
-            },
-            Global = new()
-            {
-                Show = true,
-                FontSize = 50,
-                Pos = new()
-                {
-                    X = 528,
-                    Y = 170
                 }
             },
             Guild = new()
             {
                 Show = true,
-                FontSize = 50,
-                Pos = new()
-                {
-                    X = 490,
-                    Y = 313
-                }
-            },
-            Awarded = new()
-            {
-                Show = true,
                 FontSize = 25,
                 Pos = new()
                 {
-                    X = 490,
-                    Y = 345
+                    X = 330,
+                    Y = 104
                 }
             }
         }
@@ -160,22 +104,22 @@ public class XpTemplate
             Show = true,
             Pos = new()
             {
-                X = 722,
-                Y = 25
+                X = 451,
+                Y = 15
             },
             Size = new()
             {
-                X = 45,
-                Y = 45
+                X = 29,
+                Y = 29
             }
         },
         Name = new()
         {
-            FontSize = 35,
+            FontSize = 20,
             Pos = new()
             {
-                X = 650,
-                Y = 49
+                X = 394,
+                Y = 35
             },
             Show = true
         }
@@ -199,10 +143,8 @@ public class XpTemplateUser
 {
     public XpTemplateText Name { get; set; }
     public XpTemplateIcon Icon { get; set; }
-    public XpTemplateText GlobalLevel { get; set; }
-    public XpTemplateText GuildLevel { get; set; }
-    public XpTemplateText GlobalRank { get; set; }
-    public XpTemplateText GuildRank { get; set; }
+    public XpTemplateText Level { get; set; }
+    public XpTemplateText Rank { get; set; }
     public XpTemplateXp Xp { get; set; }
 }
 
@@ -225,15 +167,12 @@ public class XpTemplateText
 public class XpTemplateXp
 {
     public XpTemplateXpBar Bar { get; set; }
-    public XpTemplateText Global { get; set; }
     public XpTemplateText Guild { get; set; }
-    public XpTemplateText Awarded { get; set; }
 }
 
 public class XpTemplateXpBar
 {
     public bool Show { get; set; }
-    public XpBar Global { get; set; }
     public XpBar Guild { get; set; }
 }
 

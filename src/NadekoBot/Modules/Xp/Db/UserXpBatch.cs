@@ -11,4 +11,5 @@ public sealed class UserXpBatch
     public ulong GuildId { get; set; }
     public string Username { get; set; } = string.Empty;
     public string AvatarId { get; set; } = string.Empty;
+    public long XpToGain { get; set; } = 0;
 }

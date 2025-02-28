@@ -13,6 +13,6 @@ public static class MusicPlaylistExtensions
         return playlists.AsQueryable().Skip((num - 1) * 20).Take(20).Include(pl => pl.Songs).ToList();
     }
 
-    public static MusicPlaylist GetWithSongs(this DbSet<MusicPlaylist> playlists, int id)
+    public static MusicPlaylist GetWithSongs(this IQueryable<MusicPlaylist> playlists, int id)
         => playlists.Include(mpl => mpl.Songs).FirstOrDefault(mpl => mpl.Id == id);
 }

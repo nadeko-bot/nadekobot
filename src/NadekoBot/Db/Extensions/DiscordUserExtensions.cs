@@ -17,7 +17,6 @@ public static class DiscordUserExtensions
         this DbContext ctx,
         ulong userId,
         string username,
-        string discrim,
         string avatarId)
         => ctx.GetTable<DiscordUser>()
               .InsertOrUpdate(
@@ -65,11 +64,10 @@ public static class DiscordUserExtensions
         this DbContext ctx,
         ulong userId,
         string username,
-        string discrim,
         string avatarId,
         Func<IQueryable<DiscordUser>, IQueryable<DiscordUser>> includes = null)
     {
-        ctx.EnsureUserCreated(userId, username, discrim, avatarId);
+        ctx.EnsureUserCreated(userId, username, avatarId);
 
         IQueryable<DiscordUser> queryable = ctx.Set<DiscordUser>();
         if (includes is not null)
@@ -78,13 +76,6 @@ public static class DiscordUserExtensions
     }
 
 
-    public static int GetUserGlobalRank(this DbSet<DiscordUser> users, ulong id)
-        => users.AsQueryable()
-                .Where(x => x.TotalXp
-                            > users.AsQueryable().Where(y => y.UserId == id).Select(y => y.TotalXp).FirstOrDefault())
-                .Count()
-           + 1;
-    
     public static Task<List<DiscordUser>> GetTopRichest(
         this DbSet<DiscordUser> users,
         ulong botId,

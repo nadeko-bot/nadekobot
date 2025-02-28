@@ -1,5 +1,7 @@
 ﻿#nullable disable
+using CommandLine;
 using LinqToDB;
+using Microsoft.EntityFrameworkCore;
 using NadekoBot.Modules.Music.Services;
 using NadekoBot.Db.Models;
 
@@ -50,17 +52,17 @@ public sealed partial class Music
             }
 
             var embed = CreateEmbed()
-                        .WithAuthor(GetText(strs.playlists_page(num)), MUSIC_ICON_URL)
-                        .WithDescription(string.Join("\n",
-                            playlists.Select(r => GetText(strs.playlists(r.Id, r.Name, r.Author, r.Songs.Count)))))
-                        .WithOkColor();
+                .WithAuthor(GetText(strs.playlists_page(num)), MUSIC_ICON_URL)
+                .WithDescription(string.Join("\n",
+                    playlists.Select(r => GetText(strs.playlists(r.Id, r.Name, r.Author, r.Songs.Count)))))
+                .WithOkColor();
 
             await Response().Embed(embed).SendAsync();
         }
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
-        public async Task DeletePlaylist([Leftover] int id)
+        public async Task PlaylistDelete([Leftover] int id)
         {
             var success = false;
             try
@@ -103,26 +105,26 @@ public sealed partial class Music
             }
 
             await Response()
-                  .Paginated()
-                  .Items(mpl.Songs)
-                  .PageSize(20)
-                  .CurrentPage(page)
-                  .Page((items, _) =>
-                  {
-                      var i = 0;
-                      var str = string.Join("\n",
-                          items
-                              .Select(x => $"`{++i}.` [{x.Title.TrimTo(45)}]({x.Query}) `{x.Provider}`"));
-                      return CreateEmbed().WithTitle($"\"{mpl.Name}\" by {mpl.Author}")
-                                               .WithOkColor()
-                                               .WithDescription(str);
-                  })
-                  .SendAsync();
+                .Paginated()
+                .Items(mpl.Songs)
+                .PageSize(20)
+                .CurrentPage(page)
+                .Page((items, _) =>
+                {
+                    var i = 0;
+                    var str = string.Join("\n",
+                        items
+                            .Select(x => $"`{++i}.` [{x.Title.TrimTo(45)}]({x.Query}) `{x.Provider}`"));
+                    return CreateEmbed().WithTitle($"\"{mpl.Name}\" by {mpl.Author}")
+                        .WithOkColor()
+                        .WithDescription(str);
+                })
+                .SendAsync();
         }
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
-        public async Task Save([Leftover] string name)
+        public async Task PlaylistSave([Leftover] string name)
         {
             if (!_service.TryGetMusicPlayer(ctx.Guild.Id, out var mp))
             {
@@ -131,14 +133,14 @@ public sealed partial class Music
             }
 
             var songs = mp.GetQueuedTracks()
-                          .Select(s => new PlaylistSong
-                          {
-                              Provider = s.Platform.ToString(),
-                              ProviderType = (MusicType)s.Platform,
-                              Title = s.Title,
-                              Query = s.Url
-                          })
-                          .ToList();
+                .Select(s => new PlaylistSong
+                {
+                    Provider = s.Platform.ToString(),
+                    ProviderType = (MusicType)s.Platform,
+                    Title = s.Title,
+                    Query = s.Url
+                })
+                .ToList();
 
             MusicPlaylist playlist;
             await using (var uow = _db.GetDbContext())
@@ -155,18 +157,30 @@ public sealed partial class Music
             }
 
             await Response()
-                  .Embed(CreateEmbed()
-                         .WithOkColor()
-                         .WithTitle(GetText(strs.playlist_saved))
-                         .AddField(GetText(strs.name), name)
-                         .AddField(GetText(strs.id), playlist.Id.ToString()))
-                  .SendAsync();
+                .Embed(CreateEmbed()
+                    .WithOkColor()
+                    .WithTitle(GetText(strs.playlist_saved))
+                    .AddField(GetText(strs.name), name)
+                    .AddField(GetText(strs.id), playlist.Id.ToString()))
+                .SendAsync();
         }
 
+        public class PlaylistLoadOptions : INadekoCommandOptions
+        {
+            [Option("shuffle")]
+            public bool Shuffled { get; set; } = false;
+
+            public void NormalizeOptions()
+            {
+            }
+        }
+        
         [Cmd]
         [RequireContext(ContextType.Guild)]
-        public async Task Load([Leftover] int id)
+        [NadekoOptions<PlaylistLoadOptions>]
+        public async Task PlaylistLoad(int id, params string[] args)
         {
+            var opts = OptionsParser.ParseFrom(new PlaylistLoadOptions(), args).Item1;
             // expensive action, 1 at a time
             await _playlistLock.WaitAsync();
             try
@@ -201,7 +215,9 @@ public sealed partial class Music
                 MusicPlaylist mpl;
                 await using (var uow = _db.GetDbContext())
                 {
-                    mpl = uow.Set<MusicPlaylist>().GetWithSongs(id);
+                    mpl = uow.Set<MusicPlaylist>()
+                        .AsNoTracking()
+                        .GetWithSongs(id);
                 }
 
                 if (mpl is null)
@@ -214,14 +230,19 @@ public sealed partial class Music
                 try
                 {
                     msg = await Response()
-                                .Pending(strs.attempting_to_queue(Format.Bold(mpl.Songs.Count.ToString())))
-                                .SendAsync();
+                        .Pending(strs.attempting_to_queue(Format.Bold(mpl.Songs.Count.ToString())))
+                        .SendAsync();
                 }
                 catch (Exception)
                 {
                 }
 
-                await mp.EnqueueManyAsync(mpl.Songs.Select(x => (x.Query, (MusicPlatform)x.ProviderType)),
+                var songs = opts.Shuffled
+                    ? mpl.Songs.Shuffle()
+                    : mpl.Songs;
+
+                await mp.EnqueueManyAsync(
+                    songs.Select(x => (x.Query, (MusicPlatform)x.ProviderType)),
                     ctx.User.ToString());
 
                 if (msg is not null)

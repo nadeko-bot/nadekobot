@@ -40,7 +40,7 @@ public abstract class NadekoInteractionBase
         message = msg;
 
         Client.InteractionCreated += OnInteraction;
-        await Task.WhenAny(Task.Delay(30_000), _interactionCompletedSource.Task);
+        await Task.WhenAny(Task.Delay(600_000), _interactionCompletedSource.Task);
         Client.InteractionCreated -= OnInteraction;
 
         if (_clearAfter)
@@ -130,7 +130,7 @@ public sealed class NadekoModalSubmitHandler
         message = msg;
 
         Client.ModalSubmitted += OnInteraction;
-        await Task.WhenAny(Task.Delay(300_000), _interactionCompletedSource.Task);
+        await Task.WhenAny(Task.Delay(600_000), _interactionCompletedSource.Task);
         Client.ModalSubmitted -= OnInteraction;
 
         await msg.ModifyAsync(m => m.Components = new ComponentBuilder().Build());

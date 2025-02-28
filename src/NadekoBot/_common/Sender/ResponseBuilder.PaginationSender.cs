@@ -159,7 +159,7 @@ public partial class ResponseBuilder
             
             await Task.WhenAll(left.RunAsync(msg), extra?.RunAsync(msg) ?? Task.CompletedTask, right.RunAsync(msg));
 
-            await Task.Delay(30_000);
+            await Task.Delay(600_000);
             
             await msg.ModifyAsync(mp => mp.Components = new ComponentBuilder().Build());
         }

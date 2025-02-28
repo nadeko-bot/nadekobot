@@ -20,28 +20,13 @@ public sealed class ImagesConfig : ConfigServiceBase<ImageUrls>
 
     private void Migrate()
     {
-        if (data.Version < 5)
+        if (data.Version < 10)
         {
             ModifyConfig(c =>
             {
-                c.Version = 5;
-            });
-        }
-
-        if (data.Version < 6)
-        {
-            ModifyConfig(c =>
-            {
-                if (c.Slots.Emojis?.Length == 6)
-                {
-                    c.Slots.Emojis =
-                    [
-                        new("https://cdn.nadeko.bot/slots/15.png"),
-                        ..c.Slots.Emojis
-                    ];
-                }
-
-                c.Version = 6;
+                if(c.Xp.Bg.ToString().Contains("cdn.nadeko.bot"))
+                    c.Xp.Bg = new("https://cdn.nadeko.bot/xp/bgs/v6.png");
+                c.Version = 10;
             });
         }
     }

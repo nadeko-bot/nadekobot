@@ -180,24 +180,24 @@ public partial class Gambling
 
             Color fontColor = Config.Slots.CurrencyFontColor;
 
-            bgImage.Mutate<Rgba32>(x => x.DrawText(new RichTextOptions(_fonts.DottyFont.CreateFont(65))
+            bgImage.Mutate<Rgba32>(x => x.DrawText(new RichTextOptions(_fonts.NotoSans.CreateFont(35))
                 {
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
                     WrappingLength = 140,
-                    Origin = new(298, 100)
+                    Origin = new(295, 100)
                 },
                 ((long)result.Won).ToString(),
                 fontColor));
 
-            var bottomFont = _fonts.DottyFont.CreateFont(50);
+            var bottomFont = _fonts.NotoSans.CreateFont(24);
 
             bgImage.Mutate(x => x.DrawText(new RichTextOptions(bottomFont)
                 {
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
                     WrappingLength = 135,
-                    Origin = new(196, 480)
+                    Origin = new(196, 479)
                 },
                 amount.ToString(),
                 fontColor));

@@ -1,7 +1,7 @@
 site_name: 'NadekoBot'
 site_url: 'https://nadeko.bot'
-repo_url: 'https://gitlab.com/Kwoth/nadekobot'
-site_author: 'Kwoth'
+repo_url: 'https://github.com/nadeko-bot/nadekobot'
+site_author: 'Breaker'
 
 theme:
     name: material
