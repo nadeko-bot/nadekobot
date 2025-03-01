@@ -2,6 +2,7 @@ site_name: 'NadekoBot'
 site_url: 'https://nadeko.bot'
 repo_url: 'https://github.com/nadeko-bot/nadekobot'
 site_author: 'Breaker'
+docs_dir: 'md'
 
 theme:
     name: material
