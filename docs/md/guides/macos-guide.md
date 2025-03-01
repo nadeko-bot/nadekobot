@@ -1,4 +1,4 @@
---8<-- "docs/creds-guide.md"
+--8<-- "md/creds-guide.md"
 
 ### Get Homebrew
 You must have homebrew installed to run this guide.
@@ -6,4 +6,4 @@ You must have homebrew installed to run this guide.
 - Copy and paste this command, then press Enter:
     - `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 
---8<-- "docs/guides/linux-guide.md"
+--8<-- "md/guides/linux-guide.md"

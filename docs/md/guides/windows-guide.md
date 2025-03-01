@@ -3,7 +3,7 @@
 <!-- There is no such anchor on this page. -->
 <!-- *Note: If you want to make changes to Nadeko's source code, please follow the [From Source](#windows-from-source) guide instead.* -->
 
---8<-- "docs/creds-guide.md"
+--8<-- "md/creds-guide.md"
 
 #### Prerequisites
 
