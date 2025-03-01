@@ -36,10 +36,6 @@ theme:
 extra:
   homepage: https://nadeko.bot
 
-extra_css:
-  - stylesheets/styling-overrides.css
-  - stylesheets/theme.css
-
 plugins:
     - search
 
