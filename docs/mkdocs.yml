@@ -15,7 +15,7 @@ theme:
                 icon: material/weather-sunny
                 name: Switch to dark mode
           - media: "(prefers-color-scheme: dark)"
-            scheme: dark
+            scheme: slate
             primary: blue
             accent: light blue
             toggle:
