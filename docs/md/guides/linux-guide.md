@@ -99,27 +99,13 @@ If you are presented with the installer main menu, exit it by choosing Option `8
 
 The above command will create a new session named **nadeko** *(you can replace “nadeko” with anything you prefer, it's your session name)*.
 
-2. Run the installer: `bash n-install.sh`
+1. Run the installer: `bash n-install.sh`
 
-3. There are a few options when it comes to running Nadeko.
+1. There are a few options when it comes to running Nadeko.
 
-    - Run `3` to *Run the bot normally*
-    - Run `4` to *Run the bot with Auto Restart* (This is may or may not work)
+    - Type `2` to *Run the bot*
 
-4. If option `4` was selected, you have the following options
-```
-1. Run Auto Restart normally without updating NadekoBot.
-2. Run Auto Restart and update NadekoBot.
-3. Exit
-
-Choose:
-[1] to Run NadekoBot with Auto Restart on "die" command without updating.
-[2] to Run with Auto Updating on restart after using "die" command.
-```
-- Run `1` to restart the bot without updating. (This is done using the `.die` command)
-- Run `2` to update the bot upon restart. (This is also done using the `.die` command)
-
-5. That's it! to detatch the tmux session:
+1. That's it! to detach the tmux session:
     - Press `Ctrl` + `B`
     - Then press `D`
 
@@ -127,14 +113,12 @@ Now check your Discord server, the bot should be online. Nadeko should now be ru
 
 To re-open the tmux session to either update, restart, or whatever, execute `tmux a -t nadeko`. *(Make sure to replace "nadeko" with your session name. If you didn't change it, leave it as it is.)*
 
-
-
 ### Systemd + Script
 
 This method is similar to the one above, but requires one extra step, with the added benefit of better error logging and control over what happens before and after the startup of Nadeko.
 
-1. Locate the project and move to its parent directory
-    - Project location example: `/home/user/nadekobot/`
+1. Locate your nadeko folder
+    - Nadeko location example: `/home/user/nadeko/`
     - Parent directory example: `/home/user/`
 2. Use the following command to create a service that will be used to execute `NadekoRun.sh`:
 
@@ -169,31 +153,21 @@ This method is similar to the one above, but requires one extra step, with the a
     echo '#!/bin/bash'
     echo ""
     echo "echo \"Running NadekoBot in the background with auto restart\"
-    yt-dlp -U
-
-    # If you want Nadeko to be compiled prior to every startup, uncomment the lines
-    # below. Note  that it's not necessary unless you are personally modifying the
-    # source code.
-    #echo \"Compiling NadekoBot...\"
-    #cd \"$PWD\"/nadekobot
-    #dotnet build src/NadekoBot/NadekoBot.csproj -c Release -o output/
-
-    echo \"Starting NadekoBot...\"
 
     while true; do
-        if [[ -d $PWD/nadekobot/output ]]; then
-            cd $PWD/nadekobot/output || {
-                echo \"Failed to change working directory to $PWD/nadekobot/output\" >&2
+        if [[ -d $PWD/nadeko ]]; then
+            cd $PWD/nadeko || {
+                echo \"Failed to change working directory to $PWD/nadeko\" >&2
                 echo \"Ensure that the working directory inside of '/etc/systemd/system/nadeko.service' is correct\"
                 echo \"Exiting...\"
                 exit 1
             }
         else
-            echo \"$PWD/nadekobot/output doesn't exist\"
+            echo \"$PWD/nadeko doesn't exist\"
             exit 1
         fi
 
-        dotnet NadekoBot.dll || {
+        ./NadekoBot || {
             echo \"An error occurred when trying to start NadekBot\"
             echo \"Exiting...\"
             exit 1
@@ -222,19 +196,21 @@ These are the min requirements you must follow:
 
 OS: Any between Ubuntu, Fedora, and Debian
 
-Plan: Basic
+Droplet Type: SHARED CPU | Basic
 
-CPU options: regular with SSD
+CPU options: Regular | Disk type: SSD
+6$/mo
 1 GB / 1 CPU
 25 GB SSD Disk
 1000 GB transfer
 
-Note: You can select the cheapest option with 512 MB /1 CPU but this has been a hit or miss.
+Note: You can select the cheapest option with 512 MB / 1 CPU but this has been a hit or miss.
 
 Datacenter region: Choose one depending on where you are located.
 
 Authentication: Password or SSH
 (Select SSH if you know what you are doing, otherwise choose password)
+Click create droplet
 ```
 **Setting up NadekoBot**
 Assuming you have followed the link above to setup an account and a Droplet with a 64-bit operational system on Digital Ocean and got the `IP address and root password (in your e-mail)` to login, it's time to get started.

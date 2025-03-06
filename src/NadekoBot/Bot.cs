@@ -16,7 +16,6 @@ public sealed class Bot : IBot
 
     private IContainer Services { get; set; }
 
-    public bool IsReady { get; private set; }
     public int ShardId { get; }
 
     private readonly IBotCreds _creds;
@@ -260,21 +259,23 @@ public sealed class Bot : IBot
         Log.Information("Shard {ShardId} connected in {Elapsed:F2}s",
             Client.ShardId,
             Stopwatch.GetElapsedTime(startTime).TotalSeconds);
+        
         var commandHandler = Services.GetRequiredService<CommandHandler>();
-
-        // start handling messages received in commandhandler
-        await commandHandler.StartHandling();
+        
 
         foreach (var a in _loadedAssemblies)
         {
             await _commandService.AddModulesAsync(a, Services);
         }
 
-        // await _interactionService.AddModulesAsync(typeof(Bot).Assembly, Services);
-        IsReady = true;
-
         await EnsureBotOwnershipAsync();
+        
+        await commandHandler.InitializeAsync();
+        
         _ = Task.Run(ExecuteReadySubscriptions);
+        
+        await commandHandler.StartHandling();
+        
         Log.Information("Shard {ShardId} ready", Client.ShardId);
     }
 

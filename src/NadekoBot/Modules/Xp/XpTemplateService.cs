@@ -7,6 +7,7 @@ namespace NadekoBot.Modules.Xp.Services;
 public sealed class XpTemplateService : INService, IReadyExecutor
 {
     private const string XP_TEMPLATE_PATH = "./data/xp_template.json";
+    private const string BACKUP_XP_TEMPLATE_PATH = "./data/OLD_xp_template.json";
 
     private readonly IPubSub _pubSub;
     private XpTemplate _template = new();
@@ -39,21 +40,11 @@ public sealed class XpTemplateService : INService, IReadyExecutor
 
             if (_template.Version < 3)
             {
-                if (_template.OutputSize is
-                    {
-                        X: 800,
-                        Y: 392
-                    })
-                {
-                    _template.OutputSize = new()
-                    {
-                        X = 500,
-                        Y = 245
-                    };
-                    _template.Version = 3;
-                    
-                    File.WriteAllText(XP_TEMPLATE_PATH, JsonConvert.SerializeObject(_template, Formatting.Indented));
-                }
+                if (File.Exists(XP_TEMPLATE_PATH))
+                    File.Move(XP_TEMPLATE_PATH, BACKUP_XP_TEMPLATE_PATH);
+
+                _template = new();
+                File.WriteAllText(XP_TEMPLATE_PATH, JsonConvert.SerializeObject(_template, Formatting.Indented));
             }
         }
         catch (Exception ex)

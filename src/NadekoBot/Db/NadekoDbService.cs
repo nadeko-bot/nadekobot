@@ -94,14 +94,13 @@ public sealed class NadekoDbService : DbService
             .OrderBy(x => x);
 
         var lastApplied = applied.Last();
-        Log.Information("Last applied migration: {LastApplied}", lastApplied);
 
         // apply all migrations with names greater than the last applied
         foreach (var runnable in available)
         {
             if (string.Compare(lastApplied, runnable, StringComparison.Ordinal) < 0)
             {
-                Log.Warning("Migration {MigrationName} has not been applied yet", runnable);
+                Log.Warning("Applying migration {MigrationName}", runnable);
 
                 var query = await File.ReadAllTextAsync(GetMigrationPath(ctx.Database, runnable));
                 await ctx.Database.ExecuteSqlRawAsync(query);

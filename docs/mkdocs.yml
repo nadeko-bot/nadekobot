@@ -63,8 +63,8 @@ nav:
         - Windows Guide: guides/windows-guide.md
         - Linux Guide: guides/linux-guide.md
         - macOS Guide: guides/macos-guide.md
-        - Windows Guide (from source): guides/source-guide.md
-        - Docker Guide (unsupported): guides/docker-guide.md
+        - Docker Guide: guides/docker-guide.md
+        - <sourcecode> Windows Guide: guides/source-guide.md
     - Commands:
         - Commands List: https://nadeko.bot/commands
     - Features Explained:

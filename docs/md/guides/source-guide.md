@@ -38,7 +38,7 @@ Open PowerShell as described above and run the following commands:
     - `cd ~/Desktop/nadekobot`
 1. Pull the new version, and make sure you're on the v6 branch
     - `git pull`
-    - ⚠️ If this fails, you may want to stash or remove your code changes if you don't know how to resolve merge conflicts
+    - ⚠️ IF this fails, you may want to `git stash` or remove your code changes if you don't know how to resolve merge conflicts
 1. **Backup** old output in case your data is overwritten
     - `cp -r -fo output/ output-old`
 1. Build the bot again
@@ -53,15 +53,9 @@ Open PowerShell as described above and run the following commands:
 
 #### Music prerequisites
 In order to use music commands, you need ffmpeg and yt-dlp installed.
-- [ffmpeg-32bit] | [ffmpeg-64bit] - Download the **appropriate version** for your system (32 bit if you're running a 32 bit OS, or 64 if you're running a 64bit OS). Unzip it, and move `ffmpeg.exe` to a path that's in your PATH environment variable. If you don't know what that is, just move the `ffmpeg.exe` file to `NadekoBot/output`.
-- [youtube-dlp] - Click to download the `yt-dlp.exe` file, then move `yt-dlp.exe` to a path that's in your PATH environment variable. If you don't know what that is, just move the `yt-dlp.exe` file to `NadekoBot/system`.
+- [ffmpeg]
+- [yt-dlp] - Click to download the `yt-dlp.exe` file, then move `yt-dlp.exe` to a path that's in your PATH environment variable. If you don't know what that is, just move the `yt-dlp.exe` file to your nadekobot's output folder.
 
-[Updater]: https://dl.nadeko.bot/v3/
-[Notepad++]: https://notepad-plus-plus.org/
 [.net]: https://dotnet.microsoft.com/download/dotnet/8.0
-[Redis]: https://github.com/MicrosoftArchive/redis/releases/download/win-3.0.504/Redis-x64-3.0.504.msi
-[Visual C++ 2010 (x86)]: https://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x86.exe
-[Visual C++ 2017 (x64)]: https://aka.ms/vs/15/release/vc_redist.x64.exe
-[ffmpeg-32bit]: https://cdn.nadeko.bot/dl/ffmpeg-32.zip
-[ffmpeg-64bit]: https://cdn.nadeko.bot/dl/ffmpeg-64.zip
-[youtube-dlp]: https://github.com/yt-dlp/yt-dlp/releases
+[ffmpeg]: https://github.com/GyanD/codexffmpeg/releases/latest
+[youtube-dlp]: https://github.com/yt-dlp/yt-dlp/releases/latest

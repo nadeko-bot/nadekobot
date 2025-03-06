@@ -40,7 +40,7 @@ Ensure Docker Compose is installed on your system. If not, follow the official D
 
 ## Step-by-Step Installation
 
-1. **Choose Your Workspace:** Select a directory where you'll set up your NadekoBot stack. Use your terminal to navigate to this directory. For the purpose of this guide, we'll use `/opt/stacks/nadekobot/` as an example, but you can choose any directory that suits your needs.
+1. **Choose Your Workspace:** Select a directory where you'll set up your NadekoBot stack. Use your terminal to navigate to this directory. For the purpose of this guide, we'll use `/opt/stacks/nadeko/` as an example, but you can choose any directory that suits your needs.
 
 2. **Create a Docker Compose File:** In this directory, create a Docker Compose file named `docker-compose.yml`. You can use any text editor for this task. For instance, to use the `nano` editor, type `nano docker-compose.yml`.
 
@@ -55,16 +55,14 @@ Ensure Docker Compose is installed on your system. If not, follow the official D
           TZ: Europe/Rome
           bot_token: YOUR_TOKEN_HERE
         volumes:
-          - /opt/stacks/nadekobot/data:/app/data
+          - /opt/stacks/nadeko/data:/app/data
     networks: {}
   ```
 
-4. **Launch Your Bot:** Now, you're ready to run Docker Compose. Use the following command: `docker-compose up -d`.
+4. **Launch Your Bot:** Now, you're ready to run Docker Compose. Use the following command: `docker compose up -d`.
 
-## Keeping Your Bot Up-to-Date
+1. **Navigate to Your Directory:** Use `cd /opt/stacks/nadeko/` to go to the directory containing your Docker Compose file.
 
-1. **Navigate to Your Directory:** Use `cd /path/to/your/directory` to go to the directory containing your Docker Compose file.
+2. **Pull the Latest Images:** Use `docker compose pull` to fetch the latest images.
 
-2. **Pull the Latest Images:** Use `docker-compose pull` to fetch the latest images.
-
-3. **Restart Your Containers:** Use `docker-compose up -d` to restart the containers.
+3. **Restart Your Containers:** Use `docker compose up -d` to restart the containers.

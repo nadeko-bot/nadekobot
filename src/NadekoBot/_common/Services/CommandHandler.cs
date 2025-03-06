@@ -8,24 +8,16 @@ using PreconditionResult = Discord.Commands.PreconditionResult;
 
 namespace NadekoBot.Services;
 
-public class CommandHandler : INService, IReadyExecutor, ICommandHandler
+public class CommandHandler : INService, ICommandHandler
 {
-    private const int GLOBAL_COMMANDS_COOLDOWN = 200;
-
     private const float ONE_THOUSANDTH = 1.0f / 1000;
 
     public event Func<IUserMessage, CommandInfo, Task> CommandExecuted = delegate { return Task.CompletedTask; };
     public event Func<CommandInfo, ITextChannel, string, Task> CommandErrored = delegate { return Task.CompletedTask; };
 
-    //userid/msg count
-    public ConcurrentDictionary<ulong, uint> UserMessagesSent { get; } = new();
-
-    public ConcurrentHashSet<ulong> UsersOnShortCooldown { get; } = new();
-
     private readonly DiscordSocketClient _client;
     private readonly CommandService _commandService;
     private readonly BotConfigService _bcs;
-    private readonly IBot _bot;
     private readonly IBehaviorHandler _behaviorHandler;
     private readonly IServiceProvider _services;
     private readonly ShardData _shardData;
@@ -41,7 +33,6 @@ public class CommandHandler : INService, IReadyExecutor, ICommandHandler
         DbService db,
         CommandService commandService,
         BotConfigService bcs,
-        IBot bot,
         IBehaviorHandler behaviorHandler,
         IServiceProvider services,
         ShardData shardData)
@@ -50,28 +41,20 @@ public class CommandHandler : INService, IReadyExecutor, ICommandHandler
         _commandService = commandService;
         _bc = bcs.Data;
         _bcs = bcs;
-        _bot = bot;
         _behaviorHandler = behaviorHandler;
         _db = db;
         _services = services;
         _shardData = shardData;
     }
 
-    public async Task OnReadyAsync()
+    public async Task InitializeAsync()
     {
-        await using (var uow = _db.GetDbContext())
-        {
-            _prefixes = await uow.GetTable<GuildConfig>()
-                                 .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                                 .Where(x => x.Prefix != null)
-                                 .ToListAsyncLinqToDB()
-                                 .Fmap(x => x.ToDictionary(x => x.GuildId, x => x.Prefix).ToConcurrent());
-        }
-
-        // clear users on short cooldown every GLOBAL_COMMANDS_COOLDOWN miliseconds
-        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(GLOBAL_COMMANDS_COOLDOWN));
-        while (await timer.WaitForNextTickAsync())
-            UsersOnShortCooldown.Clear();
+        await using var uow = _db.GetDbContext();
+        _prefixes = await uow.GetTable<GuildConfig>()
+            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(x => x.Prefix != null)
+            .ToListAsyncLinqToDB()
+            .Fmap(x => x.ToDictionary(x => x.GuildId, x => x.Prefix).ToConcurrent());
     }
 
     public string GetPrefix(IGuild guild)
@@ -218,9 +201,6 @@ public class CommandHandler : INService, IReadyExecutor, ICommandHandler
 
     private Task MessageReceivedHandler(SocketMessage msg)
     {
-        if (!_bot.IsReady)
-            return Task.CompletedTask;
-
         if (_bc.IgnoreOtherBots)
         {
             if (msg.Author.IsBot)
@@ -236,11 +216,6 @@ public class CommandHandler : INService, IReadyExecutor, ICommandHandler
         {
             try
             {
-#if !GLOBAL_NADEKO
-                // track how many messages each user is sending
-                UserMessagesSent.AddOrUpdate(usrMsg.Author.Id, 1, (_, old) => ++old);
-#endif
-
                 var channel = msg.Channel;
                 var guild = (msg.Channel as SocketTextChannel)?.Guild;
 
@@ -415,10 +390,6 @@ public class CommandHandler : INService, IReadyExecutor, ICommandHandler
 
         var cmd = successfulParses[0].Key.Command;
 
-        // Bot will ignore commands which are ran more often than what specified by
-        // GlobalCommandsCooldown constant (miliseconds)
-        if (!UsersOnShortCooldown.Add(context.Message.Author.Id))
-            return (false, null, cmd);
         //return SearchResult.FromError(CommandError.Exception, "You are on a global cooldown.");
 
         var blocked = await _behaviorHandler.RunPreCommandAsync(context, cmd);

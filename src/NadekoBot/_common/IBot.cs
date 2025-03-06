@@ -5,5 +5,4 @@ namespace NadekoBot;
 
 public interface IBot
 {
-    bool IsReady { get; }
 }

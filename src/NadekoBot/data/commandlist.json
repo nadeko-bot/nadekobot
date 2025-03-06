@@ -238,7 +238,7 @@
         ".delete",
         ".del"
       ],
-      "Description": "Deletes a single message given the channel and message ID. If channel is ommited, message will be searched for in the current channel. You can also specify time parameter after which the message will be deleted (up to 7 days). This timer won't persist through bot restarts.",
+      "Description": "Deletes a single message given the channel and message ID, or a message link.\nIf channel is omitted, message will be searched for in the current channel.\nYou can also specify time parameter after which the message will be deleted (up to 7 days).\nThis timer won't persist through bot restarts.",
       "Usage": [
         ".delete #chat 771562360594628608",
         ".delete 771562360594628608",
@@ -966,9 +966,26 @@
         ".notify",
         ".nfy"
       ],
-      "Description": "Sends a message to the current channel once the specified event occurs.\nProvide no parameters to see all available events.",
+      "Description": "Sends a message to the specified channel once the specified event occurs.\n\nIf no channel is specified, the message will be sent to the channel from which the event originated.\n*note: this is only possible for events that have an origin channel (for example `levelup`)*\n\nProvide no parameters to see all available events.",
       "Usage": [
         ".notify levelup Congratulations to user %user.name% for reaching level %event.level%"
+      ],
+      "Submodule": "NotifyCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".notifyphs",
+        ".notifyph",
+        ".notifyplaceholders"
+      ],
+      "Description": "Lists the placeholders for a given notify event type",
+      "Usage": [
+        ".notifyphs levelup"
       ],
       "Submodule": "NotifyCommands",
       "Module": "Administration",
@@ -4913,14 +4930,14 @@
     },
     {
       "Aliases": [
-        ".playlistshuffle",
-        ".shuffle",
-        ".sh",
-        ".plsh"
+        ".queueshuffle",
+        ".qsh",
+        ".qshuffle",
+        ".shuffle"
       ],
       "Description": "Shuffles the current playlist.",
       "Usage": [
-        ".playlistshuffle"
+        ".queueshuffle"
       ],
       "Submodule": "Music",
       "Module": "Music",
@@ -5063,12 +5080,14 @@
     },
     {
       "Aliases": [
-        ".deleteplaylist",
-        ".delpls"
+        ".playlistdelete",
+        ".pldel",
+        ".plrm",
+        ".pldelete"
       ],
-      "Description": "Deletes a saved playlist using its id. Works only if you made it or if you are the bot owner.",
+      "Description": "Deletes a saved playlist using its ID. Works only on playlists saved by you.",
       "Usage": [
-        ".deleteplaylist 5"
+        ".playlistdelete 5"
       ],
       "Submodule": "PlaylistCommands",
       "Module": "Music",
@@ -5095,11 +5114,13 @@
     },
     {
       "Aliases": [
-        ".save"
+        ".playlistsave",
+        ".plsave",
+        ".psave"
       ],
       "Description": "Saves a playlist under a certain name. Playlist name must be no longer than 20 characters and must not contain dashes.",
       "Usage": [
-        ".save classical1"
+        ".playlistsave classical1"
       ],
       "Submodule": "PlaylistCommands",
       "Module": "Music",
@@ -5110,15 +5131,20 @@
     },
     {
       "Aliases": [
-        ".load"
+        ".playlistload",
+        ".pload",
+        ".plload",
+        ".pll"
       ],
       "Description": "Loads a saved playlist using its ID. Use `.pls` to list all saved playlists and `.save` to save new ones.",
       "Usage": [
-        ".load 5"
+        ".playlistload 5"
       ],
       "Submodule": "PlaylistCommands",
       "Module": "Music",
-      "Options": null,
+      "Options": [
+        "`--shuffle`     "
+      ],
       "Requirements": [
         "No Public Bot"
       ]
@@ -7879,6 +7905,22 @@
     },
     {
       "Aliases": [
+        ".todo archive done",
+        ".todo archive compelete",
+        ".todo archive finish",
+        ".todo archive completed"
+      ],
+      "Description": "Creates a new archive with the specified name using only completed current todos.",
+      "Usage": [
+        ".todo archive done Success!"
+      ],
+      "Submodule": "archive",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
         ".todo archive list",
         ".todo archive ls"
       ],
@@ -7957,37 +7999,6 @@
       "Usage": [
         ".experience",
         ".experience @someguy"
-      ],
-      "Submodule": "Xp",
-      "Module": "Xp",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".xpexclude",
-        ".xpex"
-      ],
-      "Description": "Exclude a channel, role or current server from the xp system.",
-      "Usage": [
-        ".xpexclude Role Excluded-Role",
-        ".xpexclude Server"
-      ],
-      "Submodule": "Xp",
-      "Module": "Xp",
-      "Options": null,
-      "Requirements": [
-        "Administrator Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".xpexclusionlist",
-        ".xpexl"
-      ],
-      "Description": "Shows the roles and channels excluded from the XP system on this server, as well as whether the whole server is excluded.",
-      "Usage": [
-        ".xpexclusionlist"
       ],
       "Submodule": "Xp",
       "Module": "Xp",
@@ -8361,6 +8372,35 @@
         ".clubrename New cool club name"
       ],
       "Submodule": "Club",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".xprate"
+      ],
+      "Description": "Sets the xp rate for the server or the specified channel.\nFirst specify the type, amount, and then the cooldown in minutes.\nProvide no parameters to see the current rates.\nCooldown has no effect on voice xp, as any amount is gained per minute.",
+      "Usage": [
+        ".xprate",
+        ".xprate text 3 5",
+        ".xprate #channel voice 50 1"
+      ],
+      "Submodule": "XpRateCommands",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".xpratereset"
+      ],
+      "Description": "Resets the xp rate for the server or the specified channel.",
+      "Usage": [
+        ".xpratereset",
+        ".xpratereset #channel"
+      ],
+      "Submodule": "XpRateCommands",
       "Module": "Xp",
       "Options": null,
       "Requirements": []

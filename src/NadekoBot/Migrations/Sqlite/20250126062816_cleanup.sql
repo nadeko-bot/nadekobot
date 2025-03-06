@@ -178,7 +178,8 @@ DELETE FROM GcChannelId WHERE GuildConfigId IS NULL OR GuildConfigId NOT IN (SEL
 UPDATE GcChannelId
 SET GuildId = (SELECT GuildId FROM GuildConfigs WHERE GuildConfigs.Id = GcChannelId.GuildConfigId);
 
-DELETE FROM CommandCooldown WHERE GuildConfigId IS NULL OR GuildConfigId NOT IN (SELECT Id FROM GuildConfigs);
+DELETE FROM CommandCooldown WHERE GuildConfigId IS NULL OR GuildConfigId NOT IN (SELECT Id FROM GuildConfigs)
+    OR (GuildId, CommandName) IN (SELECT GuildId, CommandName FROM CommandCooldown GROUP BY GuildId, CommandName HAVING COUNT(*) > 1);
 UPDATE CommandCooldown
 SET GuildId = (SELECT GuildId FROM GuildConfigs WHERE GuildConfigs.Id = CommandCooldown.GuildConfigId);
 
