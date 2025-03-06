@@ -370,6 +370,7 @@ site/
 PROMPT.md
 .aider*
 
-## Pip files
+## Python pip/env files
 Pipfile
 Pipfile.lock
+.venv
