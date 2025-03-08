@@ -84,6 +84,7 @@ jobs:
             if [[ "$runtime" == *"win"* ]]; then
               zip -r "$runtime.zip" "$runtime"
             else
+              chmod +x "$runtime/NadekoBot"
               tar -czf "$runtime.tar.gz" "$runtime"
             fi
           done

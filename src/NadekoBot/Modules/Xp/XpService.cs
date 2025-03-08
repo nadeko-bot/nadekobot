@@ -619,49 +619,54 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             }
 
             var avatarUrl = stats.User.RealAvatarUrl();
-            byte[] avatarImageData = null;
-
-            if (avatarUrl is not null)
+            var avatarFetchTask = Task.Run(async () =>
             {
-                var result = await _c.GetImageDataAsync(avatarUrl);
-                if (!result.TryPickT0(out avatarImageData, out _))
+                try
                 {
-                    using (var http = _httpFactory.CreateClient())
-                    {
-                        var avatarData = await http.GetByteArrayAsync(avatarUrl);
-                        using (var tempDraw = Image.Load<Rgba32>(avatarData))
-                        {
-                            tempDraw.Mutate(x => x
-                                .Resize(template.User.Icon.Size.X, template.User.Icon.Size.Y)
-                                .ApplyRoundedCorners(Math.Max(template.User.Icon.Size.X,
-                                                         template.User.Icon.Size.Y)
-                                                     / 2.0f));
-                            await using (var stream = await tempDraw.ToStreamAsync())
-                            {
-                                avatarImageData = stream.ToArray();
-                            }
-                        }
-                    }
+                    if (avatarUrl is null)
+                        return null;
 
-                    await _c.SetImageDataAsync(avatarUrl, avatarImageData);
+                    var result = await _c.GetImageDataAsync(avatarUrl);
+                    if (result.TryPickT0(out var imgData, out _))
+                        return imgData;
+
+                    using var http = _httpFactory.CreateClient();
+
+                    var avatarData = await http.GetByteArrayAsync(avatarUrl);
+                    using var tempDraw = Image.Load<Rgba32>(avatarData);
+
+                    tempDraw.Mutate(x => x
+                        .Resize(template.User.Icon.Size.X, template.User.Icon.Size.Y)
+                        .ApplyRoundedCorners(Math.Max(template.User.Icon.Size.X,
+                                                 template.User.Icon.Size.Y)
+                                             / 2.0f));
+                    await using var stream = await tempDraw.ToStreamAsync();
+                    var data = stream.ToArray();
+                    await _c.SetImageDataAsync(avatarUrl, data);
+                    return data;
                 }
-            }
+                catch (Exception)
+                {
+                    return null;
+                }
+            });
 
             using var img = Image.Load<Rgba32>(bgBytes);
 
-            if (template.User.Name.Show)
+
+            img.Mutate(x =>
             {
-                var fontSize = (int)(template.User.Name.FontSize * 0.9);
-                var username = stats.User.ToString();
-                var usernameFont = _fonts.NotoSans.CreateFont(fontSize, FontStyle.Bold);
-
-                var size = TextMeasurer.MeasureSize($"@{username}", new(usernameFont));
-                var scale = 400f / size.Width;
-                if (scale < 1)
-                    usernameFont = _fonts.NotoSans.CreateFont(template.User.Name.FontSize * scale, FontStyle.Bold);
-
-                img.Mutate(x =>
+                if (template.User.Name.Show)
                 {
+                    var fontSize = (int)(template.User.Name.FontSize * 0.9);
+                    var username = stats.User.ToString();
+                    var usernameFont = _fonts.NotoSans.CreateFont(fontSize, FontStyle.Bold);
+
+                    var size = TextMeasurer.MeasureSize($"@{username}", new(usernameFont));
+                    var scale = 400f / size.Width;
+                    if (scale < 1)
+                        usernameFont = _fonts.NotoSans.CreateFont(template.User.Name.FontSize * scale, FontStyle.Bold);
+
                     x.DrawText(new RichTextOptions(usernameFont)
                         {
                             HorizontalAlignment = HorizontalAlignment.Left,
@@ -671,126 +676,129 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                         },
                         "@" + username,
                         Brushes.Solid(template.User.Name.Color));
+                }
 
 
-                    //club name
+                //club name
 
-                    if (template.Club.Name.Show)
-                    {
-                        var clubName = stats.User.Club?.ToString() ?? "-";
+                if (template.Club.Name.Show)
+                {
+                    var clubName = stats.User.Club?.ToString() ?? "-";
 
-                        var clubFont = _fonts.NotoSans.CreateFont(template.Club.Name.FontSize, FontStyle.Regular);
+                    var clubFont = _fonts.NotoSans.CreateFont(template.Club.Name.FontSize, FontStyle.Regular);
 
-                        x.DrawText(new RichTextOptions(clubFont)
-                            {
-                                HorizontalAlignment = HorizontalAlignment.Right,
-                                VerticalAlignment = VerticalAlignment.Top,
-                                FallbackFontFamilies = _fonts.FallBackFonts,
-                                Origin = new(template.Club.Name.Pos.X + 50, template.Club.Name.Pos.Y - 8)
-                            },
-                            clubName,
-                            Brushes.Solid(template.Club.Name.Color));
-                    }
-
-                    Font GetTruncatedFont(
-                        FontFamily fontFamily,
-                        int fontSize,
-                        FontStyle style,
-                        string text,
-                        int maxSize)
-                    {
-                        var font = fontFamily.CreateFont(fontSize, style);
-                        var size = TextMeasurer.MeasureSize(text, new(font));
-                        var scale = maxSize / size.Width;
-                        if (scale < 1)
-                            font = fontFamily.CreateFont(fontSize * scale, style);
-
-                        return font;
-                    }
-
-
-                    if (template.User.Level.Show)
-                    {
-                        var guildLevelFont = GetTruncatedFont(
-                            _fonts.NotoSans,
-                            template.User.Level.FontSize,
-                            FontStyle.Bold,
-                            stats.Guild.Level.ToString(),
-                            33);
-
-
-                        x.DrawText(stats.Guild.Level.ToString(),
-                            guildLevelFont,
-                            template.User.Level.Color,
-                            new(template.User.Level.Pos.X, template.User.Level.Pos.Y));
-                    }
-
-
-                    var guild = stats.Guild;
-
-                    //xp bar
-                    if (template.User.Xp.Bar.Show)
-                    {
-                        var xpPercent = guild.LevelXp / (float)guild.RequiredXp;
-                        DrawXpBar(xpPercent, template.User.Xp.Bar.Guild, img);
-                    }
-
-                    if (template.User.Xp.Guild.Show)
-                    {
-                        x.DrawText(
-                            new RichTextOptions(_fonts.NotoSans.CreateFont(template.User.Xp.Guild.FontSize,
-                                FontStyle.Bold))
-                            {
-                                HorizontalAlignment = HorizontalAlignment.Center,
-                                VerticalAlignment = VerticalAlignment.Center,
-                                Origin = new(template.User.Xp.Guild.Pos.X, template.User.Xp.Guild.Pos.Y)
-                            },
-                            $"{guild.LevelXp}/{guild.RequiredXp}",
-                            Brushes.Solid(template.User.Xp.Guild.Color));
-                    }
-
-                    var rankPen = new SolidPen(Color.White, 1);
-                    //ranking
-
-                    if (template.User.Rank.Show)
-                    {
-                        var guildRankStr = stats.GuildRanking.ToString();
-
-                        var guildRankFont = GetTruncatedFont(
-                            _fonts.NotoSans,
-                            template.User.Rank.FontSize,
-                            FontStyle.Bold,
-                            guildRankStr,
-                            22);
-
-                        x.DrawText(
-                            new RichTextOptions(guildRankFont)
-                            {
-                                Origin = new(template.User.Rank.Pos.X, template.User.Rank.Pos.Y)
-                            },
-                            guildRankStr,
-                            Brushes.Solid(template.User.Rank.Color),
-                            rankPen
-                        );
-                    }
-
-                    if (template.User.Icon.Show)
-                    {
-                        try
+                    x.DrawText(new RichTextOptions(clubFont)
                         {
-                            using var toDraw = Image.Load(avatarImageData);
-                            if (toDraw.Size != new Size(template.User.Icon.Size.X, template.User.Icon.Size.Y))
-                                toDraw.Mutate(x
-                                    => x.Resize(template.User.Icon.Size.X, template.User.Icon.Size.Y));
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            FallbackFontFamilies = _fonts.FallBackFonts,
+                            Origin = new(template.Club.Name.Pos.X + 50, template.Club.Name.Pos.Y - 8)
+                        },
+                        clubName,
+                        Brushes.Solid(template.Club.Name.Color));
+                }
 
-                            x.DrawImage(toDraw,
-                                new Point(template.User.Icon.Pos.X, template.User.Icon.Pos.Y),
-                                1);
-                        }
-                        catch (Exception ex)
+                Font GetTruncatedFont(
+                    FontFamily fontFamily,
+                    int fontSize,
+                    FontStyle style,
+                    string text,
+                    int maxSize)
+                {
+                    var font = fontFamily.CreateFont(fontSize, style);
+                    var size = TextMeasurer.MeasureSize(text, new(font));
+                    var scale = maxSize / size.Width;
+                    if (scale < 1)
+                        font = fontFamily.CreateFont(fontSize * scale, style);
+
+                    return font;
+                }
+
+
+                if (template.User.Level.Show)
+                {
+                    var guildLevelFont = GetTruncatedFont(
+                        _fonts.NotoSans,
+                        template.User.Level.FontSize,
+                        FontStyle.Bold,
+                        stats.Guild.Level.ToString(),
+                        33);
+
+
+                    x.DrawText(stats.Guild.Level.ToString(),
+                        guildLevelFont,
+                        template.User.Level.Color,
+                        new(template.User.Level.Pos.X, template.User.Level.Pos.Y));
+                }
+
+
+                var guild = stats.Guild;
+
+                //xp bar
+                if (template.User.Xp.Bar.Show)
+                {
+                    var xpPercent = guild.LevelXp / (float)guild.RequiredXp;
+                    DrawXpBar(xpPercent, template.User.Xp.Bar.Guild, img);
+                }
+
+                if (template.User.Xp.Guild.Show)
+                {
+                    x.DrawText(
+                        new RichTextOptions(_fonts.NotoSans.CreateFont(template.User.Xp.Guild.FontSize,
+                            FontStyle.Bold))
                         {
-                            Log.Warning(ex, "Error drawing avatar image");
-                        }
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Origin = new(template.User.Xp.Guild.Pos.X, template.User.Xp.Guild.Pos.Y)
+                        },
+                        $"{guild.LevelXp}/{guild.RequiredXp}",
+                        Brushes.Solid(template.User.Xp.Guild.Color));
+                }
+
+                var rankPen = new SolidPen(Color.White, 1);
+                //ranking
+
+                if (template.User.Rank.Show)
+                {
+                    var guildRankStr = stats.GuildRanking.ToString();
+
+                    var guildRankFont = GetTruncatedFont(
+                        _fonts.NotoSans,
+                        template.User.Rank.FontSize,
+                        FontStyle.Bold,
+                        guildRankStr,
+                        22);
+
+                    x.DrawText(
+                        new RichTextOptions(guildRankFont)
+                        {
+                            Origin = new(template.User.Rank.Pos.X, template.User.Rank.Pos.Y)
+                        },
+                        guildRankStr,
+                        Brushes.Solid(template.User.Rank.Color),
+                        rankPen
+                    );
+                }
+            });
+
+            if (template.User.Icon.Show)
+            {
+                var avImageData = await avatarFetchTask;
+                img.Mutate(mut =>
+                {
+                    try
+                    {
+                        using var toDraw = Image.Load(avImageData);
+                        if (toDraw.Size != new Size(template.User.Icon.Size.X, template.User.Icon.Size.Y))
+                            toDraw.Mutate(x => x.Resize(template.User.Icon.Size.X, template.User.Icon.Size.Y));
+
+                        mut.DrawImage(toDraw,
+                            new Point(template.User.Icon.Pos.X, template.User.Icon.Pos.Y),
+                            1);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "Error drawing avatar image");
                     }
                 });
             }

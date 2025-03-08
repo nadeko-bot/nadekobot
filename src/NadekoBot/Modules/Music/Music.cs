@@ -7,13 +7,24 @@ namespace NadekoBot.Modules.Music;
 [NoPublicBot]
 public sealed partial class Music : NadekoModule<IMusicService>
 {
-    public enum All { All = -1 }
+    public enum All
+    {
+        All = -1
+    }
 
     public enum InputRepeatType
     {
-        N = 0, No = 0, None = 0,
-        T = 1, Track = 1, S = 1, Song = 1,
-        Q = 2, Queue = 2, Playlist = 2, Pl = 2
+        N = 0,
+        No = 0,
+        None = 0,
+        T = 1,
+        Track = 1,
+        S = 1,
+        Song = 1,
+        Q = 2,
+        Queue = 2,
+        Playlist = 2,
+        Pl = 2
     }
 
     public const string MUSIC_ICON_URL = "https://i.imgur.com/nhKS3PT.png";
@@ -22,9 +33,13 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
     private static readonly SemaphoreSlim _voiceChannelLock = new(1, 1);
     private readonly ILogCommandService _logService;
+    private readonly ILyricsService _lyricsService;
 
-    public Music(ILogCommandService logService)
-        => _logService = logService;
+    public Music(ILogCommandService logService, ILyricsService lyricsService)
+    {
+        _logService = logService;
+        _lyricsService = lyricsService;
+    }
 
     private async Task<bool> ValidateAsync()
     {
@@ -110,10 +125,10 @@ public sealed partial class Music : NadekoModule<IMusicService>
         try
         {
             var embed = CreateEmbed()
-                               .WithOkColor()
-                               .WithAuthor(GetText(strs.queued_track) + " #" + (index + 1), MUSIC_ICON_URL)
-                               .WithDescription($"{trackInfo.PrettyName()}\n{GetText(strs.queue)} ")
-                               .WithFooter(trackInfo.Platform.ToString());
+                .WithOkColor()
+                .WithAuthor(GetText(strs.queued_track) + " #" + (index + 1), MUSIC_ICON_URL)
+                .WithDescription($"{trackInfo.PrettyName()}\n{GetText(strs.queue)} ")
+                .WithFooter(trackInfo.Platform.ToString());
 
             if (!string.IsNullOrWhiteSpace(trackInfo.Thumbnail))
                 embed.WithThumbnailUrl(trackInfo.Thumbnail);
@@ -301,39 +316,39 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
 
             desc += tracks
-                    .Select((v, index) =>
-                    {
-                        index += LQ_ITEMS_PER_PAGE * curPage;
-                        if (index == currentIndex)
-                            return $"**⇒**`{index + 1}.` {v.PrettyFullName()}";
+                .Select((v, index) =>
+                {
+                    index += LQ_ITEMS_PER_PAGE * curPage;
+                    if (index == currentIndex)
+                        return $"**⇒**`{index + 1}.` {v.PrettyFullName()}";
 
-                        return $"`{index + 1}.` {v.PrettyFullName()}";
-                    })
-                    .Join('\n');
+                    return $"`{index + 1}.` {v.PrettyFullName()}";
+                })
+                .Join('\n');
 
             if (!string.IsNullOrWhiteSpace(add))
                 desc = add + "\n" + desc;
 
             var embed = CreateEmbed()
-                               .WithAuthor(
-                                   GetText(strs.player_queue(curPage + 1, (tracks.Count / LQ_ITEMS_PER_PAGE) + 1)),
-                                   MUSIC_ICON_URL)
-                               .WithDescription(desc)
-                               .WithFooter(
-                                   $"  {mp.PrettyVolume()}  |  🎶 {tracks.Count}  |  ⌛ {mp.PrettyTotalTime()}  ")
-                               .WithOkColor();
+                .WithAuthor(
+                    GetText(strs.player_queue(curPage + 1, (tracks.Count / LQ_ITEMS_PER_PAGE) + 1)),
+                    MUSIC_ICON_URL)
+                .WithDescription(desc)
+                .WithFooter(
+                    $"  {mp.PrettyVolume()}  |  🎶 {tracks.Count}  |  ⌛ {mp.PrettyTotalTime()}  ")
+                .WithOkColor();
 
             return embed;
         }
 
         await Response()
-              .Paginated()
-              .Items(tracks)
-              .PageSize(LQ_ITEMS_PER_PAGE)
-              .CurrentPage(page)
-              .AddFooter(false)
-              .Page(PrintAction)
-              .SendAsync();
+            .Paginated()
+            .Items(tracks)
+            .PageSize(LQ_ITEMS_PER_PAGE)
+            .CurrentPage(page)
+            .AddFooter(false)
+            .Page(PrintAction)
+            .SendAsync();
     }
 
     // search
@@ -353,15 +368,15 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
 
         var embeds = videos.Select((x, i) => CreateEmbed()
-                                                    .WithOkColor()
-                                                    .WithThumbnailUrl(x.Thumbnail)
-                                                    .WithDescription($"`{i + 1}.` {Format.Bold(x.Title)}\n\t{x.Url}"))
-                           .ToList();
+                .WithOkColor()
+                .WithThumbnailUrl(x.Thumbnail)
+                .WithDescription($"`{i + 1}.` {Format.Bold(x.Title)}\n\t{x.Url}"))
+            .ToList();
 
         var msg = await Response()
-                        .Text(strs.queue_search_results)
-                        .Embeds(embeds)
-                        .SendAsync();
+            .Text(strs.queue_search_results)
+            .Embeds(embeds)
+            .SendAsync();
 
         try
         {
@@ -425,10 +440,10 @@ public sealed partial class Music : NadekoModule<IMusicService>
         }
 
         var embed = CreateEmbed()
-                           .WithAuthor(GetText(strs.removed_track) + " #" + index, MUSIC_ICON_URL)
-                           .WithDescription(track.PrettyName())
-                           .WithFooter(track.PrettyInfo())
-                           .WithErrorColor();
+            .WithAuthor(GetText(strs.removed_track) + " #" + index, MUSIC_ICON_URL)
+            .WithDescription(track.PrettyName())
+            .WithFooter(track.PrettyInfo())
+            .WithErrorColor();
 
         await _service.SendToOutputAsync(ctx.Guild.Id, embed);
     }
@@ -593,11 +608,11 @@ public sealed partial class Music : NadekoModule<IMusicService>
         }
 
         var embed = CreateEmbed()
-                           .WithTitle(track.Title.TrimTo(65))
-                           .WithAuthor(GetText(strs.track_moved), MUSIC_ICON_URL)
-                           .AddField(GetText(strs.from_position), $"#{from + 1}", true)
-                           .AddField(GetText(strs.to_position), $"#{to + 1}", true)
-                           .WithOkColor();
+            .WithTitle(track.Title.TrimTo(65))
+            .WithAuthor(GetText(strs.track_moved), MUSIC_ICON_URL)
+            .AddField(GetText(strs.from_position), $"#{from + 1}", true)
+            .AddField(GetText(strs.to_position), $"#{to + 1}", true)
+            .WithOkColor();
 
         if (Uri.IsWellFormedUriString(track.Url, UriKind.Absolute))
             embed.WithUrl(track.Url);
@@ -652,12 +667,12 @@ public sealed partial class Music : NadekoModule<IMusicService>
             return;
 
         var embed = CreateEmbed()
-                           .WithOkColor()
-                           .WithAuthor(GetText(strs.now_playing), MUSIC_ICON_URL)
-                           .WithDescription(currentTrack.PrettyName())
-                           .WithThumbnailUrl(currentTrack.Thumbnail)
-                           .WithFooter(
-                               $"{mp.PrettyVolume()} | {mp.PrettyTotalTime()} | {currentTrack.Platform} | {currentTrack.Queuer}");
+            .WithOkColor()
+            .WithAuthor(GetText(strs.now_playing), MUSIC_ICON_URL)
+            .WithDescription(currentTrack.PrettyName())
+            .WithThumbnailUrl(currentTrack.Thumbnail)
+            .WithFooter(
+                $"{mp.PrettyVolume()} | {mp.PrettyTotalTime()} | {currentTrack.Platform} | {currentTrack.Queuer}");
 
         await Response().Embed(embed).SendAsync();
     }
@@ -767,5 +782,72 @@ public sealed partial class Music : NadekoModule<IMusicService>
         {
             await Response().Confirm(strs.wrongsong_success(removed.Title.TrimTo(30))).SendAsync();
         }
+    }
+
+    [Cmd]
+    [RequireContext(ContextType.Guild)]
+    public async Task Lyrics([Leftover] string name = null)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            if (_service.TryGetMusicPlayer(ctx.Guild.Id, out var mp)
+                && mp.GetCurrentTrack(out _) is { } currentTrack)
+            {
+                name = currentTrack.Title;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        var tracks = await _lyricsService.SearchTracksAsync(name);
+
+        if (tracks.Count == 0)
+        {
+            await Response().Error(strs.no_lyrics_found).SendAsync();
+            return;
+        }
+
+        var embed = CreateEmbed()
+            .WithFooter("type 1-5 to select");
+
+        for (var i = 0; i <= 5 && i < tracks.Count; i++)
+        {
+            var item = tracks[i];
+            embed.AddField($"`{(i + 1)}`. {item.Author}", item.Title, false);
+        }
+
+        await Response()
+            .Embed(embed)
+            .SendAsync();
+
+        var input = await GetUserInputAsync(ctx.User.Id, ctx.Channel.Id, str => int.TryParse(str, out _));
+
+        if (input is null)
+            return;
+
+        var index = int.Parse(input) - 1;
+        if (index < 0 || index > 4)
+        {
+            return;
+        }
+
+        var track = tracks[index];
+        var lyrics = await _lyricsService.GetLyricsAsync(track.Id);
+
+        if (string.IsNullOrWhiteSpace(lyrics))
+        {
+            await Response().Error(strs.no_lyrics_found).SendAsync();
+            return;
+        }
+
+        await Response()
+            .Embed(CreateEmbed()
+                .WithOkColor()
+                .WithAuthor(track.Author)
+                .WithTitle(track.Title)
+                .WithDescription(lyrics))
+            .SendAsync();
     }
 }

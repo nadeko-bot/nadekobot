@@ -218,20 +218,20 @@ public partial class Gambling : GamblingModule<GamblingService>
         var val = Config.Timely.Amount;
         var boostGuilds = Config.BoostBonus.GuildIds ?? new();
         var guildUsers = await boostGuilds
-                               .Select(async gid =>
-                               {
-                                   try
-                                   {
-                                       var guild = await _client.Rest.GetGuildAsync(gid, false);
-                                       var user = await _client.Rest.GetGuildUserAsync(gid, ctx.User.Id);
-                                       return (guild, user);
-                                   }
-                                   catch
-                                   {
-                                       return default;
-                                   }
-                               })
-                               .WhenAll();
+            .Select(async gid =>
+            {
+                try
+                {
+                    var guild = await _client.Rest.GetGuildAsync(gid, false);
+                    var user = await _client.Rest.GetGuildUserAsync(gid, ctx.User.Id);
+                    return (guild, user);
+                }
+                catch
+                {
+                    return default;
+                }
+            })
+            .WhenAll();
 
         var userInfo = guildUsers.FirstOrDefault(x => x.user?.PremiumSince is not null);
         var booster = userInfo != default;
@@ -296,8 +296,8 @@ public partial class Gambling : GamblingModule<GamblingService>
         else
         {
             await Response()
-                  .Confirm(strs.timely_set(Format.Bold(N(amount)), Format.Bold(period.ToString())))
-                  .SendAsync();
+                .Confirm(strs.timely_set(Format.Bold(N(amount)), Format.Bold(period.ToString())))
+                .SendAsync();
         }
     }
 
@@ -316,10 +316,10 @@ public partial class Gambling : GamblingModule<GamblingService>
 
         var usr = membersArray[new NadekoRandom().Next(0, membersArray.Length)];
         await Response()
-              .Confirm("🎟 " + GetText(strs.raffled_user),
-                  $"**{usr.Username}**",
-                  footer: $"ID: {usr.Id}")
-              .SendAsync();
+            .Confirm("🎟 " + GetText(strs.raffled_user),
+                $"**{usr.Username}**",
+                footer: $"ID: {usr.Id}")
+            .SendAsync();
     }
 
     [Cmd]
@@ -337,10 +337,10 @@ public partial class Gambling : GamblingModule<GamblingService>
 
         var usr = membersArray[new NadekoRandom().Next(0, membersArray.Length)];
         await Response()
-              .Confirm("🎟 " + GetText(strs.raffled_user),
-                  $"**{usr.Username}**",
-                  footer: $"ID: {usr.Id}")
-              .SendAsync();
+            .Confirm("🎟 " + GetText(strs.raffled_user),
+                $"**{usr.Username}**",
+                footer: $"ID: {usr.Id}")
+            .SendAsync();
     }
 
     [Cmd]
@@ -373,41 +373,54 @@ public partial class Gambling : GamblingModule<GamblingService>
             return;
         }
 
-        List<CurrencyTransaction> trs;
+        var embed = CreateEmbed()
+            .WithTitle(GetText(strs.transactions(
+                ((SocketGuild)ctx.Guild)?.GetUser(userId)?.ToString()
+                ?? $"{userId}")))
+            .WithOkColor();
+
+        int count;
         await using (var uow = _db.GetDbContext())
         {
-            trs = await uow.Set<CurrencyTransaction>().GetPageFor(userId, page);
+            count = await uow.Set<CurrencyTransaction>()
+                .GetCountFor(userId);
         }
 
-        var embed = CreateEmbed()
-                    .WithTitle(GetText(strs.transactions(
-                        ((SocketGuild)ctx.Guild)?.GetUser(userId)?.ToString()
-                        ?? $"{userId}")))
-                    .WithOkColor();
-
-        var sb = new StringBuilder();
-        foreach (var tr in trs)
-        {
-            var change = tr.Amount >= 0 ? "🔵" : "🔴";
-            var kwumId = new kwum(tr.Id).ToString();
-            var date = $"#{Format.Code(kwumId)} `〖{GetFormattedCurtrDate(tr)}〗`";
-
-            sb.AppendLine($"\\{change} {date} {Format.Bold(N(tr.Amount))}");
-            var transactionString = GetHumanReadableTransaction(tr.Type, tr.Extra, tr.OtherId);
-            if (transactionString is not null)
+        await Response()
+            .Paginated()
+            .PageItems(async (curPage) =>
             {
-                sb.AppendLine(transactionString);
-            }
-
-            if (!string.IsNullOrWhiteSpace(tr.Note))
+                await using var uow = _db.GetDbContext();
+                return await uow.Set<CurrencyTransaction>()
+                    .GetPageFor(userId, curPage);
+            })
+            .PageSize(15)
+            .TotalElements(count)
+            .Page((trs, _) =>
             {
-                sb.AppendLine($"\t`Note:` {tr.Note.TrimTo(50)}");
-            }
-        }
+                var sb = new StringBuilder();
+                foreach (var tr in trs)
+                {
+                    var change = tr.Amount >= 0 ? "🔵" : "🔴";
+                    var kwumId = new kwum(tr.Id).ToString();
+                    var date = $"#{Format.Code(kwumId)} `〖{GetFormattedCurtrDate(tr)}〗`";
 
-        embed.WithDescription(sb.ToString());
-        embed.WithFooter(GetText(strs.page(page + 1)));
-        await Response().Embed(embed).SendAsync();
+                    sb.AppendLine($"\\{change} {date} {Format.Bold(N(tr.Amount))}");
+                    var transactionString = GetHumanReadableTransaction(tr.Type, tr.Extra, tr.OtherId);
+                    if (transactionString is not null)
+                    {
+                        sb.AppendLine(transactionString);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(tr.Note))
+                    {
+                        sb.AppendLine($"\t`Note:` {tr.Note.TrimTo(50)}");
+                    }
+                }
+
+                embed.WithDescription(sb.ToString());
+                return Task.FromResult(embed);
+            }).SendAsync();
     }
 
     private static string GetFormattedCurtrDate(CurrencyTransaction ct)
@@ -420,9 +433,9 @@ public partial class Gambling : GamblingModule<GamblingService>
         await using var uow = _db.GetDbContext();
 
         var tr = await uow.Set<CurrencyTransaction>()
-                          .ToLinqToDBTable()
-                          .Where(x => x.Id == intId && x.UserId == ctx.User.Id)
-                          .FirstOrDefaultAsync();
+            .ToLinqToDBTable()
+            .Where(x => x.Id == intId && x.UserId == ctx.User.Id)
+            .FirstOrDefaultAsync();
 
         if (tr is null)
         {
@@ -483,9 +496,9 @@ public partial class Gambling : GamblingModule<GamblingService>
         var balance = await _bank.GetBalanceAsync(ctx.User.Id);
 
         await N(balance)
-              .Pipe(strs.bank_balance)
-              .Pipe(GetText)
-              .Pipe(text => smc.RespondConfirmAsync(_sender, text, ephemeral: true));
+            .Pipe(strs.bank_balance)
+            .Pipe(GetText)
+            .Pipe(text => smc.RespondConfirmAsync(_sender, text, ephemeral: true));
     }
 
     private NadekoInteractionBase CreateCashInteraction()
@@ -507,13 +520,13 @@ public partial class Gambling : GamblingModule<GamblingService>
             : null;
 
         await Response()
-              .Confirm(
-                  user.ToString()
-                      .Pipe(Format.Bold)
-                      .With(cur)
-                      .Pipe(strs.has))
-              .Interaction(inter)
-              .SendAsync();
+            .Confirm(
+                user.ToString()
+                    .Pipe(Format.Bold)
+                    .With(cur)
+                    .Pipe(strs.has))
+            .Interaction(inter)
+            .SendAsync();
     }
 
     [Cmd]
@@ -594,10 +607,10 @@ public partial class Gambling : GamblingModule<GamblingService>
             new("award", ctx.User.ToString()!, role.Name, ctx.User.Id));
 
         await Response()
-              .Confirm(strs.mass_award(N(amount),
-                  Format.Bold(users.Count.ToString()),
-                  Format.Bold(role.Name)))
-              .SendAsync();
+            .Confirm(strs.mass_award(N(amount),
+                Format.Bold(users.Count.ToString()),
+                Format.Bold(role.Name)))
+            .SendAsync();
     }
 
     [Cmd]
@@ -613,10 +626,10 @@ public partial class Gambling : GamblingModule<GamblingService>
             new("take", ctx.User.ToString()!, null, ctx.User.Id));
 
         await Response()
-              .Confirm(strs.mass_take(N(amount),
-                  Format.Bold(users.Count.ToString()),
-                  Format.Bold(role.Name)))
-              .SendAsync();
+            .Confirm(strs.mass_take(N(amount),
+                Format.Bold(users.Count.ToString()),
+                Format.Bold(role.Name)))
+            .SendAsync();
     }
 
     [Cmd]
@@ -639,8 +652,8 @@ public partial class Gambling : GamblingModule<GamblingService>
         else
         {
             await Response()
-                  .Error(strs.take_fail(N(amount), Format.Bold(user.ToString()), CurrencySign))
-                  .SendAsync();
+                .Error(strs.take_fail(N(amount), Format.Bold(user.ToString()), CurrencySign))
+                .SendAsync();
         }
     }
 
@@ -662,8 +675,8 @@ public partial class Gambling : GamblingModule<GamblingService>
         else
         {
             await Response()
-                  .Error(strs.take_fail(N(amount), Format.Code(usrId.ToString()), CurrencySign))
-                  .SendAsync();
+                .Error(strs.take_fail(N(amount), Format.Code(usrId.ToString()), CurrencySign))
+                .SendAsync();
         }
     }
 
@@ -695,12 +708,12 @@ public partial class Gambling : GamblingModule<GamblingService>
         }
 
         var eb = CreateEmbed()
-                 .WithAuthor(ctx.User)
-                 .WithDescription(Format.Bold(str))
-                 .AddField(GetText(strs.roll2), result.Roll.ToString(CultureInfo.InvariantCulture), true)
-                 .AddField(GetText(strs.bet), N(amount), true)
-                 .AddField(GetText(strs.won), N((long)result.Won), true)
-                 .WithOkColor();
+            .WithAuthor(ctx.User)
+            .WithDescription(Format.Bold(str))
+            .AddField(GetText(strs.roll2), result.Roll.ToString(CultureInfo.InvariantCulture), true)
+            .AddField(GetText(strs.bet), N(amount), true)
+            .AddField(GetText(strs.won), N((long)result.Won), true)
+            .WithOkColor();
 
         await Response().Embed(eb).SendAsync();
     }
@@ -741,11 +754,11 @@ public partial class Gambling : GamblingModule<GamblingService>
 
                 await using var uow = _db.GetDbContext();
                 var cleanRichest = await uow.GetTable<DiscordUser>()
-                                            .Where(x => x.UserId.In(users))
-                                            .OrderByDescending(x => x.CurrencyAmount)
-                                            .Skip(curPage * perPage)
-                                            .Take(perPage)
-                                            .ToListAsync();
+                    .Where(x => x.UserId.In(users))
+                    .OrderByDescending(x => x.CurrencyAmount)
+                    .Skip(curPage * perPage)
+                    .Take(perPage)
+                    .ToListAsync();
 
                 return cleanRichest;
             }
@@ -757,34 +770,34 @@ public partial class Gambling : GamblingModule<GamblingService>
         }
 
         await Response()
-              .Paginated()
-              .PageItems(GetTopRichest)
-              .PageSize(9)
-              .CurrentPage(page)
-              .Page((toSend, curPage) =>
-              {
-                  var embed = CreateEmbed()
-                              .WithOkColor()
-                              .WithTitle(CurrencySign + " " + GetText(strs.leaderboard));
+            .Paginated()
+            .PageItems(GetTopRichest)
+            .PageSize(9)
+            .CurrentPage(page)
+            .Page((toSend, curPage) =>
+            {
+                var embed = CreateEmbed()
+                    .WithOkColor()
+                    .WithTitle(CurrencySign + " " + GetText(strs.leaderboard));
 
-                  if (!toSend.Any())
-                  {
-                      embed.WithDescription(GetText(strs.no_user_on_this_page));
-                      return Task.FromResult(embed);
-                  }
+                if (!toSend.Any())
+                {
+                    embed.WithDescription(GetText(strs.no_user_on_this_page));
+                    return Task.FromResult(embed);
+                }
 
-                  for (var i = 0; i < toSend.Count; i++)
-                  {
-                      var x = toSend[i];
-                      var usrStr = x.ToString().TrimTo(20, true);
+                for (var i = 0; i < toSend.Count; i++)
+                {
+                    var x = toSend[i];
+                    var usrStr = x.ToString().TrimTo(20, true);
 
-                      var j = i;
-                      embed.AddField("#" + ((9 * curPage) + j + 1) + " " + usrStr, N(x.CurrencyAmount), true);
-                  }
+                    var j = i;
+                    embed.AddField("#" + ((9 * curPage) + j + 1) + " " + usrStr, N(x.CurrencyAmount), true);
+                }
 
-                  return Task.FromResult(embed);
-              })
-              .SendAsync();
+                return Task.FromResult(embed);
+            })
+            .SendAsync();
     }
 
     public enum InputRpsPick : byte
@@ -895,11 +908,11 @@ public partial class Gambling : GamblingModule<GamblingService>
         }
 
         var eb = CreateEmbed()
-                 .WithOkColor()
-                 .WithDescription(sb.ToString())
-                 .AddField(GetText(strs.bet), N(amount), true)
-                 .AddField(GetText(strs.won), $"{N((long)result.Won)}", true)
-                 .WithAuthor(ctx.User);
+            .WithOkColor()
+            .WithDescription(sb.ToString())
+            .AddField(GetText(strs.bet), N(amount), true)
+            .AddField(GetText(strs.won), $"{N((long)result.Won)}", true)
+            .WithAuthor(ctx.User);
 
 
         await Response().Embed(eb).SendAsync();
@@ -924,8 +937,8 @@ public partial class Gambling : GamblingModule<GamblingService>
     public async Task BetTest()
     {
         var values = Enum.GetValues<GambleTestTarget>()
-                         .Select(x => $"`{x}`")
-                         .Join(", ");
+            .Select(x => $"`{x}`")
+            .Join(", ");
 
         await Response().Confirm(GetText(strs.available_tests), values).SendAsync();
     }
@@ -998,10 +1011,10 @@ public partial class Gambling : GamblingModule<GamblingService>
         sb.AppendLine($"Longest lose streak: `{maxL}`");
 
         await Response()
-              .Confirm(GetText(strs.test_results_for(target)),
-                  sb.ToString(),
-                  footer: $"Total Bet: {tests} | Payout: {payout:F0} | {payout * 1.0M / tests * 100}%")
-              .SendAsync();
+            .Confirm(GetText(strs.test_results_for(target)),
+                sb.ToString(),
+                footer: $"Total Bet: {tests} | Payout: {payout:F0} | {payout * 1.0M / tests * 100}%")
+            .SendAsync();
     }
 
     private NadekoInteractionBase CreateRakebackInteraction()
@@ -1032,16 +1045,16 @@ public partial class Gambling : GamblingModule<GamblingService>
         if (rb < 1)
         {
             await Response()
-                  .Error(strs.rakeback_none)
-                  .SendAsync();
+                .Error(strs.rakeback_none)
+                .SendAsync();
 
             return;
         }
 
         var inter = CreateRakebackInteraction();
         await Response()
-              .Pending(strs.rakeback_available(N(rb)))
-              .Interaction(inter)
-              .SendAsync();
+            .Pending(strs.rakeback_available(N(rb)))
+            .Interaction(inter)
+            .SendAsync();
     }
 }

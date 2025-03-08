@@ -1178,5 +1178,6 @@
   "xp_rate_channel_set": "Channel **{0}** xp rate set to **{1}** xp per every **{2}** min.",
   "xp_rate_server_reset": "Server xp rate has been reset to global defaults.",
   "xp_rate_channel_reset": "Channel {0} xp rate has been reset.",
-  "xp_rate_no_gain": "No xp gain"
+  "xp_rate_no_gain": "No xp gain",
+  "no_lyrics_found": "No lyrics found."
 }

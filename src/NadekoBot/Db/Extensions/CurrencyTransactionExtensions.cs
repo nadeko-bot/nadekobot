@@ -7,14 +7,23 @@ namespace NadekoBot.Db;
 
 public static class CurrencyTransactionExtensions
 {
-    public static Task<List<CurrencyTransaction>> GetPageFor(
+    public static async Task<IReadOnlyCollection<CurrencyTransaction>> GetPageFor(
         this DbSet<CurrencyTransaction> set,
         ulong userId,
         int page)
-        => set.ToLinqToDBTable()
+    {
+        var items = await set.ToLinqToDBTable()
             .Where(x => x.UserId == userId)
             .OrderByDescending(x => x.DateAdded)
             .Skip(15 * page)
             .Take(15)
             .ToListAsyncLinqToDB();
+        
+        return items;
+    }
+    
+    public static async Task<int> GetCountFor(this DbSet<CurrencyTransaction> set, ulong userId)
+        => await set.ToLinqToDBTable()
+            .Where(x => x.UserId == userId)
+            .CountAsyncLinqToDB();
 }

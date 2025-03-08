@@ -1,6 +1,7 @@
-# Setting up NadekoBot on Linux
 
---8<-- "md/creds-guide.md"
+--8<-- "docs/md/creds-guide.md"
+
+# Setting up NadekoBot on Linux
 
 ### Operating System Compatibility
 

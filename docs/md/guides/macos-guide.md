@@ -1,4 +1,4 @@
---8<-- "md/creds-guide.md"
+--8<-- "docs/md/creds-guide.md"
 
 ### Get Homebrew
 You must have homebrew installed to run this guide.

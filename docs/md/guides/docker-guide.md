@@ -1,6 +1,7 @@
-# Deploying NadekoBot with Docker: A Comprehensive Guide
 
---8<-- "md/creds-guide.md"
+--8<-- "docs/md/creds-guide.md"
+
+# Deploying NadekoBot with Docker: A Comprehensive Guide
 
 ## Install NadekoBot with Docker
 

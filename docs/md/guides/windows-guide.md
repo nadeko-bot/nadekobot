@@ -1,12 +1,12 @@
 ## Setting Up NadekoBot on Windows With the Updater
 
---8<-- "md/creds-guide.md"
+--8<-- "docs/md/creds-guide.md"
 
-#### Prerequisites
+### Prerequisites
 
 - Windows 10 or later (64-bit)
 
-#### Setup
+### Setup
 
 - Download and run the [upeko][Updater].
  ![Create a new bot](../assets/upeko-1.png "Create a new bot")
@@ -22,11 +22,11 @@
 - 2 simply opens your bot's data folder.
 - Paste in your BOT TOKEN previously obtained
 
-#### Starting the bot
+### Starting the bot
 
 - Either click on **`RUN`** button in the updater or run the bot via its desktop shortcut.
 
-#### Updating Nadeko
+### Updating Nadeko
 
 - Make sure Nadeko is closed and not running
   (Run `.die` in a connected server to make sure).

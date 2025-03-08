@@ -85,10 +85,10 @@ public partial class Utility : NadekoModule
         message = await repSvc.ReplaceAsync(message, repCtx);
 
         await Response()
-              .Text(message)
-              .Channel(channel)
-              .UserBasedMentions()
-              .SendAsync();
+            .Text(message)
+            .Channel(channel)
+            .UserBasedMentions()
+            .SendAsync();
     }
 
     [Cmd]
@@ -123,27 +123,27 @@ public partial class Utility : NadekoModule
         }
 
         await Response()
-              .Sanitize()
-              .Paginated()
-              .Items(userNames)
-              .PageSize(20)
-              .Page((names, _) =>
-              {
-                  if (names.Count == 0)
-                  {
-                      return CreateEmbed()
-                                    .WithErrorColor()
-                                    .WithDescription(GetText(strs.nobody_playing_game));
-                  }
+            .Sanitize()
+            .Paginated()
+            .Items(userNames)
+            .PageSize(20)
+            .Page((names, _) =>
+            {
+                if (names.Count == 0)
+                {
+                    return CreateEmbed()
+                        .WithErrorColor()
+                        .WithDescription(GetText(strs.nobody_playing_game));
+                }
 
-                  var eb = CreateEmbed()
-                                  .WithOkColor();
+                var eb = CreateEmbed()
+                    .WithOkColor();
 
-                  var users = names.Join('\n');
+                var users = names.Join('\n');
 
-                  return eb.WithDescription(users);
-              })
-              .SendAsync();
+                return eb.WithDescription(users);
+            })
+            .SendAsync();
     }
 
     [Cmd]
@@ -161,9 +161,11 @@ public partial class Utility : NadekoModule
             CacheMode.CacheOnly
         );
 
-        users = role is null
-            ? users
-            : users.Where(u => u.RoleIds.Contains(role.Id)).ToList();
+        users = (role is null
+                ? users
+                : users.Where(u => u.RoleIds.Contains(role.Id)))
+            .OrderBy(x => x.DisplayName)
+            .ToList();
 
 
         var roleUsers = new List<string>(users.Count);
@@ -173,23 +175,23 @@ public partial class Utility : NadekoModule
         }
 
         await Response()
-              .Paginated()
-              .Items(roleUsers)
-              .PageSize(20)
-              .CurrentPage(page)
-              .Page((pageUsers, _) =>
-              {
-                  if (pageUsers.Count == 0)
-                      return CreateEmbed().WithOkColor().WithDescription(GetText(strs.no_user_on_this_page));
+            .Paginated()
+            .Items(roleUsers)
+            .PageSize(20)
+            .CurrentPage(page)
+            .Page((pageUsers, _) =>
+            {
+                if (pageUsers.Count == 0)
+                    return CreateEmbed().WithOkColor().WithDescription(GetText(strs.no_user_on_this_page));
 
-                  var roleName = Format.Bold(role?.Name ?? "No Role");
+                var roleName = Format.Bold(role?.Name ?? "No Role");
 
-                  return CreateEmbed()
-                                .WithOkColor()
-                                .WithTitle(GetText(strs.inrole_list(role?.GetIconUrl() + roleName, roleUsers.Count)))
-                                .WithDescription(string.Join("\n", pageUsers));
-              })
-              .SendAsync();
+                return CreateEmbed()
+                    .WithOkColor()
+                    .WithTitle(GetText(strs.inrole_list(role?.GetIconUrl() + roleName, roleUsers.Count)))
+                    .WithDescription(string.Join("\n", pageUsers));
+            })
+            .SendAsync();
     }
 
     [Cmd]
@@ -211,14 +213,14 @@ public partial class Utility : NadekoModule
     {
         var builder = new StringBuilder();
         foreach (var p in perms.GetType()
-                               .GetProperties()
-                               .Where(static p =>
-                               {
-                                   var method = p.GetGetMethod();
-                                   if (method is null)
-                                       return false;
-                                   return !method.GetParameters().Any();
-                               }))
+                     .GetProperties()
+                     .Where(static p =>
+                     {
+                         var method = p.GetGetMethod();
+                         if (method is null)
+                             return false;
+                         return !method.GetParameters().Any();
+                     }))
             builder.AppendLine($"{p.Name} : {p.GetValue(perms, null)}");
         await Response().Confirm(builder.ToString()).SendAsync();
     }
@@ -229,20 +231,20 @@ public partial class Utility : NadekoModule
     {
         var usr = target ?? ctx.User;
         await Response()
-              .Confirm(strs.userid("🆔",
-                  Format.Bold(usr.ToString()),
-                  Format.Code(usr.Id.ToString())))
-              .SendAsync();
+            .Confirm(strs.userid("🆔",
+                Format.Bold(usr.ToString()),
+                Format.Code(usr.Id.ToString())))
+            .SendAsync();
     }
 
     [Cmd]
     [RequireContext(ContextType.Guild)]
     public async Task RoleId([Leftover] IRole role)
         => await Response()
-                 .Confirm(strs.roleid("🆔",
-                     Format.Bold(role.ToString()),
-                     Format.Code(role.Id.ToString())))
-                 .SendAsync();
+            .Confirm(strs.roleid("🆔",
+                Format.Bold(role.ToString()),
+                Format.Code(role.Id.ToString())))
+            .SendAsync();
 
     [Cmd]
     public async Task ChannelId()
@@ -267,36 +269,36 @@ public partial class Utility : NadekoModule
         if (target is not null)
         {
             var roles = target.GetRoles()
-                              .Except(new[] { guild.EveryoneRole })
-                              .OrderBy(r => -r.Position)
-                              .Skip((page - 1) * rolesPerPage)
-                              .Take(rolesPerPage)
-                              .ToArray();
+                .Except(new[] { guild.EveryoneRole })
+                .OrderBy(r => -r.Position)
+                .Skip((page - 1) * rolesPerPage)
+                .Take(rolesPerPage)
+                .ToArray();
             if (!roles.Any())
                 await Response().Error(strs.no_roles_on_page).SendAsync();
             else
             {
                 await Response()
-                      .Confirm(GetText(strs.roles_page(page, Format.Bold(target.ToString()))),
-                          "\n• " + string.Join("\n• ", (IEnumerable<IRole>)roles))
-                      .SendAsync();
+                    .Confirm(GetText(strs.roles_page(page, Format.Bold(target.ToString()))),
+                        "\n• " + string.Join("\n• ", (IEnumerable<IRole>)roles))
+                    .SendAsync();
             }
         }
         else
         {
             var roles = guild.Roles.Except(new[] { guild.EveryoneRole })
-                             .OrderBy(r => -r.Position)
-                             .Skip((page - 1) * rolesPerPage)
-                             .Take(rolesPerPage)
-                             .ToArray();
+                .OrderBy(r => -r.Position)
+                .Skip((page - 1) * rolesPerPage)
+                .Take(rolesPerPage)
+                .ToArray();
             if (!roles.Any())
                 await Response().Error(strs.no_roles_on_page).SendAsync();
             else
             {
                 await Response()
-                      .Confirm(GetText(strs.roles_all_page(page)),
-                          "\n• " + string.Join("\n• ", (IEnumerable<IRole>)roles).SanitizeMentions(true))
-                      .SendAsync();
+                    .Confirm(GetText(strs.roles_all_page(page)),
+                        "\n• " + string.Join("\n• ", (IEnumerable<IRole>)roles).SanitizeMentions(true))
+                    .SendAsync();
             }
         }
     }
@@ -328,33 +330,33 @@ public partial class Utility : NadekoModule
             ownerIds = "-";
 
         var eb = CreateEmbed()
-                        .WithOkColor()
-                        .WithAuthor($"NadekoBot v{StatsService.BotVersion}",
-                            "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/avatar.png",
-                            "https://nadekobot.readthedocs.io/en/latest/")
-                        .AddField(GetText(strs.author), _stats.Author, true)
-                        .AddField(GetText(strs.botid), _client.CurrentUser.Id.ToString(), true)
-                        .AddField(GetText(strs.shard),
-                            $"#{_client.ShardId} / {_creds.TotalShards}",
-                            true)
-                        .AddField(GetText(strs.commands_ran), _stats.CommandsRan.ToString(), true)
-                        .AddField(GetText(strs.messages),
-                            $"{_stats.MessageCounter} ({_stats.MessagesPerSecond:F2}/sec)",
-                            true)
-                        .AddField(GetText(strs.memory),
-                            FormattableString.Invariant($"{_stats.GetPrivateMemoryMegabytes():F2} MB"),
-                            true)
-                        .AddField(GetText(strs.owner_ids), ownerIds, true)
-                        .AddField(GetText(strs.uptime), _stats.GetUptimeString("\n"), true)
-                        .AddField(GetText(strs.presence),
-                            GetText(strs.presence_txt(_coord.GetGuildCount(),
-                                _stats.TextChannels,
-                                _stats.VoiceChannels)),
-                            true);
+            .WithOkColor()
+            .WithAuthor($"NadekoBot v{StatsService.BotVersion}",
+                "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/avatar.png",
+                "https://nadekobot.readthedocs.io/en/latest/")
+            .AddField(GetText(strs.author), _stats.Author, true)
+            .AddField(GetText(strs.botid), _client.CurrentUser.Id.ToString(), true)
+            .AddField(GetText(strs.shard),
+                $"#{_client.ShardId} / {_creds.TotalShards}",
+                true)
+            .AddField(GetText(strs.commands_ran), _stats.CommandsRan.ToString(), true)
+            .AddField(GetText(strs.messages),
+                $"{_stats.MessageCounter} ({_stats.MessagesPerSecond:F2}/sec)",
+                true)
+            .AddField(GetText(strs.memory),
+                FormattableString.Invariant($"{_stats.GetPrivateMemoryMegabytes():F2} MB"),
+                true)
+            .AddField(GetText(strs.owner_ids), ownerIds, true)
+            .AddField(GetText(strs.uptime), _stats.GetUptimeString("\n"), true)
+            .AddField(GetText(strs.presence),
+                GetText(strs.presence_txt(_coord.GetGuildCount(),
+                    _stats.TextChannels,
+                    _stats.VoiceChannels)),
+                true);
 
         await Response()
-              .Embed(eb)
-              .SendAsync();
+            .Embed(eb)
+            .SendAsync();
     }
 
     [Cmd]
@@ -503,9 +505,9 @@ public partial class Utility : NadekoModule
                 }
 
                 format = attach.Filename
-                               .Split('.')
-                               .Last()
-                               .ToLowerInvariant();
+                    .Split('.')
+                    .Last()
+                    .ToLowerInvariant();
 
                 if (string.IsNullOrWhiteSpace(format) || (format != "png" && format != "apng"))
                 {
@@ -572,30 +574,30 @@ public partial class Utility : NadekoModule
             return;
 
         var allGuilds = _client.Guilds
-                               .OrderBy(g => g.Name)
-                               .ToList();
+            .OrderBy(g => g.Name)
+            .ToList();
 
         await Response()
-              .Paginated()
-              .Items(allGuilds)
-              .PageSize(9)
-              .Page((guilds, _) =>
-              {
-                  if (!guilds.Any())
-                  {
-                      return CreateEmbed()
-                                    .WithDescription(GetText(strs.listservers_none))
-                                    .WithErrorColor();
-                  }
+            .Paginated()
+            .Items(allGuilds)
+            .PageSize(9)
+            .Page((guilds, _) =>
+            {
+                if (!guilds.Any())
+                {
+                    return CreateEmbed()
+                        .WithDescription(GetText(strs.listservers_none))
+                        .WithErrorColor();
+                }
 
-                  var embed = CreateEmbed()
-                                     .WithOkColor();
-                  foreach (var guild in guilds)
-                      embed.AddField(guild.Name, GetText(strs.listservers(guild.Id, guild.MemberCount, guild.OwnerId)));
+                var embed = CreateEmbed()
+                    .WithOkColor();
+                foreach (var guild in guilds)
+                    embed.AddField(guild.Name, GetText(strs.listservers(guild.Id, guild.MemberCount, guild.OwnerId)));
 
-                  return embed;
-              })
-              .SendAsync();
+                return embed;
+            })
+            .SendAsync();
     }
 
     [Cmd]
@@ -632,7 +634,7 @@ public partial class Utility : NadekoModule
         {
             Content = msg.Content,
             Embeds = msg.Embeds
-                        .Map(x => new SmartEmbedArrayElementText(x))
+                .Map(x => new SmartEmbedArrayElementText(x))
         }.ToJson(_showEmbedSerializerOptions);
 
         await Response().Confirm(Format.Code(json, "json").Replace("](", "]\\(")).SendAsync();
@@ -648,34 +650,34 @@ public partial class Utility : NadekoModule
 
         var title = $"Chatlog-{ctx.Guild.Name}/#{ctx.Channel.Name}-{DateTime.Now}.txt";
         var grouping = msgs.GroupBy(x => $"{x.CreatedAt.Date:dd.MM.yyyy}")
-                           .Select(g => new
-                           {
-                               date = g.Key,
-                               messages = g.OrderBy(x => x.CreatedAt)
-                                           .Select(s =>
-                                           {
-                                               var msg = $"【{s.Timestamp:HH:mm:ss}】{s.Author}:";
-                                               if (string.IsNullOrWhiteSpace(s.ToString()))
-                                               {
-                                                   if (s.Attachments.Any())
-                                                   {
-                                                       msg += "FILES_UPLOADED: "
-                                                              + string.Join("\n", s.Attachments.Select(x => x.Url));
-                                                   }
-                                                   else if (s.Embeds.Any())
-                                                   {
-                                                       msg += "EMBEDS: "
-                                                              + string.Join("\n--------\n",
-                                                                  s.Embeds.Select(x
-                                                                      => $"Description: {x.Description}"));
-                                                   }
-                                               }
-                                               else
-                                                   msg += s.ToString();
+            .Select(g => new
+            {
+                date = g.Key,
+                messages = g.OrderBy(x => x.CreatedAt)
+                    .Select(s =>
+                    {
+                        var msg = $"【{s.Timestamp:HH:mm:ss}】{s.Author}:";
+                        if (string.IsNullOrWhiteSpace(s.ToString()))
+                        {
+                            if (s.Attachments.Any())
+                            {
+                                msg += "FILES_UPLOADED: "
+                                       + string.Join("\n", s.Attachments.Select(x => x.Url));
+                            }
+                            else if (s.Embeds.Any())
+                            {
+                                msg += "EMBEDS: "
+                                       + string.Join("\n--------\n",
+                                           s.Embeds.Select(x
+                                               => $"Description: {x.Description}"));
+                            }
+                        }
+                        else
+                            msg += s.ToString();
 
-                                               return msg;
-                                           })
-                           });
+                        return msg;
+                    })
+            });
         await using var stream = await JsonConvert.SerializeObject(grouping, Formatting.Indented).ToStream();
         await ctx.User.SendFileAsync(stream, title, title);
     }
@@ -690,8 +692,8 @@ public partial class Utility : NadekoModule
         msg.DeleteAfter(0);
 
         await Response()
-              .Confirm($"{Format.Bold(ctx.User.ToString())} 🏓 {(int)sw.Elapsed.TotalMilliseconds}ms")
-              .SendAsync();
+            .Confirm($"{Format.Bold(ctx.User.ToString())} 🏓 {(int)sw.Elapsed.TotalMilliseconds}ms")
+            .SendAsync();
     }
 
     [Cmd]
@@ -715,8 +717,8 @@ public partial class Utility : NadekoModule
         if (succ)
         {
             await Response()
-                  .Confirm(strs.afk_set)
-                  .SendAsync();
+                .Confirm(strs.afk_set)
+                .SendAsync();
         }
     }
 
@@ -737,22 +739,22 @@ public partial class Utility : NadekoModule
 
         var script = CSharpScript.Create(scriptText,
             ScriptOptions.Default
-                         .WithReferences(this.GetType().Assembly)
-                         .WithImports(
-                             "System",
-                             "System.Collections.Generic",
-                             "System.IO",
-                             "System.Linq",
-                             "System.Net.Http",
-                             "System.Threading",
-                             "System.Threading.Tasks",
-                             "NadekoBot",
-                             "NadekoBot.Extensions",
-                             "Microsoft.Extensions.DependencyInjection",
-                             "NadekoBot.Common",
-                             "NadekoBot.Modules",
-                             "System.Text",
-                             "System.Text.Json"),
+                .WithReferences(this.GetType().Assembly)
+                .WithImports(
+                    "System",
+                    "System.Collections.Generic",
+                    "System.IO",
+                    "System.Linq",
+                    "System.Net.Http",
+                    "System.Threading",
+                    "System.Threading.Tasks",
+                    "NadekoBot",
+                    "NadekoBot.Extensions",
+                    "Microsoft.Extensions.DependencyInjection",
+                    "NadekoBot.Common",
+                    "NadekoBot.Modules",
+                    "System.Text",
+                    "System.Text.Json"),
             globalsType: typeof(EvalGlobals));
 
         try
@@ -771,9 +773,9 @@ public partial class Utility : NadekoModule
             if (!string.IsNullOrWhiteSpace(output))
             {
                 var eb = CreateEmbed()
-                                .WithOkColor()
-                                .AddField("Code", scriptText)
-                                .AddField("Output", output.TrimTo(512)!);
+                    .WithOkColor()
+                    .AddField("Code", scriptText)
+                    .AddField("Output", output.TrimTo(512)!);
 
                 _ = Response().Embed(eb).SendAsync();
             }
@@ -790,19 +792,21 @@ public partial class Utility : NadekoModule
         if (ctx.Message.ReferencedMessage is not { } msg)
         {
             var msgs = await ctx.Channel.GetMessagesAsync(ctx.Message, Direction.Before, 3).FlattenAsync();
-            msg = msgs.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Content) || (x.Attachments.FirstOrDefault()?.Width is not null)) as IUserMessage;
+            msg = msgs.FirstOrDefault(x
+                => !string.IsNullOrWhiteSpace(x.Content) ||
+                   (x.Attachments.FirstOrDefault()?.Width is not null)) as IUserMessage;
 
             if (msg is null)
                 return;
         }
 
         var eb = CreateEmbed()
-                        .WithOkColor()
-                        .WithDescription(msg.Content)
-                        .WithAuthor(msg.Author)
-                        .WithTimestamp(msg.Timestamp)
-                        .WithImageUrl(msg.Attachments.FirstOrDefault()?.Url)
-                        .WithFooter(GetText(strs.sniped_by(ctx.User.ToString())), ctx.User.GetDisplayAvatarUrl());
+            .WithOkColor()
+            .WithDescription(msg.Content)
+            .WithAuthor(msg.Author)
+            .WithTimestamp(msg.Timestamp)
+            .WithImageUrl(msg.Attachments.FirstOrDefault()?.Url)
+            .WithFooter(GetText(strs.sniped_by(ctx.User.ToString())), ctx.User.GetDisplayAvatarUrl());
 
         ctx.Message.DeleteAfter(1);
         await Response().Embed(eb).SendAsync();

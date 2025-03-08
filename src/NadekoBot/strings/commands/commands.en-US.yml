@@ -4978,3 +4978,11 @@ xpratereset:
     - { }
     - channel:
         desc: "The channel to reset the rate for."
+lyrics:
+  desc: |-
+    Looks up lyrics for a song. Very hit or miss.
+  ex:
+    - 'biri biri'
+  params:
+    - song:
+        desc: "The song to look up lyrics for."
