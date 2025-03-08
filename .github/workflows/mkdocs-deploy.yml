@@ -1,0 +1,33 @@
+name: Deploy Bash Style Guide GitHub Page
+
+on:
+  push:
+    branches: ["v6"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip' # caching pip dependencies
+
+      - name: Install project dependencies
+        run: pip install -r docs/requirements.txt
+
+      - name: Build the site with MkDocs
+        working-directory: ./docs
+        run: mkdocs build --strict
+
+      - name: Deploy to GitHub Pages
+        working-directory: ./docs
+        run: mkdocs gh-deploy --force
