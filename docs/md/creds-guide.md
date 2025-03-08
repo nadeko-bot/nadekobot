@@ -3,18 +3,18 @@
 This guide will show you how to create your own discord bot, invite it to your server, and obtain the credentials needed to run it.
 
 1. Go to [the Discord developer application page][DiscordApp].
-1. Log in with your Discord account.
-1. Click **New Application**.
-1. Fill out the `Name` field however you like, accept the terms, and confirm.
-1. Go to the **Bot** tab on the left sidebar.
-1. Click on the `Add a Bot` button and confirm that you do want to add a bot to this app.
-1. **Optional:** Add bot's avatar and description.
-1. Copy your Token to `creds.yml` as shown above.
-1. Scroll down to the **`Privileged Gateway Intents`** section
+2. Log in with your Discord account.
+3. Click **New Application**.
+4. Fill out the `Name` field however you like, accept the terms, and confirm.
+5. Go to the **Bot** tab on the left sidebar.
+6. Click on the `Add a Bot` button and confirm that you do want to add a bot to this app.
+7. **Optional:** Add bot's avatar and description.
+8. Copy your Token to `creds.yml` as shown above.
+9. Scroll down to the **`Privileged Gateway Intents`** section
     - You MUST enable the following:
-         - **PRESENCE INTENT**
-         - **SERVER MEMBERS INTENT**
-         - **MESSAGE CONTENT INTENT**
+        - **PRESENCE INTENT**
+        - **SERVER MEMBERS INTENT**
+        - **MESSAGE CONTENT INTENT**
 
 ### Inviting your bot to your server
 
