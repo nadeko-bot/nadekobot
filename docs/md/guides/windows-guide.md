@@ -1,6 +1,6 @@
 ## Setting Up NadekoBot on Windows With the Updater
 
---8<-- "docs/md/creds-guide.md"
+--8<-- "md/creds-guide.md"
 
 ### Prerequisites
 
