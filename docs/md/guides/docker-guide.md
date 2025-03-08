@@ -1,11 +1,17 @@
---8<-- "md/creds-guide.md"
+# Docker Guide
 
-# Deploying NadekoBot with Docker: A Comprehensive Guide
+### Prerequisites
 
-## Install NadekoBot with Docker
+- [Docker Core Engine](https://docs.docker.com/engine/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/) (optional, but recommended)
 
-Ensure Docker is installed. If not, follow the official Docker guides for your specific operating system:
-  - [Docker Installation Guide](https://docs.docker.com/engine/install/)
+## Installing NadekoBot with Docker
+
+When deploying NadekoBot with Docker, you have two options: using [Docker](#__tabbed_1_1) or [Docker Compose](#__tabbed_1_2). The following sections provide step-by-step instructions for both methods.
+
+/// tab | Docker
+
+### Deploying NadekoBot with Docker
 
 1. Move to a directory where you want your Nadekobot's data folder to be (data folder will keep the database and config files) and create a data folder there.
     ``` sh
@@ -31,18 +37,11 @@ If you want to update nadekobot to the latest version, all you have to do is pul
     ```
 3. Done! 🎉
 
-## Install NadekoBot with Docker Compose
-
-Ensure Docker Compose is installed on your system. If not, follow the official Docker guides for your specific operating system:
-
-  - [Docker Compose Installation Guide](https://docs.docker.com/compose/install/)
-
-## Step-by-Step Installation
+///
+/// tab | Docker Compose
 
 1. **Choose Your Workspace:** Select a directory where you'll set up your NadekoBot stack. Use your terminal to navigate to this directory. For the purpose of this guide, we'll use `/opt/stacks/nadeko/` as an example, but you can choose any directory that suits your needs.
-
 2. **Create a Docker Compose File:** In this directory, create a Docker Compose file named `docker-compose.yml`. You can use any text editor for this task. For instance, to use the `nano` editor, type `nano docker-compose.yml`.
-
 3. **Configure Your Docker Compose File:** Populate your Docker Compose file with the following configuration:
     ``` yml
     services:
@@ -58,10 +57,13 @@ Ensure Docker Compose is installed on your system. If not, follow the official D
     networks: {}
     ```
 
-4. **Launch Your Bot:** Now, you're ready to run Docker Compose. Use the following command: `docker compose up -d`.
+1. **Launch Your Bot:** Now, you're ready to run Docker Compose. Use the following command: `docker compose up -d`.
+2. **Navigate to Your Directory:** Use `cd /opt/stacks/nadeko/` to go to the directory containing your Docker Compose file.
+3. **Pull the Latest Images:** Use `docker compose pull` to fetch the latest images.
+4. **Restart Your Containers:** Use `docker compose up -d` to restart the containers.
 
-1. **Navigate to Your Directory:** Use `cd /opt/stacks/nadeko/` to go to the directory containing your Docker Compose file.
+///
 
-2. **Pull the Latest Images:** Use `docker compose pull` to fetch the latest images.
+---
 
-3. **Restart Your Containers:** Use `docker compose up -d` to restart the containers.
+--8<-- "md/creds-guide.md"
