@@ -1,4 +1,4 @@
-name: Deploy Bash Style Guide GitHub Page
+name: Deploy NadekoBot Docs
 
 on:
   push:
@@ -19,7 +19,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: 'pip' # caching pip dependencies
+          cache: 'pip'
+          cache-dependency-path: 'docs/requirements.txt'
 
       - name: Install project dependencies
         run: pip install -r docs/requirements.txt
