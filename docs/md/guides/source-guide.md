@@ -1,8 +1,6 @@
---8<-- "md/creds-guide.md"
+# Setting Up NadekoBot on Windows from source
 
-## Setting Up NadekoBot on Windows from source
-
-1. Prerequisites
+### Prerequisites
 
 - Windows 10 or later (64-bit)
 - [.net 8 sdk](https://dotnet.microsoft.com/download/dotnet/8.0)
@@ -11,11 +9,9 @@
 - **Optional** Any code editor, for example [Visual Studio Code](https://code.visualstudio.com/Download)
     - You'll need to at least modify creds.yml, notepad is inadequate
 
-
-##### Installation Instructions
+## Installation Instructions
 
 Open PowerShell (press windows button on your keyboard and type powershell, it should show up; alternatively, right click the start menu and select Windows PowerShell), and
-
 
 0. Navigate to the location where you want to install the bot
     - for example, type `cd ~/Desktop/` and press enter
@@ -28,7 +24,7 @@ Open PowerShell (press windows button on your keyboard and type powershell, it s
 1. Run the bot `dotnet NadekoBot.dll`
 1. 🎉 Enjoy
 
-##### Update Instructions
+## Update Instructions
 
 Open PowerShell as described above and run the following commands:
 
@@ -51,10 +47,15 @@ Open PowerShell as described above and run the following commands:
 
 🎉 Enjoy
 
-#### Music prerequisites
+## Music Prerequisites
+
 In order to use music commands, you need ffmpeg and yt-dlp installed.
 - [ffmpeg]
 - [yt-dlp] - Click to download the `yt-dlp.exe` file, then move `yt-dlp.exe` to a path that's in your PATH environment variable. If you don't know what that is, just move the `yt-dlp.exe` file to your nadekobot's output folder.
+
+---
+
+--8<-- "md/creds-guide.md"
 
 [.net]: https://dotnet.microsoft.com/download/dotnet/8.0
 [ffmpeg]: https://github.com/GyanD/codexffmpeg/releases/latest

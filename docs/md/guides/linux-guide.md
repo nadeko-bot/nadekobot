@@ -12,8 +12,6 @@
 - Arch, Artix
 - MacOS: 11+ ?
 
---8<-- "md/creds-guide.md"
-
 --8<-- "md/guides/vps-linux-guide.md"
 
 ## Installation Instructions
@@ -58,21 +56,20 @@ Open Terminal (if you're on an installation with a window manager) and navigate 
 
     ///
 
-
 2. Download and run the **new** installer script
     ``` sh
-        cd ~ &&
-        curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh &&
-        bash n-install.sh
+    cd ~
+    curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh
+    bash n-install.sh
     ```
 3. Install the bot (type `1` and press enter)
 4. Edit creds (type `3` and press enter)
-    3.1 *ALTERNATIVELY* You can exit the installer (option `6`) and edit `nadeko/creds.yml` file yourself
+    - *ALTERNATIVELY* You can exit the installer (option `6`) and edit `nadeko/creds.yml` file yourself
 5. [Click here to follow creds guide](../creds-guide.md)
-    - After you're done, you can close nano (and save the file) by inputting, in order
-       - `CTRL` + `X`
-       - `Y`
-       - `Enter`
+    - After you're done, you can close nano (and save the file) by inputting, in order:
+        - `CTRL` + `X`
+        - `Y`
+        - `Enter`
 6. Run the installer script again
     - `bash n-install.sh`
 7. Run the bot (type `3` and press enter)
@@ -187,6 +184,10 @@ This method is similar to the one above, but requires one extra step, with the a
 
 5. Start Nadeko:
     - `sudo systemctl start nadeko.service && sudo systemctl enable nadeko.service`
+
+---
+
+--8<-- "md/creds-guide.md"
 
 [Source Update Instructions]: #source-update-instructions
 [Release Update Instructions]: #release-update-instructions

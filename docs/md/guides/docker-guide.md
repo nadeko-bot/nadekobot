@@ -8,29 +8,28 @@ Ensure Docker is installed. If not, follow the official Docker guides for your s
   - [Docker Installation Guide](https://docs.docker.com/engine/install/)
 
 1. Move to a directory where you want your Nadekobot's data folder to be (data folder will keep the database and config files) and create a data folder there.
-  ``` sh
+    ``` sh
     cd ~ && mkdir nadeko && cd nadeko && mkdir data
-  ```
-1. Mount the newly created empty data folder as a volume while starting your docker container. Replace YOUR_TOKEN_HERE with the bot token obtained from the creds guide above.
-  ``` sh
-  docker run -d --name nadeko ghcr.io/nadeko-bot/nadekobot:v6 -e bot_token=YOUR_TOKEN_HERE -v "./data:/app/data" && docker logs -f --tail 500 nadeko
-  ```
-1. Enjoy 🎉
+    ```
+2. Mount the newly created empty data folder as a volume while starting your docker container. Replace YOUR_TOKEN_HERE with the bot token obtained from the creds guide above.
+    ``` sh
+    docker run -d --name nadeko ghcr.io/nadeko-bot/nadekobot:v6 -e bot_token=YOUR_TOKEN_HERE -v "./data:/app/data" && docker logs -f --tail 500 nadeko
+    ```
+3. Enjoy! 🎉
 
-#### Updating your bot
+### Updating your bot
 
 If you want to update nadekobot to the latest version, all you have to do is pull the latest image and re-run.
 
 1. Pull the latest image
-  ``` sh
+    ``` sh
     docker pull ghcr.io/nadeko-bot/nadekobot:v6
-  ```
-
-1. Re-run your bot the same way you did before
-  ``` sh
+    ```
+2. Re-run your bot the same way you did before
+    ``` sh
     docker run -d --name nadeko ghcr.io/nadeko-bot/nadekobot:v6 -e bot_token=YOUR_TOKEN_HERE -v "./data:/app/data" && docker logs -f --tail 500 nadeko
-  ```
-1. Done! 🎉
+    ```
+3. Done! 🎉
 
 ## Install NadekoBot with Docker Compose
 
@@ -45,19 +44,19 @@ Ensure Docker Compose is installed on your system. If not, follow the official D
 2. **Create a Docker Compose File:** In this directory, create a Docker Compose file named `docker-compose.yml`. You can use any text editor for this task. For instance, to use the `nano` editor, type `nano docker-compose.yml`.
 
 3. **Configure Your Docker Compose File:** Populate your Docker Compose file with the following configuration:
-  ``` yml
+    ``` yml
     services:
       nadeko:
         image: ghcr.io/nadeko-bot/nadekobot:v6
         container_name: nadeko
         restart: unless-stopped
         environment:
-          TZ: Europe/Rome
+          TZ: Europe/Rome # Modify this to your timezone
           bot_token: YOUR_TOKEN_HERE
         volumes:
           - /opt/stacks/nadeko/data:/app/data
     networks: {}
-  ```
+    ```
 
 4. **Launch Your Bot:** Now, you're ready to run Docker Compose. Use the following command: `docker compose up -d`.
 
