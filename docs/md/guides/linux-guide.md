@@ -1,6 +1,3 @@
-
---8<-- "md/creds-guide.md"
-
 # Setting up NadekoBot on Linux
 
 ### Operating System Compatibility
@@ -14,6 +11,10 @@
 - Fedora: 38, 39, 40, 41, 42
 - Arch, Artix
 - MacOS: 11+ ?
+
+--8<-- "md/creds-guide.md"
+
+--8<-- "md/guides/vps-linux-guide.md"
 
 ### Installation Instructions
 
