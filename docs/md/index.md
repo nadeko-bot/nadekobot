@@ -22,8 +22,6 @@ To self-host your own Nadeko, use the guides below:
 
 In case you need any help, join our [Discord server][discord-server] where we may provide support.
 
----
-
 ## About Nadeko
 
 NadekoBot is an [open source project][github]. Any issues with the bot may be filed [here][issues].

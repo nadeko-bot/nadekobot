@@ -1,4 +1,4 @@
-### Setting up Nadeko on a Linux VPS (Digital Ocean Droplet)
+## Setting up Nadeko on a Linux VPS (Digital Ocean Droplet)
 
 If you want Nadeko to play music for you 24/7 without having to hosting it on your PC and want to keep it cheap, reliable and convenient as possible, you can try Nadeko on Linux Digital Ocean Droplet using the link [DigitalOcean](http://m.do.co/c/46b4d3d44795/) (by using this link, you will get **$10 credit** and also support Nadeko)
 
@@ -29,13 +29,13 @@ Assuming you have followed the link above to setup an account and a Droplet with
 
 **This section is only relevant to those who want to host Nadeko on DigitalOcean. Go through this whole section before setting the bot up.**
 
-#### Prerequisites
+### Prerequisites
 
 - Download [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)
 - Download [WinSCP](https://winscp.net/eng/download.php) *(optional)*
 - [Create and invite the bot](../creds-guide.md).
 
-#### Starting up
+### Starting up
 
 - **Open PuTTY** and paste or enter your `IP address` and then click **Open**.
   If you entered your Droplets IP address correctly, it should show **login as:** in a newly opened window.

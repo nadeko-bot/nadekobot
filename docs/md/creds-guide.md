@@ -16,7 +16,7 @@ This guide will show you how to create your own discord bot, invite it to your s
          - **SERVER MEMBERS INTENT**
          - **MESSAGE CONTENT INTENT**
 
-#### Inviting your bot to your server
+### Inviting your bot to your server
 
 ![Invite the bot to your server](https://cdn.nadeko.bot/tutorial/bot-invite-guide.gif)
 
