@@ -3,6 +3,8 @@ name: Deploy NadekoBot Docs
 on:
   push:
     branches: ["v6"]
+    paths:
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
