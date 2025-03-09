@@ -1,6 +1,6 @@
 # Setting Up NadekoBot on Windows With the Updater
 
-## Prerequisites
+### Operating System Compatibility
 
 - Windows 10 or later (64-bit)
 
