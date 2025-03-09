@@ -1,15 +1,14 @@
+# NadekoBot
+
 [![CI/CD](https://github.com/nadeko-bot/nadekobot/actions/workflows/ci.yml/badge.svg)](https://github.com/nadeko-bot/nadekobot/actions/workflows/ci.yml)
 
-### NadekoBot
+NadekoBot is an open source Discord bot. It is written in C# and is built on .NET 8.
 
-NadekoBot is an open source Discord bot. It is written in C# and is built on .net 8.
-
-If you want to run your own instance of NadekoBot, please check out
-the [Self hosting Guides and Docs](https://nadekobot.readthedocs.io/en/latest).
+If you want to run your own instance of NadekoBot, please check out the [Self hosting Guides and Docs](https://nadekobot.readthedocs.io/en/latest).
 
 If you have any questions, please visit our [Discord support server](https://discord.nadeko.bot).
 
-# Contributing to NadekoBot
+## Contributing to NadekoBot
 
 We love your input! We want to make contributing to this project as easy as possible, whether it's:
 
@@ -19,7 +18,7 @@ We love your input! We want to make contributing to this project as easy as poss
 - Proposing new features
 - Becoming a maintainer
 
-## Contribution
+### Contribution
 
 By submitting code, content, or materials via pull request or similar means ("Contribution"), you irrevocably assign all
 intellectual property rights (including copyright and patents) to NadekoBot Repository Owner and affirm you either:
