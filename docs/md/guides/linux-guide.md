@@ -11,7 +11,12 @@
 - Fedora: 38, 39, 40, 41, 42
 - Arch, Artix
 
---8<-- "md/guides/vps-linux-guide.md"
+---
+
+??? note "Nadeko on a Linux VPS"
+    --8<-- "md/guides/vps-linux-guide.md"
+
+---
 
 ## Installation Instructions
 
