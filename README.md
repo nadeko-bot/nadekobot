@@ -11,13 +11,16 @@ If you have any questions, please visit our [Discord support server](https://dis
 ## Installation
 
 ### Default option
+
 You may want to consider using [upeko](https://github.com/nadeko-bot/upeko/releases) if you want to run bot on your PC.+
 
 ### Hosting on a linux server
+
 If you want your bot to be online 24/7, you should [host it on a linux vps](https://docs.nadeko.bot/guides/linux-guide).
 
 ### Docker
-There is an offical Docker image for a [simple setup](https://nadekobot.readthedocs.io/en/latest/guides/docker-guide/)
+
+There is an official Docker image for a [simple setup](https://nadekobot.readthedocs.io/en/latest/guides/docker-guide/)
 Short version:
   ```sh
     docker run -d --name nadeko ghcr.io/nadeko-bot/nadekobot:v6 -e bot_token=YOUR_TOKEN_HERE -v "./data:/app/data" && docker logs -f --tail 500 nadeko
