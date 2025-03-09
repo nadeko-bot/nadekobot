@@ -38,6 +38,12 @@ extra:
 
 plugins:
     - search
+    - exclude:
+        glob:
+          - 'guides/vps-linux-guide.md'
+          - 'snippets/installation-instructions.md'
+          - 'snippets/running-nadeko.md'
+          - 'snippets/update-instructions.md'
 
 markdown_extensions:
     - attr_list
