@@ -4,6 +4,13 @@
 
 - Windows 10 or later (64-bit)
 
+---
+
+??? note "Creating a Discord Bot & Getting Credentials"
+    --8<-- "md/creds-guide.md"
+
+---
+
 ## Setup
 
 1. Download and run the [upeko][Updater].
@@ -45,7 +52,3 @@
 - If updates are available, you will be able to click on the Update button
 - Click `Update`
 - Click `RUN` after it's done
-
----
-
---8<-- "md/creds-guide.md"

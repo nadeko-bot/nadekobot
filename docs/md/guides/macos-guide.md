@@ -8,6 +8,13 @@
 
 - [Homebrew](https://brew.sh/)
 
+---
+
+??? note "Creating a Discord Bot & Getting Credentials"
+    --8<-- "md/creds-guide.md"
+
+---
+
 ## Installation Instructions
 
 Open Terminal (if you're on an installation with a window manager) and navigate to the location where you want to install the bot (for example `cd ~`)
@@ -20,7 +27,3 @@ Open Terminal (if you're on an installation with a window manager) and navigate 
 ## Running Nadeko
 
 --8<-- "md/snippets/running-nadeko.md:macos"
-
----
-
---8<-- "md/creds-guide.md"

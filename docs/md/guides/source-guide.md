@@ -9,6 +9,13 @@
 - **Optional** Any code editor, for example [Visual Studio Code](https://code.visualstudio.com/Download)
     - You'll need to at least modify creds.yml, notepad is inadequate
 
+---
+
+??? note "Creating a Discord Bot & Getting Credentials"
+    --8<-- "md/creds-guide.md"
+
+---
+
 ## Installation Instructions
 
 Open PowerShell (press windows button on your keyboard and type powershell, it should show up; alternatively, right click the start menu and select Windows PowerShell), and
@@ -53,9 +60,7 @@ In order to use music commands, you need ffmpeg and yt-dlp installed.
 - [ffmpeg]
 - [yt-dlp] - Click to download the `yt-dlp.exe` file, then move `yt-dlp.exe` to a path that's in your PATH environment variable. If you don't know what that is, just move the `yt-dlp.exe` file to your nadekobot's output folder.
 
----
 
---8<-- "md/creds-guide.md"
 
 [.net]: https://dotnet.microsoft.com/download/dotnet/8.0
 [ffmpeg]: https://github.com/GyanD/codexffmpeg/releases/latest

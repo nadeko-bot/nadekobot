@@ -5,6 +5,13 @@
 - [Docker Core Engine](https://docs.docker.com/engine/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/) (optional, but recommended)
 
+---
+
+??? note "Creating a Discord Bot & Getting Credentials"
+    --8<-- "md/creds-guide.md"
+
+---
+
 ## Installing NadekoBot with Docker
 
 When deploying NadekoBot with Docker, you have two options: using [Docker](#__tabbed_1_1) or [Docker Compose](#__tabbed_1_2). The following sections provide step-by-step instructions for both methods.
@@ -63,7 +70,3 @@ If you want to update nadekobot to the latest version, all you have to do is pul
 4. **Restart Your Containers:** Use `docker compose up -d` to restart the containers.
 
 ///
-
----
-
---8<-- "md/creds-guide.md"
