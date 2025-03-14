@@ -11,7 +11,7 @@
 - openSUSE Leap: 15.5, 15.6
 - openSUSE Tumbleweed
 - Fedora: 38, 39, 40, 41, 42
-- Arch 8 Artix
+- Arch & Artix
 --8<-- [end:linux]
 --8<-- [start:macos]
 - macOS 13 (Ventura) or later
