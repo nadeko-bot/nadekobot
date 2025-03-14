@@ -1,8 +1,8 @@
-# Setting Up NadekoBot on Windows With the Updater
+# NadekoBot Desktop Guide
 
-### Operating System Compatibility
+### Supported Operating Systems
 
-- Windows 10 or later (64-bit)
+--8<-- "md/snippets/supported-platforms.md"
 
 ---
 

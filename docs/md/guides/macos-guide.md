@@ -2,7 +2,7 @@
 
 ### Operating System Compatibility
 
-- MacOS: 11+ ?
+--8<-- "md/snippets/supported-platforms.md:macos"
 
 ### Prerequisites
 

@@ -13,11 +13,11 @@ To invite public Nadeko to your server or to view its commands, click on the but
 
 To self-host your own Nadeko, use the guides below:
 
-- [:material-microsoft-windows: Windows guide][windows-guide]
-- [:material-linux: Linux guide][linux-guide]
-- [:material-apple: Mac OS guide][macos-guide]
-- [:material-source-branch: From source guide][from-source-guide]
+- [:material-television-guide: Desktop guide (Windows/Linux/Macos)][desktop-guide]
+- [:material-linux: Linux guide (CLI)][linux-guide]
+- [:material-apple: macOS guide (CLI)][macos-guide]
 - [:material-docker: Docker guide][docker-guide]
+- [:material-source-branch: From source guide][from-source-guide]
 
 
 In case you need any help, join our [Discord server][discord-server] where we may provide support.
@@ -32,7 +32,7 @@ If you're unsure whether something is an issue, ask in our support server first.
 
 [invite]: https://invite.nadeko.bot/
 [commands]: https://nadeko.bot/commands/
-[windows-guide]: ./guides/windows-guide.md
+[desktop-guide]: ./guides/desktop-guide.md
 [linux-guide]: ./guides/linux-guide.md
 [macos-guide]: ./guides/macos-guide.md
 [docker-guide]: ./guides/docker-guide.md

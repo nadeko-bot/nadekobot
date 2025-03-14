@@ -43,6 +43,7 @@ plugins:
           - 'guides/vps-linux-guide.md'
           - 'snippets/installation-instructions.md'
           - 'snippets/running-nadeko.md'
+          - 'snippets/supported-platforms.md'
           - 'snippets/update-instructions.md'
 
 markdown_extensions:
@@ -67,11 +68,11 @@ markdown_extensions:
 nav:
     - Home: index.md
     - Guides:
-        - Windows Guide: guides/windows-guide.md
+        - Desktop Guide: guides/desktop-guide.md
         - Linux Guide: guides/linux-guide.md
         - macOS Guide: guides/macos-guide.md
         - Docker Guide: guides/docker-guide.md
-        - <sourcecode> Windows Guide: guides/source-guide.md
+        - Source Guide: guides/source-guide.md
     - Commands:
         - Commands List: https://nadeko.bot/commands
     - Features Explained:

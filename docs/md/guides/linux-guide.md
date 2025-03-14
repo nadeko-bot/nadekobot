@@ -2,14 +2,7 @@
 
 ### Operating System Compatibility
 
-- Ubuntu: 20.04, 22.04, 24.04
-- Mint: 19, 20, 21
-- Debian: 10, 11, 12
-- RockyLinux: 8, 9
-- AlmaLinux: 8, 9
-- openSUSE Leap: 15.5, 15.6 & Tumbleweed
-- Fedora: 38, 39, 40, 41, 42
-- Arch, Artix
+--8<-- "md/snippets/supported-platforms.md:linux"
 
 ---
 
