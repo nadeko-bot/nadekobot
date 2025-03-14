@@ -13,7 +13,7 @@
 
 ## Setup
 
-1. Download and run the [upeko][Updater].
+1. Download and run the [upeko](https://github.com/nadeko-bot/upeko/releases/latest).
 
     ![Create a new bot](../assets/upeko-1.png "Create a new bot")
 
