@@ -1,18 +1,18 @@
 <!-- TODO: These should potentially be reformated to be more readable... -->
 --8<-- [start:windows]
-- Windows 10 or later (64-bit)
+- **Windows 10** or later (64-bit)
 --8<-- [end:windows]
 --8<-- [start:linux]
-- Ubuntu: 20.04, 22.04, 24.04
-- Mint: 19, 20, 21
-- Debian: 10, 11, 12
-- RockyLinux: 8, 9
-- AlmaLinux: 8, 9
-- openSUSE Leap: 15.5, 15.6
-- openSUSE Tumbleweed
-- Fedora: 38, 39, 40, 41, 42
-- Arch & Artix
+- **Ubuntu**: 20.04, 22.04, 24.04
+- **Mint**: 19, 20, 21
+- **Debian**: 10, 11, 12
+- **RockyLinux**: 8, 9
+- **AlmaLinux**: 8, 9
+- **openSUSE Leap**: 15.5, 15.6
+- **openSUSE Tumbleweed**
+- **Fedora**: 38, 39, 40, 41, 42
+- **Arch** & **Artix**
 --8<-- [end:linux]
 --8<-- [start:macos]
-- macOS 13 (Ventura) or later
+- **macOS 13 (Ventura)** or later
 --8<-- [end:macos]
