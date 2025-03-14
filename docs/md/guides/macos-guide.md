@@ -1,6 +1,6 @@
 # Setting up NadekoBot on macOS
 
-### Operating System Compatibility
+### Supported macOS Versions
 
 --8<-- "md/snippets/supported-platforms.md:macos"
 

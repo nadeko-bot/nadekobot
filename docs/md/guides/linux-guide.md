@@ -1,6 +1,6 @@
-# Setting up NadekoBot on Linux
+# Linux and macOS Guide
 
-### Operating System Compatibility
+### Supported Linux Distributions
 
 --8<-- "md/snippets/supported-platforms.md:linux"
 
