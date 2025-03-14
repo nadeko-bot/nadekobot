@@ -1,5 +1,5 @@
 # DO NOT CHANGE
-version: 20
+version: 13
 # Bot token. Do not share with anyone ever -> https://discordapp.com/developers/applications/
 token: ''
 # List of Ids of the users who have bot owner permissions
@@ -111,11 +111,24 @@ twitchClientSecret:
 # {0} -> shard id
 # {1} -> total shards
 # Linux default
-# cmd: dotnet
-# args: "NadekoBot.dll -- {0}"
+# cmd: NadekoBot
+# args: "{0}"
 # Windows default
 # cmd: NadekoBot.exe
 # args: "{0}"
 restartCommand:
   cmd: 
   args: 
+# Settings for the grpc api.
+# We don't provide support for this.
+# If you leave certPath empty, the api will run on http.
+grpcApi:
+  enabled: false
+  certChain: ''
+  certPrivateKey: ''
+  host: localhost
+  port: 43120
+# Url and api key to a seq server. If url is set, bot will try to send logs to it.
+seq:
+  url: 
+  apiKey: 

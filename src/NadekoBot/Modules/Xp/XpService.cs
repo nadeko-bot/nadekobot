@@ -227,11 +227,6 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             var oldStats = new LevelStats(u.Xp - data.Xp);
             var newStats = new LevelStats(u.Xp);
 
-            Log.Information("User {User} xp updated from {OldLevel} to {NewLevel}",
-                u.UserId,
-                oldStats.TotalXp,
-                newStats.TotalXp);
-
             if (oldStats.Level < newStats.Level)
             {
                 await _levelUpQueue.EnqueueAsync(NotifyUser(u.GuildId,

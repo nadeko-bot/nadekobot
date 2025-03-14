@@ -35,26 +35,9 @@ public class XpSvc : GrpcXp.GrpcXpBase, IGrpcSvc, INService
         if (guild is null)
             throw new RpcException(new Status(StatusCode.NotFound, "Guild not found"));
 
-        var excludedChannels = new List<ulong>();
-        var excludedRoles = new List<ulong>();
         var isServerExcluded = false;
 
         var reply = new GetXpSettingsReply();
-
-        reply.Exclusions.AddRange(excludedChannels
-            .Select(x => new ExclItemReply()
-            {
-                Id = x,
-                Type = "Channel",
-                Name = guild.GetChannel(x)?.Name ?? "????"
-            })
-            .Concat(excludedRoles
-                .Select(x => new ExclItemReply()
-                {
-                    Id = x,
-                    Type = "Role",
-                    Name = guild.GetRole(x)?.Name ?? "????"
-                })));
 
         var settings = await _xp.GetFullXpSettingsFor(request.GuildId);
         var curRews = settings.CurrencyRewards;
@@ -76,8 +59,6 @@ public class XpSvc : GrpcXp.GrpcXpBase, IGrpcSvc, INService
             .OrderBy(x => x.Level);
 
         reply.Rewards.AddRange(rews);
-
-        reply.ServerExcluded = isServerExcluded;
 
         return reply;
     }

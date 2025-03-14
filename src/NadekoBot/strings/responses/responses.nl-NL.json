@@ -981,7 +981,7 @@
     "club_create_error_name": "Het aanmaken van de club is mislukt. Er bestaat al een club met die naam.",
     "club_desc_update": "Club Beschrijving Bijgewerkt",
     "bank_accounts": "Bankrekeningen",
-    "module_description_medusa": "**Alleen robot eigenaar.** Laadt, ontlaadt en behandelt dynamische modules. Lees meer [hier](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)",
+    "module_description_medusa": "**Alleen robot eigenaar.** Laadt, ontlaadt en behandelt dynamische modules.",
     "list_of_medusae": "Lijst van Medusae",
     "list_of_unloaded": "Lijst van beschikbare Medusae",
     "medusa_name_not_found": "Medusa met die naam bestaat niet of is niet geladen.",
@@ -1046,6 +1046,5 @@
     "xpshop_buy_success": "Succesvol gekocht `{0}/{1}`",
     "patron_insuff_tier": "Je Patron Tier is onvoldoende om deze actie uit te voeren.",
     "xpshop_already_owned": "Je bezit dit voorwerp al.",
-    "xpshop_item_not_found": "Een item met die sleutel bestaat niet.",
-    "xpshop_website": "Je kan de lijst van alle Xp Shop artikelen hier zien: <https://xpshop.nadeko.bot>"
+    "xpshop_item_not_found": "Een item met die sleutel bestaat niet."
 }

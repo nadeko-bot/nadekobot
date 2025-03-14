@@ -34,7 +34,7 @@ public class CryptoService : INService
 
         var gElement = xml["svg"]?["g"];
         if (gElement is null)
-            return Array.Empty<PointF>();
+            return [];
 
         Span<PointF> points = new PointF[gElement.ChildNodes.Count];
         var cnt = 0;
@@ -73,7 +73,7 @@ public class CryptoService : INService
         }
 
         if (cnt == 0)
-            return Array.Empty<PointF>();
+            return [];
 
         return points.Slice(0, cnt).ToArray();
     }

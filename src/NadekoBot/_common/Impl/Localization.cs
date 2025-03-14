@@ -12,7 +12,7 @@ public class Localization : ILocalization, IReadyExecutor, INService
         JsonConvert.DeserializeObject<Dictionary<string, CommandData>>(
             File.ReadAllText("./strings/commands/commands.en-US.json"));
 
-    private ConcurrentDictionary<ulong, CultureInfo> _guildCultureInfos;
+    private ConcurrentDictionary<ulong, CultureInfo> _guildCultureInfos = [];
 
     public IDictionary<ulong, CultureInfo> GuildCultureInfos
         => _guildCultureInfos;

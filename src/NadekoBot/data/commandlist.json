@@ -2717,7 +2717,7 @@
         ".exas",
         ".expraddserver"
       ],
-      "Description": "Add an expression with a trigger and a response in this server. Bot will post a response whenever someone types the trigger word. This command is useful if you want to lower the permission requirement for managing expressions by using `.dpo`. Guide [here](<https://nadekobot.readthedocs.io/en/latest/custom-reactions/>).",
+      "Description": "Add an expression with a trigger and a response in this server. Bot will post a response whenever someone types the trigger word. This command is useful if you want to lower the permission requirement for managing expressions by using `.dpo`.",
       "Usage": [
         ".expradds \"hello\" Hi there %user.mention%"
       ],
@@ -2735,7 +2735,7 @@
         ".exa",
         ".acr"
       ],
-      "Description": "Add an expression with a trigger and a response. Bot will post a response whenever someone types the trigger word.  Running this command in a server requires the Administrator permission. Running this command in DM is Bot Owner only and adds a new global expression. Guide [here](<https://nadekobot.readthedocs.io/en/latest/custom-reactions/>)",
+      "Description": "Add an expression with a trigger and a response.\nBot will post a response whenever someone types the trigger word.\nRunning this command in a server requires the Administrator permission.\nRunning this command in DM is Bot Owner only and adds a new global expression.",
       "Usage": [
         ".expradd \"hello\" Hi there %user.mention%"
       ],
@@ -4519,7 +4519,7 @@
         ".medusaload",
         ".meload"
       ],
-      "Description": "Loads a medusa with the specified name from the data/medusae/ folder.\nProvide no name to see the list of loadable medusae.\nRead about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)",
+      "Description": "Loads a medusa with the specified name from the data/medusae/ folder.\nProvide no name to see the list of loadable medusae.",
       "Usage": [
         ".medusaload mycoolmedusa",
         ".medusaload"
@@ -4537,7 +4537,7 @@
         ".medusaunload",
         ".meunload"
       ],
-      "Description": "Unloads the previously loaded medusa.\nProvide no name to see the list of unloadable medusae. \nRead about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)",
+      "Description": "Unloads the previously loaded medusa.\nProvide no name to see the list of unloadable medusae. ",
       "Usage": [
         ".medusaunload mycoolmedusa",
         ".medusaunload"
@@ -4555,7 +4555,7 @@
         ".medusalist",
         ".melist"
       ],
-      "Description": "Lists all loaded and unloaded medusae.\nRead about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)",
+      "Description": "Lists all loaded and unloaded medusae.",
       "Usage": [
         ".medusalist"
       ],
@@ -4572,7 +4572,7 @@
         ".medusainfo",
         ".meinfo"
       ],
-      "Description": "Shows information about the specified medusa such as the author, name, description, list of sneks, number of commands etc.\nProvide no name to see the basic information about all loaded medusae. \nRead about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)",
+      "Description": "Shows information about the specified medusa such as the author, name, description, list of sneks, number of commands etc.\nProvide no name to see the basic information about all loaded medusae. ",
       "Usage": [
         ".medusainfo mycoolmedusa",
         ".medusainfo"
@@ -5054,6 +5054,21 @@
       "Description": "Removes the last queued song.\nIf the queue was shuffled or fairly re-ordered the song will not be removed.",
       "Usage": [
         ".wrongsong"
+      ],
+      "Submodule": "Music",
+      "Module": "Music",
+      "Options": null,
+      "Requirements": [
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".lyrics"
+      ],
+      "Description": "Looks up lyrics for a song. Very hit or miss.",
+      "Usage": [
+        ".lyrics biri biri"
       ],
       "Submodule": "Music",
       "Module": "Music",
@@ -7987,6 +8002,114 @@
       "Module": "Utility",
       "Options": null,
       "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".userroleassign",
+        ".ura",
+        ".uradd"
+      ],
+      "Description": "Assigns a role to a user that can later be modified by that user.",
+      "Usage": [
+        ".userroleassign @User @Role"
+      ],
+      "Submodule": "UserRoleCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".userroleremove",
+        ".urr",
+        ".urdel",
+        ".urrm"
+      ],
+      "Description": "Removes a previously assigned role from a user.",
+      "Usage": [
+        ".userroleremove @User @Role"
+      ],
+      "Submodule": "UserRoleCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".userrolelist",
+        ".url"
+      ],
+      "Description": "Lists all user roles in the server, or for a specific user.",
+      "Usage": [
+        ".userrolelist",
+        ".userrolelist @User"
+      ],
+      "Submodule": "UserRoleCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".userrolemy",
+        ".urm"
+      ],
+      "Description": "Lists all of the user roles assigned to you.",
+      "Usage": [
+        ".userrolemy"
+      ],
+      "Submodule": "UserRoleCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".userrolecolor",
+        ".urc"
+      ],
+      "Description": "Changes the color of your assigned role.",
+      "Usage": [
+        ".userrolecolor @Role #ff0000"
+      ],
+      "Submodule": "UserRoleCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".userrolename",
+        ".urn"
+      ],
+      "Description": "Changes the name of your assigned role.",
+      "Usage": [
+        ".userrolename @Role New Role Name"
+      ],
+      "Submodule": "UserRoleCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".userroleicon",
+        ".uri"
+      ],
+      "Description": "Changes the icon of your assigned role.",
+      "Usage": [
+        ".userroleicon @Role :thumbsup:"
+      ],
+      "Submodule": "UserRoleCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
     }
   ],
   "Xp": [
@@ -8187,6 +8310,20 @@
       "Description": "Sets the club icon.",
       "Usage": [
         ".clubicon https://i.imgur.com/htfDMfU.png"
+      ],
+      "Submodule": "Club",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".clubbanner"
+      ],
+      "Description": "Sets an image as a club banner.\nThe banner will be displayed when club information is shown.",
+      "Usage": [
+        ".clubbanner https://i.imgur.com/example.png",
+        ".clubbanner"
       ],
       "Submodule": "Club",
       "Module": "Xp",

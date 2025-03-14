@@ -15,7 +15,12 @@ public enum MuteType
 
 public class MuteService : INService, IReadyExecutor
 {
-    public enum TimerType { Mute, Ban, AddRole }
+    public enum TimerType
+    {
+        Mute,
+        Ban,
+        AddRole
+    }
 
     private static readonly OverwritePermissions _denyOverwrite = new(addReactions: PermValue.Deny,
         sendMessages: PermValue.Deny,
@@ -57,12 +62,12 @@ public class MuteService : INService, IReadyExecutor
             return;
 
         _ = Task.Run(() => _sender.Response(user)
-                                  .Embed(_sender.CreateEmbed(user?.GuildId)
-                                                .WithDescription($"You've been muted in {user.Guild} server")
-                                                .AddField("Mute Type", type.ToString())
-                                                .AddField("Moderator", mod.ToString())
-                                                .AddField("Reason", reason))
-                                  .SendAsync());
+            .Embed(_sender.CreateEmbed(user?.GuildId)
+                .WithDescription($"You've been muted in {user.Guild} server")
+                .AddField("Mute Type", type.ToString())
+                .AddField("Moderator", mod.ToString())
+                .AddField("Reason", reason))
+            .SendAsync());
     }
 
     private void OnUserUnmuted(
@@ -75,12 +80,12 @@ public class MuteService : INService, IReadyExecutor
             return;
 
         _ = Task.Run(() => _sender.Response(user)
-                                  .Embed(_sender.CreateEmbed(user.GuildId)
-                                                .WithDescription($"You've been unmuted in {user.Guild} server")
-                                                .AddField("Unmute Type", type.ToString())
-                                                .AddField("Moderator", mod.ToString())
-                                                .AddField("Reason", reason))
-                                  .SendAsync());
+            .Embed(_sender.CreateEmbed(user.GuildId)
+                .WithDescription($"You've been unmuted in {user.Guild} server")
+                .AddField("Unmute Type", type.ToString())
+                .AddField("Moderator", mod.ToString())
+                .AddField("Reason", reason))
+            .SendAsync());
     }
 
     private Task Client_UserJoined(IGuildUser usr)
@@ -105,8 +110,8 @@ public class MuteService : INService, IReadyExecutor
     {
         await using var uow = _db.GetDbContext();
         var config = uow.GetTable<GuildConfig>()
-                        .Where(x => x.GuildId == guildId)
-                        .FirstOrDefault();
+            .Where(x => x.GuildId == guildId)
+            .FirstOrDefault();
         config.MuteRoleName = name;
         _guildMuteRoles.AddOrUpdate(guildId, name, (_, _) => name);
         await uow.SaveChangesAsync();
@@ -121,8 +126,12 @@ public class MuteService : INService, IReadyExecutor
         if (type == MuteType.All)
         {
             try
-            { await usr.ModifyAsync(x => x.Mute = true); }
-            catch { }
+            {
+                await usr.ModifyAsync(x => x.Mute = true);
+            }
+            catch
+            {
+            }
 
             var muteRole = await GetMuteRole(usr.Guild);
             if (!usr.RoleIds.Contains(muteRole.Id))
@@ -131,19 +140,19 @@ public class MuteService : INService, IReadyExecutor
             await using (var uow = _db.GetDbContext())
             {
                 await uow.GetTable<MutedUserId>()
-                         .InsertOrUpdateAsync(() => new()
-                         {
-                             GuildId = usr.GuildId,
-                             UserId = usr.Id
-                         },
-                             (_) => new()
-                             {
-                             },
-                             () => new()
-                             {
-                                 GuildId = usr.GuildId,
-                                 UserId = usr.Id
-                             });
+                    .InsertOrUpdateAsync(() => new()
+                        {
+                            GuildId = usr.GuildId,
+                            UserId = usr.Id
+                        },
+                        (_) => new()
+                        {
+                        },
+                        () => new()
+                        {
+                            GuildId = usr.GuildId,
+                            UserId = usr.Id
+                        });
 
                 if (_mutedUsers.TryGetValue(usr.Guild.Id, out var muted))
                     muted.Add(usr.Id);
@@ -160,7 +169,9 @@ public class MuteService : INService, IReadyExecutor
                 await usr.ModifyAsync(x => x.Mute = true);
                 UserMuted(usr, mod, MuteType.Voice, reason);
             }
-            catch { }
+            catch
+            {
+            }
         }
         else if (type == MuteType.Chat)
         {
@@ -183,12 +194,12 @@ public class MuteService : INService, IReadyExecutor
             await using (var uow = _db.GetDbContext())
             {
                 await uow.GetTable<MutedUserId>()
-                         .Where(x => x.GuildId == guildId && x.UserId == usrId)
-                         .DeleteAsync();
+                    .Where(x => x.GuildId == guildId && x.UserId == usrId)
+                    .DeleteAsync();
 
                 await uow.GetTable<UnmuteTimer>()
-                         .Where(x => x.GuildId == guildId && x.UserId == usrId)
-                         .DeleteAsync();
+                    .Where(x => x.GuildId == guildId && x.UserId == usrId)
+                    .DeleteAsync();
 
                 if (_mutedUsers.TryGetValue(guildId, out var muted))
                     muted.TryRemove(usrId);
@@ -197,11 +208,17 @@ public class MuteService : INService, IReadyExecutor
             if (usr is not null)
             {
                 try
-                { await usr.ModifyAsync(x => x.Mute = false); }
-                catch { }
+                {
+                    await usr.ModifyAsync(x => x.Mute = false);
+                }
+                catch
+                {
+                }
 
                 try
-                { await usr.RemoveRoleAsync(await GetMuteRole(usr.Guild)); }
+                {
+                    await usr.RemoveRoleAsync(await GetMuteRole(usr.Guild));
+                }
                 catch
                 {
                     /*ignore*/
@@ -237,10 +254,12 @@ public class MuteService : INService, IReadyExecutor
 
         var muteRole = guild.Roles.FirstOrDefault(r => r.Name == muteRoleName);
         if (muteRole is null)
-        //if it doesn't exist, create it
+            //if it doesn't exist, create it
         {
             try
-            { muteRole = await guild.CreateRoleAsync(muteRoleName, isMentionable: false); }
+            {
+                muteRole = await guild.CreateRoleAsync(muteRoleName, isMentionable: false);
+            }
             catch
             {
                 //if creations fails,  maybe the name is not correct, find default one, if doesn't work, create default one
@@ -282,12 +301,12 @@ public class MuteService : INService, IReadyExecutor
         {
             var unmuteAt = DateTime.UtcNow + after;
             await uow.GetTable<UnmuteTimer>()
-                     .InsertAsync(() => new()
-                     {
-                         GuildId = user.GuildId,
-                         UserId = user.Id,
-                         UnmuteAt = unmuteAt
-                     });
+                .InsertAsync(() => new()
+                {
+                    GuildId = user.GuildId,
+                    UserId = user.Id,
+                    UnmuteAt = unmuteAt
+                });
         }
 
         StartUn_Timer(user.GuildId, user.Id, after, TimerType.Mute); // start the timer
@@ -305,12 +324,12 @@ public class MuteService : INService, IReadyExecutor
         {
             var unbanAt = DateTime.UtcNow + after;
             await uow.GetTable<UnbanTimer>()
-                     .InsertAsync(() => new()
-                     {
-                         GuildId = guild.Id,
-                         UserId = userId,
-                         UnbanAt = unbanAt
-                     });
+                .InsertAsync(() => new()
+                {
+                    GuildId = guild.Id,
+                    UserId = userId,
+                    UnbanAt = unbanAt
+                });
         }
 
         StartUn_Timer(guild.Id, userId, after, TimerType.Ban); // start the timer
@@ -415,83 +434,80 @@ public class MuteService : INService, IReadyExecutor
     {
         await using var uow = _db.GetDbContext();
         var configs = await uow.Set<GuildConfig>()
-                               .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                               .ToListAsyncLinqToDB();
+            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .ToListAsyncLinqToDB();
 
         _guildMuteRoles = configs.Where(c => !string.IsNullOrWhiteSpace(c.MuteRoleName))
-                                .ToDictionary(c => c.GuildId, c => c.MuteRoleName)
-                                .ToConcurrent();
+            .ToDictionary(c => c.GuildId, c => c.MuteRoleName)
+            .ToConcurrent();
 
         _mutedUsers = await uow.GetTable<MutedUserId>()
-                              .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                              .ToListAsyncLinqToDB()
-                              .Fmap(x => x.GroupBy(x => x.GuildId)
-                                               .ToDictionary(g => g.Key, g => new ConcurrentHashSet<ulong>(g.Select(x => x.UserId)))
-                                               .ToConcurrent());
+            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .ToListAsyncLinqToDB()
+            .Fmap(x => x.GroupBy(x => x.GuildId)
+                .ToDictionary(g => g.Key, g => new ConcurrentHashSet<ulong>(g.Select(x => x.UserId)))
+                .ToConcurrent());
 
         var max = TimeSpan.FromDays(49);
 
         var unmuteTimers = await uow.GetTable<UnmuteTimer>()
-                                    .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                                    .ToListAsyncLinqToDB();
+            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .ToListAsyncLinqToDB();
 
         var unbanTimers = await uow.GetTable<UnbanTimer>()
-                                    .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                                    .ToListAsyncLinqToDB();
+            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .ToListAsyncLinqToDB();
 
         var unroleTimers = await uow.GetTable<UnroleTimer>()
-                                    .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                                    .ToListAsyncLinqToDB();
+            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .ToListAsyncLinqToDB();
 
-        foreach (var conf in configs)
+        foreach (var x in unmuteTimers)
         {
-            foreach (var x in unmuteTimers)
+            TimeSpan after;
+            if (x.UnmuteAt - TimeSpan.FromMinutes(2) <= DateTime.UtcNow)
             {
-                TimeSpan after;
-                if (x.UnmuteAt - TimeSpan.FromMinutes(2) <= DateTime.UtcNow)
-                {
-                    after = TimeSpan.FromMinutes(2);
-                }
-                else
-                {
-                    var unmute = x.UnmuteAt - DateTime.UtcNow;
-                    after = unmute > max ? max : unmute;
-                }
-
-                StartUn_Timer(conf.GuildId, x.UserId, after, TimerType.Mute);
+                after = TimeSpan.FromMinutes(2);
+            }
+            else
+            {
+                var unmute = x.UnmuteAt - DateTime.UtcNow;
+                after = unmute > max ? max : unmute;
             }
 
-            foreach (var x in unbanTimers)
-            {
-                TimeSpan after;
-                if (x.UnbanAt - TimeSpan.FromMinutes(2) <= DateTime.UtcNow)
-                {
-                    after = TimeSpan.FromMinutes(2);
-                }
-                else
-                {
-                    var unban = x.UnbanAt - DateTime.UtcNow;
-                    after = unban > max ? max : unban;
-                }
+            StartUn_Timer(x.GuildId, x.UserId, after, TimerType.Mute);
+        }
 
-                StartUn_Timer(conf.GuildId, x.UserId, after, TimerType.Ban);
+        foreach (var x in unbanTimers)
+        {
+            TimeSpan after;
+            if (x.UnbanAt - TimeSpan.FromMinutes(2) <= DateTime.UtcNow)
+            {
+                after = TimeSpan.FromMinutes(2);
+            }
+            else
+            {
+                var unban = x.UnbanAt - DateTime.UtcNow;
+                after = unban > max ? max : unban;
             }
 
-            foreach (var x in unroleTimers)
-            {
-                TimeSpan after;
-                if (x.UnbanAt - TimeSpan.FromMinutes(2) <= DateTime.UtcNow)
-                {
-                    after = TimeSpan.FromMinutes(2);
-                }
-                else
-                {
-                    var unban = x.UnbanAt - DateTime.UtcNow;
-                    after = unban > max ? max : unban;
-                }
+            StartUn_Timer(x.GuildId, x.UserId, after, TimerType.Ban);
+        }
 
-                StartUn_Timer(conf.GuildId, x.UserId, after, TimerType.AddRole, x.RoleId);
+        foreach (var x in unroleTimers)
+        {
+            TimeSpan after;
+            if (x.UnbanAt - TimeSpan.FromMinutes(2) <= DateTime.UtcNow)
+            {
+                after = TimeSpan.FromMinutes(2);
             }
+            else
+            {
+                var unban = x.UnbanAt - DateTime.UtcNow;
+                after = unban > max ? max : unban;
+            }
+
+            StartUn_Timer(x.GuildId, x.UserId, after, TimerType.AddRole, x.RoleId);
         }
 
         _client.UserJoined += Client_UserJoined;

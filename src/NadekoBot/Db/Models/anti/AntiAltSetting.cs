@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LinqToDB.Mapping;
+using DataType = LinqToDB.DataType;
 
 namespace NadekoBot.Db.Models;
 

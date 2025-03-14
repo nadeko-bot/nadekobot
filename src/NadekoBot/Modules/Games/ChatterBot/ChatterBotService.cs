@@ -13,7 +13,7 @@ namespace NadekoBot.Modules.Games.Services;
 
 public class ChatterBotService : IExecOnMessage, IReadyExecutor
 {
-    private ConcurrentDictionary<ulong, Lazy<IChatterBotSession>> _chatterBotGuilds;
+    private ConcurrentDictionary<ulong, Lazy<IChatterBotSession>> _chatterBotGuilds = [];
 
     public int Priority
         => 1;
@@ -165,8 +165,8 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
                     (inTokens) + (result.TokensOut / 2 * 3));
 
                 await _sender.Response(channel)
-                             .Confirm(result.Text)
-                             .SendAsync();
+                    .Confirm(result.Text)
+                    .SendAsync();
             }
             else
             {
@@ -204,12 +204,12 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
         {
             await using var uow = _db.GetDbContext();
             await uow.Set<GuildConfig>()
-                     .ToLinqToDBTable()
-                     .Where(x => x.GuildId == guildId)
-                     .UpdateAsync((gc) => new GuildConfig()
-                     {
-                         CleverbotEnabled = false
-                     });
+                .ToLinqToDBTable()
+                .Where(x => x.GuildId == guildId)
+                .UpdateAsync((gc) => new GuildConfig()
+                {
+                    CleverbotEnabled = false
+                });
             await uow.SaveChangesAsync();
             return false;
         }
@@ -219,12 +219,12 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
         await using (var uow = _db.GetDbContext())
         {
             await uow.Set<GuildConfig>()
-                     .ToLinqToDBTable()
-                     .Where(x => x.GuildId == guildId)
-                     .UpdateAsync((gc) => new GuildConfig()
-                     {
-                         CleverbotEnabled = true
-                     });
+                .ToLinqToDBTable()
+                .Where(x => x.GuildId == guildId)
+                .UpdateAsync((gc) => new GuildConfig()
+                {
+                    CleverbotEnabled = true
+                });
 
             await uow.SaveChangesAsync();
         }
@@ -235,12 +235,13 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
     public async Task OnReadyAsync()
     {
         await using var uow = _db.GetDbContext();
-        _chatterBotGuilds = uow.GuildConfigs
-                               .AsNoTracking()
-                               .Where(gc => gc.CleverbotEnabled)
-                               .AsEnumerable()
-                               .ToDictionary(gc => gc.GuildId,
-                                   _ => new Lazy<IChatterBotSession>(() => CreateSession(), true))
-                               .ToConcurrent();
+        _chatterBotGuilds = await uow.GuildConfigs
+            .AsNoTracking()
+            .Where(gc => gc.CleverbotEnabled)
+            .ToListAsyncLinqToDB()
+            .Fmap(x => x
+                .ToDictionary(gc => gc.GuildId,
+                    _ => new Lazy<IChatterBotSession>(() => CreateSession(), true))
+                .ToConcurrent());
     }
 }

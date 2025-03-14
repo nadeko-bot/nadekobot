@@ -11,7 +11,7 @@ namespace NadekoBot.Services;
 /// </summary>
 public class RedisBotStringsProvider : IBotStringsProvider
 {
-    private const string COMMANDS_KEY = "commands_v5";
+    private const string COMMANDS_KEY = "commands_v6";
 
     private readonly ConnectionMultiplexer _redis;
     private readonly IStringsSource _source;

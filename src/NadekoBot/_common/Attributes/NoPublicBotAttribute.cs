@@ -10,7 +10,7 @@ public sealed class NoPublicBotAttribute : PreconditionAttribute
         IServiceProvider services)
     {
 #if GLOBAL_NADEKO
-        return Task.FromResult(PreconditionResult.FromError("Not available on the public bot. To learn how to selfhost a private bot, click [here](https://nadekobot.readthedocs.io/en/latest/)."));
+        return Task.FromResult(PreconditionResult.FromError("Not available on the public bot. To learn how to selfhost a private bot, click [here](https://docs.nadeko.bot)."));
 #else
         return Task.FromResult(PreconditionResult.FromSuccess());
 #endif

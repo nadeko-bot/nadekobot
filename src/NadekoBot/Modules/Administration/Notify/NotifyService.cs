@@ -4,6 +4,7 @@ using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using NadekoBot.Generators;
 using NadekoBot.Modules.Administration.Services;
+using NadekoBot.Modules.Gambling;
 using NadekoBot.Modules.Xp.Services;
 
 namespace NadekoBot.Modules.Administration;
@@ -41,6 +42,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         RegisterModel<ProtectionNotifyModel>();
         RegisterModel<AddRoleRewardNotifyModel>();
         RegisterModel<RemoveRoleRewardNotifyModel>();
+        // RegisterModel<BigWinNotifyModel>();
     }
 
     public async Task OnReadyAsync()

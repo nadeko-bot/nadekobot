@@ -112,31 +112,6 @@ public sealed class OtherSvc : GrpcOther.GrpcOtherBase, IGrpcSvc, INService
     }
 
     [GrpcNoAuthRequired]
-    public override async Task<XpLbReply> GetXpLb(GetLbRequest request, ServerCallContext context)
-    {
-        var users = await _xp.GetGlobalUserXps(request.Page);
-
-        var reply = new XpLbReply();
-
-        var entries = users.Select(x =>
-        {
-            var lvl = new LevelStats(x.TotalXp);
-
-            return new XpLbEntryReply()
-            {
-                Level = lvl.Level,
-                TotalXp = x.TotalXp,
-                User = x.Username,
-                UserId = x.UserId
-            };
-        });
-
-        reply.Entries.AddRange(entries);
-
-        return reply;
-    }
-
-    [GrpcNoAuthRequired]
     public override async Task<WaifuLbReply> GetWaifuLb(GetLbRequest request, ServerCallContext context)
     {
         var waifus = await _waifus.GetTopWaifusAtPage(request.Page, request.PerPage);

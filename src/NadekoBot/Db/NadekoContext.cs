@@ -272,9 +272,6 @@ public abstract class NadekoContext : DbContext
             du.Property(x => x.IsClubAdmin)
               .HasDefaultValue(false);
 
-            du.Property(x => x.NotifyOnLevelUp)
-              .HasDefaultValue(XpNotificationLocation.None);
-
             du.Property(x => x.TotalXp)
               .HasDefaultValue(0);
 

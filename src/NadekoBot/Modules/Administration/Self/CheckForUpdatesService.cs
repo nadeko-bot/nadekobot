@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace NadekoBot.Modules.Administration.Self;
 
-public sealed class GitlabReleaseModel
+public sealed class GithubReleaseModel
 {
     [JsonPropertyName("tag_name")]
     public required string TagName { get; init; }
@@ -19,7 +19,7 @@ public sealed class CheckForUpdatesService(
     IMessageSenderService sender)
     : INService, IReadyExecutor
 {
-    private const string RELEASES_URL = "https://gitlab.com/api/v4/projects/9321079/releases";
+    private const string RELEASES_URL = "https://api.github.com/repos/nadeko-bot/nadekobot/releases";
 
     public async Task OnReadyAsync()
     {
@@ -37,13 +37,15 @@ public sealed class CheckForUpdatesService(
             try
             {
                 using var http = httpFactory.CreateClient();
-                var gitlabRelease = (await http.GetFromJsonAsync<GitlabReleaseModel[]>(RELEASES_URL))
+                http.DefaultRequestHeaders.Clear();
+                http.DefaultRequestHeaders.Add("User-Agent", "nadekobot_" + client.CurrentUser.Id.ToString()[^5..]);
+                var githubRelease = (await http.GetFromJsonAsync<GithubReleaseModel[]>(RELEASES_URL))
                     ?.FirstOrDefault();
 
-                if (gitlabRelease?.TagName is null)
+                if (githubRelease?.TagName is null)
                     continue;
 
-                var latest = gitlabRelease.TagName;
+                var latest = githubRelease.TagName;
                 var latestVersion = Version.Parse(latest);
                 var lastKnownVersion = GetLastKnownVersion();
 
@@ -58,7 +60,7 @@ public sealed class CheckForUpdatesService(
                     UpdateLastKnownVersion(latestVersion);
 
                     // pull changelog
-                    var changelog = await http.GetStringAsync("https://gitlab.com/kwoth/nadekobot/-/raw/v6/CHANGELOG.md");
+                    var changelog = await http.GetStringAsync("https://raw.githubusercontent.com/nadeko-bot/nadekobot/refs/heads/v6/CHANGELOG.md");
 
                     var thisVersionChangelog = GetVersionChangelog(latestVersion, changelog);
 
@@ -81,7 +83,7 @@ public sealed class CheckForUpdatesService(
                                                    .WithOkColor()
                                                    .WithAuthor($"NadekoBot v{latest} Released!")
                                                    .WithTitle("Changelog")
-                                                   .WithUrl("https://gitlab.com/kwoth/nadekobot/-/blob/v6/CHANGELOG.md")
+                                                   .WithUrl("https://github.com/nadeko-bot/nadekobot/blob/refs/heads/v6/CHANGELOG.md")
                                                    .WithDescription(thisVersionChangelog.TrimTo(4096))
                                                    .WithFooter(
                                                        "You may disable these messages by typing '.conf bot checkforupdates false'");

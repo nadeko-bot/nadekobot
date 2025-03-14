@@ -25,13 +25,11 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
     private readonly FontProvider _fonts;
     private readonly ICurrencyService _cs;
     private readonly CommandHandler _cmdHandler;
-    private readonly NadekoRandom _rng;
     private readonly DiscordSocketClient _client;
     private readonly GamblingConfigService _gss;
     private readonly GamblingService _gs;
 
-    private ConcurrentHashSet<ulong> _generationChannels;
-    private readonly SemaphoreSlim _pickLock = new(1, 1);
+    private ConcurrentHashSet<ulong> _generationChannels = [];
 
     public PlantPickService(
         DbService db,
@@ -50,13 +48,9 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
         _fonts = fonts;
         _cs = cs;
         _cmdHandler = cmdHandler;
-        _rng = new();
         _client = client;
         _gss = gss;
         _gs = gs;
-
-        using var uow = db.GetDbContext();
-        var guildIds = client.Guilds.Select(x => x.Id).ToList();
     }
 
     public Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
@@ -416,7 +410,6 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
 
     public async Task OnReadyAsync()
     {
-
         await using var uow = _db.GetDbContext();
         _generationChannels = (await uow.GetTable<GCChannelId>()
             .Select(x => x.ChannelId)

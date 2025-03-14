@@ -981,7 +981,7 @@
     "club_create_error_name": "Échec de la création du club. Un club existe du même nom existe déjà.",
     "club_desc_update": "La description du club a été mise à jour",
     "bank_accounts": "Comptes bancaires",
-    "module_description_medusa": "**Unique au propriétaire du bot.** Charger, décharger et maintenez des modules dynamiques. Découvrez en plus [ici](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)",
+    "module_description_medusa": "**Unique au propriétaire du bot.** Charger, décharger et maintenez des modules dynamiques.",
     "list_of_medusae": "Liste des méduses",
     "list_of_unloaded": "Liste des méduses disponible",
     "medusa_name_not_found": "Une méduse de ce nom n'existe pas ou n'est pas chargée.",
@@ -1046,6 +1046,5 @@
     "xpshop_buy_success": "Vous avez acheté avec succès `{0}/{1}`",
     "patron_insuff_tier": "Votre Tier Patron est insuffisant pour réaliser cette action.",
     "xpshop_already_owned": "Vous disposez déjà de cet item.",
-    "xpshop_item_not_found": "Aucun item disposant de cette clé n'existe.",
-    "xpshop_website": "Vous pouvez voir la liste de tous les items du magasin d'XP ici: <https://xpshop.nadeko.bot>"
+    "xpshop_item_not_found": "Aucun item disposant de cette clé n'existe."
 }

@@ -715,8 +715,14 @@ public partial class Administration
 
             var banPrune = await _service.GetBanPruneAsync(ctx.Guild.Id) ?? 7;
             await ctx.Guild.AddBanAsync(user, banPrune, ("Softban | " + ctx.User + " | " + msg).TrimTo(512));
-            try { await ctx.Guild.RemoveBanAsync(user); }
-            catch { await ctx.Guild.RemoveBanAsync(user); }
+            try
+            {
+                await ctx.Guild.RemoveBanAsync(user);
+            }
+            catch
+            {
+                
+            }
 
             var toSend = CreateEmbed()
                                 .WithOkColor()

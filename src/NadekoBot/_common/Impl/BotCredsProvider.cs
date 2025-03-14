@@ -77,25 +77,27 @@ public sealed class BotCredsProvider : IBotCredsProvider
 
             if (string.IsNullOrWhiteSpace(_creds.Token))
             {
-                Log.Error("Token is missing from data/creds.yml or Environment variables.\nAdd it and restart the program");
+                Log.Error(
+                    "Token is missing from data/creds.yml or Environment variables.\nAdd it and restart the program");
                 Helpers.ReadErrorAndExit(1);
                 return;
             }
-            
+
             if (string.IsNullOrWhiteSpace(_creds.RestartCommand?.Cmd)
                 || string.IsNullOrWhiteSpace(_creds.RestartCommand?.Args))
             {
-                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                if (Environment.OSVersion.Platform == PlatformID.Unix ||
+                    Environment.OSVersion.Platform == PlatformID.MacOSX)
                 {
-                    _creds.RestartCommand = new RestartConfig()
+                    _creds.RestartCommand = new()
                     {
-                        Args = "dotnet",
-                        Cmd = "NadekoBot.dll -- {0}"
+                        Args = "NadekoBot",
+                        Cmd = "{0}"
                     };
                 }
                 else
                 {
-                    _creds.RestartCommand = new RestartConfig()
+                    _creds.RestartCommand = new()
                     {
                         Args = "NadekoBot.exe",
                         Cmd = "{0}"

@@ -12,7 +12,6 @@ service GrpcOther {
   rpc GetRoles(GetRolesRequest) returns (GetRolesReply);
 
   rpc GetCurrencyLb(GetLbRequest) returns (CurrencyLbReply);
-  rpc GetXpLb(GetLbRequest) returns (XpLbReply);
   rpc GetWaifuLb(GetLbRequest) returns (WaifuLbReply);
 
   rpc GetShardStats(google.protobuf.Empty) returns (stream ShardStatsReply);
@@ -76,17 +75,6 @@ message CurrencyLbEntryReply {
 message GetLbRequest {
   int32 page = 1;
   int32 perPage = 2;
-}
-
-message XpLbReply {
-  repeated XpLbEntryReply entries = 1;
-}
-
-message XpLbEntryReply {
-  string user = 1;
-  uint64 userId = 2;
-  int64 totalXp = 3;
-  int64 level = 4;
 }
 
 message WaifuLbReply {

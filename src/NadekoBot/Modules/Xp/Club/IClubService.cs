@@ -1,4 +1,4 @@
-﻿using NadekoBot.Db.Models;
+using NadekoBot.Db.Models;
 using OneOf;
 
 namespace NadekoBot.Modules.Xp.Services;
@@ -10,6 +10,7 @@ public interface IClubService
     Task<ToggleAdminResult> ToggleAdminAsync(IUser owner, IUser toAdmin);
     ClubInfo? GetClubByMember(IUser user);
     Task<SetClubIconResult> SetClubIconAsync(ulong ownerUserId, string? url);
+    Task<SetClubIconResult> SetClubBannerAsync(ulong ownerUserId, string? url);
     bool GetClubByName(string clubName, out ClubInfo club);
     ClubApplyResult ApplyToClub(IUser user, ClubInfo club);
     ClubAcceptResult AcceptApplication(ulong clubOwnerUserId, string userName, out DiscordUser? discordUser);

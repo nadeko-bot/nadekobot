@@ -569,6 +569,10 @@ namespace NadekoBot.Migrations.PostgreSql
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BannerUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("bannerurl");
+
                     b.Property<DateTime?>("DateAdded")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("dateadded");
@@ -3439,6 +3443,32 @@ namespace NadekoBot.Migrations.PostgreSql
                         .HasDatabaseName("ix_userfishstats_userid");
 
                     b.ToTable("userfishstats", (string)null);
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Utility.UserRole.UserRole", b =>
+                {
+                    b.Property<decimal>("GuildId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("guildid");
+
+                    b.Property<decimal>("UserId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("userid");
+
+                    b.Property<decimal>("RoleId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("roleid");
+
+                    b.HasKey("GuildId", "UserId", "RoleId")
+                        .HasName("pk_userrole");
+
+                    b.HasIndex("GuildId")
+                        .HasDatabaseName("ix_userrole_guildid");
+
+                    b.HasIndex("GuildId", "UserId")
+                        .HasDatabaseName("ix_userrole_guildid_userid");
+
+                    b.ToTable("userrole", (string)null);
                 });
 
             modelBuilder.Entity("NadekoBot.Modules.Xp.ChannelXpConfig", b =>

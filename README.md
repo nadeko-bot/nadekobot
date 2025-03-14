@@ -4,7 +4,7 @@
 
 NadekoBot is an open source Discord bot. It is written in C# and is built on .NET 8.
 
-If you want to run your own instance of NadekoBot, please check out the [Self hosting Guides and Docs](https://nadekobot.readthedocs.io/en/latest).
+If you want to run your own instance of NadekoBot, please check out the [Self hosting Guides and Docs](https://docs.nadeko.bot).
 
 If you have any questions, please visit our [Discord support server](https://discord.nadeko.bot).
 
@@ -20,7 +20,7 @@ If you want your bot to be online 24/7, you should [host it on a linux vps](http
 
 ### Docker
 
-There is an official Docker image for a [simple setup](https://nadekobot.readthedocs.io/en/latest/guides/docker-guide/)
+There is an official Docker image for a [simple setup](https://docs.nadeko.bot/guides/docker-guide/)
 Short version:
   ```sh
     docker run -d --name nadeko ghcr.io/nadeko-bot/nadekobot:v6 -e bot_token=YOUR_TOKEN_HERE -v "./data:/app/data" && docker logs -f --tail 500 nadeko

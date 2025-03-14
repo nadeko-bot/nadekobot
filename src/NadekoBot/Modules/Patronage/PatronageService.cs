@@ -427,12 +427,7 @@ public sealed class PatronageService
                             .AddField("Instructions",
                                 """
                                 *- Within the next **1-2 minutes** you will have all of the benefits of the Tier you've subscribed to.*
-                                *- You can check your benefits on <https://www.patreon.com/join/nadekobot>*
                                 *- You can use the `.patron` command in this chat to check your current quota usage for the Patron-only commands*
-                                *- **ALL** of the servers that you **own** will enjoy your Patron benefits.*
-                                *- You can use any of the commands available in your tier on any server (assuming you have sufficient permissions to run those commands)*
-                                *- Any user in any of your servers can use Patron-only commands, but they will spend **your quota**, which is why it's recommended to use Nadeko's command cooldown system (.h .cmdcd) or permission system to limit the command usage for your server members.*
-                                *- Permission guide can be found here if you're not familiar with it: <https://nadekobot.readthedocs.io/en/latest/permissions-system/>*
                                 """,
                                 inline: false)
                             .WithFooter($"platform id: {patron.UniquePlatformUserId}");

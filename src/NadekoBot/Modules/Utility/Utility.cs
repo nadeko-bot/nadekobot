@@ -112,12 +112,13 @@ public partial class Utility : NadekoModule
             return;
         }
 
-
         var userNames = new List<IUser>(socketGuild.Users.Count / 100);
         foreach (var user in socketGuild.Users)
         {
-            if (user.Activities.Any(x => x.Name is not null && x.Name.ToUpperInvariant() == game))
+            var activity = user.Activities.FirstOrDefault(x => x.Name is not null && x.Name.ToUpperInvariant() == game);
+            if (activity is not null)
             {
+                game = activity.Name;
                 userNames.Add(user);
             }
         }
@@ -129,6 +130,9 @@ public partial class Utility : NadekoModule
             .PageSize(20)
             .Page((names, _) =>
             {
+                var eb = CreateEmbed()
+                    .WithTitle(GetText(strs.whos_playing_game(userNames.Count, game)));
+                
                 if (names.Count == 0)
                 {
                     return CreateEmbed()
@@ -136,8 +140,7 @@ public partial class Utility : NadekoModule
                         .WithDescription(GetText(strs.nobody_playing_game));
                 }
 
-                var eb = CreateEmbed()
-                    .WithOkColor();
+                eb = eb.WithOkColor();
 
                 var users = names.Join('\n');
 
@@ -333,7 +336,7 @@ public partial class Utility : NadekoModule
             .WithOkColor()
             .WithAuthor($"NadekoBot v{StatsService.BotVersion}",
                 "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/avatar.png",
-                "https://nadekobot.readthedocs.io/en/latest/")
+                "https://nadeko.bot")
             .AddField(GetText(strs.author), _stats.Author, true)
             .AddField(GetText(strs.botid), _client.CurrentUser.Id.ToString(), true)
             .AddField(GetText(strs.shard),
@@ -642,9 +645,13 @@ public partial class Utility : NadekoModule
 
     [Cmd]
     [RequireContext(ContextType.Guild)]
-    [OwnerOnly]
+    [UserPerm(GuildPerm.Administrator)]
+    [Ratelimit(3600)]
     public async Task SaveChat(int cnt)
     {
+        if (cnt > 1000)
+            return;
+
         var msgs = new List<IMessage>(cnt);
         await ctx.Channel.GetMessagesAsync(cnt).ForEachAsync(dled => msgs.AddRange(dled));
 

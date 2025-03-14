@@ -53,10 +53,10 @@ public sealed partial class Help : NadekoModule<HelpService>
 
         var clientId = await _lazyClientId.Value;
         var repCtx = new ReplacementContext(Context)
-                     .WithOverride("{0}", () => clientId.ToString())
-                     .WithOverride("{1}", () => prefix)
-                     .WithOverride("%prefix%", () => prefix)
-                     .WithOverride("%bot.prefix%", () => prefix);
+            .WithOverride("{0}", () => clientId.ToString())
+            .WithOverride("{1}", () => prefix)
+            .WithOverride("%prefix%", () => prefix)
+            .WithOverride("%bot.prefix%", () => prefix);
 
         var text = SmartText.CreateFrom(botSettings.HelpText);
         return await repSvc.ReplaceAsync(text, repCtx);
@@ -87,8 +87,8 @@ public sealed partial class Help : NadekoModule<HelpService>
         }
 
         var menu = new SelectMenuBuilder()
-                   .WithPlaceholder("Select a module to see its commands")
-                   .WithCustomId("cmds:modules_select");
+            .WithPlaceholder("Select a module to see its commands")
+            .WithCustomId("cmds:modules_select");
 
         foreach (var m in topLevelModules)
             menu.AddOption(m.Name, m.Name, GetModuleEmoji(m.Name));
@@ -106,33 +106,33 @@ public sealed partial class Help : NadekoModule<HelpService>
             });
 
         await Response()
-              .Paginated()
-              .Items(topLevelModules)
-              .PageSize(12)
-              .CurrentPage(page)
-              .Interaction(inter)
-              .AddFooter(false)
-              .Page((items, _) =>
-              {
-                  var embed = CreateEmbed().WithOkColor().WithTitle(GetText(strs.list_of_modules));
+            .Paginated()
+            .Items(topLevelModules)
+            .PageSize(12)
+            .CurrentPage(page)
+            .Interaction(inter)
+            .AddFooter(false)
+            .Page((items, _) =>
+            {
+                var embed = CreateEmbed().WithOkColor().WithTitle(GetText(strs.list_of_modules));
 
-                  if (!items.Any())
-                  {
-                      embed = embed.WithOkColor().WithDescription(GetText(strs.module_page_empty));
-                      return embed;
-                  }
+                if (!items.Any())
+                {
+                    embed = embed.WithOkColor().WithDescription(GetText(strs.module_page_empty));
+                    return embed;
+                }
 
-                  items
-                      .ToList()
-                      .ForEach(module => embed.AddField($"{GetModuleEmoji(module.Name)} {module.Name}",
-                          GetModuleDescription(module.Name)
-                          + "\n"
-                          + Format.Code(GetText(strs.module_footer(prefix, module.Name.ToLowerInvariant()))),
-                          true));
+                items
+                    .ToList()
+                    .ForEach(module => embed.AddField($"{GetModuleEmoji(module.Name)} {module.Name}",
+                        GetModuleDescription(module.Name)
+                        + "\n"
+                        + Format.Code(GetText(strs.module_footer(prefix, module.Name.ToLowerInvariant()))),
+                        true));
 
-                  return embed;
-              })
-              .SendAsync();
+                return embed;
+            })
+            .SendAsync();
     }
 
     private string GetModuleDescription(string moduleName)
@@ -142,11 +142,11 @@ public sealed partial class Help : NadekoModule<HelpService>
         if (key.Key == strs.module_description_missing.Key)
         {
             var desc = _medusae
-                       .GetLoadedMedusae(Culture)
-                       .FirstOrDefault(m => m.Sneks
-                                             .Any(x => x.Name.Equals(moduleName,
-                                                 StringComparison.InvariantCultureIgnoreCase)))
-                       ?.Description;
+                .GetLoadedMedusae(Culture)
+                .FirstOrDefault(m => m.Sneks
+                    .Any(x => x.Name.Equals(moduleName,
+                        StringComparison.InvariantCultureIgnoreCase)))
+                ?.Description;
 
             if (desc is not null)
                 return desc;
@@ -238,18 +238,18 @@ public sealed partial class Help : NadekoModule<HelpService>
         var allowed = new List<CommandInfo>();
 
         var mdls = _cmds.Commands
-                        .Where(c => c.Module.GetTopLevelModule()
-                                     .Name
-                                     .StartsWith(module, StringComparison.InvariantCultureIgnoreCase))
-                        .ToArray();
+            .Where(c => c.Module.GetTopLevelModule()
+                .Name
+                .StartsWith(module, StringComparison.InvariantCultureIgnoreCase))
+            .ToArray();
 
         if (mdls.Length == 0)
         {
             var group = _cmds.Modules
-                             .Where(x => x.Parent is not null)
-                             .FirstOrDefault(x => string.Equals(x.Name.Replace("Commands", ""),
-                                 module,
-                                 StringComparison.InvariantCultureIgnoreCase));
+                .Where(x => x.Parent is not null)
+                .FirstOrDefault(x => string.Equals(x.Name.Replace("Commands", ""),
+                    module,
+                    StringComparison.InvariantCultureIgnoreCase));
 
             if (group is not null)
             {
@@ -272,8 +272,8 @@ public sealed partial class Help : NadekoModule<HelpService>
 
 
         var cmds = allowed.OrderBy(c => c.Aliases[0])
-                          .DistinctBy(x => x.Aliases[0])
-                          .ToList();
+            .DistinctBy(x => x.Aliases[0])
+            .ToList();
 
 
         // check preconditions for all commands, but only if it's not 'all'
@@ -284,12 +284,12 @@ public sealed partial class Help : NadekoModule<HelpService>
             succ =
             [
                 ..(await cmds.Select(async x =>
-                             {
-                                 var pre = await x.CheckPreconditionsAsync(Context, _services);
-                                 return (Cmd: x, Succ: pre.IsSuccess);
-                             })
-                             .WhenAll()).Where(x => x.Succ)
-                                        .Select(x => x.Cmd)
+                    {
+                        var pre = await x.CheckPreconditionsAsync(Context, _services);
+                        return (Cmd: x, Succ: pre.IsSuccess);
+                    })
+                    .WhenAll()).Where(x => x.Succ)
+                .Select(x => x.Cmd)
             ];
 
             if (opts.View == CommandsOptions.ViewType.Hide)
@@ -298,8 +298,8 @@ public sealed partial class Help : NadekoModule<HelpService>
         }
 
         var cmdsWithGroup = cmds.GroupBy(c => c.Module.GetGroupName())
-                                .OrderBy(x => x.Key == x.First().Module.Name ? int.MaxValue : x.Count())
-                                .ToList();
+            .OrderBy(x => x.Key == x.First().Module.Name ? int.MaxValue : x.Count())
+            .ToList();
 
         if (cmdsWithGroup.Count == 0)
         {
@@ -311,8 +311,8 @@ public sealed partial class Help : NadekoModule<HelpService>
         }
 
         var sb = new SelectMenuBuilder()
-                 .WithCustomId("cmds:submodule_select")
-                 .WithPlaceholder("Select a submodule to see detailed commands");
+            .WithCustomId("cmds:submodule_select")
+            .WithPlaceholder("Select a submodule to see detailed commands");
 
         var groups = cmdsWithGroup.ToArray();
         var embed = CreateEmbed().WithOkColor();
@@ -322,17 +322,29 @@ public sealed partial class Help : NadekoModule<HelpService>
             var transformed = g
                 .Select(x =>
                 {
+                    var prepend = string.Empty;
+
+                    var isOwnerOnly = x.Preconditions.Any(x => x is OwnerOnlyAttribute);
+                    if (isOwnerOnly)
+                        prepend = " \\👑";
+                    
                     //if cross is specified, and the command doesn't satisfy the requirements, cross it out
                     if (opts.View == CommandsOptions.ViewType.Cross)
                     {
-                        return $"{(succ.Contains(x) ? "✅" : "❌")} {prefix + x.Aliases[0]}";
+                        var outp = $"{(succ.Contains(x) ? "✅" : "❌")} {prefix + x.Aliases[0]}";
+                        
+                        return prepend + outp;
                     }
+                    
+                    var output = prefix + x.Aliases[0];
 
+                    if (x.Aliases.Count > 1)
+                        output += " | " + prefix + x.Aliases[1];
+                    
+                    if(opts.View == CommandsOptions.ViewType.All)
+                        return prepend + output;
 
-                    if (x.Aliases.Count == 1)
-                        return prefix + x.Aliases[0];
-
-                    return prefix + x.Aliases[0] + " | " + prefix + x.Aliases[1];
+                    return output;
                 });
 
             embed.AddField(g.Key, "" + string.Join("\n", transformed) + "", true);
@@ -347,7 +359,9 @@ public sealed partial class Help : NadekoModule<HelpService>
             {
                 var groupName = smc.Data.Values.FirstOrDefault();
                 var mdl = _cmds.Modules.FirstOrDefault(x
-                    => string.Equals(x.Name.Replace("Commands", ""), groupName, StringComparison.InvariantCultureIgnoreCase));
+                    => string.Equals(x.Name.Replace("Commands", ""),
+                        groupName,
+                        StringComparison.InvariantCultureIgnoreCase));
                 await smc.DeferAsync();
                 await Group(mdl);
             }
@@ -359,8 +373,8 @@ public sealed partial class Help : NadekoModule<HelpService>
     private async Task Group(ModuleInfo group)
     {
         var menu = new SelectMenuBuilder()
-                   .WithCustomId("cmds:group_select")
-                   .WithPlaceholder("Select a command to see its details");
+            .WithCustomId("cmds:group_select")
+            .WithPlaceholder("Select a command to see its details");
 
         foreach (var cmd in group.Commands.DistinctBy(x => x.Aliases[0]))
         {
@@ -377,30 +391,30 @@ public sealed partial class Help : NadekoModule<HelpService>
             });
 
         await Response()
-              .Paginated()
-              .Items(group.Commands.DistinctBy(x => x.Aliases[0]).ToArray())
-              .PageSize(25)
-              .Interaction(inter)
-              .Page((items, _) =>
-              {
-                  var eb = CreateEmbed()
-                                  .WithTitle(GetText(strs.cmd_group_commands(group.Name)))
-                                  .WithOkColor();
+            .Paginated()
+            .Items(group.Commands.DistinctBy(x => x.Aliases[0]).ToArray())
+            .PageSize(25)
+            .Interaction(inter)
+            .Page((items, _) =>
+            {
+                var eb = CreateEmbed()
+                    .WithTitle(GetText(strs.cmd_group_commands(group.Name)))
+                    .WithOkColor();
 
-                  foreach (var cmd in items)
-                  {
-                      string cmdName;
-                      if (cmd.Aliases.Count > 1)
-                          cmdName = Format.Code(prefix + cmd.Aliases[0]) + " | " + Format.Code(prefix + cmd.Aliases[1]);
-                      else
-                          cmdName = Format.Code(prefix + cmd.Aliases.First());
+                foreach (var cmd in items)
+                {
+                    string cmdName;
+                    if (cmd.Aliases.Count > 1)
+                        cmdName = Format.Code(prefix + cmd.Aliases[0]) + " | " + Format.Code(prefix + cmd.Aliases[1]);
+                    else
+                        cmdName = Format.Code(prefix + cmd.Aliases.First());
 
-                      eb.AddField(cmdName, cmd.RealSummary(_strings, _medusae, Culture, prefix));
-                  }
+                    eb.AddField(cmdName, cmd.RealSummary(_strings, _medusae, Culture, prefix));
+                }
 
-                  return eb;
-              })
-              .SendAsync();
+                return eb;
+            })
+            .SendAsync();
     }
 
     [Cmd]
@@ -419,10 +433,10 @@ public sealed partial class Help : NadekoModule<HelpService>
             fail = fail.Substring(prefix.Length);
 
         var group = _cmds.Modules
-                         .SelectMany(x => x.Submodules)
-                         .FirstOrDefault(x => string.Equals(x.Group,
-                             fail,
-                             StringComparison.InvariantCultureIgnoreCase));
+            .SelectMany(x => x.Submodules)
+            .FirstOrDefault(x => string.Equals(x.Group,
+                fail,
+                StringComparison.InvariantCultureIgnoreCase));
 
         if (group is not null)
         {
@@ -477,29 +491,29 @@ public sealed partial class Help : NadekoModule<HelpService>
         // order commands by top level module name
         // and make a dictionary of <ModuleName, Array<JsonCommandData>>
         var cmdData = _cmds.Commands.GroupBy(x => x.Module.GetTopLevelModule().Name)
-                           .OrderBy(x => x.Key)
-                           .ToDictionary(x => x.Key,
-                               x => x.DistinctBy(c => c.Aliases.First())
-                                     .Select(com =>
-                                     {
-                                         List<string> optHelpStr = null;
+            .OrderBy(x => x.Key)
+            .ToDictionary(x => x.Key,
+                x => x.DistinctBy(c => c.Aliases.First())
+                    .Select(com =>
+                    {
+                        List<string> optHelpStr = null;
 
-                                         var opt = CommandsUtilityService.GetNadekoOptionType(com.Attributes);
-                                         if (opt is not null)
-                                             optHelpStr = CommandsUtilityService.GetCommandOptionHelpList(opt);
+                        var opt = CommandsUtilityService.GetNadekoOptionType(com.Attributes);
+                        if (opt is not null)
+                            optHelpStr = CommandsUtilityService.GetCommandOptionHelpList(opt);
 
-                                         return new CommandJsonObject
-                                         {
-                                             Aliases = com.Aliases.Select(alias => prefix + alias).ToArray(),
-                                             Description = com.RealSummary(_strings, _medusae, Culture, prefix),
-                                             Usage = com.RealRemarksArr(_strings, _medusae, Culture, prefix),
-                                             Submodule = com.Module.Name,
-                                             Module = com.Module.GetTopLevelModule().Name,
-                                             Options = optHelpStr,
-                                             Requirements = CommandsUtilityService.GetCommandRequirements(com)
-                                         };
-                                     })
-                                     .ToList());
+                        return new CommandJsonObject
+                        {
+                            Aliases = com.Aliases.Select(alias => prefix + alias).ToArray(),
+                            Description = com.RealSummary(_strings, _medusae, Culture, prefix),
+                            Usage = com.RealRemarksArr(_strings, _medusae, Culture, prefix),
+                            Submodule = com.Module.Name,
+                            Module = com.Module.GetTopLevelModule().Name,
+                            Options = optHelpStr,
+                            Requirements = CommandsUtilityService.GetCommandRequirements(com)
+                        };
+                    })
+                    .ToList());
 
         var readableData = JsonConvert.SerializeObject(cmdData, Formatting.Indented);
 
@@ -512,17 +526,17 @@ public sealed partial class Help : NadekoModule<HelpService>
     [Cmd]
     public async Task Guide()
         => await Response()
-                 .Confirm(strs.guide("https://nadeko.bot/commands",
-                     "https://nadekobot.readthedocs.io/en/latest/"))
-                 .SendAsync();
+            .Confirm(strs.guide("https://nadeko.bot/commands",
+                "https://docs.nadeko.bot/"))
+            .SendAsync();
 
     [Cmd]
     [OnlyPublicBot]
     public async Task Donate()
     {
         var eb = CreateEmbed()
-                        .WithOkColor()
-                        .WithTitle("Thank you for considering to donate to the NadekoBot project!");
+            .WithOkColor()
+            .WithTitle("Thank you for considering to donate to the NadekoBot project!");
 
         eb
             .WithDescription("""
@@ -554,9 +568,9 @@ public sealed partial class Help : NadekoModule<HelpService>
         try
         {
             await Response()
-                  .Channel(await ctx.User.CreateDMChannelAsync())
-                  .Embed(eb)
-                  .SendAsync();
+                .Channel(await ctx.User.CreateDMChannelAsync())
+                .Embed(eb)
+                .SendAsync();
 
             _ = ctx.OkAsync();
         }

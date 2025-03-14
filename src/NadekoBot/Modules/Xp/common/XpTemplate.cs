@@ -119,7 +119,7 @@ public class XpTemplate
             Pos = new()
             {
                 X = 394,
-                Y = 35
+                Y = 40
             },
             Show = true
         }

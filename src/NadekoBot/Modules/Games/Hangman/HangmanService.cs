@@ -52,11 +52,8 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
 
     public ValueTask<bool> StopHangman(ulong channelId)
     {
-        lock (_locker)
-        {
-            if (_hangmanGames.TryRemove(channelId, out _))
-                return new(true);
-        }
+        if (_hangmanGames.TryRemove(channelId, out _))
+            return new(true);
 
         return new(false);
     }
@@ -66,48 +63,50 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
 
     public async Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
     {
-        if (_hangmanGames.ContainsKey(msg.Channel.Id))
+        if (!_hangmanGames.ContainsKey(msg.Channel.Id))
         {
-            if (string.IsNullOrWhiteSpace(msg.Content))
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(msg.Content))
+            return;
+
+        if (_cdCache.TryGetValue(msg.Author.Id, out _))
+            return;
+
+        HangmanGame.State state;
+        long rew = 0;
+        lock (_locker)
+        {
+            if (!_hangmanGames.TryGetValue(msg.Channel.Id, out var game))
                 return;
 
-            if (_cdCache.TryGetValue(msg.Author.Id, out _))
+            state = game.Guess(msg.Content.ToLowerInvariant());
+
+            if (state.GuessResult == HangmanGame.GuessResult.NoAction)
                 return;
 
-            HangmanGame.State state;
-            long rew = 0;
-            lock (_locker)
+            if (state.GuessResult is HangmanGame.GuessResult.Incorrect or HangmanGame.GuessResult.AlreadyTried)
             {
-                if (!_hangmanGames.TryGetValue(msg.Channel.Id, out var game))
-                    return;
-
-                state = game.Guess(msg.Content.ToLowerInvariant());
-
-                if (state.GuessResult == HangmanGame.GuessResult.NoAction)
-                    return;
-
-                if (state.GuessResult is HangmanGame.GuessResult.Incorrect or HangmanGame.GuessResult.AlreadyTried)
-                {
-                    _cdCache.Set(msg.Author.Id,
-                        string.Empty,
-                        new MemoryCacheEntryOptions
-                        {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3)
-                        });
-                }
-
-                if (state.Phase == HangmanGame.Phase.Ended)
-                {
-                    if (_hangmanGames.TryRemove(msg.Channel.Id, out _))
-                        rew = _gcs.Data.Hangman.CurrencyReward;
-                }
+                _cdCache.Set(msg.Author.Id,
+                    string.Empty,
+                    new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3)
+                    });
             }
 
-            if (rew > 0)
-                await _cs.AddAsync(msg.Author, rew, new("hangman", "win"));
-
-            await SendState((ITextChannel)msg.Channel, msg.Author, msg.Content, state);
+            if (state.Phase == HangmanGame.Phase.Ended)
+            {
+                if (_hangmanGames.TryRemove(msg.Channel.Id, out _))
+                    rew = _gcs.Data.Hangman.CurrencyReward;
+            }
         }
+
+        if (rew > 0)
+            await _cs.AddAsync(msg.Author, rew, new("hangman", "win"));
+
+        await SendState((ITextChannel)msg.Channel, msg.Author, msg.Content, state);
     }
 
     private Task<IUserMessage> SendState(

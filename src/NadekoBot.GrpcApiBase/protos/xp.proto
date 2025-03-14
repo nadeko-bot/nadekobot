@@ -10,22 +10,8 @@ service GrpcXp {
 
   rpc GetXpSettings(GetXpSettingsRequest) returns (GetXpSettingsReply);
 
-  rpc AddExclusion(AddExclusionRequest) returns (AddExclusionReply);
-  rpc DeleteExclusion(DeleteExclusionRequest) returns (DeleteExclusionReply);
-
   rpc AddReward(AddRewardRequest) returns (AddRewardReply);
   rpc DeleteReward(DeleteRewardRequest) returns (DeleteRewardReply);
-
-  rpc SetServerExclusion(SetServerExclusionRequest) returns (SetServerExclusionReply);
-}
-
-message SetServerExclusionRequest {
-  uint64 guildId = 1;
-  bool serverExcluded = 2;
-}
-
-message SetServerExclusionReply {
-  bool success = 1;
 }
 
 message GetXpLbRequest {
@@ -57,45 +43,17 @@ message ResetUserXpReply {
 }
 
 message GetXpSettingsReply {
-  repeated ExclItemReply exclusions = 1;
   repeated RewItemReply rewards = 2;
-  bool serverExcluded = 3;
 }
 
 message GetXpSettingsRequest {
   uint64 guildId = 1;
 }
 
-message ExclItemReply {
-  string type = 1;
-  uint64 id = 2;
-  string name = 3;
-}
-
 message RewItemReply {
   int32 level = 1;
   string type = 2;
   string value = 3;
-}
-
-message AddExclusionRequest {
-  uint64 guildId = 1;
-  string type = 2;
-  uint64 id = 3;
-}
-
-message AddExclusionReply {
-  bool success = 1;
-}
-
-message DeleteExclusionRequest {
-  uint64 guildId = 1;
-  string type = 2;
-  uint64 id = 3;
-}
-
-message DeleteExclusionReply {
-  bool success = 1;
 }
 
 message AddRewardRequest {

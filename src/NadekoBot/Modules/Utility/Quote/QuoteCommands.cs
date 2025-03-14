@@ -20,7 +20,6 @@ public partial class Utility
             #   txt: Quote text
 
             """;
-
         private static readonly ISerializer _exportSerializer = new SerializerBuilder()
                                                                 .WithEventEmitter(args
                                                                     => new MultilineScalarFlowStyleEmitter(args))

@@ -147,8 +147,8 @@ public sealed class Creds : IBotCreds
                  {0} -> shard id 
                  {1} -> total shards
              Linux default
-                 cmd: dotnet
-                 args: "NadekoBot.dll -- {0}"
+                 cmd: NadekoBot
+                 args: "{0}"
              Windows default
                  cmd: NadekoBot.exe
                  args: "{0}"

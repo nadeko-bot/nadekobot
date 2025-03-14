@@ -120,6 +120,26 @@ public class ClubService : INService, IClubService
         return SetClubIconResult.Success;
     }
 
+    /// <summary>
+    /// Sets club banner url
+    /// </summary>
+    /// <param name="ownerUserId">User ID of the club owner</param>
+    /// <param name="url">Banner URL to set</param>
+    /// <returns>Result of the operation</returns>
+    public async Task<SetClubIconResult> SetClubBannerAsync(ulong ownerUserId, string? url)
+    {
+        await using var uow = _db.GetDbContext();
+        var club = uow.Set<ClubInfo>().GetByOwner(ownerUserId);
+
+        if (club is null)
+            return SetClubIconResult.NotOwner;
+
+        club.BannerUrl = url;
+        await uow.SaveChangesAsync();
+
+        return SetClubIconResult.Success;
+    }
+
     public bool GetClubByName(string clubName, out ClubInfo club)
     {
         using var uow = _db.GetDbContext();

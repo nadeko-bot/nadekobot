@@ -6,6 +6,8 @@ using NadekoBot.Services.Currency;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Gambling;
 using System.Collections.Concurrent;
+using NadekoBot.Modules.Administration;
+using NadekoBot.Modules.Gambling.Services;
 
 namespace NadekoBot.Services;
 
@@ -20,10 +22,14 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
     private ConcurrentBag<UserBetStats> userStats = new();
 
     private readonly DbService _db;
+    private readonly GamblingConfigService _gcs;
+    private readonly INotifySubscriber _notify;
 
-    public GamblingTxTracker(DbService db)
+    public GamblingTxTracker(DbService db, GamblingConfigService gcs, INotifySubscriber notify)
     {
         _db = db;
+        _gcs = gcs;
+        _notify = notify;
     }
 
     public async Task OnReadyAsync()
@@ -183,6 +189,12 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
 
         if (mType is not { } type)
             return Task.CompletedTask;
+
+        // var bigWin = _gcs.Data.BigWin;
+        // if (bigWin > 0 && amount >= bigWin)
+        // {
+            // _notify.NotifyAsync<BigWinNotifyModel>(new())
+        // }
 
         if (txData.Type == "lula")
         {

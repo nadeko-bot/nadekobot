@@ -98,10 +98,10 @@ public partial class Utility
                 return;
 
             var embed = CreateEmbed()
-                        .WithOkColor()
-                        .WithTitle(GetText(guildId is not null
-                            ? strs.reminder_server_list
-                            : strs.reminder_list));
+                .WithOkColor()
+                .WithTitle(GetText(guildId is not null
+                    ? strs.reminder_server_list
+                    : strs.reminder_list));
 
             List<Reminder> rems;
             if (guildId is { } gid)
@@ -201,14 +201,19 @@ public partial class Utility
                 message,
                 ReminderType.User);
 
-            await Response()
-                  .Confirm($"\u23f0 {GetText(strs.remind2(
-                      Format.Bold(!isPrivate ? $"<#{targetId}>" : ctx.User.Username),
-                      Format.Bold(message),
-                      TimestampTag.FromDateTime(DateTime.UtcNow.Add(ts), TimestampTagStyles.Relative),
-                      TimestampTag.FormatFromDateTime(time, TimestampTagStyles.ShortDateTime)))}")
-                  .SendAsync();
+            var eb = CreateEmbed()
+                .WithOkColor()
+                .WithAuthor(ctx.User)
+                .WithTitle(GetText(strs.reminder_created))
+                .AddField(GetText(strs.who_where), !isPrivate ? $"<#{targetId}>" : ctx.User.Username, true)
+                .AddField(GetText(strs.when), TimestampTag.FromDateTime(time, TimestampTagStyles.Relative), true)
+                .AddField(GetText(strs.date2), TimestampTag.FromDateTime(time, TimestampTagStyles.ShortDateTime), true)
+                .WithDescription(message);
 
+            await Response()
+                .Embed(eb)
+                .SendAsync();
+            
             return true;
         }
     }

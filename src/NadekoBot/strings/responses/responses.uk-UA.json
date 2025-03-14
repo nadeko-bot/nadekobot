@@ -981,7 +981,7 @@
     "club_create_error_name": "Не вдалося створити клуб. Клуб з такою назвою вже існує.",
     "club_desc_update": "Опис клубу оновлено",
     "bank_accounts": "Банківські рахунки",
-    "module_description_medusa": "**Лише власник бота.** Завантажуйте, вивантажуйте та обробляйте динамічні модулі. Докладніше [тут](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)",
+    "module_description_medusa": "**Лише власник бота.** Завантажуйте, вивантажуйте та обробляйте динамічні модулі.",
     "list_of_medusae": "Список Медуз",
     "list_of_unloaded": "Список доступних Медуз",
     "medusa_name_not_found": "Медуза з такою назвою не існує або не завантажується.",
@@ -1046,6 +1046,5 @@
     "xpshop_buy_success": "Успішно придбано `{0}/{1}`",
     "patron_insuff_tier": "Рівень вашого патрона недостатній для виконання цієї дії.",
     "xpshop_already_owned": "Ви вже володієте цим товаром.",
-    "xpshop_item_not_found": "Елемент із таким ключем не існує.",
-    "xpshop_website": "Ви можете переглянути список усіх товарів Xp магазина тут: <https://xpshop.nadeko.bot>"
+    "xpshop_item_not_found": "Елемент із таким ключем не існує."
 }

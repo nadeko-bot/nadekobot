@@ -1166,6 +1166,8 @@ clubadmin:
   - clubadmin
 clubrename:
   - clubrename
+clubbanner:
+  - clubbanner
 eightball:
   - eightball
   - 8ball
@@ -1589,3 +1591,27 @@ xpratereset:
   - xpratereset
 lyrics:
   - lyrics
+userroleassign:
+  - userroleassign
+  - ura
+  - uradd
+userroleremove:
+  - userroleremove
+  - urr
+  - urdel
+  - urrm
+userrolelist:
+  - userrolelist
+  - url
+userrolemy:
+  - userrolemy
+  - urm
+userrolecolor:
+  - userrolecolor
+  - urc
+userrolename:
+  - userrolename
+  - urn
+userroleicon:
+  - userroleicon
+  - uri

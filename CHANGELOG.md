@@ -1,18 +1,54 @@
 # Changelog
 
-Mostly based on [keepachangelog](https://keepachangelog.com/en/1.0.0/) except date format. a-c-f-r-o
+*a,c,f,r,o*
 
-6.0.0
----
+## [6.0.4] - 13.03.2025
 
 ### Added
 
-- Initial version of 6.0.0 release
+- `.xp` system reworked
+  - Global XP has been removed in favor of server XP
+  - You can now set `.xprate` for each channel in your server!
+    - You can set voice, image, and text rates
+    - Use `.xpratereset` to reset it back to default
+    - This feature makes `.xpexclude` obsolete
+  - Requirement to create a club removed
+  - `.xp` card should generate faster
+  - Fixed countless possible issues with xp where some users didn't gain xp, or froze, etc
+- user-role commands added!
+  - `.ura <user> <role>` - assign a role to a user
+  - `.url <user?>` - list assigned roles for all users or a specific user
+  - `.urm` - show 'my' (your) assigned roles
+  - `.urn <role> <new_name>` - set a name for your role
+  - `.urc <role> <hex_color>` - set a color for your role
+  - `.uri <role> <url/server_emoji>` - set an icon for your role (accepts either a server emoji or a link to an image)
+- `.notify` improved
+  - Lets you specify source channel (for some events) as the message output
+- `.pload <id> --shuffle` lets you load a saved playlist in random order
+- `.lyrics <song_name>` added - find lyrics for a song (it's not always accurate)
+
+- For Selfhosters
+  - you have to update to latest v5 before updating to v6, otherwise migrations will fail
+  - migration system was reworked
+  - Xp card is now 500x245
+  - xp_template.json backed up to old_xp_template.json 
+  - check pinned message in #dev channel to see full selfhoster announcement
+  - Get bot version via --version
 
 ### Changed
 
-### Fixed
+- `.lopl` will queue subdirectories too now
+- Some music playlist commands have been renamed to fit with other commands
+- Removed gold/silver frames from xp card
+- `.inrole` is now showing users in alphabetical order
+- `.curtrs` are now paginated
+- pagination now lasts for 10+ minutes
+- selfhosters: Restart command default now assumes binary installation
 
+### Removed
+
+- Removed several fonts
+- Xp Exclusion commands (superseded by `.xprate`)
 
 ## [5.3.9] - 30.01.2025
 

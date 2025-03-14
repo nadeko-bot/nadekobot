@@ -418,7 +418,11 @@ iamnot:
     - role:
         desc: "The role to remove."
 expradd:
-  desc: 'Add an expression with a trigger and a response. Bot will post a response whenever someone types the trigger word.  Running this command in a server requires the Administrator permission. Running this command in DM is Bot Owner only and adds a new global expression. Guide [here](<https://nadekobot.readthedocs.io/en/latest/custom-reactions/>)'
+  desc: |-
+    Add an expression with a trigger and a response.
+    Bot will post a response whenever someone types the trigger word.
+    Running this command in a server requires the Administrator permission.
+    Running this command in DM is Bot Owner only and adds a new global expression.
   ex:
     - '"hello" Hi there %user.mention%'
   params:
@@ -427,7 +431,7 @@ expradd:
       response:
         desc: "The text of the message that shows up when a user types the trigger word or phrase."
 expraddserver:
-  desc: 'Add an expression with a trigger and a response in this server. Bot will post a response whenever someone types the trigger word. This command is useful if you want to lower the permission requirement for managing expressions by using `{0}dpo`. Guide [here](<https://nadekobot.readthedocs.io/en/latest/custom-reactions/>).'
+  desc: 'Add an expression with a trigger and a response in this server. Bot will post a response whenever someone types the trigger word. This command is useful if you want to lower the permission requirement for managing expressions by using `{0}dpo`.'
   ex:
     - '"hello" Hi there %user.mention%'
   params:
@@ -3694,6 +3698,17 @@ clubicon:
   params:
     - url:
         desc: "The URL of an image file to use as the club icon."
+clubbanner:
+  desc: |-
+    Sets an image as a club banner.
+    The banner will be displayed when club information is shown.
+  ex:
+    - 'https://i.imgur.com/example.png'
+    - ''
+  params:
+    - { }
+    - url:
+        desc: "URL to the image to set as a club banner."
 clubapps:
   desc: Shows the list of users who have applied to your club. Paginated. You must be club owner to use this command.
   ex:
@@ -4200,7 +4215,6 @@ medusaload:
   desc: |-
     Loads a medusa with the specified name from the data/medusae/ folder.
     Provide no name to see the list of loadable medusae.
-    Read about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)
   ex:
     - mycoolmedusa
     - ''
@@ -4211,7 +4225,6 @@ medusaunload:
   desc: |-
     Unloads the previously loaded medusa.
     Provide no name to see the list of unloadable medusae. 
-    Read about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)
   ex:
     - mycoolmedusa
     - ''
@@ -4222,7 +4235,6 @@ medusainfo:
   desc: |-
     Shows information about the specified medusa such as the author, name, description, list of sneks, number of commands etc.
     Provide no name to see the basic information about all loaded medusae. 
-    Read about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)
   ex:
     - mycoolmedusa
     - ''
@@ -4232,7 +4244,6 @@ medusainfo:
 medusalist:
   desc: |-
     Lists all loaded and unloaded medusae.
-    Read about the medusa system [here](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)
   ex:
     - ''
   params:
@@ -4986,3 +4997,80 @@ lyrics:
   params:
     - song:
         desc: "The song to look up lyrics for."
+userroleassign:
+  desc: |-
+    Assigns a role to a user that can later be modified by that user.
+  ex:
+    - '@User @Role'
+  params:
+    - user:
+        desc: 'The user to assign the role to.'
+      role:
+        desc: 'The role to assign.'
+
+userroleremove:
+  desc: |-
+    Removes a previously assigned role from a user.
+  ex:
+    - '@User @Role'
+  params:
+    - user:
+        desc: 'The user to remove the role from.'
+      role:
+        desc: 'The role to remove.'
+
+userrolelist:
+  desc: |-
+    Lists all user roles in the server, or for a specific user.
+  ex:
+    - ''
+    - '@User'
+  params:
+    - { }
+    - user:
+        desc: 'The user whose roles to list.'
+
+userrolemy:
+  desc: |-
+    Lists all of the user roles assigned to you.
+  ex:
+    - ''
+  params:
+    - { }
+
+userrolecolor:
+  desc: |-
+    Changes the color of your assigned role.
+  ex:
+    - '@Role #ff0000'
+  params:
+    - role:
+        desc: 'The assigned role to change the color of.'
+      color:
+        desc: 'The new color for the role in hex format.'
+
+userroleicon:
+  desc: |-
+    Changes the icon of your assigned role.
+  ex:
+    - '@Role :thumbsup:'
+  params:
+    - role:
+        desc: 'The assigned role to change the icon of.'
+      imageUrl:
+        desc: 'The image url to be used as a new icon for the role.'
+    - role:
+        desc: 'The assigned role to change the icon of.'
+      serverEmoji:
+        desc: 'The server emoji to be used as a new icon for the role.'
+
+userrolename:
+  desc: |-
+    Changes the name of your assigned role.
+  ex:
+    - '@Role New Role Name'
+  params:
+    - role:
+        desc: 'The assigned role to rename.'
+      name:
+        desc: 'The new name for the role.'

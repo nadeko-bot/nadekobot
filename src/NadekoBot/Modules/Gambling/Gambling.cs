@@ -15,13 +15,6 @@ using NadekoBot.Modules.Gambling.Rps;
 using NadekoBot.Common.TypeReaders;
 using NadekoBot.Modules.Games;
 using NadekoBot.Modules.Patronage;
-using SixLabors.Fonts;
-using SixLabors.Fonts.Unicode;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using Color = SixLabors.ImageSharp.Color;
 
 namespace NadekoBot.Modules.Gambling;
 

@@ -981,7 +981,7 @@
     "club_create_error_name": "Nie udało się utworzyć klubu. Klub o podanej nazwie już istnieje.",
     "club_desc_update": "Zaktualizowano Opis Klubu",
     "bank_accounts": "Konta Bankowe",
-    "module_description_medusa": "**Tylko dla Właściciela Bota.** Załaduj, rozładuj i zarządzaj dynamicznymi modułami. Czytaj więcej [tutaj](https://nadekobot.readthedocs.io/en/latest/medusa/creating-a-medusa/)",
+    "module_description_medusa": "**Tylko dla Właściciela Bota.** Załaduj, rozładuj i zarządzaj dynamicznymi modułami.",
     "list_of_medusae": "Lista Meduz",
     "list_of_unloaded": "Lista Dostępnych Meduz",
     "medusa_name_not_found": "Meduza o podanej nazwie nie istnieje lub nie jest załadowana.",
@@ -1046,6 +1046,5 @@
     "xpshop_buy_success": "Pomyślnie zakupiono `{0}/{1}`",
     "patron_insuff_tier": "Twoja Ranga Patrona jest niewystarczająca do wykonania tej akcji.",
     "xpshop_already_owned": "Już posiadasz ten przedmiot.",
-    "xpshop_item_not_found": "Przedmiot o podanym kluczu nie istnieje.",
-    "xpshop_website": "Możesz sprawdzić listę wszystkich towarów Sklepu Xp tutaj: <https://xpshop.nadeko.bot>"
+    "xpshop_item_not_found": "Przedmiot o podanym kluczu nie istnieje."
 }
