@@ -31,9 +31,9 @@
     ![Download](../assets/upeko-4.png "Download")
     ![Creds](../assets/upeko-5.png "Edit creds")
 
-6. When installation is finished, click on **CREDS** (1) above the **RUN** (3) button on the lower left
-7. 2 simply opens your bot's data folder.
-8. Paste in your BOT TOKEN previously obtained
+6. When installation is finished, click on **`CREDS`** (`1`) above the **`RUN`** (`3`) button on the lower left
+    - **`2`** simply opens your bot's data folder.
+7. Paste in your **BOT TOKEN** previously obtained
 
 ## Starting the bot
 
