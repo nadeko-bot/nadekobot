@@ -896,7 +896,9 @@ send:
       text:
         desc: "The recipient's preferred format for the message, such as plain text or formatted text with images and links."
 savechat:
-  desc: Saves a number of messages to a text file and sends it to you.
+  desc: |-
+    Saves a number of messages to a text file and sends it to you.
+    Max is 1000, unless you're the bot owner. 
   ex:
     - 150
   params:

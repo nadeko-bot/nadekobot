@@ -84,7 +84,8 @@ public sealed class BotActivityService : IBotActivityService, IReadyExecutor, IN
             {
                 Name = game,
                 Link = null,
-                Type = type
+                Type = type,
+                Disable = true
             });
 
     public Task SetStreamAsync(string name, string link)
@@ -93,7 +94,8 @@ public sealed class BotActivityService : IBotActivityService, IReadyExecutor, IN
             {
                 Name = name,
                 Link = link,
-                Type = ActivityType.Streaming
+                Type = ActivityType.Streaming,
+                Disable = true
             });
 
     private sealed class ActivityPubData
@@ -101,6 +103,7 @@ public sealed class BotActivityService : IBotActivityService, IReadyExecutor, IN
         public string Name { get; init; }
         public string Link { get; init; }
         public ActivityType? Type { get; init; }
+        public bool Disable { get; init; }
     }
 
     public async Task OnReadyAsync()
@@ -108,7 +111,7 @@ public sealed class BotActivityService : IBotActivityService, IReadyExecutor, IN
         await _pubSub.Sub(_activitySetKey,
             async data =>
             {
-                if (_client.ShardId == 0)
+                if (_client.ShardId == 0 && data.Disable)
                 {
                     DisableRotatePlaying();
                 }
@@ -156,11 +159,19 @@ public sealed class BotActivityService : IBotActivityService, IReadyExecutor, IN
                     : rotatingStatuses[index++];
 
                 var statusText = await _rep.ReplaceAsync(playingStatus.Status, new(client: _client));
-                await SetActivityAsync(statusText, (ActivityType)playingStatus.Type);
+
+                await _pubSub.Pub(_activitySetKey,
+                    new()
+                    {
+                        Name = statusText,
+                        Link = null,
+                        Type = (ActivityType)playingStatus.Type,
+                        Disable = false
+                    });
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Rotating playing status errored: {ErrorMessage}", ex.Message);
+                Log.Error(ex, "Rotating playing status errored: {ErrorMessage}", ex.Message);
             }
         }
     }

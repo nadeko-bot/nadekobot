@@ -649,7 +649,7 @@ public partial class Utility : NadekoModule
     [Ratelimit(3600)]
     public async Task SaveChat(int cnt)
     {
-        if (cnt > 1000)
+        if (!_creds.IsOwner(ctx.User) && cnt > 1000)
             return;
 
         var msgs = new List<IMessage>(cnt);

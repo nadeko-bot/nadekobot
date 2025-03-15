@@ -2,6 +2,22 @@
 
 *a,c,f,r,o*
 
+## [6.0.5] - 14.03.2025
+
+### Added
+
+- Aded a title in `.whosplaying`
+- Added a crown emoji next to commands if -v 1 or -v2 option is specified
+
+### Changed 
+
+- `.remind` looks better
+- `.savechat` no longer owner only, up to 1000 messages - unlimited if ran by the bot owner
+
+### Fixed
+
+- `.ropl` fixed
+
 ## [6.0.4] - 13.03.2025
 
 ### Added
