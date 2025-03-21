@@ -10,7 +10,7 @@ namespace NadekoBot.Modules.Xp;
 public sealed partial class XpConfig : ICloneable<XpConfig>
 {
     [Comment("""DO NOT CHANGE""")]
-    public int Version { get; set; } = 10;
+    public int Version { get; set; } = 11;
 
     [Comment("""How much XP will the users receive per message""")]
     public int TextXpPerMessage { get; set; } = 3;
@@ -35,18 +35,6 @@ public sealed partial class XpConfig : ICloneable<XpConfig>
                  False -> Users can't access the xp shop
                  """)]
         public bool IsEnabled { get; set; } = false;
-
-        [Comment("""
-                 Which patron tier do users need in order to use the .xpshop bgs command
-                 Leave at 'None' if patron system is disabled or you don't want any restrictions
-                 """)]
-        public PatronTier BgsTierRequirement { get; set; } = PatronTier.None;
-
-        [Comment("""
-                 Which patron tier do users need in order to use the .xpshop frames command
-                 Leave at 'None' if patron system is disabled or you don't want any restrictions
-                 """)]
-        public PatronTier FramesTierRequirement { get; set; } = PatronTier.None;
 
         [Comment("""
                  Frames available for sale. Keys are unique IDs.

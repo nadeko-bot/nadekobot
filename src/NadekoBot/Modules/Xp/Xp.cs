@@ -380,12 +380,6 @@ public partial class Xp : NadekoModule<XpService>
                   if (!string.IsNullOrWhiteSpace(item.Desc))
                       eb.AddField(GetText(strs.desc), item.Desc);
 
-                  var tier = _service.GetXpShopTierRequirement(type);
-                  if (tier != PatronTier.None)
-                  {
-                      eb.WithFooter(GetText(strs.xp_shop_buy_required_tier(tier.ToString())));
-                  }
-
                   return eb;
               })
               .Interaction(async current =>
@@ -460,7 +454,6 @@ public partial class Xp : NadekoModule<XpService>
                 BuyResult.AlreadyOwned =>
                     await Response().Error(strs.xpshop_already_owned).Interaction(GetUseInteraction()).SendAsync(),
                 BuyResult.UnknownItem => await Response().Error(strs.xpshop_item_not_found).SendAsync(),
-                BuyResult.InsufficientPatronTier => await Response().Error(strs.patron_insuff_tier).SendAsync(),
                 _ => throw new ArgumentOutOfRangeException()
             };
             return;

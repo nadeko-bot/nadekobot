@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using NadekoBot.Common.Configs;
+using NadekoBot.Db.Models;
 
 namespace NadekoBot.Modules.Xp.Services;
 
@@ -19,13 +20,13 @@ public sealed class XpConfigService : ConfigServiceBase<XpConfig>
             int.TryParse,
             (f) => f.ToString("F2"),
             x => x > 0);
-        
+
         AddParsedProp("txt.permsg",
             conf => conf.TextXpPerMessage,
             int.TryParse,
             ConfigPrinters.ToString,
             x => x >= 0);
-        
+
         AddParsedProp("txt.perimage",
             conf => conf.TextXpFromImage,
             int.TryParse,
@@ -37,7 +38,7 @@ public sealed class XpConfigService : ConfigServiceBase<XpConfig>
             int.TryParse,
             ConfigPrinters.ToString,
             x => x >= 0);
-        
+
         AddParsedProp("shop.is_enabled",
             conf => conf.Shop.IsEnabled,
             bool.TryParse,
@@ -48,12 +49,27 @@ public sealed class XpConfigService : ConfigServiceBase<XpConfig>
 
     private void Migrate()
     {
-        if (data.Version < 10)
+        if (data.Version < 11)
         {
-            ModifyConfig(c =>
-            {
-                c.Version = 10;
-            });
+            ModifyConfig(c => { c.Version = 11; });
         }
+    }
+
+    public async Task<bool> AddItemAsync(string uniqueName, XpShopItemType itemType, XpConfig.ShopItemInfo shopItemInfo)
+    {
+        await Task.Yield();
+        
+        var success = false;
+        ModifyConfig(c =>
+        {
+            var items = itemType == XpShopItemType.Background
+                ? c.Shop.Bgs
+                : c.Shop.Frames;
+
+            if (items is not null)
+                success = items.TryAdd(uniqueName, shopItemInfo);
+        });
+
+        return success;
     }
 }

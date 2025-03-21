@@ -57,8 +57,7 @@ public partial class Administration
                 _ => ctx.OkAsync(),
                 async fl =>
                 {
-                    _ = msg.RemoveReactionAsync(emote, ctx.Client.CurrentUser);
-                    await Response().Pending(strs.feature_limit_reached_owner).SendAsync();
+                    await msg.RemoveReactionAsync(emote, ctx.Client.CurrentUser);
                 });
         }
 

@@ -40,7 +40,9 @@ public partial class Administration
             var progressMsg = await Response().Pending(strs.prune_progress(0, 100)).SendAsync();
             var progress = GetProgressTracker(progressMsg);
 
-            var result = await _service.PruneWhere(ctx.Channel,
+            var result = await _service.PruneWhere(
+                ctx.User.Id,
+                ctx.Channel,
                 100,
                 x => x.Author.Id == ctx.Client.CurrentUser.Id,
                 progress);
@@ -66,13 +68,17 @@ public partial class Administration
 
             PruneResult result;
             if (opts.Safe)
-                result = await _service.PruneWhere((ITextChannel)ctx.Channel,
+                result = await _service.PruneWhere(
+                    ctx.User.Id,
+                    (ITextChannel)ctx.Channel,
                     100,
                     x => x.Author.Id == user.Id && !x.IsPinned,
                     progress,
                     opts.After);
             else
-                result = await _service.PruneWhere((ITextChannel)ctx.Channel,
+                result = await _service.PruneWhere(
+                    ctx.User.Id,
+                    (ITextChannel)ctx.Channel,
                     100,
                     x => x.Author.Id == user.Id,
                     progress,
@@ -107,13 +113,17 @@ public partial class Administration
 
             PruneResult result;
             if (opts.Safe)
-                result = await _service.PruneWhere((ITextChannel)ctx.Channel,
+                result = await _service.PruneWhere(
+                    ctx.User.Id,
+                    ctx.Channel,
                     count,
                     x => !x.IsPinned && x.Id != progressMsg.Id,
                     progress,
                     opts.After);
             else
-                result = await _service.PruneWhere((ITextChannel)ctx.Channel,
+                result = await _service.PruneWhere(
+                    ctx.User.Id,
+                    ctx.Channel,
                     count,
                     x => x.Id != progressMsg.Id,
                     progress,
@@ -133,13 +143,14 @@ public partial class Administration
                     await progressMsg.ModifyAsync(props =>
                     {
                         props.Embed = CreateEmbed()
-                                      .WithPendingColor()
-                                      .WithDescription(GetText(strs.prune_progress(deleted, total)))
-                                      .Build();
+                            .WithPendingColor()
+                            .WithDescription(GetText(strs.prune_progress(deleted, total)))
+                            .Build();
                     });
                 }
                 catch
                 {
+                    // ignored
                 }
             });
 
@@ -182,7 +193,9 @@ public partial class Administration
             PruneResult result;
             if (opts.Safe)
             {
-                result = await _service.PruneWhere((ITextChannel)ctx.Channel,
+                result = await _service.PruneWhere(
+                    ctx.User.Id,
+                    ctx.Channel,
                     count,
                     m => m.Author.Id == userId && DateTime.UtcNow - m.CreatedAt < _twoWeeks && !m.IsPinned,
                     progress,
@@ -191,7 +204,9 @@ public partial class Administration
             }
             else
             {
-                result = await _service.PruneWhere((ITextChannel)ctx.Channel,
+                result = await _service.PruneWhere(
+                    ctx.User.Id,
+                    ctx.Channel,
                     count,
                     m => m.Author.Id == userId && DateTime.UtcNow - m.CreatedAt < _twoWeeks,
                     progress,
@@ -233,7 +248,7 @@ public partial class Administration
                     msg.DeleteAfter(5);
                     break;
                 case PruneResult.FeatureLimit:
-                    var msg2 = await Response().Pending(strs.feature_limit_reached_owner).SendAsync();
+                    var msg2 = await Response().Pending(strs.prune_patron).SendAsync();
                     msg2.DeleteAfter(10);
                     break;
                 default:

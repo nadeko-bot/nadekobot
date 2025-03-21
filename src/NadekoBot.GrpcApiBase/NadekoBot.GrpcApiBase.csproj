@@ -16,13 +16,6 @@
         <Protobuf Include="protos/*.proto">
             <GrpcServices>Server</GrpcServices>
         </Protobuf>
-        <Protobuf Update="protos\xpshop.proto">
-          <Access>Public</Access>
-          <ProtoCompile>True</ProtoCompile>
-          <CompileOutputs>True</CompileOutputs>
-          <OutputDir>obj\Debug\net8.0\</OutputDir>
-          <Generator>MSBuild:Compile</Generator>
-        </Protobuf>
     </ItemGroup>
 
 </Project>
