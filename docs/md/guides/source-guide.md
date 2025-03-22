@@ -20,38 +20,38 @@
 
 Open PowerShell (press windows button on your keyboard and type powershell, it should show up; alternatively, right click the start menu and select Windows PowerShell), and
 
-0. Navigate to the location where you want to install the bot
+1. Navigate to the location where you want to install the bot
     - for example, type `cd ~/Desktop/` and press enter
-1. `git clone https://github.com/nadeko-bot/nadekobot -b v6 --depth 1`
-1. `cd nadekobot/src/NadekoBot`
-1. `dotnet build -c Release`
-1. `cp data/creds_example.yml data/creds.yml`
-1. "You're done installing, you may now proceed to set up your bot's credentials by following the [#creds-guide]
+2. `git clone https://github.com/nadeko-bot/nadekobot -b v6 --depth 1`
+3. `cd nadekobot/src/NadekoBot`
+4. `dotnet build -c Release`
+5. `cp data/creds_example.yml data/creds.yml`
+6. "You're done installing, you may now proceed to set up your bot's credentials by following the [#creds-guide]
     - Once done, come back here and run the last command
-1. Run the bot `dotnet NadekoBot.dll`
-1. 🎉 Enjoy
+6. Run the bot `dotnet NadekoBot.dll`
+7. 🎉 Enjoy
 
 ## Update Instructions
 
 Open PowerShell as described above and run the following commands:
 
 1. Stop the bot
-  - ⚠️ Make sure you don't have your database, credentials or any other nadekobot folder open in some application, this might prevent some of the steps from executing successfully
-1. Navigate to your bot's folder, example:
+    - ⚠️ Make sure you don't have your database, credentials or any other nadekobot folder open in some application, this might prevent some of the steps from executing successfully
+2. Navigate to your bot's folder, example:
     - `cd ~/Desktop/nadekobot`
-1. Pull the new version, and make sure you're on the v6 branch
+3. Pull the new version, and make sure you're on the v6 branch
     - `git pull`
     - ⚠️ IF this fails, you may want to `git stash` or remove your code changes if you don't know how to resolve merge conflicts
-1. **Backup** old output in case your data is overwritten
+4. **Backup** old output in case your data is overwritten
     - `cp -r -fo output/ output-old`
-1. Build the bot again
+5. Build the bot again
     - `dotnet run -c Release src/NadekoBot/`
-1. Copy old data, and new strings
+6. Copy old data, and new strings
     - `cp -r -fo .\output-old\data\ .\output\`
-1. Run the bot
+7. Run the bot
     - `cd output`
     - `dotnet NadekoBot.dll`
-1. 🎉 Enjoy
+8. 🎉 Enjoy
 
 ## Music Prerequisites
 
