@@ -36,7 +36,7 @@ Open PowerShell (press windows button on your keyboard and type powershell, it s
 Open PowerShell as described above and run the following commands:
 
 1. Stop the bot
-  - ⚠️ Make sure you don't have your database, credentials or any other nadekobot folder open in some application, this might prevent some of the steps from executing succesfully
+  - ⚠️ Make sure you don't have your database, credentials or any other nadekobot folder open in some application, this might prevent some of the steps from executing successfully
 1. Navigate to your bot's folder, example:
     - `cd ~/Desktop/nadekobot`
 1. Pull the new version, and make sure you're on the v6 branch
@@ -51,17 +51,16 @@ Open PowerShell as described above and run the following commands:
 1. Run the bot
     - `cd output`
     - `dotnet NadekoBot.dll`
-
-🎉 Enjoy
+1. 🎉 Enjoy
 
 ## Music Prerequisites
 
 In order to use music commands, you need ffmpeg and yt-dlp installed.
+
 - [ffmpeg]
-- [yt-dlp] - Click to download the `yt-dlp.exe` file, then move `yt-dlp.exe` to a path that's in your PATH environment variable. If you don't know what that is, just move the `yt-dlp.exe` file to your nadekobot's output folder.
-
-
+- [yt-dlp]
+    - Click to download the `yt-dlp.exe` file, then move `yt-dlp.exe` to a path that's in your PATH environment variable. If you don't know what that is, just move the `yt-dlp.exe` file to your nadekobot's output folder.
 
 [.net]: https://dotnet.microsoft.com/download/dotnet/8.0
 [ffmpeg]: https://github.com/GyanD/codexffmpeg/releases/latest
-[youtube-dlp]: https://github.com/yt-dlp/yt-dlp/releases/latest
+[yt-dlp]: https://github.com/yt-dlp/yt-dlp/releases/latest
