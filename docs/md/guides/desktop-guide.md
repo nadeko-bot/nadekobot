@@ -44,7 +44,7 @@
 !!! warning "IMPORTANT"
 
     - Make sure Nadeko is closed and not running
-        - (Run `.die` in a connected server to make sure).
+        - Run `.die` in a connected server to make sure.
     - Make sure you don't have `data` folder, bot folder, or any other bot file open in any program, as the updater will fail to replace your version
 
 1. Run `upeko` if not already running
