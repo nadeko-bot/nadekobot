@@ -1,8 +1,107 @@
-There are two main methods to run NadekoBot on Linux: using `tmux` or using `systemd` with a script.
+# NadekoBot CLI Guide (via Bash Installer)
+
+### Supported Operating Systems
+
+--8<-- "md/snippets/supported-platforms.md:linux"
+--8<-- "md/snippets/supported-platforms.md:macos"
+
+### Prerequisites
+
+macOS:
+
+- [Homebrew](https://brew.sh/)
+- [Curl](#__tabbed_1_5)
+
+Linux:
+
+- [Curl](#__tabbed_1_1)
+
+---
+
+??? note "24/7 Up-time via VPS (Digital Ocean Guide)"
+    --8<-- "md/guides/vps-linux-guide.md"
+
+??? note "Creating a Discord Bot & Getting Credentials"
+    --8<-- "md/creds-guide.md"
+
+---
+
+## Installation Instructions
+
+Open Terminal (if you're on an installation with a window manager) and navigate to the location where you want to install the bot (for example `cd ~`)
+
+1. First make sure that curl is installed
+
+    /// tab | Ubuntu | Debian | Mint
+
+    ```bash
+    sudo apt install curl
+    ```
+
+    ///
+    /// tab | Rocky | Alma | Fedora
+
+    ```bash
+    sudo dnf install curl
+    ```
+
+    ///
+    /// tab | openSUSE
+
+    ```bash
+    sudo zypper install curl
+    ```
+
+    ///
+    /// tab | Arch | Artix
+
+    ```bash
+    sudo pacman -S curl
+    ```
+
+    ///
+    /// tab | macOS
+
+    ```bash
+    brew install curl
+    ```
+
+    ///
+
+2. Download and run the **new** installer script
+    ``` sh
+    cd ~
+    curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh
+    bash n-install.sh
+    ```
+3. Install the bot (type `1` and press enter)
+4. Edit creds (type `3` and press enter)
+    - *ALTERNATIVELY*, you can exit the installer (option `6`) and edit `nadeko/creds.yml` file yourself
+5. Follow the instruction [below](#creating-your-own-discord-bot) to create your own Discord bot and obtain the credentials needed to run it.
+    - After you're done, you can close nano (and save the file) by inputting, in order:
+        - `CTRL` + `X`
+        - `Y`
+        - `Enter`
+6. Run the installer script again
+    - `bash n-install.sh`
+7. Run the bot (type `3` and press enter)
+8. Done!
+
+## Update Instructions
+
+1. ⚠ Stop the bot ⚠
+2. Navigate to your bot's folder, we'll use home directory as an example
+    - `cd ~`
+3. Simply re-install the bot with a newer version by running the installer script
+    - `curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh && bash n-install.sh`
+4. Select option 1, and select a NEWER version
+
+## Running Nadeko
+
+There are two main methods to run NadekoBot: using `tmux` (macOS and Linux) or using `systemd` with a script (Linux only).
 
 /// tab | Tmux (Preferred Method)
 
---8<-- [start:macos]
 Using `tmux` is the simplest method, and is therefore recommended for most users.
 
 !!! warning
@@ -20,10 +119,12 @@ Using `tmux` is the simplest method, and is therefore recommended for most users
 Now check your Discord server, the bot should be online. Nadeko should now be running in the background of your system.
 
 To re-open the tmux session to either update, restart, or whatever, execute `tmux a -t nadeko`. *(Make sure to replace "nadeko" with your session name. If you didn't change it, leave it as it is.)*
---8<-- [end:macos]
 
 ///
 /// tab | Systemd
+
+!!! note
+    Systemd is only available on Linux. macOS utilizes Launchd, which is not covered in this guide. If you're on macOS, please use the `tmux` method, or use [Upeko](desktop-guide.md) to run NadekoBot.
 
 This method is a bit more complex and involved, but comes with the added benefit of better error logging and control over what happens before and after the startup of Nadeko.
 

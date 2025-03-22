@@ -1,4 +1,4 @@
-# NadekoBot Desktop Guide
+# NadekoBot Desktop Guide (via Upeko)
 
 ### Supported Operating Systems
 
