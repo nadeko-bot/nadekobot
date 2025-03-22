@@ -12,6 +12,8 @@ service GrpcXp {
 
   rpc AddReward(AddRewardRequest) returns (AddRewardReply);
   rpc DeleteReward(DeleteRewardRequest) returns (DeleteRewardReply);
+  
+  rpc GetUserXp(GetUserXpRequest) returns (GetUserXpReply);
 }
 
 message GetXpLbRequest {
@@ -75,4 +77,18 @@ message DeleteRewardRequest {
 
 message DeleteRewardReply {
   bool success = 1;
+}
+
+message GetUserXpRequest {
+  uint64 guildId = 1;
+  uint64 userId = 2;
+}
+
+message GetUserXpReply {
+  int64 xp = 1;
+  int64 requiredXp = 2;
+  int64 level = 3;
+  string club = 4;
+  string clubIcon = 5;
+  int32 rank = 6;
 }

@@ -2619,6 +2619,21 @@
     },
     {
       "Aliases": [
+        ".masskick"
+      ],
+      "Description": "Kicks multiple users at once. Specify a space separated list of IDs of users who you wish to kick.",
+      "Usage": [
+        ".masskick 123123123 3333333333 444444444"
+      ],
+      "Submodule": "UserPunishCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "KickMembers Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".massban"
       ],
       "Description": "Bans multiple users at once. Specify a space separated list of IDs of users who you wish to ban.",
@@ -6898,7 +6913,7 @@
       "Aliases": [
         ".savechat"
       ],
-      "Description": "Saves a number of messages to a text file and sends it to you.",
+      "Description": "Saves a number of messages to a text file and sends it to you.\nMax is 1000, unless you're the bot owner. ",
       "Usage": [
         ".savechat 150"
       ],
@@ -6906,7 +6921,7 @@
       "Module": "Utility",
       "Options": null,
       "Requirements": [
-        "Bot Owner Only"
+        "Administrator Server Permission"
       ]
     },
     {
@@ -7371,6 +7386,59 @@
     },
     {
       "Aliases": [
+        ".livechadd",
+        ".lcha",
+        ".lchadd"
+      ],
+      "Description": "Adds a channel as a live channel with the specified template.\nYou can see a full list of placeholders with `.phs` command.",
+      "Usage": [
+        ".livechadd #general Time: %server.time%",
+        ".livechadd #general -- %server.members% --"
+      ],
+      "Submodule": "LiveChannelCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageChannels Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".livechlist",
+        ".lchl",
+        ".lchli",
+        ".lchlist"
+      ],
+      "Description": "Lists all live channels in the server.",
+      "Usage": [
+        ".livechlist"
+      ],
+      "Submodule": "LiveChannelCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageChannels Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".livechremove",
+        ".lchd",
+        ".lchrm"
+      ],
+      "Description": "Removes a live channel.",
+      "Usage": [
+        ".livechremove #general"
+      ],
+      "Submodule": "LiveChannelCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageChannels Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".quotelist",
         ".qli",
         ".quli",
@@ -7718,6 +7786,52 @@
       "Requirements": [
         "ManageMessages Server Permission"
       ]
+    },
+    {
+      "Aliases": [
+        ".schedulelist",
+        ".schl",
+        ".schli"
+      ],
+      "Description": "Lists your scheduled commands in the current server.",
+      "Usage": [
+        ".schedulelist"
+      ],
+      "Submodule": "ScheduledCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".scheduledelete",
+        ".schd",
+        ".schdel"
+      ],
+      "Description": "Deletes one of your scheduled commands by its ID.",
+      "Usage": [
+        ".scheduledelete 5"
+      ],
+      "Submodule": "ScheduledCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".scheduleadd",
+        ".scha",
+        ".schadd"
+      ],
+      "Description": "Schedules a command to be executed after the specified amount of time.\nYou can schedule up to 5 commands at a time.",
+      "Usage": [
+        ".scheduleadd 1h5m .say Hello after 1 hour and 5 minutes",
+        ".scheduleadd 3h .br all"
+      ],
+      "Submodule": "ScheduledCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
     },
     {
       "Aliases": [
@@ -8512,6 +8626,41 @@
       "Module": "Xp",
       "Options": null,
       "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".xpexclusion",
+        ".xpexl"
+      ],
+      "Description": "Shows a list of all XP exclusions in the server.",
+      "Usage": [
+        ".xpexclusion"
+      ],
+      "Submodule": "XpExclusionCommands",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".xpexclude",
+        ".xpex"
+      ],
+      "Description": "Toggles XP gain exclusion for a specified item.\nItem types can be Role or User.",
+      "Usage": [
+        ".xpexclude @CoolRole",
+        ".xpexclude @User",
+        ".xpexclude role 123123123",
+        ".xpexclude user 123123123"
+      ],
+      "Submodule": "XpExclusionCommands",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
     },
     {
       "Aliases": [

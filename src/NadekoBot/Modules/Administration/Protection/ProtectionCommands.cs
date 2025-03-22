@@ -143,9 +143,9 @@ public partial class Administration
                 return;
 
             await Response()
-                  .Confirm(GetText(strs.prot_enable("Anti-Raid")),
-                      $"{ctx.User.Mention} {GetAntiRaidString(stats)}")
-                  .SendAsync();
+                .Confirm(GetText(strs.prot_enable("Anti-Raid")),
+                    $"{ctx.User.Mention} {GetAntiRaidString(stats)}")
+                .SendAsync();
         }
 
         [Cmd]
@@ -210,12 +210,13 @@ public partial class Administration
             if (action is PunishmentAction.TimeOut && time < 1)
                 return;
 
+            _ = Task.Run(() => ctx.Channel.TriggerTypingAsync());
             var stats = await _service.StartAntiSpamAsync(ctx.Guild.Id, messageCount, action, time, role?.Id);
 
             await Response()
-                  .Confirm(GetText(strs.prot_enable("Anti-Spam")),
-                      $"{ctx.User.Mention} {GetAntiSpamString(stats)}")
-                  .SendAsync();
+                .Confirm(GetText(strs.prot_enable("Anti-Spam")),
+                    $"{ctx.User.Mention} {GetAntiSpamString(stats)}")
+                .SendAsync();
         }
 
         [Cmd]

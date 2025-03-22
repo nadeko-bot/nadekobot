@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using System.Net;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
@@ -254,22 +255,23 @@ public class MuteService : INService, IReadyExecutor
 
         var muteRole = guild.Roles.FirstOrDefault(r => r.Name == muteRoleName);
         if (muteRole is null)
-            //if it doesn't exist, create it
         {
             try
             {
                 muteRole = await guild.CreateRoleAsync(muteRoleName, isMentionable: false);
             }
-            catch
+            catch (Exception ex)
             {
-                //if creations fails,  maybe the name is not correct, find default one, if doesn't work, create default one
-                muteRole = guild.Roles.FirstOrDefault(r => r.Name == muteRoleName)
-                           ?? await guild.CreateRoleAsync(defaultMuteRoleName, isMentionable: false);
+                Log.Warning(ex, "Unable to create mute role for guild {GuildId}", guild.Id);
+                return null;
             }
         }
 
         foreach (var toOverwrite in await guild.GetTextChannelsAsync())
         {
+            if (toOverwrite is IThreadChannel)
+                continue;
+            
             try
             {
                 if (!toOverwrite.PermissionOverwrites.Any(x => x.TargetId == muteRole.Id
@@ -280,9 +282,10 @@ public class MuteService : INService, IReadyExecutor
                     await Task.Delay(200);
                 }
             }
-            catch
+            catch (HttpException ex) when (ex.DiscordCode == DiscordErrorCode.MissingPermissions)
             {
-                // ignored
+                Log.Error(ex, "Error in Initializing mute role in guild {GuildId}: {Message}", guild.Id, ex.Message);
+                break;
             }
         }
 

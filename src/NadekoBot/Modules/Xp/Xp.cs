@@ -40,9 +40,19 @@ public partial class Xp : NadekoModule<XpService>
         _templateService = templateService;
     }
 
+    // [Cmd]
+    // [RequireContext(ContextType.Guild)]
+    // public async Task ExperienceText([Leftover] IUser? user = null)
+    // {
+    //     user ??= ctx.User;
+    //     var xp = await _service.GetUserStatsAsync((IGuildUser)user);
+    //     await ctx.Channel.TriggerTypingAsync();
+    //     await ctx.Channel.SendMessageAsync(_templateService.GetXpText(xp));
+    // }
+    
     [Cmd]
     [RequireContext(ContextType.Guild)]
-    public async Task Experience([Leftover] IUser user = null)
+    public async Task Experience([Leftover] IUser? user = null)
     {
         user ??= ctx.User;
         await ctx.Channel.TriggerTypingAsync();
@@ -113,59 +123,6 @@ public partial class Xp : NadekoModule<XpService>
 
                       embed.AddField($"#{i + 1 + (curPage * 10)} {user?.ToString() ?? users[i].UserId.ToString()}",
                           $"{GetText(strs.level_x(levelStats.Level))} - {levelStats.TotalXp}xp {awardStr}");
-                  }
-
-                  return embed;
-              })
-              .SendAsync();
-    }
-
-    [Cmd]
-    [RequireContext(ContextType.Guild)]
-    public async Task XpGlobalLeaderboard(int page = 1, params string[] args)
-    {
-        if (--page < 0 || page > 99)
-            return;
-
-        var (opts, _) = OptionsParser.ParseFrom(new LbOpts(), args);
-
-        await ctx.Channel.TriggerTypingAsync();
-        if (opts.Clean)
-        {
-            await _tracker.EnsureUsersDownloadedAsync(ctx.Guild);
-        }
-
-        async Task<IReadOnlyCollection<DiscordUser>> GetPageItems(int curPage)
-        {
-            if (opts.Clean)
-            {
-                return await _service.GetGlobalUserXps(page, ((SocketGuild)ctx.Guild).Users.Select(x => x.Id).ToList());
-            }
-
-            return await _service.GetGlobalUserXps(curPage);
-        }
-
-        await Response()
-              .Paginated()
-              .PageItems(GetPageItems)
-              .PageSize(10)
-              .Page((users, curPage) =>
-              {
-                  var embed = CreateEmbed()
-                              .WithOkColor()
-                              .WithTitle(GetText(strs.global_leaderboard));
-
-                  if (!users.Any())
-                  {
-                      embed.WithDescription("-");
-                      return embed;
-                  }
-
-                  for (var i = 0; i < users.Count; i++)
-                  {
-                      var user = users[i];
-                      embed.AddField($"#{i + 1 + (curPage * 10)} {user}",
-                          $"{GetText(strs.level_x(new LevelStats(users[i].TotalXp).Level))} - {users[i].TotalXp}xp");
                   }
 
                   return embed;
@@ -370,12 +327,6 @@ public partial class Xp : NadekoModule<XpService>
                   if (!string.IsNullOrWhiteSpace(item.Desc))
                       eb.AddField(GetText(strs.desc), item.Desc);
 
-                  var tier = _service.GetXpShopTierRequirement(type);
-                  if (tier != PatronTier.None)
-                  {
-                      eb.WithFooter(GetText(strs.xp_shop_buy_required_tier(tier.ToString())));
-                  }
-
                   return eb;
               })
               .Interaction(async current =>
@@ -450,7 +401,6 @@ public partial class Xp : NadekoModule<XpService>
                 BuyResult.AlreadyOwned =>
                     await Response().Error(strs.xpshop_already_owned).Interaction(GetUseInteraction()).SendAsync(),
                 BuyResult.UnknownItem => await Response().Error(strs.xpshop_item_not_found).SendAsync(),
-                BuyResult.InsufficientPatronTier => await Response().Error(strs.patron_insuff_tier).SendAsync(),
                 _ => throw new ArgumentOutOfRangeException()
             };
             return;

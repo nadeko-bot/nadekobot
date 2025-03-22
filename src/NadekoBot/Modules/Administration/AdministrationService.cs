@@ -107,12 +107,12 @@ public class AdministrationService : INService, IReadyExecutor
             .UpdateWithOutputAsync(x => new()
             {
                 DeleteMessageOnCommand = !x.DeleteMessageOnCommand
-            });
+            }, (old, newVal) => newVal);
 
         if (conf.Length == 0)
             return false;
 
-        var val = conf[0].Inserted.DeleteMessageOnCommand;
+        var val = conf[0].DeleteMessageOnCommand;
 
         if (val)
             deleteMessagesOnCommand.Add(guildId);

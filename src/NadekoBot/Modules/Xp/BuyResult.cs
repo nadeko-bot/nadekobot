@@ -7,5 +7,4 @@ public enum BuyResult
     AlreadyOwned,
     InsufficientFunds,
     UnknownItem,
-    InsufficientPatronTier,
 }

@@ -44,12 +44,12 @@ public partial class Administration
             try
             {
                 await _sender.Response(user)
-                             .Embed(CreateEmbed()
-                                           .WithErrorColor()
-                                           .WithDescription(GetText(strs.warned_on(ctx.Guild.ToString())))
-                                           .AddField(GetText(strs.moderator), ctx.User.ToString())
-                                           .AddField(GetText(strs.reason), reason ?? "-"))
-                             .SendAsync();
+                    .Embed(CreateEmbed()
+                        .WithErrorColor()
+                        .WithDescription(GetText(strs.warned_on(ctx.Guild.ToString())))
+                        .AddField(GetText(strs.moderator), ctx.User.ToString())
+                        .AddField(GetText(strs.reason), reason ?? "-"))
+                    .SendAsync();
             }
             catch
             {
@@ -65,8 +65,8 @@ public partial class Administration
             {
                 Log.Warning(ex, "Exception occured while warning a user");
                 var errorEmbed = CreateEmbed()
-                                        .WithErrorColor()
-                                        .WithDescription(GetText(strs.cant_apply_punishment));
+                    .WithErrorColor()
+                    .WithDescription(GetText(strs.cant_apply_punishment));
 
                 if (dmFailed)
                     errorEmbed.WithFooter("⚠️ " + GetText(strs.unable_to_dm_user));
@@ -177,45 +177,45 @@ public partial class Administration
             var allWarnings = _service.UserWarnings(ctx.Guild.Id, userId);
 
             await Response()
-                  .Paginated()
-                  .Items(allWarnings)
-                  .PageSize(9)
-                  .CurrentPage(inputPage)
-                  .Page((warnings, page) =>
-                  {
-                      var user = (ctx.Guild as SocketGuild)?.GetUser(userId)?.ToString() ?? userId.ToString();
-                      var embed = CreateEmbed().WithOkColor().WithTitle(GetText(strs.warnlog_for(user)));
+                .Paginated()
+                .Items(allWarnings)
+                .PageSize(9)
+                .CurrentPage(inputPage)
+                .Page((warnings, page) =>
+                {
+                    var user = (ctx.Guild as SocketGuild)?.GetUser(userId)?.ToString() ?? userId.ToString();
+                    var embed = CreateEmbed().WithOkColor().WithTitle(GetText(strs.warnlog_for(user)));
 
-                      if (!warnings.Any())
-                          embed.WithDescription(GetText(strs.warnings_none));
-                      else
-                      {
-                          var descText = GetText(strs.warn_count(
-                              Format.Bold(warnings.Where(x => !x.Forgiven).Sum(x => x.Weight).ToString()),
-                              Format.Bold(warnings.Sum(x => x.Weight).ToString())));
+                    if (!warnings.Any())
+                        embed.WithDescription(GetText(strs.warnings_none));
+                    else
+                    {
+                        var descText = GetText(strs.warn_count(
+                            Format.Bold(warnings.Where(x => !x.Forgiven).Sum(x => x.Weight).ToString()),
+                            Format.Bold(warnings.Sum(x => x.Weight).ToString())));
 
-                          embed.WithDescription(descText);
+                        embed.WithDescription(descText);
 
-                          var i = page * 9;
-                          foreach (var w in warnings)
-                          {
-                              i++;
-                              var name = GetText(strs.warned_on_by(w.DateAdded?.ToString("dd.MM.yyy"),
-                                  w.DateAdded?.ToString("HH:mm"),
-                                  w.Moderator));
+                        var i = page * 9;
+                        foreach (var w in warnings)
+                        {
+                            i++;
+                            var name = GetText(strs.warned_on_by(w.DateAdded?.ToString("dd.MM.yyy"),
+                                w.DateAdded?.ToString("HH:mm"),
+                                w.Moderator));
 
-                              if (w.Forgiven)
-                                  name = $"{Format.Strikethrough(name)} {GetText(strs.warn_cleared_by(w.ForgivenBy))}";
+                            if (w.Forgiven)
+                                name = $"{Format.Strikethrough(name)} {GetText(strs.warn_cleared_by(w.ForgivenBy))}";
 
 
-                              embed.AddField($"#`{i}` " + name,
-                                  Format.Code(GetText(strs.warn_weight(w.Weight))) + '\n' + w.Reason.TrimTo(1000));
-                          }
-                      }
+                            embed.AddField($"#`{i}` " + name,
+                                Format.Code(GetText(strs.warn_weight(w.Weight))) + '\n' + w.Reason.TrimTo(1000));
+                        }
+                    }
 
-                      return embed;
-                  })
-                  .SendAsync();
+                    return embed;
+                })
+                .SendAsync();
         }
 
         [Cmd]
@@ -228,29 +228,29 @@ public partial class Administration
             var allWarnings = _service.WarnlogAll(ctx.Guild.Id);
 
             await Response()
-                  .Paginated()
-                  .Items(allWarnings)
-                  .PageSize(15)
-                  .CurrentPage(page)
-                  .Page((warnings, _) =>
-                  {
-                      var ws = warnings
-                          .Select(x =>
-                          {
-                              var all = x.Count();
-                              var forgiven = x.Count(y => y.Forgiven);
-                              var total = all - forgiven;
-                              var usr = ((SocketGuild)ctx.Guild).GetUser(x.Key);
-                              return (usr?.ToString() ?? x.Key.ToString())
-                                     + $" | {total} ({all} - {forgiven})";
-                          });
+                .Paginated()
+                .Items(allWarnings)
+                .PageSize(15)
+                .CurrentPage(page)
+                .Page((warnings, _) =>
+                {
+                    var ws = warnings
+                        .Select(x =>
+                        {
+                            var all = x.Count();
+                            var forgiven = x.Count(y => y.Forgiven);
+                            var total = all - forgiven;
+                            var usr = ((SocketGuild)ctx.Guild).GetUser(x.Key);
+                            return (usr?.ToString() ?? x.Key.ToString())
+                                   + $" | {total} ({all} - {forgiven})";
+                        });
 
-                      return CreateEmbed()
-                                    .WithOkColor()
-                                    .WithTitle(GetText(strs.warnings_list))
-                                    .WithDescription(string.Join("\n", ws));
-                  })
-                  .SendAsync();
+                    return CreateEmbed()
+                        .WithOkColor()
+                        .WithTitle(GetText(strs.warnings_list))
+                        .WithDescription(string.Join("\n", ws));
+                })
+                .SendAsync();
         }
 
         [Cmd]
@@ -332,17 +332,17 @@ public partial class Administration
             if (timespan is null)
             {
                 await Response()
-                      .Confirm(strs.warn_punish_set(Format.Bold(punish.ToString()),
-                          Format.Bold(number.ToString())))
-                      .SendAsync();
+                    .Confirm(strs.warn_punish_set(Format.Bold(punish.ToString()),
+                        Format.Bold(number.ToString())))
+                    .SendAsync();
             }
             else
             {
                 await Response()
-                      .Confirm(strs.warn_punish_set_timed(Format.Bold(punish.ToString()),
-                          Format.Bold(number.ToString()),
-                          Format.Bold(timespan.Input)))
-                      .SendAsync();
+                    .Confirm(strs.warn_punish_set_timed(Format.Bold(punish.ToString()),
+                        Format.Bold(number.ToString()),
+                        Format.Bold(timespan.Input)))
+                    .SendAsync();
             }
         }
 
@@ -368,17 +368,17 @@ public partial class Administration
             if (timespan is null)
             {
                 await Response()
-                      .Confirm(strs.warn_punish_set(Format.Bold(punish.ToString()),
-                          Format.Bold(number.ToString())))
-                      .SendAsync();
+                    .Confirm(strs.warn_punish_set(Format.Bold(punish.ToString()),
+                        Format.Bold(number.ToString())))
+                    .SendAsync();
             }
             else
             {
                 await Response()
-                      .Confirm(strs.warn_punish_set_timed(Format.Bold(punish.ToString()),
-                          Format.Bold(number.ToString()),
-                          Format.Bold(timespan.Input)))
-                      .SendAsync();
+                    .Confirm(strs.warn_punish_set_timed(Format.Bold(punish.ToString()),
+                        Format.Bold(number.ToString()),
+                        Format.Bold(timespan.Input)))
+                    .SendAsync();
             }
         }
 
@@ -458,13 +458,13 @@ public partial class Administration
             var banPrune = await _service.GetBanPruneAsync(ctx.Guild.Id) ?? 7;
             await _mute.TimedBan(ctx.Guild, userId, timespan.Time, (ctx.User + " | " + msg).TrimTo(512), banPrune);
             var toSend = CreateEmbed()
-                                .WithOkColor()
-                                .WithTitle("⛔️ " + GetText(strs.banned_user))
-                                .AddField(GetText(strs.username), user?.ToString() ?? userId.ToString(), true)
-                                .AddField("ID", userId.ToString(), true)
-                                .AddField(GetText(strs.duration),
-                                    timespan.Time.ToPrettyStringHm(),
-                                    true);
+                .WithOkColor()
+                .WithTitle("⛔️ " + GetText(strs.banned_user))
+                .AddField(GetText(strs.username), user?.ToString() ?? userId.ToString(), true)
+                .AddField("ID", userId.ToString(), true)
+                .AddField(GetText(strs.duration),
+                    timespan.Time.ToPrettyStringHm(),
+                    true);
 
             if (dmFailed)
                 toSend.WithFooter("⚠️ " + GetText(strs.unable_to_dm_user));
@@ -486,11 +486,11 @@ public partial class Administration
                 await ctx.Guild.AddBanAsync(userId, banPrune, (ctx.User + " | " + msg).TrimTo(512));
 
                 await Response()
-                      .Embed(CreateEmbed()
-                                    .WithOkColor()
-                                    .WithTitle("⛔️ " + GetText(strs.banned_user))
-                                    .AddField("ID", userId.ToString(), true))
-                      .SendAsync();
+                    .Embed(CreateEmbed()
+                        .WithOkColor()
+                        .WithTitle("⛔️ " + GetText(strs.banned_user))
+                        .AddField("ID", userId.ToString(), true))
+                    .SendAsync();
             }
             else
                 await Ban(user, msg);
@@ -524,10 +524,10 @@ public partial class Administration
             await ctx.Guild.AddBanAsync(user, banPrune, (ctx.User + " | " + msg).TrimTo(512));
 
             var toSend = CreateEmbed()
-                                .WithOkColor()
-                                .WithTitle("⛔️ " + GetText(strs.banned_user))
-                                .AddField(GetText(strs.username), user.ToString(), true)
-                                .AddField("ID", user.Id.ToString(), true);
+                .WithOkColor()
+                .WithTitle("⛔️ " + GetText(strs.banned_user))
+                .AddField(GetText(strs.username), user.ToString(), true)
+                .AddField("ID", user.Id.ToString(), true);
 
             if (dmFailed)
                 toSend.WithFooter("⚠️ " + GetText(strs.unable_to_dm_user));
@@ -704,9 +704,9 @@ public partial class Administration
             try
             {
                 await Response()
-                      .Channel(await user.CreateDMChannelAsync())
-                      .Error(strs.sbdm(Format.Bold(ctx.Guild.Name), msg))
-                      .SendAsync();
+                    .Channel(await user.CreateDMChannelAsync())
+                    .Error(strs.sbdm(Format.Bold(ctx.Guild.Name), msg))
+                    .SendAsync();
             }
             catch
             {
@@ -721,14 +721,13 @@ public partial class Administration
             }
             catch
             {
-                
             }
 
             var toSend = CreateEmbed()
-                                .WithOkColor()
-                                .WithTitle("☣ " + GetText(strs.sb_user))
-                                .AddField(GetText(strs.username), user.ToString(), true)
-                                .AddField("ID", user.Id.ToString(), true);
+                .WithOkColor()
+                .WithTitle("☣ " + GetText(strs.sb_user))
+                .AddField(GetText(strs.username), user.ToString(), true)
+                .AddField("ID", user.Id.ToString(), true);
 
             if (dmFailed)
                 toSend.WithFooter("⚠️ " + GetText(strs.unable_to_dm_user));
@@ -768,9 +767,9 @@ public partial class Administration
             try
             {
                 await Response()
-                      .Channel(await user.CreateDMChannelAsync())
-                      .Error(GetText(strs.kickdm(Format.Bold(ctx.Guild.Name), msg)))
-                      .SendAsync();
+                    .Channel(await user.CreateDMChannelAsync())
+                    .Error(GetText(strs.kickdm(Format.Bold(ctx.Guild.Name), msg)))
+                    .SendAsync();
             }
             catch
             {
@@ -780,10 +779,10 @@ public partial class Administration
             await user.KickAsync((ctx.User + " | " + msg).TrimTo(512));
 
             var toSend = CreateEmbed()
-                                .WithOkColor()
-                                .WithTitle(GetText(strs.kicked_user))
-                                .AddField(GetText(strs.username), user.ToString(), true)
-                                .AddField("ID", user.Id.ToString(), true);
+                .WithOkColor()
+                .WithTitle(GetText(strs.kicked_user))
+                .AddField(GetText(strs.username), user.ToString(), true)
+                .AddField("ID", user.Id.ToString(), true);
 
             if (dmFailed)
                 toSend.WithFooter("⚠️ " + GetText(strs.unable_to_dm_user));
@@ -812,10 +811,10 @@ public partial class Administration
             {
                 var dmMessage = GetText(strs.timeoutdm(Format.Bold(ctx.Guild.Name), msg));
                 await _sender.Response(user)
-                             .Embed(CreateEmbed()
-                                           .WithPendingColor()
-                                           .WithDescription(dmMessage))
-                             .SendAsync();
+                    .Embed(CreateEmbed()
+                        .WithPendingColor()
+                        .WithDescription(dmMessage))
+                    .SendAsync();
             }
             catch
             {
@@ -825,10 +824,10 @@ public partial class Administration
             await user.SetTimeOutAsync(timespan.Time);
 
             var toSend = CreateEmbed()
-                                .WithOkColor()
-                                .WithTitle("⏳ " + GetText(strs.timedout_user))
-                                .AddField(GetText(strs.username), user.ToString(), true)
-                                .AddField("ID", user.Id.ToString(), true);
+                .WithOkColor()
+                .WithTitle("⏳ " + GetText(strs.timedout_user))
+                .AddField(GetText(strs.username), user.ToString(), true)
+                .AddField("ID", user.Id.ToString(), true);
 
             if (dmFailed)
                 toSend.WithFooter("⚠️ " + GetText(strs.unable_to_dm_user));
@@ -836,21 +835,38 @@ public partial class Administration
             await Response().Embed(toSend).SendAsync();
         }
 
+        public enum PunishType
+        {
+            Kick,
+            Ban
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.KickMembers)]
+        [BotPerm(GuildPerm.KickMembers)]
+        [Ratelimit(30)]
+        public async Task MassKick(params string[] users)
+            => await MassPunish(PunishType.Ban, users);
+
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.BanMembers)]
         [BotPerm(GuildPerm.BanMembers)]
         [Ratelimit(30)]
-        public async Task MassBan(params string[] userStrings)
+        public async Task MassBan(params string[] users)
+            => await MassPunish(PunishType.Ban, users);
+
+        private async Task MassPunish(PunishType type, params string[] users)
         {
-            if (userStrings.Length == 0)
+            if (users.Length == 0)
                 return;
 
             var missing = new List<string>();
-            var banning = new HashSet<IUser>();
+            var punishing = new HashSet<IUser>();
 
             await ctx.Channel.TriggerTypingAsync();
-            foreach (var userStr in userStrings)
+            foreach (var userStr in users)
             {
                 if (ulong.TryParse(userStr, out var userId))
                 {
@@ -875,7 +891,7 @@ public partial class Administration
                     if (user is IGuildUser gu && !await CheckRoleHierarchy(gu))
                         return;
 
-                    banning.Add(user);
+                    punishing.Add(user);
                 }
                 else
                     missing.Add(userStr);
@@ -886,33 +902,48 @@ public partial class Administration
                 missStr = "-";
 
             var toSend = CreateEmbed()
-                                .WithDescription(GetText(strs.mass_ban_in_progress(banning.Count)))
-                                .AddField(GetText(strs.invalid(missing.Count)), missStr)
-                                .WithPendingColor();
+                .WithDescription(GetText(strs.mass_ban_in_progress(punishing.Count)))
+                .AddField(GetText(strs.invalid(missing.Count)), missStr)
+                .WithPendingColor();
 
             var banningMessage = await Response().Embed(toSend).SendAsync();
-
             var banPrune = await _service.GetBanPruneAsync(ctx.Guild.Id) ?? 7;
-            foreach (var toBan in banning)
+
+            foreach (var toPunish in punishing)
             {
-                try
+                if (type == PunishType.Kick)
                 {
-                    await ctx.Guild.AddBanAsync(toBan.Id, banPrune, $"{ctx.User} | Massban");
+                    try
+                    {
+                        if (toPunish is IGuildUser u)
+                            await u.KickAsync($"{ctx.User} | Masskick");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "Error kicking {User} user in {GuildId} server", toPunish.Id, ctx.Guild.Id);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Log.Warning(ex, "Error banning {User} user in {GuildId} server", toBan.Id, ctx.Guild.Id);
+                    try
+                    {
+                        await ctx.Guild.AddBanAsync(toPunish.Id, banPrune, $"{ctx.User} | Massban");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "Error banning {User} user in {GuildId} server", toPunish.Id, ctx.Guild.Id);
+                    }
                 }
             }
 
             await banningMessage.ModifyAsync(x => x.Embed = CreateEmbed()
-                                                                   .WithDescription(
-                                                                       GetText(strs.mass_ban_completed(
-                                                                           banning.Count())))
-                                                                   .AddField(GetText(strs.invalid(missing.Count)),
-                                                                       missStr)
-                                                                   .WithOkColor()
-                                                                   .Build());
+                .WithDescription(
+                    GetText(strs.mass_ban_completed(
+                        punishing.Count())))
+                .AddField(GetText(strs.invalid(missing.Count)),
+                    missStr)
+                .WithOkColor()
+                .Build());
         }
 
         [Cmd]
@@ -933,33 +964,33 @@ public partial class Administration
 
             //send a message but don't wait for it
             var banningMessageTask = Response()
-                                     .Embed(CreateEmbed()
-                                                   .WithDescription(
-                                                       GetText(strs.mass_kill_in_progress(bans.Count())))
-                                                   .AddField(GetText(strs.invalid(missing)), missStr)
-                                                   .WithPendingColor())
-                                     .SendAsync();
+                .Embed(CreateEmbed()
+                    .WithDescription(
+                        GetText(strs.mass_kill_in_progress(bans.Count())))
+                    .AddField(GetText(strs.invalid(missing)), missStr)
+                    .WithPendingColor())
+                .SendAsync();
 
             var banPrune = await _service.GetBanPruneAsync(ctx.Guild.Id) ?? 7;
             //do the banning
             await Task.WhenAll(bans.Where(x => x.Id.HasValue)
-                                   .Select(x => ctx.Guild.AddBanAsync(x.Id.Value,
-                                       banPrune,
-                                       x.Reason,
-                                       new()
-                                       {
-                                           RetryMode = RetryMode.AlwaysRetry
-                                       })));
+                .Select(x => ctx.Guild.AddBanAsync(x.Id.Value,
+                    banPrune,
+                    x.Reason,
+                    new()
+                    {
+                        RetryMode = RetryMode.AlwaysRetry
+                    })));
 
             //wait for the message and edit it
             var banningMessage = await banningMessageTask;
 
             await banningMessage.ModifyAsync(x => x.Embed = CreateEmbed()
-                                                                   .WithDescription(
-                                                                       GetText(strs.mass_kill_completed(bans.Count())))
-                                                                   .AddField(GetText(strs.invalid(missing)), missStr)
-                                                                   .WithOkColor()
-                                                                   .Build());
+                .WithDescription(
+                    GetText(strs.mass_kill_completed(bans.Count())))
+                .AddField(GetText(strs.invalid(missing)), missStr)
+                .WithOkColor()
+                .Build());
         }
 
         public class WarnExpireOptions : INadekoCommandOptions

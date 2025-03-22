@@ -1,3 +1,7 @@
 ﻿namespace NadekoBot.Db.Models;
 
-public enum ExcludedItemType { Channel, Role }
+public enum XpExcludedItemType
+{
+    User,
+    Role
+}

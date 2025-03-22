@@ -11,11 +11,7 @@ public class AntiAltSetting
 {
     [Key]
     public int Id { get; set; }
-
-    public int GuildConfigId { get; set; }
-
     public ulong GuildId { get; set; }
-
     public TimeSpan MinAge { get; set; }
     public PunishmentAction Action { get; set; }
     public int ActionDurationMinutes { get; set; }

@@ -27,9 +27,9 @@ public partial class Searches
 
             var embed = _service.GetEmbed(ctx.Guild.Id, data);
             await Response()
-                  .Embed(embed)
-                  .Text(strs.stream_tracked)
-                  .SendAsync();
+                .Embed(embed)
+                .Text(strs.stream_tracked)
+                .SendAsync();
         }
 
         [Cmd]
@@ -48,7 +48,10 @@ public partial class Searches
                 return;
             }
 
-            await Response().Confirm(strs.stream_removed(Format.Bold(fs.Username), fs.Type)).SendAsync();
+            await Response()
+                .Confirm(strs.stream_removed(
+                    Format.Bold(string.IsNullOrWhiteSpace(fs.PrettyName) ? fs.Username : fs.PrettyName),
+                    fs.Type)).SendAsync();
         }
 
         [Cmd]
@@ -70,27 +73,27 @@ public partial class Searches
             var allStreams = await _service.GetAllStreamsAsync((SocketGuild)ctx.Guild);
 
             await Response()
-                  .Paginated()
-                  .Items(allStreams)
-                  .PageSize(12)
-                  .CurrentPage(page)
-                  .Page((elements, cur) =>
-                  {
-                      if (elements.Count == 0)
-                          return CreateEmbed().WithDescription(GetText(strs.streams_none)).WithErrorColor();
+                .Paginated()
+                .Items(allStreams)
+                .PageSize(12)
+                .CurrentPage(page)
+                .Page((elements, cur) =>
+                {
+                    if (elements.Count == 0)
+                        return CreateEmbed().WithDescription(GetText(strs.streams_none)).WithErrorColor();
 
-                      var eb = CreateEmbed().WithTitle(GetText(strs.streams_follow_title)).WithOkColor();
-                      for (var index = 0; index < elements.Count; index++)
-                      {
-                          var elem = elements[index];
-                          eb.AddField($"**#{index + 1 + (12 * cur)}** {elem.Username.ToLower()}",
-                              $"【{elem.Type}】\n<#{elem.ChannelId}>\n{elem.Message?.TrimTo(50)}",
-                              true);
-                      }
+                    var eb = CreateEmbed().WithTitle(GetText(strs.streams_follow_title)).WithOkColor();
+                    for (var index = 0; index < elements.Count; index++)
+                    {
+                        var elem = elements[index];
+                        eb.AddField($"**#{index + 1 + (12 * cur)}** {(elem.PrettyName ?? elem.Username).ToLower()}",
+                            $"【{elem.Type}】\n<#{elem.ChannelId}>\n{elem.Message?.TrimTo(50)}",
+                            true);
+                    }
 
-                      return eb;
-                  })
-                  .SendAsync();
+                    return eb;
+                })
+                .SendAsync();
         }
 
         [Cmd]
@@ -149,7 +152,7 @@ public partial class Searches
             var canMentionEveryone = (ctx.User as IGuildUser)?.GuildPermissions.MentionEveryone ?? true;
             if (!canMentionEveryone)
                 message = message?.SanitizeAllMentions();
-            
+
             var count = _service.SetStreamMessageForAll(ctx.Guild.Id, message);
 
             if (count == 0)
@@ -176,10 +179,10 @@ public partial class Searches
 
                 if (data.IsLive)
                 {
+                    var embed = _service.GetEmbed(ctx.Guild.Id, data, false);
                     await Response()
-                          .Confirm(strs.streamer_online(Format.Bold(data.Name),
-                              Format.Bold(data.Viewers.ToString())))
-                          .SendAsync();
+                        .Embed(embed)
+                        .SendAsync();
                 }
                 else
                     await Response().Confirm(strs.streamer_offline(data.Name)).SendAsync();

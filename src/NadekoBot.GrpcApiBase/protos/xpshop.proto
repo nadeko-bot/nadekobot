@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option csharp_namespace = "NadekoBot.GrpcApi";
+
+package greet;
+
+service GrpcXpShop {
+  rpc AddXpShopItem (AddXpShopItemRequest) returns (AddXpShopItemReply);
+  rpc GetShopItems (GetShopItemsRequest) returns (GetShopItemsReply);
+  rpc UseShopItem (UseShopItemRequest) returns (UseShopItemReply);
+  rpc BuyShopItem (BuyShopItemRequest) returns (BuyShopItemReply);
+}
+
+message UseShopItemRequest {
+  uint64 userId = 1;
+  string uniqueName = 2;
+  GrpcXpShopItemType itemType = 3;
+}
+
+message UseShopItemReply {
+  bool success = 1;
+}
+
+message BuyShopItemRequest {
+  uint64 userId = 1;
+  string uniqueName = 2;
+  GrpcXpShopItemType itemType = 3;
+}
+
+message BuyShopItemReply {
+  bool success = 1;
+  optional BuyShopItemError Error = 2;
+}
+
+enum BuyShopItemError {
+  NotEnough = 0;
+  AlreadyOwned = 1;
+  Unknown = 2;
+}
+
+message AddXpShopItemRequest {
+  XpShopItem item = 1;
+  string uniqueName = 2;
+  GrpcXpShopItemType itemType = 3;
+}
+
+message AddXpShopItemReply {
+  bool success = 1;
+}
+
+message GetShopItemsRequest {
+  
+}
+
+message GetShopItemsReply {
+  repeated XpShopItem bgs = 1;
+  repeated XpShopItem frames = 2;
+}
+
+message XpShopItem {
+  string Name = 1;
+  string Description = 2;
+  int64 Price = 3;
+  string FullUrl = 4;
+  string PreviewUrl = 5;
+}
+
+enum GrpcXpShopItemType {
+  Bg = 0;
+  Frame = 1;
+}

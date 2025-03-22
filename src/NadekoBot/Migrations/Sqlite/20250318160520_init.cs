@@ -17,7 +17,6 @@ namespace NadekoBot.Migrations.Sqlite
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    GuildConfigId = table.Column<int>(type: "INTEGER", nullable: false),
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     MinAge = table.Column<TimeSpan>(type: "TEXT", nullable: false),
                     Action = table.Column<int>(type: "INTEGER", nullable: false),
@@ -53,7 +52,6 @@ namespace NadekoBot.Migrations.Sqlite
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    GuildConfigId = table.Column<int>(type: "INTEGER", nullable: false),
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     Action = table.Column<int>(type: "INTEGER", nullable: false),
                     MessageThreshold = table.Column<int>(type: "INTEGER", nullable: false),
@@ -366,6 +364,7 @@ namespace NadekoBot.Migrations.Sqlite
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     Username = table.Column<string>(type: "TEXT", nullable: true),
+                    PrettyName = table.Column<string>(type: "TEXT", nullable: true),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     Message = table.Column<string>(type: "TEXT", nullable: true)
                 },
@@ -549,6 +548,21 @@ namespace NadekoBot.Migrations.Sqlite
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ImageOnlyChannels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LiveChannelConfig",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Template = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LiveChannelConfig", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -859,6 +873,24 @@ namespace NadekoBot.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
+                name: "ScheduledCommand",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    MessageId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Text = table.Column<string>(type: "TEXT", nullable: false),
+                    When = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduledCommand", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShopEntry",
                 columns: table => new
                 {
@@ -1162,6 +1194,22 @@ namespace NadekoBot.Migrations.Sqlite
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Warnings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "XpExcludedItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ItemType = table.Column<int>(type: "INTEGER", nullable: false),
+                    ItemId = table.Column<ulong>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_XpExcludedItem", x => x.Id);
+                    table.UniqueConstraint("AK_XpExcludedItem_GuildId_ItemType_ItemId", x => new { x.GuildId, x.ItemType, x.ItemId });
                 });
 
             migrationBuilder.CreateTable(
@@ -1625,7 +1673,6 @@ namespace NadekoBot.Migrations.Sqlite
                     ClubId = table.Column<int>(type: "INTEGER", nullable: true),
                     IsClubAdmin = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
                     TotalXp = table.Column<long>(type: "INTEGER", nullable: false, defaultValue: 0L),
-                    NotifyOnLevelUp = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
                     CurrencyAmount = table.Column<long>(type: "INTEGER", nullable: false, defaultValue: 0L),
                     DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -1955,6 +2002,17 @@ namespace NadekoBot.Migrations.Sqlite
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_LiveChannelConfig_GuildId",
+                table: "LiveChannelConfig",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LiveChannelConfig_GuildId_ChannelId",
+                table: "LiveChannelConfig",
+                columns: new[] { "GuildId", "ChannelId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LogSettings_GuildId",
                 table: "LogSettings",
                 column: "GuildId",
@@ -2051,6 +2109,21 @@ namespace NadekoBot.Migrations.Sqlite
                 table: "SarAutoDelete",
                 column: "GuildId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduledCommand_GuildId",
+                table: "ScheduledCommand",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduledCommand_UserId",
+                table: "ScheduledCommand",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduledCommand_When",
+                table: "ScheduledCommand",
+                column: "When");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShopEntry_GuildId_Index",
@@ -2252,6 +2325,11 @@ namespace NadekoBot.Migrations.Sqlite
                 column: "XpSettingsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_XpExcludedItem_GuildId",
+                table: "XpExcludedItem",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_XpRoleReward_XpSettingsId_Level",
                 table: "XpRoleReward",
                 columns: new[] { "XpSettingsId", "Level" },
@@ -2426,6 +2504,9 @@ namespace NadekoBot.Migrations.Sqlite
                 name: "ImageOnlyChannels");
 
             migrationBuilder.DropTable(
+                name: "LiveChannelConfig");
+
+            migrationBuilder.DropTable(
                 name: "MusicPlayerSettings");
 
             migrationBuilder.DropTable(
@@ -2475,6 +2556,9 @@ namespace NadekoBot.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "SarAutoDelete");
+
+            migrationBuilder.DropTable(
+                name: "ScheduledCommand");
 
             migrationBuilder.DropTable(
                 name: "ShopEntryItem");
@@ -2541,6 +2625,9 @@ namespace NadekoBot.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "XpCurrencyReward");
+
+            migrationBuilder.DropTable(
+                name: "XpExcludedItem");
 
             migrationBuilder.DropTable(
                 name: "XpRoleReward");

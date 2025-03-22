@@ -8,8 +8,6 @@ namespace NadekoBot.Db.Models;
 #nullable disable
 public class AntiSpamSetting : DbEntity
 {
-    public int GuildConfigId { get; set; }
-
     public ulong GuildId { get; set; }
 
     public PunishmentAction Action { get; set; }

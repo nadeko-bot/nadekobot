@@ -8,7 +8,7 @@ public sealed class DoAsUserMessage : IUserMessage
     private IUserMessage _msg;
     private readonly IUser _user;
 
-    public DoAsUserMessage(SocketUserMessage msg, IUser user, string message)
+    public DoAsUserMessage(IUserMessage msg, IUser user, string message)
     {
         _msg = msg;
         _user = user;

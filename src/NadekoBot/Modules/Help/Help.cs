@@ -1,8 +1,6 @@
 #nullable disable
 using NadekoBot.Modules.Help.Common;
 using NadekoBot.Modules.Help.Services;
-using Newtonsoft.Json;
-using System.Text;
 using Nadeko.Common.Medusa;
 
 namespace NadekoBot.Modules.Help;
@@ -22,6 +20,7 @@ public sealed partial class Help : NadekoModule<HelpService>
 
     private readonly AsyncLazy<ulong> _lazyClientId;
     private readonly IMedusaLoaderService _medusae;
+    private readonly CommandListGenerator _cmdListGen;
 
     public Help(
         ICommandsUtilityService _cus,
@@ -31,7 +30,8 @@ public sealed partial class Help : NadekoModule<HelpService>
         IServiceProvider services,
         DiscordSocketClient client,
         IBotStrings strings,
-        IMedusaLoaderService medusae)
+        IMedusaLoaderService medusae,
+        CommandListGenerator cmdListGen)
     {
         this._cus = _cus;
         _cmds = cmds;
@@ -41,6 +41,7 @@ public sealed partial class Help : NadekoModule<HelpService>
         _client = client;
         _strings = strings;
         _medusae = medusae;
+        _cmdListGen = cmdListGen;
 
         _lazyClientId = new(async () => (await _client.GetApplicationInfoAsync()).Id);
     }
@@ -327,21 +328,21 @@ public sealed partial class Help : NadekoModule<HelpService>
                     var isOwnerOnly = x.Preconditions.Any(x => x is OwnerOnlyAttribute);
                     if (isOwnerOnly)
                         prepend = " \\👑";
-                    
+
                     //if cross is specified, and the command doesn't satisfy the requirements, cross it out
                     if (opts.View == CommandsOptions.ViewType.Cross)
                     {
                         var outp = $"{(succ.Contains(x) ? "✅" : "❌")} {prefix + x.Aliases[0]}";
-                        
+
                         return prepend + outp;
                     }
-                    
+
                     var output = prefix + x.Aliases[0];
 
                     if (x.Aliases.Count > 1)
                         output += " | " + prefix + x.Aliases[1];
-                    
-                    if(opts.View == CommandsOptions.ViewType.All)
+
+                    if (opts.View == CommandsOptions.ViewType.All)
                         return prepend + output;
 
                     return output;
@@ -488,38 +489,7 @@ public sealed partial class Help : NadekoModule<HelpService>
     {
         _ = ctx.Channel.TriggerTypingAsync();
 
-        // order commands by top level module name
-        // and make a dictionary of <ModuleName, Array<JsonCommandData>>
-        var cmdData = _cmds.Commands.GroupBy(x => x.Module.GetTopLevelModule().Name)
-            .OrderBy(x => x.Key)
-            .ToDictionary(x => x.Key,
-                x => x.DistinctBy(c => c.Aliases.First())
-                    .Select(com =>
-                    {
-                        List<string> optHelpStr = null;
-
-                        var opt = CommandsUtilityService.GetNadekoOptionType(com.Attributes);
-                        if (opt is not null)
-                            optHelpStr = CommandsUtilityService.GetCommandOptionHelpList(opt);
-
-                        return new CommandJsonObject
-                        {
-                            Aliases = com.Aliases.Select(alias => prefix + alias).ToArray(),
-                            Description = com.RealSummary(_strings, _medusae, Culture, prefix),
-                            Usage = com.RealRemarksArr(_strings, _medusae, Culture, prefix),
-                            Submodule = com.Module.Name,
-                            Module = com.Module.GetTopLevelModule().Name,
-                            Options = optHelpStr,
-                            Requirements = CommandsUtilityService.GetCommandRequirements(com)
-                        };
-                    })
-                    .ToList());
-
-        var readableData = JsonConvert.SerializeObject(cmdData, Formatting.Indented);
-
-        // send the indented file to chat
-        await using var rDataStream = new MemoryStream(Encoding.ASCII.GetBytes(readableData));
-        await File.WriteAllTextAsync("data/commandlist.json", readableData);
+        await using var rDataStream = await _cmdListGen.GenerateCommandListAsync(prefix, Culture);
         await ctx.Channel.SendFileAsync(rDataStream, "cmds.json", GetText(strs.commandlist_regen));
     }
 

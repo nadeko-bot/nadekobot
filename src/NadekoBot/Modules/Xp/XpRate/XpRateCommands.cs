@@ -3,7 +3,7 @@
 public partial class Xp
 {
     [RequireUserPermission(GuildPermission.ManageGuild)]
-    public class XpRateCommands : NadekoModule<GuildConfigXpService>
+    public class XpRateCommands : NadekoModule<XpRateService>
     {
         [Cmd]
         [RequireContext(ContextType.Guild)]

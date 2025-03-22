@@ -18,7 +18,6 @@ namespace NadekoBot.Migrations.PostgreSql
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    guildconfigid = table.Column<int>(type: "integer", nullable: false),
                     guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     minage = table.Column<TimeSpan>(type: "interval", nullable: false),
                     action = table.Column<int>(type: "integer", nullable: false),
@@ -54,7 +53,6 @@ namespace NadekoBot.Migrations.PostgreSql
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    guildconfigid = table.Column<int>(type: "integer", nullable: false),
                     guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     action = table.Column<int>(type: "integer", nullable: false),
                     messagethreshold = table.Column<int>(type: "integer", nullable: false),
@@ -367,6 +365,7 @@ namespace NadekoBot.Migrations.PostgreSql
                     guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     username = table.Column<string>(type: "text", nullable: true),
+                    prettyname = table.Column<string>(type: "text", nullable: true),
                     type = table.Column<int>(type: "integer", nullable: false),
                     message = table.Column<string>(type: "text", nullable: true)
                 },
@@ -549,6 +548,21 @@ namespace NadekoBot.Migrations.PostgreSql
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_imageonlychannels", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "livechannelconfig",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    template = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_livechannelconfig", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -857,6 +871,24 @@ namespace NadekoBot.Migrations.PostgreSql
                 });
 
             migrationBuilder.CreateTable(
+                name: "scheduledcommand",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    userid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    messageid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    text = table.Column<string>(type: "text", nullable: false),
+                    when = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_scheduledcommand", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "shopentry",
                 columns: table => new
                 {
@@ -1160,6 +1192,22 @@ namespace NadekoBot.Migrations.PostgreSql
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_warnings", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "xpexcludeditem",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    itemtype = table.Column<int>(type: "integer", nullable: false),
+                    itemid = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_xpexcludeditem", x => x.id);
+                    table.UniqueConstraint("ak_xpexcludeditem_guildid_itemtype_itemid", x => new { x.guildid, x.itemtype, x.itemid });
                 });
 
             migrationBuilder.CreateTable(
@@ -1623,7 +1671,6 @@ namespace NadekoBot.Migrations.PostgreSql
                     clubid = table.Column<int>(type: "integer", nullable: true),
                     isclubadmin = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     totalxp = table.Column<long>(type: "bigint", nullable: false, defaultValue: 0L),
-                    notifyonlevelup = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
                     currencyamount = table.Column<long>(type: "bigint", nullable: false, defaultValue: 0L),
                     dateadded = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
@@ -1953,6 +2000,17 @@ namespace NadekoBot.Migrations.PostgreSql
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_livechannelconfig_guildid",
+                table: "livechannelconfig",
+                column: "guildid");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_livechannelconfig_guildid_channelid",
+                table: "livechannelconfig",
+                columns: new[] { "guildid", "channelid" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_logsettings_guildid",
                 table: "logsettings",
                 column: "guildid",
@@ -2049,6 +2107,21 @@ namespace NadekoBot.Migrations.PostgreSql
                 table: "sarautodelete",
                 column: "guildid",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_scheduledcommand_guildid",
+                table: "scheduledcommand",
+                column: "guildid");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_scheduledcommand_userid",
+                table: "scheduledcommand",
+                column: "userid");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_scheduledcommand_when",
+                table: "scheduledcommand",
+                column: "when");
 
             migrationBuilder.CreateIndex(
                 name: "ix_shopentry_guildid_index",
@@ -2250,6 +2323,11 @@ namespace NadekoBot.Migrations.PostgreSql
                 column: "xpsettingsid");
 
             migrationBuilder.CreateIndex(
+                name: "ix_xpexcludeditem_guildid",
+                table: "xpexcludeditem",
+                column: "guildid");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_xprolereward_xpsettingsid_level",
                 table: "xprolereward",
                 columns: new[] { "xpsettingsid", "level" },
@@ -2424,6 +2502,9 @@ namespace NadekoBot.Migrations.PostgreSql
                 name: "imageonlychannels");
 
             migrationBuilder.DropTable(
+                name: "livechannelconfig");
+
+            migrationBuilder.DropTable(
                 name: "musicplayersettings");
 
             migrationBuilder.DropTable(
@@ -2473,6 +2554,9 @@ namespace NadekoBot.Migrations.PostgreSql
 
             migrationBuilder.DropTable(
                 name: "sarautodelete");
+
+            migrationBuilder.DropTable(
+                name: "scheduledcommand");
 
             migrationBuilder.DropTable(
                 name: "shopentryitem");
@@ -2539,6 +2623,9 @@ namespace NadekoBot.Migrations.PostgreSql
 
             migrationBuilder.DropTable(
                 name: "xpcurrencyreward");
+
+            migrationBuilder.DropTable(
+                name: "xpexcludeditem");
 
             migrationBuilder.DropTable(
                 name: "xprolereward");

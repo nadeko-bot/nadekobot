@@ -35,7 +35,6 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         if (!_source.GetTerm(category, out var term))
             return false;
 
-
         var game = new HangmanGame(term);
         lock (_locker)
         {
@@ -71,7 +70,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         if (string.IsNullOrWhiteSpace(msg.Content))
             return;
 
-        if (_cdCache.TryGetValue(msg.Author.Id, out _))
+        if (_cdCache.TryGetValue("hangman:" + msg.Author.Id, out _))
             return;
 
         HangmanGame.State state;
@@ -88,7 +87,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
 
             if (state.GuessResult is HangmanGame.GuessResult.Incorrect or HangmanGame.GuessResult.AlreadyTried)
             {
-                _cdCache.Set(msg.Author.Id,
+                _cdCache.Set("hangman:" + msg.Author.Id,
                     string.Empty,
                     new MemoryCacheEntryOptions
                     {

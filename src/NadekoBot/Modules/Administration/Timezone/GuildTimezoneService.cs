@@ -85,8 +85,7 @@ public sealed class GuildTimezoneService : ITimezoneService, IReadyExecutor, INS
                     to = GetTimeZoneOrDefault(g.Id) ?? TimeZoneInfo.Local;
                 }
 
-                return TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.Utc, to).ToString("HH:mm ")
-                       + to.StandardName.GetInitials();
+                return TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.Utc, to).ToShortTimeString();
             });
     }
 }

@@ -74,7 +74,15 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
             Save();
         }
 
-        data = _serializer.Deserialize<TSettings>(File.ReadAllText(_filePath));
+        try
+        {
+            data = _serializer.Deserialize<TSettings>(File.ReadAllText(_filePath));
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error while loading {ConfigFilePath}", _filePath);
+            throw;
+        }
     }
 
     /// <summary>

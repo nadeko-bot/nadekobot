@@ -1,23 +1,13 @@
 ﻿#nullable disable
-using NadekoBot.Modules.Patronage;
-
 namespace NadekoBot.Modules.Administration.Services;
 
-public class PruneService : INService
+public class PruneService(ILogCommandService logService) : INService
 {
-    //channelids where prunes are currently occuring
     private readonly ConcurrentDictionary<ulong, CancellationTokenSource> _pruningGuilds = new();
     private readonly TimeSpan _twoWeeks = TimeSpan.FromDays(14);
-    private readonly ILogCommandService _logService;
-    private readonly IPatronageService _ps;
-
-    public PruneService(ILogCommandService logService, IPatronageService ps)
-    {
-        _logService = logService;
-        _ps = ps;
-    }
 
     public async Task<PruneResult> PruneWhere(
+        ulong runnerUserId,
         IMessageChannel channel,
         int amount,
         Func<IMessage, bool> predicate,
@@ -37,11 +27,6 @@ public class PruneService : INService
 
         try
         {
-            if (channel is ITextChannel tc && !await _ps.LimitHitAsync(LimitedFeatureName.Prune, tc.Guild.OwnerId))
-            {
-                return PruneResult.FeatureLimit;
-            }
-
             var now = DateTime.UtcNow;
             IMessage[] msgs;
             IMessage lastMessage = null;
@@ -67,7 +52,7 @@ public class PruneService : INService
                 var singleDeletable = new List<IMessage>();
                 foreach (var x in msgs)
                 {
-                    _logService.AddDeleteIgnore(x.Id);
+                    logService.AddDeleteIgnore(x.Id);
 
                     if (now - x.CreatedAt < _twoWeeks)
                         bulkDeletable.Add(x);

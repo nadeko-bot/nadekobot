@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -52,12 +52,12 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         await using var uow = _db.GetDbContext();
 
         var confs = await uow.GetTable<GuildFilterConfig>()
-                             .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                             .LoadWith(x => x.FilterInvitesChannelIds)
-                             .LoadWith(x => x.FilterWordsChannelIds)
-                             .LoadWith(x => x.FilterLinksChannelIds)
-                             .LoadWith(x => x.FilteredWords)
-                             .ToListAsyncLinqToDB();
+            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .LoadWith(x => x.FilterInvitesChannelIds)
+            .LoadWith(x => x.FilterWordsChannelIds)
+            .LoadWith(x => x.FilterLinksChannelIds)
+            .LoadWith(x => x.FilteredWords)
+            .ToListAsyncLinqToDB();
 
         foreach (var conf in confs)
         {
@@ -97,7 +97,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         await using var uow = _db.GetDbContext();
         var fc = uow.FilterConfigForId(guildId,
             set => set.Include(x => x.FilteredWords)
-                      .Include(x => x.FilterWordsChannelIds));
+                .Include(x => x.FilterWordsChannelIds));
 
         WordFilteringServers.TryRemove(guildId);
         ServerFilteredWords.TryRemove(guildId, out _);
@@ -140,7 +140,8 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         var filteredChannelWords =
             FilteredWordsForChannel(usrMsg.Channel.Id, guild.Id) ?? new ConcurrentHashSet<string>();
         var filteredServerWords = FilteredWordsForServer(guild.Id) ?? new ConcurrentHashSet<string>();
-        var wordsInMessage = usrMsg.Content.ToLowerInvariant().Split(' ');
+        var wordsInMessage = (usrMsg.Content + " " + usrMsg.ForwardedMessages.FirstOrDefault().Message?.Content)
+            .ToLowerInvariant().Split(' ');
         if (filteredChannelWords.Count != 0 || filteredServerWords.Count != 0)
         {
             foreach (var word in wordsInMessage)
@@ -183,7 +184,8 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             return false;
 
         if ((InviteFilteringChannels.Contains(usrMsg.Channel.Id) || InviteFilteringServers.Contains(guild.Id))
-            && usrMsg.Content.IsDiscordInvite())
+            && (usrMsg.Content.IsDiscordInvite() ||
+                usrMsg.ForwardedMessages.Any(x => x.Message?.Content.IsDiscordInvite() ?? false)))
         {
             Log.Information("User {UserName} [{UserId}] sent a filtered invite to {ChannelId} channel",
                 usrMsg.Author.ToString(),
@@ -219,7 +221,8 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             return false;
 
         if ((LinkFilteringChannels.Contains(usrMsg.Channel.Id) || LinkFilteringServers.Contains(guild.Id))
-            && usrMsg.Content.TryGetUrlPath(out _))
+            && (usrMsg.Content.TryGetUrlPath(out _) ||
+                usrMsg.ForwardedMessages.Any(x => x.Message?.Content.TryGetUrlPath(out _) ?? false)))
         {
             Log.Information("User {UserName} [{UserId}] sent a filtered link to {ChannelId} channel",
                 usrMsg.Author.ToString(),
@@ -246,17 +249,17 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         await using var uow = _db.GetDbContext();
 
         var conf = await uow.GetTable<GuildFilterConfig>()
-                            .Where(fi => fi.GuildId == guildId)
-                            .LoadWith(x => x.FilterInvitesChannelIds)
-                            .LoadWith(x => x.FilterLinksChannelIds)
-                            .FirstOrDefaultAsyncLinqToDB();
+            .Where(fi => fi.GuildId == guildId)
+            .LoadWith(x => x.FilterInvitesChannelIds)
+            .LoadWith(x => x.FilterLinksChannelIds)
+            .FirstOrDefaultAsyncLinqToDB();
 
         return new()
         {
             FilterInvitesChannels = conf?.FilterInvitesChannelIds.Select(x => x.ChannelId).ToArray() ?? [],
             FilterLinksChannels = conf?.FilterLinksChannelIds.Select(x => x.ChannelId).ToArray() ?? [],
-            FilterInvitesEnabled = false,
-            FilterLinksEnabled = false,
+            FilterInvitesEnabled = conf?.FilterInvites ?? InviteFilteringServers.Contains(guildId),
+            FilterLinksEnabled = conf?.FilterLinks ?? LinkFilteringServers.Contains(guildId),
         };
     }
 
@@ -271,6 +274,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         }
         else
         {
+            LinkFilteringServers.TryRemove(guildId);
             fc.FilterLinks = false;
         }
 
@@ -313,6 +317,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             return true;
         }
 
+        InviteFilteringServers.TryRemove(guildId);
         fc.FilterInvites = false;
         await uow.SaveChangesAsync();
         return false;
@@ -352,6 +357,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             return true;
         }
 
+        WordFilteringServers.TryRemove(guildId);
         fc.FilterWords = false;
         await uow.SaveChangesAsync();
         return false;
@@ -382,7 +388,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
     public async Task<bool> ToggleFilteredWordAsync(ulong guildId, string word)
     {
         word = word?.Trim().ToLowerInvariant();
-        
+
         await using var uow = _db.GetDbContext();
         var fc = uow.FilterConfigForId(guildId, set => set.Include(x => x.FilteredWords));
         var sfw = ServerFilteredWords.GetOrAdd(guildId, []);

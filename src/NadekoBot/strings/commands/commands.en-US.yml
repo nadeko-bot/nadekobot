@@ -1854,7 +1854,7 @@ playlistload:
     - 5
   params:
     - id:
-        desc: "The id of the playlist to be loaded."        
+        desc: "The id of the playlist to be loaded."
 playlistsave:
   desc: Saves a playlist under a certain name. Playlist name must be no longer than 20 characters and must not contain dashes.
   ex:
@@ -3574,13 +3574,6 @@ xpleaderboard:
         desc: "The number of pages to display in the leaderboard."
       params:
         desc: "The list of player names or IDs to filter the leaderboard by."
-xpgloballeaderboard:
-  desc: Shows the global xp leaderboard.
-  ex:
-    - ''
-  params:
-    - page:
-        desc: "The current page number for displaying the leaderboard results."
 xpadd:
   desc: Adds server XP to a single user or all users role on this server. This does not affect their global ranking. You can use negative values.
   ex:
@@ -3952,13 +3945,20 @@ stock:
   params:
     - query:
         desc: "The ticker symbol or company name used to retrieve the stock's information."
+masskick:
+  desc: Kicks multiple users at once. Specify a space separated list of IDs of users who you wish to kick.
+  ex:
+    - 123123123 3333333333 444444444
+  params:
+    - users:
+        desc: "The list of user IDs to kick. Whitespace-separated string."
 massban:
   desc: Bans multiple users at once. Specify a space separated list of IDs of users who you wish to ban.
   ex:
     - 123123123 3333333333 444444444
   params:
-    - userStrings:
-        desc: "The list of user IDs to ban, provided as a comma-separated string."
+    - users:
+        desc: "The list of user IDs to ban. Whitespace-separated string."
 masskill:
   desc: Specify a new-line separated list of `userid reason`. You can use Username#discrim instead of UserId. Specified users will be banned from the current server, blacklisted from the bot, and have all of their currency taken away.
   ex:
@@ -5076,3 +5076,84 @@ userrolename:
         desc: 'The assigned role to rename.'
       name:
         desc: 'The new name for the role.'
+
+schedulelist:
+  desc: |-
+    Lists your scheduled commands in the current server.
+  ex:
+    - ''
+  params:
+    - { }
+
+scheduledelete:
+  desc: |-
+    Deletes one of your scheduled commands by its ID.
+  ex:
+    - '5'
+  params:
+    - id:
+        desc: "The ID of the scheduled command to delete."
+
+scheduleadd:
+  desc: |-
+    Schedules a command to be executed after the specified amount of time.
+    You can schedule up to 5 commands at a time.
+  ex:
+    - '1h5m .say Hello after 1 hour and 5 minutes'
+    - '3h .br all'
+  params:
+    - time:
+        desc: "How long it takes for the command to execute. Example: 1h30m = 1 hour and 30 minutes"
+    - command:
+        desc: "Command that will be executed after the specified time has elapsed"
+xpexclusion:
+  desc: |-
+    Shows a list of all XP exclusions in the server.
+  ex:
+    - ''
+  params:
+    - { }
+
+xpexclude:
+  desc: |-
+    Toggles XP gain exclusion for a specified item.
+    Item types can be Role or User.
+  ex:
+    - '@CoolRole'
+    - '@User'
+    - 'role 123123123'
+    - 'user 123123123'
+  params:
+    - type:
+        desc: "Type of the item to exclude: role or user"
+      itemId:
+        desc: "ID or mention of the item to exclude." 
+livechadd:
+  desc: |-
+    Adds a channel as a live channel with the specified template.
+    You can see a full list of placeholders with `{0}phs` command.
+  ex:
+    - '#general Time: %server.time%'
+    - '#general -- %server.members% --'
+  params:
+    - channel:
+        desc: "The channel to configure as a live channel."
+    - template:
+        desc: "The text template to use as a name for the live channel."
+
+livechlist:
+  desc: |-
+    Lists all live channels in the server.
+  ex:
+    - ''
+  params:
+    - { }
+
+livechremove:
+  desc: |-
+    Removes a live channel.
+  ex:
+    - '#general'
+  params:
+    - channel:
+        desc: "The channel to remove from live channels."

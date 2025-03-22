@@ -14,13 +14,15 @@ public class NotifChecker
 
     public NotifChecker(
         IHttpClientFactory httpClientFactory,
-        IBotCredsProvider credsProvider)
+        IBotCredsProvider credsProvider,
+        SearchesConfigService scs)
     {
         _streamProviders = new Dictionary<FollowedStream.FType, Provider>()
         {
             { FollowedStream.FType.Twitch, new TwitchHelixProvider(httpClientFactory, credsProvider) },
             { FollowedStream.FType.Picarto, new PicartoProvider(httpClientFactory) },
-            { FollowedStream.FType.Trovo, new TrovoProvider(httpClientFactory, credsProvider) }
+            { FollowedStream.FType.Trovo, new TrovoProvider(httpClientFactory, credsProvider) },
+            { FollowedStream.FType.Youtube, new YouTubeProvider(httpClientFactory, scs) }
         };
         _offlineBuffer = new();
     }
@@ -29,11 +31,11 @@ public class NotifChecker
     public IEnumerable<StreamDataKey> GetFailingStreams(TimeSpan duration, bool remove = false)
     {
         var toReturn = _streamProviders
-                       .SelectMany(prov => prov.Value
-                                               .FailingStreams
-                                               .Where(fs => DateTime.UtcNow - fs.Value > duration)
-                                               .Select(fs => new StreamDataKey(prov.Value.Platform, fs.Key)))
-                       .ToList();
+            .SelectMany(prov => prov.Value
+                .FailingStreams
+                .Where(fs => DateTime.UtcNow - fs.Value > duration)
+                .Select(fs => new StreamDataKey(prov.Value.Platform, fs.Key)))
+            .ToList();
 
         if (remove)
         {
@@ -54,29 +56,28 @@ public class NotifChecker
                     var allStreamData = GetAllData();
 
                     var oldStreamDataDict = allStreamData
-                                            // group by type
-                                            .GroupBy(entry => entry.Key.Type)
-                                            .ToDictionary(entry => entry.Key,
-                                                entry => entry.AsEnumerable()
-                                                              .ToDictionary(x => x.Key.Name, x => x.Value));
+                        // group by type
+                        .GroupBy(entry => entry.Key.Type)
+                        .ToDictionary(entry => entry.Key,
+                            entry => entry.AsEnumerable()
+                                .ToDictionary(x => x.Key.Name, x => x.Value));
 
                     var newStreamData = await oldStreamDataDict
-                                              .Select(x =>
-                                              {
-                                                  // get all stream data for the streams of this type
-                                                  if (_streamProviders.TryGetValue(x.Key,
-                                                          out var provider))
-                                                  {
-                                                      return provider.GetStreamDataAsync(x.Value
-                                                          .Select(entry => entry.Key)
-                                                          .ToList());
-                                                  }
+                        .Select(async x =>
+                        {
+                            // get all stream data for the streams of this type
+                            if (_streamProviders.TryGetValue(x.Key,
+                                    out var provider))
+                            {
+                                return await provider.GetStreamDataAsync(x.Value
+                                    .Select(entry => entry.Key)
+                                    .ToList());
+                            }
 
-                                                  // this means there's no provider for this stream data, (and there was before?)
-                                                  return Task.FromResult<IReadOnlyCollection<StreamData>>(
-                                                      new List<StreamData>());
-                                              })
-                                              .WhenAll();
+                            // this means there's no provider for this stream data, (and there was before?)
+                            return [];
+                        })
+                        .WhenAll();
 
                     var newlyOnline = new List<StreamData>();
                     var newlyOffline = new List<StreamData>();
@@ -94,11 +95,11 @@ public class NotifChecker
                             AddLastData(key, newData, true);
                             continue;
                         }
-                        
+
                         // fill with last known game in case it's empty
                         if (string.IsNullOrWhiteSpace(newData.Game))
                             newData.Game = oldData.Game;
-                        
+
                         AddLastData(key, newData, true);
 
                         // if the stream is offline, we need to check if it was
@@ -144,6 +145,7 @@ public class NotifChecker
                 catch (Exception ex)
                 {
                     Log.Error(ex, "Error getting stream notifications: {ErrorMessage}", ex.Message);
+                    await Task.Delay(15_000);
                 }
             }
         });
@@ -155,7 +157,7 @@ public class NotifChecker
             _cache[key] = data;
             return true;
         }
-        
+
         return _cache.TryAdd(key, data);
     }
 

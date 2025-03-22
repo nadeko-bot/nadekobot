@@ -1116,9 +1116,6 @@ xpcurrencyreward:
 xpleaderboard:
   - xpleaderboard
   - xplb
-xpgloballeaderboard:
-  - xpgleaderboard
-  - xpglb
 xpadd:
   - xpadd
 xpshop:
@@ -1220,6 +1217,8 @@ crypto:
   - c
 massban:
   - massban
+masskick:
+  - masskick
 masskill:
   - masskill
 reroadd:
@@ -1615,3 +1614,34 @@ userrolename:
 userroleicon:
   - userroleicon
   - uri
+schedulelist:
+  - schedulelist
+  - schl
+  - schli
+scheduledelete:
+  - scheduledelete
+  - schd
+  - schdel
+scheduleadd:
+  - scheduleadd
+  - scha
+  - schadd
+xpexclusion:
+  - xpexclusion
+  - xpexl
+xpexclude:
+  - xpexclude
+  - xpex
+livechadd:
+  - livechadd
+  - lcha
+  - lchadd
+livechlist:
+  - livechlist
+  - lchl
+  - lchli
+  - lchlist
+livechremove:
+  - livechremove
+  - lchd
+  - lchrm

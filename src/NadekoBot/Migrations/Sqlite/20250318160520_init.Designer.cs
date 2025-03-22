@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations.Sqlite
 {
     [DbContext(typeof(SqliteContext))]
-    [Migration("20250310143048_init")]
+    [Migration("20250318160520_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -30,9 +30,6 @@ namespace NadekoBot.Migrations.Sqlite
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ActionDurationMinutes")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("GuildConfigId")
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("GuildId")
@@ -117,9 +114,6 @@ namespace NadekoBot.Migrations.Sqlite
 
                     b.Property<DateTime?>("DateAdded")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("GuildConfigId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
@@ -627,11 +621,6 @@ namespace NadekoBot.Migrations.Sqlite
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("NotifyOnLevelUp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
-
                     b.Property<long>("TotalXp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
@@ -810,6 +799,9 @@ namespace NadekoBot.Migrations.Sqlite
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Message")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PrettyName")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Type")
@@ -1119,6 +1111,32 @@ namespace NadekoBot.Migrations.Sqlite
                         .IsUnique();
 
                     b.ToTable("ImageOnlyChannels");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.LiveChannelConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Template")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
+
+                    b.HasIndex("GuildId", "ChannelId")
+                        .IsUnique();
+
+                    b.ToTable("LiveChannelConfig");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.LogSetting", b =>
@@ -2436,6 +2454,30 @@ namespace NadekoBot.Migrations.Sqlite
                     b.ToTable("XpCurrencyReward");
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.XpExcludedItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ItemType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("GuildId", "ItemType", "ItemId");
+
+                    b.HasIndex("GuildId");
+
+                    b.ToTable("XpExcludedItem");
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.XpRoleReward", b =>
                 {
                     b.Property<int>("Id")
@@ -2564,6 +2606,42 @@ namespace NadekoBot.Migrations.Sqlite
                         .IsUnique();
 
                     b.ToTable("UserFishStats");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Utility.Scheduled.ScheduledCommand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("MessageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("When")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("When");
+
+                    b.ToTable("ScheduledCommand");
                 });
 
             modelBuilder.Entity("NadekoBot.Modules.Utility.UserRole.UserRole", b =>

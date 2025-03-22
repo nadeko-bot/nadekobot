@@ -4,7 +4,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>true</ImplicitUsings>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-        <Version>6.0.5</Version>
+        <Version>6.0.12</Version>
 
         <!-- Output/build -->
         <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
@@ -34,7 +34,7 @@
         <PackageReference Include="Google.Protobuf" Version="3.29.3" />
         <PackageReference Include="Grpc" Version="2.46.6" />
         <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
-        <PackageReference Include="Grpc.Tools" Version="2.69.0" PrivateAssets="All" />
+        <PackageReference Include="Grpc.Tools" Version="2.68.1" PrivateAssets="All" />
         
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0" />
 

@@ -2,6 +2,92 @@
 
 *a,c,f,r,o*
 
+## [6.0.12] - 19.03.2025
+
+### Fixed
+- `.antispamignore` fixed for the last time hopefully
+  - protection commands are some of the oldest commands, and they might get overhauled in future updates
+  - please report if you find any other weird issue with them
+
+## [6.0.11] - 19.03.2025
+
+### Changed
+- wordfilter, invitefilter and linkfilter will now properly detect forwarded messages, as forwards were used to circumvent filtering.
+
+### Fixed
+- `.dmc` fixed 
+- Fixed .streamremove - now showing proper youtube name when removing instead of channel id
+
+## [6.0.10] - 19.03.2025
+
+### Changed
+
+- Live channels `.lcha` is limited to 1 for now. It will be reverted back to 5 in a couple of days at most as some things need to be implemented.
+
+### Fixed
+
+- `.antispam` won't break if you have thread channels in the server anymore
+- `.ve` now works properly
+- selfhosters: `.yml` parsing errors will now tell you which .yml file is causing the issue and why.
+
+## [6.0.9] - 19.03.2025
+
+### Changed
+
+- `.cinfo` now also has a member list
+
+### Fixed
+
+- `.antispamignore` will now properly persist through restarts
+- livechannels and scheduled commands will now be inside utility module as they should
+
+## [6.0.8] - 18.03.2025
+
+### Added
+
+- Live channel commands
+  - `.lcha` adds a channel with a template message (supports placeholders, and works on category channels too!)
+    - Every 10 minutes, channel name will be updated
+    - example: `.lcha #my-channel --> Members: %server.members% <--` will display the number of members in the server as a channel name, updating once every 10 minutes
+  - `.lchl` lists all live channels (Up to 5)
+  - `.lchd <channel or channelId>` removed a live channel
+
+### Fixed
+
+- `.antispamignore` fixed
+
+## [6.0.7] - 18.03.2025
+
+### Added
+
+- Schedule commands!
+  - `.scha <time> <text>` adds the command to be excuted after the specified amount of time
+  - `.schd <id>` deletes the command with the specified id
+  - `.schl` lists your scheduled commands
+- `.masskick` added as massban and masskill already exist
+- `.xpex` and `.xpexl` are back, as there was no way to exclude specific users or roles with .xprate
+
+### Fix
+
+- `.xprate` will now (as exclusion did) respect parent channel xp rates in threads
+  - the xprate system will first check if a thread channel has a rate set
+  - if it doesn't it will try to use the parent channel's rate
+
+## [6.0.6] - 15.03.2025
+
+### Added
+
+- Added youtube live stream notification support for `.streamadd`
+  - it only works by using an invidious instance (with a working api) from data/searches.yml
+
+### Fixed
+
+- Fixed `.hangman` not receiving input sometimes
+- Fixed `.sfl` and similar toggles not working
+- Fixed `.antialt` and other protection commands not properly turning on
+- Fixed `%bot.time%` and  `%bot.date%` placeholders showing wrong date.
+  - No longer a timestamp
+
 ## [6.0.5] - 14.03.2025
 
 ### Added

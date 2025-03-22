@@ -19,8 +19,9 @@ public class FollowedStream
     public ulong GuildId { get; set; }
     public ulong ChannelId { get; set; }
     public string Username { get; set; }
+    public string PrettyName { get; set; } = null;
     public FType Type { get; set; }
-    public string Message { get; set; }
+    public string Message { get; set; } = null;
 
     protected bool Equals(FollowedStream other)
         => ChannelId == other.ChannelId

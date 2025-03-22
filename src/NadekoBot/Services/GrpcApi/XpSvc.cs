@@ -1,4 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Gambling.Bank;
@@ -34,8 +34,6 @@ public class XpSvc : GrpcXp.GrpcXpBase, IGrpcSvc, INService
 
         if (guild is null)
             throw new RpcException(new Status(StatusCode.NotFound, "Guild not found"));
-
-        var isServerExcluded = false;
 
         var reply = new GetXpSettingsReply();
 
@@ -195,4 +193,52 @@ public class XpSvc : GrpcXp.GrpcXpBase, IGrpcSvc, INService
 
         return reply;
     }
+    
+    /// <summary>
+    /// Gets XP information for a specific user in a guild
+    /// </summary>
+    public override async Task<GetUserXpReply> GetUserXp(
+        GetUserXpRequest request,
+        ServerCallContext context)
+    {
+        var guild = _client.GetGuild(request.GuildId);
+        
+        if (guild is null)
+            throw new RpcException(new Status(StatusCode.NotFound, "Guild not found"));
+            
+        var user = guild.GetUser(request.UserId);
+        
+        if (user is null)
+            throw new RpcException(new Status(StatusCode.NotFound, "User not found"));
+            
+        var reply = new GetUserXpReply();
+        
+        // Get user stats from the XP service
+        var stats = await _xp.GetUserStatsAsync(user);
+        var levelStats = stats.Guild;
+        
+        // Get user's rank in guild
+        var guildRank = stats.GuildRanking;
+        
+        // Fill the response with user XP data
+        reply.Xp = levelStats.LevelXp;
+        reply.RequiredXp = levelStats.RequiredXp;
+        reply.Level = levelStats.Level;
+        reply.Rank = guildRank;
+        
+        // Add club information if available
+        if (stats.User.Club is not null)
+        {
+            reply.Club = stats.User.Club.ToString();
+            reply.ClubIcon = stats.User.Club.ImageUrl ?? string.Empty;
+        }
+        else
+        {
+            reply.Club = string.Empty;
+            reply.ClubIcon = string.Empty;
+        }
+        
+        return reply;
+    }
+    
 }

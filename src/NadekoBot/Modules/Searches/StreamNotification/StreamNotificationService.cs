@@ -63,7 +63,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         _repSvc = repSvc;
         _shardData = shardData;
 
-        _streamTracker = new(httpFactory, creds);
+        _streamTracker = new(httpFactory, creds, config);
 
         StreamsOnlineKey = new("streams.online");
         StreamsOfflineKey = new("streams.offline");
@@ -123,11 +123,11 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         _shardTrackedStreams = followedStreams.GroupBy(x => new
                                               {
                                                   x.Type,
-                                                  Name = x.Username.ToLower()
+                                                  Name = x.Username
                                               })
                                               .ToList()
                                               .ToDictionary(
-                                                  x => new StreamDataKey(x.Key.Type, x.Key.Name.ToLower()),
+                                                  x => new StreamDataKey(x.Key.Type, x.Key.Name),
                                                   x => x.GroupBy(y => y.GuildId)
                                                         .ToDictionary(y => y.Key,
                                                             y => y.AsEnumerable().ToHashSet()));
@@ -143,7 +143,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
             _trackCounter = allFollowedStreams.GroupBy(x => new
                                               {
                                                   x.Type,
-                                                  Name = x.Username.ToLower()
+                                                  Name = x.Username
                                               })
                                               .ToDictionary(x => new StreamDataKey(x.Key.Type, x.Key.Name),
                                                   x => x.Select(fs => fs.GuildId).ToHashSet());
@@ -478,6 +478,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
             {
                 Type = data.StreamType,
                 Username = data.UniqueName,
+                PrettyName = data.Name,
                 ChannelId = channelId,
                 GuildId = guildId
             };

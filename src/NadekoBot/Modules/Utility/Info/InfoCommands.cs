@@ -84,14 +84,30 @@ public partial class Utility
                 return;
             var createdAt = new DateTime(2015, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(ch.Id >> 22);
             var usercount = (await ch.GetUsersAsync().FlattenAsync()).Count();
-            var embed = CreateEmbed()
-                .WithTitle(ch.Name)
-                .WithDescription(ch.Topic?.SanitizeMentions(true))
-                .AddField(GetText(strs.id), ch.Id.ToString(), true)
-                .AddField(GetText(strs.created_at), $"{createdAt:dd.MM.yyyy HH:mm}", true)
-                .AddField(GetText(strs.users), usercount.ToString(), true)
-                .WithOkColor();
-            await Response().Embed(embed).SendAsync();
+
+            var users = await ch.GetUsersAsync(CacheMode.CacheOnly).FlattenAsync().Fmap(x => x.ToList());
+
+
+            await Response()
+                .Paginated()
+                .Items(users)
+                .PageSize(20)
+                .Page((items, _) =>
+                {
+                    var embed = CreateEmbed()
+                        .WithTitle(ch.Name)
+                        .WithDescription(ch.Topic?.SanitizeMentions(true))
+                        .AddField(GetText(strs.id), ch.Id.ToString(), true)
+                        .AddField(GetText(strs.created_at),
+                            TimestampTag.FromDateTime(createdAt, TimestampTagStyles.ShortDateTime),
+                            true)
+                        .AddField(GetText(strs.users), usercount.ToString(), true)
+                        .AddField(GetText(strs.members), string.Join(" · ", items.Select(x => x.DisplayName)))
+                        .WithOkColor();
+
+                    return embed;
+                })
+                .SendAsync();
         }
 
         [Cmd]

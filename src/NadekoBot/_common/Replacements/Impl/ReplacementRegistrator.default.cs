@@ -11,12 +11,10 @@ public sealed partial class ReplacementPatternStore
     private void WithDefault()
     {
         Register("%bot.time%",
-            static ()
-                => TimestampTag.FromDateTime(DateTime.UtcNow, TimestampTagStyles.ShortTime).ToString());
+            static () => DateTime.Now.ToShortTimeString());
 
         Register("%bot.date%",
-            static ()
-                => TimestampTag.FromDateTime(DateTime.UtcNow, TimestampTagStyles.ShortDate).ToString());
+            static () => DateTime.Now.ToShortDateString());
     }
 
     private void WithClient()
