@@ -35,20 +35,21 @@
     - **`2`** simply opens your bot's data folder.
 7. Paste in your **BOT TOKEN** previously obtained
 
-## Starting the bot
+## Starting NadekoBot
 
 - Either click on **`RUN`** button in the updater or run the bot via its desktop shortcut.
 
-## Updating Nadeko
+## Updating NadekoBot
 
-- Make sure Nadeko is closed and not running
+!!! warning "IMPORTANT"
 
-    (Run `.die` in a connected server to make sure).
+    - Make sure Nadeko is closed and not running
+        - (Run `.die` in a connected server to make sure).
+    - Make sure you don't have `data` folder, bot folder, or any other bot file open in any program, as the updater will fail to replace your version
 
-- Make sure you don't have `data` folder, bot folder, or any other bot file open in any program, as the updater will fail to replace your version
-- Run `upeko` if not already running
-- Click on your bot
-- Click on **`Check for updates`**
-- If updates are available, you will be able to click on the Update button
-- Click `Update`
-- Click `RUN` after it's done
+1. Run `upeko` if not already running
+2. Click on your bot
+3. Click on **`Check for updates`**
+4. If updates are available, you will be able to click on the Update button
+5. Click `Update`
+6. Click `RUN` after it's done
