@@ -13,8 +13,8 @@ To invite public Nadeko to your server or to view its commands, click on the but
 
 To self-host your own Nadeko, use the guides below:
 
-- [:material-television-guide: Desktop guide (Windows/Linux/Macos)][desktop-guide]
-- [:material-console: CLI Guide (Linux/macOS)][cli-guide]
+- [:material-television-guide: Desktop guide (Windows/Linux/macOS)][desktop-guide]
+- [:material-console: CLI guide (Linux/macOS)][cli-guide]
 - [:material-docker: Docker guide][docker-guide]
 - [:material-source-branch: From source guide][from-source-guide]
 
