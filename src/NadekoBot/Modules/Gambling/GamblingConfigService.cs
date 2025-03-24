@@ -12,12 +12,6 @@ public sealed class GamblingConfigService : ConfigServiceBase<GamblingConfig>
     public override string Name
         => "gambling";
 
-    private readonly IEnumerable<WaifuItemModel> _antiGiftSeed = new[]
-    {
-        new WaifuItemModel("🥀", 100, "WiltedRose", true), new WaifuItemModel("✂️", 1000, "Haircut", true),
-        new WaifuItemModel("🧻", 10000, "ToiletPaper", true)
-    };
-
     public GamblingConfigService(IConfigSeria serializer, IPubSub pubSub)
         : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
@@ -153,52 +147,13 @@ public sealed class GamblingConfigService : ConfigServiceBase<GamblingConfig>
     }
 
     public void Migrate()
-    {
-        if (data.Version < 2)
+    {        
+        if (data.Version < 13)
         {
             ModifyConfig(c =>
             {
-                c.Waifu.Items = c.Waifu.Items.Concat(_antiGiftSeed).ToList();
-                c.Version = 2;
-            });
-        }
-
-        if (data.Version < 3)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 3;
-                c.VoteReward = 100;
-            });
-        }
-
-        if (data.Version < 7)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 7;
-            });
-        }
-
-        if (data.Version < 8)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 8;
-                c.Waifu.Decay.UnclaimedDecayPercent = 0;
-            });
-        }
-        
-        if (data.Version < 12)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 12;
-
-                if (c.BetRoll.Pairs.Length == 3 && c.BetRoll.Pairs[2].WhenAbove == 66)
-                {
-                    c.BetRoll.Pairs[2].WhenAbove = 65;
-                }
+                c.Version = 13;
+                c.VotePlatforms = [];
             });
         }
     }

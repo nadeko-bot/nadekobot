@@ -7,6 +7,12 @@ public sealed class FishResult
     public bool IsSkillUp { get; set; }
     public int Skill { get; set; }
     public int MaxSkill { get; set; }
-}
-public readonly record struct AlreadyFishing;
+    
+    public bool IsMaxStar()
+        => Stars == Fish.Stars;
 
+    public bool IsRare()
+        => Fish.Chance <= 15;
+}
+
+public readonly record struct AlreadyFishing;

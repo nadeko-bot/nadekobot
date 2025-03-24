@@ -42,13 +42,11 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         RegisterModel<ProtectionNotifyModel>();
         RegisterModel<AddRoleRewardNotifyModel>();
         RegisterModel<RemoveRoleRewardNotifyModel>();
-        // RegisterModel<BigWinNotifyModel>();
+        RegisterModel<NiceCatchNotifyModel>();
     }
 
     public async Task OnReadyAsync()
     {
-        RegisterModels();
-
         await using var uow = _db.GetDbContext();
         _events = (await uow.GetTable<Notify>()
                 .Where(x => Queries.GuildOnShard(x.GuildId,
@@ -59,8 +57,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
             .ToDictionary(x => x.Key, x => x.ToDictionary(x => x.GuildId).ToConcurrent())
             .ToConcurrent();
 
-
-        await SubscribeToEvent<LevelUpNotifyModel>();
+        RegisterModels();
     }
 
     private async Task SubscribeToEvent<T>()
@@ -76,7 +73,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         {
             if (isShardLocal)
             {
-                await OnEvent(data);
+                _ = Task.Run(async () => await OnEvent(data));
                 return;
             }
 
@@ -284,7 +281,10 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         var data = new NotifyModelData(T.NotifyType,
             T.SupportsOriginTarget,
             T.GetReplacements().Map(x => x.Name));
+
         _models[T.NotifyType] = data;
+
+        _pubSub.Sub<T>(new(T.KeyName), async (data) => await OnEvent(data));
     }
 
     public NotifyModelData GetRegisteredModel(NotifyType nType)

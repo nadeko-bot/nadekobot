@@ -551,6 +551,21 @@ namespace NadekoBot.Migrations.PostgreSql
                 });
 
             migrationBuilder.CreateTable(
+                name: "linkfix",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    olddomain = table.Column<string>(type: "text", nullable: false),
+                    newdomain = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_linkfix", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "livechannelconfig",
                 columns: table => new
                 {
@@ -2000,6 +2015,12 @@ namespace NadekoBot.Migrations.PostgreSql
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_linkfix_guildid_olddomain",
+                table: "linkfix",
+                columns: new[] { "guildid", "olddomain" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_livechannelconfig_guildid",
                 table: "livechannelconfig",
                 column: "guildid");
@@ -2500,6 +2521,9 @@ namespace NadekoBot.Migrations.PostgreSql
 
             migrationBuilder.DropTable(
                 name: "imageonlychannels");
+
+            migrationBuilder.DropTable(
+                name: "linkfix");
 
             migrationBuilder.DropTable(
                 name: "livechannelconfig");

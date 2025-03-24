@@ -391,7 +391,7 @@ public class ProtectionService : IReadyExecutor, INService
     {
         var obj = new AntiSpamIgnore
         {
-            ChannelId = channelId
+            ChannelId = channelId,
         };
 
         await using var uow = _db.GetDbContext();
@@ -529,16 +529,18 @@ public class ProtectionService : IReadyExecutor, INService
             };
         }
 
-        var spamConfigs = await uow.GetTable<AntiSpamSetting>()
+        var spamConfigs = await uow.Set<AntiSpamSetting>()
             .AsNoTracking()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-            .ToListAsyncLinqToDB();
+            .Where(x => gids.Contains(x.GuildId))
+            .Include(x => x.IgnoredChannels)
+            .ToListAsyncEF();
 
         foreach (var config in spamConfigs)
         {
             _antiSpamGuilds[config.GuildId] = new()
             {
                 AntiSpamSettings = config,
+                UserStats = new()
             };
         }
 

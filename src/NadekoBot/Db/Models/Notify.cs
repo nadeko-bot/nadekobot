@@ -21,5 +21,6 @@ public enum NotifyType
     Protection = 1, Prot = 1,
     AddRoleReward = 2,
     RemoveRoleReward = 3,
+    NiceCatch = 4,
     // BigWin = 4,
 }

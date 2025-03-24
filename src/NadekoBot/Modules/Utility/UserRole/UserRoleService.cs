@@ -154,7 +154,7 @@ public sealed class UserRoleService : IUserRoleService, INService
             memoryStream.Position = 0;
 
             // Create Discord image from stream
-            var discordImage = new Image(memoryStream);
+            using var discordImage = new Image(memoryStream);
 
             // Upload the image to Discord
             var discordSuccess = await _discordRoleManager.ModifyRoleAsync(

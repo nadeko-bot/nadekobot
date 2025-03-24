@@ -332,17 +332,18 @@ public partial class Gambling
                 Type = ShopEntryType.Role,
                 AuthorId = ctx.User.Id,
                 RoleId = role.Id,
-                RoleName = role.Name
+                RoleName = role.Name,
+                GuildId = ctx.Guild.Id,
             };
             await using (var uow = _db.GetDbContext())
             {
                 var entries = new IndexedCollection<ShopEntry>(await uow.Set<ShopEntry>()
                     .Where(x => x.GuildId == ctx.Guild.Id)
                     .Include(x => x.Items)
-                    .ToListAsyncEF())
-                {
-                    entry
-                };
+                    .ToListAsyncEF());
+
+                entries.Add(entry);
+                uow.Add(entry);
                 await uow.SaveChangesAsync();
             }
 
@@ -363,7 +364,8 @@ public partial class Gambling
                 Price = price,
                 Type = ShopEntryType.List,
                 AuthorId = ctx.User.Id,
-                Items = new()
+                Items = new(),
+                GuildId = ctx.Guild.Id
             };
             await using (var uow = _db.GetDbContext())
             {
@@ -440,7 +442,7 @@ public partial class Gambling
                 var items = await uow.Set<ShopEntry>()
                     .Where(x => x.GuildId == ctx.Guild.Id)
                     .Include(x => x.Items)
-                    .ToListAsyncLinqToDB();
+                    .ToListAsyncEF();
 
                 var entries = new IndexedCollection<ShopEntry>(items);
                 removed = entries.ElementAtOrDefault(index);

@@ -1,10 +1,12 @@
 #nullable disable
+using System.Globalization;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Gambling.Common;
 using NadekoBot.Modules.Gambling.Common.Connect4;
+using NadekoBot.Modules.Patronage;
 
 namespace NadekoBot.Modules.Gambling.Services;
 
@@ -15,7 +17,8 @@ public class GamblingService : INService, IReadyExecutor
     private readonly DbService _db;
     private readonly DiscordSocketClient _client;
     private readonly IBotCache _cache;
-    private readonly GamblingConfigService _gss;
+    private readonly GamblingConfigService _gcs;
+    private readonly IPatronageService _ps;
     private readonly NadekoRandom _rng;
 
     private static readonly TypedKey<long> _curDecayKey = new("currency:last_decay");
@@ -24,12 +27,14 @@ public class GamblingService : INService, IReadyExecutor
         DbService db,
         DiscordSocketClient client,
         IBotCache cache,
-        GamblingConfigService gss)
+        GamblingConfigService gcs,
+        IPatronageService ps)
     {
         _db = db;
         _client = client;
         _cache = cache;
-        _gss = gss;
+        _gcs = gcs;
+        _ps = ps;
         _rng = new NadekoRandom();
     }
 
@@ -53,7 +58,7 @@ public class GamblingService : INService, IReadyExecutor
         {
             try
             {
-                var lifetime = _gss.Data.Currency.TransactionsLifetime;
+                var lifetime = _gcs.Data.Currency.TransactionsLifetime;
                 if (lifetime <= 0)
                     continue;
 
@@ -61,7 +66,7 @@ public class GamblingService : INService, IReadyExecutor
                 var days = TimeSpan.FromDays(lifetime);
                 await using var uow = _db.GetDbContext();
                 await uow.Set<CurrencyTransaction>()
-                         .DeleteAsync(ct => ct.DateAdded == null || now - ct.DateAdded < days);
+                    .DeleteAsync(ct => ct.DateAdded == null || now - ct.DateAdded < days);
             }
             catch (Exception ex)
             {
@@ -82,7 +87,7 @@ public class GamblingService : INService, IReadyExecutor
         {
             try
             {
-                var config = _gss.Data;
+                var config = _gcs.Data;
                 var maxDecay = config.Decay.MaxDecay;
                 if (config.Decay.Percent is <= 0 or > 1 || maxDecay < 0)
                     continue;
@@ -113,14 +118,14 @@ public class GamblingService : INService, IReadyExecutor
 
                 var decay = (double)config.Decay.Percent;
                 await uow.Set<DiscordUser>()
-                         .Where(x => x.CurrencyAmount > config.Decay.MinThreshold && x.UserId != _client.CurrentUser.Id)
-                         .UpdateAsync(old => new()
-                         {
-                             CurrencyAmount =
-                                 maxDecay > Sql.Round((old.CurrencyAmount * decay) - 0.5)
-                                     ? (long)(old.CurrencyAmount - Sql.Round((old.CurrencyAmount * decay) - 0.5))
-                                     : old.CurrencyAmount - maxDecay
-                         });
+                    .Where(x => x.CurrencyAmount > config.Decay.MinThreshold && x.UserId != _client.CurrentUser.Id)
+                    .UpdateAsync(old => new()
+                    {
+                        CurrencyAmount =
+                            maxDecay > Sql.Round((old.CurrencyAmount * decay) - 0.5)
+                                ? (long)(old.CurrencyAmount - Sql.Round((old.CurrencyAmount * decay) - 0.5))
+                                : old.CurrencyAmount - maxDecay
+                    });
 
                 await uow.SaveChangesAsync();
 
@@ -189,10 +194,65 @@ public class GamblingService : INService, IReadyExecutor
     {
         var db = _db.GetDbContext();
         return db.GetTable<Reminder>()
-                 .Any(x => x.UserId == userId
-                           && x.Type == ReminderType.Timely);
+            .Any(x => x.UserId == userId
+                      && x.Type == ReminderType.Timely);
     }
 
     public async Task RemoveAllTimelyClaimsAsync()
         => await _cache.RemoveAsync(_timelyKey);
+
+    private string N(long amount)
+        => CurrencyHelper.N(amount, CultureInfo.InvariantCulture, _gcs.Data.Currency.Sign);
+
+    public async Task<(long val, string msg)> GetAmountAndMessage(ulong userId, long originalAmount)
+    {
+        var gcsData = _gcs.Data;
+        var boostGuilds = gcsData.BoostBonus.GuildIds ?? [];
+        var guildUsers = await boostGuilds
+            .Select(async gid =>
+            {
+                try
+                {
+                    var guild = _client.GetGuild(gid) as IGuild ?? await _client.Rest.GetGuildAsync(gid, false);
+                    var user = await guild.GetUserAsync(gid) ?? await _client.Rest.GetGuildUserAsync(gid, userId);
+                    return (guild, user);
+                }
+                catch
+                {
+                    return default;
+                }
+            })
+            .WhenAll();
+
+        var userInfo = guildUsers.FirstOrDefault(x => x.user?.PremiumSince is not null);
+        var booster = userInfo != default;
+
+        if (booster)
+            originalAmount += gcsData.BoostBonus.BaseTimelyBonus;
+
+        var patron = await _ps.GetPatronAsync(userId);
+        var percentBonus = (_ps.PercentBonus(patron) / 100f);
+
+        originalAmount += (int)(originalAmount * percentBonus);
+
+        var msg = $"**{N(originalAmount)}** base reward\n\n";
+        if (boostGuilds.Count > 0)
+        {
+            if (booster)
+                msg += $"\\✅ *+{N(gcsData.BoostBonus.BaseTimelyBonus)} bonus for boosting {userInfo.guild}!*\n";
+            else
+                msg += $"\\❌ *+0 bonus for boosting {userInfo.guild}*\n";
+        }
+
+        if (_ps.GetConfig().IsEnabled)
+        {
+            if (percentBonus > float.Epsilon)
+                msg +=
+                    $"\\✅ *+{percentBonus:P0} bonus for the [Patreon](https://patreon.com/nadekobot) pledge! <:hart:746995901758832712>*\n";
+            else
+                msg += $"\\❌ *+0 bonus for the [Patreon](https://patreon.com/nadekobot) pledge*\n";
+        }
+
+        return (originalAmount, msg);
+    }
 }

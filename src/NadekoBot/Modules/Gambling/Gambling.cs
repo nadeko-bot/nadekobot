@@ -35,6 +35,7 @@ public partial class Gambling : GamblingModule<GamblingService>
     private readonly RakebackService _rb;
     private readonly IBotCache _cache;
     private readonly CaptchaService _captchaService;
+    private readonly VoteRewardService _vrs;
 
     public Gambling(
         IGamblingService gs,
@@ -50,7 +51,8 @@ public partial class Gambling : GamblingModule<GamblingService>
         GamblingTxTracker gamblingTxTracker,
         RakebackService rb,
         IBotCache cache,
-        CaptchaService captchaService)
+        CaptchaService captchaService,
+        VoteRewardService vrs)
         : base(configService)
     {
         _gs = gs;
@@ -65,6 +67,7 @@ public partial class Gambling : GamblingModule<GamblingService>
         _captchaService = captchaService;
         _ps = patronage;
         _rng = new NadekoRandom();
+        _vrs = vrs;
 
         _enUsCulture = new CultureInfo("en-US", false).NumberFormat;
         _enUsCulture.NumberDecimalDigits = 0;
@@ -132,16 +135,101 @@ public partial class Gambling : GamblingModule<GamblingService>
                 });
 
     [Cmd]
+    public async Task Vote()
+    {
+        var reward = Config.VoteReward;
+        if (reward <= 0)
+        {
+            if (Config.Timely.Amount > 0 && Config.Timely.Cooldown > 0)
+            {
+                await Timely();
+            }
+
+            return;
+        }
+
+        if (await _vrs.LastVoted(ctx.User.Id) is { } remainder)
+        {
+            // Get correct time form remainder
+            var interaction = CreateRemindMeInteraction(remainder.TotalMilliseconds);
+
+            // Removes timely button if there is a timely reminder in DB
+            if (_service.UserHasTimelyReminder(ctx.User.Id))
+            {
+                interaction = null;
+            }
+
+            var now = DateTime.UtcNow;
+            var relativeTag = TimestampTag.FromDateTime(now.Add(remainder), TimestampTagStyles.Relative);
+            await Response().Pending(strs.vote_already_claimed(relativeTag)).Interaction(interaction).SendAsync();
+            return;
+        }
+
+        var (amount, msg) = await _service.GetAmountAndMessage(ctx.User.Id, reward);
+
+        var prepend = GetText(strs.vote_suggest(Format.Bold(N(amount))));
+        msg = prepend + "\n\n" + msg;
+
+        var inter = CreateRemindMeInteraction(6) as NadekoButtonInteractionHandler;
+        var eb = CreateEmbed()
+          .WithOkColor()
+          .WithDescription(msg);
+
+        var cb = new ComponentBuilder();
+
+        // Add vote platform buttons if any are configured
+        if (Config.VotePlatforms.Length > 0)
+        {
+            var row = new ActionRowBuilder();
+            // Loop through each vote platform and create a URL button for it
+            foreach (var platform in Config.VotePlatforms)
+            {
+                // Create a URL button for each platform
+                // The platform string should be in format "Label|URL"
+                var parts = platform.Split('|', 2);
+                if (parts.Length == 2)
+                {
+                    var label = parts[0];
+                    var url = parts[1];
+
+                    // Add a URL button to the component builder
+                    row.WithButton(label, style: ButtonStyle.Link, url: url);
+                }
+            }
+            cb.AddRow(row);
+        }
+        if (!_service.UserHasTimelyReminder(ctx.User.Id))
+        {
+            var secondRow = new ActionRowBuilder();
+            secondRow.WithButton(inter.Button);
+            cb.AddRow(secondRow);
+            var sent = await ctx.Channel.SendMessageAsync(embed: eb.Build(), components: cb?.Build());
+            await inter.RunAsync(sent);
+        }
+        else
+        {
+            await ctx.Channel.SendMessageAsync(embed: eb.Build(), components: cb?.Build());
+        }
+    }
+
+    [Cmd]
     public async Task Timely()
     {
         var val = Config.Timely.Amount;
         var period = Config.Timely.Cooldown;
         if (val <= 0 || period <= 0)
         {
+            if (Config.VoteReward > 0)
+            {
+                await Vote();
+                return;
+            }
+
             await Response().Error(strs.timely_none).SendAsync();
             return;
         }
 
+        await _cs.AddAsync(ctx.User.Id, val, new("timely", "claim"));
         if (Config.Timely.ProtType == TimelyProt.Button)
         {
             var interaction = CreateTimelyInteraction();
@@ -149,7 +237,8 @@ public partial class Gambling : GamblingModule<GamblingService>
             await msg.DeleteAsync();
             return;
         }
-        else if (Config.Timely.ProtType == TimelyProt.Captcha)
+
+        if (Config.Timely.ProtType == TimelyProt.Captcha)
         {
             var password = await _captchaService.GetUserCaptcha(ctx.User.Id);
 
@@ -209,55 +298,18 @@ public partial class Gambling : GamblingModule<GamblingService>
 
 
         var val = Config.Timely.Amount;
-        var boostGuilds = Config.BoostBonus.GuildIds ?? new();
-        var guildUsers = await boostGuilds
-            .Select(async gid =>
-            {
-                try
-                {
-                    var guild = await _client.Rest.GetGuildAsync(gid, false);
-                    var user = await _client.Rest.GetGuildUserAsync(gid, ctx.User.Id);
-                    return (guild, user);
-                }
-                catch
-                {
-                    return default;
-                }
-            })
-            .WhenAll();
-
-        var userInfo = guildUsers.FirstOrDefault(x => x.user?.PremiumSince is not null);
-        var booster = userInfo != default;
-
-        if (booster)
-            val += Config.BoostBonus.BaseTimelyBonus;
-
-        var patron = await _ps.GetPatronAsync(ctx.User.Id);
-
-        var percentBonus = (_ps.PercentBonus(patron) / 100f);
-
-        val += (int)(val * percentBonus);
-
         var inter = CreateRemindMeInteraction(period);
 
-        await _cs.AddAsync(ctx.User.Id, val, new("timely", "claim"));
+        var prepend = GetText(strs.timely(N(val), period));
+        var (newVal, msg) = await _service.GetAmountAndMessage(ctx.User.Id, val);
 
-        var msg = GetText(strs.timely(N(val), period));
-        if (booster || percentBonus > float.Epsilon)
-        {
-            msg += "\n\n";
-            if (booster)
-                msg += $"*+{N(Config.BoostBonus.BaseTimelyBonus)} bonus for boosting {userInfo.guild}!*\n";
+        msg = prepend + "\n\n" + msg;
 
-            if (percentBonus > float.Epsilon)
-                msg +=
-                    $"*+{percentBonus:P0} bonus for the [Patreon](https://patreon.com/nadekobot) pledge! <:hart:746995901758832712>*";
+        await _cs.AddAsync(ctx.User.Id, newVal, new("timely", "claim"));
 
-            await Response().Confirm(msg).Interaction(inter).SendAsync();
-        }
-        else
-            await Response().Confirm(strs.timely(N(val), period)).Interaction(inter).SendAsync();
+        await Response().Confirm(msg).Interaction(inter).SendAsync();
     }
+
 
     [Cmd]
     [OwnerOnly]
@@ -910,7 +962,6 @@ public partial class Gambling : GamblingModule<GamblingService>
 
         await Response().Embed(eb).SendAsync();
     }
-
 
     public enum GambleTestTarget
     {

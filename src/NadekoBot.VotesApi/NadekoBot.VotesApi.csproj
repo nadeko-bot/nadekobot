@@ -8,6 +8,11 @@
     <ItemGroup>
         <PackageReference Include="MorseCode.ITask" Version="2.0.3" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.67.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Protos/vote.proto" GrpcServices="Client" />
     </ItemGroup>
 
 </Project>

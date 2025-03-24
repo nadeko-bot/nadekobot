@@ -551,6 +551,21 @@ namespace NadekoBot.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
+                name: "LinkFix",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    OldDomain = table.Column<string>(type: "TEXT", nullable: false),
+                    NewDomain = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LinkFix", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LiveChannelConfig",
                 columns: table => new
                 {
@@ -2002,6 +2017,12 @@ namespace NadekoBot.Migrations.Sqlite
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_LinkFix_GuildId_OldDomain",
+                table: "LinkFix",
+                columns: new[] { "GuildId", "OldDomain" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LiveChannelConfig_GuildId",
                 table: "LiveChannelConfig",
                 column: "GuildId");
@@ -2502,6 +2523,9 @@ namespace NadekoBot.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "ImageOnlyChannels");
+
+            migrationBuilder.DropTable(
+                name: "LinkFix");
 
             migrationBuilder.DropTable(
                 name: "LiveChannelConfig");

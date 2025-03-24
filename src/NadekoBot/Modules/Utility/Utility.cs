@@ -88,6 +88,7 @@ public partial class Utility : NadekoModule
             .Text(message)
             .Channel(channel)
             .UserBasedMentions()
+            .NoReply()
             .SendAsync();
     }
 

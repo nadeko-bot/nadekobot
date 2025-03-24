@@ -974,7 +974,7 @@
       "Module": "Administration",
       "Options": null,
       "Requirements": [
-        "Administrator Server Permission"
+        "ManageMessages Server Permission"
       ]
     },
     {
@@ -991,7 +991,7 @@
       "Module": "Administration",
       "Options": null,
       "Requirements": [
-        "Administrator Server Permission"
+        "ManageMessages Server Permission"
       ]
     },
     {
@@ -1007,7 +1007,7 @@
       "Module": "Administration",
       "Options": null,
       "Requirements": [
-        "Administrator Server Permission"
+        "ManageMessages Server Permission"
       ]
     },
     {
@@ -1025,7 +1025,7 @@
       "Module": "Administration",
       "Options": null,
       "Requirements": [
-        "Administrator Server Permission"
+        "ManageMessages Server Permission"
       ]
     },
     {
@@ -1604,6 +1604,21 @@
       "Options": null,
       "Requirements": [
         "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".roleicon"
+      ],
+      "Description": "Changes the icon of a role.",
+      "Usage": [
+        ".roleicon @Role :server_emoji_here:"
+      ],
+      "Submodule": "RoleCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
       ]
     },
     {
@@ -2975,6 +2990,19 @@
     }
   ],
   "Gambling": [
+    {
+      "Aliases": [
+        ".vote"
+      ],
+      "Description": "?",
+      "Usage": [
+        ".vote"
+      ],
+      "Submodule": "Gambling",
+      "Module": "Gambling",
+      "Options": null,
+      "Requirements": []
+    },
     {
       "Aliases": [
         ".timely"
@@ -5196,6 +5224,22 @@
       ]
     }
   ],
+  "Owner": [
+    {
+      "Aliases": [
+        ".votefeed"
+      ],
+      "Description": "Shows bot votes in real time in the specified channel.\nOmit channel to disable.",
+      "Usage": [
+        ".votefeed #votefeed",
+        ".votefeed"
+      ],
+      "Submodule": "Owner",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": []
+    }
+  ],
   "Permissions": [
     {
       "Aliases": [
@@ -7386,6 +7430,37 @@
     },
     {
       "Aliases": [
+        ".linkfix",
+        ".lfix"
+      ],
+      "Description": "Configures automatic link fixing from one site to another.\nWhen a user posts a link containing the old domain, the bot will automatically fix it to use the new domain.\nProvide no second domain to disable link fixing.",
+      "Usage": [
+        ".linkfix twitter.com vxtwitter.com",
+        ".linkfix x.com"
+      ],
+      "Submodule": "LinkFixerCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageMessages Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".linkfixlist",
+        ".lfixlist"
+      ],
+      "Description": "Lists all configured link fixes for the server.",
+      "Usage": [
+        ".linkfixlist"
+      ],
+      "Submodule": "LinkFixerCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
         ".livechadd",
         ".lcha",
         ".lchadd"
@@ -8218,7 +8293,7 @@
       ],
       "Description": "Changes the icon of your assigned role.",
       "Usage": [
-        ".userroleicon @Role :thumbsup:"
+        ".userroleicon @Role :server_emoji_here:"
       ],
       "Submodule": "UserRoleCommands",
       "Module": "Utility",
@@ -8256,20 +8331,6 @@
       "Options": [
         "`--clean` (`-c`)   Only show users who are on the server.  "
       ],
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".xpgleaderboard",
-        ".xpglb"
-      ],
-      "Description": "Shows the global xp leaderboard.",
-      "Usage": [
-        ".xpgleaderboard"
-      ],
-      "Submodule": "Xp",
-      "Module": "Xp",
-      "Options": null,
       "Requirements": []
     },
     {

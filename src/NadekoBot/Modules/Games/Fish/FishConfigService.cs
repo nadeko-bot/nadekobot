@@ -15,5 +15,15 @@ public sealed class FishConfigService : ConfigServiceBase<FishConfig>
         IPubSub pubSub)
         : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
+        Migrate();
+    }
+
+    private void Migrate()
+    {
+        ModifyConfig(c =>
+        {
+            c.Version = 2;
+            c.RequireCaptcha = true;
+        });
     }
 }

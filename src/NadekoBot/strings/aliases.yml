@@ -165,6 +165,8 @@ deleterole:
 rolecolor:
   - rolecolor
   - roleclr
+roleicon:
+  - roleicon
 ban:
   - ban
   - b
@@ -1645,3 +1647,13 @@ livechremove:
   - livechremove
   - lchd
   - lchrm
+linkfix:
+  - linkfix
+  - lfix
+linkfixlist:
+  - linkfixlist
+  - lfixlist
+votefeed:
+  - votefeed
+vote:
+  - vote

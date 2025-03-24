@@ -2,6 +2,39 @@
 
 *a,c,f,r,o*
 
+## [6.0.14]
+
+### Added
+- Added `.notify <channel> nicecatch <message>` event
+  - It will show all rare fish/trash and all max star fish caught on any server
+  - You can use `.notifyphs nicecatch`  to see the list of placeholders you can use while setting a message
+  - Example: `.notify #fishfeed nicecatch %user% just caught a %event.fish.stars% %event.fish.name% %event.fish.emoji%`
+
+### Changed
+- .notify commands now require Manage Messages permission
+- .notify will now let you know if you can't set a notify message due to a missing channel
+
+### Fixed
+- Fixed `.antispamignore` restart persistence
+- Fixed `.notify` events. Only levelup used to work 
+
+## [6.0.13] - 23.03.2025
+
+### Added
+- Added `.linkfix <old> <new>` command
+  - If bot sees a message with the old link, it will reply to the message with a fixed (new) link
+  - ex: `.linkfix twitter.com vxtwitter.com`
+- Added `.roleicon role <icon_url / server_emoji>` command to set the icon of a role
+- Added a captcha option for `.fish`
+
+### Fixed
+- Fixed youtube stream notifications in case invalid channel was provided
+- `.lcha` (live channel) will now let you override an existing channel template even if you're at the limit
+- Fixed `.shop` commands
+
+### Removed
+- removed `.xpglb` as it is no longer used
+
 ## [6.0.12] - 19.03.2025
 
 ### Fixed

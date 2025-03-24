@@ -599,6 +599,20 @@ rolehoist:
   params:
     - role:
         desc: "The role that determines the visibility of the sidebar."
+roleicon:
+  desc: |-
+    Changes the icon of a role.
+  ex:
+    - '@Role :server_emoji_here:'
+  params:
+    - role:
+        desc: 'The role to change the icon of.'
+      imageUrl:
+        desc: 'The image url to be used as a new icon for the role.'
+    - role:
+        desc: 'The role to change the icon of.'
+      serverEmoji:
+        desc: 'The server emoji to be used as a new icon for the role.'
 createrole:
   desc: Creates a role with a given name.
   ex:
@@ -5055,7 +5069,7 @@ userroleicon:
   desc: |-
     Changes the icon of your assigned role.
   ex:
-    - '@Role :thumbsup:'
+    - '@Role :server_emoji_here:'
   params:
     - role:
         desc: 'The assigned role to change the icon of.'
@@ -5140,7 +5154,6 @@ livechadd:
         desc: "The channel to configure as a live channel."
     - template:
         desc: "The text template to use as a name for the live channel."
-
 livechlist:
   desc: |-
     Lists all live channels in the server.
@@ -5148,7 +5161,6 @@ livechlist:
     - ''
   params:
     - { }
-
 livechremove:
   desc: |-
     Removes a live channel.
@@ -5157,3 +5169,40 @@ livechremove:
   params:
     - channel:
         desc: "The channel to remove from live channels."
+linkfix:
+  desc: |-
+    Configures automatic link fixing from one site to another.
+    When a user posts a link containing the old domain, the bot will automatically fix it to use the new domain.
+    Provide no second domain to disable link fixing.
+  ex:
+    - 'twitter.com vxtwitter.com'
+    - 'x.com'
+  params:
+    - oldDomain:
+        desc: "The domain to be replaced."
+      newDomain:
+        desc: "The domain to replace with."
+linkfixlist:
+  desc: |-
+    Lists all configured link fixes for the server.
+  ex:
+    - ''
+  params:
+    - { }
+votefeed:
+  desc: |-
+    Shows bot votes in real time in the specified channel.
+    Omit channel to disable.
+  ex:
+    - '#votefeed'
+    - ''
+  params:
+    - { }
+vote:
+  desc: |-
+    Shows instructions for voting for the bot in order to get rewards.
+    Will redirect user to timely if voting is not enabled.
+  ex:
+    - ''
+  params:
+    - { }

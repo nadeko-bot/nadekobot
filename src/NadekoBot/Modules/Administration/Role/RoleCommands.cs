@@ -48,9 +48,9 @@ public partial class Administration
                     });
 
                 await Response()
-                      .Confirm(strs.setrole(Format.Bold(roleToAdd.Name),
-                          Format.Bold(targetUser.ToString())))
-                      .SendAsync();
+                    .Confirm(strs.setrole(Format.Bold(roleToAdd.Name),
+                        Format.Bold(targetUser.ToString())))
+                    .SendAsync();
             }
             catch (Exception ex)
             {
@@ -73,9 +73,9 @@ public partial class Administration
             {
                 await targetUser.RemoveRoleAsync(roleToRemove);
                 await Response()
-                      .Confirm(strs.remrole(Format.Bold(roleToRemove.Name),
-                          Format.Bold(targetUser.ToString())))
-                      .SendAsync();
+                    .Confirm(strs.remrole(Format.Bold(roleToRemove.Name),
+                        Format.Bold(targetUser.ToString())))
+                    .SendAsync();
             }
             catch
             {
@@ -226,20 +226,93 @@ public partial class Administration
             if (!await CheckRoleHierarchy(role))
             {
                 await Response()
-                      .Error(strs.hierarchy)
-                      .SendAsync();
+                    .Error(strs.hierarchy)
+                    .SendAsync();
                 return;
             }
 
             await user.AddRoleAsync(role);
             await _tempRoleService.AddTempRoleAsync(ctx.Guild.Id, role.Id, user.Id, timespan.Time);
-            
+
 
             await Response()
-                  .Confirm(strs.temp_role_added(user.Mention,
-                      Format.Bold(role.Name),
-                      TimestampTag.FromDateTime(DateTime.UtcNow.Add(timespan.Time), TimestampTagStyles.Relative)))
-                  .SendAsync();
+                .Confirm(strs.temp_role_added(user.Mention,
+                    Format.Bold(role.Name),
+                    TimestampTag.FromDateTime(DateTime.UtcNow.Add(timespan.Time), TimestampTagStyles.Relative)))
+                .SendAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.ManageRoles)]
+        [BotPerm(GuildPerm.ManageRoles)]
+        public Task RoleIcon(IRole role, Emote emote)
+            => RoleIcon(role, emote.Url);
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.ManageRoles)]
+        [BotPerm(GuildPerm.ManageRoles)]
+        public async Task RoleIcon(IRole role, [Leftover] string iconUrl)
+        {
+            if (!await CheckRoleHierarchy(role))
+                return;
+
+            if (string.IsNullOrWhiteSpace(iconUrl))
+            {
+                await Response().Error(strs.userrole_icon_invalid).SendAsync();
+                return;
+            }
+
+            // Validate the URL format
+            if (!Uri.TryCreate(iconUrl, UriKind.Absolute, out var uri))
+            {
+                await Response().Error(strs.userrole_icon_invalid).SendAsync();
+                return;
+            }
+
+            // Download the image
+            using var httpClient = new HttpClient();
+            using var response = await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
+
+            // Check if the response is successful
+            if (!response.IsSuccessStatusCode)
+            {
+                await Response().Error(strs.userrole_icon_fail).SendAsync();
+                return;
+            }
+
+            // Check content type - must be image/png or image/jpeg
+            var contentType = response.Content.Headers.ContentType?.MediaType?.ToLower();
+            if (contentType != "image/png"
+                && contentType != "image/jpeg"
+                && contentType != "image/webp")
+            {
+                await Response().Error(strs.userrole_icon_fail).SendAsync();
+                return;
+            }
+
+            // Check file size - Discord limit is 256KB
+            var contentLength = response.Content.Headers.ContentLength;
+            if (contentLength is > 256 * 1024)
+            {
+                await Response().Error(strs.userrole_icon_fail).SendAsync();
+                return;
+            }
+
+            // Save the image to a memory stream
+            await using var stream = await response.Content.ReadAsStreamAsync();
+            await using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            // Create Discord image from stream
+            using var discordImage = new Image(memoryStream);
+
+            // Upload the image to Discord
+            await role.ModifyAsync(r => r.Icon = discordImage);
+
+            await Response().Confirm(strs.userrole_icon_success(Format.Bold(role.Name))).SendAsync();
         }
     }
 }

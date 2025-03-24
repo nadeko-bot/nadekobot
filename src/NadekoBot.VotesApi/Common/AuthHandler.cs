@@ -14,6 +14,7 @@ namespace NadekoBot.VotesApi
         public const string SchemeName = "AUTHORIZATION_SCHEME";
         public const string DiscordsClaim = "DISCORDS_CLAIM";
         public const string TopggClaim = "TOPGG_CLAIM";
+        public const string DiscordbotlistClaim = "DISCORDBOTLIST_CLAIM";
 
         private readonly IConfiguration _conf;
 
@@ -33,6 +34,9 @@ namespace NadekoBot.VotesApi
 
             if (_conf[ConfKeys.TOPGG_KEY] == Request.Headers["Authorization"].ToString().Trim())
                 claims.Add(new Claim(TopggClaim, "true"));
+            
+            if(_conf[ConfKeys.DISCORDBOTLIST_KEY] == Request.Headers["Authorization"].ToString().Trim())
+                claims.Add(new Claim(DiscordbotlistClaim, "true"));
 
             return Task.FromResult(AuthenticateResult.Success(new(new(new ClaimsIdentity(claims)), SchemeName)));
         }

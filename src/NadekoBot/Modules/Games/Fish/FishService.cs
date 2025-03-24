@@ -1,10 +1,19 @@
 ﻿using System.Security.Cryptography;
+using System.Text;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
+using NadekoBot.Modules.Administration;
+using NadekoBot.Modules.Administration.Services;
 
 namespace NadekoBot.Modules.Games.Fish;
 
-public sealed class FishService(FishConfigService fcs, IBotCache cache, DbService db) : INService
+public sealed class FishService(
+    FishConfigService fcs,
+    IBotCache cache,
+    DbService db,
+    INotifySubscriber notify
+)
+    : INService
 {
     private const double MAX_SKILL = 100;
 
@@ -15,7 +24,7 @@ public sealed class FishService(FishConfigService fcs, IBotCache cache, DbServic
 
     public async Task<OneOf.OneOf<Task<FishResult?>, AlreadyFishing>> FishAsync(ulong userId, ulong channelId)
     {
-        var duration = _rng.Next(5, 9);
+        var duration = _rng.Next(3, 6);
 
         if (!await cache.AddAsync(FishingKey(userId), true, TimeSpan.FromSeconds(duration), overwrite: false))
         {
@@ -69,6 +78,18 @@ public sealed class FishService(FishConfigService fcs, IBotCache cache, DbServic
             }
         }
 
+        // notification system
+        if (result is not null)
+        {
+            if (result.IsMaxStar() || result.IsRare())
+            {
+                await notify.NotifyAsync(new NiceCatchNotifyModel(
+                    userId,
+                    result.Fish,
+                    GetStarText(result.Stars, result.Fish.Stars)
+                ));
+            }
+        }
 
         return result;
     }
@@ -85,21 +106,21 @@ public sealed class FishService(FishConfigService fcs, IBotCache cache, DbServic
 
             var maxSkill = (int)MAX_SKILL;
             await ctx.GetTable<UserFishStats>()
-                     .InsertOrUpdateAsync(() => new()
-                         {
-                             UserId = userId,
-                             Skill = 1,
-                         },
-                         (old) => new()
-                         {
-                             UserId = userId,
-                             Skill = old.Skill > maxSkill ? maxSkill : old.Skill + 1
-                         },
-                         () => new()
-                         {
-                             UserId = userId,
-                             Skill = playerSkill
-                         });
+                .InsertOrUpdateAsync(() => new()
+                    {
+                        UserId = userId,
+                        Skill = 1,
+                    },
+                    (old) => new()
+                    {
+                        UserId = userId,
+                        Skill = old.Skill > maxSkill ? maxSkill : old.Skill + 1
+                    },
+                    () => new()
+                    {
+                        UserId = userId,
+                        Skill = playerSkill
+                    });
 
             return true;
         }
@@ -123,9 +144,9 @@ public sealed class FishService(FishConfigService fcs, IBotCache cache, DbServic
         await using var ctx = db.GetDbContext();
 
         var skill = await ctx.GetTable<UserFishStats>()
-                             .Where(x => x.UserId == userId)
-                             .Select(x => x.Skill)
-                             .FirstOrDefaultAsyncLinqToDB();
+            .Where(x => x.UserId == userId)
+            .Select(x => x.Skill)
+            .FirstOrDefaultAsyncLinqToDB();
 
         return (skill, (int)MAX_SKILL);
     }
@@ -188,23 +209,23 @@ public sealed class FishService(FishConfigService fcs, IBotCache cache, DbServic
             await using var uow = db.GetDbContext();
 
             await uow.GetTable<FishCatch>()
-                     .InsertOrUpdateAsync(() => new FishCatch()
-                         {
-                             UserId = userId,
-                             FishId = caught.Fish.Id,
-                             MaxStars = caught.Stars,
-                             Count = 1
-                         },
-                         (old) => new FishCatch()
-                         {
-                             Count = old.Count + 1,
-                             MaxStars = Math.Max(old.MaxStars, caught.Stars),
-                         },
-                         () => new()
-                         {
-                             FishId = caught.Fish.Id,
-                             UserId = userId
-                         });
+                .InsertOrUpdateAsync(() => new FishCatch()
+                    {
+                        UserId = userId,
+                        FishId = caught.Fish.Id,
+                        MaxStars = caught.Stars,
+                        Count = 1
+                    },
+                    (old) => new FishCatch()
+                    {
+                        Count = old.Count + 1,
+                        MaxStars = Math.Max(old.MaxStars, caught.Stars),
+                    },
+                    () => new()
+                    {
+                        FishId = caught.Fish.Id,
+                        UserId = userId
+                    });
 
             return caught;
         }
@@ -392,9 +413,35 @@ public sealed class FishService(FishConfigService fcs, IBotCache cache, DbServic
         await using var ctx = db.GetDbContext();
 
         var catches = await ctx.GetTable<FishCatch>()
-                               .Where(x => x.UserId == userId)
-                               .ToListAsyncLinqToDB();
+            .Where(x => x.UserId == userId)
+            .ToListAsyncLinqToDB();
 
         return catches;
+    }
+
+    public string GetStarText(int resStars, int fishStars)
+    {
+        if (resStars == fishStars)
+        {
+            return MultiplyStars(fcs.Data.StarEmojis[^1], fishStars);
+        }
+
+        var c = fcs.Data;
+        var starsp1 = MultiplyStars(c.StarEmojis[resStars], resStars);
+        var starsp2 = MultiplyStars(c.StarEmojis[0], fishStars - resStars);
+
+        return starsp1 + starsp2;
+    }
+
+    private string MultiplyStars(string starEmoji, int count)
+    {
+        var sb = new StringBuilder();
+
+        for (var i = 0; i < count; i++)
+        {
+            sb.Append(starEmoji);
+        }
+
+        return sb.ToString();
     }
 }

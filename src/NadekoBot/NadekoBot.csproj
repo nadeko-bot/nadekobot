@@ -4,7 +4,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>true</ImplicitUsings>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-        <Version>6.0.12</Version>
+        <Version>6.0.13</Version>
 
         <!-- Output/build -->
         <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
@@ -123,6 +123,9 @@
         <Protobuf Include="..\NadekoBot.Coordinator\Protos\coordinator.proto">
             <Link>_common\CoordinatorProtos\coordinator.proto</Link>
             <GrpcServices>Client</GrpcServices>
+        </Protobuf>
+        <Protobuf Include="../NadekoBot.VotesApi/Protos/*.proto">
+            <GrpcServices>Server</GrpcServices>
         </Protobuf>
     </ItemGroup>
 

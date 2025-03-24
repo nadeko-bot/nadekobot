@@ -1,5 +1,5 @@
 # DO NOT CHANGE
-version: 12
+version: 13
 # Currency settings
 currency:
   # What is the emoji/character which represents the currency
@@ -269,7 +269,13 @@ waifu:
 patreonCurrencyPerCent: 1
 # Currency reward per vote.
 # This will work only if you've set up VotesApi and correct credentials for topgg and/or discords voting
-voteReward: 100
+voteReward: 0
+# Id of the channel to send a message to after a user votes
+voteFeedChannelId: 
+votePlatforms:
+  - Top.gg|https://top.gg/bot/YOUR_BOT_ID/vote
+  - DiscordBotList|https://discordsbotlist.com/bot/YOUR_BOT_ID/vote
+  - Discords|https://discords.com/bot/YOUR_BOT_ID/vote
 # Slot config
 slots:
   # Hex value of the color which the numbers on the slot image will have.

@@ -493,6 +493,9 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                     .WithTitle($"{usr.Username}#{usr.Discriminator} | {usr.Id}")
                     .WithFooter(CurrentTime(usr.Guild))
                     .WithOkColor();
+                
+                if (!string.IsNullOrWhiteSpace(reason))
+                    embed.WithDescription(reason);
 
                 await _sender.Response(logChannel).Embed(embed).SendAsync();
             }

@@ -1,106 +1,128 @@
-#nullable disable
+using System.Globalization;
+using Grpc.Core;
 using NadekoBot.Common.ModuleBehaviors;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using NadekoBot.GrpcApi;
+using NadekoBot.GrpcVotesApi;
 
 namespace NadekoBot.Modules.Gambling.Services;
 
-public class VoteModel
+public class VoteRewardService(
+    ShardData shardData,
+    GamblingConfigService gcs,
+    CurrencyService cs,
+    IBotCache cache,
+    DiscordSocketClient client,
+    IMessageSenderService sender
+) : INService, IReadyExecutor
 {
-    [JsonPropertyName("userId")]
-    public ulong UserId { get; set; }
-}
+    private TypedKey<DateTime> VoteKey(ulong userId)
+        => new($"vote:{userId}");
 
-public class VoteRewardService : INService, IReadyExecutor
-{
-    private readonly DiscordSocketClient _client;
-    private readonly IBotCreds _creds;
-    private readonly ICurrencyService _currencyService;
-    private readonly GamblingConfigService _gamb;
-
-    public VoteRewardService(
-        DiscordSocketClient client,
-        IBotCreds creds,
-        ICurrencyService currencyService,
-        GamblingConfigService gamb)
-    {
-        _client = client;
-        _creds = creds;
-        _currencyService = currencyService;
-        _gamb = gamb;
-    }
+    private Server? _app;
+    private IMessageChannel? _voteFeedChannel;
 
     public async Task OnReadyAsync()
     {
-        if (_client.ShardId != 0)
+        if (shardData.ShardId != 0)
             return;
 
-        using var http = new HttpClient(new HttpClientHandler
+        var serverCreds = ServerCredentials.Insecure;
+        var ssd = VoteService.BindService(new VotesGrpcService(this));
+
+        _app = new()
         {
-            AllowAutoRedirect = false,
-            ServerCertificateCustomValidationCallback = delegate { return true; }
+            Ports =
+            {
+                new("127.0.0.1", 59384, serverCreds),
+            }
+        };
+
+        _app.Services.Add(ssd);
+        _app.Start();
+
+        if (gcs.Data.VoteFeedChannelId is ulong cid)
+        {
+            _voteFeedChannel = await client.GetChannelAsync(cid) as IMessageChannel;
+        }
+
+        return;
+    }
+
+    public void SetVoiceChannel(IMessageChannel? channel)
+    {
+        gcs.ModifyConfig(c => { c.VoteFeedChannelId = channel?.Id; });
+        _voteFeedChannel = channel;
+    }
+
+    public async Task UserVotedAsync(ulong userId, VoteType requestType)
+    {
+        var gcsData = gcs.Data;
+        var reward = gcsData.VoteReward;
+        if (reward <= 0)
+            return;
+
+        var key = VoteKey(userId);
+        if (!await cache.AddAsync(key, DateTime.UtcNow, expiry: TimeSpan.FromHours(6)))
+            return;
+
+        await cs.AddAsync(userId, reward, new("vote", requestType.ToString()));
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                var user = await client.GetUserAsync(userId);
+
+                await sender.Response(user)
+                    .Confirm(strs.vote_reward(N(reward)))
+                    .SendAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Unable to send vote confirmation message to user {UserId}", userId);
+            }
         });
 
-        while (true)
+        _ = Task.Run(async () =>
         {
-            await Task.Delay(30000);
-
-            var topggKey = _creds.Votes?.TopggKey;
-            var topggServiceUrl = _creds.Votes?.TopggServiceUrl;
-
-            try
+            if (_voteFeedChannel is not null)
             {
-                if (!string.IsNullOrWhiteSpace(topggKey) && !string.IsNullOrWhiteSpace(topggServiceUrl))
+                try
                 {
-                    http.DefaultRequestHeaders.Authorization = new(topggKey);
-                    var uri = new Uri(new(topggServiceUrl), "topgg/new");
-                    var res = await http.GetStringAsync(uri);
-                    var data = JsonSerializer.Deserialize<List<VoteModel>>(res);
-
-                    if (data is { Count: > 0 })
-                    {
-                        var ids = data.Select(x => x.UserId).ToList();
-
-                        await _currencyService.AddBulkAsync(ids,
-                            _gamb.Data.VoteReward,
-                            new("vote", "top.gg", "top.gg vote reward"));
-
-                        Log.Information("Rewarding {Count} top.gg voters", ids.Count());
-                    }
+                    var user = await client.GetUserAsync(userId);
+                    await _voteFeedChannel.SendMessageAsync(
+                        $"{user} just received {strs.vote_reward(N(reward))} for voting!",
+                        allowedMentions: AllowedMentions.None);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Unable to send vote reward message to user {UserId}", userId);
                 }
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Critical error loading top.gg vote rewards");
-            }
+        });
+    }
 
-            var discordsKey = _creds.Votes?.DiscordsKey;
-            var discordsServiceUrl = _creds.Votes?.DiscordsServiceUrl;
+    public async Task<TimeSpan?> LastVoted(ulong userId)
+    {
+        var key = VoteKey(userId);
+        var last = await cache.GetAsync(key);
+        return last.Match(
+            static x => DateTime.UtcNow.Subtract(x),
+            static _ => default(TimeSpan?));
+    }
 
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(discordsKey) && !string.IsNullOrWhiteSpace(discordsServiceUrl))
-                {
-                    http.DefaultRequestHeaders.Authorization = new(discordsKey);
-                    var res = await http.GetStringAsync(new Uri(new(discordsServiceUrl), "discords/new"));
-                    var data = JsonSerializer.Deserialize<List<VoteModel>>(res);
+    private string N(long amount)
+        => CurrencyHelper.N(amount, CultureInfo.InvariantCulture, gcs.Data.Currency.Sign);
+}
 
-                    if (data is { Count: > 0 })
-                    {
-                        var ids = data.Select(x => x.UserId).ToList();
+public sealed class VotesGrpcService(VoteRewardService vrs)
+    : VoteService.VoteServiceBase, INService
+{
+    [GrpcNoAuthRequired]
+    public override async Task<GrpcVoteResult> VoteReceived(GrpcVoteData request, ServerCallContext context)
+    {
+        await vrs.UserVotedAsync(ulong.Parse(request.UserId), request.Type);
 
-                        await _currencyService.AddBulkAsync(ids,
-                            _gamb.Data.VoteReward,
-                            new("vote", "discords", "discords.com vote reward"));
-
-                        Log.Information("Rewarding {Count} discords.com voters", ids.Count());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Critical error loading discords.com vote rewards");
-            }
-        }
+        return new();
     }
 }

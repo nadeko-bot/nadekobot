@@ -1487,6 +1487,39 @@ namespace NadekoBot.Migrations.PostgreSql
                     b.ToTable("imageonlychannels", (string)null);
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.LinkFix", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("GuildId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("guildid");
+
+                    b.Property<string>("NewDomain")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("newdomain");
+
+                    b.Property<string>("OldDomain")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("olddomain");
+
+                    b.HasKey("Id")
+                        .HasName("pk_linkfix");
+
+                    b.HasIndex("GuildId", "OldDomain")
+                        .IsUnique()
+                        .HasDatabaseName("ix_linkfix_guildid_olddomain");
+
+                    b.ToTable("linkfix", (string)null);
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.LiveChannelConfig", b =>
                 {
                     b.Property<int>("Id")

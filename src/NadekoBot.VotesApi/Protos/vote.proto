@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package vote;
+
+option csharp_namespace = "NadekoBot.GrpcVotesApi";
+
+enum VoteType {
+    TOPGG = 0;
+    DISCORDBOTLIST = 1;
+    DISCORDS = 2;
+}
+
+message GrpcVoteData {
+    string userId = 1;
+    VoteType type = 2;
+}
+
+message GrpcVoteResult {
+  
+}
+
+service VoteService {
+    rpc VoteReceived (GrpcVoteData) returns (GrpcVoteResult);
+}

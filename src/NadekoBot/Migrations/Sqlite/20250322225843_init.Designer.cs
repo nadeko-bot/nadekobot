@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations.Sqlite
 {
     [DbContext(typeof(SqliteContext))]
-    [Migration("20250318160520_init")]
+    [Migration("20250322225843_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -1111,6 +1111,31 @@ namespace NadekoBot.Migrations.Sqlite
                         .IsUnique();
 
                     b.ToTable("ImageOnlyChannels");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.LinkFix", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("NewDomain")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OldDomain")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "OldDomain")
+                        .IsUnique();
+
+                    b.ToTable("LinkFix");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.LiveChannelConfig", b =>

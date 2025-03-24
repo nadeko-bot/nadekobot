@@ -24,7 +24,10 @@ public partial class Games
             var cRes = await cache.GetAsync(FishingWhitelistKey(ctx.User.Id));
             if (cRes.TryPickT1(out _, out _))
             {
-                var password = await captchaService.GetUserCaptcha(ctx.User.Id);
+                string? password = null;
+                if (fcs.Data.RequireCaptcha)
+                    password = await captchaService.GetUserCaptcha(ctx.User.Id);
+
                 if (password is not null)
                 {
                     var img = captchaService.GetPasswordImage(password);
@@ -72,16 +75,16 @@ public partial class Games
             var spot = fs.GetSpot(ctx.Channel.Id);
 
             var msg = await Response()
-                            .Embed(CreateEmbed()
-                                   .WithPendingColor()
-                                   .WithAuthor(ctx.User)
-                                   .WithDescription(GetText(strs.fish_waiting))
-                                   .AddField(GetText(strs.fish_spot), GetSpotEmoji(spot) + " " + spot.ToString(), true)
-                                   .AddField(GetText(strs.fish_weather),
-                                       GetWeatherEmoji(currentWeather) + " " + currentWeather,
-                                       true)
-                                   .AddField(GetText(strs.fish_tod), GetTodEmoji(currentTod) + " " + currentTod, true))
-                            .SendAsync();
+                .Embed(CreateEmbed()
+                    .WithPendingColor()
+                    .WithAuthor(ctx.User)
+                    .WithDescription(GetText(strs.fish_waiting))
+                    .AddField(GetText(strs.fish_spot), GetSpotEmoji(spot) + " " + spot.ToString(), true)
+                    .AddField(GetText(strs.fish_weather),
+                        GetWeatherEmoji(currentWeather) + " " + currentWeather,
+                        true)
+                    .AddField(GetText(strs.fish_tod), GetTodEmoji(currentTod) + " " + currentTod, true))
+                .SendAsync();
 
             var res = await fishTask;
             if (res is null)
@@ -98,14 +101,14 @@ public partial class Games
             }
 
             await Response()
-                  .Embed(CreateEmbed()
-                         .WithOkColor()
-                         .WithAuthor(ctx.User)
-                         .WithDescription(desc)
-                         .AddField(GetText(strs.fish_quality), GetStarText(res.Stars, res.Fish.Stars), true)
-                         .AddField(GetText(strs.desc), res.Fish.Fluff, true)
-                         .WithThumbnailUrl(res.Fish.Image))
-                  .SendAsync();
+                .Embed(CreateEmbed()
+                    .WithOkColor()
+                    .WithAuthor(ctx.User)
+                    .WithDescription(desc)
+                    .AddField(GetText(strs.fish_quality), fs.GetStarText(res.Stars, res.Fish.Stars), true)
+                    .AddField(GetText(strs.desc), res.Fish.Fluff, true)
+                    .WithThumbnailUrl(res.Fish.Image))
+                .SendAsync();
 
             await msg.DeleteAsync();
         }
@@ -118,15 +121,15 @@ public partial class Games
             var time = fs.GetTime();
 
             await Response()
-                  .Embed(CreateEmbed()
-                         .WithOkColor()
-                         .WithDescription(GetText(strs.fish_weather_duration(fs.GetWeatherPeriodDuration())))
-                         .AddField(GetText(strs.fish_spot), GetSpotEmoji(spot) + " " + spot, true)
-                         .AddField(GetText(strs.fish_tod), GetTodEmoji(time) + " " + time, true)
-                         .AddField(GetText(strs.fish_weather_forecast),
-                             ws.Select(x => GetWeatherEmoji(x)).Join(""),
-                             true))
-                  .SendAsync();
+                .Embed(CreateEmbed()
+                    .WithOkColor()
+                    .WithDescription(GetText(strs.fish_weather_duration(fs.GetWeatherPeriodDuration())))
+                    .AddField(GetText(strs.fish_spot), GetSpotEmoji(spot) + " " + spot, true)
+                    .AddField(GetText(strs.fish_tod), GetTodEmoji(time) + " " + time, true)
+                    .AddField(GetText(strs.fish_weather_forecast),
+                        ws.Select(x => GetWeatherEmoji(x)).Join(""),
+                        true))
+                .SendAsync();
         }
 
         [Cmd]
@@ -143,43 +146,43 @@ public partial class Games
             var catchDict = catches.ToDictionary(x => x.FishId, x => x);
 
             await Response()
-                  .Paginated()
-                  .Items(fishes)
-                  .PageSize(9)
-                  .CurrentPage(page)
-                  .Page((fs, i) =>
-                  {
-                      var eb = CreateEmbed()
-                               .WithDescription($"🧠 **Skill:** {skill} / {maxSkill}")
-                               .WithAuthor(ctx.User)
-                               .WithTitle(GetText(strs.fish_list_title))
-                               .WithOkColor();
+                .Paginated()
+                .Items(fishes)
+                .PageSize(9)
+                .CurrentPage(page)
+                .Page((fishes, i) =>
+                {
+                    var eb = CreateEmbed()
+                        .WithDescription($"🧠 **Skill:** {skill} / {maxSkill}")
+                        .WithAuthor(ctx.User)
+                        .WithTitle(GetText(strs.fish_list_title))
+                        .WithOkColor();
 
-                      foreach (var f in fs)
-                      {
-                          if (catchDict.TryGetValue(f.Id, out var c))
-                          {
-                              eb.AddField(f.Name,
-                                  GetFishEmoji(f, c.Count)
-                                  + " "
-                                  + GetSpotEmoji(f.Spot)
-                                  + GetTodEmoji(f.Time)
-                                  + GetWeatherEmoji(f.Weather)
-                                  + "\n"
-                                  + GetStarText(c.MaxStars, f.Stars)
-                                  + "\n"
-                                  + Format.Italics(f.Fluff),
-                                  true);
-                          }
-                          else
-                          {
-                              eb.AddField("?", GetFishEmoji(null, 0) + "\n" + GetStarText(0, f.Stars), true);
-                          }
-                      }
+                    foreach (var f in fishes)
+                    {
+                        if (catchDict.TryGetValue(f.Id, out var c))
+                        {
+                            eb.AddField(f.Name,
+                                GetFishEmoji(f, c.Count)
+                                + " "
+                                + GetSpotEmoji(f.Spot)
+                                + GetTodEmoji(f.Time)
+                                + GetWeatherEmoji(f.Weather)
+                                + "\n"
+                                + fs.GetStarText(c.MaxStars, f.Stars)
+                                + "\n"
+                                + Format.Italics(f.Fluff),
+                                true);
+                        }
+                        else
+                        {
+                            eb.AddField("?", GetFishEmoji(null, 0) + "\n" + fs.GetStarText(0, f.Stars), true);
+                        }
+                    }
 
-                      return eb;
-                  })
-                  .SendAsync();
+                    return eb;
+                })
+                .SendAsync();
         }
 
         private string GetFishEmoji(FishData? fish, int count)
@@ -222,31 +225,8 @@ public partial class Games
                 _ => ""
             };
 
-        private string GetStarText(int resStars, int fishStars)
-        {
-            if (resStars == fishStars)
-            {
-                return MultiplyStars(fcs.Data.StarEmojis[^1], fishStars);
-            }
+        
 
-            var c = fcs.Data;
-            var starsp1 = MultiplyStars(c.StarEmojis[resStars], resStars);
-            var starsp2 = MultiplyStars(c.StarEmojis[0], fishStars - resStars);
-
-            return starsp1 + starsp2;
-        }
-
-        private string MultiplyStars(string starEmoji, int count)
-        {
-            var sb = new StringBuilder();
-
-            for (var i = 0; i < count; i++)
-            {
-                sb.Append(starEmoji);
-            }
-
-            return sb.ToString();
-        }
     }
 }
 
