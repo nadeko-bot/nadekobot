@@ -44,9 +44,14 @@ public partial class Games
         private string GetItemDescription(FishItem item, UserFishItem? userItem = null)
         {
             var multiplierInfo = GetMultiplierInfo(item);
+
+            var priceText = userItem is null
+                ? $"【 **{CurrencyHelper.N(item.Price, Culture, cp.GetCurrencySign())}** 】"
+                : "";
+
             return $"""
                      《 **{item.Name}** 》
-                     {GetEmoji(item.ItemType)} `{item.ItemType.ToString().ToLower()}`  【 **{CurrencyHelper.N(item.Price, Culture, cp.GetCurrencySign())}** 】
+                     {GetEmoji(item.ItemType)} `{item.ItemType.ToString().ToLower()}` {priceText}
                      {item.Description}
                      {GetItemNotes(item, userItem)}
                      {multiplierInfo}
@@ -231,7 +236,5 @@ public partial class Games
                 .AddFooter(false)
                 .SendAsync();
         }
-        
-        
     }
 }
