@@ -14,4 +14,8 @@ public sealed partial class FishConfig : ICloneable<FishConfig>
     public List<string> StarEmojis { get; set; } = new();
     public List<string> SpotEmojis { get; set; } = new();
     public FishChance Chance { get; set; } = new FishChance();
+    
+    public List<FishData> Fish { get; set; } = new();
+    public List<FishData> Trash { get; set; } = new();
+    public List<FishItem> Items {get;set;} = new();
 }

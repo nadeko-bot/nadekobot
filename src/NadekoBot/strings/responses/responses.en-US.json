@@ -1248,5 +1248,16 @@
   "quest_log": "Quest Log",
   "dailies_done": "You've completed your dailies!",
   "dailies_reset": "Reset {0}",
-  "daily_completed": "You've completed a daily quest: {0}"
+  "daily_completed": "You've completed a daily quest: {0}",
+  "fish_items_title": "Fishing Shop",
+  "fish_buy_success": "Item purchased successfully!",
+  "fish_item_not_found": "Item not found.",
+  "fish_buy_insufficient_funds": "You don't have enough currency to buy this item.",
+  "fish_buy_error": "An error occurred while trying to buy the item.",
+  "fish_use_success": "Item equipped successfully!",
+  "fish_use_error": "Unknown error occurred while trying to equip the item.",
+  "fish_unequip_success": "Item unequipped successfully!",
+  "fish_unequip_error": "Could not unequip item.",
+  "fish_inv_title": "Fishing Inventory",
+  "fish_cant_uneq_potion": "You can't unequip a potion."
 }

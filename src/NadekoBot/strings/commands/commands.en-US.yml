@@ -5221,3 +5221,47 @@ questlog:
     - ''
   params:
     - { }
+fishshop:
+  desc: |-
+    Opens the fish shop.
+    Lists all fish items available for sale
+  ex:
+    - ''
+  params:
+    - { }
+fishinv:
+  desc: |-
+    Opens your fish inventory.
+    Your inventory contains all items you've purchased but not spent.
+  ex:
+    - ''
+  params:
+    - { }
+fishbuy:
+  desc: |-
+    Purchase a fishing item with the specified id.
+    After purchase the item will appear in your inventory where you can use/equip it.
+  ex:
+    - '1'
+  params:
+    - id:
+        desc: "The ID of the item to buy."
+fishuse:
+  desc: |-
+    Use a fishing item in your inventory.
+    You can unequip it later, unless its a potion.
+  ex:
+    - '1'
+  params:
+    - index:
+        desc: "The index of the item to use."
+fishunequip:
+  desc: |-
+    Unequips an item by specifying its index in your inventory.
+    You can use it again later.
+    You can't unequip potions.
+  ex:
+    - '1'
+  params:
+    - index:
+        desc: "The index of the item to unequip."

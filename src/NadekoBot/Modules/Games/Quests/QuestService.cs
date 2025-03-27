@@ -13,8 +13,6 @@ public sealed class QuestService(
     DiscordSocketClient client
 ) : INService, IExecPreCommand
 {
-    private readonly NadekoRandom rng = new();
-
     private readonly IQuest[] _availableQuests =
     [
         new HangmanWinQuest(),
@@ -48,10 +46,10 @@ public sealed class QuestService(
 
         _ = Task.Run(async () =>
         {
-            Log.Information("Action reported by {UserId}: {EventType} {Metadata}",
-                userId,
-                eventType,
-                metadata.ToJson());
+            // Log.Information("Action reported by {UserId}: {EventType} {Metadata}",
+                // userId,
+                // eventType,
+                // metadata.ToJson());
             metadata ??= new();
             var now = DateTime.UtcNow;
 
@@ -140,11 +138,11 @@ public sealed class QuestService(
     {
         var today = date.Date;
         var timeUntilTomorrow = today.AddDays(1) - DateTime.UtcNow;
-        if (!await botCache.AddAsync(UserHasQuestsKey(userId), true, expiry: timeUntilTomorrow))
+        if (!await botCache.AddAsync(UserHasQuestsKey(userId), true, expiry: timeUntilTomorrow, overwrite: false))
             return;
 
         await using var uow = db.GetDbContext();
-        var newQuests = GenerateDailyQuestsAsync(userId);
+        var newQuests = GenerateDailyQuestsAsync();
         for (var i = 0; i < MAX_QUESTS_PER_DAY; i++)
         {
             await uow.GetTable<UserQuest>()
@@ -170,7 +168,7 @@ public sealed class QuestService(
         }
     }
 
-    private IReadOnlyList<IQuest> GenerateDailyQuestsAsync(ulong userId)
+    private IReadOnlyList<IQuest> GenerateDailyQuestsAsync()
     {
         return _availableQuests
             .ToList()

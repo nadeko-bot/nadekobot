@@ -47,6 +47,15 @@ public class UserFishItem
     /// The date and time when this item expires. Null means the item doesn't expire.
     /// </summary>
     public DateTime? ExpiresAt { get; set; }
+
+
+    public int? ExpiryFromNowInMinutes()
+    {
+        if (ExpiresAt is null)
+            return null;
+        
+        return (int)(ExpiresAt.Value - DateTime.UtcNow).TotalMinutes;
+    }
 }
 
 /// <summary>

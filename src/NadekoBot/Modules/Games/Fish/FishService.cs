@@ -13,7 +13,8 @@ public sealed class FishService(
     IBotCache cache,
     DbService db,
     INotifySubscriber notify,
-    QuestService quests
+    QuestService quests,
+    FishItemService itemService
 )
     : INService
 {
@@ -24,19 +25,24 @@ public sealed class FishService(
     private static TypedKey<bool> FishingKey(ulong userId)
         => new($"fishing:{userId}");
 
-    public async Task<OneOf.OneOf<Task<FishResult?>, AlreadyFishing>> FishAsync(ulong userId, ulong channelId)
+    public async Task<OneOf.OneOf<Task<FishResult?>, AlreadyFishing>> FishAsync(ulong userId, ulong channelId,
+        FishMultipliers multipliers)
     {
-        var duration = _rng.Next(3, 6);
+        var duration = _rng.Next(3, 6) / multipliers.FishingSpeedMultiplier;
 
         if (!await cache.AddAsync(FishingKey(userId), true, TimeSpan.FromSeconds(duration), overwrite: false))
         {
             return new AlreadyFishing();
         }
 
-        return TryFishAsync(userId, channelId, duration);
+        return TryFishAsync(userId, channelId, duration, multipliers);
     }
 
-    private async Task<FishResult?> TryFishAsync(ulong userId, ulong channelId, int duration)
+    private async Task<FishResult?> TryFishAsync(
+        ulong userId,
+        ulong channelId,
+        double duration,
+        FishMultipliers multipliers)
     {
         var conf = fcs.Data;
         await Task.Delay(TimeSpan.FromSeconds(duration));
@@ -46,8 +52,8 @@ public sealed class FishService(
         var trashChanceMultiplier = Math.Clamp(((2 * MAX_SKILL) - playerSkill) / MAX_SKILL, 1, 2);
 
         var nothingChance = conf.Chance.Nothing;
-        var fishChance = conf.Chance.Fish * fishChanceMultiplier;
-        var trashChance = conf.Chance.Trash * trashChanceMultiplier;
+        var fishChance = conf.Chance.Fish * fishChanceMultiplier * multipliers.FishMultiplier;
+        var trashChance = conf.Chance.Trash * trashChanceMultiplier * multipliers.TrashMultiplier;
 
         // first roll whether it's fish, trash or nothing
         var totalChance = fishChance + trashChance + conf.Chance.Nothing;
@@ -59,13 +65,21 @@ public sealed class FishService(
             return null;
         }
 
-        var items = typeRoll < nothingChance + fishChance
+        var isFish = typeRoll < nothingChance + fishChance;
+
+        var items = isFish
             ? conf.Fish
             : conf.Trash;
 
+        var result = await FishAsyncInternal(userId, channelId, items, multipliers);
+        
+        // use bait
+        if (result is not null)
+        {
+            await itemService.UseBaitAsync(userId);
+        }
 
-        var result = await FishAsyncInternal(userId, channelId, items);
-
+        // skill
         if (result is not null)
         {
             var isSkillUp = await TrySkillUpAsync(userId, playerSkill);
@@ -162,7 +176,11 @@ public sealed class FishService(
         return (skill, (int)MAX_SKILL);
     }
 
-    private async Task<FishResult?> FishAsyncInternal(ulong userId, ulong channelId, List<FishData> items)
+    private async Task<FishResult?> FishAsyncInternal(
+        ulong userId,
+        ulong channelId,
+        List<FishData> items,
+        FishMultipliers multipliers)
     {
         var filteredItems = new List<FishData>();
 
@@ -192,7 +210,20 @@ public sealed class FishService(
             filteredItems.Add(item);
         }
 
-        var maxSum = filteredItems.Sum(x => x.Chance * 100);
+
+        var maxSum = filteredItems
+            .Select(x => (x.Id, x.Chance, x.Stars))
+            .Select(x =>
+            {
+                if (x.Chance <= 15)
+                    return x with
+                    {
+                        Chance = x.Chance *= multipliers.RareMultiplier
+                    };
+
+                return x;
+            })
+            .Sum(x => { return x.Chance * 100; });
 
 
         var roll = _rng.NextDouble() * maxSum;
@@ -209,7 +240,7 @@ public sealed class FishService(
                 caught = new FishResult()
                 {
                     Fish = i,
-                    Stars = GetRandomStars(i.Stars),
+                    Stars = GetRandomStars(i.Stars, multipliers),
                 };
                 break;
             }
@@ -353,25 +384,30 @@ public sealed class FishService(
     /// if maxStars == 5, returns 1 (40%) or 2 (30%) or 3 (15%) or 4 (10%) or 5 (5%)
     /// </summary>
     /// <param name="maxStars">Max Number of stars to generate</param>
+    /// <param name="multipliers"></param>
     /// <returns>Random number of stars</returns>
-    private int GetRandomStars(int maxStars)
+    private int GetRandomStars(int maxStars, FishMultipliers multipliers)
     {
         if (maxStars == 1)
             return 1;
 
+        var maxStarMulti = multipliers.StarMultiplier;
+        double baseChance;
         if (maxStars == 2)
         {
             // 15% chance of 1 star, 85% chance of 2 stars
-            return _rng.NextDouble() < 0.85 ? 1 : 2;
+            baseChance = Math.Clamp(0.15 * multipliers.StarMultiplier, 0, 1);
+            return _rng.NextDouble() < (1 - baseChance) ? 1 : 2;
         }
 
         if (maxStars == 3)
         {
             // 65% chance of 1 star, 30% chance of 2 stars, 5% chance of 3 stars
+            baseChance = 0.05 * multipliers.StarMultiplier;
             var r = _rng.NextDouble();
-            if (r < 0.65)
+            if (r < (1 - baseChance - 0.3))
                 return 1;
-            if (r < 0.95)
+            if (r < (1 - baseChance))
                 return 2;
             return 3;
         }
@@ -381,26 +417,28 @@ public sealed class FishService(
             // this should never happen
             // 50% chance of 1 star, 25% chance of 2 stars, 18% chance of 3 stars, 7% chance of 4 stars
             var r = _rng.NextDouble();
-            if (r < 0.55)
+            baseChance = 0.02 * multipliers.StarMultiplier;
+            if (r < (1 - baseChance - 0.45))
                 return 1;
-            if (r < 0.80)
+            if (r < (1 - baseChance - 0.15))
                 return 2;
-            if (r < 0.98)
+            if (r < (1 - baseChance))
                 return 3;
             return 4;
         }
 
         if (maxStars == 5)
         {
-            // 40% chance of 1 star, 30% chance of 2 stars, 15% chance of 3 stars, 10% chance of 4 stars, 5% chance of 5 stars
+            // 40% chance of 1 star, 30% chance of 2 stars, 15% chance of 3 stars, 10% chance of 4 stars, 2% chance of 5 stars
             var r = _rng.NextDouble();
-            if (r < 0.4)
+            baseChance = 0.02 * multipliers.StarMultiplier;
+            if (r < (1 - baseChance - 0.6))
                 return 1;
-            if (r < 0.7)
+            if (r < (1 - baseChance - 0.3))
                 return 2;
-            if (r < 0.9)
+            if (r < (1 - baseChance - 0.1))
                 return 3;
-            if (r < 0.98)
+            if (r < (1 - baseChance))
                 return 4;
             return 5;
         }

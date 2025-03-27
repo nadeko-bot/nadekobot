@@ -1623,191 +1623,6 @@
     },
     {
       "Aliases": [
-        ".iam"
-      ],
-      "Description": "Adds a role to you that you choose. Role must be on the list of self-assignable roles.",
-      "Usage": [
-        ".iam Gamer"
-      ],
-      "Submodule": "SelfAssignedRolesHelpers",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".iamnot",
-        ".iamn"
-      ],
-      "Description": "Removes a specified role from you. Role must be on the list of self-assignable roles.",
-      "Usage": [
-        ".iamnot Gamer"
-      ],
-      "Submodule": "SelfAssignedRolesHelpers",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".sar ad",
-        ".sar autodel",
-        ".sar adsarm"
-      ],
-      "Description": "Toggles the automatic deletion of the user's message and Nadeko's confirmations for `.iam` and `.iamn` commands.",
-      "Usage": [
-        ".sar ad"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageMessages Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sar add",
-        ".sar a",
-        ".sar asar"
-      ],
-      "Description": "Adds a role to the list of self-assignable roles. You can also specify a group. If 'Exclusive self-assignable roles' feature is enabled (`.tesar`), users will be able to pick one role per group.",
-      "Usage": [
-        ".sar add Gamer",
-        ".sar add 1 Alliance",
-        ".sar add 1 Horde"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sar groupname",
-        ".sar gn",
-        ".sar sargn"
-      ],
-      "Description": "Sets a self assignable role group name. Provide no name to remove.",
-      "Usage": [
-        ".sar groupname 1 Faction",
-        ".sar groupname 2"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sar remove",
-        ".sar rm",
-        ".sar rem",
-        ".sar rsar"
-      ],
-      "Description": "Removes a specified role from the list of self-assignable roles.",
-      "Usage": [
-        ".sar remove Gamer",
-        ".sar remove Alliance",
-        ".sar remove Horde"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sar list",
-        ".sar l",
-        ".sar ls",
-        ".sar lsar"
-      ],
-      "Description": "Lists self-assignable roles. Shows 20 roles per page.",
-      "Usage": [
-        ".sar list",
-        ".sar list 2"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".sar exclusive",
-        ".sar ex",
-        ".sar excl",
-        ".sar tesar"
-      ],
-      "Description": "Toggles the sar group as exclusive.\nWhile enabled, users can only have one self-assignable role from that group.",
-      "Usage": [
-        ".sar exclusive 1"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sar rolelvlreq",
-        ".sar rlr"
-      ],
-      "Description": "Set a level requirement on a self-assignable role.",
-      "Usage": [
-        ".sar rolelvlreq 5 SomeRole"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sar grouprolereq",
-        ".sar grr"
-      ],
-      "Description": "Set a role that users have to have in order to assign a self-assignable role from the specified group.",
-      "Usage": [
-        ".sar grouprolereq 1 SomeRole"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sar groupdelete",
-        ".sar gd",
-        ".sar gdel"
-      ],
-      "Description": "Deletes a self-assignable role group",
-      "Usage": [
-        ".sar groupdelete 0"
-      ],
-      "Submodule": "sar",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
         ".cacheusers"
       ],
       "Description": "Caches users of a Discord server and saves them to the database.",
@@ -2248,6 +2063,191 @@
       "Options": null,
       "Requirements": [
         "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".iam"
+      ],
+      "Description": "Adds a role to you that you choose. Role must be on the list of self-assignable roles.",
+      "Usage": [
+        ".iam Gamer"
+      ],
+      "Submodule": "SelfAssignedRolesHelpers",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".iamnot",
+        ".iamn"
+      ],
+      "Description": "Removes a specified role from you. Role must be on the list of self-assignable roles.",
+      "Usage": [
+        ".iamnot Gamer"
+      ],
+      "Submodule": "SelfAssignedRolesHelpers",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".sar ad",
+        ".sar autodel",
+        ".sar adsarm"
+      ],
+      "Description": "Toggles the automatic deletion of the user's message and Nadeko's confirmations for `.iam` and `.iamn` commands.",
+      "Usage": [
+        ".sar ad"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageMessages Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sar add",
+        ".sar a",
+        ".sar asar"
+      ],
+      "Description": "Adds a role to the list of self-assignable roles. You can also specify a group. If 'Exclusive self-assignable roles' feature is enabled (`.tesar`), users will be able to pick one role per group.",
+      "Usage": [
+        ".sar add Gamer",
+        ".sar add 1 Alliance",
+        ".sar add 1 Horde"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sar groupname",
+        ".sar gn",
+        ".sar sargn"
+      ],
+      "Description": "Sets a self assignable role group name. Provide no name to remove.",
+      "Usage": [
+        ".sar groupname 1 Faction",
+        ".sar groupname 2"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sar remove",
+        ".sar rm",
+        ".sar rem",
+        ".sar rsar"
+      ],
+      "Description": "Removes a specified role from the list of self-assignable roles.",
+      "Usage": [
+        ".sar remove Gamer",
+        ".sar remove Alliance",
+        ".sar remove Horde"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sar list",
+        ".sar l",
+        ".sar ls",
+        ".sar lsar"
+      ],
+      "Description": "Lists self-assignable roles. Shows 20 roles per page.",
+      "Usage": [
+        ".sar list",
+        ".sar list 2"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".sar exclusive",
+        ".sar ex",
+        ".sar excl",
+        ".sar tesar"
+      ],
+      "Description": "Toggles the sar group as exclusive.\nWhile enabled, users can only have one self-assignable role from that group.",
+      "Usage": [
+        ".sar exclusive 1"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sar rolelvlreq",
+        ".sar rlr"
+      ],
+      "Description": "Set a level requirement on a self-assignable role.",
+      "Usage": [
+        ".sar rolelvlreq 5 SomeRole"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sar grouprolereq",
+        ".sar grr"
+      ],
+      "Description": "Set a role that users have to have in order to assign a self-assignable role from the specified group.",
+      "Usage": [
+        ".sar grouprolereq 1 SomeRole"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sar groupdelete",
+        ".sar gd",
+        ".sar gdel"
+      ],
+      "Description": "Deletes a self-assignable role group",
+      "Usage": [
+        ".sar groupdelete 0"
+      ],
+      "Submodule": "sar",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
       ]
     },
     {
@@ -4146,6 +4146,83 @@
         ".fishlist"
       ],
       "Submodule": "FishCommands",
+      "Module": "Games",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".fishshop",
+        ".fishop"
+      ],
+      "Description": "Opens the fish shop.\nLists all fish items available for sale",
+      "Usage": [
+        ".fishshop"
+      ],
+      "Submodule": "FishItemCommands",
+      "Module": "Games",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".fishbuy",
+        ".fibuy"
+      ],
+      "Description": "Purchase a fishing item with the specified id.\nAfter purchase the item will appear in your inventory where you can use/equip it.",
+      "Usage": [
+        ".fishbuy 1"
+      ],
+      "Submodule": "FishItemCommands",
+      "Module": "Games",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".fishuse",
+        ".fiuse",
+        ".fiequip",
+        ".fieq",
+        ".fiquip"
+      ],
+      "Description": "Use a fishing item in your inventory.\nYou can unequip it later, unless its a potion.",
+      "Usage": [
+        ".fishuse 1"
+      ],
+      "Submodule": "FishItemCommands",
+      "Module": "Games",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".fishunequip",
+        ".fiuneq",
+        ".fiunequip",
+        ".fiunuse",
+        ".fishunuse"
+      ],
+      "Description": "Unequips an item by specifying its index in your inventory.\nYou can use it again later.\nYou can't unequip potions.",
+      "Usage": [
+        ".fishunequip 1"
+      ],
+      "Submodule": "FishItemCommands",
+      "Module": "Games",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".fishinv",
+        ".finv",
+        ".fiinv"
+      ],
+      "Description": "Opens your fish inventory.\nYour inventory contains all items you've purchased but not spent.",
+      "Usage": [
+        ".fishinv"
+      ],
+      "Submodule": "FishItemCommands",
       "Module": "Games",
       "Options": null,
       "Requirements": []

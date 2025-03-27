@@ -2236,7 +2236,7 @@ namespace NadekoBot.Migrations.Sqlite
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("Progress")
+                    b.Property<int>("Progress")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("QuestId")
@@ -2613,6 +2613,37 @@ namespace NadekoBot.Migrations.Sqlite
                     b.ToTable("XpShopOwnedItem");
                 });
 
+            modelBuilder.Entity("NadekoBot.Modules.Games.Fish.Db.UserFishItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ItemType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("UsesLeft")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFishItem");
+                });
+
             modelBuilder.Entity("NadekoBot.Modules.Games.FishCatch", b =>
                 {
                     b.Property<int>("Id")
@@ -2642,12 +2673,6 @@ namespace NadekoBot.Migrations.Sqlite
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("Bait")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("Pole")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Skill")

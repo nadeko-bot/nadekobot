@@ -1661,3 +1661,25 @@ questlog:
   - questlog
   - qlog
   - myquests
+fishshop:
+  - fishshop
+  - fishop
+fishbuy:
+  - fishbuy
+  - fibuy
+fishuse:
+  - fishuse
+  - fiuse
+  - fiequip
+  - fieq
+  - fiquip
+fishunequip:
+  - fishunequip
+  - fiuneq
+  - fiunequip
+  - fiunuse
+  - fishunuse
+fishinv:
+  - fishinv
+  - finv
+  - fiinv

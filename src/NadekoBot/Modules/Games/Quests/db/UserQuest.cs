@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NadekoBot.Modules.Games.Quests;
 
 namespace NadekoBot.Db.Models;
@@ -20,3 +22,17 @@ public class UserQuest
     public DateTime DateAssigned { get; set; }
 }
 
+public sealed class UserQuestEntityConfiguration : IEntityTypeConfiguration<UserQuest>
+{
+    public void Configure(EntityTypeBuilder<UserQuest> builder)
+    {
+        builder.HasIndex(x => x.UserId);
+        
+        builder.HasIndex(x => new
+        {
+            x.UserId,
+            x.QuestNumber,
+            x.DateAssigned
+        }).IsUnique();
+    }
+}

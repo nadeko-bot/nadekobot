@@ -1110,15 +1110,31 @@ namespace NadekoBot.Migrations.PostgreSql
                 });
 
             migrationBuilder.CreateTable(
+                name: "userfishitem",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    userid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    itemtype = table.Column<int>(type: "integer", nullable: false),
+                    itemid = table.Column<int>(type: "integer", nullable: false),
+                    isequipped = table.Column<bool>(type: "boolean", nullable: false),
+                    usesleft = table.Column<int>(type: "integer", nullable: true),
+                    expiresat = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_userfishitem", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "userfishstats",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     userid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    skill = table.Column<int>(type: "integer", nullable: false),
-                    pole = table.Column<int>(type: "integer", nullable: true),
-                    bait = table.Column<int>(type: "integer", nullable: true)
+                    skill = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1134,7 +1150,7 @@ namespace NadekoBot.Migrations.PostgreSql
                     questnumber = table.Column<int>(type: "integer", nullable: false),
                     userid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     questid = table.Column<int>(type: "integer", nullable: false),
-                    progress = table.Column<long>(type: "bigint", nullable: false),
+                    progress = table.Column<int>(type: "integer", nullable: false),
                     iscompleted = table.Column<bool>(type: "boolean", nullable: false),
                     dateassigned = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -2252,6 +2268,11 @@ namespace NadekoBot.Migrations.PostgreSql
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_userfishitem_userid",
+                table: "userfishitem",
+                column: "userid");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_userfishstats_userid",
                 table: "userfishstats",
                 column: "userid",
@@ -2649,6 +2670,9 @@ namespace NadekoBot.Migrations.PostgreSql
 
             migrationBuilder.DropTable(
                 name: "userbetstats");
+
+            migrationBuilder.DropTable(
+                name: "userfishitem");
 
             migrationBuilder.DropTable(
                 name: "userfishstats");

@@ -1,43 +1,49 @@
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Modules.Games.Fish.Db;
-using NadekoBot.Services.Currency;
 
-namespace NadekoBot.Modules.Games.Fish;
+namespace NadekoBot.Modules.Games;
 
 /// <summary>
 /// Service for managing fish items that users can buy, equip, and use.
 /// </summary>
-public sealed class FishItemService(DbService db, ICurrencyService cs, IBotCache cache) : INService
+public sealed class FishItemService(
+    DbService db,
+    ICurrencyService cs,
+    FishConfigService fcs) : INService
 {
-    private readonly IReadOnlyList<FishItem> _items;
+    private IReadOnlyList<FishItem> _items
+        => fcs.Data.Items;
 
     /// <summary>
     /// Gets all available fish items.
     /// </summary>
-    public List<FishItem> GetItems() => _items;
+    public IReadOnlyList<FishItem> GetItems()
+        => _items;
 
     /// <summary>
     /// Gets a specific fish item by ID.
     /// </summary>
-    public FishItem GetItem(int id) => _items.FirstOrDefault(i => i.Id == id);
+    public FishItem? GetItem(int id)
+        => _items.FirstOrDefault(i => i.Id == id);
 
     /// <summary>
     /// Gets all items of a specific type.
     /// </summary>
-    public List<FishItem> GetItemsByType(FishItemType type) => _items.Where(i => i.ItemType == type).ToList();
+    public List<FishItem> GetItemsByType(FishItemType type)
+        => _items.Where(i => i.ItemType == type).ToList();
 
     /// <summary>
     /// Gets all items owned by a user.
     /// </summary>
-    public async Task<List<(UserFishItem UserItem, FishItem Item)>> GetUserItemsAsync(ulong userId)
+    public async Task<List<(UserFishItem UserItem, FishItem? Item)>> GetUserItemsAsync(ulong userId)
     {
         await using var ctx = db.GetDbContext();
-        
+
         var userItems = await ctx.GetTable<UserFishItem>()
             .Where(x => x.UserId == userId)
             .ToListAsyncLinqToDB();
-        
+
         return userItems
             .Select(ui => (ui, GetItem(ui.ItemId)))
             .Where(x => x.Item2 != null)
@@ -47,118 +53,132 @@ public sealed class FishItemService(DbService db, ICurrencyService cs, IBotCache
     /// <summary>
     /// Gets all equipped items for a user.
     /// </summary>
-    public async Task<Dictionary<FishItemType, (UserFishItem UserItem, FishItem Item)>> GetEquippedItemsAsync(ulong userId)
+    public async Task<List<(UserFishItem UserItem, FishItem Item)>> GetEquippedItemsAsync(ulong userId)
     {
+        await CheckExpiredItemsAsync(userId);
+
         await using var ctx = db.GetDbContext();
-        
-        var userItems = await ctx.GetTable<UserFishItem>()
+        var items = await ctx.GetTable<UserFishItem>()
             .Where(x => x.UserId == userId && x.IsEquipped)
             .ToListAsyncLinqToDB();
-        
-        return userItems
-            .Select(ui => (ui, GetItem(ui.ItemId)))
-            .Where(x => x.Item2 != null)
-            .ToDictionary(x => x.Item2.ItemType);
+
+        var output = new List<(UserFishItem, FishItem)>();
+
+        foreach (var item in items)
+        {
+            var fishItem = GetItem(item.ItemId);
+            if (fishItem is not null)
+                output.Add((item, fishItem));
+        }
+
+        return output;
     }
 
     /// <summary>
     /// Buys an item for a user.
     /// </summary>
-    public async Task<BuyResult> BuyItemAsync(ulong userId, int itemId)
+    public async Task<OneOf.OneOf<FishItem, BuyResult>> BuyItemAsync(ulong userId, int itemId)
     {
         var item = GetItem(itemId);
-        if (item == null)
+        if (item is null)
             return BuyResult.NotFound;
-        
+
         await using var ctx = db.GetDbContext();
-        
-        // Check if user already owns this item
-        var exists = await ctx.GetTable<UserFishItem>()
-            .AnyAsyncLinqToDB(x => x.UserId == userId && x.ItemId == itemId);
-        
-        if (exists)
-            return BuyResult.AlreadyOwned;
-        
-        // Try to remove currency
-        var txData = new TxData("fish_item_purchase", item.Name);
-        
-        var removed = await cs.RemoveAsync(userId, item.Price, txData);
+
+        var removed = await cs.RemoveAsync(userId, item.Price, new("fish_item_purchase", item.Name));
         if (!removed)
             return BuyResult.InsufficientFunds;
-        
+
         // Add item to user's inventory
-        var userItem = new UserFishItem
-        {
-            UserId = userId,
-            ItemId = itemId,
-            ItemType = item.ItemType,
-            UsesLeft = item.Uses,
-        };
-        
         await ctx.GetTable<UserFishItem>()
-            .InsertAsync(() => userItem);
-        
-        return BuyResult.Success;
+            .InsertAsync(() => new UserFishItem
+            {
+                UserId = userId,
+                ItemId = itemId,
+                ItemType = item.ItemType,
+                UsesLeft = item.Uses,
+                IsEquipped = false,
+            });
+
+        return item;
     }
 
     /// <summary>
     /// Equips an item for a user.
     /// </summary>
-    public async Task<EquipResult> EquipItemAsync(ulong userId, int itemId)
+    public async Task<FishItem?> EquipItemAsync(ulong userId, int index)
     {
-        var item = GetItem(itemId);
-        if (item == null)
-            return EquipResult.NotFound;
-        
         await using var ctx = db.GetDbContext();
-        
-        // Check if user owns this item
-        var userItem = await ctx.GetTable<UserFishItem>()
-            .FirstOrDefaultAsyncLinqToDB(x => x.UserId == userId && x.ItemId == itemId);
-        
-        if (userItem == null)
-            return EquipResult.NotOwned;
-        
-        // Check if item has expired
-        if (userItem.ExpiresAt.HasValue && userItem.ExpiresAt.Value < DateTime.UtcNow)
-            return EquipResult.Expired;
-        
-        // Check if item has uses left
-        if (userItem.UsesLeft.HasValue && userItem.UsesLeft.Value <= 0)
-            return EquipResult.NoUsesLeft;
-        
-        // Unequip any currently equipped item of the same type
-        await ctx.GetTable<UserFishItem>()
-            .Where(x => x.UserId == userId && x.ItemType == item.ItemType && x.IsEquipped)
-            .Set(x => x.IsEquipped, false)
-            .UpdateAsync();
-        
-        // Equip the new item
-        await ctx.GetTable<UserFishItem>()
-            .Where(x => x.Id == userItem.Id)
-            .Set(x => x.IsEquipped, true)
-            .UpdateAsync();
-        
-        return EquipResult.Success;
+        await using var tr = await ctx.Database.BeginTransactionAsync();
+        try
+        {
+            var userItem = await ctx.GetTable<UserFishItem>()
+                .Where(x => x.UserId == userId)
+                .Skip(index - 1)
+                .Take(1)
+                .FirstOrDefaultAsync();
+
+            if (userItem is null)
+                return null;
+
+            var fishItem = GetItem(userItem.ItemId);
+
+            if (fishItem is null)
+                return null;
+
+            if (userItem.ItemType == FishItemType.Potion)
+            {
+                var query = ctx.GetTable<UserFishItem>()
+                    .Where(x => x.Id == userItem.Id && !x.IsEquipped)
+                    .Set(x => x.IsEquipped, true);
+
+                if (fishItem.DurationMinutes is { } dur)
+                    query = query
+                        .Set(x => x.ExpiresAt, DateTime.UtcNow.AddMinutes(dur));
+
+                await query.UpdateAsync();
+                await tr.CommitAsync();
+                return fishItem;
+            }
+
+            // UnEquip any currently equipped item of the same type
+            // and equip current one
+            await ctx.GetTable<UserFishItem>()
+                .Where(x => x.UserId == userId && x.ItemType == userItem.ItemType)
+                .Set(x => x.IsEquipped, x => x.Id == userItem.Id)
+                .UpdateAsync();
+
+            await tr.CommitAsync();
+
+            return fishItem;
+        }
+        catch
+        {
+            await tr.RollbackAsync();
+            return null;
+        }
     }
 
     /// <summary>
     /// Unequips an item for a user.
     /// </summary>
-    public async Task<bool> UnequipItemAsync(ulong userId, FishItemType itemType)
+    public async Task<UnequipResult> UnequipItemAsync(ulong userId, FishItemType itemType)
     {
         // can't unequip potions
-        if(itemType == FishItemType.Potion)
-            return false;
+        if (itemType == FishItemType.Potion)
+            return UnequipResult.Potion;
 
         await using var ctx = db.GetDbContext();
-        
+
         var affected = await ctx.GetTable<UserFishItem>()
             .Where(x => x.UserId == userId && x.ItemType == itemType && x.IsEquipped)
             .Set(x => x.IsEquipped, false)
             .UpdateAsync();
-        
-        return affected > 0;
+
+        if (affected > 0)
+            return UnequipResult.Success;
+        else
+            return UnequipResult.NotFound;
     }
 
     /// <summary>
@@ -167,18 +187,18 @@ public sealed class FishItemService(DbService db, ICurrencyService cs, IBotCache
     public async Task<FishMultipliers> GetUserMultipliersAsync(ulong userId)
     {
         var equippedItems = await GetEquippedItemsAsync(userId);
-        
+
         var multipliers = new FishMultipliers();
-        
-        foreach (var (_, (_, item)) in equippedItems)
+
+        foreach (var (_, item) in equippedItems)
         {
-            multipliers.FishMultiplier *= item.FishMultiplier;
-            multipliers.TrashMultiplier *= item.TrashMultiplier;
-            multipliers.MaxStarMultiplier *= item.MaxStarMultiplier;
-            multipliers.RareMultiplier *= item.RareMultiplier;
-            multipliers.FishingSpeedMultiplier *= item.FishingSpeedMultiplier;
+            multipliers.FishMultiplier *= item.FishMultiplier ?? 1;
+            multipliers.TrashMultiplier *= item.TrashMultiplier ?? 1;
+            multipliers.StarMultiplier *= item.StarMultiplier ?? 1;
+            multipliers.RareMultiplier *= item.RareMultiplier ?? 1;
+            multipliers.FishingSpeedMultiplier *= item.FishingSpeedMultiplier ?? 1;
         }
-        
+
         return multipliers;
     }
 
@@ -188,15 +208,23 @@ public sealed class FishItemService(DbService db, ICurrencyService cs, IBotCache
     public async Task<bool> UseBaitAsync(ulong userId)
     {
         await using var ctx = db.GetDbContext();
-        
-        await ctx.GetTable<UserFishItem>()
-            .Where(x => 
-                x.UserId == userId && 
-                x.ItemType == FishItemType.Bait && 
-                x.IsEquipped && 
-                x.UsesLeft > 0)
+
+        var updated = await ctx.GetTable<UserFishItem>()
+            .Where(x =>
+                x.UserId == userId &&
+                x.ItemType == FishItemType.Bait &&
+                x.IsEquipped)
             .Set(x => x.UsesLeft, x => x.UsesLeft - 1)
-            .UpdateAsync();
+            .UpdateWithOutputAsync((o, n) => n);
+
+        if (updated.Length == 0)
+            return false;
+
+        if (updated[0].UsesLeft <= 0)
+        {
+            await ctx.GetTable<UserFishItem>()
+                .DeleteAsync(x => x.Id == updated[0].Id);
+        }
 
         return true;
     }
@@ -207,14 +235,12 @@ public sealed class FishItemService(DbService db, ICurrencyService cs, IBotCache
     public async Task CheckExpiredItemsAsync(ulong userId)
     {
         await using var ctx = db.GetDbContext();
-        
+
         var now = DateTime.UtcNow;
-        
-        // Unequip expired items
+
         await ctx.GetTable<UserFishItem>()
-            .Where(x => x.UserId == userId && x.ExpiresAt.HasValue && x.ExpiresAt < now && x.IsEquipped)
-            .Set(x => x.IsEquipped, false)
-            .UpdateAsync();
+            .Where(x => x.UserId == userId && x.ExpiresAt.HasValue && x.ExpiresAt < now)
+            .DeleteAsync();
     }
 }
 
@@ -223,22 +249,18 @@ public sealed class FishItemService(DbService db, ICurrencyService cs, IBotCache
 /// </summary>
 public enum BuyResult
 {
-    Success,
     NotFound,
-    AlreadyOwned,
     InsufficientFunds
 }
 
 /// <summary>
 /// Represents the result of an equip operation.
 /// </summary>
-public enum EquipResult
+public enum UnequipResult
 {
     Success,
     NotFound,
-    NotOwned,
-    Expired,
-    NoUsesLeft
+    Potion
 }
 
 /// <summary>
@@ -248,7 +270,7 @@ public class FishMultipliers
 {
     public double FishMultiplier { get; set; } = 1.0;
     public double TrashMultiplier { get; set; } = 1.0;
-    public double MaxStarMultiplier { get; set; } = 1.0;
+    public double StarMultiplier { get; set; } = 1.0;
     public double RareMultiplier { get; set; } = 1.0;
     public double FishingSpeedMultiplier { get; set; } = 1.0;
 }

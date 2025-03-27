@@ -1,4 +1,4 @@
-namespace NadekoBot.Modules.Games.Fish;
+namespace NadekoBot.Modules.Games;
 
 /// <summary>
 /// Represents an item used in the fishing game.
@@ -19,6 +19,11 @@ public class FishItem
     /// Name of the item.
     /// </summary>
     public string Name { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Item Emoji
+    /// </summary>
+    public string Emoji { get; set; } = string.Empty;
     
     /// <summary>
     /// Description of the item.
@@ -43,27 +48,27 @@ public class FishItem
     /// <summary>
     /// Multiplier affecting the fish catch rate.
     /// </summary>
-    public double FishMultiplier { get; set; } = 1.0;
+    public double? FishMultiplier { get; set; }
     
     /// <summary>
     /// Multiplier affecting the trash catch rate.
     /// </summary>
-    public double TrashMultiplier { get; set; } = 1.0;
+    public double? TrashMultiplier { get; set; }
     
     /// <summary>
     /// Multiplier affecting the maximum star rating of caught fish.
     /// </summary>
-    public double MaxStarMultiplier { get; set; } = 1.0;
+    public double? StarMultiplier { get; set; }
     
     /// <summary>
     /// Multiplier affecting the chance of catching rare fish.
     /// </summary>
-    public double RareMultiplier { get; set; } = 1.0;
+    public double? RareMultiplier { get; set; }
     
     /// <summary>
     /// Multiplier affecting the fishing speed.
     /// </summary>
-    public double FishingSpeedMultiplier { get; set; } = 1.0;
+    public double? FishingSpeedMultiplier { get; set; }
 }
 
 /// <summary>
