@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Games;
 
 public partial class Games
 {
-    public class FishCommands(
+    public class FishingCommands(
         FishService fs,
         FishItemService fis,
         FishConfigService fcs,
@@ -33,7 +33,10 @@ public partial class Games
                     using var stream = await img.ToStreamAsync();
 
                     var toSend = Response()
-                        .File(stream, "timely.png");
+                        .File(stream, "timely.png")
+                        .Embed(CreateEmbed()
+                            .WithFooter("captcha: type the text from the image")
+                            .WithImageUrl("attachment://timely.png"));
 
 #if GLOBAL_NADEKO
                     if (_rng.Next(0, 8) == 0)

@@ -194,7 +194,7 @@ public sealed class FishItemService(
         {
             multipliers.FishMultiplier *= item.FishMultiplier ?? 1;
             multipliers.TrashMultiplier *= item.TrashMultiplier ?? 1;
-            multipliers.StarMultiplier *= item.StarMultiplier ?? 1;
+            multipliers.StarMultiplier *= item.MaxStarMultiplier ?? 1;
             multipliers.RareMultiplier *= item.RareMultiplier ?? 1;
             multipliers.FishingSpeedMultiplier *= item.FishingSpeedMultiplier ?? 1;
         }

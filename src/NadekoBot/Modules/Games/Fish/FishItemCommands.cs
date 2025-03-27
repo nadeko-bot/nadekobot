@@ -21,17 +21,16 @@ public partial class Games
                 {
                     var eb = CreateEmbed()
                         .WithTitle(GetText(strs.fish_items_title))
-                        .WithFooter("`.fibu <id>` to by an item")
+                        .WithFooter("`.fibuy <id>` to by an item")
                         .WithOkColor();
 
                     foreach (var item in pageItems)
                     {
                         var description = GetItemDescription(item);
-                        eb.AddField($"{item.Id} | {item.Name}",
+                        eb.AddField($"{item.Id}",
                             $"""
                              {description}
                               
-                             【 **{CurrencyHelper.N(item.Price, Culture, cp.GetCurrencySign())}** 】
                              """,
                             true);
                     }
@@ -46,7 +45,8 @@ public partial class Games
         {
             var multiplierInfo = GetMultiplierInfo(item);
             return $"""
-                     {GetEmoji(item.ItemType)} `{item.ItemType.ToString().ToLower()}`
+                     《 **{item.Name}** 》
+                     {GetEmoji(item.ItemType)} `{item.ItemType.ToString().ToLower()}`  【 **{CurrencyHelper.N(item.Price, Culture, cp.GetCurrencySign())}** 】
                      {item.Description}
                      {GetItemNotes(item, userItem)}
                      {multiplierInfo}
@@ -85,7 +85,7 @@ public partial class Games
                 FishMultiplier = item.FishMultiplier ?? 1,
                 TrashMultiplier = item.TrashMultiplier ?? 1,
                 RareMultiplier = item.RareMultiplier ?? 1,
-                StarMultiplier = item.StarMultiplier ?? 1,
+                StarMultiplier = item.MaxStarMultiplier ?? 1,
                 FishingSpeedMultiplier = item.FishingSpeedMultiplier ?? 1
             };
 
@@ -200,6 +200,7 @@ public partial class Games
                     var eb = CreateEmbed()
                         .WithAuthor(ctx.User)
                         .WithTitle(GetText(strs.fish_inv_title))
+                        .WithFooter($"`.fiuse <num>` to use/equip an item")
                         .WithOkColor();
 
                     for (var i = 0; i < items.Count; i++)
@@ -227,6 +228,7 @@ public partial class Games
 
                     return eb;
                 })
+                .AddFooter(false)
                 .SendAsync();
         }
         

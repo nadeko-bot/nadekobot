@@ -4114,7 +4114,7 @@
       "Usage": [
         ".fish"
       ],
-      "Submodule": "FishCommands",
+      "Submodule": "FishingCommands",
       "Module": "Games",
       "Options": null,
       "Requirements": []
@@ -4129,7 +4129,7 @@
       "Usage": [
         ".fishspot"
       ],
-      "Submodule": "FishCommands",
+      "Submodule": "FishingCommands",
       "Module": "Games",
       "Options": null,
       "Requirements": []
@@ -4145,7 +4145,7 @@
       "Usage": [
         ".fishlist"
       ],
-      "Submodule": "FishCommands",
+      "Submodule": "FishingCommands",
       "Module": "Games",
       "Options": null,
       "Requirements": []

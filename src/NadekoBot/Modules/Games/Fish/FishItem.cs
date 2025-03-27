@@ -58,7 +58,7 @@ public class FishItem
     /// <summary>
     /// Multiplier affecting the maximum star rating of caught fish.
     /// </summary>
-    public double? StarMultiplier { get; set; }
+    public double? MaxStarMultiplier { get; set; }
     
     /// <summary>
     /// Multiplier affecting the chance of catching rare fish.

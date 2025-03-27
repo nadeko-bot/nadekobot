@@ -172,6 +172,8 @@ public sealed class GamblingTxTracker(
         if (txData is null)
             return;
 
+        await Task.Yield();
+        
         if (_gamblingTypes.Contains(txData.Type))
         {
             globalStats.AddOrUpdate(txData.Type,
