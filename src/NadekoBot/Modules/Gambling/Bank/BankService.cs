@@ -1,20 +1,15 @@
 ﻿using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Games.Quests;
 
 namespace NadekoBot.Modules.Gambling.Bank;
 
-public sealed class BankService : IBankService, INService
+public sealed class BankService(
+    ICurrencyService _cur,
+    DbService _db,
+    QuestService quests) : IBankService, INService
 {
-    private readonly ICurrencyService _cur;
-    private readonly DbService _db;
-
-    public BankService(ICurrencyService cur, DbService db)
-    {
-        _cur = cur;
-        _db = db;
-    }
-
     public async Task<bool> AwardAsync(ulong userId, long amount)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
@@ -37,7 +32,7 @@ public sealed class BankService : IBankService, INService
 
         return true;
     }
-    
+
     public async Task<bool> TakeAsync(ulong userId, long amount)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
@@ -50,7 +45,7 @@ public sealed class BankService : IBankService, INService
             {
                 Balance = old.Balance - amount
             });
-        
+
         return rows > 0;
     }
 
@@ -63,20 +58,28 @@ public sealed class BankService : IBankService, INService
 
         await using var ctx = _db.GetDbContext();
         await ctx.Set<BankUser>()
-                 .ToLinqToDBTable()
-                 .InsertOrUpdateAsync(() => new()
-                     {
-                         UserId = userId,
-                         Balance = amount
-                     },
-                     (old) => new()
-                     {
-                         Balance = old.Balance + amount
-                     },
-                     () => new()
-                     {
-                         UserId = userId
-                     });
+            .ToLinqToDBTable()
+            .InsertOrUpdateAsync(() => new()
+                {
+                    UserId = userId,
+                    Balance = amount
+                },
+                (old) => new()
+                {
+                    Balance = old.Balance + amount
+                },
+                () => new()
+                {
+                    UserId = userId
+                });
+
+        await quests.ReportActionAsync(userId,
+            QuestEventType.BankAction,
+            new()
+            {
+                { "type", "deposit" },
+                { "amount", amount.ToString() }
+            });
 
         return true;
     }
@@ -87,16 +90,23 @@ public sealed class BankService : IBankService, INService
 
         await using var ctx = _db.GetDbContext();
         var rows = await ctx.Set<BankUser>()
-                 .ToLinqToDBTable()
-                 .Where(x => x.UserId == userId && x.Balance >= amount)
-                 .UpdateAsync((old) => new()
-                 {
-                     Balance = old.Balance - amount
-                 });
+            .ToLinqToDBTable()
+            .Where(x => x.UserId == userId && x.Balance >= amount)
+            .UpdateAsync((old) => new()
+            {
+                Balance = old.Balance - amount
+            });
 
         if (rows > 0)
         {
             await _cur.AddAsync(userId, amount, new("bank", "withdraw"));
+            await quests.ReportActionAsync(userId,
+                QuestEventType.BankAction,
+                new()
+                {
+                    { "type", "withdraw" },
+                    { "amount", amount.ToString() }
+                });
             return true;
         }
 
@@ -106,10 +116,18 @@ public sealed class BankService : IBankService, INService
     public async Task<long> GetBalanceAsync(ulong userId)
     {
         await using var ctx = _db.GetDbContext();
-        return (await ctx.Set<BankUser>()
-                         .ToLinqToDBTable()
-                         .FirstOrDefaultAsync(x => x.UserId == userId))
-               ?.Balance
-               ?? 0;
+        var res = (await ctx.Set<BankUser>()
+                      .ToLinqToDBTable()
+                      .FirstOrDefaultAsync(x => x.UserId == userId))
+                  ?.Balance
+                  ?? 0;
+
+        await quests.ReportActionAsync(userId,
+            QuestEventType.BankAction,
+            new()
+            {
+                { "type", "balance" },
+            });
+        return res;
     }
 }

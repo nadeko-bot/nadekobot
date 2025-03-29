@@ -35,10 +35,10 @@ public interface IBotCreds
 
 public interface IVotesSettings
 {
-    string TopggServiceUrl { get; set; }
-    string TopggKey { get; set; }
-    string DiscordsServiceUrl { get; set; }
-    string DiscordsKey { get; set; }
+    string Host { get; set; }
+    int Port { get; set; }
+    string DblApiKey { get; set; }
+    string DiscordsApiKey { get; set; }
 }
 
 public interface IPatreonSettings

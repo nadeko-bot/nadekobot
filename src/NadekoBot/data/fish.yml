@@ -42,3 +42,43 @@ trash:
     condition: 
     image: https://cdn.nadeko.bot/fish/plasticbag.png
     emoji: <:plasticbag:1328520895454515211>
+items:
+- id: 1
+  itemType: Pole
+  name: "Wooden Rod"
+  description: "Better than catching it with bare hands."
+  price: 1000
+  fishMultiplier: 1.2
+  
+- id: 11
+  itemType: Pole
+  name: Magnet on a Stick
+  description: "Attracts all trash, not just metal."
+  price: 3000
+  fishMultiplier: 0.9
+  trashMultiplier: 2
+  
+- id: 21
+  itemType: Bait
+  name: "Corn"
+  description: "Just some cooked corn."
+  price: 100
+  uses: 100
+  rareMultiplier: 1.1
+
+- id: 31
+  itemType: Potion
+  name: "A Cup of Tea"
+  description: "Helps you focus."
+  price: 12000
+  durationMinutes: 30
+  maxStarMultiplier: 1.1
+  fishingSpeedMultiplier: 1.01
+  
+- id: 41
+  itemType: Boat
+  name: "Canoe"
+  description: "Lets you fish a little faster."
+  price: 3000
+  fishingSpeedMultiplier: 1.201
+  maxStarMultiplier: 1.1

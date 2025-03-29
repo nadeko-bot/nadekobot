@@ -6,21 +6,12 @@ using NadekoBot.Services.Currency;
 
 namespace NadekoBot.Services;
 
-public sealed class CurrencyService : ICurrencyService, INService
+public sealed class CurrencyService(DbService db, ITxTracker txTracker) : ICurrencyService, INService
 {
-    private readonly DbService _db;
-    private readonly ITxTracker _txTracker;
-
-    public CurrencyService(DbService db, ITxTracker txTracker)
-    {
-        _db = db;
-        _txTracker = txTracker;
-    }
-
     public Task<IWallet> GetWalletAsync(ulong userId, CurrencyType type = CurrencyType.Default)
     {
         if (type == CurrencyType.Default)
-            return Task.FromResult<IWallet>(new DefaultWallet(userId, _db));
+            return Task.FromResult<IWallet>(new DefaultWallet(userId, db));
 
         throw new ArgumentOutOfRangeException(nameof(type));
     }
@@ -53,16 +44,16 @@ public sealed class CurrencyService : ICurrencyService, INService
     {
         if (type == CurrencyType.Default)
         {
-            await using var ctx = _db.GetDbContext();
+            await using var ctx = db.GetDbContext();
             await ctx
-                  .GetTable<DiscordUser>()
-                  .Where(x => userIds.Contains(x.UserId))
-                  .UpdateAsync(du => new()
-                  {
-                      CurrencyAmount = du.CurrencyAmount >= amount
-                          ? du.CurrencyAmount - amount
-                          : 0
-                  });
+                .GetTable<DiscordUser>()
+                .Where(x => userIds.Contains(x.UserId))
+                .UpdateAsync(du => new()
+                {
+                    CurrencyAmount = du.CurrencyAmount >= amount
+                        ? du.CurrencyAmount - amount
+                        : 0
+                });
             await ctx.SaveChangesAsync();
             return;
         }
@@ -77,7 +68,7 @@ public sealed class CurrencyService : ICurrencyService, INService
     {
         var wallet = await GetWalletAsync(userId);
         await wallet.Add(amount, txData);
-        await _txTracker.TrackAdd(userId, amount, txData);
+        await txTracker.TrackAdd(userId, amount, txData);
     }
 
     public async Task AddAsync(
@@ -97,7 +88,7 @@ public sealed class CurrencyService : ICurrencyService, INService
         var wallet = await GetWalletAsync(userId);
         var result = await wallet.Take(amount, txData);
         if (result)
-            await _txTracker.TrackRemove(userId, amount, txData);
+            await txTracker.TrackRemove(userId, amount, txData);
         return result;
     }
 
@@ -109,7 +100,7 @@ public sealed class CurrencyService : ICurrencyService, INService
 
     public async Task<IReadOnlyList<DiscordUser>> GetTopRichest(ulong ignoreId, int page = 0, int perPage = 9)
     {
-        await using var uow = _db.GetDbContext();
+        await using var uow = db.GetDbContext();
         return await uow.Set<DiscordUser>().GetTopRichest(ignoreId, page, perPage);
     }
 
@@ -118,23 +109,63 @@ public sealed class CurrencyService : ICurrencyService, INService
         int page,
         int perPage = 15)
     {
-        await using var uow = _db.GetDbContext();
+        await using var uow = db.GetDbContext();
 
         var trs = await uow.GetTable<CurrencyTransaction>()
-                           .Where(x => x.UserId == userId)
-                           .OrderByDescending(x => x.DateAdded)
-                           .Skip(perPage * page)
-                           .Take(perPage)
-                           .ToListAsyncLinqToDB();
+            .Where(x => x.UserId == userId)
+            .OrderByDescending(x => x.DateAdded)
+            .Skip(perPage * page)
+            .Take(perPage)
+            .ToListAsyncLinqToDB();
 
         return trs;
     }
 
     public async Task<int> GetTransactionsCountAsync(ulong userId)
     {
-        await using var uow = _db.GetDbContext();
+        await using var uow = db.GetDbContext();
         return await uow.GetTable<CurrencyTransaction>()
-                       .Where(x => x.UserId == userId)
-                       .CountAsyncLinqToDB();
+            .Where(x => x.UserId == userId)
+            .CountAsyncLinqToDB();
+    }
+
+    public async Task<bool> TransferAsync(
+        IMessageSenderService sender,
+        IUser from,
+        IUser to,
+        long amount,
+        string note,
+        string formattedAmount)
+    {
+        var fromWallet = await GetWalletAsync(from.Id);
+        var toWallet = await GetWalletAsync(to.Id);
+
+        var extra = new TxData("gift", from.ToString()!, note, from.Id);
+
+        if (await fromWallet.Transfer(amount, toWallet, extra))
+        {
+            try
+            {
+                await sender.Response(to)
+                    .Confirm(string.IsNullOrWhiteSpace(note)
+                        ? $"Received {formattedAmount} from {from} "
+                        : $"Received {formattedAmount} from {from}: {note}")
+                    .SendAsync();
+            }
+            catch
+            {
+                //ignored
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<long> GetBalanceAsync(ulong userId)
+    {
+        var wallet = await GetWalletAsync(userId);
+        return await wallet.GetBalance();
     }
 }

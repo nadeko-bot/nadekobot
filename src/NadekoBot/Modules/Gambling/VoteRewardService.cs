@@ -1,29 +1,117 @@
 using System.Globalization;
+using System.Net.Http.Json;
 using Grpc.Core;
 using NadekoBot.Common.ModuleBehaviors;
-using NadekoBot.GrpcApi;
 using NadekoBot.GrpcVotesApi;
 
 namespace NadekoBot.Modules.Gambling.Services;
 
+public sealed class ServerCountRewardService(
+    IBotCreds creds,
+    IHttpClientFactory httpFactory,
+    DiscordSocketClient client,
+    ShardData shardData
+)
+    : INService, IReadyExecutor
+{
+    private Task dblTask = Task.CompletedTask;
+    private Task discordsTask = Task.CompletedTask;
+
+    public Task OnReadyAsync()
+    {
+        if (creds.Votes is null)
+            return Task.CompletedTask;
+
+        if (!string.IsNullOrWhiteSpace(creds.Votes.DblApiKey))
+        {
+            dblTask = Task.Run(async () =>
+            {
+                var dblApiKey = creds.Votes.DblApiKey;
+                while (true)
+                {
+                    try
+                    {
+                        using var httpClient = httpFactory.CreateClient();
+                        httpClient.DefaultRequestHeaders.Clear();
+                        httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", dblApiKey);
+                        httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+                        await httpClient.PostAsJsonAsync(
+                            $"https://discordbotlist.com/api/v1/bots/{116275390695079945}/stats",
+                            new
+                            {
+                                users = client.Guilds.Sum(x => x.MemberCount),
+                                shard_id = shardData.ShardId,
+                                guilds = client.Guilds.Count,
+                                voice_connections = 0
+                            });
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "Unable to send server count to DBL");
+                    }
+
+                    await Task.Delay(TimeSpan.FromHours(12));
+                }
+            });
+
+            if (shardData.ShardId != 0)
+                return Task.CompletedTask;
+
+            if (!string.IsNullOrWhiteSpace(creds.Votes.DiscordsApiKey))
+            {
+                discordsTask = Task.Run(async () =>
+                {
+                    var discordsApiKey = creds.Votes.DiscordsApiKey;
+                    while (true)
+                    {
+                        try
+                        {
+                            using var httpClient = httpFactory.CreateClient();
+                            httpClient.DefaultRequestHeaders.Clear();
+                            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", discordsApiKey);
+                            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type",
+                                "application/json");
+                            await httpClient.PostAsJsonAsync(
+                                $"https://discords.com/bots/api/bot/{client.CurrentUser.Id}/setservers",
+                                new
+                                {
+                                    server_count = client.Guilds.Count * shardData.TotalShards,
+                                });
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Warning(ex, "Unable to send server count to Discords");
+                        }
+
+                        await Task.Delay(TimeSpan.FromHours(12));
+                    }
+                });
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+}
+
 public class VoteRewardService(
     ShardData shardData,
     GamblingConfigService gcs,
+    GamblingService gs,
     CurrencyService cs,
-    IBotCache cache,
     DiscordSocketClient client,
-    IMessageSenderService sender
+    IMessageSenderService sender,
+    IBotCreds creds
 ) : INService, IReadyExecutor
 {
-    private TypedKey<DateTime> VoteKey(ulong userId)
-        => new($"vote:{userId}");
-
     private Server? _app;
     private IMessageChannel? _voteFeedChannel;
 
     public async Task OnReadyAsync()
     {
         if (shardData.ShardId != 0)
+            return;
+
+        if (creds.Votes is null || creds.Votes.Host is null || creds.Votes.Port == 0)
             return;
 
         var serverCreds = ServerCredentials.Insecure;
@@ -33,7 +121,7 @@ public class VoteRewardService(
         {
             Ports =
             {
-                new("127.0.0.1", 59384, serverCreds),
+                new(creds.Votes.Host, creds.Votes.Port, serverCreds),
             }
         };
 
@@ -44,8 +132,6 @@ public class VoteRewardService(
         {
             _voteFeedChannel = await client.GetChannelAsync(cid) as IMessageChannel;
         }
-
-        return;
     }
 
     public void SetVoiceChannel(IMessageChannel? channel)
@@ -61,10 +147,7 @@ public class VoteRewardService(
         if (reward <= 0)
             return;
 
-        var key = VoteKey(userId);
-        if (!await cache.AddAsync(key, DateTime.UtcNow, expiry: TimeSpan.FromHours(6)))
-            return;
-
+        (reward, var msg) = await gs.GetAmountAndMessage(userId, reward);
         await cs.AddAsync(userId, reward, new("vote", requestType.ToString()));
 
         _ = Task.Run(async () =>
@@ -73,8 +156,9 @@ public class VoteRewardService(
             {
                 var user = await client.GetUserAsync(userId);
 
-                await sender.Response(user)
-                    .Confirm(strs.vote_reward(N(reward)))
+                await sender
+                    .Response(user)
+                    .Confirm($"You've received{N(reward)} for voting!\n\n{msg}")
                     .SendAsync();
             }
             catch (Exception ex)
@@ -91,7 +175,7 @@ public class VoteRewardService(
                 {
                     var user = await client.GetUserAsync(userId);
                     await _voteFeedChannel.SendMessageAsync(
-                        $"{user} just received {strs.vote_reward(N(reward))} for voting!",
+                        $"**{user}** just received **{N(reward)}** for voting!",
                         allowedMentions: AllowedMentions.None);
                 }
                 catch (Exception ex)
@@ -102,15 +186,6 @@ public class VoteRewardService(
         });
     }
 
-    public async Task<TimeSpan?> LastVoted(ulong userId)
-    {
-        var key = VoteKey(userId);
-        var last = await cache.GetAsync(key);
-        return last.Match(
-            static x => DateTime.UtcNow.Subtract(x),
-            static _ => default(TimeSpan?));
-    }
-
     private string N(long amount)
         => CurrencyHelper.N(amount, CultureInfo.InvariantCulture, gcs.Data.Currency.Sign);
 }
@@ -118,7 +193,6 @@ public class VoteRewardService(
 public sealed class VotesGrpcService(VoteRewardService vrs)
     : VoteService.VoteServiceBase, INService
 {
-    [GrpcNoAuthRequired]
     public override async Task<GrpcVoteResult> VoteReceived(GrpcVoteData request, ServerCallContext context)
     {
         await vrs.UserVotedAsync(ulong.Parse(request.UserId), request.Type);

@@ -80,7 +80,7 @@ public abstract class NadekoContext : DbContext
     {
         // load all entities from current assembly
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(NadekoContext).Assembly);
-        
+
         #region Notify
 
         modelBuilder.Entity<Notify>(e =>
@@ -113,8 +113,8 @@ public abstract class NadekoContext : DbContext
         #region GuildColors
 
         modelBuilder.Entity<GuildColors>()
-                    .HasIndex(x => x.GuildId)
-                    .IsUnique(true);
+            .HasIndex(x => x.GuildId)
+            .IsUnique(true);
 
         #endregion
 
@@ -123,7 +123,7 @@ public abstract class NadekoContext : DbContext
         modelBuilder.Entity<ButtonRole>(br =>
         {
             br.HasIndex(x => x.GuildId)
-              .IsUnique(false);
+                .IsUnique(false);
 
             br.HasAlternateKey(x => new
             {
@@ -145,27 +145,27 @@ public abstract class NadekoContext : DbContext
             });
 
             sg.HasMany(x => x.Roles)
-              .WithOne()
-              .OnDelete(DeleteBehavior.Cascade);
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Sar>()
-                    .HasAlternateKey(x => new
-                    {
-                        x.GuildId,
-                        x.RoleId
-                    });
+            .HasAlternateKey(x => new
+            {
+                x.GuildId,
+                x.RoleId
+            });
 
         modelBuilder.Entity<SarAutoDelete>()
-                    .HasIndex(x => x.GuildId)
-                    .IsUnique();
+            .HasIndex(x => x.GuildId)
+            .IsUnique();
 
         #endregion
 
         #region Rakeback
 
         modelBuilder.Entity<Rakeback>()
-                    .HasKey(x => x.UserId);
+            .HasKey(x => x.UserId);
 
         #endregion
 
@@ -174,14 +174,14 @@ public abstract class NadekoContext : DbContext
         modelBuilder.Entity<UserBetStats>(ubs =>
         {
             ubs.HasIndex(x => new
-               {
-                   x.UserId,
-                   x.Game
-               })
-               .IsUnique();
+                {
+                    x.UserId,
+                    x.Game
+                })
+                .IsUnique();
 
             ubs.HasIndex(x => x.MaxWin)
-               .IsUnique(false);
+                .IsUnique(false);
         });
 
         #endregion
@@ -189,22 +189,22 @@ public abstract class NadekoContext : DbContext
         #region Flag Translate
 
         modelBuilder.Entity<FlagTranslateChannel>()
-                    .HasIndex(x => new
-                    {
-                        x.GuildId,
-                        x.ChannelId
-                    })
-                    .IsUnique();
+            .HasIndex(x => new
+            {
+                x.GuildId,
+                x.ChannelId
+            })
+            .IsUnique();
 
         #endregion
 
         #region NCanvas
 
         modelBuilder.Entity<NCPixel>()
-                    .HasAlternateKey(x => x.Position);
+            .HasAlternateKey(x => x.Position);
 
         modelBuilder.Entity<NCPixel>()
-                    .HasIndex(x => x.OwnerId);
+            .HasIndex(x => x.OwnerId);
 
         #endregion
 
@@ -221,10 +221,11 @@ public abstract class NadekoContext : DbContext
         var configEntity = modelBuilder.Entity<GuildConfig>();
 
         configEntity.HasIndex(c => c.GuildId)
-                    .IsUnique();
+            .IsUnique();
 
         configEntity.Property(x => x.VerboseErrors)
-                    .HasDefaultValue(true);
+            .HasDefaultValue(true);
+
         // end shop
 
         modelBuilder.Entity<PlantedCurrency>().HasIndex(x => x.MessageId).IsUnique();
@@ -270,19 +271,19 @@ public abstract class NadekoContext : DbContext
         modelBuilder.Entity<DiscordUser>(du =>
         {
             du.Property(x => x.IsClubAdmin)
-              .HasDefaultValue(false);
+                .HasDefaultValue(false);
 
             du.Property(x => x.TotalXp)
-              .HasDefaultValue(0);
+                .HasDefaultValue(0);
 
             du.Property(x => x.CurrencyAmount)
-              .HasDefaultValue(0);
+                .HasDefaultValue(0);
 
             du.HasAlternateKey(w => w.UserId);
             du.HasOne(x => x.Club)
-              .WithMany(x => x.Members)
-              .IsRequired(false)
-              .OnDelete(DeleteBehavior.NoAction);
+                .WithMany(x => x.Members)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
 
             du.HasIndex(x => x.TotalXp);
             du.HasIndex(x => x.CurrencyAmount);
@@ -308,11 +309,11 @@ public abstract class NadekoContext : DbContext
 
         var xps = modelBuilder.Entity<UserXpStats>();
         xps.HasIndex(x => new
-           {
-               x.UserId,
-               x.GuildId
-           })
-           .IsUnique();
+            {
+                x.UserId,
+                x.GuildId
+            })
+            .IsUnique();
 
         xps.HasIndex(x => x.UserId);
         xps.HasIndex(x => x.GuildId);
@@ -324,49 +325,49 @@ public abstract class NadekoContext : DbContext
 
         var ci = modelBuilder.Entity<ClubInfo>();
         ci.HasOne(x => x.Owner)
-          .WithOne()
-          .HasForeignKey<ClubInfo>(x => x.OwnerId)
-          .OnDelete(DeleteBehavior.SetNull);
+            .WithOne()
+            .HasForeignKey<ClubInfo>(x => x.OwnerId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         ci.HasIndex(x => new
-          {
-              x.Name
-          })
-          .IsUnique();
+            {
+                x.Name
+            })
+            .IsUnique();
 
         #endregion
 
         #region ClubManytoMany
 
         modelBuilder.Entity<ClubApplicants>()
-                    .HasKey(t => new
-                    {
-                        t.ClubId,
-                        t.UserId
-                    });
+            .HasKey(t => new
+            {
+                t.ClubId,
+                t.UserId
+            });
 
         modelBuilder.Entity<ClubApplicants>()
-                    .HasOne(pt => pt.User)
-                    .WithMany();
+            .HasOne(pt => pt.User)
+            .WithMany();
 
         modelBuilder.Entity<ClubApplicants>()
-                    .HasOne(pt => pt.Club)
-                    .WithMany(x => x.Applicants);
+            .HasOne(pt => pt.Club)
+            .WithMany(x => x.Applicants);
 
         modelBuilder.Entity<ClubBans>()
-                    .HasKey(t => new
-                    {
-                        t.ClubId,
-                        t.UserId
-                    });
+            .HasKey(t => new
+            {
+                t.ClubId,
+                t.UserId
+            });
 
         modelBuilder.Entity<ClubBans>()
-                    .HasOne(pt => pt.User)
-                    .WithMany();
+            .HasOne(pt => pt.User)
+            .WithMany();
 
         modelBuilder.Entity<ClubBans>()
-                    .HasOne(pt => pt.Club)
-                    .WithMany(x => x.Bans);
+            .HasOne(pt => pt.Club)
+            .WithMany(x => x.Bans);
 
         #endregion
 
@@ -375,16 +376,16 @@ public abstract class NadekoContext : DbContext
         modelBuilder.Entity<CurrencyTransaction>(e =>
         {
             e.HasIndex(x => x.UserId)
-             .IsUnique(false);
+                .IsUnique(false);
 
             e.Property(x => x.OtherId)
-             .HasDefaultValueSql(CurrencyTransactionOtherIdDefaultValue);
+                .HasDefaultValueSql(CurrencyTransactionOtherIdDefaultValue);
 
             e.Property(x => x.Type)
-             .IsRequired();
+                .IsRequired();
 
             e.Property(x => x.Extra)
-             .IsRequired();
+                .IsRequired();
         });
 
         #endregion
@@ -399,21 +400,21 @@ public abstract class NadekoContext : DbContext
 
         modelBuilder.Entity<BanTemplate>().HasIndex(x => x.GuildId).IsUnique();
         modelBuilder.Entity<BanTemplate>()
-                    .Property(x => x.PruneDays)
-                    .HasDefaultValue(null)
-                    .IsRequired(false);
+            .Property(x => x.PruneDays)
+            .HasDefaultValue(null)
+            .IsRequired(false);
 
         #endregion
 
         #region Perm Override
 
         modelBuilder.Entity<DiscordPermOverride>()
-                    .HasIndex(x => new
-                    {
-                        x.GuildId,
-                        x.Command
-                    })
-                    .IsUnique();
+            .HasIndex(x => new
+            {
+                x.GuildId,
+                x.Command
+            })
+            .IsUnique();
 
         #endregion
 
@@ -430,14 +431,14 @@ public abstract class NadekoContext : DbContext
         modelBuilder.Entity<ReactionRoleV2>(rr2 =>
         {
             rr2.HasIndex(x => x.GuildId)
-               .IsUnique(false);
+                .IsUnique(false);
 
             rr2.HasIndex(x => new
-               {
-                   x.MessageId,
-                   x.Emote
-               })
-               .IsUnique();
+                {
+                    x.MessageId,
+                    x.Emote
+                })
+                .IsUnique();
         });
 
         #endregion
@@ -447,18 +448,18 @@ public abstract class NadekoContext : DbContext
         modelBuilder.Entity<LogSetting>(ls => ls.HasIndex(x => x.GuildId).IsUnique());
 
         modelBuilder.Entity<LogSetting>(ls => ls
-                                              .HasMany(x => x.LogIgnores)
-                                              .WithOne(x => x.LogSetting)
-                                              .OnDelete(DeleteBehavior.Cascade));
+            .HasMany(x => x.LogIgnores)
+            .WithOne(x => x.LogSetting)
+            .OnDelete(DeleteBehavior.Cascade));
 
         modelBuilder.Entity<IgnoredLogItem>(ili => ili
-                                                   .HasIndex(x => new
-                                                   {
-                                                       x.LogSettingId,
-                                                       x.LogItemId,
-                                                       x.ItemType
-                                                   })
-                                                   .IsUnique());
+            .HasIndex(x => new
+            {
+                x.LogSettingId,
+                x.LogItemId,
+                x.ItemType
+            })
+            .IsUnique());
 
         #endregion
 
@@ -511,12 +512,12 @@ public abstract class NadekoContext : DbContext
             {
                 // user can own only one of each item
                 x.HasIndex(model => new
-                 {
-                     model.UserId,
-                     model.ItemType,
-                     model.ItemKey
-                 })
-                 .IsUnique();
+                    {
+                        model.UserId,
+                        model.ItemType,
+                        model.ItemKey
+                    })
+                    .IsUnique();
             });
 
         #endregion
@@ -524,27 +525,27 @@ public abstract class NadekoContext : DbContext
         #region AutoPublish
 
         modelBuilder.Entity<AutoPublishChannel>(apc => apc
-                                                       .HasIndex(x => x.GuildId)
-                                                       .IsUnique());
+            .HasIndex(x => x.GuildId)
+            .IsUnique());
 
         #endregion
 
         #region GamblingStats
 
         modelBuilder.Entity<GamblingStats>(gs => gs
-                                                 .HasIndex(x => x.Feature)
-                                                 .IsUnique());
+            .HasIndex(x => x.Feature)
+            .IsUnique());
 
         #endregion
 
         #region Sticky Roles
 
         modelBuilder.Entity<StickyRole>(sr => sr.HasIndex(x => new
-                                                {
-                                                    x.GuildId,
-                                                    x.UserId
-                                                })
-                                                .IsUnique());
+            {
+                x.GuildId,
+                x.UserId
+            })
+            .IsUnique());
 
         #endregion
 
@@ -552,35 +553,35 @@ public abstract class NadekoContext : DbContext
         #region Giveaway
 
         modelBuilder.Entity<GiveawayModel>()
-                    .HasMany(x => x.Participants)
-                    .WithOne()
-                    .HasForeignKey(x => x.GiveawayId)
-                    .OnDelete(DeleteBehavior.Cascade);
+            .HasMany(x => x.Participants)
+            .WithOne()
+            .HasForeignKey(x => x.GiveawayId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<GiveawayUser>(gu => gu
-                                                .HasIndex(x => new
-                                                {
-                                                    x.GiveawayId,
-                                                    x.UserId
-                                                })
-                                                .IsUnique());
+            .HasIndex(x => new
+            {
+                x.GiveawayId,
+                x.UserId
+            })
+            .IsUnique());
 
         #endregion
 
         #region Todo
 
         modelBuilder.Entity<TodoModel>()
-                    .HasKey(x => x.Id);
+            .HasKey(x => x.Id);
 
         modelBuilder.Entity<TodoModel>()
-                    .HasIndex(x => x.UserId)
-                    .IsUnique(false);
+            .HasIndex(x => x.UserId)
+            .IsUnique(false);
 
         modelBuilder.Entity<ArchivedTodoListModel>()
-                    .HasMany(x => x.Items)
-                    .WithOne()
-                    .HasForeignKey(x => x.ArchiveId)
-                    .OnDelete(DeleteBehavior.Cascade);
+            .HasMany(x => x.Items)
+            .WithOne()
+            .HasForeignKey(x => x.ArchiveId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         #endregion
 
@@ -588,11 +589,11 @@ public abstract class NadekoContext : DbContext
 
         modelBuilder
             .Entity<GreetSettings>(gs => gs.HasIndex(x => new
-                                           {
-                                               x.GuildId,
-                                               x.GreetType
-                                           })
-                                           .IsUnique());
+                {
+                    x.GuildId,
+                    x.GreetType
+                })
+                .IsUnique());
 
         modelBuilder.Entity<GreetSettings>(gs =>
         {
@@ -619,6 +620,6 @@ public abstract class NadekoContext : DbContext
 #endif
 
         optionsBuilder.ConfigureWarnings(x => x.Log(RelationalEventId.PendingModelChangesWarning)
-                                               .Ignore());
+            .Ignore());
     }
 }

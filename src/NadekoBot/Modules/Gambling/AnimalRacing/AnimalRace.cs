@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using NadekoBot.Modules.Gambling.Common.AnimalRacing.Exceptions;
 using NadekoBot.Modules.Games.Common;
+using NadekoBot.Modules.Games.Quests;
 
 namespace NadekoBot.Modules.Gambling.Common.AnimalRacing;
 
@@ -35,12 +36,18 @@ public sealed class AnimalRace : IDisposable
     private readonly ICurrencyService _currency;
     private readonly RaceOptions _options;
     private readonly Queue<RaceAnimal> _animalsQueue;
+    private readonly QuestService _quests;
 
-    public AnimalRace(RaceOptions options, ICurrencyService currency, IEnumerable<RaceAnimal> availableAnimals)
+    public AnimalRace(
+        RaceOptions options,
+        ICurrencyService currency,
+        IEnumerable<RaceAnimal> availableAnimals,
+        QuestService quests)
     {
         _currency = currency;
         _options = options;
         _animalsQueue = new(availableAnimals);
+        _quests = quests;
         MaxUsers = _animalsQueue.Count;
 
         if (_animalsQueue.Count == 0)
@@ -60,7 +67,10 @@ public sealed class AnimalRace : IDisposable
 
                 await Start();
             }
-            finally { _locker.Release(); }
+            finally
+            {
+                _locker.Release();
+            }
         });
 
     public async Task<AnimalRacingUser> JoinRace(ulong userId, string userName, long bet = 0)
@@ -93,7 +103,10 @@ public sealed class AnimalRace : IDisposable
 
             return user;
         }
-        finally { _locker.Release(); }
+        finally
+        {
+            _locker.Release();
+        }
     }
 
     private async Task Start()
@@ -104,12 +117,19 @@ public sealed class AnimalRace : IDisposable
             foreach (var user in _users)
             {
                 if (user.Bet > 0)
-                    await _currency.AddAsync(user.UserId, (long)(user.Bet * BASE_MULTIPLIER), new("animalrace", "refund"));
+                    await _currency.AddAsync(user.UserId,
+                        (long)(user.Bet * BASE_MULTIPLIER),
+                        new("animalrace", "refund"));
             }
 
             _ = OnStartingFailed?.Invoke(this);
             CurrentPhase = Phase.Ended;
             return;
+        }
+
+        foreach (var user in _users)
+        {
+            await _quests.ReportActionAsync(user.UserId, QuestEventType.RaceJoined);
         }
 
         _ = OnStarted?.Invoke(this);

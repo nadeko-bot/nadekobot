@@ -124,7 +124,7 @@ public partial class Administration : NadekoModule<AdministrationService>
     [Priority(1)]
     public async Task Delmsgoncmd(Server _ = Server.Server)
     {
-        var enabled = await _service.ToggleDeleteMessageOnCommand(ctx.Guild.Id);
+        var enabled = await _service.ToggleDelMsgOnCmd(ctx.Guild.Id);
         if (enabled)
         {
             await Response().Confirm(strs.delmsg_on).SendAsync();

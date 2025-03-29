@@ -8,10 +8,15 @@ using NadekoBot.Modules.Gambling;
 using System.Collections.Concurrent;
 using NadekoBot.Modules.Administration;
 using NadekoBot.Modules.Gambling.Services;
+using NadekoBot.Modules.Games.Quests;
 
 namespace NadekoBot.Services;
 
-public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
+public sealed class GamblingTxTracker(
+    DbService db,
+    QuestService quests
+)
+    : ITxTracker, INService, IReadyExecutor
 {
     private static readonly IReadOnlySet<string> _gamblingTypes = new HashSet<string>(new[]
     {
@@ -21,17 +26,6 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
     private NonBlocking.ConcurrentDictionary<string, (decimal Bet, decimal PaidOut)> globalStats = new();
     private ConcurrentBag<UserBetStats> userStats = new();
 
-    private readonly DbService _db;
-    private readonly GamblingConfigService _gcs;
-    private readonly INotifySubscriber _notify;
-
-    public GamblingTxTracker(DbService db, GamblingConfigService gcs, INotifySubscriber notify)
-    {
-        _db = db;
-        _gcs = gcs;
-        _notify = notify;
-    }
-
     public async Task OnReadyAsync()
         => await Task.WhenAll(RunUserStatsCollector(), RunBetStatsCollector());
 
@@ -40,7 +34,7 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
         using var timer = new PeriodicTimer(TimeSpan.FromHours(1));
         while (await timer.WaitForNextTickAsync())
         {
-            await using var ctx = _db.GetDbContext();
+            await using var ctx = db.GetDbContext();
 
             try
             {
@@ -51,22 +45,22 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
                     if (globalStats.TryRemove(key, out var stat))
                     {
                         await ctx.GetTable<GamblingStats>()
-                                 .InsertOrUpdateAsync(() => new()
-                                     {
-                                         Feature = key,
-                                         Bet = stat.Bet,
-                                         PaidOut = stat.PaidOut,
-                                         DateAdded = DateTime.UtcNow
-                                     },
-                                     old => new()
-                                     {
-                                         Bet = old.Bet + stat.Bet,
-                                         PaidOut = old.PaidOut + stat.PaidOut,
-                                     },
-                                     () => new()
-                                     {
-                                         Feature = key
-                                     });
+                            .InsertOrUpdateAsync(() => new()
+                                {
+                                    Feature = key,
+                                    Bet = stat.Bet,
+                                    PaidOut = stat.PaidOut,
+                                    DateAdded = DateTime.UtcNow
+                                },
+                                old => new()
+                                {
+                                    Bet = old.Bet + stat.Bet,
+                                    PaidOut = old.PaidOut + stat.PaidOut,
+                                },
+                                () => new()
+                                {
+                                    Feature = key
+                                });
                     }
                 }
             }
@@ -100,68 +94,68 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
 
                 // update userstats
                 foreach (var (k, x) in users.GroupBy(x => (x.UserId, x.Game))
-                                            .ToDictionary(x => x.Key,
-                                                x => x.Aggregate((a, b) => new()
-                                                {
-                                                    WinCount = a.WinCount + b.WinCount,
-                                                    LoseCount = a.LoseCount + b.LoseCount,
-                                                    TotalBet = a.TotalBet + b.TotalBet,
-                                                    PaidOut = a.PaidOut + b.PaidOut,
-                                                    MaxBet = Math.Max(a.MaxBet, b.MaxBet),
-                                                    MaxWin = Math.Max(a.MaxWin, b.MaxWin),
-                                                })))
+                             .ToDictionary(x => x.Key,
+                                 x => x.Aggregate((a, b) => new()
+                                 {
+                                     WinCount = a.WinCount + b.WinCount,
+                                     LoseCount = a.LoseCount + b.LoseCount,
+                                     TotalBet = a.TotalBet + b.TotalBet,
+                                     PaidOut = a.PaidOut + b.PaidOut,
+                                     MaxBet = Math.Max(a.MaxBet, b.MaxBet),
+                                     MaxWin = Math.Max(a.MaxWin, b.MaxWin),
+                                 })))
                 {
                     rakebacks.TryAdd(k.UserId, 0m);
                     rakebacks[k.UserId] += x.TotalBet * GetHouseEdge(k.Game) * BASE_RAKEBACK;
 
 
                     // bulk upsert in the future
-                    await using var uow = _db.GetDbContext();
+                    await using var uow = db.GetDbContext();
                     await uow.GetTable<UserBetStats>()
-                             .InsertOrUpdateAsync(() => new()
-                                 {
-                                     UserId = k.UserId,
-                                     Game = k.Game,
-                                     WinCount = x.WinCount,
-                                     LoseCount = Math.Max(0, x.LoseCount),
-                                     TotalBet = x.TotalBet,
-                                     PaidOut = x.PaidOut,
-                                     MaxBet = x.MaxBet,
-                                     MaxWin = x.MaxWin
-                                 },
-                                 o => new()
-                                 {
-                                     WinCount = o.WinCount + x.WinCount,
-                                     LoseCount = Math.Max(0, o.LoseCount + x.LoseCount),
-                                     TotalBet = o.TotalBet + x.TotalBet,
-                                     PaidOut = o.PaidOut + x.PaidOut,
-                                     MaxBet = Math.Max(o.MaxBet, x.MaxBet),
-                                     MaxWin = Math.Max(o.MaxWin, x.MaxWin),
-                                 },
-                                 () => new()
-                                 {
-                                     UserId = k.UserId,
-                                     Game = k.Game
-                                 });
+                        .InsertOrUpdateAsync(() => new()
+                            {
+                                UserId = k.UserId,
+                                Game = k.Game,
+                                WinCount = x.WinCount,
+                                LoseCount = Math.Max(0, x.LoseCount),
+                                TotalBet = x.TotalBet,
+                                PaidOut = x.PaidOut,
+                                MaxBet = x.MaxBet,
+                                MaxWin = x.MaxWin
+                            },
+                            o => new()
+                            {
+                                WinCount = o.WinCount + x.WinCount,
+                                LoseCount = Math.Max(0, o.LoseCount + x.LoseCount),
+                                TotalBet = o.TotalBet + x.TotalBet,
+                                PaidOut = o.PaidOut + x.PaidOut,
+                                MaxBet = Math.Max(o.MaxBet, x.MaxBet),
+                                MaxWin = Math.Max(o.MaxWin, x.MaxWin),
+                            },
+                            () => new()
+                            {
+                                UserId = k.UserId,
+                                Game = k.Game
+                            });
                 }
 
                 foreach (var (k, v) in rakebacks)
                 {
-                    await _db.GetDbContext()
-                             .GetTable<Rakeback>()
-                             .InsertOrUpdateAsync(() => new()
-                                 {
-                                     UserId = k,
-                                     Amount = v
-                                 },
-                                 (old) => new()
-                                 {
-                                     Amount = old.Amount + v
-                                 },
-                                 () => new()
-                                 {
-                                     UserId = k
-                                 });
+                    await db.GetDbContext()
+                        .GetTable<Rakeback>()
+                        .InsertOrUpdateAsync(() => new()
+                            {
+                                UserId = k,
+                                Amount = v
+                            },
+                            (old) => new()
+                            {
+                                Amount = old.Amount + v
+                            },
+                            () => new()
+                            {
+                                UserId = k
+                            });
                 }
             }
             catch (Exception ex)
@@ -173,11 +167,13 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
 
     private const decimal BASE_RAKEBACK = 0.05m;
 
-    public Task TrackAdd(ulong userId, long amount, TxData? txData)
+    public async Task TrackAdd(ulong userId, long amount, TxData? txData)
     {
         if (txData is null)
-            return Task.CompletedTask;
+            return;
 
+        await Task.Yield();
+        
         if (_gamblingTypes.Contains(txData.Type))
         {
             globalStats.AddOrUpdate(txData.Type,
@@ -188,12 +184,12 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
         var mType = GetGameType(txData.Type);
 
         if (mType is not { } type)
-            return Task.CompletedTask;
+            return;
 
         // var bigWin = _gcs.Data.BigWin;
         // if (bigWin > 0 && amount >= bigWin)
         // {
-            // _notify.NotifyAsync<BigWinNotifyModel>(new())
+        // _notify.NotifyAsync<BigWinNotifyModel>(new())
         // }
 
         if (txData.Type == "lula")
@@ -211,7 +207,7 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
                     MaxBet = 0,
                     MaxWin = amount,
                 });
-                return Task.CompletedTask;
+                return;
             }
         }
         else if (txData.Type == "animalrace")
@@ -230,7 +226,7 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
                     MaxWin = 0,
                 });
 
-                return Task.CompletedTask;
+                return;
             }
         }
 
@@ -245,14 +241,12 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
             MaxBet = 0,
             MaxWin = amount,
         });
-
-        return Task.CompletedTask;
     }
 
-    public Task TrackRemove(ulong userId, long amount, TxData? txData)
+    public async Task TrackRemove(ulong userId, long amount, TxData? txData)
     {
         if (txData is null)
-            return Task.CompletedTask;
+            return;
 
         if (_gamblingTypes.Contains(txData.Type))
         {
@@ -264,7 +258,7 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
         var mType = GetGameType(txData.Type);
 
         if (mType is not { } type)
-            return Task.CompletedTask;
+            return;
 
         userStats.Add(new UserBetStats()
         {
@@ -278,7 +272,14 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
             MaxWin = 0
         });
 
-        return Task.CompletedTask;
+        await quests.ReportActionAsync(userId,
+            QuestEventType.BetPlaced,
+            new()
+            {
+                { "type", txData.Type },
+                { "amount", amount.ToString() }
+            }
+        );
     }
 
     private static GamblingGame? GetGameType(string game)
@@ -296,26 +297,26 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
 
     public async Task<IReadOnlyCollection<GamblingStats>> GetAllAsync()
     {
-        await using var ctx = _db.GetDbContext();
+        await using var ctx = db.GetDbContext();
         return await ctx.Set<GamblingStats>()
-                        .ToListAsyncEF();
+            .ToListAsyncEF();
     }
 
     public async Task<List<UserBetStats>> GetUserStatsAsync(ulong userId, GamblingGame? game = null)
     {
-        await using var ctx = _db.GetDbContext();
+        await using var ctx = db.GetDbContext();
 
 
         if (game is null)
             return await ctx
-                         .GetTable<UserBetStats>()
-                         .Where(x => x.UserId == userId)
-                         .ToListAsync();
+                .GetTable<UserBetStats>()
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
 
         return await ctx
-                     .GetTable<UserBetStats>()
-                     .Where(x => x.UserId == userId && x.Game == game)
-                     .ToListAsync();
+            .GetTable<UserBetStats>()
+            .Where(x => x.UserId == userId && x.Game == game)
+            .ToListAsync();
     }
 
     public decimal GetHouseEdge(GamblingGame game)
@@ -330,8 +331,6 @@ public sealed class GamblingTxTracker : ITxTracker, INService, IReadyExecutor
             GamblingGame.Race => 0.06m,
             _ => 0
         };
-
-  
 }
 
 public sealed class UserBetStats

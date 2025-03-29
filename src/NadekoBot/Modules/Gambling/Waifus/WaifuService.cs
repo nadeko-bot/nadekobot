@@ -6,6 +6,7 @@ using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Gambling.Common;
 using NadekoBot.Modules.Gambling.Common.Waifu;
+using NadekoBot.Modules.Games.Quests;
 
 namespace NadekoBot.Modules.Gambling.Services;
 
@@ -15,23 +16,23 @@ public class WaifuService : INService, IReadyExecutor
     private readonly ICurrencyService _cs;
     private readonly IBotCache _cache;
     private readonly GamblingConfigService _gss;
-    private readonly IBotCreds _creds;
     private readonly DiscordSocketClient _client;
+    private readonly QuestService _quests;
 
     public WaifuService(
         DbService db,
         ICurrencyService cs,
         IBotCache cache,
         GamblingConfigService gss,
-        IBotCreds creds,
-        DiscordSocketClient client)
+        DiscordSocketClient client,
+        QuestService quests)
     {
         _db = db;
         _cs = cs;
         _cache = cache;
         _gss = gss;
-        _creds = creds;
         _client = client;
+        _quests = quests;
     }
 
     public async Task<bool> WaifuTransfer(IUser owner, ulong waifuId, IUser newOwner)
@@ -411,6 +412,8 @@ public class WaifuService : INService, IReadyExecutor
                 w.Price += (long)(totalValue * _gss.Data.Waifu.Multipliers.GiftEffect);
             else
                 w.Price += totalValue / 2;
+
+            await _quests.ReportActionAsync(from.Id, QuestEventType.WaifuGiftSent);
         }
         else
         {

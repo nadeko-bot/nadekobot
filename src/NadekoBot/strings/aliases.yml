@@ -374,7 +374,6 @@ quoteadd:
   - qa
   - qadd
   - quadd
-  - .
 quoteedit:
   - quoteedit
   - qe
@@ -384,7 +383,6 @@ quoteprint:
   - quoteprint
   - qp
   - qup
-  - ..
   - qprint
 quoteshow:
   - quoteshow
@@ -1479,6 +1477,8 @@ ncanvas:
   - ncanvas
   - nc
   - ncanv
+  - pixel
+  - pixels
 ncsetimg:
   - ncsetimg
   - ncsi
@@ -1486,6 +1486,7 @@ ncsetpixel:
   - ncsetpixel
   - ncsp
   - ncs
+  - ncset
 nczoom:
   - nczoom
   - ncz
@@ -1657,3 +1658,36 @@ votefeed:
   - votefeed
 vote:
   - vote
+massping:
+  - massping
+questlog:
+  - questlog
+  - qlog
+  - quest
+  - quests
+  - dailies
+fishshop:
+  - fishshop
+  - fishop
+fishbuy:
+  - fishbuy
+  - fibuy
+fishuse:
+  - fishuse
+  - fiuse
+  - fiequip
+  - fieq
+  - fiquip
+fishunequip:
+  - fishunequip
+  - fiuneq
+  - fiunequip
+  - fiunuse
+  - fishunuse
+fishinv:
+  - fishinv
+  - finv
+  - fiinv
+fishlb:
+  - fishlb
+  - filb

@@ -14,6 +14,7 @@ using System.Text;
 using NadekoBot.Modules.Gambling.Rps;
 using NadekoBot.Common.TypeReaders;
 using NadekoBot.Modules.Games;
+using NadekoBot.Modules.Games.Quests;
 using NadekoBot.Modules.Patronage;
 
 namespace NadekoBot.Modules.Gambling;
@@ -36,6 +37,7 @@ public partial class Gambling : GamblingModule<GamblingService>
     private readonly IBotCache _cache;
     private readonly CaptchaService _captchaService;
     private readonly VoteRewardService _vrs;
+    private readonly QuestService _quests;
 
     public Gambling(
         IGamblingService gs,
@@ -52,7 +54,8 @@ public partial class Gambling : GamblingModule<GamblingService>
         RakebackService rb,
         IBotCache cache,
         CaptchaService captchaService,
-        VoteRewardService vrs)
+        VoteRewardService vrs,
+        QuestService quests)
         : base(configService)
     {
         _gs = gs;
@@ -68,6 +71,7 @@ public partial class Gambling : GamblingModule<GamblingService>
         _ps = patronage;
         _rng = new NadekoRandom();
         _vrs = vrs;
+        _quests = quests;
 
         _enUsCulture = new CultureInfo("en-US", false).NumberFormat;
         _enUsCulture.NumberDecimalDigits = 0;
@@ -148,29 +152,12 @@ public partial class Gambling : GamblingModule<GamblingService>
             return;
         }
 
-        if (await _vrs.LastVoted(ctx.User.Id) is { } remainder)
-        {
-            // Get correct time form remainder
-            var interaction = CreateRemindMeInteraction(remainder.TotalMilliseconds);
-
-            // Removes timely button if there is a timely reminder in DB
-            if (_service.UserHasTimelyReminder(ctx.User.Id))
-            {
-                interaction = null;
-            }
-
-            var now = DateTime.UtcNow;
-            var relativeTag = TimestampTag.FromDateTime(now.Add(remainder), TimestampTagStyles.Relative);
-            await Response().Pending(strs.vote_already_claimed(relativeTag)).Interaction(interaction).SendAsync();
-            return;
-        }
-
         var (amount, msg) = await _service.GetAmountAndMessage(ctx.User.Id, reward);
 
         var prepend = GetText(strs.vote_suggest(Format.Bold(N(amount))));
         msg = prepend + "\n\n" + msg;
 
-        var inter = CreateRemindMeInteraction(6) as NadekoButtonInteractionHandler;
+        var inter = CreateRemindMeInteraction(12) as NadekoButtonInteractionHandler;
         var eb = CreateEmbed()
           .WithOkColor()
           .WithDescription(msg);

@@ -2,6 +2,7 @@
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Modules.Games.Services;
 using System.Diagnostics.CodeAnalysis;
+using NadekoBot.Modules.Games.Quests;
 
 namespace NadekoBot.Modules.Games.Hangman;
 
@@ -13,6 +14,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
     private readonly GamesConfigService _gcs;
     private readonly ICurrencyService _cs;
     private readonly IMemoryCache _cdCache;
+    private readonly QuestService _quests;
     private readonly object _locker = new();
 
     public HangmanService(
@@ -20,13 +22,15 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         IMessageSenderService sender,
         GamesConfigService gcs,
         ICurrencyService cs,
-        IMemoryCache cdCache)
+        IMemoryCache cdCache,
+        QuestService quests)
     {
         _source = source;
         _sender = sender;
         _gcs = gcs;
         _cs = cs;
         _cdCache = cdCache;
+        _quests = quests;
     }
 
     public bool StartHangman(ulong channelId, string? category, [NotNullWhen(true)] out HangmanGame.State? state)
@@ -104,6 +108,10 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
 
         if (rew > 0)
             await _cs.AddAsync(msg.Author, rew, new("hangman", "win"));
+
+
+        if (state.GuessResult == HangmanGame.GuessResult.Win)
+            await _quests.ReportActionAsync(msg.Author.Id, QuestEventType.GameWon, new() { { "game", "hangman" } });
 
         await SendState((ITextChannel)msg.Channel, msg.Author, msg.Content, state);
     }

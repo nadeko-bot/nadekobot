@@ -158,7 +158,15 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         IUser? user = null;
         if (model.TryGetUserId(out var userId))
         {
-            user = guild.GetUser(userId) ?? _client.GetUser(userId);
+            try
+            {
+                user = guild.GetUser(userId)
+                       ?? await _client.GetUserAsync(userId);
+            }
+            catch
+            {
+                user = null;
+            }
         }
 
         var rctx = new ReplacementContext(guild: guild, channel: channel, user: user);

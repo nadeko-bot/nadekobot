@@ -1,16 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
-using NadekoBot.Modules.Games.Fish;
+﻿using NadekoBot.Modules.Games.Fish;
+using NadekoBot.Modules.Xp.Services;
 using Format = Discord.Format;
 
 namespace NadekoBot.Modules.Games;
 
 public partial class Games
 {
-    public class FishCommands(
+    public class FishingCommands(
         FishService fs,
+        FishItemService fis,
         FishConfigService fcs,
         IBotCache cache,
+        UserService us,
         CaptchaService captchaService) : NadekoModule
     {
         private static readonly NadekoRandom _rng = new();
@@ -19,6 +20,7 @@ public partial class Games
             => new($"fishingwhitelist:{userId}");
 
         [Cmd]
+        [RequireContext(ContextType.Guild)]
         public async Task Fish()
         {
             var cRes = await cache.GetAsync(FishingWhitelistKey(ctx.User.Id));
@@ -34,7 +36,10 @@ public partial class Games
                     using var stream = await img.ToStreamAsync();
 
                     var toSend = Response()
-                        .File(stream, "timely.png");
+                        .File(stream, "timely.png")
+                        .Embed(CreateEmbed()
+                            .WithFooter("captcha: type the text from the image")
+                            .WithImageUrl("attachment://timely.png"));
 
 #if GLOBAL_NADEKO
                     if (_rng.Next(0, 8) == 0)
@@ -64,11 +69,13 @@ public partial class Games
             }
 
 
-            var fishResult = await fs.FishAsync(ctx.User.Id, ctx.Channel.Id);
+            var multis = await fis.GetUserMultipliersAsync(ctx.User.Id);
+            var fishResult = await fs.FishAsync(ctx.User.Id, ctx.Channel.Id, multis);
             if (fishResult.TryPickT1(out _, out var fishTask))
             {
                 return;
             }
+
 
             var currentWeather = fs.GetCurrentWeather();
             var currentTod = fs.GetTime();
@@ -78,7 +85,10 @@ public partial class Games
                 .Embed(CreateEmbed()
                     .WithPendingColor()
                     .WithAuthor(ctx.User)
-                    .WithDescription(GetText(strs.fish_waiting))
+                    .WithDescription($"""
+                                      {GetText(strs.fish_waiting)}
+                                      {FishItemCommands.GetMultiplierInfo(multis)}
+                                      """)
                     .AddField(GetText(strs.fish_spot), GetSpotEmoji(spot) + " " + spot.ToString(), true)
                     .AddField(GetText(strs.fish_weather),
                         GetWeatherEmoji(currentWeather) + " " + currentWeather,
@@ -114,6 +124,7 @@ public partial class Games
         }
 
         [Cmd]
+        [RequireContext(ContextType.Guild)]
         public async Task FishSpot()
         {
             var ws = fs.GetWeatherForPeriods(7);
@@ -133,7 +144,8 @@ public partial class Games
         }
 
         [Cmd]
-        public async Task Fishlist(int page = 1)
+        [RequireContext(ContextType.Guild)]
+        public async Task FishList(int page = 1)
         {
             if (--page < 0)
                 return;
@@ -145,20 +157,33 @@ public partial class Games
 
             var catchDict = catches.ToDictionary(x => x.FishId, x => x);
 
+            var items = await fis.GetEquippedItemsAsync(ctx.User.Id);
+            var desc = $"""
+                        🧠 {skill} / {maxSkill}
+                        """;
+
+            foreach (var itemType in Enum.GetValues<FishItemType>())
+            {
+                var i = items.Where(x => x.Item.ItemType == itemType).ToArray();
+
+                desc += " · " + FishItemCommands.GetEmoji(itemType) + " " +
+                        (i.Any() ? string.Join(", ", i.Select(x => x.Item.Name)) : "None");
+            }
+
             await Response()
                 .Paginated()
                 .Items(fishes)
                 .PageSize(9)
                 .CurrentPage(page)
-                .Page((fishes, i) =>
+                .Page((pageFish, i) =>
                 {
                     var eb = CreateEmbed()
-                        .WithDescription($"🧠 **Skill:** {skill} / {maxSkill}")
+                        .WithDescription(desc)
                         .WithAuthor(ctx.User)
                         .WithTitle(GetText(strs.fish_list_title))
                         .WithOkColor();
 
-                    foreach (var f in fishes)
+                    foreach (var f in pageFish)
                     {
                         if (catchDict.TryGetValue(f.Id, out var c))
                         {
@@ -184,6 +209,43 @@ public partial class Games
                 })
                 .SendAsync();
         }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        public async Task FishLb(int page = 1)
+        {
+            if (--page < 0)
+                return;
+
+            await Response()
+                .Paginated()
+                .PageItems(async p => await fs.GetFishLbAsync(p))
+                .PageSize(9)
+                .Page(async (items, page) =>
+                {
+                    var users = await us.GetUsersAsync(items.Select(x => x.UserId).ToArray());
+
+                    var eb = CreateEmbed()
+                        .WithTitle(GetText(strs.fish_lb_title))
+                        .WithOkColor();
+
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        var data = items[i];
+                        var user = users.TryGetValue(data.UserId, out var ud)
+                            ? ud.ToString()
+                            : data.UserId.ToString();
+
+                        eb.AddField("#" + (page * 9 + i + 1) + " | " + user,
+                            GetText(strs.fish_catches(Format.Bold(data.Catches.ToString()))),
+                            false);
+                    }
+
+                    return eb;
+                })
+                .SendAsync();
+        }
+
 
         private string GetFishEmoji(FishData? fish, int count)
         {
@@ -224,9 +286,6 @@ public partial class Games
                 FishingWeather.Clear => "☀️",
                 _ => ""
             };
-
-        
-
     }
 }
 

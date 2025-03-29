@@ -2985,6 +2985,52 @@ namespace NadekoBot.Migrations.PostgreSql
                     b.ToTable("unroletimer", (string)null);
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.UserQuest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateAssigned")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("dateassigned");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("iscompleted");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("integer")
+                        .HasColumnName("progress");
+
+                    b.Property<int>("QuestId")
+                        .HasColumnType("integer")
+                        .HasColumnName("questid");
+
+                    b.Property<int>("QuestNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("questnumber");
+
+                    b.Property<decimal>("UserId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("userid");
+
+                    b.HasKey("Id")
+                        .HasName("pk_userquest");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_userquest_userid");
+
+                    b.HasIndex("UserId", "QuestNumber", "DateAssigned")
+                        .IsUnique()
+                        .HasDatabaseName("ix_userquest_userid_questnumber_dateassigned");
+
+                    b.ToTable("userquest", (string)null);
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.UserXpStats", b =>
                 {
                     b.Property<int>("Id")
@@ -3467,6 +3513,48 @@ namespace NadekoBot.Migrations.PostgreSql
                     b.ToTable("xpshopowneditem", (string)null);
                 });
 
+            modelBuilder.Entity("NadekoBot.Modules.Games.Fish.Db.UserFishItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("expiresat");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("boolean")
+                        .HasColumnName("isequipped");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("integer")
+                        .HasColumnName("itemid");
+
+                    b.Property<int>("ItemType")
+                        .HasColumnType("integer")
+                        .HasColumnName("itemtype");
+
+                    b.Property<decimal>("UserId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("userid");
+
+                    b.Property<int?>("UsesLeft")
+                        .HasColumnType("integer")
+                        .HasColumnName("usesleft");
+
+                    b.HasKey("Id")
+                        .HasName("pk_userfishitem");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_userfishitem_userid");
+
+                    b.ToTable("userfishitem", (string)null);
+                });
+
             modelBuilder.Entity("NadekoBot.Modules.Games.FishCatch", b =>
                 {
                     b.Property<int>("Id")
@@ -3509,14 +3597,6 @@ namespace NadekoBot.Migrations.PostgreSql
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("Bait")
-                        .HasColumnType("integer")
-                        .HasColumnName("bait");
-
-                    b.Property<int?>("Pole")
-                        .HasColumnType("integer")
-                        .HasColumnName("pole");
 
                     b.Property<int>("Skill")
                         .HasColumnType("integer")

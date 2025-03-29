@@ -36,11 +36,11 @@ public partial class Help
             var result = await _service.SendMessageToPatronsAsync(tierAndHigher, message);
 
             await Response()
-                  .Confirm(strs.patron_msg_sent(
-                      Format.Code(tierAndHigher.ToString()),
-                      Format.Bold(result.Success.ToString()),
-                      Format.Bold(result.Failed.ToString())))
-                  .SendAsync();
+                .Confirm(strs.patron_msg_sent(
+                    Format.Code(tierAndHigher.ToString()),
+                    Format.Bold(result.Success.ToString()),
+                    Format.Bold(result.Failed.ToString())))
+                .SendAsync();
         }
 
         // [OwnerOnly]
@@ -73,32 +73,24 @@ public partial class Help
 
             var maybePatron = await _service.GetPatronAsync(user.Id);
 
-            var quotaStats = await _service.LimitStats(user.Id);
-
             var eb = CreateEmbed()
-                            .WithAuthor(user)
-                            .WithTitle(GetText(strs.patron_info))
-                            .WithOkColor();
+                .WithAuthor(user)
+                .WithTitle(GetText(strs.patron_info))
+                .WithOkColor();
 
-            if (quotaStats.Count == 0 || maybePatron is not { } patron)
+            if (maybePatron is not { } patron)
             {
-                eb.WithDescription(GetText(strs.no_quota_found));
+                eb.WithDescription("You don't have an active subscription");
             }
             else
             {
                 eb.AddField(GetText(strs.tier), Format.Bold(patron.Tier.ToFullName()), true)
-                  .AddField(GetText(strs.pledge), $"**{patron.Amount / 100.0f:N1}$**", true);
+                    .AddField(GetText(strs.pledge), $"**{patron.Amount / 100.0f:N1}$**", true);
 
                 if (patron.Tier != PatronTier.None)
                     eb.AddField(GetText(strs.expires),
                         patron.ValidThru.AddDays(1).ToShortAndRelativeTimestampTag(),
                         true);
-
-                eb.AddField(GetText(strs.quotas), "⁣", false);
-
-                var text = GetQuotaList(quotaStats);
-                if (!string.IsNullOrWhiteSpace(text))
-                    eb.AddField(GetText(strs.modules), text, true);
             }
 
 
@@ -112,29 +104,5 @@ public partial class Help
                 await Response().Error(strs.cant_dm).SendAsync();
             }
         }
-
-        private string GetQuotaList(
-            IReadOnlyDictionary<LimitedFeatureName, (int Cur, QuotaLimit Quota)> featureQuotaStats)
-        {
-            var text = string.Empty;
-            foreach (var (key, (cur, quota)) in featureQuotaStats)
-            {
-                text += $"\n⁣\t`{key}`\n";
-                if (quota.QuotaPeriod == QuotaPer.PerHour)
-                    text += $"⁣ ⁣  {cur}/{(quota.Quota == -1 ? "∞" : quota.Quota)} {QuotaPeriodToString(quota.QuotaPeriod)}\n";
-            }
-
-            return text;
-        }
-
-        public string QuotaPeriodToString(QuotaPer per)
-            => per switch
-            {
-                QuotaPer.PerHour => "per hour",
-                QuotaPer.PerDay => "per day",
-                QuotaPer.PerMonth => "per month",
-                QuotaPer.Total => "total",
-                _ => throw new ArgumentOutOfRangeException(nameof(per), per, null)
-            };
     }
 }

@@ -14,7 +14,7 @@ namespace NadekoBot.VotesApi.Controllers
         [Authorize(Policy = Policies.DiscordsAuth)]
         public async Task<IActionResult> DiscordsWebhook([FromBody] DiscordsVoteWebhookModel data)
         {
-            if (data.Type != "vote")
+            if ((data.Type?.Contains("vote") ?? false) == false)
                 return Ok();
 
             logger.LogInformation("User {UserId} has voted for Bot {BotId} on {Platform}",

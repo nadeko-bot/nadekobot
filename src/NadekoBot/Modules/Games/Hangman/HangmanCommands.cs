@@ -10,44 +10,54 @@ public partial class Games
         [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task Hangmanlist()
-            => await Response().Confirm(GetText(strs.hangman_types(prefix)), _service.GetHangmanTypes().Join('\n')).SendAsync();
+            => await Response().Confirm(GetText(strs.hangman_types(prefix)), _service.GetHangmanTypes().Join('\n'))
+                .SendAsync();
 
         private static string Draw(HangmanGame.State state)
-            => $"""
-            . ┌─────┐
-            .┃...............┋
-            .┃...............┋
-            .┃{(state.Errors > 0 ? ".............😲" : "")}
-            .┃{(state.Errors > 1 ? "............./" : "")} {(state.Errors > 2 ? "|" : "")} {(state.Errors > 3 ? "\\" : "")}
-            .┃{(state.Errors > 4 ? "............../" : "")} {(state.Errors > 5 ? "\\" : "")}
-            /-\
-            """;
+        {
+            var head = state.Errors >= 1 ? "O" : " ";
+            var torso = state.Errors >= 2 ? "|" : " ";
+            var leftArm = state.Errors >= 3 ? "/" : " ";
+            var rightArm = state.Errors >= 4 ? "\\" : " ";
+            var leftLeg = state.Errors >= 5 ? "/" : " ";
+            var rightLeg = state.Errors >= 6 ? "\\" : " ";
+
+            return $"""
+                    ```
+                     ┌─────┐
+                     │     {head}
+                     │   {leftArm}{torso}{rightArm}
+                     │    {leftLeg} {rightLeg}
+                    ─┴─
+                    ```
+                    """;
+        }
 
         public static EmbedBuilder GetEmbed(IMessageSenderService sender, HangmanGame.State state)
         {
             if (state.Phase == HangmanGame.Phase.Running)
             {
                 return sender.CreateEmbed()
-                         .WithOkColor()
-                         .AddField("Hangman", Draw(state))
-                         .AddField("Guess", Format.Code(state.Word))
-                         .WithFooter(state.MissedLetters.Join(' '));
+                    .WithOkColor()
+                    .AddField("Hangman", Draw(state))
+                    .AddField("Guess", Format.Code(state.Word))
+                    .WithFooter(state.MissedLetters.Join(' '));
             }
 
             if (state.Phase == HangmanGame.Phase.Ended && state.Failed)
             {
                 return sender.CreateEmbed()
-                         .WithErrorColor()
-                         .AddField("Hangman", Draw(state))
-                         .AddField("Guess", Format.Code(state.Word))
-                         .WithFooter(state.MissedLetters.Join(' '));
+                    .WithErrorColor()
+                    .AddField("Hangman", Draw(state))
+                    .AddField("Guess", Format.Code(state.Word))
+                    .WithFooter(state.MissedLetters.Join(' '));
             }
 
             return sender.CreateEmbed()
-                     .WithOkColor()
-                     .AddField("Hangman", Draw(state))
-                     .AddField("Guess", Format.Code(state.Word))
-                     .WithFooter(state.MissedLetters.Join(' '));
+                .WithOkColor()
+                .AddField("Hangman", Draw(state))
+                .AddField("Guess", Format.Code(state.Word))
+                .WithFooter(state.MissedLetters.Join(' '));
         }
 
         [Cmd]

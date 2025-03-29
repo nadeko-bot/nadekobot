@@ -38,13 +38,23 @@ public interface ICurrencyService
         IUser user,
         long amount,
         TxData? txData);
-    
+
     Task<IReadOnlyList<DiscordUser>> GetTopRichest(ulong ignoreId, int page = 0, int perPage = 9);
 
     Task<IReadOnlyList<CurrencyTransaction>> GetTransactionsAsync(
         ulong userId,
         int page,
         int perPage = 15);
-    
+
     Task<int> GetTransactionsCountAsync(ulong userId);
+
+    Task<bool> TransferAsync(
+        IMessageSenderService sender,
+        IUser from,
+        IUser to,
+        long amount,
+        string? note,
+        string formattedAmount);
+
+    Task<long> GetBalanceAsync(ulong userId);
 }

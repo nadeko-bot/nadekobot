@@ -20,10 +20,13 @@ public sealed class FishConfigService : ConfigServiceBase<FishConfig>
 
     private void Migrate()
     {
-        ModifyConfig(c =>
+        if (data.Version < 2)
         {
-            c.Version = 2;
-            c.RequireCaptcha = true;
-        });
+            ModifyConfig(c =>
+            {
+                c.Version = 2;
+                c.RequireCaptcha = true;
+            });
+        }
     }
 }

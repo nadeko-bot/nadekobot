@@ -46,7 +46,7 @@ public partial class ResponseBuilder
                 GetInteractions()
             {
                 var leftButton = new ButtonBuilder()
-                                 .WithStyle(ButtonStyle.Primary)
+                                 .WithStyle(ButtonStyle.Secondary)
                                  .WithCustomId(BUTTON_LEFT)
                                  .WithEmote(InteractionHelpers.ArrowLeft)
                                  .WithDisabled(lastPage == 0 || currentPage <= 0);
@@ -80,7 +80,7 @@ public partial class ResponseBuilder
                 }
 
                 var rightButton = new ButtonBuilder()
-                                  .WithStyle(ButtonStyle.Primary)
+                                  .WithStyle(ButtonStyle.Secondary)
                                   .WithCustomId(BUTTON_RIGHT)
                                   .WithEmote(InteractionHelpers.ArrowRight)
                                   .WithDisabled(lastPage == 0 || currentPage >= lastPage);

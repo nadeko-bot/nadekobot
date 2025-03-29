@@ -25,7 +25,7 @@ namespace NadekoBot.VotesApi
 
             services.AddGrpcClient<VoteService.VoteServiceClient>(options =>
                 {
-                    options.Address = new Uri("http://127.0.0.1:59384");
+                    options.Address = new Uri(Configuration["BotGrpcHost"]!);
                 })
                 .ConfigureChannel((sp, c) =>
                 {
@@ -53,6 +53,11 @@ namespace NadekoBot.VotesApi
                     opts.AddPolicy(Policies.DiscordbotlistAuth,
                         static policy => policy.RequireClaim(AuthHandler.DiscordbotlistClaim));
                 });
+
+            services.AddCors(x => x.AddDefaultPolicy(cpb =>
+                cpb.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

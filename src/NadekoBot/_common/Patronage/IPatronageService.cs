@@ -30,12 +30,9 @@ public interface IPatronageService
     /// <returns>A patron with the specifeid userId</returns>
     public Task<Patron?> GetPatronAsync(ulong userId);
     
-    Task<bool> LimitHitAsync(LimitedFeatureName key, ulong userId, int amount = 1);
-    Task<bool> LimitForceHit(LimitedFeatureName key, ulong userId, int amount);
-    Task<QuotaLimit> GetUserLimit(LimitedFeatureName name, ulong userId);
+    Task<bool> LimitHitAsync(string name, ulong userId, int def);
+    Task<int> GetUserLimit(string name, ulong userId, int def );
     
-    Task<Dictionary<LimitedFeatureName, (int, QuotaLimit)>> LimitStats(ulong userId);
-
     PatronConfigData GetConfig();
     int PercentBonus(Patron? user);
     int PercentBonus(long amount);

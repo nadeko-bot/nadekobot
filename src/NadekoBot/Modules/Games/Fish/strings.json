@@ -1,0 +1,21 @@
+{
+  "fish_items_title": "Available Fishing Items",
+  "fish_buy_success": "Item purchased successfully!",
+  "fish_buy_not_found": "Item not found.",
+  "fish_buy_already_owned": "You already own this item.",
+  "fish_buy_insufficient_funds": "You don't have enough currency to buy this item.",
+  "fish_buy_error": "An error occurred while trying to buy the item.",
+  "fish_use_success": "Item equipped successfully!",
+  "fish_use_not_found": "Item not found.",
+  "fish_use_not_owned": "You don't own this item.",
+  "fish_use_expired": "This item has expired.",
+  "fish_use_no_uses": "This item has no uses left.",
+  "fish_use_error": "An error occurred while trying to use the item.",
+  "fish_unequip_success": "Item unequipped successfully!",
+  "fish_unequip_error": "Could not unequip item.",
+  "fish_inv_title": "{0}'s Fishing Inventory",
+  "fish_gift_self": "You can't gift items to yourself.",
+  "fish_gift_not_owned": "You don't own this item.",
+  "fish_gift_equipped": "You can't gift equipped items. Unequip it first.",
+  "fish_gift_success": "Item successfully gifted to {0}!"
+}

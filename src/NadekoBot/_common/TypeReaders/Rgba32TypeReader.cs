@@ -8,12 +8,13 @@ public sealed class Rgba32TypeReader : NadekoTypeReader<Rgba32>
 {
     public override ValueTask<TypeReaderResult<Rgba32>> ReadAsync(ICommandContext context, string input)
     {
-        if (Rgba32.TryParseHex(input, out var clr))
+        if (!Color.TryParse(input, out var color))
         {
-            return ValueTask.FromResult(TypeReaderResult.FromSuccess(clr));
+            Log.Information("Fail");
+            return ValueTask.FromResult(
+                TypeReaderResult.FromError<Rgba32>(CommandError.ParseFailed, "Parameter is not a valid color hex."));
         }
 
-        return ValueTask.FromResult(
-            TypeReaderResult.FromError<Rgba32>(CommandError.ParseFailed, "Parameter is not a valid color hex."));
+        return ValueTask.FromResult(TypeReaderResult.FromSuccess((Rgba32)color));
     }
 }

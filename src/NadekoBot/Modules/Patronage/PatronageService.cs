@@ -98,21 +98,21 @@ public sealed class PatronageService
             try
             {
                 var dbPatron = await ctx.GetTable<PatronUser>()
-                                        .FirstOrDefaultAsync(x
-                                            => x.UniquePlatformUserId == subscriber.UniquePlatformUserId);
+                    .FirstOrDefaultAsync(x
+                        => x.UniquePlatformUserId == subscriber.UniquePlatformUserId);
 
                 if (dbPatron is null)
                 {
                     // if the user is not in the database alrady
                     dbPatron = await ctx.GetTable<PatronUser>()
-                                        .InsertWithOutputAsync(() => new()
-                                        {
-                                            UniquePlatformUserId = subscriber.UniquePlatformUserId,
-                                            UserId = subscriber.UserId,
-                                            AmountCents = subscriber.Cents,
-                                            LastCharge = lastChargeUtc,
-                                            ValidThru = dateInOneMonth,
-                                        });
+                        .InsertWithOutputAsync(() => new()
+                        {
+                            UniquePlatformUserId = subscriber.UniquePlatformUserId,
+                            UserId = subscriber.UserId,
+                            AmountCents = subscriber.Cents,
+                            LastCharge = lastChargeUtc,
+                            ValidThru = dateInOneMonth,
+                        });
 
                     // await tran.CommitAsync();
 
@@ -129,18 +129,18 @@ public sealed class PatronageService
                         // if his sub would end in teh future, extend it by one month.
                         // if it's not, just add 1 month to the last charge date
                         await ctx.GetTable<PatronUser>()
-                                 .Where(x => x.UniquePlatformUserId
-                                             == subscriber.UniquePlatformUserId)
-                                 .UpdateAsync(old => new()
-                                 {
-                                     UserId = subscriber.UserId,
-                                     AmountCents = subscriber.Cents,
-                                     LastCharge = lastChargeUtc,
-                                     ValidThru = old.ValidThru >= todayDate
-                                         // ? Sql.DateAdd(Sql.DateParts.Month, 1, old.ValidThru).Value
-                                         ? old.ValidThru.AddMonths(1)
-                                         : dateInOneMonth,
-                                 });
+                            .Where(x => x.UniquePlatformUserId
+                                        == subscriber.UniquePlatformUserId)
+                            .UpdateAsync(old => new()
+                            {
+                                UserId = subscriber.UserId,
+                                AmountCents = subscriber.Cents,
+                                LastCharge = lastChargeUtc,
+                                ValidThru = old.ValidThru >= todayDate
+                                    // ? Sql.DateAdd(Sql.DateParts.Month, 1, old.ValidThru).Value
+                                    ? old.ValidThru.AddMonths(1)
+                                    : dateInOneMonth,
+                            });
 
 
                         dbPatron.UserId = subscriber.UserId;
@@ -158,14 +158,14 @@ public sealed class PatronageService
                         var cents = subscriber.Cents;
                         // the user updated the pledge or changed the connected discord account
                         await ctx.GetTable<PatronUser>()
-                                 .Where(x => x.UniquePlatformUserId == subscriber.UniquePlatformUserId)
-                                 .UpdateAsync(old => new()
-                                 {
-                                     UserId = subscriber.UserId,
-                                     AmountCents = cents,
-                                     LastCharge = lastChargeUtc,
-                                     ValidThru = old.ValidThru,
-                                 });
+                            .Where(x => x.UniquePlatformUserId == subscriber.UniquePlatformUserId)
+                            .UpdateAsync(old => new()
+                            {
+                                UserId = subscriber.UserId,
+                                AmountCents = cents,
+                                LastCharge = lastChargeUtc,
+                                ValidThru = old.ValidThru,
+                            });
 
                         var newPatron = dbPatron.Clone();
                         newPatron.AmountCents = cents;
@@ -192,19 +192,19 @@ public sealed class PatronageService
         {
             // if the subscription is refunded, Disable user's valid thru 
             var changedCount = await ctx.GetTable<PatronUser>()
-                                        .Where(x => x.UniquePlatformUserId == patron.UniquePlatformUserId
-                                                    && x.ValidThru != expiredDate)
-                                        .UpdateAsync(old => new()
-                                        {
-                                            ValidThru = expiredDate
-                                        });
+                .Where(x => x.UniquePlatformUserId == patron.UniquePlatformUserId
+                            && x.ValidThru != expiredDate)
+                .UpdateAsync(old => new()
+                {
+                    ValidThru = expiredDate
+                });
 
             if (changedCount == 0)
                 continue;
 
             var updated = await ctx.GetTable<PatronUser>()
-                                   .Where(x => x.UniquePlatformUserId == patron.UniquePlatformUserId)
-                                   .FirstAsync();
+                .Where(x => x.UniquePlatformUserId == patron.UniquePlatformUserId)
+                .FirstAsync();
 
             await OnPatronRefunded(PatronUserToPatron(updated));
         }
@@ -218,8 +218,8 @@ public sealed class PatronageService
         // is subscribed on multiple platforms
         // or if there are multiple users on the same platform who connected the same discord account?!
         var users = await ctx.GetTable<PatronUser>()
-                             .Where(x => x.UserId == userId)
-                             .ToListAsync();
+            .Where(x => x.UserId == userId)
+            .ToListAsync();
 
         // first find all active subscriptions
         // and return the one with the highest amount
@@ -236,135 +236,55 @@ public sealed class PatronageService
         return PatronUserToPatron(max);
     }
 
-    public async Task<bool> LimitHitAsync(LimitedFeatureName key, ulong userId, int amount = 1)
+    private Func<string, ulong, TypedKey<int>> Limitkey
+        => (name, userId) => new($"patron_limit:{userId}:{name}");
+
+    public async Task<bool> LimitHitAsync(string name, ulong userId, int defaultMax)
     {
-        if (_creds.GetCreds().IsOwner(userId))
+        var data = _pConf.Data;
+        if (!data.IsEnabled)
             return true;
 
-        if (!_pConf.Data.IsEnabled)
+        var limit = await GetUserLimit(name, userId, defaultMax);
+
+        if (limit == -1)
             return true;
+        
+        var timeUntilTomorrow = (DateTime.UtcNow.Date.AddDays(1) - DateTime.UtcNow);
+        var soFar = await _cache.GetOrAddAsync(Limitkey(name, userId),
+            () => Task.FromResult(0),
+            expiry: timeUntilTomorrow);
 
-        var userLimit = await GetUserLimit(key, userId);
-
-        if (userLimit.Quota == 0)
+        if (soFar >= limit)
             return false;
 
-        if (userLimit.Quota == -1)
-            return true;
-
-        return await TryAddLimit(key, userLimit, userId, amount);
+        await _cache.AddAsync(Limitkey(name, userId), soFar + 1, timeUntilTomorrow, overwrite: true);
+        return true;
     }
 
-    public async Task<bool> LimitForceHit(LimitedFeatureName key, ulong userId, int amount)
+    public async Task<int> GetUserLimit(string name, ulong userId, int defaultMax)
     {
-        if (_creds.GetCreds().IsOwner(userId))
-            return true;
+        var data = _pConf.Data;
+        if (!data.IsEnabled || _creds.GetCreds().OwnerIds.Contains(userId))
+            return defaultMax;
 
-        if (!_pConf.Data.IsEnabled)
-            return true;
+        var mPatron = await GetPatronAsync(userId);
 
-        var userLimit = await GetUserLimit(key, userId);
-
-        var cacheKey = CreateKey(key, userId);
-        await _cache.GetOrAddAsync(cacheKey, () => Task.FromResult(0), GetExpiry(userLimit));
-
-        return await TryAddLimit(key, userLimit, userId, amount);
-    }
-
-    private async Task<bool> TryAddLimit(
-        LimitedFeatureName key,
-        QuotaLimit userLimit,
-        ulong userId,
-        int amount)
-    {
-        var cacheKey = CreateKey(key, userId);
-        var cur = await _cache.GetOrAddAsync(cacheKey, () => Task.FromResult(0), GetExpiry(userLimit));
-
-        if (cur + amount < userLimit.Quota)
+        if (mPatron is not { } patron || !patron.IsActive)
         {
-            await _cache.AddAsync(cacheKey, cur + amount);
-            return true;
+            if (data.Quotas.TryGetValue(PatronTier.I, out var limits)
+                && limits.TryGetValue(name, out var limit))
+                return limit;
+
+            return 0;
         }
 
-        return false;
+        if (data.Quotas.TryGetValue(patron.Tier, out var plimits)
+            && plimits.TryGetValue(name, out var plimit))
+            return plimit;
+
+        return 0;
     }
-
-    private TimeSpan? GetExpiry(QuotaLimit userLimit)
-    {
-        var now = DateTime.UtcNow;
-        switch (userLimit.QuotaPeriod)
-        {
-            case QuotaPer.PerHour:
-                return TimeSpan.FromMinutes(60 - now.Minute);
-            case QuotaPer.PerDay:
-                return TimeSpan.FromMinutes((24 * 60) - ((now.Hour * 60) + now.Minute));
-            case QuotaPer.PerMonth:
-                var firstOfNextMonth = now.FirstOfNextMonth();
-                return firstOfNextMonth - now;
-            default:
-                return null;
-        }
-    }
-
-    private TypedKey<int> CreateKey(LimitedFeatureName key, ulong userId)
-        => new($"limited_feature:{key}:{userId}");
-
-    private readonly QuotaLimit _emptyQuota = new QuotaLimit()
-    {
-        Quota = 0,
-        QuotaPeriod = QuotaPer.PerDay,
-    };
-
-    private readonly QuotaLimit _infiniteQuota = new QuotaLimit()
-    {
-        Quota = -1,
-        QuotaPeriod = QuotaPer.PerDay,
-    };
-
-    public async Task<QuotaLimit> GetUserLimit(LimitedFeatureName name, ulong userId)
-    {
-        if (!_pConf.Data.IsEnabled)
-            return _infiniteQuota;
-        
-        var maybePatron = await GetPatronAsync(userId);
-
-        if (maybePatron is not { } patron)
-            return _emptyQuota;
-
-        if (patron.ValidThru < DateTime.UtcNow)
-            return _emptyQuota;
-
-        foreach (var (key, value) in _pConf.Data.Limits)
-        {
-            if (patron.Amount >= key)
-            {
-                if (value.TryGetValue(name, out var quotaLimit))
-                {
-                    return quotaLimit;
-                }
-
-                break;
-            }
-        }
-
-        return _emptyQuota;
-    }
-
-    public async Task<Dictionary<LimitedFeatureName, (int, QuotaLimit)>> LimitStats(ulong userId)
-    {
-        var dict = new Dictionary<LimitedFeatureName, (int, QuotaLimit)>();
-        foreach (var featureName in Enum.GetValues<LimitedFeatureName>())
-        {
-            var cacheKey = CreateKey(featureName, userId);
-            var userLimit = await GetUserLimit(featureName, userId);
-            var cur = await _cache.GetOrAddAsync(cacheKey, () => Task.FromResult(0), GetExpiry(userLimit));
-
-            dict[featureName] = (cur, userLimit);
-        }
-
-        return dict;
-    }
-
 
     private Patron PatronUserToPatron(PatronUser user)
         => new Patron()
@@ -384,10 +304,13 @@ public sealed class PatronageService
 
         return user.AmountCents switch
         {
-            <= 200 => PatronTier.I,
-            <= 1_000 => PatronTier.C,
-            <= 5_000 => PatronTier.L,
-            _ => PatronTier.None
+            >= 10_000 => PatronTier.C,
+            >= 5_000 => PatronTier.L,
+            >= 2_000 => PatronTier.XX,
+            >= 1_000 => PatronTier.X,
+            >= 500 => PatronTier.V,
+            >= 100 => PatronTier.I,
+            _ => 0,
         };
     }
 
@@ -399,10 +322,12 @@ public sealed class PatronageService
     public int PercentBonus(long amount)
         => amount switch
         {
-            < 200 => 0,
-            < 1_000 => 10,
-            < 5_000 => 50,
-            _ => 100
+            >= 10_000 => 100,
+            >= 5_000 => 50,
+            >= 2_000 => 25,
+            >= 1_000 => 10,
+            >= 500 => 5,
+            _ => 0,
         };
 
     private async Task SendWelcomeMessage(Patron patron)
@@ -414,23 +339,23 @@ public sealed class PatronageService
                 return;
 
             var eb = _sender.CreateEmbed()
-                            .WithOkColor()
-                            .WithTitle("❤️ Thank you for supporting NadekoBot! ❤️")
-                            .WithDescription(
-                                "Your donation has been processed and you will receive the rewards shortly.\n"
-                                + "You can visit <https://www.patreon.com/join/nadekobot> to see rewards for your tier. 🎉")
-                            .AddField("Tier", Format.Bold(patron.Tier.ToString()), true)
-                            .AddField("Pledge", $"**{patron.Amount / 100.0f:N1}$**", true)
-                            .AddField("Expires",
-                                patron.ValidThru.AddDays(1).ToShortAndRelativeTimestampTag(),
-                                true)
-                            .AddField("Instructions",
-                                """
-                                *- Within the next **1-2 minutes** you will have all of the benefits of the Tier you've subscribed to.*
-                                *- You can use the `.patron` command in this chat to check your current quota usage for the Patron-only commands*
-                                """,
-                                inline: false)
-                            .WithFooter($"platform id: {patron.UniquePlatformUserId}");
+                .WithOkColor()
+                .WithTitle("❤️ Thank you for supporting NadekoBot! ❤️")
+                .WithDescription(
+                    "Your donation has been processed and you will receive the rewards shortly.\n"
+                    + "You can visit <https://www.patreon.com/join/nadekobot> to see rewards for your tier. 🎉")
+                .AddField("Tier", Format.Bold(patron.Tier.ToString()), true)
+                .AddField("Pledge", $"**{patron.Amount / 100.0f:N1}$**", true)
+                .AddField("Expires",
+                    patron.ValidThru.AddDays(1).ToShortAndRelativeTimestampTag(),
+                    true)
+                .AddField("Instructions",
+                    """
+                    *- Within the next **1-2 minutes** you will have all of the benefits of the Tier you've subscribed to.*
+                    *- You can use the `.patron` command in this chat to check your current quota usage for the Patron-only commands*
+                    """,
+                    inline: false)
+                .WithFooter($"platform id: {patron.UniquePlatformUserId}");
 
             await _sender.Response(user).Embed(eb).SendAsync();
         }
@@ -445,8 +370,8 @@ public sealed class PatronageService
         await using var ctx = _db.GetDbContext();
 
         var patrons = await ctx.GetTable<PatronUser>()
-                               .Where(x => x.ValidThru > DateTime.UtcNow)
-                               .ToArrayAsync();
+            .Where(x => x.ValidThru > DateTime.UtcNow)
+            .ToArrayAsync();
 
         var text = SmartText.CreateFrom(message);
 

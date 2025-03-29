@@ -368,8 +368,7 @@ site/
 
 .aider.*
 PROMPT.md
-.aider*
-.windsurfrules
+.*rules
 
 ## Python pip/env files
 Pipfile

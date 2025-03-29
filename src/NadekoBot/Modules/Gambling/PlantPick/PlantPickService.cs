@@ -4,6 +4,7 @@ using LinqToDB.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Games.Quests;
 using SixLabors.Fonts;
 using SixLabors.Fonts.Unicode;
 using SixLabors.ImageSharp;
@@ -15,67 +16,47 @@ using Image = SixLabors.ImageSharp.Image;
 
 namespace NadekoBot.Modules.Gambling.Services;
 
-public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
+public class PlantPickService(
+    DbService db,
+    IBotStrings strings,
+    IImageCache images,
+    FontProvider fonts,
+    ICurrencyService cs,
+    CommandHandler cmdHandler,
+    DiscordSocketClient client,
+    GamblingConfigService gss,
+    GamblingService gs,
+    QuestService quests) : INService, IExecNoCommand, IReadyExecutor
 {
     //channelId/last generation
     public ConcurrentDictionary<ulong, long> LastGenerations { get; } = new();
-    private readonly DbService _db;
-    private readonly IBotStrings _strings;
-    private readonly IImageCache _images;
-    private readonly FontProvider _fonts;
-    private readonly ICurrencyService _cs;
-    private readonly CommandHandler _cmdHandler;
-    private readonly DiscordSocketClient _client;
-    private readonly GamblingConfigService _gss;
-    private readonly GamblingService _gs;
-
     private ConcurrentHashSet<ulong> _generationChannels = [];
-
-    public PlantPickService(
-        DbService db,
-        IBotStrings strings,
-        IImageCache images,
-        FontProvider fonts,
-        ICurrencyService cs,
-        CommandHandler cmdHandler,
-        DiscordSocketClient client,
-        GamblingConfigService gss,
-        GamblingService gs)
-    {
-        _db = db;
-        _strings = strings;
-        _images = images;
-        _fonts = fonts;
-        _cs = cs;
-        _cmdHandler = cmdHandler;
-        _client = client;
-        _gss = gss;
-        _gs = gs;
-    }
 
     public Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
         => PotentialFlowerGeneration(msg);
 
     private string GetText(ulong gid, LocStr str)
-        => _strings.GetText(str, gid);
+        => strings.GetText(str, gid);
 
     public async Task<bool> ToggleCurrencyGeneration(ulong gid, ulong cid)
     {
         bool enabled;
-        await using var uow = _db.GetDbContext();
+        await using var uow = db.GetDbContext();
 
         if (_generationChannels.Add(cid))
         {
             await uow.GetTable<GCChannelId>()
-                    .InsertOrUpdateAsync(() => new()
+                .InsertOrUpdateAsync(() => new()
                     {
                         ChannelId = cid,
                         GuildId = gid
-                    }, (x) => new()
+                    },
+                    (x) => new()
                     {
                         ChannelId = cid,
                         GuildId = gid
-                    }, () => new()
+                    },
+                    () => new()
                     {
                         ChannelId = cid,
                         GuildId = gid
@@ -87,8 +68,8 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
         else
         {
             await uow.GetTable<GCChannelId>()
-                    .Where(x => x.ChannelId == cid && x.GuildId == gid)
-                    .DeleteAsync();
+                .Where(x => x.ChannelId == cid && x.GuildId == gid)
+                .DeleteAsync();
 
             _generationChannels.TryRemove(cid);
             enabled = false;
@@ -99,9 +80,9 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
 
     public async Task<IReadOnlyCollection<GCChannelId>> GetAllGeneratingChannels()
     {
-        await using var uow = _db.GetDbContext();
+        await using var uow = db.GetDbContext();
         return await uow.GetTable<GCChannelId>()
-                        .ToListAsyncLinqToDB();
+            .ToListAsyncLinqToDB();
     }
 
     /// <summary>
@@ -111,7 +92,7 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
     /// <returns>Stream of the currency image</returns>
     public async Task<(Stream, string)> GetRandomCurrencyImageAsync(string pass)
     {
-        var curImg = await _images.GetCurrencyImageAsync();
+        var curImg = await images.GetCurrencyImageAsync();
 
         if (curImg is null)
             return (new MemoryStream(), null);
@@ -142,7 +123,7 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
         pass = pass.TrimTo(10, true).ToLowerInvariant();
         using var img = Image.Load<Rgba32>(curImg);
         // choose font size based on the image height, so that it's visible
-        var font = _fonts.NotoSans.CreateFont(img.Height / 11.0f, FontStyle.Bold);
+        var font = fonts.NotoSans.CreateFont(img.Height / 11.0f, FontStyle.Bold);
         img.Mutate(x =>
         {
             // measure the size of the text to be drawing
@@ -170,13 +151,13 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
 
             // draw the password over the background
             x.DrawText(new RichTextOptions(font)
-            {
-                Origin = new(0, 0),
-                TextRuns =
+                {
+                    Origin = new(0, 0),
+                    TextRuns =
                     [
                         strikeoutRun
                     ]
-            },
+                },
                 pass,
                 new SolidBrush(Color.White));
         });
@@ -200,7 +181,7 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
         {
             try
             {
-                var config = _gss.Data;
+                var config = gss.Data;
                 var lastGeneration = LastGenerations.GetOrAdd(channel.Id, DateTime.MinValue.ToBinary());
                 var rng = new NadekoRandom();
 
@@ -219,7 +200,7 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
 
                     if (dropAmount > 0)
                     {
-                        var prefix = _cmdHandler.GetPrefix(channel.Guild.Id);
+                        var prefix = cmdHandler.GetPrefix(channel.Guild.Id);
                         var toSend = dropAmount == 1
                             ? GetText(channel.GuildId, strs.curgen_sn(config.Currency.Sign))
                               + " "
@@ -228,7 +209,7 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
                               + " "
                               + GetText(channel.GuildId, strs.pick_pl(prefix));
 
-                        var pw = config.Generation.HasPassword ? _gs.GeneratePassword().ToUpperInvariant() : null;
+                        var pw = config.Generation.HasPassword ? gs.GeneratePassword().ToUpperInvariant() : null;
 
                         IUserMessage sent;
                         var (stream, ext) = await GetRandomCurrencyImageAsync(pw);
@@ -238,7 +219,7 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
 
                         var res = await AddPlantToDatabase(channel.GuildId,
                             channel.Id,
-                            _client.CurrentUser.Id,
+                            client.CurrentUser.Id,
                             sent.Id,
                             dropAmount,
                             pw,
@@ -261,12 +242,12 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
     public async Task<long> PickAsync(
         ulong gid,
         ITextChannel ch,
-        ulong uid,
+        ulong userId,
         string pass)
     {
         long amount;
         ulong[] ids;
-        await using (var uow = _db.GetDbContext())
+        await using (var uow = db.GetDbContext())
         {
             // this method will sum all plants with that password,
             // remove them, and get messageids of the removed plants
@@ -274,8 +255,8 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
             pass = pass?.Trim().TrimTo(10, true)?.ToUpperInvariant();
             // gets all plants in this channel with the same password
             var entries = await uow.GetTable<PlantedCurrency>()
-                                   .Where(x => x.ChannelId == ch.Id && pass == x.Password)
-                                   .DeleteWithOutputAsync();
+                .Where(x => x.ChannelId == ch.Id && pass == x.Password)
+                .DeleteWithOutputAsync();
 
             if (!entries.Any())
                 return 0;
@@ -285,14 +266,24 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
         }
 
         if (amount > 0)
-            await _cs.AddAsync(uid, amount, new("currency", "collect"));
+        {
+            await cs.AddAsync(userId, amount, new("currency", "collect"));
+            await quests.ReportActionAsync(userId,
+                QuestEventType.PlantOrPick,
+                new()
+                {
+                    { "type", "pick" },
+                });
+        }
 
 
         try
         {
             _ = ch.DeleteMessagesAsync(ids);
         }
-        catch { }
+        catch
+        {
+        }
 
         // return the amount of currency the user picked
         return amount;
@@ -308,8 +299,8 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
         try
         {
             // get the text
-            var prefix = _cmdHandler.GetPrefix(gid);
-            var msgToSend = GetText(gid, strs.planted(Format.Bold(user), amount + _gss.Data.Currency.Sign));
+            var prefix = cmdHandler.GetPrefix(gid);
+            var msgToSend = GetText(gid, strs.planted(Format.Bold(user), amount + gss.Data.Currency.Sign));
 
             if (amount > 1)
                 msgToSend += " " + GetText(gid, strs.pick_pl(prefix));
@@ -337,7 +328,7 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
     public async Task<bool> PlantAsync(
         ulong gid,
         ITextChannel ch,
-        ulong uid,
+        ulong userId,
         string user,
         long amount,
         string pass)
@@ -349,19 +340,20 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
             return false;
 
         // remove currency from the user who's planting
-        if (await _cs.RemoveAsync(uid, amount, new("put/collect", "put")))
+        if (await cs.RemoveAsync(userId, amount, new("put/collect", "put")))
         {
             // try to send the message with the currency image
             var msgId = await SendPlantMessageAsync(gid, ch, user, amount, pass);
             if (msgId is null)
             {
                 // if it fails it will return null, if it returns null, refund
-                await _cs.AddAsync(uid, amount, new("put/collect", "refund"));
+                await cs.AddAsync(userId, amount, new("put/collect", "refund"));
                 return false;
             }
 
             // if it doesn't fail, put the plant in the database for other people to pick
-            await AddPlantToDatabase(gid, ch.Id, uid, msgId.Value, amount, pass);
+            await AddPlantToDatabase(gid, ch.Id, userId, msgId.Value, amount, pass);
+            await quests.ReportActionAsync(userId, QuestEventType.PlantOrPick, new() { { "type", "plant" } });
 
             return true;
         }
@@ -379,43 +371,42 @@ public class PlantPickService : INService, IExecNoCommand, IReadyExecutor
         string pass,
         bool auto = false)
     {
-        await using var uow = _db.GetDbContext();
+        await using var uow = db.GetDbContext();
 
         PlantedCurrency[] deleted = [];
         if (!string.IsNullOrWhiteSpace(pass) && auto)
         {
             deleted = await uow.GetTable<PlantedCurrency>()
-                               .Where(x => x.GuildId == gid
-                                           && x.ChannelId == cid
-                                           && x.Password != null
-                                           && x.Password.Length == pass.Length)
-                               .DeleteWithOutputAsync();
+                .Where(x => x.GuildId == gid
+                            && x.ChannelId == cid
+                            && x.Password != null
+                            && x.Password.Length == pass.Length)
+                .DeleteWithOutputAsync();
         }
 
         var totalDeletedAmount = deleted.Length == 0 ? 0 : deleted.Sum(x => x.Amount);
 
         await uow.GetTable<PlantedCurrency>()
-                 .InsertAsync(() => new()
-                 {
-                     Amount = totalDeletedAmount + amount,
-                     GuildId = gid,
-                     ChannelId = cid,
-                     Password = pass,
-                     UserId = uid,
-                     MessageId = mid,
-                 });
+            .InsertAsync(() => new()
+            {
+                Amount = totalDeletedAmount + amount,
+                GuildId = gid,
+                ChannelId = cid,
+                Password = pass,
+                UserId = uid,
+                MessageId = mid,
+            });
 
         return (totalDeletedAmount + amount, deleted.Select(x => x.MessageId).ToArray());
     }
 
     public async Task OnReadyAsync()
     {
-        await using var uow = _db.GetDbContext();
+        await using var uow = db.GetDbContext();
         _generationChannels = (await uow.GetTable<GCChannelId>()
-            .Select(x => x.ChannelId)
-            .ToListAsyncLinqToDB())
+                .Select(x => x.ChannelId)
+                .ToListAsyncLinqToDB())
             .ToHashSet()
             .ToConcurrentSet();
-
     }
 }

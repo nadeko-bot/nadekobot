@@ -1112,19 +1112,53 @@ namespace NadekoBot.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserFishItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ItemType = table.Column<int>(type: "INTEGER", nullable: false),
+                    ItemId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsEquipped = table.Column<bool>(type: "INTEGER", nullable: false),
+                    UsesLeft = table.Column<int>(type: "INTEGER", nullable: true),
+                    ExpiresAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserFishItem", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserFishStats",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
-                    Skill = table.Column<int>(type: "INTEGER", nullable: false),
-                    Pole = table.Column<int>(type: "INTEGER", nullable: true),
-                    Bait = table.Column<int>(type: "INTEGER", nullable: true)
+                    Skill = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserFishStats", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserQuest",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    QuestNumber = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    QuestId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Progress = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DateAssigned = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserQuest", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -2236,9 +2270,25 @@ namespace NadekoBot.Migrations.Sqlite
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserFishItem_UserId",
+                table: "UserFishItem",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserFishStats_UserId",
                 table: "UserFishStats",
                 column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserQuest_UserId",
+                table: "UserQuest",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserQuest_UserId_QuestNumber_DateAssigned",
+                table: "UserQuest",
+                columns: new[] { "UserId", "QuestNumber", "DateAssigned" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -2624,7 +2674,13 @@ namespace NadekoBot.Migrations.Sqlite
                 name: "UserBetStats");
 
             migrationBuilder.DropTable(
+                name: "UserFishItem");
+
+            migrationBuilder.DropTable(
                 name: "UserFishStats");
+
+            migrationBuilder.DropTable(
+                name: "UserQuest");
 
             migrationBuilder.DropTable(
                 name: "UserRole");

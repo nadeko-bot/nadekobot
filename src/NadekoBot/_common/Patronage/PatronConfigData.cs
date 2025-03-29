@@ -11,7 +11,7 @@ public partial class PatronConfigData : ICloneable<PatronConfigData>
 
     [Comment("Whether the patronage feature is enabled")]
     public bool IsEnabled { get; set; }
-
-    [Comment("Who can do how much of what")]
-    public Dictionary<int, Dictionary<LimitedFeatureName, QuotaLimit>> Limits { get; set; } = new();
+    
+    [Comment("Quotas for patron system")]
+    public Dictionary<PatronTier, Dictionary<string, int>> Quotas { get; set; } = new();
 }

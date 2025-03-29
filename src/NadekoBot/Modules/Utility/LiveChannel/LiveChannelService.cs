@@ -4,6 +4,7 @@ using LinqToDB.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Patronage;
 using Newtonsoft.Json.Linq;
 
 namespace NadekoBot.Modules.Utility.LiveChannel;
@@ -15,9 +16,10 @@ public class LiveChannelService(
     DbService db,
     DiscordSocketClient client,
     IReplacementService repSvc,
+    IPatronageService patron,
     ShardData shardData) : IReadyExecutor, INService
 {
-    public const int MAX_LIVECHANNELS = 1;
+    public const int DEFAULT_MAX_LIVECHANNELS = 5;
 
     private readonly ConcurrentDictionary<ulong, ConcurrentDictionary<ulong, LiveChannelConfig>> _liveChannels = new();
 
@@ -122,13 +124,13 @@ public class LiveChannelService(
     /// <param name="channelId">ID of the channel</param>
     /// <param name="template">Template text to use for the channel</param>
     /// <returns>True if successfully added, false otherwise</returns>
-    public async Task<bool> AddLiveChannelAsync(ulong guildId, ulong channelId, string template)
+    public async Task<bool> AddLiveChannelAsync(ulong guildId, ulong channelId, ulong guildOwnerId, string template)
     {
         var guildDict = _liveChannels.GetOrAdd(
             guildId,
             _ => new());
 
-        if (!guildDict.ContainsKey(channelId) && guildDict.Count >= MAX_LIVECHANNELS)
+        if (!guildDict.ContainsKey(channelId) && guildDict.Count >= await GetMaxLiveChannels(guildOwnerId))
             return false;
 
         await using var uow = db.GetDbContext();
@@ -193,5 +195,12 @@ public class LiveChannelService(
             .AsNoTracking()
             .Where(x => x.GuildId == guildId)
             .ToListAsyncLinqToDB();
+    }
+
+
+    public async Task<int> GetMaxLiveChannels(ulong guildOwnerId)
+    {
+        var limit = await patron.GetUserLimit("livechannels", guildOwnerId, DEFAULT_MAX_LIVECHANNELS);
+        return limit;
     }
 }

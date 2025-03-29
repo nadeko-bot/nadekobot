@@ -2,21 +2,44 @@
 
 *a,c,f,r,o*
 
-## [6.0.14]
+## [6.1.0] - 28.03.2025
 
 ### Added
+- Added Quest System!
+  - Each user gets a couple of daily quests to complete
+  - There are 10-15 different quests, each day you'll get 3
+  - Upon completion of all dailies, the user will get a boost to timely and vote
+  - `.quests` to see your quests
+- Added Fishing Items!
+  - `.fishop` to see a list of all available items for sale
+  - `.fibuy` to buy an item
+  - `.finv` to see your inventory
+  - `.fiuse` to use an item. You can equip one of each item, except potions
+    - You can equip one of each item
+    - You can equip any number of potions, but they have limited duration and cant be unequiped
+  - `.fili` will show your equipped item names, nad `.fish` will show bonuses
+- Added `.fishlb` to see the top anglers
 - Added `.notify <channel> nicecatch <message>` event
   - It will show all rare fish/trash and all max star fish caught on any server
   - You can use `.notifyphs nicecatch`  to see the list of placeholders you can use while setting a message
   - Example: `.notify #fishfeed nicecatch %user% just caught a %event.fish.stars% %event.fish.name% %event.fish.emoji%`
+- Added prices to `.nczoom`
+- Voting re-added, `.votefeed` to see all votes. Non-trivial setup required, check commits
+- owner only `.massping` command for special situations
 
 ### Changed
 - .notify commands now require Manage Messages permission
 - .notify will now let you know if you can't set a notify message due to a missing channel
+- `.say` will no longer reply
+- `.vote` and `.timely` will now show active bonuses
+- `.lcha` (live channel) limit increased to 5
+- `.nc` will now show instructions
 
 ### Fixed
 - Fixed `.antispamignore` restart persistence
 - Fixed `.notify` events. Only levelup used to work 
+- Fixed `.hangman` misalignment
+- Fixed bank quest
 
 ## [6.0.13] - 23.03.2025
 

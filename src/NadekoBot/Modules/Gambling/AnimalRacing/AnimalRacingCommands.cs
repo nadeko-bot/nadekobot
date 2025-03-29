@@ -4,6 +4,7 @@ using NadekoBot.Modules.Gambling.Common;
 using NadekoBot.Modules.Gambling.Common.AnimalRacing;
 using NadekoBot.Modules.Gambling.Common.AnimalRacing.Exceptions;
 using NadekoBot.Modules.Gambling.Services;
+using NadekoBot.Modules.Games.Quests;
 using NadekoBot.Modules.Games.Services;
 
 namespace NadekoBot.Modules.Gambling;
@@ -17,6 +18,7 @@ public partial class Gambling
         private readonly ICurrencyService _cs;
         private readonly DiscordSocketClient _client;
         private readonly GamesConfigService _gamesConf;
+        private readonly QuestService _quests;
 
         private IUserMessage raceMessage;
 
@@ -24,12 +26,14 @@ public partial class Gambling
             ICurrencyService cs,
             DiscordSocketClient client,
             GamblingConfigService gamblingConf,
-            GamesConfigService gamesConf)
+            GamesConfigService gamesConf,
+            QuestService quests)
             : base(gamblingConf)
         {
             _cs = cs;
             _client = client;
             _gamesConf = gamesConf;
+            _quests = quests;
         }
 
         [Cmd]
@@ -39,11 +43,11 @@ public partial class Gambling
         {
             var (options, _) = OptionsParser.ParseFrom(new RaceOptions(), args);
 
-            var ar = new AnimalRace(options, _cs, _gamesConf.Data.RaceAnimals.Shuffle());
+            var ar = new AnimalRace(options, _cs, _gamesConf.Data.RaceAnimals.Shuffle(), _quests);
             if (!_service.AnimalRaces.TryAdd(ctx.Guild.Id, ar))
                 return Response()
-                       .Error(GetText(strs.animal_race), GetText(strs.animal_race_already_started))
-                       .SendAsync();
+                    .Error(GetText(strs.animal_race), GetText(strs.animal_race_already_started))
+                    .SendAsync();
 
             ar.Initialize();
 
@@ -61,7 +65,9 @@ public partial class Gambling
                                 raceMessage = null;
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                    }
                 });
                 return Task.CompletedTask;
             }
@@ -74,22 +80,22 @@ public partial class Gambling
                 if (race.FinishedUsers[0].Bet > 0)
                 {
                     return Response()
-                           .Embed(CreateEmbed()
-                                         .WithOkColor()
-                                         .WithTitle(GetText(strs.animal_race))
-                                         .WithDescription(GetText(strs.animal_race_won_money(
-                                             Format.Bold(winner.Username),
-                                             winner.Animal.Icon,
-                                             N(race.FinishedUsers[0].Bet * race.Multi))))
-                                         .WithFooter($"x{race.Multi:F2}"))
-                           .SendAsync();
+                        .Embed(CreateEmbed()
+                            .WithOkColor()
+                            .WithTitle(GetText(strs.animal_race))
+                            .WithDescription(GetText(strs.animal_race_won_money(
+                                Format.Bold(winner.Username),
+                                winner.Animal.Icon,
+                                N(race.FinishedUsers[0].Bet * race.Multi))))
+                            .WithFooter($"x{race.Multi:F2}"))
+                        .SendAsync();
                 }
 
                 ar.Dispose();
                 return Response()
-                       .Confirm(GetText(strs.animal_race),
-                           GetText(strs.animal_race_won(Format.Bold(winner.Username), winner.Animal.Icon)))
-                       .SendAsync();
+                    .Confirm(GetText(strs.animal_race),
+                        GetText(strs.animal_race_won(Format.Bold(winner.Username), winner.Animal.Icon)))
+                    .SendAsync();
             }
 
             ar.OnStartingFailed += Ar_OnStartingFailed;
@@ -99,10 +105,10 @@ public partial class Gambling
             _client.MessageReceived += ClientMessageReceived;
 
             return Response()
-                   .Confirm(GetText(strs.animal_race),
-                       GetText(strs.animal_race_starting(options.StartTime)),
-                       footer: GetText(strs.animal_race_join_instr(prefix)))
-                   .SendAsync();
+                .Confirm(GetText(strs.animal_race),
+                    GetText(strs.animal_race_starting(options.StartTime)),
+                    footer: GetText(strs.animal_race_join_instr(prefix)))
+                .SendAsync();
         }
 
         private Task Ar_OnStarted(AnimalRace race)
@@ -110,9 +116,9 @@ public partial class Gambling
             if (race.Users.Count == race.MaxUsers)
                 return Response().Confirm(GetText(strs.animal_race), GetText(strs.animal_race_full)).SendAsync();
             return Response()
-                   .Confirm(GetText(strs.animal_race),
-                       GetText(strs.animal_race_starting_with_x(race.Users.Count)))
-                   .SendAsync();
+                .Confirm(GetText(strs.animal_race),
+                    GetText(strs.animal_race_starting_with_x(race.Users.Count)))
+                .SendAsync();
         }
 
         private async Task Ar_OnStateUpdate(AnimalRace race)
@@ -133,10 +139,10 @@ public partial class Gambling
             else
             {
                 await msg.ModifyAsync(x => x.Embed = CreateEmbed()
-                                                            .WithTitle(GetText(strs.animal_race))
-                                                            .WithDescription(text)
-                                                            .WithOkColor()
-                                                            .Build());
+                    .WithTitle(GetText(strs.animal_race))
+                    .WithDescription(text)
+                    .WithOkColor()
+                    .Build());
             }
         }
 
@@ -166,15 +172,15 @@ public partial class Gambling
                 if (amount > 0)
                 {
                     await Response()
-                          .Confirm(GetText(strs.animal_race_join_bet(ctx.User.Mention,
-                              user.Animal.Icon,
-                              amount + CurrencySign)))
-                          .SendAsync();
+                        .Confirm(GetText(strs.animal_race_join_bet(ctx.User.Mention,
+                            user.Animal.Icon,
+                            amount + CurrencySign)))
+                        .SendAsync();
                 }
                 else
                     await Response()
-                          .Confirm(strs.animal_race_join(ctx.User.Mention, user.Animal.Icon))
-                          .SendAsync();
+                        .Confirm(strs.animal_race_join(ctx.User.Mention, user.Animal.Icon))
+                        .SendAsync();
             }
             catch (ArgumentOutOfRangeException)
             {

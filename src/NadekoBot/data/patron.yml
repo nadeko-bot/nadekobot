@@ -2,35 +2,24 @@
 version: 3
 # Whether the patronage feature is enabled
 isEnabled: false
-# Who can do how much of what
-limits:
-  50:
-    ChatBot:
-      quota: 20000000
-      quotaPeriod: PerMonth
-    ReactionRole:
-      quota: -1
-      quotaPeriod: Total
-    Prune:
-      quota: -1
-      quotaPeriod: PerDay
-  10:
-    ChatBot:
-      quota: 2500000
-      quotaPeriod: PerMonth
-    ReactionRole:
-      quota: 50
-      quotaPeriod: Total
-    Prune:
-      quota: 5
-      quotaPeriod: PerDay
-  2:
-    ChatBot:
-      quota: 1000000
-      quotaPeriod: PerMonth
-    ReactionRole:
-      quota: 25
-      quotaPeriod: Total
-    Prune:
-      quota: 2
-      quotaPeriod: PerDay
+# Quotas for patron system
+quotas:
+  None: 
+  I:
+    livechannels: 1
+    ai: 0
+  V:
+    livechannels: 2
+    ai: 50
+  X:
+    livechannels: 5
+    ai: 100
+  XX:
+    livechannels: 5
+    ai: 200
+  L:
+    livechannels: 5
+    ai: 500
+  C:
+    livechannels: 5
+    ai: -1

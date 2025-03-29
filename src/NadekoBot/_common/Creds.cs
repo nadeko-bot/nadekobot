@@ -6,7 +6,7 @@ namespace NadekoBot.Common;
 public sealed class Creds : IBotCreds
 {
     [Comment("""DO NOT CHANGE""")]
-    public int Version { get; set; } = 13;
+    public int Version { get; set; } = 21;
 
     [Comment("""Bot token. Do not share with anyone ever -> https://discordapp.com/developers/applications/""")]
     public string Token { get; set; }
@@ -175,7 +175,7 @@ public sealed class Creds : IBotCreds
         OwnerIds = new List<ulong>();
         TotalShards = 1;
         GoogleApiKey = string.Empty;
-        Votes = new VotesSettings(string.Empty, string.Empty, string.Empty, string.Empty);
+        Votes = new VotesSettings();
         Patreon = new PatreonSettings(string.Empty, string.Empty, string.Empty, string.Empty);
         BotListToken = string.Empty;
         CleverbotApiKey = string.Empty;
@@ -246,47 +246,10 @@ public sealed class Creds : IBotCreds
 
     public sealed record VotesSettings : IVotesSettings
     {
-        [Comment("""
-                 top.gg votes service url
-                 This is the url of your instance of the NadekoBot.Votes api
-                 Example: https://votes.my.cool.bot.com
-                 """)]
-        public string TopggServiceUrl { get; set; }
-
-        [Comment("""
-                 Authorization header value sent to the TopGG service url with each request
-                 This should be equivalent to the TopggKey in your NadekoBot.Votes api appsettings.json file
-                 """)]
-        public string TopggKey { get; set; }
-
-        [Comment("""
-                 discords.com votes service url
-                 This is the url of your instance of the NadekoBot.Votes api
-                 Example: https://votes.my.cool.bot.com
-                 """)]
-        public string DiscordsServiceUrl { get; set; }
-
-        [Comment("""
-                 Authorization header value sent to the Discords service url with each request
-                 This should be equivalent to the DiscordsKey in your NadekoBot.Votes api appsettings.json file
-                 """)]
-        public string DiscordsKey { get; set; }
-
-        public VotesSettings()
-        {
-        }
-
-        public VotesSettings(
-            string topggServiceUrl,
-            string topggKey,
-            string discordsServiceUrl,
-            string discordsKey)
-        {
-            TopggServiceUrl = topggServiceUrl;
-            TopggKey = topggKey;
-            DiscordsServiceUrl = discordsServiceUrl;
-            DiscordsKey = discordsKey;
-        }
+        public string Host { get; set; }
+        public int Port {get; set; }
+        public string DblApiKey { get; set; }
+        public string DiscordsApiKey { get; set; }
     }
 
     public sealed record GrpcApiConfig

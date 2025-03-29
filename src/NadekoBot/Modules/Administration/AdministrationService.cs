@@ -1,7 +1,5 @@
 ﻿#nullable disable
-using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Administration._common.results;
@@ -10,8 +8,8 @@ namespace NadekoBot.Modules.Administration;
 
 public class AdministrationService : INService, IReadyExecutor
 {
-    private ConcurrentHashSet<ulong> deleteMessagesOnCommand;
-    private ConcurrentDictionary<ulong, bool> delMsgOnCmdChannels;
+    private ConcurrentHashSet<ulong> _deleteMessagesOnCommand;
+    private ConcurrentDictionary<ulong, bool> _delMsgOnCmdChannels;
 
     private readonly DbService _db;
     private readonly IReplacementService _repSvc;
@@ -39,31 +37,32 @@ public class AdministrationService : INService, IReadyExecutor
     public async Task OnReadyAsync()
     {
         await using var uow = _db.GetDbContext();
-        deleteMessagesOnCommand = new(await uow.GetTable<GuildConfig>()
-                                         .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId) && x.DeleteMessageOnCommand)
-                                         .Select(x => x.GuildId)
-                                         .ToListAsyncLinqToDB());
+        _deleteMessagesOnCommand = new(await uow.GetTable<GuildConfig>()
+            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId) &&
+                        x.DeleteMessageOnCommand)
+            .Select(x => x.GuildId)
+            .ToListAsyncLinqToDB());
 
-        delMsgOnCmdChannels = (await uow.GetTable<DelMsgOnCmdChannel>()
-                                                   .Where(x => deleteMessagesOnCommand.Contains(x.GuildId))
-                                                   .ToDictionaryAsyncLinqToDB(x => x.ChannelId, x => x.State))
-                                                   .ToConcurrent();
+        _delMsgOnCmdChannels = (await uow.GetTable<DelMsgOnCmdChannel>()
+                .Where(x => _deleteMessagesOnCommand.Contains(x.GuildId))
+                .ToDictionaryAsyncLinqToDB(x => x.ChannelId, x => x.State))
+            .ToConcurrent();
 
         _cmdHandler.CommandExecuted += DelMsgOnCmd_Handler;
     }
 
     public async Task<(bool DelMsgOnCmd, IEnumerable<DelMsgOnCmdChannel> channels)> GetDelMsgOnCmdData(ulong guildId)
     {
-        using var uow = _db.GetDbContext();
+        await using var uow = _db.GetDbContext();
 
         var conf = await uow.GetTable<GuildConfig>()
-        .Where(x => x.GuildId == guildId)
-        .Select(x => x.DeleteMessageOnCommand)
-        .FirstOrDefaultAsyncLinqToDB();
+            .Where(x => x.GuildId == guildId)
+            .Select(x => x.DeleteMessageOnCommand)
+            .FirstOrDefaultAsyncLinqToDB();
 
         var channels = await uow.GetTable<DelMsgOnCmdChannel>()
-        .Where(x => x.GuildId == guildId)
-        .ToListAsyncLinqToDB();
+            .Where(x => x.GuildId == guildId)
+            .ToListAsyncLinqToDB();
 
         return (conf, channels);
     }
@@ -76,50 +75,50 @@ public class AdministrationService : INService, IReadyExecutor
         _ = Task.Run(async () =>
         {
             //wat ?!
-            if (delMsgOnCmdChannels.TryGetValue(channel.Id, out var state))
+            if (_delMsgOnCmdChannels.TryGetValue(channel.Id, out var state))
             {
                 if (state && cmd.Name != "prune" && cmd.Name != "pick")
                 {
                     _logService.AddDeleteIgnore(msg.Id);
                     try
-                    { await msg.DeleteAsync(); }
-                    catch { }
+                    {
+                        await msg.DeleteAsync();
+                    }
+                    catch
+                    {
+                    }
                 }
                 //if state is false, that means do not do it
             }
-            else if (deleteMessagesOnCommand.Contains(channel.Guild.Id) && cmd.Name != "prune" && cmd.Name != "pick")
+            else if (_deleteMessagesOnCommand.Contains(channel.Guild.Id) && cmd.Name != "prune" && cmd.Name != "pick")
             {
                 _logService.AddDeleteIgnore(msg.Id);
                 try
-                { await msg.DeleteAsync(); }
-                catch { }
+                {
+                    await msg.DeleteAsync();
+                }
+                catch
+                {
+                }
             }
         });
         return Task.CompletedTask;
     }
 
-    public async Task<bool> ToggleDeleteMessageOnCommand(ulong guildId)
+    public async Task<bool> ToggleDelMsgOnCmd(ulong guildId)
     {
-        using var uow = _db.GetDbContext();
+        await using var uow = _db.GetDbContext();
 
-        var conf = await uow.GetTable<GuildConfig>()
-            .Where(x => x.GuildId == guildId)
-            .UpdateWithOutputAsync(x => new()
-            {
-                DeleteMessageOnCommand = !x.DeleteMessageOnCommand
-            }, (old, newVal) => newVal);
+        var gc = uow.GuildConfigsForId(guildId);
+        gc.DeleteMessageOnCommand = !gc.DeleteMessageOnCommand;
 
-        if (conf.Length == 0)
-            return false;
-
-        var val = conf[0].DeleteMessageOnCommand;
-
-        if (val)
-            deleteMessagesOnCommand.Add(guildId);
+        if (gc.DeleteMessageOnCommand)
+            _deleteMessagesOnCommand.Add(guildId);
         else
-            deleteMessagesOnCommand.TryRemove(guildId);
+            _deleteMessagesOnCommand.TryRemove(guildId);
 
-        return val;
+        await uow.SaveChangesAsync();
+        return gc.DeleteMessageOnCommand;
     }
 
     public async Task SetDelMsgOnCmdState(ulong guildId, ulong chId, Administration.State newState)
@@ -151,7 +150,7 @@ public class AdministrationService : INService, IReadyExecutor
                 }
 
                 old.State = newState == Administration.State.Enable;
-                delMsgOnCmdChannels[chId] = newState == Administration.State.Enable;
+                _delMsgOnCmdChannels[chId] = newState == Administration.State.Enable;
             }
 
             await uow.SaveChangesAsync();
@@ -162,11 +161,11 @@ public class AdministrationService : INService, IReadyExecutor
         }
         else if (newState == Administration.State.Enable)
         {
-            delMsgOnCmdChannels[chId] = true;
+            _delMsgOnCmdChannels[chId] = true;
         }
         else
         {
-            delMsgOnCmdChannels.TryRemove(chId, out _);
+            _delMsgOnCmdChannels.TryRemove(chId, out _);
         }
     }
 
@@ -249,5 +248,6 @@ public class AdministrationService : INService, IReadyExecutor
         return SetServerIconResult.Success;
     }
 
-    private bool IsValidUri(string img) => !string.IsNullOrWhiteSpace(img) && Uri.IsWellFormedUriString(img, UriKind.Absolute);
+    private bool IsValidUri(string img)
+        => !string.IsNullOrWhiteSpace(img) && Uri.IsWellFormedUriString(img, UriKind.Absolute);
 }

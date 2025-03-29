@@ -1,4 +1,3 @@
-#nullable disable
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
@@ -30,39 +29,38 @@ public sealed class GuildFilterConfigEntityConfiguration : IEntityTypeConfigurat
 public class GuildConfig : DbEntity
 {
     public ulong GuildId { get; set; }
-    public string Prefix { get; set; }
+    public string? Prefix { get; set; } = null;
 
-    public bool DeleteMessageOnCommand { get; set; }
+    public bool DeleteMessageOnCommand { get; set; } = false;
 
-    public string AutoAssignRoleIds { get; set; }
-
+    public string? AutoAssignRoleIds { get; set; } = null;
     public bool VerbosePermissions { get; set; } = true;
-    public string PermissionRole { get; set; }
+    public string? PermissionRole { get; set; } = null;
 
     //filtering
-    public string MuteRoleName { get; set; }
+    public string? MuteRoleName { get; set; } = null;
 
     // chatterbot
-    public bool CleverbotEnabled { get; set; }
+    public bool CleverbotEnabled { get; set; } = false;
 
     // aliases
-    public bool WarningsInitialized { get; set; }
+    public bool WarningsInitialized { get; set; } = false;
 
-    public ulong? GameVoiceChannel { get; set; }
+    public ulong? GameVoiceChannel { get; set; } = null;
     public bool VerboseErrors { get; set; } = true;
 
 
-    public bool NotifyStreamOffline { get; set; }
-    public bool DeleteStreamOnlineMessage { get; set; }
-    public int WarnExpireHours { get; set; }
+    public bool NotifyStreamOffline { get; set; } = true;
+    public bool DeleteStreamOnlineMessage { get; set; } = false;
+    public int WarnExpireHours { get; set; } = 0;
     public WarnExpireAction WarnExpireAction { get; set; } = WarnExpireAction.Clear;
 
     public bool DisableGlobalExpressions { get; set; } = false;
 
-    public bool StickyRoles { get; set; }
-    
-    public string TimeZoneId { get; set; }
-    public string Locale { get; set; }
+    public bool StickyRoles { get; set; } = false;
+
+    public string? TimeZoneId { get; set; } = null;
+    public string? Locale { get; set; } = null;
 
     public List<Permissionv2> Permissions { get; set; } = [];
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -25,20 +26,58 @@ namespace NadekoBot.VotesApi
             : base(options, logger, encoder)
             => _conf = conf;
 
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            if (!Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                return AuthenticateResult.Fail("Authorization header missing");
+            }
+
+            var authToken = authHeader.ToString().Trim();
+            if (string.IsNullOrWhiteSpace(authToken))
+            {
+                return AuthenticateResult.Fail("Authorization token empty");
+            }
+
             var claims = new List<Claim>();
 
-            if (_conf[ConfKeys.DISCORDS_KEY].Trim() == Request.Headers["Authorization"].ToString().Trim())
-                claims.Add(new(DiscordsClaim, "true"));
+            var discsKey = _conf[ConfKeys.DISCORDS_KEY]?.Trim();
+            var topggKey = _conf[ConfKeys.TOPGG_KEY]?.Trim();
+            var dblKey = _conf[ConfKeys.DISCORDBOTLIST_KEY]?.Trim();
 
-            if (_conf[ConfKeys.TOPGG_KEY] == Request.Headers["Authorization"].ToString().Trim())
+            if (!string.IsNullOrWhiteSpace(discsKey)
+                && System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(
+                    Encoding.UTF8.GetBytes(discsKey),
+                    Encoding.UTF8.GetBytes(authToken)))
+            {
+                claims.Add(new Claim(DiscordsClaim, "true"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(topggKey)
+                && System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(
+                    Encoding.UTF8.GetBytes(topggKey),
+                    Encoding.UTF8.GetBytes(authToken)))
+            {
                 claims.Add(new Claim(TopggClaim, "true"));
-            
-            if(_conf[ConfKeys.DISCORDBOTLIST_KEY] == Request.Headers["Authorization"].ToString().Trim())
-                claims.Add(new Claim(DiscordbotlistClaim, "true"));
+            }
 
-            return Task.FromResult(AuthenticateResult.Success(new(new(new ClaimsIdentity(claims)), SchemeName)));
+            if (!string.IsNullOrWhiteSpace(dblKey)
+                && System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(
+                    Encoding.UTF8.GetBytes(dblKey),
+                    Encoding.UTF8.GetBytes(authToken)))
+            {
+                claims.Add(new Claim(DiscordbotlistClaim, "true"));
+            }
+
+            if (claims.Count == 0)
+            {
+                return AuthenticateResult.Fail("Invalid authorization token");
+            }
+
+            return AuthenticateResult.Success(
+                new AuthenticationTicket(
+                    new ClaimsPrincipal(new ClaimsIdentity(claims)),
+                    SchemeName));
         }
     }
 }

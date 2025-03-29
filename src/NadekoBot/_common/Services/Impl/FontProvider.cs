@@ -6,6 +6,7 @@ namespace NadekoBot.Services;
 public class FontProvider : INService
 {
     public FontFamily NotoSans { get; }
+    public FontFamily Symbola { get; }
     public List<FontFamily> FallBackFonts { get; }
     private readonly FontCollection _fonts;
 
@@ -14,6 +15,7 @@ public class FontProvider : INService
         _fonts = new();
 
         NotoSans = _fonts.Add("data/fonts/NotoSans-Bold.ttf");
+        Symbola = _fonts.Add("data/fonts/Symbola-10.24.ttf");
 
         FallBackFonts = new();
 
@@ -27,7 +29,9 @@ public class FontProvider : INService
                 FallBackFonts.AddRange(_fonts.AddCollection(Path.Combine(fontsfolder, "msgothic.ttc")));
                 FallBackFonts.AddRange(_fonts.AddCollection(Path.Combine(fontsfolder, "segoe.ttc")));
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         // any fonts present in data/fonts should be added as fallback fonts

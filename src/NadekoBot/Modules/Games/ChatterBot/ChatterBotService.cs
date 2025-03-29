@@ -145,7 +145,7 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
             if (!res.IsAllowed)
                 return false;
 
-            if (!await _ps.LimitHitAsync(LimitedFeatureName.ChatBot, usrMsg.Author.Id, 2048 / 2))
+            if (!await _ps.LimitHitAsync("ai", guild.OwnerId, 1))
             {
                 // limit exceeded
                 return false;
@@ -156,14 +156,6 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
 
             if (response.TryPickT0(out var result, out var error))
             {
-                // calculate the diff in case we overestimated user's usage
-                var inTokens = (result.TokensIn - 2048) / 2;
-
-                // add the output tokens to the limit
-                await _ps.LimitForceHit(LimitedFeatureName.ChatBot,
-                    usrMsg.Author.Id,
-                    (inTokens) + (result.TokensOut / 2 * 3));
-
                 await _sender.Response(channel)
                     .Confirm(result.Text)
                     .SendAsync();
