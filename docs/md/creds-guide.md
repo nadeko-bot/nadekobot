@@ -30,3 +30,6 @@ This guide will show you how to create your own discord bot, invite it to your s
     - The link should now look something like this: `https://discordapp.com/oauth2/authorize?client_id=123123123123&scope=bot&permissions=66186303`
 - Access that newly created link, pick your Discord server, click `Authorize` and confirm with the captcha at the end.
 - The bot should now be in your server!
+
+
+[DiscordApp]: https://discordapp.com/developers/applications/me
