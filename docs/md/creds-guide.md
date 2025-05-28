@@ -5,7 +5,7 @@ This guide will show you how to create your own discord bot, invite it to your s
 1. Go to [the Discord developer application page][DiscordApp].
 2. Log in with your Discord account.
 3. Click **New Application**.
-4. Fill out the `Name` field however you like, accept the terms, and confirm.
+4. Fill out the **Name** field however you like, accept the terms, and confirm.
 5. Go to the **Bot** tab on the left sidebar.
 6. **Optional:** Add bot's avatar and description.
 7. Click the **Reset Token** button, select **Yes, do it!** to confirm token reset, then copy the token that is revealed.
