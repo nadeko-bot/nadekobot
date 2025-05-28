@@ -33,7 +33,7 @@
 
 6. When installation is finished, click on **`CREDS`** (`1`) above the **`RUN`** (`3`) button on the lower left
     - **`2`** simply opens your bot's data folder.
-7. Paste in your **BOT TOKEN** previously obtained
+7. Paste in your **BOT TOKEN** previously obtained via [Creating a Discord Bot & Getting Credentials](#creating-your-own-discord-bot), then save your changes.
 
 ## Starting NadekoBot
 
