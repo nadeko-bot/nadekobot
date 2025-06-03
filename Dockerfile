@@ -34,7 +34,7 @@ RUN apk add --no-cache ffmpeg libsodium
 # Required dependencies
 # icu-libs is required for globalization
 RUN apk update; \
-    apk add --no-cache libstdc++ libgcc icu-libs libc6-compat \
+    apk add --no-cache libstdc++ libgcc icu-libs libc6-compat tzdata\
     && rm -rf /var/cache/apk/*;
 
 COPY --from=build /app ./
