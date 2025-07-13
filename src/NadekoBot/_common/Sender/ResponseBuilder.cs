@@ -8,13 +8,14 @@ public sealed partial class ResponseBuilder
     private IMessageChannel? channel;
     private IUser? user;
     private IUserMessage? msg;
-    
+
     private string? plainText;
     private IReadOnlyCollection<EmbedBuilder>? embeds;
     private bool sanitizeMentions = true;
     private LocStr? locTxt;
     private object[] locParams = [];
     private bool shouldReply = true;
+    private bool shouldSplit = false;
     private readonly IBotStrings _bs;
     private readonly IMessageSenderService _sender;
     private EmbedBuilder? embedBuilder;
@@ -78,6 +79,7 @@ public sealed partial class ResponseBuilder
             MessageReference = msgReference,
             Text = txt,
             User = user ?? ctx?.User,
+            Split = shouldSplit,
             Embed = finalEmbed,
             Embeds = embeds?.Map(x => x.Build()),
             SanitizeMentions = sanitizeMentions ? new(AllowedMentionTypes.Users) : AllowedMentions.All,
@@ -99,26 +101,42 @@ public sealed partial class ResponseBuilder
 
     public async Task<IUserMessage> SendAsync(ResponseMessageModel model)
     {
-        IUserMessage sentMsg;
+        IUserMessage sentMsg = null;
+        List<string> texts = new List<string>();
+        if (model.Split) {
+            while (model.Text.Length > 2000) {
+                int index = TruncateAtWordIndex(model.Text, 1999);
+                texts.Add(model.Text.Substring(0, index));
+                model.Text = model.Text.Substring(index);
+            }
+            texts.Add(model.Text);
+        }
+        else {
+            texts.Add(model.Text);
+        }
         if (fileStream is Stream stream)
         {
-            sentMsg = await model.TargetChannel.SendFileAsync(stream,
-                filename: fileName,
-                model.Text,
-                embed: model.Embed,
-                components: inter?.CreateComponent(),
-                allowedMentions: model.SanitizeMentions,
-                messageReference: model.MessageReference);
+            foreach (string text in texts) {
+                sentMsg = await model.TargetChannel.SendFileAsync(stream,
+                    filename: fileName,
+                    text,
+                    embed: model.Embed,
+                    components: inter?.CreateComponent(),
+                    allowedMentions: model.SanitizeMentions,
+                    messageReference: model.MessageReference);
+            }
         }
         else
         {
-            sentMsg = await model.TargetChannel.SendMessageAsync(
-                model.Text,
-                embed: model.Embed,
-                embeds: model.Embeds,
-                components: inter?.CreateComponent(),
-                allowedMentions: model.SanitizeMentions,
-                messageReference: model.MessageReference);
+            foreach (string text in texts) {
+                sentMsg = await model.TargetChannel.SendMessageAsync(
+                    text,
+                    embed: model.Embed,
+                    embeds: model.Embeds,
+                    components: inter?.CreateComponent(),
+                    allowedMentions: model.SanitizeMentions,
+                    messageReference: model.MessageReference);
+            }
         }
 
         if (model.Interaction is not null)
@@ -198,7 +216,7 @@ public sealed partial class ResponseBuilder
         string? url = null,
         string? footer = null)
     {
-        var eb = _sender.CreateEmbed(ctx?.Guild?.Id ??  (channel as ITextChannel)?.GuildId ?? (user as IGuildUser)?.GuildId)
+        var eb = _sender.CreateEmbed(ctx?.Guild?.Id ?? (channel as ITextChannel)?.GuildId ?? (user as IGuildUser)?.GuildId)
             .WithDescription(text);
 
         if (!string.IsNullOrWhiteSpace(title))
@@ -360,6 +378,16 @@ public sealed partial class ResponseBuilder
 
     public PaginatedResponseBuilder Paginated()
         => new(this);
+        
+    public ResponseBuilder AutoSplit() {
+        shouldSplit = true;
+        return this;
+    }
+    public int TruncateAtWordIndex(string input, int length)
+    {
+        int iNextSpace = input.LastIndexOf(" ", length, StringComparison.Ordinal);
+        return (iNextSpace > 0) ? iNextSpace : length;
+    }
 }
 
 public class PaginatedResponseBuilder

@@ -27,7 +27,7 @@ public partial class Gambling
 
             if (picked > 0)
             {
-                var msg = await Response().NoReply().Confirm(strs.picked(N(picked), ctx.User)).SendAsync();
+                var msg = await Response().NoReply().Confirm(strs.picked(N(picked), Format.Bold(ctx.User.ToString()))).SendAsync();
                 msg.DeleteAfter(10);
             }
 

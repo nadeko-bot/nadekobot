@@ -157,7 +157,9 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
             if (response.TryPickT0(out var result, out var error))
             {
                 await _sender.Response(channel)
-                    .Confirm(result.Text)
+                    .Text(result.Text)
+                    .AutoSplit()
+                    .UserBasedMentions()
                     .SendAsync();
             }
             else
