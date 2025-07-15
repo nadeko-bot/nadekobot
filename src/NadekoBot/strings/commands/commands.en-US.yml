@@ -2628,6 +2628,14 @@ cleverbot:
     - ''
   params:
     - { }
+resetchatbotsession:
+  desc: |-
+    Resets the current chatbot session.
+    Useful if you are changing the chatbot config, or if you need to clear bot's context.
+  ex:
+    - ''
+  params:
+    - { }
 shorten:
   desc: Attempts to shorten an URL, if it fails, returns the input URL.
   ex:

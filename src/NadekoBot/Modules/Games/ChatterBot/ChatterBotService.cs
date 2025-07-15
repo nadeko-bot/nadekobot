@@ -226,6 +226,15 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
         return true;
     }
 
+    public bool ResetChatterBot(ulong guildId)
+    {
+        if (_gcs.Data.ChatBot == ChatBotImplementation.Cleverbot) return false;
+
+        _chatterBotGuilds.TryRemove(guildId, out _);
+        GetOrCreateSession(guildId);
+        return true;
+    }
+
     public async Task OnReadyAsync()
     {
         await using var uow = _db.GetDbContext();
