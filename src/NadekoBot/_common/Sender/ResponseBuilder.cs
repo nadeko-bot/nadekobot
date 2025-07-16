@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Discord.Rest;
 using Discord.Webhook;
+using DryIoc.ImTools;
 using SixLabors.ImageSharp.PixelFormats;
 using Image = SixLabors.ImageSharp.Image;
 
@@ -117,55 +118,77 @@ public sealed partial class ResponseBuilder
 
     public async Task<IUserMessage> SendAsync(ResponseMessageModel model)
     {
-        IUserMessage sentMsg = null;
-        List<string> texts = new List<string>();
-        if (shouldSplit)
+        IUserMessage sentMsg;
+        List<string> texts = [];
+        if (model.Text is not null)
         {
-            while (model.Text.Length > 2000)
+            if (shouldSplit)
             {
-                int index = TruncateAtWordIndex(model.Text, 1999);
-                texts.Add(model.Text.Substring(0, index));
-                model.Text = model.Text.Substring(index);
+                while (model.Text.Length > 2000)
+                {
+                    int index = TruncateAtWordIndex(model.Text, 1999);
+                    texts.Add(model.Text.Substring(0, index));
+                    model.Text = model.Text.Substring(index);
+                }
+                texts.Add(model.Text);
             }
-            texts.Add(model.Text);
+            else
+            {
+                texts.Add(model.Text);
+            }
         }
         else
         {
-            texts.Add(model.Text);
+            texts.Add("");
         }
         if (fileStream is Stream stream)
         {
-            foreach (string text in texts)
+            for (var i = 0; i < (texts.Count - 1); i++)
             {
-                sentMsg = await model.TargetChannel.SendMessageAsync(
-                    text,
-                    embed: model.Embed,
-                    components: inter?.CreateComponent(),
-                    allowedMentions: model.SanitizeMentions,
-                    messageReference: model.MessageReference);
+                if (i != texts.Count - 1)
+                {
+                    await model.TargetChannel.SendMessageAsync(
+                        text: texts[i],
+                        allowedMentions: model.SanitizeMentions,
+                        messageReference: model.MessageReference);
+                }
             }
-            //Send file last.
-            sentMsg = await model.TargetChannel.SendFileAsync(stream, filename: fileName);
+            sentMsg = await model.TargetChannel.SendFileAsync(
+                        stream,
+                        filename: fileName,
+                        text: texts[^1],
+                        embed: model.Embed,
+                        components: inter?.CreateComponent(),
+                        allowedMentions: model.SanitizeMentions,
+                        messageReference: model.MessageReference);
+            if (model.Interaction is not null)
+            {
+                await model.Interaction.RunAsync(sentMsg);
+            }
+
+            return sentMsg;
         }
-        else
+
+        for(var i = 0; i < (texts.Count - 1); i++)
         {
-            foreach (string text in texts)
-            {
-                sentMsg = await model.TargetChannel.SendMessageAsync(
-                    text,
-                    embed: model.Embed,
-                    embeds: model.Embeds,
-                    components: inter?.CreateComponent(),
-                    allowedMentions: model.SanitizeMentions,
-                    messageReference: model.MessageReference);
-            }
+            await model.TargetChannel.SendMessageAsync(
+                texts[i],
+                allowedMentions: model.SanitizeMentions,
+                messageReference: model.MessageReference);
         }
+        
+        sentMsg = await model.TargetChannel.SendMessageAsync(
+            texts[^1],
+            embed: model.Embed,
+            embeds: model.Embeds,
+            components: inter?.CreateComponent(),
+            allowedMentions: model.SanitizeMentions,
+            messageReference: model.MessageReference);
 
         if (model.Interaction is not null)
         {
             await model.Interaction.RunAsync(sentMsg);
         }
-
         return sentMsg;
     }
 
@@ -174,32 +197,40 @@ public sealed partial class ResponseBuilder
         if(usr is null) throw new ArgumentException("Argument Exeception", nameof(usr));
         List<string> texts = new List<string>();
         ulong msgId = 0;
-        if (shouldSplit)
+        if (model.Text is not null)
         {
-            while (model.Text.Length > 2000)
+            if (shouldSplit)
             {
-                int index = TruncateAtWordIndex(model.Text, 1999);
-                texts.Add(model.Text.Substring(0, index));
-                model.Text = model.Text.Substring(index);
+                while (model.Text.Length > 2000)
+                {
+                    int index = TruncateAtWordIndex(model.Text, 1999);
+                    texts.Add(model.Text.Substring(0, index));
+                    model.Text = model.Text.Substring(index);
+                }
+                texts.Add(model.Text);
             }
-            texts.Add(model.Text);
+            else
+            {
+                texts.Add(model.Text);
+            }
         }
         else
         {
-            texts.Add(model.Text);
+            texts.Add("");
         }
         var intChannel = model.TargetChannel as IIntegrationChannel;
-        Stream avatar;
+        Stream? avatar;
 
         try
         {
             var avatarData = await _http.GetByteArrayAsync(usr.RealAvatarUrl());
             avatar = await Image.Load<Rgba32>(avatarData).ToStreamAsync();
         }
-        catch (Exception)
+        catch
         {
             avatar = null;
         }
+        if(intChannel is null) throw new NullReferenceException(nameof(intChannel));
         var webhook = await intChannel.CreateWebhookAsync(usr.UserDisplayName(), avatar);
         var webhookClient = new DiscordWebhookClient(webhook.Id, webhook.Token);
         foreach (var text in texts)

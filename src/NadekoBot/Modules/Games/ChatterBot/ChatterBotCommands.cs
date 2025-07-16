@@ -11,7 +11,6 @@ public partial class Games
     public partial class ChatterBotCommands : NadekoModule<ChatterBotService>
     {
         private readonly DbService _db;
-        private readonly GamesConfigService _gcs;
 
         public ChatterBotCommands(DbService db)
             => _db = db;
