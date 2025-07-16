@@ -75,6 +75,7 @@ public partial class LinkFixerService(DbService db, IMessageSenderService sender
             var authorName = (msg.Author as SocketGuildUser).Nickname ?? msg.Author.GlobalName ?? msg.Author.Username;
             await _sender.Response(msg.Channel)
                 .Text(words.Join(" "))
+                .AutoSplit()
                 .Impersonate(authorName, msg.Author.RealAvatarUrl())
                 .SendImpersonatedAsync();
             await msg.DeleteAsync();
@@ -83,7 +84,7 @@ public partial class LinkFixerService(DbService db, IMessageSenderService sender
         {
             foreach (var url in matchedUrls)
             {
-                //await msg.ReplyAsync(url, allowedMentions: AllowedMentions.None);
+                await msg.ReplyAsync(url, allowedMentions: AllowedMentions.None);
             }
         }
     }
