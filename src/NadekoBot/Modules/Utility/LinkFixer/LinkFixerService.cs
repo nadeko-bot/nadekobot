@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NadekoBot.Common.Configs;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 
@@ -42,35 +43,47 @@ public partial class LinkFixerService(DbService db, IMessageSenderService sender
         if (string.IsNullOrWhiteSpace(content))
             return;
 
-        var words = content.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var lines = content.Split('\n', StringSplitOptions.None);
 
         List<string> matchedUrls = [];
+        string text = "";
         bool replaced = false;
 
-        for (int x = 0; x < words.Length; x++)
+        for (int x = 0; x < lines.Length; x++)
         {
-            var match = FullUrlRegex().Match(words[x]);
-            if (!match.Success)
-                continue;
+            var words = lines[x].Split(' ', StringSplitOptions.None);
+            for (int y = 0; y < words.Length; y++)
+            {
+                string space = y == 0 ? "" : " ";
+                text += space + words[y];
+                if (string.IsNullOrWhiteSpace(words[y]))
+                    continue;
+                var match = FullUrlRegex().Match(words[y]);
+                if (!match.Success)
+                    continue;
 
-            var domain = match.Groups["domain"].Value;
-            if (string.IsNullOrWhiteSpace(domain))
-                continue;
+                var domain = match.Groups["domain"].Value;
+                if (string.IsNullOrWhiteSpace(domain))
+                    continue;
 
-            if (!guildDict.TryGetValue(domain, out var newDomain))
-                continue;
+                if (!guildDict.TryGetValue(domain, out var newDomain))
+                    continue;
 
-            var newUrl = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
-            words[x] = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
-            replaced = true;
-            matchedUrls.Add(newUrl);
+                var newUrl = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
+                words[x] = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
+                replaced = true;
+                matchedUrls.Add(newUrl);
+                
+            }
+            text += '\n';
         }
+        
         try
         {
             if (!replaced) return;
             var authorName = (msg.Author as SocketGuildUser).Nickname ?? msg.Author.GlobalName ?? msg.Author.Username;
             await _sender.Response(msg.Channel)
-                .Text(words.Join(" "))
+                .Text(text.Trim())
                 .AutoSplit()
                 .SendImpersonatedAsync(authorName, msg.Author.RealAvatarUrl());
             await msg.DeleteAsync();
