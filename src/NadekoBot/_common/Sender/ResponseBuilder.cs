@@ -106,10 +106,10 @@ public sealed partial class ResponseBuilder
         return sentMsg;
     }
 
-    public async Task<IMessage> SendImpersonatedAsync(string name, Uri avatarUri)
+    public async Task<IMessage> SendImpersonatedAsync(IUser usr)
     {
         var model = await BuildAsync(false);
-        var sentMsg = await SendImpersonatedAsync(model, name, avatarUri);
+        var sentMsg = await SendImpersonatedAsync(model, usr);
 
         return sentMsg;
     }
@@ -169,8 +169,9 @@ public sealed partial class ResponseBuilder
         return sentMsg;
     }
 
-    public async Task<IMessage> SendImpersonatedAsync(ResponseMessageModel model, string name, Uri avatarUri )
+    public async Task<IMessage> SendImpersonatedAsync(ResponseMessageModel model, IUser usr)
     {
+        if(usr is null) throw new ArgumentException("Argument Exeception", nameof(usr));
         List<string> texts = new List<string>();
         ulong msgId = 0;
         if (shouldSplit)
@@ -192,15 +193,14 @@ public sealed partial class ResponseBuilder
 
         try
         {
-            var avatarData = await _http.GetByteArrayAsync(avatarUri);
+            var avatarData = await _http.GetByteArrayAsync(usr.RealAvatarUrl());
             avatar = await Image.Load<Rgba32>(avatarData).ToStreamAsync();
         }
         catch (Exception)
         {
             avatar = null;
         }
-
-        var webhook = await intChannel.CreateWebhookAsync(name, avatar);
+        var webhook = await intChannel.CreateWebhookAsync(usr.UserDisplayName(), avatar);
         var webhookClient = new DiscordWebhookClient(webhook.Id, webhook.Token);
         foreach (var text in texts)
         {

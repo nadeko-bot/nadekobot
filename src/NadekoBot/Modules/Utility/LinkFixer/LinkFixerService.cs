@@ -82,11 +82,10 @@ public partial class LinkFixerService(DbService db, IMessageSenderService sender
         try
         {
             if (!replaced) return;
-            var authorName = (msg.Author as SocketGuildUser).Nickname ?? msg.Author.GlobalName ?? msg.Author.Username;
             await _sender.Response(msg.Channel)
                 .Text(text.Trim())
                 .AutoSplit()
-                .SendImpersonatedAsync(authorName, msg.Author.RealAvatarUrl());
+                .SendImpersonatedAsync(msg.Author);
             await msg.DeleteAsync();
         }
         catch
