@@ -349,6 +349,8 @@
   "category": "Category",
   "chatbot_disabled": "Disabled chatbot on this server.",
   "chatbot_enabled": "Enabled chatbot on this server.",
+  "chatbot_reset": "Chatbot session has been cleared.",
+  "chatbot_reset_failed": "Unable to reset chatbot session.",
   "curgen_disabled": "Currency generation has been disabled on this channel.",
   "curgen_enabled": "Currency generation has been enabled on this channel.",
   "curgen_pl": "{0} random {1} appeared!",

@@ -1,4 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
+using Discord.Rest;
+using Discord.Webhook;
+using DryIoc.ImTools;
+using SixLabors.ImageSharp.PixelFormats;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace NadekoBot.Extensions;
 
@@ -8,13 +15,15 @@ public sealed partial class ResponseBuilder
     private IMessageChannel? channel;
     private IUser? user;
     private IUserMessage? msg;
-    
+
     private string? plainText;
     private IReadOnlyCollection<EmbedBuilder>? embeds;
     private bool sanitizeMentions = true;
     private LocStr? locTxt;
     private object[] locParams = [];
     private bool shouldReply = true;
+    private bool shouldSplit = false;
+    private HttpClient _http;
     private readonly IBotStrings _bs;
     private readonly IMessageSenderService _sender;
     private EmbedBuilder? embedBuilder;
@@ -23,6 +32,7 @@ public sealed partial class ResponseBuilder
     private string? fileName;
     private EmbedColor color = EmbedColor.Ok;
     private LocStr? embedLocDesc;
+    private MessageFlags flags = 0;
 
     public DiscordSocketClient Client { get; set; }
 
@@ -31,6 +41,7 @@ public sealed partial class ResponseBuilder
         _bs = bs;
         _sender = sender;
         Client = client;
+        _http = new HttpClient();
     }
 
 
@@ -82,7 +93,7 @@ public sealed partial class ResponseBuilder
             Embeds = embeds?.Map(x => x.Build()),
             SanitizeMentions = sanitizeMentions ? new(AllowedMentionTypes.Users) : AllowedMentions.All,
             Ephemeral = ephemeral,
-            Interaction = inter
+            Interaction = inter,
         };
 
         return buildModel;
@@ -97,36 +108,146 @@ public sealed partial class ResponseBuilder
         return sentMsg;
     }
 
+    public async Task<IMessage> SendImpersonatedAsync(IUser usr)
+    {
+        var model = await BuildAsync(false);
+        var sentMsg = await SendImpersonatedAsync(model, usr);
+
+        return sentMsg;
+    }
+
+
     public async Task<IUserMessage> SendAsync(ResponseMessageModel model)
     {
         IUserMessage sentMsg;
-        if (fileStream is Stream stream)
+        List<string> texts = [];
+        if (model.Text is not null)
         {
-            sentMsg = await model.TargetChannel.SendFileAsync(stream,
-                filename: fileName,
-                model.Text,
-                embed: model.Embed,
-                components: inter?.CreateComponent(),
-                allowedMentions: model.SanitizeMentions,
-                messageReference: model.MessageReference);
+            if (shouldSplit)
+            {
+                while (model.Text.Length > 2000)
+                {
+                    int index = TruncateAtWordIndex(model.Text, 1999);
+                    texts.Add(model.Text.Substring(0, index));
+                    model.Text = model.Text.Substring(index);
+                }
+                texts.Add(model.Text);
+            }
+            else
+            {
+                texts.Add(model.Text);
+            }
         }
         else
         {
-            sentMsg = await model.TargetChannel.SendMessageAsync(
-                model.Text,
+            texts.Add("");
+        }
+        if (fileStream is Stream stream)
+        {
+            for (var i = 0; i < (texts.Count - 1); i++)
+            {
+                if (i != texts.Count - 1)
+                {
+                    await model.TargetChannel.SendMessageAsync(
+                        text: texts[i],
+                        allowedMentions: model.SanitizeMentions,
+                        messageReference: model.MessageReference,
+                        flags: flags);
+                }
+            }
+            sentMsg = await model.TargetChannel.SendFileAsync(
+                stream,
+                filename: fileName,
+                text: texts[^1],
                 embed: model.Embed,
-                embeds: model.Embeds,
                 components: inter?.CreateComponent(),
                 allowedMentions: model.SanitizeMentions,
-                messageReference: model.MessageReference);
+                messageReference: model.MessageReference,
+                flags: flags);
+            if (model.Interaction is not null)
+            {
+                await model.Interaction.RunAsync(sentMsg);
+            }
+
+            return sentMsg;
         }
+
+        for(var i = 0; i < (texts.Count - 1); i++)
+        {
+            await model.TargetChannel.SendMessageAsync(
+                texts[i],
+                allowedMentions: model.SanitizeMentions,
+                messageReference: model.MessageReference,
+                flags: flags);
+        }
+        
+        sentMsg = await model.TargetChannel.SendMessageAsync(
+            texts[^1],
+            embed: model.Embed,
+            embeds: model.Embeds,
+            components: inter?.CreateComponent(),
+            allowedMentions: model.SanitizeMentions,
+            messageReference: model.MessageReference,
+            flags: flags);
 
         if (model.Interaction is not null)
         {
             await model.Interaction.RunAsync(sentMsg);
         }
-
         return sentMsg;
+    }
+
+    public async Task<IMessage> SendImpersonatedAsync(ResponseMessageModel model, IUser usr)
+    {
+        if(usr is null) throw new ArgumentException("Argument Exeception", nameof(usr));
+        List<string> texts = new List<string>();
+        ulong msgId = 0;
+        if (model.Text is not null)
+        {
+            if (shouldSplit)
+            {
+                while (model.Text.Length > 2000)
+                {
+                    int index = TruncateAtWordIndex(model.Text, 1999);
+                    texts.Add(model.Text.Substring(0, index));
+                    model.Text = model.Text.Substring(index);
+                }
+                texts.Add(model.Text);
+            }
+            else
+            {
+                texts.Add(model.Text);
+            }
+        }
+        else
+        {
+            texts.Add("");
+        }
+        var intChannel = model.TargetChannel as IIntegrationChannel;
+        Stream? avatar;
+
+        try
+        {
+            var avatarData = await _http.GetByteArrayAsync(usr.RealAvatarUrl());
+            avatar = await Image.Load<Rgba32>(avatarData).ToStreamAsync();
+        }
+        catch
+        {
+            avatar = null;
+        }
+        if(intChannel is null) throw new NullReferenceException(nameof(intChannel));
+        var webhook = await intChannel.CreateWebhookAsync(usr.UserDisplayName(), avatar);
+        var webhookClient = new DiscordWebhookClient(webhook.Id, webhook.Token);
+        foreach (var text in texts)
+        {
+            msgId = await webhookClient.SendMessageAsync(text,
+                embeds: model.Embeds,
+                components: inter?.CreateComponent(),
+                allowedMentions: model.SanitizeMentions,
+                flags: flags);
+        }
+        await webhook.DeleteAsync();
+        return await model.TargetChannel.GetMessageAsync(msgId);
     }
 
     private EmbedBuilder PaintEmbedInternal(EmbedBuilder eb)
@@ -198,7 +319,7 @@ public sealed partial class ResponseBuilder
         string? url = null,
         string? footer = null)
     {
-        var eb = _sender.CreateEmbed(ctx?.Guild?.Id ??  (channel as ITextChannel)?.GuildId ?? (user as IGuildUser)?.GuildId)
+        var eb = _sender.CreateEmbed(ctx?.Guild?.Id ?? (channel as ITextChannel)?.GuildId ?? (user as IGuildUser)?.GuildId)
             .WithDescription(text);
 
         if (!string.IsNullOrWhiteSpace(title))
@@ -360,6 +481,21 @@ public sealed partial class ResponseBuilder
 
     public PaginatedResponseBuilder Paginated()
         => new(this);
+
+    public ResponseBuilder AutoSplit() {
+        shouldSplit = true;
+        return this;
+    }
+    public ResponseBuilder SuppressNotification()
+    {
+        flags |= MessageFlags.SuppressNotification;
+        return this;
+    }
+    public int TruncateAtWordIndex(string input, int length)
+    {
+        int iNextSpace = input.LastIndexOf(" ", length, StringComparison.Ordinal);
+        return (iNextSpace > 0) ? iNextSpace : length;
+    }
 }
 
 public class PaginatedResponseBuilder

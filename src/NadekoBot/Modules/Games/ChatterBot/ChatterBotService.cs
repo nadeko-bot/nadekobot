@@ -157,7 +157,9 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
             if (response.TryPickT0(out var result, out var error))
             {
                 await _sender.Response(channel)
-                    .Confirm(result.Text)
+                    .Text(result.Text)
+                    .AutoSplit()
+                    .UserBasedMentions()
                     .SendAsync();
             }
             else
@@ -221,6 +223,15 @@ public class ChatterBotService : IExecOnMessage, IReadyExecutor
             await uow.SaveChangesAsync();
         }
 
+        return true;
+    }
+
+    public bool ResetChatterBot(ulong guildId)
+    {
+        if (_gcs.Data.ChatBot == ChatBotImplementation.Cleverbot) return false;
+
+        _chatterBotGuilds.TryRemove(guildId, out _);
+        GetOrCreateSession(guildId);
         return true;
     }
 

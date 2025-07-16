@@ -18,4 +18,9 @@ public static class UserExtensions
             ? uri
             : null;
     }
+    public static string UserDisplayName(this IUser usr)
+    {
+        var guildUser = usr as SocketGuildUser;
+        return guildUser?.Nickname ?? usr.GlobalName ?? usr.Username;
+    }
 }

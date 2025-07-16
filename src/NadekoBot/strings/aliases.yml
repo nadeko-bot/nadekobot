@@ -1688,3 +1688,5 @@ fishinv:
 fishlb:
   - fishlb
   - filb
+resetchatbotsession:
+  - rcbs

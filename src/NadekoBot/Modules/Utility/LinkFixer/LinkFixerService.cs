@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NadekoBot.Common.Configs;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 
@@ -10,9 +11,10 @@ namespace NadekoBot.Modules.Utility.LinkFixer;
 /// <summary>
 /// Service for managing link fixing functionality
 /// </summary>
-public partial class LinkFixerService(DbService db) : IReadyExecutor, IExecNoCommand, INService
+public partial class LinkFixerService(DbService db, IMessageSenderService sender) : IReadyExecutor, IExecNoCommand, INService
 {
     private readonly ConcurrentDictionary<ulong, ConcurrentDictionary<string, string>> _guildLinkFixes = new();
+    private readonly IMessageSenderService _sender = sender;
 
     public async Task OnReadyAsync()
     {
@@ -41,22 +43,57 @@ public partial class LinkFixerService(DbService db) : IReadyExecutor, IExecNoCom
         if (string.IsNullOrWhiteSpace(content))
             return;
 
-        var words = content.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        foreach (var word in words)
+        var lines = content.Split('\n', StringSplitOptions.None);
+
+        List<string> matchedUrls = [];
+        string text = "";
+        bool replaced = false;
+
+        for (int x = 0; x < lines.Length; x++)
         {
-            var match = FullUrlRegex().Match(word);
-            if (!match.Success)
-                continue;
+            var words = lines[x].Split(' ', StringSplitOptions.None);
+            for (int y = 0; y < words.Length; y++)
+            {
+                if (string.IsNullOrWhiteSpace(words[y]))
+                    continue;
 
-            var domain = match.Groups["domain"].Value;
-            if (string.IsNullOrWhiteSpace(domain))
-                continue;
+                var match = FullUrlRegex().Match(words[y]);
 
-            if (!guildDict.TryGetValue(domain, out var newDomain))
-                continue;
+                if (!match.Success)
+                    continue;
 
-            var newUrl = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
-            await msg.ReplyAsync(newUrl, allowedMentions: AllowedMentions.None);
+                var domain = match.Groups["domain"].Value;
+
+                if (string.IsNullOrWhiteSpace(domain))
+                    continue;
+
+                if (!guildDict.TryGetValue(domain, out var newDomain))
+                    continue;
+
+                var newUrl = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
+                words[y] = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
+                replaced = true;
+                matchedUrls.Add(newUrl);
+            }
+
+            text += words.Join(' ') + '\n';
+        }
+        
+        try
+        {
+            if (!replaced) return;
+            await _sender.Response(msg.Channel)
+                .Text(text.Trim())
+                .AutoSplit()
+                .SendImpersonatedAsync(msg.Author);
+            await msg.DeleteAsync();
+        }
+        catch
+        {
+            foreach (var url in matchedUrls)
+            {
+                await msg.ReplyAsync(url, allowedMentions: AllowedMentions.None);
+            }
         }
     }
 

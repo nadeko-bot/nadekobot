@@ -27,7 +27,7 @@ public partial class Gambling
 
             if (picked > 0)
             {
-                var msg = await Response().NoReply().Confirm(strs.picked(N(picked), ctx.User)).SendAsync();
+                var msg = await Response().NoReply().SuppressNotification().Confirm(strs.picked(N(picked), Format.Bold(ctx.User.UserDisplayName()))).SendAsync();
                 msg.DeleteAfter(10);
             }
 
@@ -61,7 +61,7 @@ public partial class Gambling
             var success = await _service.PlantAsync(ctx.Guild.Id,
                 (ITextChannel)ctx.Channel,
                 ctx.User.Id,
-                ctx.User.ToString(),
+                ctx.User.UserDisplayName(),
                 amount,
                 pass);
 
