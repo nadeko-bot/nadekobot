@@ -72,8 +72,7 @@ public partial class LinkFixerService(DbService db, IMessageSenderService sender
             await _sender.Response(msg.Channel)
                 .Text(words.Join(" "))
                 .AutoSplit()
-                .Impersonate(authorName, msg.Author.RealAvatarUrl())
-                .SendImpersonatedAsync();
+                .SendImpersonatedAsync(authorName, msg.Author.RealAvatarUrl());
             await msg.DeleteAsync();
         }
         catch

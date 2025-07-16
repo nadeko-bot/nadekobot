@@ -22,9 +22,6 @@ public sealed partial class ResponseBuilder
     private object[] locParams = [];
     private bool shouldReply = true;
     private bool shouldSplit = false;
-    private bool shouldImpersonate = false;
-    private string? ImpersonatedName;
-    private Uri? impersonatedAvatar;
     private HttpClient _http;
     private readonly IBotStrings _bs;
     private readonly IMessageSenderService _sender;
@@ -109,10 +106,10 @@ public sealed partial class ResponseBuilder
         return sentMsg;
     }
 
-    public async Task<IMessage> SendImpersonatedAsync()
+    public async Task<IMessage> SendImpersonatedAsync(string name, Uri avatarUri)
     {
         var model = await BuildAsync(false);
-        var sentMsg = await SendImpersonatedAsync(model);
+        var sentMsg = await SendImpersonatedAsync(model, name, avatarUri);
 
         return sentMsg;
     }
@@ -172,9 +169,8 @@ public sealed partial class ResponseBuilder
         return sentMsg;
     }
 
-    public async Task<IMessage> SendImpersonatedAsync(ResponseMessageModel model)
+    public async Task<IMessage> SendImpersonatedAsync(ResponseMessageModel model, string name, Uri avatarUri )
     {
-        IMessage sentMsg = null;
         List<string> texts = new List<string>();
         ulong msgId = 0;
         if (shouldSplit)
@@ -191,34 +187,30 @@ public sealed partial class ResponseBuilder
         {
             texts.Add(model.Text);
         }
-        if (shouldImpersonate)
+        var intChannel = model.TargetChannel as IIntegrationChannel;
+        Stream avatar;
+
+        try
         {
-            var intChannel = model.TargetChannel as IIntegrationChannel;
-            Stream avatar;
-
-            try
-            {
-                var avatarData = await _http.GetByteArrayAsync(impersonatedAvatar);
-                avatar = await Image.Load<Rgba32>(avatarData).ToStreamAsync();
-            }
-            catch (Exception)
-            {
-                avatar = null;
-            }
-
-            var webhook = await intChannel.CreateWebhookAsync(ImpersonatedName, avatar);
-            var webhookClient = new DiscordWebhookClient(webhook.Id, webhook.Token);
-            foreach (var text in texts)
-            {
-                msgId = await webhookClient.SendMessageAsync(text,
-                    embeds: model.Embeds,
-                    components: inter?.CreateComponent(),
-                    allowedMentions: model.SanitizeMentions);
-            }
-            await webhook.DeleteAsync();
-            sentMsg = await model.TargetChannel.GetMessageAsync(msgId);
+            var avatarData = await _http.GetByteArrayAsync(avatarUri);
+            avatar = await Image.Load<Rgba32>(avatarData).ToStreamAsync();
         }
-        return sentMsg;
+        catch (Exception)
+        {
+            avatar = null;
+        }
+
+        var webhook = await intChannel.CreateWebhookAsync(name, avatar);
+        var webhookClient = new DiscordWebhookClient(webhook.Id, webhook.Token);
+        foreach (var text in texts)
+        {
+            msgId = await webhookClient.SendMessageAsync(text,
+                embeds: model.Embeds,
+                components: inter?.CreateComponent(),
+                allowedMentions: model.SanitizeMentions);
+        }
+        await webhook.DeleteAsync();
+        return await model.TargetChannel.GetMessageAsync(msgId);
     }
 
     private EmbedBuilder PaintEmbedInternal(EmbedBuilder eb)
@@ -455,12 +447,6 @@ public sealed partial class ResponseBuilder
 
     public ResponseBuilder AutoSplit() {
         shouldSplit = true;
-        return this;
-    }
-    public ResponseBuilder Impersonate(string name, Uri avatar) {
-        shouldImpersonate = true;
-        impersonatedAvatar = avatar;
-        ImpersonatedName = name;
         return this;
     }
     public int TruncateAtWordIndex(string input, int length)
