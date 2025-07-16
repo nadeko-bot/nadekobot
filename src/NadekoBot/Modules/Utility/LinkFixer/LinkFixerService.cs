@@ -44,10 +44,6 @@ public partial class LinkFixerService(DbService db, IMessageSenderService sender
 
         var words = content.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        //impersonation implementation
-        //todo: replace all with replacement domain - check if any replacements occur, and f'ing send it
-        //if send fails for whatever reason fall back to old method
-
         List<string> matchedUrls = [];
         bool replaced = false;
 
