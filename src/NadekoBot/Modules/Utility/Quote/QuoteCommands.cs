@@ -177,6 +177,14 @@ public partial class Utility
 
             var quotes = await _qs.SearchQuoteKeywordTextAsync(ctx.Guild.Id, keyword, textOrAuthor);
 
+            if (quotes.Count == 0)
+            {
+                await Response()
+                    .Error(strs.quotes_page_none)
+                    .SendAsync();
+                return;
+            }
+
             await Response()
                   .Paginated()
                   .Items(quotes)
