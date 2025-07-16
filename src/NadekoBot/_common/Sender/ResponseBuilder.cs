@@ -32,6 +32,7 @@ public sealed partial class ResponseBuilder
     private string? fileName;
     private EmbedColor color = EmbedColor.Ok;
     private LocStr? embedLocDesc;
+    private MessageFlags flags = 0;
 
     public DiscordSocketClient Client { get; set; }
 
@@ -92,7 +93,7 @@ public sealed partial class ResponseBuilder
             Embeds = embeds?.Map(x => x.Build()),
             SanitizeMentions = sanitizeMentions ? new(AllowedMentionTypes.Users) : AllowedMentions.All,
             Ephemeral = ephemeral,
-            Interaction = inter
+            Interaction = inter,
         };
 
         return buildModel;
@@ -150,17 +151,19 @@ public sealed partial class ResponseBuilder
                     await model.TargetChannel.SendMessageAsync(
                         text: texts[i],
                         allowedMentions: model.SanitizeMentions,
-                        messageReference: model.MessageReference);
+                        messageReference: model.MessageReference,
+                        flags: flags);
                 }
             }
             sentMsg = await model.TargetChannel.SendFileAsync(
-                        stream,
-                        filename: fileName,
-                        text: texts[^1],
-                        embed: model.Embed,
-                        components: inter?.CreateComponent(),
-                        allowedMentions: model.SanitizeMentions,
-                        messageReference: model.MessageReference);
+                stream,
+                filename: fileName,
+                text: texts[^1],
+                embed: model.Embed,
+                components: inter?.CreateComponent(),
+                allowedMentions: model.SanitizeMentions,
+                messageReference: model.MessageReference,
+                flags: flags);
             if (model.Interaction is not null)
             {
                 await model.Interaction.RunAsync(sentMsg);
@@ -174,7 +177,8 @@ public sealed partial class ResponseBuilder
             await model.TargetChannel.SendMessageAsync(
                 texts[i],
                 allowedMentions: model.SanitizeMentions,
-                messageReference: model.MessageReference);
+                messageReference: model.MessageReference,
+                flags: flags);
         }
         
         sentMsg = await model.TargetChannel.SendMessageAsync(
@@ -183,7 +187,8 @@ public sealed partial class ResponseBuilder
             embeds: model.Embeds,
             components: inter?.CreateComponent(),
             allowedMentions: model.SanitizeMentions,
-            messageReference: model.MessageReference);
+            messageReference: model.MessageReference,
+            flags: flags);
 
         if (model.Interaction is not null)
         {
@@ -238,7 +243,8 @@ public sealed partial class ResponseBuilder
             msgId = await webhookClient.SendMessageAsync(text,
                 embeds: model.Embeds,
                 components: inter?.CreateComponent(),
-                allowedMentions: model.SanitizeMentions);
+                allowedMentions: model.SanitizeMentions,
+                flags: flags);
         }
         await webhook.DeleteAsync();
         return await model.TargetChannel.GetMessageAsync(msgId);
@@ -478,6 +484,11 @@ public sealed partial class ResponseBuilder
 
     public ResponseBuilder AutoSplit() {
         shouldSplit = true;
+        return this;
+    }
+    public ResponseBuilder SuppressNotification()
+    {
+        flags |= MessageFlags.SuppressNotification;
         return this;
     }
     public int TruncateAtWordIndex(string input, int length)
