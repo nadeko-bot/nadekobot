@@ -54,15 +54,16 @@ public partial class LinkFixerService(DbService db, IMessageSenderService sender
             var words = lines[x].Split(' ', StringSplitOptions.None);
             for (int y = 0; y < words.Length; y++)
             {
-                string space = y == 0 ? "" : " ";
-                text += space + words[y];
                 if (string.IsNullOrWhiteSpace(words[y]))
                     continue;
+
                 var match = FullUrlRegex().Match(words[y]);
+
                 if (!match.Success)
                     continue;
 
                 var domain = match.Groups["domain"].Value;
+
                 if (string.IsNullOrWhiteSpace(domain))
                     continue;
 
@@ -70,12 +71,12 @@ public partial class LinkFixerService(DbService db, IMessageSenderService sender
                     continue;
 
                 var newUrl = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
-                words[x] = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
+                words[y] = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
                 replaced = true;
                 matchedUrls.Add(newUrl);
-                
             }
-            text += '\n';
+
+            text += words.Join(' ') + '\n';
         }
         
         try
