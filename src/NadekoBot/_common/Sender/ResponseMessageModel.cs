@@ -9,5 +9,4 @@
     public IUser? User { get; set; }
     public bool Ephemeral { get; set; }
     public NadekoInteractionBase? Interaction { get; set; }
-    public bool Split { get; set; }
 }

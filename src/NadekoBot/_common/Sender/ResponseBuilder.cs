@@ -1,4 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
+using Discord.Rest;
+using Discord.Webhook;
+using SixLabors.ImageSharp.PixelFormats;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace NadekoBot.Extensions;
 
@@ -16,6 +22,10 @@ public sealed partial class ResponseBuilder
     private object[] locParams = [];
     private bool shouldReply = true;
     private bool shouldSplit = false;
+    private bool shouldImpersonate = false;
+    private string? ImpersonatedName;
+    private Uri? impersonatedAvatar;
+    private HttpClient _http;
     private readonly IBotStrings _bs;
     private readonly IMessageSenderService _sender;
     private EmbedBuilder? embedBuilder;
@@ -32,6 +42,7 @@ public sealed partial class ResponseBuilder
         _bs = bs;
         _sender = sender;
         Client = client;
+        _http = new HttpClient();
     }
 
 
@@ -79,7 +90,6 @@ public sealed partial class ResponseBuilder
             MessageReference = msgReference,
             Text = txt,
             User = user ?? ctx?.User,
-            Split = shouldSplit,
             Embed = finalEmbed,
             Embeds = embeds?.Map(x => x.Build()),
             SanitizeMentions = sanitizeMentions ? new(AllowedMentionTypes.Users) : AllowedMentions.All,
@@ -99,36 +109,51 @@ public sealed partial class ResponseBuilder
         return sentMsg;
     }
 
+    public async Task<IMessage> SendImpersonatedAsync()
+    {
+        var model = await BuildAsync(false);
+        var sentMsg = await SendImpersonatedAsync(model);
+
+        return sentMsg;
+    }
+
+
     public async Task<IUserMessage> SendAsync(ResponseMessageModel model)
     {
         IUserMessage sentMsg = null;
         List<string> texts = new List<string>();
-        if (model.Split) {
-            while (model.Text.Length > 2000) {
+        if (shouldSplit)
+        {
+            while (model.Text.Length > 2000)
+            {
                 int index = TruncateAtWordIndex(model.Text, 1999);
                 texts.Add(model.Text.Substring(0, index));
                 model.Text = model.Text.Substring(index);
             }
             texts.Add(model.Text);
         }
-        else {
+        else
+        {
             texts.Add(model.Text);
         }
         if (fileStream is Stream stream)
         {
-            foreach (string text in texts) {
-                sentMsg = await model.TargetChannel.SendFileAsync(stream,
-                    filename: fileName,
+            foreach (string text in texts)
+            {
+                sentMsg = await model.TargetChannel.SendMessageAsync(
                     text,
                     embed: model.Embed,
                     components: inter?.CreateComponent(),
                     allowedMentions: model.SanitizeMentions,
                     messageReference: model.MessageReference);
             }
+            //Send file last.
+            sentMsg = await model.TargetChannel.SendFileAsync(stream, filename: fileName);
         }
         else
         {
-            foreach (string text in texts) {
+            foreach (string text in texts)
+            {
                 sentMsg = await model.TargetChannel.SendMessageAsync(
                     text,
                     embed: model.Embed,
@@ -144,6 +169,55 @@ public sealed partial class ResponseBuilder
             await model.Interaction.RunAsync(sentMsg);
         }
 
+        return sentMsg;
+    }
+
+    public async Task<IMessage> SendImpersonatedAsync(ResponseMessageModel model)
+    {
+        IMessage sentMsg = null;
+        List<string> texts = new List<string>();
+        ulong msgId = 0;
+        if (shouldSplit)
+        {
+            while (model.Text.Length > 2000)
+            {
+                int index = TruncateAtWordIndex(model.Text, 1999);
+                texts.Add(model.Text.Substring(0, index));
+                model.Text = model.Text.Substring(index);
+            }
+            texts.Add(model.Text);
+        }
+        else
+        {
+            texts.Add(model.Text);
+        }
+        if (shouldImpersonate)
+        {
+            var intChannel = model.TargetChannel as IIntegrationChannel;
+            Stream avatar;
+
+            try
+            {
+                var avatarData = await _http.GetByteArrayAsync(impersonatedAvatar);
+                avatar = await Image.Load<Rgba32>(avatarData).ToStreamAsync();
+            }
+            catch (Exception)
+            {
+                avatar = null;
+            }
+
+            var webhook = await intChannel.CreateWebhookAsync(ImpersonatedName, avatar);
+            var webhookClient = new DiscordWebhookClient(webhook.Id, webhook.Token);
+            foreach (var text in texts)
+            {
+                msgId = await webhookClient.SendMessageAsync(text,
+                    embeds: model.Embeds,
+                    components: inter?.CreateComponent(),
+                    allowedMentions: model.SanitizeMentions);
+            }
+            await webhook.DeleteAsync();
+            sentMsg = await model.TargetChannel.GetMessageAsync(msgId);
+        }
         return sentMsg;
     }
 
@@ -378,9 +452,15 @@ public sealed partial class ResponseBuilder
 
     public PaginatedResponseBuilder Paginated()
         => new(this);
-        
+
     public ResponseBuilder AutoSplit() {
         shouldSplit = true;
+        return this;
+    }
+    public ResponseBuilder Impersonate(string name, Uri avatar) {
+        shouldImpersonate = true;
+        impersonatedAvatar = avatar;
+        ImpersonatedName = name;
         return this;
     }
     public int TruncateAtWordIndex(string input, int length)

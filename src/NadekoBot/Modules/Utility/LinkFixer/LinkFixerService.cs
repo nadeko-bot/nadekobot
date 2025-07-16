@@ -10,9 +10,10 @@ namespace NadekoBot.Modules.Utility.LinkFixer;
 /// <summary>
 /// Service for managing link fixing functionality
 /// </summary>
-public partial class LinkFixerService(DbService db) : IReadyExecutor, IExecNoCommand, INService
+public partial class LinkFixerService(DbService db, IMessageSenderService sender) : IReadyExecutor, IExecNoCommand, INService
 {
     private readonly ConcurrentDictionary<ulong, ConcurrentDictionary<string, string>> _guildLinkFixes = new();
+    private readonly IMessageSenderService _sender = sender;
 
     public async Task OnReadyAsync()
     {
@@ -42,9 +43,17 @@ public partial class LinkFixerService(DbService db) : IReadyExecutor, IExecNoCom
             return;
 
         var words = content.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        foreach (var word in words)
+
+        //impersonation implementation
+        //todo: replace all with replacement domain - check if any replacements occur, and f'ing send it
+        //if send fails for whatever reason fall back to old method
+
+        List<string> matchedUrls = [];
+        bool replaced = false;
+
+        for (int x = 0; x < words.Length; x++)
         {
-            var match = FullUrlRegex().Match(word);
+            var match = FullUrlRegex().Match(words[x]);
             if (!match.Success)
                 continue;
 
@@ -56,7 +65,26 @@ public partial class LinkFixerService(DbService db) : IReadyExecutor, IExecNoCom
                 continue;
 
             var newUrl = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
-            await msg.ReplyAsync(newUrl, allowedMentions: AllowedMentions.None);
+            words[x] = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
+            replaced = true;
+            matchedUrls.Add(newUrl);
+        }
+        try
+        {
+            if (!replaced) return;
+            var authorName = (msg.Author as SocketGuildUser).Nickname ?? msg.Author.GlobalName ?? msg.Author.Username;
+            await _sender.Response(msg.Channel)
+                .Text(words.Join(" "))
+                .Impersonate(authorName, msg.Author.RealAvatarUrl())
+                .SendImpersonatedAsync();
+            await msg.DeleteAsync();
+        }
+        catch
+        {
+            foreach (var url in matchedUrls)
+            {
+                //await msg.ReplyAsync(url, allowedMentions: AllowedMentions.None);
+            }
         }
     }
 
