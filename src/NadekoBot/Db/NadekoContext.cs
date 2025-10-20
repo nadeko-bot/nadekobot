@@ -69,6 +69,12 @@ public abstract class NadekoContext : DbContext
 
     // public DbSet<GuildColors> GuildColors { get; set; }
 
+    // Starboard
+    public DbSet<StarboardSetting> StarboardSettings { get; set; }
+    public DbSet<StarboardIgnoredChannel> StarboardIgnoredChannels { get; set; }
+    public DbSet<StarboardChannelOverride> StarboardChannelOverrides { get; set; }
+    public DbSet<StarboardMessage> StarboardMessages { get; set; }
+
 
     #region Mandatory Provider-Specific Values
 
@@ -582,6 +588,31 @@ public abstract class NadekoContext : DbContext
             .WithOne()
             .HasForeignKey(x => x.ArchiveId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        #endregion
+
+        #region Starboard
+
+        modelBuilder.Entity<StarboardSetting>(sb =>
+        {
+            sb.HasIndex(x => x.GuildId).IsUnique();
+        });
+
+        modelBuilder.Entity<StarboardIgnoredChannel>(sic =>
+        {
+            sic.HasIndex(x => new { x.GuildId, x.ChannelId }).IsUnique();
+        });
+
+        modelBuilder.Entity<StarboardChannelOverride>(sco =>
+        {
+            sco.HasIndex(x => new { x.GuildId, x.ChannelId }).IsUnique();
+        });
+
+        modelBuilder.Entity<StarboardMessage>(sm =>
+        {
+            sm.HasIndex(x => x.GuildId).IsUnique(false);
+            sm.HasIndex(x => x.SourceMessageId).IsUnique();
+        });
 
         #endregion
 
