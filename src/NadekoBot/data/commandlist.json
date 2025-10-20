@@ -8017,6 +8017,160 @@
     },
     {
       "Aliases": [
+        ".starboard channel"
+      ],
+      "Description": "Sets or clears the starboard channel for this server.",
+      "Usage": [
+        ".starboard channel #starboard",
+        ".starboard channel"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starboard"
+      ],
+      "Description": "Shows the current starboard configuration for this server.",
+      "Usage": [
+        ".starboard"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".starboard enable"
+      ],
+      "Description": "Enables or disables the starboard feature.",
+      "Usage": [
+        ".starboard enable",
+        ".starboard enable false"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starboard threshold"
+      ],
+      "Description": "Sets the number of reactions required for a message to appear on the starboard.",
+      "Usage": [
+        ".starboard threshold 5"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starboard emoji"
+      ],
+      "Description": "Sets the emoji used for the starboard.",
+      "Usage": [
+        ".starboard emoji ⭐"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starboard self"
+      ],
+      "Description": "Allows or disallows users to star their own messages.",
+      "Usage": [
+        ".starboard self",
+        ".starboard self false"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starboard bots"
+      ],
+      "Description": "Allows or disallows bot messages to be starred.",
+      "Usage": [
+        ".starboard bots",
+        ".starboard bots false"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starboard strict"
+      ],
+      "Description": "Enables or disables strict mode for the starboard.",
+      "Usage": [
+        ".starboard strict",
+        ".starboard strict true"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starboard ignore"
+      ],
+      "Description": "Ignores or unignores a channel for the starboard.",
+      "Usage": [
+        ".starboard ignore #general"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starboard channelthreshold"
+      ],
+      "Description": "Sets a custom star threshold for a specific channel.",
+      "Usage": [
+        ".starboard channelthreshold #memes 10",
+        ".starboard channelthreshold #memes"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".streamrole"
       ],
       "Description": "Sets a role which is monitored for streamers (FromRole), and a role to add if a user from 'FromRole' is streaming (AddRole). When a user from 'FromRole' starts streaming, they will receive an 'AddRole'. You can only have 1 Stream Role per server. Provide no parameters to disable",

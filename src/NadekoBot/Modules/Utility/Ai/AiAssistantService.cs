@@ -165,7 +165,7 @@ public sealed class AiAssistantService
             {
                 Name = cmd,
                 Desc = commandStrings.Desc?.Replace("currency", "flowers") ?? string.Empty,
-                Params = commandStrings.Params.FirstOrDefault()
+                Params = commandStrings.Params?.FirstOrDefault()
                                        ?.Select(x => new AiCommandParamModel()
                                        {
                                            Desc = x.Value.Desc,

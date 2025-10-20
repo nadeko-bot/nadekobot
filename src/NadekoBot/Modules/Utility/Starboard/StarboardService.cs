@@ -1,5 +1,4 @@
-using LinqToDB;
-using LinqToDB.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NadekoBot.Db.Models;
 using NadekoBot.Common.ModuleBehaviors;
 
@@ -53,14 +52,14 @@ public sealed class StarboardService : INService, IReadyExecutor
 
         // load guild settings
         var sb = await ctx.Set<StarboardSetting>()
-            .FirstOrDefaultAsyncLinqToDB(x => x.GuildId == textCh.GuildId);
+            .FirstOrDefaultAsync(x => x.GuildId == textCh.GuildId);
 
         if (sb is null || !sb.IsEnabled || sb.StarboardChannelId is null)
             return;
 
         // ignore configured channels
         var ignored = await ctx.Set<StarboardIgnoredChannel>()
-            .AnyAsyncLinqToDB(x => x.GuildId == textCh.GuildId && x.ChannelId == textCh.Id);
+            .AnyAsync(x => x.GuildId == textCh.GuildId && x.ChannelId == textCh.Id);
 
         if (ignored)
             return;
@@ -95,7 +94,7 @@ public sealed class StarboardService : INService, IReadyExecutor
         var overrideThreshold = await ctx.Set<StarboardChannelOverride>()
             .Where(x => x.GuildId == textCh.GuildId && x.ChannelId == textCh.Id)
             .Select(x => x.Threshold)
-            .FirstOrDefaultAsyncLinqToDB();
+            .FirstOrDefaultAsync();
 
         var threshold = overrideThreshold ?? sb.Threshold;
 
@@ -114,25 +113,26 @@ public sealed class StarboardService : INService, IReadyExecutor
 
         // upsert tracked message
         var tracked = await ctx.Set<StarboardMessage>()
-            .FirstOrDefaultAsyncLinqToDB(x => x.SourceMessageId == sourceMessage.Id);
+            .FirstOrDefaultAsync(x => x.SourceMessageId == sourceMessage.Id);
 
         if (tracked is null)
         {
-            tracked = await ctx.Set<StarboardMessage>()
-                .InsertWithOutputAsync(() => new StarboardMessage
-                {
-                    GuildId = textCh.GuildId,
-                    ChannelId = textCh.Id,
-                    SourceMessageId = sourceMessage.Id,
-                    StarCount = count,
-                    AuthorId = sourceMessage.Author.Id,
-                    SnapshotContent = sourceMessage.Content?.TrimTo(2000)
-                });
+            tracked = new StarboardMessage
+            {
+                GuildId = textCh.GuildId,
+                ChannelId = textCh.Id,
+                SourceMessageId = sourceMessage.Id,
+                StarCount = count,
+                AuthorId = sourceMessage.Author.Id,
+                SnapshotContent = sourceMessage.Content?.TrimTo(2000)
+            };
+            ctx.Set<StarboardMessage>().Add(tracked);
+            await ctx.SaveChangesAsync();
         }
         else
         {
             tracked.StarCount = count;
-            await ctx.UpdateAsync(tracked);
+            await ctx.SaveChangesAsync();
         }
 
         // post or update starboard entry
@@ -142,12 +142,26 @@ public sealed class StarboardService : INService, IReadyExecutor
             if (sbChannel is null)
                 return;
 
+            // Build footer: show custom emoji as an icon (footer doesn't render custom emojis in text)
+            string footerTextBase = $"{count} • #{textCh.Name}";
+            string? footerIconUrl = null;
+            var emojiStr = sb.Emoji ?? "⭐";
+            if (Emote.TryParse(emojiStr, out var customEmote))
+            {
+                footerIconUrl = customEmote.Url;
+            }
+            else
+            {
+                // unicode emoji - keep it in the text
+                footerTextBase = $"{emojiStr} {footerTextBase}";
+            }
+
             var eb = _sender.CreateEmbed(textCh.GuildId)
                 .WithOkColor()
                 .WithAuthor(sourceMessage.Author)
                 .WithDescription(string.IsNullOrWhiteSpace(sourceMessage.Content) ? "-" : sourceMessage.Content)
                 .AddField("Jump", sourceMessage.GetJumpUrl())
-                .WithFooter($"{(sb.Emoji ?? "⭐")} {count} • #{textCh.Name}");
+                .WithFooter(footerTextBase, footerIconUrl);
 
             if (sourceMessage.Attachments.FirstOrDefault() is { } att && att.Height is not null)
                 eb.WithImageUrl(att.Url);
@@ -156,7 +170,7 @@ public sealed class StarboardService : INService, IReadyExecutor
             {
                 var posted = await _sender.Response(sbChannel).Embed(eb).SendAsync();
                 tracked.StarboardMessageId = posted.Id;
-                await ctx.UpdateAsync(tracked);
+                await ctx.SaveChangesAsync();
             }
             else
             {
@@ -185,7 +199,7 @@ public sealed class StarboardService : INService, IReadyExecutor
             }
 
             tracked.StarboardMessageId = null;
-            await ctx.UpdateAsync(tracked);
+            await ctx.SaveChangesAsync();
         }
     }
 }

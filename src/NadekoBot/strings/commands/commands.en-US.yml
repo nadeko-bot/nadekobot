@@ -1998,6 +1998,83 @@ calculate:
   desc: Evaluate a mathematical expression.
   ex:
     - 1+1
+starboard:
+  desc: Shows the current starboard configuration for this server.
+  ex:
+    - ''
+  params:
+    - { }
+"starboard channel":
+  desc: Sets or clears the starboard channel. Provide no channel to clear.
+  ex:
+    - ''
+    - '#stars'
+  params:
+    - ch:
+        desc: "Optional channel to set as the starboard channel."
+"starboard enable":
+  desc: Enables or disables the starboard. Provide no value to toggle.
+  ex:
+    - ''
+    - true
+  params:
+    - enabled:
+        desc: "Whether to enable (true) or disable (false) the starboard."
+"starboard threshold":
+  desc: Sets the reaction threshold required for a message to be posted to the starboard.
+  ex:
+    - '5'
+  params:
+    - threshold:
+        desc: "The minimum number of reactions required (1-100)."
+"starboard emoji":
+  desc: Sets the emoji which counts towards the star threshold.
+  ex:
+    - ⭐
+  params:
+    - emoji:
+        desc: "Emoji to use for counting stars (unicode or custom emote string)."
+"starboard self":
+  desc: Toggles whether users can star their own messages.
+  ex:
+    - ''
+    - true
+  params:
+    - allow:
+        desc: "Whether self-starring is allowed (true/false)."
+"starboard bots":
+  desc: Toggles whether bot messages can be starred.
+  ex:
+    - ''
+    - false
+  params:
+    - allow:
+        desc: "Whether bot messages are allowed (true/false)."
+"starboard strict":
+  desc: Toggles whether only the configured emoji counts (strict mode).
+  ex:
+    - ''
+    - true
+  params:
+    - strict:
+        desc: "Whether to require the configured emoji (true/false)."
+"starboard ignore":
+  desc: Toggles ignoring a channel for starboard counting.
+  ex:
+    - '#offtopic'
+  params:
+    - ch:
+        desc: "Channel to ignore or unignore."
+"starboard channelthreshold":
+  desc: Sets or clears a per-channel threshold override.
+  ex:
+    - '#memes 7'
+    - '#memes'
+  params:
+    - ch:
+        desc: "Channel to set a threshold override for."
+      threshold:
+        desc: "Optional override value; omit to clear."
   params:
     - expression:
         desc: "The input string represents the mathematical formula to be evaluated."
@@ -5274,3 +5351,82 @@ fishstarslb:
   params:
     - page:
         desc: "The optional page to display."
+starboard channel:
+  desc: Sets or clears the starboard channel for this server.
+  ex:
+    - '#starboard'
+    - ''
+  params:
+    - channel:
+        desc: "The channel to set as the starboard. Leave empty to clear."
+
+starboard enable:
+  desc: Enables or disables the starboard feature.
+  ex:
+    - ''
+    - 'false'
+  params:
+    - enabled:
+        desc: "Set to true or false to enable or disable. Leave empty to toggle."
+
+starboard threshold:
+  desc: Sets the number of reactions required for a message to appear on the starboard.
+  ex:
+    - '5'
+  params:
+    - threshold:
+        desc: "The number of reactions required (1-100)."
+
+starboard emoji:
+  desc: Sets the emoji used for the starboard.
+  ex:
+    - '⭐'
+  params:
+    - emoji:
+        desc: "The emoji to use for the starboard."
+
+starboard self:
+  desc: Allows or disallows users to star their own messages.
+  ex:
+    - ''
+    - 'false'
+  params:
+    - allow:
+        desc: "Set to true or false. Leave empty to toggle."
+
+starboard bots:
+  desc: Allows or disallows bot messages to be starred.
+  ex:
+    - ''
+    - 'false'
+  params:
+    - allow:
+        desc: "Set to true or false. Leave empty to toggle."
+
+starboard strict:
+  desc: Enables or disables strict mode for the starboard.
+  ex:
+    - ''
+    - 'true'
+  params:
+    - strict:
+        desc: "Set to true or false. Leave empty to toggle."
+
+starboard ignore:
+  desc: Ignores or unignores a channel for the starboard.
+  ex:
+    - '#general'
+  params:
+    - channel:
+        desc: "The channel to ignore or unignore."
+
+starboard channelthreshold:
+  desc: Sets a custom star threshold for a specific channel.
+  ex:
+    - '#memes 10'
+    - '#memes'
+  params:
+    - channel:
+        desc: "The channel to set a custom threshold for."
+    - threshold:
+        desc: "The custom threshold. Leave empty to clear."
