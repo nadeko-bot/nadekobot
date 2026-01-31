@@ -932,5 +932,6 @@
   "template_reloaded": "Xp šablona byla byla načtena znovu.",
   "new_gamestatus_event": "Napiš tajný kód do jakéhokoliv kanálu pro zisk {1}\n{2} zbývá k udělení.",
   "event_duration_footer": "Tato událost bude aktivní až {0} hodin.",
-  "event_title": "Událost {0} byla spuštěna!"
+  "event_title": "Událost {0} byla spuštěna!",
+  "steam_api_missing": "Majitel bota neupřesnil SteamApiKey. Nemůžeš použít tuto funkci."
 }

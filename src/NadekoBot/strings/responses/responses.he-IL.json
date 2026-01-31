@@ -932,5 +932,6 @@
   "template_reloaded": "",
   "new_gamestatus_event": "",
   "event_duration_footer": "",
-  "event_title": ""
+  "event_title": "",
+  "steam_api_missing": "בעל בוט לא ציין את SteamApiKey. לא ניתן להשתמש בפונקציונליות זו."
 }

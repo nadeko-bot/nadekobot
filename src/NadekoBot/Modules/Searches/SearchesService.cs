@@ -351,24 +351,28 @@ public class SearchesService : INService
     public async Task<int> GetSteamAppIdByName(string query)
     {
         const string steamGameIdsKey = "steam_names_to_appid";
+        string steamApiKey = _creds.GetCreds().SteamApiKey;
+        if (string.IsNullOrWhiteSpace(steamApiKey))
+        {
+           return -1;
+        }
 
         var gamesMap = await _c.GetOrAddAsync(new(steamGameIdsKey),
             async () =>
             {
                 using var http = _httpFactory.CreateClient();
 
-                // https://api.steampowered.com/ISteamApps/GetAppList/v2/
-                var gamesStr = await http.GetStringAsync("https://api.steampowered.com/ISteamApps/GetAppList/v2/");
+                var gamesStr = await http.GetStringAsync($"https://api.steampowered.com/IStoreService/GetAppList/v1/?key={steamApiKey}");
                 var apps = JsonConvert
                            .DeserializeAnonymousType(gamesStr,
                                new
                                {
-                                   applist = new
+                                   response = new
                                    {
                                        apps = new List<SteamGameId>()
                                    }
                                })!
-                           .applist.apps;
+                           .response.apps;
 
                 return apps.OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
                            .GroupBy(x => x.Name)

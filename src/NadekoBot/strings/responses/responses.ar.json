@@ -1046,5 +1046,6 @@
     "xpshop_buy_success": "",
     "patron_insuff_tier": "",
     "xpshop_already_owned": "",
-    "xpshop_item_not_found": ""
+    "xpshop_item_not_found": "",
+    "steam_api_missing": ""
 }

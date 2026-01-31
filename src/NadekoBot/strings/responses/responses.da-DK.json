@@ -932,5 +932,6 @@
   "template_reloaded": "",
   "new_gamestatus_event": "",
   "event_duration_footer": "",
-  "event_title": ""
+  "event_title": "",
+  "steam_api_missing": "Ejeren af botten specificerede ikke en SteamApiKey. Du kan ikke bruge denne funktion."
 }

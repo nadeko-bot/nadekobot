@@ -1261,5 +1261,6 @@
   "fish_lb_title": "Fishing Leaderboard",
   "fish_unique": "Caught {0} unique fish",
   "fish_catches": "{0} catches total",
-  "fish_stars": "{1} {0}"
+  "fish_stars": "{1} {0}",
+  "steam_api_missing": "Bot owner didn't specify SteamApiKey. You can't use this functionality."
 }

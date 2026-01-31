@@ -1046,5 +1046,6 @@
     "xpshop_buy_success": "Pomyślnie zakupiono `{0}/{1}`",
     "patron_insuff_tier": "Twoja Ranga Patrona jest niewystarczająca do wykonania tej akcji.",
     "xpshop_already_owned": "Już posiadasz ten przedmiot.",
-    "xpshop_item_not_found": "Przedmiot o podanym kluczu nie istnieje."
+    "xpshop_item_not_found": "Przedmiot o podanym kluczu nie istnieje.",
+    "steam_api_missing": "Właściciel bota nie ustawił SteamApiKey. Nie możesz korzystać z tej funkcjonalności."
 }

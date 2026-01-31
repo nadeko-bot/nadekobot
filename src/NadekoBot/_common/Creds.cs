@@ -168,6 +168,9 @@ public sealed class Creds : IBotCreds
              """)]
     public SeqConfig Seq { get; set; }
 
+    [Comment("""Official Steam api key.""")]
+    public string SteamApiKey { get; set; }
+
     public Creds()
     {
         Token = string.Empty;
@@ -195,6 +198,7 @@ public sealed class Creds : IBotCreds
 
         GrpcApi = new();
         Seq = new();
+        SteamApiKey = string.Empty;
     }
 
     public class DbOptions

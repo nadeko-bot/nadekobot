@@ -932,5 +932,6 @@
   "template_reloaded": "I reloaded the Xp template this time, but keep asking.",
   "new_gamestatus_event": "Type the super secret code in any of the channels to receive {1} {2} are left to be awarded! Why your reading this start typing baka!",
   "event_duration_footer": "This event has been going on for {0} hours! When will this madness stop?",
-  "event_title": "{0} has started... Here we go again.."
+  "event_title": "{0} has started... Here we go again..",
+  "steam_api_missing": "I need a SteamApiKey for that... M-maybe we should ask Master?"
 }

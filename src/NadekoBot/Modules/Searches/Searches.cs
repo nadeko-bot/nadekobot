@@ -466,6 +466,12 @@ public partial class Searches : NadekoModule<SearchesService>
         if (string.IsNullOrWhiteSpace(query))
             return;
 
+        if (string.IsNullOrWhiteSpace(_creds.SteamApiKey))
+        {
+            await Response().Error(strs.steam_api_missing).SendAsync();
+            return;
+        }
+
         await ctx.Channel.TriggerTypingAsync();
 
         var appId = await _service.GetSteamAppIdByName(query);

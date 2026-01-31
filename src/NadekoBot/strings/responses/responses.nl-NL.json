@@ -1046,5 +1046,6 @@
     "xpshop_buy_success": "Succesvol gekocht `{0}/{1}`",
     "patron_insuff_tier": "Je Patron Tier is onvoldoende om deze actie uit te voeren.",
     "xpshop_already_owned": "Je bezit dit voorwerp al.",
-    "xpshop_item_not_found": "Een item met die sleutel bestaat niet."
+    "xpshop_item_not_found": "Een item met die sleutel bestaat niet.",
+    "steam_api_missing": "Bot eigenaar heeft geen SteamApiKey opgegeven. U kunt deze functionaliteit niet gebruiken."
 }

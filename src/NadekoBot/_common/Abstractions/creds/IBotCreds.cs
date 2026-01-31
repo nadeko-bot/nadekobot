@@ -31,6 +31,7 @@ public interface IBotCreds
     BotCacheImplemenation BotCache { get; set; }
     Creds.GrpcApiConfig GrpcApi { get; set; }
     SeqConfig Seq { get; set; }
+    string SteamApiKey { get; }
 }
 
 public interface IVotesSettings

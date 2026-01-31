@@ -932,5 +932,6 @@
   "template_reloaded": "",
   "new_gamestatus_event": "",
   "event_duration_footer": "",
-  "event_title": ""
+  "event_title": "",
+  "steam_api_missing": "Bot ägare specificerade  inte SteamApiKey. Du kan inte använda den här funktionen."
 }
