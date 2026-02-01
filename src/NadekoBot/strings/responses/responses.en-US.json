@@ -1205,6 +1205,7 @@
   "userrole_icon_success": "The icon for {0} has been saved.",
   "userrole_icon_fail": "Failed to set the role icon.",
   "userrole_icon_invalid": "The role icon cannot be empty.",
+  "userrole_icon_missing_permissions": "The server does not have permissions to use RoleIcons.",
   "userrole_role_not_exists": "That role doesn't exist.",
   "whos_playing_game": "{0} users are playing {1}",
   "schedule_list_title": "Scheduled Commands",
