@@ -397,14 +397,11 @@ public class SearchesService : INService
 
         var allApps = new List<SteamGameId>();
         const int limit = 50000;
-        int? lastAppId = null;
+        int lastAppId = 0;
 
         while (true)
         {
-            string url = $"https://api.steampowered.com/IStoreService/GetAppList/v1/?key={steamApiKey}&max_results={limit}";
-
-            if (lastAppId.HasValue)
-                url += $"&last_appid={lastAppId}";
+            string url = $"https://api.steampowered.com/IStoreService/GetAppList/v1/?key={steamApiKey}&max_results={limit}&last_appid={lastAppId}";
 
             string gamesStr = await http.GetStringAsync(url);
 
@@ -422,10 +419,10 @@ public class SearchesService : INService
 
             allApps.AddRange(result.response.apps);
 
-            lastAppId = result.response.last_appid;
-
             if (!result.response.have_more_results.HasValue)
                 break;
+
+            lastAppId = result.response.last_appid.Value;
         }
 
         return allApps;
