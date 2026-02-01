@@ -7,6 +7,10 @@ using System.Text.Json.Serialization;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using NadekoBot.Modules.Searches.Common;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Gif;
+using SixLabors.ImageSharp.PixelFormats;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace NadekoBot.Modules.Utility;
 
@@ -414,11 +418,52 @@ public partial class Utility : NadekoModule
             return;
         }
 
+        var isGif = res.Content.Headers.ContentType?.MediaType == "image/gif";
         await using var imgStream = await res.Content.ReadAsStreamAsync();
         Emote em;
         try
         {
             em = await ctx.Guild.CreateEmoteAsync(name, new(imgStream));
+        }
+        catch (HttpException hex) when (hex.DiscordCode == DiscordErrorCode.MaximumEmojisReached && !isGif)
+        {
+            var inter = _inter.Create(ctx.User.Id,
+                new ButtonBuilder("Retry as GIF",
+                    "emojiadd:gif:" + ctx.Message.Id,
+                    ButtonStyle.Primary),
+                async (smc) =>
+                {
+                    await smc.DeferAsync();
+                    try
+                    {
+                        using var http2 = _httpFactory.CreateClient();
+                        await using var imgStream2 = await http2.GetStreamAsync(url);
+                        using var img = await Image.LoadAsync<Rgba32>(imgStream2);
+
+                        img.Frames.AddFrame(img.Frames[0]);
+
+                        foreach (var frame in img.Frames.OfType<ImageFrame<Rgba32>>())
+                            frame.Metadata.GetGifMetadata().DisposalMethod = GifDisposalMethod.RestoreToBackground;
+
+                        await using var gifStream = new MemoryStream();
+                        await img.SaveAsGifAsync(gifStream);
+                        gifStream.Position = 0;
+
+                        var gifEm = await ctx.Guild.CreateEmoteAsync(name, new(gifStream));
+                        await Response().Confirm(strs.emoji_added(gifEm.ToString())).SendAsync();
+                    }
+                    catch (Exception ex2)
+                    {
+                        Log.Warning(ex2, "Error adding emoji as gif on server {GuildId}", ctx.Guild.Id);
+                        await Response().Error(strs.emoji_add_error).SendAsync();
+                    }
+                });
+
+            await Response()
+                .Error(strs.emoji_slots_full_retry_gif)
+                .Interaction(inter)
+                .SendAsync();
+            return;
         }
         catch (Exception ex)
         {

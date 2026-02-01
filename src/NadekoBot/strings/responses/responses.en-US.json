@@ -13,6 +13,7 @@
   "invalid_emojis": "All emojis you've specified are invalid.",
   "invalid_emoji_link": "Specified link is either not an image or exceeds 256KB.",
   "emoji_add_error": "Error adding emoji. You either ran out of emoji slots, or image size is inadequate.",
+  "emoji_slots_full_retry_gif": "Static emoji slots are full. Would you like to try adding it as an animated emoji instead?",
   "emoji_added": "Added a new emoji: {0}",
   "emoji_not_removed": "The following emojis were not removed: {0}",
   "fw_cleared": "Removed all filtered words and filtered words channel settings.",
