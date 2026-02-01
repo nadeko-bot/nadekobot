@@ -352,6 +352,7 @@ public class SearchesService : INService
     {
         const string steamGameIdsKey = "steam_names_to_appid";
         string steamApiKey = _creds.GetCreds().SteamApiKey;
+
         if (string.IsNullOrWhiteSpace(steamApiKey))
         {
            return -1;
@@ -360,25 +361,15 @@ public class SearchesService : INService
         var gamesMap = await _c.GetOrAddAsync(new(steamGameIdsKey),
             async () =>
             {
-                using var http = _httpFactory.CreateClient();
+                var apps = await FetchAllSteamApps(steamApiKey);
 
-                var gamesStr = await http.GetStringAsync($"https://api.steampowered.com/IStoreService/GetAppList/v1/?key={steamApiKey}");
-                var apps = JsonConvert
-                           .DeserializeAnonymousType(gamesStr,
-                               new
-                               {
-                                   response = new
-                                   {
-                                       apps = new List<SteamGameId>()
-                                   }
-                               })!
-                           .response.apps;
-
-                return apps.OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
-                           .GroupBy(x => x.Name)
-                           .ToDictionary(x => x.Key, x => x.First().AppId);
+                return apps
+                    .OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
+                    .GroupBy(x => x.Name)
+                    .ToDictionary(x => x.Key, x => x.First().AppId);
             },
-            TimeSpan.FromHours(24));
+            TimeSpan.FromHours(24)
+        );
 
         if (gamesMap is null)
             return -1;
@@ -397,6 +388,47 @@ public class SearchesService : INService
         }
 
         return gamesMap[key];
+    }
+
+
+    private async Task<List<SteamGameId>> FetchAllSteamApps(string steamApiKey)
+    {
+        using var http = _httpFactory.CreateClient();
+
+        var allApps = new List<SteamGameId>();
+        const int limit = 50000;
+        int? lastAppId = null;
+
+        while (true)
+        {
+            string url = $"https://api.steampowered.com/IStoreService/GetAppList/v1/?key={steamApiKey}&max_results={limit}";
+
+            if (lastAppId.HasValue)
+                url += $"&last_appid={lastAppId}";
+
+            string gamesStr = await http.GetStringAsync(url);
+
+            var result = JsonConvert.DeserializeAnonymousType(gamesStr,
+                new
+                {
+                    response = new
+                    {
+                        apps = new List<SteamGameId>(),
+                        have_more_results = (bool?)null,
+                        last_appid = (int?)null
+                    }
+                }
+            );
+
+            allApps.AddRange(result.response.apps);
+
+            lastAppId = result.response.last_appid;
+
+            if (!result.response.have_more_results.HasValue)
+                break;
+        }
+
+        return allApps;
     }
 
     public async Task<OneOf<WikipediaReply, ErrorType>> GetWikipediaPageAsync(string query)
