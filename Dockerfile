@@ -24,12 +24,12 @@ RUN dotnet publish -c Release -o /app --self-contained -r linux-musl-x64 --no-re
     && chmod +x /app/NadekoBot
 
 # Final stage
-FROM alpine:3.20
+FROM alpine:3.23
 WORKDIR /app
 
 # Music dependencies
-ADD --chmod=755 https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux /usr/local/bin/yt-dlp
-RUN apk add --no-cache ffmpeg libsodium
+RUN apk add --no-cache ffmpeg libsodium python3 py3-pip deno
+RUN python3 -m pip install -U "yt-dlp[default]" --break-system-packages
 
 # Required dependencies
 # icu-libs is required for globalization
