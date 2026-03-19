@@ -28,6 +28,9 @@ permrole:
 removeperm:
   - removeperm
   - rp
+dpoglobal:
+  - dpoglobal
+  - dpog
 resetglobalperms:
   - resetglobalperms
 resetperms:

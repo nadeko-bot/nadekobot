@@ -84,6 +84,9 @@ public sealed partial class BotConfig : ICloneable<BotConfig>
     [Comment("""List of modules and commands blocked from usage in DMs on the bot""")]
     public BlockedConfig DmBlocked { get; set; } = new();
 
+    [Comment("""Global command permission overrides""")]
+    public Dictionary<string, string> CommandOverrides { get; set; } = new();
+
     [Comment("""Which string will be used to recognize the commands""")]
     public string Prefix { get; set; }
 
