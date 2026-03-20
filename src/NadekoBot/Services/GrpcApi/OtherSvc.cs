@@ -112,7 +112,7 @@ public sealed class OtherSvc : GrpcOther.GrpcOtherBase, IGrpcSvc, INService
     }
 
     [GrpcNoAuthRequired]
-    public override async Task<WaifuLbReply> GetWaifuLb(GetLbRequest request, ServerCallContext context)
+    public override Task<WaifuLbReply> GetWaifuLb(GetLbRequest request, ServerCallContext context)
     {
         // var waifus = await _waifus.GetTopWaifusAtPage(request.Page, request.PerPage);
 
@@ -124,7 +124,7 @@ public sealed class OtherSvc : GrpcOther.GrpcOtherBase, IGrpcSvc, INService
         //     Value = x.Price,
         //     User = x.WaifuName,
         // }));
-        return reply;
+        return Task.FromResult(reply);
     }
 
     [GrpcNoAuthRequired]

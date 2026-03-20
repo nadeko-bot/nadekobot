@@ -41,7 +41,7 @@ public partial class Searches
             if (!await ValidateQuery(smh))
                 return;
 
-            var link = $"https://letmegooglethat.com/?q={Uri.EscapeDataString(smh)}";
+            var link = $"https://letmegooglethat.com/?q={Uri.EscapeDataString(smh!)}";
             var shortenedUrl = await _service.ShortenLink(link) ?? link;
             await Response().Confirm($"<{shortenedUrl}>").SendAsync();
         }

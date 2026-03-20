@@ -2,6 +2,17 @@
 
 *a,c,f,r,o,d*
 
+## [7.0.12] - 20.03.2026
+
+### Fixed
+
+- `.hug`/`.pat`/`.kiss` now work on non-waifus too (with no effect)
+- some waifu issues fixed
+
+### Updated
+
+- `.wbuy` now prompts before transaction
+
 ## [7.0.11] - 17.03.2026
 
 ### Changed

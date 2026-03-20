@@ -49,7 +49,7 @@ public partial class Searches
             await ctx.Channel.TriggerTypingAsync();
             using var http = _httpFactory.CreateClient();
             var res = await http.GetStringAsync($"https://api.urbandictionary.com/v0/define?"
-                                             + $"term={Uri.EscapeDataString(query)}");
+                                             + $"term={Uri.EscapeDataString(query!)}");
             var allItems = JsonConvert.DeserializeObject<UrbanResponse>(res)?.List;
 
             if (allItems is null or { Length: 0 })

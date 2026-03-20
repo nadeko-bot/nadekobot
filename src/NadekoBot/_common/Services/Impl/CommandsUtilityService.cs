@@ -47,7 +47,7 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
 
         _dpos.TryGetOverrides(guild?.Id ?? 0, com.Name, out var overrides);
         
-        string globalOverride = null;
+        string? globalOverride = null;
         if (_bss.Data.CommandOverrides.TryGetValue(com.Name.ToLowerInvariant(), out var go))
         {
             globalOverride = go;
@@ -120,7 +120,7 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
            .Select(a => a.GenericTypeArguments[0])
            .FirstOrDefault();
 
-    public static string[] GetCommandRequirements(CommandInfo cmd, GuildPermission? overrides = null, string globalOverride = null)
+    public static string[] GetCommandRequirements(CommandInfo cmd, GuildPermission? overrides = null, string? globalOverride = null)
     {
         var toReturn = new List<string>();
 
