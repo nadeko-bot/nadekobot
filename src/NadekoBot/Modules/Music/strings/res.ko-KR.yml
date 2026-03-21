@@ -19,6 +19,7 @@ now_playing: 지금 재생 중
 player_queue: '플레이어 대기열 - {0}/{1} 페이지'
 playlist_delete_fail: 해당 재생목록을 삭제하지 못했어요. 재생목록이 존재하지 않거나, 작성자가 아닐 수 있어요.
 playlist_deleted: 재생목록이 삭제되었어요.
+playlist_name_too_long: 재생목록 이름은 20자 이내여야 해요.
 playlist_id_not_found: 해당 ID의 재생목록이 존재하지 않아요.
 playlist_queue_complete: 재생목록 대기열 추가 완료.
 playlist_saved: 재생목록이 저장되었어요

@@ -7,11 +7,11 @@ waifu_opted_out: Waifu dünyasından ayrıldın. Bir dahaki sefere görüşürü
 waifu_insufficient_funds: Bunun için yeterli paran yok.
 waifu_has_fans: Hâlâ seni destekleyen fanların var! Çıkış yapmadan önce onlardan ayrılmalarını iste.
 waifu_self_not_allowed: Bunu kendine yapamazsın!
-waifu_no_actions_left: Bugünlük tüm aksiyonlarını kullandın. Yarın tekrar gel!
 waifu_not_found: Bu waifu mevcut değil.
 waifu_hugged: '{0} kullanıcısına sıcak bir sarılma verdin!'
 waifu_kissed: '{0} kullanıcısını öptün!'
 waifu_patted: '{0} kullanıcısını nazikçe okşadın.'
+waifu_nommed: '{0} kullanicisini besledin!'
 waifu_pending_payout: 'Toplanmamış {0} ödemen var.'
 waifu_no_pending_payout: Bekleyen ödemen yok.
 waifu_payout_claimed: '{0} toplandı!'
@@ -89,4 +89,4 @@ waifu_help_footer: 'Komut listesi için {0}cmds waifu yaz'
 waifu_backed_label: desteklenen
 waifu_buy_confirm: '**{1}** karsiligi **{0}** adli waifunun yoneticisi olmak ister misin?'
 waifu_btn_confirm: Onayla
-waifu_no_effect: "etkisi yok!"
+waifu_no_effect: etkisi yok!

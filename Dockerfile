@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+﻿FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG TARGETARCH
 WORKDIR /source
 
@@ -7,7 +7,6 @@ COPY src/NadekoBot/*.csproj src/NadekoBot/
 COPY src/NadekoBot.Coordinator/*.csproj src/NadekoBot.Coordinator/
 COPY src/NadekoBot.Generators/*.csproj src/NadekoBot.Generators/
 COPY src/NadekoBot.Voice/*.csproj src/NadekoBot.Voice/
-COPY src/NadekoBot.GrpcApiBase/*.csproj src/NadekoBot.GrpcApiBase/
 COPY src/NadekoBot.StringsMerger/*.csproj src/NadekoBot.StringsMerger/
 
 RUN DOTNET_RID="linux-$([ "$TARGETARCH" = "arm64" ] && echo "arm64" || echo "x64")" \

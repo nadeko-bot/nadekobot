@@ -1,5 +1,0 @@
-no_vcroles: Sesli kanal rolü yok.
-vc_role_list: Sesli kanal rolleri
-vcrole_added: '{0} sesli kanalına katılan kullanıcılar {1} rolünü alacak.'
-vcrole_not_found: Bu sesli kanalda bir VcRole yok.
-vcrole_removed: '{0} sesli kanalına katılan kullanıcılar artık rol almayacak.'

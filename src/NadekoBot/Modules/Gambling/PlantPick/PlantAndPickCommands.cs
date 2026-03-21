@@ -44,7 +44,7 @@ public partial class Gambling
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
-        public async Task Plant([OverrideTypeReader(typeof(BalanceTypeReader))] long amount, string pass = null)
+        public async Task Plant([OverrideTypeReader(typeof(BalanceTypeReader))] long amount = 1, string pass = null)
         {
             if (amount < 1)
                 return;

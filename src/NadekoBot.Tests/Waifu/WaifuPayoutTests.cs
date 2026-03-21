@@ -33,7 +33,7 @@ public class WaifuPayoutTests
         var cache = Substitute.For<IBotCache>();
         _time = new FakeTimeProvider(new(Epoch, TimeSpan.Zero));
         var client = Substitute.For<DiscordSocketClient>();
-        _svc = new WaifuService(_db, cache, _cs, client, WaifuTestHelper.CreateConfigService(), null!, _time);
+        _svc = new WaifuService(_db, cache, _cs, client, WaifuTestHelper.CreateConfigService(), WaifuTestHelper.CreatePatronageService(), null!, _time);
         _cs.RemoveAsync(Arg.Any<ulong>(), Arg.Any<long>(), Arg.Any<TxData?>()).Returns(true);
     }
 

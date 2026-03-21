@@ -19,6 +19,7 @@ now_playing: Teraz odtwarzane
 player_queue: 'Kolejka odtwarzacza - Strona {0}/{1}'
 playlist_delete_fail: Nie udało się usunąć playlisty. Nie istnieje lub nie jesteś jej autorem.
 playlist_deleted: Playlista usunięta.
+playlist_name_too_long: Nazwa playlisty nie może mieć więcej niż 20 znaków.
 playlist_id_not_found: Playlista o tym ID nie istnieje.
 playlist_queue_complete: Kolejkowanie playlisty zakończone.
 playlist_saved: Playlista zapisana

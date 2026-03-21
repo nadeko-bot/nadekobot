@@ -2614,6 +2614,32 @@ namespace NadekoBot.Migrations.Sqlite
                     b.ToTable("UserFishStats");
                 });
 
+            modelBuilder.Entity("NadekoBot.Modules.Utility.AiAgent.GuildAiToolSetting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsAllowed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ToolName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
+
+                    b.HasIndex("GuildId", "ToolName")
+                        .IsUnique();
+
+                    b.ToTable("GuildAiToolSetting");
+                });
+
             modelBuilder.Entity("NadekoBot.Modules.Utility.LineUp.LineUpUser", b =>
                 {
                     b.Property<ulong>("GuildId")

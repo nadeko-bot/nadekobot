@@ -53,7 +53,8 @@ public class RemoteGrpcCoordinator : ICoordinator, IReadyExecutor
                       ConnectionState = FromCoordConnState(s.State),
                       GuildCount = s.GuildCount,
                       ShardId = s.ShardId,
-                      LastUpdate = s.LastUpdate.ToDateTime()
+                      LastUpdate = s.LastUpdate.ToDateTime(),
+                      UptimePercent = s.UptimePercent
                   });
     }
 

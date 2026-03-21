@@ -208,4 +208,33 @@ public sealed class NCanvasService : INCanvasService, IReadyExecutor, INService
 
     public int GetWidth()
         => CANVAS_WIDTH;
+
+    /// <summary>
+    /// Gets the cached username for the given user ID from the DiscordUser table.
+    /// </summary>
+    public async Task<string?> GetOwnerName(ulong userId)
+    {
+        await using var ctx = _db.GetDbContext();
+        return await ctx.GetTable<DiscordUser>()
+            .Where(x => x.UserId == userId)
+            .Select(x => x.Username)
+            .FirstOrDefaultAsyncLinqToDB();
+    }
+
+    /// <summary>
+    /// Resets all pixels owned by the specified user to black with default price and no text.
+    /// </summary>
+    public async Task<int> NukeUserPixelsAsync(ulong userId)
+    {
+        var black = ((Rgba32)Color.Black).PackedValue;
+
+        await using var ctx = _db.GetDbContext();
+        return await ctx.GetTable<NCPixel>()
+            .Where(x => x.OwnerId == userId)
+            .Set(x => x.Color, black)
+            .Set(x => x.OwnerId, (ulong)0)
+            .Set(x => x.Price, 1)
+            .Set(x => x.Text, "")
+            .UpdateAsync();
+    }
 }

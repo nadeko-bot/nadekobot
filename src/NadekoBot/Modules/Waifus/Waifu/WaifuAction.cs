@@ -4,5 +4,6 @@ public enum WaifuAction
 {
     Hug,
     Kiss,
-    Pat
+    Pat,
+    Nom
 }

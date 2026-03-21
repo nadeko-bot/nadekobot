@@ -7,16 +7,16 @@ autotranslang:
   params:
     - {}
     - fromLang:
-        desc: null
+        desc: The source language code, such as "en" for English.
       toLang:
         desc: >-
           The destination language code, such as "en" for English or "fr" for
           French.
 autotranslate:
   desc: >-
-    Starts automatic translation of all messages by users who set their `{0}atl`
-    in this channel. You can set "del" parameter to automatically delete all
-    translated user messages.
+    Toggles automatic translation of all messages by users who set their
+    `{0}atl` in this channel. You can set "del" parameter to automatically
+    delete all translated user messages.
   ex:
     - ''
     - del

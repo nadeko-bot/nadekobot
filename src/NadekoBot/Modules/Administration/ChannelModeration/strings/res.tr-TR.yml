@@ -4,3 +4,11 @@ linkonly_disable: Bu kanal artık yalnızca link kanalı değil.
 linkonly_enable: Bu kanal artık yalnızca link kanalı.
 nsfw_set_false: Bu kanalda NSFW devre dışı bırakıldı.
 nsfw_set_true: Bu kanalda NSFW etkinleştirildi.
+
+channel_delmsgoncmd: Kanala Özel Ayarlar
+delmsg_channel_inherit: Sunucuda bu özellik etkinse, bu kanalda başarıyla çalıştırılan komut mesajlarını otomatik sileceğim.
+delmsg_channel_off: Bu kanalda başarıyla çalıştırılan komut mesajlarını asla otomatik silmeyeceğim.
+delmsg_channel_on: Sunucu ayarından bağımsız olarak, bu kanalda başarıyla çalıştırılan komut mesajlarını her zaman otomatik sileceğim.
+delmsg_off: Bu sunucuda başarıyla çalıştırılan komut mesajlarını artık otomatik silmeyeceğim.
+delmsg_on: Bu sunucuda başarıyla çalıştırılan komut mesajlarını otomatik sileceğim.
+server_delmsgoncmd: Sunucu Ayarı

@@ -6,7 +6,7 @@ convert:
     - m km 1000
   params:
     - origin:
-        desc: The location or source from which the quantity originates.
+        desc: The source unit to convert from.
       target:
         desc: The target unit or currency for the conversion.
       value:

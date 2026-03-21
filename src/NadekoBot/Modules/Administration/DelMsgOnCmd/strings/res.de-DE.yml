@@ -1,7 +1,0 @@
-channel_delmsgoncmd: Kanal spezifische Einstellungen
-delmsg_channel_inherit: Ich werde nur automatisch Nachrichten löschen, in denen erfolgreich Befehle in diesem Kanal ausgeführt wurden, wenn diese Funktion auf dem Server aktiviert ist.
-delmsg_channel_off: Ich werde niemals automatisch Nachrichten löschen, in denen erfolgreich Befehle in diesem Kanal ausgeführt wurden.
-delmsg_channel_on: Ich werde immer automatisch Nachrichten löschen, in denen erfolgreich Befehle in diesem Kanal ausgeführt wurden, trotz der Server Einstellungen.
-delmsg_off: Ich werde nicht mehr automatisch Nachrichten löschen, in denen erfolgreich Befehle auf dem Server ausgeführt wurden.
-delmsg_on: Ich werde automatisch Nachrichten löschen, in denen erfolgreich Befehle auf dem Server ausgeführt wurden.
-server_delmsgoncmd: Server Einstellung

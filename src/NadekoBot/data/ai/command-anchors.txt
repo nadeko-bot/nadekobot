@@ -1,0 +1,52 @@
+# Phrases that sound like someone asking the bot to DO something.
+# One per command category - maximize diversity, no near-duplicates.
+what's the weather in tokyo
+play some chill lofi beats
+skip to the next song
+pause the music player
+set the volume to fifty percent
+queue up my playlist
+shuffle the current playlist
+show lyrics for this song
+disconnect from voice channel
+mute this user for spamming
+ban that account permanently
+kick him from the server
+warn this user for toxicity
+clear the last ten messages
+enable slow mode
+lock this channel
+spin the slot machine
+deal me a hand of blackjack
+bet fifty coins on red
+flip a coin for me
+show my xp level
+show the leaderboard rankings
+set a reminder for tomorrow
+translate this to japanese
+search for one piece anime
+look up naruto manga info
+show the server statistics
+get user info for this person
+add a custom reaction emoji
+assign the moderator role to them
+create a poll for movie night
+notify me when the stream goes live
+start a trivia game
+go fishing in the lake
+give me a random quote
+convert miles to kilometers
+roll a twenty sided dice
+change my nickname to captain
+show me my coin balance
+give me my daily bonus
+transfer points to my friend
+show the ban list
+generate an invite link
+pin this important message
+move everyone to voice channel
+set my afk status
+repeat this message every hour
+show me the shop items
+list all available commands
+calculate this math expression

@@ -1,9 +1,13 @@
 invalid_img_size: 'Ảnh phải có kích thước {0}x{1} pixel.'
 nc_hint: 'Dùng lệnh `{0}nczoom x y` để phóng to. Ảnh có kích thước {1}x{2} pixel.'
 nc_insuff_payment: Thanh toán không hợp lệ.
+nc_nuke_confirm: 'Ban co chac muon xoa tat ca pixel cua {0} khong? Hanh dong nay khong the hoan tac.'
+nc_nuke_done: 'Da xoa {0} pixel.'
+nc_nuke_none: Nguoi dung do khong so huu pixel nao.
 nc_pixel: 'Pixel {0}'
 nc_pixel_not_found: Không tìm thấy pixel
 nc_pixel_set: 'Pixel {0} đã được đặt thành công!'
 nc_pixel_set_confirm: 'Bạn có chắc muốn đặt pixel {0} không? Sẽ tốn {1}'
 nc_position: Vị trí
+nc_pixel_owner: Chủ sở hữu
 no_attach_found: Không tìm thấy tệp đính kèm. Vui lòng gửi ảnh kèm theo lệnh này.

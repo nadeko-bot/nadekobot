@@ -1,12 +1,12 @@
 setserverbanner:
   desc: >-
     Sets a new banner image for the current server. Parameter is a direct link
-    to an image.
+    to an image. Requires server boost level Tier 2 or higher.
   ex:
     - https://i.imgur.com/xTG3a1I.jpg
   params:
     - img:
-        desc: The URL of the image file to be displayed as the bot's banner.
+        desc: The URL of the image file to be displayed as the server's banner.
 setservericon:
   desc: >-
     Sets a new icon image for the current server. Parameter is a direct link to
@@ -15,4 +15,4 @@ setservericon:
     - https://i.imgur.com/xTG3a1I.jpg
   params:
     - img:
-        desc: The URL of the image file to be displayed as the bot's banner.
+        desc: The URL of the image file to be displayed as the server's icon.

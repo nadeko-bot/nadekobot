@@ -22,7 +22,7 @@ languagesetdefault:
   params:
     - {}
     - name:
-        desc: The code page or character encoding for the target audience.
+        desc: The locale name for which the default response language should be set.
 languageslist:
   desc: List of languages for which translation (or part of it) exist atm.
   ex:

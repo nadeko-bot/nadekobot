@@ -32,8 +32,6 @@ shopadd:
 
     -     `%you%` - Buyer mention
 
-    -     `%you.id%` - Buyer's user ID
-
     -     `%you.username%` - Buyer's username
 
     -     `%you.name%` - Buyer's global name
@@ -44,7 +42,7 @@ shopadd:
     the item to the shop. This is configurable by the bot owner
   ex:
     - role 1000 Rich
-    - cmd 1000 .setrole %user% Rich
+    - cmd 1000 .setrole %you% Rich
   params:
     - _:
         desc: This value has to be 'cmd'
@@ -56,10 +54,10 @@ shopadd:
         desc: The cost at which the command is available for purchase.
     - _:
         desc: This value has to be 'list'
+      name:
+        desc: The name of the list item being sold.
       price:
         desc: The cost at which the item is available for purchase.
-      role:
-        desc: The item (text) that is being sold.
     - _:
         desc: This value has to be 'role'
       name:

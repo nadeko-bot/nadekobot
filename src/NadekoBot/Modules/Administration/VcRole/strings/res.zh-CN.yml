@@ -1,5 +1,0 @@
-no_vcroles: 沒有語音頻道身分組。
-vc_role_list: 語音頻道身分組
-vcrole_added: '加入 {0} 語音頻道的用戶將獲得 {1} 身分組。'
-vcrole_not_found: 該語音通道沒有 VcRole。
-vcrole_removed: '加入 {0} 語音頻道的用戶將不再獲得身分組。'

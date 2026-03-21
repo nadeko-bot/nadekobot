@@ -7,11 +7,11 @@ waifu_opted_out: Bạn đã rời khỏi thế giới waifu. Hẹn gặp lại!
 waifu_insufficient_funds: Bạn không đủ tiền để làm điều đó.
 waifu_has_fans: Bạn vẫn còn fan đang ủng hộ! Hãy nhờ họ rời đi trước khi bạn có thể rút lui.
 waifu_self_not_allowed: Bạn không thể làm điều đó với chính mình!
-waifu_no_actions_left: Bạn đã dùng hết lượt hành động hôm nay. Quay lại vào ngày mai nhé!
 waifu_not_found: Waifu đó không tồn tại.
 waifu_hugged: 'Bạn đã ôm {0} thật ấm áp!'
 waifu_kissed: 'Bạn đã hôn {0}!'
 waifu_patted: 'Bạn đã nhẹ nhàng vỗ về {0}.'
+waifu_nommed: 'Ban da cho {0} an!'
 waifu_pending_payout: 'Bạn có {0} chưa nhận.'
 waifu_no_pending_payout: Bạn không có khoản thanh toán nào đang chờ.
 waifu_payout_claimed: 'Bạn đã nhận {0}!'
@@ -89,4 +89,4 @@ waifu_help_footer: 'Dùng {0}cmds waifu để xem danh sách lệnh'
 waifu_backed_label: ủng hộ
 waifu_buy_confirm: 'Trở thành quản lý của **{0}** với giá **{1}**?'
 waifu_btn_confirm: Xác nhận
-waifu_no_effect: "không hiệu lực!"
+waifu_no_effect: không hiệu lực!

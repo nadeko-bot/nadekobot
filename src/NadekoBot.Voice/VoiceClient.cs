@@ -112,6 +112,10 @@ namespace NadekoBot.Voice
                     _arrayPool.Return(encryptedFrame);
                 }
             }
+            else if (daveManager != null && gw.DaveProtocolVersion > 0)
+            {
+                return (int)SendPcmError.DaveKeyRatchetUnavailable;
+            }
             else
             {
                 audioPayload = data;
@@ -166,6 +170,7 @@ namespace NadekoBot.Voice
     public enum SendPcmError
     {
         SecretKeyUnavailable = -1,
+        DaveKeyRatchetUnavailable = -2,
     }
 
     public enum FrameDelay

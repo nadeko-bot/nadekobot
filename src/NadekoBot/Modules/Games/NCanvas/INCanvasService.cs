@@ -21,4 +21,14 @@ public interface INCanvasService
     int GetHeight();
     int GetWidth();
     Task ResetAsync();
+
+    /// <summary>
+    /// Gets the cached username for the given user ID from the DiscordUser table.
+    /// </summary>
+    Task<string?> GetOwnerName(ulong userId);
+
+    /// <summary>
+    /// Resets all pixels owned by the specified user to black with default price and no text.
+    /// </summary>
+    Task<int> NukeUserPixelsAsync(ulong userId);
 }

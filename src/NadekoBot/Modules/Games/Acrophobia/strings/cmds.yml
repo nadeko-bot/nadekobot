@@ -6,5 +6,5 @@ acrophobia:
   params:
     - params:
         desc: >-
-          The list of command-line arguments passed to the game, which may
-          include options or settings for customizing the gameplay experience.
+          Options: -s/--submission-time <seconds> (15-300, default 60),
+          -v/--vote-time <seconds> (15-120, default 30).

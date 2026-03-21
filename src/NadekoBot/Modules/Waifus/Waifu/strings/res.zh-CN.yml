@@ -7,11 +7,11 @@ waifu_opted_out: 你已離開老婆世界。下次見！
 waifu_insufficient_funds: 你的資金不足。
 waifu_has_fans: 你還有粉絲在支持你！請他們先離開你才能退出。
 waifu_self_not_allowed: 你不能對自己這麼做！
-waifu_no_actions_left: 你今天的行動已用完。明天再來吧！
 waifu_not_found: 該老婆不存在。
 waifu_hugged: '你給了 {0} 一個溫暖的擁抱！'
 waifu_kissed: '你親了 {0}！'
 waifu_patted: '你輕輕摸了摸 {0}。'
+waifu_nommed: '你喂了 {0}!'
 waifu_pending_payout: '你有 {0} 未領取的收益。'
 waifu_no_pending_payout: 你沒有待領取的收益。
 waifu_payout_claimed: '你已領取 {0}！'
@@ -89,4 +89,4 @@ waifu_help_footer: '使用 {0}cmds waifu 查看指令列表'
 waifu_backed_label: 已支持
 waifu_buy_confirm: '成为 **{0}** 的经理人，花费 **{1}**？'
 waifu_btn_confirm: 确认
-waifu_no_effect: "没有效果!"
+waifu_no_effect: 没有效果!

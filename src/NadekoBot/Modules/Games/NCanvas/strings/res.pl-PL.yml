@@ -1,9 +1,13 @@
 invalid_img_size: 'Obraz musi mieć wymiary {0}x{1} pikseli.'
 nc_hint: 'Użyj komendy `{0}nczoom x y`, aby przybliżyć. Obraz ma {1}x{2} pikseli.'
 nc_insuff_payment: Nieprawidłowa płatność.
+nc_nuke_confirm: 'Czy na pewno chcesz usunac wszystkie piksele nalezace do {0}? Tego nie mozna cofnac.'
+nc_nuke_done: 'Usunieto {0} pikseli.'
+nc_nuke_none: Ten uzytkownik nie posiada zadnych pikseli.
 nc_pixel: 'Piksel {0}'
 nc_pixel_not_found: Nie znaleziono piksela
 nc_pixel_set: 'Piksel {0} ustawiony pomyślnie!'
 nc_pixel_set_confirm: 'Czy na pewno chcesz ustawić piksel {0}? Będzie cię to kosztować {1}'
 nc_position: Pozycja
+nc_pixel_owner: Właściciel
 no_attach_found: Nie znaleziono załącznika. Wyślij obraz razem z tą komendą.

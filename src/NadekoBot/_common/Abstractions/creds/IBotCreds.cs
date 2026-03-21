@@ -14,8 +14,7 @@ public interface IBotCreds
     string OsuApiKey { get; }
     int TotalShards { get; }
     Creds.PatreonSettings Patreon { get; }
-    string CleverbotApiKey { get; }
-    string Gpt3ApiKey { get; }
+    string AiApiKey { get; }
     RestartConfig RestartCommand { get; }
     Creds.VotesSettings Votes { get; }
     string BotListToken { get; }
@@ -29,7 +28,6 @@ public interface IBotCreds
     string TwitchClientSecret { get; set; }
     GoogleApiConfig Google { get; set; }
     BotCacheImplemenation BotCache { get; set; }
-    Creds.GrpcApiConfig GrpcApi { get; set; }
     SeqConfig Seq { get; set; }
     string SteamApiKey { get; }
 }

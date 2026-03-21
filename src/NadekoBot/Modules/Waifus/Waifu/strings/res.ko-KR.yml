@@ -7,11 +7,11 @@ waifu_opted_out: 와이푸 세계를 떠났어요. 다음에 또 만나요!
 waifu_insufficient_funds: 자금이 부족해요.
 waifu_has_fans: 아직 팬이 있어요! 탈퇴하려면 먼저 팬들에게 떠나달라고 해 주세요.
 waifu_self_not_allowed: 자기 자신에게는 할 수 없어요!
-waifu_no_actions_left: 오늘의 행동을 모두 사용했어요. 내일 다시 와 주세요!
 waifu_not_found: 해당 와이푸가 존재하지 않아요.
 waifu_hugged: '{0}에게 따뜻한 포옹을 해줬어요!'
 waifu_kissed: '{0}에게 키스했어요!'
 waifu_patted: '{0}을(를) 부드럽게 쓰다듬었어요.'
+waifu_nommed: '{0}에게 밥을 줬어요!'
 waifu_pending_payout: '미수령 보수가 {0} 있어요.'
 waifu_no_pending_payout: 미수령 보수가 없어요.
 waifu_payout_claimed: '{0}을(를) 수령했어요!'
@@ -89,4 +89,4 @@ waifu_help_footer: '{0}cmds waifu로 명령어 목록을 확인하세요'
 waifu_backed_label: 후원
 waifu_buy_confirm: '**{1}**에 **{0}**의 매니저가 되시겠습니까?'
 waifu_btn_confirm: 확인
-waifu_no_effect: "효과 없음!"
+waifu_no_effect: 효과 없음!

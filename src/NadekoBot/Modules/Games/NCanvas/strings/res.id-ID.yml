@@ -1,9 +1,13 @@
 invalid_img_size: 'Gambar harus berukuran {0}x{1} piksel.'
 nc_hint: 'Gunakan perintah `{0}nczoom x y` untuk memperbesar. Gambar berukuran {1}x{2} piksel.'
 nc_insuff_payment: Pembayaran tidak valid.
+nc_nuke_confirm: 'Apakah kamu yakin ingin menghapus semua piksel milik {0}? Ini tidak bisa dibatalkan.'
+nc_nuke_done: '{0} piksel dihapus.'
+nc_nuke_none: Pengguna ini tidak memiliki piksel.
 nc_pixel: 'Piksel {0}'
 nc_pixel_not_found: Piksel tidak ditemukan
 nc_pixel_set: 'Piksel {0} berhasil diatur!'
 nc_pixel_set_confirm: 'Apakah kamu yakin ingin mengatur piksel {0}? Biayanya {1}'
 nc_position: Posisi
+nc_pixel_owner: Pemilik
 no_attach_found: Tidak ada lampiran ditemukan. Silakan kirim gambar bersamaan dengan perintah ini.

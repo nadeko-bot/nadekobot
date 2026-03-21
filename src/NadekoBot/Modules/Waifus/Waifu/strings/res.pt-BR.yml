@@ -7,11 +7,11 @@ waifu_opted_out: Você saiu do mundo waifu. Até a próxima!
 waifu_insufficient_funds: Você não tem fundos suficientes para isso.
 waifu_has_fans: Você ainda tem fãs te apoiando! Peça para eles saírem antes de poder sair.
 waifu_self_not_allowed: Você não pode fazer isso consigo mesma!
-waifu_no_actions_left: Você usou todas as suas ações por hoje. Volte amanhã!
 waifu_not_found: Essa waifu não existe.
 waifu_hugged: 'Você deu um abraço caloroso em {0}!'
 waifu_kissed: 'Você beijou {0}!'
 waifu_patted: 'Você fez carinho em {0}.'
+waifu_nommed: 'Voce alimentou {0}!'
 waifu_pending_payout: 'Você tem {0} em pagamentos não coletados.'
 waifu_no_pending_payout: Você não tem pagamentos pendentes.
 waifu_payout_claimed: 'Você coletou {0}!'
@@ -89,4 +89,4 @@ waifu_help_footer: 'Use {0}cmds waifu para uma lista de comandos'
 waifu_backed_label: apoiado
 waifu_buy_confirm: 'Se tornar gerente de **{0}** por **{1}**?'
 waifu_btn_confirm: Confirmar
-waifu_no_effect: "sem efeito!"
+waifu_no_effect: sem efeito!

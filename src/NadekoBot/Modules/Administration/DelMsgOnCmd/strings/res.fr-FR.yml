@@ -1,7 +1,0 @@
-channel_delmsgoncmd: Réglages propre aux salons
-delmsg_channel_inherit: Les messages exécutant une commande avec succès seront supprimés automatiquement sur ce salon seulement si l'option est activée sur le serveur.
-delmsg_channel_off: Les messages exécutant une commande avec succès ne seront jamais supprimés sur ce salon.
-delmsg_channel_on: Les messages exécutant une commande avec succès seront toujours supprimés automatiquement sur ce salon, en dehors des réglages du serveur.
-delmsg_off: Les messages exécutant une commande avec succès ne seront plus supprimés automatiquement sur ce serveur.
-delmsg_on: Les messages exécutant une commande avec succès seront supprimés automatiquement sur ce serveur.
-server_delmsgoncmd: Paramètres du serveur

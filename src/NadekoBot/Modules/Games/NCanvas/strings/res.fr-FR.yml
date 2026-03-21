@@ -1,9 +1,13 @@
 invalid_img_size: 'L''image doit faire {0}x{1} pixels.'
 nc_hint: 'Utilisez la commande `{0}nczoom x y` pour zoomer. L''image fait {1}x{2} pixels.'
 nc_insuff_payment: Paiement invalide.
+nc_nuke_confirm: 'Es-tu sur de vouloir supprimer tous les pixels de {0} ? C''est irreversible.'
+nc_nuke_done: '{0} pixels supprimes.'
+nc_nuke_none: Cet utilisateur ne possede aucun pixel.
 nc_pixel: 'Pixel {0}'
 nc_pixel_not_found: Pixel non trouvé
 nc_pixel_set: 'Pixel {0} défini avec succès !'
 nc_pixel_set_confirm: 'Êtes-vous sûr de vouloir définir le pixel {0} ? Ça vous coûtera {1}'
 nc_position: Position
+nc_pixel_owner: Propriétaire
 no_attach_found: Aucune pièce jointe trouvée. Veuillez envoyer l'image avec cette commande.

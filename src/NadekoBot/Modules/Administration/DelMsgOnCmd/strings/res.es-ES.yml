@@ -1,7 +1,0 @@
-channel_delmsgoncmd: Configuración de canal específico
-delmsg_channel_inherit: Eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este canal solamente si esta función está activada en el servidor.
-delmsg_channel_off: Nunca eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este canal.
-delmsg_channel_on: Siempre eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este canal, independientemente de la configuración del servidor.
-delmsg_off: Ya no eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este servidor.
-delmsg_on: Eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este servidor.
-server_delmsgoncmd: Configuración del servidor

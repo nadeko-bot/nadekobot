@@ -34,7 +34,7 @@ join:
     - voiceChannel:
         desc: "The voice channel to join, specified by name or ID."
 listqueue:
-  desc: Lists 10 currently queued songs per page. Default page is 1.
+  desc: Lists 9 currently queued songs per page. Default page is 1.
   ex:
     - ''
     - 2
@@ -61,7 +61,7 @@ lyrics:
   ex:
     - biri biri
   params:
-    - song:
+    - name:
         desc: The song to look up lyrics for.
 musicquality:
   desc: >-
@@ -132,7 +132,9 @@ playlist:
     - playlistQuery:
         desc: The search query used to find the YouTube playlist.
 playlistdelete:
-  desc: Deletes a saved playlist using its ID. Works only on playlists saved by you.
+  desc: >-
+    Deletes a saved playlist using its ID. Works only on playlists saved by you
+    or if you are the bot owner.
   ex:
     - 5
   params:
@@ -141,9 +143,11 @@ playlistdelete:
 playlistload:
   desc: >-
     Loads a saved playlist using its ID. Use `{0}pls` to list all saved
-    playlists and `{0}save` to save new ones.
+    playlists and `{0}save` to save new ones. Use `--shuffle` to load in random
+    order.
   ex:
     - 5
+    - 5 --shuffle
   params:
     - id:
         desc: The id of the playlist to be loaded.
@@ -152,12 +156,12 @@ playlists:
   ex:
     - 1
   params:
-    - num:
-        desc: The number of pages to retrieve.
+    - page:
+        desc: The page number to display.
 playlistsave:
   desc: >-
     Saves a playlist under a certain name. Playlist name must be no longer than
-    20 characters and must not contain dashes.
+    20 characters.
   ex:
     - classical1
   params:
@@ -285,7 +289,7 @@ trackremove:
     - index:
         desc: The position of the song to be removed from the playlist.
     - _:
-        desc: The number of items to be removed from the list.
+        desc: Use 'all' to remove all songs from the queue.
 unsetmusicchannel:
   desc: >-
     Bot will output playing, finished, paused and removed songs to the channel

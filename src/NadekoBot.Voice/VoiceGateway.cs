@@ -311,15 +311,26 @@ namespace NadekoBot.Voice
             if (commit.Length > 0)
                 Buffer.BlockCopy(payload, 2, commit, 0, commit.Length);
 
-            var success = DaveManager!.OnCommitTransition(transitionId, commit);
-            if (success)
+            var result = DaveManager!.OnCommitTransition(transitionId, commit);
+            if (result == CommitProcessResult.Success)
             {
                 SendDaveTransitionReady(transitionId);
             }
-            else
+            else if (result == CommitProcessResult.Failed)
             {
+                Log.Warning("DAVE commit failed for transition {TransitionId}, recovering", transitionId);
                 SendDaveInvalidCommitWelcome(transitionId);
-                SendDaveMlsKeyPackage();
+                var needsKeyPackage = DaveManager.HandleProtocolInit(DaveProtocolVersion);
+                if (needsKeyPackage)
+                    SendDaveMlsKeyPackage();
+            }
+            else if (result == CommitProcessResult.Ignored)
+            {
+                Log.Warning("DAVE commit ignored for transition {TransitionId}, recovering", transitionId);
+                SendDaveInvalidCommitWelcome(transitionId);
+                var needsKeyPackage = DaveManager.HandleProtocolInit(DaveProtocolVersion);
+                if (needsKeyPackage)
+                    SendDaveMlsKeyPackage();
             }
         }
 
@@ -340,6 +351,7 @@ namespace NadekoBot.Voice
             }
             else
             {
+                Log.Warning("DAVE welcome failed for transition {TransitionId}, recovering", transitionId);
                 SendDaveInvalidCommitWelcome(transitionId);
                 SendDaveMlsKeyPackage();
             }

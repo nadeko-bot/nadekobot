@@ -7,18 +7,18 @@ allcmdcooldowns:
         desc: The number of the page to display in the list of command cooldowns.
 cmdcooldown:
   desc: >-
-    Sets a cooldown, in seconds, for a command or an expression which will be
-    applied per user. Set it to 0 to remove the cooldown. Supports a special
-    command `cleverbot:response` which can be used limit how often users can
-    talk to cleverbot
+    Sets a cooldown, in seconds (max 3600), for a command or an expression
+    which will be applied per user. Set it to 0 to remove the cooldown.
+    Supports a special command `cleverbot:response` which can be used to limit
+    how often users can talk to cleverbot
   ex:
     - .h 5
     - .pat 30
   params:
     - command:
         desc: >-
-          The response string from CleverBot, used to generate a conversation
-          with the user.
+          The special `cleverbot:response` literal to set a cooldown on
+          cleverbot interactions.
       secs:
         desc: >-
           The time, in seconds, after which the user is allowed to use the

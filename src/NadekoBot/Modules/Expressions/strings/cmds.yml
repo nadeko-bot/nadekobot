@@ -97,7 +97,7 @@ exprdm:
     - 44
   params:
     - id:
-        desc: The ID of the user who should receive the direct message.
+        desc: The ID of the expression to toggle DM response for.
 expredit:
   desc: Edits the expression's response given its ID.
   ex:

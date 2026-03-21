@@ -1,7 +1,0 @@
-channel_delmsgoncmd: ''
-delmsg_channel_inherit: ''
-delmsg_channel_off: ''
-delmsg_channel_on: ''
-delmsg_off: 成功したコマンド呼び出しの自動削除を停止しました。
-delmsg_on: 成功したコマンド呼び出しは自動的に削除されるようになりました。
-server_delmsgoncmd: ''

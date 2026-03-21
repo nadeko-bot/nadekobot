@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using NadekoBot.Common.TypeReaders.Models;
 using NadekoBot.Modules.Administration.Services;
+using NadekoBot.Modules.Administration.Honeypot;
 using NadekoBot.Db.Models;
 
 namespace NadekoBot.Modules.Administration;
@@ -8,7 +9,7 @@ namespace NadekoBot.Modules.Administration;
 public partial class Administration
 {
     [Group]
-    public partial class ProtectionCommands : NadekoModule<ProtectionService>
+    public partial class ProtectionCommands(IHoneyPotService honeyPotService) : NadekoModule<ProtectionService>
     {
         [Cmd]
         [RequireContext(ContextType.Guild)]
@@ -296,6 +297,20 @@ public partial class Administration
             return GetText(strs.raid_stats(Format.Bold(stats.AntiRaidSettings.UserThreshold.ToString()),
                 Format.Bold(stats.AntiRaidSettings.Seconds.ToString()),
                 actionString));
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        public async Task Honeypot()
+        {
+            var enabled = await honeyPotService.ToggleHoneypotChannel(ctx.Guild.Id, ctx.Channel.Id);
+
+            if (enabled)
+                await Response().Confirm(strs.honeypot_on).SendAsync();
+            else
+                await Response().Confirm(strs.honeypot_off).SendAsync();
         }
     }
 }

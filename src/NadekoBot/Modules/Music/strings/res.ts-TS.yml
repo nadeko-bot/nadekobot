@@ -19,6 +19,7 @@ now_playing: Now playing
 player_queue: 'Player queue - Page {0}/{1}'
 playlist_delete_fail: Failed to delete that playlist. It either doesn't exist, or you're not the author.
 playlist_deleted: Playlist deleted.
+playlist_name_too_long: Playlist name can't be longer than 20 characters, got it?
 playlist_id_not_found: A playlist with that ID doesn't exist. Check your numbers.
 playlist_queue_complete: Playlist queue complete.
 playlist_saved: Playlist saved.

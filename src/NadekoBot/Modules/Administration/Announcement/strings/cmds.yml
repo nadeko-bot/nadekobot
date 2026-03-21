@@ -1,8 +1,0 @@
-autopublish:
-  desc: >-
-    Make the bot automatically publish all messages posted in the news channel
-    this command was executed in.
-  ex:
-    - ''
-  params:
-    - {}

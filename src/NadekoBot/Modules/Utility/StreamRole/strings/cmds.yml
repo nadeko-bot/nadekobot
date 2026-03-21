@@ -7,10 +7,10 @@ streamrole:
   ex:
     - '"Eligible Streamers" "Featured Streams"'
   params:
-    - addRole:
-        desc: The role to be added to users when they start streaming.
-      fromRole:
+    - fromRole:
         desc: The role of users being monitored for streamer status.
+      addRole:
+        desc: The role to be added to users when they start streaming.
     - {}
 streamroleblacklist:
   desc: >-

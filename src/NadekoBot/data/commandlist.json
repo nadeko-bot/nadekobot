@@ -2,21 +2,6 @@
   "Administration": [
     {
       "Aliases": [
-        ".autopublish"
-      ],
-      "Description": "Make the bot automatically publish all messages posted in the news channel this command was executed in.",
-      "Usage": [
-        ".autopublish"
-      ],
-      "Submodule": "AnnouncementCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageMessages Channel Permission"
-      ]
-    },
-    {
-      "Aliases": [
         ".autoassignrole",
         ".aar"
       ],
@@ -70,7 +55,7 @@
       "Aliases": [
         ".slowmode"
       ],
-      "Description": "Toggles slowmode on the current channel with the specified amount of time. Provide no parameters to disable.",
+      "Description": "Toggles slowmode on the current channel with the specified amount of time. Maximum is 6 hours. Provide no parameters to disable.",
       "Usage": [
         ".slowmode",
         ".slowmode 27s",
@@ -101,150 +86,6 @@
     },
     {
       "Aliases": [
-        ".cleanupguilddata"
-      ],
-      "Description": "Deletes data for all servers bot is no longer a member of from the database.\nThis is a highly destructive and irreversible command.",
-      "Usage": [
-        ".cleanupguilddata"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sqlselect"
-      ],
-      "Description": "Executes provided sql query and returns the results. Dangerous.",
-      "Usage": [
-        ".sqlselect SELECT * FROM DiscordUser LIMIT 5"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sqlselectcsv"
-      ],
-      "Description": "Executes provided sql query and returns the results in a csv file. Dangerous.",
-      "Usage": [
-        ".sqlselectcsv SELECT * FROM DiscordUser LIMIT 5"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sqlexec"
-      ],
-      "Description": "Executes provided sql command and returns the number of affected rows. Dangerous.",
-      "Usage": [
-        ".sqlexec UPDATE DiscordUser SET CurrencyAmount=CurrencyAmount+1234"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".purgeuser"
-      ],
-      "Description": "Purge user from the database completely. This includes currency, xp, clubs that user owns, waifu info",
-      "Usage": [
-        ".purgeuser @Oblivion"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".deletexp"
-      ],
-      "Description": "Deletes everything from UserXpStats, Clubs and sets users' TotalXP to 0.",
-      "Usage": [
-        ".deletexp"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".deletewaifus"
-      ],
-      "Description": "Deletes everything from WaifuUpdates, WaifuItem and WaifuInfo tables.",
-      "Usage": [
-        ".deletewaifus"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".deletewaifu"
-      ],
-      "Description": "Deletes everything from WaifuUpdates, WaifuItem and WaifuInfo tables for the specified user. Also makes specified user's waifus free.",
-      "Usage": [
-        ".deletewaifu"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".deletecurrency"
-      ],
-      "Description": "Deletes everything from Currency and CurrencyTransactions.",
-      "Usage": [
-        ".deletecurrency"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
         ".delmsgoncmd",
         ".dmc"
       ],
@@ -255,23 +96,7 @@
         ".delmsgoncmd ch inherit",
         ".delmsgoncmd list"
       ],
-      "Submodule": "DelMsgOnCmdCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Administrator Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".gamevoicechannel",
-        ".gvc"
-      ],
-      "Description": "Toggles game voice channel feature in the voice channel you're currently in. Users who join the game voice channel will get automatically redirected to the voice channel with the name of their current game, if it exists. Can't move users to channels that the bot has no connect permission for. One per server.",
-      "Usage": [
-        ".gamevoicechannel"
-      ],
-      "Submodule": "GameVoiceChannelCommands",
+      "Submodule": "ChannelModerationCommands",
       "Module": "Administration",
       "Options": null,
       "Requirements": [
@@ -297,7 +122,7 @@
       "Aliases": [
         ".boostdel"
       ],
-      "Description": "Sets the time it takes (in seconds) for boost messages to be auto-deleted. Set it to `0` to disable automatic deletion.",
+      "Description": "Sets the time it takes (in seconds) for boost messages to be auto-deleted. Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.",
       "Usage": [
         ".boostdel 0",
         ".boostdel 30"
@@ -344,7 +169,7 @@
         ".greetdel",
         ".grdel"
       ],
-      "Description": "Sets the time it takes (in seconds) for greet messages to be auto-deleted. Set it to `0` to disable automatic deletion.",
+      "Description": "Sets the time it takes (in seconds) for greet messages to be auto-deleted. Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.",
       "Usage": [
         ".greetdel 0",
         ".greetdel 30"
@@ -420,7 +245,7 @@
       "Aliases": [
         ".byedel"
       ],
-      "Description": "Sets the time it takes (in seconds) for bye messages to be auto-deleted. Set it to `0` to disable automatic deletion.",
+      "Description": "Sets the time it takes (in seconds) for bye messages to be auto-deleted. Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.",
       "Usage": [
         ".byedel 0",
         ".byedel 30"
@@ -513,19 +338,6 @@
     },
     {
       "Aliases": [
-        ".honeypot"
-      ],
-      "Description": "Toggles honeypot on the current channel.\nAnyone sending a message in this channel will be soft banned. (Banned and then unbanned)\nThis is useful for automatically getting rid of spam bots.",
-      "Usage": [
-        ".honeypot"
-      ],
-      "Submodule": "HoneypotCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
         ".languageset",
         ".langset"
       ],
@@ -605,6 +417,21 @@
     },
     {
       "Aliases": [
+        ".autopublish"
+      ],
+      "Description": "Toggles whether the bot automatically publishes all messages posted in the news channel this command was executed in.",
+      "Usage": [
+        ".autopublish"
+      ],
+      "Submodule": "MessageCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageMessages Channel Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".muterole",
         ".setmuterole"
       ],
@@ -624,7 +451,7 @@
       "Aliases": [
         ".mute"
       ],
-      "Description": "Mutes a mentioned user both from speaking and chatting. You can also specify time string for how long the user should be muted. You can optionally specify a reason.",
+      "Description": "Mutes a mentioned user both from speaking and chatting. You can also specify time string for how long the user should be muted (min 1 minute, max 49 days). You can optionally specify a reason.",
       "Usage": [
         ".mute @Someone",
         ".mute @Someone too noisy",
@@ -657,7 +484,7 @@
       "Aliases": [
         ".chatmute"
       ],
-      "Description": "Prevents a mentioned user from chatting in text channels. You can also specify time string for how long the user should be muted. You can optionally specify a reason.",
+      "Description": "Prevents a mentioned user from chatting in text channels. You can also specify time string for how long the user should be muted (min 1 minute, max 49 days). You can optionally specify a reason.",
       "Usage": [
         ".chatmute @Someone",
         ".chatmute @Someone stop writing",
@@ -691,7 +518,7 @@
       "Aliases": [
         ".voicemute"
       ],
-      "Description": "Prevents a mentioned user from speaking in voice channels. User has to be in a voice channel in order for the command to have an effect. You can also specify time string for how long the user should be muted. You can optionally specify a reason.",
+      "Description": "Prevents a mentioned user from speaking in voice channels. User has to be in a voice channel in order for the command to have an effect. You can also specify time string for how long the user should be muted (min 1 minute, max 49 days). You can optionally specify a reason.",
       "Usage": [
         ".voicemute @Someone",
         ".voicemute @Someone stop talking",
@@ -719,21 +546,6 @@
       "Options": null,
       "Requirements": [
         "MuteMembers Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setnick"
-      ],
-      "Description": "Changes the nickname of the bot on this server.",
-      "Usage": [
-        ".setnick BotNickname"
-      ],
-      "Submodule": "NicknameCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageNicknames Server Permission"
       ]
     },
     {
@@ -852,71 +664,6 @@
     },
     {
       "Aliases": [
-        ".rotateplaying",
-        ".ropl"
-      ],
-      "Description": "Toggles rotation of playing status of the dynamic strings you previously specified.",
-      "Usage": [
-        ".rotateplaying"
-      ],
-      "Submodule": "PlayingRotateCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".addplaying",
-        ".adpl"
-      ],
-      "Description": "Adds a specified string to the list of playing strings to rotate. You have to pick either `Playing`, `Watching` or `Listening` as the first parameter.",
-      "Usage": [
-        ".addplaying Playing with you",
-        ".addplaying Watching you sleep"
-      ],
-      "Submodule": "PlayingRotateCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".listplaying",
-        ".lipl"
-      ],
-      "Description": "Lists all playing statuses and their indexes.",
-      "Usage": [
-        ".listplaying"
-      ],
-      "Submodule": "PlayingRotateCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".removeplaying",
-        ".rmpl"
-      ],
-      "Description": "Removes a playing status by index. Use `.lipl` to see indexes.",
-      "Usage": [
-        ".removeplaying"
-      ],
-      "Submodule": "PlayingRotateCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
         ".prefix"
       ],
       "Description": "Sets this server's prefix for all bot commands. Provide no parameters to see the current server prefix. **Setting prefix requires Administrator server permission.**",
@@ -947,7 +694,7 @@
       "Aliases": [
         ".antialt"
       ],
-      "Description": "Applies a punishment action to any user whose account is younger than the specified threshold. \nAvailable Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\nMax message count is 10.\nProvide no parameters to disable.",
+      "Description": "Applies a punishment action to any user whose account is younger than the specified threshold. \nAvailable Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\nProvide no parameters to disable.",
       "Usage": [
         ".antialt 1h Ban",
         ".antialt 3d Mute 1h"
@@ -963,7 +710,7 @@
       "Aliases": [
         ".antiraid"
       ],
-      "Description": "Sets an anti-raid protection on the server.\n\nFirst parameter is number of people which will trigger the protection.\n\nSecond parameter is a time interval in which that number of people needs to join in order to trigger the protection.\n\nThird parameter is punishment for those people.\nAvailable punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\n\nProvide no parameters to disable.",
+      "Description": "Sets an anti-raid protection on the server.\n\nFirst parameter is number of people which will trigger the protection.\n\nSecond parameter is a time interval in which that number of people needs to join in order to trigger the protection.\n\nThird parameter is punishment for those people.\nAvailable punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, Warn, TimeOut\nUser threshold must be between 2-30, and seconds between 2-300.\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\n\nProvide no parameters to disable.",
       "Usage": [
         ".antiraid 5 20 Kick",
         ".antiraid 7 9 Ban",
@@ -1026,10 +773,23 @@
     },
     {
       "Aliases": [
+        ".honeypot"
+      ],
+      "Description": "Toggles honeypot on the current channel.\nAnyone sending a message in this channel will be soft banned. (Banned and then unbanned)\nThis is useful for automatically getting rid of spam bots.",
+      "Usage": [
+        ".honeypot"
+      ],
+      "Submodule": "ProtectionCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
         ".prune",
         ".clear"
       ],
-      "Description": "`.prune` removes all Nadeko's messages in the last 100 messages. `.prune X` removes last `X` number of messages from the channel (up to 100). `.prune @Someone` removes all Someone's messages in the last 100 messages. `.prune @Someone X` removes last `X` number of 'Someone's' messages in the channel.",
+      "Description": "`.prune` removes all Nadeko's messages in the last 100 messages. `.prune X` removes last `X` number of messages from the channel (up to 1000). `.prune @Someone` removes all Someone's messages in the last 100 messages. `.prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID to only prune messages after that message.",
       "Usage": [
         ".prune",
         ".prune -s",
@@ -1398,450 +1158,6 @@
     },
     {
       "Aliases": [
-        ".cacheusers"
-      ],
-      "Description": "Caches users of a Discord server and saves them to the database.",
-      "Usage": [
-        ".cacheusers",
-        ".cacheusers serverId"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".doas",
-        ".execas"
-      ],
-      "Description": "Execute the command as if you were the target user. Requires bot ownership and server administrator permission.",
-      "Usage": [
-        ".doas @Thief .give all @Admin"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".scadd",
-        ".startcmdadd"
-      ],
-      "Description": "Adds a command to the list of commands which will be executed automatically in the current channel, in the order they were added in, by the bot when it startups up.",
-      "Usage": [
-        ".scadd .stats"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "Administrator Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".acadd",
-        ".autocmdadd"
-      ],
-      "Description": "Adds a command to the list of commands which will be executed automatically every X seconds.",
-      "Usage": [
-        ".acadd 60 .prune 1000"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "Administrator Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sclist",
-        ".startcmdlist"
-      ],
-      "Description": "Lists all startup commands in the order they will be executed in.",
-      "Usage": [
-        ".sclist"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".aclist",
-        ".autolist",
-        ".autocommands",
-        ".autocmdlist"
-      ],
-      "Description": "Lists all auto commands and the intervals in which they execute.",
-      "Usage": [
-        ".aclist"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".wait"
-      ],
-      "Description": "Used only as a startup command. Waits a certain number of milliseconds before continuing the execution of the following startup commands.",
-      "Usage": [
-        ".wait 3000"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".acrm",
-        ".autocmdrm"
-      ],
-      "Description": "Removes an auto command on the specified index.",
-      "Usage": [
-        ".acrm 3"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "Administrator Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".scrm",
-        ".startcmdrm"
-      ],
-      "Description": "Removes a startup command on the specified index.",
-      "Usage": [
-        ".scrm 3"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".scclear",
-        ".scclr"
-      ],
-      "Description": "Removes all startup commands.",
-      "Usage": [
-        ".scclear"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "Administrator Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".forwardmessages",
-        ".fwmsgs"
-      ],
-      "Description": "Toggles forwarding of non-command messages sent to bot's DM to the bot owners",
-      "Usage": [
-        ".forwardmessages"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".forwardtoall",
-        ".fwtoall"
-      ],
-      "Description": "Toggles whether messages will be forwarded to all bot owners or only to the first one specified in the creds.yml file",
-      "Usage": [
-        ".forwardtoall"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".forwardtochannel",
-        ".fwtoch",
-        ".fwtochannel"
-      ],
-      "Description": "Toggles forwarding of non-command messages sent to bot's DM to the current channel",
-      "Usage": [
-        ".forwardtochannel"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".shardstats"
-      ],
-      "Description": "Stats for shards. Paginated with 25 shards per page.\nFormat: `[status] | # [shard_id] | [last_heartbeat] | [server_count]`",
-      "Usage": [
-        ".shardstats",
-        ".shardstats 2"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".restartshard"
-      ],
-      "Description": "Try (re)connecting a shard with a certain shardid when it dies. No one knows will it work. Keep an eye on the console for errors.",
-      "Usage": [
-        ".restartshard 2"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".leave"
-      ],
-      "Description": "Makes Nadeko leave the server. Either server name or server ID is required.",
-      "Usage": [
-        ".leave 123123123331"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".deleteemptyservers"
-      ],
-      "Description": "Deletes all servers in which the bot is the only member.",
-      "Usage": [
-        ".deleteemptyservers"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".die"
-      ],
-      "Description": "Shuts the bot down.",
-      "Usage": [
-        ".die"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".restart"
-      ],
-      "Description": "Restarts the bot. Might not work.",
-      "Usage": [
-        ".restart"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setname",
-        ".newnm"
-      ],
-      "Description": "Gives the bot a new name.",
-      "Usage": [
-        ".setname BotName"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setstatus"
-      ],
-      "Description": "Sets the bot's status. (Online/Idle/Dnd/Invisible)",
-      "Usage": [
-        ".setstatus Idle"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setavatar",
-        ".setav"
-      ],
-      "Description": "Sets a new avatar image for the NadekoBot. Parameter is a direct link to an image.",
-      "Usage": [
-        ".setavatar https://i.imgur.com/xTG3a1I.jpg"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setbanner"
-      ],
-      "Description": "Sets a new banner image for the NadekoBot. Parameter is a direct link to an image. Supports gifs.",
-      "Usage": [
-        ".setbanner https://i.imgur.com/xTG3a1I.jpg"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setactivity",
-        ".setgame"
-      ],
-      "Description": "Sets the bots game status to a Custom, Playing, Listening, or Watching status.",
-      "Usage": [
-        ".setactivity Just chilling",
-        ".setactivity Playing with snakes",
-        ".setactivity Listening music"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setstream"
-      ],
-      "Description": "Sets the bots stream. First parameter is the twitch link, second parameter is stream name.",
-      "Usage": [
-        ".setstream TWITCHLINK Hello"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".send"
-      ],
-      "Description": "Sends a message to a channel or user.\nYou can write \"channel\" (literally word 'channel') first followed by the channel id or channel mention, or\nYou can write \"user\" (literally word 'user') first followed by the user id or user mention.\nAfter either one of those, specify the message to be sent.\nThis command can only be used by the Bot Owner.",
-      "Usage": [
-        ".send channel 123123123132312 Stop spamming commands plz",
-        ".send user 1231231232132 I can see in the console what you're doing."
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".stringsreload"
-      ],
-      "Description": "Reloads localized bot strings.",
-      "Usage": [
-        ".stringsreload"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".coordreload"
-      ],
-      "Description": "Reloads coordinator config",
-      "Usage": [
-        ".coordreload"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
         ".iam"
       ],
       "Description": "Adds a role to you that you choose. Role must be on the list of self-assignable roles.",
@@ -2030,7 +1346,7 @@
         ".setserverbanner",
         ".serverbanner"
       ],
-      "Description": "Sets a new banner image for the current server. Parameter is a direct link to an image.",
+      "Description": "Sets a new banner image for the current server. Parameter is a direct link to an image. Requires server boost level Tier 2 or higher.",
       "Usage": [
         ".setserverbanner https://i.imgur.com/xTG3a1I.jpg"
       ],
@@ -2328,7 +1644,7 @@
       ],
       "Description": "Deletes a warning from a user by its index.",
       "Usage": [
-        ".warndelete 3"
+        ".warndelete @Someone 3"
       ],
       "Submodule": "UserPunishCommands",
       "Module": "Administration",
@@ -2359,7 +1675,7 @@
         ".warnpunish",
         ".warnp"
       ],
-      "Description": "Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or *'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles",
+      "Description": "Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or *'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut",
       "Usage": [
         ".warnpunish 3",
         ".warnpunish 5 Ban",
@@ -2584,50 +1900,6 @@
     },
     {
       "Aliases": [
-        ".vcrolerm"
-      ],
-      "Description": "Removes any `.vcrole` associated with the specified channel ID. This is useful if your vcrole has been enabled on a VC which has been deleted.",
-      "Usage": [
-        ".vcrolerm 123123123123123"
-      ],
-      "Submodule": "VcRoleCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".vcrole"
-      ],
-      "Description": "Sets or resets a role which will be given to users who join the voice channel you're in when you run this command. Provide no role name to disable. You must be in a voice channel to run this command.",
-      "Usage": [
-        ".vcrole SomeRole",
-        ".vcrole"
-      ],
-      "Submodule": "VcRoleCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": [
-        "ManageRoles Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
-        ".vcrolelist"
-      ],
-      "Description": "Shows a list of currently set voice channel roles.",
-      "Usage": [
-        ".vcrolelist"
-      ],
-      "Submodule": "VcRoleCommands",
-      "Module": "Administration",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
         ".deafen",
         ".deaf"
       ],
@@ -2691,6 +1963,66 @@
       "Requirements": [
         "ManageChannels Server Permission"
       ]
+    },
+    {
+      "Aliases": [
+        ".gamevoicechannel",
+        ".gvc"
+      ],
+      "Description": "Toggles game voice channel feature in the voice channel you're currently in. Users who join the game voice channel will get automatically redirected to the voice channel with the name of their current game, if it exists. Can't move users to channels that the bot has no connect permission for. One per server.",
+      "Usage": [
+        ".gamevoicechannel"
+      ],
+      "Submodule": "VoiceCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".vcrolerm"
+      ],
+      "Description": "Removes any `.vcrole` associated with the specified channel ID. This is useful if your vcrole has been enabled on a VC which has been deleted.",
+      "Usage": [
+        ".vcrolerm 123123123123123"
+      ],
+      "Submodule": "VoiceCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".vcrole"
+      ],
+      "Description": "Sets or resets a role which will be given to users who join the voice channel you're in when you run this command. Provide no role name to disable. You must be in a voice channel to run this command.",
+      "Usage": [
+        ".vcrole SomeRole",
+        ".vcrole"
+      ],
+      "Submodule": "VoiceCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".vcrolelist"
+      ],
+      "Description": "Shows a list of currently set voice channel roles.",
+      "Usage": [
+        ".vcrolelist"
+      ],
+      "Submodule": "VoiceCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": []
     }
   ],
   "Expressions": [
@@ -3157,7 +2489,7 @@
         ".leaderboard",
         ".lb"
       ],
-      "Description": "Displays the bot's currency leaderboard, or in other words, the richest users.\nSpecifying -c flag will show only users who are in this server.\nPaginated with 10 users per page.",
+      "Description": "Displays the bot's currency leaderboard, or in other words, the richest users.\nSpecifying -c flag will show only users who are in this server.\nPaginated with 9 users per page.",
       "Usage": [
         ".leaderboard",
         ".leaderboard -c"
@@ -3358,7 +2690,7 @@
         ".betstats",
         ".bs"
       ],
-      "Description": "Shows the current bet stats for yourself, or the targetted user.\nYou may optionally specify the game to show stats for.\nSupported games right now are: bf, br, bd, lula, slot, race",
+      "Description": "Shows the current bet stats for yourself, or the targetted user.\nYou may optionally specify the game to show stats for.\nSupported games right now are: bf, br, bj, bd, lula, slot, race",
       "Usage": [
         ".betstats",
         ".betstats @someone",
@@ -3489,7 +2821,7 @@
       "Aliases": [
         ".roll"
       ],
-      "Description": "Rolls 0-100. If you supply a number `X` it rolls up to 30 normal dice. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`. `Y` can be a letter 'F' if you want to roll fate dice instead of dnd.",
+      "Description": "Rolls 1-100. If you supply a number `X` it rolls up to 30 normal dice. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`. `Y` can be a letter 'F' if you want to roll fate dice instead of dnd.",
       "Usage": [
         ".roll",
         ".roll 7",
@@ -3731,10 +3063,10 @@
       "Aliases": [
         ".shopadd"
       ],
-      "Description": "Adds an item to the shop.\nFirst you begin by specifying the type of the item you wish to add.\nAvailable types are role, list and command.\nIf the item is a role, specify a role id or a role name.\nIn case you're selling a command, and you need user's name, id etc, you can use the following placeholders:\n-     `%you%` - Buyer mention\n-     `%you.id%` - Buyer's user ID\n-     `%you.username%` - Buyer's username\n-     `%you.name%` - Buyer's global name\n-     `%you.nick%` - Buyer's display name\n90% of currency from each purchase will be received by the user who added the item to the shop. This is configurable by the bot owner",
+      "Description": "Adds an item to the shop.\nFirst you begin by specifying the type of the item you wish to add.\nAvailable types are role, list and command.\nIf the item is a role, specify a role id or a role name.\nIn case you're selling a command, and you need user's name, id etc, you can use the following placeholders:\n-     `%you%` - Buyer mention\n-     `%you.username%` - Buyer's username\n-     `%you.name%` - Buyer's global name\n-     `%you.nick%` - Buyer's display name\n90% of currency from each purchase will be received by the user who added the item to the shop. This is configurable by the bot owner",
       "Usage": [
         ".shopadd role 1000 Rich",
-        ".shopadd cmd 1000 .setrole %user% Rich"
+        ".shopadd cmd 1000 .setrole %you% Rich"
       ],
       "Submodule": "ShopCommands",
       "Module": "Gambling",
@@ -3930,23 +3262,6 @@
     },
     {
       "Aliases": [
-        ".cleverbot",
-        ".chatbot",
-        ".chatgpt"
-      ],
-      "Description": "Toggles cleverbot/chatgpt session.\nWhen enabled, the bot will reply to messages starting with bot mention in the server.\nExpressions starting with %bot.mention% won't work if cleverbot/chatgpt is enabled.",
-      "Usage": [
-        ".cleverbot"
-      ],
-      "Submodule": "ChatterBotCommands",
-      "Module": "Games",
-      "Options": null,
-      "Requirements": [
-        "ManageMessages Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
         ".fish",
         ".fi"
       ],
@@ -4086,9 +3401,9 @@
         ".fiunuse",
         ".fishunuse"
       ],
-      "Description": "Unequips an item by specifying its index in your inventory.\nYou can use it again later.\nYou can't unequip potions.",
+      "Description": "Unequips an item by specifying the item type (pole, boat, bait, potion).\nYou can use it again later.\nYou can't unequip potions.",
       "Usage": [
-        ".fishunequip 1"
+        ".fishunequip pole"
       ],
       "Submodule": "FishItemCommands",
       "Module": "Games",
@@ -4160,7 +3475,8 @@
       ],
       "Description": "Shows the current nCanvas.\nThe canvas allows users to set each pixel's color and text using currency.",
       "Usage": [
-        ".ncanvas"
+        ".ncanvas",
+        ".ncanvas sgu"
       ],
       "Submodule": "NCanvasCommands",
       "Module": "Games",
@@ -4172,7 +3488,7 @@
         ".nczoom",
         ".ncz"
       ],
-      "Description": "Zooms in on the nCanvas.\nBot will show the 10x10 grid with the position of each cell for use with `ncset`.\nYou can either use alphanumeric position (ex. s4u) or pixel x and y (ex. 123 123)",
+      "Description": "Zooms in on the nCanvas.\nBot will show a 5x5 grid with the position of each cell for use with `ncset`.\nYou can either use alphanumeric position (ex. s4u) or pixel x and y (ex. 123 123)",
       "Usage": [
         ".nczoom sgu",
         ".nczoom 123 123"
@@ -4237,6 +3553,22 @@
       "Description": "Clears the nCanvas.\nAll prices and colors will be reset.\nThis command is dangerous and irreversible.",
       "Usage": [
         ".ncreset"
+      ],
+      "Submodule": "NCanvasCommands",
+      "Module": "Games",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".ncnuke",
+        ".ncn"
+      ],
+      "Description": "Nukes all pixels owned by the specified user, resetting them to black.\nOwner only.",
+      "Usage": [
+        ".ncnuke @user"
       ],
       "Submodule": "NCanvasCommands",
       "Module": "Games",
@@ -4665,7 +3997,7 @@
         ".listqueue",
         ".lq"
       ],
-      "Description": "Lists 10 currently queued songs per page. Default page is 1.",
+      "Description": "Lists 9 currently queued songs per page. Default page is 1.",
       "Usage": [
         ".listqueue",
         ".listqueue 2"
@@ -5036,7 +4368,7 @@
         ".plrm",
         ".pldelete"
       ],
-      "Description": "Deletes a saved playlist using its ID. Works only on playlists saved by you.",
+      "Description": "Deletes a saved playlist using its ID. Works only on playlists saved by you or if you are the bot owner.",
       "Usage": [
         ".playlistdelete 5"
       ],
@@ -5069,7 +4401,7 @@
         ".plsave",
         ".psave"
       ],
-      "Description": "Saves a playlist under a certain name. Playlist name must be no longer than 20 characters and must not contain dashes.",
+      "Description": "Saves a playlist under a certain name. Playlist name must be no longer than 20 characters.",
       "Usage": [
         ".playlistsave classical1"
       ],
@@ -5087,9 +4419,10 @@
         ".plload",
         ".pll"
       ],
-      "Description": "Loads a saved playlist using its ID. Use `.pls` to list all saved playlists and `.save` to save new ones.",
+      "Description": "Loads a saved playlist using its ID. Use `.pls` to list all saved playlists and `.save` to save new ones. Use `--shuffle` to load in random order.",
       "Usage": [
-        ".playlistload 5"
+        ".playlistload 5",
+        ".playlistload 5 --shuffle"
       ],
       "Submodule": "PlaylistCommands",
       "Module": "Music",
@@ -5122,9 +4455,8 @@
       "Aliases": [
         ".votefeed"
       ],
-      "Description": "Shows bot votes in real time in the specified channel.\nOmit channel to disable.",
+      "Description": "Shows bot votes in real time in the current channel.\nRun in a different channel to change, or use the command again to toggle.",
       "Usage": [
-        ".votefeed #votefeed",
         ".votefeed"
       ],
       "Submodule": "Owner",
@@ -5231,6 +4563,661 @@
       "Requirements": [
         "Bot Owner Only",
         "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".cleanupguilddata"
+      ],
+      "Description": "Deletes data for all servers bot is no longer a member of from the database.\nThis is a highly destructive and irreversible command.",
+      "Usage": [
+        ".cleanupguilddata"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sqlselect"
+      ],
+      "Description": "Executes provided sql query and returns the results. Dangerous.",
+      "Usage": [
+        ".sqlselect SELECT * FROM DiscordUser LIMIT 5"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sqlselectcsv"
+      ],
+      "Description": "Executes provided sql query and returns the results in a csv file. Dangerous.",
+      "Usage": [
+        ".sqlselectcsv SELECT * FROM DiscordUser LIMIT 5"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sqlexec"
+      ],
+      "Description": "Executes provided sql command and returns the number of affected rows. Dangerous.",
+      "Usage": [
+        ".sqlexec UPDATE DiscordUser SET CurrencyAmount=CurrencyAmount+1234"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".purgeuser"
+      ],
+      "Description": "Purge user from the database completely. This includes currency, xp, clubs that user owns, waifu info",
+      "Usage": [
+        ".purgeuser @Oblivion"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".deletexp"
+      ],
+      "Description": "Deletes everything from UserXpStats, Clubs and sets users' TotalXP to 0.",
+      "Usage": [
+        ".deletexp"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".deletewaifus"
+      ],
+      "Description": "Deletes everything from WaifuUpdates, WaifuItem and WaifuInfo tables.",
+      "Usage": [
+        ".deletewaifus"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".deletewaifu"
+      ],
+      "Description": "Deletes waifu data for the specified user, including waifu info, fans, and cycles. Also frees the user's waifus.",
+      "Usage": [
+        ".deletewaifu @Someone",
+        ".deletewaifu 123456789012345678"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".deletecurrency"
+      ],
+      "Description": "Deletes everything from Currency and CurrencyTransactions.",
+      "Usage": [
+        ".deletecurrency"
+      ],
+      "Submodule": "DangerousCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".rotateplaying",
+        ".ropl"
+      ],
+      "Description": "Toggles rotation of playing status of the dynamic strings you previously specified.",
+      "Usage": [
+        ".rotateplaying"
+      ],
+      "Submodule": "PlayingRotateCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".addplaying",
+        ".adpl"
+      ],
+      "Description": "Adds a specified string to the list of playing strings to rotate. Optionally pick a type: `Playing`, `Watching`, `Listening`, or `Competing`. Defaults to Custom status if no type is given.",
+      "Usage": [
+        ".addplaying Just vibing",
+        ".addplaying Playing with you",
+        ".addplaying Watching you sleep"
+      ],
+      "Submodule": "PlayingRotateCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".listplaying",
+        ".lipl"
+      ],
+      "Description": "Lists all playing statuses and their indexes.",
+      "Usage": [
+        ".listplaying"
+      ],
+      "Submodule": "PlayingRotateCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".removeplaying",
+        ".rmpl"
+      ],
+      "Description": "Removes a playing status by index. Use `.lipl` to see indexes.",
+      "Usage": [
+        ".removeplaying 3"
+      ],
+      "Submodule": "PlayingRotateCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".cacheusers"
+      ],
+      "Description": "Caches users of a Discord server and saves them to the database.",
+      "Usage": [
+        ".cacheusers",
+        ".cacheusers serverId"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".doas",
+        ".execas"
+      ],
+      "Description": "Execute the command as if you were the target user. Requires bot ownership and server administrator permission.",
+      "Usage": [
+        ".doas @Thief .give all @Admin"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".scadd",
+        ".startcmdadd"
+      ],
+      "Description": "Adds a command to the list of commands which will be executed automatically in the current channel, in the order they were added in, by the bot when it starts up.",
+      "Usage": [
+        ".scadd .stats"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".acadd",
+        ".autocmdadd"
+      ],
+      "Description": "Adds a command to the list of commands which will be executed automatically every X seconds.",
+      "Usage": [
+        ".acadd 60 .prune 1000"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sclist",
+        ".startcmdlist"
+      ],
+      "Description": "Lists all startup commands in the order they will be executed in.",
+      "Usage": [
+        ".sclist"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".aclist",
+        ".autolist",
+        ".autocommands",
+        ".autocmdlist"
+      ],
+      "Description": "Lists all auto commands and the intervals in which they execute.",
+      "Usage": [
+        ".aclist"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".wait"
+      ],
+      "Description": "Used only as a startup command. Waits a certain number of milliseconds before continuing the execution of the following startup commands.",
+      "Usage": [
+        ".wait 3000"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".acrm",
+        ".autocmdrm"
+      ],
+      "Description": "Removes an auto command on the specified index.",
+      "Usage": [
+        ".acrm 3"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".scrm",
+        ".startcmdrm"
+      ],
+      "Description": "Removes a startup command on the specified index.",
+      "Usage": [
+        ".scrm 3"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".scclear",
+        ".scclr"
+      ],
+      "Description": "Removes all startup commands.",
+      "Usage": [
+        ".scclear"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".forwardmessages",
+        ".fwmsgs"
+      ],
+      "Description": "Toggles forwarding of non-command messages sent to bot's DM to the bot owners",
+      "Usage": [
+        ".forwardmessages"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".forwardtoall",
+        ".fwtoall"
+      ],
+      "Description": "Toggles whether messages will be forwarded to all bot owners or only to the first one specified in the creds.yml file",
+      "Usage": [
+        ".forwardtoall"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".forwardtochannel",
+        ".fwtoch",
+        ".fwtochannel"
+      ],
+      "Description": "Toggles forwarding of non-command messages sent to bot's DM to the current channel",
+      "Usage": [
+        ".forwardtochannel"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".shardstats"
+      ],
+      "Description": "Stats for shards. Paginated with 25 shards per page.\nFormat: `[status] | # [shard_id] | [last_heartbeat] | [server_count]`",
+      "Usage": [
+        ".shardstats",
+        ".shardstats 2"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".restartshard"
+      ],
+      "Description": "Try (re)connecting a shard with a certain shardid when it dies. No one knows will it work. Keep an eye on the console for errors.",
+      "Usage": [
+        ".restartshard 2"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".leave"
+      ],
+      "Description": "Makes Nadeko leave the server. Either server name or server ID is required.",
+      "Usage": [
+        ".leave 123123123331"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".deleteemptyservers"
+      ],
+      "Description": "Deletes all servers in which the bot is the only member.",
+      "Usage": [
+        ".deleteemptyservers"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".die"
+      ],
+      "Description": "Shuts the bot down.",
+      "Usage": [
+        ".die"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".restart"
+      ],
+      "Description": "Restarts the bot. Might not work.",
+      "Usage": [
+        ".restart"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setname",
+        ".newnm"
+      ],
+      "Description": "Gives the bot a new name.",
+      "Usage": [
+        ".setname BotName"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setstatus"
+      ],
+      "Description": "Sets the bot's status. (Online/Idle/Dnd/Invisible)",
+      "Usage": [
+        ".setstatus Idle"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setavatar",
+        ".setav"
+      ],
+      "Description": "Sets a new avatar image for the NadekoBot. Parameter is a direct link to an image.",
+      "Usage": [
+        ".setavatar https://i.imgur.com/xTG3a1I.jpg"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setbanner"
+      ],
+      "Description": "Sets a new banner image for the NadekoBot. Parameter is a direct link to an image. Supports gifs.",
+      "Usage": [
+        ".setbanner https://i.imgur.com/xTG3a1I.jpg"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setactivity",
+        ".setgame"
+      ],
+      "Description": "Sets the bot's activity status. Optionally specify a type (Playing, Listening, Watching, Competing). Defaults to Custom status if no type given.",
+      "Usage": [
+        ".setactivity Just chilling",
+        ".setactivity Playing with snakes",
+        ".setactivity Listening music"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setstream"
+      ],
+      "Description": "Sets the bots stream. First parameter is the twitch link, second parameter is stream name.",
+      "Usage": [
+        ".setstream TWITCHLINK Hello"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".send"
+      ],
+      "Description": "Sends a message to a channel or user.\nYou can write \"channel\" (literally word 'channel') first followed by the channel id or channel mention, or\nYou can write \"user\" (literally word 'user') first followed by the user id or user mention.\nAfter either one of those, specify the message to be sent.\nThis command can only be used by the Bot Owner.",
+      "Usage": [
+        ".send channel 123123123132312 Stop spamming commands plz",
+        ".send user 1231231232132 I can see in the console what you're doing."
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".stringsreload"
+      ],
+      "Description": "Reloads localized bot strings.",
+      "Usage": [
+        ".stringsreload"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".coordreload"
+      ],
+      "Description": "Reloads coordinator config",
+      "Usage": [
+        ".coordreload"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
       ]
     }
   ],
@@ -5483,9 +5470,9 @@
         ".userblacklist",
         ".ubl"
       ],
-      "Description": "Either [add]s or [rem]oves a user or users specified by a Mention or an ID from a blacklist.\nSpecify no argument or a page number to list blacklisted users.",
+      "Description": "Either [add]s or [rem]oves a user specified by a Mention or an ID from a blacklist.\nSpecify no argument or a page number to list blacklisted users.",
       "Usage": [
-        ".userblacklist add @SomeUser @SomeUser2 @SomeUser3",
+        ".userblacklist add @SomeUser",
         ".userblacklist rem 12312312313",
         ".userblacklist",
         ".userblacklist 4"
@@ -5502,9 +5489,9 @@
         ".channelblacklist",
         ".cbl"
       ],
-      "Description": "Either [add]s or [rem]oves a channel or channels specified an ID from a blacklist.\nSpecify no argument or a page number to list blacklisted channels.",
+      "Description": "Either [add]s or [rem]oves a channel specified by an ID from a blacklist.\nSpecify no argument or a page number to list blacklisted channels.",
       "Usage": [
-        ".channelblacklist add 12312312312 66666666666",
+        ".channelblacklist add 12312312312",
         ".channelblacklist rem 12312312312",
         ".channelblacklist",
         ".channelblacklist 3"
@@ -5540,7 +5527,7 @@
         ".cmdcooldown",
         ".cmdcd"
       ],
-      "Description": "Sets a cooldown, in seconds, for a command or an expression which will be applied per user. Set it to 0 to remove the cooldown. Supports a special command `cleverbot:response` which can be used limit how often users can talk to cleverbot",
+      "Description": "Sets a cooldown, in seconds (max 3600), for a command or an expression which will be applied per user. Set it to 0 to remove the cooldown. Supports a special command `cleverbot:response` which can be used to limit how often users can talk to cleverbot",
       "Usage": [
         ".cmdcooldown .h 5",
         ".cmdcooldown .pat 30"
@@ -5883,7 +5870,6 @@
     {
       "Aliases": [
         ".coins",
-        ".crypto",
         ".cryptos"
       ],
       "Description": "Shows a list of 10 crypto currencies ordered by market cap.\nShows their price, change in the last24h, market cap and circulating and total supply.\nPaginated with 10 per page.",
@@ -6092,7 +6078,7 @@
       "Aliases": [
         ".wowjoke"
       ],
-      "Description": "Get one of penultimate WoW jokes.",
+      "Description": "Shows a random WoW joke.",
       "Usage": [
         ".wowjoke"
       ],
@@ -6346,7 +6332,7 @@
         ".youtube",
         ".yt"
       ],
-      "Description": "Searches youtubes and shows the first result",
+      "Description": "Searches YouTube and shows the first result",
       "Usage": [
         ".youtube query"
       ],
@@ -6533,7 +6519,7 @@
         ".at",
         ".autotrans"
       ],
-      "Description": "Starts automatic translation of all messages by users who set their `.atl` in this channel. You can set \"del\" parameter to automatically delete all translated user messages.",
+      "Description": "Toggles automatic translation of all messages by users who set their `.atl` in this channel. You can set \"del\" parameter to automatically delete all translated user messages.",
       "Usage": [
         ".autotranslate",
         ".autotranslate del"
@@ -6924,7 +6910,7 @@
       "Aliases": [
         ".listservers"
       ],
-      "Description": "Lists servers the bot is on with some basic info. 15 per page.",
+      "Description": "Lists servers the bot is on with some basic info. 9 per page.",
       "Usage": [
         ".listservers 3"
       ],
@@ -7046,7 +7032,8 @@
       ],
       "Description": "Shows currently raised hands in chronological order from your current voice channel.",
       "Usage": [
-        ".hands"
+        ".hands",
+        ".hands 2"
       ],
       "Submodule": "HandsCommands",
       "Module": "Utility",
@@ -7055,16 +7042,37 @@
     },
     {
       "Aliases": [
-        ".prompt"
+        ".agent",
+        ".ai"
       ],
-      "Description": "Ask the bot to do something for you.\nThis will fall back to the chatbot service in case of an error.",
+      "Description": "Runs an AI agent that can use tools to accomplish complex tasks on your behalf.\nThe agent can read messages, send messages to channels, split long texts, and more.\nAll actions respect your permissions. You can also trigger this by @mentioning the bot.",
       "Usage": [
-        ".prompt What's the weather like today?"
+        ".agent split the last long message in this channel and send the parts to #general",
+        ".agent get the message with ID 123456789 from #rules and post it in #announcements"
       ],
-      "Submodule": "PromptCommands",
+      "Submodule": "AiAgentCommands",
       "Module": "Utility",
       "Options": null,
-      "Requirements": []
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentcancel",
+        ".aicancel",
+        ".aic"
+      ],
+      "Description": "Cancels your currently running AI agent session.",
+      "Usage": [
+        ".agentcancel"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
     },
     {
       "Aliases": [
@@ -7639,6 +7647,21 @@
     },
     {
       "Aliases": [
+        ".setnick"
+      ],
+      "Description": "Changes the nickname of the bot on this server.",
+      "Usage": [
+        ".setnick BotNickname"
+      ],
+      "Submodule": "NicknameCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageNicknames Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".quotelist",
         ".qli",
         ".quli",
@@ -7692,12 +7715,10 @@
         ".qse",
         ".qsearch"
       ],
-      "Description": "Shows a random quote given a search query. Partially matches in several ways: 1) Only content of any quote, 2) only by author, 3) keyword and content, 3) or keyword and author",
+      "Description": "Searches quotes by keyword, content, or author name.\nPartially matches across all fields simultaneously.",
       "Usage": [
-        ".quotesearch \"find this long text\"",
-        ".quotesearch AuthorName",
-        ".quotesearch keyword some text",
-        ".quotesearch keyword AuthorName"
+        ".quotesearch hello",
+        ".quotesearch AuthorName"
       ],
       "Submodule": "QuoteCommands",
       "Module": "Utility",
@@ -7709,7 +7730,7 @@
         ".quoteid",
         ".qid"
       ],
-      "Description": "-| Displays the quote with the specified ID number.",
+      "Description": "Displays the quote with the specified ID number.",
       "Usage": [
         ".quoteid 123456"
       ],
@@ -7837,7 +7858,7 @@
       "Aliases": [
         ".remind"
       ],
-      "Description": "Sets a reminder which will be sent to you or to the targeted channel after certain amount of time (max 2 months).\nFirst parameter is `me` / `here` / 'channelname'\nSecond parameter is time in a descending order (mo>w>d>h>m) example: 1w5d3h10m.\nThird parameter is a (multiword) message.\nRequires ManageMessages server permission if you're targeting a different channel.",
+      "Description": "Sets a reminder which will be sent to you or to the targeted channel after certain amount of time (max 1 year).\nFirst parameter is `me` / `here` / 'channelname'\nSecond parameter is time in a descending order (mo>w>d>h>m) example: 1w5d3h10m.\nThird parameter is a (multiword) message.\nRequires ManageMessages server permission if you're targeting a different channel.",
       "Usage": [
         ".remind me 1d5h Do something",
         ".remind #general 1m Start now!"
@@ -8341,7 +8362,8 @@
       ],
       "Description": "Removes a previously assigned role from a user.",
       "Usage": [
-        ".userroleremove @User @Role"
+        ".userroleremove @User @Role",
+        ".userroleremove @User 123456789012345678"
       ],
       "Submodule": "UserRoleCommands",
       "Module": "Utility",
@@ -8536,9 +8558,11 @@
         ".wclaim",
         ".wc"
       ],
-      "Description": "Buys the manager position for a waifu.\nCosts 115% of the current price. Only available in the first 18h of a cycle.\n90% goes to old manager, 5% to waifu, 5% burned.",
+      "Description": "Buys the manager position for a waifu.\nYou must bid at least 115% of the current price. Only available in the first 18h of a cycle.\n90% goes to old manager (or waifu if first), 5% to waifu, 5% burned.",
       "Usage": [
-        ".waifubuy @user"
+        ".waifubuy 1150 @user",
+        ".waifubuy 5000 @user",
+        ".waifubuy 5000 123456789012345678"
       ],
       "Submodule": "WaifuCommands",
       "Module": "Waifus",
@@ -8563,9 +8587,11 @@
       "Aliases": [
         ".hug"
       ],
-      "Description": "Hugs a waifu to improve their mood.",
+      "Description": "Hugs one or more users to improve their mood. If no valid user is found, just shows a hug GIF.",
       "Usage": [
-        ".hug @user"
+        ".hug @user",
+        ".hug @user1 @user2 @user3",
+        ".hug cutie"
       ],
       "Submodule": "WaifuCommands",
       "Module": "Waifus",
@@ -8576,9 +8602,11 @@
       "Aliases": [
         ".kiss"
       ],
-      "Description": "Kisses a waifu to improve their mood.",
+      "Description": "Kisses one or more users to improve their mood. If no valid user is found, just shows a kiss GIF.",
       "Usage": [
-        ".kiss @user"
+        ".kiss @user",
+        ".kiss @user1 @user2 @user3",
+        ".kiss cutie"
       ],
       "Submodule": "WaifuCommands",
       "Module": "Waifus",
@@ -8589,9 +8617,27 @@
       "Aliases": [
         ".pat"
       ],
-      "Description": "Pats a waifu to improve their mood.",
+      "Description": "Pats one or more users to improve their mood. If no valid user is found, just shows a pat GIF.",
       "Usage": [
-        ".pat @user"
+        ".pat @user",
+        ".pat @user1 @user2 @user3",
+        ".pat cutie"
+      ],
+      "Submodule": "WaifuCommands",
+      "Module": "Waifus",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".nom",
+        ".feed"
+      ],
+      "Description": "Feeds one or more users to improve their food stat. If no valid user is found, just shows a nom GIF.",
+      "Usage": [
+        ".nom @user",
+        ".nom @user1 @user2 @user3",
+        ".nom cutie"
       ],
       "Submodule": "WaifuCommands",
       "Module": "Waifus",
@@ -8635,9 +8681,10 @@
         ".wresign",
         ".wdivorce"
       ],
-      "Description": "Resign from managing a specific waifu. Triggers manager exit with financial consequences\n(50% refund, 10% to waifu, 35% to fans, 5% burned).",
+      "Description": "Resign from managing a specific waifu. The waifu's price drops to the minimum.\nNo refund is given.",
       "Usage": [
-        ".waifuresign @user"
+        ".waifuresign @user",
+        ".waifuresign 123456789012345678"
       ],
       "Submodule": "WaifuCommands",
       "Module": "Waifus",
@@ -8728,7 +8775,7 @@
       "Aliases": [
         ".xpadd"
       ],
-      "Description": "Adds server XP to a single user or all users role on this server. This does not affect their global ranking. You can use negative values.",
+      "Description": "Adds server XP to a single user or all users with a role on this server. This does not affect their global ranking. You can use negative values.",
       "Usage": [
         ".xpadd 100 @Someone",
         ".xpadd 500 SomeRoleName"
@@ -8858,7 +8905,7 @@
       "Aliases": [
         ".clubcreate"
       ],
-      "Description": "Creates a club. You must be at least level 5 and not be in the club already.",
+      "Description": "Creates a club. You must not already be in a club.",
       "Usage": [
         ".clubcreate My Brand New Club"
       ],
@@ -8871,9 +8918,10 @@
       "Aliases": [
         ".clubicon"
       ],
-      "Description": "Sets the club icon.",
+      "Description": "Sets the club icon. Provide no URL to remove the icon.",
       "Usage": [
-        ".clubicon https://i.imgur.com/htfDMfU.png"
+        ".clubicon https://i.imgur.com/htfDMfU.png",
+        ".clubicon"
       ],
       "Submodule": "Club",
       "Module": "Xp",
@@ -8911,7 +8959,7 @@
       "Aliases": [
         ".clubbans"
       ],
-      "Description": "Shows the list of users who have banned from your club. Paginated. You must be club owner to use this command.",
+      "Description": "Shows the list of users who have been banned from your club. Paginated. You must be club owner or admin to use this command.",
       "Usage": [
         ".clubbans 2"
       ],
@@ -8924,7 +8972,7 @@
       "Aliases": [
         ".clubapps"
       ],
-      "Description": "Shows the list of users who have applied to your club. Paginated. You must be club owner to use this command.",
+      "Description": "Shows the list of users who have applied to your club. Paginated. You must be club owner or admin to use this command.",
       "Usage": [
         ".clubapps 2"
       ],
@@ -8989,7 +9037,7 @@
       "Aliases": [
         ".clubkick"
       ],
-      "Description": "Kicks the user from the club. You must be the club owner. They will be able to apply again.",
+      "Description": "Kicks the user from the club. You must be the club owner or admin. They will be able to apply again.",
       "Usage": [
         ".clubkick user#1337"
       ],
@@ -9002,7 +9050,7 @@
       "Aliases": [
         ".clubban"
       ],
-      "Description": "Bans the user from the club. You must be the club owner. They will not be able to apply again.",
+      "Description": "Bans the user from the club. You must be the club owner or admin. They will not be able to apply again.",
       "Usage": [
         ".clubban user#1337"
       ],
@@ -9015,7 +9063,7 @@
       "Aliases": [
         ".clubunban"
       ],
-      "Description": "Unbans the previously banned user from the club. You must be the club owner.",
+      "Description": "Unbans the previously banned user from the club. You must be the club owner or admin.",
       "Usage": [
         ".clubunban user#1337"
       ],
@@ -9068,7 +9116,7 @@
       "Aliases": [
         ".clubrename"
       ],
-      "Description": "Renames your club. Requires you club ownership or club-admin status.",
+      "Description": "Renames your club. Requires club ownership or club-admin status.",
       "Usage": [
         ".clubrename New cool club name"
       ],

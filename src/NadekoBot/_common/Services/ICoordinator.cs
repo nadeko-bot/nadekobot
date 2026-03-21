@@ -17,4 +17,5 @@ public class ShardStatus
     public DateTime LastUpdate { get; set; }
     public int ShardId { get; set; }
     public int GuildCount { get; set; }
+    public double UptimePercent { get; set; }
 }

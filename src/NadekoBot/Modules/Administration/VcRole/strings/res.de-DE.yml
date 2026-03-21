@@ -1,5 +1,0 @@
-no_vcroles: Es gibt keine Sprachkanal-Rollen
-vc_role_list: Sprachkanal-Rollen
-vcrole_added: 'Benutzer, welche dem Sprach Kanal {0} beitreten werden die Rolle {1} kriegen.'
-vcrole_not_found: Dieser Sprachkanal hat keine Sprachkanal Rolle.
-vcrole_removed: 'Benutzer, welche dem Sprach Kanal {0} beitreten werden keine Rolle mehr kriegen.'

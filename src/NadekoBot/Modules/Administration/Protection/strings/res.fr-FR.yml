@@ -16,3 +16,6 @@ spam_not_ignore: '{0} n''ignorera plus ce salon.'
 spam_stats: |-
   Si un utilisateur publie {0} messages identiques à la fois, il sera {1}.
       __Salons Ignorés__: {2}
+
+honeypot_off: Honeypot désactivé.
+honeypot_on: Honeypot activé sur ce salon.

@@ -19,6 +19,7 @@ now_playing: 再生中の曲
 player_queue: 'プレーヤーキュー - ページ {0}/{1}'
 playlist_delete_fail: 再生リストを削除できませんでした。。指定された再生リストが存在しないか、削除する権限がありません。
 playlist_deleted: 再生リストが削除されました。
+playlist_name_too_long: 再生リスト名は20文字以内にしてください。
 playlist_id_not_found: 指定されたIDの再生リストが存在しません。
 playlist_queue_complete: 再生リストからの読み込みが完了しました。
 playlist_saved: 再生リストを保存しました

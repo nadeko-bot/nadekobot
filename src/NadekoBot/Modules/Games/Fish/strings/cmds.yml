@@ -72,14 +72,14 @@ fishspotchange:
     - {}
 fishunequip:
   desc: |-
-    Unequips an item by specifying its index in your inventory.
+    Unequips an item by specifying the item type (pole, boat, bait, potion).
     You can use it again later.
     You can't unequip potions.
   ex:
-    - '1'
+    - pole
   params:
-    - index:
-        desc: The index of the item to unequip.
+    - itemType:
+        desc: The type of item to unequip (pole, boat, bait, potion).
 fishuse:
   desc: |-
     Use a fishing item in your inventory.

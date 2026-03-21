@@ -38,7 +38,7 @@ feedlist:
     - ''
   params:
     - page:
-        desc: The number of items to display per page.
+        desc: The page number to display.
 feedremove:
   desc: >-
     Stops tracking a feed on the given index. Use `{0}feeds` command to see a

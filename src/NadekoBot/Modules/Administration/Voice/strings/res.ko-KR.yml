@@ -2,3 +2,12 @@ createvoich: '음성 채널 {0}이(가) 생성되었어요.'
 deafen: 헤드셋 음소거 완료.
 delvoich: '음성 채널 {0}이(가) 삭제되었어요.'
 undeafen: 헤드셋 음소거 해제 완료.
+
+gvc_disabled: 이 서버에서 게임 음성 채널 기능이 비활성화되었습니다.
+gvc_enabled: '{0}이(가) 게임 음성 채널로 설정되었습니다.'
+
+no_vcroles: 음성 채널 역할이 없어요.
+vc_role_list: 음성 채널 역할
+vcrole_added: '{0} 음성 채널에 접속하면 {1} 역할이 부여돼요.'
+vcrole_not_found: 해당 음성 채널에 VcRole이 설정되어 있지 않아요.
+vcrole_removed: '{0} 음성 채널에 접속해도 더 이상 역할이 부여되지 않아요.'

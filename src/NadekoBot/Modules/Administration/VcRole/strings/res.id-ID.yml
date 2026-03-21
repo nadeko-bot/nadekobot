@@ -1,5 +1,0 @@
-no_vcroles: Tidak ada role channel suara.
-vc_role_list: Daftar role channel suara
-vcrole_added: 'Pengguna yang bergabung ke channel suara {0} akan mendapatkan role {1}.'
-vcrole_not_found: Channel suara tersebut tidak memiliki VcRole.
-vcrole_removed: 'Pengguna yang bergabung ke channel suara {0} tidak akan lagi mendapatkan role.'

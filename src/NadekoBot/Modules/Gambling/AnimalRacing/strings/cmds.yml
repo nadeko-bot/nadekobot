@@ -14,4 +14,6 @@ race:
     - ''
   params:
     - params:
-        desc: The list of commands or actions for the animals in the race.
+        desc: >-
+          Optional flags for the race. Use -s to set the starting countdown
+          time in seconds.

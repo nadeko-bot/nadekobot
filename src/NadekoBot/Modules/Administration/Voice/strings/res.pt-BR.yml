@@ -2,3 +2,12 @@ createvoich: 'O canal de voz {0} foi criado.'
 deafen: Ensurdecido com sucesso.
 delvoich: 'O canal de voz {0} foi excluído.'
 undeafen: Desensurdecido com sucesso.
+
+gvc_disabled: A função Canal de Voz de Jogo foi desativada nesse servidor.
+gvc_enabled: '{0} agora é um Canal de Voz de Jogo.'
+
+no_vcroles: Não há cargos de canal de voz.
+vc_role_list: Cargos de canal de voz
+vcrole_added: 'Os usuários que se juntarem ao canal de voz {0} receberão o cargo {1}.'
+vcrole_not_found: Esse canal não possui um cargo de voz.
+vcrole_removed: 'Os usuários que se juntarem ao canal de voz {0} não receberão mais o cargo.'

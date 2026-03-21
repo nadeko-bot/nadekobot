@@ -1,0 +1,3 @@
+agent_no_query: You have to give the AI agent a prompt, you know!
+agent_cancelled: Fine, your agent session is cancelled. Hmph.
+agent_no_session: You don't even have an active agent session to cancel!

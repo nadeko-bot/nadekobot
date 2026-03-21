@@ -6,7 +6,7 @@ namespace NadekoBot.Modules.Waifus.Waifu;
 public sealed partial class WaifuConfig : ICloneable<WaifuConfig>
 {
     [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 6;
+    public int Version { get; set; } = 7;
 
     [Comment("Minimum price a waifu can have. Default 1000")]
     public long MinPrice { get; set; } = 1_000;
@@ -31,6 +31,9 @@ public sealed partial class WaifuConfig : ICloneable<WaifuConfig>
 
     [Comment("Base mood points gained from a hug action. Default 50")]
     public int BaseMoodIncrease { get; set; } = 50;
+
+    [Comment("Base food points gained from a nom action. Default 50")]
+    public int BaseFoodIncrease { get; set; } = 50;
 
     [Comment("Max mood/food actions per user per day. Default 2")]
     public int MaxDailyActions { get; set; } = 2;

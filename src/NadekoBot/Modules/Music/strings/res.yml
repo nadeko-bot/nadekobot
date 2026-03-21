@@ -29,6 +29,7 @@ playlist_delete_fail: >-
   Failed to delete that playlist. It either doesn't exist, or you are not its
   author.
 playlist_deleted: Playlist deleted.
+playlist_name_too_long: Playlist name must be no longer than 20 characters.
 playlist_id_not_found: Playlist with that ID doesn't exist.
 playlist_queue_complete: Playlist queue complete.
 playlist_saved: Playlist saved

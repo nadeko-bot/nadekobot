@@ -7,7 +7,7 @@ namespace NadekoBot.Modules.Games.Common;
 public sealed partial class GamesConfig : ICloneable<GamesConfig>
 {
     [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 5;
+    public int Version { get; set; } = 6;
 
     [Comment("Hangman related settings (.hangman command)")]
     public HangmanConfig Hangman { get; set; } = new()
@@ -101,57 +101,6 @@ public sealed partial class GamesConfig : ICloneable<GamesConfig>
             Name = "Unicorn"
         }
     ];
-
-    [Comment(
-        """
-         Which chatbot API should bot use.
-        'cleverbot' - bot will use Cleverbot API. 
-        'openai' - bot will use OpenAi API
-        """)]
-    public ChatBotImplementation ChatBot { get; set; } = ChatBotImplementation.OpenAi;
-
-    public ChatGptConfig ChatGpt { get; set; } = new();
-}
-
-[Cloneable]
-public sealed partial class ChatGptConfig
-{
-    [Comment("""
-             Url to any openai api compatible url.
-             Make sure to modify the modelName appropriately
-             DO NOT add /v1/chat/completions suffix to the url
-             """)]
-    public string ApiUrl { get; set; } = "https://api.openai.com";
-
-    [Comment("""
-             Which GPT Model should bot use.
-             gpt-3.5-turbo - cheapest
-             gpt-4o - more expensive, higher quality
-
-             If you are using another openai compatible api, you may use any of the models supported by that api
-             """)]
-    public string ModelName { get; set; } = "gpt-3.5-turbo";
-
-    [Comment("""
-             How should the chatbot behave, what's its personality?
-             This will be sent as a system message.
-             Usage of this counts towards the max tokens.
-             """)]
-    public string PersonalityPrompt { get; set; } =
-        "You are a chat bot willing to have a conversation with anyone about anything.";
-
-    [Comment(
-        """
-        The maximum number of messages in a conversation that can be remembered. 
-        This will increase the number of tokens used.
-        """)]
-    public int ChatHistory { get; set; } = 5;
-
-    [Comment(@"The maximum number of tokens to use per OpenAi API call")]
-    public int MaxTokens { get; set; } = 100;
-
-    [Comment(@"The minimum number of tokens to use per GPT API call, such that chat history is removed to make room.")]
-    public int MinTokens { get; set; } = 30;
 }
 
 [Cloneable]
@@ -179,16 +128,4 @@ public sealed partial class RaceAnimal
 {
     public string Icon { get; set; }
     public string Name { get; set; }
-}
-
-public enum ChatBotImplementation
-{
-    Cleverbot,
-    OpenAi = 1,
-
-    [Obsolete]
-    Gpt = 1,
-
-    [Obsolete]
-    Gpt3 = 1,
 }

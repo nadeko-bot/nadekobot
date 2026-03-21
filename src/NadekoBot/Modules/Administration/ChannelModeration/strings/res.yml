@@ -1,6 +1,23 @@
+channel_delmsgoncmd: Channel-Specific Settings
+delmsg_channel_inherit: >-
+  I will auto-delete messages which successfully execute commands on this
+  channel only if this feature is enabled on the server.
+delmsg_channel_off: >-
+  I will never auto-delete messages which successfully execute commands on this
+  channel.
+delmsg_channel_on: >-
+  I will always auto-delete messages which successfully execute commands on this
+  channel, regardless of the server setting.
+delmsg_off: >-
+  I will no longer auto-delete messages which successfully execute commands on
+  this server.
+delmsg_on: >-
+  I will auto-delete messages which successfully execute commands on this
+  server.
 imageonly_disable: This channel is no longer image-only.
 imageonly_enable: This channel is now image-only.
 linkonly_disable: This channel is no longer link-only.
 linkonly_enable: This channel is now link-only.
 nsfw_set_false: NSFW has been disabled on this channel.
 nsfw_set_true: NSFW has been enabled on this channel.
+server_delmsgoncmd: Server Setting

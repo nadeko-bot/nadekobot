@@ -4,7 +4,7 @@ typeadd:
     - wordswords
   params:
     - text:
-        desc: The title or name of the article being added.
+        desc: The full text of the article for the typing contest.
 typedel:
   desc: Deletes a typing article given the ID.
   ex:
@@ -26,7 +26,7 @@ typestart:
     - ''
   params:
     - params:
-        desc: The list of words or phrases for the contestants to type.
+        desc: Optional game settings.
 typestop:
   desc: Stops a typing contest on the current channel.
   ex:

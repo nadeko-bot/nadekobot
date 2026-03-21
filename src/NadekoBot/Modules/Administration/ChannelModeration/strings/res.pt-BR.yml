@@ -4,3 +4,11 @@ linkonly_disable: ''
 linkonly_enable: ''
 nsfw_set_false: NSFW foi desativado neste canal.
 nsfw_set_true: NSFW foi habilitado neste canal.
+
+channel_delmsgoncmd: Configurações específicas do canal
+delmsg_channel_inherit: Mensagens que executarem comandos com sucesso serão automaticamente excluídas somente se essa função estiver ativada no servidor.
+delmsg_channel_off: Mensagens que executarem comandos com sucesso nesse canal nunca serão automaticamente excluídas.
+delmsg_channel_on: Mensagens que executarem comandos com sucesso nesse canal serão automaticamente excluídas, independentemente da configuração no servidor.
+delmsg_off: Mensagens que executarem comandos com sucesso nesse servidor não serão mais automaticamente excluídas.
+delmsg_on: Mensagens que executarem comandos com sucesso nesse servidor serão automaticamente excluídas.
+server_delmsgoncmd: Configuração do servidor

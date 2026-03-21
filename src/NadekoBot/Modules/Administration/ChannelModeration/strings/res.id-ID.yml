@@ -4,3 +4,11 @@ linkonly_disable: Channel ini tidak lagi hanya untuk link.
 linkonly_enable: Channel ini sekarang hanya untuk link.
 nsfw_set_false: NSFW telah dinonaktifkan di channel ini.
 nsfw_set_true: NSFW telah diaktifkan di channel ini.
+
+channel_delmsgoncmd: Pengaturan Khusus Channel
+delmsg_channel_inherit: Saya akan otomatis menghapus pesan yang berhasil menjalankan perintah di channel ini hanya jika fitur ini diaktifkan di server.
+delmsg_channel_off: Saya tidak akan pernah otomatis menghapus pesan yang berhasil menjalankan perintah di channel ini.
+delmsg_channel_on: Saya akan selalu otomatis menghapus pesan yang berhasil menjalankan perintah di channel ini, terlepas dari pengaturan server.
+delmsg_off: Saya tidak akan lagi otomatis menghapus pesan yang berhasil menjalankan perintah di server ini.
+delmsg_on: Saya akan otomatis menghapus pesan yang berhasil menjalankan perintah di server ini.
+server_delmsgoncmd: Pengaturan Server

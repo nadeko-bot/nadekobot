@@ -243,9 +243,11 @@ public sealed class MusicPlayer : IMusicPlayer
                         {
                             // result is false is either when the gateway is being swapped 
                             // or if the bot is reconnecting, or just disconnected for whatever reason
+                            // or if the DAVE key ratchet is temporarily unavailable during re-keying
 
-                            // tolerate up to 15x200ms of failures (3 seconds)
-                            if (++errorCount <= 15)
+                            // tolerate up to 50x200ms of failures (10 seconds)
+                            // to survive DAVE E2EE re-keying when users join/leave
+                            if (++errorCount <= 50)
                             {
                                 await Task.Delay(200);
                                 nextFrameTick = sw.ElapsedTicks;

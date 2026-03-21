@@ -1,0 +1,3 @@
+agent_no_query: Du musst einen Prompt für den KI-Agenten angeben.
+agent_cancelled: Deine Agenten-Sitzung wurde abgebrochen.
+agent_no_session: Du hast keine aktive Agenten-Sitzung zum Abbrechen.

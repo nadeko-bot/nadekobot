@@ -10,4 +10,4 @@ tictactoe:
     - ''
   params:
     - params:
-        desc: The coordinates for placing an X or O on the board.
+        desc: Optional game settings.

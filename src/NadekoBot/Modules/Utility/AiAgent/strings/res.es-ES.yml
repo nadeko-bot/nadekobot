@@ -1,0 +1,3 @@
+agent_no_query: Debes proporcionar un prompt para el agente de IA.
+agent_cancelled: Tu sesión de agente ha sido cancelada.
+agent_no_session: No tienes una sesión de agente activa para cancelar.

@@ -1,1 +1,4 @@
+autopublish_disable: Messages in this channel will no longer be automatically published.
+autopublish_enable: All messages posted in this channel will be automatically published.
+req_announcement_channel: This command must be executed in an Announcement channel.
 time_too_long: Time you've specified is too long.

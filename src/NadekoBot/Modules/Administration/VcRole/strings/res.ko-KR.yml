@@ -1,5 +1,0 @@
-no_vcroles: 음성 채널 역할이 없어요.
-vc_role_list: 음성 채널 역할
-vcrole_added: '{0} 음성 채널에 접속하면 {1} 역할이 부여돼요.'
-vcrole_not_found: 해당 음성 채널에 VcRole이 설정되어 있지 않아요.
-vcrole_removed: '{0} 음성 채널에 접속해도 더 이상 역할이 부여되지 않아요.'

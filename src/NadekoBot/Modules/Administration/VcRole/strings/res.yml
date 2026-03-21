@@ -1,5 +1,0 @@
-no_vcroles: There are no voice channel roles.
-vc_role_list: Voice channel roles
-vcrole_added: Users who join {0} voice channel will get {1} role.
-vcrole_not_found: That voice channel doesn't have a VcRole.
-vcrole_removed: Users who join {0} voice channel will no longer get a role.

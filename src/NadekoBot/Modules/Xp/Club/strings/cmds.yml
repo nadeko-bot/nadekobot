@@ -28,16 +28,16 @@ clubapply:
 clubapps:
   desc: >-
     Shows the list of users who have applied to your club. Paginated. You must
-    be club owner to use this command.
+    be club owner or admin to use this command.
   ex:
     - 2
   params:
     - page:
-        desc: The number of pages to display in the result set.
+        desc: The page number to display.
 clubban:
   desc: >-
-    Bans the user from the club. You must be the club owner. They will not be
-    able to apply again.
+    Bans the user from the club. You must be the club owner or admin. They will
+    not be able to apply again.
   ex:
     - user#1337
   params:
@@ -58,15 +58,15 @@ clubbanner:
         desc: URL to the image to set as a club banner.
 clubbans:
   desc: >-
-    Shows the list of users who have banned from your club. Paginated. You must
-    be club owner to use this command.
+    Shows the list of users who have been banned from your club. Paginated. You
+    must be club owner or admin to use this command.
   ex:
     - 2
   params:
     - page:
-        desc: The number of pages to retrieve in the result set.
+        desc: The page number to display.
 clubcreate:
-  desc: Creates a club. You must be at least level 5 and not be in the club already.
+  desc: Creates a club. You must not already be in a club.
   ex:
     - My Brand New Club
   params:
@@ -86,10 +86,12 @@ clubdisband:
   params:
     - {}
 clubicon:
-  desc: Sets the club icon.
+  desc: Sets the club icon. Provide no URL to remove the icon.
   ex:
     - https://i.imgur.com/htfDMfU.png
+    - ''
   params:
+    - {}
     - url:
         desc: The URL of an image file to use as the club icon.
 clubinformation:
@@ -103,8 +105,8 @@ clubinformation:
         desc: The name of a specific club being queried for information.
 clubkick:
   desc: >-
-    Kicks the user from the club. You must be the club owner. They will be able
-    to apply again.
+    Kicks the user from the club. You must be the club owner or admin. They will
+    be able to apply again.
   ex:
     - user#1337
   params:
@@ -137,7 +139,7 @@ clubreject:
     - userName:
         desc: The username of the user being rejected from the club.
 clubrename:
-  desc: Renames your club. Requires you club ownership or club-admin status.
+  desc: Renames your club. Requires club ownership or club-admin status.
   ex:
     - New cool club name
   params:
@@ -151,7 +153,9 @@ clubtransfer:
     - newOwner:
         desc: The user who will take over the management of the club.
 clubunban:
-  desc: Unbans the previously banned user from the club. You must be the club owner.
+  desc: >-
+    Unbans the previously banned user from the club. You must be the club owner
+    or admin.
   ex:
     - user#1337
   params:

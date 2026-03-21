@@ -10,10 +10,10 @@ linkfix:
     - twitter.com vxtwitter.com
     - x.com
   params:
-    - newDomain:
-        desc: The domain to replace with.
-      oldDomain:
+    - oldDomain:
         desc: The domain to be replaced.
+      newDomain:
+        desc: The domain to replace with.
 linkfixlist:
   desc: Lists all configured link fixes for the server.
   ex:

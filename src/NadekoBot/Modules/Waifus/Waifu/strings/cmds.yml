@@ -89,28 +89,52 @@ waifufee:
         desc: "The fee percentage (1-5)."
 hug:
   desc: |-
-    Hugs a waifu to improve their mood.
+    Hugs one or more users to improve their mood. If no valid user is found, just shows a hug GIF.
   ex:
     - '@user'
+    - '@user1 @user2 @user3'
+    - 'cutie'
   params:
-    - user:
-        desc: "The waifu to hug."
+    - users:
+        desc: "One or more users to hug."
+    - input:
+        desc: "Arbitrary text. Shows a GIF without stat effects."
 kiss:
   desc: |-
-    Kisses a waifu to improve their mood.
+    Kisses one or more users to improve their mood. If no valid user is found, just shows a kiss GIF.
   ex:
     - '@user'
+    - '@user1 @user2 @user3'
+    - 'cutie'
   params:
-    - user:
-        desc: "The waifu to kiss."
+    - users:
+        desc: "One or more users to kiss."
+    - input:
+        desc: "Arbitrary text. Shows a GIF without stat effects."
 pat:
   desc: |-
-    Pats a waifu to improve their mood.
+    Pats one or more users to improve their mood. If no valid user is found, just shows a pat GIF.
   ex:
     - '@user'
+    - '@user1 @user2 @user3'
+    - 'cutie'
   params:
-    - user:
-        desc: "The waifu to pat."
+    - users:
+        desc: "One or more users to pat."
+    - input:
+        desc: "Arbitrary text. Shows a GIF without stat effects."
+nom:
+  desc: |-
+    Feeds one or more users to improve their food stat. If no valid user is found, just shows a nom GIF.
+  ex:
+    - '@user'
+    - '@user1 @user2 @user3'
+    - 'cutie'
+  params:
+    - users:
+        desc: "One or more users to feed."
+    - input:
+        desc: "Arbitrary text. Shows a GIF without stat effects."
 waifugiftshop:
   desc: |-
     Shows today's available gift items. Items rotate daily at 00:00 UTC.

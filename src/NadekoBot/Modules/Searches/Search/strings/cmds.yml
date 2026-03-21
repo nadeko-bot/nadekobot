@@ -13,7 +13,7 @@ image:
     - query:
         desc: The search term used to retrieve the desired image.
 youtube:
-  desc: Searches youtubes and shows the first result
+  desc: Searches YouTube and shows the first result
   ex:
     - query
   params:

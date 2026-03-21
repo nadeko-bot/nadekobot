@@ -1,0 +1,53 @@
+# Casual human-to-human reactions that should NOT trigger the bot.
+# Short reactions, greetings, slang, filler - never directed at the bot.
+lol
+haha nice
+thanks
+yeah exactly
+true
+same
+bruh
+no way
+fr fr
+gg
+rip
+based
+nah
+yep
+mood
+sheesh
+oof
+damn
+that's crazy
+that's funny
+oh cool
+nice one
+wow
+fair enough
+I agree with you
+not gonna lie
+who asked
+big if true
+literally me
+couldn't agree more
+sounds good to me
+makes perfect sense
+good morning everyone
+see you later
+I will be right back
+brb grabbing food
+welcome to the server
+good game everyone
+sorry I was away
+anyone up for a game
+just got back from work
+that movie was awesome
+that sounds like a plan
+I need a coffee break
+I am so bored right now
+did you watch the game
+this conversation is wild
+calm down everyone
+nice shot my guy
+what a coincidence
+hope you have a good day

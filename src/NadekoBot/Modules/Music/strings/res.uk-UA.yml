@@ -19,6 +19,7 @@ now_playing: Зараз грає
 player_queue: 'Черга плеєра - Сторінка {0}/{1}'
 playlist_delete_fail: Не вдалося видалити цей плейлист. Він або не існує, або ти не його автор.
 playlist_deleted: Плейлист видалено.
+playlist_name_too_long: Назва плейлиста не повинна перевищувати 20 символів.
 playlist_id_not_found: Плейлист з таким ID не існує.
 playlist_queue_complete: Плейлист додано в чергу.
 playlist_saved: Плейлист збережено

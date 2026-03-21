@@ -87,19 +87,16 @@ namespace NadekoBot.Voice
             return _session.ProcessProposals(proposals, GetRecognizedUserIds());
         }
 
-        /// <returns>True if commit was processed successfully</returns>
-        public bool OnCommitTransition(int transitionId, byte[] commit)
+        public CommitProcessResult OnCommitTransition(int transitionId, byte[] commit)
         {
-            var success = _session.ProcessCommit(commit);
-            if (success)
+            var result = _session.ProcessCommit(commit);
+            if (result == CommitProcessResult.Success)
             {
                 var version = _session.GetProtocolVersion();
                 PrepareRatchets(transitionId, version);
-                return true;
             }
 
-            _session.Reset();
-            return false;
+            return result;
         }
 
         /// <returns>True if welcome was processed successfully</returns>
@@ -133,7 +130,7 @@ namespace NadekoBot.Voice
         /// Matches TS reference: _handleDaveProtocolInit.
         /// Returns true if a key package should be sent.
         /// </summary>
-        private bool HandleProtocolInit(int protocolVersion)
+        public bool HandleProtocolInit(int protocolVersion)
         {
             if (protocolVersion > 0)
             {
@@ -162,14 +159,16 @@ namespace NadekoBot.Voice
         private void HandleExecuteTransition(int transitionId)
         {
             if (!_protocolTransitions.TryGetValue(transitionId, out var protocolVersion))
+            {
+                Log.Warning("DAVE execute transition {TransitionId} not found in pending transitions", transitionId);
                 return;
+            }
 
             _protocolTransitions.Remove(transitionId);
 
             if (protocolVersion == 0)
             {
                 _session.Reset();
-                _session.SetPassthroughMode(true);
             }
 
             _session.UpdateSelfKeyRatchet(_selfUserId);

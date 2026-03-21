@@ -16,3 +16,6 @@ spam_not_ignore: '{0} tidak lagi mengabaikan channel ini.'
 spam_stats: |-
   Jika pengguna mengirim {0} pesan yang sama berturut-turut, saya akan {1} mereka.
       __Channel yang Diabaikan__: {2}
+
+honeypot_off: Honeypot dinonaktifkan.
+honeypot_on: Honeypot diaktifkan di channel ini.

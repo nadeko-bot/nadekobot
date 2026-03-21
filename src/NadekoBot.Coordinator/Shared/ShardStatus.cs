@@ -10,6 +10,7 @@ namespace NadekoBot.Coordinator
         ConnState State = ConnState.Disconnected,
         bool ShouldRestart = false,
         Process Process = null,
-        int StateCounter = 0
+        int StateCounter = 0,
+        double UptimePercent = 0
     );
 }

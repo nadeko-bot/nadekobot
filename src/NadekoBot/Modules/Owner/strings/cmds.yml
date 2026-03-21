@@ -8,10 +8,9 @@ massping:
     - {}
 votefeed:
   desc: |-
-    Shows bot votes in real time in the specified channel.
-    Omit channel to disable.
+    Shows bot votes in real time in the current channel.
+    Run in a different channel to change, or use the command again to toggle.
   ex:
-    - '#votefeed'
     - ''
   params:
     - {}

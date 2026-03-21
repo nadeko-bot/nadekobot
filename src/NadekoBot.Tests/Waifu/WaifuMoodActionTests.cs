@@ -31,7 +31,7 @@ public class WaifuMoodActionTests
         _cache = Substitute.For<IBotCache>();
         var time = new FakeTimeProvider(new(2025, 1, 7, 0, 0, 0, TimeSpan.Zero));
         var client = Substitute.For<DiscordSocketClient>();
-        _svc = new WaifuService(_db, _cache, cs, client, WaifuTestHelper.CreateConfigService(), null!, time);
+        _svc = new WaifuService(_db, _cache, cs, client, WaifuTestHelper.CreateConfigService(), WaifuTestHelper.CreatePatronageService(), null!, time);
         _cache.GetAsync(Arg.Any<TypedKey<int>>())
             .Returns(new System.Threading.Tasks.ValueTask<OneOf.OneOf<int, None>>(new None()));
     }
@@ -78,6 +78,16 @@ public class WaifuMoodActionTests
     }
 
     [Test]
+    public async Task ImproveMood_NonWaifu_ReturnsNoEffect()
+    {
+        _cache.GetAsync(Arg.Any<TypedKey<int>>())
+            .Returns(new System.Threading.Tasks.ValueTask<OneOf.OneOf<int, None>>(new None()));
+
+        var result = await _svc.ImproveMoodAsync(2001, 1001, WaifuAction.Hug);
+        Assert.That(result.IsT3, Is.True, "Expected NoEffect");
+    }
+
+    [Test]
     public async Task ImproveMood_NoActionsLeft_ReturnsError()
     {
         _cache.GetAsync(Arg.Any<TypedKey<int>>())
@@ -88,5 +98,44 @@ public class WaifuMoodActionTests
 
         var result = await _svc.ImproveMoodAsync(2001, 1001, WaifuAction.Hug);
         Assert.That(result.IsT1, Is.True, "Expected ErrNoActionsLeft");
+    }
+
+    [Test]
+    public async Task ImproveFood_Success_IncreasesFood()
+    {
+        await using (var ctx = _db.GetDbContext())
+            await WaifuTestHelper.CreateWaifu(ctx, 1001, food: 0);
+
+        var result = await _svc.ImproveFoodAsync(2001, 1001);
+        Assert.That(result.IsT4, Is.True, "Expected Success");
+        Assert.That(result.AsT4.Value, Is.EqualTo(50));
+
+        await using (var ctx = _db.GetDbContext())
+        {
+            var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
+            Assert.That(wi.Food, Is.EqualTo(50));
+        }
+    }
+
+    [Test]
+    public async Task ImproveFood_CappedAt1000()
+    {
+        await using (var ctx = _db.GetDbContext())
+            await WaifuTestHelper.CreateWaifu(ctx, 1001, food: 980);
+
+        await _svc.ImproveFoodAsync(2001, 1001);
+
+        await using (var ctx = _db.GetDbContext())
+        {
+            var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
+            Assert.That(wi.Food, Is.EqualTo(1000));
+        }
+    }
+
+    [Test]
+    public async Task ImproveFood_Self_ReturnsError()
+    {
+        var result = await _svc.ImproveFoodAsync(1001, 1001);
+        Assert.That(result.IsT0, Is.True, "Expected ErrSelfNotAllowed");
     }
 }

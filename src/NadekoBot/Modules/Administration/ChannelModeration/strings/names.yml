@@ -1,6 +1,9 @@
 agerestricttoggle:
   - nsfwtoggle
   - artoggle
+delmsgoncmd:
+  - delmsgoncmd
+  - dmc
 imageonlychannel:
   - imageonlychannel
   - imageonly

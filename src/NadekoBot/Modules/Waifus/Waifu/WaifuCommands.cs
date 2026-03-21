@@ -2,13 +2,15 @@ using System.Text;
 using NadekoBot.Common.TypeReaders;
 using NadekoBot.Modules.Gambling.Bank;
 using NadekoBot.Modules.Waifus.Waifu;
+using NadekoBot.Services;
 
 namespace NadekoBot.Modules.Waifus;
 
 public partial class Waifus
 {
-    public class WaifuCommands(WaifuService svc, ICurrencyProvider cp, IBankService bank) : NadekoModule
+    public class WaifuCommands(WaifuService svc, ICurrencyProvider cp, IBankService bank, ImagesConfig ic) : NadekoModule
     {
+    private static readonly NadekoRandom _rng = new();
     private static string BuildProgressBar(double fraction, int length, char filled = '█', char empty = '░')
     {
         var filledCount = (int)Math.Round(fraction * length);
@@ -75,6 +77,19 @@ public partial class Waifus
             new ButtonBuilder(
                 label: GetText(strs.waifu_btn_collect),
                 customId: "waifu:collect_payout",
+                emote: new Emoji("💰"),
+                style: ButtonStyle.Success),
+            async smc =>
+            {
+                await WaifuPayout();
+                await smc.DeferAsync();
+            });
+
+    private NadekoInteractionBase CreateCollectPayoutConfirmInteraction()
+        => _inter.Create(ctx.User.Id,
+            new ButtonBuilder(
+                label: GetText(strs.waifu_btn_collect),
+                customId: "waifu:collect_confirm",
                 emote: new Emoji("💰"),
                 style: ButtonStyle.Success),
             async smc =>
@@ -193,7 +208,8 @@ public partial class Waifus
         if (isOwnCard)
         {
             var remaining = await svc.GetRemainingActionsAsync(ctx.User.Id);
-            footerParts.Add(GetText(strs.waifu_footer_actions(remaining, svc.MaxActions)));
+            var maxActions = await svc.GetMaxActionsAsync(ctx.User.Id);
+            footerParts.Add(GetText(strs.waifu_footer_actions(remaining, maxActions)));
         }
 
         eb.WithFooter(string.Join(" | ", footerParts));
@@ -549,47 +565,139 @@ public partial class Waifus
         );
     }
 
-    private string GetActionStr(WaifuAction action, IUser user)
+    private string GetActionStr(WaifuAction action, string name)
         => GetText(action switch
         {
-            WaifuAction.Hug => strs.waifu_hugged(user.ToString()),
-            WaifuAction.Kiss => strs.waifu_kissed(user.ToString()),
-            WaifuAction.Pat => strs.waifu_patted(user.ToString()),
-            _ => strs.waifu_hugged(user.ToString())
+            WaifuAction.Hug => strs.waifu_hugged(name),
+            WaifuAction.Kiss => strs.waifu_kissed(name),
+            WaifuAction.Pat => strs.waifu_patted(name),
+            WaifuAction.Nom => strs.waifu_nommed(name),
+            _ => strs.waifu_hugged(name)
         });
 
-    private async Task ImproveMoodAsync(WaifuAction action, IUser user)
+    private Uri? GetRandomActionGif(WaifuAction action)
     {
-        var res = await svc.ImproveMoodAsync(ctx.User.Id, user.Id, action);
+        var urls = action switch
+        {
+            WaifuAction.Hug => ic.Data.Waifu?.Hug,
+            WaifuAction.Kiss => ic.Data.Waifu?.Kiss,
+            WaifuAction.Pat => ic.Data.Waifu?.Pat,
+            WaifuAction.Nom => ic.Data.Waifu?.Nom,
+            _ => null
+        };
 
-        await res.Match(
-            _ => Response().Error(strs.waifu_self_not_allowed).SendAsync(),
-            _ => Response().Error(strs.waifu_no_actions_left).SendAsync(),
-            _ => Response().Error(strs.waifu_not_found).SendAsync(),
-            _ =>
+        if (urls is null or { Length: 0 })
+            return null;
+
+        return urls[_rng.Next(0, urls.Length)];
+    }
+
+    private async Task ActionWithUsersAsync(WaifuAction action, IUser[] users)
+    {
+        var isMood = action != WaifuAction.Nom;
+        var statName = isMood ? "mood" : "food";
+        var gif = GetRandomActionGif(action);
+        var targets = users.Where(u => u.Id != ctx.User.Id).Distinct().ToArray();
+
+        if (targets.Length == 0)
+        {
+            await Response().Error(strs.waifu_self_not_allowed).SendAsync();
+            return;
+        }
+
+        var lines = new List<string>();
+        var actionsExhausted = false;
+
+        foreach (var user in targets)
+        {
+            var actionText = GetActionStr(action, user.ToString()!);
+
+            if (actionsExhausted)
             {
-                var msg = $"{GetActionStr(action, user)}\n\n*{GetText(strs.waifu_no_effect)}*";
-                return Response().Confirm(msg).SendAsync();
-            },
-            moodIncrease =>
-            {
-                var msg = $"{GetActionStr(action, user)}\n\n*+{moodIncrease.Value} mood*";
-                return Response().Confirm(msg).SendAsync();
+                lines.Add($"{actionText} *{GetText(strs.waifu_no_effect)}*");
+                continue;
             }
-        );
+
+            if (isMood)
+            {
+                var res = await svc.ImproveMoodAsync(ctx.User.Id, user.Id, action);
+                res.Switch(
+                    _ => { },
+                    _ => { actionsExhausted = true; lines.Add($"{actionText} *{GetText(strs.waifu_no_effect)}*"); },
+                    _ => lines.Add($"{actionText} *{GetText(strs.waifu_no_effect)}*"),
+                    _ => lines.Add($"{actionText} *{GetText(strs.waifu_no_effect)}*"),
+                    s => lines.Add($"{actionText} *+{s.Value} {statName}*")
+                );
+            }
+            else
+            {
+                var res = await svc.ImproveFoodAsync(ctx.User.Id, user.Id);
+                res.Switch(
+                    _ => { },
+                    _ => { actionsExhausted = true; lines.Add($"{actionText} *{GetText(strs.waifu_no_effect)}*"); },
+                    _ => lines.Add($"{actionText} *{GetText(strs.waifu_no_effect)}*"),
+                    _ => lines.Add($"{actionText} *{GetText(strs.waifu_no_effect)}*"),
+                    s => lines.Add($"{actionText} *+{s.Value} {statName}*")
+                );
+            }
+        }
+
+        var eb = CreateEmbed()
+            .WithOkColor()
+            .WithDescription(string.Join("\n", lines));
+        if (gif is not null)
+            eb.WithImageUrl(gif.ToString());
+        await Response().Embed(eb).SendAsync();
+    }
+
+    private Task ActionGifOnlyAsync(WaifuAction action)
+    {
+        var gif = GetRandomActionGif(action);
+        var eb = CreateEmbed().WithOkColor();
+        if (gif is not null)
+            eb.WithImageUrl(gif.ToString());
+        return Response().Embed(eb).SendAsync();
     }
 
     [Cmd]
-    public Task Hug([Leftover] IUser user)
-        => ImproveMoodAsync(WaifuAction.Hug, user);
+    [Priority(1)]
+    public Task Hug(params IUser[] users)
+        => ActionWithUsersAsync(WaifuAction.Hug, users);
 
     [Cmd]
-    public Task Kiss([Leftover] IUser user)
-        => ImproveMoodAsync(WaifuAction.Kiss, user);
+    [Priority(1)]
+    public Task Kiss(params IUser[] users)
+        => ActionWithUsersAsync(WaifuAction.Kiss, users);
 
     [Cmd]
-    public Task Pat([Leftover] IUser user)
-        => ImproveMoodAsync(WaifuAction.Pat, user);
+    [Priority(1)]
+    public Task Pat(params IUser[] users)
+        => ActionWithUsersAsync(WaifuAction.Pat, users);
+
+    [Cmd]
+    [Priority(1)]
+    public Task Nom(params IUser[] users)
+        => ActionWithUsersAsync(WaifuAction.Nom, users);
+
+    [Cmd]
+    [Priority(0)]
+    public Task Hug([Leftover] string _)
+        => ActionGifOnlyAsync(WaifuAction.Hug);
+
+    [Cmd]
+    [Priority(0)]
+    public Task Kiss([Leftover] string _)
+        => ActionGifOnlyAsync(WaifuAction.Kiss);
+
+    [Cmd]
+    [Priority(0)]
+    public Task Pat([Leftover] string _)
+        => ActionGifOnlyAsync(WaifuAction.Pat);
+
+    [Cmd]
+    [Priority(0)]
+    public Task Nom([Leftover] string _)
+        => ActionGifOnlyAsync(WaifuAction.Nom);
 
     [Cmd]
     public async Task WaifuGiftShop()
@@ -738,7 +846,7 @@ public partial class Waifus
 
         await Response()
             .Confirm(strs.waifu_pending_payout(CurrencyHelper.N(pending, Culture, currSign)))
-            .Interaction(CreateCollectPayoutInteraction())
+            .Interaction(CreateCollectPayoutConfirmInteraction())
             .SendAsync();
     }
 }

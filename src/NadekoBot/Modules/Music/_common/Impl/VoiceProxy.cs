@@ -38,8 +38,10 @@ public sealed class VoiceProxy : IVoiceProxy
             if (gw is null || gw.Stopped || !gw.Started)
                 return false;
 
-            vc.SendPcmFrame(gw, data, 0, length);
-            return true;
+            var result = vc.SendPcmFrame(gw, data, 0, length);
+            if (result <= 0)
+                Log.Debug("SendPcmFrame returned {Result}", result);
+            return result > 0;
         }
         catch (Exception ex)
         {

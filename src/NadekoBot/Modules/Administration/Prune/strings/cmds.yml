@@ -1,10 +1,12 @@
 prune:
   desc: >-
     `{0}prune` removes all Nadeko's messages in the last 100 messages. `{0}prune
-    X` removes last `X` number of messages from the channel (up to 100).
+    X` removes last `X` number of messages from the channel (up to 1000).
     `{0}prune @Someone` removes all Someone's messages in the last 100 messages.
     `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the
-    channel.
+    channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or
+    `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID
+    to only prune messages after that message.
   ex:
     - ''
     - '-s'
@@ -17,28 +19,32 @@ prune:
   params:
     - params:
         desc: >-
-          The list of users, channels or message counts to be removed from the
-          conversation history.
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` /
+          `-a` followed by a message ID to only prune messages after that
+          message.
     - count:
-        desc: The number of messages to remove from the channel or user's messages.
+        desc: The number of messages to remove (up to 1000).
       params:
         desc: >-
-          The list of users, channels or message counts to be removed from the
-          conversation history.
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` /
+          `-a` followed by a message ID to only prune messages after that
+          message.
     - count:
-        desc: The number of messages to remove from the channel or user's messages.
+        desc: The number of messages to remove (up to 1000).
       params:
         desc: >-
-          The list of users, channels or message counts to be removed from the
-          conversation history.
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` /
+          `-a` followed by a message ID to only prune messages after that
+          message.
       user:
         desc: The user whose messages are to be removed from the channel.
     - count:
-        desc: The number of messages to remove from the channel or user's messages.
+        desc: The number of messages to remove (up to 1000).
       params:
         desc: >-
-          The list of users, channels or message counts to be removed from the
-          conversation history.
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` /
+          `-a` followed by a message ID to only prune messages after that
+          message.
       userId:
         desc: The ID of a user to filter messages by.
 prunecancel:

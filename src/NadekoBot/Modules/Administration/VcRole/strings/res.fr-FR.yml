@@ -1,5 +1,0 @@
-no_vcroles: Il n'y a pas de rôles pour les salons vocaux.
-vc_role_list: Rôles du salon vocal
-vcrole_added: 'Les utilisateurs qui rejoindront le salon vocal {0} obtiendront le rôle {1}.'
-vcrole_not_found: Ce salon vocal n'a pas de VcRole.
-vcrole_removed: 'Les utilisateurs qui rejoindront le salon vocal {0} n''obtiendront plus de rôle.'

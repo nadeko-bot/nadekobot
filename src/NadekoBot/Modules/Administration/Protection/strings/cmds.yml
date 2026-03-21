@@ -9,8 +9,6 @@ antialt:
     You can specify an additional time argument to do a timed punishment for
     actions which support it (Ban, Mute, etc) up to 24h.
 
-    Max message count is 10.
-
     Provide no parameters to disable.
   ex:
     - 1h Ban
@@ -60,7 +58,9 @@ antiraid:
     Third parameter is punishment for those people.
 
     Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute,
-    RemoveRoles, AddRole, Warn, TimeOut
+    RemoveRoles, Warn, TimeOut
+
+    User threshold must be between 2-30, and seconds between 2-300.
 
     You can specify an additional time argument to do a timed punishment for
     actions which support it (Ban, Mute, etc) up to 24h.
@@ -144,6 +144,18 @@ antispam:
           being punished.
 antispamignore:
   desc: Toggles whether antispam ignores current channel. Antispam must be enabled.
+  ex:
+    - ''
+  params:
+    - {}
+honeypot:
+  desc: >-
+    Toggles honeypot on the current channel.
+
+    Anyone sending a message in this channel will be soft banned. (Banned and
+    then unbanned)
+
+    This is useful for automatically getting rid of spam bots.
   ex:
     - ''
   params:

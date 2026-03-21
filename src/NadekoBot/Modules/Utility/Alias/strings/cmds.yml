@@ -5,12 +5,10 @@ alias:
   ex:
     - allin {0}bf all h
   params:
-    - mapping:
-        desc: >-
-          The name or nickname that will be used as an alternative to invoke the
-          original command.
-      trigger:
-        desc: The trigger string that will activate this custom alias.
+    - trigger:
+        desc: The alias name that will be used to invoke the command.
+      mapping:
+        desc: The original command that the alias maps to.
 aliasesclear:
   desc: Deletes all aliases on this server.
   ex:
@@ -24,4 +22,4 @@ aliaslist:
     - 3
   params:
     - page:
-        desc: The number of pages to display in the result set.
+        desc: The page number to display.

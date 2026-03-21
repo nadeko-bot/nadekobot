@@ -1,5 +1,0 @@
-no_vcroles: Không có vai trò kênh thoại nào.
-vc_role_list: Danh sách vai trò kênh thoại
-vcrole_added: 'Người dùng tham gia kênh thoại {0} sẽ nhận được vai trò {1}.'
-vcrole_not_found: Kênh thoại đó không có VcRole.
-vcrole_removed: 'Người dùng tham gia kênh thoại {0} sẽ không còn nhận vai trò nữa.'

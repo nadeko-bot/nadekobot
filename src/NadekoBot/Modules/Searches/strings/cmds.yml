@@ -17,7 +17,7 @@ randjoke:
   params:
     - {}
 wowjoke:
-  desc: Get one of penultimate WoW jokes.
+  desc: Shows a random WoW joke.
   ex:
     - ''
   params:

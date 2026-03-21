@@ -22,8 +22,11 @@ namespace NadekoBot.Coordinator
         private readonly Serializer _serializer;
         private readonly Deserializer _deserializer;
 
+        private const int UPTIME_WINDOW_SAMPLES = 480;
+
         private Config _config;
         private ShardStatus[] _shardStatuses;
+        private Queue<bool>[] _uptimeSamples;
 
         private readonly object locker = new object();
         private readonly Random _rng;
@@ -120,6 +123,7 @@ namespace NadekoBot.Coordinator
                             {
                                 Log.Warning("Shard {ShardId} is restarting (unresponsive)...", shardId);
                                 hadAction = true;
+                                RecordUptimeSample(shardId, false);
                                 StartShard(shardId);
                                 break;
                             }
@@ -128,6 +132,7 @@ namespace NadekoBot.Coordinator
                             {
                                 Log.Warning("Shard {ShardId} is restarting (stuck)...", shardId);
                                 hadAction = true;
+                                RecordUptimeSample(shardId, false);
                                 StartShard(shardId);
                                 break;
                             }
@@ -218,6 +223,9 @@ namespace NadekoBot.Coordinator
                     throw new ArgumentOutOfRangeException(nameof(shardId));
                 
                 var status = _shardStatuses[shardId];
+
+                RecordUptimeSample(shardId, state == ConnState.Connected);
+
                 status = _shardStatuses[shardId] = status with
                 {
                     GuildCount = guildCount,
@@ -225,7 +233,8 @@ namespace NadekoBot.Coordinator
                     LastUpdate = DateTime.UtcNow,
                     StateCounter = status.State == state
                         ? status.StateCounter + 1
-                        : 1
+                        : 1,
+                    UptimePercent = CalculateUptimePercent(shardId)
                 };
                 if (status.StateCounter > 1 && status.State == ConnState.Disconnected)
                 {
@@ -236,6 +245,28 @@ namespace NadekoBot.Coordinator
 
                 return _gracefulImminent;
             }
+        }
+
+        private void RecordUptimeSample(int shardId, bool isConnected)
+        {
+            var q = _uptimeSamples[shardId];
+            q.Enqueue(isConnected);
+            while (q.Count > UPTIME_WINDOW_SAMPLES)
+                q.Dequeue();
+        }
+
+        private double CalculateUptimePercent(int shardId)
+        {
+            var q = _uptimeSamples[shardId];
+            if (q.Count == 0)
+                return 0;
+            var connected = 0;
+            foreach (var sample in q)
+            {
+                if (sample)
+                    connected++;
+            }
+            return (double)connected / q.Count * 100;
         }
 
         public void SetShardCount(int totalShards)
@@ -354,6 +385,7 @@ namespace NadekoBot.Coordinator
                 }
 
                 _shardStatuses = new ShardStatus[_config.TotalShards];
+                _uptimeSamples = new Queue<bool>[_config.TotalShards];
 
                 for (int shardId = 0; shardId < _shardStatuses.Length; shardId++)
                 {
@@ -378,6 +410,7 @@ namespace NadekoBot.Coordinator
                         statusObj.ConnectionState,
                         p is null,
                         p);
+                    _uptimeSamples[shardId] = new Queue<bool>(UPTIME_WINDOW_SAMPLES);
                 }
                 
                 File.Move(GRACEFUL_STATE_PATH, GRACEFUL_STATE_BACKUP_PATH, overwrite: true);
@@ -391,9 +424,11 @@ namespace NadekoBot.Coordinator
             lock (locker)
             {
                 _shardStatuses = new ShardStatus[_config.TotalShards];
+                _uptimeSamples = new Queue<bool>[_config.TotalShards];
                 for (var shardId = 0; shardId < _shardStatuses.Length; shardId++)
                 {
                     _shardStatuses[shardId] = new ShardStatus(shardId, DateTime.UtcNow);
+                    _uptimeSamples[shardId] = new Queue<bool>(UPTIME_WINDOW_SAMPLES);
                 }
             }
         }
@@ -419,7 +454,10 @@ namespace NadekoBot.Coordinator
             {
                 ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(shardId, _shardStatuses.Length);
 
-                return _shardStatuses[shardId];
+                return _shardStatuses[shardId] with
+                {
+                    UptimePercent = CalculateUptimePercent(shardId)
+                };
             }
         }
 
@@ -428,7 +466,13 @@ namespace NadekoBot.Coordinator
             lock (locker)
             {
                 var toReturn = new List<ShardStatus>(_shardStatuses.Length);
-                toReturn.AddRange(_shardStatuses);
+                for (var i = 0; i < _shardStatuses.Length; i++)
+                {
+                    toReturn.Add(_shardStatuses[i] with
+                    {
+                        UptimePercent = CalculateUptimePercent(i)
+                    });
+                }
                 return toReturn;
             }
         }

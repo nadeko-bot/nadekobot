@@ -2,3 +2,12 @@ createvoich: 'Kanał głosowy {0} został utworzony.'
 deafen: Wyciszenie zakończone sukcesem.
 delvoich: 'Kanał głosowy {0} został usunięty.'
 undeafen: Odciszenie zakończone sukcesem.
+
+gvc_disabled: Funkcja Game Voice Channel została wyłączona na tym serwerze.
+gvc_enabled: '{0} jest teraz kanałem Game Voice Channel.'
+
+no_vcroles: Brak ról kanałów głosowych.
+vc_role_list: Role kanałów głosowych
+vcrole_added: 'Użytkownicy dołączający do kanału głosowego {0} otrzymają rolę {1}.'
+vcrole_not_found: Ten kanał głosowy nie ma przypisanej roli VcRole.
+vcrole_removed: 'Użytkownicy dołączający do kanału głosowego {0} nie będą już otrzymywać roli.'

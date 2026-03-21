@@ -7,7 +7,7 @@ namespace NadekoBot.Common;
 public partial class ImageUrls : ICloneable<ImageUrls> 
 {
     [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 6;
+    public int Version { get; set; } = 11;
 
     public CoinData Coins { get; set; }
     public Uri[] Currency { get; set; }
@@ -31,5 +31,15 @@ public partial class ImageUrls : ICloneable<ImageUrls>
     public class XpData
     {
         public Uri Bg { get; set; }
+    }
+
+    public WaifuActionData Waifu { get; set; }
+
+    public class WaifuActionData
+    {
+        public Uri[] Hug { get; set; }
+        public Uri[] Kiss { get; set; }
+        public Uri[] Pat { get; set; }
+        public Uri[] Nom { get; set; }
     }
 }

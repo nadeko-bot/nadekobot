@@ -4,3 +4,11 @@ linkonly_disable: Ten kanał nie jest już ograniczony do samych linków.
 linkonly_enable: Ten kanał jest teraz ograniczony do samych linków.
 nsfw_set_false: NSFW zostało wyłączone na tym kanale.
 nsfw_set_true: NSFW zostało włączone na tym kanale.
+
+channel_delmsgoncmd: Ustawienia specyficzne dla kanału
+delmsg_channel_inherit: Będę automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym kanale tylko wtedy, gdy ta funkcja jest włączona na serwerze.
+delmsg_channel_off: Nigdy nie będę automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym kanale.
+delmsg_channel_on: Zawsze będę automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym kanale, niezależnie od ustawień serwera.
+delmsg_off: Nie będę już automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym serwerze.
+delmsg_on: Będę automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym serwerze.
+server_delmsgoncmd: Ustawienia serwera

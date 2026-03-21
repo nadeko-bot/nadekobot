@@ -46,7 +46,8 @@ public class SingleProcessCoordinator : ICoordinator
                 ConnectionState = _client.ConnectionState,
                 GuildCount = _client.Guilds.Count,
                 LastUpdate = DateTime.UtcNow,
-                ShardId = _client.ShardId
+                ShardId = _client.ShardId,
+                UptimePercent = 100
             }
         };
 

@@ -16,3 +16,6 @@ spam_not_ignore: '{0} wird nicht mehr diesen Kanal ignorieren.'
 spam_stats: |-
   Wenn ein Nutzer {0} gleiche Nachrichten in Folge schickt, werde ich ihn {1}.
   __IgnorierteKanäle__: {2}
+
+honeypot_off: Honeypot deaktiviert.
+honeypot_on: Honeypot in diesem Kanal aktiviert.

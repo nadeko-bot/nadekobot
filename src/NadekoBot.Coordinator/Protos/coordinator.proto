@@ -83,6 +83,7 @@ message GetStatusReply {
   google.protobuf.Timestamp lastUpdate = 4;
   bool scheduledForRestart = 5;
   google.protobuf.Timestamp startedAt = 6;
+  double uptimePercent = 7;
 }
 
 message GetAllStatusesRequest {

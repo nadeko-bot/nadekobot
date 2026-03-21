@@ -9,3 +9,5 @@ antispam:
   - antispam
 antispamignore:
   - antispamignore
+honeypot:
+  - honeypot

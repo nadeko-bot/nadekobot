@@ -1,1 +1,5 @@
 time_too_long: 지정한 시간이 너무 깁니다.
+
+autopublish_disable: 이 채널의 메시지가 더 이상 자동으로 게시되지 않습니다.
+autopublish_enable: 이 채널에 게시되는 모든 메시지가 자동으로 게시됩니다.
+req_announcement_channel: 이 명령어는 공지 채널에서 실행해야 합니다.

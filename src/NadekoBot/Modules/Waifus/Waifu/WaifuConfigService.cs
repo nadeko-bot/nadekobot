@@ -89,6 +89,15 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
                 c.SurplusWaifuShare = 0.50;
             });
         }
+
+        if (data.Version < 7)
+        {
+            ModifyConfig(c =>
+            {
+                c.Version = 7;
+                c.BaseFoodIncrease = 50;
+            });
+        }
     }
 
     /// <summary>

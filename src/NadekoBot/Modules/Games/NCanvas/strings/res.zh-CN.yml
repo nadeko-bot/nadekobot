@@ -1,9 +1,13 @@
 invalid_img_size: '圖片必須為 {0}x{1} 像素。'
 nc_hint: '使用 `{0}nczoom x y` 指令來放大。圖片為 {1}x{2} 像素。'
 nc_insuff_payment: 支付無效。
+nc_nuke_confirm: '你确定要清除 {0} 拥有的所有像素吗？此操作不可撤销。'
+nc_nuke_done: '已清除 {0} 个像素。'
+nc_nuke_none: 该用户没有任何像素。
 nc_pixel: '像素 {0}'
 nc_pixel_not_found: 找不到像素
 nc_pixel_set: '像素 {0} 設定成功！'
 nc_pixel_set_confirm: '你確定要設定像素 {0} 嗎？這將花費 {1}'
 nc_position: 位置
+nc_pixel_owner: 所有者
 no_attach_found: 找不到附件。請隨此指令一起發送圖片。

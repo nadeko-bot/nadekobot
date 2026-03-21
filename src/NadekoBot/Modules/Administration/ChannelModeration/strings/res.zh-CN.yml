@@ -4,3 +4,11 @@ linkonly_disable: ''
 linkonly_enable: ''
 nsfw_set_false: NSFW 已在此頻道上禁用。
 nsfw_set_true: NSFW 已在此頻道上啟用。
+
+channel_delmsgoncmd: 頻道特定設置
+delmsg_channel_inherit: 我會自動刪除在此頻道已執行的指令，如果該功能有在此伺服器啟動的話。
+delmsg_channel_off: 在此頻道 我將不再自動刪除已執行的指令訊息
+delmsg_channel_on: 我將在此頻道刪除已執行的指令訊息(不論伺服器設定為何)
+delmsg_off: 機器人將不再會於本伺服器自動刪除已執行之指令訊息
+delmsg_on: 機器人會在本伺服器自動刪除已執行之指令訊息
+server_delmsgoncmd: 伺服器設置

@@ -41,6 +41,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         RegisterModel<AddRoleRewardNotifyModel>();
         RegisterModel<RemoveRoleRewardNotifyModel>();
         RegisterModel<NiceCatchNotifyModel>();
+        RegisterModel<FishCurrencyNotifyModel>();
     }
 
     public async Task OnReadyAsync()

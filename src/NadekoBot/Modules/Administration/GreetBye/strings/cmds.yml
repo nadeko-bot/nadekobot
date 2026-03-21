@@ -7,7 +7,7 @@ boost:
 boostdel:
   desc: >-
     Sets the time it takes (in seconds) for boost messages to be auto-deleted.
-    Set it to `0` to disable automatic deletion.
+    Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
   ex:
     - 0
     - 30
@@ -53,7 +53,7 @@ bye:
 byedel:
   desc: >-
     Sets the time it takes (in seconds) for bye messages to be auto-deleted. Set
-    it to `0` to disable automatic deletion.
+    it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
   ex:
     - 0
     - 30
@@ -99,7 +99,7 @@ greet:
 greetdel:
   desc: >-
     Sets the time it takes (in seconds) for greet messages to be auto-deleted.
-    Set it to `0` to disable automatic deletion.
+    Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
   ex:
     - 0
     - 30

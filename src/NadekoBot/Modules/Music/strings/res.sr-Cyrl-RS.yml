@@ -19,6 +19,7 @@ now_playing: Тренутно свира
 player_queue: 'Ред плејера - Страница {0}/{1}'
 playlist_delete_fail: Брисање плејлисте није успело. Или не постоји, или ниси њен аутор.
 playlist_deleted: Плејлиста обрисана.
+playlist_name_too_long: Назив плејлисте не сме бити дужи од 20 карактера.
 playlist_id_not_found: Плејлиста са тим ID-ом не постоји.
 playlist_queue_complete: Ред плејлисте завршен.
 playlist_saved: Плејлиста сачувана

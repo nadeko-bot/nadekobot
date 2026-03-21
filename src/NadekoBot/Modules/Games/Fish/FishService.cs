@@ -1,7 +1,9 @@
-﻿using System.Security.Cryptography;
+using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
+using NadekoBot.Common;
 using NadekoBot.Modules.Administration;
 using NadekoBot.Modules.Administration.Services;
 using NadekoBot.Modules.Games.Fish.Db;
@@ -16,7 +18,8 @@ public sealed class FishService(
     INotifySubscriber notify,
     QuestService quests,
     FishItemService itemService,
-    ICurrencyService cs
+    ICurrencyService cs,
+    ICurrencyProvider cp
 )
     : INService
 {
@@ -74,6 +77,8 @@ public sealed class FishService(
             var max = conf.CurrencyMax;
             var amount = min == max ? min : _rng.NextLong(min, max + 1);
             await cs.AddAsync(userId, amount, new("fish", "currency"));
+            var formatted = CurrencyHelper.N(amount, CultureInfo.InvariantCulture, cp.GetCurrencySign());
+            await notify.NotifyAsync(new FishCurrencyNotifyModel(userId, formatted));
             return new FishCurrencyResult(amount);
         }
 

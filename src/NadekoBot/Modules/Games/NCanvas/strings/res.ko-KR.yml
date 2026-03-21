@@ -1,9 +1,13 @@
 invalid_img_size: '이미지 크기는 {0}x{1} 픽셀이어야 해요.'
 nc_hint: '`{0}nczoom x y` 명령어로 확대할 수 있어요. 이미지 크기는 {1}x{2} 픽셀이에요.'
 nc_insuff_payment: 잘못된 결제에요.
+nc_nuke_confirm: '{0}의 모든 픽셀을 삭제하시겠어요? 되돌릴 수 없어요.'
+nc_nuke_done: '{0}개의 픽셀을 삭제했어요.'
+nc_nuke_none: 그 유저는 소유한 픽셀이 없어요.
 nc_pixel: '픽셀 {0}'
 nc_pixel_not_found: 픽셀을 찾을 수 없어요
 nc_pixel_set: '픽셀 {0}이(가) 성공적으로 설정되었어요!'
 nc_pixel_set_confirm: '픽셀 {0}을(를) 설정하시겠어요? 비용은 {1}이에요'
 nc_position: 위치
+nc_pixel_owner: 소유자
 no_attach_found: 첨부 파일을 찾을 수 없어요. 이 명령어와 함께 이미지를 보내주세요.

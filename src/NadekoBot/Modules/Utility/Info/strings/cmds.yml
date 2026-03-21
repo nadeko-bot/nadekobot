@@ -6,16 +6,16 @@ channelinfo:
     - '#some-channel'
   params:
     - channel:
-        desc: >-
-          The channel where the information will be retrieved from or displayed
-          in.
+        desc: The channel to retrieve information about.
 invitecreate:
   desc: Creates a new invite which has infinite max uses and never expires.
   ex:
     - ''
   params:
     - params:
-        desc: The recipient's email addresses or usernames.
+        desc: >-
+          Optional flags: --expire (hours), --maxuses (number), --temporary,
+          --unique.
 invitedelete:
   desc: >-
     Deletes an invite on the specified index. Use `{0}invitelist` to see the
@@ -31,17 +31,17 @@ invitelist:
     - ''
     - 3
   params:
-    - ch:
-        desc: The channel in which the invite list is being retrieved.
-      page:
+    - page:
         desc: The page number to retrieve, starting from 1.
+      ch:
+        desc: The channel for which to list invites.
 roleinfo:
   desc: Shows info about the specified role.
   ex:
     - Gamers
   params:
     - role:
-        desc: The type of user account associated with the role.
+        desc: The role to show information about.
 serverinfo:
   desc: >-
     Shows info about the server with the specified ID. The bot has to be on that

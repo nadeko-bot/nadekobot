@@ -879,7 +879,7 @@ public partial class Administration
         [BotPerm(GuildPerm.KickMembers)]
         [Ratelimit(30)]
         public async Task MassKick(params string[] users)
-            => await MassPunish(PunishType.Ban, users);
+            => await MassPunish(PunishType.Kick, users);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]

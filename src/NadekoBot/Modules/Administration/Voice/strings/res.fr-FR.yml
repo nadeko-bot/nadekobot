@@ -2,3 +2,12 @@ createvoich: 'Salon vocal {0} créé.'
 deafen: Mise en sourdine effectuée.
 delvoich: 'Salon vocal {0} supprimé.'
 undeafen: Mise en sourdine désactivée avec succès.
+
+gvc_disabled: La fonctionnalité Salon Vocal de Jeu a été désactivée sur ce serveur.
+gvc_enabled: '{0} est désormais un Salon Vocal de Jeu.'
+
+no_vcroles: Il n'y a pas de rôles pour les salons vocaux.
+vc_role_list: Rôles du salon vocal
+vcrole_added: 'Les utilisateurs qui rejoindront le salon vocal {0} obtiendront le rôle {1}.'
+vcrole_not_found: Ce salon vocal n'a pas de VcRole.
+vcrole_removed: 'Les utilisateurs qui rejoindront le salon vocal {0} n''obtiendront plus de rôle.'

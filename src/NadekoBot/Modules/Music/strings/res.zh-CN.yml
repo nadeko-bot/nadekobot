@@ -19,6 +19,7 @@ now_playing: 現在播放
 player_queue: '撥放列表 - {0}/{1} 頁'
 playlist_delete_fail: 未能刪除該播放列表。它並不存在，或者你不是它的持有者。
 playlist_deleted: 播放列表已刪除。
+playlist_name_too_long: 播放列表名称不能超过20个字符。
 playlist_id_not_found: 具有該 ID 的播放列表不存在。
 playlist_queue_complete: 播放清單載入完畢
 playlist_saved: 播放列表已保存

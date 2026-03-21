@@ -12,7 +12,7 @@ nroll:
           process.
 roll:
   desc: >-
-    Rolls 0-100. If you supply a number `X` it rolls up to 30 normal dice. If
+    Rolls 1-100. If you supply a number `X` it rolls up to 30 normal dice. If
     you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to
     `y`. `Y` can be a letter 'F' if you want to roll fate dice instead of dnd.
   ex:

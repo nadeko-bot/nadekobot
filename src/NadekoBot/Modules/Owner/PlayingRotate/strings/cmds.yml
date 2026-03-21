@@ -1,0 +1,39 @@
+addplaying:
+  desc: >-
+    Adds a specified string to the list of playing strings to rotate.
+    Optionally pick a type: `Playing`, `Watching`, `Listening`, or `Competing`.
+    Defaults to Custom status if no type is given.
+  ex:
+    - Just vibing
+    - Playing with you
+    - Watching you sleep
+  params:
+    - status:
+        desc: The status text.
+    - status:
+        desc: The status text.
+      statusType:
+        desc: >-
+          The type of status: `Playing`, `Watching`, `Listening`, or
+          `Competing`.
+listplaying:
+  desc: Lists all playing statuses and their indexes.
+  ex:
+    - ''
+  params:
+    - {}
+removeplaying:
+  desc: Removes a playing status by index. Use `{0}lipl` to see indexes.
+  ex:
+    - 3
+  params:
+    - index:
+        desc: The index of the playing string to be removed.
+rotateplaying:
+  desc: >-
+    Toggles rotation of playing status of the dynamic strings you previously
+    specified.
+  ex:
+    - ''
+  params:
+    - {}

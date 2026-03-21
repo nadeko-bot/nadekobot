@@ -13,6 +13,7 @@ using NadekoBot.Db;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Waifus.Waifu;
 using NadekoBot.Modules.Waifus.Waifu.Db;
+using NadekoBot.Modules.Patronage;
 using NadekoBot.Services;
 using NSubstitute;
 
@@ -89,6 +90,16 @@ public static class WaifuTestHelper
         Directory.CreateDirectory(tmpDir);
         var tmpPath = Path.Combine(tmpDir, "waifu.yml");
         return new WaifuConfigService(tmpPath, new YamlSeria(), Substitute.For<IPubSub>());
+    }
+
+    /// <summary>
+    /// Creates a mock IPatronageService that returns no patron (non-patron defaults).
+    /// </summary>
+    public static IPatronageService CreatePatronageService()
+    {
+        var ps = Substitute.For<IPatronageService>();
+        ps.GetPatronAsync(Arg.Any<ulong>()).Returns((Patron?)null);
+        return ps;
     }
 
     /// <summary>

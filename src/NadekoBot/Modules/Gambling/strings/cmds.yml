@@ -44,7 +44,7 @@ betstats:
   desc: |-
     Shows the current bet stats for yourself, or the targetted user.
     You may optionally specify the game to show stats for.
-    Supported games right now are: bf, br, bd, lula, slot, race
+    Supported games right now are: bf, br, bj, bd, lula, slot, race
   ex:
     - ''
     - '@someone'
@@ -168,7 +168,7 @@ leaderboard:
 
     Specifying -c flag will show only users who are in this server.
 
-    Paginated with 10 users per page.
+    Paginated with 9 users per page.
   ex:
     - ''
     - '-c'

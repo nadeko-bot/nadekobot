@@ -19,10 +19,10 @@ notify:
     - {}
     - event:
         desc: The event for which to see the current message, if set.
-    - channel:
-        desc: The channel to send the message to.
-      event:
+    - event:
         desc: The event to notify on.
+      channel:
+        desc: The channel to send the message to.
       message:
         desc: The message to send.
     - event:

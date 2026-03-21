@@ -3,10 +3,10 @@ userroleassign:
   ex:
     - '@User @Role'
   params:
-    - role:
-        desc: The role to assign.
-      user:
+    - user:
         desc: The user to assign the role to.
+      role:
+        desc: The role to assign.
 userrolecolor:
   desc: Changes the color of your assigned role.
   ex:
@@ -57,8 +57,13 @@ userroleremove:
   desc: Removes a previously assigned role from a user.
   ex:
     - '@User @Role'
+    - '@User 123456789012345678'
   params:
     - role:
         desc: The role to remove.
+      user:
+        desc: The user to remove the role from.
+    - roleId:
+        desc: The ID of the role to remove. Useful if the role has been deleted.
       user:
         desc: The user to remove the role from.

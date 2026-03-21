@@ -5,6 +5,7 @@ using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Waifus.Waifu.Db;
 using NadekoBot.Modules.Games.Quests;
+using NadekoBot.Modules.Patronage;
 using OneOf;
 using OneOf.Types;
 
@@ -41,6 +42,9 @@ public sealed partial class StopBackingResult : OneOfBase<ErrNotBacking, Success
 
 [GenerateOneOf]
 public sealed partial class ImproveMoodResult : OneOfBase<ErrSelfNotAllowed, ErrNoActionsLeft, ErrWaifuNotFound, NoEffect, Success<int>>;
+
+[GenerateOneOf]
+public sealed partial class ImproveFoodResult : OneOfBase<ErrSelfNotAllowed, ErrNoActionsLeft, ErrWaifuNotFound, NoEffect, Success<int>>;
 
 [GenerateOneOf]
 public sealed partial class SetFeeResult : OneOfBase<ErrWaifuNotFound, ErrNotOptedIn, ErrInvalidPercent, Success>;
@@ -86,6 +90,7 @@ public sealed class WaifuService(
     ICurrencyService cs,
     DiscordSocketClient client,
     WaifuConfigService configService,
+    IPatronageService ps,
     QuestService? quests = null,
     TimeProvider? timeProvider = null
 ) : INService, IReadyExecutor
@@ -96,10 +101,19 @@ public sealed class WaifuService(
     private double BaseReturnRate => configService.Data.BaseReturnRate;
     private double CyclesPerYear => 365.25 * 24 / CycleHours;
 
+    private const int PATRON_MAX_ACTIONS = 3;
+
     /// <summary>
-    /// Gets the maximum number of mood/food actions per user per day.
+    /// Gets the maximum number of mood/food actions for a user per day.
+    /// Active patrons get 3, everyone else gets the configured default.
     /// </summary>
-    public int MaxActions => configService.Data.MaxDailyActions;
+    public async Task<int> GetMaxActionsAsync(ulong userId)
+    {
+        var patron = await ps.GetPatronAsync(userId);
+        return patron is { IsActive: true }
+            ? PATRON_MAX_ACTIONS
+            : configService.Data.MaxDailyActions;
+    }
 
     /// <summary>
     /// Gets all gift items from config as WaifuGiftItem records.
@@ -305,7 +319,8 @@ public sealed class WaifuService(
     {
         var actionsKey = GetActionsKey(userId);
         var actionsUsed = await cache.GetAsync(actionsKey);
-        return configService.Data.MaxDailyActions - (actionsUsed.TryPickT0(out var used, out _) ? used : 0);
+        var max = await GetMaxActionsAsync(userId);
+        return max - (actionsUsed.TryPickT0(out var used, out _) ? used : 0);
     }
 
     /// <summary>
@@ -651,8 +666,9 @@ public sealed class WaifuService(
         var actionsKey = GetActionsKey(userId);
         var actionsUsed = await cache.GetAsync(actionsKey);
         var used = actionsUsed.TryPickT0(out var u, out _) ? u : 0;
+        var maxActions = await GetMaxActionsAsync(userId);
 
-        if (used >= conf.MaxDailyActions)
+        if (used >= maxActions)
             return new ErrNoActionsLeft();
 
         var baseMood = conf.BaseMoodIncrease;
@@ -677,6 +693,40 @@ public sealed class WaifuService(
             return new NoEffect();
 
         return new Success<int>(moodIncrease);
+    }
+
+    /// <summary>
+    /// Improves the food of a waifu through a nom action.
+    /// </summary>
+    public async Task<ImproveFoodResult> ImproveFoodAsync(ulong userId, ulong waifuId)
+    {
+        if (userId == waifuId)
+            return new ErrSelfNotAllowed();
+
+        var conf = configService.Data;
+        var actionsKey = GetActionsKey(userId);
+        var actionsUsed = await cache.GetAsync(actionsKey);
+        var used = actionsUsed.TryPickT0(out var u, out _) ? u : 0;
+        var maxActions = await GetMaxActionsAsync(userId);
+
+        if (used >= maxActions)
+            return new ErrNoActionsLeft();
+
+        var foodIncrease = conf.BaseFoodIncrease;
+
+        await using var ctx = db.GetDbContext();
+
+        var updated = await ctx.GetTable<WaifuInfo>()
+            .Where(x => x.UserId == waifuId)
+            .Set(x => x.Food, x => x.Food + foodIncrease > 1000 ? 1000 : x.Food + foodIncrease)
+            .UpdateWithOutputAsync((o, n) => n.Food);
+
+        await cache.AddAsync(actionsKey, used + 1, TimeSpan.FromHours(24));
+
+        if (updated.Length == 0)
+            return new NoEffect();
+
+        return new Success<int>(foodIncrease);
     }
 
     #endregion

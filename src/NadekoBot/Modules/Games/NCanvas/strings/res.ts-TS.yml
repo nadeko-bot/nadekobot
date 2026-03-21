@@ -1,9 +1,13 @@
 invalid_img_size: 'Image must be {0}x{1} pixels.'
 nc_hint: 'Use `{0}nczoom x y` to zoom in. Image is {1}x{2} pixels.'
 nc_insuff_payment: Invalid payment.
+nc_nuke_confirm: 'You sure you want to nuke all of {0}''s pixels? Can''t undo this.'
+nc_nuke_done: 'Nuked {0} pixels.'
+nc_nuke_none: That user doesn't own any pixels.
 nc_pixel: 'Pixel {0}'
 nc_pixel_not_found: Pixel not found. Look more carefully.
 nc_pixel_set: 'Pixel {0} set successfully!'
 nc_pixel_set_confirm: 'Are you sure you want to set pixel {0}? It will cost you {1}'
 nc_position: Position
+nc_pixel_owner: Owner
 no_attach_found: No attachment found. Send the image with the command.

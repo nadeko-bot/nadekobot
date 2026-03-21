@@ -1,0 +1,18 @@
+agent:
+  desc: |-
+    Runs an AI agent that can use tools to accomplish complex tasks on your behalf.
+    The agent can read messages, send messages to channels, split long texts, and more.
+    All actions respect your permissions. You can also trigger this by @mentioning the bot.
+  ex:
+    - 'split the last long message in this channel and send the parts to #general'
+    - 'get the message with ID 123456789 from #rules and post it in #announcements'
+  params:
+    - query:
+        desc: "What you want the AI agent to do"
+agentcancel:
+  desc: |-
+    Cancels your currently running AI agent session.
+  ex:
+    - ''
+  params:
+    - { }

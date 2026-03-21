@@ -19,6 +19,7 @@ now_playing: Lecture en cours
 player_queue: 'File d''attente du lecteur - Page {0}/{1}'
 playlist_delete_fail: Échec de la suppression de cette liste de lecture. Soit elle n'existe pas, soit vous n'en êtes pas l'auteur.
 playlist_deleted: Liste de lecture supprimée.
+playlist_name_too_long: Le nom de la liste de lecture ne doit pas dépasser 20 caractères.
 playlist_id_not_found: Une liste de lecture avec cet ID n'existe pas.
 playlist_queue_complete: La file d'attente de la liste de lecture est terminée.
 playlist_saved: Liste de lecture sauvegardée

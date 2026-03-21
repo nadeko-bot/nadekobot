@@ -1,9 +1,13 @@
 invalid_img_size: '画像は{0}x{1}ピクセルである必要があります。'
 nc_hint: '`{0}nczoom x y`コマンドでズームできます。画像は{1}x{2}ピクセルです。'
 nc_insuff_payment: 支払いが無効です。
+nc_nuke_confirm: '{0}の全ピクセルを削除しますか？この操作は元に戻せません。'
+nc_nuke_done: '{0}ピクセルを削除しました。'
+nc_nuke_none: そのユーザーはピクセルを所有していません。
 nc_pixel: 'ピクセル{0}'
 nc_pixel_not_found: ピクセルが見つかりません
 nc_pixel_set: 'ピクセル{0}が正常に設定されました！'
 nc_pixel_set_confirm: 'ピクセル{0}を設定しますか？費用は{1}です'
 nc_position: 位置
+nc_pixel_owner: 所有者
 no_attach_found: 添付ファイルが見つかりません。このコマンドと一緒に画像を送信してください。

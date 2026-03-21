@@ -1,4 +1,5 @@
-﻿using NadekoBot.Modules.Gambling.Services;
+﻿using NadekoBot.Db.Models;
+using NadekoBot.Modules.Gambling.Services;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -277,6 +278,15 @@ public partial class Games
             await using var stream = await image.ToStreamAsync();
 
             var pos = new kwum(pixel.Position);
+
+            var ownerValue = "-";
+            if (pixel.OwnerId != 0)
+            {
+                var ownerName = await _service.GetOwnerName(pixel.OwnerId)
+                                ?? DiscordUser.DEFAULT_USERNAME;
+                ownerValue = $"{ownerName} (`{pixel.OwnerId}`)";
+            }
+
             await Response()
                 .File(stream, $"{pixel.Position}.png")
                 .Embed(CreateEmbed()
@@ -288,6 +298,7 @@ public partial class Games
                         true)
                     .AddField(GetText(strs.price), pixel.Price.ToString(), true)
                     .AddField(GetText(strs.color), "#" + new Rgba32(pixel.Color).ToHex())
+                    .AddField(GetText(strs.nc_pixel_owner), ownerValue)
                     .WithImageUrl($"attachment://{pixel.Position}.png"))
                 .SendAsync();
         }
@@ -339,15 +350,33 @@ public partial class Games
         [OwnerOnly]
         public async Task NcReset()
         {
-            await _service.ResetAsync();
-
             if (!await PromptUserConfirmAsync(CreateEmbed()
                     .WithDescription(
                         "This will delete all pixels and reset the canvas.\n\n"
                         + "Are you sure you want to continue?")))
                 return;
 
+            await _service.ResetAsync();
             await ctx.OkAsync();
+        }
+        [Cmd]
+        [OwnerOnly]
+        public async Task NcNuke(IUser user)
+        {
+            if (!await PromptUserConfirmAsync(CreateEmbed()
+                    .WithPendingColor()
+                    .WithDescription(GetText(strs.nc_nuke_confirm(Format.Bold(user.ToString()))))))
+                return;
+
+            var nuked = await _service.NukeUserPixelsAsync(user.Id);
+
+            if (nuked == 0)
+            {
+                await Response().Error(strs.nc_nuke_none).SendAsync();
+                return;
+            }
+
+            await Response().Confirm(strs.nc_nuke_done(nuked)).SendAsync();
         }
     }
 }

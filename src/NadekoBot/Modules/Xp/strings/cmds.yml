@@ -8,8 +8,8 @@ experience:
         desc: Optional name, mention or ID of the user
 xpadd:
   desc: >-
-    Adds server XP to a single user or all users role on this server. This does
-    not affect their global ranking. You can use negative values.
+    Adds server XP to a single user or all users with a role on this server.
+    This does not affect their global ranking. You can use negative values.
   ex:
     - 100 @Someone
     - 500 SomeRoleName
@@ -17,17 +17,11 @@ xpadd:
     - amount:
         desc: The total experience points to be added.
       role:
-        desc: >-
-          The type of account or group that the XP is being added to, such as an
-          administrator or moderator.
-    - amount:
-        desc: The total experience points to be added.
-      userId:
-        desc: The ID of the player whose experience points are being modified.
+        desc: The role whose members will receive the XP.
     - amount:
         desc: The total experience points to be added.
       user:
-        desc: The ID of the user whose XP is being added or modified.
+        desc: The user whose XP is being modified.
 xpcurrencyreward:
   desc: >-
     Sets a currency reward on a specified level. Provide no amount in order to
@@ -35,21 +29,23 @@ xpcurrencyreward:
   ex:
     - 3 50
   params:
-    - amount:
-        desc: The amount of currency to be rewarded when completing this level.
-      level:
+    - level:
         desc: The level at which the currency reward is set or removed.
+      amount:
+        desc: The amount of currency to be rewarded when completing this level.
 xpleaderboard:
   desc: Shows current server's xp leaderboard.
   ex:
     - ''
   params:
     - params:
-        desc: The list of player names or IDs to filter the leaderboard by.
+        desc: >-
+          Optional flags such as --clean to remove users who left the server.
     - page:
-        desc: The number of pages to display in the leaderboard.
+        desc: The page number to display.
       params:
-        desc: The list of player names or IDs to filter the leaderboard by.
+        desc: >-
+          Optional flags such as --clean to remove users who left the server.
 xplevelset:
   desc: Sets the level of the user you specify.
   ex:
@@ -57,7 +53,7 @@ xplevelset:
   params:
     - level:
         desc: The level to set the user to.
-    - user:
+      user:
         desc: The user to set the level of.
 xpleveluprewards:
   desc: Shows currently set level up rewards.
@@ -75,9 +71,9 @@ xpreset:
     - ''
   params:
     - user:
-        desc: The ID of a specific guild member whose XP is being reset.
+        desc: The guild member whose XP is being reset.
     - userId:
-        desc: The ID of a specific player whose experience points are being reset.
+        desc: The ID of the user whose XP is being reset.
     - {}
 xprewsreset:
   desc: Resets all currently set xp level up rewards.
@@ -143,8 +139,7 @@ xpshopuse:
         desc: The id of the item in the XP shop that you want to use.
       type:
         desc: >-
-          The type of item to be used, such as an experience point or a skill
-          upgrade.
+          The type of item to use: backgrounds (bg) or frames (fr).
 xpowned:
   desc: Shows all xp shop items you currently own.
   ex:

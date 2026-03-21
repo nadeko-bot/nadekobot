@@ -1,5 +1,0 @@
-no_vcroles: Não há cargos de canal de voz.
-vc_role_list: Cargos de canal de voz
-vcrole_added: 'Os usuários que se juntarem ao canal de voz {0} receberão o cargo {1}.'
-vcrole_not_found: Esse canal não possui um cargo de voz.
-vcrole_removed: 'Os usuários que se juntarem ao canal de voz {0} não receberão mais o cargo.'

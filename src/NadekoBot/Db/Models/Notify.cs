@@ -23,4 +23,5 @@ public enum NotifyType
     RemoveRoleReward = 3,
     NiceCatch = 4,
     // BigWin = 4,
+    FishCurrency = 5,
 }

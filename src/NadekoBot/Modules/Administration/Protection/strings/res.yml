@@ -18,3 +18,5 @@ spam_not_ignore: '{0} will no longer ignore this channel.'
 spam_stats: |-
   If a user posts {0} same messages in a row, I will {1} them.
       __IgnoredChannels__: {2}
+honeypot_off: Honeypot disabled.
+honeypot_on: Honeypot enabled on this channel.

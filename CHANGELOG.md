@@ -2,16 +2,70 @@
 
 *a,c,f,r,o,d*
 
-## [7.0.12] - 20.03.2026
+## [7.1.3] - 21.03.2026
 
 ### Fixed
 
-- `.hug`/`.pat`/`.kiss` now work on non-waifus too (with no effect)
-- some waifu issues fixed
+- Fixed docker build
 
-### Updated
+## [7.1.2] - 21.03.2026
 
-- `.wbuy` now prompts before transaction
+### Added
+
+- `.ncnuke` owner-only command to reset all pixels owned by a specified user
+- `.shardstats` now also show uptime over last 1 hour
+
+### Changed
+
+- `.ncpixel` now shows the pixel owner's name and ID
+
+### Fixed
+
+- Fixed music going silent when someone joins/leaves the voice channel.
+
+### Removed
+
+- GrpcApi removed. Bloat.
+
+### Dev
+
+- Fixed build warnings
+
+## [7.1.1] - 20.03.2026
+
+### Added
+
+- New AI agent system - beta, owner only for now (replaces chatterbot/cleverbot/nadeko ai)
+- `.notify` now supports `fishcurrency` event to track when users fish out currency
+
+### Changed
+
+- Reorganized Administration module to fix `.cmds admin` exceeding discord's 25-option limit
+- `gptApiKey` in `creds.yml` renamed to `aiApiKey` (auto-migrated on startup)
+- Patrons now get 3 waifu actions per cycle (hug/kiss/pat/nom)
+
+### Fixed
+
+- Fixed `.masskick` actually banning users instead of kicking them
+- Fixed some waifu console errors
+- Countless command strings fixed
+
+### Removed
+
+- Chatterbot/cleverbot and old nadekoAi have been removed in favor of the new ai agent system
+
+
+## [7.0.12] - 17.03.2026
+
+### Added
+
+- `.nom` command that feeds a waifu to improve food
+
+### Changed
+
+- `.hug`, `.kiss`, `.pat`, `.nom` now show a random gif in the response
+- `.hug`, `.kiss`, `.pat`, `.nom` now support multiple users at once (e.g. `.hug @user1 @user2`) and arbitrary strings - non waifus don't receive the effect
+- `.wbuy` now asks for confirmation
 
 ## [7.0.11] - 17.03.2026
 
@@ -19,19 +73,14 @@
 
 - Hangman will now re-post once every 5 messages
 - `.log` now supports UserMuted event logging (mute/unmute)
+- You can now `.fish` out currency
+- `.hug`, `.pat`, `.kiss` now work on non-waifu users with a "no effect!" message instead of an error
 
 ### Fixed
 
 - yt-dlp errors due to unavailable formats
 
 ## [7.0.10] - 16.03.2026
-
-### Added
-
-- AI Agent framework - @mention the bot with natural language to perform multi-step tasks (split messages, send to channels, etc.)
-- `.agent` command as explicit alternative to @mention
-- `.agenttools` and `.agenttool` commands for per-guild tool management
-- Supports both self-hosted OpenAI-compatible APIs and the Nadeko AI backend
 
 ### Changed
 

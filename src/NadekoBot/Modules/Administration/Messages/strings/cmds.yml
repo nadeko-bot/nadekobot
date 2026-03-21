@@ -1,3 +1,11 @@
+autopublish:
+  desc: >-
+    Toggles whether the bot automatically publishes all messages posted in the
+    news channel this command was executed in.
+  ex:
+    - ''
+  params:
+    - {}
 delete:
   desc: >-
     Deletes a single message given the channel and message ID, or a message

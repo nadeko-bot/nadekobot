@@ -11,7 +11,7 @@ wikia:
     - mtg Vigilance
     - mlp Dashy
   params:
-    - query:
-        desc: The search term or phrase to look for on the wiki.
-      target:
+    - target:
         desc: The URL or title of the fandom being linked.
+      query:
+        desc: The search term or phrase to look for on the wiki.

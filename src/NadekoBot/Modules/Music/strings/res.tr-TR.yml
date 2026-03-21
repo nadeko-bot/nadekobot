@@ -19,6 +19,7 @@ now_playing: Şu an çalıyor
 player_queue: 'Oynatıcı sırası - Sayfa {0}/{1}'
 playlist_delete_fail: Çalma listesi silinemedi. Ya mevcut değil ya da yazarı sen değilsin.
 playlist_deleted: Çalma listesi silindi.
+playlist_name_too_long: Çalma listesi adı en fazla 20 karakter olmalıdır.
 playlist_id_not_found: Bu ID'ye sahip çalma listesi mevcut değil.
 playlist_queue_complete: Çalma listesi sıraya ekleme tamamlandı.
 playlist_saved: Çalma listesi kaydedildi

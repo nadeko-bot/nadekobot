@@ -1,7 +1,7 @@
 remind:
   desc: >-
     Sets a reminder which will be sent to you or to the targeted channel after
-    certain amount of time (max 2 months).
+    certain amount of time (max 1 year).
 
     First parameter is `me` / `here` / 'channelname'
 

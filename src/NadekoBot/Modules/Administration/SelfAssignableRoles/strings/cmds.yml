@@ -102,4 +102,4 @@ sarrolelevelreq:
     - level:
         desc: The minimum level required for the role.
       role:
-        desc: The role that must be assigned before the user can assign this one.
+        desc: The self-assignable role to set the level requirement on.

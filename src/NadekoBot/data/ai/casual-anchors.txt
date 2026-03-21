@@ -1,0 +1,53 @@
+# Phrases talking ABOUT the bot, not commanding it.
+# Uses <bot> token where the bot name would appear.
+# Opinions, observations, complaints, praise - never imperative.
+<bot> is pretty cool actually
+<bot> is a really good bot
+<bot> was made by someone talented
+<bot> reminds me of another bot I used
+<bot> is better than most other bots
+<bot> is so funny sometimes
+<bot> is broken today for some reason
+<bot> looks different after the update
+<bot> has been around for years now
+<bot> is used by thousands of servers
+<bot> keeps crashing on us lately
+<bot> has too many features honestly
+<bot> is overrated in my opinion
+<bot> was offline earlier this morning
+<bot> just got a big update
+<bot> is responding way too slowly
+<bot> used to be much better before
+<bot> has weird permission requirements
+<bot> is similar to that other bot
+<bot> is getting really popular lately
+<bot> is maintained by good developers
+<bot> costs too much for premium
+<bot> is free which is pretty nice
+<bot> supports many languages now
+<bot> is my favorite discord bot
+<bot> handles moderation really well
+<bot> has great gambling features
+<bot> needs better error messages
+<bot> is laggy during peak hours
+<bot> works great for our server
+<bot> has been super reliable
+the music feature on <bot> is amazing
+the leveling system is really fun
+the help menu is kind of confusing
+<bot> totally misunderstood what I said
+someone should fix <bot>
+the moderation tools are too strict
+<bot> has everything we need
+I wish <bot> was faster though
+the fishing minigame gets boring
+the custom reactions are hilarious
+I wonder how <bot> works
+<bot> helps manage servers well
+the weather feature is accurate
+the anime lookup is very fast
+I love the trivia games
+does anyone else use <bot>
+<bot> has saved us from so many raids
+<bot> basically runs the whole server
+does <bot> support slash commands

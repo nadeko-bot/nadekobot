@@ -7,11 +7,11 @@ waifu_opted_out: ワイフの世界を去りました。またね！
 waifu_insufficient_funds: 資金が不足しています。
 waifu_has_fans: まだあなたを応援しているファンがいます！退出する前にファンに離れてもらってください。
 waifu_self_not_allowed: 自分自身にはできません！
-waifu_no_actions_left: 今日のアクションをすべて使い切りました。明日また来てね！
 waifu_not_found: そのワイフは存在しません。
 waifu_hugged: '{0}に温かいハグをしました！'
 waifu_kissed: '{0}にキスしました！'
 waifu_patted: '{0}を優しくなでました。'
+waifu_nommed: '{0}にご飯をあげた!'
 waifu_pending_payout: '未回収のペイアウトが{0}あります。'
 waifu_no_pending_payout: 保留中のペイアウトはありません。
 waifu_payout_claimed: '{0}を回収しました！'
@@ -89,4 +89,4 @@ waifu_help_footer: '{0}cmds waifuでコマンド一覧を確認'
 waifu_backed_label: 応援済み
 waifu_buy_confirm: '**{0}** のマネージャーになりますか？費用: **{1}**'
 waifu_btn_confirm: 確認
-waifu_no_effect: "効果なし!"
+waifu_no_effect: 効果なし!

@@ -4,3 +4,11 @@ linkonly_disable: 이 채널의 링크 전용 모드가 해제되었습니다.
 linkonly_enable: 이 채널이 링크 전용 모드로 설정되었습니다.
 nsfw_set_false: 이 채널에서 NSFW가 비활성화되었습니다.
 nsfw_set_true: 이 채널에서 NSFW가 활성화되었습니다.
+
+channel_delmsgoncmd: 채널별 설정
+delmsg_channel_inherit: 서버에서 이 기능이 활성화된 경우에만, 이 채널에서 성공적으로 실행된 명령어 메시지를 자동 삭제합니다.
+delmsg_channel_off: 이 채널에서 성공적으로 실행된 명령어 메시지를 자동 삭제하지 않습니다.
+delmsg_channel_on: 서버 설정에 관계없이, 이 채널에서 성공적으로 실행된 명령어 메시지를 항상 자동 삭제합니다.
+delmsg_off: 이 서버에서 성공적으로 실행된 명령어 메시지를 더 이상 자동 삭제하지 않습니다.
+delmsg_on: 이 서버에서 성공적으로 실행된 명령어 메시지를 자동 삭제합니다.
+server_delmsgoncmd: 서버 설정

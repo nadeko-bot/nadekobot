@@ -16,3 +16,6 @@ spam_not_ignore: '{0} sẽ không còn bỏ qua kênh này nữa.'
 spam_stats: |-
   Nếu người dùng gửi {0} tin nhắn giống nhau liên tiếp, tôi sẽ {1} họ.
       __Kênh bị bỏ qua__: {2}
+
+honeypot_off: Đã tắt honeypot.
+honeypot_on: Đã bật honeypot trên kênh này.

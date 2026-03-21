@@ -19,6 +19,7 @@ now_playing: Đang phát
 player_queue: 'Hàng đợi phát nhạc - Trang {0}/{1}'
 playlist_delete_fail: Không thể xóa playlist đó. Playlist không tồn tại hoặc bạn không phải tác giả.
 playlist_deleted: Đã xóa playlist.
+playlist_name_too_long: Tên playlist không được dài quá 20 ký tự.
 playlist_id_not_found: Playlist với ID đó không tồn tại.
 playlist_queue_complete: Đã thêm xong playlist vào hàng đợi.
 playlist_saved: Đã lưu playlist

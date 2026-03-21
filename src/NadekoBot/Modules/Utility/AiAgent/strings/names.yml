@@ -1,0 +1,7 @@
+agent:
+  - agent
+  - ai
+agentcancel:
+  - agentcancel
+  - aicancel
+  - aic

@@ -4,3 +4,11 @@ linkonly_disable: Kênh này không còn chỉ cho phép liên kết nữa.
 linkonly_enable: Kênh này giờ chỉ cho phép liên kết.
 nsfw_set_false: NSFW đã được tắt trên kênh này.
 nsfw_set_true: NSFW đã được bật trên kênh này.
+
+channel_delmsgoncmd: Cài đặt riêng cho kênh
+delmsg_channel_inherit: Mình sẽ tự động xóa tin nhắn thực thi lệnh thành công trên kênh này chỉ khi tính năng này được bật trên server.
+delmsg_channel_off: Mình sẽ không bao giờ tự động xóa tin nhắn thực thi lệnh thành công trên kênh này.
+delmsg_channel_on: Mình sẽ luôn tự động xóa tin nhắn thực thi lệnh thành công trên kênh này, bất kể cài đặt server.
+delmsg_off: Mình sẽ không còn tự động xóa tin nhắn thực thi lệnh thành công trên server này nữa.
+delmsg_on: Mình sẽ tự động xóa tin nhắn thực thi lệnh thành công trên server này.
+server_delmsgoncmd: Cài đặt Server

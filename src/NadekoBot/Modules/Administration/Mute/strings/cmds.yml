@@ -1,8 +1,8 @@
 chatmute:
   desc: >-
     Prevents a mentioned user from chatting in text channels. You can also
-    specify time string for how long the user should be muted. You can
-    optionally specify a reason.
+    specify time string for how long the user should be muted (min 1 minute, max
+    49 days). You can optionally specify a reason.
   ex:
     - '@Someone'
     - '@Someone stop writing'
@@ -38,8 +38,8 @@ chatunmute:
 mute:
   desc: >-
     Mutes a mentioned user both from speaking and chatting. You can also specify
-    time string for how long the user should be muted. You can optionally
-    specify a reason.
+    time string for how long the user should be muted (min 1 minute, max 49
+    days). You can optionally specify a reason.
   ex:
     - '@Someone'
     - '@Someone too noisy'
@@ -80,8 +80,8 @@ voicemute:
   desc: >-
     Prevents a mentioned user from speaking in voice channels. User has to be in
     a voice channel in order for the command to have an effect. You can also
-    specify time string for how long the user should be muted. You can
-    optionally specify a reason.
+    specify time string for how long the user should be muted (min 1 minute, max
+    49 days). You can optionally specify a reason.
   ex:
     - '@Someone'
     - '@Someone stop talking'

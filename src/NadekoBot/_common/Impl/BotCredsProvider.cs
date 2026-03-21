@@ -133,11 +133,23 @@ public sealed class BotCredsProvider : IBotCredsProvider
         if (File.Exists(CREDS_FILE_NAME))
         {
             var creds = Yaml.Deserializer.Deserialize<Creds>(File.ReadAllText(CREDS_FILE_NAME));
+
             if (creds.Version < 22)
             {
                 creds.Version = 22;
-                File.WriteAllText(CREDS_FILE_NAME, Yaml.Serializer.Serialize(creds));
             }
+
+            if (creds.Version < 23)
+            {
+                if (string.IsNullOrWhiteSpace(creds.AiApiKey)
+                    && !string.IsNullOrWhiteSpace(creds.Gpt3ApiKey))
+                    creds.AiApiKey = creds.Gpt3ApiKey;
+
+                creds.Gpt3ApiKey = string.Empty;
+                creds.Version = 23;
+            }
+
+            File.WriteAllText(CREDS_FILE_NAME, Yaml.Serializer.Serialize(creds));
         }
     }
 

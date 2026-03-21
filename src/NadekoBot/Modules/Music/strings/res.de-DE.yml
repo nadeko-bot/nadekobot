@@ -19,6 +19,7 @@ now_playing: Spielt jetzt
 player_queue: 'Abspiel Liste - Seite {0}/{1}'
 playlist_delete_fail: Löschen der Playlist fehlgeschlagen. Entweder existiert sie nicht, oder du bist nicht ihr Autor.
 playlist_deleted: Playlist gelöscht.
+playlist_name_too_long: Der Playlist-Name darf maximal 20 Zeichen lang sein.
 playlist_id_not_found: Eine Playlist mit dieser ID existiert nicht.
 playlist_queue_complete: Playlist Warteschlange fertig.
 playlist_saved: Playlist gespeichert

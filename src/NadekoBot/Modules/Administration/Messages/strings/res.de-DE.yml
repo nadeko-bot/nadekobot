@@ -1,1 +1,5 @@
 time_too_long: Die spezifizierte Zeit ist zu lang.
+
+autopublish_disable: Nachrichten in diesem Kanal werden nicht mehr automatisch veröffentlicht.
+autopublish_enable: Alle Nachrichten in diesem Kanal werden automatisch veröffentlicht.
+req_announcement_channel: Dieser Befehl muss in einem Ankündigungskanal ausgeführt werden.

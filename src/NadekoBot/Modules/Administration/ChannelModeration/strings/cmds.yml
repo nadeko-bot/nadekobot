@@ -13,10 +13,7 @@ imageonlychannel:
   ex:
     - ''
   params:
-    - time:
-        desc: >-
-          The amount of time before banning users for sending non-image
-          messages.
+    - {}
 linkonlychannel:
   desc: |-
     Toggles whether the channel only allows links.
@@ -26,14 +23,11 @@ linkonlychannel:
   ex:
     - ''
   params:
-    - time:
-        desc: >-
-          The amount of time before a user is banned for sending non-link
-          messages.
+    - {}
 slowmode:
   desc: >-
     Toggles slowmode on the current channel with the specified amount of time.
-    Provide no parameters to disable.
+    Maximum is 6 hours. Provide no parameters to disable.
   ex:
     - ''
     - 27s
@@ -41,3 +35,33 @@ slowmode:
   params:
     - time:
         desc: The duration for which the slowmode should be enabled.
+delmsgoncmd:
+  desc: >-
+    Toggles the automatic deletion of the user's successful command message to
+    prevent chat flood. You can use it either as a server toggle, channel
+    whitelist, or channel blacklist, as channel option has 3 settings: Enable
+    (always do it on this channel), Disable (never do it on this channel), and
+    Inherit (respect server setting). Use `list` parameter to see the current
+    states.
+  ex:
+    - ''
+    - channel enable
+    - ch inherit
+    - list
+  params:
+    - _:
+        desc: The word 'list'
+    - _:
+        desc: The word 'server'
+    - _:
+        desc: The word 'channel'
+      s:
+        desc: The state to set. One of 'enable', 'disable', or 'inherit'.
+      ch:
+        desc: Channel in which to set
+    - _:
+        desc: The word 'channel'
+      s:
+        desc: The state to set. One of 'enable', 'disable', or 'inherit'.
+      chId:
+        desc: Optional channel id. If omitted, defaults to the current channel.

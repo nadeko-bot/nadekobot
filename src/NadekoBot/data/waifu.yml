@@ -1,5 +1,5 @@
 # DO NOT CHANGE
-version: 6
+version: 7
 # Minimum price a waifu can have. Default 1000
 minPrice: 1000
 # Cost to opt into the waifu system. Default 10000
@@ -16,6 +16,8 @@ defaultReturnsCap: 1000000
 buyWindowHours: 18
 # Base mood points gained from a hug action. Default 50
 baseMoodIncrease: 50
+# Base food points gained from a nom action. Default 50
+baseFoodIncrease: 50
 # Max mood/food actions per user per day. Default 2
 maxDailyActions: 2
 # Max items in a single gift command. Default 100

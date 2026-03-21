@@ -15,4 +15,4 @@ timezones:
     - ''
   params:
     - page:
-        desc: The number of pages to retrieve from the list of available timezones.
+        desc: The page number to display from the list of available timezones.

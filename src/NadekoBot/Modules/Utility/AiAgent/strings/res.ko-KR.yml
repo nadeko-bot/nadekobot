@@ -1,0 +1,3 @@
+agent_no_query: AI 에이전트에 프롬프트를 입력해야 합니다.
+agent_cancelled: 에이전트 세션이 취소되었습니다.
+agent_no_session: 취소할 활성 에이전트 세션이 없습니다.

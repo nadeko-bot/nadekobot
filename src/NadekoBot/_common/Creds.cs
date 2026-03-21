@@ -71,10 +71,10 @@ public sealed class Creds : IBotCreds
     [Comment("""Api key for sending stats to DiscordBotList.""")]
     public string BotListToken { get; set; }
 
-    [Comment("""Official cleverbot api key.""")]
-    public string CleverbotApiKey { get; set; }
+    [Comment("""API key for AI services (agent). OpenAI-compatible.""")]
+    public string AiApiKey { get; set; }
 
-    [Comment(@"OpenAi api key.")]
+    // kept for migration from gpt3ApiKey -> aiApiKey
     public string Gpt3ApiKey { get; set; }
 
     [Comment("""
@@ -157,13 +157,6 @@ public sealed class Creds : IBotCreds
 
 
     [Comment("""
-             Settings for the grpc api. 
-             We don't provide support for this.
-             If you leave certPath empty, the api will run on http.
-             """)]
-    public GrpcApiConfig GrpcApi { get; set; }
-
-    [Comment("""
              Url and api key to a seq server. If url is set, bot will try to send logs to it.
              """)]
     public SeqConfig Seq { get; set; }
@@ -181,7 +174,7 @@ public sealed class Creds : IBotCreds
         Votes = new VotesSettings();
         Patreon = new PatreonSettings(string.Empty, string.Empty, string.Empty, string.Empty);
         BotListToken = string.Empty;
-        CleverbotApiKey = string.Empty;
+        AiApiKey = string.Empty;
         Gpt3ApiKey = string.Empty;
         BotCache = BotCacheImplemenation.Memory;
         RedisOptions = "localhost:6379,syncTimeout=30000,responseTimeout=30000,allowAdmin=true,password=";
@@ -196,7 +189,6 @@ public sealed class Creds : IBotCreds
         RestartCommand = new RestartConfig();
         Google = new GoogleApiConfig();
 
-        GrpcApi = new();
         Seq = new();
         SteamApiKey = string.Empty;
     }
@@ -254,15 +246,6 @@ public sealed class Creds : IBotCreds
         public int Port {get; set; }
         public string DblApiKey { get; set; }
         public string DiscordsApiKey { get; set; }
-    }
-
-    public sealed record GrpcApiConfig
-    {
-        public bool Enabled { get; set; } = false;
-        public string CertChain { get; set; } = string.Empty;
-        public string CertPrivateKey { get; set; } = string.Empty;
-        public string Host { get; set; } = "localhost";
-        public int Port { get; set; } = 43120;
     }
 }
 

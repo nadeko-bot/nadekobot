@@ -60,10 +60,8 @@ patreon:
   campaignId: ''
 # Api key for sending stats to DiscordBotList.
 botListToken: ''
-# Official cleverbot api key.
-cleverbotApiKey: ''
-# OpenAi api key.
-gpt3ApiKey: ''
+# API key for AI services (agent). OpenAI-compatible.
+aiApiKey: ''
 # Which cache implementation should bot use.
 # 'memory' - Cache will be in memory of the bot's process itself. Only use this on bots with a single shard. When the bot is restarted the cache is reset.
 # 'redis' - Uses redis (which needs to be separately downloaded and installed). The cache will persist through bot restarts. You can configure connection string in creds.yml
@@ -119,15 +117,6 @@ twitchClientSecret:
 restartCommand:
   cmd: 
   args: 
-# Settings for the grpc api.
-# We don't provide support for this.
-# If you leave certPath empty, the api will run on http.
-grpcApi:
-  enabled: false
-  certChain: ''
-  certPrivateKey: ''
-  host: localhost
-  port: 43120
 # Url and api key to a seq server. If url is set, bot will try to send logs to it.
 seq:
   url: 

@@ -31,7 +31,7 @@ public class WaifuBackingTests
         var cache = Substitute.For<IBotCache>();
         _time = new FakeTimeProvider(new(2025, 1, 7, 0, 0, 0, TimeSpan.Zero));
         var client = Substitute.For<DiscordSocketClient>();
-        _svc = new WaifuService(_db, cache, cs, client, WaifuTestHelper.CreateConfigService(), null!, _time);
+        _svc = new WaifuService(_db, cache, cs, client, WaifuTestHelper.CreateConfigService(), WaifuTestHelper.CreatePatronageService(), null!, _time);
     }
 
     [TearDown]

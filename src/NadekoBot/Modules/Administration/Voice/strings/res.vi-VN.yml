@@ -2,3 +2,12 @@ createvoich: 'Đã tạo kênh thoại {0}.'
 deafen: Tắt tiếng thành công.
 delvoich: 'Đã xóa kênh thoại {0}.'
 undeafen: Bỏ tắt tiếng thành công.
+
+gvc_disabled: Tính năng Kênh thoại theo game đã được tắt trên server này.
+gvc_enabled: '{0} giờ là Kênh thoại theo game.'
+
+no_vcroles: Không có vai trò kênh thoại nào.
+vc_role_list: Danh sách vai trò kênh thoại
+vcrole_added: 'Người dùng tham gia kênh thoại {0} sẽ nhận được vai trò {1}.'
+vcrole_not_found: Kênh thoại đó không có VcRole.
+vcrole_removed: 'Người dùng tham gia kênh thoại {0} sẽ không còn nhận vai trò nữa.'

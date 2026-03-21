@@ -1,3 +1,5 @@
+autopublish:
+  - autopublish
 delete:
   - delete
   - del

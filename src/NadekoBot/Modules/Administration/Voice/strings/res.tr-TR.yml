@@ -2,3 +2,12 @@ createvoich: '{0} sesli kanalı oluşturuldu.'
 deafen: Sağırlaştırma başarılı.
 delvoich: '{0} sesli kanalı silindi.'
 undeafen: Sağırlaştırma kaldırıldı.
+
+gvc_disabled: Oyun Sesli Kanalı özelliği bu sunucuda devre dışı bırakıldı.
+gvc_enabled: '{0} artık bir Oyun Sesli Kanalı.'
+
+no_vcroles: Sesli kanal rolü yok.
+vc_role_list: Sesli kanal rolleri
+vcrole_added: '{0} sesli kanalına katılan kullanıcılar {1} rolünü alacak.'
+vcrole_not_found: Bu sesli kanalda bir VcRole yok.
+vcrole_removed: '{0} sesli kanalına katılan kullanıcılar artık rol almayacak.'

@@ -1,9 +1,0 @@
-prompt:
-  desc: |-
-    Ask the bot to do something for you.
-    This will fall back to the chatbot service in case of an error.
-  ex:
-    - What's the weather like today?
-  params:
-    - query:
-        desc: The message to send to the bot.

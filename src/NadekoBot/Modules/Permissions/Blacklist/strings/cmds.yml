@@ -1,11 +1,10 @@
 channelblacklist:
   desc: >-
-    Either [add]s or [rem]oves a channel or channels specified an ID from a
-    blacklist.
+    Either [add]s or [rem]oves a channel specified by an ID from a blacklist.
 
     Specify no argument or a page number to list blacklisted channels.
   ex:
-    - add 12312312312 66666666666
+    - add 12312312312
     - rem 12312312312
     - ''
     - 3
@@ -46,12 +45,12 @@ serverblacklist:
         desc: The guild for which the server blacklist is being managed.
 userblacklist:
   desc: >-
-    Either [add]s or [rem]oves a user or users specified by a Mention or an ID
-    from a blacklist.
+    Either [add]s or [rem]oves a user specified by a Mention or an ID from a
+    blacklist.
 
     Specify no argument or a page number to list blacklisted users.
   ex:
-    - add @SomeUser @SomeUser2 @SomeUser3
+    - add @SomeUser
     - rem 12312312313
     - ''
     - 4

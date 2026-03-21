@@ -19,6 +19,7 @@ now_playing: Reproduciendo
 player_queue: 'Cola - Página {0}/{1}'
 playlist_delete_fail: Error eliminando esa lista. Puede que no exista, o que tú no seas su autor.
 playlist_deleted: Lista de reproducción eliminada.
+playlist_name_too_long: El nombre de la lista no puede tener más de 20 caracteres.
 playlist_id_not_found: No existe una lista con esa ID.
 playlist_queue_complete: Lista de reproducción añadida a la cola.
 playlist_saved: Lista guardada

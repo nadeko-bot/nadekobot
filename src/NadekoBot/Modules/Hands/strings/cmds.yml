@@ -4,5 +4,8 @@ hands:
     channel.
   ex:
     - ''
+    - 2
   params:
     - {}
+    - page:
+        desc: The page number to display.

@@ -10,7 +10,7 @@ xkcd:
   params:
     - arg:
         desc: >-
-          The URL of the desired comic or "latest" to retrieve the most recent
-          one.
+          Specify "latest" to retrieve the most recent comic, or leave empty
+          for a random one.
     - num:
         desc: The number of the comic to be retrieved.

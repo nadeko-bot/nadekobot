@@ -19,6 +19,7 @@ now_playing: Reproduzindo agora
 player_queue: 'Fila de Músicas - Página {0}/{1}'
 playlist_delete_fail: Falha ao deletar a playlist. Ela não existe ou você não é o criador.
 playlist_deleted: Playlist deletada.
+playlist_name_too_long: O nome da playlist deve ter no máximo 20 caracteres.
 playlist_id_not_found: Não existe uma playlist com essa ID.
 playlist_queue_complete: Playlist adicionada à fila.
 playlist_saved: Playlist salva

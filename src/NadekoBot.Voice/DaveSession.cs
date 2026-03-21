@@ -5,6 +5,13 @@ using Serilog;
 
 namespace NadekoBot.Voice
 {
+    public enum CommitProcessResult
+    {
+        Success,
+        Ignored,
+        Failed
+    }
+
     internal sealed class DaveSession : IDisposable
     {
         private IntPtr _session;
@@ -90,20 +97,21 @@ namespace NadekoBot.Voice
             }
         }
 
-        /// <returns>True if commit was processed successfully, false if failed/ignored</returns>
-        public bool ProcessCommit(byte[] commit)
+        public CommitProcessResult ProcessCommit(byte[] commit)
         {
-            if (_session == IntPtr.Zero) return false;
+            if (_session == IntPtr.Zero) return CommitProcessResult.Failed;
 
             var result = LibDave.SessionProcessCommit(_session, commit, (UIntPtr)commit.Length);
-            if (result == IntPtr.Zero) return false;
+            if (result == IntPtr.Zero) return CommitProcessResult.Failed;
 
             try
             {
-                if (LibDave.CommitResultIsFailed(result) || LibDave.CommitResultIsIgnored(result))
-                    return false;
+                if (LibDave.CommitResultIsIgnored(result))
+                    return CommitProcessResult.Ignored;
+                if (LibDave.CommitResultIsFailed(result))
+                    return CommitProcessResult.Failed;
 
-                return true;
+                return CommitProcessResult.Success;
             }
             finally
             {

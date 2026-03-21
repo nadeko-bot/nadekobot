@@ -1,5 +1,0 @@
-no_vcroles: No hay roles para el canal de voz.
-vc_role_list: Roles para el canal de voz
-vcrole_added: 'Los usuarios que entren al canal de voz {0} obtendrán el rol {1}.'
-vcrole_not_found: El canal de voz no tiene el rol de canal de voz (VcRole).
-vcrole_removed: 'Los usuarios que entren al canal de voz {0} ya no obtendrán un rol.'

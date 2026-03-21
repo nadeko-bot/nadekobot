@@ -1,1 +1,5 @@
 time_too_long: O tempo que você especificou é muito longo.
+
+autopublish_disable: Mensagens neste canal não serão mais publicadas automaticamente.
+autopublish_enable: Todas as mensagens postadas neste canal serão publicadas automaticamente.
+req_announcement_channel: Este comando deve ser executado em um canal de Anúncios.

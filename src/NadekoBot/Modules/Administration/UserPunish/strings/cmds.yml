@@ -148,10 +148,10 @@ timeout:
   params:
     - globalUser:
         desc: The user's account or identity that is being timed out.
-      msg:
-        desc: The brief message explaining why the user was timed out.
       time:
         desc: The duration of the timeout period.
+      msg:
+        desc: The brief message explaining why the user was timed out.
 unban:
   desc: Unbans a user with the provided user#discrim or id.
   ex:
@@ -201,10 +201,16 @@ warnclear:
 warndelete:
   desc: Deletes a warning from a user by its index.
   ex:
-    - 3
+    - '@Someone 3'
   params:
     - index:
         desc: The index of the warning to be deleted.
+      user:
+        desc: The user whose warning is being deleted.
+    - index:
+        desc: The index of the warning to be deleted.
+      userId:
+        desc: The ID of the user whose warning is being deleted.
 warnexpire:
   desc: >-
     Gets or sets the number of days after which the warnings will be cleared
@@ -255,7 +261,7 @@ warnpunish:
     Sets a punishment for a certain number of warnings. You can specify a time
     string after 'Ban' or *'Mute' punishments to make it a temporary mute/ban.
     Provide no punishment to remove. Available punishments: Ban, Kick, Softban,
-    Mute, VoiceMute, ChatMute, AddRole, RemoveRoles
+    Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut
   ex:
     - 3
     - 5 Ban

@@ -81,7 +81,8 @@ namespace NadekoBot.Coordinator
                 ShardId = status.ShardId,
                 LastUpdate = Timestamp.FromDateTime(status.LastUpdate),
                 ScheduledForRestart = status.ShouldRestart,
-                StartedAt = Timestamp.FromDateTime(startTime)
+                StartedAt = Timestamp.FromDateTime(startTime),
+                UptimePercent = status.UptimePercent
             };
 
             return reply;

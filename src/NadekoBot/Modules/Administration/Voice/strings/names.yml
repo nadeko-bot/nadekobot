@@ -7,6 +7,15 @@ deafen:
 delvoichanl:
   - delvoichanl
   - dvch
+gamevoicechannel:
+  - gamevoicechannel
+  - gvc
 undeafen:
   - undeafen
   - undef
+vcrole:
+  - vcrole
+vcrolelist:
+  - vcrolelist
+vcrolerm:
+  - vcrolerm

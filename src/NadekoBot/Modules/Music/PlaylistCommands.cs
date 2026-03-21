@@ -135,6 +135,12 @@ public sealed partial class Music
         [RequireContext(ContextType.Guild)]
         public async Task PlaylistSave([Leftover] string name)
         {
+            if (name.Length > 20)
+            {
+                await Response().Error(strs.playlist_name_too_long).SendAsync();
+                return;
+            }
+
             if (!_service.TryGetMusicPlayer(ctx.Guild.Id, out var mp))
             {
                 await Response().Error(strs.no_player).SendAsync();

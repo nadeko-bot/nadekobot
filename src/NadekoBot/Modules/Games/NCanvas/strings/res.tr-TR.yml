@@ -1,9 +1,13 @@
 invalid_img_size: 'Görsel {0}x{1} piksel olmalıdır.'
 nc_hint: 'Yakınlaştırmak için `{0}nczoom x y` komutunu kullan. Görsel {1}x{2} piksel.'
 nc_insuff_payment: Geçersiz ödeme.
+nc_nuke_confirm: '{0} kullanicisinin tum piksellerini silmek istediginize emin misiniz? Bu geri alinamaz.'
+nc_nuke_done: '{0} piksel silindi.'
+nc_nuke_none: Bu kullanicinin hiç pikseli yok.
 nc_pixel: 'Piksel {0}'
 nc_pixel_not_found: Piksel bulunamadı
 nc_pixel_set: 'Piksel {0} başarıyla ayarlandı!'
 nc_pixel_set_confirm: 'Piksel {0} ayarlamak istediğine emin misin? Maliyeti {1}'
 nc_position: Konum
+nc_pixel_owner: Sahip
 no_attach_found: Ek bulunamadı. Lütfen bu komutla birlikte görseli gönder.

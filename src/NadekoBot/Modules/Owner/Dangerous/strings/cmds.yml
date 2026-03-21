@@ -1,0 +1,78 @@
+cleanupguilddata:
+  desc: |-
+    Deletes data for all servers bot is no longer a member of from the database.
+    This is a highly destructive and irreversible command.
+  ex:
+    - ''
+  params:
+    - {}
+deletecurrency:
+  desc: Deletes everything from Currency and CurrencyTransactions.
+  ex:
+    - ''
+  params:
+    - {}
+deletewaifu:
+  desc: >-
+    Deletes waifu data for the specified user, including waifu info, fans, and
+    cycles. Also frees the user's waifus.
+  ex:
+    - '@Someone'
+    - 123456789012345678
+  params:
+    - user:
+        desc: The user whose waifu data will be deleted.
+    - userId:
+        desc: The ID of the user whose waifu data will be deleted.
+deletewaifus:
+  desc: Deletes everything from WaifuUpdates, WaifuItem and WaifuInfo tables.
+  ex:
+    - ''
+  params:
+    - {}
+deletexp:
+  desc: Deletes everything from UserXpStats, Clubs and sets users' TotalXP to 0.
+  ex:
+    - ''
+  params:
+    - {}
+purgeuser:
+  desc: >-
+    Purge user from the database completely. This includes currency, xp, clubs
+    that user owns, waifu info
+  ex:
+    - '@Oblivion'
+  params:
+    - userId:
+        desc: The ID of the user to be purged from the system.
+    - user:
+        desc: The user account being purged.
+sqlexec:
+  desc: >-
+    Executes provided sql command and returns the number of affected rows.
+    Dangerous.
+  ex:
+    - UPDATE DiscordUser SET CurrencyAmount=CurrencyAmount+1234
+  params:
+    - sql:
+        desc: >-
+          The SQL query string to execute, which should be carefully crafted to
+          avoid any potential security risks.
+sqlselect:
+  desc: Executes provided sql query and returns the results. Dangerous.
+  ex:
+    - SELECT * FROM DiscordUser LIMIT 5
+  params:
+    - sql:
+        desc: The SQL query string that is executed by the function.
+sqlselectcsv:
+  desc: >-
+    Executes provided sql query and returns the results in a csv file.
+    Dangerous.
+  ex:
+    - SELECT * FROM DiscordUser LIMIT 5
+  params:
+    - sql:
+        desc: >-
+          The SQL query string that specifies the data to be retrieved and
+          formatted into a CSV file.

@@ -15,9 +15,9 @@ patronmessage:
   ex:
     - x hello
   params:
-    - message:
-        desc: The text content of the message being sent to patrons.
-      tierAndHigher:
+    - tierAndHigher:
         desc: >-
           The tier or level of membership that determines which patrons receive
           the message.
+      message:
+        desc: The text content of the message being sent to patrons.

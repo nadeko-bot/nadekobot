@@ -37,7 +37,7 @@ quoteedit:
       text:
         desc: The new message of the quote.
 quoteid:
-  desc: '-| Displays the quote with the specified ID number.'
+  desc: Displays the quote with the specified ID number.
   ex:
     - 123456
   params:
@@ -54,20 +54,20 @@ quotelist:
           The order parameter determines how the quotes are sorted and
           displayed, allowing users to choose between alphabetical or ID-based
           ordering.
-    - order:
+    - page:
+        desc: The current page number for pagination.
+      order:
         desc: >-
           The order parameter determines how the quotes are sorted and
           displayed, allowing users to choose between alphabetical or ID-based
           ordering.
-      page:
-        desc: The current page number for pagination.
 quoteprint:
   desc: Prints a random quote with a specified name.
   ex:
     - abc
   params:
     - keyword:
-        desc: The author or origin of the quote being printed.
+        desc: The keyword/trigger of the quote to print.
 quotesdeleteall:
   desc: Deletes all quotes with the specified keyword.
   ex:

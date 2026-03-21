@@ -16,3 +16,6 @@ spam_not_ignore: '{0} artık bu kanalı görmezden gelmeyecek.'
 spam_stats: |-
   Bir kullanıcı üst üste {0} aynı mesajı gönderirse, onu {1} edeceğim.
       __Görmezden Gelinen Kanallar__: {2}
+
+honeypot_off: Honeypot devre dışı bırakıldı.
+honeypot_on: Bu kanalda honeypot etkinleştirildi.

@@ -167,7 +167,7 @@ roles:
     - page:
         desc: The page number for the list of roles to be displayed.
       target:
-        desc: The guild or user for which to list the roles.
+        desc: The user whose roles to list. If omitted, lists all server roles.
     - page:
         desc: The page number for the list of roles to be displayed.
 savechat:
@@ -238,12 +238,12 @@ serverid:
   params:
     - {}
 serverlist:
-  desc: Lists servers the bot is on with some basic info. 15 per page.
+  desc: Lists servers the bot is on with some basic info. 9 per page.
   ex:
     - 3
   params:
     - page:
-        desc: The number of pages to retrieve from the server list.
+        desc: The page number to display.
 showembed:
   desc: Prints the json equivalent of the embed of the message specified by its Id.
   ex:
@@ -309,7 +309,7 @@ userid:
     - '@Someone'
   params:
     - target:
-        desc: The guild the user is a member of.
+        desc: The user whose ID to show. Defaults to yourself.
 verboseerror:
   desc: >-
     Toggles or sets whether the bot should print command errors when a command

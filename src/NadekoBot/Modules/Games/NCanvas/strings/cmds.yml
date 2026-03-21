@@ -4,8 +4,20 @@ ncanvas:
     The canvas allows users to set each pixel's color and text using currency.
   ex:
     - ''
+    - sgu
   params:
     - {}
+    - position:
+        desc: The position of the pixel to retrieve in alphanumeric format.
+ncnuke:
+  desc: |-
+    Nukes all pixels owned by the specified user, resetting them to black.
+    Owner only.
+  ex:
+    - '@user'
+  params:
+    - user:
+        desc: "The user whose pixels to nuke."
 ncpixel:
   desc: |-
     Shows the pixel at the specified position.
@@ -62,7 +74,7 @@ nczoom:
   desc: >-
     Zooms in on the nCanvas.
 
-    Bot will show the 10x10 grid with the position of each cell for use with
+    Bot will show a 5x5 grid with the position of each cell for use with
     `ncset`.
 
     You can either use alphanumeric position (ex. s4u) or pixel x and y (ex. 123

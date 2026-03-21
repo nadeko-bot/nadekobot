@@ -1,5 +1,5 @@
 # DO NOT CHANGE
-version: 10
+version: 11
 coins:
   heads:
     - https://cdn.nadeko.bot/coins/heads3.png
@@ -32,3 +32,88 @@ slots:
     - https://cdn.nadeko.bot/slots/15.png
     - https://cdn.nadeko.bot/slots/16.png
   bg: https://cdn.nadeko.bot/slots/slots_bg.png
+waifu:
+  hug:
+    - https://cdn.nadeko.bot/w/hug/hug_0.gif
+    - https://cdn.nadeko.bot/w/hug/hug_1.gif
+    - https://cdn.nadeko.bot/w/hug/hug_2.gif
+    - https://cdn.nadeko.bot/w/hug/hug_3.gif
+    - https://cdn.nadeko.bot/w/hug/hug_4.gif
+    - https://cdn.nadeko.bot/w/hug/hug_5.gif
+    - https://cdn.nadeko.bot/w/hug/hug_6.gif
+    - https://cdn.nadeko.bot/w/hug/hug_7.gif
+    - https://cdn.nadeko.bot/w/hug/hug_8.gif
+    - https://cdn.nadeko.bot/w/hug/hug_9.gif
+    - https://cdn.nadeko.bot/w/hug/hug_10.gif
+    - https://cdn.nadeko.bot/w/hug/hug_11.gif
+    - https://cdn.nadeko.bot/w/hug/hug_12.gif
+    - https://cdn.nadeko.bot/w/hug/hug_13.gif
+    - https://cdn.nadeko.bot/w/hug/hug_14.gif
+    - https://cdn.nadeko.bot/w/hug/hug_15.gif
+    - https://cdn.nadeko.bot/w/hug/hug_16.gif
+    - https://cdn.nadeko.bot/w/hug/hug_17.gif
+    - https://cdn.nadeko.bot/w/hug/hug_18.gif
+    - https://cdn.nadeko.bot/w/hug/hug_19.gif
+  kiss:
+    - https://cdn.nadeko.bot/w/kiss/kiss_0.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_1.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_2.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_3.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_4.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_5.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_6.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_7.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_8.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_9.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_10.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_11.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_12.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_13.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_14.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_15.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_16.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_17.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_18.gif
+    - https://cdn.nadeko.bot/w/kiss/kiss_19.gif
+  pat:
+    - https://cdn.nadeko.bot/w/pat/pat_0.gif
+    - https://cdn.nadeko.bot/w/pat/pat_1.gif
+    - https://cdn.nadeko.bot/w/pat/pat_2.gif
+    - https://cdn.nadeko.bot/w/pat/pat_3.gif
+    - https://cdn.nadeko.bot/w/pat/pat_4.gif
+    - https://cdn.nadeko.bot/w/pat/pat_5.gif
+    - https://cdn.nadeko.bot/w/pat/pat_6.gif
+    - https://cdn.nadeko.bot/w/pat/pat_7.gif
+    - https://cdn.nadeko.bot/w/pat/pat_8.gif
+    - https://cdn.nadeko.bot/w/pat/pat_9.gif
+    - https://cdn.nadeko.bot/w/pat/pat_10.gif
+    - https://cdn.nadeko.bot/w/pat/pat_11.gif
+    - https://cdn.nadeko.bot/w/pat/pat_12.gif
+    - https://cdn.nadeko.bot/w/pat/pat_13.gif
+    - https://cdn.nadeko.bot/w/pat/pat_14.gif
+    - https://cdn.nadeko.bot/w/pat/pat_15.gif
+    - https://cdn.nadeko.bot/w/pat/pat_16.gif
+    - https://cdn.nadeko.bot/w/pat/pat_17.gif
+    - https://cdn.nadeko.bot/w/pat/pat_18.gif
+    - https://cdn.nadeko.bot/w/pat/pat_19.gif
+  nom:
+    - https://cdn.nadeko.bot/w/nom/nom_0.gif
+    - https://cdn.nadeko.bot/w/nom/nom_1.gif
+    - https://cdn.nadeko.bot/w/nom/nom_2.gif
+    - https://cdn.nadeko.bot/w/nom/nom_3.gif
+    - https://cdn.nadeko.bot/w/nom/nom_4.gif
+    - https://cdn.nadeko.bot/w/nom/nom_5.gif
+    - https://cdn.nadeko.bot/w/nom/nom_6.gif
+    - https://cdn.nadeko.bot/w/nom/nom_7.gif
+    - https://cdn.nadeko.bot/w/nom/nom_8.gif
+    - https://cdn.nadeko.bot/w/nom/nom_9.gif
+    - https://cdn.nadeko.bot/w/nom/nom_10.gif
+    - https://cdn.nadeko.bot/w/nom/nom_11.gif
+    - https://cdn.nadeko.bot/w/nom/nom_12.gif
+    - https://cdn.nadeko.bot/w/nom/nom_13.gif
+    - https://cdn.nadeko.bot/w/nom/nom_14.gif
+    - https://cdn.nadeko.bot/w/nom/nom_15.gif
+    - https://cdn.nadeko.bot/w/nom/nom_16.gif
+    - https://cdn.nadeko.bot/w/nom/nom_17.gif
+    - https://cdn.nadeko.bot/w/nom/nom_18.gif
+    - https://cdn.nadeko.bot/w/nom/nom_19.gif
