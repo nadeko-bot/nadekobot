@@ -108,23 +108,12 @@ public sealed class CheckForUpdatesService(
         var started = false;
         foreach (var line in clSpan.EnumerateLines())
         {
-            // if we're at the current version, keep reading lines and adding to the output
             if (started)
             {
-                // if we got to previous version, end
                 if (line.StartsWith("## ["))
                     break;
 
-                // if we're reading a new segment, reformat it to print it better to discord
-                if (line.StartsWith("### "))
-                {
-                    sb.AppendLine(Format.Bold(line.ToString()));
-                }
-                else if (!line.IsEmpty && !line.IsWhiteSpace())
-                {
-                    sb.AppendLine(line.ToString());
-                }
-
+                sb.AppendLine(line.ToString());
                 continue;
             }
 
@@ -135,7 +124,7 @@ public sealed class CheckForUpdatesService(
             }
         }
 
-        return sb.ToString();
+        return sb.ToString().Trim();
     }
 
     private static readonly string LAST_KNOWN_VERSION_PATH =

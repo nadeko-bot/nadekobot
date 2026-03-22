@@ -2,12 +2,18 @@
 
 *a,c,f,r,o,d*
 
+
+## [7.1.10] - TBD
+
+### Fixed
+
+- Voice gateway reconnect loop spamming logs indefinitely on internet disconnection (added exponential backoff and retry limit)
+
 ## [7.1.9] - 21.03.2026
 
 ### Fixed
 
 - Waifu query throwing errors on some locales
-- Voice gateway reconnect loop spamming logs indefinitely on internet disconnection (added exponential backoff and retry limit)
 
 ## [7.1.8] - 21.03.2026
 
