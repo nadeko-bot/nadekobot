@@ -82,10 +82,14 @@ namespace NadekoBot.Voice
             return false;
         }
 
-        public void OnExecuteTransition(int transitionId)
+        /// <summary>
+        /// Called when DAVE_EXECUTE_TRANSITION (op 22) is received.
+        /// Returns the new protocol version, or -1 if the transition was not found.
+        /// </summary>
+        public int OnExecuteTransition(int transitionId)
         {
             Log.Information("DAVE Manager: OnExecuteTransition transitionId={TransitionId}", transitionId);
-            HandleExecuteTransition(transitionId);
+            return HandleExecuteTransition(transitionId);
         }
 
         /// <summary>
@@ -203,12 +207,12 @@ namespace NadekoBot.Voice
             }
         }
 
-        private void HandleExecuteTransition(int transitionId)
+        private int HandleExecuteTransition(int transitionId)
         {
             if (!_protocolTransitions.TryGetValue(transitionId, out var protocolVersion))
             {
                 Log.Warning("DAVE Manager: ExecuteTransition {TransitionId} not found in pending transitions", transitionId);
-                return;
+                return -1;
             }
 
             _protocolTransitions.Remove(transitionId);
@@ -224,6 +228,7 @@ namespace NadekoBot.Voice
                 transitionId, _session.HasKeyRatchet());
             _reinitializing = false;
             _lastTransitionId = transitionId;
+            return protocolVersion;
         }
 
         private void PrepareRatchets(int transitionId, int protocolVersion)

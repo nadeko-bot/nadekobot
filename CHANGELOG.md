@@ -7,6 +7,7 @@
 ### Fixed
 
 - Waifu query throwing errors on some locales
+- Voice gateway reconnect loop spamming logs indefinitely on internet disconnection (added exponential backoff and retry limit)
 
 ## [7.1.8] - 21.03.2026
 

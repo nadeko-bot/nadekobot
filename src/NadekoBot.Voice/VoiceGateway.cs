@@ -66,6 +66,9 @@ namespace NadekoBot.Voice
         private readonly CancellationToken _stopCancellationToken;
         public bool Stopped => _stopCancellationToken.IsCancellationRequested;
 
+        private int _reconnectAttempts;
+        private const int MAX_RECONNECT_ATTEMPTS = 5;
+
         public event Func<VoiceGateway, Task> OnClosed = delegate { return Task.CompletedTask; };
 
         public VoiceGateway(ulong guildId, ulong channelId, ulong userId, string session, string token, string endpoint)
@@ -288,7 +291,9 @@ namespace NadekoBot.Voice
             if (DaveManager is null) return;
             var transitionId = data?["transition_id"]?.Value<int>() ?? 0;
             Log.Information("DAVE: ExecuteTransition received, transitionId={TransitionId}", transitionId);
-            DaveManager.OnExecuteTransition(transitionId);
+            var newVersion = DaveManager.OnExecuteTransition(transitionId);
+            if (newVersion >= 0)
+                DaveProtocolVersion = newVersion;
         }
 
         private void HandleDavePrepareEpochJson(JToken data)
@@ -463,8 +468,33 @@ namespace NadekoBot.Voice
 
             if (!_stopCancellationToken.IsCancellationRequested && _shouldResume)
             {
-                _ = _ws.RunAndBlockAsync(_websocketUrl, _stopCancellationToken);
-                return Task.CompletedTask;
+                _reconnectAttempts++;
+                if (_reconnectAttempts > MAX_RECONNECT_ATTEMPTS)
+                {
+                    Log.Warning("Voice gateway exceeded max reconnect attempts ({Max}), giving up",
+                        MAX_RECONNECT_ATTEMPTS);
+                    _shouldResume = false;
+                }
+                else
+                {
+                    var delay = Math.Min(1000 * (1 << (_reconnectAttempts - 1)), 30_000);
+                    Log.Information("Voice gateway reconnect attempt {Attempt}/{Max} in {Delay}ms",
+                        _reconnectAttempts, MAX_RECONNECT_ATTEMPTS, delay);
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await Task.Delay(delay, _stopCancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            return;
+                        }
+
+                        await _ws.RunAndBlockAsync(_websocketUrl, _stopCancellationToken);
+                    });
+                    return Task.CompletedTask;
+                }
             }
             
             _ws.WebsocketClosed -= _ws_WebsocketClosed;
@@ -580,6 +610,7 @@ namespace NadekoBot.Voice
 
         private Task HandleHelloAsync(VoiceHello data)
         {
+            _reconnectAttempts = 0;
             _receivedAck = 1;
             _heartbeatTimer = new(async _ =>
             {
