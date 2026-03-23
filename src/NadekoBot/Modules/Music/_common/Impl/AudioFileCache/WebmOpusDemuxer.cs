@@ -20,32 +20,16 @@ public sealed class WebmOpusDemuxer : IDisposable
     private const uint TIMESTAMP_SCALE = 0x2AD7B1;
 
     private const int MAX_OPUS_PACKET_SIZE = 61_440;
-    private static readonly TimeSpan MAX_WAIT_TIMEOUT = TimeSpan.FromSeconds(10);
 
     private readonly FileStream _stream;
     private readonly byte[] _readBuffer;
-    private readonly CacheFileState? _state;
     private bool _headerParsed;
     private bool _isOpus;
 
     public bool IsOpus => _isOpus;
 
-    public WebmOpusDemuxer(string filePath, CacheFileState? state = null)
+    public WebmOpusDemuxer(string filePath)
     {
-        _state = state;
-
-        if (state is not null && !File.Exists(filePath))
-        {
-            while (!state.IsDone && !File.Exists(filePath))
-            {
-                var ver = state.Version;
-                state.WaitForData(ver, MAX_WAIT_TIMEOUT);
-            }
-
-            if (!File.Exists(filePath))
-                throw new FileNotFoundException("Cache file was never created", filePath);
-        }
-
         _stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite,
             bufferSize: 81_920, useAsync: false);
         _readBuffer = new byte[MAX_OPUS_PACKET_SIZE];
@@ -115,7 +99,7 @@ public sealed class WebmOpusDemuxer : IDisposable
                         continue;
 
                     default:
-                        if (elementSize > 0 && elementSize < GetKnownDataSize() - _stream.Position)
+                        if (elementSize > 0 && elementSize < _stream.Length - _stream.Position)
                             Skip(elementSize);
                         else
                             return false;
@@ -200,7 +184,7 @@ public sealed class WebmOpusDemuxer : IDisposable
                     break;
 
                 default:
-                    if (elementSize > 0 && elementSize < GetKnownDataSize() - _stream.Position)
+                    if (elementSize > 0 && elementSize < _stream.Length - _stream.Position)
                         Skip(elementSize);
                     else
                         return;
@@ -256,8 +240,8 @@ public sealed class WebmOpusDemuxer : IDisposable
         }
     }
 
-    private bool HasDataAvailable(int needed)
-        => WaitForData(needed);
+    private bool HasDataAvailable(long needed)
+        => _stream.Position + needed <= _stream.Length;
 
     private (uint Id, long Size) ReadElementHeader()
     {
@@ -329,9 +313,6 @@ public sealed class WebmOpusDemuxer : IDisposable
 
     private byte ReadByte()
     {
-        if (!WaitForData(1))
-            throw new EndOfStreamException();
-
         var b = _stream.ReadByte();
         if (b < 0)
             throw new EndOfStreamException();
@@ -343,16 +324,9 @@ public sealed class WebmOpusDemuxer : IDisposable
         var totalRead = 0;
         while (totalRead < count)
         {
-            if (!WaitForData(1))
-                throw new EndOfStreamException();
-
             var read = _stream.Read(buffer, totalRead, count - totalRead);
             if (read == 0)
-            {
-                if (!WaitForData(1))
-                    throw new EndOfStreamException();
-                continue;
-            }
+                throw new EndOfStreamException();
 
             totalRead += read;
         }
@@ -363,41 +337,7 @@ public sealed class WebmOpusDemuxer : IDisposable
         if (count <= 0)
             return;
 
-        if (!WaitForData(count))
-            throw new EndOfStreamException();
-
         _stream.Position += count;
-    }
-
-    private long GetKnownDataSize()
-        => _state?.BytesWritten ?? _stream.Length;
-
-    private bool WaitForData(long needed)
-    {
-        var targetPosition = _stream.Position + needed;
-
-        if (_state is not null)
-        {
-            if (_state.BytesWritten >= targetPosition)
-                return true;
-        }
-        else
-        {
-            return _stream.Position + needed <= _stream.Length;
-        }
-
-        if (_state.IsDone)
-            return _state.BytesWritten >= targetPosition;
-
-        while (!_state.IsDone)
-        {
-            var ver = _state.Version;
-            if (_state.BytesWritten >= targetPosition)
-                return true;
-            _state.WaitForData(ver, MAX_WAIT_TIMEOUT);
-        }
-
-        return _state.BytesWritten >= targetPosition;
     }
 
     public void Dispose()

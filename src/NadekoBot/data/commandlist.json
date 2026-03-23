@@ -6301,8 +6301,7 @@
       "Aliases": [
         ".google",
         ".search",
-        ".g",
-        ".s"
+        ".g"
       ],
       "Description": "Get a Google search link for some terms.",
       "Usage": [

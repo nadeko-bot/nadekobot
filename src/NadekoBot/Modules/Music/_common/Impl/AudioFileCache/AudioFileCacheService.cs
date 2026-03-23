@@ -12,7 +12,6 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
     private const int EVICTION_CHECK_MINUTES = 30;
     private const int DOWNLOAD_BUFFER_SIZE = 81_920;
     private const string CACHE_DIRECTORY = "data/music_cache";
-    private const int MAX_SINGLE_FILE_MB = 50;
     private const int STALE_PARTIAL_FILE_HOURS = 24;
 
     private readonly AudioFileCacheConfigService _configService;
@@ -157,15 +156,6 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
 
                 response.EnsureSuccessStatusCode();
 
-                var totalSize = GetTotalSize(response, existingBytes);
-                if (totalSize > MAX_SINGLE_FILE_MB * 1024L * 1024L)
-                {
-                    Log.Debug("File too large ({SizeMb} MB), skipping cache for {Path}",
-                        totalSize / (1024 * 1024), finalPath);
-                    state.MarkFailed();
-                    return;
-                }
-
                 var mode = existingBytes > 0 && response.StatusCode == HttpStatusCode.PartialContent
                     ? FileMode.Append
                     : FileMode.Create;
@@ -218,15 +208,6 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
 
         state.MarkFailed();
         TryDeleteFile(partialPath);
-    }
-
-    private static long GetTotalSize(HttpResponseMessage response, long existingBytes)
-    {
-        if (response.Content.Headers.ContentRange?.Length is { } rangeTotal)
-            return rangeTotal;
-
-        var contentLength = response.Content.Headers.ContentLength ?? 0;
-        return contentLength + existingBytes;
     }
 
     private async Task EvictionLoopAsync()

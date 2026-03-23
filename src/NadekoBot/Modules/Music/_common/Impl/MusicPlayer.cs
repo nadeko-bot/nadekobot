@@ -139,37 +139,23 @@ public sealed class MusicPlayer : IMusicPlayer
 
                 _ = OnStarted?.Invoke(this, track, index);
 
-                var (streamUrl, cacheState) = await GetStreamSource(track);
+                var streamUrl = await GetStreamSource(track);
                 var isLocal = track.Platform == MusicPlatform.Local
                               || (streamUrl is not null
                                   && !streamUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase));
 
-                // try Opus passthrough: skip ffmpeg and encoder entirely
-                // conditions: local/cached file, volume at 100%, YouTube platform
                 var usedPassthrough = false;
                 if (isLocal && track.Platform == MusicPlatform.Youtube
                     && Math.Abs(Volume - 1f) < 0.0001f
                     && streamUrl is not null)
                 {
-                    usedPassthrough = TryPlayOpusPassthrough(streamUrl, cacheState, sw);
+                    usedPassthrough = TryPlayOpusPassthrough(streamUrl, sw);
                 }
 
                 if (!usedPassthrough)
                 {
-                    // passthrough failed or not eligible - use ffmpeg
-                    // if the cache download is still running or failed, ffmpeg can't chase-read
-                    // the partial file, so fall back to the remote stream URL
-                    if (cacheState is not null && !cacheState.IsComplete)
-                    {
-                        streamUrl = await _ytResolverFactory.GetYoutubeResolver()
-                            .GetStreamUrl(track.TrackInfo.Id);
-                        isLocal = false;
-                    }
-
-                    // make sure song buffer is ready to be (re)used
                     _songBuffer.Reset();
 
-                    // start up the data source
                     using var source = FfmpegTrackDataSource.CreateAsync(
                         _vc.BitDepth,
                         streamUrl,
@@ -368,10 +354,10 @@ public sealed class MusicPlayer : IMusicPlayer
         }
     }
 
-    private async Task<(string? Url, CacheFileState? State)> GetStreamSource(IQueuedTrackInfo track)
+    private async Task<string?> GetStreamSource(IQueuedTrackInfo track)
     {
         if (track.TrackInfo is SimpleTrackInfo sti)
-            return (sti.StreamUrl, null);
+            return sti.StreamUrl;
 
         var trackId = track.TrackInfo.Id;
         var platform = track.Platform;
@@ -381,25 +367,20 @@ public sealed class MusicPlayer : IMusicPlayer
             platform,
             () => _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId)!);
 
-        if (cachedPath is not null)
-            return (cachedPath, state);
+        // fully cached - use local file (passthrough eligible)
+        if (cachedPath is not null && state is null)
+            return cachedPath;
 
-        // cache disabled or not applicable - resolve stream URL directly
+        // download in progress or cache not applicable - use remote URL directly
         var url = await _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId);
-        return (url, null);
+        return url;
     }
 
-    /// <summary>
-    ///     Attempts to play a WebM file by extracting raw Opus packets
-    ///     and sending them directly to Discord, bypassing ffmpeg and the Opus encoder.
-    ///     Supports progressive reading when cacheState is provided (download in progress).
-    ///     Returns true if playback completed via passthrough, false if it should fall back to ffmpeg.
-    /// </summary>
-    private bool TryPlayOpusPassthrough(string filePath, CacheFileState? cacheState, Stopwatch sw)
+    private bool TryPlayOpusPassthrough(string filePath, Stopwatch sw)
     {
         try
         {
-            using var demuxer = new WebmOpusDemuxer(filePath, cacheState);
+            using var demuxer = new WebmOpusDemuxer(filePath);
             if (!demuxer.Initialize() || !demuxer.IsOpus)
                 return false;
 

@@ -2,6 +2,17 @@
 
 *a,c,f,r,o,d*
 
+## [7.1.11] - 23.03.2026
+
+### Changed
+
+- `.google` / `.search` will no longer have `.s` as the alias as it conflicts with `.stop`
+
+### Fixed
+
+- Allow cache for big files too
+- Fallback to direct streaming when caching fails
+
 ## [7.1.10] - 23.03.2026
 
 ### Added
