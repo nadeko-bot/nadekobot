@@ -718,6 +718,7 @@ namespace NadekoBot.Voice
         {
             Started = true;
             _ = SendLoop();
+            Log.Information("Voice gateway starting WebSocket connection to {Url}", _websocketUrl);
             return _ws.RunAndBlockAsync(_websocketUrl, _stopCancellationToken);
         }
 

@@ -45,6 +45,9 @@ public sealed class InvidiousAdaptiveFormat
     
     [JsonPropertyName("audioQuality")]
     public string? AudioQuality { get; init; }
+
+    [JsonPropertyName("type")]
+    public string? Type { get; init; }
 }
 
 public sealed class InvidiousPlaylistResponse

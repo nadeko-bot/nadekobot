@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using NadekoBot.Voice;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace NadekoBot.Modules.Music.Services;
@@ -113,13 +114,18 @@ public sealed class AyuVoiceStateService : INService
                 Log.Information("Voice channel move detected for guild {GuildId}, reconnecting to channel {ChannelId}",
                     guildId, session.ChannelId);
 
+                var sw = Stopwatch.StartNew();
+
                 _ = proxy.StopGateway();
+                Log.Information("Voice move: StopGateway fired at {ElapsedMs}ms", sw.ElapsedMilliseconds);
 
                 var gw = new VoiceGateway(guildId, session.ChannelId, _currentUserId,
                     session.SessionId, data.Token, data.Endpoint);
                 proxy.SetGateway(gw);
+                Log.Information("Voice move: SetGateway completed at {ElapsedMs}ms", sw.ElapsedMilliseconds);
 
                 _ = proxy.StartGateway();
+                Log.Information("Voice move: StartGateway fired at {ElapsedMs}ms", sw.ElapsedMilliseconds);
             }
             catch (Exception ex)
             {

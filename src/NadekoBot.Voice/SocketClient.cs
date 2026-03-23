@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using System;
 using System.Buffers;
+using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,8 +29,11 @@ namespace Ayu.Discord.Gateway
             {
                 using (_ws = new())
                 {
+                    Log.Information("Voice WS: connecting to {Url}", url);
+                    var connectSw = Stopwatch.StartNew();
                     await _ws.ConnectAsync(url, cancel).ConfigureAwait(false);
-                    // WebsocketConnected!.Invoke(this);
+                    connectSw.Stop();
+                    Log.Information("Voice WS: connected in {ElapsedMs}ms", connectSw.ElapsedMilliseconds);
 
                     while (true)
                     {

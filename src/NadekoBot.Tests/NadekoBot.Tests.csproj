@@ -19,6 +19,10 @@
         <ProjectReference Include="..\NadekoBot.StringsMerger\NadekoBot.StringsMerger.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="testdata/**/*" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+
     <UsingTask
         TaskName="MergeStringsTask"
         AssemblyFile="$(MSBuildThisFileDirectory)../NadekoBot.StringsMerger/bin/$(Configuration)/netstandard2.0/NadekoBot.StringsMerger.dll"/>

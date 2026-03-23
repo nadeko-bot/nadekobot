@@ -66,8 +66,8 @@ public sealed class VoiceProxy : IVoiceProxy
                 return false;
             }
 
-            vc.SendOpusFrame(gw, data, 0, length);
-            return true;
+            var result = vc.SendOpusFrame(gw, data, 0, length);
+            return result > 0;
         }
         catch (Exception ex)
         {

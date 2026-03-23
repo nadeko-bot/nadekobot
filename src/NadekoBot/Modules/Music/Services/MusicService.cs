@@ -14,6 +14,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     private readonly DiscordSocketClient _client;
     private readonly IBotStrings _strings;
     private readonly IGoogleApiService _googleApiService;
+    private readonly AudioFileCacheService _audioFileCache;
     private readonly YtLoader _ytLoader;
     private readonly IMessageSenderService _sender;
 
@@ -30,6 +31,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         DiscordSocketClient client,
         IBotStrings strings,
         IGoogleApiService googleApiService,
+        AudioFileCacheService audioFileCache,
         YtLoader ytLoader,
         IMessageSenderService sender)
     {
@@ -41,6 +43,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         _client = client;
         _strings = strings;
         _googleApiService = googleApiService;
+        _audioFileCache = audioFileCache;
         _ytLoader = ytLoader;
         _sender = sender;
 
@@ -152,6 +155,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
             _ytResolver,
             proxy,
             _googleApiService,
+            _audioFileCache,
             settings.QualityPreset,
             settings.AutoPlay);
 

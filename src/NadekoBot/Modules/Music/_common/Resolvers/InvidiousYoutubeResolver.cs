@@ -67,10 +67,30 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
             Thumbnail = res.Thumbnails?.Select(x => x.Url).FirstOrDefault() ?? string.Empty,
             Duration = TimeSpan.FromSeconds(res.LengthSeconds),
             Platform = MusicPlatform.Youtube,
-            StreamUrl = res.AdaptiveFormats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_HIGH")?.Url
-                        ?? res.AdaptiveFormats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_MEDIUM")?.Url
-                        ?? res.AdaptiveFormats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_LOW")?.Url
+            StreamUrl = GetBestOpusStreamUrl(res.AdaptiveFormats)
         };
+    }
+
+    private static string? GetBestOpusStreamUrl(List<InvidiousAdaptiveFormat> formats)
+    {
+        // prefer Opus (WebM) for direct passthrough compatibility
+        var opusFormats = formats
+            .Where(f => f.AudioQuality is not null
+                        && f.Type is not null
+                        && f.Type.Contains("opus", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        if (opusFormats.Count > 0)
+        {
+            return opusFormats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_HIGH")?.Url
+                   ?? opusFormats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_MEDIUM")?.Url
+                   ?? opusFormats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_LOW")?.Url;
+        }
+
+        // fallback to any audio format
+        return formats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_HIGH")?.Url
+               ?? formats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_MEDIUM")?.Url
+               ?? formats.FirstOrDefault(x => x.AudioQuality == "AUDIO_QUALITY_LOW")?.Url;
     }
 
     public async IAsyncEnumerable<ITrackInfo> ResolveTracksFromPlaylistAsync(string query)

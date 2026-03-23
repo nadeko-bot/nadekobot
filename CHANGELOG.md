@@ -2,12 +2,21 @@
 
 *a,c,f,r,o,d*
 
+## [7.1.10] - 23.03.2026
 
-## [7.1.10] - TBD
+### Added
+
+- Audio file caching system saves opus data to disk, config max cache size in `data/music.yml`
+- Opus passthrough when available
+
+### Changed
+
+- Music quality presets simplified High / Medium only.
 
 ### Fixed
 
-- Voice gateway reconnect loop spamming logs indefinitely on internet disconnection (added exponential backoff and retry limit)
+- Voice gateway reconnect loop spamming logs
+- Hangman message never reposting
 
 ## [7.1.9] - 21.03.2026
 

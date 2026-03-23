@@ -91,9 +91,30 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         if (_cdCache.TryGetValue("hangman:" + msg.Author.Id, out _))
             return;
 
-        // Increment message counter for this channel
+        // Every channel message increments the counter.
+        // When the threshold is reached, repost the current board so it doesn't drift offscreen.
         if (_messageStates.TryGetValue(msg.Channel.Id, out var msgState))
+        {
             msgState.IncrementCounter();
+            if (msgState.Counter >= REPOST_THRESHOLD)
+            {
+                msgState.ResetCounter();
+
+                HangmanGame.State? currentState = null;
+                lock (_locker)
+                {
+                    if (_hangmanGames.TryGetValue(msg.Channel.Id, out var g))
+                        currentState = g.GetState();
+                }
+
+                if (currentState is not null)
+                {
+                    var embed = Games.HangmanCommands.GetEmbed(_sender, currentState);
+                    var sent = await _sender.Response((ITextChannel)msg.Channel).Embed(embed).SendAsync();
+                    msgState.SetMessage(sent);
+                }
+            }
+        }
 
         HangmanGame.State state;
         long rew = 0;
@@ -147,7 +168,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         if (_messageStates.TryGetValue(channel.Id, out var msgState))
         {
             var lastMsg = msgState.LastMessage;
-            if (lastMsg is not null && msgState.Counter < REPOST_THRESHOLD)
+            if (lastMsg is not null)
             {
                 try
                 {
@@ -156,7 +177,6 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
                         m.Embed = embed.Build();
                         m.Content = "";
                     });
-                    msgState.ResetCounter();
                     return;
                 }
                 catch
@@ -169,10 +189,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         var sent = await _sender.Response(channel).Embed(embed).SendAsync();
 
         if (_messageStates.TryGetValue(channel.Id, out msgState))
-        {
             msgState.SetMessage(sent);
-            msgState.ResetCounter();
-        }
     }
 
     private EmbedBuilder BuildEmbed(IUser user, string content, HangmanGame.State state)

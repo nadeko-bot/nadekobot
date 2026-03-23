@@ -31,6 +31,7 @@ public sealed class MusicPlayer : IMusicPlayer
     private readonly IYoutubeResolverFactory _ytResolverFactory;
     private volatile IVoiceProxy? _proxy;
     private readonly IGoogleApiService _googleApiService;
+    private readonly AudioFileCacheService _audioFileCache;
     private readonly ISongBuffer _songBuffer;
 
     private bool skipped;
@@ -45,6 +46,7 @@ public sealed class MusicPlayer : IMusicPlayer
         IYoutubeResolverFactory ytResolverFactory,
         IVoiceProxy? proxy,
         IGoogleApiService googleApiService,
+        AudioFileCacheService audioFileCache,
         QualityPreset qualityPreset,
         bool autoPlay)
     {
@@ -53,6 +55,7 @@ public sealed class MusicPlayer : IMusicPlayer
         _ytResolverFactory = ytResolverFactory;
         _proxy = proxy;
         _googleApiService = googleApiService;
+        _audioFileCache = audioFileCache;
         AutoPlay = autoPlay;
 
         _vc = GetVoiceClient(qualityPreset);
@@ -87,15 +90,9 @@ public sealed class MusicPlayer : IMusicPlayer
     private static VoiceClient GetVoiceClient(QualityPreset qualityPreset)
         => qualityPreset switch
         {
-            QualityPreset.Highest => new(),
-            QualityPreset.High => new(SampleRate._48k, Bitrate._128k, Channels.Two, FrameDelay.Delay40),
-            QualityPreset.Medium => new(SampleRate._48k,
+            QualityPreset.Highest or QualityPreset.High => new(),
+            QualityPreset.Medium or QualityPreset.Low => new(SampleRate._48k,
                 Bitrate._96k,
-                Channels.Two,
-                FrameDelay.Delay40,
-                BitDepthEnum.UInt16),
-            QualityPreset.Low => new(SampleRate._48k,
-                Bitrate._64k,
                 Channels.Two,
                 FrameDelay.Delay40,
                 BitDepthEnum.UInt16),
@@ -142,15 +139,41 @@ public sealed class MusicPlayer : IMusicPlayer
 
                 _ = OnStarted?.Invoke(this, track, index);
 
-                // make sure song buffer is ready to be (re)used
-                _songBuffer.Reset();
+                var (streamUrl, cacheState) = await GetStreamSource(track);
+                var isLocal = track.Platform == MusicPlatform.Local
+                              || (streamUrl is not null
+                                  && !streamUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase));
 
-                var streamUrl = await GetStreamUrl(track);
-                // start up the data source
-                using var source = FfmpegTrackDataSource.CreateAsync(
-                    _vc.BitDepth,
-                    streamUrl,
-                    track.Platform == MusicPlatform.Local);
+                // try Opus passthrough: skip ffmpeg and encoder entirely
+                // conditions: local/cached file, volume at 100%, YouTube platform
+                var usedPassthrough = false;
+                if (isLocal && track.Platform == MusicPlatform.Youtube
+                    && Math.Abs(Volume - 1f) < 0.0001f
+                    && streamUrl is not null)
+                {
+                    usedPassthrough = TryPlayOpusPassthrough(streamUrl, cacheState, sw);
+                }
+
+                if (!usedPassthrough)
+                {
+                    // passthrough failed or not eligible - use ffmpeg
+                    // if the cache download is still running or failed, ffmpeg can't chase-read
+                    // the partial file, so fall back to the remote stream URL
+                    if (cacheState is not null && !cacheState.IsComplete)
+                    {
+                        streamUrl = await _ytResolverFactory.GetYoutubeResolver()
+                            .GetStreamUrl(track.TrackInfo.Id);
+                        isLocal = false;
+                    }
+
+                    // make sure song buffer is ready to be (re)used
+                    _songBuffer.Reset();
+
+                    // start up the data source
+                    using var source = FfmpegTrackDataSource.CreateAsync(
+                        _vc.BitDepth,
+                        streamUrl,
+                        isLocal);
 
                 // start moving data from the source into the buffer
                 // this method will return once the sufficient prebuffering is done
@@ -288,6 +311,8 @@ public sealed class MusicPlayer : IMusicPlayer
                 // send 5 silence frames as required by Discord to avoid Opus interpolation artifacts
                 if (songFinished)
                     SendSilenceFrames(_vc, 5);
+
+                } // end if (!usedPassthrough)
             }
             catch (Win32Exception)
             {
@@ -343,12 +368,136 @@ public sealed class MusicPlayer : IMusicPlayer
         }
     }
 
-    private async Task<string?> GetStreamUrl(IQueuedTrackInfo track)
+    private async Task<(string? Url, CacheFileState? State)> GetStreamSource(IQueuedTrackInfo track)
     {
         if (track.TrackInfo is SimpleTrackInfo sti)
-            return sti.StreamUrl;
+            return (sti.StreamUrl, null);
 
-        return await _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(track.TrackInfo.Id);
+        var trackId = track.TrackInfo.Id;
+        var platform = track.Platform;
+
+        var (cachedPath, state) = _audioFileCache.GetOrStartDownload(
+            trackId,
+            platform,
+            () => _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId)!);
+
+        if (cachedPath is not null)
+            return (cachedPath, state);
+
+        // cache disabled or not applicable - resolve stream URL directly
+        var url = await _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId);
+        return (url, null);
+    }
+
+    /// <summary>
+    ///     Attempts to play a WebM file by extracting raw Opus packets
+    ///     and sending them directly to Discord, bypassing ffmpeg and the Opus encoder.
+    ///     Supports progressive reading when cacheState is provided (download in progress).
+    ///     Returns true if playback completed via passthrough, false if it should fall back to ffmpeg.
+    /// </summary>
+    private bool TryPlayOpusPassthrough(string filePath, CacheFileState? cacheState, Stopwatch sw)
+    {
+        try
+        {
+            using var demuxer = new WebmOpusDemuxer(filePath, cacheState);
+            if (!demuxer.Initialize() || !demuxer.IsOpus)
+                return false;
+
+            Log.Debug("Using Opus passthrough for {FilePath}", filePath);
+
+            // Discord expects 20ms Opus frames at 48kHz
+            const int FRAME_DELAY_MS = 20;
+            var ticksPerFrame = (long)(Stopwatch.Frequency * FRAME_DELAY_MS / 1000.0);
+
+            if (!sw.IsRunning)
+                sw.Start();
+
+            var nextFrameTick = sw.ElapsedTicks;
+            var errorCount = 0;
+            var songFinished = false;
+
+            while (!IsStopped && !IsKilled)
+            {
+                if (skipped)
+                {
+                    skipped = false;
+                    break;
+                }
+
+                if (IsPaused)
+                {
+                    Thread.Sleep(200);
+                    nextFrameTick = sw.ElapsedTicks;
+                    continue;
+                }
+
+                var proxy = _proxy;
+                if (proxy is null)
+                {
+                    IsStopped = true;
+                    break;
+                }
+
+                if (!demuxer.TryReadPacket(out var opusData, out var opusLength))
+                {
+                    songFinished = true;
+                    break;
+                }
+
+                try
+                {
+                    var sent = proxy.SendOpusFrame(_vc, opusData, opusLength);
+
+                    if (sent)
+                    {
+                        if (errorCount > 0)
+                        {
+                            _ = proxy.StartSpeakingAsync();
+                            errorCount = 0;
+                        }
+
+                        nextFrameTick += ticksPerFrame;
+
+                        var remainingMs = (nextFrameTick - sw.ElapsedTicks) * 1000.0 / Stopwatch.Frequency;
+                        if (remainingMs > 3.0)
+                            Thread.Sleep((int)(remainingMs - 2.0));
+
+                        while (sw.ElapsedTicks < nextFrameTick)
+                            Thread.SpinWait(100);
+                    }
+                    else
+                    {
+                        if (++errorCount <= 50)
+                        {
+                            if (errorCount % 10 == 0)
+                                Log.Debug("Passthrough send errors: {ErrorCount}/50", errorCount);
+                            Thread.Sleep(200);
+                            nextFrameTick = sw.ElapsedTicks;
+                            continue;
+                        }
+
+                        Log.Warning("Passthrough: can't send after {ErrorCount} failures", errorCount);
+                        IsStopped = true;
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Passthrough send error: {Message}", ex.Message);
+                    nextFrameTick = sw.ElapsedTicks;
+                }
+            }
+
+            if (songFinished)
+                SendSilenceFrames(_vc, 5);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Opus passthrough failed, falling back to ffmpeg");
+            return false;
+        }
     }
 
     private static readonly byte[] OpusSilenceFrame = { 0xF8, 0xFF, 0xFE };
