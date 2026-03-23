@@ -79,17 +79,27 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     public Task JoinVoiceChannelAsync(ulong guildId, ulong voiceChannelId)
         => _voiceStateService.JoinVoiceChannel(guildId, voiceChannelId);
 
-    public async Task<IMusicPlayer?> GetOrCreateMusicPlayerAsync(ITextChannel contextChannel)
+    public async Task<IMusicPlayer> GetOrCreateMusicPlayerAsync(ITextChannel contextChannel)
     {
         var newPLayer = await CreateMusicPlayerInternalAsync(contextChannel.GuildId, contextChannel);
-        if (newPLayer is null)
-            return null;
-
         return _players.GetOrAdd(contextChannel.GuildId, newPLayer);
     }
 
     public bool TryGetMusicPlayer(ulong guildId, [MaybeNullWhen(false)] out IMusicPlayer musicPlayer)
         => _players.TryGetValue(guildId, out musicPlayer);
+
+    /// <summary>
+    /// Attaches the voice proxy to the music player for the given guild.
+    /// Call after voice connection is established.
+    /// </summary>
+    public void AttachProxy(ulong guildId)
+    {
+        if (_players.TryGetValue(guildId, out var mp)
+            && _voiceStateService.TryGetProxy(guildId, out var proxy))
+        {
+            mp.SetProxy(proxy);
+        }
+    }
 
     public async Task<int> EnqueueYoutubePlaylistAsync(IMusicPlayer mp, string query, string queuer)
     {
@@ -117,13 +127,12 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         }
     }
 
-    private async Task<IMusicPlayer?> CreateMusicPlayerInternalAsync(ulong guildId, ITextChannel defaultChannel)
+    private async Task<IMusicPlayer> CreateMusicPlayerInternalAsync(ulong guildId, ITextChannel defaultChannel)
     {
         var queue = new MusicQueue();
         var resolver = _trackResolveProvider;
 
-        if (!_voiceStateService.TryGetProxy(guildId, out var proxy))
-            return null;
+        _voiceStateService.TryGetProxy(guildId, out var proxy);
 
         var settings = await GetSettingsInternalAsync(guildId);
 
@@ -227,7 +236,10 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         {
             if (!_voiceStateService.TryGetProxy(guildId, out var proxy)
                 || proxy.State == VoiceProxy.VoiceProxyState.Stopped)
+            {
                 await JoinVoiceChannelAsync(guildId, voiceChannelId);
+                AttachProxy(guildId);
+            }
         }
 
         mp.Next();

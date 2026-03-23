@@ -221,11 +221,7 @@ public sealed partial class Music
                 }
 
                 var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
-                if (mp is null)
-                {
-                    await Response().Error(strs.no_player).SendAsync();
-                    return;
-                }
+                _service.AttachProxy(ctx.Guild.Id);
 
                 MusicPlaylist mpl;
                 await using (var uow = _db.GetDbContext())

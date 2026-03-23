@@ -104,18 +104,38 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
     private async Task QueueByQuery(string query, bool asNext = false, MusicPlatform? forcePlatform = null)
     {
-        var succ = await QueuePreconditionInternalAsync();
-        if (!succ)
-            return;
+        var user = (IGuildUser)ctx.User;
+        var voiceChannelId = user.VoiceChannel?.Id;
 
-        var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
-        if (mp is null)
+        if (voiceChannelId is null)
         {
-            await Response().Error(strs.no_player).SendAsync();
+            await Response().Error(strs.must_be_in_voice).SendAsync();
             return;
         }
 
-        var (trackInfo, index) = await mp.TryEnqueueTrackAsync(query, ctx.User.ToString(), asNext, forcePlatform);
+        _ = ctx.Channel.TriggerTypingAsync();
+
+        var botUser = await ctx.Guild.GetCurrentUserAsync();
+
+        // create the player early (doesn't need voice proxy yet)
+        var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
+
+        // run voice join and track resolution in parallel
+        var voiceTask = EnsureBotInVoiceChannelAsync(voiceChannelId.Value, botUser);
+        var resolveTask = mp.TryEnqueueTrackAsync(query, ctx.User.ToString(), asNext, forcePlatform);
+
+        await Task.WhenAll(voiceTask, resolveTask);
+
+        // attach voice proxy to player now that voice is connected
+        _service.AttachProxy(ctx.Guild.Id);
+
+        if (botUser.VoiceChannel?.Id != voiceChannelId)
+        {
+            await Response().Error(strs.not_with_bot_in_voice).SendAsync();
+            return;
+        }
+
+        var (trackInfo, index) = resolveTask.Result;
         if (trackInfo is null)
         {
             await Response().Error(strs.track_not_found).SendAsync();
@@ -157,11 +177,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
             return;
 
         var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
-        if (mp is null)
-        {
-            await Response().Error(strs.no_player).SendAsync();
-            return;
-        }
+        _service.AttachProxy(ctx.Guild.Id);
 
         mp.MoveTo(index);
     }
@@ -569,11 +585,6 @@ public sealed partial class Music : NadekoModule<IMusicService>
         }
 
         var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
-        if (mp is null)
-        {
-            await Response().Error(strs.no_player).SendAsync();
-            return;
-        }
 
         await _service.EnqueueDirectoryAsync(mp, dirPath, ctx.User.ToString());
 
@@ -595,11 +606,6 @@ public sealed partial class Music : NadekoModule<IMusicService>
             return;
 
         var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
-        if (mp is null)
-        {
-            await Response().Error(strs.no_player).SendAsync();
-            return;
-        }
 
         var track = mp.MoveTrack(from, to);
         if (track is null)
@@ -633,11 +639,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
             return;
 
         var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
-        if (mp is null)
-        {
-            await Response().Error(strs.no_player).SendAsync();
-            return;
-        }
+        _service.AttachProxy(ctx.Guild.Id);
 
         _ = ctx.Channel.TriggerTypingAsync();
 
@@ -657,11 +659,6 @@ public sealed partial class Music : NadekoModule<IMusicService>
     public async Task NowPlaying()
     {
         var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
-        if (mp is null)
-        {
-            await Response().Error(strs.no_player).SendAsync();
-            return;
-        }
 
         var currentTrack = mp.GetCurrentTrack(out _);
         if (currentTrack is null)
@@ -687,11 +684,6 @@ public sealed partial class Music : NadekoModule<IMusicService>
             return;
 
         var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
-        if (mp is null)
-        {
-            await Response().Error(strs.no_player).SendAsync();
-            return;
-        }
 
         mp.ShuffleQueue();
         await Response().Confirm(strs.queue_shuffled).SendAsync();

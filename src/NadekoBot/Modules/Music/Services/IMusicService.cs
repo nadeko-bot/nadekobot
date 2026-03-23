@@ -18,8 +18,9 @@ public interface IMusicService
     /// <param name="voiceChannelId">Id of the voice channel</param>
     public Task JoinVoiceChannelAsync(ulong guildId, ulong voiceChannelId);
 
-    Task<IMusicPlayer?> GetOrCreateMusicPlayerAsync(ITextChannel contextChannel);
+    Task<IMusicPlayer> GetOrCreateMusicPlayerAsync(ITextChannel contextChannel);
     bool TryGetMusicPlayer(ulong guildId, [MaybeNullWhen(false)] out IMusicPlayer musicPlayer);
+    void AttachProxy(ulong guildId);
     Task<int> EnqueueYoutubePlaylistAsync(IMusicPlayer mp, string playlistId, string queuer);
     Task EnqueueDirectoryAsync(IMusicPlayer mp, string dirPath, string queuer);
     Task<IUserMessage?> SendToOutputAsync(ulong guildId, EmbedBuilder embed);

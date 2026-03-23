@@ -22,6 +22,7 @@ public interface IMusicPlayer : IDisposable
 
     void Kill();
     bool TryRemoveTrackAt(int index, out IQueuedTrackInfo? trackInfo);
+    void SetProxy(IVoiceProxy proxy);
 
 
     Task<(IQueuedTrackInfo? QueuedTrack, int Index)> TryEnqueueTrackAsync(

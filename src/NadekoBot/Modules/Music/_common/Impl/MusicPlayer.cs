@@ -29,7 +29,7 @@ public sealed class MusicPlayer : IMusicPlayer
     private readonly IMusicQueue _queue;
     private readonly ITrackResolveProvider _trackResolveProvider;
     private readonly IYoutubeResolverFactory _ytResolverFactory;
-    private readonly IVoiceProxy _proxy;
+    private volatile IVoiceProxy? _proxy;
     private readonly IGoogleApiService _googleApiService;
     private readonly ISongBuffer _songBuffer;
 
@@ -43,7 +43,7 @@ public sealed class MusicPlayer : IMusicPlayer
         IMusicQueue queue,
         ITrackResolveProvider trackResolveProvider,
         IYoutubeResolverFactory ytResolverFactory,
-        IVoiceProxy proxy,
+        IVoiceProxy? proxy,
         IGoogleApiService googleApiService,
         QualityPreset qualityPreset,
         bool autoPlay)
@@ -76,6 +76,13 @@ public sealed class MusicPlayer : IMusicPlayer
         });
         _thread.Start();
     }
+
+    /// <summary>
+    /// Attaches or replaces the voice proxy. The PlayLoop will start sending frames
+    /// once a non-null proxy is set.
+    /// </summary>
+    public void SetProxy(IVoiceProxy proxy)
+        => _proxy = proxy;
 
     private static VoiceClient GetVoiceClient(QualityPreset qualityPreset)
         => qualityPreset switch
@@ -111,6 +118,13 @@ public sealed class MusicPlayer : IMusicPlayer
                 continue;
             }
 
+            // wait for voice proxy to be attached
+            if (_proxy is null)
+            {
+                await Task.Delay(200);
+                continue;
+            }
+
             if (skipped)
             {
                 skipped = false;
@@ -123,7 +137,8 @@ public sealed class MusicPlayer : IMusicPlayer
             try
             {
                 // light up green in vc
-                _ = _proxy.StartSpeakingAsync();
+                if (_proxy is { } p1)
+                    _ = p1.StartSpeakingAsync();
 
                 _ = OnStarted?.Invoke(this, track, index);
 
@@ -224,7 +239,8 @@ public sealed class MusicPlayer : IMusicPlayer
                         {
                             if (errorCount > 0)
                             {
-                                _ = _proxy.StartSpeakingAsync();
+                                if (_proxy is { } p2)
+                                    _ = p2.StartSpeakingAsync();
                                 errorCount = 0;
                             }
 
@@ -319,7 +335,8 @@ public sealed class MusicPlayer : IMusicPlayer
                 HandleQueuePostTrack();
                 skipped = false;
 
-                _ = _proxy.StopSpeakingAsync();
+                if (_proxy is { } p3)
+                    _ = p3.StopSpeakingAsync();
 
                 await Task.Delay(100);
             }
@@ -338,11 +355,14 @@ public sealed class MusicPlayer : IMusicPlayer
 
     private void SendSilenceFrames(VoiceClient vc, int count)
     {
+        var proxy = _proxy;
+        if (proxy is null) return;
+
         for (var i = 0; i < count; i++)
         {
             try
             {
-                _proxy.SendOpusFrame(vc, OpusSilenceFrame, OpusSilenceFrame.Length);
+                proxy.SendOpusFrame(vc, OpusSilenceFrame, OpusSilenceFrame.Length);
                 Thread.Sleep(_vc.Delay);
             }
             catch
@@ -361,7 +381,7 @@ public sealed class MusicPlayer : IMusicPlayer
             return null;
 
         _adjustVolume(data, Volume);
-        return _proxy.SendPcmFrame(vc, data, length);
+        return _proxy?.SendPcmFrame(vc, data, length) ?? false;
     }
 
     private void HandleQueuePostTrack()
