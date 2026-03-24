@@ -50,7 +50,7 @@ public class StreamRoleService : IReadyExecutor, INService
         _guildSettings = await uow.GetTable<StreamRoleSettings>()
                                  .Where(x => x.Enabled)
                                  .ToDictionaryAsyncLinqToDB(x => x.GuildId, x => x)
-                                 .Fmap(x => x.ToConcurrent());
+                                 .Pipe(x => x.ToConcurrent());
 
         _client.PresenceUpdated += OnPresenceUpdate;
 

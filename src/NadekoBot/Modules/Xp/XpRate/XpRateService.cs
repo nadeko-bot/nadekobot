@@ -21,7 +21,7 @@ public class XpRateService(DbService db, ShardData shardData, XpConfigService xc
             .AsNoTracking()
             .Where(x => Queries.GuildOnShard(x.GuildId, shardData.TotalShards, shardData.ShardId))
             .ToListAsyncLinqToDB()
-            .Fmap(list =>
+            .Pipe(list =>
                 list
                     .ToDictionary(
                         x => (x.RateType, x.GuildId),
@@ -32,7 +32,7 @@ public class XpRateService(DbService db, ShardData shardData, XpConfigService xc
             .AsNoTracking()
             .Where(x => Queries.GuildOnShard(x.GuildId, shardData.TotalShards, shardData.ShardId))
             .ToListAsyncLinqToDB()
-            .Fmap(x =>
+            .Pipe(x =>
                 x.GroupBy(x => x.GuildId)
                     .ToDictionary(
                         x => x.Key,

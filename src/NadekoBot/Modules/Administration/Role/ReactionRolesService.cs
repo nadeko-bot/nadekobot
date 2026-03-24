@@ -2,6 +2,7 @@
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Xp;
 using OneOf.Types;
 using OneOf;
 
@@ -12,6 +13,7 @@ public sealed class ReactionRolesService : IReadyExecutor, INService, IReactionR
     private readonly DbService _db;
     private readonly DiscordSocketClient _client;
     private readonly IBotCreds _creds;
+    private readonly XpFormulaService _xpFormula;
 
     private ConcurrentDictionary<ulong, List<ReactionRoleV2>> _cache;
     private readonly object _cacheLock = new();
@@ -20,11 +22,13 @@ public sealed class ReactionRolesService : IReadyExecutor, INService, IReactionR
     public ReactionRolesService(
         DiscordSocketClient client,
         DbService db,
-        IBotCreds creds)
+        IBotCreds creds,
+        XpFormulaService xpFormula)
     {
         _db = db;
         _client = client;
         _creds = creds;
+        _xpFormula = xpFormula;
         _cache = new();
     }
 
@@ -154,8 +158,9 @@ public sealed class ReactionRolesService : IReadyExecutor, INService, IReactionR
                     if (rero.LevelReq > 0)
                     {
                         await using var ctx = _db.GetDbContext();
+                        var f = _xpFormula.GetFormula(user.GuildId);
                         var levelData = await ctx.GetTable<UserXpStats>()
-                                                 .GetLevelDataFor(user.GuildId, user.Id);
+                                                 .GetLevelDataFor(user.GuildId, user.Id, f.A, f.C);
 
                         if (levelData.Level < rero.LevelReq)
                             return;

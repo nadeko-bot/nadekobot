@@ -71,7 +71,7 @@ public sealed class GuildTimezoneService : ITimezoneService, IReadyExecutor, INS
         _timezones = await uow.GetTable<GuildConfig>()
                               .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
                               .ToListAsyncLinqToDB()
-                              .Fmap(x => x
+                              .Pipe(x => x
                                          .Select(GetTimezoneTuple)
                                          .ToDictionary(x => x.GuildId, x => x.Timezone)
                                          .ToConcurrent()) ?? new();

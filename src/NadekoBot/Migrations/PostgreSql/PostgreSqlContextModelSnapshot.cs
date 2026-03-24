@@ -3341,6 +3341,14 @@ namespace NadekoBot.Migrations.PostgreSql
                         .HasColumnType("numeric(20,0)")
                         .HasColumnName("guildid");
 
+                    b.Property<int>("XpFormulaA")
+                        .HasColumnType("integer")
+                        .HasColumnName("xpformulaa");
+
+                    b.Property<int>("XpFormulaC")
+                        .HasColumnType("integer")
+                        .HasColumnName("xpformulac");
+
                     b.HasKey("Id")
                         .HasName("pk_xpsettings");
 
@@ -3509,41 +3517,6 @@ namespace NadekoBot.Migrations.PostgreSql
                         .HasDatabaseName("ix_userfishstats_userid");
 
                     b.ToTable("userfishstats", (string)null);
-                });
-
-            modelBuilder.Entity("NadekoBot.Modules.Utility.AiAgent.GuildAiToolSetting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("GuildId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("guildid");
-
-                    b.Property<bool>("IsAllowed")
-                        .HasColumnType("boolean")
-                        .HasColumnName("isallowed");
-
-                    b.Property<string>("ToolName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("toolname");
-
-                    b.HasKey("Id")
-                        .HasName("pk_guildaitoolsetting");
-
-                    b.HasIndex("GuildId")
-                        .HasDatabaseName("ix_guildaitoolsetting_guildid");
-
-                    b.HasIndex("GuildId", "ToolName")
-                        .IsUnique()
-                        .HasDatabaseName("ix_guildaitoolsetting_guildid_toolname");
-
-                    b.ToTable("guildaitoolsetting", (string)null);
                 });
 
             modelBuilder.Entity("NadekoBot.Modules.Utility.LineUp.LineUpUser", b =>

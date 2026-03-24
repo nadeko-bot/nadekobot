@@ -1,0 +1,9 @@
+xpformula_current: XP-Formel
+xpformula_set: XP-Formel aktualisiert
+xpformula_desc: |-
+  |-
+    XP pro Level: **{0}** x (Level + 1) + **{1}**
+xpformula_preview: Level-Vorschau
+xpformula_a_invalid: 'Steigung (a) muss zwischen {0} und {1} liegen.'
+xpformula_c_invalid: 'Basis (c) muss zwischen {0} und {1} liegen.'
+xpformula_invalid: Ungultige Formelparameter.

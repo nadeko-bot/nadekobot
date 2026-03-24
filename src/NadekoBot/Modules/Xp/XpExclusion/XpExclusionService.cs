@@ -16,7 +16,7 @@ public class XpExclusionService(DbService db, ShardData shardData) : IReadyExecu
         _exclusions = await uow.GetTable<XpExcludedItem>()
             .Where(x => Queries.GuildOnShard(x.GuildId, shardData.TotalShards, shardData.ShardId))
             .ToListAsyncLinqToDB()
-            .Fmap(x => x
+            .Pipe(x => x
                 .Select(x => (x.GuildId, x.ItemType, x.ItemId))
                 .ToHashSet()
                 .ToConcurrentSet());

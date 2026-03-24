@@ -69,6 +69,11 @@ public class FishItem
     /// Multiplier affecting the fishing speed.
     /// </summary>
     public double? FishingSpeedMultiplier { get; set; }
+
+    /// <summary>
+    /// Minimum fishing skill level required to buy this item. Null means no requirement.
+    /// </summary>
+    public int? LevelReq { get; set; }
 }
 
 /// <summary>

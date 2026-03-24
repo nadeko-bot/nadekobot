@@ -2,6 +2,7 @@
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Xp;
 using NadekoBot.Modules.Xp.Services;
 using OneOf;
 using OneOf.Types;
@@ -227,15 +228,17 @@ public sealed class SarAssignerService : INService, IReadyExecutor
 {
     private readonly XpService _xp;
     private readonly DbService _db;
+    private readonly XpFormulaService _xpFormula;
 
     private readonly Channel<SarAssignerDataItem> _channel =
         Channel.CreateBounded<SarAssignerDataItem>(100);
 
 
-    public SarAssignerService(XpService xp, DbService db)
+    public SarAssignerService(XpService xp, DbService db, XpFormulaService xpFormula)
     {
         _xp = xp;
         _db = db;
+        _xpFormula = xpFormula;
     }
 
     public async Task OnReadyAsync()
@@ -271,7 +274,8 @@ public sealed class SarAssignerService : INService, IReadyExecutor
                 {
                     await using var ctx = _db.GetDbContext();
                     var xpStats = await ctx.GetTable<UserXpStats>().GetGuildUserXp(sar.GuildId, item.User.Id);
-                    var lvlData = new LevelStats(xpStats?.Xp ?? 0);
+                    var f = _xpFormula.GetFormula(sar.GuildId);
+                    var lvlData = new LevelStats(xpStats?.Xp ?? 0, f.A, f.C);
 
                     if (lvlData.Level < sar.LevelReq)
                     {

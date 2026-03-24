@@ -467,7 +467,7 @@ public class MuteService : INService, IReadyExecutor
         _mutedUsers = await uow.GetTable<MutedUserId>()
             .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .ToListAsyncLinqToDB()
-            .Fmap(x => x.GroupBy(x => x.GuildId)
+            .Pipe(x => x.GroupBy(x => x.GuildId)
                 .ToDictionary(g => g.Key, g => new ConcurrentHashSet<ulong>(g.Select(x => x.UserId)))
                 .ToConcurrent());
 

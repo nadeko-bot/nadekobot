@@ -2486,6 +2486,12 @@ namespace NadekoBot.Migrations.Sqlite
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("XpFormulaA")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("XpFormulaC")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GuildId")
@@ -2612,32 +2618,6 @@ namespace NadekoBot.Migrations.Sqlite
                         .IsUnique();
 
                     b.ToTable("UserFishStats");
-                });
-
-            modelBuilder.Entity("NadekoBot.Modules.Utility.AiAgent.GuildAiToolSetting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong>("GuildId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsAllowed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ToolName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuildId");
-
-                    b.HasIndex("GuildId", "ToolName")
-                        .IsUnique();
-
-                    b.ToTable("GuildAiToolSetting");
                 });
 
             modelBuilder.Entity("NadekoBot.Modules.Utility.LineUp.LineUpUser", b =>

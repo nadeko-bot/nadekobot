@@ -1,0 +1,9 @@
+xpformula_current: صيغة XP
+xpformula_set: تم تحديث صيغة XP
+xpformula_desc: |-
+  |-
+    XP لكل مستوى: **{0}** x (المستوى + 1) + **{1}**
+xpformula_preview: معاينة المستويات
+xpformula_a_invalid: 'يجب ان يكون الميل (a) بين {0} و {1}.'
+xpformula_c_invalid: 'يجب ان تكون القاعدة (c) بين {0} و {1}.'
+xpformula_invalid: معاملات الصيغة غير صالحة.

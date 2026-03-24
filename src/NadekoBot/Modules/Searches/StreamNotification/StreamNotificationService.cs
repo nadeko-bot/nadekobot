@@ -109,7 +109,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
                                        .Where(gc => gc.DeleteStreamOnlineMessage)
                                        .Select(x => x.GuildId)
                                        .ToListAsyncLinqToDB()
-                                       .Fmap(x => x.ToConcurrentSet());
+                                       .Pipe(x => x.ToConcurrentSet());
 
         foreach (var guildId in deleteOnOffline)
             _deleteOnOfflineServers.Add(guildId);

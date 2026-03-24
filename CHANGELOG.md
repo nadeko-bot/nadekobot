@@ -2,6 +2,21 @@
 
 *a,c,f,r,o,d*
 
+## [7.1.12] - 24.03.2026
+
+### Added
+
+- Fish items can now have level req.
+- `.xpformula` / `.xpf` - configure the per-guild XP leveling curve (a = slope, c = base cost)
+
+### Changed
+
+- Fishing spot coins are now used with `.fiuse` like other items and give you a random biome
+
+### Removed
+
+- `.fishpch` removed
+
 ## [7.1.11] - 23.03.2026
 
 ### Changed

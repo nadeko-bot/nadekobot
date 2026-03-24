@@ -79,11 +79,14 @@ public sealed class FishItemService(
     /// <summary>
     /// Buys an item for a user.
     /// </summary>
-    public async Task<OneOf.OneOf<FishItem, BuyResult>> BuyItemAsync(ulong userId, int itemId)
+    public async Task<OneOf.OneOf<FishItem, BuyResult>> BuyItemAsync(ulong userId, int itemId, int userSkill)
     {
         var item = GetItem(itemId);
         if (item is null)
             return BuyResult.NotFound;
+
+        if (item.LevelReq.HasValue && userSkill < item.LevelReq.Value)
+            return BuyResult.InsufficientLevel;
 
         await using var ctx = db.GetDbContext();
 
@@ -126,6 +129,9 @@ public sealed class FishItemService(
             var fishItem = GetItem(userItem.ItemId);
 
             if (fishItem is null)
+                return null;
+
+            if (userItem.ItemType == FishItemType.SpotCoin)
                 return null;
 
             if (userItem.ItemType == FishItemType.Potion)
@@ -308,7 +314,8 @@ public sealed class FishItemService(
 public enum BuyResult
 {
     NotFound,
-    InsufficientFunds
+    InsufficientFunds,
+    InsufficientLevel
 }
 
 /// <summary>

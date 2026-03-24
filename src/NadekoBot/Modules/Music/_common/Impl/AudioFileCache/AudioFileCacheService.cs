@@ -244,7 +244,7 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
         if (totalBytes <= maxBytes)
             return;
 
-        Log.Information("Music cache size {CurrentMb} MB exceeds limit {MaxGb} GB, evicting oldest files",
+        Log.Debug("Music cache size {CurrentMb} MB exceeds limit {MaxGb} GB, evicting oldest files",
             totalBytes / (1024 * 1024), _configService.Data.MaxCacheSizeGb);
 
         foreach (var file in files)

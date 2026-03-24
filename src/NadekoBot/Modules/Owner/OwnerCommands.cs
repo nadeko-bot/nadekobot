@@ -25,7 +25,7 @@ public partial class Owner(VoteRewardService vrs) : NadekoModule
 
         try
         {
-            var users = await ctx.Guild.GetUsersAsync().Fmap(u => u.Where(x => !x.IsBot).ToArray());
+            var users = await ctx.Guild.GetUsersAsync().Pipe(u => u.Where(x => !x.IsBot).ToArray());
 
             var currentIndex = 0;
             while (!_cts.IsCancellationRequested)

@@ -85,7 +85,7 @@ public partial class Utility
             var createdAt = new DateTime(2015, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(ch.Id >> 22);
             var usercount = (await ch.GetUsersAsync().FlattenAsync()).Count();
 
-            var users = await ch.GetUsersAsync(CacheMode.CacheOnly).FlattenAsync().Fmap(x => x.ToList());
+            var users = await ch.GetUsersAsync(CacheMode.CacheOnly).FlattenAsync().Pipe(x => x.ToList());
 
 
             await Response()

@@ -227,10 +227,4 @@ public static class Extensions
 
     public static IEnumerable<IRole> GetRoles(this IGuildUser user)
         => user.RoleIds.Select(r => user.Guild.GetRole(r)).Where(r => r is not null);
-
-    public static async Task<U> Fmap<T, U>(this Task<T> task, Func<T, U> func)
-    {
-        var res = await task;
-        return func(res);
-    }
 }

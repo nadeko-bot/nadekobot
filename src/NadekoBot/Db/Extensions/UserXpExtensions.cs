@@ -48,10 +48,10 @@ public static class UserXpExtensions
     public static void ResetGuildXp(this DbSet<UserXpStats> xps, ulong guildId)
         => xps.Delete(x => x.GuildId == guildId);
 
-    public static async Task<LevelStats> GetLevelDataFor(this ITable<UserXpStats> userXp, ulong guildId, ulong userId)
+    public static async Task<LevelStats> GetLevelDataFor(this ITable<UserXpStats> userXp, ulong guildId, ulong userId, int a = 9, int c = 27)
         => await userXp
                  .Where(x => x.GuildId == guildId && x.UserId == userId)
                  .FirstOrDefaultAsyncLinqToDB() is UserXpStats uxs
-            ? new(uxs.Xp)
-            : new(0);
+            ? new(uxs.Xp, a, c)
+            : new(0, a, c);
 }

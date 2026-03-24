@@ -42,6 +42,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     private readonly XpTemplateService _templateService;
     private readonly XpRateService _xpRateRateService;
     private readonly XpExclusionService _xpExcl;
+    private readonly XpFormulaService _xpFormula;
 
     private readonly QueueRunner _levelUpQueue = new QueueRunner(0, 100);
 
@@ -62,7 +63,8 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         ShardData shardData,
         XpTemplateService templateService,
         XpRateService xpRateRateService,
-        XpExclusionService xpExcl
+        XpExclusionService xpExcl,
+        XpFormulaService xpFormula
     )
     {
         _db = db;
@@ -77,6 +79,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         _templateService = templateService;
         _xpRateRateService = xpRateRateService;
         _xpExcl = xpExcl;
+        _xpFormula = xpFormula;
         _client = client;
         _ps = ps;
         _c = c;
@@ -231,8 +234,9 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             if (!userToXp.TryGetValue(u.UserId, out var data))
                 continue;
 
-            var oldStats = new LevelStats(u.Xp - data.Xp);
-            var newStats = new LevelStats(u.Xp);
+            var f = _xpFormula.GetFormula(u.GuildId);
+            var oldStats = new LevelStats(u.Xp - data.Xp, f.A, f.C);
+            var newStats = new LevelStats(u.Xp, f.A, f.C);
 
             if (oldStats.Level < newStats.Level)
             {
@@ -583,9 +587,10 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         var stats = uow.GetOrCreateUserXpStats(user.GuildId, user.Id);
         await uow.SaveChangesAsync();
 
+        var f = _xpFormula.GetFormula(user.GuildId);
         return new(du,
             stats,
-            new(stats.Xp),
+            new(stats.Xp, f.A, f.C),
             guildRank);
     }
 
@@ -1122,7 +1127,8 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
     public async Task SetLevelAsync(ulong guildId, ulong userId, int level)
     {
-        var lvlStats = LevelStats.CreateForLevel(level);
+        var f = _xpFormula.GetFormula(guildId);
+        var lvlStats = LevelStats.CreateForLevel(level, f.A, f.C);
         await using var ctx = _db.GetDbContext();
         await ctx.GetTable<UserXpStats>()
             .InsertOrUpdateAsync(() => new()

@@ -139,7 +139,12 @@ public sealed class MusicPlayer : IMusicPlayer
 
                 _ = OnStarted?.Invoke(this, track, index);
 
+                var diag = Stopwatch.StartNew();
                 var streamUrl = await GetStreamSource(track);
+                Log.Debug("GetStreamSource took {Ms}ms, url={UrlType}",
+                    diag.ElapsedMilliseconds,
+                    streamUrl?.StartsWith("http") == true ? "remote" : "local");
+
                 var isLocal = track.Platform == MusicPlatform.Local
                               || (streamUrl is not null
                                   && !streamUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase));
@@ -156,14 +161,16 @@ public sealed class MusicPlayer : IMusicPlayer
                 {
                     _songBuffer.Reset();
 
+                    diag.Restart();
                     using var source = FfmpegTrackDataSource.CreateAsync(
                         _vc.BitDepth,
                         streamUrl,
                         isLocal);
+                    Log.Debug("ffmpeg process started in {Ms}ms", diag.ElapsedMilliseconds);
 
-                // start moving data from the source into the buffer
-                // this method will return once the sufficient prebuffering is done
+                diag.Restart();
                 await _songBuffer.BufferAsync(source, token);
+                Log.Debug("Prebuffer filled in {Ms}ms", diag.ElapsedMilliseconds);
 
                 // // Implemenation with multimedia timer. Works but a hassle because no support for switching
                 // // vcs, as any error in copying will cancel the song. Also no idea how to use this as an option
@@ -308,7 +315,7 @@ public sealed class MusicPlayer : IMusicPlayer
             }
             catch (OperationCanceledException)
             {
-                Log.Information("Song skipped");
+                Log.Debug("Song skipped");
             }
             catch (Exception ex)
             {
@@ -362,17 +369,19 @@ public sealed class MusicPlayer : IMusicPlayer
         var trackId = track.TrackInfo.Id;
         var platform = track.Platform;
 
-        var (cachedPath, state) = _audioFileCache.GetOrStartDownload(
-            trackId,
-            platform,
-            () => _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId)!);
+        var diag = Stopwatch.StartNew();
+        var cachedPath = _audioFileCache.GetCachedPath(trackId, platform);
+        Log.Debug("GetCachedPath took {Ms}ms, found={Found}",
+            diag.ElapsedMilliseconds, cachedPath is not null);
 
-        // fully cached - use local file (passthrough eligible)
-        if (cachedPath is not null && state is null)
+        if (cachedPath is not null)
             return cachedPath;
 
-        // download in progress or cache not applicable - use remote URL directly
+        diag.Restart();
         var url = await _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId);
+        Log.Debug("GetStreamUrl took {Ms}ms", diag.ElapsedMilliseconds);
+
+        _audioFileCache.GetOrStartDownload(trackId, platform, () => Task.FromResult(url));
         return url;
     }
 
@@ -385,6 +394,20 @@ public sealed class MusicPlayer : IMusicPlayer
                 return false;
 
             Log.Debug("Using Opus passthrough for {FilePath}", filePath);
+
+            // wait for voice to be ready (DAVE handshake) before sending
+            var waitStart = Stopwatch.StartNew();
+            while (waitStart.ElapsedMilliseconds < 10_000)
+            {
+                if (IsStopped || IsKilled || skipped)
+                    return false;
+
+                var proxy = _proxy;
+                if (proxy is not null && proxy.SendOpusFrame(_vc, OpusSilenceFrame, OpusSilenceFrame.Length))
+                    break;
+
+                Thread.Sleep(200);
+            }
 
             // Discord expects 20ms Opus frames at 48kHz
             const int FRAME_DELAY_MS = 20;
@@ -472,7 +495,7 @@ public sealed class MusicPlayer : IMusicPlayer
             if (songFinished)
                 SendSilenceFrames(_vc, 5);
 
-            return true;
+            return songFinished;
         }
         catch (Exception ex)
         {

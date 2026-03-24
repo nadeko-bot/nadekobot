@@ -80,7 +80,7 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
 
         if (dataArray.Length < 5)
         {
-            Log.Information("Not enough data received: {YtdlData}", ytdlOutputString);
+            Log.Debug("Not enough data received: {YtdlData}", ytdlOutputString);
             return default;
         }
 
@@ -138,7 +138,7 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
         var cachedData = await _trackCacher.GetCachedDataByIdAsync(id, MusicPlatform.Youtube);
         if (cachedData is null)
         {
-            Log.Information("Resolving youtube track by Id: {YoutubeId}", id);
+            Log.Debug("Resolving youtube track by Id: {YoutubeId}", id);
 
             var data = await _ytdlIdOperation.GetDataAsync(id);
 
@@ -170,7 +170,7 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
 
     public async IAsyncEnumerable<ITrackInfo> ResolveTracksByPlaylistIdAsync(string playlistId)
     {
-        Log.Information("Resolving youtube tracks from playlist: {PlaylistId}", playlistId);
+        Log.Debug("Resolving youtube tracks from playlist: {PlaylistId}", playlistId);
         var count = 0;
 
         var ids = await _trackCacher.GetPlaylistTrackIdsAsync(playlistId, MusicPlatform.Youtube);
@@ -274,7 +274,7 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
                 return await ResolveByIdAsync(match.Groups["id"].Value);
         }
 
-        Log.Information("Resolving youtube song by search term: {YoutubeQuery}", query);
+        Log.Debug("Resolving youtube song by search term: {YoutubeQuery}", query);
 
         var cachedData = await _trackCacher.GetCachedDataByQueryAsync(query, MusicPlatform.Youtube);
         if (cachedData is null || string.IsNullOrWhiteSpace(cachedData.Title))

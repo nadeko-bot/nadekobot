@@ -31,12 +31,14 @@ public partial class Xp : NadekoModule<XpService>
     private readonly DownloadTracker _tracker;
     private readonly ICurrencyProvider _gss;
     private readonly XpTemplateService _templateService;
+    private readonly XpFormulaService _xpFormula;
 
-    public Xp(DownloadTracker tracker, ICurrencyProvider gss, XpTemplateService templateService)
+    public Xp(DownloadTracker tracker, ICurrencyProvider gss, XpTemplateService templateService, XpFormulaService xpFormula)
     {
         _tracker = tracker;
         _gss = gss;
         _templateService = templateService;
+        _xpFormula = xpFormula;
     }
 
     // [Cmd]
@@ -111,9 +113,10 @@ public partial class Xp : NadekoModule<XpService>
                 if (!users.Any())
                     return embed.WithDescription("-");
 
+                var f = _xpFormula.GetFormula(ctx.Guild.Id);
                 for (var i = 0; i < users.Count; i++)
                 {
-                    var levelStats = new LevelStats(users[i].Xp);
+                    var levelStats = new LevelStats(users[i].Xp, f.A, f.C);
                     var user = ((SocketGuild)ctx.Guild).GetUser(users[i].UserId);
 
                     var userXpData = users[i];

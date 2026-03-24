@@ -53,7 +53,7 @@ public class CommandHandler : INService, ICommandHandler
             .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .Where(x => x.Prefix != null)
             .ToListAsyncLinqToDB()
-            .Fmap(x => x.ToDictionary(x => x.GuildId, x => x.Prefix).ToConcurrent());
+            .Pipe(x => x.ToDictionary(x => x.GuildId, x => x.Prefix).ToConcurrent());
     }
 
     public string GetPrefix(IGuild guild)

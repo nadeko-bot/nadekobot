@@ -35,7 +35,7 @@ public class VcRoleService : INService, IReadyExecutor
                .AsQueryable()
                .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
                .ToListAsync()
-               .Fmap(x => x.GroupBy(x => x.GuildId));
+               .Pipe(x => x.GroupBy(x => x.GuildId));
         }
 
         await vcRoles.Select(x => InitializeVcRole(x.Key, x.ToList())).WhenAll();

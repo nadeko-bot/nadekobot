@@ -13,7 +13,7 @@ public sealed class LyricsService(HttpClient client) : ILyricsService, INService
 
     public async Task<IReadOnlyList<TracksItem>> SearchTracksAsync(string name)
         => await _api.SearchTracksAsync(NormalizeName(name))
-            .Fmap(x => x
+            .Pipe(x => x
                 .Message
                 .Body
                 .TrackList
@@ -21,5 +21,5 @@ public sealed class LyricsService(HttpClient client) : ILyricsService, INService
 
     public async Task<string> GetLyricsAsync(int trackId)
         => await _api.GetTrackLyricsAsync(trackId)
-            .Fmap(x => x.Message.Body.Lyrics.LyricsBody);
+            .Pipe(x => x.Message.Body.Lyrics.LyricsBody);
 }

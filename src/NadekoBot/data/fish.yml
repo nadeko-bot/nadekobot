@@ -74,6 +74,7 @@ items:
     maxStarMultiplier: 
     rareMultiplier: 
     fishingSpeedMultiplier: 
+    levelReq: 10
   - id: 21
     itemType: Bait
     name: Corn
@@ -100,6 +101,7 @@ items:
     maxStarMultiplier: 1.1
     rareMultiplier: 
     fishingSpeedMultiplier: 1.01
+    levelReq: 20
   - id: 41
     itemType: Boat
     name: Canoe
@@ -113,11 +115,12 @@ items:
     maxStarMultiplier: 1.1
     rareMultiplier: 
     fishingSpeedMultiplier: 1.201
+    levelReq: 15
   - id: 51
     itemType: SpotCoin
     name: Spot Change Coin
     emoji: "🪙"
-    description: Changes the fishing spot of the channel for everyone.
+    description: Changes the fishing spot of the channel for everyone. The new spot is random.
     price: 5000
     uses: 1
     durationMinutes: 

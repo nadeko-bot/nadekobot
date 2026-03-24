@@ -1,102 +1,129 @@
+using NadekoBot.Modules.Games.Fish;
 using NadekoBot.Modules.Games.Fish.Db;
 
 namespace NadekoBot.Modules.Games;
 
 public partial class Games
 {
-    public class FishItemCommands(FishItemService fis, ICurrencyProvider cp) : NadekoModule
+    public class FishItemCommands(FishItemService fis, ICurrencyProvider cp, FishService fs) : NadekoModule
     {
         [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task FishShop()
         {
             var items = fis.GetItems();
+            var sign = cp.GetCurrencySign();
 
             await Response()
                 .Paginated()
                 .Items(items)
-                .PageSize(9)
+                .PageSize(5)
                 .CurrentPage(0)
-                .Page((pageItems, i) =>
+                .Page((pageItems, _) =>
                 {
-                    var eb = CreateEmbed()
-                        .WithTitle(GetText(strs.fish_items_title))
-                        .WithFooter("`.fibuy <id>` to buy an item")
-                        .WithOkColor();
-
+                    var sb = new System.Text.StringBuilder();
                     foreach (var item in pageItems)
                     {
-                        var description = GetItemDescription(item);
-                        eb.AddField($"{item.Id}",
-                            $"""
-                             {description}
-                              
-                             """,
-                            true);
+                        sb.AppendLine(GetShopItemDescription(item, sign));
+                        sb.AppendLine();
                     }
 
-                    return eb;
+                    return CreateEmbed()
+                        .WithTitle(GetText(strs.fish_items_title))
+                        .WithDescription(sb.ToString().TrimEnd())
+                        .WithFooter("Use .fibuy <id> to purchase")
+                        .WithOkColor();
                 })
                 .AddFooter(false)
                 .SendAsync();
         }
 
-        private string GetItemDescription(FishItem item, UserFishItem? userItem = null)
+        private string GetShopItemDescription(FishItem item, string sign)
         {
-            var multiplierInfo = GetMultiplierInfo(item);
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"**#{item.Id} \u2500 {item.Name}** {GetEmoji(item.ItemType)}");
 
-            var priceText = userItem is null
-                ? $"【 **{CurrencyHelper.N(item.Price, Culture, cp.GetCurrencySign())}** 】"
-                : "";
+            sb.Append($"> *{item.Description}*\n");
 
-            return $"""
-                     《 **{item.Name}** 》
-                     {GetEmoji(item.ItemType)} `{item.ItemType.ToString().ToLower()}` {priceText}
-                     {item.Description}
-                     {GetItemNotes(item, userItem)}
-                     {multiplierInfo}
-                    """;
+            var statsLine = new List<string> { $"\U0001f4b0 **{CurrencyHelper.N(item.Price, Culture, sign)}**" };
+            statsLine.Add($"`{item.ItemType.ToString().ToLower()}`");
+            if (item.LevelReq.HasValue)
+                statsLine.Add($"\U0001f9e0 Lv.{item.LevelReq}+");
+
+            var notes = GetCompactNotes(item);
+            if (notes.Length > 0)
+                statsLine.Add(notes);
+
+            sb.Append($"> {string.Join(" \u00b7 ", statsLine)}");
+
+            var mults = GetInlineMultipliers(item);
+            if (mults.Length > 0)
+                sb.Append($"\n> {mults}");
+
+            return sb.ToString();
         }
 
-        private string GetItemNotes(FishItem item, UserFishItem? userItem)
+        private string GetInvItemDescription(FishItem item, UserFishItem userItem)
         {
-            var stats = new List<string>();
+            var sb = new System.Text.StringBuilder();
+
+            if (userItem.IsEquipped)
+                sb.AppendLine("\U0001faf4 **IN USE**");
+
+            sb.Append($"> *{item.Description}*\n");
+
+            var statsLine = new List<string> { $"`{item.ItemType.ToString().ToLower()}`" };
 
             if (item.Uses.HasValue)
-                stats.Add($"**Uses:** {userItem?.UsesLeft ?? item.Uses}");
-
+                statsLine.Add($"{userItem.UsesLeft ?? item.Uses} uses left");
             if (item.DurationMinutes.HasValue)
-                stats.Add($"**Duration:** {userItem?.ExpiryFromNowInMinutes() ?? item.DurationMinutes}m");
+                statsLine.Add($"{userItem.ExpiryFromNowInMinutes() ?? item.DurationMinutes}m");
 
-            var toReturn = stats.Count > 0 ? string.Join(" | ", stats) + "\n" : "\n";
+            sb.Append($"> {string.Join(" \u00b7 ", statsLine)}");
 
-            return "\n" + toReturn;
+            var mults = GetInlineMultipliers(item);
+            if (mults.Length > 0)
+                sb.Append($"\n> {mults}");
+
+            return sb.ToString();
+        }
+
+        private static string GetCompactNotes(FishItem item)
+        {
+            var parts = new List<string>();
+            if (item.Uses.HasValue)
+                parts.Add($"{item.Uses} uses");
+            if (item.DurationMinutes.HasValue)
+                parts.Add($"{item.DurationMinutes}m");
+            return string.Join(" \u00b7 ", parts);
+        }
+
+        private string GetInlineMultipliers(FishItem item)
+        {
+            var parts = new List<string>();
+            if (item.FishMultiplier is not null and not 1.0d)
+                parts.Add($"{AsPercent(item.FishMultiplier.Value)} fish");
+            if (item.TrashMultiplier is not null and not 1.0d)
+                parts.Add($"{AsPercent(item.TrashMultiplier.Value)} trash");
+            if (item.RareMultiplier is not null and not 1.0d)
+                parts.Add($"{AsPercent(item.RareMultiplier.Value)} rare");
+            if (item.MaxStarMultiplier is not null and not 1.0d)
+                parts.Add($"{AsPercent(item.MaxStarMultiplier.Value)} stars");
+            if (item.FishingSpeedMultiplier is not null and not 1.0d)
+                parts.Add($"{AsPercent(item.FishingSpeedMultiplier.Value)} speed");
+            return string.Join(" \u00b7 ", parts);
         }
 
         public static string GetEmoji(FishItemType itemType)
             => itemType switch
             {
-                FishItemType.Pole => @"\🎣",
-                FishItemType.Boat => @"\⛵",
-                FishItemType.Bait => @"\🍥",
-                FishItemType.Potion => @"\🍷",
+                FishItemType.Pole => "\U0001f3a3",
+                FishItemType.Boat => "\u26f5",
+                FishItemType.Bait => "\U0001f365",
+                FishItemType.Potion => "\U0001f377",
+                FishItemType.SpotCoin => "\U0001fa99",
                 _ => ""
             };
-
-        private string GetMultiplierInfo(FishItem item)
-        {
-            var multipliers = new FishMultipliers()
-            {
-                FishMultiplier = item.FishMultiplier ?? 1,
-                TrashMultiplier = item.TrashMultiplier ?? 1,
-                RareMultiplier = item.RareMultiplier ?? 1,
-                StarMultiplier = item.MaxStarMultiplier ?? 1,
-                FishingSpeedMultiplier = item.FishingSpeedMultiplier ?? 1
-            };
-
-            return GetMultiplierInfo(multipliers);
-        }
-
 
         public static string GetMultiplierInfo(FishMultipliers item)
         {
@@ -127,26 +154,43 @@ public partial class Games
             return percentage >= 0 ? $"**+{percentage}%**" : $"**{percentage}%**";
         }
 
-
         [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task FishBuy(int itemId)
         {
-            var res = await fis.BuyItemAsync(ctx.User.Id, itemId);
+            var (skill, _) = await fs.GetSkill(ctx.User.Id);
+            var res = await fis.BuyItemAsync(ctx.User.Id, itemId, skill);
 
             if (res.TryPickT1(out var err, out var eqItem))
             {
                 if (err == BuyResult.InsufficientFunds)
                     await Response().Error(strs.not_enough(cp.GetCurrencySign())).SendAsync();
+                else if (err == BuyResult.InsufficientLevel)
+                {
+                    var item = fis.GetItem(itemId);
+                    await Response().Error(strs.fish_level_too_low(item!.LevelReq!.Value)).SendAsync();
+                }
                 else
                     await Response().Error(strs.fish_item_not_found).SendAsync();
 
                 return;
             }
 
+            var buyFieldValue = $"*{eqItem.Description}*";
+            var buyMultInfo = GetMultiplierInfo(new FishMultipliers
+            {
+                FishMultiplier = eqItem.FishMultiplier ?? 1,
+                TrashMultiplier = eqItem.TrashMultiplier ?? 1,
+                RareMultiplier = eqItem.RareMultiplier ?? 1,
+                StarMultiplier = eqItem.MaxStarMultiplier ?? 1,
+                FishingSpeedMultiplier = eqItem.FishingSpeedMultiplier ?? 1
+            });
+            if (!string.IsNullOrWhiteSpace(buyMultInfo))
+                buyFieldValue += "\n" + buyMultInfo;
+
             var embed = CreateEmbed()
                 .WithDescription(GetText(strs.fish_buy_success))
-                .AddField(eqItem.Name, GetMultiplierInfo(eqItem));
+                .AddField(eqItem.Name, buyFieldValue);
 
             await Response()
                 .Embed(embed)
@@ -160,6 +204,40 @@ public partial class Games
         [RequireContext(ContextType.Guild)]
         public async Task FishUse(int index)
         {
+            var userItems = await fis.GetUserItemsAsync(ctx.User.Id);
+            if (index < 1 || index > userItems.Count)
+            {
+                await Response().Error(strs.fish_item_not_found).SendAsync();
+                return;
+            }
+
+            var (userItem, fishItem) = userItems[index - 1];
+            if (fishItem is null)
+            {
+                await Response().Error(strs.fish_item_not_found).SendAsync();
+                return;
+            }
+
+            if (fishItem.ItemType == FishItemType.SpotCoin)
+            {
+                var result = await fis.UseSpotCoinAsync(ctx.User.Id, ctx.Channel.Id);
+
+                if (result == UseSpotCoinResult.NotOwned)
+                {
+                    await Response().Error(strs.fish_spot_coin_none).SendAsync();
+                    return;
+                }
+
+                if (result is UseSpotCoinResult.Success success)
+                {
+                    await Response()
+                        .Confirm(strs.fish_spot_changed(success.NewSpot.ToString()))
+                        .SendAsync();
+                }
+
+                return;
+            }
+
             var eqItem = await fis.EquipItemAsync(ctx.User.Id, index);
 
             if (eqItem is null)
@@ -168,9 +246,21 @@ public partial class Games
                 return;
             }
 
+            var useFieldValue = $"*{eqItem.Description}*";
+            var useMultInfo = GetMultiplierInfo(new FishMultipliers
+            {
+                FishMultiplier = eqItem.FishMultiplier ?? 1,
+                TrashMultiplier = eqItem.TrashMultiplier ?? 1,
+                RareMultiplier = eqItem.RareMultiplier ?? 1,
+                StarMultiplier = eqItem.MaxStarMultiplier ?? 1,
+                FishingSpeedMultiplier = eqItem.FishingSpeedMultiplier ?? 1
+            });
+            if (!string.IsNullOrWhiteSpace(useMultInfo))
+                useFieldValue += "\n" + useMultInfo;
+
             var embed = CreateEmbed()
                 .WithDescription(GetText(strs.fish_use_success))
-                .AddField(eqItem.Name, GetMultiplierInfo(eqItem));
+                .AddField(eqItem.Name, useFieldValue);
 
             await Response().Embed(embed).SendAsync();
         }
@@ -198,40 +288,35 @@ public partial class Games
             await Response()
                 .Paginated()
                 .Items(userItems)
-                .PageSize(9)
+                .PageSize(5)
                 .Page((items, page) =>
                 {
-                    page += 1;
-                    var eb = CreateEmbed()
-                        .WithAuthor(ctx.User)
-                        .WithTitle(GetText(strs.fish_inv_title))
-                        .WithFooter($"`.fiuse <num>` to use/equip an item")
-                        .WithOkColor();
-
+                    var sb = new System.Text.StringBuilder();
                     for (var i = 0; i < items.Count; i++)
                     {
                         var (userItem, item) = items[i];
-                        var isEquipped = userItem.IsEquipped;
+                        var idx = (page * 5) + i + 1;
 
                         if (item is null)
                         {
-                            eb.AddField($"{(page * 9) + i + 1} | Item not found", $"ID: {userItem.Id}", true);
-                            continue;
+                            sb.AppendLine($"**#{idx} \u2500 ???**");
+                            sb.AppendLine($"> Item not found (ID: {userItem.ItemId})");
+                        }
+                        else
+                        {
+                            sb.AppendLine($"**#{idx} \u2500 {item.Name}** {GetEmoji(item.ItemType)}");
+                            sb.Append(GetInvItemDescription(item, userItem));
                         }
 
-                        var description = GetItemDescription(item, userItem);
-
-                        if (isEquipped)
-                            description = "🫴 **IN USE**\n" + description;
-
-                        eb.AddField($"{i + 1} | {item.Name} ",
-                            $"""
-                             {description}
-                             """,
-                            true);
+                        sb.AppendLine();
                     }
 
-                    return eb;
+                    return CreateEmbed()
+                        .WithAuthor(ctx.User)
+                        .WithTitle(GetText(strs.fish_inv_title))
+                        .WithDescription(sb.ToString().TrimEnd())
+                        .WithFooter("Use .fiuse <num> to equip an item")
+                        .WithOkColor();
                 })
                 .AddFooter(false)
                 .SendAsync();

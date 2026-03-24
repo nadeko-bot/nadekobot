@@ -1,0 +1,9 @@
+xpformula_current: XP Formulu
+xpformula_set: XP Formulu Guncellendi
+xpformula_desc: |-
+  |-
+    Seviye basina XP: **{0}** x (seviye + 1) + **{1}**
+xpformula_preview: Seviye Onizlemesi
+xpformula_a_invalid: 'Egim (a) {0} ile {1} arasinda olmalidir.'
+xpformula_c_invalid: 'Taban (c) {0} ile {1} arasinda olmalidir.'
+xpformula_invalid: Gecersiz formul parametreleri.

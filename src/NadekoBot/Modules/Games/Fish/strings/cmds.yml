@@ -62,14 +62,6 @@ fishspot:
     - ''
   params:
     - {}
-fishspotchange:
-  desc: |-
-    Uses a spot change coin to change the fishing spot of this channel.
-    The new spot is random and affects everyone fishing in this channel.
-  ex:
-    - ''
-  params:
-    - {}
 fishunequip:
   desc: |-
     Unequips an item by specifying the item type (pole, boat, bait, potion).

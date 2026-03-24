@@ -1,0 +1,9 @@
+xpformula_current: XP 공식
+xpformula_set: XP 공식 업데이트됨
+xpformula_desc: |-
+  |-
+    레벨당 XP: **{0}** x (레벨 + 1) + **{1}**
+xpformula_preview: 레벨 미리보기
+xpformula_a_invalid: '기울기 (a)는 {0}에서 {1} 사이여야 합니다.'
+xpformula_c_invalid: '기본값 (c)은 {0}에서 {1} 사이여야 합니다.'
+xpformula_invalid: 잘못된 공식 매개변수입니다.

@@ -47,7 +47,7 @@ public sealed class AutoAssignRoleService : INService, IReadyExecutor
                                                 _shardData.ShardId))
                                             .Where(x => x.AutoAssignRoleIds != null)
                                             .ToListAsyncLinqToDB()
-                                            .Fmap(x => x
+                                            .Pipe(x => x
                                                        .ToDictionary<GuildConfig, ulong, IReadOnlyList<ulong>>(
                                                            k => k.GuildId,
                                                            v => v.GetAutoAssignableRoles())

@@ -60,7 +60,7 @@ public partial class Utility
             foreach (var config in liveChannels)
             {
                 var channelName = await ctx.Guild.GetChannelAsync(config.ChannelId)
-                    .Fmap(x => x?.Name ?? config.ChannelId.ToString());
+                    .Pipe(x => x?.Name ?? config.ChannelId.ToString());
 
                 embed.AddField(channelName, config.Template);
             }

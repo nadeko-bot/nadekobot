@@ -1,0 +1,9 @@
+xpformula_current: Формула XP
+xpformula_set: Формула XP обновлена
+xpformula_desc: |-
+  |-
+    XP за уровень: **{0}** x (уровень + 1) + **{1}**
+xpformula_preview: Предпросмотр уровней
+xpformula_a_invalid: 'Наклон (a) должен быть от {0} до {1}.'
+xpformula_c_invalid: 'База (c) должна быть от {0} до {1}.'
+xpformula_invalid: Неверные параметры формулы.

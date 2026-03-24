@@ -520,7 +520,7 @@ public sealed class FishService(
                 Unique = x.Count()
             })
             .ToListAsyncLinqToDB()
-            .Fmap(x => x.Map(y => (y.UserId, y.Catches, y.Unique)));
+            .Pipe(x => x.Map(y => (y.UserId, y.Catches, y.Unique)));
 
         return result;
     }
@@ -542,7 +542,7 @@ public sealed class FishService(
                 Unique = x.Count()
             })
             .ToListAsyncLinqToDB()
-            .Fmap(x => x.Map(y => (y.UserId, y.Stars, y.Unique)));
+            .Pipe(x => x.Map(y => (y.UserId, y.Stars, y.Unique)));
 
         return result;
     }

@@ -3291,20 +3291,6 @@
     },
     {
       "Aliases": [
-        ".fishspotchange",
-        ".fispch"
-      ],
-      "Description": "Uses a spot change coin to change the fishing spot of this channel.\nThe new spot is random and affects everyone fishing in this channel.",
-      "Usage": [
-        ".fishspotchange"
-      ],
-      "Submodule": "FishingCommands",
-      "Module": "Games",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
         ".fishlist",
         ".fili",
         ".fishes",
@@ -9158,6 +9144,22 @@
       "Requirements": [
         "Administrator Server Permission"
       ]
+    },
+    {
+      "Aliases": [
+        ".xpformula",
+        ".xpf"
+      ],
+      "Description": "Shows or sets the XP leveling formula for this server.\nFormula: `a * (level + 1) + c`. 'a' controls scaling, 'c' is the base cost per level.",
+      "Usage": [
+        ".xpformula",
+        ".xpformula 9 27",
+        ".xpformula 15 50"
+      ],
+      "Submodule": "XpFormulaCommands",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": []
     },
     {
       "Aliases": [

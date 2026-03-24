@@ -168,26 +168,6 @@ public partial class Games
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
-        public async Task FishSpotChange()
-        {
-            var result = await fis.UseSpotCoinAsync(ctx.User.Id, ctx.Channel.Id);
-
-            if (result == UseSpotCoinResult.NotOwned)
-            {
-                await Response().Error(strs.fish_spot_coin_none).SendAsync();
-                return;
-            }
-
-            if (result is UseSpotCoinResult.Success success)
-            {
-                await Response()
-                    .Confirm(strs.fish_spot_changed(GetSpotEmoji(success.NewSpot) + " " + success.NewSpot))
-                    .SendAsync();
-            }
-        }
-
-        [Cmd]
-        [RequireContext(ContextType.Guild)]
         public async Task FishList(int page = 1)
         {
             if (--page < 0)

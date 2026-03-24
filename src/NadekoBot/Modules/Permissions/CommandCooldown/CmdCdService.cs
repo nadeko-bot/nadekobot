@@ -71,7 +71,7 @@ public sealed class CmdCdService : IExecPreCommand, IReadyExecutor, INService
                                  .Where(
                                      x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
                                  .ToListAsyncLinqToDB()
-                                 .Fmap(cmdcds => cmdcds
+                                 .Pipe(cmdcds => cmdcds
                                                      .GroupBy(x => x.GuildId)
                                                      .ToDictionary(x => x.Key,
                                                          x => x

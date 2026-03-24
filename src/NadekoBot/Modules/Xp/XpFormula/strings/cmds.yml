@@ -1,0 +1,14 @@
+xpformula:
+  desc: |-
+    Shows or sets the XP leveling formula for this server.
+    Formula: `a * (level + 1) + c`. 'a' controls scaling, 'c' is the base cost per level.
+  ex:
+    - ''
+    - 9 27
+    - 15 50
+  params:
+    - {}
+    - a:
+        desc: "Slope - how much harder each level gets (1-100, default 9)."
+      c:
+        desc: "Base - XP added to every level's cost (0-500, default 27)."

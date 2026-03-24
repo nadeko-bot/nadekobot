@@ -24,7 +24,7 @@ public class GameVoiceChannelService : INService
                                    .Where(gc => gc.GameVoiceChannel != null)
                                    .Select(gc => gc.GameVoiceChannel)
                                    .ToListAsyncLinqToDB()
-                                   .Fmap(u => new ConcurrentHashSet<ulong>(u.Select(x => x.Value))));
+                                   .Pipe(u => new ConcurrentHashSet<ulong>(u.Select(x => x.Value))));
 
         _client.UserVoiceStateUpdated += OnUserVoiceStateUpdated;
         _client.PresenceUpdated += OnPresenceUpdate;
