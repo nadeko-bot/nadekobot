@@ -84,6 +84,12 @@ public sealed class AiAgentService(
         if (!configService.Data.Enabled)
             return false;
 
+        if (!HasValidAiCreds())
+        {
+            configService.ModifyConfig(c => c.Enabled = false);
+            return false;
+        }
+
         if (guild is not SocketGuild)
             return false;
 
@@ -130,6 +136,12 @@ public sealed class AiAgentService(
     {
         if (!configService.Data.Enabled)
             return;
+
+        if (!HasValidAiCreds())
+        {
+            configService.ModifyConfig(c => c.Enabled = false);
+            return;
+        }
 
         if (guild is not SocketGuild)
             return;
@@ -271,14 +283,6 @@ public sealed class AiAgentService(
 
         if (!config.Enabled)
             return false;
-
-        if (string.IsNullOrWhiteSpace(credsProvider.GetCreds().AiApiKey) && config.Backend != "nadeko")
-        {
-            await sender.Response(channel)
-                        .Error("AI agent is not configured. The bot owner must set aiApiKey in data/creds.yml.")
-                        .SendAsync();
-            return true;
-        }
 
         var guildUser = await guild.GetUserAsync(message.Author.Id);
         if (guildUser is null)
@@ -558,6 +562,13 @@ public sealed class AiAgentService(
             - Available channels:
             {channelList}
             """;
+    }
+
+    private bool HasValidAiCreds()
+    {
+        var creds = credsProvider.GetCreds();
+        return !string.IsNullOrWhiteSpace(creds.NadekoAiToken)
+               || !string.IsNullOrWhiteSpace(creds.AiApiKey);
     }
 
     /// <summary>

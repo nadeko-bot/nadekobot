@@ -58,6 +58,8 @@ namespace NadekoBot.Voice
                 var output = ArrayPool<byte>.Shared.Rent(38400);
                 try
                 {
+                    const int READY_THRESHOLD = 100_000; // ~500ms of 48kHz stereo 16-bit PCM
+                    var signaled = false;
                     int read;
                     while (!Stopped && (read = source.Read(output)) > 0)
                     {
@@ -71,6 +73,12 @@ namespace NadekoBot.Voice
                             break;
 
                         Write(output, read);
+
+                        if (!signaled && ContentLength >= READY_THRESHOLD)
+                        {
+                            signaled = true;
+                            bufferingCompleted.TrySetResult(true);
+                        }
                     }
                 }
                 finally

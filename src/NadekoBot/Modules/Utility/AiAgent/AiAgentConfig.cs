@@ -6,21 +6,13 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 public sealed partial class AiAgentConfig : ICloneable<AiAgentConfig>
 {
     [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 2;
+    public int Version { get; set; } = 3;
 
     [Comment("Whether the AI agent feature is enabled. Default false")]
     public bool Enabled { get; set; } = false;
 
     [Comment("""
-             LLM backend to use.
-             'openai' - Use your own OpenAI-compatible API key (self-hosters control cost).
-             'nadeko' - Route through nai.nadeko.bot (patron-gated, uses NadekoAiToken from creds).
-             Default 'openai'
-             """)]
-    public string Backend { get; set; } = "openai";
-
-    [Comment("""
-             Base URL for the OpenAI-compatible API. Only used when Backend is 'openai'.
+             Base URL for the OpenAI-compatible API.
              DO NOT add /v1/chat/completions suffix.
              """)]
     public string ApiUrl { get; set; } = "https://api.openai.com";

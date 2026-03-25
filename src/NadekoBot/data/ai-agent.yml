@@ -1,13 +1,8 @@
 # DO NOT CHANGE
-version: 2
+version: 3
 # Whether the AI agent feature is enabled. Default false
-enabled: true
-# LLM backend to use.
-# 'openai' - Use your own OpenAI-compatible API key (self-hosters control cost).
-# 'nadeko' - Route through nai.nadeko.bot (patron-gated, uses NadekoAiToken from creds).
-# Default 'openai'
-backend: openai
-# Base URL for the OpenAI-compatible API. Only used when Backend is 'openai'.
+enabled: false
+# Base URL for the OpenAI-compatible API.
 # DO NOT add /v1/chat/completions suffix.
 apiUrl: https://openrouter.ai/api
 # Which model to use for the agent. Must support tool/function calling.

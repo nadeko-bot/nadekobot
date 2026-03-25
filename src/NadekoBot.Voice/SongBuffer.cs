@@ -69,7 +69,7 @@ Check the guides for your platform on how to setup ffmpeg correctly:
         {
             var args = $"-err_detect ignore_err -i {_streamUrl} -f {_pcmType} -ar 48000 -vn -ac 2 pipe:1 -loglevel error";
             if (!_isLocal)
-                args = $"-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 {args}";
+                args = $"-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -probesize 32768 -analyzeduration 0 {args}";
 
             return _p = Process.Start(new ProcessStartInfo
             {

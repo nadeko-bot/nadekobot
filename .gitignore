@@ -3,6 +3,7 @@
 src/NadekoBot/data/last_known_version.txt
 scripts/
 **/DESIGN.md
+src/NadekoBot/data/music_cache/
 
 # medusa stuff
 src/NadekoBot/data/medusae/

@@ -7,7 +7,7 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 
 /// <summary>
 /// Executes the ReAct agent loop: prompt -> LLM -> tool calls -> results -> LLM -> repeat.
-/// Supports both self-hosted OpenAI-compatible APIs and the nadeko backend.
+/// Uses NadekoAiToken when available, otherwise falls back to AiApiKey with the configured ApiUrl.
 /// </summary>
 public sealed class AiAgentSession(
     IHttpClientFactory httpFactory,
@@ -160,7 +160,7 @@ public sealed class AiAgentSession(
         var creds = credsProvider.GetCreds();
 
         string url;
-        if (config.Backend == "nadeko")
+        if (!string.IsNullOrWhiteSpace(creds.NadekoAiToken))
         {
             url = "https://nai.nadeko.bot/v1/chat/completions";
             http.DefaultRequestHeaders.TryAddWithoutValidation("x-auth-token", creds.NadekoAiToken);

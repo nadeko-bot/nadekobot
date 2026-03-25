@@ -10,6 +10,9 @@ namespace NadekoBot.Modules.Music;
 
 public sealed class MusicPlayer : IMusicPlayer
 {
+    private const int MAX_SEND_ERRORS = 50;
+    private const int ERROR_SLEEP_MS = 200;
+
     public event Func<IMusicPlayer, IQueuedTrackInfo, Task>? OnCompleted;
     public event Func<IMusicPlayer, IQueuedTrackInfo, int, Task>? OnStarted;
     public event Func<IMusicPlayer, Task>? OnQueueStopped;
@@ -34,9 +37,8 @@ public sealed class MusicPlayer : IMusicPlayer
     private readonly AudioFileCacheService _audioFileCache;
     private readonly ISongBuffer _songBuffer;
 
-    private bool skipped;
+    private volatile bool skipped;
     private int? forceIndex;
-    private readonly Thread _thread;
 
     public bool AutoPlay { get; set; }
 
@@ -66,24 +68,9 @@ public sealed class MusicPlayer : IMusicPlayer
 
         _songBuffer = new PoopyBufferImmortalized(_vc.InputLength);
 
-        _thread = new(async () =>
-        {
-            try
-            {
-                await PlayLoop();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Music player thread crashed");
-            }
-        });
-        _thread.Start();
+        _ = Task.Run(PlayLoopAsync);
     }
 
-    /// <summary>
-    /// Attaches or replaces the voice proxy. The PlayLoop will start sending frames
-    /// once a non-null proxy is set.
-    /// </summary>
     public void SetProxy(IVoiceProxy proxy)
         => _proxy = proxy;
 
@@ -99,269 +86,155 @@ public sealed class MusicPlayer : IMusicPlayer
             _ => throw new ArgumentOutOfRangeException(nameof(qualityPreset), qualityPreset, null)
         };
 
-    private async Task PlayLoop()
+    private async Task PlayLoopAsync()
     {
-        var sw = new Stopwatch();
-
-        while (!IsKilled)
+        try
         {
-            // wait until a song is available in the queue
-            // or until the queue is resumed
-            var track = _queue.GetCurrent(out var index);
-
-            if (track is null || IsStopped)
+            while (!IsKilled)
             {
-                await Task.Delay(500);
-                continue;
-            }
+                var track = _queue.GetCurrent(out var index);
 
-            // wait for voice proxy to be attached
-            if (_proxy is null)
-            {
-                await Task.Delay(200);
-                continue;
-            }
-
-            if (skipped)
-            {
-                skipped = false;
-                _queue.Advance();
-                continue;
-            }
-
-            using var cancellationTokenSource = new CancellationTokenSource();
-            var token = cancellationTokenSource.Token;
-            try
-            {
-                // light up green in vc
-                if (_proxy is { } p1)
-                    _ = p1.StartSpeakingAsync();
-
-                _ = OnStarted?.Invoke(this, track, index);
-
-                var diag = Stopwatch.StartNew();
-                var streamUrl = await GetStreamSource(track);
-                Log.Debug("GetStreamSource took {Ms}ms, url={UrlType}",
-                    diag.ElapsedMilliseconds,
-                    streamUrl?.StartsWith("http") == true ? "remote" : "local");
-
-                var isLocal = track.Platform == MusicPlatform.Local
-                              || (streamUrl is not null
-                                  && !streamUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase));
-
-                var usedPassthrough = false;
-                if (isLocal && track.Platform == MusicPlatform.Youtube
-                    && Math.Abs(Volume - 1f) < 0.0001f
-                    && streamUrl is not null)
+                if (track is null || IsStopped)
                 {
-                    usedPassthrough = TryPlayOpusPassthrough(streamUrl, sw);
+                    await Task.Delay(500);
+                    continue;
                 }
 
-                if (!usedPassthrough)
+                if (_proxy is null)
                 {
-                    _songBuffer.Reset();
+                    await Task.Delay(200);
+                    continue;
+                }
 
-                    diag.Restart();
-                    using var source = FfmpegTrackDataSource.CreateAsync(
-                        _vc.BitDepth,
-                        streamUrl,
-                        isLocal);
-                    Log.Debug("ffmpeg process started in {Ms}ms", diag.ElapsedMilliseconds);
-
-                diag.Restart();
-                await _songBuffer.BufferAsync(source, token);
-                Log.Debug("Prebuffer filled in {Ms}ms", diag.ElapsedMilliseconds);
-
-                // // Implemenation with multimedia timer. Works but a hassle because no support for switching
-                // // vcs, as any error in copying will cancel the song. Also no idea how to use this as an option
-                // // for selfhosters.
-                // if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                // {
-                //     var cancelSource = new CancellationTokenSource();
-                //     var cancelToken = cancelSource.Token;
-                //     using var timer = new MultimediaTimer(_ =>
-                //     {
-                //         if (IsStopped || IsKilled)
-                //         {
-                //             cancelSource.Cancel();
-                //             return;
-                //         }
-                //         
-                //         if (_skipped)
-                //         {
-                //             _skipped = false;
-                //             cancelSource.Cancel();
-                //             return;
-                //         }
-                //
-                //         if (IsPaused)
-                //             return;
-                //
-                //         try
-                //         {
-                //             // this should tolerate certain number of errors
-                //             var result = CopyChunkToOutput(_songBuffer, _vc);
-                //             if (!result)
-                //                 cancelSource.Cancel();
-                //               
-                //         }
-                //         catch (Exception ex)
-                //         {
-                //             Log.Warning(ex, "Something went wrong sending voice data: {ErrorMessage}", ex.Message);
-                //             cancelSource.Cancel();
-                //         }
-                //
-                //     }, null, 20);
-                //     
-                //     while(true)
-                //         await Task.Delay(1000, cancelToken);
-                // }
-
-                // start sending data with absolute timing to prevent drift
-                var ticksPerFrame = (long)(Stopwatch.Frequency * _vc.Delay / 1000.0);
-
-                sw.Start();
-                var nextFrameTick = sw.ElapsedTicks;
-
-                var errorCount = 0;
-                var songFinished = false;
-                while (!IsStopped && !IsKilled)
+                if (skipped)
                 {
-                    if (skipped)
-                    {
-                        skipped = false;
-                        break;
-                    }
+                    skipped = false;
+                    _queue.Advance();
+                    continue;
+                }
 
-                    if (IsPaused)
+                using var cts = new CancellationTokenSource();
+                try
+                {
+                    if (_proxy is { } p1)
+                        _ = p1.StartSpeakingAsync();
+
+                    _ = OnStarted?.Invoke(this, track, index);
+
+                    var streamUrl = await GetStreamSourceAsync(track);
+
+                    var isLocal = track.Platform == MusicPlatform.Local
+                                  || (streamUrl is not null
+                                      && !streamUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase));
+
+                    if (!await WaitForVoiceReadyAsync())
                     {
-                        await Task.Delay(200);
-                        // re-anchor timing after pause to avoid burst of catch-up frames
-                        nextFrameTick = sw.ElapsedTicks;
+                        Log.Warning("Voice not ready after 10s, skipping track");
                         continue;
                     }
 
-                    try
+                    var songFinished = false;
+
+                    // passthrough only for cached local files at unity volume
+                    if (isLocal && track.Platform == MusicPlatform.Youtube
+                        && Math.Abs(Volume - 1f) < 0.0001f
+                        && streamUrl is not null)
                     {
-                        var result = CopyChunkToOutput(_songBuffer, _vc);
+                        songFinished = await TryPlayOpusPassthroughAsync(streamUrl);
+                    }
 
-                        if (result is null)
+                    if (!songFinished)
+                    {
+                        _songBuffer.Reset();
+
+                        using var source = FfmpegTrackDataSource.CreateAsync(
+                            _vc.BitDepth,
+                            streamUrl,
+                            isLocal);
+
+                        if (source is null)
                         {
-                            songFinished = true;
-                            break;
-                        }
-
-                        if (result is true)
-                        {
-                            if (errorCount > 0)
-                            {
-                                if (_proxy is { } p2)
-                                    _ = p2.StartSpeakingAsync();
-                                errorCount = 0;
-                            }
-
-                            nextFrameTick += ticksPerFrame;
-
-                            // coarse sleep for most of the wait
-                            var remainingMs = (nextFrameTick - sw.ElapsedTicks) * 1000.0 / Stopwatch.Frequency;
-                            if (remainingMs > 3.0)
-                                Thread.Sleep((int)(remainingMs - 2.0));
-
-                            // spin-wait for precise timing
-                            while (sw.ElapsedTicks < nextFrameTick)
-                                Thread.SpinWait(100);
-                        }
-                        else
-                        {
-                            // result is false is either when the gateway is being swapped 
-                            // or if the bot is reconnecting, or just disconnected for whatever reason
-                            // or if the DAVE key ratchet is temporarily unavailable during re-keying
-
-                            // tolerate up to 50x200ms of failures (10 seconds)
-                            // to survive DAVE E2EE re-keying when users join/leave
-                            if (++errorCount <= 50)
-                            {
-                                if (errorCount % 10 == 0)
-                                    Log.Debug("Voice send errors accumulating: errorCount={ErrorCount}/50", errorCount);
-                                await Task.Delay(200);
-                                nextFrameTick = sw.ElapsedTicks;
-                                continue;
-                            }
-
-                            Log.Warning("Can't send data to voice channel after {ErrorCount} consecutive failures", errorCount);
-
                             IsStopped = true;
-                            break;
+                            Log.Error("Please install ffmpeg and make sure it's added to your "
+                                      + "PATH environment variable before trying again");
+                            continue;
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Warning(ex, "Something went wrong sending voice data: {ErrorMessage}", ex.Message);
-                        nextFrameTick = sw.ElapsedTicks;
+
+                        await _songBuffer.BufferAsync(source, cts.Token);
+                        songFinished = await RunSendLoopOnThreadAsync(TryReadAndSendPcm);
                     }
                 }
-
-                // send 5 silence frames as required by Discord to avoid Opus interpolation artifacts
-                if (songFinished)
-                    SendSilenceFrames(_vc, 5);
-
-                } // end if (!usedPassthrough)
-            }
-            catch (Win32Exception)
-            {
-                IsStopped = true;
-                Log.Error("Please install ffmpeg and make sure it's added to your "
-                          + "PATH environment variable before trying again");
-            }
-            catch (OperationCanceledException)
-            {
-                Log.Debug("Song skipped");
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Unknown error in music loop: {ErrorMessage}", ex.Message);
-                await Task.Delay(3_000);
-            }
-            finally
-            {
-                cancellationTokenSource.Cancel();
-                // turn off green in vc
-
-                _ = OnCompleted?.Invoke(this, track);
-
-                if (AutoPlay && track.Platform == MusicPlatform.Youtube)
+                catch (OperationCanceledException)
                 {
-                    try
+                    Log.Debug("Song cancelled");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error in play loop: {ErrorMessage}", ex.Message);
+                    await Task.Delay(3_000);
+                }
+                finally
+                {
+                    await cts.CancelAsync();
+
+                    _ = OnCompleted?.Invoke(this, track);
+
+                    if (AutoPlay && track.Platform == MusicPlatform.Youtube)
                     {
-                        var relatedSongs = await _googleApiService.GetRelatedVideosAsync(track.TrackInfo.Id, 5);
-                        var related = relatedSongs.Shuffle().FirstOrDefault();
-                        if (related is not null)
+                        try
                         {
-                            var relatedTrack =
-                                await _trackResolveProvider.QuerySongAsync(related, MusicPlatform.Youtube);
-                            if (relatedTrack is not null)
-                                EnqueueTrack(relatedTrack, "Autoplay");
+                            var relatedSongs =
+                                await _googleApiService.GetRelatedVideosAsync(track.TrackInfo.Id, 5);
+                            var related = relatedSongs.Shuffle().FirstOrDefault();
+                            if (related is not null)
+                            {
+                                var relatedTrack =
+                                    await _trackResolveProvider.QuerySongAsync(related, MusicPlatform.Youtube);
+                                if (relatedTrack is not null)
+                                    EnqueueTrack(relatedTrack, "Autoplay");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Warning(ex, "Failed queueing a related song via autoplay");
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Log.Warning(ex, "Failed queueing a related song via autoplay");
-                    }
+
+                    HandleQueuePostTrack();
+                    skipped = false;
+
+                    if (_proxy is { } p3)
+                        _ = p3.StopSpeakingAsync();
+
+                    await Task.Delay(100);
                 }
-
-
-                HandleQueuePostTrack();
-                skipped = false;
-
-                if (_proxy is { } p3)
-                    _ = p3.StopSpeakingAsync();
-
-                await Task.Delay(100);
             }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "PlayLoop crashed");
         }
     }
 
-    private async Task<string?> GetStreamSource(IQueuedTrackInfo track)
+    private async Task<bool> WaitForVoiceReadyAsync()
+    {
+        var elapsed = Stopwatch.StartNew();
+        while (elapsed.ElapsedMilliseconds < 10_000)
+        {
+            if (IsStopped || IsKilled || skipped)
+                return false;
+
+            var proxy = _proxy;
+            if (proxy is not null && proxy.SendOpusFrame(_vc, OpusSilenceFrame, OpusSilenceFrame.Length))
+                return true;
+
+            await Task.Delay(ERROR_SLEEP_MS);
+        }
+
+        return false;
+    }
+
+    private async Task<string?> GetStreamSourceAsync(IQueuedTrackInfo track)
     {
         if (track.TrackInfo is SimpleTrackInfo sti)
             return sti.StreamUrl;
@@ -369,23 +242,128 @@ public sealed class MusicPlayer : IMusicPlayer
         var trackId = track.TrackInfo.Id;
         var platform = track.Platform;
 
-        var diag = Stopwatch.StartNew();
         var cachedPath = _audioFileCache.GetCachedPath(trackId, platform);
-        Log.Debug("GetCachedPath took {Ms}ms, found={Found}",
-            diag.ElapsedMilliseconds, cachedPath is not null);
-
         if (cachedPath is not null)
             return cachedPath;
 
-        diag.Restart();
         var url = await _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId);
-        Log.Debug("GetStreamUrl took {Ms}ms", diag.ElapsedMilliseconds);
-
         _audioFileCache.GetOrStartDownload(trackId, platform, () => Task.FromResult(url));
         return url;
     }
 
-    private bool TryPlayOpusPassthrough(string filePath, Stopwatch sw)
+    private bool? TryReadAndSendPcm(IVoiceProxy proxy)
+    {
+        var data = _songBuffer.Read(_vc.InputLength, out var length);
+        if (data.Length == 0)
+            return null;
+
+        _adjustVolume(data, Volume);
+        return proxy.SendPcmFrame(_vc, data, length);
+    }
+
+    private Task<bool> RunSendLoopOnThreadAsync(Func<IVoiceProxy, bool?> tryReadAndSend)
+    {
+        var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var result = SendFrameLoop(tryReadAndSend);
+                tcs.TrySetResult(result);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Send thread error");
+                tcs.TrySetResult(false);
+            }
+        })
+        {
+            IsBackground = true,
+            Name = "MusicSend"
+        };
+
+        thread.Start();
+        return tcs.Task;
+    }
+
+    private bool SendFrameLoop(Func<IVoiceProxy, bool?> tryReadAndSend)
+    {
+        using var sleeper = PrecisionSleeper.Create();
+        var ticksPerFrame = (long)(Stopwatch.Frequency * _vc.Delay / 1000.0);
+        var nextFrameTick = Stopwatch.GetTimestamp();
+        var errorCount = 0;
+
+        while (!IsStopped && !IsKilled)
+        {
+            if (skipped)
+            {
+                skipped = false;
+                return false;
+            }
+
+            if (IsPaused)
+            {
+                Thread.Sleep(ERROR_SLEEP_MS);
+                nextFrameTick = Stopwatch.GetTimestamp();
+                continue;
+            }
+
+            var proxy = _proxy;
+            if (proxy is null)
+            {
+                IsStopped = true;
+                return false;
+            }
+
+            try
+            {
+                var result = tryReadAndSend(proxy);
+
+                if (result is null)
+                {
+                    SendSilenceFrames(5);
+                    return true;
+                }
+
+                if (result is true)
+                {
+                    if (errorCount > 0)
+                    {
+                        _ = proxy.StartSpeakingAsync();
+                        errorCount = 0;
+                    }
+
+                    nextFrameTick += ticksPerFrame;
+                    sleeper.SleepUntil(nextFrameTick);
+                }
+                else
+                {
+                    if (++errorCount <= MAX_SEND_ERRORS)
+                    {
+                        if (errorCount % 10 == 0)
+                            Log.Debug("Voice send errors: {ErrorCount}/{Max}", errorCount, MAX_SEND_ERRORS);
+                        Thread.Sleep(ERROR_SLEEP_MS);
+                        nextFrameTick = Stopwatch.GetTimestamp();
+                        continue;
+                    }
+
+                    Log.Warning("Can't send after {ErrorCount} consecutive failures", errorCount);
+                    IsStopped = true;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Send frame error");
+                nextFrameTick = Stopwatch.GetTimestamp();
+            }
+        }
+
+        return false;
+    }
+
+    private async Task<bool> TryPlayOpusPassthroughAsync(string filePath)
     {
         try
         {
@@ -395,107 +373,15 @@ public sealed class MusicPlayer : IMusicPlayer
 
             Log.Debug("Using Opus passthrough for {FilePath}", filePath);
 
-            // wait for voice to be ready (DAVE handshake) before sending
-            var waitStart = Stopwatch.StartNew();
-            while (waitStart.ElapsedMilliseconds < 10_000)
+            bool? TryReadAndSendOpus(IVoiceProxy proxy)
             {
-                if (IsStopped || IsKilled || skipped)
-                    return false;
-
-                var proxy = _proxy;
-                if (proxy is not null && proxy.SendOpusFrame(_vc, OpusSilenceFrame, OpusSilenceFrame.Length))
-                    break;
-
-                Thread.Sleep(200);
-            }
-
-            // Discord expects 20ms Opus frames at 48kHz
-            const int FRAME_DELAY_MS = 20;
-            var ticksPerFrame = (long)(Stopwatch.Frequency * FRAME_DELAY_MS / 1000.0);
-
-            if (!sw.IsRunning)
-                sw.Start();
-
-            var nextFrameTick = sw.ElapsedTicks;
-            var errorCount = 0;
-            var songFinished = false;
-
-            while (!IsStopped && !IsKilled)
-            {
-                if (skipped)
-                {
-                    skipped = false;
-                    break;
-                }
-
-                if (IsPaused)
-                {
-                    Thread.Sleep(200);
-                    nextFrameTick = sw.ElapsedTicks;
-                    continue;
-                }
-
-                var proxy = _proxy;
-                if (proxy is null)
-                {
-                    IsStopped = true;
-                    break;
-                }
-
                 if (!demuxer.TryReadPacket(out var opusData, out var opusLength))
-                {
-                    songFinished = true;
-                    break;
-                }
+                    return null;
 
-                try
-                {
-                    var sent = proxy.SendOpusFrame(_vc, opusData, opusLength);
-
-                    if (sent)
-                    {
-                        if (errorCount > 0)
-                        {
-                            _ = proxy.StartSpeakingAsync();
-                            errorCount = 0;
-                        }
-
-                        nextFrameTick += ticksPerFrame;
-
-                        var remainingMs = (nextFrameTick - sw.ElapsedTicks) * 1000.0 / Stopwatch.Frequency;
-                        if (remainingMs > 3.0)
-                            Thread.Sleep((int)(remainingMs - 2.0));
-
-                        while (sw.ElapsedTicks < nextFrameTick)
-                            Thread.SpinWait(100);
-                    }
-                    else
-                    {
-                        if (++errorCount <= 50)
-                        {
-                            if (errorCount % 10 == 0)
-                                Log.Debug("Passthrough send errors: {ErrorCount}/50", errorCount);
-                            Thread.Sleep(200);
-                            nextFrameTick = sw.ElapsedTicks;
-                            continue;
-                        }
-
-                        Log.Warning("Passthrough: can't send after {ErrorCount} failures", errorCount);
-                        IsStopped = true;
-                        break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning(ex, "Passthrough send error: {Message}", ex.Message);
-                    nextFrameTick = sw.ElapsedTicks;
-                }
+                return proxy.SendOpusFrame(_vc, opusData, opusLength);
             }
 
-            if (songFinished)
-                SendSilenceFrames(_vc, 5);
-
-            return songFinished;
+            return await RunSendLoopOnThreadAsync(TryReadAndSendOpus);
         }
         catch (Exception ex)
         {
@@ -504,9 +390,9 @@ public sealed class MusicPlayer : IMusicPlayer
         }
     }
 
-    private static readonly byte[] OpusSilenceFrame = { 0xF8, 0xFF, 0xFE };
+    private static readonly byte[] OpusSilenceFrame = [0xF8, 0xFF, 0xFE];
 
-    private void SendSilenceFrames(VoiceClient vc, int count)
+    private void SendSilenceFrames(int count)
     {
         var proxy = _proxy;
         if (proxy is null) return;
@@ -515,7 +401,7 @@ public sealed class MusicPlayer : IMusicPlayer
         {
             try
             {
-                proxy.SendOpusFrame(vc, OpusSilenceFrame, OpusSilenceFrame.Length);
+                proxy.SendOpusFrame(_vc, OpusSilenceFrame, OpusSilenceFrame.Length);
                 Thread.Sleep(_vc.Delay);
             }
             catch
@@ -523,18 +409,6 @@ public sealed class MusicPlayer : IMusicPlayer
                 break;
             }
         }
-    }
-
-    private bool? CopyChunkToOutput(ISongBuffer sb, VoiceClient vc)
-    {
-        var data = sb.Read(vc.InputLength, out var length);
-
-        // if nothing is read from the buffer, song is finished
-        if (data.Length == 0)
-            return null;
-
-        _adjustVolume(data, Volume);
-        return _proxy?.SendPcmFrame(vc, data, length) ?? false;
     }
 
     private void HandleQueuePostTrack()
@@ -551,11 +425,8 @@ public sealed class MusicPlayer : IMusicPlayer
         if (repeat == PlayerRepeatType.Track || isStopped)
             return;
 
-        // if queue is being repeated, advance no matter what
         if (repeat == PlayerRepeatType.None)
         {
-            // if this is the last song,
-            // stop the queue
             if (_queue.IsLast())
             {
                 IsStopped = true;
@@ -569,7 +440,6 @@ public sealed class MusicPlayer : IMusicPlayer
 
         _queue.Advance();
     }
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void AdjustVolumeInt16(Span<byte> audioSamples, float volume)
@@ -611,24 +481,11 @@ public sealed class MusicPlayer : IMusicPlayer
         if (song is null)
             return default;
 
+        int index;
+        if (asNext)
+            return (_queue.EnqueueNext(song, queuer, out index), index);
 
-        var wasLast = _queue.IsLast();
-
-        try
-        {
-            int index;
-            if (asNext)
-                return (_queue.EnqueueNext(song, queuer, out index), index);
-
-            return (_queue.Enqueue(song, queuer, out index), index);
-        }
-        finally
-        {
-            // if (wasLast && IsStopped)
-            // {
-            //     IsStopped = false;
-            // }
-        }
+        return (_queue.Enqueue(song, queuer, out index), index);
     }
 
     public async Task EnqueueManyAsync(IEnumerable<(string Query, MusicPlatform Platform)> queries, string queuer)
@@ -657,7 +514,6 @@ public sealed class MusicPlayer : IMusicPlayer
 
             await Task.Delay(1000);
 
-            // > 10 errors in a row = kill
             if (errorCount > 10)
                 break;
         }

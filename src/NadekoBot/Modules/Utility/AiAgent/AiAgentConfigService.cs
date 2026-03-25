@@ -20,12 +20,6 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             bool.TryParse,
             ConfigPrinters.ToString);
 
-        AddParsedProp("backend",
-            c => c.Backend,
-            ConfigParsers.String,
-            ConfigPrinters.ToString,
-            val => val is "openai" or "nadeko");
-
         AddParsedProp("model",
             c => c.ModelName,
             ConfigParsers.String,
@@ -71,6 +65,14 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             ModifyConfig(c =>
             {
                 c.Version = 2;
+            });
+        }
+
+        if (data.Version < 3)
+        {
+            ModifyConfig(c =>
+            {
+                c.Version = 3;
             });
         }
     }
