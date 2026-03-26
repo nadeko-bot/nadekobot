@@ -23,3 +23,4 @@ fish_currency_found: '{0}を釣り上げました！'
 fish_stars: '{0} {1}'
 fish_spot_coin_none: スポット変更コインを持っていません。
 fish_spot_changed: '釣りスポットが{0}に変更されました！'
+fish_level_too_low: 'このアイテムを購入するには釣りスキルレベル **{0}** が必要です。'

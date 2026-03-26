@@ -23,3 +23,4 @@ fish_currency_found: '¡Pescaste {0}!'
 fish_stars: '{0} {1}'
 fish_spot_coin_none: No tienes una moneda de cambio de lugar.
 fish_spot_changed: '¡El lugar de pesca ha sido cambiado a {0}!'
+fish_level_too_low: 'Necesitas nivel de habilidad de pesca **{0}** para comprar este objeto.'

@@ -23,3 +23,4 @@ fish_currency_found: 'Vous avez pêché {0} !'
 fish_stars: '{0} {1}'
 fish_spot_coin_none: Vous n'avez pas de pièce de changement de lieu.
 fish_spot_changed: 'Le lieu de pêche a été changé en {0} !'
+fish_level_too_low: 'Tu as besoin du niveau de compétence de pêche **{0}** pour acheter cet objet.'

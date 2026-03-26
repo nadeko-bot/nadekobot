@@ -2,7 +2,11 @@
 
 *a,c,f,r,o,d*
 
+<<<<<<< HEAD
 ## [7.1.12] - 25.03.2026
+=======
+## [7.1.12] - 26.03.2026
+>>>>>>> 8ffdafb (﻿upd: high resolution timers for music on all 3 major platforms)
 
 ### Added
 
@@ -11,7 +15,13 @@
 
 ### Changed
 
+- Music will start playing faster
+- Music now uses high resolution timers on all 3 platforms (meaning less lag and less cpu usage)
 - Fishing spot coins are now used with `.fiuse` like other items and give you a random biome
+
+### Fixed
+
+- Ai agent will now auto-disable if no api key is provided
 
 ### Removed
 

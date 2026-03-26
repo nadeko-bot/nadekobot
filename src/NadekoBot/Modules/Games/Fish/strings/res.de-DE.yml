@@ -23,3 +23,4 @@ fish_currency_found: 'Du hast {0} gefischt!'
 fish_stars: '{0} {1}'
 fish_spot_coin_none: Du hast keine Ortswechsel-Münze.
 fish_spot_changed: 'Der Angelort wurde zu {0} geändert!'
+fish_level_too_low: 'Du brauchst Angelfähigkeit Stufe **{0}**, um diesen Gegenstand zu kaufen.'

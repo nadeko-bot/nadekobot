@@ -23,3 +23,4 @@ fish_currency_found: 'Wyłowiłeś {0}!'
 fish_stars: '{0} {1}'
 fish_spot_coin_none: Nie masz monety zmiany łowiska.
 fish_spot_changed: 'Łowisko zostało zmienione na {0}!'
+fish_level_too_low: 'Potrzebujesz poziomu umiejętności wędkarstwa **{0}**, aby kupić ten przedmiot.'

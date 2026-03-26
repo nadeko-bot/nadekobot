@@ -23,3 +23,4 @@ fish_currency_found: '{0} tuttun!'
 fish_stars: '{0} {1}'
 fish_spot_coin_none: Nokta değiştirme jetonun yok.
 fish_spot_changed: 'Balıkçılık noktası {0} olarak değiştirildi!'
+fish_level_too_low: 'Bu ürünü satın almak için **{0}** balıkçılık beceri seviyesine ihtiyacın var.'
