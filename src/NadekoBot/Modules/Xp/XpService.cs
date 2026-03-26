@@ -128,7 +128,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     /// <summary>
     /// The current batch of users that will gain xp
     /// </summary>
-    private readonly ConcurrentHashSet<XpQueueEntry> _usersBatch = [];
+    private ConcurrentDictionary<ulong, XpQueueEntry> _usersBatch = new();
 
     /// <summary>
     /// The current batch of users that will gain voice xp
@@ -178,16 +178,16 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
     private async Task UpdateXp()
     {
-        // might want to lock this, but it's not a big deal
+        var currentBatch = Interlocked.Exchange(ref _usersBatch, new());
+        if (currentBatch.IsEmpty)
+            return;
 
-        // or do something like this
-        // foreach (var item in currentBatch)
-        //     _usersBatch.TryRemove(item);
+        var entries = new XpQueueEntry[currentBatch.Count];
+        var i = 0;
+        foreach (var (_, entry) in currentBatch)
+            entries[i++] = entry;
 
-        var currentBatch = _usersBatch.ToArray();
-        _usersBatch.Clear();
-
-        await UpdateXpInternalAsync(currentBatch);
+        await UpdateXpInternalAsync(entries);
     }
 
     private async Task UpdateXpInternalAsync(XpQueueEntry[] currentBatch)
@@ -535,7 +535,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             if (!await TryAddUserGainedXpAsync(user.Id, rate.Cooldown))
                 return;
 
-            _usersBatch.Add(new(user, rate.Amount, gc.Id));
+            _usersBatch[user.Id] = new(user, rate.Amount, gc.Id);
         });
 
         return Task.CompletedTask;
@@ -558,7 +558,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     public Task AddXpAsync(ulong channelId, long amount, params IGuildUser[] users)
     {
         foreach(var user in users)
-            _usersBatch.Add(new(user, amount, channelId));
+            _usersBatch[user.Id] = new(user, amount, channelId);
         
         return Task.CompletedTask;
     }

@@ -49,19 +49,7 @@ public sealed class ConcurrentHashSet<T> : IReadOnlyCollection<T>, ICollection<T
         ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
         ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(arrayIndex, array.Length);
 
-        CopyToInternal(array, arrayIndex);
-    }
-
-    private void CopyToInternal(T[] array, int arrayIndex)
-    {
-        var len = array.Length;
-        foreach (var (k, _) in _backingStore)
-        {
-            if (arrayIndex >= len)
-                throw new IndexOutOfRangeException(nameof(arrayIndex));
-            
-            array[arrayIndex++] = k;
-        }
+        _backingStore.Keys.CopyTo(array, arrayIndex);
     }
 
     bool ICollection<T>.Remove(T item)

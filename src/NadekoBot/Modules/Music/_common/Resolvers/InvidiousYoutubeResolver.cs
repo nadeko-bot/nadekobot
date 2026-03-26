@@ -1,10 +1,14 @@
 ﻿using NadekoBot.Modules.Searches;
 using System.Net.Http.Json;
+using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Music;
 
 public sealed class InvidiousYoutubeResolver : IYoutubeResolver
 {
+    private static readonly Regex _playlistIdRegex =
+        new(@"[?&]list=(?<id>[\w\-]{12,})", RegexOptions.Compiled);
+
     private readonly IHttpClientFactory _httpFactory;
     private readonly SearchesConfigService _sc;
     private readonly NadekoRandom _rng;
@@ -25,7 +29,7 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
 
         var items = await http.GetFromJsonAsync<List<InvidiousSearchResponse>>(
             $"{InvidiousApiUrl}/api/v1/search"
-            + $"?q={query}"
+            + $"?q={Uri.EscapeDataString(query)}"
             + $"&type=video");
 
         if (items is null || items.Count == 0)
@@ -95,9 +99,13 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
 
     public async IAsyncEnumerable<ITrackInfo> ResolveTracksFromPlaylistAsync(string query)
     {
+        var playlistId = ExtractPlaylistId(query);
+        if (playlistId is null)
+            yield break;
+
         using var http = _httpFactory.CreateClient();
         var res = await http.GetFromJsonAsync<InvidiousPlaylistResponse>(
-            $"{InvidiousApiUrl}/api/v1/search?type=video&q={query}");
+            $"{InvidiousApiUrl}/api/v1/playlists/{Uri.EscapeDataString(playlistId)}");
 
         if (res is null)
             yield break;
@@ -115,6 +123,12 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
                 StreamUrl = null
             };
         }
+    }
+
+    private static string? ExtractPlaylistId(string query)
+    {
+        var match = _playlistIdRegex.Match(query);
+        return match.Success ? match.Groups["id"].Value : null;
     }
 
     public Task<ITrackInfo?> ResolveByQueryAsync(string query, bool tryExtractingId)

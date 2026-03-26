@@ -56,7 +56,22 @@ public sealed class InvidiousPlaylistResponse
     public required string Title { get; init; }
     
     [JsonPropertyName("videos")]
-    public required List<InvidiousVideoResponse> Videos { get; init; }
+    public required List<InvidiousPlaylistVideo> Videos { get; init; }
+}
+
+public sealed class InvidiousPlaylistVideo
+{
+    [JsonPropertyName("title")]
+    public required string Title { get; init; }
+
+    [JsonPropertyName("videoId")]
+    public required string VideoId { get; init; }
+
+    [JsonPropertyName("lengthSeconds")]
+    public required int LengthSeconds { get; init; }
+
+    [JsonPropertyName("videoThumbnails")]
+    public List<InvidiousThumbnail>? Thumbnails { get; init; }
 }
 
 public sealed class InvidiousThumbnail

@@ -107,9 +107,9 @@ public class VcRoleService : INService, IReadyExecutor
             uow.RemoveRange(missingRoles);
             await uow.SaveChangesAsync();
 
-            Log.Warning("Removed {MissingRoleCount} missing roles from {ServiceName}",
+            Log.Warning("Removed {MissingRoleCount} missing vc roles in guild {GuildId}",
                 missingRoles.Count,
-                nameof(VcRoleService));
+                guildId);
         }
     }
 

@@ -18,6 +18,8 @@
 ### Fixed
 
 - Ai agent will now auto-disable if no api key is provided
+- Invidious playlist loading now uses the correct API endpoint (`/api/v1/playlists/:id` instead of search)
+- Invidious search queries with special characters no longer fail due to missing URL encoding
 
 ### Removed
 
