@@ -142,7 +142,8 @@ public class ProtectionService : IReadyExecutor, INService
                 if (stats.UsersCount >= stats.AntiRaidSettings.UserThreshold)
                 {
                     var users = stats.RaidUsers.ToArray();
-                    stats.RaidUsers.Clear();
+                    foreach (var u in users)
+                        stats.RaidUsers.TryRemove(u);
                     var settings = stats.AntiRaidSettings;
 
                     await PunishUsers(settings.Action, ProtectionType.Raiding, settings.PunishDuration, null, users);
