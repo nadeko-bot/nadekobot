@@ -2,11 +2,7 @@
 
 *a,c,f,r,o,d*
 
-<<<<<<< HEAD
 ## [7.1.12] - 25.03.2026
-=======
-## [7.1.12] - 26.03.2026
->>>>>>> 8ffdafb (﻿upd: high resolution timers for music on all 3 major platforms)
 
 ### Added
 
