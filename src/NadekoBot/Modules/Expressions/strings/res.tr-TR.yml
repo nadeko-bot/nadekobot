@@ -1,5 +1,6 @@
 expr_delete_select: Silinecek ifadeyi secin
 expr_deleted: İfade silindi
+expr_edit_select: Duzenlenecek ifadeyi secin
 expr_edited: İfade Düzenlendi
 expr_global_disabled: Global ifadeler artık bu sunucuda devre dışı.
 expr_global_enabled: Global ifadeler artık bu sunucuda devre dışı değil.

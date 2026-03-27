@@ -1,5 +1,6 @@
 expr_delete_select: 삭제할 표현식을 선택하세요
 expr_deleted: 표현식 삭제됨
+expr_edit_select: 편집할 표현식을 선택하세요
 expr_edited: 표현식 수정됨
 expr_global_disabled: 이 서버에서 글로벌 표현식이 비활성화되었어요.
 expr_global_enabled: 이 서버에서 글로벌 표현식이 더 이상 비활성화되지 않아요.

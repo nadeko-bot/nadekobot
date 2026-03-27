@@ -74,13 +74,10 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
     }
 
     [Cmd]
-    public async Task ExprEdit(kwum id, [Leftover] string message)
+    public async Task ExprEdit(string input, [Leftover] string message)
     {
-        var channel = ctx.Channel as ITextChannel;
-        if (string.IsNullOrWhiteSpace(message) || id < 0)
-        {
+        if (string.IsNullOrWhiteSpace(message) || string.IsNullOrWhiteSpace(input))
             return;
-        }
 
         if (!IsValidExprEditor())
         {
@@ -88,23 +85,100 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
             return;
         }
 
-        var ex = await _service.EditAsync(ctx.Guild?.Id, id, message);
-        if (ex is not null)
+        var allExprs = _service.GetExpressionsFor(ctx.Guild?.Id);
+
+        var triggerMatches = allExprs
+            .Where(x => x.Trigger.Equals(input, StringComparison.OrdinalIgnoreCase));
+
+        var idMatch = kwum.TryParse(input, out var id)
+            ? _service.GetExpression(ctx.Guild?.Id, id)
+            : null;
+
+        var matches = triggerMatches
+            .Concat(idMatch is not null ? [idMatch] : [])
+            .DistinctBy(x => x.Id)
+            .ToArray();
+
+        if (matches.Length == 0)
         {
-            await Response()
-                .Embed(CreateEmbed()
+            await Response().Error(strs.expr_no_found).SendAsync();
+            return;
+        }
+
+        if (matches.Length == 1)
+        {
+            var ex = await _service.EditAsync(ctx.Guild?.Id, matches[0].Id, message);
+            if (ex is not null)
+            {
+                await Response()
+                    .Embed(CreateEmbed()
+                        .WithOkColor()
+                        .WithTitle(GetText(strs.expr_edited))
+                        .WithDescription($"#{(kwum)ex.Id}")
+                        .AddField(GetText(strs.trigger), ex.Trigger)
+                        .AddField(GetText(strs.response),
+                            message.Length > 1024 ? GetText(strs.redacted_too_long) : message))
+                    .SendAsync();
+            }
+            else
+            {
+                await Response().Error(strs.expr_no_found).SendAsync();
+            }
+
+            return;
+        }
+
+        await Response()
+            .Paginated()
+            .Items(matches)
+            .PageSize(1)
+            .Page((items, _) =>
+            {
+                var expr = items.FirstOrDefault();
+                if (expr is null)
+                    return CreateEmbed().WithErrorColor().WithDescription(GetText(strs.expr_no_found));
+
+                return CreateEmbed()
                     .WithOkColor()
-                    .WithTitle(GetText(strs.expr_edited))
-                    .WithDescription($"#{id}")
-                    .AddField(GetText(strs.trigger), ex.Trigger)
-                    .AddField(GetText(strs.response),
-                        message.Length > 1024 ? GetText(strs.redacted_too_long) : message))
-                .SendAsync();
-        }
-        else
-        {
-            await Response().Error(strs.expr_no_found_id).SendAsync();
-        }
+                    .WithTitle(GetText(strs.expr_edit_select))
+                    .WithDescription($"#{(kwum)expr.Id}")
+                    .AddField(GetText(strs.trigger), expr.Trigger.TrimTo(1024))
+                    .AddField(GetText(strs.response), expr.Response.TrimTo(1024));
+            })
+            .Interaction(currentPage =>
+            {
+                var expr = matches.Skip(currentPage).FirstOrDefault();
+                if (expr is null)
+                    return Task.FromResult<NadekoInteractionBase>(null);
+
+                var inter = _inter.Create(ctx.User.Id,
+                    new ButtonBuilder()
+                        .WithStyle(ButtonStyle.Primary)
+                        .WithEmote(new Emoji("📝"))
+                        .WithCustomId("expr:edit"),
+                    async (smc) =>
+                    {
+                        await _service.EditAsync(ctx.Guild?.Id, expr.Id, message);
+                        await smc.Message.ModifyAsync(mp =>
+                        {
+                            mp.Embed = CreateEmbed()
+                                .WithOkColor()
+                                .WithTitle(GetText(strs.expr_edited))
+                                .WithDescription($"#{(kwum)expr.Id}")
+                                .AddField(GetText(strs.trigger), expr.Trigger.TrimTo(1024))
+                                .AddField(GetText(strs.response),
+                                    message.Length > 1024
+                                        ? GetText(strs.redacted_too_long)
+                                        : message.TrimTo(1024))
+                                .Build();
+                            mp.Components = new ComponentBuilder().Build();
+                        });
+                    },
+                    clearAfter: false);
+
+                return Task.FromResult(inter);
+            })
+            .SendAsync();
     }
 
     private bool IsValidExprEditor()
@@ -198,7 +272,7 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
             {
                 var msg = sm.Data.Components.FirstOrDefault()?.Value;
 
-                await ExprEdit(id, msg);
+                await ExprEdit(id.ToString(), msg);
             }
         );
         return inter;

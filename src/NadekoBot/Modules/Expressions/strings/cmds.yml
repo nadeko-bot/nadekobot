@@ -103,16 +103,17 @@ exprdm:
     - id:
         desc: The ID of the expression to toggle DM response for.
 expredit:
-  desc: Edits the expression's response given its ID.
+  desc: |-
+    Edits the expression's response given its ID or trigger.
+    If multiple expressions match, shows a paginated list to select from.
   ex:
-    - 123 I'm a magical girl
+    - 5c I'm a magical girl
+    - hello Hi there!
   params:
-    - id:
-        desc: The id of the expression being edited.
+    - input:
+        desc: "The expression ID or trigger text."
       message:
-        desc: >-
-          The text that will replace the original response in the expression's
-          output.
+        desc: "The text that will replace the original response."
 exprlist:
   desc: >-
     Lists global or server expressions (20 expressions per page).

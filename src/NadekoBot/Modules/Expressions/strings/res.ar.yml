@@ -1,5 +1,6 @@
 expr_delete_select: اختر التعبير لحذفه
 expr_deleted: تم حذف التعبير
+expr_edit_select: اختر التعبير لتعديله
 expr_edited: تم تعديل التعبير
 expr_global_disabled: تم تعطيل التعبيرات العامة في هذا السيرفر.
 expr_global_enabled: لم تعد التعبيرات العامة معطلة في هذا السيرفر.

@@ -1,5 +1,6 @@
 expr_delete_select: Wybierz wyrazenie do usuniecia
 expr_deleted: Wyrażenie usunięte
+expr_edit_select: Wybierz wyrazenie do edycji
 expr_edited: Wyrażenie edytowane
 expr_global_disabled: Globalne wyrażenia są teraz wyłączone na tym serwerze.
 expr_global_enabled: Globalne wyrażenia nie są już wyłączone na tym serwerze.

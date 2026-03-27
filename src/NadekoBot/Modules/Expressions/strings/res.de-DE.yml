@@ -1,5 +1,6 @@
 expr_delete_select: Ausdruck zum Loeschen auswaehlen
 expr_deleted: ''
+expr_edit_select: Ausdruck zum Bearbeiten auswaehlen
 expr_edited: ''
 expr_global_disabled: Globale Ausdrücke sind auf diesem Server jetzt deaktiviert.
 expr_global_enabled: Globale Ausdrücke sind auf diesem Server nicht mehr deaktiviert.

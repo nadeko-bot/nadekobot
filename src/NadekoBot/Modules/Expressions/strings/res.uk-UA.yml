@@ -1,5 +1,6 @@
 expr_delete_select: Оберiть вираз для видалення
 expr_deleted: Вираз видалено
+expr_edit_select: Оберiть вираз для редагування
 expr_edited: Вираз відредаговано
 expr_global_disabled: Глобальні вирази тепер вимкнені на цьому сервері.
 expr_global_enabled: Глобальні вирази більше не вимкнені на цьому сервері.

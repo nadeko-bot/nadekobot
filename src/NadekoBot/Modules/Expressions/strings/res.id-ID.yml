@@ -1,5 +1,6 @@
 expr_delete_select: Pilih ekspresi untuk dihapus
 expr_deleted: Ekspresi dihapus
+expr_edit_select: Pilih ekspresi untuk diedit
 expr_edited: Ekspresi Diedit
 expr_global_disabled: Ekspresi global sekarang dinonaktifkan di server ini.
 expr_global_enabled: Ekspresi global tidak lagi dinonaktifkan di server ini.
