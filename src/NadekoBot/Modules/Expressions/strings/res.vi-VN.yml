@@ -1,3 +1,4 @@
+expr_delete_select: Chon bieu thuc de xoa
 expr_deleted: Đã xóa biểu thức
 expr_edited: Đã chỉnh sửa biểu thức
 expr_global_disabled: Biểu thức toàn cục đã bị tắt trên server này.

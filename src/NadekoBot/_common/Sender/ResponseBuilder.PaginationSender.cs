@@ -129,8 +129,8 @@ public partial class ResponseBuilder
 
                 var cb = new ComponentBuilder();
                 left.AddTo(cb);
-                right.AddTo(cb);
                 extra?.AddTo(cb);
+                right.AddTo(cb);
                 
                 await smc.ModifyOriginalResponseAsync(x =>
                 {
@@ -144,8 +144,8 @@ public partial class ResponseBuilder
 
             var cb = new ComponentBuilder();
             left.AddTo(cb);
-            right.AddTo(cb);
             extra?.AddTo(cb);
+            right.AddTo(cb);
 
             var msg = await model.TargetChannel
                                  .SendMessageAsync(model.Text,

@@ -228,11 +228,11 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
     [Cmd]
     [UserPerm(GuildPerm.Administrator)]
     [RequireContext(ContextType.Guild)]
-    public async Task ExprDeleteServer(kwum id)
-        => await ExprDeleteInternalAsync(id);
+    public async Task ExprDeleteServer([Leftover] string input)
+        => await ExprDeleteByInputInternalAsync(input);
 
     [Cmd]
-    public async Task ExprDelete(kwum id)
+    public async Task ExprDelete([Leftover] string input)
     {
         if (!AdminInGuildOrOwnerInDm())
         {
@@ -240,7 +240,88 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
             return;
         }
 
-        await ExprDeleteInternalAsync(id);
+        await ExprDeleteByInputInternalAsync(input);
+    }
+
+    private async Task ExprDeleteByInputInternalAsync(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return;
+
+        var allExprs = _service.GetExpressionsFor(ctx.Guild?.Id);
+
+        var triggerMatches = allExprs
+            .Where(x => x.Trigger.Equals(input, StringComparison.OrdinalIgnoreCase));
+
+        var idMatch = kwum.TryParse(input, out var id)
+            ? _service.GetExpression(ctx.Guild?.Id, id)
+            : null;
+
+        var matches = triggerMatches
+            .Concat(idMatch is not null ? [idMatch] : [])
+            .DistinctBy(x => x.Id)
+            .ToArray();
+
+        if (matches.Length == 0)
+        {
+            await Response().Error(strs.expr_no_found).SendAsync();
+            return;
+        }
+
+        if (matches.Length == 1)
+        {
+            await ExprDeleteInternalAsync((kwum)matches[0].Id);
+            return;
+        }
+
+        await Response()
+            .Paginated()
+            .Items(matches)
+            .PageSize(1)
+            .Page((items, _) =>
+            {
+                var expr = items.FirstOrDefault();
+                if (expr is null)
+                    return CreateEmbed().WithErrorColor().WithDescription(GetText(strs.expr_no_found));
+
+                return CreateEmbed()
+                    .WithOkColor()
+                    .WithTitle(GetText(strs.expr_delete_select))
+                    .WithDescription($"#{(kwum)expr.Id}")
+                    .AddField(GetText(strs.trigger), expr.Trigger.TrimTo(1024))
+                    .AddField(GetText(strs.response), expr.Response.TrimTo(1024));
+            })
+            .Interaction(currentPage =>
+            {
+                var expr = matches.Skip(currentPage).FirstOrDefault();
+                if (expr is null)
+                    return Task.FromResult<NadekoInteractionBase>(null);
+
+                var inter = _inter.Create(ctx.User.Id,
+                    new ButtonBuilder()
+                        .WithStyle(ButtonStyle.Danger)
+                        .WithEmote(new Emoji("🗑️"))
+                        .WithCustomId("expr:delete"),
+                    async (smc) =>
+                    {
+                        await _service.DeleteAsync(ctx.Guild?.Id, expr.Id);
+                        await smc.Message.ModifyAsync(mp =>
+                        {
+                            mp.Embed = CreateEmbed()
+                                .WithOkColor()
+                                .WithTitle(GetText(strs.expr_deleted))
+                                .WithDescription($"#{(kwum)expr.Id}")
+                                .AddField(GetText(strs.trigger), expr.Trigger.TrimTo(1024))
+                                .AddField(GetText(strs.response), expr.Response.TrimTo(1024))
+                                .Build();
+                            mp.Components = new ComponentBuilder().Build();
+                        });
+                    },
+                    clearAfter: false);
+
+                return Task.FromResult(inter);
+            })
+            .SendAsync();
     }
 
     [Cmd]

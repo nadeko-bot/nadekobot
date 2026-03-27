@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text.Json;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
@@ -19,6 +20,7 @@ public sealed class CommandSearchService(
     private const string VOCAB_FILE = "vocab.txt";
     private const string COMMAND_LIST_PATH = "data/commandlist.json";
     private const string INTENT_HEAD_PATH = "data/ai/intent-head.bin";
+    private const string EMBEDDINGS_CACHE_PATH = "data/ai/command-embeddings.cache";
     private const int EMBEDDING_DIM = 384;
     private const int HIDDEN_DIM = 128;
     private const int NUM_CLASSES = 2;
@@ -80,15 +82,17 @@ public sealed class CommandSearchService(
                 return;
             }
 
+            var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
+            var cmdListHash = SHA256.HashData(cmdListBytes);
+
             Log.Information("CommandSearch: Loading command list...");
-            var commands = await LoadCommandListAsync();
+            var commands = LoadCommandList(cmdListBytes);
             if (commands.Length == 0)
             {
                 Log.Warning("CommandSearch: No commands found, semantic search disabled");
                 return;
             }
 
-            Log.Information("CommandSearch: Loaded {Count} commands, ensuring model is downloaded...", commands.Length);
             await EnsureModelDownloadedAsync();
 
             var modelPath = Path.Combine(MODEL_DIR, MODEL_FILE);
@@ -100,34 +104,122 @@ public sealed class CommandSearchService(
                 return;
             }
 
-            Log.Information("CommandSearch: Loading ONNX model and tokenizer...");
-            var sessionOptions = new SessionOptions();
-            sessionOptions.InterOpNumThreads = 1;
-            sessionOptions.IntraOpNumThreads = Math.Max(1, Environment.ProcessorCount / 2);
-            _session = new InferenceSession(modelPath, sessionOptions);
-            _tokenizer = BertTokenizer.Create(vocabPath);
+            EnsureOnnxLoaded(modelPath, vocabPath);
 
-            Log.Information("CommandSearch: Embedding {Count} commands...", commands.Length);
             var sw = System.Diagnostics.Stopwatch.StartNew();
-            var embeddings = new float[commands.Length][];
-            for (var i = 0; i < commands.Length; i++)
-                embeddings[i] = Embed(commands[i].SearchText);
 
-            sw.Stop();
+            if (TryLoadCachedEmbeddings(cmdListHash, commands.Length, out var cachedEmbeddings))
+            {
+                sw.Stop();
+                Log.Information("CommandSearch: Loaded {Count} cached embeddings in {Elapsed}ms",
+                    commands.Length, sw.ElapsedMilliseconds);
 
-            _commands = commands;
-            _embeddings = embeddings;
+                _commands = commands;
+                _embeddings = cachedEmbeddings;
+            }
+            else
+            {
+                Log.Information("CommandSearch: Embedding {Count} commands...", commands.Length);
+                sw.Restart();
+                var embeddings = new float[commands.Length][];
+                for (var i = 0; i < commands.Length; i++)
+                    embeddings[i] = Embed(commands[i].SearchText);
+
+                sw.Stop();
+
+                _commands = commands;
+                _embeddings = embeddings;
+
+                SaveCachedEmbeddings(cmdListHash, embeddings);
+
+                Log.Information("CommandSearch: Index ready - {Count} commands embedded in {Elapsed}ms",
+                    commands.Length, sw.ElapsedMilliseconds);
+            }
 
             LoadClassificationHead();
 
             _ready = true;
 
-            Log.Information("CommandSearch: Index ready - {Count} commands embedded in {Elapsed}ms, head={HeadReady}",
-                commands.Length, sw.ElapsedMilliseconds, _headReady);
+            Log.Information("CommandSearch: Ready, head={HeadReady}", _headReady);
         }
         catch (Exception ex)
         {
             Log.Error(ex, "CommandSearch: Failed to initialize");
+        }
+    }
+
+    private void EnsureOnnxLoaded(string modelPath, string vocabPath)
+    {
+        if (_session is not null)
+            return;
+
+        var sessionOptions = new SessionOptions();
+        sessionOptions.InterOpNumThreads = 1;
+        sessionOptions.IntraOpNumThreads = Math.Max(1, Environment.ProcessorCount / 2);
+        _session = new InferenceSession(modelPath, sessionOptions);
+        _tokenizer = BertTokenizer.Create(vocabPath);
+    }
+
+    private static bool TryLoadCachedEmbeddings(byte[] expectedHash, int commandCount, out float[][] embeddings)
+    {
+        embeddings = [];
+
+        if (!File.Exists(EMBEDDINGS_CACHE_PATH))
+            return false;
+
+        try
+        {
+            using var fs = File.OpenRead(EMBEDDINGS_CACHE_PATH);
+            using var reader = new BinaryReader(fs);
+
+            var storedHash = reader.ReadBytes(32);
+            if (!storedHash.AsSpan().SequenceEqual(expectedHash))
+                return false;
+
+            var count = reader.ReadInt32();
+            if (count != commandCount)
+                return false;
+
+            var result = new float[count][];
+            for (var i = 0; i < count; i++)
+            {
+                var vec = new float[EMBEDDING_DIM];
+                for (var j = 0; j < EMBEDDING_DIM; j++)
+                    vec[j] = reader.ReadSingle();
+                result[i] = vec;
+            }
+
+            embeddings = result;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "CommandSearch: Failed to load embedding cache, will re-embed");
+            return false;
+        }
+    }
+
+    private static void SaveCachedEmbeddings(byte[] hash, float[][] embeddings)
+    {
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(EMBEDDINGS_CACHE_PATH)!);
+
+            using var fs = File.Create(EMBEDDINGS_CACHE_PATH);
+            using var writer = new BinaryWriter(fs);
+
+            writer.Write(hash);
+            writer.Write(embeddings.Length);
+
+            for (var i = 0; i < embeddings.Length; i++)
+                for (var j = 0; j < EMBEDDING_DIM; j++)
+                    writer.Write(embeddings[i][j]);
+
+            Log.Information("CommandSearch: Saved embedding cache ({Size}KB)", fs.Length / 1024);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "CommandSearch: Failed to save embedding cache");
         }
     }
 
@@ -342,10 +434,9 @@ public sealed class CommandSearchService(
         return dot;
     }
 
-    private async Task<CommandEntry[]> LoadCommandListAsync()
+    private static CommandEntry[] LoadCommandList(byte[] jsonBytes)
     {
-        var json = await File.ReadAllTextAsync(COMMAND_LIST_PATH);
-        using var doc = JsonDocument.Parse(json);
+        using var doc = JsonDocument.Parse(jsonBytes);
 
         var entries = new List<CommandEntry>();
         foreach (var module in doc.RootElement.EnumerateObject())

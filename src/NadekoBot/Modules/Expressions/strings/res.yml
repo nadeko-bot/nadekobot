@@ -1,3 +1,4 @@
+expr_delete_select: Select expression to delete
 expr_deleted: Expression deleted
 expr_edited: Expression Edited
 expr_global_disabled: Global expressions are now disabled on this server.

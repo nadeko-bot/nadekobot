@@ -1,3 +1,4 @@
+expr_delete_select: Выберите выражение для удаления
 expr_deleted: ''
 expr_edited: ''
 expr_global_disabled: Глобальные выражения теперь отключены на этом сервере.

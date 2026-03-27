@@ -1,3 +1,4 @@
+expr_delete_select: 削除する式を選択してください
 expr_deleted: 式が削除されました
 expr_edited: 式が編集されました
 expr_global_disabled: このサーバーでグローバル式が無効になりました。

@@ -2132,9 +2132,10 @@
         ".exds",
         ".exdelserv"
       ],
-      "Description": "Deletes an expression on a specific index on this server. This command is useful if you want to lower the permission requirement for managing expressions by using `.dpo`.",
+      "Description": "Deletes an expression by ID or trigger on this server.\nThis command is useful if you want to lower the permission requirement for managing\nexpressions by using `.dpo`.\nIf multiple expressions match (by ID and trigger), shows a paginated list to select from.",
       "Usage": [
-        ".exprdelserv 5c"
+        ".exprdelserv 5c",
+        ".exprdelserv hello"
       ],
       "Submodule": "Expressions",
       "Module": "Expressions",
@@ -2150,9 +2151,10 @@
         ".exdel",
         ".dcr"
       ],
-      "Description": "Deletes an expression by index. If ran in DM, it is bot owner only and deletes a global expression. Running this command in a server requires the Administrator permission and deletes a server expression.",
+      "Description": "Deletes an expression by ID or trigger. If ran in DM, it is bot owner only and\ndeletes a global expression. Running this command in a server requires the\nAdministrator permission and deletes a server expression.\nIf multiple expressions match (by ID and trigger), shows a paginated list to select from.",
       "Usage": [
-        ".exprdel 5"
+        ".exprdel 5c",
+        ".exprdel hello"
       ],
       "Submodule": "Expressions",
       "Module": "Expressions",

@@ -1,3 +1,4 @@
+expr_delete_select: Pick which expression to delete already
 expr_deleted: Expression deleted.
 expr_edited: Expression edited. I made it better, obviously.
 expr_global_disabled: Global expressions are now disabled on this server.
@@ -5,10 +6,10 @@ expr_global_enabled: Global expressions are no longer disabled on this server.
 expr_insuff_perms: Insufficient permissions. Requires Bot ownership for global expressions, and Administrator for server expressions.
 expr_new: New Expression
 expr_no_found: No expression found.
-expr_reset: Expression with id {0} will no longer add reactions.
+expr_reset: 'Expression with id {0} will no longer add reactions.'
 expr_set: 'Expression with id {0} will add following reactions to the response message: {1}'
 expressions: Expressions
-exprs_cleared: All {0} expressions on this server have been removed. Hmph.
+exprs_cleared: 'All {0} expressions on this server have been removed. Hmph.'
 invalid_emojis: All emojis you've specified are invalid.
 option_disabled: '{0} option is now disabled for the expression with id {1}.'
 option_enabled: '{0} option is now enabled for the expression with id {1}.'

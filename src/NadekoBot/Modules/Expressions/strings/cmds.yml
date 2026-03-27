@@ -70,25 +70,29 @@ exprclear:
   params:
     - {}
 exprdelete:
-  desc: >-
-    Deletes an expression by index. If ran in DM, it is bot owner only and
+  desc: |-
+    Deletes an expression by ID or trigger. If ran in DM, it is bot owner only and
     deletes a global expression. Running this command in a server requires the
     Administrator permission and deletes a server expression.
-  ex:
-    - 5
-  params:
-    - id:
-        desc: The ID of the expression to delete.
-exprdeleteserver:
-  desc: >-
-    Deletes an expression on a specific index on this server. This command is
-    useful if you want to lower the permission requirement for managing
-    expressions by using `{0}dpo`.
+    If multiple expressions match (by ID and trigger), shows a paginated list to select from.
   ex:
     - 5c
+    - hello
   params:
-    - id:
-        desc: The ID of the expression to delete.
+    - input:
+        desc: "The expression ID or trigger text."
+exprdeleteserver:
+  desc: |-
+    Deletes an expression by ID or trigger on this server.
+    This command is useful if you want to lower the permission requirement for managing
+    expressions by using `{0}dpo`.
+    If multiple expressions match (by ID and trigger), shows a paginated list to select from.
+  ex:
+    - 5c
+    - hello
+  params:
+    - input:
+        desc: "The expression ID or trigger text."
 exprdm:
   desc: >-
     Toggles whether the response message of the expression will be sent as a

@@ -2,6 +2,19 @@
 
 *a,c,f,r,o,d*
 
+## [7.1.13] - 27.03.2026
+
+### Changed
+
+- `.exd` will now accept either a trigger or id
+    - if there are multiple expressions with the same trigger you will get a paginated prompt to pick which one to delete
+
+### Fixed
+
+- .onnx embedding for ai agent will be properly cached and won't re-do it every startup unless commands changed
+- Invidious playlist loading now uses the correct API endpoint
+- Fixed Invidious search queries with special characters
+
 ## [7.1.12] - 25.03.2026
 
 ### Added
@@ -18,8 +31,6 @@
 ### Fixed
 
 - Ai agent will now auto-disable if no api key is provided
-- Invidious playlist loading now uses the correct API endpoint (`/api/v1/playlists/:id` instead of search)
-- Invidious search queries with special characters no longer fail due to missing URL encoding
 
 ### Removed
 

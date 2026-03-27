@@ -1,3 +1,4 @@
+expr_delete_select: 选择要删除的表达式
 expr_deleted: 表達式已刪除
 expr_edited: 表達式編輯
 expr_global_disabled: 此伺服器上的全域表達式已停用。
