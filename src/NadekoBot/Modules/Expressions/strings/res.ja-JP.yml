@@ -7,6 +7,9 @@ expr_global_enabled: このサーバーでグローバル式が無効ではな�
 expr_insuff_perms: 権限が不足しています。グローバル式にはBot所有者権限、サーバー式には管理者権限が必要です。
 expr_new: 新しい式
 expr_no_found: 式が見つかりません。
+expr_override_disabled: ''
+expr_override_enabled: ''
+expr_search_results: '"{0}" の検索結果'
 expr_reset: 'ID {0}の式はリアクションを追加しなくなります。'
 expr_set: 'ID {0}の式は応答メッセージに以下のリアクションを追加します: {1}'
 expressions: 式

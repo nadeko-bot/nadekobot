@@ -13,7 +13,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 {
     public ConcurrentDictionary<ulong, LogSetting> GuildLogSettings { get; }
 
-    private ConcurrentDictionary<ITextChannel, List<string>> PresenceUpdates { get; } = new();
+    private ConcurrentDictionary<ITextChannel, System.Collections.Concurrent.ConcurrentQueue<string>> PresenceUpdates { get; } = new();
     private readonly DiscordSocketClient _client;
 
     private readonly IBotStrings _strings;
@@ -113,25 +113,13 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                           + GetText(logChannel.Guild,
                               strs.user_status_change("👤" + Format.Bold(gu.Username),
                                   Format.Bold(after.Status.ToString())));
-                PresenceUpdates.AddOrUpdate(logChannel,
-                    [str],
-                    (_, list) =>
-                    {
-                        list.Add(str);
-                        return list;
-                    });
+                PresenceUpdates.GetOrAdd(logChannel, _ => new System.Collections.Concurrent.ConcurrentQueue<string>()).Enqueue(str);
             }
             else if (before.Activities.FirstOrDefault()?.Name != after.Activities.FirstOrDefault()?.Name)
             {
                 var str =
                     $"👾`{PrettyCurrentTime(gu.Guild)}`👤__**{gu.Username}**__ is now playing **{after.Activities.FirstOrDefault()?.Name ?? "-"}**.";
-                PresenceUpdates.AddOrUpdate(logChannel,
-                    [str],
-                    (_, list) =>
-                    {
-                        list.Add(str);
-                        return list;
-                    });
+                PresenceUpdates.GetOrAdd(logChannel, _ => new System.Collections.Concurrent.ConcurrentQueue<string>()).Enqueue(str);
             }
         }
     }
@@ -885,13 +873,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 if (!string.IsNullOrWhiteSpace(str))
                 {
-                    PresenceUpdates.AddOrUpdate(logChannel,
-                        [str],
-                        (_, list) =>
-                        {
-                            list.Add(str);
-                            return list;
-                        });
+                    PresenceUpdates.GetOrAdd(logChannel, _ => new System.Collections.Concurrent.ConcurrentQueue<string>()).Enqueue(str);
                 }
             }
             catch
@@ -1367,6 +1349,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 break;
             case LogType.UserWarned:
                 newLogSetting.LogWarnsId = null;
+                break;
+            case LogType.ThreadCreated:
+                newLogSetting.ThreadCreatedId = null;
+                break;
+            case LogType.ThreadDeleted:
+                newLogSetting.ThreadDeletedId = null;
                 break;
         }
 

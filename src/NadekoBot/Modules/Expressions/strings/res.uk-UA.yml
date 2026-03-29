@@ -7,6 +7,9 @@ expr_global_enabled: Глобальні вирази більше не вимк�
 expr_insuff_perms: Недостатньо прав. Для глобальних виразів потрібне право власника бота, для серверних - Адміністратор.
 expr_new: Новий вираз
 expr_no_found: Вираз не знайдено.
+expr_override_disabled: ''
+expr_override_enabled: ''
+expr_search_results: 'Результати пошуку для "{0}"'
 expr_reset: 'Вираз з id {0} більше не додаватиме реакції.'
 expr_set: 'Вираз з id {0} додасть такі реакції до повідомлення-відповіді: {1}'
 expressions: Вирази

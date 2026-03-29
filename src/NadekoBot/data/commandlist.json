@@ -2044,6 +2044,22 @@
     },
     {
       "Aliases": [
+        ".exproverride",
+        ".exo"
+      ],
+      "Description": "?",
+      "Usage": [
+        ".exproverride"
+      ],
+      "Submodule": "Expressions",
+      "Module": "Expressions",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".expradds",
         ".exadds",
         ".exas",
@@ -2083,9 +2099,10 @@
         ".exedit",
         ".ecr"
       ],
-      "Description": "Edits the expression's response given its ID.",
+      "Description": "Edits the expression's response given its ID or trigger.\nIf multiple expressions match, shows a paginated list to select from.",
       "Usage": [
-        ".expredit 123 I'm a magical girl"
+        ".expredit 5c I'm a magical girl",
+        ".expredit hello Hi there!"
       ],
       "Submodule": "Expressions",
       "Module": "Expressions",
@@ -2112,14 +2129,28 @@
     },
     {
       "Aliases": [
-        ".exprshow",
-        ".exs",
-        ".exshow",
-        ".scr"
+        ".exprprint",
+        ".exp",
+        ".exprint"
       ],
-      "Description": "Shows an expression's response on a given ID.",
+      "Description": "?",
       "Usage": [
-        ".exprshow 1"
+        ".exprprint"
+      ],
+      "Submodule": "Expressions",
+      "Module": "Expressions",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".exprsearch",
+        ".exs",
+        ".exsearch"
+      ],
+      "Description": "?",
+      "Usage": [
+        ".exprsearch"
       ],
       "Submodule": "Expressions",
       "Module": "Expressions",

@@ -7,6 +7,9 @@ expr_global_enabled: Biểu thức toàn cục không còn bị tắt trên serv
 expr_insuff_perms: Không đủ quyền. Cần quyền chủ Bot cho biểu thức toàn cục, và quyền Quản trị viên cho biểu thức server.
 expr_new: Biểu thức mới
 expr_no_found: Không tìm thấy biểu thức.
+expr_override_disabled: ''
+expr_override_enabled: ''
+expr_search_results: 'Ket qua tim kiem cho "{0}"'
 expr_reset: 'Biểu thức với id {0} sẽ không còn thêm phản ứng nữa.'
 expr_set: 'Biểu thức với id {0} sẽ thêm các phản ứng sau vào tin nhắn phản hồi: {1}'
 expressions: Biểu thức

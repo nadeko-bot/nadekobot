@@ -45,16 +45,22 @@ exprlist:
   - exlist
   - exli
   - lcr
+exproverride:
+  - exproverride
+  - exo
 exprreact:
   - exreact
   - exr
 exprsexport:
   - exexport
-exprshow:
-  - exprshow
+exprprint:
+  - exprprint
+  - exp
+  - exprint
+exprsearch:
+  - exprsearch
   - exs
-  - exshow
-  - scr
+  - exsearch
 exprsimport:
   - eximport
 exprsreload:

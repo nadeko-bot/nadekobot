@@ -33,7 +33,7 @@ public static class NadekoExpressionExtensions
     private static bool IsValidWordDivider(this in ReadOnlySpan<char> str, int index)
     {
         var ch = str[index];
-        if (ch is >= 'a' and <= 'z' or >= 'A' and <= 'Z' or >= '1' and <= '9')
+        if (ch is >= 'a' and <= 'z' or >= 'A' and <= 'Z' or >= '0' and <= '9')
             return false;
 
         return true;

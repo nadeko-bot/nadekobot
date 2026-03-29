@@ -135,6 +135,15 @@ exprlist:
   params:
     - page:
         desc: The number of pages to display in the list.
+exoverride:
+  desc: >-
+    Toggles expression override mode. When enabled, adding a new expression
+    with a trigger that already exists will delete the old expression(s) with
+    that trigger and create a new one.
+  ex:
+    - ''
+  params:
+    - {}
 exprreact:
   desc: >-
     Sets or resets reactions (up to 3) which will be added to the response

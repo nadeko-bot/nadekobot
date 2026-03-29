@@ -7,6 +7,9 @@ expr_global_enabled: Globalne wyrażenia nie są już wyłączone na tym serwerz
 expr_insuff_perms: Niewystarczające uprawnienia. Wymaga bycia właścicielem bota dla globalnych wyrażeń i uprawnienia Administrator dla wyrażeń serwerowych.
 expr_new: Nowe wyrażenie
 expr_no_found: Nie znaleziono wyrażenia.
+expr_override_disabled: ''
+expr_override_enabled: ''
+expr_search_results: 'Wyniki wyszukiwania dla "{0}"'
 expr_reset: 'Wyrażenie o id {0} nie będzie już dodawać reakcji.'
 expr_set: 'Wyrażenie o id {0} doda następujące reakcje do wiadomości z odpowiedzią: {1}'
 expressions: Wyrażenia

@@ -45,6 +45,18 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
 
     [Cmd]
     [UserPerm(GuildPerm.Administrator)]
+    [RequireContext(ContextType.Guild)]
+    public async Task ExprOverride()
+    {
+        var newState = await _service.ToggleExpressionOverrideAsync(ctx.Guild.Id);
+        if (newState)
+            await Response().Confirm(strs.expr_override_enabled).SendAsync();
+        else
+            await Response().Confirm(strs.expr_override_disabled).SendAsync();
+    }
+
+    [Cmd]
+    [UserPerm(GuildPerm.Administrator)]
     public async Task ExprAddServer(string trigger, [Leftover] string response)
     {
         if (string.IsNullOrWhiteSpace(response) || string.IsNullOrWhiteSpace(trigger))
@@ -227,7 +239,7 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
     }
 
     [Cmd]
-    public async Task ExprShow(kwum id)
+    public async Task ExprPrint(kwum id)
     {
         var found = _service.GetExpression(ctx.Guild?.Id, id);
 
@@ -247,6 +259,48 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
                 .AddField(GetText(strs.trigger), found.Trigger.TrimTo(1024))
                 .AddField(GetText(strs.response),
                     found.Response.TrimTo(1000).Replace("](", "]\\(")))
+            .SendAsync();
+    }
+
+    [Cmd]
+    public async Task ExprSearch([Leftover] string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return;
+
+        var allExpressions = _service.GetExpressionsFor(ctx.Guild?.Id)
+            .Where(x => x.Trigger.Contains(query, StringComparison.OrdinalIgnoreCase)
+                        || x.Response.Contains(query, StringComparison.OrdinalIgnoreCase))
+            .OrderBy(x => x.Trigger)
+            .ToArray();
+
+        if (allExpressions.Length == 0)
+        {
+            await Response().Error(strs.expr_no_found).SendAsync();
+            return;
+        }
+
+        await Response()
+            .Paginated()
+            .Items(allExpressions)
+            .PageSize(20)
+            .Page((exprs, _) =>
+            {
+                var desc = exprs
+                    .Select(ex => $"{(ex.ContainsAnywhere ? "🗯" : "◾")}"
+                                  + $"{(ex.DmResponse ? "✉" : "◾")}"
+                                  + $"{(ex.AutoDeleteTrigger ? "❌" : "◾")}"
+                                  + $"`{(kwum)ex.Id}` {ex.Trigger}"
+                                  + (string.IsNullOrWhiteSpace(ex.Reactions)
+                                      ? string.Empty
+                                      : " // " + string.Join(" ", ex.GetReactions())))
+                    .Join('\n');
+
+                return CreateEmbed()
+                    .WithOkColor()
+                    .WithTitle(GetText(strs.expr_search_results(query)))
+                    .WithDescription(desc);
+            })
             .SendAsync();
     }
 

@@ -11,7 +11,7 @@ public sealed class StickyRolesService : INService, IReadyExecutor
     private readonly DiscordSocketClient _client;
     private readonly IBotCreds _creds;
     private readonly DbService _db;
-    private HashSet<ulong> _stickyRoles = new();
+    private ConcurrentHashSet<ulong> _stickyRoles = new();
 
     public StickyRolesService(
         DiscordSocketClient client,
@@ -28,7 +28,7 @@ public sealed class StickyRolesService : INService, IReadyExecutor
     {
         await using (var ctx = _db.GetDbContext())
         {
-            _stickyRoles = (await ctx
+            _stickyRoles = new(await ctx
                                   .Set<GuildConfig>()
                                   .ToLinqToDBTable()
                                   .Where(x => Queries.GuildOnShard(x.GuildId,
@@ -36,8 +36,7 @@ public sealed class StickyRolesService : INService, IReadyExecutor
                                       _client.ShardId))
                                   .Where(x => x.StickyRoles)
                                   .Select(x => x.GuildId)
-                                  .ToListAsync())
-                .ToHashSet();
+                                  .ToListAsync());
         }
 
         _client.UserJoined += ClientOnUserJoined;
@@ -130,7 +129,7 @@ public sealed class StickyRolesService : INService, IReadyExecutor
         }
         else
         {
-            _stickyRoles.Remove(guildId);
+            _stickyRoles.TryRemove(guildId);
         }
 
         return config.StickyRoles;

@@ -56,6 +56,7 @@ public class GuildConfig : DbEntity
     public WarnExpireAction WarnExpireAction { get; set; } = WarnExpireAction.Clear;
 
     public bool DisableGlobalExpressions { get; set; } = false;
+    public bool ExpressionOverrideEnabled { get; set; } = false;
 
     public bool StickyRoles { get; set; } = false;
 

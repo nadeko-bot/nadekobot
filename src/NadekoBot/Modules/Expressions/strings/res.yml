@@ -9,6 +9,13 @@ expr_insuff_perms: >-
   Administrator for server expressions.
 expr_new: New Expression
 expr_no_found: No expression found.
+expr_search_results: 'Search results for "{0}"'
+expr_override_disabled: |-
+  Expression override is now disabled. Adding an expression with an existing
+  trigger will create a duplicate.
+expr_override_enabled: |-
+  Expression override is now enabled. Adding an expression with an existing
+  trigger will replace the old one.
 expr_reset: Expression with id {0} will no longer add reactions.
 expr_set: >-
   Expression with id {0} will add following reactions to the response message:

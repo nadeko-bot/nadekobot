@@ -7,6 +7,9 @@ expr_global_enabled: Las expresiones globales ya no están desactivadas en este 
 expr_insuff_perms: Permisos insuficientes. Requiere ser dueño del bot para las expresiones globales, y de administrador para las expresiones del servidor.
 expr_new: Nueva expresión
 expr_no_found: No encontré expresiones.
+expr_override_disabled: ''
+expr_override_enabled: ''
+expr_search_results: 'Resultados de busqueda para "{0}"'
 expr_reset: 'Las expresiones con la ID {0} ya no agregarán reacciones.'
 expr_set: 'La expresión con la ID {0} añadirá las siguientes reacciones al mensaje de respuesta: {1}'
 expressions: Expresiones

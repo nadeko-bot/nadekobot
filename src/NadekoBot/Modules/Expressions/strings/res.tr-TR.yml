@@ -7,6 +7,9 @@ expr_global_enabled: Global ifadeler artık bu sunucuda devre dışı değil.
 expr_insuff_perms: Yetersiz izin. Global ifadeler için Bot sahipliği, sunucu ifadeleri için Yönetici izni gereklidir.
 expr_new: Yeni İfade
 expr_no_found: İfade bulunamadı.
+expr_override_disabled: ''
+expr_override_enabled: ''
+expr_search_results: '"{0}" icin arama sonuclari'
 expr_reset: '{0} id''li ifade artık tepki eklemeyecek.'
 expr_set: '{0} id''li ifade yanıt mesajına şu tepkileri ekleyecek: {1}'
 expressions: İfadeler

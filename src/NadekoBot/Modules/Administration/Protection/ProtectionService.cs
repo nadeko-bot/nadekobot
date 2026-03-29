@@ -137,9 +137,9 @@ public class ProtectionService : IReadyExecutor, INService
                 if (maybeStats is not { } stats || !stats.RaidUsers.Add(user))
                     return;
 
-                ++stats.UsersCount;
+                var count = stats.IncrementUsers();
 
-                if (stats.UsersCount >= stats.AntiRaidSettings.UserThreshold)
+                if (count >= stats.AntiRaidSettings.UserThreshold)
                 {
                     var users = stats.RaidUsers.ToArray();
                     foreach (var u in users)
@@ -155,7 +155,7 @@ public class ProtectionService : IReadyExecutor, INService
                 await Task.Delay(1000 * stats.AntiRaidSettings.Seconds);
 
                 stats.RaidUsers.TryRemove(user);
-                --stats.UsersCount;
+                stats.DecrementUsers();
             }
             catch
             {

@@ -1,4 +1,4 @@
-﻿#nullable disable
+﻿using LinqToDB;
 using Microsoft.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Common.Yml;
@@ -45,8 +45,6 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     public int Priority
         => 0;
 
-    private readonly object _gexprWriteLock = new();
-
     private readonly TypedKey<NadekoExpression> _gexprAddedKey = new("gexpr.added");
     private readonly TypedKey<int> _gexprDeletedkey = new("gexpr.deleted");
     private readonly TypedKey<NadekoExpression> _gexprEditedKey = new("gexpr.edited");
@@ -56,7 +54,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     // 1. expressions are almost never added (compared to how many times they are being looped through)
     // 2. only need write locks for this as we'll rebuild+replace the array on every edit
     // 3. there's never many of them (at most a thousand, usually < 100)
-    private NadekoExpression[] globalExpressions = Array.Empty<NadekoExpression>();
+    private volatile NadekoExpression[] globalExpressions = [];
     private ConcurrentDictionary<ulong, NadekoExpression[]> newguildExpressions = new();
 
     private readonly DbService _db;
@@ -70,8 +68,9 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     private readonly IReplacementService _repSvc;
     private readonly NadekoRandom _rng;
 
-    private bool _isReady;
+    private volatile bool _isReady;
     private ConcurrentHashSet<ulong> _disabledGlobalExpressionGuilds;
+    private ConcurrentHashSet<ulong> _expressionOverrideGuilds;
     private readonly PermissionService _pc;
     private readonly ShardData _shardData;
 
@@ -133,22 +132,24 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
                                                        .Select(x => x.GuildId)
                                                        .ToListAsyncLinqToDB());
 
-        lock (_gexprWriteLock)
-        {
-            var globalItems = uow.Set<NadekoExpression>()
-                                 .AsNoTracking()
-                                 .Where(x => x.GuildId == null || x.GuildId == 0)
-                                 .Where(x => x.Trigger != null)
-                                 .AsEnumerable()
-                                 .Select(x =>
-                                 {
-                                     x.Trigger = x.Trigger.Replace(MENTION_PH, _client.CurrentUser.Mention);
-                                     return x;
-                                 })
-                                 .ToArray();
+        _expressionOverrideGuilds = new(await uow.Set<GuildConfig>()
+                                                  .Where(x => x.ExpressionOverrideEnabled)
+                                                  .Select(x => x.GuildId)
+                                                  .ToListAsyncLinqToDB());
 
-            globalExpressions = globalItems;
-        }
+        var globalItems = uow.Set<NadekoExpression>()
+                             .AsNoTracking()
+                             .Where(x => x.GuildId == null || x.GuildId == 0)
+                             .Where(x => x.Trigger != null)
+                             .AsEnumerable()
+                             .Select(x =>
+                             {
+                                 x.Trigger = x.Trigger.Replace(MENTION_PH, _client.CurrentUser.Mention);
+                                 return x;
+                             })
+                             .ToArray();
+
+        globalExpressions = globalItems;
 
         _isReady = true;
     }
@@ -423,15 +424,19 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         }
         else
         {
-            lock (_gexprWriteLock)
+            var oldExprs = globalExpressions;
+            var newExprs = new NadekoExpression[oldExprs.Length];
+            Array.Copy(oldExprs, newExprs, oldExprs.Length);
+            for (var i = 0; i < newExprs.Length; i++)
             {
-                var exprs = globalExpressions;
-                for (var i = 0; i < exprs.Length; i++)
+                if (newExprs[i].Id == expr.Id)
                 {
-                    if (exprs[i].Id == expr.Id)
-                        exprs[i] = expr;
+                    newExprs[i] = expr;
+                    break;
                 }
             }
+
+            globalExpressions = newExprs;
         }
     }
 
@@ -453,18 +458,15 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         if (maybeGuildId is { } guildId)
         {
             newguildExpressions.AddOrUpdate(guildId,
-                Array.Empty<NadekoExpression>(),
+                [],
                 (key, old) => DeleteInternal(old, id, out _));
 
             return Task.CompletedTask;
         }
 
-        lock (_gexprWriteLock)
-        {
-            var expr = Array.Find(globalExpressions, item => item.Id == id);
-            if (expr is not null)
-                return _pubSub.Pub(_gexprDeletedkey, expr.Id);
-        }
+        var expr = Array.Find(globalExpressions, item => item.Id == id);
+        if (expr is not null)
+            return _pubSub.Pub(_gexprDeletedkey, expr.Id);
 
         return Task.CompletedTask;
     }
@@ -476,20 +478,25 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     {
         deleted = null;
         if (exprs is null || exprs.Count == 0)
-            return exprs as NadekoExpression[] ?? exprs?.ToArray();
+            return exprs as NadekoExpression[] ?? exprs?.ToArray() ?? [];
 
         var newExprs = new NadekoExpression[exprs.Count - 1];
-        for (int i = 0, k = 0; i < exprs.Count; i++, k++)
+        for (int i = 0, k = 0; i < exprs.Count; i++)
         {
             if (exprs[i].Id == id)
             {
                 deleted = exprs[i];
-                k--;
                 continue;
             }
 
-            newExprs[k] = exprs[i];
+            if (k < newExprs.Length)
+                newExprs[k] = exprs[i];
+
+            k++;
         }
+
+        if (deleted is null)
+            return exprs as NadekoExpression[] ?? exprs.ToArray();
 
         return newExprs;
     }
@@ -538,7 +545,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         return (true, newVal);
     }
 
-    public NadekoExpression GetExpression(ulong? guildId, int id)
+    public NadekoExpression? GetExpression(ulong? guildId, int id)
     {
         using var uow = _db.GetDbContext();
         var expr = uow.Set<NadekoExpression>().GetById(id);
@@ -642,46 +649,39 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
 
     private ValueTask OnGexprAdded(NadekoExpression c)
     {
-        lock (_gexprWriteLock)
-        {
-            var newGlobalReactions = new NadekoExpression[globalExpressions.Length + 1];
-            Array.Copy(globalExpressions, newGlobalReactions, globalExpressions.Length);
-            newGlobalReactions[globalExpressions.Length] = c;
-            globalExpressions = newGlobalReactions;
-        }
+        var old = globalExpressions;
+        var newGlobalReactions = new NadekoExpression[old.Length + 1];
+        Array.Copy(old, newGlobalReactions, old.Length);
+        newGlobalReactions[old.Length] = c;
+        globalExpressions = newGlobalReactions;
 
         return default;
     }
 
     private ValueTask OnGexprEdited(NadekoExpression c)
     {
-        lock (_gexprWriteLock)
-        {
-            for (var i = 0; i < globalExpressions.Length; i++)
-            {
-                if (globalExpressions[i].Id == c.Id)
-                {
-                    globalExpressions[i] = c;
-                    return default;
-                }
-            }
+        var oldExprs = globalExpressions;
+        var newExprs = new NadekoExpression[oldExprs.Length];
+        Array.Copy(oldExprs, newExprs, oldExprs.Length);
 
-            // if edited expr is not found?!
-            // add it
-            OnGexprAdded(c);
+        for (var i = 0; i < newExprs.Length; i++)
+        {
+            if (newExprs[i].Id == c.Id)
+            {
+                newExprs[i] = c;
+                globalExpressions = newExprs;
+                return default;
+            }
         }
 
+        // if edited expr is not found, add it
+        OnGexprAdded(c);
         return default;
     }
 
     private ValueTask OnGexprDeleted(int id)
     {
-        lock (_gexprWriteLock)
-        {
-            var newGlobalReactions = DeleteInternal(globalExpressions, id, out _);
-            globalExpressions = newGlobalReactions;
-        }
-
+        globalExpressions = DeleteInternal(globalExpressions, id, out _);
         return default;
     }
 
@@ -727,6 +727,16 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
 
         await using (var uow = _db.GetDbContext())
         {
+            if (guildId is { } gid && _expressionOverrideGuilds.Contains(gid))
+            {
+                var deleted = await uow.GetTable<NadekoExpression>()
+                    .Where(x => x.GuildId == gid && x.Trigger == key)
+                    .DeleteAsync();
+
+                if (deleted > 0)
+                    DeleteTriggerFromCache(gid, key);
+            }
+
             uow.Set<NadekoExpression>().Add(expr);
             await uow.SaveChangesAsync();
         }
@@ -817,22 +827,30 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         return toReturn;
     }
 
-
-    public async Task<(IReadOnlyCollection<NadekoExpression> Exprs, int TotalCount)> FindExpressionsAsync(
-        ulong guildId,
-        string query,
-        int page)
+    public async Task<bool> ToggleExpressionOverrideAsync(ulong guildId)
     {
         await using var ctx = _db.GetDbContext();
+        var gc = ctx.GuildConfigsForId(guildId, set => set);
+        var newState = gc.ExpressionOverrideEnabled = !gc.ExpressionOverrideEnabled;
+        await ctx.SaveChangesAsync();
 
-        if (newguildExpressions.TryGetValue(guildId, out var exprs))
-        {
-            return (exprs.Where(x => x.Trigger.Contains(query) || x.Response.Contains(query))
-                         .Skip(page * 9)
-                         .Take(9)
-                         .ToArray(), exprs.Length);
-        }
+        if (newState)
+            _expressionOverrideGuilds.Add(guildId);
+        else
+            _expressionOverrideGuilds.TryRemove(guildId);
 
-        return ([], 0);
+        return newState;
+    }
+
+    private void DeleteTriggerFromCache(ulong guildId, string trigger)
+    {
+        newguildExpressions.AddOrUpdate(guildId,
+            Array.Empty<NadekoExpression>(),
+            (_, old) =>
+            {
+                var triggerLower = trigger.ToLowerInvariant();
+                return old.Where(x => !string.Equals(x.Trigger, triggerLower, StringComparison.OrdinalIgnoreCase))
+                          .ToArray();
+            });
     }
 }

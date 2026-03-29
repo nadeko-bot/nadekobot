@@ -2,6 +2,23 @@
 
 *a,c,f,r,o,d*
 
+## WIP
+
+
+## [7.1.14] - 29.03.2026
+
+### Added
+
+- `.exo` / `.exoverride` - toggle expression override mode per server. When enabled, adding an expression with a trigger that already exists will replace the old one(s) instead of creating a duplicate.
+- `.exs` added - searches for expressions based on trigger or content
+
+### Changed
+
+- `.exe` will now accept either a trigger or id
+    - if there are multiple expressions with the same trigger you will get a paginated prompt to pick which one to edit
+- Old `.exs` (show) was renamed to `.exp` (print).
+    - `.exs` is now search.
+
 ## [7.1.13] - 27.03.2026
 
 ### Changed

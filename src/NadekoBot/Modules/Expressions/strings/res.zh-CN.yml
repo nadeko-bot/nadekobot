@@ -7,6 +7,9 @@ expr_global_enabled: 此伺服器上的全域表達式不再停用。
 expr_insuff_perms: 權限不足。全局表達式需要 Bot 所有權，伺服器表達式需要管理員。
 expr_new: 新表達
 expr_no_found: 未找到表達式。
+expr_override_disabled: ''
+expr_override_enabled: ''
+expr_search_results: '搜索 "{0}" 的结果'
 expr_reset: 'ID 為 {0} 的表達式將不再添加反應。'
 expr_set: 'ID 為 {0} 的表達式將在響應消息中添加以下反應：{1}'
 expressions: 表達式

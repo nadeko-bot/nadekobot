@@ -362,53 +362,60 @@ public class MuteService : INService, IReadyExecutor
         //unmute timer to be added
         var toAdd = new Timer(async _ =>
             {
-                if (type == TimerType.Ban)
+                try
                 {
-                    try
+                    if (type == TimerType.Ban)
                     {
-                        await RemoveTimerFromDb(guildId, userId, type);
-                        StopTimer(guildId, userId, type);
-                        var guild = _client.GetGuild(guildId); // load the guild
-                        if (guild is not null)
-                            await guild.RemoveBanAsync(userId);
+                        try
+                        {
+                            await RemoveTimerFromDb(guildId, userId, type);
+                            StopTimer(guildId, userId, type);
+                            var guild = _client.GetGuild(guildId); // load the guild
+                            if (guild is not null)
+                                await guild.RemoveBanAsync(userId);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Warning(ex, "Couldn't unban user {UserId} in guild {GuildId}", userId, guildId);
+                        }
                     }
-                    catch (Exception ex)
+                    else if (type == TimerType.AddRole)
                     {
-                        Log.Warning(ex, "Couldn't unban user {UserId} in guild {GuildId}", userId, guildId);
-                    }
-                }
-                else if (type == TimerType.AddRole)
-                {
-                    try
-                    {
-                        if (roleId is null)
-                            return;
+                        try
+                        {
+                            if (roleId is null)
+                                return;
 
-                        await RemoveTimerFromDb(guildId, userId, type);
-                        StopTimer(guildId, userId, type);
-                        var guild = _client.GetGuild(guildId);
-                        var user = guild?.GetUser(userId);
-                        var role = guild?.GetRole(roleId.Value);
-                        if (guild is not null && user is not null && user.Roles.Contains(role))
-                            await user.RemoveRoleAsync(role);
+                            await RemoveTimerFromDb(guildId, userId, type);
+                            StopTimer(guildId, userId, type);
+                            var guild = _client.GetGuild(guildId);
+                            var user = guild?.GetUser(userId);
+                            var role = guild?.GetRole(roleId.Value);
+                            if (guild is not null && user is not null && user.Roles.Contains(role))
+                                await user.RemoveRoleAsync(role);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Warning(ex, "Couldn't remove role from user {UserId} in guild {GuildId}", userId, guildId);
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Log.Warning(ex, "Couldn't remove role from user {UserId} in guild {GuildId}", userId, guildId);
+                        try
+                        {
+                            await UnmuteUser(guildId, userId, _client.CurrentUser, reason: "Timed mute expired");
+                        }
+                        catch (Exception ex)
+                        {
+                            try { await RemoveTimerFromDb(guildId, userId, type); }
+                            catch (Exception ex2) { Log.Warning(ex2, "Couldn't remove timer from db for user {UserId} in guild {GuildId}", userId, guildId); }
+                            Log.Warning(ex, "Couldn't unmute user {UserId} in guild {GuildId}", userId, guildId);
+                        }
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        // unmute the user, this will also remove the timer from the db
-                        await UnmuteUser(guildId, userId, _client.CurrentUser, reason: "Timed mute expired");
-                    }
-                    catch (Exception ex)
-                    {
-                        await RemoveTimerFromDb(guildId, userId, type); // if unmute errored, just remove unmute from db
-                        Log.Warning(ex, "Couldn't unmute user {UserId} in guild {GuildId}", userId, guildId);
-                    }
+                    Log.Error(ex, "Unhandled error in un-timer callback for user {UserId} in guild {GuildId}", userId, guildId);
                 }
             },
             null,

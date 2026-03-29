@@ -13,8 +13,15 @@ public enum ProtectionType
 public class AntiRaidStats
 {
     public AntiRaidSetting AntiRaidSettings { get; set; }
-    public int UsersCount { get; set; }
+    private int _usersCount;
+    public int UsersCount => _usersCount;
     public ConcurrentHashSet<IGuildUser> RaidUsers { get; set; } = new();
+
+    public int IncrementUsers()
+        => Interlocked.Increment(ref _usersCount);
+
+    public int DecrementUsers()
+        => Interlocked.Decrement(ref _usersCount);
 }
 
 public class AntiSpamStats
