@@ -216,6 +216,18 @@ public partial class Utility : NadekoModule
 
     [Cmd]
     [RequireContext(ContextType.Guild)]
+    [Priority(2)]
+    public Task InRole(int page, [Leftover] IRole role)
+        => InRole(page, new[] { role });
+
+    [Cmd]
+    [RequireContext(ContextType.Guild)]
+    [Priority(3)]
+    public Task InRole([Leftover] IRole role)
+        => InRole(1, new[] { role });
+
+    [Cmd]
+    [RequireContext(ContextType.Guild)]
     public async Task CheckPerms(MeOrBot who = MeOrBot.Me)
     {
         var user = who == MeOrBot.Me ? (IGuildUser)ctx.User : ((SocketGuild)ctx.Guild).CurrentUser;

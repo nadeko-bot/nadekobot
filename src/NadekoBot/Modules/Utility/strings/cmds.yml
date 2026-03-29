@@ -132,6 +132,7 @@ inrole:
     Lists every person from the specified role(s) on this server. When multiple roles are specified, shows users who have ALL of them. You can specify a page number as the first argument. Provide no role to list users who have no roles.
   ex:
     - RoleName
+    - Some Multi Word Role
     - 5 RoleName
     - ''
     - '@Moderator @VIP'
@@ -139,10 +140,16 @@ inrole:
   params:
     - page:
         desc: "The starting page number for the result set."
+      role:
+        desc: "The role to filter by."
+    - role:
+        desc: "The role to filter by."
+    - page:
+        desc: "The starting page number for the result set."
       roles:
-        desc: "One or more roles to filter by. Users must have ALL specified roles."
+        desc: "One or more roles to filter by (use mentions). Users must have ALL specified roles."
     - roles:
-        desc: "One or more roles to filter by. Users must have ALL specified roles."
+        desc: "One or more roles to filter by (use mentions). Users must have ALL specified roles."
 ping:
   desc: Ping the bot to see if there are latency issues.
   ex:

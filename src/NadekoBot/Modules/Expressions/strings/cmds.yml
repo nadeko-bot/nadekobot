@@ -1,63 +1,42 @@
 exprad:
-  desc: >-
-    Toggles whether the message triggering the expression will be automatically
-    deleted.
+  desc: "Toggles whether the message triggering the expression will be automatically deleted."
   ex:
     - 59
   params:
     - id:
         desc: The ID of a message that should be affected by this toggle.
 expradd:
-  desc: >-
+  desc: |-
     Add an expression with a trigger and a response.
-
     Bot will post a response whenever someone types the trigger word.
-
     Running this command in a server requires the Administrator permission.
-
-    Running this command in DM is Bot Owner only and adds a new global
-    expression.
+    Running this command in DM is Bot Owner only and adds a new global expression.
   ex:
     - '"hello" Hi there %user.mention%'
   params:
     - response:
-        desc: >-
-          The text of the message that shows up when a user types the trigger
-          word or phrase.
+        desc: "The text of the message that shows up when a user types the trigger word or phrase."
       trigger:
         desc: The trigger word or phrase (phrase must be in quotes).
 expraddserver:
-  desc: >-
-    Add an expression with a trigger and a response in this server. Bot will
-    post a response whenever someone types the trigger word. This command is
-    useful if you want to lower the permission requirement for managing
-    expressions by using `{0}dpo`.
+  desc: |-
+    Add an expression with a trigger and a response in this server. Bot will post a response whenever someone types the trigger word. This command is useful if you want to lower the permission requirement for managing expressions by using `{0}dpo`.
   ex:
     - '"hello" Hi there %user.mention%'
   params:
     - response:
-        desc: >-
-          The text of the message that shows up when a user types the trigger
-          word or phrase.
+        desc: "The text of the message that shows up when a user types the trigger word or phrase."
       trigger:
         desc: The trigger word or phrase (phrase must be in quotes).
 exprat:
-  desc: >-
-    Toggles whether the expression will allow extra input after the trigger. For
-    example, with this feature enabled, expression with trigger 'hi' will also
-    be invoked when a user types 'hi there'. This feature is automatically
-    enabled on expressions which have '%target%' in their response.
+  desc: "Toggles whether the expression will allow extra input after the trigger. For example, with this feature enabled, expression with trigger 'hi' will also be invoked when a user types 'hi there'. This feature is automatically enabled on expressions which have '%target%' in their response."
   ex:
     - 59
   params:
     - id:
-        desc: >-
-          The ID of the expression to toggle this feature for. It determines
-          which expression's behavior will be modified by this setting.
+        desc: "The ID of the expression to toggle this feature for. It determines which expression's behavior will be modified by this setting."
 exprca:
-  desc: >-
-    Toggles whether the expression will trigger if the triggering message
-    contains the keyword (instead of only starting with it).
+  desc: "Toggles whether the expression will trigger if the triggering message contains the keyword (instead of only starting with it)."
   ex:
     - 44
   params:
@@ -71,9 +50,7 @@ exprclear:
     - {}
 exprdelete:
   desc: |-
-    Deletes an expression by ID or trigger. If ran in DM, it is bot owner only and
-    deletes a global expression. Running this command in a server requires the
-    Administrator permission and deletes a server expression.
+    Deletes an expression by ID or trigger. If ran in DM, it is bot owner only and deletes a global expression. Running this command in a server requires the Administrator permission and deletes a server expression.
     If multiple expressions match (by ID and trigger), shows a paginated list to select from.
   ex:
     - 5c
@@ -84,8 +61,7 @@ exprdelete:
 exprdeleteserver:
   desc: |-
     Deletes an expression by ID or trigger on this server.
-    This command is useful if you want to lower the permission requirement for managing
-    expressions by using `{0}dpo`.
+    This command is useful if you want to lower the permission requirement for managing expressions by using `{0}dpo`.
     If multiple expressions match (by ID and trigger), shows a paginated list to select from.
   ex:
     - 5c
@@ -94,9 +70,7 @@ exprdeleteserver:
     - input:
         desc: "The expression ID or trigger text."
 exprdm:
-  desc: >-
-    Toggles whether the response message of the expression will be sent as a
-    direct message.
+  desc: "Toggles whether the response message of the expression will be sent as a direct message."
   ex:
     - 44
   params:
@@ -115,39 +89,34 @@ expredit:
       message:
         desc: "The text that will replace the original response."
 exprlist:
-  desc: >-
+  desc: |-
     Lists global or server expressions (20 expressions per page).
-
-    Running the command in DM will list global expressions, while running it in
-    a server will list server expressions.
-
+    Running the command in DM will list global expressions, while running it in a server will list server expressions.
     Shows enabled settings, followed by id, followed by the trigger.
-
     **Settings:** 
-
     • 🗯️ Triggered if trigger matches any phrase (`{0}h exca`)
-
     • ✉️ Response will be DMed (`{0}h exdm`)
-
     • ❌ Trigger message will be deleted (`{0}h exad`)
   ex:
     - 1
   params:
     - page:
         desc: The number of pages to display in the list.
-exoverride:
-  desc: >-
-    Toggles expression override mode. When enabled, adding a new expression
-    with a trigger that already exists will delete the old expression(s) with
-    that trigger and create a new one.
+exproverride:
+  desc: "Toggles expression override mode. When enabled, adding a new expression with a trigger that already exists will delete the old expression(s) with that trigger and create a new one."
   ex:
     - ''
   params:
     - {}
+exprprint:
+  desc: Shows an expression's response on a given ID.
+  ex:
+    - 1
+  params:
+    - id:
+        desc: The expression ID to show.
 exprreact:
-  desc: >-
-    Sets or resets reactions (up to 3) which will be added to the response
-    message of the Expression with the specified ID. Provide no emojis to reset.
+  desc: "Sets or resets reactions (up to 3) which will be added to the response message of the Expression with the specified ID. Provide no emojis to reset."
   ex:
     - '59 👍 👎 '
     - 59 <a:nFlower:408963839191941120>
@@ -157,37 +126,28 @@ exprreact:
         desc: The set of emojis that can be used to react to the expression.
       id:
         desc: The ID of the expression.
+exprsearch:
+  desc: "Searches expressions by trigger or response text. Lists all matching expressions with their IDs and settings."
+  ex:
+    - hello
+  params:
+    - query:
+        desc: "The text to search for in expression triggers and responses."
 exprsexport:
-  desc: >-
-    Exports expressions from the current server (or global expressions in DMs)
-    into a .yml file
+  desc: "Exports expressions from the current server (or global expressions in DMs) into a .yml file"
   ex:
     - ''
   params:
     - {}
-exprshow:
-  desc: Shows an expression's response on a given ID.
-  ex:
-    - 1
-  params:
-    - id:
-        desc: The expression ID to show.
 exprsimport:
-  desc: >-
-    Upload the file or send the raw .yml data with this command to import all
-    expressions from the specified string or file into the current server (or as
-    global expressions in dm)
+  desc: "Upload the file or send the raw .yml data with this command to import all expressions from the specified string or file into the current server (or as global expressions in dm)"
   ex:
     - <upload .yml file>
   params:
     - input:
-        desc: >-
-          The path to a file containing YAML data or a raw YAML string to be
-          imported.
+        desc: "The path to a file containing YAML data or a raw YAML string to be imported."
 exprsreload:
-  desc: >-
-    Reloads all expressions on all shards. Use this if you've made changes to
-    the database while the bot is running, or used `{0}deleteunusedcrnq`
+  desc: "Reloads all expressions on all shards. Use this if you've made changes to the database while the bot is running, or used `{0}deleteunusedcrnq`"
   ex:
     - ''
   params:

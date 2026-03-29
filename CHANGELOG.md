@@ -2,10 +2,7 @@
 
 *a,c,f,r,o,d*
 
-## WIP
-
-
-## [7.1.14] - 29.03.2026
+## [7.1.15] - 29.03.2026
 
 ### Added
 
@@ -18,6 +15,10 @@
     - if there are multiple expressions with the same trigger you will get a paginated prompt to pick which one to edit
 - Old `.exs` (show) was renamed to `.exp` (print).
     - `.exs` is now search.
+
+### Fixed
+
+- `.inrole` now works with multi-word role names without having to add double quotes
 
 ## [7.1.13] - 27.03.2026
 
