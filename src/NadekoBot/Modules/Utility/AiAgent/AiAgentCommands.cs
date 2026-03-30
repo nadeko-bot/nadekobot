@@ -9,9 +9,14 @@ public partial class Utility
     {
         [Cmd]
         [RequireContext(ContextType.Guild)]
-        [OwnerOnly]
         public async Task Agent([Leftover] string query)
         {
+            if (!await _service.IsAllowedAsync(ctx.User))
+            {
+                await Response().Error(strs.agent_not_allowed).SendAsync();
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(query))
             {
                 await Response().Error(strs.agent_no_query).SendAsync();
@@ -23,9 +28,14 @@ public partial class Utility
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
-        [OwnerOnly]
         public async Task AgentCancel()
         {
+            if (!await _service.IsAllowedAsync(ctx.User))
+            {
+                await Response().Error(strs.agent_not_allowed).SendAsync();
+                return;
+            }
+
             if (_service.CancelSession(ctx.User.Id))
                 await Response().Confirm(strs.agent_cancelled).SendAsync();
             else

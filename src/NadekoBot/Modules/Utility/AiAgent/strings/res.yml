@@ -1,3 +1,4 @@
 agent_no_query: "You must provide a prompt for the AI agent."
 agent_cancelled: "Your agent session has been cancelled."
 agent_no_session: "You don't have an active agent session to cancel."
+agent_not_allowed: "You don't have permission to use the AI agent."

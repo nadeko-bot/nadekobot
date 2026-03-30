@@ -1,10 +1,11 @@
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Modules.Administration;
+using NadekoBot.Modules.Patronage;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
 /// <summary>
-/// Orchestrates AI agent invocations. Owner-only during alpha.
+/// Orchestrates AI agent invocations. Available to owner and active patrons.
 /// </summary>
 public sealed class AiAgentService(
     IAiAgentSession agentSession,
@@ -14,11 +15,14 @@ public sealed class AiAgentService(
     ConversationWindowTracker conversationTracker,
     IBotCredsProvider credsProvider,
     DiscordSocketClient client,
-    IMessageSenderService sender) : INService, IExecOnMessage, IExecNoCommand, IReadyExecutor
+    IMessageSenderService sender,
+    IPatronageService patronageService,
+    PatronageConfig patronageConfig) : INService, IExecOnMessage, IExecNoCommand, IReadyExecutor
 {
     private readonly ConcurrentDictionary<ulong, CancellationTokenSource> _activeSessions = new();
     private readonly ConcurrentDictionary<ulong, System.Collections.Concurrent.ConcurrentQueue<QueuedMessage>> _pendingMessages = new();
     private readonly ConcurrentDictionary<ulong, ChannelMessageBuffer> _channelBuffers = new();
+    private readonly ConcurrentDictionary<ulong, (bool Allowed, DateTime ExpiresUtc)> _allowedCache = new();
 
     private sealed record QueuedMessage(IGuild Guild, ITextChannel Channel, IUserMessage Message, string Text);
 
@@ -67,6 +71,13 @@ public sealed class AiAgentService(
                     if (!_activeSessions.ContainsKey(userId))
                         _pendingMessages.TryRemove(userId, out _);
                 }
+
+                var now = DateTime.UtcNow;
+                foreach (var (userId, entry) in _allowedCache)
+                {
+                    if (entry.ExpiresUtc <= now)
+                        _allowedCache.TryRemove(userId, out _);
+                }
             }
             catch (Exception ex)
             {
@@ -103,29 +114,34 @@ public sealed class AiAgentService(
         if (msg is DoAsUserMessage || msg.Author.IsBot)
             return false;
 
-        if (!credsProvider.GetCreds().IsOwner(msg.Author))
-            return false;
-
         var nadekoId = client.CurrentUser.Id;
 
         var normalMention = $"<@{nadekoId}>";
         var nickMention = $"<@!{nadekoId}>";
 
+        string? query = null;
+
         if (msg.Content.StartsWith(normalMention, StringComparison.InvariantCulture))
         {
-            var query = msg.Content[normalMention.Length..].Trim();
-            if (!string.IsNullOrWhiteSpace(query))
-                return await TryRunAgentAsync(guild, channel, msg, query);
+            var q = msg.Content[normalMention.Length..].Trim();
+            if (!string.IsNullOrWhiteSpace(q))
+                query = q;
         }
 
-        if (msg.Content.StartsWith(nickMention, StringComparison.InvariantCulture))
+        if (query is null && msg.Content.StartsWith(nickMention, StringComparison.InvariantCulture))
         {
-            var query = msg.Content[nickMention.Length..].Trim();
-            if (!string.IsNullOrWhiteSpace(query))
-                return await TryRunAgentAsync(guild, channel, msg, query);
+            var q = msg.Content[nickMention.Length..].Trim();
+            if (!string.IsNullOrWhiteSpace(q))
+                query = q;
         }
 
-        return false;
+        if (query is null)
+            return false;
+
+        if (!await IsAllowedAsync(msg.Author))
+            return false;
+
+        return await TryRunAgentAsync(guild, channel, msg, query);
     }
 
     /// <summary>
@@ -153,9 +169,6 @@ public sealed class AiAgentService(
         if (msg is DoAsUserMessage || msg.Author.IsBot)
             return;
 
-        if (!credsProvider.GetCreds().IsOwner(msg.Author))
-            return;
-
         var config = configService.Data;
         var nadekoId = client.CurrentUser.Id;
 
@@ -165,6 +178,9 @@ public sealed class AiAgentService(
             var query = msg.Content.Trim();
             if (!string.IsNullOrWhiteSpace(query))
             {
+                if (!await IsAllowedAsync(msg.Author))
+                    return;
+
                 await TryRunAgentAsync(guild, channel, msg, query);
                 return;
             }
@@ -181,6 +197,9 @@ public sealed class AiAgentService(
 
             if (searchService.IsCommandIntent(textForClassification))
             {
+                if (!await IsAllowedAsync(msg.Author))
+                    return;
+
                 await TryRunAgentAsync(guild, channel, msg, query);
                 return;
             }
@@ -211,6 +230,9 @@ public sealed class AiAgentService(
                 var normalized = NormalizeBotName(msg.Content, matchedName);
                 if (!string.IsNullOrWhiteSpace(normalized) && searchService.IsCommandIntent(normalized))
                 {
+                    if (!await IsAllowedAsync(msg.Author))
+                        return;
+
                     var query = StripBotName(msg.Content, matchedName).Trim();
                     await TryRunAgentAsync(guild, channel, msg, query);
                     return;
@@ -569,6 +591,29 @@ public sealed class AiAgentService(
         var creds = credsProvider.GetCreds();
         return !string.IsNullOrWhiteSpace(creds.NadekoAiToken)
                || !string.IsNullOrWhiteSpace(creds.AiApiKey);
+    }
+
+    /// <summary>
+    /// Checks if a user is allowed to use the AI agent.
+    /// Owner is always allowed. When patronage is enabled, active patrons are also allowed.
+    /// Results are cached for 1 minute to avoid DB queries on every message.
+    /// </summary>
+    public async Task<bool> IsAllowedAsync(IUser user)
+    {
+        if (credsProvider.GetCreds().IsOwner(user))
+            return true;
+
+        if (!patronageConfig.Data.IsEnabled)
+            return false;
+
+        var now = DateTime.UtcNow;
+        if (_allowedCache.TryGetValue(user.Id, out var cached) && cached.ExpiresUtc > now)
+            return cached.Allowed;
+
+        var patron = await patronageService.GetPatronAsync(user.Id);
+        var allowed = patron is { IsActive: true };
+        _allowedCache[user.Id] = (allowed, now.AddMinutes(1));
+        return allowed;
     }
 
     /// <summary>

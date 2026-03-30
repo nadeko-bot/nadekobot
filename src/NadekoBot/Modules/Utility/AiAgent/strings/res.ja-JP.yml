@@ -1,3 +1,4 @@
 agent_no_query: AIエージェントにプロンプトを入力してください。
 agent_cancelled: エージェントセッションがキャンセルされました。
 agent_no_session: キャンセルするアクティブなエージェントセッションがありません。
+agent_not_allowed: AIエージェントを使用する権限がありません。
