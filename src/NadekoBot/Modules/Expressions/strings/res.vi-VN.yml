@@ -7,10 +7,13 @@ expr_global_enabled: Biểu thức toàn cục không còn bị tắt trên serv
 expr_insuff_perms: Không đủ quyền. Cần quyền chủ Bot cho biểu thức toàn cục, và quyền Quản trị viên cho biểu thức server.
 expr_new: Biểu thức mới
 expr_no_found: Không tìm thấy biểu thức.
-expr_override_confirm: |-
-  Ban co chac muon bat/tat che do ghi de bieu thuc khong?
-  Khi bat, them bieu thuc voi trigger da ton tai se xoa cai cu va thay the bang cai moi.
+expr_override_disable_confirm: |-
+  Ban co chac muon tat che do ghi de bieu thuc khong?
+  Them bieu thuc voi trigger da ton tai se tao ra ban sao.
 expr_override_disabled: ''
+expr_override_enable_confirm: |-
+  Ban co chac muon bat che do ghi de bieu thuc khong?
+  Them bieu thuc voi trigger da ton tai se xoa cai cu va thay the bang cai moi.
 expr_override_enabled: ''
 expr_search_results: 'Ket qua tim kiem cho "{0}"'
 expr_reset: 'Biểu thức với id {0} sẽ không còn thêm phản ứng nữa.'

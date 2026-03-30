@@ -7,10 +7,13 @@ expr_global_enabled: Expressões globais não estão mais desativadas neste serv
 expr_insuff_perms: Permissões insuficientes. Apenas o proprietário do bot para expressões globais e um Administrador para expressões em um servidor.
 expr_new: Nova expressão
 expr_no_found: Nenhuma expressão encontrada.
-expr_override_confirm: |-
-  Tem certeza de que quer alternar o modo de substituição de expressões?
-  Quando ativado, adicionar uma expressão com um gatilho existente vai deletar a antiga e substituir por uma nova.
+expr_override_disable_confirm: |-
+  Tem certeza de que quer desativar o modo de substituição de expressões?
+  Adicionar uma expressão com um gatilho existente vai criar duplicatas.
 expr_override_disabled: ''
+expr_override_enable_confirm: |-
+  Tem certeza de que quer ativar o modo de substituição de expressões?
+  Adicionar uma expressão com um gatilho existente vai deletar a antiga e substituir por uma nova.
 expr_override_enabled: ''
 expr_search_results: 'Resultados da busca por "{0}"'
 expr_reset: 'A expressão com o id {0} não adicionará mas reações.'

@@ -7,10 +7,13 @@ expr_global_enabled: Global ifadeler artık bu sunucuda devre dışı değil.
 expr_insuff_perms: Yetersiz izin. Global ifadeler için Bot sahipliği, sunucu ifadeleri için Yönetici izni gereklidir.
 expr_new: Yeni İfade
 expr_no_found: İfade bulunamadı.
-expr_override_confirm: |-
-  Ifade degistirme modunu acip kapatmak istedigin emin misin?
-  Acik oldugunda, mevcut bir tetikleyiciye sahip bir ifade eklemek eskisini silip yenisiyle degistirecek.
+expr_override_disable_confirm: |-
+  Ifade degistirme modunu kapatmak istedigin emin misin?
+  Mevcut bir tetikleyiciye sahip bir ifade eklemek kopya olusturacak.
 expr_override_disabled: ''
+expr_override_enable_confirm: |-
+  Ifade degistirme modunu acmak istedigin emin misin?
+  Mevcut bir tetikleyiciye sahip bir ifade eklemek eskisini silip yenisiyle degistirecek.
 expr_override_enabled: ''
 expr_search_results: '"{0}" icin arama sonuclari'
 expr_reset: '{0} id''li ifade artık tepki eklemeyecek.'

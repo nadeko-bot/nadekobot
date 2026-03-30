@@ -7,10 +7,13 @@ expr_global_enabled: Globalne wyrażenia nie są już wyłączone na tym serwerz
 expr_insuff_perms: Niewystarczające uprawnienia. Wymaga bycia właścicielem bota dla globalnych wyrażeń i uprawnienia Administrator dla wyrażeń serwerowych.
 expr_new: Nowe wyrażenie
 expr_no_found: Nie znaleziono wyrażenia.
-expr_override_confirm: |-
-  Czy na pewno chcesz przelaczac tryb nadpisywania wyrazen?
-  Po wlaczeniu dodanie wyrazenia z istniejacym triggerem usunie stare i zastapi je nowym.
+expr_override_disable_confirm: |-
+  Czy na pewno chcesz wylaczyc tryb nadpisywania wyrazen?
+  Dodanie wyrazenia z istniejacym triggerem utworzy duplikat.
 expr_override_disabled: ''
+expr_override_enable_confirm: |-
+  Czy na pewno chcesz wlaczyc tryb nadpisywania wyrazen?
+  Dodanie wyrazenia z istniejacym triggerem usunie stare i zastapi je nowym.
 expr_override_enabled: ''
 expr_search_results: 'Wyniki wyszukiwania dla "{0}"'
 expr_reset: 'Wyrażenie o id {0} nie będzie już dodawać reakcji.'

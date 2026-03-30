@@ -10,12 +10,15 @@ expr_insuff_perms: >-
 expr_new: New Expression
 expr_no_found: No expression found.
 expr_search_results: 'Search results for "{0}"'
-expr_override_confirm: |-
-  Are you sure you want to toggle expression override mode?
-  When enabled, adding an expression with an existing trigger will delete the old one and replace it.
+expr_override_disable_confirm: |-
+  Are you sure you want to disable expression override mode?
+  Adding an expression with an existing trigger will create duplicates.
 expr_override_disabled: |-
   Expression override is now disabled. Adding an expression with an existing
   trigger will create a duplicate.
+expr_override_enable_confirm: |-
+  Are you sure you want to enable expression override mode?
+  Adding an expression with an existing trigger will delete the old one and replace it.
 expr_override_enabled: |-
   Expression override is now enabled. Adding an expression with an existing
   trigger will replace the old one.

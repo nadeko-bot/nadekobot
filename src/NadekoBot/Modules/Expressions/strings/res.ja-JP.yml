@@ -7,10 +7,13 @@ expr_global_enabled: このサーバーでグローバル式が無効ではな�
 expr_insuff_perms: 権限が不足しています。グローバル式にはBot所有者権限、サーバー式には管理者権限が必要です。
 expr_new: 新しい式
 expr_no_found: 式が見つかりません。
-expr_override_confirm: |-
-  式の上書きモードを切り替えてもいいですか？
-  有効にすると、既存のトリガーと同じ式を追加した場合、古い式が削除されて置き換わります。
+expr_override_disable_confirm: |-
+  式の上書きモードを無効にしてもいいですか？
+  既存のトリガーと同じ式を追加すると、重複が作成されます。
 expr_override_disabled: ''
+expr_override_enable_confirm: |-
+  式の上書きモードを有効にしてもいいですか？
+  既存のトリガーと同じ式を追加すると、古い式が削除されて置き換わります。
 expr_override_enabled: ''
 expr_search_results: '"{0}" の検索結果'
 expr_reset: 'ID {0}の式はリアクションを追加しなくなります。'

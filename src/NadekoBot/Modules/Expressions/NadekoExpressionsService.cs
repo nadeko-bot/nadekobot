@@ -827,19 +827,20 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         return toReturn;
     }
 
-    public async Task<bool> ToggleExpressionOverrideAsync(ulong guildId)
+    public bool IsExpressionOverrideEnabled(ulong guildId)
+        => _expressionOverrideGuilds.Contains(guildId);
+
+    public async Task SetExpressionOverrideAsync(ulong guildId, bool enabled)
     {
         await using var ctx = _db.GetDbContext();
         var gc = ctx.GuildConfigsForId(guildId, set => set);
-        var newState = gc.ExpressionOverrideEnabled = !gc.ExpressionOverrideEnabled;
+        gc.ExpressionOverrideEnabled = enabled;
         await ctx.SaveChangesAsync();
 
-        if (newState)
+        if (enabled)
             _expressionOverrideGuilds.Add(guildId);
         else
             _expressionOverrideGuilds.TryRemove(guildId);
-
-        return newState;
     }
 
     private void DeleteTriggerFromCache(ulong guildId, string trigger)
