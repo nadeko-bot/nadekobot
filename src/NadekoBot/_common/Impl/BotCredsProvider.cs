@@ -20,7 +20,7 @@ public sealed class BotCredsProvider : IBotCredsProvider
     private readonly IConfigurationRoot _config;
 
 
-    private readonly object _reloadLock = new();
+    private readonly Lock _reloadLock = new();
 
     public BotCredsProvider(int? totalShards = null)
     {

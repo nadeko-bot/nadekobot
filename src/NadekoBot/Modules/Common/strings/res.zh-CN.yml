@@ -31,7 +31,6 @@ perm_prevent: '#{0} {1} 阻止了此操作。'
 price: 價格
 redacted_too_long: 訊息太長，已被刪減
 response: 回覆
-sql_confirm_exec: 確認執行以下 SQL 命令
 trigger: 觸發關鍵字詞
 user_not_found: 未找到用戶。
 userrole_icon_fail: 設定身分組圖示失敗。

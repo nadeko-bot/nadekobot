@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using System.Collections.Frozen;
 using System.Globalization;
 
 namespace NadekoBot.Modules.Administration;
@@ -8,7 +9,7 @@ public partial class Administration
     [Group]
     public partial class LocalizationCommands : NadekoModule
     {
-        private static readonly IReadOnlyDictionary<string, string> _supportedLocales = new Dictionary<string, string>
+        private static readonly FrozenDictionary<string, string> _supportedLocales = new Dictionary<string, string>
         {
             { "ar", "العربية" },
             { "zh-CN", "简体中文, 中华人民共和国" },
@@ -27,7 +28,7 @@ public partial class Administration
             { "ts-TS", "Tsundere, You Baka" },
             { "uk-UA", "Українська, Україна" },
             { "vi-VN", "Tiếng Việt, Việt Nam" }
-        };
+        }.ToFrozenDictionary();
 
         [Cmd]
         [RequireContext(ContextType.Guild)]

@@ -18,7 +18,7 @@ public sealed class RepeaterService : IReadyExecutor, INService
     private readonly ConcurrentHashSet<int> _noRedundant;
     private readonly ConcurrentHashSet<int> _skipNext = new();
 
-    private readonly object _queueLocker = new();
+    private readonly Lock _queueLocker = new();
     private readonly IMessageSenderService _sender;
 
     public RepeaterService(
@@ -73,7 +73,7 @@ public sealed class RepeaterService : IReadyExecutor, INService
                 var now = DateTime.UtcNow + TimeSpan.FromSeconds(3);
 
                 var toExecute = new List<RunningRepeater>();
-                lock (_repeaterQueue)
+                lock (_queueLocker)
                 {
                     var current = _repeaterQueue.First;
                     while (true)

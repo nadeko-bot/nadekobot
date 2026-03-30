@@ -31,7 +31,6 @@ perm_prevent: 'Quyền số #{0} {1} đang ngăn hành động này.'
 price: Giá
 redacted_too_long: Đã ẩn vì quá dài.
 response: Phản hồi
-sql_confirm_exec: Xác nhận thực thi lệnh SQL sau
 trigger: Kích hoạt
 user_not_found: Không tìm thấy người dùng.
 userrole_icon_fail: Không thể đặt biểu tượng vai trò.

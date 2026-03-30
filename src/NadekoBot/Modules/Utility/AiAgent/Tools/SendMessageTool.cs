@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Discord;
@@ -72,7 +73,7 @@ public sealed partial class SendMessageTool : IAiTool, INService
         }
         """).RootElement.Clone();
 
-    private static readonly Dictionary<string, Color> _namedColors = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly FrozenDictionary<string, Color> _namedColors = new Dictionary<string, Color>(StringComparer.OrdinalIgnoreCase)
     {
         ["red"] = Color.Red,
         ["green"] = Color.Green,
@@ -83,7 +84,7 @@ public sealed partial class SendMessageTool : IAiTool, INService
         ["teal"] = Color.Teal,
         ["gold"] = Color.Gold,
         ["magenta"] = Color.Magenta,
-    };
+    }.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
 
     [GeneratedRegex(@"<#(\d+)>")]
     private static partial Regex ChannelMentionRegex();

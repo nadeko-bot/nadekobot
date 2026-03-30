@@ -31,7 +31,7 @@ public class IndexedCollection<T> : IList<T>
         }
     }
 
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
 
     public IndexedCollection()
         => Source = new();

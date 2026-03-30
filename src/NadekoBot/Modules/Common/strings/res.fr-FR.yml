@@ -31,7 +31,6 @@ perm_prevent: 'Le numéro d''autorisation # {0} {1} empêche cette action.'
 price: Prix
 redacted_too_long: Révisé car trop long.
 response: Réponse
-sql_confirm_exec: Confirmez l'exécution de la commande SQL suivante
 trigger: Déclencheur
 user_not_found: Utilisateur introuvable.
 userrole_icon_fail: Échec de la définition de l'icône du rôle.

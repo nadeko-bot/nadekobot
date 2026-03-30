@@ -1,161 +1,122 @@
-﻿#nullable enable
+#nullable enable
 using System.CodeDom.Compiler;
-using System.Diagnostics;
+using System.Collections.Immutable;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
-// using YamlDotNet.Core;
-// using YamlDotNet.Serialization;
+namespace NadekoBot.Generators;
 
-namespace NadekoBot.Generators
+[Generator]
+public class LocalizedStringsGenerator : IIncrementalGenerator
 {
-    internal readonly struct TranslationPair
-    {
-        public string Name { get; }
-        public string Value { get; }
+    private static readonly Regex _placeholderRegex = new(@"\{(?<num>\d+)[}:]", RegexOptions.Compiled);
 
-        public TranslationPair(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var resFiles = context.AdditionalTextsProvider
+            .Where(static f => Path.GetFileName(f.Path) == "res.yml");
+
+        var collected = resFiles.Collect();
+
+        context.RegisterSourceOutput(collected, static (spc, files) => Execute(spc, files));
     }
 
-    [Generator]
-    public class LocalizedStringsGenerator : ISourceGenerator
+    private static void Execute(SourceProductionContext context, ImmutableArray<AdditionalText> files)
     {
-//         private const string LOC_STR_SOURCE = @"namespace NadekoBot
-// {
-//     public readonly struct LocStr
-//     {
-//         public readonly string Key;
-//         public readonly object[] Params;
-//         
-//         public LocStr(string key, params object[] data)
-//         {
-//             Key = key;
-//             Params = data;
-//         }
-//     }
-// }";
+        var mergedDict = new Dictionary<string, string>();
 
-        public void Initialize(GeneratorInitializationContext context)
+        foreach (var file in files)
         {
+            var text = file.GetText(context.CancellationToken)?.ToString();
+            if (string.IsNullOrWhiteSpace(text))
+                continue;
+
+            var fields = ParseYaml(text!);
+            foreach (var field in fields)
+            {
+                mergedDict[field.Key] = field.Value;
+            }
         }
 
-        public void Execute(GeneratorExecutionContext context)
+        var sb = new StringBuilder();
+        using (var stringWriter = new StringWriter(sb))
+        using (var sw = new IndentedTextWriter(stringWriter))
         {
-            var mergedDict = new Dictionary<string, string>();
-            
-            foreach (var additionalFile in context.AdditionalFiles)
+            sw.WriteLine("#pragma warning disable CS8981");
+            sw.WriteLine("namespace NadekoBot;");
+            sw.WriteLine();
+
+            sw.WriteLine("public static class strs");
+            sw.WriteLine("{");
+            sw.Indent++;
+
+            var typedParamStrings = new List<string>(10);
+            foreach (var field in mergedDict)
             {
-                if (Path.GetFileName(additionalFile.Path) != "res.yml")
-                    continue;
-                
-                var fields = GetFields(additionalFile.GetText()?.ToString());
-                foreach (var field in fields)
+                var matches = _placeholderRegex.Matches(field.Value);
+                var max = 0;
+                foreach (Match match in matches)
                 {
-                    mergedDict[field.Name] = field.Value;
-                }
-            }
-
-            using (var stringWriter = new StringWriter())
-            using (var sw = new IndentedTextWriter(stringWriter))
-            {
-                sw.WriteLine("#pragma warning disable CS8981");
-                sw.WriteLine("namespace NadekoBot;");
-                sw.WriteLine();
-
-                sw.WriteLine("public static class strs");
-                sw.WriteLine("{");
-                sw.Indent++;
-
-                var typedParamStrings = new List<string>(10);
-                foreach (var field in mergedDict)
-                {
-                    var matches = Regex.Matches(field.Value, @"{(?<num>\d)[}:]");
-                    var max = 0;
-                    foreach (Match match in matches)
-                    {
-                        max = Math.Max(max, int.Parse(match.Groups["num"].Value) + 1);
-                    }
-
-                    typedParamStrings.Clear();
-                    var typeParams = new string[max];
-                    var passedParamString = string.Empty;
-                    for (var i = 0; i < max; i++)
-                    {
-                        typedParamStrings.Add($"in T{i} p{i}");
-                        passedParamString += $", p{i}";
-                        typeParams[i] = $"T{i}";
-                    }
-
-                    var sig = string.Empty;
-                    var typeParamStr = string.Empty;
-                    if (max > 0)
-                    {
-                        sig = $"({string.Join(", ", typedParamStrings)})";
-                        typeParamStr = $"<{string.Join(", ", typeParams)}>";
-                    }
-
-                    sw.WriteLine("public static LocStr {0}{1}{2} => new LocStr(\"{3}\"{4});",
-                        field.Key,
-                        typeParamStr,
-                        sig,
-                        field.Key,
-                        passedParamString);
+                    max = Math.Max(max, int.Parse(match.Groups["num"].Value) + 1);
                 }
 
-                sw.Indent--;
-                sw.WriteLine("}");
+                typedParamStrings.Clear();
+                var typeParams = new string[max];
+                var passedParamString = string.Empty;
+                for (var i = 0; i < max; i++)
+                {
+                    typedParamStrings.Add($"in T{i} p{i}");
+                    passedParamString += $", p{i}";
+                    typeParams[i] = $"T{i}";
+                }
 
+                var sig = string.Empty;
+                var typeParamStr = string.Empty;
+                if (max > 0)
+                {
+                    sig = $"({string.Join(", ", typedParamStrings)})";
+                    typeParamStr = $"<{string.Join(", ", typeParams)}>";
+                }
 
-                sw.Flush();
-                context.AddSource("strs.g.cs", stringWriter.ToString());
+                sw.WriteLine("public static LocStr {0}{1}{2} => new LocStr(\"{3}\"{4});",
+                    field.Key,
+                    typeParamStr,
+                    sig,
+                    field.Key,
+                    passedParamString);
             }
 
-            // context.AddSource("LocStr.g.cs", LOC_STR_SOURCE);
+            sw.Indent--;
+            sw.WriteLine("}");
+
+            sw.Flush();
         }
 
-        private List<TranslationPair> GetFields(string? dataText)
+        context.AddSource("strs.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
+    }
+
+    private static Dictionary<string, string> ParseYaml(string dataText)
+    {
+        try
         {
-            if (string.IsNullOrWhiteSpace(dataText))
-                return new();
+            var deserializer = new DeserializerBuilder()
+                .IgnoreUnmatchedProperties()
+                .Build();
 
-            Dictionary<string, string> data;
-            try
-            {
-                var deserializer = new DeserializerBuilder()
-                    .IgnoreUnmatchedProperties()
-                    .Build();
-
-                data = deserializer.Deserialize<Dictionary<string, string>>(dataText!);
-                if (data is null)
-                    return new();
-            }
-            catch (YamlException ye)
-            {
-                Debug.WriteLine($"YAML parsing error: {ye.Message}");
-                return new();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Unexpected error reading YAML: {ex.Message}");
-                return new();
-            }
-
-            var list = new List<TranslationPair>();
-            foreach (var entry in data)
-            {
-                list.Add(new TranslationPair(
-                    entry.Key,
-                    entry.Value
-                ));
-            }
-
-            return list;
+            return deserializer.Deserialize<Dictionary<string, string>>(dataText)
+                   ?? new Dictionary<string, string>();
+        }
+        catch (YamlException)
+        {
+            return new Dictionary<string, string>();
+        }
+        catch (Exception)
+        {
+            return new Dictionary<string, string>();
         }
     }
 }

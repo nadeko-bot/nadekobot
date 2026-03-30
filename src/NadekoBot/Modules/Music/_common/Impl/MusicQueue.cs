@@ -64,7 +64,7 @@ public sealed partial class MusicQueue : IMusicQueue
     private int index;
     private int? _lastQueued = null;
 
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
 
     public MusicQueue()
     {

@@ -1,4 +1,6 @@
 #nullable disable
+using System.Collections.Frozen;
+
 namespace Nadeko.Econ;
 
 public class Deck
@@ -11,7 +13,7 @@ public class Deck
         Clubs = 4
     }
 
-    private static readonly Dictionary<int, string> _cardNames = new()
+    private static readonly FrozenDictionary<int, string> _cardNames = new Dictionary<int, string>
     {
         { 1, "Ace" },
         { 2, "Two" },
@@ -26,7 +28,7 @@ public class Deck
         { 11, "Jack" },
         { 12, "Queen" },
         { 13, "King" }
-    };
+    }.ToFrozenDictionary();
 
     private static Dictionary<string, Func<List<Card>, bool>> handValues;
 
@@ -204,15 +206,15 @@ public class Deck
 
     public class Card : IComparable
     {
-        private static readonly IReadOnlyDictionary<CardSuit, string> _suitToSuitChar = new Dictionary<CardSuit, string>
+        private static readonly FrozenDictionary<CardSuit, string> _suitToSuitChar = new Dictionary<CardSuit, string>
         {
             { CardSuit.Diamonds, "♦" },
             { CardSuit.Clubs, "♣" },
             { CardSuit.Spades, "♠" },
             { CardSuit.Hearts, "♥" }
-        };
+        }.ToFrozenDictionary();
 
-        private static readonly IReadOnlyDictionary<string, CardSuit> _suitCharToSuit = new Dictionary<string, CardSuit>
+        private static readonly FrozenDictionary<string, CardSuit> _suitCharToSuit = new Dictionary<string, CardSuit>
         {
             { "♦", CardSuit.Diamonds },
             { "d", CardSuit.Diamonds },
@@ -222,9 +224,9 @@ public class Deck
             { "s", CardSuit.Spades },
             { "♥", CardSuit.Hearts },
             { "h", CardSuit.Hearts }
-        };
+        }.ToFrozenDictionary();
 
-        private static readonly IReadOnlyDictionary<char, int> _numberCharToNumber = new Dictionary<char, int>
+        private static readonly FrozenDictionary<char, int> _numberCharToNumber = new Dictionary<char, int>
         {
             { 'a', 1 },
             { '2', 2 },
@@ -239,7 +241,7 @@ public class Deck
             { 'j', 11 },
             { 'q', 12 },
             { 'k', 13 }
-        };
+        }.ToFrozenDictionary();
 
         public CardSuit Suit { get; }
         public int Number { get; }

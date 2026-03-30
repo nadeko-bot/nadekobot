@@ -27,9 +27,9 @@ public class GameStatusEvent : ICurrencyEvent
 
     private readonly string _code;
 
-    private readonly object _stopLock = new();
+    private readonly Lock _stopLock = new();
 
-    private readonly object _potLock = new();
+    private readonly Lock _potLock = new();
     private readonly IMessageSenderService _sender;
 
     private static readonly NadekoRandom _rng = new NadekoRandom();

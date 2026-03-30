@@ -27,9 +27,9 @@ public class ReactionEvent : ICurrencyEvent
     private readonly EventOptions _opts;
     private readonly GamblingConfig _config;
 
-    private readonly object _stopLock = new();
+    private readonly Lock _stopLock = new();
 
-    private readonly object _potLock = new();
+    private readonly Lock _potLock = new();
     private readonly IMessageSenderService _sender;
 
     public ReactionEvent(

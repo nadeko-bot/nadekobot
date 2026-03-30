@@ -18,6 +18,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
     private readonly ILocalization _localization;
     private readonly IMemoryCache _cache;
     private SortedSet<GiveawayModel> _giveawayCache = new SortedSet<GiveawayModel>();
+    private readonly Lock _giveawayLock = new();
     private readonly NadekoRandom _rng;
 
     public GiveawayService(
@@ -97,7 +98,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
                         .Where(x => Queries.GuildOnShard(x.GuildId, _creds.TotalShards, _client.ShardId))
                         .ToArrayAsync();
 
-        lock (_giveawayCache)
+        lock (_giveawayLock)
         {
             _giveawayCache = new(gas, Comparer<GiveawayModel>.Create((x, y) => x.EndsAt.CompareTo(y.EndsAt)));
         }
@@ -107,7 +108,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
         while (await timer.WaitForNextTickAsync())
         {
             IEnumerable<GiveawayModel> toEnd;
-            lock (_giveawayCache)
+            lock (_giveawayLock)
             {
                 toEnd = _giveawayCache.TakeWhile(
                                           x => x.EndsAt <= DateTime.UtcNow.AddSeconds(15))
@@ -156,7 +157,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
                               EndsAt = endsAt,
                           });
 
-        lock (_giveawayCache)
+        lock (_giveawayLock)
         {
             _giveawayCache.Add(ga);
         }
@@ -183,7 +184,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
               .Where(x => x.Id == id)
               .DeleteAsync();
 
-        lock (_giveawayCache)
+        lock (_giveawayLock)
         {
             _giveawayCache.Remove(giveaway);
         }
@@ -242,7 +243,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
         if (ga is not { Length: > 0 })
             return false;
 
-        lock (_giveawayCache)
+        lock (_giveawayLock)
         {
             _giveawayCache.Remove(ga[0]);
         }

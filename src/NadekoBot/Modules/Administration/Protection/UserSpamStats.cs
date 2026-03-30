@@ -19,7 +19,7 @@ public sealed class UserSpamStats
 
     private readonly Queue<DateTime> _messageTracker;
 
-    private readonly object _applyLock = new();
+    private readonly Lock _applyLock = new();
 
     private readonly TimeSpan _maxTime = TimeSpan.FromMinutes(30);
 

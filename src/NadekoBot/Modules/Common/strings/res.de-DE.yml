@@ -31,7 +31,6 @@ perm_prevent: 'Berechtigung Nummer #{0} {1} verhindert diese Aktion.'
 price: Preis
 redacted_too_long: Wurde entfernt da es zu lang ist.
 response: Antwort
-sql_confirm_exec: Bestätige die Ausführung vom folgenden SQL Befehl
 trigger: Auslöser
 user_not_found: Nutzer nicht gefunden.
 userrole_icon_fail: Fehler beim Festlegen des Rollensymbols.

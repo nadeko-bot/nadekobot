@@ -28,7 +28,7 @@ namespace NadekoBot.Coordinator
         private ShardStatus[] _shardStatuses;
         private Queue<bool>[] _uptimeSamples;
 
-        private readonly object locker = new object();
+        private readonly Lock locker = new();
         private readonly Random _rng;
         private bool _gracefulImminent;
         

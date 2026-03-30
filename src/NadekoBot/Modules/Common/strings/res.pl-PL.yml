@@ -31,7 +31,6 @@ perm_prevent: 'Uprawnienie nr #{0} {1} blokuje tę akcję.'
 price: Cena
 redacted_too_long: Ukryto, bo jest za długie.
 response: Odpowiedź
-sql_confirm_exec: Potwierdź wykonanie następującej komendy SQL
 trigger: Wyzwalacz
 user_not_found: Nie znaleziono użytkownika.
 userrole_icon_fail: Nie udało się ustawić ikony roli.

@@ -20,7 +20,7 @@ public sealed class ChannelMessageBuffer
     private readonly int _capacity;
     private int _count;
     private int _writeIndex;
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
 
     /// <summary>
     /// When the buffer was last accessed by an agent invocation (for idle expiry)

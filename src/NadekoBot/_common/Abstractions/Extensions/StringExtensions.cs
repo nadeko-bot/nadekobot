@@ -6,14 +6,6 @@ namespace NadekoBot.Extensions;
 
 public static class StringExtensions
 {
-    private static readonly HashSet<char> _lettersAndDigits =
-    [
-        ..Enumerable.Range(48, 10)
-                    .Concat(Enumerable.Range(65, 26))
-                    .Concat(Enumerable.Range(97, 26))
-                    .Select(x => (char)x)
-    ];
-
     private static readonly Regex _filterRegex = new(@"discord(?:\.gg|\.io|\.me|\.li|(?:app)?\.com\/invite)\/(\w+)",
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -137,7 +129,7 @@ public static class StringExtensions
         => txt.Split(' ').Select(x => x.FirstOrDefault()).Join(glue);
 
     public static bool IsAlphaNumeric(this string txt)
-        => txt.All(c => _lettersAndDigits.Contains(c));
+        => txt.All(char.IsAsciiLetterOrDigit);
 
     public static string UnescapeUnicodeCodePoints(this string input)
         => _codePointRegex.Replace(input,

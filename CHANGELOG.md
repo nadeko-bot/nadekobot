@@ -16,6 +16,8 @@
 ### Dev
 
 - Upped to .net9
+- Replaced all `object` lock fields with `System.Threading.Lock` for ~25% faster locking
+- Eliminated allocating string normalization (ToLower/ToUpper) in type readers, config service, and command lookup by using case-insensitive comparers
 
 ## [7.1.15] - 29.03.2026
 

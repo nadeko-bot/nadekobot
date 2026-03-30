@@ -31,7 +31,6 @@ perm_prevent: 'Permission number #{0} {1} is preventing this action.'
 price: Price
 redacted_too_long: Redacted because it's too long.
 response: Response
-sql_confirm_exec: You want me to run this SQL command? Confirm it then.
 trigger: Trigger
 user_not_found: User not found. B-baka, are you sure they exist?
 userrole_icon_fail: Failed to set the role icon.

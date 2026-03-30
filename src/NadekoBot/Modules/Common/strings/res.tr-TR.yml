@@ -31,7 +31,6 @@ perm_prevent: '{0} numaralı {1} izni bu işlemi engelliyor.'
 price: Fiyat
 redacted_too_long: Çok uzun olduğu için gizlendi.
 response: Yanıt
-sql_confirm_exec: Aşağıdaki SQL komutunun çalıştırılmasını onayla
 trigger: Tetikleyici
 user_not_found: Kullanıcı bulunamadı.
 userrole_icon_fail: Rol simgesi ayarlanamadı.

@@ -31,7 +31,6 @@ perm_prevent: 'Izin nomor #{0} {1} mencegah tindakan ini.'
 price: Harga
 redacted_too_long: Disembunyikan karena terlalu panjang.
 response: Respons
-sql_confirm_exec: Konfirmasi eksekusi perintah SQL berikut
 trigger: Pemicu
 user_not_found: Pengguna tidak ditemukan.
 userrole_icon_fail: Gagal mengatur ikon role.

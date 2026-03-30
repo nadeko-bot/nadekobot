@@ -10,10 +10,12 @@ public sealed class GuildTypeReader : NadekoTypeReader<IGuild>
 
     public override ValueTask<TypeReaderResult<IGuild>> ReadAsync(ICommandContext context, string input)
     {
-        input = input.Trim().ToUpperInvariant();
+        input = input.Trim();
         var guilds = _client.Guilds;
-        IGuild guild = guilds.FirstOrDefault(g => g.Id.ToString().Trim().ToUpperInvariant() == input) //by id
-                       ?? guilds.FirstOrDefault(g => g.Name.Trim().ToUpperInvariant() == input); //by name
+        IGuild guild = guilds.FirstOrDefault(g =>
+                           g.Id.ToString().Equals(input, StringComparison.InvariantCultureIgnoreCase))
+                       ?? guilds.FirstOrDefault(g =>
+                           g.Name.Trim().Equals(input, StringComparison.InvariantCultureIgnoreCase));
 
         if (guild is not null)
             return new(TypeReaderResult.FromSuccess(guild));

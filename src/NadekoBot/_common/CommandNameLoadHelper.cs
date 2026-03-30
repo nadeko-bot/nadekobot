@@ -15,7 +15,8 @@ public static class CommandNameLoadHelper
     {
         var loc = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var text = File.ReadAllText(Path.Combine(loc, aliasesFilePath));
-        return _deserializer.Deserialize<Dictionary<string, string[]>>(text);
+        var raw = _deserializer.Deserialize<Dictionary<string, string[]>>(text);
+        return new Dictionary<string, string[]>(raw, StringComparer.InvariantCultureIgnoreCase);
     }
 
     public static Dictionary<string, CommandStrings> LoadCommandStrings(
@@ -27,13 +28,12 @@ public static class CommandNameLoadHelper
     }
 
     public static string[] GetAliasesFor(string methodName)
-        => _lazyCommandAliases.Value.TryGetValue(methodName.ToLowerInvariant(), out var aliases) && aliases.Length > 1
+        => _lazyCommandAliases.Value.TryGetValue(methodName, out var aliases) && aliases.Length > 1
             ? aliases.ToArray()
             : Array.Empty<string>();
 
     public static string GetCommandNameFor(string methodName)
     {
-        methodName = methodName.ToLowerInvariant();
         var toReturn = _lazyCommandAliases.Value.TryGetValue(methodName, out var aliases) && aliases.Length > 0
             ? aliases[0]
             : methodName;

@@ -18,7 +18,7 @@ public class PermissionsCollection<T> : IndexedCollection<T>
         }
     }
 
-    private readonly object _localLocker = new();
+    private readonly Lock _localLocker = new();
 
     public PermissionsCollection(IEnumerable<T> source)
         : base(source)

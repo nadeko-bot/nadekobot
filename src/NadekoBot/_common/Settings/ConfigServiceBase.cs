@@ -24,10 +24,10 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
 
     protected TSettings data;
 
-    private readonly Dictionary<string, Func<TSettings, string, bool>> _propSetters = new();
-    private readonly Dictionary<string, Func<object>> _propSelectors = new();
-    private readonly Dictionary<string, Func<object, string>> _propPrinters = new();
-    private readonly Dictionary<string, string?> _propComments = new();
+    private readonly Dictionary<string, Func<TSettings, string, bool>> _propSetters = new(StringComparer.InvariantCultureIgnoreCase);
+    private readonly Dictionary<string, Func<object>> _propSelectors = new(StringComparer.InvariantCultureIgnoreCase);
+    private readonly Dictionary<string, Func<object, string>> _propPrinters = new(StringComparer.InvariantCultureIgnoreCase);
+    private readonly Dictionary<string, string?> _propComments = new(StringComparer.InvariantCultureIgnoreCase);
 
     /// <summary>
     ///     Initialized an instance of <see cref="ConfigServiceBase{TSettings}" />
@@ -117,7 +117,6 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
         Func<TProp, bool>? checker = null)
     {
         checker ??= _ => true;
-        key = key.ToLowerInvariant();
         _propPrinters[key] = obj => printer((TProp)obj);
         _propSelectors[key] = () => selector.Compile()(data)!;
         _propSetters[key] = Magic(selector, parser, checker);
@@ -166,7 +165,6 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
 
     public string? GetSetting(string prop)
     {
-        prop = prop.ToLowerInvariant();
         if (!_propSelectors.TryGetValue(prop, out var selector) || !_propPrinters.TryGetValue(prop, out var printer))
             return null;
 
@@ -182,7 +180,7 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
     }
 
     private bool SetProperty(TSettings target, string key, string value)
-        => _propSetters.TryGetValue(key.ToLowerInvariant(), out var magic) && magic(target, value);
+        => _propSetters.TryGetValue(key, out var magic) && magic(target, value);
 
     public bool SetSetting(string prop, string newValue)
     {

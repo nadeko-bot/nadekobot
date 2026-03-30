@@ -452,7 +452,8 @@ public sealed partial class Help : NadekoModule<HelpService>
     public async Task H([Leftover] string fail)
     {
         var prefixless =
-            _cmds.Commands.FirstOrDefault(x => x.Aliases.Any(cmdName => cmdName.ToLowerInvariant() == fail));
+            _cmds.Commands.FirstOrDefault(x =>
+                x.Aliases.Any(cmdName => cmdName.Equals(fail, StringComparison.InvariantCultureIgnoreCase)));
         if (prefixless is not null)
         {
             await H(prefixless);
@@ -460,7 +461,7 @@ public sealed partial class Help : NadekoModule<HelpService>
         }
 
         if (fail.StartsWith(prefix))
-            fail = fail.Substring(prefix.Length);
+            fail = fail[prefix.Length..];
 
         var group = _cmds.Modules
             .SelectMany(x => x.Submodules)

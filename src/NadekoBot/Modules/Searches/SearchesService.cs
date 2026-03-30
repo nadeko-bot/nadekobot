@@ -26,7 +26,7 @@ public class SearchesService : INService
     private readonly NadekoRandom _rng;
     private readonly List<string> _yomamaJokes;
 
-    private readonly object _yomamaLock = new();
+    private readonly Lock _yomamaLock = new();
     private int yomamaJokeIndex;
     private readonly ConcurrentDictionary<string, string> _cachedShortenedLinks = new();
 

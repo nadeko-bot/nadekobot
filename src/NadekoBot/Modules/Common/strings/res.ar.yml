@@ -31,7 +31,6 @@ perm_prevent: 'الصلاحية رقم #{0} {1} تمنع هذا الإجراء.'
 price: السعر
 redacted_too_long: تم الحذف لأنه طويل جداً.
 response: الاستجابة
-sql_confirm_exec: تأكيد تنفيذ أمر SQL التالي
 trigger: المُحفّز
 user_not_found: المستخدم غير موجود.
 userrole_icon_fail: فشل في تعيين أيقونة الدور.

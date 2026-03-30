@@ -31,7 +31,6 @@ perm_prevent: 'Дозвіл #{0} {1} блокує цю дію.'
 price: Ціна
 redacted_too_long: Приховано, бо занадто довге.
 response: Відповідь
-sql_confirm_exec: Підтвердіть виконання наступної SQL команди
 trigger: Тригер
 user_not_found: Користувача не знайдено.
 userrole_icon_fail: Не вдалося встановити іконку ролі.

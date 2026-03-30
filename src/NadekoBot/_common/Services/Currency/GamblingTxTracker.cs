@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
@@ -14,10 +15,10 @@ public sealed class GamblingTxTracker(
 )
     : ITxTracker, INService, IReadyExecutor
 {
-    private static readonly IReadOnlySet<string> _gamblingTypes = new HashSet<string>(new[]
+    private static readonly FrozenSet<string> _gamblingTypes = new[]
     {
         "lula", "betroll", "betflip", "blackjack", "betdraw", "slot",
-    });
+    }.ToFrozenSet();
 
     private NonBlocking.ConcurrentDictionary<string, (decimal Bet, decimal PaidOut)> globalStats = new();
     private ConcurrentBag<UserBetStats> userStats = new();

@@ -26,7 +26,7 @@ public partial class Gambling
         private readonly IImageCache _images;
         private readonly FontProvider _fonts;
         private readonly DbService _db;
-        private object _slotStatsLock = new();
+        private readonly Lock _slotStatsLock = new();
 
         public SlotCommands(
             IImageCache images,

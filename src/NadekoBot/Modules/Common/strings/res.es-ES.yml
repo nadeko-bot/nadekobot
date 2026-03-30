@@ -31,7 +31,6 @@ perm_prevent: 'El permiso número #{0} {1} está impidiendo esta acción.'
 price: Precio
 redacted_too_long: Editada porque es muy larga.
 response: Respuesta
-sql_confirm_exec: Confirma la ejecución del siguiente comando SQL.
 trigger: Escribe
 user_not_found: Usuario no encontrado.
 userrole_icon_fail: Error al establecer el ícono del rol.

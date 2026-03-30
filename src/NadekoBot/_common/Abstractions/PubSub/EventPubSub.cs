@@ -3,7 +3,7 @@ namespace Nadeko.Common;
 public class EventPubSub : IPubSub
 {
     private readonly Dictionary<string, Dictionary<Delegate, List<Func<object, ValueTask>>>> _actions = new();
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
 
     public Task Sub<TData>(in TypedKey<TData> key, Func<TData, ValueTask> action)
         where TData : notnull

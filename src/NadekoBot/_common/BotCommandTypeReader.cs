@@ -14,14 +14,14 @@ public sealed class CommandTypeReader : NadekoTypeReader<CommandInfo>
 
     public override ValueTask<TypeReaderResult<CommandInfo>> ReadAsync(ICommandContext ctx, string input)
     {
-        input = input.ToUpperInvariant();
         var prefix = _handler.GetPrefix(ctx.Guild);
-        if (!input.StartsWith(prefix.ToUpperInvariant(), StringComparison.InvariantCulture))
+        if (!input.StartsWith(prefix, StringComparison.InvariantCultureIgnoreCase))
             return new(TypeReaderResult.FromError<CommandInfo>(CommandError.ParseFailed, "No such command found."));
 
         input = input[prefix.Length..];
 
-        var cmd = _cmds.Commands.FirstOrDefault(c => c.Aliases.Select(a => a.ToUpperInvariant()).Contains(input));
+        var cmd = _cmds.Commands.FirstOrDefault(c =>
+            c.Aliases.Any(a => a.Equals(input, StringComparison.InvariantCultureIgnoreCase)));
         if (cmd is null)
             return new(TypeReaderResult.FromError<CommandInfo>(CommandError.ParseFailed, "No such command found."));
 

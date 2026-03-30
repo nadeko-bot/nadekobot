@@ -16,7 +16,7 @@ public sealed class ReactionRolesService : IReadyExecutor, INService, IReactionR
     private readonly XpFormulaService _xpFormula;
 
     private ConcurrentDictionary<ulong, List<ReactionRoleV2>> _cache;
-    private readonly object _cacheLock = new();
+    private readonly Lock _cacheLock = new();
     private readonly SemaphoreSlim _assignementLock = new(1, 1);
 
     public ReactionRolesService(

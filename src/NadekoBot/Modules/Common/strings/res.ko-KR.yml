@@ -31,7 +31,6 @@ perm_prevent: '권한 #{0} {1}이(가) 이 동작을 막고 있어요.'
 price: 가격
 redacted_too_long: 내용이 너무 길어서 생략되었어요.
 response: 응답
-sql_confirm_exec: 다음 SQL 명령어의 실행을 확인해주세요
 trigger: 트리거
 user_not_found: 유저를 찾을 수 없어요.
 userrole_icon_fail: 역할 아이콘 설정에 실패했어요.

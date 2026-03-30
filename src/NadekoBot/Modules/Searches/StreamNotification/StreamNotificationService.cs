@@ -16,7 +16,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
     private readonly DiscordSocketClient _client;
     private readonly NotifChecker _streamTracker;
 
-    private readonly object _shardLock = new();
+    private readonly Lock _shardLock = new();
 
     private Dictionary<StreamDataKey, HashSet<ulong>> _trackCounter = new();
 

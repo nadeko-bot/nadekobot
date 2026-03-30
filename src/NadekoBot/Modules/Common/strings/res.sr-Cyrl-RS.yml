@@ -31,7 +31,6 @@ perm_prevent: 'Дозвола број #{0} {1} спречава ову акци
 price: Цена
 redacted_too_long: Уклоњено јер је предугачко.
 response: Одговор
-sql_confirm_exec: Потврдите извршавање следеће SQL команде
 trigger: Окидач
 user_not_found: Корисник није пронађен.
 userrole_icon_fail: Постављање иконе улоге није успело.

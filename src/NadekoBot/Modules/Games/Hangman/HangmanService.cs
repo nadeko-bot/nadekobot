@@ -18,7 +18,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
     private readonly ICurrencyService _cs;
     private readonly IMemoryCache _cdCache;
     private readonly QuestService _quests;
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
 
     public HangmanService(
         IHangmanSource source,

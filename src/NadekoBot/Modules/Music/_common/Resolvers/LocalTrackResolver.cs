@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Frozen;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 
@@ -6,11 +7,11 @@ namespace NadekoBot.Modules.Music.Resolvers;
 
 public sealed class LocalTrackResolver : ILocalTrackResolver
 {
-    private static readonly HashSet<string> _musicExtensions = new[]
+    private static readonly FrozenSet<string> _musicExtensions = new[]
     {
         ".MP4", ".MP3", ".FLAC", ".OGG", ".WAV", ".WMA", ".WMV", ".AAC", ".MKV", ".WEBM", ".M4A", ".AA", ".AAX",
-        ".ALAC", ".AIFF", ".MOV", ".FLV", ".OGG", ".M4V"
-    }.ToHashSet();
+        ".ALAC", ".AIFF", ".MOV", ".FLV", ".M4V"
+    }.ToFrozenSet(StringComparer.InvariantCultureIgnoreCase);
 
     public async Task<ITrackInfo?> ResolveByQueryAsync(string query)
     {
@@ -43,7 +44,7 @@ public sealed class LocalTrackResolver : ILocalTrackResolver
                        .Where(x =>
                        {
                            if (!x.Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System)
-                               && _musicExtensions.Contains(x.Extension.ToUpperInvariant()))
+                               && _musicExtensions.Contains(x.Extension))
                                return true;
                            return false;
                        })

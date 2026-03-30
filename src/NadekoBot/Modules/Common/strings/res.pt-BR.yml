@@ -31,7 +31,6 @@ perm_prevent: 'Permissão número #{0} {1} está impedindo essa ação.'
 price: Preço
 redacted_too_long: O texto é longo demais.
 response: Resposta
-sql_confirm_exec: Confirme a execução do seguinte comando SQL
 trigger: Gatilho
 user_not_found: Usuário não encontrado.
 userrole_icon_fail: Falha ao definir o ícone do cargo.

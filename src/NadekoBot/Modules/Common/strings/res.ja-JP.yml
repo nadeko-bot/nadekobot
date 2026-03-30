@@ -31,7 +31,6 @@ perm_prevent: '権限番号#{0} {1}がこのアクションを妨げています
 price: 価格
 redacted_too_long: 非常に長いので編集されました。
 response: 反応
-sql_confirm_exec: 次のSQLコマンドの実行を確認する
 trigger: トリガー
 user_not_found: ユーザーが見つかりません。
 userrole_icon_fail: ロールアイコンの設定に失敗しました。
