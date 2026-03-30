@@ -2,6 +2,21 @@
 
 *a,c,f,r,o,d*
 
+## [7.1.16] - 30.03.2026
+
+
+### Changed
+
+- global only: Ai agent is now owner + patron (still alpha)
+
+### Fixed
+
+- Fixed initial database creation broken in the last patch
+
+### Dev
+
+- Upped to .net9
+
 ## [7.1.15] - 29.03.2026
 
 ### Added

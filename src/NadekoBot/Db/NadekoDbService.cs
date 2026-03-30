@@ -88,6 +88,13 @@ public sealed class NadekoDbService : DbService
 
         var applied = await ctx.Database.GetAppliedMigrationsAsync();
 
+        if (!applied.Any())
+        {
+            Log.Information("No migrations applied. Running baseline migration...");
+            await ctx.Database.MigrateAsync();
+            return;
+        }
+
         // get all .sql file names from the migrations folder
         var available = Directory.GetFiles("Migrations/" + GetMigrationDirectory(ctx.Database), "*_*.sql")
             .Select(x => Path.GetFileNameWithoutExtension(x))
