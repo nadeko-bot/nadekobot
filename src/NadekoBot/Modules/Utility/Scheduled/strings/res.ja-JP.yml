@@ -1,4 +1,4 @@
-schedule_add_error: 既に5つのスケジュールコマンドがあります。追加する前にいくつか削除してください。
+schedule_add_error: 既に{0}つのスケジュールコマンドがあります。追加する前にいくつか削除してください。
 schedule_add_success: スケジュールコマンドが正常に追加されました。
 schedule_command: コマンド
 schedule_delete_error: スケジュールコマンドの削除中にエラーが発生しました。

@@ -10,9 +10,13 @@ public sealed class ScheduleCommandService(
     DbService db,
     ICommandHandler cmdHandler,
     DiscordSocketClient client,
-    ShardData shardData) : INService, IReadyExecutor
+    ShardData shardData,
+    UtilityConfigService ucs) : INService, IReadyExecutor
 {
     private TaskCompletionSource _tcs = new();
+
+    public int MaxScheduledPerUser
+        => ucs.Data.MaxScheduledPerUser;
 
     public async Task OnReadyAsync()
     {
@@ -108,7 +112,7 @@ public sealed class ScheduleCommandService(
             .Where(x => x.GuildId == guildId && x.UserId == userId)
             .CountAsyncLinqToDB();
 
-        if (count >= 5)
+        if (count >= ucs.Data.MaxScheduledPerUser)
             return false;
 
         await uow.GetTable<ScheduledCommand>()

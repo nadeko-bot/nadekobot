@@ -1,4 +1,4 @@
-schedule_add_error: لديك بالفعل 5 أوامر مجدولة. يُرجى حذف بعضها قبل إضافة المزيد.
+schedule_add_error: لديك بالفعل {0} أوامر مجدولة. يُرجى حذف بعضها قبل إضافة المزيد.
 schedule_add_success: تمت إضافة الأمر المجدول بنجاح.
 schedule_command: الأمر
 schedule_delete_error: خطأ في حذف الأمر المجدول.

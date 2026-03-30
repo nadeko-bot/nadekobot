@@ -1,4 +1,4 @@
-schedule_add_error: 你已有 5 個排程指令。請先刪除一些再新增。
+schedule_add_error: 你已有 {0} 個排程指令。請先刪除一些再新增。
 schedule_add_success: 排程指令已成功新增。
 schedule_command: 指令
 schedule_delete_error: 刪除排程指令時發生錯誤。

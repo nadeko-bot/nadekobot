@@ -1,4 +1,4 @@
-schedule_add_error: Bạn đã có 5 lệnh hẹn giờ. Vui lòng xóa bớt trước khi thêm mới.
+schedule_add_error: Bạn đã có {0} lệnh hẹn giờ. Vui lòng xóa bớt trước khi thêm mới.
 schedule_add_success: Đã thêm lệnh hẹn giờ thành công.
 schedule_command: Lệnh
 schedule_delete_error: Lỗi khi xóa lệnh hẹn giờ.

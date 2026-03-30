@@ -8022,7 +8022,7 @@
       "Aliases": [
         ".repeat"
       ],
-      "Description": "Repeat a message once per specified time increment in the current channel. \nYou can specify a different channel as the first argument instead.\nYou can also specify time of day for the message to be repeated daily (make sure you've set your server's `.timezone`). \nIf you specify time of day, you can still override the default daily interval with your own interval. \nYou can have up to 5 repeating messages on one server in total.",
+      "Description": "Repeat a message once per specified time increment in the current channel. \nYou can specify a different channel as the first argument instead.\nYou can also specify time of day for the message to be repeated daily (make sure you've set your server's `.timezone`). \nIf you specify time of day, you can still override the default daily interval with your own interval. \nYou can have up to 5 repeating messages on one server in total (configurable via `.config utility maxRepeaters`).",
       "Usage": [
         ".repeat Hello there",
         ".repeat #other-channel hello there",

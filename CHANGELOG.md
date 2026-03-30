@@ -4,7 +4,9 @@
 
 ## WIP
 
+### Added
 
+- New `data/utility.yml` config file with configurable per-server limits for repeaters, scheduled commands, and live channels (`.config utility` to view/edit)
 
 ## [7.1.17] - 30.03.2026
 

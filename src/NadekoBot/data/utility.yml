@@ -1,0 +1,8 @@
+# DO NOT CHANGE
+version: 1
+# Maximum number of repeating messages per server. Default 5
+maxRepeaters: 5
+# Maximum number of scheduled commands per user per server. Default 5
+maxScheduledPerUser: 5
+# Default maximum number of live channels per server. Default 5
+maxLiveChannels: 5

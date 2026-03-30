@@ -1,4 +1,4 @@
-schedule_add_error: You already have 5 scheduled commands. Please delete some before adding more.
+schedule_add_error: You already have {0} scheduled commands. Please delete some before adding more.
 schedule_add_success: Scheduled command successfully added.
 schedule_command: Command
 schedule_delete_error: Error deleting scheduled command.

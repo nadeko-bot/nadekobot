@@ -83,7 +83,7 @@ public partial class Utility
             }
             else
             {
-                await Response().Error(strs.schedule_add_error).SendAsync();
+                await Response().Error(strs.schedule_add_error(scs.MaxScheduledPerUser)).SendAsync();
             }
         }
     }

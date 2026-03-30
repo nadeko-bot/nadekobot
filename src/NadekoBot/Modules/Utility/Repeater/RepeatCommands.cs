@@ -182,7 +182,7 @@ public partial class Utility
 
             if (runner is null)
             {
-                await Response().Error(strs.repeater_exceed_limit(5)).SendAsync();
+                await Response().Error(strs.repeater_exceed_limit(_service.MaxRepeaters)).SendAsync();
                 return;
             }
 

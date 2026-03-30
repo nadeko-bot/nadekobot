@@ -1,4 +1,4 @@
-schedule_add_error: Kamu sudah punya 5 perintah terjadwal. Hapus beberapa sebelum menambahkan yang baru.
+schedule_add_error: Kamu sudah punya {0} perintah terjadwal. Hapus beberapa sebelum menambahkan yang baru.
 schedule_add_success: Perintah terjadwal berhasil ditambahkan.
 schedule_command: Perintah
 schedule_delete_error: Gagal menghapus perintah terjadwal.

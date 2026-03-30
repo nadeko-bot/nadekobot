@@ -16,10 +16,9 @@ public class LiveChannelService(
     DiscordSocketClient client,
     IReplacementService repSvc,
     IPatronageService patron,
-    ShardData shardData) : IReadyExecutor, INService
+    ShardData shardData,
+    UtilityConfigService ucs) : IReadyExecutor, INService
 {
-    public const int DEFAULT_MAX_LIVECHANNELS = 5;
-
     private readonly ConcurrentDictionary<ulong, ConcurrentDictionary<ulong, LiveChannelConfig>> _liveChannels = new();
 
     /// <summary>
@@ -199,7 +198,7 @@ public class LiveChannelService(
 
     public async Task<int> GetMaxLiveChannels(ulong guildOwnerId)
     {
-        var limit = await patron.GetUserLimit("livechannels", guildOwnerId, DEFAULT_MAX_LIVECHANNELS);
+        var limit = await patron.GetUserLimit("livechannels", guildOwnerId, ucs.Data.MaxLiveChannels);
         return limit;
     }
 }

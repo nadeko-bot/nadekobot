@@ -1,4 +1,4 @@
-schedule_add_error: Masz już 5 zaplanowanych komend. Usuń jakieś, zanim dodasz nowe.
+schedule_add_error: Masz już {0} zaplanowanych komend. Usuń jakieś, zanim dodasz nowe.
 schedule_add_success: Zaplanowana komenda została pomyślnie dodana.
 schedule_command: Komenda
 schedule_delete_error: Błąd podczas usuwania zaplanowanej komendy.

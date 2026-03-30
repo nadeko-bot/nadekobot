@@ -1,4 +1,4 @@
-schedule_add_error: Ya tienes 5 comandos programados. Por favor, elimina algunos antes de añadir más.
+schedule_add_error: Ya tienes {0} comandos programados. Por favor, elimina algunos antes de añadir más.
 schedule_add_success: Comando programado añadido con éxito.
 schedule_command: Comando
 schedule_delete_error: Error al eliminar comando programado.

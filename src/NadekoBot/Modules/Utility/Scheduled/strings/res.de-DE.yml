@@ -1,4 +1,4 @@
-schedule_add_error: Du hast bereits 5 geplante Befehle. Bitte lösche einige, bevor du weitere hinzufügst.
+schedule_add_error: Du hast bereits {0} geplante Befehle. Bitte lösche einige, bevor du weitere hinzufügst.
 schedule_add_success: Geplanter Befehl erfolgreich hinzugefügt.
 schedule_command: Befehl
 schedule_delete_error: Fehler beim Löschen des geplanten Befehls.

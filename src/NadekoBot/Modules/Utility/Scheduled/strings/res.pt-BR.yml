@@ -1,4 +1,4 @@
-schedule_add_error: Você já tem 5 comandos agendados. Por favor, exclua alguns antes de adicionar mais.
+schedule_add_error: Você já tem {0} comandos agendados. Por favor, exclua alguns antes de adicionar mais.
 schedule_add_success: Comando agendado adicionado com sucesso.
 schedule_command: Comando
 schedule_delete_error: Erro ao excluir comando agendado.

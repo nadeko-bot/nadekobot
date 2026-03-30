@@ -10,7 +10,8 @@ repeat:
     If you specify time of day, you can still override the default daily
     interval with your own interval. 
 
-    You can have up to 5 repeating messages on one server in total.
+    You can have up to 5 repeating messages on one server in total (configurable
+    via `.config utility maxRepeaters`).
   ex:
     - Hello there
     - '#other-channel hello there'

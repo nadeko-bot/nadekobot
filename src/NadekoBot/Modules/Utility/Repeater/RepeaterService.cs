@@ -8,8 +8,6 @@ namespace NadekoBot.Modules.Utility.Services;
 
 public sealed class RepeaterService : IReadyExecutor, INService
 {
-    private const int MAX_REPEATERS = 5;
-
     private readonly DbService _db;
     private readonly IReplacementService _repSvc;
     private readonly IBotCreds _creds;
@@ -20,19 +18,25 @@ public sealed class RepeaterService : IReadyExecutor, INService
 
     private readonly Lock _queueLocker = new();
     private readonly IMessageSenderService _sender;
+    private readonly UtilityConfigService _ucs;
+
+    public int MaxRepeaters
+        => _ucs.Data.MaxRepeaters;
 
     public RepeaterService(
         DiscordSocketClient client,
         DbService db,
         IReplacementService repSvc,
         IBotCreds creds,
-        IMessageSenderService sender)
+        IMessageSenderService sender,
+        UtilityConfigService ucs)
     {
         _db = db;
         _repSvc = repSvc;
         _creds = creds;
         _client = client;
         _sender = sender;
+        _ucs = ucs;
 
         using var uow = _db.GetDbContext();
         var shardRepeaters = uow.Set<Repeater>()
@@ -347,7 +351,7 @@ public sealed class RepeaterService : IReadyExecutor, INService
 
         await using var uow = _db.GetDbContext();
 
-        if (await uow.Set<Repeater>().CountAsyncEF(x => x.GuildId == guildId) < MAX_REPEATERS)
+        if (await uow.Set<Repeater>().CountAsyncEF(x => x.GuildId == guildId) < _ucs.Data.MaxRepeaters)
             uow.Set<Repeater>().Add(rep);
         else
             return null;
@@ -363,7 +367,7 @@ public sealed class RepeaterService : IReadyExecutor, INService
 
     public async Task<RunningRepeater?> RemoveByIndexAsync(ulong guildId, int index)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, MAX_REPEATERS * 2);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, _ucs.Data.MaxRepeaters * 2);
 
         await using var uow = _db.GetDbContext();
         var toRemove = await uow.Set<Repeater>()
