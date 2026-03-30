@@ -29,6 +29,8 @@ owner: Właściciel
 page: 'strona {0}'
 perm_prevent: 'Uprawnienie nr #{0} {1} blokuje tę akcję.'
 price: Cena
+prompt_no: "Nie"
+prompt_yes: "Tak"
 redacted_too_long: Ukryto, bo jest za długie.
 response: Odpowiedź
 trigger: Wyzwalacz

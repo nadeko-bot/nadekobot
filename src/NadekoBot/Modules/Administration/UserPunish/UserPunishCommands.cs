@@ -62,13 +62,20 @@ public partial class Administration
             {
                 if (user is not null)
                 {
-                    await _sender.Response(user)
-                        .Embed(CreateEmbed()
-                            .WithErrorColor()
-                            .WithDescription(GetText(strs.warned_on(ctx.Guild.ToString())))
-                            .AddField(GetText(strs.moderator), ctx.User.ToString())
-                            .AddField(GetText(strs.reason), reason ?? "-"))
-                        .SendAsync();
+                    var previousCount = await _service.GetCurrentWarnCount(ctx.Guild.Id, userId);
+                    var totalCount = previousCount + weight;
+
+                    var smartText = await _service.GetWarnUserDmEmbed(Context,
+                        user,
+                        GetText(strs.warned_on(ctx.Guild.ToString())),
+                        GetText(strs.moderator),
+                        GetText(strs.reason),
+                        reason,
+                        weight,
+                        totalCount);
+
+                    if (smartText is not null)
+                        await Response().User(user).Text(smartText).SendAsync();
                 }
                 else
                 {
@@ -647,6 +654,72 @@ public partial class Administration
 
             if (smartText is null)
                 await Response().Confirm(strs.banmsg_disabled).SendAsync();
+            else
+            {
+                try
+                {
+                    await Response().User(ctx.User).Text(smartText).SendAsync();
+                }
+                catch (Exception)
+                {
+                    await Response().Error(strs.unable_to_dm_user).SendAsync();
+                    return;
+                }
+
+                await ctx.OkAsync();
+            }
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.BanMembers)]
+        public async Task WarnMessage([Leftover] string message = null)
+        {
+            if (message is null)
+            {
+                var template = await _service.GetWarnTemplateAsync(ctx.Guild.Id);
+                if (template is null)
+                {
+                    await Response().Confirm(strs.warnmsg_default).SendAsync();
+                    return;
+                }
+
+                await Response().Confirm(template).SendAsync();
+                return;
+            }
+
+            await _service.SetWarnTemplateAsync(ctx.Guild.Id, message);
+            await ctx.OkAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.BanMembers)]
+        public async Task WarnMsgReset()
+        {
+            await _service.SetWarnTemplateAsync(ctx.Guild.Id, null);
+            await ctx.OkAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.BanMembers)]
+        public async Task WarnMessageTest([Leftover] string reason = null)
+        {
+            var previousCount = await _service.GetCurrentWarnCount(ctx.Guild.Id, ctx.User.Id);
+            var totalCount = previousCount + 1;
+
+            var smartText = await _service.GetWarnUserDmEmbed(Context,
+                (IGuildUser)ctx.User,
+                GetText(strs.warned_on(ctx.Guild.ToString())),
+                GetText(strs.moderator),
+                GetText(strs.reason),
+                reason,
+                1,
+                totalCount);
+
+            if (smartText is null)
+                await Response().Confirm(strs.warnmsg_disabled).SendAsync();
             else
             {
                 try

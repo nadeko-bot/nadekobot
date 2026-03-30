@@ -29,6 +29,8 @@ owner: المالك
 page: 'الصفحة {0}'
 perm_prevent: 'الصلاحية رقم #{0} {1} تمنع هذا الإجراء.'
 price: السعر
+prompt_no: "لا"
+prompt_yes: "نعم"
 redacted_too_long: تم الحذف لأنه طويل جداً.
 response: الاستجابة
 trigger: المُحفّز

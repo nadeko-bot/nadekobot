@@ -51,6 +51,10 @@ warn_punish_set_timed: I will apply {0} punishment for {2} to users with {1} war
 warn_weight: 'Weight: {0}'
 warned_on: Warned on {0} server
 warned_on_by: On {0} at {1} by {2}
+warnmsg_default: No warn message set. Default behavior will be used.
+warnmsg_disabled: >-
+  Warn messages are disabled. You can enable them by setting a warnmsg to
+  something other than '-'.
 warning_clear_fail: >-
   Warning not cleared. Either the warning at that index doesn't exist, or it has
   already been cleared.

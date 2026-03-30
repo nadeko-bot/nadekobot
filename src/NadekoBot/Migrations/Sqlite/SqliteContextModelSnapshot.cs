@@ -2322,6 +2322,29 @@ namespace NadekoBot.Migrations.Sqlite
                     b.ToTable("VcRoleInfo");
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.WarnTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DateAdded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId")
+                        .IsUnique();
+
+                    b.ToTable("WarnTemplates");
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.Warning", b =>
                 {
                     b.Property<int>("Id")

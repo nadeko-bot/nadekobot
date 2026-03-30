@@ -45,6 +45,8 @@ warn_punish_set_timed: 'Aku akan memberikan hukuman {0} selama {2} ke pengguna d
 warn_weight: 'Bobot: {0}'
 warned_on: 'Diperingatkan di server {0}'
 warned_on_by: 'Di {0} pada {1} oleh {2}'
+warnmsg_default: Tidak ada pesan peringatan yang dipasang. Perilaku default akan digunakan.
+warnmsg_disabled: Pesan peringatan dinonaktifkan. Kamu bisa mengaktifkannya dengan mengatur warnmsg ke sesuatu selain '-'.
 warning_clear_fail: Peringatan tidak dihapus. Peringatan di indeks tersebut tidak ada, atau sudah dihapus sebelumnya.
 warning_cleared: 'Peringatan {0} telah dihapus untuk {1}.'
 warning_deleted: 'Peringatan {0} telah dihapus.'

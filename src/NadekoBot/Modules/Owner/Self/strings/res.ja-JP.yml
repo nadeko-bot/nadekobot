@@ -9,12 +9,12 @@ cache_users_pending: ユーザーを更新中、お待ちください...
 command_text: コマンドテキスト
 deleted_x_servers: '{0}サーバーを削除しました。'
 dm_from: 'ダイレクトメッセージ 送信者:'
-fwall_start: すべてのBot所有者にDMを転送するようになりました。
-fwall_stop: 最初のBot所有者にのみDMを転送するようになりました。
+fw_enabled: 転送されたDMを受け取るようになりました。
+fw_disabled: 転送されたDMを受け取らないようになりました。
+fw_enabled_but_channel: '転送されたDMを受け取るようになりましたが、チャンネル転送が有効で優先されます。先に{0}で無効にしてください。'
 fwch_start: Botに送信されたDMはすべてこのチャンネルに転送されます。
 fwch_stop: Botに送信されたDMはこのチャンネルに転送されなくなります。
-fwdm_start: Bot所有者へのDM転送がオンになりました。
-fwdm_stop: Bot所有者へのDM転送がオフになりました。
+fwch_notify: '{0}によりDM転送がチャンネルにリダイレクトされました。この間、個別のDM転送は一時停止されます。'
 interval: ''
 invalid_format: 入力フォーマットが無効です。
 no_shard_id: そのIDのShardが見つかりませんでした。

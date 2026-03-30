@@ -18,7 +18,7 @@ public sealed partial class ResponseBuilder
     private readonly IBotStrings _bs;
     private readonly IMessageSenderService _sender;
     private EmbedBuilder? embedBuilder;
-    private NadekoInteractionBase? inter;
+    private List<NadekoInteractionBase>? inters;
     private Stream? fileStream;
     private string? fileName;
     private EmbedColor color = EmbedColor.Ok;
@@ -82,7 +82,9 @@ public sealed partial class ResponseBuilder
             Embeds = embeds?.Map(x => x.Build()),
             SanitizeMentions = sanitizeMentions ? new(AllowedMentionTypes.Users) : AllowedMentions.All,
             Ephemeral = ephemeral,
-            Interaction = inter
+            InteractionGroup = inters is { Count: > 0 }
+                ? new NadekoInteractionGroup(inters.ToArray())
+                : null
         };
 
         return buildModel;
@@ -99,6 +101,8 @@ public sealed partial class ResponseBuilder
 
     public async Task<IUserMessage> SendAsync(ResponseMessageModel model)
     {
+        var components = model.InteractionGroup?.CreateComponent();
+
         IUserMessage sentMsg;
         if (fileStream is Stream stream)
         {
@@ -106,7 +110,7 @@ public sealed partial class ResponseBuilder
                 filename: fileName,
                 model.Text,
                 embed: model.Embed,
-                components: inter?.CreateComponent(),
+                components: components,
                 allowedMentions: model.SanitizeMentions,
                 messageReference: model.MessageReference);
         }
@@ -116,14 +120,14 @@ public sealed partial class ResponseBuilder
                 model.Text,
                 embed: model.Embed,
                 embeds: model.Embeds,
-                components: inter?.CreateComponent(),
+                components: components,
                 allowedMentions: model.SanitizeMentions,
                 messageReference: model.MessageReference);
         }
 
-        if (model.Interaction is not null)
+        if (model.InteractionGroup is not null)
         {
-            await model.Interaction.RunAsync(sentMsg);
+            await model.InteractionGroup.RunAsync(sentMsg);
         }
 
         return sentMsg;
@@ -341,7 +345,15 @@ public sealed partial class ResponseBuilder
 
     public ResponseBuilder Interaction(NadekoInteractionBase? interaction)
     {
-        inter = interaction;
+        if (interaction is not null)
+            (inters ??= []).Add(interaction);
+        return this;
+    }
+
+    public ResponseBuilder Interactions(params NadekoInteractionBase[] interactions)
+    {
+        if (interactions.Length > 0)
+            (inters ??= []).AddRange(interactions);
         return this;
     }
 

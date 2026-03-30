@@ -110,7 +110,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
                 {
                     if (await exec.ExecOnMessageAsync(guild, usrMsg))
                     {
-                        Log.Information("{TypeName} blocked message g:{GuildId} u:{UserId} c:{ChannelId} msg:{Message}",
+                        Log.Information("{TypeName} intercepted message g:{GuildId} u:{UserId} c:{ChannelId} msg:{Message}",
                             GetExecName(exec),
                             guild?.Id,
                             usrMsg.Author.Id,
@@ -123,7 +123,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
                 catch (Exception ex)
                 {
                     Log.Error(ex,
-                        "An error occurred in {TypeName} late blocker: {ErrorMessage}",
+                        "An error occurred in {TypeName} OnMessage handler: {ErrorMessage}",
                         GetExecName(exec),
                         ex.Message);
                 }
@@ -164,7 +164,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
                 {
                     if (await exec.ExecPreCommandAsync(ctx, cmd.Module.GetTopLevelModule().Name, cmd))
                     {
-                        Log.Information("{TypeName} Pre-Command blocked [{User}] Command: [{Command}]",
+                        Log.Information("{TypeName} intercepted [{User}] Command: [{Command}]",
                             GetExecName(exec),
                             ctx.User,
                             cmd.Aliases[0]);

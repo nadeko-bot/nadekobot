@@ -1,31 +1,25 @@
-ban_prune: Bot will prune up to {0} day(s) worth of messages from banned user.
+ban_prune: 'Bot will prune up to {0} day(s) worth of messages from banned user.'
 ban_prune_disabled: Banned user's messages will no longer be deleted.
 bandm: |-
   You have been banned from {0} server.
   Reason: {1}
 banmsg_default: No ban message set. Default behavior will be used.
-banmsg_disabled: >-
-  Ban messages are disabled. Set a banmsg to something other than '-' to
-  enable them.
+banmsg_disabled: Ban messages are disabled. Set a banmsg to something other than '-' to enable them.
 banned_user: User Banned
-cant_apply_punishment: >-
-  Can't apply punishment. Make sure I have sufficient permissions and that my
-  role is above the others.
+cant_apply_punishment: Can't apply punishment. Make sure I have sufficient permissions and that my role is above the others.
 duration: Duration
-invalid: Invalid / Can't be found ({0})
+invalid: 'Invalid / Can''t be found ({0})'
 kickdm: |-
   You have been kicked from {0} server.
   Reason: {1}
 kicked_user: User kicked.
-mass_ban_completed: Banned {0} users.
-mass_ban_in_progress: Banning {0} users... D-don't rush me!
-mass_kill_completed: Mass banning and blacklisting of {0} users is complete.
-mass_kill_in_progress: Mass banning and blacklisting of {0} users is in progress...
+mass_ban_completed: 'Banned {0} users.'
+mass_ban_in_progress: 'Banning {0} users... D-don''t rush me!'
+mass_kill_completed: 'Mass banning and blacklisting of {0} users is complete.'
+mass_kill_in_progress: 'Mass banning and blacklisting of {0} users is in progress...'
 moderator: Moderator
 reason: Reason
-role_too_high: >-
-  You can't use this command with roles above your highest role unless you're
-  a server administrator.
+role_too_high: You can't use this command with roles above your highest role unless you're a server administrator.
 sb_user: User soft-banned.
 sbdm: |-
   You have been soft-banned from {0} server.
@@ -35,32 +29,32 @@ timeoutdm: |-
   You have been timed out in {0} server.
   Reason: {1}
 unable_to_dm_user: DMing user failed.
-unbanned_user: User {0} has been unbanned.
-user_warned: User {0} has been warned.
+unbanned_user: 'User {0} has been unbanned.'
+user_warned: 'User {0} has been warned.'
 user_warned_and_punished: 'User {0} has been warned and {1} punishment has been applied. They deserved it.'
 username: Username
-warn_cleared_by: cleared by {0}
+warn_cleared_by: 'cleared by {0}'
 warn_count: '{0} current, {1} total'
 warn_expire_reset: Warnings will no longer expire.
-warn_expire_set_clear: Warnings will be cleared after {0} days.
-warn_expire_set_delete: Warnings will be deleted after {0} days. Hmph, I-I'm not being lenient.
+warn_expire_set_clear: 'Warnings will be cleared after {0} days.'
+warn_expire_set_delete: 'Warnings will be deleted after {0} days. Hmph, I-I''m not being lenient.'
 warn_punish_list: Warning punishment list
-warn_punish_rem: Having {0} warnings will no longer trigger a punishment.
-warn_punish_set: I will apply {0} punishment to users with {1} warnings. D-don't test me!
-warn_punish_set_timed: I will apply {0} punishment for {2} to users with {1} warnings.
+warn_punish_rem: 'Having {0} warnings will no longer trigger a punishment.'
+warn_punish_set: 'I will apply {0} punishment to users with {1} warnings. D-don''t test me!'
+warn_punish_set_timed: 'I will apply {0} punishment for {2} to users with {1} warnings.'
 warn_weight: 'Weight: {0}'
-warned_on: Warned on {0} server
-warned_on_by: On {0} at {1} by {2}
-warning_clear_fail: >-
-  Warning not cleared. Either the warning at that index doesn't exist, or it has
-  already been cleared.
-warning_cleared: Warning {0} has been cleared for {1}.
-warning_deleted: Warning {0} has been deleted.
+warned_on: 'Warned on {0} server'
+warned_on_by: 'On {0} at {1} by {2}'
+warnmsg_default: No warn message set. Default behavior will be used.
+warnmsg_disabled: Warn messages are disabled. You can enable them by setting a warnmsg to something other than '-'.
+warning_clear_fail: Warning not cleared. Either the warning at that index doesn't exist, or it has already been cleared.
+warning_cleared: 'Warning {0} has been cleared for {1}.'
+warning_deleted: 'Warning {0} has been deleted.'
 warning_not_found: Warning not found.
-warnings_cleared: All warnings have been cleared for {0}.
+warnings_cleared: 'All warnings have been cleared for {0}.'
 warnings_list: List of all warned users on the server
 warnings_none: No warnings on this page.
-warnlog_for: Warnlog for {0}
+warnlog_for: 'Warnlog for {0}'
 warnpl_none: No punishments set.
 warns_dont_expire: Warnings have no expiry set.
-warns_expire_in: Warnings will expire in {0} days.
+warns_expire_in: 'Warnings will expire in {0} days.'

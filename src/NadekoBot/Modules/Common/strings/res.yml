@@ -33,6 +33,8 @@ owner: Owner
 page: page {0}
 perm_prevent: 'Permission number #{0} {1} is preventing this action.'
 price: Price
+prompt_no: "No"
+prompt_yes: "Yes"
 redacted_too_long: Redacted because it's too long.
 response: Response
 trigger: Trigger

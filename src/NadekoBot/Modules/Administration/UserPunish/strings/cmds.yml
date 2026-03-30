@@ -182,6 +182,37 @@ warn:
         desc: The user to be warned about the issue or situation.
       weight:
         desc: The level of severity for the warning.
+warnmessage:
+  desc: |-
+    Sets a warn message template which will be used when a user is warned on
+    this server. You can use embed strings and warn-specific placeholders:
+    %warn.mod%, %warn.user%, %warn.reason%, %warn.count%, %warn.weight%.
+    You can disable warn DMs with `{0}warnmsg -`
+  ex:
+    - '%warn.user%, you have been warned in %server.name%. Reason: %warn.reason%'
+    - >-
+      {{ "description": "%warn.user% you have been warned in %server.name% by
+      %warn.mod%. Total warnings: %warn.count%" }}
+  params:
+    - message:
+        desc: The custom message to be displayed when a user is warned.
+warnmessagetest:
+  desc: |-
+    If warn message is not disabled, bot will send you the message as if you
+    were warned by yourself. Used for testing the warn message.
+  ex:
+    - No reason
+  params:
+    - reason:
+        desc: The reason why a user was warned.
+warnmsgreset:
+  desc: |-
+    Resets warn message to default. If you want to completely disable warn
+    DMs, use `{0}warnmsg -`
+  ex:
+    - ''
+  params:
+    - {}
 warnclear:
   desc: >-
     Clears all warnings from a certain user. You can specify a number to clear a

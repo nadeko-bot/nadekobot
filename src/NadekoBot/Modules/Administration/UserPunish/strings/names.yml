@@ -44,6 +44,15 @@ warnlog:
   - warnlog
 warnlogall:
   - warnlogall
+warnmessage:
+  - warnmessage
+  - warnmsg
+  - warntemplate
+  - warntemp
+warnmessagetest:
+  - warnmsgtest
+warnmsgreset:
+  - warnmsgreset
 warnpunish:
   - warnpunish
   - warnp

@@ -29,6 +29,8 @@ owner: 擁有者
 page: '第 {0} 頁'
 perm_prevent: '#{0} {1} 阻止了此操作。'
 price: 價格
+prompt_no: "否"
+prompt_yes: "是"
 redacted_too_long: 訊息太長，已被刪減
 response: 回覆
 trigger: 觸發關鍵字詞

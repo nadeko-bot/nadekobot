@@ -276,24 +276,14 @@ public partial class Owner
         [OwnerOnly]
         public async Task ForwardMessages()
         {
-            var enabled = _service.ForwardMessages();
+            var isOptedOut = _service.ToggleForwardOptOut(ctx.User.Id);
 
-            if (enabled)
-                await Response().Confirm(strs.fwdm_start).SendAsync();
+            if (isOptedOut)
+                await Response().Pending(strs.fw_disabled).SendAsync();
+            else if (_service.IsForwardToChannelActive())
+                await Response().Confirm(strs.fw_enabled_but_channel(prefix + "fwtoch")).SendAsync();
             else
-                await Response().Pending(strs.fwdm_stop).SendAsync();
-        }
-
-        [Cmd]
-        [OwnerOnly]
-        public async Task ForwardToAll()
-        {
-            var enabled = _service.ForwardToAll();
-
-            if (enabled)
-                await Response().Confirm(strs.fwall_start).SendAsync();
-            else
-                await Response().Pending(strs.fwall_stop).SendAsync();
+                await Response().Confirm(strs.fw_enabled).SendAsync();
         }
 
         [Cmd]
@@ -304,7 +294,10 @@ public partial class Owner
             var enabled = _service.ForwardToChannel(ctx.Channel.Id);
 
             if (enabled)
+            {
                 await Response().Confirm(strs.fwch_start).SendAsync();
+                await _service.NotifyOwnersAboutForwardChannelAsync(ctx.User.Id, ctx.User);
+            }
             else
                 await Response().Pending(strs.fwch_stop).SendAsync();
         }

@@ -29,6 +29,8 @@ owner: Besitzer
 page: 'Seite {0}'
 perm_prevent: 'Berechtigung Nummer #{0} {1} verhindert diese Aktion.'
 price: Preis
+prompt_no: "Nein"
+prompt_yes: "Ja"
 redacted_too_long: Wurde entfernt da es zu lang ist.
 response: Antwort
 trigger: Auslöser

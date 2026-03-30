@@ -9,12 +9,12 @@ cache_users_pending: Mise à jour des utilisateurs, veuillez patienter...
 command_text: Commande textuelle
 deleted_x_servers: '{0} serveurs supprimés.'
 dm_from: MP de
-fwall_start: Je transmettrai les MPs à tous les propriétaires.
-fwall_stop: Je transmettrai les MPs uniquement au premier propriétaire.
+fw_enabled: Tu recevras les MPs transférés à partir de maintenant.
+fw_disabled: Tu ne recevras plus les MPs transférés.
+fw_enabled_but_channel: 'Tu recevras les MPs transférés, mais le transfert vers un salon est actif et prioritaire. Désactive-le d''abord avec {0}.'
 fwch_start: Tout message envoyé dans les DMs du bot sera transféré vers ce salon.
 fwch_stop: Les messages envoyés dans les DMs du bot ne seront plus transférés vers ce salon.
-fwdm_start: Je transmettrai les MPs dès maintenant.
-fwdm_stop: J'arrête de transmettre les MPs dès maintenant.
+fwch_notify: 'Le transfert de MPs a été redirigé vers un salon par {0}. Ton transfert individuel de MPs est suspendu tant que cela est actif.'
 interval: Intervalle
 invalid_format: Format d'entrée invalide.
 no_shard_id: Aucun fragment avec cet ID n'a été trouvée.

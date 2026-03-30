@@ -45,6 +45,8 @@ warn_punish_set_timed: '警告が{1}回のユーザーに{2}の間{0}処罰を�
 warn_weight: '重み: {0}'
 warned_on: '{0}サーバーで警告されました'
 warned_on_by: '{1}の{0}で{2}'
+warnmsg_default: 警告メッセージは設定されていません。デフォルトの動作が使用されます。
+warnmsg_disabled: 警告メッセージは無効です。'-'以外に設定することで有効にできます。
 warning_clear_fail: ''
 warning_cleared: ''
 warning_deleted: '警告{0}が削除されました。'

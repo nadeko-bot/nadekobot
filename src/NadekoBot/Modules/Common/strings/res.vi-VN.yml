@@ -29,6 +29,8 @@ owner: Chủ sở hữu
 page: 'trang {0}'
 perm_prevent: 'Quyền số #{0} {1} đang ngăn hành động này.'
 price: Giá
+prompt_no: "Không"
+prompt_yes: "Có"
 redacted_too_long: Đã ẩn vì quá dài.
 response: Phản hồi
 trigger: Kích hoạt

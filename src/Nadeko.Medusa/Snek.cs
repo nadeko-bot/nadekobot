@@ -97,7 +97,7 @@ public abstract class Snek : IAsyncDisposable
     /// <param name="context">Command context</param>
     /// <param name="moduleName">Name of the snek or module from which the command originates</param>
     /// <param name="commandName">Name of the command which is about to be executed</param>
-    /// <returns>A <see cref="ValueTask"/> representing whether the execution should be blocked</returns>
+    /// <returns>A <see cref="ValueTask"/> representing whether the execution should be intercepted</returns>
     public virtual ValueTask<bool> ExecPreCommandAsync(
         AnyContext context,
         string moduleName,
@@ -123,7 +123,7 @@ public abstract class Snek : IAsyncDisposable
     /// <summary>
     /// This method is called if no command was found for the input.
     /// Useful if you want to have games or features which take arbitrary input
-    /// but ignore any messages which were blocked or caused a command execution
+    /// but ignore any messages which were intercepted or caused a command execution
     /// If this method was called, then <see cref="ExecPostCommandAsync"/> will not be executed
     /// <para>Execution order:</para>
     /// <para>

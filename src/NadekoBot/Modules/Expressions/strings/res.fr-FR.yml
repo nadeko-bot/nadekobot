@@ -7,6 +7,9 @@ expr_global_enabled: Les expressions globales ne sont plus désactivées sur ce 
 expr_insuff_perms: Permissions insuffisantes. La détention du bot est requise pour les expressions globales, et le statut d'administrateur pour les expressions du serveur.
 expr_new: Nouvelle Expression
 expr_no_found: Aucune expression de trouvée.
+expr_override_confirm: |-
+  Es-tu sur de vouloir activer/desactiver le mode de remplacement des expressions ?
+  Quand il est active, ajouter une expression avec un declencheur existant supprimera l'ancienne et la remplacera.
 expr_override_disabled: ''
 expr_override_enabled: ''
 expr_search_results: 'Resultats de recherche pour "{0}"'

@@ -29,6 +29,8 @@ owner: Dono
 page: 'Página {0}'
 perm_prevent: 'Permissão número #{0} {1} está impedindo essa ação.'
 price: Preço
+prompt_no: "Não"
+prompt_yes: "Sim"
 redacted_too_long: O texto é longo demais.
 response: Resposta
 trigger: Gatilho

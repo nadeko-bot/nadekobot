@@ -45,6 +45,8 @@ warn_punish_set_timed: '我將對有 {1} 警告的用戶應用 {0} 懲罰 {2}。
 warn_weight: '設定值：{0}'
 warned_on: '在 {0} 伺服器上收到警告'
 warned_on_by: '{0} {1} 來自 {2}'
+warnmsg_default: 没有设置警告消息。将使用默认行为。
+warnmsg_disabled: 警告消息已禁用。您可以通过将 warnmsg 设置为 '-' 以外的内容来启用它们。
 warning_clear_fail: 警告未清除。該索引處的警告不存在，或者已被清除。
 warning_cleared: '{1} 的警告 {0} 已清除。'
 warning_deleted: '警告 {0} 已刪除。'

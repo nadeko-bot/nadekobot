@@ -45,6 +45,8 @@ warn_punish_set_timed: 'Ich werde {0} Strafen für {2} an Nutzern mit {1} Warnun
 warn_weight: 'Gewicht: {0}'
 warned_on: 'Gewarnt auf {0} Server'
 warned_on_by: 'Am {0} um {1} von {2}'
+warnmsg_default: Es wurde keine Warnungsnachricht gesetzt. Normales Verhalten wird verwendet.
+warnmsg_disabled: Warnungsnachrichten sind abgeschaltet. Du kannst sie anschalten wenn du eine Warnungsnachricht als etwas anderes setzt als '-'.
 warning_clear_fail: Warnung wurde nicht gelöscht. Entweder gibt es die Warnung mit diesem Index nicht, oder sie wurde bereits gelöscht.
 warning_cleared: 'Warnung {0} wurde für {1} entfernt.'
 warning_deleted: 'Warnung {0} wurde gelöscht.'

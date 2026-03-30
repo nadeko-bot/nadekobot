@@ -235,11 +235,11 @@ public class CommandHandler : INService, ICommandHandler
     {
         var startTime = Environment.TickCount;
 
-        var blocked = await _behaviorHandler.RunExecOnMessageAsync(guild, usrMsg);
-        if (blocked)
+        var intercepted = await _behaviorHandler.RunExecOnMessageAsync(guild, usrMsg);
+        if (intercepted)
             return;
 
-        var blockTime = Environment.TickCount - startTime;
+        var interceptTime = Environment.TickCount - startTime;
 
         var messageContent = await _behaviorHandler.RunInputTransformersAsync(guild, usrMsg);
 
@@ -263,7 +263,7 @@ public class CommandHandler : INService, ICommandHandler
                 // if it successfully executed
                 if (success)
                 {
-                    await LogSuccessfulExecution(usrMsg, channel as ITextChannel, blockTime, startTime);
+                    await LogSuccessfulExecution(usrMsg, channel as ITextChannel, interceptTime, startTime);
                     await CommandExecuted(usrMsg, info);
                     await _behaviorHandler.RunPostCommandAsync(context, info.Module.GetTopLevelModule().Name, info);
                     return;
@@ -273,7 +273,7 @@ public class CommandHandler : INService, ICommandHandler
                 if (error is not null)
                 {
                     error = HumanizeError(error);
-                    LogErroredExecution(error, usrMsg, channel as ITextChannel, blockTime, startTime);
+                    LogErroredExecution(error, usrMsg, channel as ITextChannel, interceptTime, startTime);
 
                     if (guild is not null)
                         await CommandErrored(info, channel as ITextChannel, error);
@@ -391,8 +391,8 @@ public class CommandHandler : INService, ICommandHandler
 
         //return SearchResult.FromError(CommandError.Exception, "You are on a global cooldown.");
 
-        var blocked = await _behaviorHandler.RunPreCommandAsync(context, cmd);
-        if (blocked)
+        var intercepted = await _behaviorHandler.RunPreCommandAsync(context, cmd);
+        if (intercepted)
             return (false, null, cmd);
 
         //If we get this far, at least one parse was successful. Execute the most likely overload.

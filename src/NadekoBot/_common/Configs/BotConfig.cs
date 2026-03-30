@@ -12,7 +12,7 @@ namespace NadekoBot.Common.Configs;
 public sealed partial class BotConfig : ICloneable<BotConfig>
 {
     [Comment("""DO NOT CHANGE""")]
-    public int Version { get; set; } = 9;
+    public int Version { get; set; } = 10;
 
     [Comment("""
         Most commands, when executed, have a small colored line
@@ -36,18 +36,15 @@ public sealed partial class BotConfig : ICloneable<BotConfig>
     [Comment("""Whether the bot will check for new releases every hour""")]
     public bool CheckForUpdates { get; set; } = true;
 
-    [Comment("""Do you want any messages sent by users in Bot's DM to be forwarded to the owner(s)?""")]
-    public bool ForwardMessages { get; set; }
-
     [Comment("""
-            Do you want the message to be forwarded only to the first owner specified in the list of owners (in creds.yml),
-            or all owners? (this might cause the bot to lag if there's a lot of owners specified)
-            """)]
-    public bool ForwardToAllOwners { get; set; }
+        List of owner IDs who have opted out of receiving forwarded DMs.
+        By default, all owners receive forwarded DMs. Use .fw command to opt out.
+        """)]
+    public List<ulong> ForwardOptOutOwnerIds { get; set; }
     
     [Comment("""
-        Any messages sent by users in Bot's DM to be forwarded to the specified channel.
-        This option will only work when ForwardToAllOwners is set to false
+        Any messages sent by users in Bot's DM will be forwarded to the specified channel.
+        When set, this overrides individual owner DM forwarding.
         """)]
     public ulong? ForwardToChannel { get; set; }
     
@@ -100,8 +97,7 @@ public sealed partial class BotConfig : ICloneable<BotConfig>
         Color = color;
         DefaultLocale = new("en-US");
         ConsoleOutputType = ConsoleOutputType.Normal;
-        ForwardMessages = false;
-        ForwardToAllOwners = false;
+        ForwardOptOutOwnerIds = [];
         DmHelpText = """{"description": "Type `%prefix%h` for help."}""";
         HelpText = """
             {

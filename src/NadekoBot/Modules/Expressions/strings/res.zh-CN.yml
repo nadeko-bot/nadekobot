@@ -7,6 +7,9 @@ expr_global_enabled: 此伺服器上的全域表達式不再停用。
 expr_insuff_perms: 權限不足。全局表達式需要 Bot 所有權，伺服器表達式需要管理員。
 expr_new: 新表達
 expr_no_found: 未找到表達式。
+expr_override_confirm: |-
+  你确定要切换表达式覆盖模式吗？
+  开启后，添加一个已有触发词的表达式会删除旧的并替换。
 expr_override_disabled: ''
 expr_override_enabled: ''
 expr_search_results: '搜索 "{0}" 的结果'

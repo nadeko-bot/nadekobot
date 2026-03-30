@@ -9,12 +9,12 @@ cache_users_pending: Atualizando usuários, por favor aguarde...
 command_text: Comando de Texto
 deleted_x_servers: 'Servidores deletados {0}.'
 dm_from: DM de
-fwall_start: DMs serão encaminhadas para todos os donos.
-fwall_stop: DMs serão encaminhadas somente para o primeiro dono.
+fw_enabled: Agora você receberá DMs encaminhadas.
+fw_disabled: Você não receberá mais DMs encaminhadas.
+fw_enabled_but_channel: 'Você receberá DMs encaminhadas, mas o encaminhamento para canal está ativo e tem prioridade. Desative-o primeiro com {0}.'
 fwch_start: Qualquer mensagem enviada nas DMs do bot será encaminhada para este canal.
 fwch_stop: Mensagens enviadas nas DMs do bot não serão mais encaminhadas para este canal.
-fwdm_start: DMs serão encaminhadas a partir de agora.
-fwdm_stop: DMs não serão mais encaminhadas.
+fwch_notify: 'O encaminhamento de DMs foi redirecionado para um canal por {0}. Seu encaminhamento individual de DMs está pausado enquanto isso estiver ativo.'
 interval: Intervalo
 invalid_format: Input inválido.
 no_shard_id: Nenhuma shard com esse ID encontrado.

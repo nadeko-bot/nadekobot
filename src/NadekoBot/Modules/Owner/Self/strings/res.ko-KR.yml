@@ -9,12 +9,12 @@ cache_users_pending: 유저를 업데이트하는 중이에요, 잠시 기다려
 command_text: 명령어 텍스트
 deleted_x_servers: '{0}개의 서버가 삭제되었어요.'
 dm_from: DM 발신
-fwall_start: 모든 소유자에게 DM을 전달할게요.
-fwall_stop: 첫 번째 소유자에게만 DM을 전달할게요.
+fw_enabled: 이제 전달된 DM을 받게 됩니다.
+fw_disabled: 더 이상 전달된 DM을 받지 않습니다.
+fw_enabled_but_channel: '전달된 DM을 받게 되지만, 채널 전달이 활성화되어 있어 우선됩니다. 먼저 {0}으로 비활성화하세요.'
 fwch_start: 봇의 DM으로 전송된 모든 메시지가 이 채널로 전달돼요.
 fwch_stop: 봇의 DM으로 전송된 메시지가 더 이상 이 채널로 전달되지 않아요.
-fwdm_start: 이제부터 DM을 전달할게요.
-fwdm_stop: 이제부터 DM 전달을 중단할게요.
+fwch_notify: '{0}에 의해 DM 전달이 채널로 리다이렉트되었습니다. 이 기간 동안 개별 DM 전달은 일시 중지됩니다.'
 interval: 간격
 invalid_format: 잘못된 입력 형식이에요.
 no_shard_id: 해당 ID의 샤드를 찾을 수 없어요.

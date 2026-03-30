@@ -611,7 +611,7 @@ public class UserPunishService : INService, IReadyExecutor
             return default;
         // if template is an embed, send that embed with replacements
         // otherwise, treat template as a regular string with replacements
-        else if (SmartText.CreateFrom(template) is not { IsEmbed: true } or { IsEmbedArray: true })
+        else if (SmartText.CreateFrom(template) is not ({ IsEmbed: true } or { IsEmbedArray: true }))
         {
             template = JsonConvert.SerializeObject(new
             {
@@ -711,5 +711,132 @@ public class UserPunishService : INService, IReadyExecutor
                                   .CountAsyncLinqToDB();
 
         return (latest, totalCount);
+    }
+
+    public async Task<string> GetWarnTemplateAsync(ulong guildId)
+    {
+        await using var uow = _db.GetDbContext();
+        return await uow.GetTable<WarnTemplate>()
+                        .Where(x => x.GuildId == guildId)
+                        .Select(x => x.Text)
+                        .FirstOrDefaultAsyncLinqToDB();
+    }
+
+    public async Task SetWarnTemplateAsync(ulong guildId, string text)
+    {
+        await using var uow = _db.GetDbContext();
+
+        if (text is null)
+        {
+            await uow.GetTable<WarnTemplate>()
+                     .Where(x => x.GuildId == guildId)
+                     .DeleteAsync();
+        }
+        else
+        {
+            await uow.GetTable<WarnTemplate>()
+                     .InsertOrUpdateAsync(
+                         () => new()
+                         {
+                             GuildId = guildId,
+                             Text = text,
+                             DateAdded = DateTime.UtcNow
+                         },
+                         old => new()
+                         {
+                             Text = text
+                         },
+                         () => new()
+                         {
+                             GuildId = guildId
+                         });
+        }
+    }
+
+    public async Task<SmartText> GetWarnUserDmEmbed(
+        DiscordSocketClient client,
+        SocketGuild guild,
+        IGuildUser moderator,
+        IGuildUser target,
+        string localizedDescription,
+        string localizedModLabel,
+        string localizedReasonLabel,
+        string warnReason,
+        long weight,
+        long totalCount)
+    {
+        var template = await GetWarnTemplateAsync(guild.Id);
+
+        warnReason = string.IsNullOrWhiteSpace(warnReason) ? "-" : warnReason;
+
+        var repCtx = new ReplacementContext(client, guild)
+                     .WithOverride("%warn.mod%", () => moderator.ToString())
+                     .WithOverride("%warn.mod.fullname%", () => moderator.ToString())
+                     .WithOverride("%warn.mod.name%", () => moderator.Username)
+                     .WithOverride("%warn.mod.discrim%", () => moderator.Discriminator)
+                     .WithOverride("%warn.user%", () => target.ToString())
+                     .WithOverride("%warn.user.fullname%", () => target.ToString())
+                     .WithOverride("%warn.user.name%", () => target.Username)
+                     .WithOverride("%warn.user.discrim%", () => target.Discriminator)
+                     .WithOverride("%reason%", () => warnReason)
+                     .WithOverride("%warn.reason%", () => warnReason)
+                     .WithOverride("%warn.count%", () => totalCount.ToString())
+                     .WithOverride("%warn.weight%", () => weight.ToString());
+
+        if (string.IsNullOrWhiteSpace(template))
+        {
+            var errorColor = _bcs.Data.Color.Error.PackedValue >> 8;
+            template = JsonConvert.SerializeObject(new
+            {
+                color = errorColor,
+                description = localizedDescription,
+                fields = new[]
+                {
+                    new { name = localizedModLabel, value = moderator.ToString(), inline = false },
+                    new { name = localizedReasonLabel, value = warnReason, inline = false }
+                }
+            });
+        }
+        else if (template == "-")
+            return default;
+        else if (SmartText.CreateFrom(template) is not ({ IsEmbed: true } or { IsEmbedArray: true }))
+        {
+            template = JsonConvert.SerializeObject(new
+            {
+                color = _bcs.Data.Color.Error.PackedValue >> 8,
+                description = template
+            });
+        }
+
+        var output = SmartText.CreateFrom(template);
+        return await _repSvc.ReplaceAsync(output, repCtx);
+    }
+
+    public Task<SmartText> GetWarnUserDmEmbed(
+        ICommandContext context,
+        IGuildUser target,
+        string localizedDescription,
+        string localizedModLabel,
+        string localizedReasonLabel,
+        string warnReason,
+        long weight,
+        long totalCount)
+        => GetWarnUserDmEmbed((DiscordSocketClient)context.Client,
+            (SocketGuild)context.Guild,
+            (IGuildUser)context.User,
+            target,
+            localizedDescription,
+            localizedModLabel,
+            localizedReasonLabel,
+            warnReason,
+            weight,
+            totalCount);
+
+    public async Task<long> GetCurrentWarnCount(ulong guildId, ulong userId)
+    {
+        await using var uow = _db.GetDbContext();
+        return await uow.GetTable<Warning>()
+                        .Where(w => w.GuildId == guildId && w.UserId == userId && !w.Forgiven)
+                        .SumAsyncLinqToDB(x => x.Weight);
     }
 }

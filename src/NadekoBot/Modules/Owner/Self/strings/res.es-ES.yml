@@ -9,12 +9,12 @@ cache_users_pending: Actualizando usuarios, por favor espera...
 command_text: Comando de texto
 deleted_x_servers: 'Se han eliminado {0} servidores.'
 dm_from: Mensaje privado de
-fwall_start: Le enviaré los mensajes privados a todos los administradores.
-fwall_stop: Le enviaré los mensajes privados únicamente al primer administrador.
+fw_enabled: Ahora recibirás los DMs reenviados.
+fw_disabled: Ya no recibirás los DMs reenviados.
+fw_enabled_but_channel: 'Recibirás los DMs reenviados, pero el reenvío a canal está activo y tiene prioridad. Desactívalo primero con {0}.'
 fwch_start: Cualquier mensaje enviado a los DMs del bot será reenviado a este canal.
 fwch_stop: Los mensajes enviados a los DMs del bot ya no serán reenviados a este canal.
-fwdm_start: Redirigiré los mensajes privados a partir de ahora.
-fwdm_stop: Dejaré de redirigir los mensajes privados.
+fwch_notify: 'El reenvío de DMs ha sido redirigido a un canal por {0}. Tu reenvío individual de DMs está pausado mientras esto esté activo.'
 interval: Intervalo
 invalid_format: Formato no válido.
 no_shard_id: No se encontró ningún fragmento con esa ID.

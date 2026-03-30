@@ -9,12 +9,14 @@ cache_users_pending: Updating users, please wait...
 command_text: Command Text
 deleted_x_servers: Deleted {0} servers.
 dm_from: DM from
-fwall_start: I will forward DMs to all owners.
-fwall_stop: I will forward DMs only to the first owner.
+fw_enabled: You will now receive forwarded DMs.
+fw_disabled: You will no longer receive forwarded DMs.
+fw_enabled_but_channel: |-
+  You will now receive forwarded DMs, but channel forwarding is currently active and takes priority. Disable it with {0} first.
 fwch_start: Any message sent to bot's DMs will be forwarded to this channel.
 fwch_stop: Messages sent to bot's DMs will no longer be forwarded to this channel.
-fwdm_start: I will forward DMs from now on.
-fwdm_stop: I will stop forwarding DMs from now on.
+fwch_notify: |-
+  DM forwarding has been redirected to a channel by {0}. Your individual DM forwarding is paused while this is active.
 interval: Interval
 invalid_format: Invalid input format.
 no_shard_id: No shard with that ID found.

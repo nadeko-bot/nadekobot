@@ -362,7 +362,7 @@ public partial class Games
         [Cmd]
         [OwnerOnly]
         public Task NcNuke(IUser user)
-            => NcNukeInternal(user.Id, user.ToString());
+            => NcNukeInternal(user.Id, user.ToString() ?? user.Id.ToString());
 
         [Cmd]
         [OwnerOnly]

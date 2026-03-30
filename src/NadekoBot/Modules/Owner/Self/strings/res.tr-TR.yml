@@ -9,12 +9,12 @@ cache_users_pending: Kullanıcılar güncelleniyor, lütfen bekle...
 command_text: Komut Metni
 deleted_x_servers: '{0} sunucu silindi.'
 dm_from: DM gönderen
-fwall_start: DM'leri tüm sahiplere ileteceğim.
-fwall_stop: DM'leri yalnızca ilk sahibe ileteceğim.
+fw_enabled: Artık iletilen DM'leri alacaksınız.
+fw_disabled: Artık iletilen DM'leri almayacaksınız.
+fw_enabled_but_channel: 'İletilen DM''leri alacaksınız, ancak kanal yönlendirmesi aktif ve öncelikli. Önce {0} ile devre dışı bırakın.'
 fwch_start: Botun DM'lerine gönderilen tüm mesajlar bu kanala iletilecek.
 fwch_stop: Botun DM'lerine gönderilen mesajlar artık bu kanala iletilmeyecek.
-fwdm_start: Bundan sonra DM'leri ileteceğim.
-fwdm_stop: Bundan sonra DM'leri iletmeyi durduracağım.
+fwch_notify: 'DM yönlendirmesi {0} tarafından bir kanala yönlendirildi. Bu aktifken bireysel DM yönlendirmeniz duraklatıldı.'
 interval: Aralık
 invalid_format: Geçersiz giriş biçimi.
 no_shard_id: Bu kimliğe sahip shard bulunamadı.

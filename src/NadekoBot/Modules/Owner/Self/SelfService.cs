@@ -202,7 +202,7 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
     public async Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
     {
         var bs = _bss.Data;
-        if (msg.Channel is IDMChannel && bs.ForwardMessages && (ownerChannels.Any() || bs.ForwardToChannel is not null))
+        if (msg.Channel is IDMChannel && (ownerChannels.Any() || bs.ForwardToChannel is not null))
         {
             var title = _strings.GetText(strs.dm_from) + $" [{msg.Author}]({msg.Author.Id})";
 
@@ -216,23 +216,7 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
                           + string.Join("\n", msg.Attachments.Select(a => a.ProxyUrl));
             }
 
-            if (bs.ForwardToAllOwners)
-            {
-                var allOwnerChannels = ownerChannels.Values;
-
-                foreach (var ownerCh in allOwnerChannels.Where(ch => ch.Recipient.Id != msg.Author.Id))
-                {
-                    try
-                    {
-                        await _sender.Response(ownerCh).Confirm(title, toSend).SendAsync();
-                    }
-                    catch
-                    {
-                        Log.Warning("Can't contact owner with id {OwnerId}", ownerCh.Recipient.Id);
-                    }
-                }
-            }
-            else if (bs.ForwardToChannel is ulong cid)
+            if (bs.ForwardToChannel is ulong cid)
             {
                 try
                 {
@@ -246,16 +230,22 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
             }
             else
             {
-                var firstOwnerChannel = ownerChannels.Values.First();
-                if (firstOwnerChannel.Recipient.Id != msg.Author.Id)
+                var optOutIds = bs.ForwardOptOutOwnerIds;
+                foreach (var ownerCh in ownerChannels.Values)
                 {
+                    if (ownerCh.Recipient.Id == msg.Author.Id)
+                        continue;
+
+                    if (optOutIds.Contains(ownerCh.Recipient.Id))
+                        continue;
+
                     try
                     {
-                        await _sender.Response(firstOwnerChannel).Confirm(title, toSend).SendAsync();
+                        await _sender.Response(ownerCh).Confirm(title, toSend).SendAsync();
                     }
                     catch
                     {
-                        // ignored
+                        Log.Warning("Can't contact owner with id {OwnerId}", ownerCh.Recipient.Id);
                     }
                 }
             }
@@ -364,34 +354,75 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
         uow.SaveChanges();
     }
 
-    public bool ForwardMessages()
+    public bool ToggleForwardOptOut(ulong ownerId)
     {
-        var isForwarding = false;
-        _bss.ModifyConfig(config => { isForwarding = config.ForwardMessages = !config.ForwardMessages; });
+        var isOptedOut = false;
+        _bss.ModifyConfig(config =>
+        {
+            if (config.ForwardOptOutOwnerIds.Contains(ownerId))
+            {
+                config.ForwardOptOutOwnerIds.Remove(ownerId);
+                isOptedOut = false;
+            }
+            else
+            {
+                config.ForwardOptOutOwnerIds.Add(ownerId);
+                isOptedOut = true;
+            }
+        });
 
-        return isForwarding;
-    }
-
-    public bool ForwardToAll()
-    {
-        var isToAll = false;
-        _bss.ModifyConfig(config => { isToAll = config.ForwardToAllOwners = !config.ForwardToAllOwners; });
-        return isToAll;
+        return isOptedOut;
     }
 
     public bool ForwardToChannel(ulong? channelId)
     {
-        using var uow = _db.GetDbContext();
-
+        var enabled = false;
         _bss.ModifyConfig(config =>
         {
-            config.ForwardToChannel = channelId == config.ForwardToChannel
-                ? null
-                : channelId;
+            if (channelId == config.ForwardToChannel)
+            {
+                config.ForwardToChannel = null;
+                enabled = false;
+            }
+            else
+            {
+                config.ForwardToChannel = channelId;
+                enabled = true;
+            }
         });
 
-        return channelId is not null;
+        return enabled;
     }
+
+    public async Task NotifyOwnersAboutForwardChannelAsync(ulong invokerOwnerId, IUser invokerUser)
+    {
+        var bs = _bss.Data;
+        var optOutIds = bs.ForwardOptOutOwnerIds;
+
+        foreach (var ownerCh in ownerChannels.Values)
+        {
+            if (ownerCh.Recipient.Id == invokerOwnerId)
+                continue;
+
+            if (optOutIds.Contains(ownerCh.Recipient.Id))
+                continue;
+
+            try
+            {
+                await _sender.Response(ownerCh)
+                    .Confirm(_strings.GetText(strs.fwch_notify(invokerUser.ToString())))
+                    .SendAsync();
+            }
+            catch
+            {
+                Log.Warning("Can't notify owner {OwnerId} about channel forward change",
+                    ownerCh.Recipient.Id);
+            }
+        }
+    }
+
+    public bool IsForwardToChannelActive()
+        => _bss.Data.ForwardToChannel is not null;
 
     /// <summary>
     /// Adds the specified <paramref name="users"/> to the database. If a database user with placeholder name

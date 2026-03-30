@@ -45,6 +45,8 @@ warn_punish_set_timed: 'J''appliquerai {0} punition pour {2} aux utilisateurs av
 warn_weight: 'Poids: {0}'
 warned_on: 'Avertissement envoyé sur le serveur {0}'
 warned_on_by: 'Le {0} à {1} par {2}'
+warnmsg_default: Aucun message d'avertissement défini. Le comportement par défaut sera utilisé.
+warnmsg_disabled: Les messages d'avertissement sont désactivés. Vous pouvez les activer en définissant warnmsg autrement qu'avec '-'.
 warning_clear_fail: Avertissement non effacé. Soit l'avertissement sur cet index n'existe pas, soit il a déjà été effacé.
 warning_cleared: 'L''avertissement {0} a été effacé pour {1}.'
 warning_deleted: 'L''avertissement {0} a été supprimé.'

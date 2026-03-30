@@ -29,6 +29,8 @@ owner: 소유자
 page: '페이지 {0}'
 perm_prevent: '권한 #{0} {1}이(가) 이 동작을 막고 있어요.'
 price: 가격
+prompt_no: "아니요"
+prompt_yes: "네"
 redacted_too_long: 내용이 너무 길어서 생략되었어요.
 response: 응답
 trigger: 트리거

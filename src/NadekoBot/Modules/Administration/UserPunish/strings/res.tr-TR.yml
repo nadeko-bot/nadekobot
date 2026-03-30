@@ -45,6 +45,8 @@ warn_punish_set_timed: '{1} uyarıya sahip kullanıcılara {2} süreliğine {0} 
 warn_weight: 'Ağırlık: {0}'
 warned_on: '{0} sunucusunda uyarıldı'
 warned_on_by: '{0} sunucusunda {1} tarihinde {2} tarafından'
+warnmsg_default: Uyarı mesajı ayarlanmamış. Varsayılan davranış kullanılacak.
+warnmsg_disabled: Uyarı mesajları devre dışı. '-' dışında bir şey ayarlayarak etkinleştirebilirsin.
 warning_clear_fail: Uyarı temizlenemedi. Ya o indekste bir uyarı yok ya da zaten temizlenmiş.
 warning_cleared: '{1} için {0}. uyarı temizlendi.'
 warning_deleted: '{0}. uyarı silindi.'

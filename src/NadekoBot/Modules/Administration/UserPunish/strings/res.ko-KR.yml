@@ -45,6 +45,8 @@ warn_punish_set_timed: '경고가 {1}개인 유저에게 {2} 동안 {0} 처벌�
 warn_weight: '가중치: {0}'
 warned_on: '{0} 서버에서 경고를 받음'
 warned_on_by: '{0}에서 {1}에 {2}에 의해'
+warnmsg_default: 경고 메시지가 설정되지 않았어요. 기본 동작이 사용돼요.
+warnmsg_disabled: 경고 메시지가 비활성화되어 있어요. '-' 이외의 값으로 warnmsg를 설정하면 활성화할 수 있어요.
 warning_clear_fail: 경고를 해제하지 못했어요. 해당 번호의 경고가 존재하지 않거나 이미 해제되었어요.
 warning_cleared: '{1}의 경고 {0}이(가) 해제되었어요.'
 warning_deleted: '경고 {0}이(가) 삭제되었어요.'

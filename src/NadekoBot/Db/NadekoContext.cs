@@ -41,6 +41,7 @@ public abstract class NadekoContext : DbContext
     public DbSet<RewardedUser> RewardedUsers { get; set; }
     public DbSet<PlantedCurrency> PlantedCurrency { get; set; }
     public DbSet<BanTemplate> BanTemplates { get; set; }
+    public DbSet<WarnTemplate> WarnTemplates { get; set; }
     public DbSet<DiscordPermOverride> DiscordPermOverrides { get; set; }
     public DbSet<DiscordUser> DiscordUser { get; set; }
     public DbSet<MusicPlayerSettings> MusicPlayerSettings { get; set; }
@@ -395,6 +396,12 @@ public abstract class NadekoContext : DbContext
             .Property(x => x.PruneDays)
             .HasDefaultValue(null)
             .IsRequired(false);
+
+        #endregion
+
+        #region WarnTemplate
+
+        modelBuilder.Entity<WarnTemplate>().HasIndex(x => x.GuildId).IsUnique();
 
         #endregion
 

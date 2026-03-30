@@ -22,10 +22,8 @@ doas:
   - execas
 forwardmessages:
   - forwardmessages
+  - fw
   - fwmsgs
-forwardtoall:
-  - forwardtoall
-  - fwtoall
 forwardtochannel:
   - forwardtochannel
   - fwtoch

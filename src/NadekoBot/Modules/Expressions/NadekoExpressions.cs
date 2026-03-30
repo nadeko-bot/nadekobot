@@ -48,6 +48,13 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
     [RequireContext(ContextType.Guild)]
     public async Task ExprOverride()
     {
+        var embed = CreateEmbed()
+            .WithPendingColor()
+            .WithDescription(GetText(strs.expr_override_confirm));
+
+        if (!await PromptUserConfirmAsync(embed))
+            return;
+
         var newState = await _service.ToggleExpressionOverrideAsync(ctx.Guild.Id);
         if (newState)
             await Response().Confirm(strs.expr_override_enabled).SendAsync();

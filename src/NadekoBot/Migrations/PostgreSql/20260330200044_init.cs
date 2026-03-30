@@ -1380,6 +1380,21 @@ namespace NadekoBot.Migrations.PostgreSql
                 });
 
             migrationBuilder.CreateTable(
+                name: "warntemplates",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    text = table.Column<string>(type: "text", nullable: true),
+                    dateadded = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_warntemplates", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "xpexcludeditem",
                 columns: table => new
                 {
@@ -2454,6 +2469,12 @@ namespace NadekoBot.Migrations.PostgreSql
                 column: "userid");
 
             migrationBuilder.CreateIndex(
+                name: "ix_warntemplates_guildid",
+                table: "warntemplates",
+                column: "guildid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_xpcurrencyreward_level_xpsettingsid",
                 table: "xpcurrencyreward",
                 columns: new[] { "level", "xpsettingsid" },
@@ -2789,6 +2810,9 @@ namespace NadekoBot.Migrations.PostgreSql
 
             migrationBuilder.DropTable(
                 name: "warnings");
+
+            migrationBuilder.DropTable(
+                name: "warntemplates");
 
             migrationBuilder.DropTable(
                 name: "xpcurrencyreward");

@@ -2,7 +2,7 @@ namespace NadekoBot.Common.ModuleBehaviors;
 
 /// <summary>
 /// This interface's method is executed after a command was found but before it was executed.
-/// Able to block further processing of a command
+/// Able to intercept and prevent further processing of a command
 /// </summary>
 public interface IExecPreCommand : IBehavior
 {
@@ -20,6 +20,6 @@ public interface IExecPreCommand : IBehavior
     /// <param name="context">Command context</param>
     /// <param name="moduleName">Name of the module</param>
     /// <param name="command">Command info</param>
-    /// <returns>Whether further processing of the command is blocked</returns>
+    /// <returns>Whether the command was intercepted</returns>
     Task<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command);
 }

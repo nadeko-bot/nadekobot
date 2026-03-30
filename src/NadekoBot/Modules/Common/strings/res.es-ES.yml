@@ -29,6 +29,8 @@ owner: Dueño
 page: 'Página {0}'
 perm_prevent: 'El permiso número #{0} {1} está impidiendo esta acción.'
 price: Precio
+prompt_no: "No"
+prompt_yes: "Sí"
 redacted_too_long: Editada porque es muy larga.
 response: Respuesta
 trigger: Escribe

@@ -45,6 +45,8 @@ warn_punish_set_timed: 'Aplicaré el castigo {0} por {2} a los usuarios con {1} 
 warn_weight: 'Peso: {0}'
 warned_on: 'Advertido en el servidor {0}'
 warned_on_by: 'El {0} a las {1} por {2}.'
+warnmsg_default: No hay un mensaje de advertencia establecido. Se utilizarán los ajustes predeterminados.
+warnmsg_disabled: Mensajes de advertencia desactivados. Puede habilitarlos estableciendo un warnmsg en algo diferente a '-'.
 warning_clear_fail: Advertencias no eliminadas. O la advertencia con ese índice no existe, o ya ha sido eliminada.
 warning_cleared: 'Advertencia {0} ha sido reiniciada para {1}.'
 warning_deleted: 'La advertencia {0} ha sido eliminada.'

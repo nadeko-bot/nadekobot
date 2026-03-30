@@ -45,6 +45,8 @@ warn_punish_set_timed: 'Tôi sẽ áp dụng hình phạt {0} trong {2} cho ngư
 warn_weight: 'Mức độ: {0}'
 warned_on: 'Bị cảnh cáo trên server {0}'
 warned_on_by: 'Trên {0} lúc {1} bởi {2}'
+warnmsg_default: Chưa đặt tin nhắn cảnh cáo. Hành vi mặc định sẽ được sử dụng.
+warnmsg_disabled: Tin nhắn cảnh cáo đã bị tắt. Bạn có thể bật lại bằng cách đặt warnmsg thành nội dung khác ngoài '-'.
 warning_clear_fail: Không thể xóa cảnh cáo. Cảnh cáo ở vị trí đó không tồn tại, hoặc đã được xóa rồi.
 warning_cleared: 'Cảnh cáo {0} đã được xóa cho {1}.'
 warning_deleted: 'Cảnh cáo {0} đã bị xóa.'

@@ -29,6 +29,8 @@ owner: Власник
 page: 'страница {0}'
 perm_prevent: 'Дозвола број #{0} {1} спречава ову акцију.'
 price: Цена
+prompt_no: "Не"
+prompt_yes: "Да"
 redacted_too_long: Уклоњено јер је предугачко.
 response: Одговор
 trigger: Окидач

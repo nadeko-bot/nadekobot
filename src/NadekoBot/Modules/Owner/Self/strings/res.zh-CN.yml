@@ -9,12 +9,12 @@ cache_users_pending: 正在更新使用者，請稍候...
 command_text: 命令文本
 deleted_x_servers: '已刪除 {0} 個伺服器。'
 dm_from: 私信來自
-fwall_start: 我會把私訊訊息轉寄給所有機器人擁有者
-fwall_stop: 機器人將只轉寄訊息給第一位擁有者
+fw_enabled: 你现在会收到转发的私信了。
+fw_disabled: 你将不再收到转发的私信。
+fw_enabled_but_channel: '你会收到转发的私信，但频道转发目前处于启用状态且优先级更高。请先用 {0} 关闭它。'
 fwch_start: 發送給機器人私訊的任何訊息都將轉發到此頻道。
 fwch_stop: 發送給機器人私訊的訊息將不再轉發到此頻道。
-fwdm_start: 從現在開始，我將會轉發私人訊息。
-fwdm_stop: 從現在開始，我將停止轉發私人訊息。
+fwch_notify: '{0} 已将私信转发重定向到了一个频道。在此期间，你的个人私信转发已暂停。'
 interval: 間隔
 invalid_format: 無效的輸入格式。
 no_shard_id: 未找到該 ID。

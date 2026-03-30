@@ -7,6 +7,9 @@ expr_global_enabled: Ekspresi global tidak lagi dinonaktifkan di server ini.
 expr_insuff_perms: Izin tidak cukup. Membutuhkan kepemilikan Bot untuk ekspresi global, dan Administrator untuk ekspresi server.
 expr_new: Ekspresi Baru
 expr_no_found: Ekspresi tidak ditemukan.
+expr_override_confirm: |-
+  Apakah kamu yakin ingin mengubah mode penggantian ekspresi?
+  Jika diaktifkan, menambahkan ekspresi dengan trigger yang sudah ada akan menghapus yang lama dan menggantinya.
 expr_override_disabled: ''
 expr_override_enabled: ''
 expr_search_results: 'Hasil pencarian untuk "{0}"'

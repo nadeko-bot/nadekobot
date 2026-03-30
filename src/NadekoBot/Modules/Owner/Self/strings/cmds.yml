@@ -69,17 +69,8 @@ doas:
           The user whose identity is being impersonated for the command
           execution.
 forwardmessages:
-  desc: >-
-    Toggles forwarding of non-command messages sent to bot's DM to the bot
-    owners
-  ex:
-    - ''
-  params:
-    - {}
-forwardtoall:
-  desc: >-
-    Toggles whether messages will be forwarded to all bot owners or only to the
-    first one specified in the creds.yml file
+  desc: |-
+    Toggles whether you will receive DMs forwarded from bot users. All owners receive them by default. Use this to opt out or back in.
   ex:
     - ''
   params:

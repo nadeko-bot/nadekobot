@@ -29,6 +29,8 @@ owner: Sahip
 page: 'sayfa {0}'
 perm_prevent: '{0} numaralı {1} izni bu işlemi engelliyor.'
 price: Fiyat
+prompt_no: "Hayır"
+prompt_yes: "Evet"
 redacted_too_long: Çok uzun olduğu için gizlendi.
 response: Yanıt
 trigger: Tetikleyici

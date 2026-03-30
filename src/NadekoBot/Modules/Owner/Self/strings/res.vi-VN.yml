@@ -9,12 +9,12 @@ cache_users_pending: Đang cập nhật người dùng, vui lòng đợi...
 command_text: Nội dung lệnh
 deleted_x_servers: 'Đã xóa {0} máy chủ.'
 dm_from: Tin nhắn riêng từ
-fwall_start: Tôi sẽ chuyển tiếp tin nhắn riêng đến tất cả chủ sở hữu.
-fwall_stop: Tôi sẽ chỉ chuyển tiếp tin nhắn riêng đến chủ sở hữu đầu tiên.
+fw_enabled: Bạn sẽ nhận được tin nhắn riêng được chuyển tiếp từ bây giờ.
+fw_disabled: Bạn sẽ không còn nhận được tin nhắn riêng được chuyển tiếp nữa.
+fw_enabled_but_channel: 'Bạn sẽ nhận được tin nhắn riêng được chuyển tiếp, nhưng chuyển tiếp kênh đang hoạt động và được ưu tiên. Tắt nó trước bằng {0}.'
 fwch_start: Mọi tin nhắn gửi đến DM của bot sẽ được chuyển tiếp đến kênh này.
 fwch_stop: Tin nhắn gửi đến DM của bot sẽ không còn được chuyển tiếp đến kênh này nữa.
-fwdm_start: Từ giờ tôi sẽ chuyển tiếp tin nhắn riêng.
-fwdm_stop: Từ giờ tôi sẽ ngừng chuyển tiếp tin nhắn riêng.
+fwch_notify: 'Chuyển tiếp DM đã được chuyển hướng đến một kênh bởi {0}. Chuyển tiếp DM cá nhân của bạn tạm dừng khi tính năng này hoạt động.'
 interval: Khoảng thời gian
 invalid_format: Định dạng nhập không hợp lệ.
 no_shard_id: Không tìm thấy shard với ID đó.

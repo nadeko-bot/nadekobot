@@ -69,8 +69,8 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     private readonly NadekoRandom _rng;
 
     private volatile bool _isReady;
-    private ConcurrentHashSet<ulong> _disabledGlobalExpressionGuilds;
-    private ConcurrentHashSet<ulong> _expressionOverrideGuilds;
+    private ConcurrentHashSet<ulong> _disabledGlobalExpressionGuilds = [];
+    private ConcurrentHashSet<ulong> _expressionOverrideGuilds = [];
     private readonly PermissionService _pc;
     private readonly ShardData _shardData;
 
@@ -154,7 +154,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         _isReady = true;
     }
 
-    private NadekoExpression TryGetExpression(IUserMessage umsg)
+    private NadekoExpression? TryGetExpression(IUserMessage umsg)
     {
         if (!_isReady)
             return null;
@@ -178,7 +178,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private NadekoExpression MatchExpressions(in ReadOnlySpan<char> content, NadekoExpression[] exprs)
+    private NadekoExpression? MatchExpressions(in ReadOnlySpan<char> content, NadekoExpression[] exprs)
     {
         var result = new List<NadekoExpression>(1);
         for (var i = 0; i < exprs.Length; i++)
@@ -474,7 +474,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     private NadekoExpression[] DeleteInternal(
         IReadOnlyList<NadekoExpression> exprs,
         int id,
-        out NadekoExpression deleted)
+        out NadekoExpression? deleted)
     {
         deleted = null;
         if (exprs is null || exprs.Count == 0)
@@ -746,7 +746,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         return expr;
     }
 
-    public async Task<NadekoExpression> EditAsync(
+    public async Task<NadekoExpression?> EditAsync(
         ulong? guildId,
         int id,
         string message,
@@ -782,7 +782,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     }
 
 
-    public async Task<NadekoExpression> DeleteAsync(ulong? guildId, int id)
+    public async Task<NadekoExpression?> DeleteAsync(ulong? guildId, int id)
     {
         await using var uow = _db.GetDbContext();
         var toDelete = uow.Set<NadekoExpression>().GetById(id);

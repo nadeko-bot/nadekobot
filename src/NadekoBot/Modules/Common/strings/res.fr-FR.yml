@@ -29,6 +29,8 @@ owner: Propriétaire
 page: 'page {0}'
 perm_prevent: 'Le numéro d''autorisation # {0} {1} empêche cette action.'
 price: Prix
+prompt_no: "Non"
+prompt_yes: "Oui"
 redacted_too_long: Révisé car trop long.
 response: Réponse
 trigger: Déclencheur

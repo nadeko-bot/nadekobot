@@ -29,6 +29,8 @@ owner: オーナー
 page: '{0}ページ'
 perm_prevent: '権限番号#{0} {1}がこのアクションを妨げています。'
 price: 価格
+prompt_no: "いいえ"
+prompt_yes: "はい"
 redacted_too_long: 非常に長いので編集されました。
 response: 反応
 trigger: トリガー

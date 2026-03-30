@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NadekoBot.Migrations.PostgreSql
 {
     [DbContext(typeof(PostgreSqlContext))]
-    [Migration("20260330040239_init")]
+    [Migration("20260330200044_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -3119,6 +3119,37 @@ namespace NadekoBot.Migrations.PostgreSql
                         .HasDatabaseName("ix_vcroleinfo_guildid_voicechannelid");
 
                     b.ToTable("vcroleinfo", (string)null);
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.WarnTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DateAdded")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("dateadded");
+
+                    b.Property<decimal>("GuildId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("guildid");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text")
+                        .HasColumnName("text");
+
+                    b.HasKey("Id")
+                        .HasName("pk_warntemplates");
+
+                    b.HasIndex("GuildId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_warntemplates_guildid");
+
+                    b.ToTable("warntemplates", (string)null);
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.Warning", b =>

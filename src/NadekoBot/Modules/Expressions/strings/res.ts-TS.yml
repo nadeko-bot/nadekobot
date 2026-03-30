@@ -7,6 +7,9 @@ expr_global_enabled: Global expressions are no longer disabled on this server.
 expr_insuff_perms: Insufficient permissions. Requires Bot ownership for global expressions, and Administrator for server expressions.
 expr_new: New Expression
 expr_no_found: No expression found.
+expr_override_confirm: |-
+  You want to toggle expression override mode? Fine, but don't come crying to me if something breaks.
+  When enabled, adding an expression with an existing trigger will delete the old one and replace it.
 expr_override_disabled: ''
 expr_override_enabled: ''
 expr_search_results: 'Here''s what I found for "{0}", not that I looked hard or anything'

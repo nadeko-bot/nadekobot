@@ -29,6 +29,8 @@ owner: Власник
 page: 'сторінка {0}'
 perm_prevent: 'Дозвіл #{0} {1} блокує цю дію.'
 price: Ціна
+prompt_no: "Ні"
+prompt_yes: "Так"
 redacted_too_long: Приховано, бо занадто довге.
 response: Відповідь
 trigger: Тригер

@@ -1383,6 +1383,21 @@ namespace NadekoBot.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
+                name: "WarnTemplates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Text = table.Column<string>(type: "TEXT", nullable: true),
+                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarnTemplates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "XpExcludedItem",
                 columns: table => new
                 {
@@ -2457,6 +2472,12 @@ namespace NadekoBot.Migrations.Sqlite
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_WarnTemplates_GuildId",
+                table: "WarnTemplates",
+                column: "GuildId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_XpCurrencyReward_Level_XpSettingsId",
                 table: "XpCurrencyReward",
                 columns: new[] { "Level", "XpSettingsId" },
@@ -2792,6 +2813,9 @@ namespace NadekoBot.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "Warnings");
+
+            migrationBuilder.DropTable(
+                name: "WarnTemplates");
 
             migrationBuilder.DropTable(
                 name: "XpCurrencyReward");

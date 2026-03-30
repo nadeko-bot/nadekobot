@@ -9,12 +9,12 @@ cache_users_pending: Benutzer werden aktualisiert, bitte warten...
 command_text: Befehl Text
 deleted_x_servers: ''
 dm_from: DM von
-fwall_start: Ich werde die DM's an alle Eigentümer schicken.
-fwall_stop: Ich werde die DM's nur an den ersten Eigentümer schicken
+fw_enabled: Du wirst ab jetzt weitergeleitete DMs erhalten.
+fw_disabled: Du wirst keine weitergeleiteten DMs mehr erhalten.
+fw_enabled_but_channel: 'Du wirst weitergeleitete DMs erhalten, aber die Kanalweiterleitung ist aktiv und hat Vorrang. Deaktiviere sie zuerst mit {0}.'
 fwch_start: Jede Nachricht, die an die DMs des Bots gesendet wird, wird an diesen Kanal weitergeleitet.
 fwch_stop: Nachrichten, die an die DMs des Bots gesendet werden, werden nicht mehr an diesen Kanal weitergeleitet.
-fwdm_start: Von jetzt an, werde ich DMs schicken.
-fwdm_stop: Von jetzt an, werde ich aufhören DMs zu schicken.
+fwch_notify: 'DM-Weiterleitung wurde von {0} auf einen Kanal umgeleitet. Deine individuelle DM-Weiterleitung ist währenddessen pausiert.'
 interval: Interval
 invalid_format: Ungültiges Eingabeformat.
 no_shard_id: Keine Shard mit dieser ID gefunden.

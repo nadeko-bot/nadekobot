@@ -29,6 +29,8 @@ owner: Pemilik
 page: 'halaman {0}'
 perm_prevent: 'Izin nomor #{0} {1} mencegah tindakan ini.'
 price: Harga
+prompt_no: "Tidak"
+prompt_yes: "Ya"
 redacted_too_long: Disembunyikan karena terlalu panjang.
 response: Respons
 trigger: Pemicu

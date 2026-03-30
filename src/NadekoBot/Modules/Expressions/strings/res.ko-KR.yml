@@ -7,6 +7,9 @@ expr_global_enabled: 이 서버에서 글로벌 표현식이 더 이상 비활�
 expr_insuff_perms: 권한이 부족해요. 글로벌 표현식에는 봇 소유자 권한이, 서버 표현식에는 관리자 권한이 필요해요.
 expr_new: 새 표현식
 expr_no_found: 표현식을 찾을 수 없어요.
+expr_override_confirm: |-
+  표현식 덮어쓰기 모드를 전환할까요?
+  활성화하면 이미 있는 트리거로 표현식을 추가할 때 기존 표현식이 삭제되고 대체돼요.
 expr_override_disabled: ''
 expr_override_enabled: ''
 expr_search_results: '"{0}" 검색 결과'

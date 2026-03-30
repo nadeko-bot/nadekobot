@@ -1788,6 +1788,55 @@
     },
     {
       "Aliases": [
+        ".warnmessage",
+        ".warnmsg",
+        ".warntemplate",
+        ".warntemp"
+      ],
+      "Description": "Sets a warn message template which will be used when a user is warned on\nthis server. You can use embed strings and warn-specific placeholders:\n%warn.mod%, %warn.user%, %warn.reason%, %warn.count%, %warn.weight%.\nYou can disable warn DMs with `.warnmsg -`",
+      "Usage": [
+        ".warnmessage %warn.user%, you have been warned in %server.name%. Reason: %warn.reason%",
+        ".warnmessage { \"description\": \"%warn.user% you have been warned in %server.name% by %warn.mod%. Total warnings: %warn.count%\" }"
+      ],
+      "Submodule": "UserPunishCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "BanMembers Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".warnmsgreset"
+      ],
+      "Description": "Resets warn message to default. If you want to completely disable warn\nDMs, use `.warnmsg -`",
+      "Usage": [
+        ".warnmsgreset"
+      ],
+      "Submodule": "UserPunishCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "BanMembers Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".warnmsgtest"
+      ],
+      "Description": "If warn message is not disabled, bot will send you the message as if you\nwere warned by yourself. Used for testing the warn message.",
+      "Usage": [
+        ".warnmsgtest No reason"
+      ],
+      "Submodule": "UserPunishCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "BanMembers Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".unban"
       ],
       "Description": "Unbans a user with the provided user#discrim or id.",
@@ -4964,27 +5013,12 @@
     {
       "Aliases": [
         ".forwardmessages",
+        ".fw",
         ".fwmsgs"
       ],
-      "Description": "Toggles forwarding of non-command messages sent to bot's DM to the bot owners",
+      "Description": "Toggles whether you will receive DMs forwarded from bot users. All owners receive them by default. Use this to opt out or back in.",
       "Usage": [
         ".forwardmessages"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".forwardtoall",
-        ".fwtoall"
-      ],
-      "Description": "Toggles whether messages will be forwarded to all bot owners or only to the first one specified in the creds.yml file",
-      "Usage": [
-        ".forwardtoall"
       ],
       "Submodule": "SelfCommands",
       "Module": "Owner",

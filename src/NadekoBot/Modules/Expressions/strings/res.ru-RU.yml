@@ -7,6 +7,9 @@ expr_global_enabled: Глобальные выражения больше не �
 expr_insuff_perms: ''
 expr_new: ''
 expr_no_found: ''
+expr_override_confirm: |-
+  Уверен, что хочешь переключить режим замены выражений?
+  Когда включено, добавление выражения с существующим триггером удалит старое и заменит его новым.
 expr_override_disabled: ''
 expr_override_enabled: ''
 expr_search_results: 'Результаты поиска для "{0}"'

@@ -9,12 +9,12 @@ cache_users_pending: Sedang memperbarui pengguna, mohon tunggu...
 command_text: Teks Perintah
 deleted_x_servers: '{0} server dihapus.'
 dm_from: DM dari
-fwall_start: Saya akan meneruskan DM ke semua owner.
-fwall_stop: Saya akan meneruskan DM hanya ke owner pertama.
+fw_enabled: Kamu sekarang akan menerima DM yang diteruskan.
+fw_disabled: Kamu tidak akan lagi menerima DM yang diteruskan.
+fw_enabled_but_channel: 'Kamu akan menerima DM yang diteruskan, tetapi penerusan ke channel sedang aktif dan lebih diutamakan. Nonaktifkan dulu dengan {0}.'
 fwch_start: Semua pesan yang dikirim ke DM bot akan diteruskan ke channel ini.
 fwch_stop: Pesan yang dikirim ke DM bot tidak lagi diteruskan ke channel ini.
-fwdm_start: Mulai sekarang saya akan meneruskan DM.
-fwdm_stop: Mulai sekarang saya akan berhenti meneruskan DM.
+fwch_notify: 'Penerusan DM telah dialihkan ke channel oleh {0}. Penerusan DM individual kamu dijeda selama ini aktif.'
 interval: Interval
 invalid_format: Format input tidak valid.
 no_shard_id: Tidak ditemukan shard dengan ID tersebut.

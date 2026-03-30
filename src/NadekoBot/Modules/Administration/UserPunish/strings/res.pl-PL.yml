@@ -45,6 +45,8 @@ warn_punish_set_timed: 'Zastosuję karę {0} na {2} dla użytkowników z {1} ost
 warn_weight: 'Waga: {0}'
 warned_on: 'Ostrzeżony na serwerze {0}'
 warned_on_by: 'Na {0} o {1} przez {2}'
+warnmsg_default: Nie ustawiono wiadomości ostrzeżenia. Zostanie użyte domyślne zachowanie.
+warnmsg_disabled: Wiadomości ostrzeżeń są wyłączone. Możesz je włączyć, ustawiając warnmsg na coś innego niż '-'.
 warning_clear_fail: Nie udało się usunąć ostrzeżenia. Ostrzeżenie o tym indeksie nie istnieje lub zostało już usunięte.
 warning_cleared: 'Ostrzeżenie {0} zostało usunięte dla {1}.'
 warning_deleted: 'Ostrzeżenie {0} zostało skasowane.'

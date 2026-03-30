@@ -45,6 +45,8 @@ warn_punish_set_timed: 'A punição {0} será aplicada por {2} a usuários com {
 warn_weight: 'Peso: {0}'
 warned_on: 'Você foi advertido no servidor {0}'
 warned_on_by: 'Em {0} às {1} por {2}'
+warnmsg_default: Notificação de advertência não definida. A notificação padrão será utilizada.
+warnmsg_disabled: Mensagens de advertência foram desativadas. Você pode ativá-las configurando a mensagem para algo outro que não seja '-'.
 warning_clear_fail: Erro. Não há advertência nesse índice ou ela já foi removida.
 warning_cleared: 'A advertência #{0} do usuário {1} foi removida.'
 warning_deleted: 'O aviso {0} foi excluído.'

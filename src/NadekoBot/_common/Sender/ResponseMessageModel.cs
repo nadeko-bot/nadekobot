@@ -8,5 +8,5 @@
     public required AllowedMentions SanitizeMentions { get; set; }
     public IUser? User { get; set; }
     public bool Ephemeral { get; set; }
-    public NadekoInteractionBase? Interaction { get; set; }
+    public NadekoInteractionGroup? InteractionGroup { get; set; }
 }

@@ -2,6 +2,24 @@
 
 *a,c,f,r,o,d*
 
+## WIP
+
+
+
+## [7.1.17] - 30.03.2026
+
+### Added
+
+- `.warnmsg` / `.warnmsgreset` / `.warnmsgtest` commands for customizable warn DMs, similar to `.banmsg`
+
+### Changed
+
+- Console log messages now say "intercepted" instead of "blocked" for early command interception
+- `.exo` now requires confirmation before toggling expression override mode, as it is a potentially highly destructive action
+- All confirmation prompts now use interactive buttons instead of typing yes/no
+- Owner DM forwarding is now always on. Each owner individually opts out via `.fw`. Removed `.fwtoall`.
+- `.fwtoch` now notifies all non-opted-out owners when channel forwarding is enabled
+
 ## [7.1.16] - 30.03.2026
 
 

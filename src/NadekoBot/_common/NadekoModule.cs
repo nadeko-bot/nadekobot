@@ -42,24 +42,42 @@ public abstract class NadekoModule : ModuleBase
     // localized normal
     public async Task<bool> PromptUserConfirmAsync(EmbedBuilder embed)
     {
-        embed.WithPendingColor()
-             .WithFooter("yes/no");
+        embed.WithPendingColor();
 
-        var msg = await Response().Embed(embed).SendAsync();
-        try
-        {
-            var input = await GetUserInputAsync(ctx.User.Id, ctx.Channel.Id);
-            input = input?.ToUpperInvariant();
+        var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            if (input != "YES" && input != "Y")
-                return false;
+        var yesBtn = _inter.Create(ctx.User.Id,
+            new ButtonBuilder(
+                label: GetText(strs.prompt_yes),
+                customId: "prompt:yes",
+                emote: new Emoji("\u2705"),
+                style: ButtonStyle.Success),
+            static async (smc, state) =>
+            {
+                state.TrySetResult(true);
+                await smc.DeferAsync();
+            },
+            in tcs);
 
-            return true;
-        }
-        finally
-        {
-            _ = Task.Run(() => msg.DeleteAsync());
-        }
+        var noBtn = _inter.Create(ctx.User.Id,
+            new ButtonBuilder(
+                label: GetText(strs.prompt_no),
+                customId: "prompt:no",
+                emote: new Emoji("\u274C"),
+                style: ButtonStyle.Danger),
+            static async (smc, state) =>
+            {
+                state.TrySetResult(false);
+                await smc.DeferAsync();
+            },
+            in tcs);
+
+        await Response().Embed(embed).Interactions(yesBtn, noBtn).SendAsync();
+
+        if (await Task.WhenAny(tcs.Task, Task.Delay(30_000)) != tcs.Task)
+            return false;
+
+        return tcs.Task.Result;
     }
 
     // TypeConverter typeConverter = TypeDescriptor.GetConverter(propType); ?
