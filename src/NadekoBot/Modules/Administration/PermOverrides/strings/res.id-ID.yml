@@ -1,6 +1,0 @@
-perm_override: 'User memerlukan izin {0} untuk menjalankan perintah {1}.'
-perm_override_all: Semua override izin Discord telah dihapus.
-perm_override_all_confirm: Apakah kamu yakin ingin menghapus **SEMUA** override izin Discord di server ini? Tindakan ini tidak bisa dibatalkan.
-perm_override_page_none: Tidak ada override di halaman ini.
-perm_override_reset: Override Izin Discord untuk perintah ini telah dihapus.
-perm_overrides: Override Izin Discord

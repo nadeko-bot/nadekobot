@@ -1,0 +1,191 @@
+ar:
+  countup_created: تم إنشاء لعبة CountUp. في انتظار انضمام المستخدمين.
+  countup_ended: 'انتهت لعبة CountUp. فاز {0}'
+  countup_ended_no_winner: انتهت لعبة CountUp بدون فائز.
+  countup_failed_to_start: فشل بدء لعبة CountUp بسبب عدم كفاية المشاركين.
+  countup_joined: 'انضممت إلى لعبة CountUp. انضم {0} مستخدم حتى الآن.'
+  countup_next_number: 'تم تسجيل الرقم. آخر رقم كان {0}.'
+  countup_round_ended: 'انتهت جولة CountUp. {0} خرج من اللعبة.'
+  countup_round_ended_boot: 'انتهت جولة CountUp بسبب انتهاء مهلة بعض المستخدمين. هؤلاء المستخدمون لا يزالون في اللعبة: {0}'
+  countup_round_started: 'بدأت جولة CountUp مع {0} مستخدم. ابدأ العد من الرقم {1}.'
+  countup_started: 'بدأت لعبة CountUp مع {0} مشارك.'
+
+de-DE:
+  countup_created: Nunchi Spiel wurde gestartet. Es wird darauf gewartet das Nutzer beitreten.
+  countup_ended: 'Das Nunchi Spiel wurde beendet. {0} hat gewonnen.'
+  countup_ended_no_winner: Das Nunchi Spiel wurde ohne einen Gewinner beendet.
+  countup_failed_to_start: Das Nunchi Spiel konnte nicht gestartet werden, da es nicht genug Teilnehmer gibt.
+  countup_joined: 'CountUp-Spiel beigetreten. {0} Benutzer haben sich bisher angemeldet.'
+  countup_next_number: 'Nummer registriert. Die letzte Nummer war {0}.'
+  countup_round_ended: 'Nunchi Runde wurde beendet. {0} ist aus dem Spiel.'
+  countup_round_ended_boot: 'Nunchi Runde wurde beendet da ein Nutzer einen Time-out hat. Diese Nutzer sind noch im Spiel: {0}'
+  countup_round_started: 'Ninchi Runde hat mit {0} Benutzern gestartet. Fang an zu Zählen ab der Nummer {1}.'
+  countup_started: 'Nunchi Spiel gestartet mit {0} Teilnehmern.'
+
+es-ES:
+  countup_created: Juego de Nunchi creado. Esperando usuarios.
+  countup_ended: 'Ha finalizado el juego de Nunchi. {0} gana.'
+  countup_ended_no_winner: El juego terminó sin ganadores.
+  countup_failed_to_start: No se pudo iniciar el juego debido a que no hay suficientes participantes.
+  countup_joined: 'Te uniste al juego CountUp. {0} usuarios se han unido hasta ahora.'
+  countup_next_number: 'Número registrado. El último número fue {0}.'
+  countup_round_ended: 'Ronda terminada. {0} queda fuera.'
+  countup_round_ended_boot: 'Terminó la ronda debido a que varios usuarios tardaron. Estos usuarios siguen en juego: {0}'
+  countup_round_started: 'La ronda de Nunchi empezó con {0} usuarios.Empiecen contando desde el {1}.'
+  countup_started: 'El juego de Nunchi empezó con {0} participantes.'
+
+fr-FR:
+  countup_created: Une partie de Nunchi a été créé. En attente de la participation d'autres utilisateurs.
+  countup_ended: 'Le partie de Nunchi s''est terminé. {0} a gagné'
+  countup_ended_no_winner: Le partie de Nunchi s'est terminé sans vainqueur.
+  countup_failed_to_start: La partie de Nunchi n'a pas pu démarrer car il n'y avait pas assez de participants.
+  countup_joined: 'Vous avez rejoint le jeu CountUp. {0} utilisateurs ont rejoint jusqu''ici.'
+  countup_next_number: 'Numéro enregistré. Le dernier numéro était {0}.'
+  countup_round_ended: 'Fin de la manche de Nunchi. {0} est éliminé·e.'
+  countup_round_ended_boot: 'La manche de Nunchi s''est terminé en raison de l''inactivité de certains utilisateurs. Ces utilisateurs sont toujours dans le jeu: {0}'
+  countup_round_started: 'La manche de Nunchi a commencé avec {0} utilisateurs. Commencez à compter à partir du nombre {1}.'
+  countup_started: 'Jeu de Nunchi a commencé avec {0} participants.'
+
+id-ID:
+  countup_created: Permainan CountUp dibuat. Menunggu pengguna untuk bergabung.
+  countup_ended: 'Permainan CountUp berakhir. {0} menang'
+  countup_ended_no_winner: Permainan CountUp berakhir tanpa pemenang.
+  countup_failed_to_start: CountUp gagal dimulai karena peserta tidak cukup.
+  countup_joined: 'Bergabung ke permainan CountUp. {0} pengguna sudah bergabung.'
+  countup_next_number: 'Angka terdaftar. Angka terakhir adalah {0}.'
+  countup_round_ended: 'Ronde CountUp berakhir. {0} keluar dari permainan.'
+  countup_round_ended_boot: 'Ronde CountUp berakhir karena waktu habis untuk beberapa pengguna. Pengguna yang masih bertahan: {0}'
+  countup_round_started: 'Ronde CountUp dimulai dengan {0} pengguna. Mulai menghitung dari angka {1}.'
+  countup_started: 'Permainan CountUp dimulai dengan {0} peserta.'
+
+ja-JP:
+  countup_created: カウントアップゲームが作成されました。参加者を待っています。
+  countup_ended: 'カウントアップゲームが終了しました。{0}の勝利です'
+  countup_ended_no_winner: カウントアップゲームは勝者なしで終了しました。
+  countup_failed_to_start: 参加者が足りなかったため、カウントアップを開始できませんでした。
+  countup_joined: 'CountUpゲームに参加しました。現在{0}人のユーザーが参加しています。'
+  countup_next_number: '数字が登録されました。最後の数字は{0}でした。'
+  countup_round_ended: 'カウントアップのラウンドが終了しました。{0}がゲームから脱落しました。'
+  countup_round_ended_boot: '一部のユーザーのタイムアウトによりカウントアップのラウンドが終了しました。まだゲームに残っているユーザー: {0}'
+  countup_round_started: 'カウントアップのラウンドが{0}人のユーザーで開始されました。数字{1}からカウントを始めてください。'
+  countup_started: 'カウントアップゲームが{0}人の参加者で開始されました。'
+
+ko-KR:
+  countup_created: 카운트업 게임이 생성되었어요. 사용자 참가를 기다리는 중이에요.
+  countup_ended: '카운트업 게임이 끝났어요. {0} 승리'
+  countup_ended_no_winner: 카운트업 게임이 승자 없이 끝났어요.
+  countup_failed_to_start: 참가자가 부족해서 카운트업을 시작할 수 없었어요.
+  countup_joined: '카운트업 게임에 참가했어요. 현재 {0}명이 참가했어요.'
+  countup_next_number: '숫자가 등록되었어요. 마지막 숫자는 {0}이었어요.'
+  countup_round_ended: '카운트업 라운드가 끝났어요. {0}이(가) 탈락했어요.'
+  countup_round_ended_boot: '일부 사용자의 시간 초과로 카운트업 라운드가 끝났어요. 남은 사용자: {0}'
+  countup_round_started: '카운트업 라운드가 {0}명으로 시작되었어요. {1}부터 세기 시작하세요.'
+  countup_started: '카운트업 게임이 {0}명의 참가자로 시작되었어요.'
+
+pl-PL:
+  countup_created: Gra CountUp utworzona. Oczekiwanie na dołączenie graczy.
+  countup_ended: 'Gra CountUp zakończona. {0} wygrał'
+  countup_ended_no_winner: Gra CountUp zakończona bez zwycięzcy.
+  countup_failed_to_start: CountUp nie wystartował, bo było za mało uczestników.
+  countup_joined: 'Dołączono do gry CountUp. {0} graczy dołączyło do tej pory.'
+  countup_next_number: 'Liczba zarejestrowana. Ostatnia liczba to {0}.'
+  countup_round_ended: 'Runda CountUp zakończona. {0} odpada z gry.'
+  countup_round_ended_boot: 'Runda CountUp zakończona z powodu upływu czasu niektórych graczy. Ci gracze wciąż są w grze: {0}'
+  countup_round_started: 'Runda CountUp rozpoczęta z {0} graczami. Zacznijcie liczyć od liczby {1}.'
+  countup_started: 'Gra CountUp rozpoczęta z {0} uczestnikami.'
+
+pt-BR:
+  countup_created: Uma partida de Nunchi foi criada. Aguardando novos jogadores.
+  countup_ended: 'A partida de Nunchi terminou. {0} é o vencedor!'
+  countup_ended_no_winner: A partida de Nunchi terminou sem vencedor.
+  countup_failed_to_start: A partida de Nunchi não iniciou porque não havia participantes o suficiente.
+  countup_joined: 'Entrou no jogo CountUp. {0} usuários entraram até agora.'
+  countup_next_number: 'Número registrado. O último número foi {0}.'
+  countup_round_ended: 'Rodada de Nunchi encerrada. {0} foi eliminado.'
+  countup_round_ended_boot: 'A rodada de Nunchi foi encerrada devido à inatividade de alguns jogadores. Os seguintes jogadores permanecem no jogo: {0}'
+  countup_round_started: 'Rodada de Nunchi iniciada com {0} usuários. Comece a contar a partir do número {1}.'
+  countup_started: 'O Nunchi começou com {0} participantes.'
+
+ru-RU:
+  countup_created: Игра в нунчи была создана. Ожидаются игроки.
+  countup_ended: 'Игра в нунчи закончилась. {0} победил'
+  countup_ended_no_winner: Игра в нунчи закончилась без победителя.
+  countup_failed_to_start: Невозможно было начать игру в нунчи из-за недостаточного количества участников.
+  countup_joined: 'Присоединились к игре CountUp. {0} пользователей присоединились.'
+  countup_next_number: 'Номер зарегистрирован. Последний номер был {0}'
+  countup_round_ended: 'Раунд в нунчи окончен. {0} выбывает.'
+  countup_round_ended_boot: 'Раунд в нунчи закончился из-за таймаута некоторых пользователей. Данные пользователи ещё в игре: {0}'
+  countup_round_started: 'Раунд в нунчи начался с {0} пользователями. Начните считать с числа {1}.'
+  countup_started: 'Игра «Нунчи» началась с {0} участниками.'
+
+sr-Cyrl-RS:
+  countup_created: CountUp игра креирана. Чекамо да се играчи придруже.
+  countup_ended: 'CountUp игра завршена. {0} побеђује'
+  countup_ended_no_winner: CountUp игра завршена без победника.
+  countup_failed_to_start: CountUp није могао да почне јер није било довољно учесника.
+  countup_joined: 'Придружио/ла се CountUp игри. {0} корисника се придружило до сад.'
+  countup_next_number: 'Број регистрован. Последњи број је био {0}.'
+  countup_round_ended: 'CountUp рунда завршена. {0} испада из игре.'
+  countup_round_ended_boot: 'CountUp рунда завршена због истека времена неких корисника. Ови корисници су још у игри: {0}'
+  countup_round_started: 'CountUp рунда почела са {0} корисника. Почните бројање од броја {1}.'
+  countup_started: 'CountUp игра почела са {0} учесника.'
+
+tr-TR:
+  countup_created: CountUp oyunu oluşturuldu. Kullanıcıların katılması bekleniyor.
+  countup_ended: 'CountUp oyunu sona erdi. {0} kazandı'
+  countup_ended_no_winner: CountUp oyunu kazanan olmadan sona erdi.
+  countup_failed_to_start: Yeterli katılımcı olmadığı için CountUp başlatılamadı.
+  countup_joined: 'CountUp oyununa katıldın. Şu ana kadar {0} kullanıcı katıldı.'
+  countup_next_number: 'Sayı kaydedildi. Son sayı {0} idi.'
+  countup_round_ended: 'CountUp turu sona erdi. {0} oyundan elendi.'
+  countup_round_ended_boot: 'Bazı kullanıcıların zaman aşımı nedeniyle CountUp turu sona erdi. Oyunda kalan kullanıcılar: {0}'
+  countup_round_started: 'CountUp turu {0} kullanıcıyla başladı. {1} sayısından saymaya başlayın.'
+  countup_started: 'CountUp oyunu {0} katılımcıyla başladı.'
+
+ts-TS:
+  countup_created: CountUp game created. Waiting for users to join.
+  countup_ended: 'CountUp game ended. {0} won!'
+  countup_ended_no_winner: CountUp ended with no winner. You're all hopeless.
+  countup_failed_to_start: CountUp failed to start because there were not enough participants.
+  countup_joined: 'Joined CountUp game. {0} users joined so far.'
+  countup_next_number: 'Number registered. Last number was {0}.'
+  countup_round_ended: 'CountUp round ended. {0} is out of the game.'
+  countup_round_ended_boot: 'Round ended due to timeout. These users are still in: {0}'
+  countup_round_started: 'CountUp round started with {0} users. Start counting from {1}.'
+  countup_started: 'CountUp started with {0} participants.'
+
+uk-UA:
+  countup_created: Гру CountUp створено. Чекаємо на гравців.
+  countup_ended: 'Гру CountUp завершено. {0} переміг'
+  countup_ended_no_winner: Гру CountUp завершено без переможця.
+  countup_failed_to_start: CountUp не вдалося розпочати, бо недостатньо учасників.
+  countup_joined: 'Приєднався до гри CountUp. {0} гравців приєдналось.'
+  countup_next_number: 'Число зареєстровано. Останнє число було {0}.'
+  countup_round_ended: 'Раунд CountUp завершено. {0} вибуває з гри.'
+  countup_round_ended_boot: 'Раунд CountUp завершено через тайм-аут деяких гравців. Ці гравці ще в грі: {0}'
+  countup_round_started: 'Раунд CountUp розпочато з {0} гравцями. Починайте рахувати з числа {1}.'
+  countup_started: 'Гру CountUp розпочато з {0} учасниками.'
+
+vi-VN:
+  countup_created: Trò CountUp đã được tạo. Đang chờ người chơi tham gia.
+  countup_ended: 'Trò CountUp kết thúc. {0} thắng'
+  countup_ended_no_winner: Trò CountUp kết thúc mà không có người thắng.
+  countup_failed_to_start: CountUp không thể bắt đầu vì không đủ người chơi.
+  countup_joined: 'Đã tham gia trò CountUp. {0} người đã tham gia.'
+  countup_next_number: 'Số đã được ghi nhận. Số cuối cùng là {0}.'
+  countup_round_ended: 'Lượt CountUp kết thúc. {0} bị loại khỏi trò chơi.'
+  countup_round_ended_boot: 'Lượt CountUp kết thúc do hết thời gian của một số người chơi. Những người còn lại: {0}'
+  countup_round_started: 'Lượt CountUp bắt đầu với {0} người chơi. Bắt đầu đếm từ số {1}.'
+  countup_started: 'Trò CountUp bắt đầu với {0} người tham gia.'
+
+zh-CN:
+  countup_created: Nunchi 遊戲創建。等待用戶加入。
+  countup_ended: 'Nunchi遊戲結束。{0}贏了'
+  countup_ended_no_winner: Nunchi 比賽沒有贏家而結束。
+  countup_failed_to_start: Nunchi 遊戲未能啟動，因為沒有足夠的參與者。
+  countup_joined: '已加入 CountUp 遊戲。目前 {0} 位使用者已加入。'
+  countup_next_number: '註冊的號碼。最後一個數字是 {0}。'
+  countup_round_ended: 'Nunchi回合結束。{0} 退出遊戲。'
+  countup_round_ended_boot: 'Nunchi 回合因部分用戶超時而結束。這些用戶仍在遊戲中：{0}'
+  countup_round_started: 'Nunchi 回合從 {0} 名用戶開始。從數字 {1} 開始計數。'
+  countup_started: 'Nunchi 遊戲開始時有 {0} 名參與者。'

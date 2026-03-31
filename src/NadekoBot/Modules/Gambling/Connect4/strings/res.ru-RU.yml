@@ -1,5 +1,0 @@
-connect4_created: Игра в Connect4 была создана. Ожидается игрок.
-connect4_draw: Игра в Connect4 закончилась ничьей.
-connect4_failed_to_start: Невозможно было начать игру в Connect4, поскольку никто не присоединился.
-connect4_player_to_move: 'Ход игрока: {0}'
-connect4_won: '{0} победил игру в Connect4 против {1}.'

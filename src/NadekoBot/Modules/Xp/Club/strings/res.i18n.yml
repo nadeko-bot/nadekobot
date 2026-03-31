@@ -1,0 +1,767 @@
+ar:
+  club_accept_invalid_applicant: هذا المستخدم لم يتقدم بطلب للنادي.
+  club_accepted: 'تم قبول المستخدم {0} في النادي.'
+  club_admin_add: '{0} أصبح الآن مشرف نادي.'
+  club_admin_invalid_target: لا يمكنك استهداف نفسك أو مالك النادي.
+  club_admin_perms: يجب أن تكون مشرف نادي أو مالكه للقيام بهذا الإجراء.
+  club_admin_remove: '{0} لم يعد مشرف نادي.'
+  club_already_applied: لقد تقدمت بطلب لهذا النادي بالفعل.
+  club_already_in: أنت بالفعل عضو في نادٍ.
+  club_applied: 'لقد تقدمت بطلب عضوية في نادي {0}.'
+  club_apps_for: 'المتقدمون لنادي {0}'
+  club_ban_fail_unbannable: فقط مالك النادي يمكنه حظر مشرفي النادي.
+  club_ban_fail_user_not_found: هذا المستخدم ليس في ناديك أو لم يتقدم بطلب له.
+  club_banner_reset: تمت إعادة تعيين لافتة النادي.
+  club_banner_set: تم تعيين لافتة نادي جديدة.
+  club_bans_for: 'المحظورون في نادي {0}'
+  club_create_insuff_lvl: لا تستوفي الحد الأدنى من متطلبات المستوى لإنشاء نادٍ.
+  club_created: 'تم إنشاء نادي {0} بنجاح!'
+  club_desc_update: تم تحديث وصف النادي
+  club_desc_update_failed: فشل تغيير وصف النادي.
+  club_disband_error: خطأ. أنت إما لست في نادٍ، أو لست مالك ناديك.
+  club_disbanded: 'تم حل نادي {0}'
+  club_icon_invalid_filetype: الصورة المحددة ذات نوع ملف غير صالح. تأكد من أنك تحدد رابط صورة مباشر.
+  club_icon_set: تم تعيين أيقونة نادي جديدة.
+  club_icon_too_large: الصورة كبيرة جدًا.
+  club_icon_url_format: يجب تحديد رابط صورة مطلق.
+  club_join_banned: أنت محظور من هذا النادي.
+  club_kick_hierarchy: فقط مالك النادي يمكنه طرد مشرفي النادي. لا يمكن طرد المالك.
+  club_leaderboard: 'لوحة متصدري الأندية - صفحة {0}'
+  club_left: لقد غادرت النادي.
+  club_name_taken: يوجد نادٍ بهذا الاسم بالفعل.
+  club_name_too_long: اسم النادي طويل جدًا.
+  club_not_exists: هذا النادي غير موجود.
+  club_not_in_a_club: أنت لست في نادٍ.
+  club_owner_cant_leave: لا يمكن لمالك النادي مغادرته -- يجب عليك نقل الملكية أو حل النادي.
+  club_owner_only: يمكن لمالك النادي فقط القيام بهذا الإجراء.
+  club_rejected: 'تم رفض طلب {0}.'
+  club_renamed: 'تمت إعادة تسمية النادي إلى {0}'
+  club_target_not_member: المستخدم المحدد ليس عضوًا في ناديك.
+  club_transfered: 'تم نقل ملكية نادي {0} إلى {1}'
+  club_unban_fail_user_not_found: هذا المستخدم غير محظور في هذا النادي.
+  club_user_banned: 'تم حظر المستخدم {0} من نادي {1}.'
+  club_user_kick: 'تم طرد المستخدم {0} من نادي {1}.'
+  club_user_not_in_club: '{0} ليس في نادٍ.'
+  club_user_unbanned: 'تم رفع الحظر عن المستخدم {0} في نادي {1}.'
+  level_req: ''
+  rank: الترتيب
+
+de-DE:
+  club_accept_invalid_applicant: Dieser Benutzer hat sich nicht bei deinem Club beworben.
+  club_accepted: 'Der Benutzer {0} wurde in den Club aufgenommen.'
+  club_admin_add: '{0} ist nun Club Administrator.'
+  club_admin_invalid_target: Du kannst dich selbst oder den Clubbesitzer nicht auswählen.
+  club_admin_perms: Du musst Admin oder Besitzer des Clubs sein, um diese Aktion durchzuführen.
+  club_admin_remove: '{0} ist nun nicht mehr Club Administrator.'
+  club_already_applied: Du hast dich bereits bei diesem Club beworben.
+  club_already_in: Du bist bereits Mitglied eines Clubs.
+  club_applied: 'Du hast dich für eine Mitgliedschaft im Club {0} beworben.'
+  club_apps_for: 'Bewerbungen für den Club {0}'
+  club_ban_fail_unbannable: Nur der Clubbesitzer kann Club-Admins bannen.
+  club_ban_fail_user_not_found: Dieser Benutzer ist nicht in deinem Club und hat sich nicht beworben.
+  club_banner_reset: Club-Banner wurde zurückgesetzt.
+  club_banner_set: Neues Club-Banner festgelegt.
+  club_bans_for: 'Gebannte des Clubs {0}'
+  club_create_insuff_lvl: Du erfüllst nicht die Mindestlevel-Anforderungen zum Erstellen eines Clubs.
+  club_created: 'Club {0} wurde erfolgreich erstellt!'
+  club_desc_update: Clubbeschreibung aktualisiert
+  club_desc_update_failed: Fehler beim Ändern der Club Beschreibung.
+  club_disband_error: Fehler. Du bist entweder nicht im Club, oder bist nicht der Besitzer des Clubs.
+  club_disbanded: 'Club {0} wurde aufgelöst.'
+  club_icon_invalid_filetype: Das angegebene Bild hat einen ungültigen Dateityp. Stelle sicher, dass du eine direkte Bild-URL angibst.
+  club_icon_set: Neues Club Symbol wurde gesetzt.
+  club_icon_too_large: Das Bild ist zu groß.
+  club_icon_url_format: Du musst eine absolute Bild-URL angeben.
+  club_join_banned: Du bist von diesem Club gebannt.
+  club_kick_hierarchy: Nur der Clubbesitzer kann Admins kicken. Der Besitzer kann nicht gekickt werden.
+  club_leaderboard: 'Club Rangliste - Seite {0}'
+  club_left: Du hast den Club verlassen.
+  club_name_taken: Ein Club mit diesem Namen existiert bereits.
+  club_name_too_long: Club Name ist zu lang.
+  club_not_exists: Der Club existiert nicht.
+  club_not_in_a_club: Du bist in keinem Club.
+  club_owner_cant_leave: Der Clubbesitzer kann nicht gehen -- du musst das Eigentum übertragen oder den Club auflösen.
+  club_owner_only: Diese Aktion kann nur vom Clubbesitzer durchgeführt werden.
+  club_rejected: 'Die Bewerbung von {0} wurde abgelehnt.'
+  club_renamed: 'Club wurde umbenannt zu {0}'
+  club_target_not_member: Der angegebene Benutzer ist kein Mitglied deines Clubs.
+  club_transfered: 'Besitz des Clubs {0} wurde transferiert zu {1}'
+  club_unban_fail_user_not_found: Dieser Benutzer ist in diesem Club nicht gebannt.
+  club_user_banned: 'Nutzer {0} wurde vom Club {1} gebannt.'
+  club_user_kick: 'Nutzer {0} wurde vom Club {1} gekickt.'
+  club_user_not_in_club: '{0} ist in keinem Club.'
+  club_user_unbanned: 'Nutzer {0} wurde im Club {1} entbannt.'
+  level_req: ''
+  rank: Rang
+
+es-ES:
+  club_accept_invalid_applicant: Ese usuario no se ha postulado a tu club.
+  club_accepted: 'Se ha aceptado al usuario {0} en el club.'
+  club_admin_add: '{0} es ahora un administrador del club.'
+  club_admin_invalid_target: No puedes seleccionarte a ti mismo o al dueño del club.
+  club_admin_perms: Debes ser admin o dueño del club para realizar esta acción.
+  club_admin_remove: '{0} ya no es un administrador del club.'
+  club_already_applied: Ya te has postulado a ese club.
+  club_already_in: Ya eres miembro de un club.
+  club_applied: 'Has aplicado al club {0}.'
+  club_apps_for: 'Aplicantes al club {0}'
+  club_ban_fail_unbannable: Solo el dueño del club puede banear a los admins del club.
+  club_ban_fail_user_not_found: Ese usuario no está en tu club ni se ha postulado.
+  club_banner_reset: El banner del club ha sido restablecido.
+  club_banner_set: Nuevo banner del club establecido.
+  club_bans_for: 'Vetados del club {0}'
+  club_create_insuff_lvl: No cumples con los requisitos mínimos de nivel para crear un club.
+  club_created: '¡Club {0} creado!'
+  club_desc_update: Descripcion del club actualizada
+  club_desc_update_failed: No pude cambiar la descripción del club.
+  club_disband_error: Error. No estás en un club o no eres el administrador de ese club.
+  club_disbanded: 'El club {0} ha sido disuelto.'
+  club_icon_invalid_filetype: La imagen especificada tiene un tipo de archivo inválido. Asegúrate de especificar una URL directa de imagen.
+  club_icon_set: Nuevo avatar de club configurado.
+  club_icon_too_large: La imagen es demasiado grande.
+  club_icon_url_format: Debes especificar una URL absoluta de imagen.
+  club_join_banned: Estás baneado de ese club.
+  club_kick_hierarchy: Solo el dueño del club puede expulsar admins. El dueño no puede ser expulsado.
+  club_leaderboard: 'Marcador de clubes - página {0}'
+  club_left: Has salido del club.
+  club_name_taken: Ya existe un club con ese nombre.
+  club_name_too_long: El nombre del club es demasiado largo
+  club_not_exists: Ese club no existe.
+  club_not_in_a_club: No estás en ningún club.
+  club_owner_cant_leave: El dueño del club no puede irse -- debes transferir la propiedad o disolver el club.
+  club_owner_only: Esta acción solo puede ser realizada por el dueño del club.
+  club_rejected: 'La postulación de {0} ha sido rechazada.'
+  club_renamed: 'El club ha sido renombrado a {0}'
+  club_target_not_member: El usuario especificado no es miembro de tu club.
+  club_transfered: 'La propiedad del club {0} ha sido transferida a {1}.'
+  club_unban_fail_user_not_found: Ese usuario no está baneado en este club.
+  club_user_banned: 'El usuario {0} ha sido bloqueado del club {1}.'
+  club_user_kick: 'El usuario {0} ha sido expulsado del club {1}.'
+  club_user_not_in_club: '{0} no está en un club.'
+  club_user_unbanned: 'El usuario {0} ha sido desbloqueado en el club {1}.'
+  level_req: ''
+  rank: Rango
+
+fr-FR:
+  club_accept_invalid_applicant: Cet utilisateur n'a pas postulé à votre club.
+  club_accepted: 'L''utilisateur {0} a été accepté dans le club.'
+  club_admin_add: '{0} est désormais administrateur du club.'
+  club_admin_invalid_target: Vous ne pouvez pas vous cibler vous-même ou le propriétaire du club.
+  club_admin_perms: Vous devez être admin ou propriétaire du club pour effectuer cette action.
+  club_admin_remove: '{0} n''est plus administrateur du club.'
+  club_already_applied: Vous avez déjà postulé à ce club.
+  club_already_in: Vous êtes déjà membre d'un club.
+  club_applied: 'Vous avez candidaté pour le club {0}.'
+  club_apps_for: 'Liste des candidatures pour le club {0}'
+  club_ban_fail_unbannable: Seul le propriétaire du club peut bannir les admins du club.
+  club_ban_fail_user_not_found: Cet utilisateur n'est pas dans votre club et n'y a pas postulé.
+  club_banner_reset: Le banner du club a été réinitialisé.
+  club_banner_set: Nouveau banner du club défini.
+  club_bans_for: 'Liste des bans pour le club {0}'
+  club_create_insuff_lvl: Vous ne remplissez pas les conditions de niveau minimum pour créer un club.
+  club_created: 'Club {0} créé avec succès !'
+  club_desc_update: La description du club a été mise à jour
+  club_desc_update_failed: Échec du changement de la description du club.
+  club_disband_error: Erreur. Soit vous n'êtes pas dans un club ou vous n'êtes pas le propriétaire du club.
+  club_disbanded: 'Le club {0} a été dissout'
+  club_icon_invalid_filetype: L'image spécifiée a un type de fichier invalide. Assurez-vous de spécifier une URL directe d'image.
+  club_icon_set: Nouvel icône de club défini.
+  club_icon_too_large: L'image est trop grande.
+  club_icon_url_format: Vous devez spécifier une URL absolue d'image.
+  club_join_banned: Vous êtes banni de ce club.
+  club_kick_hierarchy: Seul le propriétaire du club peut expulser les admins. Le propriétaire ne peut pas être expulsé.
+  club_leaderboard: 'Tableau de classement du club - page {0}'
+  club_left: Vous avez quitté le club.
+  club_name_taken: Un club avec ce nom existe déjà.
+  club_name_too_long: Nom du club trop long.
+  club_not_exists: Ce club n'existe pas.
+  club_not_in_a_club: Vous n'êtes dans aucun club.
+  club_owner_cant_leave: Le propriétaire du club ne peut pas partir -- vous devez transférer la propriété ou dissoudre le club.
+  club_owner_only: Cette action ne peut être effectuée que par le propriétaire du club.
+  club_rejected: 'La candidature de {0} a été rejetée.'
+  club_renamed: 'Le club a été renommé en {0}'
+  club_target_not_member: L'utilisateur spécifié n'est pas membre de votre club.
+  club_transfered: 'La propriété du club {0} a été transférée à {1}'
+  club_unban_fail_user_not_found: Cet utilisateur n'est pas banni dans ce club.
+  club_user_banned: 'L''utilisateur {0} a été banni du club {1}.'
+  club_user_kick: 'L''utilisateur {0} a été exclu du club {1} .'
+  club_user_not_in_club: '{0} n''est pas dans un club.'
+  club_user_unbanned: 'L''utilisateur {0} a été débanni du club {1}.'
+  level_req: ''
+  rank: Rang
+
+id-ID:
+  club_accept_invalid_applicant: Pengguna itu belum melamar ke klubmu.
+  club_accepted: 'Menerima {0} ke dalam klub.'
+  club_admin_add: '{0} sekarang jadi admin klub.'
+  club_admin_invalid_target: Kamu nggak bisa menargetkan dirimu sendiri atau pemilik klub.
+  club_admin_perms: Kamu harus jadi admin atau pemilik klub untuk melakukan aksi ini.
+  club_admin_remove: '{0} bukan admin klub lagi.'
+  club_already_applied: Kamu sudah melamar ke klub itu.
+  club_already_in: Kamu sudah jadi anggota klub.
+  club_applied: 'Kamu sudah melamar keanggotaan di klub {0}.'
+  club_apps_for: 'Pelamar untuk klub {0}'
+  club_ban_fail_unbannable: Hanya pemilik klub yang bisa ban admin klub.
+  club_ban_fail_user_not_found: Pengguna itu nggak ada di klubmu atau belum melamar.
+  club_banner_reset: Banner klub sudah direset.
+  club_banner_set: Banner klub baru sudah dipasang.
+  club_bans_for: 'Ban untuk klub {0}'
+  club_create_insuff_lvl: Kamu belum memenuhi syarat level minimum untuk membuat klub.
+  club_created: 'Klub {0} berhasil dibuat!'
+  club_desc_update: Deskripsi Klub Diperbarui
+  club_desc_update_failed: Gagal mengubah deskripsi klub.
+  club_disband_error: Error. Kamu mungkin nggak ada di klub, atau kamu bukan pemilik klubmu.
+  club_disbanded: 'Klub {0} sudah dibubarkan'
+  club_icon_invalid_filetype: Gambar yang ditentukan punya tipe file yang nggak valid. Pastikan kamu memberikan URL gambar langsung.
+  club_icon_set: Ikon klub baru sudah dipasang.
+  club_icon_too_large: Gambarnya terlalu besar.
+  club_icon_url_format: Kamu harus memberikan URL gambar absolut.
+  club_join_banned: Kamu di-ban dari klub itu.
+  club_kick_hierarchy: Hanya pemilik klub yang bisa kick admin klub. Pemilik nggak bisa di-kick.
+  club_leaderboard: 'Papan peringkat klub - halaman {0}'
+  club_left: Kamu sudah keluar dari klub.
+  club_name_taken: Klub dengan nama itu sudah ada.
+  club_name_too_long: Nama klub terlalu panjang.
+  club_not_exists: Klub itu nggak ada.
+  club_not_in_a_club: Kamu nggak ada di klub mana pun.
+  club_owner_cant_leave: Pemilik klub nggak bisa meninggalkan klub - kamu harus transfer kepemilikan atau bubarkan klubnya.
+  club_owner_only: Aksi ini hanya bisa dilakukan oleh pemilik klub.
+  club_rejected: 'Lamaran dari {0} sudah ditolak.'
+  club_renamed: 'Klub sudah diganti nama jadi {0}'
+  club_target_not_member: Pengguna yang ditentukan bukan anggota klubmu.
+  club_transfered: 'Kepemilikan klub {0} sudah ditransfer ke {1}'
+  club_unban_fail_user_not_found: Pengguna itu nggak di-ban di klub ini.
+  club_user_banned: 'Pengguna {0} di-ban dari klub {1}.'
+  club_user_kick: 'Pengguna {0} di-kick dari klub {1}.'
+  club_user_not_in_club: '{0} nggak ada di klub.'
+  club_user_unbanned: 'Pengguna {0} di-unban di klub {1}.'
+  level_req: ''
+  rank: Peringkat
+
+ja-JP:
+  club_accept_invalid_applicant: そのユーザーはクラブに応募していません。
+  club_accepted: 'ユーザー {0} はクラブに受け入れられました。'
+  club_admin_add: '{0} はクラブ管理者になりました。'
+  club_admin_invalid_target: 自分自身またはクラブオーナーを選択することはできません。
+  club_admin_perms: このアクションを実行するにはクラブ管理者またはオーナーである必要があります。
+  club_admin_remove: '{0} はクラブ管理者ではなくなりました。'
+  club_already_applied: そのクラブには既に応募済みです。
+  club_already_in: あなたは既にクラブのメンバーです。
+  club_applied: 'あなたは {0} クラブのメンバー権を申請しました。'
+  club_apps_for: '{0} クラブの応募者'
+  club_ban_fail_unbannable: クラブ管理者をBANできるのはクラブオーナーのみです。
+  club_ban_fail_user_not_found: そのユーザーはクラブに所属しておらず、応募もしていません。
+  club_banner_reset: クラブバナーがリセットされました。
+  club_banner_set: 新しいクラブバナーが設定されました。
+  club_bans_for: '{0} クラブをバンされたユーザー'
+  club_create_insuff_lvl: クラブを作成するための最低レベル要件を満たしていません。
+  club_created: 'クラブ {0} は正常に作成されました！'
+  club_desc_update: クラブの説明が更新されました
+  club_desc_update_failed: クラブの説明の変更に失敗しました。
+  club_disband_error: 'エラー:あなたがクラブにいないか、あなたのクラブのオーナーではありません。'
+  club_disbanded: 'クラブ {0} は解散されました。'
+  club_icon_invalid_filetype: 指定された画像のファイルタイプが無効です。画像の直接URLを指定していることを確認してください。
+  club_icon_set: 新しいクラブアイコンがセットされました。
+  club_icon_too_large: 画像が大きすぎます。
+  club_icon_url_format: 絶対画像URLを指定する必要があります。
+  club_join_banned: そのクラブからBANされています。
+  club_kick_hierarchy: クラブ管理者をキックできるのはクラブオーナーのみです。オーナーはキックできません。
+  club_leaderboard: 'クラブリーダーボード - ページ {0}'
+  club_left: あなたはクラブを去りました。
+  club_name_taken: その名前のクラブは既に存在します。
+  club_name_too_long: クラブ名が長すぎます。
+  club_not_exists: そのクラブは存在しません。
+  club_not_in_a_club: あなたはクラブに所属していません。
+  club_owner_cant_leave: クラブオーナーは退出できません--所有権を移転するか、クラブを解散する必要があります。
+  club_owner_only: このアクションはクラブオーナーのみが実行できます。
+  club_rejected: '{0}の応募が却下されました。'
+  club_renamed: 'クラブ名が{0}に変更されました'
+  club_target_not_member: 指定されたユーザーはクラブのメンバーではありません。
+  club_transfered: 'クラブ {0} の所有権が {1} に移動しました。'
+  club_unban_fail_user_not_found: そのユーザーはこのクラブでBANされていません。
+  club_user_banned: 'ユーザー {0} は {1} クラブからバンされました。'
+  club_user_kick: 'ユーザー {0} は {1} クラブからキックされました。'
+  club_user_not_in_club: '{0}はクラブに所属していません。'
+  club_user_unbanned: 'ユーザー {0} が {1} クラブでバン解除されました。'
+  level_req: ''
+  rank: ランク
+
+ko-KR:
+  club_accept_invalid_applicant: 해당 유저는 클럽에 가입 신청하지 않았어요.
+  club_accepted: '{0}을(를) 클럽에 수락했어요.'
+  club_admin_add: '{0}이(가) 클럽 관리자가 되었어요.'
+  club_admin_invalid_target: 자기 자신이나 클럽 소유자를 대상으로 할 수 없어요.
+  club_admin_perms: 이 작업을 수행하려면 클럽 관리자 또는 소유자여야 해요.
+  club_admin_remove: '{0}은(는) 더 이상 클럽 관리자가 아니에요.'
+  club_already_applied: 이미 해당 클럽에 가입 신청했어요.
+  club_already_in: 이미 클럽에 소속되어 있어요.
+  club_applied: '{0} 클럽에 가입 신청했어요.'
+  club_apps_for: '{0} 클럽 신청자 목록'
+  club_ban_fail_unbannable: 클럽 관리자는 클럽 소유자만 차단할 수 있어요.
+  club_ban_fail_user_not_found: 해당 유저는 클럽에 소속되어 있지 않거나 가입 신청한 적이 없어요.
+  club_banner_reset: 클럽 배너가 초기화되었어요.
+  club_banner_set: 새 클럽 배너가 설정되었어요.
+  club_bans_for: '{0} 클럽 차단 목록'
+  club_create_insuff_lvl: 클럽을 만들기 위한 최소 레벨 요건을 충족하지 못했어요.
+  club_created: '클럽 {0}이(가) 성공적으로 생성되었어요!'
+  club_desc_update: 클럽 설명이 업데이트되었어요
+  club_desc_update_failed: 클럽 설명 변경에 실패했어요.
+  club_disband_error: 오류. 클럽에 소속되어 있지 않거나, 클럽 소유자가 아니에요.
+  club_disbanded: '클럽 {0}이(가) 해체되었어요'
+  club_icon_invalid_filetype: 지정한 이미지의 파일 형식이 올바르지 않아요. 직접 이미지 URL을 지정하고 있는지 확인하세요.
+  club_icon_set: 새 클럽 아이콘이 설정되었어요.
+  club_icon_too_large: 이미지가 너무 커요.
+  club_icon_url_format: 절대 이미지 URL을 지정해야 해요.
+  club_join_banned: 해당 클럽에서 차단되었어요.
+  club_kick_hierarchy: 클럽 관리자는 클럽 소유자만 추방할 수 있어요. 소유자는 추방할 수 없어요.
+  club_leaderboard: '클럽 리더보드 - 페이지 {0}'
+  club_left: 클럽에서 탈퇴했어요.
+  club_name_taken: 해당 이름의 클럽이 이미 존재해요.
+  club_name_too_long: 클럽 이름이 너무 길어요.
+  club_not_exists: 해당 클럽이 존재하지 않아요.
+  club_not_in_a_club: 클럽에 소속되어 있지 않아요.
+  club_owner_cant_leave: 클럽 소유자는 클럽을 떠날 수 없어요 - 소유권을 양도하거나 클럽을 해체해야 해요.
+  club_owner_only: 이 작업은 클럽 소유자만 수행할 수 있어요.
+  club_rejected: '{0}의 가입 신청이 거절되었어요.'
+  club_renamed: '클럽 이름이 {0}(으)로 변경되었어요'
+  club_target_not_member: 지정한 유저는 클럽 멤버가 아니에요.
+  club_transfered: '클럽 {0}의 소유권이 {1}에게 양도되었어요'
+  club_unban_fail_user_not_found: 해당 유저는 이 클럽에서 차단되지 않았어요.
+  club_user_banned: '{0}을(를) {1} 클럽에서 차단했어요.'
+  club_user_kick: '{0}을(를) {1} 클럽에서 추방했어요.'
+  club_user_not_in_club: '{0}은(는) 클럽에 소속되어 있지 않아요.'
+  club_user_unbanned: '{0}의 {1} 클럽 차단이 해제되었어요.'
+  level_req: ''
+  rank: 순위
+
+pl-PL:
+  club_accept_invalid_applicant: Ten użytkownik nie aplikował do twojego klubu.
+  club_accepted: 'Przyjęto użytkownika {0} do klubu.'
+  club_admin_add: '{0} jest teraz adminem klubu.'
+  club_admin_invalid_target: Nie możesz wybrać siebie ani właściciela klubu.
+  club_admin_perms: Musisz być adminem lub właścicielem klubu, żeby wykonać tę akcję.
+  club_admin_remove: '{0} nie jest już adminem klubu.'
+  club_already_applied: Już aplikowałeś/aś do tego klubu.
+  club_already_in: Już jesteś członkiem klubu.
+  club_applied: 'Zaaplikowałeś/aś o członkostwo w klubie {0}.'
+  club_apps_for: 'Kandydaci do klubu {0}'
+  club_ban_fail_unbannable: Tylko właściciel klubu może banować adminów klubu.
+  club_ban_fail_user_not_found: Ten użytkownik nie jest w twoim klubie ani nie aplikował do niego.
+  club_banner_reset: Baner klubu został zresetowany.
+  club_banner_set: Ustawiono nowy baner klubu.
+  club_bans_for: 'Bany w klubie {0}'
+  club_create_insuff_lvl: Nie spełniasz wymaganego poziomu, żeby utworzyć klub.
+  club_created: 'Klub {0} został pomyślnie utworzony!'
+  club_desc_update: Opis Klubu Zaktualizowany
+  club_desc_update_failed: Nie udało się zmienić opisu klubu.
+  club_disband_error: Błąd. Albo nie jesteś w klubie, albo nie jesteś właścicielem swojego klubu.
+  club_disbanded: 'Klub {0} został rozwiązany'
+  club_icon_invalid_filetype: Podany obraz ma nieprawidłowy format. Upewnij się, że podajesz bezpośredni URL do obrazu.
+  club_icon_set: Ustawiono nową ikonę klubu.
+  club_icon_too_large: Obraz jest za duży.
+  club_icon_url_format: Musisz podać bezpośredni URL do obrazu.
+  club_join_banned: Masz bana w tym klubie.
+  club_kick_hierarchy: Tylko właściciel klubu może wyrzucić adminów. Właściciela nie można wyrzucić.
+  club_leaderboard: 'Ranking klubów - strona {0}'
+  club_left: Opuściłeś/aś klub.
+  club_name_taken: Klub o tej nazwie już istnieje.
+  club_name_too_long: Nazwa klubu jest za długa.
+  club_not_exists: Ten klub nie istnieje.
+  club_not_in_a_club: Nie jesteś w żadnym klubie.
+  club_owner_cant_leave: Właściciel klubu nie może go opuścić - musisz przekazać własność albo rozwiązać klub.
+  club_owner_only: Tę akcję może wykonać tylko właściciel klubu.
+  club_rejected: 'Aplikacja użytkownika {0} została odrzucona.'
+  club_renamed: 'Klub został przemianowany na {0}'
+  club_target_not_member: Podany użytkownik nie jest członkiem twojego klubu.
+  club_transfered: 'Własność klubu {0} została przekazana użytkownikowi {1}'
+  club_unban_fail_user_not_found: Ten użytkownik nie jest zbanowany w tym klubie.
+  club_user_banned: 'Zbanowano użytkownika {0} w klubie {1}.'
+  club_user_kick: 'Wyrzucono użytkownika {0} z klubu {1}.'
+  club_user_not_in_club: '{0} nie jest w żadnym klubie.'
+  club_user_unbanned: 'Odbanowano użytkownika {0} w klubie {1}.'
+  level_req: ''
+  rank: Ranga
+
+pt-BR:
+  club_accept_invalid_applicant: Esse usuário não se candidatou ao seu clube.
+  club_accepted: 'Usuário {0} foi aceito no clube.'
+  club_admin_add: '{0} é agora um administrador do clube.'
+  club_admin_invalid_target: Você não pode selecionar a si mesmo ou o dono do clube.
+  club_admin_perms: Você deve ser admin ou dono do clube para realizar esta ação.
+  club_admin_remove: '{0} não é mais um administrador do clube.'
+  club_already_applied: Você já se candidatou a esse clube.
+  club_already_in: Você já é membro de um clube.
+  club_applied: 'Você se inscreveu no clube {0}.'
+  club_apps_for: 'Candidatos ao clube {0}'
+  club_ban_fail_unbannable: Apenas o dono do clube pode banir admins do clube.
+  club_ban_fail_user_not_found: Esse usuário não está no seu clube nem se candidatou a ele.
+  club_banner_reset: O banner do clube foi redefinido.
+  club_banner_set: Novo banner do clube definido.
+  club_bans_for: 'Banimentos do clube {0}'
+  club_create_insuff_lvl: Você não atende aos requisitos mínimos de nível para criar um clube.
+  club_created: 'Clube {0} criado com sucesso!'
+  club_desc_update: Descricao do Clube Atualizada
+  club_desc_update_failed: Falha ao alterar a descrição do clube.
+  club_disband_error: Erro. Ou você não está em um clube ou não é o dono do seu clube.
+  club_disbanded: 'O clube {0} foi dissolvido'
+  club_icon_invalid_filetype: A imagem especificada tem um tipo de arquivo inválido. Certifique-se de especificar uma URL direta de imagem.
+  club_icon_set: Novo ícone de clube definido.
+  club_icon_too_large: A imagem é muito grande.
+  club_icon_url_format: Você deve especificar uma URL absoluta de imagem.
+  club_join_banned: Você está banido desse clube.
+  club_kick_hierarchy: Apenas o dono do clube pode expulsar admins. O dono não pode ser expulso.
+  club_leaderboard: 'Ranking de clubes - Página {0}'
+  club_left: Você saiu o clube.
+  club_name_taken: Já existe um clube com esse nome.
+  club_name_too_long: Nome do clube é muito longo.
+  club_not_exists: Esse clube não existe.
+  club_not_in_a_club: Você não está em nenhum clube.
+  club_owner_cant_leave: O dono do clube não pode sair -- você deve transferir a posse ou dissolver o clube.
+  club_owner_only: Esta ação só pode ser realizada pelo dono do clube.
+  club_rejected: 'A candidatura de {0} foi rejeitada.'
+  club_renamed: 'O clube foi renomeado para {0}'
+  club_target_not_member: O usuário especificado não é membro do seu clube.
+  club_transfered: 'A propriedade do clube {0} foi transferida para {1}'
+  club_unban_fail_user_not_found: Esse usuário não está banido neste clube.
+  club_user_banned: 'O usuário {0} foi banido do clube {1}.'
+  club_user_kick: 'O usuário {0} foi expulso do {1} clube.'
+  club_user_not_in_club: '{0} não é um clube.'
+  club_user_unbanned: 'Desbanindo o usuário {0} no clube {1}.'
+  level_req: ''
+  rank: Rank
+
+ru-RU:
+  club_accept_invalid_applicant: Этот пользователь не подавал заявку в ваш клуб.
+  club_accepted: 'Пользователь {0} был принят в клуб.'
+  club_admin_add: '{0} теперь администратор клуба.'
+  club_admin_invalid_target: Вы не можете выбрать себя или владельца клуба.
+  club_admin_perms: Вы должны быть админом или владельцем клуба для выполнения этого действия.
+  club_admin_remove: '{0} больше не администратор клуба.'
+  club_already_applied: Вы уже подали заявку в этот клуб.
+  club_already_in: Вы уже состоите в клубе.
+  club_applied: 'Вы подали заявку на участие в клубе {0}.'
+  club_apps_for: 'Кандидаты в клуб {0}'
+  club_ban_fail_unbannable: Только владелец клуба может банить админов клуба.
+  club_ban_fail_user_not_found: Этот пользователь не в вашем клубе и не подавал заявку.
+  club_banner_reset: Баннер клуба сброшен.
+  club_banner_set: Новый баннер клуба установлен.
+  club_bans_for: 'Список заблокированных в клубе {0}'
+  club_create_insuff_lvl: Вы не соответствуете минимальным требованиям уровня для создания клуба.
+  club_created: 'Клуб {0} успешно создан!'
+  club_desc_update: Описание клуба обновлено
+  club_desc_update_failed: Не удалось изменить описание клуба.
+  club_disband_error: Ошибка. Вы либо не в клубе или же вы не владелец клуба.
+  club_disbanded: 'Клуб {0} был расформирован'
+  club_icon_invalid_filetype: Указанное изображение имеет недопустимый тип файла. Убедитесь, что указываете прямую ссылку на изображение.
+  club_icon_set: Новый логотип клуба установлен.
+  club_icon_too_large: Изображение слишком большое.
+  club_icon_url_format: Вы должны указать абсолютный URL изображения.
+  club_join_banned: Вы забанены в этом клубе.
+  club_kick_hierarchy: Только владелец клуба может кикнуть админов. Владельца кикнуть нельзя.
+  club_leaderboard: 'Клубная таблица рейтинга - страница {0}'
+  club_left: Вы покинули клуб
+  club_name_taken: Клуб с таким названием уже существует.
+  club_name_too_long: Название клуба слишком длинное.
+  club_not_exists: Этот клуб не существует.
+  club_not_in_a_club: Вы не состоите в клубе.
+  club_owner_cant_leave: Владелец клуба не может уйти - необходимо передать владение или распустить клуб.
+  club_owner_only: Это действие может выполнить только владелец клуба.
+  club_rejected: 'Заявка от {0} была отклонена.'
+  club_renamed: 'Клуб переименован в {0}'
+  club_target_not_member: Указанный пользователь не является членом вашего клуба.
+  club_transfered: 'Права владения клуба {0} были переданы {1}'
+  club_unban_fail_user_not_found: Этот пользователь не забанен в этом клубе.
+  club_user_banned: 'Пользователь {0} был заблокирован в клубе {1}'
+  club_user_kick: 'Пользователь {0} был исключен из клуба {1}'
+  club_user_not_in_club: '{0} не состоит в клубе.'
+  club_user_unbanned: 'Пользователь {0} был разблокирован в клубе {1}.'
+  level_req: ''
+  rank: Ранг
+
+sr-Cyrl-RS:
+  club_accept_invalid_applicant: Тај корисник се није пријавио у твој клуб.
+  club_accepted: 'Корисник {0} је примљен у клуб.'
+  club_admin_add: '{0} је сада админ клуба.'
+  club_admin_invalid_target: Не можеш да циљаш себе или власника клуба.
+  club_admin_perms: Мораш бити админ или власник клуба да би извршио/ла ову акцију.
+  club_admin_remove: '{0} више није админ клуба.'
+  club_already_applied: Већ си се пријавио/ла у тај клуб.
+  club_already_in: Већ си члан клуба.
+  club_applied: 'Пријавио/ла си се за чланство у клубу {0}.'
+  club_apps_for: 'Пријаве за клуб {0}'
+  club_ban_fail_unbannable: Само власник клуба може да банује админе клуба.
+  club_ban_fail_user_not_found: Тај корисник није у твом клубу нити се пријавио.
+  club_banner_reset: Банер клуба је ресетован.
+  club_banner_set: Нови банер клуба је постављен.
+  club_bans_for: 'Банови за клуб {0}'
+  club_create_insuff_lvl: Не испуњаваш минимални ниво потребан за креирање клуба.
+  club_created: 'Клуб {0} је успешно креиран!'
+  club_desc_update: Опис клуба ажуриран
+  club_desc_update_failed: Неуспешна промена описа клуба.
+  club_disband_error: Грешка. Или ниси у клубу, или ниси власник свог клуба.
+  club_disbanded: 'Клуб {0} је распуштен'
+  club_icon_invalid_filetype: Наведена слика има неважећи формат. Провери да ли наводиш директан URL слике.
+  club_icon_set: Нова иконица клуба је постављена.
+  club_icon_too_large: Слика је превелика.
+  club_icon_url_format: Мораш да наведеш апсолутни URL слике.
+  club_join_banned: Банован/а си из тог клуба.
+  club_kick_hierarchy: Само власник клуба може да избаци админе клуба. Власник не може бити избачен.
+  club_leaderboard: 'Ранг-листа клубова - страна {0}'
+  club_left: Напустио/ла си клуб.
+  club_name_taken: Клуб са тим именом већ постоји.
+  club_name_too_long: Име клуба је предугачко.
+  club_not_exists: Тај клуб не постоји.
+  club_not_in_a_club: Ниси у клубу.
+  club_owner_cant_leave: Власник клуба не може да напусти клуб - мораш да пренесеш власништво или да распустиш клуб.
+  club_owner_only: Ову акцију може извршити само власник клуба.
+  club_rejected: 'Пријава корисника {0} је одбијена.'
+  club_renamed: 'Клуб је преименован у {0}'
+  club_target_not_member: Наведени корисник није члан твог клуба.
+  club_transfered: 'Власништво клуба {0} је пренето на {1}'
+  club_unban_fail_user_not_found: Тај корисник није банован у овом клубу.
+  club_user_banned: 'Корисник {0} је банован из клуба {1}.'
+  club_user_kick: 'Корисник {0} је избачен из клуба {1}.'
+  club_user_not_in_club: '{0} није у клубу.'
+  club_user_unbanned: 'Корисник {0} је одбанован у клубу {1}.'
+  level_req: ''
+  rank: Ранг
+
+tr-TR:
+  club_accept_invalid_applicant: Bu kullanıcı kulübüne başvurmamış.
+  club_accepted: '{0} kulübe kabul edildi.'
+  club_admin_add: '{0} artık kulüp yöneticisi.'
+  club_admin_invalid_target: Kendini veya kulüp sahibini hedef alamazsın.
+  club_admin_perms: Bu işlemi gerçekleştirmek için kulüp yöneticisi veya sahibi olmalısın.
+  club_admin_remove: '{0} artık kulüp yöneticisi değil.'
+  club_already_applied: Bu kulübe zaten başvurdun.
+  club_already_in: Zaten bir kulübün üyesisin.
+  club_applied: '{0} kulübüne üyelik başvurusunda bulundun.'
+  club_apps_for: '{0} kulübü için başvuranlar'
+  club_ban_fail_unbannable: Yalnızca kulüp sahibi kulüp yöneticilerini yasaklayabilir.
+  club_ban_fail_user_not_found: Bu kullanıcı kulübünde değil veya başvurmamış.
+  club_banner_reset: Kulüp afişi sıfırlandı.
+  club_banner_set: Yeni kulüp afişi ayarlandı.
+  club_bans_for: '{0} kulübü için yasaklar'
+  club_create_insuff_lvl: Kulüp oluşturmak için gereken minimum seviye şartını karşılamıyorsun.
+  club_created: '{0} kulübü başarıyla oluşturuldu!'
+  club_desc_update: Kulüp Açıklaması Güncellendi
+  club_desc_update_failed: Kulüp açıklaması değiştirilemedi.
+  club_disband_error: Hata. Ya bir kulüpte değilsin ya da kulübünün sahibi değilsin.
+  club_disbanded: '{0} kulübü dağıtıldı'
+  club_icon_invalid_filetype: Belirtilen görsel geçersiz bir dosya türüne sahip. Doğrudan bir görsel URL'si belirttiğinden emin ol.
+  club_icon_set: Yeni kulüp simgesi ayarlandı.
+  club_icon_too_large: Görsel çok büyük.
+  club_icon_url_format: Mutlak bir görsel URL'si belirtmelisin.
+  club_join_banned: Bu kulüpten yasaklısın.
+  club_kick_hierarchy: Yalnızca kulüp sahibi kulüp yöneticilerini atabilir. Sahip atılamaz.
+  club_leaderboard: 'Kulüp sıralaması - sayfa {0}'
+  club_left: Kulüpten ayrıldın.
+  club_name_taken: Bu isimde bir kulüp zaten var.
+  club_name_too_long: Kulüp ismi çok uzun.
+  club_not_exists: Bu kulüp mevcut değil.
+  club_not_in_a_club: Bir kulüpte değilsin.
+  club_owner_cant_leave: Kulüp sahibi kulüpten ayrılamaz -- ya sahipliği devretmeli ya da kulübü dağıtmalısın.
+  club_owner_only: Bu işlem yalnızca kulüp sahibi tarafından gerçekleştirilebilir.
+  club_rejected: '{0} kişisinin başvurusu reddedildi.'
+  club_renamed: 'Kulüp adı {0} olarak değiştirildi'
+  club_target_not_member: Belirtilen kullanıcı kulübünün üyesi değil.
+  club_transfered: '{0} kulübünün sahipliği {1} kişisine devredildi'
+  club_unban_fail_user_not_found: Bu kullanıcı bu kulüpte yasaklı değil.
+  club_user_banned: '{0} kullanıcısı {1} kulübünden yasaklandı.'
+  club_user_kick: '{0} kullanıcısı {1} kulübünden atıldı.'
+  club_user_not_in_club: '{0} bir kulüpte değil.'
+  club_user_unbanned: '{0} kullanıcısının {1} kulübündeki yasağı kaldırıldı.'
+  level_req: ''
+  rank: Sıralama
+
+ts-TS:
+  club_accept_invalid_applicant: That user hasn't applied to your club. Check properly!
+  club_accepted: 'Accepted user {0} to the club.'
+  club_admin_add: '{0} is now a club admin.'
+  club_admin_invalid_target: You can't target yourself or the club owner, b-baka!
+  club_admin_perms: You must be a club admin or owner to do this.
+  club_admin_remove: '{0} is no longer club admin. Hmph.'
+  club_already_applied: You've already applied to that club. So impatient!
+  club_already_in: You're already in a club.
+  club_applied: 'You''ve applied for membership in {0} club. G-good luck, I guess.'
+  club_apps_for: 'Applicants for {0} club'
+  club_ban_fail_unbannable: Only the club owner can ban club admins.
+  club_ban_fail_user_not_found: That user isn't in your club or applied to it. Look more carefully!
+  club_banner_reset: Club banner has been reset.
+  club_banner_set: New club banner set.
+  club_bans_for: 'Bans for {0} club'
+  club_create_insuff_lvl: You don't meet the minimum level to create a club. Go level up first, b-baka!
+  club_created: 'Club {0} successfully created!'
+  club_desc_update: Club description updated.
+  club_desc_update_failed: Failed changing club description.
+  club_disband_error: Error. You're either not in a club, or you're not the owner. Get your facts straight!
+  club_disbanded: 'Club {0} has been disbanded.'
+  club_icon_invalid_filetype: That image has an invalid filetype. Make sure you're using a direct image url.
+  club_icon_set: New club icon set.
+  club_icon_too_large: Image is too large. Compress it or something.
+  club_icon_url_format: You must specify an absolute image url.
+  club_join_banned: You're banned from that club.
+  club_kick_hierarchy: Only the club owner can kick club admins. The owner can't be kicked.
+  club_leaderboard: 'Club leaderboard - page {0}'
+  club_left: You've left the club.
+  club_name_taken: A club with that name already exists. Be more creative.
+  club_name_too_long: Club name is too long.
+  club_not_exists: That club doesn't exist. D-did you make it up?
+  club_not_in_a_club: You're not in a club.
+  club_owner_cant_leave: Club owner can't leave - transfer ownership or disband the club.
+  club_owner_only: Only the club owner can do this. D-don't overstep.
+  club_rejected: 'The application by {0} has been rejected. Hmph.'
+  club_renamed: 'Club has been renamed to {0}.'
+  club_target_not_member: That user isn't a member of your club. Pay attention!
+  club_transfered: 'Ownership of club {0} has been transferred to {1}. Take good care of it.'
+  club_unban_fail_user_not_found: That user isn't banned in this club.
+  club_user_banned: 'Banned user {0} from {1} club.'
+  club_user_kick: 'User {0} kicked from {1} club. D-don''t cause trouble next time.'
+  club_user_not_in_club: '{0} is not in a club.'
+  club_user_unbanned: 'Unbanned user {0} in {1} club.'
+  level_req: ''
+  rank: Rank
+
+uk-UA:
+  club_accept_invalid_applicant: Цей користувач не подавав заявку до твого клубу.
+  club_accepted: 'Користувача {0} прийнято до клубу.'
+  club_admin_add: '{0} тепер адмін клубу.'
+  club_admin_invalid_target: Ти не можеш обрати себе або власника клубу.
+  club_admin_perms: Ти маєш бути адміном або власником клубу, щоб виконати цю дію.
+  club_admin_remove: '{0} більше не адмін клубу.'
+  club_already_applied: Ти вже подав(-ла) заявку до цього клубу.
+  club_already_in: Ти вже є учасником клубу.
+  club_applied: 'Ти подав(-ла) заявку на вступ до клубу {0}.'
+  club_apps_for: 'Заявки до клубу {0}'
+  club_ban_fail_unbannable: Тільки власник клубу може банити адмінів клубу.
+  club_ban_fail_user_not_found: Цей користувач не є учасником твого клубу і не подавав заявку.
+  club_banner_reset: Банер клубу скинуто.
+  club_banner_set: Новий банер клубу встановлено.
+  club_bans_for: 'Бани клубу {0}'
+  club_create_insuff_lvl: Ти не досягнув(-ла) мінімального рівня для створення клубу.
+  club_created: 'Клуб {0} успішно створено!'
+  club_desc_update: Опис клубу оновлено
+  club_desc_update_failed: Не вдалося змінити опис клубу.
+  club_disband_error: Помилка. Ти або не в клубі, або не є його власником.
+  club_disbanded: 'Клуб {0} розформовано'
+  club_icon_invalid_filetype: Вказане зображення має невірний формат. Переконайся, що ти вказуєш пряме посилання на зображення.
+  club_icon_set: Нову іконку клубу встановлено.
+  club_icon_too_large: Зображення занадто велике.
+  club_icon_url_format: Ти маєш вказати абсолютне посилання на зображення.
+  club_join_banned: Тебе забанено в цьому клубі.
+  club_kick_hierarchy: Тільки власник клубу може кікати адмінів. Власника не можна кікнути.
+  club_leaderboard: 'Рейтинг клубів - сторінка {0}'
+  club_left: Ти покинув(-ла) клуб.
+  club_name_taken: Клуб з такою назвою вже існує.
+  club_name_too_long: Назва клубу занадто довга.
+  club_not_exists: Такого клубу не існує.
+  club_not_in_a_club: Ти не в клубі.
+  club_owner_cant_leave: Власник клубу не може покинути клуб - ти маєш або передати право власності, або розформувати клуб.
+  club_owner_only: Цю дію може виконати лише власник клубу.
+  club_rejected: 'Заявку від {0} відхилено.'
+  club_renamed: 'Клуб перейменовано на {0}'
+  club_target_not_member: Вказаний користувач не є учасником твого клубу.
+  club_transfered: 'Право власності на клуб {0} передано {1}'
+  club_unban_fail_user_not_found: Цей користувач не забанений у цьому клубі.
+  club_user_banned: 'Користувача {0} забанено в клубі {1}.'
+  club_user_kick: 'Користувача {0} вигнано з клубу {1}.'
+  club_user_not_in_club: '{0} не в клубі.'
+  club_user_unbanned: 'Користувача {0} розбанено в клубі {1}.'
+  level_req: ''
+  rank: Ранг
+
+vi-VN:
+  club_accept_invalid_applicant: Người dùng đó chưa nộp đơn vào câu lạc bộ của bạn.
+  club_accepted: 'Đã chấp nhận người dùng {0} vào câu lạc bộ.'
+  club_admin_add: '{0} giờ là quản trị viên câu lạc bộ.'
+  club_admin_invalid_target: Bạn không thể chọn chính mình hoặc chủ câu lạc bộ.
+  club_admin_perms: Bạn phải là quản trị viên hoặc chủ câu lạc bộ để thực hiện hành động này.
+  club_admin_remove: '{0} không còn là quản trị viên câu lạc bộ.'
+  club_already_applied: Bạn đã nộp đơn vào câu lạc bộ đó rồi.
+  club_already_in: Bạn đã là thành viên của một câu lạc bộ rồi.
+  club_applied: 'Bạn đã nộp đơn gia nhập câu lạc bộ {0}.'
+  club_apps_for: 'Đơn xin gia nhập câu lạc bộ {0}'
+  club_ban_fail_unbannable: Chỉ chủ câu lạc bộ mới có thể cấm quản trị viên.
+  club_ban_fail_user_not_found: Người dùng đó không có trong câu lạc bộ của bạn hoặc chưa nộp đơn.
+  club_banner_reset: Đã đặt lại banner câu lạc bộ.
+  club_banner_set: Đã đặt banner câu lạc bộ mới.
+  club_bans_for: 'Danh sách cấm của câu lạc bộ {0}'
+  club_create_insuff_lvl: Bạn chưa đạt cấp độ tối thiểu để tạo câu lạc bộ.
+  club_created: 'Câu lạc bộ {0} đã được tạo thành công!'
+  club_desc_update: Đã cập nhật mô tả câu lạc bộ
+  club_desc_update_failed: Không thể thay đổi mô tả câu lạc bộ.
+  club_disband_error: Lỗi. Bạn không ở trong câu lạc bộ nào, hoặc bạn không phải chủ câu lạc bộ.
+  club_disbanded: 'Câu lạc bộ {0} đã bị giải tán'
+  club_icon_invalid_filetype: Ảnh có định dạng không hợp lệ. Hãy chắc chắn bạn đang dùng đường dẫn trực tiếp đến ảnh.
+  club_icon_set: Đã đặt biểu tượng câu lạc bộ mới.
+  club_icon_too_large: Ảnh quá lớn.
+  club_icon_url_format: Bạn phải nhập đường dẫn ảnh tuyệt đối.
+  club_join_banned: Bạn đã bị cấm khỏi câu lạc bộ đó.
+  club_kick_hierarchy: Chỉ chủ câu lạc bộ mới có thể đuổi quản trị viên. Chủ câu lạc bộ không thể bị đuổi.
+  club_leaderboard: 'Bảng xếp hạng câu lạc bộ - trang {0}'
+  club_left: Bạn đã rời câu lạc bộ.
+  club_name_taken: Đã có câu lạc bộ với tên đó rồi.
+  club_name_too_long: Tên câu lạc bộ quá dài.
+  club_not_exists: Câu lạc bộ đó không tồn tại.
+  club_not_in_a_club: Bạn không ở trong câu lạc bộ nào.
+  club_owner_cant_leave: Chủ câu lạc bộ không thể rời - bạn phải chuyển quyền sở hữu hoặc giải tán câu lạc bộ.
+  club_owner_only: Chỉ chủ câu lạc bộ mới có thể thực hiện hành động này.
+  club_rejected: 'Đơn xin gia nhập của {0} đã bị từ chối.'
+  club_renamed: 'Câu lạc bộ đã được đổi tên thành {0}'
+  club_target_not_member: Người dùng được chỉ định không phải thành viên câu lạc bộ của bạn.
+  club_transfered: 'Quyền sở hữu câu lạc bộ {0} đã được chuyển cho {1}'
+  club_unban_fail_user_not_found: Người dùng đó không bị cấm trong câu lạc bộ này.
+  club_user_banned: 'Đã cấm người dùng {0} khỏi câu lạc bộ {1}.'
+  club_user_kick: 'Đã đuổi người dùng {0} khỏi câu lạc bộ {1}.'
+  club_user_not_in_club: '{0} không ở trong câu lạc bộ nào.'
+  club_user_unbanned: 'Đã bỏ cấm người dùng {0} trong câu lạc bộ {1}.'
+  level_req: ''
+  rank: Hạng
+
+zh-CN:
+  club_accept_invalid_applicant: 該使用者未申請加入你的社團。
+  club_accepted: '已接受用戶 {0} 加入公會。'
+  club_admin_add: '{0} 現在是公會管理員。'
+  club_admin_invalid_target: 你不能選擇自己或社團擁有者。
+  club_admin_perms: 你必須是社團管理員或擁有者才能執行此操作。
+  club_admin_remove: '{0} 不再是公會管理員。'
+  club_already_applied: 你已經申請過這個社團了。
+  club_already_in: 你已經是社團成員了。
+  club_applied: '您已申請加入 {0} 公會。'
+  club_apps_for: '{0} 公會的申請者'
+  club_ban_fail_unbannable: 只有社團擁有者可以封禁社團管理員。
+  club_ban_fail_user_not_found: 該使用者不在你的社團中，也未申請加入。
+  club_banner_reset: 社團橫幅已重置。
+  club_banner_set: 已設定新的社團橫幅。
+  club_bans_for: '{0} 公會的禁令'
+  club_create_insuff_lvl: 你不符合建立社團的最低等級要求。
+  club_created: '公會 {0} 已成功創建！'
+  club_desc_update: 俱乐部简介已更新
+  club_desc_update_failed: 未能更改公會描述。
+  club_disband_error: 錯誤。您未加入公會，或不是公會的管理者。
+  club_disbanded: '公會 {0} 已解散'
+  club_icon_invalid_filetype: 指定的圖片檔案類型無效。請確保你指定的是圖片直接連結。
+  club_icon_set: 新公會圖標集。
+  club_icon_too_large: 圖片太大了。
+  club_icon_url_format: 你必須指定絕對圖片 URL。
+  club_join_banned: 你被該社團封禁了。
+  club_kick_hierarchy: 只有社團擁有者可以踢出管理員。擁有者不能被踢出。
+  club_leaderboard: '公會排行榜 - 第 {0} 頁'
+  club_left: 你已經離開了公會。
+  club_name_taken: 該名稱的社團已經存在。
+  club_name_too_long: 社團名稱超過長度上限
+  club_not_exists: 那個公會不存在。
+  club_not_in_a_club: 你不在任何社團中。
+  club_owner_cant_leave: 社團擁有者不能離開社團--你必須轉讓擁有權或解散社團。
+  club_owner_only: 此操作只能由社團擁有者執行。
+  club_rejected: '{0} 的申請已被拒絕。'
+  club_renamed: '社團已更名為 {0}'
+  club_target_not_member: 指定的使用者不是你社團的成員。
+  club_transfered: '公會 {0} 會長職位已轉讓給 {1}'
+  club_unban_fail_user_not_found: 該使用者未被此社團封禁。
+  club_user_banned: '禁止用戶 {0} 加入 {1} 公會。'
+  club_user_kick: '用戶 {0} 被踢出 {1} 公會。'
+  club_user_not_in_club: '{0} 不在任何社團內'
+  club_user_unbanned: '{1} 公會中的未禁止用戶 {0}。'
+  level_req: ''
+  rank: 排名

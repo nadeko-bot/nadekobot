@@ -1,0 +1,47 @@
+ar:
+  wikia_input_error: يرجى إدخال ويكي مستهدفة، متبوعة باستعلام البحث.
+
+de-DE:
+  wikia_input_error: Bitte gebe ein Ziel Wikia ein, gefolgt von einer Suchanfrage.
+
+es-ES:
+  wikia_input_error: Ingresa una wikia, seguido por tu búsqueda.
+
+fr-FR:
+  wikia_input_error: Veuillez entrer un wikia cible, suivi d'une requête de recherche.
+
+id-ID:
+  wikia_input_error: Silakan masukkan target wikia, diikuti kata kunci pencarian.
+
+ja-JP:
+  wikia_input_error: 検索するウィキアを入力し、続けて検索クエリを入力してください。
+
+ko-KR:
+  wikia_input_error: 대상 위키아와 검색어를 입력해 주세요.
+
+pl-PL:
+  wikia_input_error: Wprowadź docelową wikię, a następnie zapytanie.
+
+pt-BR:
+  wikia_input_error: Por favor entre a wikia alvo, seguido pelo objeto a ser pesquisado.
+
+ru-RU:
+  wikia_input_error: Введите целевую викию, а затем поисковый запрос.
+
+sr-Cyrl-RS:
+  wikia_input_error: Унеси циљну викију, а затим претрагу.
+
+tr-TR:
+  wikia_input_error: Lütfen bir hedef wikia ve ardından arama sorgusunu gir.
+
+ts-TS:
+  wikia_input_error: Please enter a target wikia followed by a search query.
+
+uk-UA:
+  wikia_input_error: Будь ласка, введи назву цільової вікі, а потім пошуковий запит.
+
+vi-VN:
+  wikia_input_error: Vui lòng nhập tên wikia mục tiêu, sau đó là từ khóa tìm kiếm.
+
+zh-CN:
+  wikia_input_error: 請輸入目標的維基百科，然後輸入搜索查詢。

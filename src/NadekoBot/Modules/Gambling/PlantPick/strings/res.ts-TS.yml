@@ -1,8 +1,0 @@
-curgen_disabled: Currency generation has been disabled on this channel.
-curgen_enabled: Currency generation has been enabled on this channel.
-curgen_pl: '{0} random {1} appeared!'
-curgen_sn: A random {0} appeared!
-pick_pl: 'Pick them up by typing `{0}pick`'
-pick_sn: 'Pick it up by typing `{0}pick`'
-picked: '{1} picked {0}'
-planted: '{0} planted {1}'

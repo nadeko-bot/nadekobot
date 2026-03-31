@@ -1,6 +1,0 @@
-alias_added: '鍵入 {0} 現在將是 {1} 的別名。'
-alias_list: 別名列表
-alias_remove_fail: '觸發器 {0} 沒有別名。'
-alias_removed: '觸發器 {0} 不再有別名。'
-aliases_cleared: '此伺服器上的所有 {0} 別名均已刪除。'
-aliases_none: 找不到別名

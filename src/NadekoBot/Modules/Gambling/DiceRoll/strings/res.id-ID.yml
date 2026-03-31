@@ -1,6 +1,0 @@
-dice_invalid_number: 'Angka yang dimasukkan tidak valid. Kamu bisa melempar {0}-{1} dadu sekaligus.'
-dice_rolled: 'melempar {0}'
-dice_rolled_num: 'Dadu dilempar: {0}'
-rolls: Lemparan
-second_larger_than_first: Angka kedua harus lebih besar dari angka pertama.
-total: Total

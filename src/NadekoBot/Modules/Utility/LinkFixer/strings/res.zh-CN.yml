@@ -1,7 +1,0 @@
-linkfix_added: '來自 {0} 的連結現在將被修正為 {1}。'
-linkfix_already_exists: '{0} 的連結修正已存在。'
-linkfix_invalid_domains: 舊域名和新域名都必須有效。
-linkfix_list_none: 此伺服器未設定任何連結修正。
-linkfix_list_title: 連結修正
-linkfix_not_found: '找不到 {0} 的連結修正。'
-linkfix_removed: '{0} 的連結修正已移除。'

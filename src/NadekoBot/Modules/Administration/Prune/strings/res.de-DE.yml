@@ -1,5 +1,0 @@
-prune_already_running: Eine Bereinigung läuft bereits auf diesem Server.
-prune_cancelled: Die Bereinigung wurde abgebrochen.
-prune_not_found: Keine aktive Bereinigung auf diesem Server gefunden.
-prune_patron: 'Das Löschen von Nachrichten, die 2 Wochen oder älter sind, erfordert [Patron Tier X](https://patreon.com/join/nadekobot) oder höher.'
-prune_progress: 'Bereinigung... {0}/{1} Nachrichten gelöscht.'

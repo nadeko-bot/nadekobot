@@ -1,4 +1,0 @@
-aar_disabled: '**Otomatik rol atama** artık **devre dışı**.'
-aar_none: Kullanıcılar bu sunucuya katıldığında herhangi bir rol almıyor.
-aar_role_removed: 'Kullanıcılar bu sunucuya katıldığında artık {0} rolünü almayacak.'
-aar_roles: 'Bu sunucuya katılan kullanıcılara şu roller veriliyor: {0}'

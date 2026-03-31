@@ -1,9 +1,0 @@
-xpformula_current: Cong thuc XP
-xpformula_set: Cong thuc XP da cap nhat
-xpformula_desc: |-
-  |-
-    XP moi cap: **{0}** x (cap + 1) + **{1}**
-xpformula_preview: Xem truoc cap do
-xpformula_a_invalid: 'Do doc (a) phai nam trong khoang {0} den {1}.'
-xpformula_c_invalid: 'Gia tri co so (c) phai nam trong khoang {0} den {1}.'
-xpformula_invalid: Tham so cong thuc khong hop le.

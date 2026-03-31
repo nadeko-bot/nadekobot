@@ -1,5 +1,0 @@
-prune_already_running: このサーバーでは既にプルーンが実行中です。
-prune_cancelled: プルーンがキャンセルされました。
-prune_not_found: このサーバーでアクティブなプルーンは見つかりませんでした。
-prune_patron: '2週間以上前のメッセージの削除には[Patron Tier X](https://patreon.com/join/nadekobot)以上が必要です。'
-prune_progress: 'プルーン中... {0}/{1}メッセージ削除済み。'

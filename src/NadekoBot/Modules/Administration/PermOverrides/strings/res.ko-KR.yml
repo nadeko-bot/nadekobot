@@ -1,6 +1,0 @@
-perm_override: '유저가 {1} 명령어를 실행하려면 {0} 권한이 필요합니다.'
-perm_override_all: 모든 Discord 권한 오버라이드가 초기화되었습니다.
-perm_override_all_confirm: 이 서버의 **모든** Discord 권한 오버라이드를 정말로 제거하시겠습니까? 이 작업은 되돌릴 수 없습니다.
-perm_override_page_none: 이 페이지에 오버라이드가 없습니다.
-perm_override_reset: 이 명령어의 Discord 권한 오버라이드가 초기화되었습니다.
-perm_overrides: Discord 권한 오버라이드

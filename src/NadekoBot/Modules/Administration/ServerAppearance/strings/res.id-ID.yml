@@ -1,5 +1,0 @@
-set_srvr_banner: Banner server baru sudah dipasang!
-set_srvr_icon: Ikon server baru sudah dipasang!
-srvr_banner_invalid: Gambar yang ditentukan punya tipe file yang tidak valid. Pastikan kamu memasukkan URL gambar langsung.
-srvr_banner_invalid_url: URL yang ditentukan tidak valid. Pastikan kamu memasukkan URL gambar langsung.
-srvr_banner_too_large: Gambar yang ditentukan terlalu besar! Ukuran maksimal 8MB.

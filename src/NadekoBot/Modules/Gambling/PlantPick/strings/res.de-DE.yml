@@ -1,8 +1,0 @@
-curgen_disabled: Währungs Generation wurde für diesen Kanal deaktiviert.
-curgen_enabled: Einkommens Generation wurde für diesen Kanal aktiviert.
-curgen_pl: '{0} zufälliges {1} ist aufgetaucht!'
-curgen_sn: 'Ein zufälliges {0} ist aufgetaucht!'
-pick_pl: 'Schreibe {0} um sie aufzunehmen'
-pick_sn: 'Schreibe {0} up es aufzuheben'
-picked: '{1} hat {0} aufgehoben'
-planted: '{0} hat {1} gepflanzt'

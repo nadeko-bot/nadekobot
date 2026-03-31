@@ -1,4 +1,0 @@
-bank_balance_other: 'Người dùng {0} có {1} trong ngân hàng.'
-bank_deposited: 'Bạn đã gửi {0} vào tài khoản ngân hàng.'
-bank_withdraw_insuff: 'Bạn không có đủ {0} trong tài khoản ngân hàng.'
-bank_withdrew: 'Bạn đã rút {0} từ tài khoản ngân hàng.'

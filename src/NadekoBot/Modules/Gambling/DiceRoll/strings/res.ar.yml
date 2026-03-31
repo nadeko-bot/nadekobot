@@ -1,6 +1,0 @@
-dice_invalid_number: 'عدد غير صالح. يمكنك رمي {0}-{1} نرد في المرة الواحدة.'
-dice_rolled: 'رمى {0}'
-dice_rolled_num: 'نتيجة النرد: {0}'
-rolls: الرميات
-second_larger_than_first: يجب أن يكون الرقم الثاني أكبر من الأول.
-total: المجموع

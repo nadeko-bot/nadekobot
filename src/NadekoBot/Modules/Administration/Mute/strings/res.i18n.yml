@@ -1,0 +1,239 @@
+ar:
+  mute_error: على الأرجح لا أملك الصلاحيات اللازمة لذلك.
+  mute_perms: لا يمكنك كتم مستخدم يملك دورًا أعلى من أعلى دور لديك في تسلسل الأدوار إلا إذا كنت مالك الخادم.
+  mute_role: 'دور الكتم الحالي هو {0}'
+  mute_role_set: تم تعيين دور كتم جديد.
+  user_chat_mute: 'تم **كتم** {0} من الدردشة.'
+  user_chat_mute_time: 'تم **كتم دردشة** {0} لمدة {1} دقيقة.'
+  user_chat_unmute: 'تم **إلغاء كتم** {0} من الدردشة.'
+  user_muted: 'تم **كتم** {0} من الدردشة النصية والصوتية.'
+  user_muted_time: 'تم **كتم** {0} من الدردشة النصية والصوتية لمدة {1} دقيقة.'
+  user_unmuted: 'تم **إلغاء كتم** {0} من الدردشة النصية والصوتية.'
+  user_voice_mute: 'تم **كتم صوت** {0}.'
+  user_voice_mute_time: 'تم **كتم صوت** {0} لمدة {1} دقيقة.'
+  user_voice_unmute: 'تم **إلغاء كتم صوت** {0}.'
+
+de-DE:
+  mute_error: Ich habe dafür wahrscheinlich nicht genügend Rechte.
+  mute_perms: Du kannst einen Nutzer mit einer höheren Rolle als deiner höchsten Rolle in der Rollen Hierarchie nicht Stummschalten.
+  mute_role: 'Aktuelle Stummschaltungsrolle ist {0}'
+  mute_role_set: Neue Stumm Role gesetzt
+  user_chat_mute: '{0} wurde für das Schreiben stummgeschaltet.'
+  user_chat_mute_time: '{0} wurde **text gestummt** für {1} Minuten.'
+  user_chat_unmute: 'Die Stummschaltung für {0} wurde für das Schreiben aufgehoben.'
+  user_muted: '{0} wurde vom Text Kanal und Sprach Kanal *stumm* geschaltet.'
+  user_muted_time: '{0} wurde von Text und Sprach Kanälen für {1} Minuten **stummgeschaltet**.'
+  user_unmuted: '{0} wurde von Text und Sprach Kanälen entstummt.'
+  user_voice_mute: '{0} wurde im Sprach Kanal stummgeschaltet.'
+  user_voice_mute_time: '{0} wurde **sprach gestummt** für {1} Minuten.'
+  user_voice_unmute: '{0} wurde im **Sprachkanal entstummt**.'
+
+es-ES:
+  mute_error: Es probable que no tengas los permisos necesarios.
+  mute_perms: No puedes silenciar a un usuario con un rol más alto que el tuyo en la jerarquía excepto si eres el propietario del servidor.
+  mute_role: 'El actual rol de silenciado es {0}'
+  mute_role_set: Nuevo rol de silencio configurado.
+  user_chat_mute: '{0} ha sido **silenciado** del chat.'
+  user_chat_mute_time: '{0} ha sido **silenciado** por {1} minutos.'
+  user_chat_unmute: '{0} ha sido **desilenciado** del chat.'
+  user_muted: '{0} ha sido **silenciado** de chat y voz.'
+  user_muted_time: '{0} ha sido **silenciado** de chat y voz por {1} minutos.'
+  user_unmuted: '{0} ha sido **desilenciado** de chat y voz.'
+  user_voice_mute: '{0} ha sido **silenciado de voz**.'
+  user_voice_mute_time: '{0} ha sido **silenciado en la llamada** durante {1} minutos.'
+  user_voice_unmute: '{0} ha sido **desilenciado de voz**.'
+
+fr-FR:
+  mute_error: Je n'ai certainement pas les permissions nécessaires pour cela.
+  mute_perms: Vous ne pouvez pas rendre muet un utilisateur dont le rôle est au-dessus du vôtre, sauf si vous êtes le propriétaire du serveur.
+  mute_role: 'Le rôle muet actuel est {0}'
+  mute_role_set: Nouveau rôle muet défini.
+  user_chat_mute: '{0} a été **rendu muet** dans les salons textuels.'
+  user_chat_mute_time: '{0} a été **rendu muet à l''écrit** pendant {1} minutes.'
+  user_chat_unmute: '{0} n''est **plus muet** dans les salons textuels.'
+  user_muted: '{0} a été **rendu muet** dans les salons textuels et vocaux.'
+  user_muted_time: '{0} a été **rendu muet** à l''écrit et à l''oral pour {1} minutes.'
+  user_unmuted: '{0} n''est **plus muet** dans les salons textuels et vocaux.'
+  user_voice_mute: '{0} a été **rendu muet** en vocal.'
+  user_voice_mute_time: '{0} a été **rendu muet à l''oral** pendant {1} minutes.'
+  user_voice_unmute: '{0} n''est **plus muet** en vocal.'
+
+id-ID:
+  mute_error: Kemungkinan besar saya tidak punya izin yang diperlukan untuk itu.
+  mute_perms: Kamu tidak bisa mute user yang punya role lebih tinggi dari role tertinggimu di hierarki role, kecuali kamu adalah pemilik server.
+  mute_role: 'Role mute saat ini adalah {0}'
+  mute_role_set: Role mute baru telah diatur.
+  user_chat_mute: '{0} telah **dimute** dari chat.'
+  user_chat_mute_time: '{0} telah **dimute dari chat** selama {1} menit.'
+  user_chat_unmute: '{0} telah **diunmute** dari chat.'
+  user_muted: '{0} telah **dimute** dari chat teks dan suara.'
+  user_muted_time: '{0} telah **dimute** dari chat teks dan suara selama {1} menit.'
+  user_unmuted: '{0} telah **diunmute** dari chat teks dan suara.'
+  user_voice_mute: '{0} telah **dimute suaranya**.'
+  user_voice_mute_time: '{0} telah **dimute suaranya** selama {1} menit.'
+  user_voice_unmute: '{0} telah **diunmute suaranya**.'
+
+ja-JP:
+  mute_error: 必要な権限がおそらくBotにありません。
+  mute_perms: サーバーの所有者でない限り、ロール階層であなたの最高ロールより上のロールを持つユーザーをミュートすることはできません。
+  mute_role: '現在のミュートロールは{0}です'
+  mute_role_set: 新しいミュート用役割が設定されました。
+  user_chat_mute: '{0}はチャット上で**ミュートにされました**。'
+  user_chat_mute_time: '{0}が{1}分間**チャットミュート**されました。'
+  user_chat_unmute: '{0}はチャット上の**ミュートが解除されました**。'
+  user_muted: '{0}はテキストチャットとボイスチャット上で**ミュートにされました**。'
+  user_muted_time: '{0}は{1}分間、テキストチャットとボイスチャット上で**ミュートにされました**。'
+  user_unmuted: '{0}はテキストチャットとボイスチャット上での**ミュートが解除されました**。'
+  user_voice_mute: '{0}は**音声ミュートにされました**。'
+  user_voice_mute_time: '{0}が{1}分間**ボイスミュート**されました。'
+  user_voice_unmute: '{0}の**音声ミュートが解除されました**。'
+
+ko-KR:
+  mute_error: 해당 작업에 필요한 권한이 없는 것 같습니다.
+  mute_perms: 서버 소유자가 아닌 한, 역할 계층에서 자신보다 높은 역할을 가진 유저를 뮤트할 수 없습니다.
+  mute_role: '현재 뮤트 역할은 {0}입니다'
+  mute_role_set: 새 뮤트 역할이 설정되었습니다.
+  user_chat_mute: '{0}님이 채팅에서 **뮤트**되었습니다.'
+  user_chat_mute_time: '{0}님이 {1}분 동안 **채팅 뮤트**되었습니다.'
+  user_chat_unmute: '{0}님의 채팅 **뮤트가 해제**되었습니다.'
+  user_muted: '{0}님이 텍스트 및 음성 채팅에서 **뮤트**되었습니다.'
+  user_muted_time: '{0}님이 {1}분 동안 텍스트 및 음성 채팅에서 **뮤트**되었습니다.'
+  user_unmuted: '{0}님의 텍스트 및 음성 채팅 **뮤트가 해제**되었습니다.'
+  user_voice_mute: '{0}님이 **음성 뮤트**되었습니다.'
+  user_voice_mute_time: '{0}님이 {1}분 동안 **음성 뮤트**되었습니다.'
+  user_voice_unmute: '{0}님의 **음성 뮤트가 해제**되었습니다.'
+
+pl-PL:
+  mute_error: Najprawdopodobniej nie mam wystarczających uprawnień.
+  mute_perms: Nie możesz wyciszyć użytkownika, który ma rolę wyższą niż twoja najwyższa rola w hierarchii, chyba że jesteś właścicielem serwera.
+  mute_role: 'Aktualna rola wyciszenia to {0}'
+  mute_role_set: Ustawiono nową rolę wyciszenia.
+  user_chat_mute: '{0} został(a) **wyciszony(a)** na czacie.'
+  user_chat_mute_time: '{0} został(a) **wyciszony(a)** na czacie na {1} minut.'
+  user_chat_unmute: '{0} został(a) **odciszony(a)** na czacie.'
+  user_muted: '{0} został(a) **wyciszony(a)** na czacie tekstowym i głosowym.'
+  user_muted_time: '{0} został(a) **wyciszony(a)** na czacie tekstowym i głosowym na {1} minut.'
+  user_unmuted: '{0} został(a) **odciszony(a)** na czacie tekstowym i głosowym.'
+  user_voice_mute: '{0} został(a) **wyciszony(a)** głosowo.'
+  user_voice_mute_time: '{0} został(a) **wyciszony(a)** głosowo na {1} minut.'
+  user_voice_unmute: '{0} został(a) **odciszony(a)** głosowo.'
+
+pt-BR:
+  mute_error: Não tenho a permissão necessária para isso.
+  mute_perms: Você não pode silenciar um usuário que tem cargo maior na hierarquia que o seu ao não ser que você seja dono do servidor.
+  mute_role: 'Cargo de mudo atual é {0}'
+  mute_role_set: Novo cargo mudo definido.
+  user_chat_mute: '{0} foi ** mutado** nos chats de voz e texto.'
+  user_chat_mute_time: '{0} foi **silenciado nos canais de texto** por {1} minutos.'
+  user_chat_unmute: '{0} foi **desmutado** nos chats de texto'
+  user_muted: '{0} foi **mutado** nos chats de voz e texto.'
+  user_muted_time: '{0} foi **mutado** nos chats de voz e texto por {1} minutos.'
+  user_unmuted: '{0} foi **desmutado** nos chats de voz e texto.'
+  user_voice_mute: '{0} foi **mutado** nos chats de voz.'
+  user_voice_mute_time: '{0} foi **silenciado nos canais de voz** por {1} minutos.'
+  user_voice_unmute: '{0} foi **desmutado** nos chats de voz.'
+
+ru-RU:
+  mute_error: У меня, скорее всего, нет прав на это.
+  mute_perms: Вы не можете отключить звук для пользователя, чья роль выше вашей наивысшей роли в иерархии ролей, если только вы не являетесь владельцем сервера.
+  mute_role: 'Текущая роль с отключеным звуком {0}'
+  mute_role_set: Новая роль мута создана.
+  user_chat_mute: '{0} теперь **запрещено** писать в чате.'
+  user_chat_mute_time: '{0} ** отключен чат ** в течение {1} минут.'
+  user_chat_unmute: '{0} теперь **разрешено** писать в чате.'
+  user_muted: '{0} теперь **запрещено** общаться в текстовом и голосовом чатах.'
+  user_muted_time: '{0 теперь **запрещено** общаться в текстовом и голосовом чатах на {1} минут.'
+  user_unmuted: '{0} теперь **разрешено** общаться в текстовом и голосовом чатах.'
+  user_voice_mute: '{0} был выдан запрет на общение в **голосовом чате**'
+  user_voice_mute_time: '{0} был ** отключен звук ** в течение {1} минут.'
+  user_voice_unmute: '{0} было выдано разрешение на общение в **голосовом чате**'
+
+sr-Cyrl-RS:
+  mute_error: Највероватније немам потребну дозволу за то.
+  mute_perms: Не можете мутирати корисника који има вишу улогу од ваше највише улоге у хијерархији, осим ако нисте власник сервера.
+  mute_role: 'Тренутна улога за мутирање је {0}'
+  mute_role_set: Нова улога за мутирање је постављена.
+  user_chat_mute: '{0} је **мутиран/а** у чету.'
+  user_chat_mute_time: '{0} је **мутиран/а** у чету на {1} минута.'
+  user_chat_unmute: '{0} је **одмутиран/а** у чету.'
+  user_muted: '{0} је **мутиран/а** у текстуалном и гласовном чету.'
+  user_muted_time: '{0} је **мутиран/а** у текстуалном и гласовном чету на {1} минута.'
+  user_unmuted: '{0} је **одмутиран/а** у текстуалном и гласовном чету.'
+  user_voice_mute: '{0} је **гласовно мутиран/а**.'
+  user_voice_mute_time: '{0} је **гласовно мутиран/а** на {1} минута.'
+  user_voice_unmute: '{0} је **гласовно одмутиран/а**.'
+
+tr-TR:
+  mute_error: Büyük ihtimalle bunun için gerekli iznim yok.
+  mute_perms: Sunucu sahibi olmadığın sürece, rol hiyerarşisinde senden yüksek bir role sahip kullanıcıyı susturamazsın.
+  mute_role: 'Mevcut susturma rolü: {0}'
+  mute_role_set: Yeni susturma rolü ayarlandı.
+  user_chat_mute: '{0} **yazışmadan susturuldu**.'
+  user_chat_mute_time: '{0}, {1} dakikalığına **yazışmadan susturuldu**.'
+  user_chat_unmute: '{0} kullanıcısının **yazışma susturması kaldırıldı**.'
+  user_muted: '{0} **metin ve sesli sohbetten susturuldu**.'
+  user_muted_time: '{0}, {1} dakikalığına **metin ve sesli sohbetten susturuldu**.'
+  user_unmuted: '{0} kullanıcısının **metin ve sesli sohbet susturması kaldırıldı**.'
+  user_voice_mute: '{0} **sesli sohbetten susturuldu**.'
+  user_voice_mute_time: '{0}, {1} dakikalığına **sesli sohbetten susturuldu**.'
+  user_voice_unmute: '{0} kullanıcısının **sesli sohbet susturması kaldırıldı**.'
+
+ts-TS:
+  mute_error: I don't have the right permissions for that, most likely.
+  mute_perms: You can't mute someone with a higher role than yours unless you're the server owner. I-I'm just stating facts.
+  mute_role: 'Current mute role is {0}'
+  mute_role_set: New mute role set.
+  user_chat_mute: '{0} has been **muted** from chatting.'
+  user_chat_mute_time: '{0} has been **chat muted** for {1} minutes.'
+  user_chat_unmute: '{0} has been **unmuted** from chatting.'
+  user_muted: '{0} has been **muted** from text and voice chat. Hmph, they had it coming.'
+  user_muted_time: '{0} has been **muted** from text and voice chat for {1} minutes.'
+  user_unmuted: '{0} has been **unmuted** from text and voice chat.'
+  user_voice_mute: '{0} has been **voice muted**.'
+  user_voice_mute_time: '{0} has been **voice muted** for {1} minutes.'
+  user_voice_unmute: '{0} has been **voice unmuted**.'
+
+uk-UA:
+  mute_error: Скоріш за все, у мене немає необхідних дозволів для цього.
+  mute_perms: Ви не можете замутити користувача, який має роль вище за вашу найвищу роль в ієрархії, якщо ви не власник сервера.
+  mute_role: 'Поточна роль мʼюту: {0}'
+  mute_role_set: Нову роль мʼюту встановлено.
+  user_chat_mute: '{0} був **замучений** у чаті.'
+  user_chat_mute_time: '{0} був **замучений** у чаті на {1} хвилин.'
+  user_chat_unmute: '{0} був **розмучений** у чаті.'
+  user_muted: '{0} був **замучений** у текстовому та голосовому чаті.'
+  user_muted_time: '{0} був **замучений** у текстовому та голосовому чаті на {1} хвилин.'
+  user_unmuted: '{0} був **розмучений** у текстовому та голосовому чаті.'
+  user_voice_mute: '{0} був **замучений** у голосовому чаті.'
+  user_voice_mute_time: '{0} був **замучений** у голосовому чаті на {1} хвилин.'
+  user_voice_unmute: '{0} був **розмучений** у голосовому чаті.'
+
+vi-VN:
+  mute_error: Mình có thể không có đủ quyền để làm điều đó.
+  mute_perms: Bạn không thể mute người dùng có role cao hơn role cao nhất của bạn trong hệ thống phân cấp role, trừ khi bạn là chủ server.
+  mute_role: 'Role mute hiện tại là {0}'
+  mute_role_set: Đã đặt role mute mới.
+  user_chat_mute: '{0} đã bị **mute** khỏi chat.'
+  user_chat_mute_time: '{0} đã bị **mute chat** trong {1} phút.'
+  user_chat_unmute: '{0} đã được **bỏ mute** khỏi chat.'
+  user_muted: '{0} đã bị **mute** khỏi chat văn bản và thoại.'
+  user_muted_time: '{0} đã bị **mute** khỏi chat văn bản và thoại trong {1} phút.'
+  user_unmuted: '{0} đã được **bỏ mute** khỏi chat văn bản và thoại.'
+  user_voice_mute: '{0} đã bị **mute thoại**.'
+  user_voice_mute_time: '{0} đã bị **mute thoại** trong {1} phút.'
+  user_voice_unmute: '{0} đã được **bỏ mute thoại**.'
+
+zh-CN:
+  mute_error: 機器人很可能沒有權限進行這個操作
+  mute_perms: 除非您是伺服器的所有者，否則您不能將身分組高於您在身分組層次結構中的最高身分組的用戶靜音。
+  mute_role: '當前靜音角色是 {0}'
+  mute_role_set: 已設置新的禁言身分組。
+  user_chat_mute: '{0} 的聊天功能已被**禁止**。'
+  user_chat_mute_time: '{0} 已被禁言 {1} 分鐘'
+  user_chat_unmute: '{0} 的聊天功能已被**解禁**。'
+  user_muted: '{0} 的文字與語音聊天功能已被**禁止**。'
+  user_muted_time: '{0} 已從文字和語音頻道中**靜音** {1} 分鐘。'
+  user_unmuted: '{0} 的文字與語音聊天功能已被**解禁**。'
+  user_voice_mute: '{0} 已被**靜音**。'
+  user_voice_mute_time: '{0} 已被靜音 {1} 分鐘'
+  user_voice_unmute: '{0} 已被**解除靜音**。'

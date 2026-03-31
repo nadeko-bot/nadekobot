@@ -1,6 +1,0 @@
-alias_added: 'Wpisanie {0} będzie teraz aliasem dla {1}.'
-alias_list: Lista aliasów
-alias_remove_fail: 'Wyzwalacz {0} nie miał aliasu.'
-alias_removed: 'Wyzwalacz {0} nie ma już aliasu.'
-aliases_cleared: 'Wszystkie aliasy ({0}) na tym serwerze zostały usunięte.'
-aliases_none: Nie znaleziono aliasów

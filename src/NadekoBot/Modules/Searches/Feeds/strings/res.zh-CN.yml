@@ -1,9 +1,0 @@
-feed_added: 添加了新訂閱。
-feed_cant_parse: 無法存取或解析該訂閱源 URL 的內容。
-feed_duplicate: 你已在此伺服器上追蹤該訂閱源。
-feed_invalid_url: 無效的訂閱源 URL。必須是絕對的 http 或 https URL。
-feed_limit_reached: 你已達到每個伺服器允許的最大訂閱源數量。
-feed_no_feed: 您尚未訂閱此伺服器上的任何訂閱源。
-feed_out_of_range: 索引超出範圍。
-feed_removed: 訂閱源被移除。
-feed_auto_removed: '订阅源 `{0}` 因多次获取失败已被自动移除。'

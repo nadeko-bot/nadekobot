@@ -1,9 +1,0 @@
-schedule_add_error: Zaten {0} zamanlanmış komutun var. Daha fazla eklemek için lütfen bazılarını sil.
-schedule_add_success: Zamanlanmış komut başarıyla eklendi.
-schedule_command: Komut
-schedule_delete_error: Zamanlanmış komut silinirken hata oluştu.
-schedule_deleted: '#{0} numaralı zamanlanmış komut başarıyla silindi.'
-schedule_id: ID
-schedule_list_none: Zamanlanmış komutun yok.
-schedule_list_title: Zamanlanmış Komutlar
-schedule_when: Çalıştırılacağı Zaman

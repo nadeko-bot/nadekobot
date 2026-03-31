@@ -1,9 +1,0 @@
-livechannel_added: '{0} успешно добавлен как живой канал.'
-livechannel_limit: 'Вы можете иметь не более {0} живых каналов на сервер.'
-livechannel_list_empty: На этом сервере не настроены живые каналы.
-livechannel_list_title: 'Живые Каналы в {0}'
-livechannel_not_found: Канал не найден в списке живых каналов.
-livechannel_please_wait: Пожалуйста, подождите до 10 минут, чтобы изменения вступили в силу
-livechannel_removed: '{0} успешно удалён из живых каналов.'
-preview: Предпросмотр
-template: Шаблон

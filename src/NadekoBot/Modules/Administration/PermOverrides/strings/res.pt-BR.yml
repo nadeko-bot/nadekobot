@@ -1,6 +1,0 @@
-perm_override: 'Os usuários precisão ter a permissão {0} para usar o comando {1}.'
-perm_override_all: Todas as permissões substitutivas foram limpas.
-perm_override_all_confirm: Você tem certeza que quer remover **TODAS** as permissões substitutivas do Discord neste servidor? Essa ação é irreversível.
-perm_override_page_none: Sem permissões substitutivas nesta página.
-perm_override_reset: As permissões substitutivas do Discord foram limpas para este comando.
-perm_overrides: Permissões substitutivas do Discord

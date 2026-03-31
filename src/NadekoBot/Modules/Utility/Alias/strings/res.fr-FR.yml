@@ -1,6 +1,0 @@
-alias_added: 'Taper {0} sera désormais un alias de {1}.'
-alias_list: Liste des pseudonymes
-alias_remove_fail: 'Le déclencheur {0} n''avait pas d''alias.'
-alias_removed: 'Le déclencheur {0} n''a plus d''alias.'
-aliases_cleared: 'Tous les alias {0} de ce serveur ont été enlevés.'
-aliases_none: Aucun pseudonyme trouvé

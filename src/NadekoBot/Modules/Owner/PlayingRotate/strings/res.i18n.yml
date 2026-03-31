@@ -1,0 +1,153 @@
+ar:
+  reprm: 'تمت إزالة رسالة الحالة: {0}'
+  ropl_added: تمت الإضافة.
+  ropl_disabled: تم تعطيل تدوير حالة اللعب.
+  ropl_enabled: تم تفعيل تدوير حالة اللعب.
+  ropl_list: |-
+    إليك قائمة الحالات الدوّارة:
+    {0}
+  ropl_not_set: لم يتم تعيين أي حالات تشغيل دوّارة.
+
+de-DE:
+  reprm: 'Entfernen der Spiel Nachricht: {0}'
+  ropl_added: Hinzugefügt.
+  ropl_disabled: Rotierender Spielstatus deaktiviert.
+  ropl_enabled: Rotierender Spielstatus aktiviert.
+  ropl_list: 'Hier ist eine Liste der rotierenden Status: {0}'
+  ropl_not_set: Keine rotierenden Spielstatus festgelegt.
+
+es-ES:
+  reprm: 'Removido el mensaje de juego: {0}'
+  ropl_added: Añadido.
+  ropl_disabled: Rotación de estados desactivada.
+  ropl_enabled: Rotación de estados activada.
+  ropl_list: 'Lista de estados rotativos: {0}'
+  ropl_not_set: No hay estados rotativos.
+
+fr-FR:
+  reprm: 'Suppression du message de lecture: {0}.'
+  ropl_added: Ajoutés.
+  ropl_disabled: Rotation du statut de jeu désactivée.
+  ropl_enabled: Rotation du statut de jeu activée.
+  ropl_list: |-
+    Voici une liste des statuts en rotation :
+    {0}
+  ropl_not_set: Aucun statut en rotation réglé.
+
+id-ID:
+  reprm: 'Menghapus pesan playing: {0}'
+  ropl_added: Ditambahkan.
+  ropl_disabled: Status playing bergilir dinonaktifkan.
+  ropl_enabled: Status playing bergilir diaktifkan.
+  ropl_list: |-
+    Berikut daftar status bermain bergilir:
+    {0}
+  ropl_not_set: Belum ada status bermain bergilir yang disetel.
+
+ja-JP:
+  reprm: 'ゲーム活動メッセージを削除しました: {0}'
+  ropl_added: 追加されました。
+  ropl_disabled: ゲーム活動状態の循環が無効になりました。
+  ropl_enabled: ゲーム活動状態の循環が有効になりました。
+  ropl_list: |-
+    ゲーム活動状態の循環の一覧は、次のとおりです:
+    {0}
+  ropl_not_set: ゲーム活動状態の循環の設定はありません。
+
+ko-KR:
+  reprm: '재생 메시지가 제거되었습니다: {0}'
+  ropl_added: 추가되었습니다.
+  ropl_disabled: 순환 재생 상태가 비활성화되었습니다.
+  ropl_enabled: 순환 재생 상태가 활성화되었습니다.
+  ropl_list: |-
+    순환 상태 목록:
+    {0}
+  ropl_not_set: 설정된 순환 상태가 없어요.
+
+pl-PL:
+  reprm: 'Usunięto status aktywności: {0}'
+  ropl_added: Dodano.
+  ropl_disabled: Rotacyjny status aktywności wyłączony.
+  ropl_enabled: Rotacyjny status aktywności włączony.
+  ropl_list: |-
+    Oto lista rotacyjnych statusów:
+    {0}
+  ropl_not_set: Nie ustawiono żadnych rotacyjnych statusów.
+
+pt-BR:
+  reprm: 'Mensagem de status removida: {0}'
+  ropl_added: Adicionado.
+  ropl_disabled: Rotação de status disabilitado.
+  ropl_enabled: Rotação de status habilitado.
+  ropl_list: |-
+    Aqui é uma lista de status rotativos:
+    {0}
+  ropl_not_set: Nenhum status rotativo selecionado.
+
+ru-RU:
+  reprm: 'Удалено чередующееся сообщение: {0}'
+  ropl_added: Добавлено.
+  ropl_disabled: Воспроизведения статуса что вращается отключено.
+  ropl_enabled: Воспроизведения статуса что вращается включено.
+  ropl_list: |-
+    Вот список вращающихся статусов:
+    {0}
+  ropl_not_set: Не установлено воспроизведение вращающихся статусов.
+
+sr-Cyrl-RS:
+  reprm: 'Уклоњена порука за приказ: {0}'
+  ropl_added: Додато.
+  ropl_disabled: Ротирајући статус искључен.
+  ropl_enabled: Ротирајући статус укључен.
+  ropl_list: |-
+    Ево листе ротирајућих статуса:
+    {0}
+  ropl_not_set: Нема постављених ротирајућих статуса.
+
+tr-TR:
+  reprm: 'Oynatma mesajı kaldırıldı: {0}'
+  ropl_added: Eklendi.
+  ropl_disabled: Dönen oynatma durumu devre dışı bırakıldı.
+  ropl_enabled: Dönen oynatma durumu etkinleştirildi.
+  ropl_list: |-
+    Dönen durumların listesi:
+    {0}
+  ropl_not_set: Dönen oynatma durumu ayarlanmamış.
+
+ts-TS:
+  reprm: 'Removed the playing message: {0}'
+  ropl_added: Added.
+  ropl_disabled: Rotating playing status disabled.
+  ropl_enabled: Rotating playing status enabled. I-I set it up perfectly.
+  ropl_list: |-
+    Here is a list of rotating statuses:
+    {0}
+  ropl_not_set: No rotating playing statuses set. N-not that I was keeping track.
+
+uk-UA:
+  reprm: 'Видалено повідомлення про статус: {0}'
+  ropl_added: Додано.
+  ropl_disabled: Ротацію статусів вимкнено.
+  ropl_enabled: Ротацію статусів увімкнено.
+  ropl_list: |-
+    Ось список статусів, що змінюються:
+    {0}
+  ropl_not_set: Немає встановлених статусів, що змінюються.
+
+vi-VN:
+  reprm: 'Đã xóa tin nhắn trạng thái: {0}'
+  ropl_added: Đã thêm.
+  ropl_disabled: Đã tắt trạng thái xoay vòng.
+  ropl_enabled: Đã bật trạng thái xoay vòng.
+  ropl_list: |-
+    Đây là danh sách các trạng thái xoay vòng:
+    {0}
+  ropl_not_set: Chưa thiết lập trạng thái chơi xoay vòng nào.
+
+zh-CN:
+  reprm: '移除了自訂狀態：{0}'
+  ropl_added: 添加。
+  ropl_disabled: 禁用重複播放狀態。
+  ropl_enabled: 啟用重複播放狀態。
+  ropl_list: '以下是輪換狀態列表：{0}'
+  ropl_not_set: 沒有設置重複播放狀態。

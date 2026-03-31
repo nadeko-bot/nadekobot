@@ -1,9 +1,0 @@
-livechannel_added: 'Berhasil menambahkan {0} sebagai live channel.'
-livechannel_limit: 'Kamu bisa punya maksimal {0} live channel per server.'
-livechannel_list_empty: Belum ada live channel yang dikonfigurasi untuk server ini.
-livechannel_list_title: 'Live Channel di {0}'
-livechannel_not_found: Channel tidak ditemukan dalam daftar live channel.
-livechannel_please_wait: Mohon tunggu hingga 10 menit agar perubahan berlaku
-livechannel_removed: 'Berhasil menghapus {0} dari live channel.'
-preview: Pratinjau
-template: Template

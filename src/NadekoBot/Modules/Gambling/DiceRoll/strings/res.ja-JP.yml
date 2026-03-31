@@ -1,6 +1,0 @@
-dice_invalid_number: '数が正しくありません。一度に{0}～{1}個のサイコロを振ることができます。'
-dice_rolled: 'はサイコロを振り、{0}が出ました。'
-dice_rolled_num: 'サイコロを振りました: {0}個'
-rolls: ロール結果
-second_larger_than_first: 2番目の数を、1番目の数よりも大きくしてください。
-total: 合計

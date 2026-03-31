@@ -1,0 +1,207 @@
+ar:
+  game_started: بدأت اللعبة
+  ttt_a_draw: تعادل!
+  ttt_against_yourself: لا يمكنك اللعب ضد نفسك.
+  ttt_already_running: لعبة XO قيد التشغيل بالفعل في هذه القناة.
+  ttt_created: '{0} أنشأ لعبة XO.'
+  ttt_has_won: '{0} فاز!'
+  ttt_matched_three: ثلاثة متطابقة
+  ttt_no_moves: لا توجد حركات متبقية!
+  ttt_time_expired: انتهى الوقت!
+  ttt_users_move: 'دور {0}'
+  vs: '{0} ضد {1}'
+
+de-DE:
+  game_started: Spiel gestartet
+  ttt_a_draw: Ein Unentschieden!
+  ttt_against_yourself: Du kannst nicht gegen dich selbst spielen.
+  ttt_already_running: TicTacToe läuft bereits in diesem Raum.
+  ttt_created: '{0} hat ein TicTacToe-Spiel erstellt.'
+  ttt_has_won: '{0} hat gewonnen!'
+  ttt_matched_three: 3 Gleiche
+  ttt_no_moves: Keine Züge übrig!
+  ttt_time_expired: Zeit abgelaufen!
+  ttt_users_move: '{0}''s Zug'
+  vs: '{0} gegen {1}'
+
+es-ES:
+  game_started: Juego iniciado
+  ttt_a_draw: ¡Empate!
+  ttt_against_yourself: No puedes jugar contra ti.
+  ttt_already_running: El juego de TicTacToe ya se está ejecutando en este canal.
+  ttt_created: '{0} ha creado un juego de TicTacToe.'
+  ttt_has_won: '¡{0} gana!'
+  ttt_matched_three: Alineó tres
+  ttt_no_moves: ¡No quedan movimientos!
+  ttt_time_expired: ¡Tiempo!
+  ttt_users_move: 'Turno de {0}'
+  vs: '{0} contra {1}'
+
+fr-FR:
+  game_started: La partie a commencée
+  ttt_a_draw: Égalité !
+  ttt_against_yourself: Vous ne pouvez pas jouer contre vous-même.
+  ttt_already_running: Une partie de morpion est déjà en cours sur ce salon.
+  ttt_created: '{0} a créé une partie de morpion.'
+  ttt_has_won: '{0} a gagné !'
+  ttt_matched_three: Trois correspondances
+  ttt_no_moves: Aucun coups restants !
+  ttt_time_expired: Temps écoulé !
+  ttt_users_move: 'Au tour de {0}'
+  vs: '{0} contre {1}'
+
+id-ID:
+  game_started: Permainan dimulai
+  ttt_a_draw: Seri!
+  ttt_against_yourself: Kamu tidak bisa bermain melawan dirimu sendiri.
+  ttt_already_running: Permainan TicTacToe sudah berjalan di channel ini.
+  ttt_created: '{0} membuat permainan TicTacToe.'
+  ttt_has_won: '{0} menang!'
+  ttt_matched_three: Tiga berjejer
+  ttt_no_moves: Tidak ada langkah tersisa!
+  ttt_time_expired: Waktu habis!
+  ttt_users_move: 'Giliran {0}'
+  vs: '{0} vs {1}'
+
+ja-JP:
+  game_started: ゲームが始まりました。
+  ttt_a_draw: 引き分け！
+  ttt_against_yourself: ひとりではゲームできません。
+  ttt_already_running: 三目並べは既にこのサーバーで行われています。
+  ttt_created: '{0}が三目並べを準備しました。'
+  ttt_has_won: '{0}の勝ち！'
+  ttt_matched_three: 3つ揃いました
+  ttt_no_moves: 勝負は終了です！
+  ttt_time_expired: 時間切れです！
+  ttt_users_move: '{0}の手番'
+  vs: '{0}対{1}'
+
+ko-KR:
+  game_started: 게임이 시작되었어요
+  ttt_a_draw: 무승부!
+  ttt_against_yourself: 자기 자신과는 대전할 수 없어요.
+  ttt_already_running: 이 채널에서 이미 틱택토 게임이 진행 중이에요.
+  ttt_created: '{0}이(가) 틱택토 게임을 만들었어요.'
+  ttt_has_won: '{0}이(가) 이겼어요!'
+  ttt_matched_three: 3개 연속 달성
+  ttt_no_moves: 더 이상 둘 수 있는 곳이 없어요!
+  ttt_time_expired: 시간이 만료되었어요!
+  ttt_users_move: '{0}의 차례'
+  vs: '{0} vs {1}'
+
+pl-PL:
+  game_started: Gra rozpoczęta
+  ttt_a_draw: Remis!
+  ttt_against_yourself: Nie możesz grać sam ze sobą.
+  ttt_already_running: Gra w kółko i krzyżyk już trwa na tym kanale.
+  ttt_created: '{0} utworzył grę w kółko i krzyżyk.'
+  ttt_has_won: '{0} wygrał!'
+  ttt_matched_three: Trzy w rzędzie
+  ttt_no_moves: Brak ruchów!
+  ttt_time_expired: Czas minął!
+  ttt_users_move: 'Ruch gracza {0}'
+  vs: '{0} vs {1}'
+
+pt-BR:
+  game_started: Jogo da forca iniciado
+  ttt_a_draw: Um empate!
+  ttt_against_yourself: Você não pode jogar contra si mesmo.
+  ttt_already_running: Um Jogo da Velha já está em andamento nesse canal.
+  ttt_created: '{0} criou um Jogo da Velha.'
+  ttt_has_won: '{0} venceu!'
+  ttt_matched_three: Alinhou três
+  ttt_no_moves: Não há jogadas restantes.
+  ttt_time_expired: Tempo Esgotado!
+  ttt_users_move: 'É a vez de {0}'
+  vs: '{0} vs {1}'
+
+ru-RU:
+  game_started: Игра началась
+  ttt_a_draw: Ничья!
+  ttt_against_yourself: Вы не можете играть против себя.
+  ttt_already_running: Игра в Крестики-нолики уже идет в этом канале.
+  ttt_created: '{0} создал игру в Крестики-нолики.'
+  ttt_has_won: '{0} победил!'
+  ttt_matched_three: сложил три в ряд!
+  ttt_no_moves: Ходов больше не осталось!
+  ttt_time_expired: Время истекло!
+  ttt_users_move: 'Ход игрока {0}'
+  vs: '{0} против {1}'
+
+sr-Cyrl-RS:
+  game_started: Игра почела
+  ttt_a_draw: Нерешено!
+  ttt_against_yourself: Не можеш играти против себе.
+  ttt_already_running: TicTacToe игра већ траје на овом каналу.
+  ttt_created: '{0} је креирао/ла TicTacToe игру.'
+  ttt_has_won: '{0} је победио/ла!'
+  ttt_matched_three: Три у низу
+  ttt_no_moves: Нема више потеза!
+  ttt_time_expired: Време истекло!
+  ttt_users_move: 'Потез играча {0}'
+  vs: '{0} против {1}'
+
+tr-TR:
+  game_started: Oyun başladı
+  ttt_a_draw: Berabere!
+  ttt_against_yourself: Kendinle oynayamazsın.
+  ttt_already_running: Bu kanalda zaten bir XOX oyunu çalışıyor.
+  ttt_created: '{0} bir XOX oyunu oluşturdu.'
+  ttt_has_won: '{0} kazandı!'
+  ttt_matched_three: Üç eşleşti
+  ttt_no_moves: Hamle kalmadı!
+  ttt_time_expired: Süre doldu!
+  ttt_users_move: '{0} hamle yapıyor'
+  vs: '{0} vs {1}'
+
+ts-TS:
+  game_started: Game started!
+  ttt_a_draw: It's a draw!
+  ttt_against_yourself: You can't play against yourself. That's just sad.
+  ttt_already_running: TicTacToe game is already running in this channel.
+  ttt_created: '{0} has created a game of TicTacToe.'
+  ttt_has_won: '{0} has won!'
+  ttt_matched_three: Matched three!
+  ttt_no_moves: No moves left!
+  ttt_time_expired: Time expired! You took too long, b-baka!
+  ttt_users_move: '{0}''s move'
+  vs: '{0} vs {1}'
+
+uk-UA:
+  game_started: Гру розпочато
+  ttt_a_draw: Нічия!
+  ttt_against_yourself: Ти не можеш грати сам проти себе.
+  ttt_already_running: Гра в хрестики-нулики вже йде в цьому каналі.
+  ttt_created: '{0} створив гру в хрестики-нулики.'
+  ttt_has_won: '{0} переміг!'
+  ttt_matched_three: Три в ряд
+  ttt_no_moves: Більше немає ходів!
+  ttt_time_expired: Час вийшов!
+  ttt_users_move: 'Хід {0}'
+  vs: '{0} проти {1}'
+
+vi-VN:
+  game_started: Trò chơi bắt đầu
+  ttt_a_draw: Hòa!
+  ttt_against_yourself: Bạn không thể chơi với chính mình.
+  ttt_already_running: Trò TicTacToe đang chạy trong kênh này rồi.
+  ttt_created: '{0} đã tạo một ván TicTacToe.'
+  ttt_has_won: '{0} đã thắng!'
+  ttt_matched_three: Ba ô liên tiếp
+  ttt_no_moves: Không còn nước đi!
+  ttt_time_expired: Hết giờ!
+  ttt_users_move: 'Lượt của {0}'
+  vs: '{0} vs {1}'
+
+zh-CN:
+  game_started: 遊戲開始
+  ttt_a_draw: 平手!
+  ttt_against_yourself: 你不能和自己玩
+  ttt_already_running: 目前已有一個井字遊戲在此頻道執行。
+  ttt_created: '{0} 创建了一场井字游戏。'
+  ttt_has_won: '{0} 獲勝了'
+  ttt_matched_three: 連線成功
+  ttt_no_moves: 沒有空間了!
+  ttt_time_expired: 時間到！
+  ttt_users_move: '{0}的回合'
+  vs: '{0} vs {1}'

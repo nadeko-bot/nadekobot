@@ -1,6 +1,0 @@
-expires: 만료일
-patron_info: 후원자 정보
-patron_msg_sent: '티어 {1} 이상의 후원자에게 메시지 전송 완료. {1}건 성공, {2}건 실패.'
-patron_not_enabled: 후원자 시스템이 비활성화되어 있어요.
-pledge: 후원 금액
-tier: 티어

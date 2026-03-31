@@ -1,0 +1,812 @@
+ar:
+  afk_set: تم تعيين رسالة AFK. اكتب رسالة في أي قناة لمسحها.
+  author: المؤلف
+  botid: معرّف البوت
+  channel_topic: موضوع القناة
+  channelid: '{0} لهذه القناة هو {1}'
+  commands_ran: الأوامر المنفّذة
+  config_edit_fail: 'فشل تعيين {0} إلى القيمة {1}'
+  config_list: قائمة الإعدادات
+  config_not_found: 'الإعداد {0} غير موجود'
+  config_prop_not_found: 'الخاصية {0} غير موجودة في إعداد {1}'
+  emoji_add_error: خطأ في إضافة الإيموجي. إما نفدت خانات الإيموجي أو حجم الصورة غير مناسب.
+  emoji_added: 'تمت إضافة إيموجي جديد: {0}'
+  emoji_slots_full_retry_gif: جميع خانات إيموجي الصور ممتلئة. هل تريد إعادة المحاولة كصورة GIF متحركة؟
+  emoji_not_removed: 'لم تتم إزالة الإيموجيات التالية: {0}'
+  inrole_users: المستخدمون
+  inrole_nobody: لم يتم العثور على مستخدمين
+  invalid_emoji_link: الرابط المحدد إما ليس صورة أو يتجاوز 256 كيلوبايت.
+  listservers: |-
+    المعرّف: {0}
+    الأعضاء: {1}
+    معرّف المالك: {2}
+  listservers_none: لا توجد خوادم في هذه الصفحة.
+  memory: الذاكرة
+  messages: الرسائل
+  no_roles_on_page: لا توجد أدوار في هذه الصفحة.
+  no_topic_set: لم يتم تعيين موضوع.
+  nobody_playing_game: لا أحد يلعب هذه اللعبة.
+  owner_ids: معرّفات المالكين
+  presence: التواجد
+  presence_txt: |-
+    {0} خادم
+    {1} قناة نصية
+    {2} قناة صوتية
+  roleid: '{0} للدور {1} هو {2}'
+  roles_all_page: 'الصفحة #{0} من جميع الأدوار في هذا الخادم:'
+  roles_page: 'الصفحة #{0} من أدوار {1}'
+  server_color_set: تم تعيين لون الخادم الجديد بنجاح.
+  serverid: '{0} لهذا الخادم هو {1}'
+  shard: الجزء
+  showemojis: '**الاسم:** {0} **الرابط:** {1}'
+  showemojis_none: لم يتم العثور على إيموجيات خاصة.
+  sniped_by: 'التقطها {0}'
+  sticker_error: يجب إرسال ملصق مع هذا الأمر، أو رفع صورة بصيغة .png أو .apng بأبعاد 300×300 وحجم لا يتجاوز 512 كيلوبايت.
+  uptime: مدة التشغيل
+  user_afk: 'المستخدم {0} غائب (AFK).'
+  userid: '{0} للمستخدم {1} هو {2}'
+  verbose_errors_disabled: لن تظهر الأخطاء بعد الآن عند استخدام الأوامر بشكل غير صحيح.
+  verbose_errors_enabled: ستظهر الأخطاء الآن عند استخدام الأوامر بشكل غير صحيح.
+  whos_playing_game: '{0} مستخدم يلعبون {1}'
+
+de-DE:
+  afk_set: AFK-Nachricht gesetzt. Schreibe eine Nachricht in einem beliebigen Kanal zum Zurücksetzen.
+  author: Author
+  botid: Bot ID
+  channel_topic: Kanal Thema
+  channelid: '{0} von diesem Kanal ist {1}'
+  commands_ran: Commands ausgeführt
+  config_edit_fail: 'Einstellen von {0} zu der Menge {1} gescheitert.'
+  config_list: Konfigurationsliste
+  config_not_found: 'Konfiguration {0} nicht gefunden'
+  config_prop_not_found: 'Eigentum {0} nicht gefunden mit {1} Konfiguration'
+  emoji_add_error: Fehler beim hinzufügen des Emoji. Es sind keine Emoji slots mehr vorhanden, oder die Bildgröße ist unangemessen.
+  emoji_added: 'Neuen Emoji hinzugefügt: {0}'
+  emoji_slots_full_retry_gif: Alle Bild-Emoji-Slots sind voll. Möchtest du es als animiertes GIF erneut versuchen?
+  emoji_not_removed: 'Die folgenden Emojis wurden nicht entfernt: {0}'
+  inrole_users: Benutzer
+  inrole_nobody: Keine Benutzer gefunden
+  invalid_emoji_link: Der angegebene Link is entweder kein Bild, oder größer als 256KB.
+  listservers: |-
+    ID: {0}
+    Mitglieder: {1}
+    Owner ID: {2}
+  listservers_none: Keine Server auf dieser Seite gefunden
+  memory: Erinnerung
+  messages: Nachrichten
+  no_roles_on_page: Keine Rollen auf dieser Seite.
+  no_topic_set: Kein Thema eingetragen
+  nobody_playing_game: Niemand spielt
+  owner_ids: Besitzer IDs
+  presence: Präsenz
+  presence_txt: |-
+    {0} Server
+    {1} Textkanäle
+    {2} Sprachkanäle
+  roleid: '{0} der Rolle {1} ist {2}'
+  roles_all_page: 'Seite #{0} von allen Rollen auf diesem Server:'
+  roles_page: 'Seite #{0} der Rollen für {1}'
+  server_color_set: Neue Serverfarbe erfolgreich festgelegt.
+  serverid: '{0} von diesem Server ist {1}'
+  shard: Shard
+  showemojis: '**Name:** {0} **Link:** {1}'
+  showemojis_none: Keine beseonderen Emojis gefunden.
+  sniped_by: 'Abgefangen von {0}'
+  sticker_error: Du musst entweder einen Sticker mit diesem Befehl senden oder ein 300x300 .png oder .apng Bild hochladen. Bis zu 512KB groß.
+  uptime: Betriebszeit
+  user_afk: 'Benutzer {0} ist AFK.'
+  userid: '{0} des Nutzers {1} ist {2}'
+  verbose_errors_disabled: Unbehandelte Befehl Fehler werden nicht mehr im Chat angezeigt.
+  verbose_errors_enabled: Unbehandelte Befehl Fehler werden von nun an im Chat angezeigt.
+  whos_playing_game: '{0} Benutzer spielen {1}'
+
+es-ES:
+  afk_set: Mensaje de AFK establecido. Escribe un mensaje en cualquier canal para limpiar.
+  author: Autor
+  botid: ID del bot
+  channel_topic: Tema del canal
+  channelid: '{0} de este canal es {1}'
+  commands_ran: Comandos ejecutados
+  config_edit_fail: 'No se ha podido configurar {0} al valor {1}'
+  config_list: Lista de configuraciones
+  config_not_found: 'Configuración {0} no encontrada'
+  config_prop_not_found: 'La propiedad {0} no se encuentra en la configuración {1}'
+  emoji_add_error: Error al agregar emoji. Ya no hay espacio para más, o el tamaño de la imagen no es adecuado.
+  emoji_added: 'Se agregó un emoji nuevo: {0}'
+  emoji_slots_full_retry_gif: ¿Todos los slots de emoji de imagen están llenos. Quieres reintentar como GIF animado?
+  emoji_not_removed: 'Los siguientes emojis no fueron eliminados: {0}'
+  inrole_users: Usuarios
+  inrole_nobody: No se encontraron usuarios
+  invalid_emoji_link: La liga especificada o no es una imagen, o se excede de los 256KB.
+  listservers: |-
+    ID: {0}
+    Miembros: {1}
+    IDs de dueños: {2}
+  listservers_none: No encontré servidores en esa página.
+  memory: Memoria
+  messages: Mensajes
+  no_roles_on_page: No hay roles en esta página.
+  no_topic_set: No hay tema configurado.
+  nobody_playing_game: Nadie está jugando eso.
+  owner_ids: ID del dueño
+  presence: Presencia
+  presence_txt: |-
+    {0} Servidores
+    {1} Chats
+    {2} Llamadas
+  roleid: '{0} del rol {1} es {2}'
+  roles_all_page: 'Página #{0} de todos los roles en este servidor:'
+  roles_page: 'Página #{0} de roles para {1}'
+  server_color_set: Nuevo color del servidor establecido con éxito.
+  serverid: '{0} de este servidor es {1}'
+  shard: Fragmento
+  showemojis: '**Nombre:** {0} **Enlace:** {1}'
+  showemojis_none: No encontré emojis especiales.
+  sniped_by: 'Capturado por {0}'
+  sticker_error: Debes enviar un sticker junto con este comando, o subir una imagen .png o .apng de 300x300. Hasta 512KB de tamaño.
+  uptime: Tiempo en línea
+  user_afk: 'El usuario {0} está AFK.'
+  userid: '{0} del usuario {1} es {2}'
+  verbose_errors_disabled: El uso incorrecto de comandos ya no mostrará errores.
+  verbose_errors_enabled: Desde ahora, el uso incorrecto de comandos mostrará errores.
+  whos_playing_game: '{0} usuarios están jugando {1}'
+
+fr-FR:
+  afk_set: Message AFK défini. Tapez un message dans n'importe quel salon pour l'effacer.
+  author: Auteur
+  botid: ID du bot
+  channel_topic: Thème du salon
+  channelid: '{0} de ce salon est {1}.'
+  commands_ran: Commandes exécutées
+  config_edit_fail: 'Échec de la définition de {0} sur la valeur {1}'
+  config_list: Liste de configuration
+  config_not_found: 'Configuration {0} introuvable'
+  config_prop_not_found: 'Propriété {0} introuvable dans la configuration {1}'
+  emoji_add_error: Erreur lors de l'ajout d'emoji. Soit vous n'avez plus d'emplacements pour emoji, soit la taille de l'image est inadéquate.
+  emoji_added: 'Nouveau emoji ajouté: {0}'
+  emoji_slots_full_retry_gif: Tous les emplacements d'emoji image sont pleins. Voulez-vous réessayer en GIF animé ?
+  emoji_not_removed: 'Les emojis suivants n''ont pas été supprimés : {0}'
+  inrole_users: Utilisateurs
+  inrole_nobody: Aucun utilisateur trouvé
+  invalid_emoji_link: Le lien spécifié n'est pas une image ou excède 256KB.
+  listservers: |-
+    ID: {0}
+    Membres: {1}
+    ID du propriétaire: {2}
+  listservers_none: Aucuns serveurs trouvés sur cette page
+  memory: Mémoire
+  messages: Messages
+  no_roles_on_page: Aucun rôle sur cette page.
+  no_topic_set: Aucun thème réglé
+  nobody_playing_game: Personne ne joue à ce jeu.
+  owner_ids: Identifiant·s Propriétaire·s
+  presence: Présence
+  presence_txt: |-
+    {0} Serveurs
+    {1} Salons Textuels
+    {2} Salons Vocaux
+  roleid: '{0} du rôle {1} est {2}'
+  roles_all_page: 'Page #{0} de tous les rôles dans ce serveur:'
+  roles_page: 'Page #{0} des rôles pour {1}'
+  server_color_set: Nouvelle couleur du serveur définie avec succès.
+  serverid: '{0} de ce serveur est {1}'
+  shard: Fragment
+  showemojis: '**Nom:** {0} **Lien:** {1}'
+  showemojis_none: Pas d'emojis spéciaux trouvés.
+  sniped_by: 'Capturé par {0}'
+  sticker_error: Vous devez envoyer un sticker avec cette commande, ou télécharger une image .png ou .apng de 300x300. Jusqu'à 512 Ko.
+  uptime: Temps de fonctionnement
+  user_afk: 'L''utilisateur {0} est AFK.'
+  userid: '{0} de l''utilisateur {1} est {2}'
+  verbose_errors_disabled: Les commandes mal utilisées n'afficheront plus de message d'erreur.
+  verbose_errors_enabled: Les commandes mal utilisées afficheront désormais un message d'erreur.
+  whos_playing_game: '{0} utilisateurs jouent à {1}'
+
+id-ID:
+  afk_set: Pesan AFK sudah diatur. Ketik pesan di channel mana pun untuk menghapusnya.
+  author: Penulis
+  botid: ID Bot
+  channel_topic: Topik channel
+  channelid: '{0} dari channel ini adalah {1}'
+  commands_ran: Perintah dijalankan
+  config_edit_fail: 'Gagal mengatur {0} ke nilai {1}'
+  config_list: Daftar konfigurasi
+  config_not_found: 'Konfigurasi {0} tidak ditemukan'
+  config_prop_not_found: 'Properti {0} tidak ditemukan di konfigurasi {1}'
+  emoji_add_error: Gagal menambahkan emoji. Slot emoji habis, atau ukuran gambar tidak sesuai.
+  emoji_added: 'Emoji baru ditambahkan: {0}'
+  emoji_slots_full_retry_gif: Semua slot emoji gambar sudah penuh. Mau coba lagi sebagai GIF animasi?
+  emoji_not_removed: 'Emoji berikut tidak bisa dihapus: {0}'
+  inrole_users: Pengguna
+  inrole_nobody: Tidak ada pengguna ditemukan
+  invalid_emoji_link: Link yang ditentukan bukan gambar atau melebihi 256KB.
+  listservers: |-
+    ID: {0}
+    Member: {1}
+    ID Pemilik: {2}
+  listservers_none: Tidak ada server ditemukan di halaman ini.
+  memory: Memori
+  messages: Pesan
+  no_roles_on_page: Tidak ada role di halaman ini.
+  no_topic_set: Tidak ada topik yang diatur.
+  nobody_playing_game: Tidak ada yang bermain game itu.
+  owner_ids: ID Pemilik
+  presence: Kehadiran
+  presence_txt: |-
+    {0} Server
+    {1} Channel Teks
+    {2} Channel Suara
+  roleid: '{0} dari role {1} adalah {2}'
+  roles_all_page: 'Halaman #{0} dari semua role di server ini:'
+  roles_page: 'Halaman #{0} dari role untuk {1}'
+  server_color_set: Berhasil mengatur warna server baru.
+  serverid: '{0} dari server ini adalah {1}'
+  shard: Shard
+  showemojis: '**Nama:** {0} **Link:** {1}'
+  showemojis_none: Tidak ada emoji spesial yang ditemukan.
+  sniped_by: 'Di-snipe oleh {0}'
+  sticker_error: Kamu harus mengirim stiker bersama perintah ini, atau mengunggah gambar .png atau .apng berukuran 300x300. Maksimal 512KB.
+  uptime: Waktu aktif
+  user_afk: 'Pengguna {0} sedang AFK.'
+  userid: '{0} dari pengguna {1} adalah {2}'
+  verbose_errors_disabled: Perintah yang salah digunakan tidak akan menampilkan error lagi.
+  verbose_errors_enabled: Perintah yang salah digunakan sekarang akan menampilkan error.
+  whos_playing_game: '{0} pengguna sedang bermain {1}'
+
+ja-JP:
+  afk_set: AFKメッセージが設定されました。任意のチャンネルでメッセージを送信するとクリアされます。
+  author: 制作者
+  botid: Bot ID
+  channel_topic: チャンネルトピック
+  channelid: 'このチャンネルの{0}は{1}です'
+  commands_ran: 実行されたコマンド数
+  config_edit_fail: '{0}の値を{1}に設定できませんでした'
+  config_list: 設定一覧
+  config_not_found: '設定{0}が見つかりません'
+  config_prop_not_found: '{1}設定にプロパティ{0}が見つかりません'
+  emoji_add_error: 絵文字の追加中にエラーが発生しました。絵文字スロットが不足しているか、画像サイズが不適切です。
+  emoji_added: '新しい絵文字を追加しました: {0}'
+  emoji_slots_full_retry_gif: すべての画像絵文字スロットが満杯です。アニメーションGIFとして再試行しますか？
+  emoji_not_removed: '以下の絵文字は削除されませんでした: {0}'
+  inrole_users: ユーザー
+  inrole_nobody: ユーザーが見つかりませんでした
+  invalid_emoji_link: 指定されたリンクは画像ではないか、256KBを超えています。
+  listservers: |-
+    ID: {0}
+    メンバー数: {1}
+    オーナーID: {2}
+  listservers_none: 指定されたページには、サーバーはありません。
+  memory: メモリ
+  messages: メッセージ
+  no_roles_on_page: このページには、役割はありません。
+  no_topic_set: トピックは設定されていません。
+  nobody_playing_game: 指定されたゲームをプレイしている人はいません。
+  owner_ids: オーナーID
+  presence: 稼働場所
+  presence_txt: |-
+    サーバー: {0}個
+    テキストチャンネル: {1}個
+    ボイスチャンネル: {2}個
+  roleid: 'ロール{1}の{0}は{2}です'
+  roles_all_page: 'このサーバーの全役割一覧 {0}ページ目'
+  roles_page: '{1}の役割一覧 {0}ページ目'
+  server_color_set: 新しいサーバーカラーが正常に設定されました。
+  serverid: 'このサーバーの{0}は{1}です。'
+  shard: Shard
+  showemojis: '**名前:** {0} **リンク:** {1}'
+  showemojis_none: 特別な絵文字は見つかりませんでした。
+  sniped_by: '{0}がスナイプ'
+  sticker_error: このコマンドと一緒にステッカーを送信するか、300x300の.pngまたは.apng画像をアップロードしてください。最大512KBです。
+  uptime: 稼働時間
+  user_afk: 'ユーザー{0}はAFK中です。'
+  userid: '{1}の{0}は{2}です'
+  verbose_errors_disabled: 間違ったコマンドを使用してもエラーを表示しません。
+  verbose_errors_enabled: 間違ったコマンドを使用した際にエラーを表示します。
+  whos_playing_game: '{0}人のユーザーが{1}をプレイ中'
+
+ko-KR:
+  afk_set: AFK 메시지가 설정되었어요. 아무 채널에서 메시지를 보내면 해제돼요.
+  author: 작성자
+  botid: 봇 ID
+  channel_topic: 채널 주제
+  channelid: '이 채널의 {0}은(는) {1}이에요'
+  commands_ran: 실행된 명령어 수
+  config_edit_fail: '{0}을(를) {1} 값으로 설정하는 데 실패했어요'
+  config_list: 설정 목록
+  config_not_found: '{0} 설정을 찾을 수 없어요'
+  config_prop_not_found: '{1} 설정에서 {0} 속성을 찾을 수 없어요'
+  emoji_add_error: 이모지 추가 중 오류가 발생했어요. 이모지 슬롯이 부족하거나 이미지 크기가 적절하지 않아요.
+  emoji_added: '새 이모지가 추가되었어요: {0}'
+  emoji_slots_full_retry_gif: 모든 이미지 이모지 슬롯이 꽉 찼어요. 애니메이션 GIF로 다시 시도할까요?
+  emoji_not_removed: '다음 이모지가 제거되지 않았어요: {0}'
+  inrole_users: 유저
+  inrole_nobody: 유저를 찾을 수 없어요
+  invalid_emoji_link: 지정된 링크가 이미지가 아니거나 256KB를 초과해요.
+  listservers: |-
+    ID: {0}
+    멤버 수: {1}
+    소유자 ID: {2}
+  listservers_none: 해당 페이지에 서버가 없어요.
+  memory: 메모리
+  messages: 메시지
+  no_roles_on_page: 이 페이지에 역할이 없어요.
+  no_topic_set: 설정된 주제가 없어요.
+  nobody_playing_game: 아무도 그 게임을 하고 있지 않아요.
+  owner_ids: 소유자 ID
+  presence: 프레즌스
+  presence_txt: |-
+    {0}개 서버
+    {1}개 텍스트 채널
+    {2}개 음성 채널
+  roleid: '{1} 역할의 {0}은(는) {2}이에요'
+  roles_all_page: '이 서버 전체 역할의 {0}페이지:'
+  roles_page: '{1}의 역할 {0}페이지'
+  server_color_set: 새 서버 색상이 설정되었어요.
+  serverid: '이 서버의 {0}은(는) {1}이에요'
+  shard: 샤드
+  showemojis: '**이름:** {0} **링크:** {1}'
+  showemojis_none: 특수 이모지를 찾을 수 없어요.
+  sniped_by: '{0}이(가) 스나이프함'
+  sticker_error: 이 명령어와 함께 스티커를 보내거나, 300x300 크기의 .png 또는 .apng 이미지를 업로드해 주세요. 최대 512KB까지 가능해요.
+  uptime: 가동 시간
+  user_afk: '유저 {0}이(가) AFK 상태예요.'
+  userid: '유저 {1}의 {0}은(는) {2}이에요'
+  verbose_errors_disabled: 잘못 사용된 명령어가 더 이상 오류를 표시하지 않아요.
+  verbose_errors_enabled: 잘못 사용된 명령어가 이제 오류를 표시해요.
+  whos_playing_game: '{0}명의 유저가 {1}을(를) 플레이 중이에요'
+
+pl-PL:
+  afk_set: Wiadomość AFK ustawiona. Napisz coś na dowolnym kanale, żeby ją usunąć.
+  author: Autor
+  botid: ID Bota
+  channel_topic: Temat kanału
+  channelid: '{0} tego kanału to {1}'
+  commands_ran: Wykonane komendy
+  config_edit_fail: 'Nie udało się ustawić {0} na wartość {1}'
+  config_list: Lista konfiguracji
+  config_not_found: 'Nie znaleziono konfiguracji {0}'
+  config_prop_not_found: 'Właściwość {0} nie została znaleziona w konfiguracji {1}'
+  emoji_add_error: Błąd podczas dodawania emoji. Albo skończyły się sloty na emoji, albo rozmiar obrazu jest nieodpowiedni.
+  emoji_added: 'Dodano nowe emoji: {0}'
+  emoji_slots_full_retry_gif: Wszystkie sloty na statyczne emoji są pełne. Chcesz spróbować ponownie jako animowany GIF?
+  emoji_not_removed: 'Następujące emoji nie zostały usunięte: {0}'
+  inrole_users: Użytkownicy
+  inrole_nobody: Nie znaleziono użytkowników
+  invalid_emoji_link: Podany link nie jest obrazem lub przekracza 256KB.
+  listservers: |-
+    ID: {0}
+    Członkowie: {1}
+    ID Właściciela: {2}
+  listservers_none: Nie znaleziono serwerów na tej stronie.
+  memory: Pamięć
+  messages: Wiadomości
+  no_roles_on_page: Brak ról na tej stronie.
+  no_topic_set: Nie ustawiono tematu.
+  nobody_playing_game: Nikt nie gra w tę grę.
+  owner_ids: ID Właścicieli
+  presence: Obecność
+  presence_txt: |-
+    {0} Serwerów
+    {1} Kanałów Tekstowych
+    {2} Kanałów Głosowych
+  roleid: '{0} roli {1} to {2}'
+  roles_all_page: 'Strona #{0} wszystkich ról na tym serwerze:'
+  roles_page: 'Strona #{0} ról dla {1}'
+  server_color_set: Pomyślnie ustawiono nowy kolor serwera.
+  serverid: '{0} tego serwera to {1}'
+  shard: Shard
+  showemojis: '**Nazwa:** {0} **Link:** {1}'
+  showemojis_none: Nie znaleziono specjalnych emoji.
+  sniped_by: 'Przechwycone przez {0}'
+  sticker_error: Musisz wysłać naklejkę razem z tą komendą lub przesłać obraz .png lub .apng o wymiarach 300x300. Maksymalnie 512KB.
+  uptime: Czas działania
+  user_afk: 'Użytkownik {0} jest AFK.'
+  userid: '{0} użytkownika {1} to {2}'
+  verbose_errors_disabled: Niepoprawnie użyte komendy nie będą już pokazywać błędów.
+  verbose_errors_enabled: Niepoprawnie użyte komendy będą teraz pokazywać błędy.
+  whos_playing_game: '{0} użytkowników gra w {1}'
+
+pt-BR:
+  afk_set: Mensagem de AFK definida. Digite uma mensagem em qualquer canal para limpar.
+  author: Autor
+  botid: ID do Bot
+  channel_topic: Tópico do canal
+  channelid: '{0} deste canal é {1}'
+  commands_ran: Comandos executados
+  config_edit_fail: 'Falha em configurar {0} para o valor {1}'
+  config_list: Config Lista
+  config_not_found: 'Configuração {0} não encontrada'
+  config_prop_not_found: 'Propriedade {0} não encontrada na configuração {1}'
+  emoji_add_error: Erro ao adicionar emoji. O servidor não possui mais slots de emoji disponíveis ou o tamanho da imagem é incompatível.
+  emoji_added: 'Novo emoji adicionado: {0}'
+  emoji_slots_full_retry_gif: Todos os slots de emoji de imagem estão cheios. Deseja tentar novamente como GIF animado?
+  emoji_not_removed: 'Os seguintes emojis não foram removidos: {0}'
+  inrole_users: Usuários
+  inrole_nobody: Nenhum usuário encontrado
+  invalid_emoji_link: O link especificado não retorna para uma imagem ou excede 256KB.
+  listservers: |-
+    ID: {0}
+    Membros: {1}
+    ID do dono: {2}
+  listservers_none: Nenhum servidor foi encontrado nessa página.
+  memory: Memória
+  messages: Mensagens
+  no_roles_on_page: Nenhum cargo nesta página.
+  no_topic_set: Nenhum tópico definido.
+  nobody_playing_game: Ninguém está jogando esse jogo.
+  owner_ids: IDs de Dono
+  presence: Presença
+  presence_txt: |-
+    {0} Servidores
+    {1} Canais de texto
+    {2} Canais de voz
+  roleid: '{0} do cargo {1} é {2}'
+  roles_all_page: 'Paginá #{0} de todos os cargos desse servidor:'
+  roles_page: 'Página #{0} de cargos para {1}'
+  server_color_set: Nova cor do servidor definida com sucesso.
+  serverid: '{0} desse servidor é {1}'
+  shard: Shard
+  showemojis: '**Nome:** {0} **Link:** {1}'
+  showemojis_none: Nenhum emoji especial foi encontrado.
+  sniped_by: 'Capturado por {0}'
+  sticker_error: Você deve enviar um sticker junto com este comando, ou enviar uma imagem .png ou .apng de 300x300. Até 512KB de tamanho.
+  uptime: Tempo de Atividade
+  user_afk: 'O usuário {0} está AFK.'
+  userid: '{0} do usuário {1} é {2}'
+  verbose_errors_disabled: Comandos utilizados incorretamente não exibirão mais erros.
+  verbose_errors_enabled: Comandos utilizados incorretamente exibirão erros.
+  whos_playing_game: '{0} usuários estão jogando {1}'
+
+ru-RU:
+  afk_set: Сообщение AFK установлено. Напишите сообщение в любом канале, чтобы сбросить.
+  author: Автор
+  botid: Идентификатор бота
+  channel_topic: Тема канала
+  channelid: '{0} этого канала {1}'
+  commands_ran: Команд запущено
+  config_edit_fail: 'Не удалось установить {0} значение {1}'
+  config_list: Список свойств
+  config_not_found: 'Конфигурация {0} не найдена'
+  config_prop_not_found: 'Свойство {0} не найдено в конфигурации {1}'
+  emoji_add_error: Ошибка добавления эмодзи. Либо у вас закончились слоты для смайликов, либо размер изображения не отвечающий требованиям.
+  emoji_added: 'Добавлен новый эмодзи: {0}'
+  emoji_slots_full_retry_gif: Все слоты для эмодзи-изображений заняты. Хотите попробовать как анимированный GIF?
+  emoji_not_removed: 'Следующие эмодзи не были удалены: {0}'
+  inrole_users: Пользователи
+  inrole_nobody: Пользователи не найдены
+  invalid_emoji_link: Указанная ссылка либо не является изображением, либо превышает 256 КБ.
+  listservers: |-
+    Идентификатор: {0}
+    Участники: {1}
+    Идентификатор владельца: {2}
+  listservers_none: Никаких серверов не найдено на этой странице.
+  memory: Использование памяти
+  messages: Сообщения
+  no_roles_on_page: На этой странице нет ролей.
+  no_topic_set: Нет заданной темы.
+  nobody_playing_game: Никто не играет в эту игру на данный момент
+  owner_ids: Идентификаторы владельцев
+  presence: Присутствие
+  presence_txt: |-
+    {0} Серверы
+    {1} Текстовые каналы
+    {2} Голосовые каналы
+  roleid: '{0} роли {1} - {2}'
+  roles_all_page: 'Страница #{0} всех ролей на этом сервере:'
+  roles_page: 'Страница #{0} ролей для {1}'
+  server_color_set: Новый цвет сервера успешно установлен.
+  serverid: '{0} этого сервера - {1}'
+  shard: Шард
+  showemojis: '** Название: ** {0} ** Ссылка: ** {1}'
+  showemojis_none: Специальных эмодзи не найдено.
+  sniped_by: 'Перехвачено {0}'
+  sticker_error: Вы должны отправить стикер с этой командой, или загрузить изображение .png или .apng размером 300x300. До 512 КБ.
+  uptime: Время работы
+  user_afk: 'Пользователь {0} AFK.'
+  userid: '{0} пользователя {1} - {2}'
+  verbose_errors_disabled: Необработанные ошибки команд больше не будут показаны в чате.
+  verbose_errors_enabled: Отныне необработанные ошибки команд будут показаны в чате.
+  whos_playing_game: '{0} пользователей играют в {1}'
+
+sr-Cyrl-RS:
+  afk_set: АФК порука постављена. Откуцајте поруку у било ком каналу да је обришете.
+  author: Аутор
+  botid: Бот ИД
+  channel_topic: Тема канала
+  channelid: '{0} овог канала је {1}'
+  commands_ran: Извршене команде
+  config_edit_fail: 'Неуспешно постављање {0} на вредност {1}'
+  config_list: Листа конфигурација
+  config_not_found: 'Конфигурација {0} није пронађена'
+  config_prop_not_found: 'Својство {0} није пронађено у конфигурацији {1}'
+  emoji_add_error: Грешка при додавању емоџија. Или су вам слотови за емоџије пуни, или величина слике није одговарајућа.
+  emoji_added: 'Додат нови емоџи: {0}'
+  emoji_slots_full_retry_gif: Сви слотови за статичне емоџије су пуни. Желите ли да покушате поново као анимирани GIF?
+  emoji_not_removed: 'Следећи емоџији нису уклоњени: {0}'
+  inrole_users: Корисници
+  inrole_nobody: Нису пронађени корисници
+  invalid_emoji_link: Наведени линк или није слика или прелази 256KB.
+  listservers: |-
+    ИД: {0}
+    Чланови: {1}
+    ИД власника: {2}
+  listservers_none: Нема сервера на овој страници.
+  memory: Меморија
+  messages: Поруке
+  no_roles_on_page: Нема улога на овој страници.
+  no_topic_set: Тема није постављена.
+  nobody_playing_game: Нико не игра ту игру.
+  owner_ids: ИД-ови власника
+  presence: Присутност
+  presence_txt: |-
+    {0} сервера
+    {1} текстуалних канала
+    {2} гласовних канала
+  roleid: '{0} улоге {1} је {2}'
+  roles_all_page: 'Страница #{0} свих улога на овом серверу:'
+  roles_page: 'Страница #{0} улога за {1}'
+  server_color_set: Успешно постављена нова боја сервера.
+  serverid: '{0} овог сервера је {1}'
+  shard: Шард
+  showemojis: '**Име:** {0} **Линк:** {1}'
+  showemojis_none: Нису пронађени посебни емоџији.
+  sniped_by: 'Ухваћено од {0}'
+  sticker_error: Морате послати стикер уз ову команду, или отпремити .png или .apng слику величине 300x300. До 512KB.
+  uptime: Време рада
+  user_afk: 'Корисник {0} је АФК.'
+  userid: '{0} корисника {1} је {2}'
+  verbose_errors_disabled: Погрешно коришћене команде више неће приказивати грешке.
+  verbose_errors_enabled: Погрешно коришћене команде ће сада приказивати грешке.
+  whos_playing_game: '{0} корисника игра {1}'
+
+tr-TR:
+  afk_set: AFK mesajı ayarlandı. Temizlemek için herhangi bir kanalda mesaj yaz.
+  author: Yazar
+  botid: Bot ID
+  channel_topic: Kanal konusu
+  channelid: 'Bu kanalın {0} değeri {1}'
+  commands_ran: Çalıştırılan komutlar
+  config_edit_fail: '{0} değeri {1} olarak ayarlanamadı'
+  config_list: Yapılandırma listesi
+  config_not_found: '{0} yapılandırması bulunamadı'
+  config_prop_not_found: '{1} yapılandırmasında {0} özelliği bulunamadı'
+  emoji_add_error: Emoji eklenirken hata oluştu. Ya emoji slotların doldu ya da resim boyutu uygun değil.
+  emoji_added: 'Yeni bir emoji eklendi: {0}'
+  emoji_slots_full_retry_gif: Tüm resim emoji slotları dolu. Animasyonlu GIF olarak tekrar denemek ister misin?
+  emoji_not_removed: 'Şu emojiler kaldırılamadı: {0}'
+  inrole_users: Kullanıcılar
+  inrole_nobody: Kullanıcı bulunamadı
+  invalid_emoji_link: Belirtilen bağlantı ya bir resim değil ya da 256KB sınırını aşıyor.
+  listservers: |-
+    ID: {0}
+    Üyeler: {1}
+    Sahip ID: {2}
+  listservers_none: Bu sayfada sunucu bulunamadı.
+  memory: Bellek
+  messages: Mesajlar
+  no_roles_on_page: Bu sayfada rol yok.
+  no_topic_set: Konu ayarlanmamış.
+  nobody_playing_game: Kimse bu oyunu oynamıyor.
+  owner_ids: Sahip ID'leri
+  presence: Durum
+  presence_txt: |-
+    {0} Sunucu
+    {1} Metin Kanalı
+    {2} Ses Kanalı
+  roleid: '{1} rolünün {0} değeri {2}'
+  roles_all_page: 'Bu sunucudaki tüm rollerin #{0}. sayfası:'
+  roles_page: '{1} için rollerin #{0}. sayfası'
+  server_color_set: Yeni sunucu rengi başarıyla ayarlandı.
+  serverid: 'Bu sunucunun {0} değeri {1}'
+  shard: Shard
+  showemojis: '**Ad:** {0} **Bağlantı:** {1}'
+  showemojis_none: Özel emoji bulunamadı.
+  sniped_by: '{0} tarafından yakalandı'
+  sticker_error: Bu komutla birlikte bir çıkartma göndermelisin ya da 300x300 boyutunda .png veya .apng resmi yüklemelisin. En fazla 512KB boyutunda.
+  uptime: Çalışma süresi
+  user_afk: '{0} kullanıcısı AFK.'
+  userid: '{1} kullanıcısının {0} değeri {2}'
+  verbose_errors_disabled: Hatalı kullanılan komutlar artık hata göstermeyecek.
+  verbose_errors_enabled: Hatalı kullanılan komutlar artık hata gösterecek.
+  whos_playing_game: '{0} kullanıcı {1} oynuyor'
+
+ts-TS:
+  afk_set: AFK message set. Type a message in any channel to clear it. N-not that I'll miss you.
+  author: Author
+  botid: Bot ID
+  channel_topic: Channel topic
+  channelid: '{0} of this channel is {1}'
+  commands_ran: Commands ran
+  config_edit_fail: 'Failed setting {0} to {1}. The value is probably wrong, b-baka.'
+  config_list: Config list
+  config_not_found: 'Configuration {0} not found. D-did you even spell it right?'
+  config_prop_not_found: 'Property {0} doesn''t exist on {1} configuration.'
+  emoji_add_error: Couldn't add that emoji. You're probably out of slots or the image is wrong.
+  emoji_added: 'Added a new emoji: {0}'
+  emoji_slots_full_retry_gif: All image emoji slots are full. Want me to retry as an animated GIF instead?
+  emoji_not_removed: 'These emojis couldn''t be removed: {0}'
+  inrole_users: Users
+  inrole_nobody: No users found. Hmph, how empty.
+  invalid_emoji_link: That link isn't an image or it's over 256KB. Check before sending next time.
+  listservers: |-
+    ID: {0}
+    Members: {1}
+    Owner ID: {2}
+  listservers_none: No servers found on that page.
+  memory: Memory
+  messages: Messages
+  no_roles_on_page: No roles on this page.
+  no_topic_set: No topic set.
+  nobody_playing_game: Nobody's playing that game.
+  owner_ids: Owner IDs
+  presence: Presence
+  presence_txt: |-
+    {0} Servers
+    {1} Text Channels
+    {2} Voice Channels
+  roleid: '{0} of the role {1} is {2}'
+  roles_all_page: 'Page #{0} of all roles on this server:'
+  roles_page: 'Page #{0} of roles for {1}'
+  server_color_set: New server color set.
+  serverid: '{0} of this server is {1}'
+  shard: Shard
+  showemojis: '**Name:** {0} **Link:** {1}'
+  showemojis_none: No special emojis found. Hmph.
+  sniped_by: 'Sniped by {0}'
+  sticker_error: You need to send a sticker with the command or upload a 300x300 .png or .apng under 512KB. Is that so hard?
+  uptime: Uptime
+  user_afk: 'User {0} is AFK.'
+  userid: '{0} of the user {1} is {2}'
+  verbose_errors_disabled: Incorrectly used commands will no longer show errors.
+  verbose_errors_enabled: Incorrectly used commands will now show errors. W-well, you clearly need the help.
+  whos_playing_game: '{0} users are playing {1}.'
+
+uk-UA:
+  afk_set: AFK-повідомлення встановлено. Напиши щось у будь-якому каналі, щоб зняти.
+  author: Автор
+  botid: ID бота
+  channel_topic: Тема каналу
+  channelid: '{0} цього каналу - {1}'
+  commands_ran: Виконано команд
+  config_edit_fail: 'Не вдалося встановити {0} у значення {1}'
+  config_list: Список конфігурацій
+  config_not_found: 'Конфігурацію {0} не знайдено'
+  config_prop_not_found: 'Властивість {0} не знайдено в конфігурації {1}'
+  emoji_add_error: Помилка додавання емодзі. Або закінчились слоти для емодзі, або розмір зображення не підходить.
+  emoji_added: 'Додано новий емодзі: {0}'
+  emoji_slots_full_retry_gif: Усі слоти для звичайних емодзі зайняті. Хочеш спробувати як анімований GIF?
+  emoji_not_removed: 'Ці емодзі не було видалено: {0}'
+  inrole_users: Користувачі
+  inrole_nobody: Користувачів не знайдено
+  invalid_emoji_link: Вказане посилання або не є зображенням, або перевищує 256КБ.
+  listservers: |-
+    ID: {0}
+    Учасників: {1}
+    ID власника: {2}
+  listservers_none: На цій сторінці серверів не знайдено.
+  memory: Пам'ять
+  messages: Повідомлення
+  no_roles_on_page: На цій сторінці немає ролей.
+  no_topic_set: Тему не встановлено.
+  nobody_playing_game: Ніхто не грає в цю гру.
+  owner_ids: ID власників
+  presence: Присутність
+  presence_txt: |-
+    {0} серверів
+    {1} текстових каналів
+    {2} голосових каналів
+  roleid: '{0} ролі {1} - {2}'
+  roles_all_page: 'Сторінка #{0} усіх ролей на цьому сервері:'
+  roles_page: 'Сторінка #{0} ролей для {1}'
+  server_color_set: Новий колір сервера успішно встановлено.
+  serverid: '{0} цього сервера - {1}'
+  shard: Шард
+  showemojis: '**Назва:** {0} **Посилання:** {1}'
+  showemojis_none: Спеціальних емодзі не знайдено.
+  sniped_by: 'Перехоплено {0}'
+  sticker_error: Треба або надіслати стікер разом із цією командою, або завантажити .png чи .apng зображення 300x300. Максимум 512КБ.
+  uptime: Час роботи
+  user_afk: 'Користувач {0} зараз AFK.'
+  userid: '{0} користувача {1} - {2}'
+  verbose_errors_disabled: Неправильно використані команди більше не показуватимуть помилки.
+  verbose_errors_enabled: Неправильно використані команди тепер показуватимуть помилки.
+  whos_playing_game: '{0} користувачів грають у {1}'
+
+vi-VN:
+  afk_set: Đã đặt tin nhắn AFK. Gõ tin nhắn ở bất kỳ kênh nào để xóa.
+  author: Tác giả
+  botid: Bot ID
+  channel_topic: Chủ đề kênh
+  channelid: '{0} của kênh này là {1}'
+  commands_ran: Lệnh đã chạy
+  config_edit_fail: 'Không thể đặt {0} thành giá trị {1}'
+  config_list: Danh sách cấu hình
+  config_not_found: 'Không tìm thấy cấu hình {0}'
+  config_prop_not_found: 'Không tìm thấy thuộc tính {0} trong cấu hình {1}'
+  emoji_add_error: Lỗi khi thêm emoji. Bạn có thể đã hết chỗ emoji, hoặc kích thước ảnh không phù hợp.
+  emoji_added: 'Đã thêm emoji mới: {0}'
+  emoji_slots_full_retry_gif: Tất cả chỗ emoji ảnh đã đầy. Bạn có muốn thử lại dưới dạng GIF động không?
+  emoji_not_removed: 'Các emoji sau không được xóa: {0}'
+  inrole_users: Người dùng
+  inrole_nobody: Không tìm thấy người dùng
+  invalid_emoji_link: Liên kết được chỉ định không phải là ảnh hoặc vượt quá 256KB.
+  listservers: |-
+    ID: {0}
+    Thành viên: {1}
+    ID chủ sở hữu: {2}
+  listservers_none: Không tìm thấy server nào trên trang này.
+  memory: Bộ nhớ
+  messages: Tin nhắn
+  no_roles_on_page: Không có vai trò nào trên trang này.
+  no_topic_set: Chưa đặt chủ đề.
+  nobody_playing_game: Không ai đang chơi trò đó.
+  owner_ids: ID chủ sở hữu
+  presence: Trạng thái
+  presence_txt: |-
+    {0} Server
+    {1} Kênh văn bản
+    {2} Kênh thoại
+  roleid: '{0} của vai trò {1} là {2}'
+  roles_all_page: 'Trang #{0} tất cả vai trò trên server này:'
+  roles_page: 'Trang #{0} vai trò của {1}'
+  server_color_set: Đã đặt màu server mới thành công.
+  serverid: '{0} của server này là {1}'
+  shard: Shard
+  showemojis: '**Tên:** {0} **Liên kết:** {1}'
+  showemojis_none: Không tìm thấy emoji đặc biệt nào.
+  sniped_by: 'Bắt được bởi {0}'
+  sticker_error: Bạn phải gửi kèm một sticker với lệnh này, hoặc tải lên ảnh .png hoặc .apng kích thước 300x300. Tối đa 512KB.
+  uptime: Thời gian hoạt động
+  user_afk: 'Người dùng {0} đang AFK.'
+  userid: '{0} của người dùng {1} là {2}'
+  verbose_errors_disabled: Các lệnh sử dụng sai sẽ không còn hiển thị lỗi nữa.
+  verbose_errors_enabled: Các lệnh sử dụng sai bây giờ sẽ hiển thị lỗi.
+  whos_playing_game: '{0} người dùng đang chơi {1}'
+
+zh-CN:
+  afk_set: AFK 訊息已設定。在任何頻道輸入訊息即可清除。
+  author: 作者
+  botid: 機器人ID
+  channel_topic: 頻道主題
+  channelid: '當前頻道的{0}是{1}'
+  commands_ran: 已執行指令
+  config_edit_fail: '無法將 {0} 的值設定為 {1}'
+  config_list: 設定列表
+  config_not_found: '找不到設定 {0}'
+  config_prop_not_found: '設定 {1} 中找不到屬性 {0}'
+  emoji_add_error: 添加表情符號時出錯。您可能已經用完了表情符號空間，或是圖像太小了。
+  emoji_added: '添加了一個新的表情符號：{0}'
+  emoji_slots_full_retry_gif: 所有圖片表情符號位置已滿。要以動態 GIF 重試嗎？
+  emoji_not_removed: '以下表情符號未被移除：{0}'
+  inrole_users: 用户
+  inrole_nobody: 未找到用户
+  invalid_emoji_link: 指定的連結不是圖像或超過 256KB。
+  listservers: |-
+    ID: {0}
+    成員: {1}
+    擁有者ID: {2}
+  listservers_none: 在那一頁上沒有伺服器
+  memory: 檔案大小
+  messages: 訊息
+  no_roles_on_page: 此頁面上沒有身分組。
+  no_topic_set: 未設定主題
+  nobody_playing_game: 目前沒人在玩這遊戲
+  owner_ids: 擁有者ID
+  presence: 在場
+  presence_txt: '{0} 伺服器 {1} 文字頻道 {2} 語音頻道'
+  roleid: '{1}的{0}是{2}'
+  roles_all_page: '此伺服器上所有身分組的第 #{0} 頁：'
+  roles_page: '{1} 的第 #{0} 頁角色'
+  server_color_set: 已成功設定新的伺服器顏色。
+  serverid: '這個伺服器的{0}是{1}'
+  shard: 資料分片
+  showemojis: '**名稱：** {0} **連結：** {1}'
+  showemojis_none: 沒有找到特殊的表情符號。
+  sniped_by: '被 {0} 截獲'
+  sticker_error: 你必須隨此指令發送貼圖，或上傳 300x300 的 .png 或 .apng 圖片。最大 512KB。
+  uptime: 上線時間
+  user_afk: '使用者 {0} 目前離開中。'
+  userid: '{1}的{0}是{2}'
+  verbose_errors_disabled: 錯誤使用的命令現在將不再顯示錯誤了。
+  verbose_errors_enabled: 錯誤使用的命令現在開始會顯示錯誤了。
+  whos_playing_game: '{0} 位使用者正在玩 {1}'

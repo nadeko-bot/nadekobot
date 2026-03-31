@@ -1,0 +1,223 @@
+ar:
+  cant_read_or_send: لا يمكنك القراءة من أو إرسال رسائل إلى تلك القناة.
+  date2: التاريخ
+  remind_invalid: صيغة التذكير غير صالحة. يجب أن يحتوي التذكير على هدف ومؤقت وسبب. تحقق من قائمة الأوامر.
+  remind_too_long: تجاوز وقت التذكير الحد الأقصى.
+  reminder_created: تم إنشاء التذكير
+  reminder_deleted: 'تم حذف التذكير #{0}.'
+  reminder_list: قائمة التذكيرات
+  reminder_not_exist: التذكير في ذلك الفهرس غير موجود.
+  reminder_server_list: قائمة تذكيرات السيرفر
+  reminders_none: لا توجد تذكيرات في هذه الصفحة.
+  when: متى
+  who_where: مَن / أين
+
+de-DE:
+  cant_read_or_send: Du kannst keine Nachrichten i
+  date2: Datum
+  remind_invalid: Kein gültiges Format für Erinnerungen. Erinnerungen müssen immer ein Ziel, Timer und einen Grund haben. Prüfe die Befehlsliste.
+  remind_too_long: Erinngerungs Zeit ist über dem Maximum
+  reminder_created: Erinnerung Erstellt
+  reminder_deleted: 'Erinnerung #{0} wurde gelöscht.'
+  reminder_list: Liste an Erinnerungen
+  reminder_not_exist: Eine Erinnerung auf dieser Kennziffer existiert nicht.
+  reminder_server_list: Liste der Server-Erinnerungen
+  reminders_none: Keine Erinnerung auf dieser Seite.
+  when: Wann
+  who_where: Wer / Wo
+
+es-ES:
+  cant_read_or_send: No puedes leer ni enviar mensajes a ese canal.
+  date2: Fecha
+  remind_invalid: No es un formato de recordatorio válido. Debe tener un objetivo, un temporizador y una razón.  Verifique la lista de comandos.
+  remind_too_long: El tiempo del recordatorio ha excedido el máximo.
+  reminder_created: Recordatorio Creado
+  reminder_deleted: 'El recordatorio #{0} fue eliminado.'
+  reminder_list: Lista de recordatorios
+  reminder_not_exist: No existe tal recordatorio.
+  reminder_server_list: Lista de recordatorios del servidor
+  reminders_none: No hay recordatorios en esta página.
+  when: Cuándo
+  who_where: Quién / Dónde
+
+fr-FR:
+  cant_read_or_send: Vous ne pouvez pas lire ou envoyer des messages sur ce salon.
+  date2: Date
+  remind_invalid: Ceci n'est pas un format de rappel valide. Le rappel doit avoir une cible, un temps et une raison. Vérifiez la liste de commandes.
+  remind_too_long: Le temps de rappel dépasse le maximum.
+  reminder_created: Rappel Créé
+  reminder_deleted: 'Le rappel #{0} a été supprimé.'
+  reminder_list: Liste des rappels
+  reminder_not_exist: Aucun rappel n'existe à cet index.
+  reminder_server_list: Liste des rappels du server.
+  reminders_none: Aucun rappel sur cette page.
+  when: Quand
+  who_where: Qui / Où
+
+id-ID:
+  cant_read_or_send: Kamu tidak bisa membaca atau mengirim pesan ke channel itu.
+  date2: Tanggal
+  remind_invalid: Format pengingat tidak valid. Pengingat harus memiliki target, waktu, dan alasan. Cek daftar perintah.
+  remind_too_long: Waktu pengingat melebihi batas maksimum.
+  reminder_created: Pengingat Dibuat
+  reminder_deleted: 'Pengingat #{0} telah dihapus.'
+  reminder_list: Daftar pengingat
+  reminder_not_exist: Pengingat pada indeks tersebut tidak ada.
+  reminder_server_list: Daftar pengingat server
+  reminders_none: Tidak ada pengingat di halaman ini.
+  when: Kapan
+  who_where: Siapa / Di mana
+
+ja-JP:
+  cant_read_or_send: そのチャンネルへのメッセージの読み込みや送信はできません。
+  date2: 日付
+  remind_invalid: 有効なリマインド形式ではありません。リマインドにはターゲット、タイマー、理由が必要です。コマンドリストを確認してください。
+  remind_too_long: リマインダーの時間が上限を超えています。
+  reminder_created: リマインダー作成
+  reminder_deleted: 'リマインダー#{0}が削除されました。'
+  reminder_list: リマインダー一覧
+  reminder_not_exist: そのインデックスのリマインダーは存在しません。
+  reminder_server_list: サーバーリマインダーの一覧
+  reminders_none: このページにリマインダーはありません。
+  when: いつ
+  who_where: 誰 / どこ
+
+ko-KR:
+  cant_read_or_send: 해당 채널에서 메시지를 읽거나 보낼 수 없어요.
+  date2: 날짜
+  remind_invalid: 올바른 리마인더 형식이 아니에요. 리마인더에는 대상, 시간, 사유가 필요해요. 명령어 목록을 확인해 주세요.
+  remind_too_long: 리마인더 시간이 최대치를 초과했어요.
+  reminder_created: 리마인더가 생성되었어요
+  reminder_deleted: '리마인더 #{0}이(가) 삭제되었어요.'
+  reminder_list: 리마인더 목록
+  reminder_not_exist: 해당 인덱스에 리마인더가 없어요.
+  reminder_server_list: 서버 리마인더 목록
+  reminders_none: 이 페이지에 리마인더가 없어요.
+  when: 시간
+  who_where: 대상 / 위치
+
+pl-PL:
+  cant_read_or_send: Nie możesz czytać ani wysyłać wiadomości na tym kanale.
+  date2: Data
+  remind_invalid: Nieprawidłowy format przypomnienia. Przypomnienie musi mieć cel, czas i powód. Sprawdź listę komend.
+  remind_too_long: Czas przypomnienia przekroczył maksimum.
+  reminder_created: Przypomnienie utworzone
+  reminder_deleted: 'Przypomnienie #{0} zostało usunięte.'
+  reminder_list: Lista przypomnień
+  reminder_not_exist: Przypomnienie o tym indeksie nie istnieje.
+  reminder_server_list: Lista przypomnień serwera
+  reminders_none: Brak przypomnień na tej stronie.
+  when: Kiedy
+  who_where: Kto / Gdzie
+
+pt-BR:
+  cant_read_or_send: Você não pode ler ou enviar mensagens nesse canal.
+  date2: Data
+  remind_invalid: Não é um formato válido de lembrete. O lembrete deve ter um canal-alvo, tempo e uma razão. Verifique a lista de comandos.
+  remind_too_long: O tempo do lembrete é longo demais.
+  reminder_created: Lembrete Criado
+  reminder_deleted: 'O lembrete #{0} foi excluído.'
+  reminder_list: Lista de lembretes
+  reminder_not_exist: Não há lembrete nesse índice.
+  reminder_server_list: Lista de lembretes do servidor
+  reminders_none: Não há lembretes nessa página.
+  when: Quando
+  who_where: Quem / Onde
+
+ru-RU:
+  cant_read_or_send: Вы не можете читать сообщения или отправлять сообщения в этом канале.
+  date2: Дата
+  remind_invalid: Недействительный формат напоминания. Напоминание должно иметь цель, таймер и причину. Проверьте список команд.
+  remind_too_long: Время напоминания превысило максимум.
+  reminder_created: Напоминание Создано
+  reminder_deleted: 'Напоминание #{0} удалено.'
+  reminder_list: Список напоминаний
+  reminder_not_exist: Напоминание с этим номером не существует.
+  reminder_server_list: Список напоминаний сервера
+  reminders_none: Нет напоминаний на этой странице.
+  when: Когда
+  who_where: Кто / Где
+
+sr-Cyrl-RS:
+  cant_read_or_send: Не можете читати или слати поруке у том каналу.
+  date2: Датум
+  remind_invalid: Невалидан формат подсетника. Подсетник мора имати циљ, време и разлог. Проверите листу команди.
+  remind_too_long: Време подсетника је премашило максимум.
+  reminder_created: Подсетник креиран
+  reminder_deleted: 'Подсетник #{0} је обрисан.'
+  reminder_list: Листа подсетника
+  reminder_not_exist: Подсетник на том индексу не постоји.
+  reminder_server_list: Листа серверских подсетника
+  reminders_none: Нема подсетника на овој страни.
+  when: Када
+  who_where: Ко / Где
+
+tr-TR:
+  cant_read_or_send: O kanala mesaj okuyamaz veya gönderemezsin.
+  date2: Tarih
+  remind_invalid: Geçerli bir hatırlatma formatı değil. Hatırlatma bir hedef, zamanlayıcı ve sebep içermelidir. Komut listesine bak.
+  remind_too_long: Hatırlatma süresi maksimumu aştı.
+  reminder_created: Hatırlatma Oluşturuldu
+  reminder_deleted: '#{0} numaralı hatırlatma silindi.'
+  reminder_list: Hatırlatma listesi
+  reminder_not_exist: O indekste hatırlatma mevcut değil.
+  reminder_server_list: Sunucu hatırlatma listesi
+  reminders_none: Bu sayfada hatırlatma yok.
+  when: Ne Zaman
+  who_where: Kim / Nerede
+
+ts-TS:
+  cant_read_or_send: You can't read from or send messages to that channel.
+  date2: Date
+  remind_invalid: Not a valid remind format. You need a target, timer, and a reason. Check the command list.
+  remind_too_long: Remind time has exceeded the maximum. Hmph, be reasonable.
+  reminder_created: Reminder created.
+  reminder_deleted: 'Reminder #{0} was deleted.'
+  reminder_list: List of reminders
+  reminder_not_exist: That reminder doesn't exist. Check the index, b-baka!
+  reminder_server_list: List of server reminders
+  reminders_none: No reminders on this page.
+  when: When
+  who_where: Who / Where
+
+uk-UA:
+  cant_read_or_send: Ти не можеш читати або надсилати повідомлення в цей канал.
+  date2: Дата
+  remind_invalid: Невірний формат нагадування. Нагадування повинно мати ціль, таймер і причину. Перевір список команд.
+  remind_too_long: Час нагадування перевищує максимум.
+  reminder_created: Нагадування створено
+  reminder_deleted: 'Нагадування #{0} видалено.'
+  reminder_list: Список нагадувань
+  reminder_not_exist: Нагадування з таким індексом не існує.
+  reminder_server_list: Список серверних нагадувань
+  reminders_none: Немає нагадувань на цій сторінці.
+  when: Коли
+  who_where: Хто / Де
+
+vi-VN:
+  cant_read_or_send: Bạn không thể đọc hoặc gửi tin nhắn đến kênh đó.
+  date2: Ngày
+  remind_invalid: Định dạng nhắc nhở không hợp lệ. Nhắc nhở phải có mục tiêu, thời gian và lý do. Hãy kiểm tra danh sách lệnh.
+  remind_too_long: Thời gian nhắc nhở đã vượt quá giới hạn tối đa.
+  reminder_created: Đã tạo nhắc nhở
+  reminder_deleted: 'Đã xóa nhắc nhở #{0}.'
+  reminder_list: Danh sách nhắc nhở
+  reminder_not_exist: Nhắc nhở tại vị trí đó không tồn tại.
+  reminder_server_list: Danh sách nhắc nhở của máy chủ
+  reminders_none: Không có nhắc nhở nào trên trang này.
+  when: Khi nào
+  who_where: Ai / Ở đâu
+
+zh-CN:
+  cant_read_or_send: 您無法從該頻道閱讀或向該頻道發送消息。
+  date2: 日期
+  remind_invalid: 錯誤的提醒格式，提醒需要指定對象、時間和事由，請參照指令列表。
+  remind_too_long: 提醒時間超過最大值
+  reminder_created: 提醒已建立
+  reminder_deleted: '提醒 #{0} 已刪除。'
+  reminder_list: 提醒清單
+  reminder_not_exist: 該索引處的提醒不存在。
+  reminder_server_list: 伺服器提醒列表
+  reminders_none: 此頁面上沒有提醒。
+  when: 何時
+  who_where: 誰 / 何處

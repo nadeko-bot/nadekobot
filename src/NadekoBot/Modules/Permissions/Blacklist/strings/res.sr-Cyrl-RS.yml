@@ -1,5 +1,0 @@
-blacklisted: '{0} са ID-јем {1} додат/а на црну листу'
-blacklisted_channels: Канали на црној листи
-blacklisted_servers: Сервери на црној листи
-blacklisted_users: Корисници на црној листи
-unblacklisted: '{0} са ID-јем {1} уклоњен/а са црне листе'

@@ -1,4 +1,0 @@
-convert: '{0} {1} to {2} {3}'
-convert_not_found: 'Nie można przekonwertować {0} na {1}: nie znaleziono jednostek'
-convert_type_error: 'Nie można przekonwertować {0} na {1}: typy jednostek nie są takie same'
-convertlist: Jednostki dostępne do konwersji

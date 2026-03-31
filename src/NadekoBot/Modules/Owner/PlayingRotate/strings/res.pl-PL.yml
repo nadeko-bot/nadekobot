@@ -1,8 +1,0 @@
-reprm: 'Usunięto status aktywności: {0}'
-ropl_added: Dodano.
-ropl_disabled: Rotacyjny status aktywności wyłączony.
-ropl_enabled: Rotacyjny status aktywności włączony.
-ropl_list: |-
-  Oto lista rotacyjnych statusów:
-  {0}
-ropl_not_set: Nie ustawiono żadnych rotacyjnych statusów.

@@ -1,9 +1,0 @@
-livechannel_added: 'Đã thêm {0} làm kênh trực tiếp thành công.'
-livechannel_limit: 'Bạn chỉ có thể có tối đa {0} kênh trực tiếp mỗi máy chủ.'
-livechannel_list_empty: Chưa có kênh trực tiếp nào được cấu hình cho máy chủ này.
-livechannel_list_title: 'Kênh trực tiếp trong {0}'
-livechannel_not_found: Không tìm thấy kênh trong danh sách kênh trực tiếp.
-livechannel_please_wait: Vui lòng chờ tối đa 10 phút để thay đổi có hiệu lực
-livechannel_removed: 'Đã xóa {0} khỏi kênh trực tiếp thành công.'
-preview: Xem trước
-template: Mẫu

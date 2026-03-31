@@ -1,8 +1,0 @@
-curgen_disabled: Generasi mata uang telah dinonaktifkan di channel ini.
-curgen_enabled: Generasi mata uang telah diaktifkan di channel ini.
-curgen_pl: '{0} {1} acak muncul!'
-curgen_sn: 'Sebuah {0} acak muncul!'
-pick_pl: 'Ambil mereka dengan mengetik `{0}pick`'
-pick_sn: 'Ambil dengan mengetik `{0}pick`'
-picked: '{1} mengambil {0}'
-planted: '{0} menanam {1}'

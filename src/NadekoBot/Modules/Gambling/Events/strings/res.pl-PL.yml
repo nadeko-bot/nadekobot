@@ -1,9 +1,0 @@
-event_duration_footer: 'To wydarzenie trwa do {0} godzin.'
-event_title: 'Wydarzenie {0} rozpoczęte!'
-new_gamestatus_event: |-
-  Wpisz tajny kod na dowolnym kanale, żeby otrzymać {1}
-  Pozostało {2} do rozdania.
-new_reaction_event: |-
-  Dodaj reakcję {0} do tej wiadomości, żeby otrzymać {1}
-  Pozostało {2} do rozdania.
-start_event_fail: Nie udało się uruchomić wydarzenia. Inne wydarzenie jest w toku lub wystąpił błąd.

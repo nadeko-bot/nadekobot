@@ -1,0 +1,991 @@
+ar:
+  ban_prune: 'سيقوم البوت بحذف رسائل المستخدم المحظور حتى {0} يوم/أيام.'
+  ban_prune_disabled: لن يتم حذف رسائل المستخدم المحظور بعد الآن.
+  bandm: |-
+    لقد تم حظرك من خادم {0}.
+    السبب: {1}
+  banmsg_default: لم يتم تعيين رسالة حظر. سيتم استخدام السلوك الافتراضي.
+  banmsg_disabled: رسائل الحظر معطلة. يمكنك تفعيلها بتعيين رسالة حظر بقيمة غير '-'.
+  banned_user: تم حظر المستخدم
+  cant_apply_punishment: لا يمكن تطبيق العقوبة. يرجى التأكد من أن لدي الصلاحيات الكافية، وأن دوري أعلى من أي دور آخر في إعدادات الخادم.
+  duration: المدة
+  invalid: 'غير صالح / لا يمكن العثور عليه ({0})'
+  kickdm: |-
+    لقد تم طردك من خادم {0}.
+    السبب: {1}
+  kicked_user: تم طرد المستخدم
+  mass_ban_completed: 'تم حظر {0} مستخدمين.'
+  mass_ban_in_progress: 'جارٍ حظر {0} مستخدمين...'
+  mass_kill_completed: 'اكتمل الحظر الجماعي والقائمة السوداء لـ {0} مستخدمين.'
+  mass_kill_in_progress: 'جارٍ الحظر الجماعي والقائمة السوداء لـ {0} مستخدمين...'
+  moderator: المشرف
+  reason: السبب
+  role_too_high: لا يمكنك استخدام هذا الأمر مع أدوار أعلى من أعلى دور لديك، إلا إذا كنت مسؤول الخادم.
+  sb_user: تم الحظر المؤقت للمستخدم
+  sbdm: |-
+    لقد تم حظرك مؤقتًا من خادم {0}.
+    السبب: {1}
+  timedout_user: تم تقييد المستخدم مؤقتًا
+  timeoutdm: |-
+    لقد تم تقييدك مؤقتًا في خادم {0}.
+    السبب: {1}
+  unable_to_dm_user: فشل إرسال رسالة خاصة للمستخدم.
+  unbanned_user: 'تم إلغاء حظر المستخدم {0}.'
+  user_warned: 'تم تحذير المستخدم {0}.'
+  user_warned_and_punished: 'تم تحذير المستخدم {0} وتم تطبيق عقوبة {1}.'
+  username: اسم المستخدم
+  warn_cleared_by: 'تم المسح بواسطة {0}'
+  warn_count: '{0} حالي، {1} إجمالي'
+  warn_expire_reset: لن تنتهي صلاحية التحذيرات بعد الآن.
+  warn_expire_set_clear: 'سيتم مسح التحذيرات بعد {0} يوم.'
+  warn_expire_set_delete: 'سيتم حذف التحذيرات بعد {0} يوم.'
+  warn_punish_list: قائمة عقوبات التحذيرات
+  warn_punish_rem: 'الحصول على {0} تحذيرات لن يؤدي إلى عقوبة بعد الآن.'
+  warn_punish_set: 'سأطبق عقوبة {0} على المستخدمين الذين لديهم {1} تحذيرات.'
+  warn_punish_set_timed: 'سأطبق عقوبة {0} لمدة {2} على المستخدمين الذين لديهم {1} تحذيرات.'
+  warn_weight: 'الوزن: {0}'
+  warned_on: 'تم التحذير في سيرفر {0}'
+  warned_on_by: 'في {0} بتاريخ {1} بواسطة {2}'
+  warnmsg_default: لم يتم تعيين رسالة تحذير. سيتم استخدام السلوك الافتراضي.
+  warnmsg_disabled: رسائل التحذير معطلة. يمكنك تفعيلها بتعيين رسالة تحذير بقيمة غير '-'.
+  warning_clear_fail: لم يتم مسح التحذير. إما أن التحذير في ذلك الترتيب غير موجود، أو تم مسحه بالفعل.
+  warning_cleared: 'تم مسح التحذير {0} للمستخدم {1}.'
+  warning_deleted: 'تم حذف التحذير {0}.'
+  warning_not_found: التحذير غير موجود.
+  warnings_cleared: 'تم مسح جميع التحذيرات للمستخدم {0}.'
+  warnings_list: قائمة جميع المستخدمين المحذرين في السيرفر
+  warnings_none: لا توجد تحذيرات في هذه الصفحة.
+  warnlog_for: 'سجل التحذيرات للمستخدم {0}'
+  warnpl_none: لا توجد عقوبات محددة.
+  warns_dont_expire: التحذيرات ليس لها تاريخ انتهاء.
+  warns_expire_in: 'ستنتهي صلاحية التحذيرات خلال {0} يوم.'
+
+de-DE:
+  ban_prune: 'Der Bot wird bis zu {0} Tag(e) Nachrichten des gebannten Benutzers löschen.'
+  ban_prune_disabled: Nachrichten des gebannten Benutzers werden nicht mehr gelöscht.
+  bandm: |-
+    Du wurdest von Server {0} gebannt.
+    Grund: {1}
+  banmsg_default: Es wurde keine Bannnachricht gesetzt. Normales Verhalten wird verwendet.
+  banmsg_disabled: Bannnachrichten sind abgeschaltet. Du kannst sie anschalten wenn du eine Bannnachricht als etwas anderes setzt als '-'
+  banned_user: Nutzer gebannt
+  cant_apply_punishment: Ich kann keine Bestrafung ausführen. Fehlende Berechtigungen.
+  duration: Dauer
+  invalid: 'Ungültig / Konnte nicht gefunden werden ({0})'
+  kickdm: |-
+    Du wurdest von {0} gekickt.
+    Grund: {1}
+  kicked_user: Nutzer gekickt
+  mass_ban_completed: '{0} Benutzer gebannt.'
+  mass_ban_in_progress: 'Es werden {0} User gebannt...'
+  mass_kill_completed: 'Massen Bannen und Blacklisten von {0} Nutzern ist fertig.'
+  mass_kill_in_progress: 'Massen Bannen und Blacklisten von {0} Nutzern ist im Vorgang...'
+  moderator: Moderator
+  reason: Grund
+  role_too_high: Du kannst diesen Befehl nicht mit Rollen welche über deiner höchsten Rolle stehen benutzen. Außer du bist der Serveradministrator.
+  sb_user: Nuzter wurde soft-gebannt.
+  sbdm: |-
+    Du wurdest soft-banned vom {0} Server.
+    Grund: {1}
+  timedout_user: Benutzer mit Timeout
+  timeoutdm: |-
+    Du hast einen Timeout auf dem Server {0} erhalten.
+    Grund: {1}
+  unable_to_dm_user: Direktnachricht an den Benutzer fehlgeschlagen.
+  unbanned_user: 'Nutzer {0} wurde entbannt.'
+  user_warned: 'Benutzer {0} wurde verwarnt.'
+  user_warned_and_punished: 'Benutzer {0} wurde verwarnt und die Strafe {1} wurde angewandt.'
+  username: Benutzername
+  warn_cleared_by: 'Gelöscht von {0}'
+  warn_count: '{0} momentan, {1} insgesamt'
+  warn_expire_reset: Warnungen werden nicht mehr ablaufen.
+  warn_expire_set_clear: 'Warnungen werden nach {0} Tagen entfernt.'
+  warn_expire_set_delete: 'Warnungen werden nach {0} Tagen gelöscht.'
+  warn_punish_list: Bestrafungsliste
+  warn_punish_rem: '{0} Warnungen zu haben wird keine Bestrafung mehr nach sich ziehen.'
+  warn_punish_set: 'Ich werde {0} Bestrafungen ausführen an Nutzern mit {1} Warnungen'
+  warn_punish_set_timed: 'Ich werde {0} Strafen für {2} an Nutzern mit {1} Warnungen anwenden.'
+  warn_weight: 'Gewicht: {0}'
+  warned_on: 'Gewarnt auf {0} Server'
+  warned_on_by: 'Am {0} um {1} von {2}'
+  warnmsg_default: Es wurde keine Warnungsnachricht gesetzt. Normales Verhalten wird verwendet.
+  warnmsg_disabled: Warnungsnachrichten sind abgeschaltet. Du kannst sie anschalten wenn du eine Warnungsnachricht als etwas anderes setzt als '-'.
+  warning_clear_fail: Warnung wurde nicht gelöscht. Entweder gibt es die Warnung mit diesem Index nicht, oder sie wurde bereits gelöscht.
+  warning_cleared: 'Warnung {0} wurde für {1} entfernt.'
+  warning_deleted: 'Warnung {0} wurde gelöscht.'
+  warning_not_found: Warnung nicht gefunden.
+  warnings_cleared: 'Alle Warnungen für {0} wurden entfernt.'
+  warnings_list: Liste aller gewarnten Nutzer auf diesem Server
+  warnings_none: Keine Warnungen auf dieser Seite.
+  warnlog_for: 'Warnungs-log für {0}'
+  warnpl_none: Keine Bestrafungen definiert.
+  warns_dont_expire: Warnung haben keinen Verfall eingestellt.
+  warns_expire_in: 'Warnungen verfallen in {0} Tagen.'
+
+es-ES:
+  ban_prune: 'El bot eliminará hasta {0} día(s) de mensajes del usuario baneado.'
+  ban_prune_disabled: Los mensajes del usuario baneado ya no serán eliminados.
+  bandm: |-
+    Has sido bloqueado del servidor {0}.
+    Razón: {1}
+  banmsg_default: No hay un mensaje de veto establecido. Se utilizarán los ajustes predeterminados.
+  banmsg_disabled: Mensajes de veto desactivados. Puede habilitarlos estableciendo un 'banmsg' en algo diferente a '-'.
+  banned_user: Usuario bloqueado
+  cant_apply_punishment: No pude aplicar el castigo. Faltan permisos.
+  duration: Duración
+  invalid: 'No válido / No se encuentra ({0})'
+  kickdm: |-
+    Has sido expulsado del servidor {0}.
+    Razón: {1}
+  kicked_user: Usuario expulsado.
+  mass_ban_completed: 'Se han corrido a {0} usuarios.'
+  mass_ban_in_progress: 'Corriendo a {0} usuarios...'
+  mass_kill_completed: 'Se ha completado el veto en masa y envío a la lista negra de {0} usuarios.'
+  mass_kill_in_progress: 'Vetando en masa y añadiendo a la lista negra {0} usuarios...'
+  moderator: Moderador
+  reason: Razón
+  role_too_high: No puedes usar este comando con roles que están por encima del tuyo, a menos que seas el administrador.
+  sb_user: Usuario expulsado
+  sbdm: |-
+    Has sido expulsado del servidor {0}.
+    Razón: {1}
+  timedout_user: Usuario con Timeout
+  timeoutdm: |-
+    Has recibido un timeout en el servidor {0}.
+    Razón: {1}
+  unable_to_dm_user: Error escribiendo al usuario un mensaje privado.
+  unbanned_user: 'El usuario {0} ha sido desbloqueado.'
+  user_warned: 'El usuario {0} ha sido advertido.'
+  user_warned_and_punished: 'El usuario {0} ha sido advertido y el castigo {1} ha sido aplicado.'
+  username: Usuario
+  warn_cleared_by: 'Reiniciados por {0}.'
+  warn_count: 'Actual {0}, total {1}'
+  warn_expire_reset: Las advertencias ya no expirarán.
+  warn_expire_set_clear: 'Las advertencias se reiniciarán cada {0} días.'
+  warn_expire_set_delete: 'Las advertencias se eliminarán cada {0} días.'
+  warn_punish_list: Lista de castigos activos
+  warn_punish_rem: 'Tener {0} advertencias ya no ejecutará un castigo.'
+  warn_punish_set: 'Aplicaré el castigo {0} a los usuarios con {1} advertencias.'
+  warn_punish_set_timed: 'Aplicaré el castigo {0} por {2} a los usuarios con {1} advertencias.'
+  warn_weight: 'Peso: {0}'
+  warned_on: 'Advertido en el servidor {0}'
+  warned_on_by: 'El {0} a las {1} por {2}.'
+  warnmsg_default: No hay un mensaje de advertencia establecido. Se utilizarán los ajustes predeterminados.
+  warnmsg_disabled: Mensajes de advertencia desactivados. Puede habilitarlos estableciendo un warnmsg en algo diferente a '-'.
+  warning_clear_fail: Advertencias no eliminadas. O la advertencia con ese índice no existe, o ya ha sido eliminada.
+  warning_cleared: 'Advertencia {0} ha sido reiniciada para {1}.'
+  warning_deleted: 'La advertencia {0} ha sido eliminada.'
+  warning_not_found: Advertencia no encontrada.
+  warnings_cleared: 'Todas las advertencias han sido reiniciadas para {0}.'
+  warnings_list: Lista de usuarios advertidos en el servidor
+  warnings_none: No hay castigos configurados.
+  warnlog_for: 'Registro de advertencias para {0}'
+  warnpl_none: No hay castigos configurados.
+  warns_dont_expire: Las advertencias no tienen expiración configurada.
+  warns_expire_in: 'Las advertencias expirarán en {0} días.'
+
+fr-FR:
+  ban_prune: 'Le bot supprimera jusqu''à {0} jour(s) de messages de l''utilisateur banni.'
+  ban_prune_disabled: Les messages de l'utilisateur banni ne seront plus supprimés.
+  bandm: |-
+    Vous avez été banni du serveur {0}.
+    Raison : {1}
+  banmsg_default: Aucun message de bannissement défini. La conduite par défaut sera appliquée.
+  banmsg_disabled: Les messages d'exclusion sont désactivés. Vous pouvez les activer en définissant banmsg autrement qu'avec '-'.
+  banned_user: Membre banni
+  cant_apply_punishment: Je ne peux pas appliquer la sanction. Veuillez vérifiez mes permissions ainsi que la place de mon rôle, qu'il soit au-dessus des autres dans les paramètres du serveur.
+  duration: Durée
+  invalid: 'Invalide / Introuvable ({0})'
+  kickdm: |-
+    Vous avez été expulsé du serveur {0}.
+    Raison : {1}
+  kicked_user: Membre expulsé
+  mass_ban_completed: '{0} membres bannis.'
+  mass_ban_in_progress: 'En train de bannir {0} membres...'
+  mass_kill_completed: 'Le bannissement massif et la mise sur liste noire de {0} utilisateurs est fini.'
+  mass_kill_in_progress: 'Le bannissement massif et la mise sur liste noire de {0} utilisateurs est en cours...'
+  moderator: Modérateur
+  reason: Raison
+  role_too_high: Vous ne pouvez pas utiliser cette commande avec des rôles supérieurs au votre, sauf si vous êtes administrateur de serveur.
+  sb_user: L'utilisateur a été radié.
+  sbdm: |-
+    Vous avez été radié du serveur {0}.
+    Raison : {1}
+  timedout_user: Utilisateur en Timeout
+  timeoutdm: |-
+    Vous avez reçu un timeout sur le serveur {0}.
+    Raison : {1}
+  unable_to_dm_user: Échec de l'envoi du message par MP.
+  unbanned_user: 'L''utilisateur {0} à été débanni.'
+  user_warned: 'L''utilisateur {0} a reçu un avertissement.'
+  user_warned_and_punished: 'L''utilisateur {0} a reçu un avertissement et la punition {1} a été appliquée.'
+  username: Nom d'utilisateur
+  warn_cleared_by: 'Effacé par {0}'
+  warn_count: '{0} actuel·s, {1} total'
+  warn_expire_reset: Les avertissements n'expireront plus.
+  warn_expire_set_clear: 'Les avertissements seront annulés après {0} jours.'
+  warn_expire_set_delete: 'Les avertissements seront supprimés après {0} jours.'
+  warn_punish_list: Liste des avertissements punitifs
+  warn_punish_rem: 'Avoir {0} avertissements ne déclenche plus une punition.'
+  warn_punish_set: 'J''appliquerai la sanction {0} pour les utilisateurs avec {1} avertissements.'
+  warn_punish_set_timed: 'J''appliquerai {0} punition pour {2} aux utilisateurs avec {1} avertissements.'
+  warn_weight: 'Poids: {0}'
+  warned_on: 'Avertissement envoyé sur le serveur {0}'
+  warned_on_by: 'Le {0} à {1} par {2}'
+  warnmsg_default: Aucun message d'avertissement défini. Le comportement par défaut sera utilisé.
+  warnmsg_disabled: Les messages d'avertissement sont désactivés. Vous pouvez les activer en définissant warnmsg autrement qu'avec '-'.
+  warning_clear_fail: Avertissement non effacé. Soit l'avertissement sur cet index n'existe pas, soit il a déjà été effacé.
+  warning_cleared: 'L''avertissement {0} a été effacé pour {1}.'
+  warning_deleted: 'L''avertissement {0} a été supprimé.'
+  warning_not_found: Avertissement non trouvé.
+  warnings_cleared: 'Tous les avertissements ont été effacés pour {0}.'
+  warnings_list: Liste des utilisateurs ayant reçus un avertissement sur ce serveur
+  warnings_none: Aucun avertissement sur cette page.
+  warnlog_for: 'Journal d''avertissement pour {0}'
+  warnpl_none: Aucun châtiment réglé.
+  warns_dont_expire: Les avertissements n'ont pas de date d'expiration définie.
+  warns_expire_in: 'Les avertissements expireront dans {0} jours.'
+
+id-ID:
+  ban_prune: 'Bot akan menghapus pesan hingga {0} hari dari user yang dibanned.'
+  ban_prune_disabled: Pesan user yang dibanned tidak akan dihapus lagi.
+  bandm: |-
+    Kamu telah dibanned dari server {0}.
+    Alasan: {1}
+  banmsg_default: Tidak ada pesan ban yang dipasang. Perilaku default akan digunakan.
+  banmsg_disabled: Pesan ban dinonaktifkan. Kamu bisa mengaktifkannya dengan mengatur banmsg ke sesuatu selain '-'.
+  banned_user: User Dibanned
+  cant_apply_punishment: Nggak bisa menerapkan hukuman. Pastikan aku punya izin yang cukup, dan role-ku berada di atas role lainnya di pengaturan server.
+  duration: Durasi
+  invalid: 'Tidak valid / Tidak ditemukan ({0})'
+  kickdm: |-
+    Kamu telah di-kick dari server {0}.
+    Alasan: {1}
+  kicked_user: User di-kick
+  mass_ban_completed: '{0} user berhasil dibanned.'
+  mass_ban_in_progress: 'Sedang membanned {0} user...'
+  mass_kill_completed: 'Mass ban dan blacklist {0} user sudah selesai.'
+  mass_kill_in_progress: 'Mass ban dan blacklist {0} user sedang berlangsung...'
+  moderator: Moderator
+  reason: Alasan
+  role_too_high: Kamu nggak bisa menggunakan perintah ini dengan role yang lebih tinggi dari role tertinggimu, kecuali kamu administrator server.
+  sb_user: User di-softban
+  sbdm: |-
+    Kamu telah di-softban dari server {0}.
+    Alasan: {1}
+  timedout_user: User Di-timeout
+  timeoutdm: |-
+    Kamu telah di-timeout di server {0}.
+    Alasan: {1}
+  unable_to_dm_user: Gagal mengirim DM ke user.
+  unbanned_user: 'User {0} sudah di-unban.'
+  user_warned: 'Pengguna {0} telah diperingatkan.'
+  user_warned_and_punished: 'Pengguna {0} telah diperingatkan dan hukuman {1} telah diterapkan.'
+  username: Nama Pengguna
+  warn_cleared_by: 'dihapus oleh {0}'
+  warn_count: '{0} saat ini, {1} total'
+  warn_expire_reset: Peringatan tidak akan kedaluwarsa lagi.
+  warn_expire_set_clear: 'Peringatan akan dihapus setelah {0} hari.'
+  warn_expire_set_delete: 'Peringatan akan dihapus permanen setelah {0} hari.'
+  warn_punish_list: Daftar hukuman peringatan
+  warn_punish_rem: 'Memiliki {0} peringatan tidak akan lagi memicu hukuman.'
+  warn_punish_set: 'Aku akan memberikan hukuman {0} ke pengguna dengan {1} peringatan.'
+  warn_punish_set_timed: 'Aku akan memberikan hukuman {0} selama {2} ke pengguna dengan {1} peringatan.'
+  warn_weight: 'Bobot: {0}'
+  warned_on: 'Diperingatkan di server {0}'
+  warned_on_by: 'Di {0} pada {1} oleh {2}'
+  warnmsg_default: Tidak ada pesan peringatan yang dipasang. Perilaku default akan digunakan.
+  warnmsg_disabled: Pesan peringatan dinonaktifkan. Kamu bisa mengaktifkannya dengan mengatur warnmsg ke sesuatu selain '-'.
+  warning_clear_fail: Peringatan tidak dihapus. Peringatan di indeks tersebut tidak ada, atau sudah dihapus sebelumnya.
+  warning_cleared: 'Peringatan {0} telah dihapus untuk {1}.'
+  warning_deleted: 'Peringatan {0} telah dihapus.'
+  warning_not_found: Peringatan tidak ditemukan.
+  warnings_cleared: 'Semua peringatan telah dihapus untuk {0}.'
+  warnings_list: Daftar semua pengguna yang diperingatkan di server
+  warnings_none: Tidak ada peringatan di halaman ini.
+  warnlog_for: 'Log peringatan untuk {0}'
+  warnpl_none: Tidak ada hukuman yang diatur.
+  warns_dont_expire: Peringatan tidak memiliki batas kedaluwarsa.
+  warns_expire_in: 'Peringatan akan kedaluwarsa dalam {0} hari.'
+
+ja-JP:
+  ban_prune: 'Botはバンされたユーザーの{0}日分のメッセージを削除します。'
+  ban_prune_disabled: バンされたユーザーのメッセージは削除されなくなります。
+  bandm: |-
+    あなたは《{0}》サーバーからBANされました。
+    理由: {1}
+  banmsg_default: バンメッセージは設定されていません。デフォルトの動作が使用されます。
+  banmsg_disabled: バンメッセージは無効です。'-'以外に設定することで有効にできます。
+  banned_user: ユーザーがBANされました
+  cant_apply_punishment: 処罰を適用できません。十分な権限があること、およびBotのロールがサーバー設定で他のすべてのロールより上にあることを確認してください。
+  duration: 期間
+  invalid: '無効 / 見つかりません ({0})'
+  kickdm: |-
+    あなたは《{0}》サーバーからキックされました。
+    理由: {1}
+  kicked_user: ユーザーがキックされました
+  mass_ban_completed: '{0}人のユーザーをバンしました。'
+  mass_ban_in_progress: '{0}人のユーザーをバン中...'
+  mass_kill_completed: '{0}人のユーザーの一括BAN・ブラックリスト登録が完了しました。'
+  mass_kill_in_progress: '{0}人のユーザーの一括BAN・ブラックリスト登録を実行中...'
+  moderator: モデレータ
+  reason: 理由
+  role_too_high: サーバー管理者でない限り、あなたの最高ロールより上のロールにはこのコマンドを使用できません。
+  sb_user: ユーザがソフトBANされました
+  sbdm: |-
+    あなたは《{0}》サーバーからソフトBANされました。
+    理由: {1}
+  timedout_user: タイムアウトされたユーザー
+  timeoutdm: |-
+    サーバー{0}でタイムアウトを受けました。
+    理由: {1}
+  unable_to_dm_user: ユーザーへのDM送信に失敗しました。
+  unbanned_user: 'ユーザー{0}はブロックされていません。'
+  user_warned: 'ユーザー{0}は警告されました。'
+  user_warned_and_punished: 'ユーザー{0}に警告があり、{1}罰が適用されました。'
+  username: ユーザー名
+  warn_cleared_by: '{0}でクリアされました'
+  warn_count: '現在{0}、合計{1}'
+  warn_expire_reset: 警告は期限切れにならなくなります。
+  warn_expire_set_clear: '警告は{0}日後にクリアされます。'
+  warn_expire_set_delete: '警告は{0}日後に削除されます。'
+  warn_punish_list: 警告罰リスト
+  warn_punish_rem: '{0}の警告があれば、もはや罰を引き起こさないでしょう。'
+  warn_punish_set: '{1}警告のあるユーザーに{0}罰を適用します。'
+  warn_punish_set_timed: '警告が{1}回のユーザーに{2}の間{0}処罰を適用します。'
+  warn_weight: '重み: {0}'
+  warned_on: '{0}サーバーで警告されました'
+  warned_on_by: '{1}の{0}で{2}'
+  warnmsg_default: 警告メッセージは設定されていません。デフォルトの動作が使用されます。
+  warnmsg_disabled: 警告メッセージは無効です。'-'以外に設定することで有効にできます。
+  warning_clear_fail: 警告がクリアされませんでした。そのインデックスの警告が存在しないか、すでにクリアされています。
+  warning_cleared: '{1}の警告{0}がクリアされました。'
+  warning_deleted: '警告{0}が削除されました。'
+  warning_not_found: 警告が見つかりません。
+  warnings_cleared: 'すべての警告は{0}でクリアされています。'
+  warnings_list: サーバーで警告されたユーザーのリスト
+  warnings_none: このページでは警告は表示されません。
+  warnlog_for: '{0}の警告'
+  warnpl_none: 罰は設定されていません。
+  warns_dont_expire: 警告に期限は設定されていません。
+  warns_expire_in: '警告は{0}日後に期限切れになります。'
+
+ko-KR:
+  ban_prune: '봇이 차단된 사용자의 최대 {0}일치 메시지를 삭제해요.'
+  ban_prune_disabled: 차단된 사용자의 메시지가 더 이상 삭제되지 않아요.
+  bandm: |-
+    {0} 서버에서 차단되었습니다.
+    사유: {1}
+  banmsg_default: 차단 메시지가 설정되지 않았어요. 기본 동작이 사용돼요.
+  banmsg_disabled: 차단 메시지가 비활성화되어 있어요. '-' 이외의 값으로 banmsg를 설정하면 활성화할 수 있어요.
+  banned_user: 사용자 차단됨
+  cant_apply_punishment: 처벌을 적용할 수 없어요. 충분한 권한이 있는지, 그리고 제 역할이 서버 설정에서 다른 역할보다 위에 있는지 확인해 주세요.
+  duration: 기간
+  invalid: '유효하지 않음 / 찾을 수 없음 ({0})'
+  kickdm: |-
+    {0} 서버에서 추방되었습니다.
+    사유: {1}
+  kicked_user: 사용자 추방됨
+  mass_ban_completed: '{0}명의 사용자를 차단했어요.'
+  mass_ban_in_progress: '{0}명의 사용자를 차단하는 중...'
+  mass_kill_completed: '{0}명의 사용자에 대한 일괄 차단 및 블랙리스트가 완료되었어요.'
+  mass_kill_in_progress: '{0}명의 사용자에 대한 일괄 차단 및 블랙리스트가 진행 중...'
+  moderator: 관리자
+  reason: 사유
+  role_too_high: 본인의 최고 역할보다 위에 있는 역할에는 이 명령어를 사용할 수 없어요. 서버 관리자인 경우는 예외예요.
+  sb_user: 사용자 소프트 밴됨
+  sbdm: |-
+    {0} 서버에서 소프트 밴되었습니다.
+    사유: {1}
+  timedout_user: 사용자 타임아웃됨
+  timeoutdm: |-
+    {0} 서버에서 타임아웃되었습니다.
+    사유: {1}
+  unable_to_dm_user: 사용자에게 DM을 보내지 못했어요.
+  unbanned_user: '사용자 {0}의 차단이 해제되었어요.'
+  user_warned: '유저 {0}에게 경고가 부여되었어요.'
+  user_warned_and_punished: '유저 {0}에게 경고가 부여되었고, {1} 처벌이 적용되었어요.'
+  username: 유저 이름
+  warn_cleared_by: '{0}에 의해 해제됨'
+  warn_count: '현재 {0}개, 총 {1}개'
+  warn_expire_reset: 경고가 더 이상 만료되지 않아요.
+  warn_expire_set_clear: '경고가 {0}일 후 초기화돼요.'
+  warn_expire_set_delete: '경고가 {0}일 후 삭제돼요.'
+  warn_punish_list: 경고 처벌 목록
+  warn_punish_rem: '경고 {0}개가 더 이상 처벌을 발동하지 않아요.'
+  warn_punish_set: '경고가 {1}개인 유저에게 {0} 처벌을 적용할게요.'
+  warn_punish_set_timed: '경고가 {1}개인 유저에게 {2} 동안 {0} 처벌을 적용할게요.'
+  warn_weight: '가중치: {0}'
+  warned_on: '{0} 서버에서 경고를 받음'
+  warned_on_by: '{0}에서 {1}에 {2}에 의해'
+  warnmsg_default: 경고 메시지가 설정되지 않았어요. 기본 동작이 사용돼요.
+  warnmsg_disabled: 경고 메시지가 비활성화되어 있어요. '-' 이외의 값으로 warnmsg를 설정하면 활성화할 수 있어요.
+  warning_clear_fail: 경고를 해제하지 못했어요. 해당 번호의 경고가 존재하지 않거나 이미 해제되었어요.
+  warning_cleared: '{1}의 경고 {0}이(가) 해제되었어요.'
+  warning_deleted: '경고 {0}이(가) 삭제되었어요.'
+  warning_not_found: 경고를 찾을 수 없어요.
+  warnings_cleared: '{0}의 모든 경고가 해제되었어요.'
+  warnings_list: 서버의 경고 받은 유저 전체 목록
+  warnings_none: 이 페이지에 경고가 없어요.
+  warnlog_for: '{0}의 경고 기록'
+  warnpl_none: 설정된 처벌이 없어요.
+  warns_dont_expire: 경고에 만료 기한이 설정되어 있지 않아요.
+  warns_expire_in: '경고가 {0}일 후 만료돼요.'
+
+pl-PL:
+  ban_prune: 'Bot usunie wiadomości zbanowanego użytkownika z ostatnich {0} dni.'
+  ban_prune_disabled: Wiadomości zbanowanych użytkowników nie będą już usuwane.
+  bandm: |-
+    Zostałeś zbanowany na serwerze {0}.
+    Powód: {1}
+  banmsg_default: Nie ustawiono wiadomości bana. Zostanie użyte domyślne zachowanie.
+  banmsg_disabled: Wiadomości banów są wyłączone. Możesz je włączyć, ustawiając banmsg na coś innego niż '-'.
+  banned_user: Użytkownik zbanowany
+  cant_apply_punishment: Nie można zastosować kary. Upewnij się, że mam wystarczające uprawnienia i że moja rola jest powyżej wszystkich innych ról w ustawieniach serwera.
+  duration: Czas trwania
+  invalid: 'Nieprawidłowe / Nie znaleziono ({0})'
+  kickdm: |-
+    Zostałeś wyrzucony z serwera {0}.
+    Powód: {1}
+  kicked_user: Użytkownik wyrzucony
+  mass_ban_completed: 'Zbanowano {0} użytkowników.'
+  mass_ban_in_progress: 'Banowanie {0} użytkowników...'
+  mass_kill_completed: 'Masowe banowanie i dodawanie do czarnej listy {0} użytkowników zakończone.'
+  mass_kill_in_progress: 'Masowe banowanie i dodawanie do czarnej listy {0} użytkowników w toku...'
+  moderator: Moderator
+  reason: Powód
+  role_too_high: Nie możesz użyć tej komendy z rolami, które są wyższe niż twoja najwyższa rola, chyba że jesteś administratorem serwera.
+  sb_user: Użytkownik miękko zbanowany
+  sbdm: |-
+    Zostałeś miękko zbanowany na serwerze {0}.
+    Powód: {1}
+  timedout_user: Użytkownik wyciszony czasowo
+  timeoutdm: |-
+    Otrzymałeś wyciszenie czasowe na serwerze {0}.
+    Powód: {1}
+  unable_to_dm_user: Nie udało się wysłać wiadomości prywatnej do użytkownika.
+  unbanned_user: 'Użytkownik {0} został odbanowany.'
+  user_warned: 'Użytkownik {0} został ostrzeżony.'
+  user_warned_and_punished: 'Użytkownik {0} został ostrzeżony i zastosowano karę {1}.'
+  username: Nazwa użytkownika
+  warn_cleared_by: 'usunięte przez {0}'
+  warn_count: '{0} aktualnych, {1} łącznie'
+  warn_expire_reset: Ostrzeżenia nie będą już wygasać.
+  warn_expire_set_clear: 'Ostrzeżenia zostaną wyczyszczone po {0} dniach.'
+  warn_expire_set_delete: 'Ostrzeżenia zostaną usunięte po {0} dniach.'
+  warn_punish_list: Lista kar za ostrzeżenia
+  warn_punish_rem: 'Posiadanie {0} ostrzeżeń nie będzie już powodować kary.'
+  warn_punish_set: 'Zastosuję karę {0} dla użytkowników z {1} ostrzeżeniami.'
+  warn_punish_set_timed: 'Zastosuję karę {0} na {2} dla użytkowników z {1} ostrzeżeniami.'
+  warn_weight: 'Waga: {0}'
+  warned_on: 'Ostrzeżony na serwerze {0}'
+  warned_on_by: 'Na {0} o {1} przez {2}'
+  warnmsg_default: Nie ustawiono wiadomości ostrzeżenia. Zostanie użyte domyślne zachowanie.
+  warnmsg_disabled: Wiadomości ostrzeżeń są wyłączone. Możesz je włączyć, ustawiając warnmsg na coś innego niż '-'.
+  warning_clear_fail: Nie udało się usunąć ostrzeżenia. Ostrzeżenie o tym indeksie nie istnieje lub zostało już usunięte.
+  warning_cleared: 'Ostrzeżenie {0} zostało usunięte dla {1}.'
+  warning_deleted: 'Ostrzeżenie {0} zostało skasowane.'
+  warning_not_found: Nie znaleziono ostrzeżenia.
+  warnings_cleared: 'Wszystkie ostrzeżenia zostały usunięte dla {0}.'
+  warnings_list: Lista wszystkich ostrzeżonych użytkowników na serwerze
+  warnings_none: Brak ostrzeżeń na tej stronie.
+  warnlog_for: 'Historia ostrzeżeń dla {0}'
+  warnpl_none: Brak ustawionych kar.
+  warns_dont_expire: Ostrzeżenia nie mają ustawionego wygasania.
+  warns_expire_in: 'Ostrzeżenia wygasną za {0} dni.'
+
+pt-BR:
+  ban_prune: 'O bot excluirá até {0} dia(s) de mensagens do usuário banido.'
+  ban_prune_disabled: As mensagens do usuário banido não serão mais excluídas.
+  bandm: |-
+    Você foi banido do servidor {0}.
+    Motivo: {1}
+  banmsg_default: Notificação de banimento não definida. A notificação padrão será utilizada.
+  banmsg_disabled: Mensagens de banimento foram desativadas. Você pode ativa-las configurando a mensagem para algo outro que não seja '-'.
+  banned_user: Usuário Banido
+  cant_apply_punishment: Não tenho as permissões necessárias para aplicar essa punição.
+  duration: Duração
+  invalid: 'Inválido / Não foi possível encontrar ({0})'
+  kickdm: |-
+    Você foi expulso do servidor {0}.
+    Motivo: {1}
+  kicked_user: Usuário expulso
+  mass_ban_completed: '{0} usuários banidos.'
+  mass_ban_in_progress: 'Banindo {0} usuários...'
+  mass_kill_completed: 'Banimento em massa de {0} usuários concluído.'
+  mass_kill_in_progress: 'Banimento em massa de {0} usuários em andamento...'
+  moderator: Moderador
+  reason: Motivo
+  role_too_high: Você não pode usar esse comando em cargos que estão acima do seu nível hierárquico, a não ser que você seja um administrador.
+  sb_user: Usuário expulso
+  sbdm: |-
+    Você foi temporariamente banido do servidor {0}.
+    Motivo: {1}
+  timedout_user: Usuário com Timeout
+  timeoutdm: |-
+    Você recebeu timeout no servidor {0}.
+    Motivo: {1}
+  unable_to_dm_user: Falha em enviar mensagem para usuário.
+  unbanned_user: 'O usuário {0} foi desbanido'
+  user_warned: 'O usuário {0} foi advertido.'
+  user_warned_and_punished: 'O usuário {0} foi advertido e a punição {1} foi aplicada.'
+  username: Nome de usuário
+  warn_cleared_by: 'removido pelo(a) {0}'
+  warn_count: '{0} atual, {1} total'
+  warn_expire_reset: Advertências não vão mais expirar.
+  warn_expire_set_clear: 'Advertências serão limpas após {0} dias.'
+  warn_expire_set_delete: 'Advertências serão deletadas após {0} dias.'
+  warn_punish_list: Lista de punições
+  warn_punish_rem: 'Ter {0} advertências não causará mais uma punição.'
+  warn_punish_set: 'Usuários que acumularem {1} advertências serão punidos com {0}.'
+  warn_punish_set_timed: 'A punição {0} será aplicada por {2} a usuários com {1} advertências.'
+  warn_weight: 'Peso: {0}'
+  warned_on: 'Você foi advertido no servidor {0}'
+  warned_on_by: 'Em {0} às {1} por {2}'
+  warnmsg_default: Notificação de advertência não definida. A notificação padrão será utilizada.
+  warnmsg_disabled: Mensagens de advertência foram desativadas. Você pode ativá-las configurando a mensagem para algo outro que não seja '-'.
+  warning_clear_fail: Erro. Não há advertência nesse índice ou ela já foi removida.
+  warning_cleared: 'A advertência #{0} do usuário {1} foi removida.'
+  warning_deleted: 'O aviso {0} foi excluído.'
+  warning_not_found: Aviso não encontrado.
+  warnings_cleared: 'Todas as advertências do usuário {0} foram removidas.'
+  warnings_list: Lista de usuários advertidos no servidor
+  warnings_none: Há nenhuma advertência nessa página.
+  warnlog_for: 'Lista de advertências para {0}'
+  warnpl_none: Nenhuma punição foi definida.
+  warns_dont_expire: As advertências não possuem validade estabelecida.
+  warns_expire_in: 'Advertências expirarão em {0} dias.'
+
+ru-RU:
+  ban_prune: 'Бот удалит до {0} дней сообщений забаненного пользователя.'
+  ban_prune_disabled: Сообщения забаненного пользователя больше не будут удаляться.
+  bandm: |-
+    Вы получили бан на сервере {0}.
+    Причина: {1}
+  banmsg_default: Сообщение о запрете не установлено. Будет использоваться поведение по умолчанию.
+  banmsg_disabled: Сообщения о запрете отключены. Вы можете включить их, установив для banmsg значение, отличное от '-'.
+  banned_user: Пользователь забанен
+  cant_apply_punishment: Не могу применить наказание. Отсутствуют нужные разрешения.
+  duration: Продолжительность
+  invalid: 'Неверное значение / Не может быть найдено ({0})'
+  kickdm: |-
+    Вы были выгнаны с сервера {0}
+    Причина: {1}
+  kicked_user: Пользователь выгнан
+  mass_ban_completed: 'Заблокировано {0} пользователей.'
+  mass_ban_in_progress: 'Блокировка {0} пользователей...'
+  mass_kill_completed: 'Массовая блокировка и занесение в черный список {0} пользователей было завершено.'
+  mass_kill_in_progress: 'Массовая блокировка и занесение в черный список {0} пользователей в процессе...'
+  moderator: Модератор
+  reason: Причина
+  role_too_high: Вы не можете использовать эту команду с ролями выше вашей наивысшей роли, если вы не являетесь администратором сервера.
+  sb_user: Пользователь был выгнан
+  sbdm: |-
+    Вы были заблокированы на сервере {0}.
+    Причина: {1}
+  timedout_user: Пользователь с Тайм-аутом
+  timeoutdm: |-
+    Вы получили тайм-аут на сервере {0}.
+    Причина: {1}
+  unable_to_dm_user: Отправка ЛС пользователю не удалась.
+  unbanned_user: 'Пользователь {0} был разблокирован.'
+  user_warned: 'Пользователь {0} получил предупреждение.'
+  user_warned_and_punished: 'Пользователь {0} получил предупреждение и наказание в виде {1} было применено.'
+  username: Логин
+  warn_cleared_by: 'Предупреждения сняты {0}'
+  warn_count: '{0} текущий, {1} всего'
+  warn_expire_reset: Предупреждения больше не истекают.
+  warn_expire_set_clear: 'Предупреждения будут очищены через {0} дн.'
+  warn_expire_set_delete: 'Предупреждения будут удалены через {0} дн.'
+  warn_punish_list: Список наказаний за предупреждения
+  warn_punish_rem: 'Наказания за {0} предупреждений больше не будет.'
+  warn_punish_set: 'Я буду применять наказание {0} к пользователям с {1} предупреждениями.'
+  warn_punish_set_timed: 'Я применю {0} наказание за {2} к пользователям с предупреждениями {1}.'
+  warn_weight: 'Вес: {0}'
+  warned_on: 'Получил предупреждение на сервере {0}'
+  warned_on_by: '{0} в {1} пользователем {2}'
+  warnmsg_default: Сообщение о предупреждении не установлено. Будет использоваться поведение по умолчанию.
+  warnmsg_disabled: Сообщения о предупреждении отключены. Вы можете включить их, установив для warnmsg значение, отличное от '-'.
+  warning_clear_fail: Предупреждение не было снято. Или никакого предупреждения под таким индексом не существует, или оно уже было снято.
+  warning_cleared: 'Предупреждение {0} было снято для {1}'
+  warning_deleted: 'Предупреждение {0} было удалено.'
+  warning_not_found: Предупреждение не найдено.
+  warnings_cleared: 'Все предупреждения пользователя {0} были сняты.'
+  warnings_list: Список всех людей с предупреждениями на этом сервере
+  warnings_none: Никаких предупреждений на этой странице
+  warnlog_for: 'Список предупреждений для {0}'
+  warnpl_none: Никаких наказаний не установлено.
+  warns_dont_expire: Предупреждения не имеют срока действия.
+  warns_expire_in: 'Срок действия предупреждений истечет через {0} дн.'
+
+sr-Cyrl-RS:
+  ban_prune: 'Бот ће обрисати до {0} дан(а) порука од банованог корисника.'
+  ban_prune_disabled: Поруке банованих корисника се више неће брисати.
+  bandm: |-
+    Банован/а си са сервера {0}.
+    Разлог: {1}
+  banmsg_default: Порука за бан није постављена. Подразумевано понашање ће бити коришћено.
+  banmsg_disabled: Поруке за бан су искључене. Можеш их укључити тако што поставиш banmsg на нешто друго осим '-'.
+  banned_user: Корисник банован
+  cant_apply_punishment: Не могу да применим казну. Провери да ли имам довољно дозвола и да ли је моја улога изнад свих других улога у подешавањима сервера.
+  duration: Трајање
+  invalid: 'Неважеће / Не може се пронаћи ({0})'
+  kickdm: |-
+    Избачен/а си са сервера {0}.
+    Разлог: {1}
+  kicked_user: Корисник избачен
+  mass_ban_completed: 'Бановано {0} корисника.'
+  mass_ban_in_progress: 'Бановање {0} корисника...'
+  mass_kill_completed: 'Масовно бановање и стављање на црну листу {0} корисника је завршено.'
+  mass_kill_in_progress: 'Масовно бановање и стављање на црну листу {0} корисника је у току...'
+  moderator: Модератор
+  reason: Разлог
+  role_too_high: Не можеш да користиш ову команду са улогама које су изнад твоје највише улоге, осим ако ниси администратор сервера.
+  sb_user: Корисник софт-банован
+  sbdm: |-
+    Софт-банован/а си са сервера {0}.
+    Разлог: {1}
+  timedout_user: Корисник искључен на одређено време
+  timeoutdm: |-
+    Искључен/а си на одређено време на серверу {0}.
+    Разлог: {1}
+  unable_to_dm_user: Слање приватне поруке кориснику није успело.
+  unbanned_user: 'Корисник {0} је одбанован.'
+  user_warned: 'Корисник {0} је упозорен.'
+  user_warned_and_punished: 'Корисник {0} је упозорен и примењена је казна {1}.'
+  username: Корисничко име
+  warn_cleared_by: 'обрисао {0}'
+  warn_count: '{0} тренутно, {1} укупно'
+  warn_expire_reset: Упозорења више неће истицати.
+  warn_expire_set_clear: 'Упозорења ће бити обрисана после {0} дана.'
+  warn_expire_set_delete: 'Упозорења ће бити избрисана после {0} дана.'
+  warn_punish_list: Листа казни за упозорења
+  warn_punish_rem: 'Имати {0} упозорења више неће покренути казну.'
+  warn_punish_set: 'Применићу казну {0} на кориснике са {1} упозорења.'
+  warn_punish_set_timed: 'Применићу казну {0} у трајању од {2} на кориснике са {1} упозорења.'
+  warn_weight: 'Тежина: {0}'
+  warned_on: 'Упозорен на серверу {0}'
+  warned_on_by: 'На {0} у {1} од стране {2}'
+  warnmsg_default: Порука за упозорење није постављена. Подразумевано понашање ће бити коришћено.
+  warnmsg_disabled: Поруке за упозорење су искључене. Можеш их укључити тако што поставиш warnmsg на нешто друго осим '-'.
+  warning_clear_fail: Упозорење није обрисано. Или упозорење на том индексу не постоји, или је већ обрисано.
+  warning_cleared: 'Упозорење {0} је обрисано за {1}.'
+  warning_deleted: 'Упозорење {0} је избрисано.'
+  warning_not_found: Упозорење није пронађено.
+  warnings_cleared: 'Сва упозорења су обрисана за {0}.'
+  warnings_list: Листа свих упозорених корисника на серверу
+  warnings_none: Нема упозорења на овој страници.
+  warnlog_for: 'Лог упозорења за {0}'
+  warnpl_none: Нема постављених казни.
+  warns_dont_expire: Упозорења немају рок истека.
+  warns_expire_in: 'Упозорења ће истећи за {0} дана.'
+
+tr-TR:
+  ban_prune: 'Bot, yasaklanan kullanıcının en fazla {0} günlük mesajlarını silecek.'
+  ban_prune_disabled: Yasaklanan kullanıcının mesajları artık silinmeyecek.
+  bandm: |-
+    {0} sunucusundan yasaklandın.
+    Sebep: {1}
+  banmsg_default: Ban mesajı ayarlanmamış. Varsayılan davranış kullanılacak.
+  banmsg_disabled: Ban mesajları devre dışı. '-' dışında bir şey ayarlayarak etkinleştirebilirsin.
+  banned_user: Kullanıcı Yasaklandı
+  cant_apply_punishment: Ceza uygulanamıyor. Lütfen yeterli izinlere sahip olduğumdan ve rolümün sunucu ayarlarında diğer tüm rollerden üstte olduğundan emin ol.
+  duration: Süre
+  invalid: 'Geçersiz / Bulunamadı ({0})'
+  kickdm: |-
+    {0} sunucusundan atıldın.
+    Sebep: {1}
+  kicked_user: Kullanıcı atıldı
+  mass_ban_completed: '{0} kullanıcı yasaklandı.'
+  mass_ban_in_progress: '{0} kullanıcı yasaklanıyor...'
+  mass_kill_completed: '{0} kullanıcının toplu yasaklama ve kara listeye alma işlemi tamamlandı.'
+  mass_kill_in_progress: '{0} kullanıcının toplu yasaklama ve kara listeye alma işlemi devam ediyor...'
+  moderator: Moderatör
+  reason: Sebep
+  role_too_high: Bu komutu en yüksek rolünden üstte olan rollerle kullanamazsın, sunucu yöneticisi değilsen.
+  sb_user: Kullanıcı geçici olarak yasaklandı
+  sbdm: |-
+    {0} sunucusundan geçici olarak yasaklandın.
+    Sebep: {1}
+  timedout_user: Kullanıcı Zaman Aşımına Uğratıldı
+  timeoutdm: |-
+    {0} sunucusunda zaman aşımına uğratıldın.
+    Sebep: {1}
+  unable_to_dm_user: Kullanıcıya DM gönderilemedi.
+  unbanned_user: '{0} kullanıcısının yasağı kaldırıldı.'
+  user_warned: 'Kullanıcı {0} uyarıldı.'
+  user_warned_and_punished: 'Kullanıcı {0} uyarıldı ve {1} cezası uygulandı.'
+  username: Kullanıcı adı
+  warn_cleared_by: '{0} tarafından temizlendi'
+  warn_count: '{0} mevcut, {1} toplam'
+  warn_expire_reset: Uyarıların artık süresi dolmayacak.
+  warn_expire_set_clear: 'Uyarılar {0} gün sonra temizlenecek.'
+  warn_expire_set_delete: 'Uyarılar {0} gün sonra silinecek.'
+  warn_punish_list: Uyarı ceza listesi
+  warn_punish_rem: '{0} uyarıya sahip olmak artık bir ceza tetiklemeyecek.'
+  warn_punish_set: '{1} uyarıya sahip kullanıcılara {0} cezası uygulayacağım.'
+  warn_punish_set_timed: '{1} uyarıya sahip kullanıcılara {2} süreliğine {0} cezası uygulayacağım.'
+  warn_weight: 'Ağırlık: {0}'
+  warned_on: '{0} sunucusunda uyarıldı'
+  warned_on_by: '{0} sunucusunda {1} tarihinde {2} tarafından'
+  warnmsg_default: Uyarı mesajı ayarlanmamış. Varsayılan davranış kullanılacak.
+  warnmsg_disabled: Uyarı mesajları devre dışı. '-' dışında bir şey ayarlayarak etkinleştirebilirsin.
+  warning_clear_fail: Uyarı temizlenemedi. Ya o indekste bir uyarı yok ya da zaten temizlenmiş.
+  warning_cleared: '{1} için {0}. uyarı temizlendi.'
+  warning_deleted: '{0}. uyarı silindi.'
+  warning_not_found: Uyarı bulunamadı.
+  warnings_cleared: '{0} için tüm uyarılar temizlendi.'
+  warnings_list: Sunucudaki tüm uyarılmış kullanıcıların listesi
+  warnings_none: Bu sayfada uyarı yok.
+  warnlog_for: '{0} için uyarı kaydı'
+  warnpl_none: Ayarlanmış ceza yok.
+  warns_dont_expire: Uyarıların süre sınırı yok.
+  warns_expire_in: 'Uyarılar {0} gün içinde sona erecek.'
+
+ts-TS:
+  ban_prune: 'Bot will prune up to {0} day(s) worth of messages from banned user.'
+  ban_prune_disabled: Banned user's messages will no longer be deleted.
+  bandm: |-
+    You have been banned from {0} server.
+    Reason: {1}
+  banmsg_default: No ban message set. Default behavior will be used.
+  banmsg_disabled: Ban messages are disabled. Set a banmsg to something other than '-' to enable them.
+  banned_user: User Banned
+  cant_apply_punishment: Can't apply punishment. Make sure I have sufficient permissions and that my role is above the others.
+  duration: Duration
+  invalid: 'Invalid / Can''t be found ({0})'
+  kickdm: |-
+    You have been kicked from {0} server.
+    Reason: {1}
+  kicked_user: User kicked.
+  mass_ban_completed: 'Banned {0} users.'
+  mass_ban_in_progress: 'Banning {0} users... D-don''t rush me!'
+  mass_kill_completed: 'Mass banning and blacklisting of {0} users is complete.'
+  mass_kill_in_progress: 'Mass banning and blacklisting of {0} users is in progress...'
+  moderator: Moderator
+  reason: Reason
+  role_too_high: You can't use this command with roles above your highest role unless you're a server administrator.
+  sb_user: User soft-banned.
+  sbdm: |-
+    You have been soft-banned from {0} server.
+    Reason: {1}
+  timedout_user: User Timed Out
+  timeoutdm: |-
+    You have been timed out in {0} server.
+    Reason: {1}
+  unable_to_dm_user: DMing user failed.
+  unbanned_user: 'User {0} has been unbanned.'
+  user_warned: 'User {0} has been warned.'
+  user_warned_and_punished: 'User {0} has been warned and {1} punishment has been applied. They deserved it.'
+  username: Username
+  warn_cleared_by: 'cleared by {0}'
+  warn_count: '{0} current, {1} total'
+  warn_expire_reset: Warnings will no longer expire.
+  warn_expire_set_clear: 'Warnings will be cleared after {0} days.'
+  warn_expire_set_delete: 'Warnings will be deleted after {0} days. Hmph, I-I''m not being lenient.'
+  warn_punish_list: Warning punishment list
+  warn_punish_rem: 'Having {0} warnings will no longer trigger a punishment.'
+  warn_punish_set: 'I will apply {0} punishment to users with {1} warnings. D-don''t test me!'
+  warn_punish_set_timed: 'I will apply {0} punishment for {2} to users with {1} warnings.'
+  warn_weight: 'Weight: {0}'
+  warned_on: 'Warned on {0} server'
+  warned_on_by: 'On {0} at {1} by {2}'
+  warnmsg_default: No warn message set. Default behavior will be used.
+  warnmsg_disabled: Warn messages are disabled. You can enable them by setting a warnmsg to something other than '-'.
+  warning_clear_fail: Warning not cleared. Either the warning at that index doesn't exist, or it has already been cleared.
+  warning_cleared: 'Warning {0} has been cleared for {1}.'
+  warning_deleted: 'Warning {0} has been deleted.'
+  warning_not_found: Warning not found.
+  warnings_cleared: 'All warnings have been cleared for {0}.'
+  warnings_list: List of all warned users on the server
+  warnings_none: No warnings on this page.
+  warnlog_for: 'Warnlog for {0}'
+  warnpl_none: No punishments set.
+  warns_dont_expire: Warnings have no expiry set.
+  warns_expire_in: 'Warnings will expire in {0} days.'
+
+uk-UA:
+  ban_prune: 'Бот видалить повідомлення забаненого користувача за останні {0} день(днів).'
+  ban_prune_disabled: Повідомлення забаненого користувача більше не видалятимуться.
+  bandm: |-
+    Тебе було забанено на сервері {0}.
+    Причина: {1}
+  banmsg_default: Повідомлення про бан не встановлено. Буде використано стандартну поведінку.
+  banmsg_disabled: Повідомлення про бан вимкнено. Ти можеш увімкнути їх, встановивши banmsg на щось інше, ніж '-'.
+  banned_user: Користувача забанено
+  cant_apply_punishment: Не вдається застосувати покарання. Переконайся, що в мене достатньо прав і що моя роль вища за інші ролі в налаштуваннях сервера.
+  duration: Тривалість
+  invalid: 'Недійсне / Не знайдено ({0})'
+  kickdm: |-
+    Тебе було кікнуто з сервера {0}.
+    Причина: {1}
+  kicked_user: Користувача кікнуто
+  mass_ban_completed: 'Забанено {0} користувачів.'
+  mass_ban_in_progress: 'Банимо {0} користувачів...'
+  mass_kill_completed: 'Масовий бан та чорний список для {0} користувачів завершено.'
+  mass_kill_in_progress: 'Масовий бан та чорний список для {0} користувачів у процесі...'
+  moderator: Модератор
+  reason: Причина
+  role_too_high: Ти не можеш використовувати цю команду з ролями, які вищі за твою найвищу роль, хіба що ти адміністратор сервера.
+  sb_user: Користувача софт-банено
+  sbdm: |-
+    Тебе було софт-банено на сервері {0}.
+    Причина: {1}
+  timedout_user: Тайм-аут користувача
+  timeoutdm: |-
+    Тебе було відправлено в тайм-аут на сервері {0}.
+    Причина: {1}
+  unable_to_dm_user: Не вдалося надіслати повідомлення користувачу.
+  unbanned_user: 'Користувача {0} було розбанено.'
+  user_warned: 'Користувач {0} отримав попередження.'
+  user_warned_and_punished: 'Користувач {0} отримав попередження і було застосовано покарання {1}.'
+  username: Ім'я користувача
+  warn_cleared_by: 'знято {0}'
+  warn_count: '{0} поточних, {1} всього'
+  warn_expire_reset: Попередження більше не будуть закінчуватися.
+  warn_expire_set_clear: 'Попередження будуть зняті через {0} днів.'
+  warn_expire_set_delete: 'Попередження будуть видалені через {0} днів.'
+  warn_punish_list: Список покарань за попередження
+  warn_punish_rem: 'Наявність {0} попереджень більше не викликатиме покарання.'
+  warn_punish_set: 'Я застосую покарання {0} до користувачів з {1} попередженнями.'
+  warn_punish_set_timed: 'Я застосую покарання {0} на {2} до користувачів з {1} попередженнями.'
+  warn_weight: 'Вага: {0}'
+  warned_on: 'Попередження на сервері {0}'
+  warned_on_by: 'На {0} о {1} від {2}'
+  warnmsg_default: Повідомлення про попередження не встановлено. Буде використано стандартну поведінку.
+  warnmsg_disabled: Повідомлення про попередження вимкнено. Ти можеш увімкнути їх, встановивши warnmsg на щось інше, ніж '-'.
+  warning_clear_fail: Попередження не знято. Або попередження з таким індексом не існує, або воно вже було знято.
+  warning_cleared: 'Попередження {0} було знято для {1}.'
+  warning_deleted: 'Попередження {0} було видалено.'
+  warning_not_found: Попередження не знайдено.
+  warnings_cleared: 'Усі попередження для {0} були зняті.'
+  warnings_list: Список усіх попереджених користувачів на сервері
+  warnings_none: Немає попереджень на цій сторінці.
+  warnlog_for: 'Журнал попереджень для {0}'
+  warnpl_none: Покарання не встановлені.
+  warns_dont_expire: Попередження не мають терміну дії.
+  warns_expire_in: 'Попередження закінчаться через {0} днів.'
+
+vi-VN:
+  ban_prune: 'Bot sẽ xóa tin nhắn trong {0} ngày gần nhất của người dùng bị cấm.'
+  ban_prune_disabled: Tin nhắn của người dùng bị cấm sẽ không còn bị xóa nữa.
+  bandm: |-
+    Bạn đã bị cấm khỏi máy chủ {0}.
+    Lý do: {1}
+  banmsg_default: Chưa đặt tin nhắn cấm. Hành vi mặc định sẽ được sử dụng.
+  banmsg_disabled: Tin nhắn cấm đã bị tắt. Bạn có thể bật lại bằng cách đặt banmsg thành nội dung khác ngoài '-'.
+  banned_user: Người dùng đã bị cấm
+  cant_apply_punishment: Không thể áp dụng hình phạt. Vui lòng đảm bảo mình có đủ quyền, và vai trò của mình cao hơn các vai trò khác trong cài đặt máy chủ.
+  duration: Thời hạn
+  invalid: 'Không hợp lệ / Không tìm thấy ({0})'
+  kickdm: |-
+    Bạn đã bị đuổi khỏi máy chủ {0}.
+    Lý do: {1}
+  kicked_user: Người dùng đã bị đuổi
+  mass_ban_completed: 'Đã cấm {0} người dùng.'
+  mass_ban_in_progress: 'Đang cấm {0} người dùng...'
+  mass_kill_completed: 'Cấm hàng loạt và đưa vào danh sách đen {0} người dùng đã hoàn tất.'
+  mass_kill_in_progress: 'Đang cấm hàng loạt và đưa vào danh sách đen {0} người dùng...'
+  moderator: Người kiểm duyệt
+  reason: Lý do
+  role_too_high: Bạn không thể dùng lệnh này với các vai trò cao hơn vai trò cao nhất của bạn, trừ khi bạn là quản trị viên máy chủ.
+  sb_user: Người dùng đã bị cấm tạm
+  sbdm: |-
+    Bạn đã bị cấm tạm khỏi máy chủ {0}.
+    Lý do: {1}
+  timedout_user: Người dùng đã bị hạn chế thời gian
+  timeoutdm: |-
+    Bạn đã bị hạn chế thời gian trong máy chủ {0}.
+    Lý do: {1}
+  unable_to_dm_user: Gửi tin nhắn riêng cho người dùng thất bại.
+  unbanned_user: 'Người dùng {0} đã được bỏ cấm.'
+  user_warned: 'Người dùng {0} đã bị cảnh cáo.'
+  user_warned_and_punished: 'Người dùng {0} đã bị cảnh cáo và hình phạt {1} đã được áp dụng.'
+  username: Tên người dùng
+  warn_cleared_by: 'được xóa bởi {0}'
+  warn_count: '{0} hiện tại, {1} tổng cộng'
+  warn_expire_reset: Cảnh cáo sẽ không còn hết hạn nữa.
+  warn_expire_set_clear: 'Cảnh cáo sẽ được xóa sau {0} ngày.'
+  warn_expire_set_delete: 'Cảnh cáo sẽ bị xóa hoàn toàn sau {0} ngày.'
+  warn_punish_list: Danh sách hình phạt cảnh cáo
+  warn_punish_rem: 'Có {0} cảnh cáo sẽ không còn kích hoạt hình phạt nữa.'
+  warn_punish_set: 'Tôi sẽ áp dụng hình phạt {0} cho người dùng có {1} cảnh cáo.'
+  warn_punish_set_timed: 'Tôi sẽ áp dụng hình phạt {0} trong {2} cho người dùng có {1} cảnh cáo.'
+  warn_weight: 'Mức độ: {0}'
+  warned_on: 'Bị cảnh cáo trên server {0}'
+  warned_on_by: 'Trên {0} lúc {1} bởi {2}'
+  warnmsg_default: Chưa đặt tin nhắn cảnh cáo. Hành vi mặc định sẽ được sử dụng.
+  warnmsg_disabled: Tin nhắn cảnh cáo đã bị tắt. Bạn có thể bật lại bằng cách đặt warnmsg thành nội dung khác ngoài '-'.
+  warning_clear_fail: Không thể xóa cảnh cáo. Cảnh cáo ở vị trí đó không tồn tại, hoặc đã được xóa rồi.
+  warning_cleared: 'Cảnh cáo {0} đã được xóa cho {1}.'
+  warning_deleted: 'Cảnh cáo {0} đã bị xóa.'
+  warning_not_found: Không tìm thấy cảnh cáo.
+  warnings_cleared: 'Tất cả cảnh cáo đã được xóa cho {0}.'
+  warnings_list: Danh sách tất cả người dùng bị cảnh cáo trên server
+  warnings_none: Không có cảnh cáo nào trên trang này.
+  warnlog_for: 'Nhật ký cảnh cáo của {0}'
+  warnpl_none: Chưa đặt hình phạt nào.
+  warns_dont_expire: Cảnh cáo chưa được đặt thời hạn hết hạn.
+  warns_expire_in: 'Cảnh cáo sẽ hết hạn sau {0} ngày.'
+
+zh-CN:
+  ban_prune: '機器人將刪除被封禁使用者最多 {0} 天的訊息。'
+  ban_prune_disabled: 被封禁使用者的訊息將不再被刪除。
+  bandm: |-
+    您已被 {0} 封鎖
+    原因: {1}
+  banmsg_default: 沒有設置禁止消息。將使用默認行為。
+  banmsg_disabled: 禁止消息被禁用。您可以通過將 banmsg 設置為"-"以外的內容來啟用它們。
+  banned_user: 用戶已被封鎖
+  cant_apply_punishment: 不能適用處罰。請確保我有足夠的權限，並且我的身分組高於伺服器設置中的任何其他身分組。
+  duration: 期間
+  invalid: '無效/找不到 ({0})'
+  kickdm: |-
+    你已被踢出 {0} 伺服器。
+    理由：{1}
+  kicked_user: 已踢出使用者
+  mass_ban_completed: '禁止 {0} 個用戶。'
+  mass_ban_in_progress: '禁止 {0} 個用戶...'
+  mass_kill_completed: '{0} 用戶的大規模禁止和黑名單已完成。'
+  mass_kill_in_progress: '正在對 {0} 名用戶進行大規模禁止和黑名單...'
+  moderator: 主持人
+  reason: 原因
+  role_too_high: 你不能對在你最高身分組之上的身分組使用這個指令，除非你擁有伺服器管理員權限
+  sb_user: 使用者已被軟性停權
+  sbdm: |-
+    你已被 {0} 伺服器軟性停權。
+    理由：{1}
+  timedout_user: 使用者已暫停
+  timeoutdm: |-
+    您在伺服器 {0} 中被暫停。
+    原因：{1}
+  unable_to_dm_user: DMing 用戶失敗。
+  unbanned_user: '已取消禁止用戶 {0}。'
+  user_warned: '已警告用戶 {0}。'
+  user_warned_and_punished: '用戶 {0} 已被警告並已應用 {1} 懲罰。'
+  username: 用戶名稱
+  warn_cleared_by: '由 {0} 清除'
+  warn_count: '{0} 當前，共 {1}'
+  warn_expire_reset: 警告將不再過期。
+  warn_expire_set_clear: '{0} 天後將清除警告。'
+  warn_expire_set_delete: '{0} 天後將刪除警告。'
+  warn_punish_list: 警告處罰名單
+  warn_punish_rem: '有 {0} 警告將不再觸發懲罰。'
+  warn_punish_set: '我將對有 {1} 警告的用戶應用 {0} 懲罰。'
+  warn_punish_set_timed: '我將對有 {1} 警告的用戶應用 {0} 懲罰 {2}。'
+  warn_weight: '設定值：{0}'
+  warned_on: '在 {0} 伺服器上收到警告'
+  warned_on_by: '{0} {1} 來自 {2}'
+  warnmsg_default: 没有设置警告消息。将使用默认行为。
+  warnmsg_disabled: 警告消息已禁用。您可以通过将 warnmsg 设置为 '-' 以外的内容来启用它们。
+  warning_clear_fail: 警告未清除。該索引處的警告不存在，或者已被清除。
+  warning_cleared: '{1} 的警告 {0} 已清除。'
+  warning_deleted: '警告 {0} 已刪除。'
+  warning_not_found: 找不到警告。
+  warnings_cleared: '已清除 {0} 的所有警告。'
+  warnings_list: 伺服器上所有警告用戶的列表
+  warnings_none: 此頁面上沒有警告。
+  warnlog_for: '{0} 的警告日誌'
+  warnpl_none: 沒有設置懲罰。
+  warns_dont_expire: 警告將不會自動解除
+  warns_expire_in: '警告將在 {0} 天後解除'

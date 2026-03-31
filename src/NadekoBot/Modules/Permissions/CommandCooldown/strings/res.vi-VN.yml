@@ -1,4 +1,0 @@
-cmdcd_add: 'Lệnh {0} giờ có thời gian hồi {1} giây.'
-cmdcd_cleared: 'Lệnh {0} giờ không còn thời gian hồi và tất cả thời gian hồi hiện có đã được xóa.'
-cmdcd_none: Không có thời gian hồi lệnh nào được thiết lập.
-invalid_second_param_between: 'Tham số thứ hai không hợp lệ. (Phải là số từ {0} đến {1})'

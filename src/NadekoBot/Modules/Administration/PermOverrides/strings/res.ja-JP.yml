@@ -1,6 +1,0 @@
-perm_override: '{1}コマンドを実行するには{0}権限が必要になります。'
-perm_override_all: すべてのDiscord権限オーバーライドがクリアされました。
-perm_override_all_confirm: このサーバーの**すべて**のDiscord権限オーバーライドを削除しますか？この操作は元に戻せません。
-perm_override_page_none: このページにオーバーライドはありません。
-perm_override_reset: このコマンドのDiscord権限オーバーライドがクリアされました。
-perm_overrides: Discord権限オーバーライド

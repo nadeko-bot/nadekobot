@@ -1,0 +1,239 @@
+ar:
+  channel_delmsgoncmd: إعدادات خاصة بالقناة
+  delmsg_channel_inherit: سأحذف الرسائل التي تنفّذ أوامر بنجاح في هذه القناة تلقائيًا فقط إذا كانت هذه الميزة مفعّلة على مستوى الخادم.
+  delmsg_channel_off: لن أحذف الرسائل التي تنفّذ أوامر بنجاح في هذه القناة تلقائيًا أبدًا.
+  delmsg_channel_on: سأحذف دائمًا الرسائل التي تنفّذ أوامر بنجاح في هذه القناة تلقائيًا، بغض النظر عن إعداد الخادم.
+  delmsg_off: لن أحذف الرسائل التي تنفّذ أوامر بنجاح في هذا الخادم تلقائيًا بعد الآن.
+  delmsg_on: سأحذف الرسائل التي تنفّذ أوامر بنجاح في هذا الخادم تلقائيًا.
+  imageonly_disable: لم تعد هذه القناة مقتصرة على الصور فقط.
+  imageonly_enable: أصبحت هذه القناة مقتصرة على الصور فقط.
+  linkonly_disable: لم تعد هذه القناة مقتصرة على الروابط فقط.
+  linkonly_enable: أصبحت هذه القناة مقتصرة على الروابط فقط.
+  nsfw_set_false: تم تعطيل محتوى NSFW في هذه القناة.
+  nsfw_set_true: تم تفعيل محتوى NSFW في هذه القناة.
+  server_delmsgoncmd: إعداد الخادم
+
+de-DE:
+  channel_delmsgoncmd: Kanal spezifische Einstellungen
+  delmsg_channel_inherit: Ich werde nur automatisch Nachrichten löschen, in denen erfolgreich Befehle in diesem Kanal ausgeführt wurden, wenn diese Funktion auf dem Server aktiviert ist.
+  delmsg_channel_off: Ich werde niemals automatisch Nachrichten löschen, in denen erfolgreich Befehle in diesem Kanal ausgeführt wurden.
+  delmsg_channel_on: Ich werde immer automatisch Nachrichten löschen, in denen erfolgreich Befehle in diesem Kanal ausgeführt wurden, trotz der Server Einstellungen.
+  delmsg_off: Ich werde nicht mehr automatisch Nachrichten löschen, in denen erfolgreich Befehle auf dem Server ausgeführt wurden.
+  delmsg_on: Ich werde automatisch Nachrichten löschen, in denen erfolgreich Befehle auf dem Server ausgeführt wurden.
+  imageonly_disable: Dieser Kanal ist nicht mehr auf Bilder beschränkt.
+  imageonly_enable: Dieser Kanal ist jetzt auf Bilder beschränkt.
+  linkonly_disable: Dieser Kanal ist nicht mehr auf Links beschränkt.
+  linkonly_enable: Dieser Kanal ist jetzt auf Links beschränkt.
+  nsfw_set_false: NSFW wurde in diesem Kanal deaktiviert.
+  nsfw_set_true: NSFW wurde in diesem Kanal aktiviert.
+  server_delmsgoncmd: Server Einstellung
+
+es-ES:
+  channel_delmsgoncmd: Configuración de canal específico
+  delmsg_channel_inherit: Eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este canal solamente si esta función está activada en el servidor.
+  delmsg_channel_off: Nunca eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este canal.
+  delmsg_channel_on: Siempre eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este canal, independientemente de la configuración del servidor.
+  delmsg_off: Ya no eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este servidor.
+  delmsg_on: Eliminaré automáticamente los mensajes que ejecuten con éxito un comando en este servidor.
+  imageonly_disable: Este canal ya no es exclusivo para imágenes.
+  imageonly_enable: Este canal ahora es exclusivo para imágenes.
+  linkonly_disable: Este canal ya no es solo para enlaces.
+  linkonly_enable: Este canal ahora es solo para enlaces.
+  nsfw_set_false: NSFW ha sido prohibido en este canal.
+  nsfw_set_true: NSFW ha sido permitido en este canal.
+  server_delmsgoncmd: Configuración del servidor
+
+fr-FR:
+  channel_delmsgoncmd: Réglages propre aux salons
+  delmsg_channel_inherit: Les messages exécutant une commande avec succès seront supprimés automatiquement sur ce salon seulement si l'option est activée sur le serveur.
+  delmsg_channel_off: Les messages exécutant une commande avec succès ne seront jamais supprimés sur ce salon.
+  delmsg_channel_on: Les messages exécutant une commande avec succès seront toujours supprimés automatiquement sur ce salon, en dehors des réglages du serveur.
+  delmsg_off: Les messages exécutant une commande avec succès ne seront plus supprimés automatiquement sur ce serveur.
+  delmsg_on: Les messages exécutant une commande avec succès seront supprimés automatiquement sur ce serveur.
+  imageonly_disable: Ce salon n'est plus exclusivement pour les images.
+  imageonly_enable: Ce salon est maintenant exclusivement pour les images.
+  linkonly_disable: Ce channel n'est désormais plus limité aux liens.
+  linkonly_enable: Ce channel est désormais limité aux liens.
+  nsfw_set_false: Le NSFW a été **désactivé** sur ce salon.
+  nsfw_set_true: Le NSFW a été **activé** sur ce salon.
+  server_delmsgoncmd: Paramètres du serveur
+
+id-ID:
+  channel_delmsgoncmd: Pengaturan Khusus Channel
+  delmsg_channel_inherit: Saya akan otomatis menghapus pesan yang berhasil menjalankan perintah di channel ini hanya jika fitur ini diaktifkan di server.
+  delmsg_channel_off: Saya tidak akan pernah otomatis menghapus pesan yang berhasil menjalankan perintah di channel ini.
+  delmsg_channel_on: Saya akan selalu otomatis menghapus pesan yang berhasil menjalankan perintah di channel ini, terlepas dari pengaturan server.
+  delmsg_off: Saya tidak akan lagi otomatis menghapus pesan yang berhasil menjalankan perintah di server ini.
+  delmsg_on: Saya akan otomatis menghapus pesan yang berhasil menjalankan perintah di server ini.
+  imageonly_disable: Channel ini tidak lagi hanya untuk gambar.
+  imageonly_enable: Channel ini sekarang hanya untuk gambar.
+  linkonly_disable: Channel ini tidak lagi hanya untuk link.
+  linkonly_enable: Channel ini sekarang hanya untuk link.
+  nsfw_set_false: NSFW telah dinonaktifkan di channel ini.
+  nsfw_set_true: NSFW telah diaktifkan di channel ini.
+  server_delmsgoncmd: Pengaturan Server
+
+ja-JP:
+  channel_delmsgoncmd: チャンネル固有の設定
+  delmsg_channel_inherit: このチャンネルでコマンドが正常に実行されたメッセージの自動削除は、サーバーでこの機能が有効な場合のみ行われます。
+  delmsg_channel_off: このチャンネルでコマンドが正常に実行されたメッセージを自動削除しません。
+  delmsg_channel_on: サーバーの設定に関わらず、このチャンネルでコマンドが正常に実行されたメッセージを常に自動削除します。
+  delmsg_off: 成功したコマンド呼び出しの自動削除を停止しました。
+  delmsg_on: 成功したコマンド呼び出しは自動的に削除されるようになりました。
+  imageonly_disable: このチャンネルは画像専用ではなくなりました。
+  imageonly_enable: このチャンネルは画像専用になりました。
+  linkonly_disable: このチャンネルはリンク専用ではなくなりました。
+  linkonly_enable: このチャンネルはリンク専用になりました。
+  nsfw_set_false: このチャンネルのNSFWが無効になりました。
+  nsfw_set_true: このチャンネルのNSFWが有効になりました。
+  server_delmsgoncmd: サーバー設定
+
+ko-KR:
+  channel_delmsgoncmd: 채널별 설정
+  delmsg_channel_inherit: 서버에서 이 기능이 활성화된 경우에만, 이 채널에서 성공적으로 실행된 명령어 메시지를 자동 삭제합니다.
+  delmsg_channel_off: 이 채널에서 성공적으로 실행된 명령어 메시지를 자동 삭제하지 않습니다.
+  delmsg_channel_on: 서버 설정에 관계없이, 이 채널에서 성공적으로 실행된 명령어 메시지를 항상 자동 삭제합니다.
+  delmsg_off: 이 서버에서 성공적으로 실행된 명령어 메시지를 더 이상 자동 삭제하지 않습니다.
+  delmsg_on: 이 서버에서 성공적으로 실행된 명령어 메시지를 자동 삭제합니다.
+  imageonly_disable: 이 채널의 이미지 전용 모드가 해제되었습니다.
+  imageonly_enable: 이 채널이 이미지 전용 모드로 설정되었습니다.
+  linkonly_disable: 이 채널의 링크 전용 모드가 해제되었습니다.
+  linkonly_enable: 이 채널이 링크 전용 모드로 설정되었습니다.
+  nsfw_set_false: 이 채널에서 NSFW가 비활성화되었습니다.
+  nsfw_set_true: 이 채널에서 NSFW가 활성화되었습니다.
+  server_delmsgoncmd: 서버 설정
+
+pl-PL:
+  channel_delmsgoncmd: Ustawienia specyficzne dla kanału
+  delmsg_channel_inherit: Będę automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym kanale tylko wtedy, gdy ta funkcja jest włączona na serwerze.
+  delmsg_channel_off: Nigdy nie będę automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym kanale.
+  delmsg_channel_on: Zawsze będę automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym kanale, niezależnie od ustawień serwera.
+  delmsg_off: Nie będę już automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym serwerze.
+  delmsg_on: Będę automatycznie usuwać wiadomości z pomyślnie wykonanymi komendami na tym serwerze.
+  imageonly_disable: Ten kanał nie jest już ograniczony do samych obrazów.
+  imageonly_enable: Ten kanał jest teraz ograniczony do samych obrazów.
+  linkonly_disable: Ten kanał nie jest już ograniczony do samych linków.
+  linkonly_enable: Ten kanał jest teraz ograniczony do samych linków.
+  nsfw_set_false: NSFW zostało wyłączone na tym kanale.
+  nsfw_set_true: NSFW zostało włączone na tym kanale.
+  server_delmsgoncmd: Ustawienia serwera
+
+pt-BR:
+  channel_delmsgoncmd: Configurações específicas do canal
+  delmsg_channel_inherit: Mensagens que executarem comandos com sucesso serão automaticamente excluídas somente se essa função estiver ativada no servidor.
+  delmsg_channel_off: Mensagens que executarem comandos com sucesso nesse canal nunca serão automaticamente excluídas.
+  delmsg_channel_on: Mensagens que executarem comandos com sucesso nesse canal serão automaticamente excluídas, independentemente da configuração no servidor.
+  delmsg_off: Mensagens que executarem comandos com sucesso nesse servidor não serão mais automaticamente excluídas.
+  delmsg_on: Mensagens que executarem comandos com sucesso nesse servidor serão automaticamente excluídas.
+  imageonly_disable: Este canal não é mais exclusivo para imagens.
+  imageonly_enable: Agora este canal é exclusivo para imagens.
+  linkonly_disable: Este canal nao e mais somente links.
+  linkonly_enable: Este canal agora e somente links.
+  nsfw_set_false: NSFW foi desativado neste canal.
+  nsfw_set_true: NSFW foi habilitado neste canal.
+  server_delmsgoncmd: Configuração do servidor
+
+ru-RU:
+  channel_delmsgoncmd: Настройки для отдельных каналов
+  delmsg_channel_inherit: Я буду автоматически удалять сообщения команд на этом канале, только если это разрешено сервером.
+  delmsg_channel_off: Я не буду больше автоматически удалять сообщения команд на этом канале.
+  delmsg_channel_on: Я всегда буду автоматически удалять сообщения команд на этом канале не смотря на серверные настройки.
+  delmsg_off: Больше я не буду автоматически удалать сообщения команд на этом сервере.
+  delmsg_on: Теперь я буду автоматически удалять команды сообщений на этом сервере.
+  imageonly_disable: Этот канал больше не предназначен только для изображений.
+  imageonly_enable: Этот канал теперь только для изображений.
+  linkonly_disable: Этот канал больше не только для ссылок.
+  linkonly_enable: Теперь этот канал только для ссылок.
+  nsfw_set_false: NSFW отключен на этом канале.
+  nsfw_set_true: На этом канале включен NSFW.
+  server_delmsgoncmd: Настройка сервера
+
+sr-Cyrl-RS:
+  channel_delmsgoncmd: Подешавања за канал
+  delmsg_channel_inherit: Аутоматски ћу брисати поруке које успешно изврше команде на овом каналу само ако је ова функција укључена на серверу.
+  delmsg_channel_off: Никада нећу аутоматски брисати поруке које успешно изврше команде на овом каналу.
+  delmsg_channel_on: Увек ћу аутоматски брисати поруке које успешно изврше команде на овом каналу, без обзира на подешавање сервера.
+  delmsg_off: Више нећу аутоматски брисати поруке које успешно изврше команде на овом серверу.
+  delmsg_on: Аутоматски ћу брисати поруке које успешно изврше команде на овом серверу.
+  imageonly_disable: Овај канал више није само за слике.
+  imageonly_enable: Овај канал је сада само за слике.
+  linkonly_disable: Овај канал више није само за линкове.
+  linkonly_enable: Овај канал је сада само за линкове.
+  nsfw_set_false: NSFW је искључен на овом каналу.
+  nsfw_set_true: NSFW је укључен на овом каналу.
+  server_delmsgoncmd: Подешавање сервера
+
+tr-TR:
+  channel_delmsgoncmd: Kanala Özel Ayarlar
+  delmsg_channel_inherit: Sunucuda bu özellik etkinse, bu kanalda başarıyla çalıştırılan komut mesajlarını otomatik sileceğim.
+  delmsg_channel_off: Bu kanalda başarıyla çalıştırılan komut mesajlarını asla otomatik silmeyeceğim.
+  delmsg_channel_on: Sunucu ayarından bağımsız olarak, bu kanalda başarıyla çalıştırılan komut mesajlarını her zaman otomatik sileceğim.
+  delmsg_off: Bu sunucuda başarıyla çalıştırılan komut mesajlarını artık otomatik silmeyeceğim.
+  delmsg_on: Bu sunucuda başarıyla çalıştırılan komut mesajlarını otomatik sileceğim.
+  imageonly_disable: Bu kanal artık yalnızca resim kanalı değil.
+  imageonly_enable: Bu kanal artık yalnızca resim kanalı.
+  linkonly_disable: Bu kanal artık yalnızca link kanalı değil.
+  linkonly_enable: Bu kanal artık yalnızca link kanalı.
+  nsfw_set_false: Bu kanalda NSFW devre dışı bırakıldı.
+  nsfw_set_true: Bu kanalda NSFW etkinleştirildi.
+  server_delmsgoncmd: Sunucu Ayarı
+
+ts-TS:
+  channel_delmsgoncmd: Channel-Specific Settings
+  delmsg_channel_inherit: I will auto-delete messages which successfully execute commands on this channel only if this feature is enabled on the server.
+  delmsg_channel_off: I will never auto-delete messages which successfully execute commands on this channel. D-don't complain about it!
+  delmsg_channel_on: I will always auto-delete messages which successfully execute commands on this channel, regardless of the server setting.
+  delmsg_off: I will no longer auto-delete messages which successfully execute commands on this server.
+  delmsg_on: I will auto-delete messages which successfully execute commands on this server. Hmph, keeping things tidy.
+  imageonly_disable: This channel is no longer image-only.
+  imageonly_enable: This channel is now image-only. I-I'm just enforcing the rules.
+  linkonly_disable: This channel is no longer link-only.
+  linkonly_enable: This channel is now link-only. Only links allowed.
+  nsfw_set_false: NSFW has been disabled on this channel.
+  nsfw_set_true: NSFW has been enabled on this channel. D-don't get any weird ideas!
+  server_delmsgoncmd: Server Setting
+
+uk-UA:
+  channel_delmsgoncmd: Налаштування для каналу
+  delmsg_channel_inherit: Я буду автоматично видаляти повідомлення з успішно виконаними командами в цьому каналі, тільки якщо ця функція увімкнена на сервері.
+  delmsg_channel_off: Я ніколи не буду автоматично видаляти повідомлення з успішно виконаними командами в цьому каналі.
+  delmsg_channel_on: Я завжди буду автоматично видаляти повідомлення з успішно виконаними командами в цьому каналі, незалежно від налаштувань сервера.
+  delmsg_off: Я більше не буду автоматично видаляти повідомлення з успішно виконаними командами на цьому сервері.
+  delmsg_on: Я буду автоматично видаляти повідомлення з успішно виконаними командами на цьому сервері.
+  imageonly_disable: Цей канал більше не обмежений лише зображеннями.
+  imageonly_enable: Тепер у цьому каналі дозволено лише зображення.
+  linkonly_disable: Цей канал більше не обмежений лише посиланнями.
+  linkonly_enable: Тепер у цьому каналі дозволено лише посилання.
+  nsfw_set_false: NSFW вимкнено для цього каналу.
+  nsfw_set_true: NSFW увімкнено для цього каналу.
+  server_delmsgoncmd: Налаштування сервера
+
+vi-VN:
+  channel_delmsgoncmd: Cài đặt riêng cho kênh
+  delmsg_channel_inherit: Mình sẽ tự động xóa tin nhắn thực thi lệnh thành công trên kênh này chỉ khi tính năng này được bật trên server.
+  delmsg_channel_off: Mình sẽ không bao giờ tự động xóa tin nhắn thực thi lệnh thành công trên kênh này.
+  delmsg_channel_on: Mình sẽ luôn tự động xóa tin nhắn thực thi lệnh thành công trên kênh này, bất kể cài đặt server.
+  delmsg_off: Mình sẽ không còn tự động xóa tin nhắn thực thi lệnh thành công trên server này nữa.
+  delmsg_on: Mình sẽ tự động xóa tin nhắn thực thi lệnh thành công trên server này.
+  imageonly_disable: Kênh này không còn chỉ cho phép hình ảnh nữa.
+  imageonly_enable: Kênh này giờ chỉ cho phép hình ảnh.
+  linkonly_disable: Kênh này không còn chỉ cho phép liên kết nữa.
+  linkonly_enable: Kênh này giờ chỉ cho phép liên kết.
+  nsfw_set_false: NSFW đã được tắt trên kênh này.
+  nsfw_set_true: NSFW đã được bật trên kênh này.
+  server_delmsgoncmd: Cài đặt Server
+
+zh-CN:
+  channel_delmsgoncmd: 頻道特定設置
+  delmsg_channel_inherit: 我會自動刪除在此頻道已執行的指令，如果該功能有在此伺服器啟動的話。
+  delmsg_channel_off: 在此頻道 我將不再自動刪除已執行的指令訊息
+  delmsg_channel_on: 我將在此頻道刪除已執行的指令訊息(不論伺服器設定為何)
+  delmsg_off: 機器人將不再會於本伺服器自動刪除已執行之指令訊息
+  delmsg_on: 機器人會在本伺服器自動刪除已執行之指令訊息
+  imageonly_disable: 此頻道不再是僅圖像。
+  imageonly_enable: 該頻道現在是純圖像的。
+  linkonly_disable: 此频道不再是仅链接模式。
+  linkonly_enable: 此频道现在是仅链接模式。
+  nsfw_set_false: NSFW 已在此頻道上禁用。
+  nsfw_set_true: NSFW 已在此頻道上啟用。
+  server_delmsgoncmd: 伺服器設置

@@ -1,6 +1,0 @@
-lang_list: Dil listesi
-lang_set: 'Sunucunun dili artık {0} - {1}'
-lang_set_bot: 'Botun varsayılan dili artık {0} - {1}'
-lang_set_bot_show: 'Botun dili {0} - {1} olarak ayarlı'
-lang_set_fail: Dil ayarlanamadı. Bu komutun yardım sayfasına bak.
-lang_set_show: 'Bu sunucunun dili {0} - {1} olarak ayarlı'

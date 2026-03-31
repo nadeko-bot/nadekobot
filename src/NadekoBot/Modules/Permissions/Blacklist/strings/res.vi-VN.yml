@@ -1,5 +1,0 @@
-blacklisted: 'Đã chặn {0} với ID {1}'
-blacklisted_channels: Các Kênh Bị Chặn
-blacklisted_servers: Các Máy Chủ Bị Chặn
-blacklisted_users: Các Người Dùng Bị Chặn
-unblacklisted: 'Đã bỏ chặn {0} với ID {1}'

@@ -1,4 +1,0 @@
-cmdcd_add: 'Komenda {0} ma teraz {1}s cooldownu.'
-cmdcd_cleared: 'Komenda {0} nie ma już cooldownu i wszystkie istniejące cooldowny zostały wyczyszczone.'
-cmdcd_none: Brak ustawionych cooldownów komend.
-invalid_second_param_between: 'Nieprawidłowy drugi parametr. (Musi być liczbą między {0} a {1})'

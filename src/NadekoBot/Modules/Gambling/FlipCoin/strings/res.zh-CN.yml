@@ -1,6 +1,0 @@
-betflip_guess: 你猜對了！
-flip_invalid: '指定的號碼無效。您可以翻轉 1 到 {0} 個硬幣。'
-flip_results: '投擲了 {0} 個硬幣，{1}正{2}反'
-flipped: '翻轉 {0}。'
-heads: 頭
-tails: 尾巴

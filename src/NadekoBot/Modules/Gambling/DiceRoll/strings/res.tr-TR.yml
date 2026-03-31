@@ -1,6 +1,0 @@
-dice_invalid_number: 'Geçersiz sayı belirtildi. Aynı anda {0}-{1} zar atabilirsin.'
-dice_rolled: '{0} atıldı'
-dice_rolled_num: 'Atılan zar: {0}'
-rolls: Atışlar
-second_larger_than_first: İkinci sayı birinciden büyük olmalı.
-total: Toplam

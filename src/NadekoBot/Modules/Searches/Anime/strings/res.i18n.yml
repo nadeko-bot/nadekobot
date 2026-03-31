@@ -1,0 +1,127 @@
+ar:
+  chapters: الفصول
+  episodes: الحلقات
+  failed_finding_anime: فشل العثور على هذا الأنمي.
+  failed_finding_manga: فشل العثور على هذه المانغا.
+  genres: الأنواع
+  score: 'التقييم:'
+
+de-DE:
+  chapters: Kapitel
+  episodes: Folgen
+  failed_finding_anime: Dieser Animu konnte nicht gefunden werden.
+  failed_finding_manga: Die Mango konnte nicht gefunden werden.
+  genres: Genre
+  score: 'Punkte:'
+
+es-ES:
+  chapters: Capítulos
+  episodes: Episodios
+  failed_finding_anime: Error encontrando ese anime.
+  failed_finding_manga: Error encontrando ese manga.
+  genres: Géneros
+  score: 'Puntuación:'
+
+fr-FR:
+  chapters: Chapitres
+  episodes: Épisodes
+  failed_finding_anime: Échec pour trouver cet anime.
+  failed_finding_manga: Échec pour trouver ce manga.
+  genres: Genres
+  score: 'Score:'
+
+id-ID:
+  chapters: Chapter
+  episodes: Episode
+  failed_finding_anime: Gagal menemukan anime tersebut.
+  failed_finding_manga: Gagal menemukan manga tersebut.
+  genres: Genre
+  score: 'Skor:'
+
+ja-JP:
+  chapters: チャプター数
+  episodes: エピソード数
+  failed_finding_anime: 指定されたアニメが見つかりませんでした。
+  failed_finding_manga: 指定されたマンガが見つかりませんでした。
+  genres: ジャンル
+  score: '評価:'
+
+ko-KR:
+  chapters: 챕터
+  episodes: 에피소드
+  failed_finding_anime: 해당 애니메이션을 찾지 못했어요.
+  failed_finding_manga: 해당 만화를 찾지 못했어요.
+  genres: 장르
+  score: '점수:'
+
+pl-PL:
+  chapters: Rozdziały
+  episodes: Odcinki
+  failed_finding_anime: Nie udało się znaleźć tego anime.
+  failed_finding_manga: Nie udało się znaleźć tej mangi.
+  genres: Gatunki
+  score: 'Ocena:'
+
+pt-BR:
+  chapters: Capítulos
+  episodes: Episódios
+  failed_finding_anime: Não foi possível encontrar esse anime.
+  failed_finding_manga: Não foi possível encontrar esse manga.
+  genres: Gêneros
+  score: 'Pontuação:'
+
+ru-RU:
+  chapters: Главы
+  episodes: Эпизоды
+  failed_finding_anime: Не удалось найти это аниму.
+  failed_finding_manga: Не удалось найти эту мангу.
+  genres: Жанры
+  score: 'Счет:'
+
+sr-Cyrl-RS:
+  chapters: Поглавља
+  episodes: Епизоде
+  failed_finding_anime: Нисам успео да пронађем тај аниме.
+  failed_finding_manga: Нисам успео да пронађем ту мангу.
+  genres: Жанрови
+  score: 'Оцена:'
+
+tr-TR:
+  chapters: Bölümler
+  episodes: Bölümler
+  failed_finding_anime: O anime bulunamadı.
+  failed_finding_manga: O manga bulunamadı.
+  genres: Türler
+  score: 'Puan:'
+
+ts-TS:
+  chapters: Chapters
+  episodes: Episodes
+  failed_finding_anime: Failed finding that anime.
+  failed_finding_manga: Failed finding that manga. Hmph.
+  genres: Genres
+  score: 'Score:'
+
+uk-UA:
+  chapters: Розділи
+  episodes: Епізоди
+  failed_finding_anime: Не вдалося знайти це аніме.
+  failed_finding_manga: Не вдалося знайти цю мангу.
+  genres: Жанри
+  score: 'Оцінка:'
+
+vi-VN:
+  chapters: Số chương
+  episodes: Số tập
+  failed_finding_anime: Không tìm thấy anime đó.
+  failed_finding_manga: Không tìm thấy manga đó.
+  genres: Thể loại
+  score: 'Điểm:'
+
+zh-CN:
+  chapters: 章節
+  episodes: 集數
+  failed_finding_anime: 找不到那個動漫。
+  failed_finding_manga: 找不到那個漫畫。
+  genres: 類別
+  score: 分數：

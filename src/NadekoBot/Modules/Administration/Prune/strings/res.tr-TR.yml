@@ -1,5 +1,0 @@
-prune_already_running: Bu sunucuda zaten bir temizleme çalışıyor.
-prune_cancelled: Temizleme iptal edildi.
-prune_not_found: Bu sunucuda aktif bir temizleme bulunamadı.
-prune_patron: '2 hafta veya daha eski mesajları silmek için [Patron Seviye X](https://patreon.com/join/nadekobot) veya üstü gereklidir.'
-prune_progress: 'Temizleniyor... {0}/{1} mesaj silindi.'

@@ -1,9 +1,0 @@
-xpformula_current: XP Formula
-xpformula_set: XP Formula Updated... hmph
-xpformula_desc: |-
-  |-
-    XP per level: **{0}** x (level + 1) + **{1}**
-xpformula_preview: Level Preview
-xpformula_a_invalid: 'Slope (a) must be between {0} and {1}, got it?'
-xpformula_c_invalid: 'Base (c) must be between {0} and {1}... obviously.'
-xpformula_invalid: Invalid formula parameters... b-baka.

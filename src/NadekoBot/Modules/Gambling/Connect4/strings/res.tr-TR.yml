@@ -1,5 +1,0 @@
-connect4_created: Connect4 oyunu oluşturuldu. Bir oyuncunun katılması bekleniyor.
-connect4_draw: Connect4 oyunu berabere bitti.
-connect4_failed_to_start: Kimse katılmadığı için Connect4 oyunu başlatılamadı.
-connect4_player_to_move: 'Sıra: {0}'
-connect4_won: '{0}, {1} karşısında Connect4 oyununu kazandı.'

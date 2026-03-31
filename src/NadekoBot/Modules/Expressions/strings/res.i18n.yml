@@ -1,0 +1,483 @@
+ar:
+  expr_delete_select: اختر التعبير لحذفه
+  expr_deleted: تم حذف التعبير
+  expr_edit_select: اختر التعبير لتعديله
+  expr_edited: تم تعديل التعبير
+  expr_global_disabled: تم تعطيل التعبيرات العامة في هذا السيرفر.
+  expr_global_enabled: لم تعد التعبيرات العامة معطلة في هذا السيرفر.
+  expr_insuff_perms: صلاحيات غير كافية. يتطلب ملكية البوت للتعبيرات العامة، وصلاحية المسؤول للتعبيرات الخاصة بالسيرفر.
+  expr_new: تعبير جديد
+  expr_no_found: لم يتم العثور على تعبير.
+  expr_search_results: 'نتائج البحث عن "{0}"'
+  expr_override_disable_confirm: |-
+    هل أنت متأكد أنك تريد تعطيل وضع استبدال التعبيرات؟
+    إضافة تعبير بنفس المشغّل الموجود ستنشئ نسخة مكررة.
+  expr_override_disabled: |-
+    تم تعطيل استبدال التعبيرات. اضافة تعبير بنفس المحفز سينشئ
+    نسخة مكررة.
+  expr_override_enable_confirm: |-
+    هل أنت متأكد أنك تريد تفعيل وضع استبدال التعبيرات؟
+    إضافة تعبير بنفس المشغّل الموجود سيحذف القديم ويستبدله.
+  expr_override_enabled: |-
+    تم تفعيل استبدال التعبيرات. اضافة تعبير بنفس المحفز سيستبدل
+    التعبير القديم.
+  expr_reset: 'التعبير ذو المعرف {0} لن يضيف تفاعلات بعد الآن.'
+  expr_set: 'التعبير ذو المعرف {0} سيضيف التفاعلات التالية إلى رسالة الرد: {1}'
+  expressions: التعبيرات
+  exprs_cleared: 'تم إزالة جميع التعبيرات ({0}) من هذا السيرفر.'
+  invalid_emojis: جميع الرموز التعبيرية التي حددتها غير صالحة.
+  option_disabled: 'تم تعطيل خيار {0} للتعبير ذي المعرف {1}.'
+  option_enabled: 'تم تفعيل خيار {0} للتعبير ذي المعرف {1}.'
+
+de-DE:
+  expr_delete_select: Ausdruck zum Loeschen auswaehlen
+  expr_deleted: Ausdruck gelöscht
+  expr_edit_select: Ausdruck zum Bearbeiten auswaehlen
+  expr_edited: Ausdruck bearbeitet
+  expr_global_disabled: Globale Ausdrücke sind auf diesem Server jetzt deaktiviert.
+  expr_global_enabled: Globale Ausdrücke sind auf diesem Server nicht mehr deaktiviert.
+  expr_insuff_perms: Unzureichende Berechtigungen. Erfordert Bot-Besitzer für globale Ausdrücke und Administrator für Server-Ausdrücke.
+  expr_new: Neuer Ausdruck
+  expr_no_found: Kein Ausdruck gefunden.
+  expr_search_results: 'Suchergebnisse fuer "{0}"'
+  expr_override_disable_confirm: |-
+    Bist du sicher, dass du den Ausdruck-Ersetzungsmodus deaktivieren willst?
+    Einen Ausdruck mit einem bestehenden Trigger hinzuzufuegen wird Duplikate erstellen.
+  expr_override_disabled: |-
+    Ausdruck-Überschreibung ist jetzt deaktiviert. Das Hinzufügen eines Ausdrucks mit einem
+    vorhandenen Trigger erstellt ein Duplikat.
+  expr_override_enable_confirm: |-
+    Bist du sicher, dass du den Ausdruck-Ersetzungsmodus aktivieren willst?
+    Einen Ausdruck mit einem bestehenden Trigger hinzuzufuegen wird den alten loeschen und ersetzen.
+  expr_override_enabled: |-
+    Ausdruck-Überschreibung ist jetzt aktiviert. Das Hinzufügen eines Ausdrucks mit einem
+    vorhandenen Trigger ersetzt den alten.
+  expr_reset: 'Ausdruck mit ID {0} wird keine Reaktionen mehr hinzufügen.'
+  expr_set: 'Ausdruck mit ID {0} wird folgende Reaktionen zur Antwortnachricht hinzufügen: {1}'
+  expressions: Ausdrücke
+  exprs_cleared: 'Alle {0} Ausdrücke auf diesem Server wurden entfernt.'
+  invalid_emojis: Alle Emojis die ausgewählt wurden sind ungültig.
+  option_disabled: '{0} Option ist nun deaktiviert für Ausdrücke mit id {1}'
+  option_enabled: '{0} Option ist jetzt aktiviert für den Ausdruck mit der ID {1}. '
+
+es-ES:
+  expr_delete_select: Selecciona la expresion a eliminar
+  expr_deleted: Expresión eliminada
+  expr_edit_select: Selecciona la expresion a editar
+  expr_edited: Expresión editada.
+  expr_global_disabled: Las expresiones globales están desactivadas en este servidor.
+  expr_global_enabled: Las expresiones globales ya no están desactivadas en este servidor.
+  expr_insuff_perms: Permisos insuficientes. Requiere ser dueño del bot para las expresiones globales, y de administrador para las expresiones del servidor.
+  expr_new: Nueva expresión
+  expr_no_found: No encontré expresiones.
+  expr_search_results: 'Resultados de busqueda para "{0}"'
+  expr_override_disable_confirm: |-
+    Estas seguro de que quieres desactivar el modo de reemplazo de expresiones?
+    Agregar una expresion con un disparador existente creara duplicados.
+  expr_override_disabled: |-
+    La sobreescritura de expresiones esta desactivada. Agregar una expresion con un
+    activador existente creara un duplicado.
+  expr_override_enable_confirm: |-
+    Estas seguro de que quieres activar el modo de reemplazo de expresiones?
+    Agregar una expresion con un disparador existente eliminara la anterior y la reemplazara.
+  expr_override_enabled: |-
+    La sobreescritura de expresiones esta activada. Agregar una expresion con un
+    activador existente reemplazara la anterior.
+  expr_reset: 'Las expresiones con la ID {0} ya no agregarán reacciones.'
+  expr_set: 'La expresión con la ID {0} añadirá las siguientes reacciones al mensaje de respuesta: {1}'
+  expressions: Expresiones
+  exprs_cleared: 'Se han eliminado las {0} expresiones de este servidor.'
+  invalid_emojis: Los emojis especificados no son válidos.
+  option_disabled: 'La opción {0} ahora está desactivada para la expresión con la ID {1}.'
+  option_enabled: 'La opción {0} ahora está activada para la expresión con la ID {1}.'
+
+fr-FR:
+  expr_delete_select: Choisir l'expression a supprimer
+  expr_deleted: Expression supprimée
+  expr_edit_select: Choisir l'expression a modifier
+  expr_edited: Expression éditée
+  expr_global_disabled: Les expressions globales sont maintenant désactivées sur ce serveur.
+  expr_global_enabled: Les expressions globales ne sont plus désactivées sur ce serveur.
+  expr_insuff_perms: Permissions insuffisantes. La détention du bot est requise pour les expressions globales, et le statut d'administrateur pour les expressions du serveur.
+  expr_new: Nouvelle Expression
+  expr_no_found: Aucune expression de trouvée.
+  expr_search_results: 'Resultats de recherche pour "{0}"'
+  expr_override_disable_confirm: |-
+    Es-tu sur de vouloir desactiver le mode de remplacement des expressions ?
+    Ajouter une expression avec un declencheur existant creera des doublons.
+  expr_override_disabled: |-
+    Le remplacement d'expression est maintenant desactive. Ajouter une expression
+    avec un declencheur existant creera un doublon.
+  expr_override_enable_confirm: |-
+    Es-tu sur de vouloir activer le mode de remplacement des expressions ?
+    Ajouter une expression avec un declencheur existant supprimera l'ancienne et la remplacera.
+  expr_override_enabled: |-
+    Le remplacement d'expression est maintenant active. Ajouter une expression avec
+    un declencheur existant remplacera l'ancienne.
+  expr_reset: 'L''expression avec l''id {0} ne rajoutera plus de réactions.'
+  expr_set: 'L''expression avec l''id {0} ajoutera automatiquement ces réactions au message de réponse : {1}'
+  expressions: Expressions
+  exprs_cleared: 'L''ensemble des {0} expressions du serveur ont été retirées.'
+  invalid_emojis: Tous les emojis spécifiés sont invalides.
+  option_disabled: 'L''option {0} est maintenant **désactivée** pour la réaction personnalisée dont l''ID est {1}.'
+  option_enabled: 'L''option {0} est désormais **activée** pour la réaction personnalisée dont l''ID est {1}.'
+
+id-ID:
+  expr_delete_select: Pilih ekspresi untuk dihapus
+  expr_deleted: Ekspresi dihapus
+  expr_edit_select: Pilih ekspresi untuk diedit
+  expr_edited: Ekspresi Diedit
+  expr_global_disabled: Ekspresi global sekarang dinonaktifkan di server ini.
+  expr_global_enabled: Ekspresi global tidak lagi dinonaktifkan di server ini.
+  expr_insuff_perms: Izin tidak cukup. Membutuhkan kepemilikan Bot untuk ekspresi global, dan Administrator untuk ekspresi server.
+  expr_new: Ekspresi Baru
+  expr_no_found: Ekspresi tidak ditemukan.
+  expr_search_results: 'Hasil pencarian untuk "{0}"'
+  expr_override_disable_confirm: |-
+    Apakah kamu yakin ingin menonaktifkan mode penggantian ekspresi?
+    Menambahkan ekspresi dengan trigger yang sudah ada akan membuat duplikat.
+  expr_override_disabled: |-
+    Penimpaan ekspresi sekarang dinonaktifkan. Menambahkan ekspresi dengan trigger
+    yang sudah ada akan membuat duplikat.
+  expr_override_enable_confirm: |-
+    Apakah kamu yakin ingin mengaktifkan mode penggantian ekspresi?
+    Menambahkan ekspresi dengan trigger yang sudah ada akan menghapus yang lama dan menggantinya.
+  expr_override_enabled: |-
+    Penimpaan ekspresi sekarang diaktifkan. Menambahkan ekspresi dengan trigger
+    yang sudah ada akan menggantikan yang lama.
+  expr_reset: 'Ekspresi dengan id {0} tidak akan lagi menambahkan reaksi.'
+  expr_set: 'Ekspresi dengan id {0} akan menambahkan reaksi berikut ke pesan respons: {1}'
+  expressions: Ekspresi
+  exprs_cleared: 'Semua {0} ekspresi di server ini telah dihapus.'
+  invalid_emojis: Semua emoji yang kamu tentukan tidak valid.
+  option_disabled: 'Opsi {0} sekarang dinonaktifkan untuk ekspresi dengan id {1}.'
+  option_enabled: 'Opsi {0} sekarang diaktifkan untuk ekspresi dengan id {1}.'
+
+ja-JP:
+  expr_delete_select: 削除する式を選択してください
+  expr_deleted: 式が削除されました
+  expr_edit_select: 編集する式を選択してください
+  expr_edited: 式が編集されました
+  expr_global_disabled: このサーバーでグローバル式が無効になりました。
+  expr_global_enabled: このサーバーでグローバル式が無効ではなくなりました。
+  expr_insuff_perms: 権限が不足しています。グローバル式にはBot所有者権限、サーバー式には管理者権限が必要です。
+  expr_new: 新しい式
+  expr_no_found: 式が見つかりません。
+  expr_search_results: '"{0}" の検索結果'
+  expr_override_disable_confirm: |-
+    式の上書きモードを無効にしてもいいですか？
+    既存のトリガーと同じ式を追加すると、重複が作成されます。
+  expr_override_disabled: |-
+    表現のオーバーライドが無効になりました。既存のトリガーと同じ表現を追加すると
+    重複が作成されます。
+  expr_override_enable_confirm: |-
+    式の上書きモードを有効にしてもいいですか？
+    既存のトリガーと同じ式を追加すると、古い式が削除されて置き換わります。
+  expr_override_enabled: |-
+    表現のオーバーライドが有効になりました。既存のトリガーと同じ表現を追加すると
+    古いものが置き換えられます。
+  expr_reset: 'ID {0}の式はリアクションを追加しなくなります。'
+  expr_set: 'ID {0}の式は応答メッセージに以下のリアクションを追加します: {1}'
+  expressions: 式
+  exprs_cleared: 'このサーバーの{0}個の式がすべて削除されました。'
+  invalid_emojis: 指定されたすべての絵文字が無効です。
+  option_disabled: 'ID {1}の式の{0}オプションが無効になりました。'
+  option_enabled: 'ID {1}の式の{0}オプションが有効になりました。'
+
+ko-KR:
+  expr_delete_select: 삭제할 표현식을 선택하세요
+  expr_deleted: 표현식 삭제됨
+  expr_edit_select: 편집할 표현식을 선택하세요
+  expr_edited: 표현식 수정됨
+  expr_global_disabled: 이 서버에서 글로벌 표현식이 비활성화되었어요.
+  expr_global_enabled: 이 서버에서 글로벌 표현식이 더 이상 비활성화되지 않아요.
+  expr_insuff_perms: 권한이 부족해요. 글로벌 표현식에는 봇 소유자 권한이, 서버 표현식에는 관리자 권한이 필요해요.
+  expr_new: 새 표현식
+  expr_no_found: 표현식을 찾을 수 없어요.
+  expr_search_results: '"{0}" 검색 결과'
+  expr_override_disable_confirm: |-
+    표현식 덮어쓰기 모드를 비활성화할까요?
+    이미 있는 트리거로 표현식을 추가하면 중복이 생겨요.
+  expr_override_disabled: 표현식 덮어쓰기가 비활성화되었어요. 이미 있는 트리거로 표현식을 추가하면 중복이 생겨요.
+  expr_override_enable_confirm: |-
+    표현식 덮어쓰기 모드를 활성화할까요?
+    이미 있는 트리거로 표현식을 추가하면 기존 표현식이 삭제되고 대체돼요.
+  expr_override_enabled: 표현식 덮어쓰기가 활성화되었어요. 이미 있는 트리거로 표현식을 추가하면 기존 표현식이 대체돼요.
+  expr_reset: 'ID {0}의 표현식이 더 이상 반응을 추가하지 않아요.'
+  expr_set: 'ID {0}의 표현식이 응답 메시지에 다음 반응을 추가해요: {1}'
+  expressions: 표현식
+  exprs_cleared: '이 서버의 모든 표현식 {0}개가 삭제되었어요.'
+  invalid_emojis: 지정한 이모지가 모두 유효하지 않아요.
+  option_disabled: 'ID {1}의 표현식에서 {0} 옵션이 비활성화되었어요.'
+  option_enabled: 'ID {1}의 표현식에서 {0} 옵션이 활성화되었어요.'
+
+pl-PL:
+  expr_delete_select: Wybierz wyrazenie do usuniecia
+  expr_deleted: Wyrażenie usunięte
+  expr_edit_select: Wybierz wyrazenie do edycji
+  expr_edited: Wyrażenie edytowane
+  expr_global_disabled: Globalne wyrażenia są teraz wyłączone na tym serwerze.
+  expr_global_enabled: Globalne wyrażenia nie są już wyłączone na tym serwerze.
+  expr_insuff_perms: Niewystarczające uprawnienia. Wymaga bycia właścicielem bota dla globalnych wyrażeń i uprawnienia Administrator dla wyrażeń serwerowych.
+  expr_new: Nowe wyrażenie
+  expr_no_found: Nie znaleziono wyrażenia.
+  expr_search_results: 'Wyniki wyszukiwania dla "{0}"'
+  expr_override_disable_confirm: |-
+    Czy na pewno chcesz wylaczyc tryb nadpisywania wyrazen?
+    Dodanie wyrazenia z istniejacym triggerem utworzy duplikat.
+  expr_override_disabled: |-
+    Nadpisywanie wyrażeń jest teraz wyłączone. Dodanie wyrażenia z istniejącym
+    wyzwalaczem utworzy duplikat.
+  expr_override_enable_confirm: |-
+    Czy na pewno chcesz wlaczyc tryb nadpisywania wyrazen?
+    Dodanie wyrazenia z istniejacym triggerem usunie stare i zastapi je nowym.
+  expr_override_enabled: |-
+    Nadpisywanie wyrażeń jest teraz włączone. Dodanie wyrażenia z istniejącym
+    wyzwalaczem zastąpi poprzednie.
+  expr_reset: 'Wyrażenie o id {0} nie będzie już dodawać reakcji.'
+  expr_set: 'Wyrażenie o id {0} doda następujące reakcje do wiadomości z odpowiedzią: {1}'
+  expressions: Wyrażenia
+  exprs_cleared: 'Wszystkie wyrażenia ({0}) na tym serwerze zostały usunięte.'
+  invalid_emojis: Wszystkie podane przez ciebie emoji są nieprawidłowe.
+  option_disabled: 'Opcja {0} jest teraz wyłączona dla wyrażenia o id {1}.'
+  option_enabled: 'Opcja {0} jest teraz włączona dla wyrażenia o id {1}.'
+
+pt-BR:
+  expr_delete_select: Selecione a expressao para excluir
+  expr_deleted: Expressão apagada
+  expr_edit_select: Selecione a expressao para editar
+  expr_edited: Expressão editada
+  expr_global_disabled: Expressões globais estão desativadas neste servidor.
+  expr_global_enabled: Expressões globais não estão mais desativadas neste servidor.
+  expr_insuff_perms: Permissões insuficientes. Apenas o proprietário do bot para expressões globais e um Administrador para expressões em um servidor.
+  expr_new: Nova expressão
+  expr_no_found: Nenhuma expressão encontrada.
+  expr_search_results: 'Resultados da busca por "{0}"'
+  expr_override_disable_confirm: |-
+    Tem certeza de que quer desativar o modo de substituição de expressões?
+    Adicionar uma expressão com um gatilho existente vai criar duplicatas.
+  expr_override_disabled: |-
+    Substituicao de expressao foi desativada. Adicionar uma expressao com um
+    gatilho existente vai criar uma duplicata.
+  expr_override_enable_confirm: |-
+    Tem certeza de que quer ativar o modo de substituição de expressões?
+    Adicionar uma expressão com um gatilho existente vai deletar a antiga e substituir por uma nova.
+  expr_override_enabled: |-
+    Substituicao de expressao foi ativada. Adicionar uma expressao com um
+    gatilho existente vai substituir a antiga.
+  expr_reset: 'A expressão com o id {0} não adicionará mas reações.'
+  expr_set: 'A expressão com a id {0} irá adicionar as seguintes reações na resposta: {1}  '
+  expressions: Expressões
+  exprs_cleared: 'Todas {0} expressões foram removidas deste servidor.'
+  invalid_emojis: Todos os emojis que você especificou são inválidos.
+  option_disabled: 'A opção {0} agora está desativada para expressão com o id {1}.'
+  option_enabled: 'A opção {0} agora está ativada para expressão com o id {1}.'
+
+ru-RU:
+  expr_delete_select: Выберите выражение для удаления
+  expr_deleted: Выражение удалено
+  expr_edit_select: Выберите выражение для редактирования
+  expr_edited: Выражение отредактировано
+  expr_global_disabled: Глобальные выражения теперь отключены на этом сервере.
+  expr_global_enabled: Глобальные выражения больше не отключены на этом сервере.
+  expr_insuff_perms: Недостаточно прав. Для глобальных выражений нужны права владельца бота, для серверных - права администратора.
+  expr_new: Новое выражение
+  expr_no_found: Выражение не найдено.
+  expr_search_results: 'Результаты поиска для "{0}"'
+  expr_override_disable_confirm: |-
+    Уверен, что хочешь отключить режим замены выражений?
+    Добавление выражения с существующим триггером создаст дубликаты.
+  expr_override_disabled: |-
+    Перезапись выражений отключена. При добавлении выражения с существующим
+    триггером будет создан дубликат.
+  expr_override_enable_confirm: |-
+    Уверен, что хочешь включить режим замены выражений?
+    Добавление выражения с существующим триггером удалит старое и заменит его новым.
+  expr_override_enabled: |-
+    Перезапись выражений включена. При добавлении выражения с существующим
+    триггером старое будет заменено.
+  expr_reset: 'Выражение с id {0} больше не будет добавлять реакции.'
+  expr_set: 'Выражение с id {0} будет добавлять следующие реакции к ответному сообщению: {1}'
+  expressions: Выражения
+  exprs_cleared: 'Все выражения ({0}) на этом сервере были удалены.'
+  invalid_emojis: Все указанные вами эмодзи недействительны.
+  option_disabled: 'Настройка {0} теперь отключена для выражения с ID {1}'
+  option_enabled: 'Настройка {0} теперь включена для выражения с ID {1}'
+
+sr-Cyrl-RS:
+  expr_delete_select: Изаберите израз за брисање
+  expr_deleted: Израз обрисан
+  expr_edit_select: Изаберите израз за уређивање
+  expr_edited: Израз измењен
+  expr_global_disabled: Глобални изрази су сада искључени на овом серверу.
+  expr_global_enabled: Глобални изрази више нису искључени на овом серверу.
+  expr_insuff_perms: Недовољне дозволе. Потребно је власништво над ботом за глобалне изразе, и Администратор за серверске изразе.
+  expr_new: Нови израз
+  expr_no_found: Израз није пронађен.
+  expr_search_results: 'Резултати претраге за "{0}"'
+  expr_override_disable_confirm: |-
+    Да ли си сигуран да желиш да искључиш режим замене израза?
+    Додавање израза са постојећим тригером ће направити дупликате.
+  expr_override_disabled: |-
+    Замена израза је сада искључена. Додавање израза са постојећим окидачем
+    ће направити дупликат.
+  expr_override_enable_confirm: |-
+    Да ли си сигуран да желиш да укључиш режим замене израза?
+    Додавање израза са постојећим тригером ће обрисати стари и заменити га новим.
+  expr_override_enabled: |-
+    Замена израза је сада укључена. Додавање израза са постојећим окидачем
+    ће заменити стари.
+  expr_reset: 'Израз са ID-ом {0} више неће додавати реакције.'
+  expr_set: 'Израз са ID-ом {0} ће додати следеће реакције на поруку одговора: {1}'
+  expressions: Изрази
+  exprs_cleared: 'Сви изрази ({0}) на овом серверу су уклоњени.'
+  invalid_emojis: Сви емоџији које си навео су неважећи.
+  option_disabled: 'Опција {0} је сада искључена за израз са ID-ом {1}.'
+  option_enabled: 'Опција {0} је сада укључена за израз са ID-ом {1}.'
+
+tr-TR:
+  expr_delete_select: Silinecek ifadeyi secin
+  expr_deleted: İfade silindi
+  expr_edit_select: Duzenlenecek ifadeyi secin
+  expr_edited: İfade Düzenlendi
+  expr_global_disabled: Global ifadeler artık bu sunucuda devre dışı.
+  expr_global_enabled: Global ifadeler artık bu sunucuda devre dışı değil.
+  expr_insuff_perms: Yetersiz izin. Global ifadeler için Bot sahipliği, sunucu ifadeleri için Yönetici izni gereklidir.
+  expr_new: Yeni İfade
+  expr_no_found: İfade bulunamadı.
+  expr_search_results: '"{0}" icin arama sonuclari'
+  expr_override_disable_confirm: |-
+    Ifade degistirme modunu kapatmak istedigin emin misin?
+    Mevcut bir tetikleyiciye sahip bir ifade eklemek kopya olusturacak.
+  expr_override_disabled: |-
+    İfade değiştirme artık devre dışı. Mevcut bir tetikleyiciyle ifade eklemek
+    kopyasını oluşturacak.
+  expr_override_enable_confirm: |-
+    Ifade degistirme modunu acmak istedigin emin misin?
+    Mevcut bir tetikleyiciye sahip bir ifade eklemek eskisini silip yenisiyle degistirecek.
+  expr_override_enabled: |-
+    İfade değiştirme artık etkin. Mevcut bir tetikleyiciyle ifade eklemek
+    eskisinin yerine geçecek.
+  expr_reset: '{0} id''li ifade artık tepki eklemeyecek.'
+  expr_set: '{0} id''li ifade yanıt mesajına şu tepkileri ekleyecek: {1}'
+  expressions: İfadeler
+  exprs_cleared: 'Bu sunucudaki tüm {0} ifade kaldırıldı.'
+  invalid_emojis: Belirttiğin tüm emojiler geçersiz.
+  option_disabled: '{1} id''li ifade için {0} seçeneği artık devre dışı.'
+  option_enabled: '{1} id''li ifade için {0} seçeneği artık etkin.'
+
+ts-TS:
+  expr_delete_select: Pick which expression to delete already
+  expr_deleted: Expression deleted.
+  expr_edit_select: Pick which expression to edit already
+  expr_edited: Expression edited. I made it better, obviously.
+  expr_global_disabled: Global expressions are now disabled on this server.
+  expr_global_enabled: Global expressions are no longer disabled on this server.
+  expr_insuff_perms: Insufficient permissions. Requires Bot ownership for global expressions, and Administrator for server expressions.
+  expr_new: New Expression
+  expr_no_found: No expression found.
+  expr_search_results: 'Here''s what I found for "{0}", not that I looked hard or anything'
+  expr_override_disable_confirm: |-
+    You want to disable expression override mode? Fine.
+    Adding an expression with an existing trigger will create duplicates now.
+  expr_override_disabled: |-
+    Expression override is now disabled. Adding an expression with an existing
+    trigger will create a duplicate.
+  expr_override_enable_confirm: |-
+    Hmph, you want to enable expression override mode?
+    Adding an expression with an existing trigger will delete the old one and replace it.
+  expr_override_enabled: |-
+    Hmph, expression override is now enabled. Adding an expression with an existing
+    trigger will replace the old one.
+  expr_reset: 'Expression with id {0} will no longer add reactions.'
+  expr_set: 'Expression with id {0} will add following reactions to the response message: {1}'
+  expressions: Expressions
+  exprs_cleared: 'All {0} expressions on this server have been removed. Hmph.'
+  invalid_emojis: All emojis you've specified are invalid.
+  option_disabled: '{0} option is now disabled for the expression with id {1}.'
+  option_enabled: '{0} option is now enabled for the expression with id {1}.'
+
+uk-UA:
+  expr_delete_select: Оберiть вираз для видалення
+  expr_deleted: Вираз видалено
+  expr_edit_select: Оберiть вираз для редагування
+  expr_edited: Вираз відредаговано
+  expr_global_disabled: Глобальні вирази тепер вимкнені на цьому сервері.
+  expr_global_enabled: Глобальні вирази більше не вимкнені на цьому сервері.
+  expr_insuff_perms: Недостатньо прав. Для глобальних виразів потрібне право власника бота, для серверних - Адміністратор.
+  expr_new: Новий вираз
+  expr_no_found: Вираз не знайдено.
+  expr_search_results: 'Результати пошуку для "{0}"'
+  expr_override_disable_confirm: |-
+    Впевнений, що хочеш вимкнути режим заміни виразів?
+    Додавання виразу з існуючим тригером створить дублікати.
+  expr_override_disabled: Перевизначення виразiв тепер вимкнено. Додавання виразу з iснуючим тригером створить дублiкат.
+  expr_override_enable_confirm: |-
+    Впевнений, що хочеш увімкнути режим заміни виразів?
+    Додавання виразу з існуючим тригером видалить старий і замінить його новим.
+  expr_override_enabled: Перевизначення виразiв тепер увiмкнено. Додавання виразу з iснуючим тригером замiнить старий.
+  expr_reset: 'Вираз з id {0} більше не додаватиме реакції.'
+  expr_set: 'Вираз з id {0} додасть такі реакції до повідомлення-відповіді: {1}'
+  expressions: Вирази
+  exprs_cleared: 'Усі {0} виразів на цьому сервері були видалені.'
+  invalid_emojis: Усі вказані емодзі недійсні.
+  option_disabled: 'Опцію {0} вимкнено для виразу з id {1}.'
+  option_enabled: 'Опцію {0} увімкнено для виразу з id {1}.'
+
+vi-VN:
+  expr_delete_select: Chon bieu thuc de xoa
+  expr_deleted: Đã xóa biểu thức
+  expr_edit_select: Chon bieu thuc de chinh sua
+  expr_edited: Đã chỉnh sửa biểu thức
+  expr_global_disabled: Biểu thức toàn cục đã bị tắt trên server này.
+  expr_global_enabled: Biểu thức toàn cục không còn bị tắt trên server này.
+  expr_insuff_perms: Không đủ quyền. Cần quyền chủ Bot cho biểu thức toàn cục, và quyền Quản trị viên cho biểu thức server.
+  expr_new: Biểu thức mới
+  expr_no_found: Không tìm thấy biểu thức.
+  expr_search_results: 'Ket qua tim kiem cho "{0}"'
+  expr_override_disable_confirm: |-
+    Ban co chac muon tat che do ghi de bieu thuc khong?
+    Them bieu thuc voi trigger da ton tai se tao ra ban sao.
+  expr_override_disabled: |-
+    Ghi đè biểu thức đã được tắt. Thêm biểu thức với trigger đã tồn tại sẽ tạo
+    một bản sao.
+  expr_override_enable_confirm: |-
+    Ban co chac muon bat che do ghi de bieu thuc khong?
+    Them bieu thuc voi trigger da ton tai se xoa cai cu va thay the bang cai moi.
+  expr_override_enabled: |-
+    Ghi đè biểu thức đã được bật. Thêm biểu thức với trigger đã tồn tại sẽ thay
+    thế biểu thức cũ.
+  expr_reset: 'Biểu thức với id {0} sẽ không còn thêm phản ứng nữa.'
+  expr_set: 'Biểu thức với id {0} sẽ thêm các phản ứng sau vào tin nhắn phản hồi: {1}'
+  expressions: Biểu thức
+  exprs_cleared: 'Tất cả {0} biểu thức trên server này đã được xóa.'
+  invalid_emojis: Tất cả emoji bạn chỉ định đều không hợp lệ.
+  option_disabled: 'Tùy chọn {0} đã được tắt cho biểu thức với id {1}.'
+  option_enabled: 'Tùy chọn {0} đã được bật cho biểu thức với id {1}.'
+
+zh-CN:
+  expr_delete_select: 选择要删除的表达式
+  expr_deleted: 表達式已刪除
+  expr_edit_select: 选择要编辑的表达式
+  expr_edited: 表達式編輯
+  expr_global_disabled: 此伺服器上的全域表達式已停用。
+  expr_global_enabled: 此伺服器上的全域表達式不再停用。
+  expr_insuff_perms: 權限不足。全局表達式需要 Bot 所有權，伺服器表達式需要管理員。
+  expr_new: 新表達
+  expr_no_found: 未找到表達式。
+  expr_search_results: '搜索 "{0}" 的结果'
+  expr_override_disable_confirm: |-
+    你确定要关闭表达式覆盖模式吗？
+    添加一个已有触发词的表达式会创建重复项。
+  expr_override_disabled: 表达式覆盖已关闭。添加与已有触发器相同的表达式时将创建副本。
+  expr_override_enable_confirm: |-
+    你确定要开启表达式覆盖模式吗？
+    添加一个已有触发词的表达式会删除旧的并替换。
+  expr_override_enabled: 表达式覆盖已开启。添加与已有触发器相同的表达式时将替换旧的。
+  expr_reset: 'ID 為 {0} 的表達式將不再添加反應。'
+  expr_set: 'ID 為 {0} 的表達式將在響應消息中添加以下反應：{1}'
+  expressions: 表達式
+  exprs_cleared: '此伺服器上的所有 {0} 表達式均已刪除。'
+  invalid_emojis: 您指定的所有表情符號均無效。
+  option_disabled: '{0} 選項現在對 ID 為 {1} 的表達式禁用。'
+  option_enabled: '現在為 ID 為 {1} 的表達式啟用了 {0} 選項。'

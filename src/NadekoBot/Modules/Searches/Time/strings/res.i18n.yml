@@ -1,0 +1,79 @@
+ar:
+  time_new: الوقت
+  timezone: المنطقة الزمنية
+  timezone_db_api_key: تحتاج إلى تفعيل مفتاح TimezoneDB API الخاص بك. يمكنك القيام بذلك بالنقر على الرابط الذي تلقيته في البريد الإلكتروني مع مفتاح API الخاص بك.
+
+de-DE:
+  time_new: Zeit
+  timezone: Zeitzone
+  timezone_db_api_key: Du musst deinen TimezoneDB API Schlüssel aktivieren. Dies kannst du tun, indem du auf den Link drückst, der in der E-Mail mit deinem API Schlüssel ist.
+
+es-ES:
+  time_new: Tiempo
+  timezone: Zona horaria
+  timezone_db_api_key: Necesitas activar tu clave de API de TimezoneDB. Puedes hacerlo haciendo click en el link que recibiste en tu e-mail con tu clave de API.
+
+fr-FR:
+  time_new: Temps
+  timezone: Fuseau horaire
+  timezone_db_api_key: Vous devez activer votre clé API TimezoneDB. Vous pouvez faire cela en cliquant sur le lien que vous avez reçu par mail avec votre clé API.
+
+id-ID:
+  time_new: Waktu
+  timezone: Zona waktu
+  timezone_db_api_key: Kamu perlu mengaktifkan API key TimezoneDB. Kamu bisa melakukannya dengan mengklik link yang kamu terima di email bersama API key-mu.
+
+ja-JP:
+  time_new: 時間
+  timezone: タイムゾーン
+  timezone_db_api_key: TimezoneDB APIキーを有効化する必要があります。APIキーが含まれたメールのリンクをクリックしてください。
+
+ko-KR:
+  time_new: 시간
+  timezone: 시간대
+  timezone_db_api_key: TimezoneDB API 키를 활성화해야 해요. API 키가 포함된 이메일의 링크를 클릭해서 활성화할 수 있어요.
+
+pl-PL:
+  time_new: Czas
+  timezone: Strefa czasowa
+  timezone_db_api_key: Musisz aktywować klucz API TimezoneDB. Możesz to zrobić, klikając link otrzymany w e-mailu z kluczem API.
+
+pt-BR:
+  time_new: Tempo
+  timezone: Fuso horário
+  timezone_db_api_key: Você precisa ativar sua chave de API TimezoneDB. Você pode fazer isso clicando no link que você recebeu por email, o qual contém a sua chave de API.
+
+ru-RU:
+  time_new: Время
+  timezone: Часовой пояс
+  timezone_db_api_key: Вам необходимо активировать свой ключ API TimezoneDB. Вы можете сделать это, щелкнув ссылку, полученную в электронном письме с вашим ключом API.
+
+sr-Cyrl-RS:
+  time_new: Време
+  timezone: Временска зона
+  timezone_db_api_key: Потребно је да активираш свој TimezoneDB API кључ. То можеш учинити кликом на линк који си добио у мејлу са својим API кључем.
+
+tr-TR:
+  time_new: Zaman
+  timezone: Saat dilimi
+  timezone_db_api_key: TimezoneDB API anahtarını etkinleştirmen gerekiyor. Bunu, API anahtarınla birlikte e-posta ile gelen bağlantıya tıklayarak yapabilirsin.
+
+ts-TS:
+  time_new: Time
+  timezone: Timezone
+  timezone_db_api_key: You need to activate your TimezoneDB API key by clicking the link in your email.
+
+uk-UA:
+  time_new: Час
+  timezone: Часовий пояс
+  timezone_db_api_key: Тобі потрібно активувати API-ключ TimezoneDB. Зроби це, натиснувши на посилання в листі з твоїм API-ключем.
+
+vi-VN:
+  time_new: Thời gian
+  timezone: Múi giờ
+  timezone_db_api_key: Bạn cần kích hoạt khóa API TimezoneDB. Bạn có thể làm điều đó bằng cách nhấn vào đường link trong email chứa khóa API của bạn.
+
+zh-CN:
+  time_new: 時間
+  timezone: 時區
+  timezone_db_api_key: 您需要激活您的 TimezoneDB API 密鑰。您可以通過單擊電子郵件中收到的帶有 API 密鑰的網址來執行此操作。

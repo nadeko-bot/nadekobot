@@ -1,5 +1,0 @@
-connect4_created: Creado el juego de Conecta 4. Esperando jugadores.
-connect4_draw: El juego Conecta 4 terminó en empate.
-connect4_failed_to_start: El juego Conecta 4 no ha podido iniciarse porque nadie se unió.
-connect4_player_to_move: 'Movimiento del jugador: {0}'
-connect4_won: '{0} ganó el juego contra {1}.'

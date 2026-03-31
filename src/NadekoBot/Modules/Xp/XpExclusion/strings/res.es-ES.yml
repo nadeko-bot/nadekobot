@@ -1,4 +1,0 @@
-xp_exclude_added: '{0}: {1} ha sido excluido del sistema de XP.'
-xp_exclude_removed: '{0}: {1} ya no está excluido del sistema de XP.'
-xp_exclusion_none: No hay exclusiones configuradas para este servidor.
-xp_exclusion_title: Exclusiones de XP

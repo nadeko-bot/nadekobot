@@ -1,3 +1,0 @@
-purge_user_confirm: '本当に{0}をデータベースからパージしますか？'
-cleanup_done: '{0}サーバーのデータがデータベースに残っています。'
-sql_confirm_exec: SQL実行を確認

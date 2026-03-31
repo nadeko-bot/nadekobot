@@ -1,5 +1,0 @@
-prune_already_running: Đang có một lệnh dọn tin nhắn chạy trên máy chủ này rồi.
-prune_cancelled: Đã hủy việc dọn tin nhắn.
-prune_not_found: Không tìm thấy lệnh dọn tin nhắn nào đang chạy trên máy chủ này.
-prune_patron: 'Xóa tin nhắn cũ 2 tuần trở lên yêu cầu [Patron Tier X](https://patreon.com/join/nadekobot) hoặc cao hơn.'
-prune_progress: 'Đang dọn... đã xóa {0}/{1} tin nhắn.'

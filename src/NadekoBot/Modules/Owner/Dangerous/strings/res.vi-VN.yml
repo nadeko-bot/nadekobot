@@ -1,3 +1,0 @@
-purge_user_confirm: 'Bạn có chắc muốn xóa dữ liệu của {0} khỏi cơ sở dữ liệu không?'
-cleanup_done: 'Dữ liệu của {0} server còn lại trong cơ sở dữ liệu.'
-sql_confirm_exec: Xác nhận thực thi lệnh SQL sau

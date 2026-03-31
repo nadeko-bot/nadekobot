@@ -1,3 +1,0 @@
-timezone_guild: '該伺服器的時區是`{0}`'
-timezone_not_found: 未找到時區。使用"timezones"命令查看可用時區列表。
-timezones_available: 可用時區

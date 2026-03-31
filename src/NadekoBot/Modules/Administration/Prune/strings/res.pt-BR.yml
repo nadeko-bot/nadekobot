@@ -1,5 +1,0 @@
-prune_already_running: Uma limpeza já está em andamento neste servidor.
-prune_cancelled: A limpeza foi cancelada.
-prune_not_found: Nenhuma limpeza ativa foi encontrada neste servidor.
-prune_patron: 'Excluir mensagens com 2 semanas ou mais requer [Patron Tier X](https://patreon.com/join/nadekobot) ou superior.'
-prune_progress: 'Limpando... {0}/{1} mensagens excluídas.'

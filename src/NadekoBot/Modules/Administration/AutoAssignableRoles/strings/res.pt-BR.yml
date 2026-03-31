@@ -1,4 +1,0 @@
-aar_disabled: '**Cargos automáticos** para usuários que entrarem está **desativado**'
-aar_none: Os usuários não recebem nenhum cargo quando se juntam ao servidor.
-aar_role_removed: 'Os usuários não receberão mais o cargo {0} quando se juntarem a esse servidor.'
-aar_roles: 'Os seguintes cargos são aplicados aos usuários que se juntarem ao servidor: {0}'

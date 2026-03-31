@@ -1,4 +1,0 @@
-xp_exclude_added: '{0}: {1} је искључен/а из XP система.'
-xp_exclude_removed: '{0}: {1} више није искључен/а из XP система.'
-xp_exclusion_none: Нема постављених искључења за овај сервер.
-xp_exclusion_title: XP искључења

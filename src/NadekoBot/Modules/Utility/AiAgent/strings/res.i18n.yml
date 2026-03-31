@@ -1,0 +1,95 @@
+ar:
+  agent_no_query: يجب عليك تقديم نص للوكيل الذكي.
+  agent_cancelled: تم إلغاء جلسة الوكيل الخاصة بك.
+  agent_no_session: ليس لديك جلسة وكيل نشطة لإلغائها.
+  agent_not_allowed: ليس لديك صلاحية استخدام الوكيل الذكي.
+
+de-DE:
+  agent_no_query: Du musst einen Prompt für den KI-Agenten angeben.
+  agent_cancelled: Deine Agenten-Sitzung wurde abgebrochen.
+  agent_no_session: Du hast keine aktive Agenten-Sitzung zum Abbrechen.
+  agent_not_allowed: Du hast keine Berechtigung, den KI-Agenten zu nutzen.
+
+es-ES:
+  agent_no_query: Debes proporcionar un prompt para el agente de IA.
+  agent_cancelled: Tu sesión de agente ha sido cancelada.
+  agent_no_session: No tienes una sesión de agente activa para cancelar.
+  agent_not_allowed: No tienes permiso para usar el agente de IA.
+
+fr-FR:
+  agent_no_query: Tu dois fournir une requête pour l'agent IA.
+  agent_cancelled: Ta session d'agent a été annulée.
+  agent_no_session: Tu n'as pas de session d'agent active à annuler.
+  agent_not_allowed: Tu n'as pas la permission d'utiliser l'agent IA.
+
+id-ID:
+  agent_no_query: Kamu harus memberikan prompt untuk agen AI.
+  agent_cancelled: Sesi agenmu telah dibatalkan.
+  agent_no_session: Kamu tidak memiliki sesi agen yang aktif untuk dibatalkan.
+  agent_not_allowed: Kamu tidak memiliki izin untuk menggunakan agen AI.
+
+ja-JP:
+  agent_no_query: AIエージェントにプロンプトを入力してください。
+  agent_cancelled: エージェントセッションがキャンセルされました。
+  agent_no_session: キャンセルするアクティブなエージェントセッションがありません。
+  agent_not_allowed: AIエージェントを使用する権限がありません。
+
+ko-KR:
+  agent_no_query: AI 에이전트에 프롬프트를 입력해야 합니다.
+  agent_cancelled: 에이전트 세션이 취소되었습니다.
+  agent_no_session: 취소할 활성 에이전트 세션이 없습니다.
+  agent_not_allowed: AI 에이전트를 사용할 권한이 없습니다.
+
+pl-PL:
+  agent_no_query: Musisz podać zapytanie dla agenta AI.
+  agent_cancelled: Twoja sesja agenta została anulowana.
+  agent_no_session: Nie masz aktywnej sesji agenta do anulowania.
+  agent_not_allowed: Nie masz uprawnień do korzystania z agenta AI.
+
+pt-BR:
+  agent_no_query: Você precisa fornecer um prompt para o agente de IA.
+  agent_cancelled: Sua sessão de agente foi cancelada.
+  agent_no_session: Você não tem uma sessão de agente ativa para cancelar.
+  agent_not_allowed: Você não tem permissão para usar o agente de IA.
+
+ru-RU:
+  agent_no_query: Вы должны указать запрос для ИИ-агента.
+  agent_cancelled: Ваша сессия агента была отменена.
+  agent_no_session: У вас нет активной сессии агента для отмены.
+  agent_not_allowed: У вас нет прав на использование ИИ-агента.
+
+sr-Cyrl-RS:
+  agent_no_query: Морате да унесете упит за АИ агента.
+  agent_cancelled: Ваша сесија агента је отказана.
+  agent_no_session: Немате активну сесију агента за отказивање.
+  agent_not_allowed: Немате дозволу да користите АИ агента.
+
+tr-TR:
+  agent_no_query: Yapay zeka ajanına bir istem belirtmelisin.
+  agent_cancelled: Ajan oturumun iptal edildi.
+  agent_no_session: İptal edilecek aktif bir ajan oturumun yok.
+  agent_not_allowed: Yapay zeka ajanını kullanma iznin yok.
+
+ts-TS:
+  agent_no_query: You have to give the AI agent a prompt, you know!
+  agent_cancelled: Fine, your agent session is cancelled. Hmph.
+  agent_no_session: You don't even have an active agent session to cancel!
+  agent_not_allowed: Hmph, you can't use the AI agent!
+
+uk-UA:
+  agent_no_query: Ви повинні надати запит для ШІ-агента.
+  agent_cancelled: Вашу сесію агента було скасовано.
+  agent_no_session: У вас немає активної сесії агента для скасування.
+  agent_not_allowed: У вас немає прав на використання ШІ-агента.
+
+vi-VN:
+  agent_no_query: Bạn phải cung cấp một prompt cho tác nhân AI.
+  agent_cancelled: Phiên làm việc với tác nhân của bạn đã bị hủy.
+  agent_no_session: Bạn không có phiên tác nhân nào đang hoạt động để hủy.
+  agent_not_allowed: Bạn không có quyền sử dụng tác nhân AI.
+
+zh-CN:
+  agent_no_query: 你必须为 AI 代理提供一个提示。
+  agent_cancelled: 你的代理会话已被取消。
+  agent_no_session: 你没有可取消的活跃代理会话。
+  agent_not_allowed: 你没有权限使用 AI 代理。

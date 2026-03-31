@@ -1,5 +1,0 @@
-blacklisted: '{0} kara listeye eklendi, ID: {1}'
-blacklisted_channels: Kara Listedeki Kanallar
-blacklisted_servers: Kara Listedeki Sunucular
-blacklisted_users: Kara Listedeki Kullanıcılar
-unblacklisted: '{0} kara listeden çıkarıldı, ID: {1}'

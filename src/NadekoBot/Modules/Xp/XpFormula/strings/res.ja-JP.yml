@@ -1,9 +1,0 @@
-xpformula_current: XP計算式
-xpformula_set: XP計算式を更新しました
-xpformula_desc: |-
-  |-
-    レベルごとのXP: **{0}** x (レベル + 1) + **{1}**
-xpformula_preview: レベルプレビュー
-xpformula_a_invalid: '傾き (a) は {0} から {1} の間で指定してください。'
-xpformula_c_invalid: '基礎値 (c) は {0} から {1} の間で指定してください。'
-xpformula_invalid: 無効な計算式パラメータです。

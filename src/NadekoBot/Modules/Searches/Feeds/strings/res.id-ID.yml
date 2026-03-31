@@ -1,9 +1,0 @@
-feed_added: Feed berhasil ditambahkan.
-feed_cant_parse: Tidak bisa mengakses atau mengurai konten URL feed tersebut.
-feed_duplicate: Kamu sudah mengikuti feed tersebut di server ini.
-feed_invalid_url: URL feed tidak valid. Harus berupa URL http atau https absolut.
-feed_limit_reached: Kamu sudah mencapai batas maksimum feed yang diizinkan per server.
-feed_no_feed: Kamu belum berlangganan feed apapun di server ini.
-feed_out_of_range: Indeks di luar jangkauan.
-feed_removed: Feed berhasil dihapus.
-feed_auto_removed: 'Feed `{0}` dihapus secara otomatis setelah berulang kali gagal mengambil data.'

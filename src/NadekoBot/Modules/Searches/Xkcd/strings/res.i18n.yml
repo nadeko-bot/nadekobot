@@ -1,0 +1,79 @@
+ar:
+  comic_not_found: لم يتم العثور على القصة المصورة.
+  comic_number: 'القصة المصورة #'
+  date: التاريخ
+
+de-DE:
+  comic_not_found: Dieser Comic konnte nicht gefunden werden.
+  comic_number: 'Comic #'
+  date: Datum
+
+es-ES:
+  comic_not_found: Cómic no encontrado.
+  comic_number: 'Cómic #'
+  date: Fecha
+
+fr-FR:
+  comic_not_found: Comic introuvé.
+  comic_number: 'Bande dessinée #'
+  date: Date
+
+id-ID:
+  comic_not_found: Komik tidak ditemukan.
+  comic_number: 'Komik #'
+  date: Tanggal
+
+ja-JP:
+  comic_not_found: コミックが見つかりません。
+  comic_number: コミック No.
+  date: 月／年
+
+ko-KR:
+  comic_not_found: 만화를 찾을 수 없어요.
+  comic_number: '만화 #'
+  date: 날짜
+
+pl-PL:
+  comic_not_found: Nie znaleziono komiksu.
+  comic_number: 'Komiks #'
+  date: Data
+
+pt-BR:
+  comic_not_found: Comic não encontrado
+  comic_number: 'Tirinha #'
+  date: Data
+
+ru-RU:
+  comic_not_found: Комикс не найден.
+  comic_number: 'Комикс #'
+  date: Дата
+
+sr-Cyrl-RS:
+  comic_not_found: Стрип није пронађен.
+  comic_number: 'Стрип #'
+  date: Датум
+
+tr-TR:
+  comic_not_found: Çizgi roman bulunamadı.
+  comic_number: 'Çizgi Roman #'
+  date: Tarih
+
+ts-TS:
+  comic_not_found: Comic not found.
+  comic_number: 'Comic #'
+  date: Date
+
+uk-UA:
+  comic_not_found: Комікс не знайдено.
+  comic_number: 'Комікс #'
+  date: Дата
+
+vi-VN:
+  comic_not_found: Không tìm thấy truyện tranh.
+  comic_number: 'Truyện số #'
+  date: Ngày
+
+zh-CN:
+  comic_not_found: 沒找到漫畫。
+  comic_number: '漫畫 #'
+  date: 日期

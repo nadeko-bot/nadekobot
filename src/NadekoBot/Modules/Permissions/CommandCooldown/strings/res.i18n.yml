@@ -1,0 +1,95 @@
+ar:
+  cmdcd_add: 'الأمر {0} لديه الآن فترة انتظار {1} ثانية.'
+  cmdcd_cleared: 'الأمر {0} ليس لديه فترة انتظار الآن وتم مسح جميع فترات الانتظار الحالية.'
+  cmdcd_none: لا توجد فترات انتظار محددة للأوامر.
+  invalid_second_param_between: 'المعامل الثاني غير صالح. (يجب أن يكون رقمًا بين {0} و {1})'
+
+de-DE:
+  cmdcd_add: 'Befehl {0} hat nun eine Abklingzeit von {1}s'
+  cmdcd_cleared: 'Befehl {0} hat keine Wartezeit mehr und alle bestehenden Wartezeiten wurden entfernt.'
+  cmdcd_none: Keine Kommandowartezeit gesetzt.
+  invalid_second_param_between: 'Ungültiger zweiter Parameter. (Es muss eine Nummer zwischen {0} und {1} sein)'
+
+es-ES:
+  cmdcd_add: 'El comando {0} ahora tiene {1} de enfriamiento.'
+  cmdcd_cleared: 'El comando {0} ya no tiene enfriamiento y todos los tiempos de enfriamiento han sido reiniciados.'
+  cmdcd_none: No se ha configurado tiempo de enfriamiento.
+  invalid_second_param_between: 'Segundo parámetro no válido. (Debe ser un número entre {0} y {1})'
+
+fr-FR:
+  cmdcd_add: 'La commande {0} a désormais un temps de recharge de {1}s'
+  cmdcd_cleared: 'La commande {0} ne possède plus de temps de recharge et tous ceux existants ont été retirés.'
+  cmdcd_none: Aucun temps de recharge n'est programmé.
+  invalid_second_param_between: 'Le second paramètre est invalide. (Doit être un nombre entre {0} et {1})'
+
+id-ID:
+  cmdcd_add: 'Perintah {0} sekarang punya cooldown {1} detik.'
+  cmdcd_cleared: 'Perintah {0} sudah tidak punya cooldown dan semua cooldown yang ada sudah dihapus.'
+  cmdcd_none: Tidak ada cooldown perintah yang diatur.
+  invalid_second_param_between: 'Parameter kedua tidak valid. (Harus berupa angka antara {0} dan {1})'
+
+ja-JP:
+  cmdcd_add: '{0}コマンドの連続使用禁止時間を{1}秒に設定しました。'
+  cmdcd_cleared: '{0}コマンドの連続使用禁止時間を0秒に設定し、現在有効な使用禁止処置をすべて解除しました。'
+  cmdcd_none: コマンドの連続使用禁止時間が設定されていません。
+  invalid_second_param_between: '第2パラメータが無効です。（{0}～{1}の数字である必要があります）'
+
+ko-KR:
+  cmdcd_add: '명령어 {0}에 {1}초 쿨다운이 설정되었어요.'
+  cmdcd_cleared: '명령어 {0}의 쿨다운이 해제되었고, 기존 쿨다운이 모두 초기화되었어요.'
+  cmdcd_none: 설정된 명령어 쿨다운이 없어요.
+  invalid_second_param_between: '두 번째 매개변수가 잘못되었어요. ({0}에서 {1} 사이의 숫자여야 해요)'
+
+pl-PL:
+  cmdcd_add: 'Komenda {0} ma teraz {1}s cooldownu.'
+  cmdcd_cleared: 'Komenda {0} nie ma już cooldownu i wszystkie istniejące cooldowny zostały wyczyszczone.'
+  cmdcd_none: Brak ustawionych cooldownów komend.
+  invalid_second_param_between: 'Nieprawidłowy drugi parametr. (Musi być liczbą między {0} a {1})'
+
+pt-BR:
+  cmdcd_add: 'O comando {0} agora possui cooldown de {1}s.'
+  cmdcd_cleared: 'O comando {0} não possui mais cooldown e todos os cooldowns existentes foram removidos.'
+  cmdcd_none: Nenhum cooldown de comando foi definido.
+  invalid_second_param_between: 'Segundo parâmetro inválido. (Precisa ser um número entre {0} e {1})'
+
+ru-RU:
+  cmdcd_add: 'У команды {0} теперь есть время перезарядки в виде {1}c'
+  cmdcd_cleared: 'У команды {0} больше нет перезарядки и все существующие перезарядки были сброшены.'
+  cmdcd_none: У команды не было установлено время перезарядки.
+  invalid_second_param_between: 'Второй параметр неверен.(Должен быть числом между {0} и {1})'
+
+sr-Cyrl-RS:
+  cmdcd_add: 'Команда {0} сада има кулдаун од {1}с.'
+  cmdcd_cleared: 'Команда {0} више нема кулдаун и сви постојећи кулдаунови су обрисани.'
+  cmdcd_none: Нема постављених кулдаунова за команде.
+  invalid_second_param_between: 'Неважећи други параметар. (Мора бити број између {0} и {1})'
+
+tr-TR:
+  cmdcd_add: '{0} komutu artık {1}s bekleme süresine sahip.'
+  cmdcd_cleared: '{0} komutu artık bekleme süresine sahip değil ve mevcut tüm bekleme süreleri temizlendi.'
+  cmdcd_none: Ayarlanmış komut bekleme süresi yok.
+  invalid_second_param_between: 'Geçersiz ikinci parametre. ({0} ile {1} arasında bir sayı olmalıdır)'
+
+ts-TS:
+  cmdcd_add: 'Command {0} now has a {1}s cooldown.'
+  cmdcd_cleared: 'Command {0} has no cooldown now and all existing cooldowns have been cleared.'
+  cmdcd_none: No command cooldowns set.
+  invalid_second_param_between: 'Invalid second parameter. It has to be a number between {0} and {1}!'
+
+uk-UA:
+  cmdcd_add: 'Команда {0} тепер має кулдаун {1}с.'
+  cmdcd_cleared: 'Команда {0} більше не має кулдауну, всі існуючі кулдауни знято.'
+  cmdcd_none: Кулдауни команд не встановлено.
+  invalid_second_param_between: 'Невірний другий параметр. (Має бути число від {0} до {1})'
+
+vi-VN:
+  cmdcd_add: 'Lệnh {0} giờ có thời gian hồi {1} giây.'
+  cmdcd_cleared: 'Lệnh {0} giờ không còn thời gian hồi và tất cả thời gian hồi hiện có đã được xóa.'
+  cmdcd_none: Không có thời gian hồi lệnh nào được thiết lập.
+  invalid_second_param_between: 'Tham số thứ hai không hợp lệ. (Phải là số từ {0} đến {1})'
+
+zh-CN:
+  cmdcd_add: '指令 {0} 的冷卻時間已設定為 {1} 秒。'
+  cmdcd_cleared: '指令 {0} 將沒有冷卻時間，現存的冷卻時間均已被移除'
+  cmdcd_none: 尚未設定指令冷卻時間。
+  invalid_second_param_between: '第二個參數錯誤，必須為 {0} 和 {1} 之間的數字'

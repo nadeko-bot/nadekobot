@@ -1,5 +1,0 @@
-connect4_created: Vier Gewinnt Spiel wurde erstellt. Warte auf einen Spieler der beitritt.
-connect4_draw: Vier Gewinnt Spiel endete in einem Unentschieden.
-connect4_failed_to_start: Vier Gewinnt Spiel konnte nicht gestartet werden, da keiner beigetreten ist.
-connect4_player_to_move: 'Spieler am Zug: {0}'
-connect4_won: '{0} hat das Vier Gewinnt Spiel gegen {1} gewonnen.'

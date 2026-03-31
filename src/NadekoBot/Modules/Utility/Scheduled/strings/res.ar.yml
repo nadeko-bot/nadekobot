@@ -1,9 +1,0 @@
-schedule_add_error: لديك بالفعل {0} أوامر مجدولة. يُرجى حذف بعضها قبل إضافة المزيد.
-schedule_add_success: تمت إضافة الأمر المجدول بنجاح.
-schedule_command: الأمر
-schedule_delete_error: خطأ في حذف الأمر المجدول.
-schedule_deleted: 'تم حذف الأمر المجدول #{0} بنجاح.'
-schedule_id: المعرّف
-schedule_list_none: ليس لديك أي أوامر مجدولة.
-schedule_list_title: الأوامر المجدولة
-schedule_when: يُنفَّذ في

@@ -1,5 +1,0 @@
-connect4_created: Направљена је Connect4 игра. Чека се играч да се придружи.
-connect4_draw: Connect4 игра је завршена нерешено.
-connect4_failed_to_start: Connect4 игра није почела јер се нико није придружио.
-connect4_player_to_move: 'На потезу: {0}'
-connect4_won: '{0} је победио/ла {1} у Connect4 игри.'

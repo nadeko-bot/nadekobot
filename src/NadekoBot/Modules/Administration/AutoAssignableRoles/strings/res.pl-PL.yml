@@ -1,4 +1,0 @@
-aar_disabled: '**Automatyczne przypisywanie roli** przy dołączeniu użytkownika jest teraz **wyłączone**.'
-aar_none: Użytkownicy nie otrzymują żadnych ról, gdy dołączają do tego serwera.
-aar_role_removed: 'Użytkownicy nie będą już otrzymywać roli {0} po dołączeniu do tego serwera.'
-aar_roles: 'Następujące role są przypisywane użytkownikom, którzy dołączają do tego serwera: {0}'

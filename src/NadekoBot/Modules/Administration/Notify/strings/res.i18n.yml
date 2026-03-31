@@ -1,0 +1,287 @@
+ar:
+  notify_available: قائمة أحداث الإشعارات المتاحة
+  notify_cant_set: هذا الحدث لا يدعم القناة المصدر. يرجى تحديد قناة.
+  notify_desc_addrolerew: يُفعَّل عندما يحصل مستخدم على دور كمكافأة لوصوله إلى مستوى معين (xprew).
+  notify_desc_levelup: يُفعَّل عندما يرتقي مستخدم في المستوى على هذا الخادم.
+  notify_desc_nicecatch: يُفعَّل عندما يصطاد مستخدم سمكة ذات جودة عالية.
+  notify_desc_not_found: لم يُعثر على وصف لهذا الحدث. يرجى الإبلاغ عن ذلك.
+  notify_desc_protection: يُفعَّل عند تشغيل antialt أو antispam أو antiraid.
+  notify_desc_removerolerew: يُفعَّل عندما يفقد مستخدم دورًا كمكافأة لوصوله إلى مستوى معين (xprew).
+  notify_list: قائمة الإشعارات
+  notify_msg: رسالة الإشعار
+  notify_msg_not_set: لم يتم تعيين رسالة الإشعار لهذا الحدث.
+  notify_none: لا توجد إشعارات في هذه الصفحة.
+  notify_off: 'لن يتم إرسال رسالة الإشعار بعد الآن عند تفعيل حدث {0}.'
+  notify_on: 'سيتم إرسال رسالة الإشعار في قناة {0} عند تفعيل حدث {1}.'
+  notify_placeholders: 'العناصر النائبة لحدث الإشعار ''{0}'''
+  notify_type: النوع
+
+de-DE:
+  notify_available: Liste der verfügbaren Benachrichtigungsereignisse
+  notify_cant_set: Dieses Ereignis unterstützt keinen Ursprungskanal. Bitte gib einen Kanal an.
+  notify_desc_addrolerew: Wird ausgelöst, wenn ein Benutzer eine Rolle als Belohnung für das Erreichen eines Levels erhält (xprew).
+  notify_desc_levelup: Wird ausgelöst, wenn ein Benutzer auf diesem Server ein Level aufsteigt.
+  notify_desc_nicecatch: Wird ausgelöst, wenn ein Benutzer einen Qualitätsfisch fängt.
+  notify_desc_not_found: Keine Beschreibung für dieses Ereignis gefunden. Bitte melde dies.
+  notify_desc_protection: Wird ausgelöst, wenn antialt, antispam oder antiraid ausgelöst wird.
+  notify_desc_removerolerew: Wird ausgelöst, wenn ein Benutzer eine Rolle als Belohnung für das Erreichen eines Levels verliert (xprew).
+  notify_list: Benachrichtigungsliste
+  notify_msg: Benachrichtigungsnachricht
+  notify_msg_not_set: Die Benachrichtigungsnachricht ist für dieses Ereignis nicht festgelegt.
+  notify_none: Keine Benachrichtigungen auf dieser Seite.
+  notify_off: 'Die Benachrichtigungsnachricht wird nicht mehr gesendet, wenn das Ereignis {0} ausgelöst wird.'
+  notify_on: 'Die Benachrichtigungsnachricht wird im Kanal {0} gesendet, wenn das Ereignis {1} ausgelöst wird.'
+  notify_placeholders: 'Platzhalter für das Ereignis ''{0}'''
+  notify_type: Typ
+
+es-ES:
+  notify_available: Lista de eventos de notificación disponibles
+  notify_cant_set: Este evento no soporta canal de origen. Por favor, especifica un canal.
+  notify_desc_addrolerew: Se activa cuando un usuario recibe un rol como recompensa por alcanzar un nivel (xprew).
+  notify_desc_levelup: Se activa cuando un usuario sube de nivel en este servidor.
+  notify_desc_nicecatch: Se activa cuando un usuario pesca un pez de calidad.
+  notify_desc_not_found: No se encontró descripción para este evento. Por favor, repórtalo.
+  notify_desc_protection: Se activa cuando antialt, antispam o antiraid se activa.
+  notify_desc_removerolerew: Se activa cuando un usuario pierde un rol como recompensa por alcanzar un nivel (xprew).
+  notify_list: Lista de Notificaciones
+  notify_msg: Mensaje de Notificación
+  notify_msg_not_set: El mensaje de notificación no está configurado para este evento.
+  notify_none: No hay notificaciones en esta página.
+  notify_off: 'El mensaje de notificación ya no se enviará cuando se active el evento {0}.'
+  notify_on: 'El mensaje de notificación se enviará en el canal {0} cuando se active el evento {1}.'
+  notify_placeholders: 'Placeholders para el evento ''{0}'''
+  notify_type: Tipo
+
+fr-FR:
+  notify_available: Liste des événements de notification disponibles
+  notify_cant_set: Cet événement ne supporte pas le salon d'origine. Veuillez spécifier un salon.
+  notify_desc_addrolerew: Se déclenche quand un utilisateur reçoit un rôle en récompense pour avoir atteint un niveau (xprew).
+  notify_desc_levelup: Se déclenche quand un utilisateur monte de niveau sur ce serveur.
+  notify_desc_nicecatch: Se déclenche quand un utilisateur attrape un poisson de qualité.
+  notify_desc_not_found: Aucune description trouvée pour cet événement. Veuillez le signaler.
+  notify_desc_protection: Se déclenche quand antialt, antispam ou antiraid est déclenché.
+  notify_desc_removerolerew: Se déclenche quand un utilisateur perd un rôle en récompense pour avoir atteint un niveau (xprew).
+  notify_list: Liste des Notifications
+  notify_msg: Message de Notification
+  notify_msg_not_set: Le message de notification n'est pas défini pour cet événement.
+  notify_none: Aucune notification sur cette page.
+  notify_off: 'Le message de notification ne sera plus envoyé quand l''événement {0} se déclenche.'
+  notify_on: 'Le message de notification sera envoyé dans le salon {0} quand l''événement {1} se déclenche.'
+  notify_placeholders: 'Placeholders pour l''événement ''{0}'''
+  notify_type: Type
+
+id-ID:
+  notify_available: Daftar event notifikasi yang tersedia
+  notify_cant_set: Event ini tidak mendukung channel asal. Silakan tentukan channel.
+  notify_desc_addrolerew: Terpicu saat user mendapat role sebagai hadiah karena mencapai level (xprew).
+  notify_desc_levelup: Terpicu saat user naik level di server ini.
+  notify_desc_nicecatch: Terpicu saat user menangkap ikan berkualitas.
+  notify_desc_not_found: Deskripsi tidak ditemukan untuk event notifikasi ini. Silakan laporkan ini.
+  notify_desc_protection: Terpicu saat antialt, antispam, atau antiraid aktif.
+  notify_desc_removerolerew: Terpicu saat user kehilangan role sebagai hadiah karena mencapai level (xprew).
+  notify_list: Daftar Notifikasi
+  notify_msg: Pesan Notifikasi
+  notify_msg_not_set: Pesan notifikasi belum diatur untuk event ini.
+  notify_none: Tidak ada notifikasi di halaman ini.
+  notify_off: 'Pesan notifikasi tidak akan lagi dikirim saat event {0} terpicu.'
+  notify_on: 'Pesan notifikasi akan dikirim di channel {0} saat event {1} terpicu.'
+  notify_placeholders: 'Placeholder untuk event notifikasi ''{0}'''
+  notify_type: Tipe
+
+ja-JP:
+  notify_available: 利用可能な通知イベントの一覧
+  notify_cant_set: このイベントはオリジンチャンネルをサポートしていません。チャンネルを指定してください。
+  notify_desc_addrolerew: ユーザーがレベル到達の報酬としてロールを獲得したときにトリガーされます（xprew）。
+  notify_desc_levelup: ユーザーがこのサーバーでレベルアップしたときにトリガーされます。
+  notify_desc_nicecatch: ユーザーが質の高い魚を釣ったときにトリガーされます。
+  notify_desc_not_found: この通知イベントの説明が見つかりません。報告してください。
+  notify_desc_protection: antialt、antispam、またはantiraidがトリガーされたときに発動します。
+  notify_desc_removerolerew: ユーザーがレベル到達の報酬としてロールを失ったときにトリガーされます（xprew）。
+  notify_list: 通知リスト
+  notify_msg: 通知メッセージ
+  notify_msg_not_set: このイベントの通知メッセージは設定されていません。
+  notify_none: このページに通知はありません。
+  notify_off: 'イベント{0}がトリガーされても通知メッセージは送信されなくなります。'
+  notify_on: 'イベント{1}がトリガーされると、チャンネル{0}に通知メッセージが送信されます。'
+  notify_placeholders: '通知イベント''{0}''のプレースホルダー'
+  notify_type: タイプ
+
+ko-KR:
+  notify_available: 사용 가능한 알림 이벤트 목록
+  notify_cant_set: 이 이벤트는 원본 채널을 지원하지 않습니다. 채널을 지정해주세요.
+  notify_desc_addrolerew: 유저가 레벨에 도달하여 보상으로 역할을 받을 때 발동합니다 (xprew).
+  notify_desc_levelup: 이 서버에서 유저가 레벨업할 때 발동합니다.
+  notify_desc_nicecatch: 유저가 고급 물고기를 잡았을 때 발동합니다.
+  notify_desc_not_found: 이 알림 이벤트에 대한 설명을 찾을 수 없습니다. 제보해주세요.
+  notify_desc_protection: antialt, antispam 또는 antiraid가 발동했을 때 트리거됩니다.
+  notify_desc_removerolerew: 유저가 레벨에 도달하여 보상 역할을 잃을 때 발동합니다 (xprew).
+  notify_list: 알림 목록
+  notify_msg: 알림 메시지
+  notify_msg_not_set: 이 이벤트에 대한 알림 메시지가 설정되지 않았습니다.
+  notify_none: 이 페이지에 알림이 없습니다.
+  notify_off: '{0} 이벤트 발동 시 더 이상 알림 메시지가 전송되지 않습니다.'
+  notify_on: '{1} 이벤트 발동 시 {0} 채널에 알림 메시지가 전송됩니다.'
+  notify_placeholders: '''{0}'' 알림 이벤트의 플레이스홀더'
+  notify_type: 유형
+
+pl-PL:
+  notify_available: Lista dostępnych zdarzeń powiadomień
+  notify_cant_set: To zdarzenie nie obsługuje kanału źródłowego. Proszę podać kanał.
+  notify_desc_addrolerew: Wyzwalane, gdy użytkownik otrzymuje rolę jako nagrodę za osiągnięcie poziomu (xprew).
+  notify_desc_levelup: Wyzwalane, gdy użytkownik awansuje na wyższy poziom na tym serwerze.
+  notify_desc_nicecatch: Wyzwalane, gdy użytkownik złowi dobrą rybę.
+  notify_desc_not_found: Nie znaleziono opisu dla tego zdarzenia. Proszę to zgłosić.
+  notify_desc_protection: Wyzwalane, gdy antialt, antispam lub antiraid zostanie uruchomiony.
+  notify_desc_removerolerew: Wyzwalane, gdy użytkownik traci rolę jako nagrodę za osiągnięcie poziomu (xprew).
+  notify_list: Lista powiadomień
+  notify_msg: Wiadomość powiadomienia
+  notify_msg_not_set: Wiadomość powiadomienia nie jest ustawiona dla tego zdarzenia.
+  notify_none: Brak powiadomień na tej stronie.
+  notify_off: 'Wiadomość powiadomienia nie będzie już wysyłana, gdy zdarzenie {0} zostanie wyzwolone.'
+  notify_on: 'Wiadomość powiadomienia będzie wysyłana na kanale {0}, gdy zdarzenie {1} zostanie wyzwolone.'
+  notify_placeholders: 'Placeholdery dla zdarzenia powiadomienia ''{0}'''
+  notify_type: Typ
+
+pt-BR:
+  notify_available: Lista de eventos de notificação disponíveis
+  notify_cant_set: Este evento não suporta canal de origem. Por favor, especifique um canal.
+  notify_desc_addrolerew: Ativa quando um usuário recebe um cargo como recompensa por atingir um nível (xprew).
+  notify_desc_levelup: Ativa quando um usuário sobe de nível neste servidor.
+  notify_desc_nicecatch: Ativa quando um usuário pesca um peixe de qualidade.
+  notify_desc_not_found: Nenhuma descrição encontrada para este evento. Por favor, reporte isso.
+  notify_desc_protection: Ativa quando antialt, antispam ou antiraid é acionado.
+  notify_desc_removerolerew: Ativa quando um usuário perde um cargo como recompensa por atingir um nível (xprew).
+  notify_list: Lista de Notificações
+  notify_msg: Mensagem de Notificação
+  notify_msg_not_set: A mensagem de notificação não está definida para este evento.
+  notify_none: Nenhuma notificação nesta página.
+  notify_off: 'A mensagem de notificação não será mais enviada quando o evento {0} for acionado.'
+  notify_on: 'A mensagem de notificação será enviada no canal {0} quando o evento {1} for acionado.'
+  notify_placeholders: 'Placeholders para o evento ''{0}'''
+  notify_type: Tipo
+
+ru-RU:
+  notify_available: Список доступных событий уведомлений
+  notify_cant_set: Это событие не поддерживает исходный канал. Пожалуйста, укажите канал.
+  notify_desc_addrolerew: Срабатывает, когда пользователь получает роль в качестве награды за достижение уровня (xprew).
+  notify_desc_levelup: Срабатывает, когда пользователь повышает уровень на этом сервере.
+  notify_desc_nicecatch: Срабатывает, когда пользователь ловит качественную рыбу.
+  notify_desc_not_found: Описание для этого события не найдено. Пожалуйста, сообщите об этом.
+  notify_desc_protection: Срабатывает, когда срабатывает antialt, antispam или antiraid.
+  notify_desc_removerolerew: Срабатывает, когда пользователь теряет роль как награду за достижение уровня (xprew).
+  notify_list: Список Уведомлений
+  notify_msg: Сообщение Уведомления
+  notify_msg_not_set: Сообщение уведомления не установлено для этого события.
+  notify_none: Нет уведомлений на этой странице.
+  notify_off: 'Сообщение уведомления больше не будет отправляться при срабатывании события {0}.'
+  notify_on: 'Сообщение уведомления будет отправлено в канал {0} при срабатывании события {1}.'
+  notify_placeholders: 'Плейсхолдеры для события ''{0}'''
+  notify_type: Тип
+
+sr-Cyrl-RS:
+  notify_available: Листа доступних обавештајних догађаја
+  notify_cant_set: Овај догађај не подржава изворни канал. Молим вас наведите канал.
+  notify_desc_addrolerew: Покреће се када корисник добије улогу као награду за достигнути ниво (xprew).
+  notify_desc_levelup: Покреће се када корисник напредује на нови ниво на овом серверу.
+  notify_desc_nicecatch: Покреће се када корисник ухвати квалитетну рибу.
+  notify_desc_not_found: Опис за овај обавештајни догађај није пронађен. Молимо пријавите ово.
+  notify_desc_protection: Покреће се када се активира antialt, antispam или antiraid.
+  notify_desc_removerolerew: Покреће се када корисник изгуби улогу као награду за достигнути ниво (xprew).
+  notify_list: Листа обавештења
+  notify_msg: Порука обавештења
+  notify_msg_not_set: Порука обавештења није постављена за овај догађај.
+  notify_none: Нема обавештења на овој страници.
+  notify_off: 'Порука обавештења се више неће слати када се покрене {0} догађај.'
+  notify_on: 'Порука обавештења ће бити послата у канал {0} када се покрене {1} догађај.'
+  notify_placeholders: 'Плејсхолдери за ''{0}'' обавештајни догађај'
+  notify_type: Тип
+
+tr-TR:
+  notify_available: Kullanılabilir bildirim olaylarının listesi
+  notify_cant_set: Bu olay kaynak kanalı desteklemiyor. Lütfen bir kanal belirt.
+  notify_desc_addrolerew: Bir kullanıcı seviye atlayarak rol ödülü aldığında tetiklenir (xprew).
+  notify_desc_levelup: Bir kullanıcı bu sunucuda seviye atladığında tetiklenir.
+  notify_desc_nicecatch: Bir kullanıcı kaliteli balık yakaladığında tetiklenir.
+  notify_desc_not_found: Bu bildirim olayı için açıklama bulunamadı. Lütfen bunu bildir.
+  notify_desc_protection: antialt, antispam veya antiraid tetiklendiğinde çalışır.
+  notify_desc_removerolerew: Bir kullanıcı seviye atlayarak rol ödülünü kaybettiğinde tetiklenir (xprew).
+  notify_list: Bildirim Listesi
+  notify_msg: Bildirim Mesajı
+  notify_msg_not_set: Bu olay için bildirim mesajı ayarlanmamış.
+  notify_none: Bu sayfada bildirim yok.
+  notify_off: '{0} olayı tetiklendiğinde artık bildirim mesajı gönderilmeyecek.'
+  notify_on: '{1} olayı tetiklendiğinde {0} kanalına bildirim mesajı gönderilecek.'
+  notify_placeholders: '''{0}'' bildirim olayı için yer tutucular'
+  notify_type: Tür
+
+ts-TS:
+  notify_available: List of available notify events
+  notify_cant_set: This event doesn't support origin channel. Specify a channel.
+  notify_desc_addrolerew: Triggers when a user gets a role as a reward for reaching a level (xprew).
+  notify_desc_levelup: Triggers when a user levels up on this server.
+  notify_desc_nicecatch: Triggers when a user catches quality fish. I-I could catch better ones, obviously.
+  notify_desc_not_found: No description found for this notify event. Please report this.
+  notify_desc_protection: Triggers when antialt, antispam or antiraid is triggered.
+  notify_desc_removerolerew: Triggers when a user loses a role as a reward for reaching a level (xprew).
+  notify_list: Notify List
+  notify_msg: Notify Message
+  notify_msg_not_set: Notification message is not set for this event.
+  notify_none: No notifications on this page.
+  notify_off: 'Notification message will no longer be sent when {0} event triggers.'
+  notify_on: 'Notification message will be sent in {0} channel when {1} event triggers. I set it up properly, obviously.'
+  notify_placeholders: 'Placeholders for ''{0}'' notify event'
+  notify_type: Type
+
+uk-UA:
+  notify_available: Список доступних подій сповіщень
+  notify_cant_set: Ця подія не підтримує канал-джерело. Будь ласка, вкажіть канал.
+  notify_desc_addrolerew: Спрацьовує, коли користувач отримує роль як нагороду за досягнення рівня (xprew).
+  notify_desc_levelup: Спрацьовує, коли користувач підвищує рівень на цьому сервері.
+  notify_desc_nicecatch: Спрацьовує, коли користувач ловить якісну рибу.
+  notify_desc_not_found: Опис для цієї події не знайдено. Будь ласка, повідомте про це.
+  notify_desc_protection: Спрацьовує, коли спрацьовує antialt, antispam або antiraid.
+  notify_desc_removerolerew: Спрацьовує, коли користувач втрачає роль як нагороду за досягнення рівня (xprew).
+  notify_list: Список сповіщень
+  notify_msg: Повідомлення сповіщення
+  notify_msg_not_set: Повідомлення сповіщення не встановлено для цієї події.
+  notify_none: На цій сторінці немає сповіщень.
+  notify_off: 'Повідомлення більше не надсилатиметься при спрацюванні події {0}.'
+  notify_on: 'Повідомлення буде надіслано в канал {0}, коли спрацює подія {1}.'
+  notify_placeholders: 'Заповнювачі для події сповіщення ''{0}'''
+  notify_type: Тип
+
+vi-VN:
+  notify_available: Danh sách các sự kiện thông báo có sẵn
+  notify_cant_set: Sự kiện này không hỗ trợ kênh gốc. Vui lòng chỉ định một kênh.
+  notify_desc_addrolerew: Kích hoạt khi người dùng nhận role làm phần thưởng khi đạt cấp độ (xprew).
+  notify_desc_levelup: Kích hoạt khi người dùng lên cấp trên server này.
+  notify_desc_nicecatch: Kích hoạt khi người dùng câu được cá chất lượng.
+  notify_desc_not_found: Không tìm thấy mô tả cho sự kiện thông báo này. Vui lòng báo cáo lỗi này.
+  notify_desc_protection: Kích hoạt khi antialt, antispam hoặc antiraid được kích hoạt.
+  notify_desc_removerolerew: Kích hoạt khi người dùng mất role phần thưởng khi đạt cấp độ (xprew).
+  notify_list: Danh sách thông báo
+  notify_msg: Tin nhắn thông báo
+  notify_msg_not_set: Chưa đặt tin nhắn thông báo cho sự kiện này.
+  notify_none: Không có thông báo nào trên trang này.
+  notify_off: 'Tin nhắn thông báo sẽ không còn được gửi khi sự kiện {0} kích hoạt.'
+  notify_on: 'Tin nhắn thông báo sẽ được gửi trong kênh {0} khi sự kiện {1} kích hoạt.'
+  notify_placeholders: 'Các placeholder cho sự kiện thông báo ''{0}'''
+  notify_type: Loại
+
+zh-CN:
+  notify_available: 可用的通知事件列表
+  notify_cant_set: 此事件不支援來源頻道。請指定一個頻道。
+  notify_desc_addrolerew: 當使用者獲得等級獎勵身分組時觸發（xprew）。
+  notify_desc_levelup: 當使用者在此伺服器升級時觸發。
+  notify_desc_nicecatch: 當使用者釣到高品質的魚時觸發。
+  notify_desc_not_found: 找不到此通知事件的說明。請回報此問題。
+  notify_desc_protection: 當 antialt、antispam 或 antiraid 被觸發時觸發。
+  notify_desc_removerolerew: 當使用者失去等級獎勵身分組時觸發（xprew）。
+  notify_list: 通知列表
+  notify_msg: 通知訊息
+  notify_msg_not_set: 此事件的通知訊息未設定。
+  notify_none: 此頁面沒有通知。
+  notify_off: '當事件 {0} 觸發時將不再發送通知訊息。'
+  notify_on: '當事件 {1} 觸發時，通知訊息將發送到頻道 {0}。'
+  notify_placeholders: '通知事件 ''{0}'' 的佔位符'
+  notify_type: 類型

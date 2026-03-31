@@ -1,5 +1,0 @@
-event_duration_footer: '此活動的有效時間最長為 {0} 小時。'
-event_title: '{0} 活動開始！'
-new_gamestatus_event: '在任何頻道中輸入密碼，即可獲得 {1} {2} 待獎勵。'
-new_reaction_event: '向此消息添加 {0} 反應以獲得 {1} {2} 待獎勵。'
-start_event_fail: 活動未能啟動。目前有另一個活動正在進行，或者啟動該活動時出錯。

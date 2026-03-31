@@ -1,6 +1,0 @@
-lang_list: List of languages
-lang_set: 'Your server''s locale is now {0} - {1}.'
-lang_set_bot: 'Bot''s default locale is now {0} - {1}.'
-lang_set_bot_show: 'Bot''s language is set to {0} - {1}.'
-lang_set_fail: Failed setting locale. Check the command's help, b-baka!
-lang_set_show: 'This server''s language is set to {0} - {1}.'

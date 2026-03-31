@@ -1,5 +1,0 @@
-prune_already_running: Na tym serwerze już trwa czyszczenie.
-prune_cancelled: Czyszczenie zostało anulowane.
-prune_not_found: Nie znaleziono aktywnego czyszczenia na tym serwerze.
-prune_patron: 'Usuwanie wiadomości starszych niż 2 tygodnie wymaga [Patrona Tier X](https://patreon.com/join/nadekobot) lub wyższego.'
-prune_progress: 'Czyszczenie... {0}/{1} wiadomości usunięto.'

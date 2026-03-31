@@ -1,4 +1,0 @@
-convert: '{0} {1} bằng {2} {3}'
-convert_not_found: 'Không thể chuyển đổi {0} sang {1}: không tìm thấy đơn vị'
-convert_type_error: 'Không thể chuyển đổi {0} sang {1}: loại đơn vị không giống nhau'
-convertlist: Các đơn vị có thể dùng cho bộ chuyển đổi

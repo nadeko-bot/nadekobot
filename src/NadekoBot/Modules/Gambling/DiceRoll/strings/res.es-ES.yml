@@ -1,6 +1,0 @@
-dice_invalid_number: 'Número especificado no válido. Puedes lanzar {0}-{1} dados a la vez.'
-dice_rolled: 'sacó {0}.'
-dice_rolled_num: 'Dados lanzados: {0}'
-rolls: ''
-second_larger_than_first: El segundo número debe ser más largo que el primero.
-total: Total

@@ -1,6 +1,0 @@
-alias_added: '{0} yazmak artık {1} komutunun kısayolu olacak.'
-alias_list: Kısayol listesi
-alias_remove_fail: '{0} tetikleyicisinin bir kısayolu yoktu.'
-alias_removed: '{0} tetikleyicisinin artık bir kısayolu yok.'
-aliases_cleared: 'Bu sunucudaki tüm {0} kısayol kaldırıldı.'
-aliases_none: Kısayol bulunamadı

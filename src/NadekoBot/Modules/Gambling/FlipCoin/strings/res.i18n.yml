@@ -1,0 +1,127 @@
+ar:
+  betflip_guess: لقد خمّنت بشكل صحيح!
+  flip_invalid: 'عدد غير صالح. يمكنك قلب 1 إلى {0} عملة.'
+  flip_results: 'قُلبت {0} عملة. {1} وجه، {2} كتابة.'
+  flipped: 'قُلبت {0}'
+  heads: وجه
+  tails: كتابة
+
+de-DE:
+  betflip_guess: Richtig geraten!
+  flip_invalid: 'Ungültige Nummer angegeben. Du kannst 1 bis {0} Münzen werfen.'
+  flip_results: 'Warf {0} Münzen. {1} Kopf, {2} Zahl.'
+  flipped: 'warf {0}.'
+  heads: Kopf
+  tails: Zahl
+
+es-ES:
+  betflip_guess: ¡Acertaste!
+  flip_invalid: 'Número especificado no válido. Puedes voltear 1 a {0} monedas.'
+  flip_results: '{0} monedas lanzadas. {1} cara, {2} cruz.'
+  flipped: 'salió {0}.'
+  heads: Cara
+  tails: Cruz
+
+fr-FR:
+  betflip_guess: Vous avez deviné !
+  flip_invalid: 'Chiffre spécifié invalide. Vous pouvez retourner entre 1 et {0} pièces.'
+  flip_results: 'a jeté {0} pièces. {1} faces, {2} piles.'
+  flipped: 'a retourné {0}.'
+  heads: Face
+  tails: Pile
+
+id-ID:
+  betflip_guess: Kamu menebak dengan benar!
+  flip_invalid: 'Angka yang dimasukkan tidak valid. Kamu bisa melempar 1 sampai {0} koin.'
+  flip_results: 'Melempar {0} koin. {1} kepala, {2} ekor.'
+  flipped: 'Melempar {0}'
+  heads: Kepala
+  tails: Ekor
+
+ja-JP:
+  betflip_guess: 当たりました！
+  flip_invalid: '無効な番号が指定されました。1～{0}個のコインを投げることが可能です。'
+  flip_results: '{0}枚のコインを投げました。表{1}枚、裏{2}枚。'
+  flipped: 'はコインを投げ、{0}が出ました。'
+  heads: 表
+  tails: 裏
+
+ko-KR:
+  betflip_guess: 맞혔어요!
+  flip_invalid: '잘못된 숫자예요. 1부터 {0}까지의 동전을 던질 수 있어요.'
+  flip_results: '동전 {0}개를 던졌어요. 앞면 {1}개, 뒷면 {2}개.'
+  flipped: '{0}이(가) 나왔어요'
+  heads: 앞면
+  tails: 뒷면
+
+pl-PL:
+  betflip_guess: Zgadłeś/aś!
+  flip_invalid: 'Podano nieprawidłową liczbę. Możesz rzucić od 1 do {0} monet.'
+  flip_results: 'Rzucono {0} monet. {1} orłów, {2} reszek.'
+  flipped: 'Wyrzucono {0}'
+  heads: Orzeł
+  tails: Reszka
+
+pt-BR:
+  betflip_guess: Você acertou!
+  flip_invalid: 'Número invalido especificado. Você pode virar 1 a {0} moedas.'
+  flip_results: 'Girou {0} moedas. {1} caras, {2} coroas.'
+  flipped: 'inverteu {0}.'
+  heads: Cara
+  tails: Coroa
+
+ru-RU:
+  betflip_guess: Вы угадали!
+  flip_invalid: 'Указан неверный номер. Вы можете подбросить монеты от 1 до {0}.'
+  flip_results: '{0} монет подброшено. Из них: {1} орлов, {2} решек.'
+  flipped: 'выкинул {0}.'
+  heads: Орёл
+  tails: Решка
+
+sr-Cyrl-RS:
+  betflip_guess: Погодио/ла си!
+  flip_invalid: 'Неважећи број. Можеш бацити од 1 до {0} новчића.'
+  flip_results: 'Бачено {0} новчића. {1} глава, {2} писмо.'
+  flipped: 'Бачено {0}'
+  heads: Глава
+  tails: Писмо
+
+tr-TR:
+  betflip_guess: Doğru tahmin!
+  flip_invalid: 'Geçersiz sayı belirtildi. 1 ile {0} arasında yazı tura atabilirsin.'
+  flip_results: '{0} yazı tura atıldı. {1} yazı, {2} tura.'
+  flipped: '{0} geldi'
+  heads: Yazı
+  tails: Tura
+
+ts-TS:
+  betflip_guess: You guessed it! Hmph, lucky.
+  flip_invalid: 'Invalid number specified. You can flip 1 to {0} coins.'
+  flip_results: 'Flipped {0} coins. {1} heads, {2} tails.'
+  flipped: 'Flipped {0}'
+  heads: Head
+  tails: Tail
+
+uk-UA:
+  betflip_guess: Ти вгадав!
+  flip_invalid: 'Неправильне число. Можна підкинути від 1 до {0} монет.'
+  flip_results: 'Підкинуто {0} монет. {1} орел, {2} решка.'
+  flipped: 'Випало {0}'
+  heads: Орел
+  tails: Решка
+
+vi-VN:
+  betflip_guess: Bạn đoán đúng rồi!
+  flip_invalid: 'Số không hợp lệ. Bạn có thể tung từ 1 đến {0} đồng xu.'
+  flip_results: 'Đã tung {0} đồng xu. {1} mặt ngửa, {2} mặt sấp.'
+  flipped: 'Đã tung {0}'
+  heads: Mặt ngửa
+  tails: Mặt sấp
+
+zh-CN:
+  betflip_guess: 你猜對了！
+  flip_invalid: '指定的號碼無效。您可以翻轉 1 到 {0} 個硬幣。'
+  flip_results: '投擲了 {0} 個硬幣，{1}正{2}反'
+  flipped: '翻轉 {0}。'
+  heads: 頭
+  tails: 尾巴

@@ -1,0 +1,239 @@
+ar:
+  lineup_added_at: 'أُضيف في {0:HH:mm}'
+  lineup_already_active: قائمة الانتظار في هذه القناة مُفعَّلة بالفعل.
+  lineup_already_in: '{0} موجود بالفعل في قائمة الانتظار في الموضع {1}.'
+  lineup_cleared: 'تم مسح قائمة الانتظار (تمت إزالة {0} مستخدمين).'
+  lineup_created: تم تفعيل ميزة قائمة الانتظار في هذه القناة.
+  lineup_empty: قائمة الانتظار فارغة.
+  lineup_join_success: '{0} انضم إلى قائمة الانتظار في الموضع {1}.'
+  lineup_leave_success: لقد غادرت قائمة الانتظار.
+  lineup_list_title: 'قائمة الانتظار لـ #{0}'
+  lineup_next_user: 'التالي: {0}'
+  lineup_not_in: أنت لست في قائمة الانتظار.
+  lineup_remove_fail: '{0} ليس في قائمة الانتظار.'
+  lineup_removed: 'تمت إزالة {0} من قائمة الانتظار.'
+
+de-DE:
+  lineup_added_at: 'Hinzugefügt um {0:HH:mm}'
+  lineup_already_active: Die Warteschlange in diesem Kanal ist bereits aktiv.
+  lineup_already_in: '{0} ist bereits in der Warteschlange auf Position {1}.'
+  lineup_cleared: 'Warteschlange geleert ({0} Benutzer entfernt).'
+  lineup_created: Die Warteschlangenfunktion ist jetzt in diesem Kanal aktiv.
+  lineup_empty: Die Warteschlange ist leer.
+  lineup_join_success: '{0} ist der Warteschlange auf Position {1} beigetreten.'
+  lineup_leave_success: Du hast die Warteschlange verlassen.
+  lineup_list_title: 'Warteschlange für #{0}'
+  lineup_next_user: 'Als Nächstes: {0}'
+  lineup_not_in: Du bist nicht in der Warteschlange.
+  lineup_remove_fail: '{0} ist nicht in der Warteschlange.'
+  lineup_removed: '{0} wurde aus der Warteschlange entfernt.'
+
+es-ES:
+  lineup_added_at: 'Añadido a las {0:HH:mm}'
+  lineup_already_active: La fila en este canal ya está activa.
+  lineup_already_in: '{0} ya está en la fila en la posición {1}.'
+  lineup_cleared: 'Fila limpiada ({0} usuarios eliminados).'
+  lineup_created: La función de fila ahora está activa en este canal.
+  lineup_empty: La fila está vacía.
+  lineup_join_success: '{0} se ha unido a la fila en la posición {1}.'
+  lineup_leave_success: Has salido de la fila.
+  lineup_list_title: 'Fila para #{0}'
+  lineup_next_user: 'Siguiente: {0}'
+  lineup_not_in: No estás en la fila.
+  lineup_remove_fail: '{0} no está en la fila.'
+  lineup_removed: '{0} ha sido eliminado de la fila.'
+
+fr-FR:
+  lineup_added_at: 'Ajouté à {0:HH:mm}'
+  lineup_already_active: La file d'attente de ce salon est déjà active.
+  lineup_already_in: '{0} est déjà dans la file d''attente à la position {1}.'
+  lineup_cleared: 'File d''attente vidée ({0} utilisateurs retirés).'
+  lineup_created: La fonction de file d'attente est maintenant active dans ce salon.
+  lineup_empty: La file d'attente est vide.
+  lineup_join_success: '{0} a rejoint la file d''attente à la position {1}.'
+  lineup_leave_success: Vous avez quitté la file d'attente.
+  lineup_list_title: 'File d''attente pour #{0}'
+  lineup_next_user: 'Suivant : {0}'
+  lineup_not_in: Vous n'êtes pas dans la file d'attente.
+  lineup_remove_fail: '{0} n''est pas dans la file d''attente.'
+  lineup_removed: '{0} a été retiré de la file d''attente.'
+
+id-ID:
+  lineup_added_at: 'Ditambahkan pada {0:HH:mm}'
+  lineup_already_active: Antrean di channel ini sudah aktif.
+  lineup_already_in: '{0} sudah ada di antrean pada posisi {1}.'
+  lineup_cleared: 'Antrean dibersihkan ({0} pengguna dihapus).'
+  lineup_created: Fitur antrean sekarang aktif di channel ini.
+  lineup_empty: Antrean kosong.
+  lineup_join_success: '{0} telah bergabung ke antrean di posisi {1}.'
+  lineup_leave_success: Kamu telah keluar dari antrean.
+  lineup_list_title: 'Antrean untuk #{0}'
+  lineup_next_user: 'Selanjutnya: {0}'
+  lineup_not_in: Kamu tidak ada di antrean.
+  lineup_remove_fail: '{0} tidak ada di antrean.'
+  lineup_removed: '{0} telah dikeluarkan dari antrean.'
+
+ja-JP:
+  lineup_added_at: '{0:HH:mm}に追加'
+  lineup_already_active: このチャンネルの並びは既にアクティブです。
+  lineup_already_in: '{0}は既にポジション{1}の並びに入っています。'
+  lineup_cleared: '並びがクリアされました（{0}人のユーザーを削除）。'
+  lineup_created: 並び機能がこのチャンネルで有効になりました。
+  lineup_empty: 並びは空です。
+  lineup_join_success: '{0}がポジション{1}で並びに参加しました。'
+  lineup_leave_success: 並びから退出しました。
+  lineup_list_title: '#{0}の並び'
+  lineup_next_user: '次: {0}'
+  lineup_not_in: 並びに入っていません。
+  lineup_remove_fail: '{0}は並びに入っていません。'
+  lineup_removed: '{0}が並びから削除されました。'
+
+ko-KR:
+  lineup_added_at: '{0:HH:mm}에 추가됨'
+  lineup_already_active: 이 채널의 대기열은 이미 활성화되어 있어요.
+  lineup_already_in: '{0}님은 이미 대기열의 {1}번 위치에 있어요.'
+  lineup_cleared: '대기열이 초기화되었어요 ({0}명 제거됨).'
+  lineup_created: 이 채널에서 대기열 기능이 활성화되었어요.
+  lineup_empty: 대기열이 비어 있어요.
+  lineup_join_success: '{0}님이 대기열의 {1}번 위치에 참가했어요.'
+  lineup_leave_success: 대기열에서 나갔어요.
+  lineup_list_title: '#{0} 대기열'
+  lineup_next_user: '다음 순서: {0}'
+  lineup_not_in: 대기열에 참가하지 않았어요.
+  lineup_remove_fail: '{0}님은 대기열에 없어요.'
+  lineup_removed: '{0}님이 대기열에서 제거되었어요.'
+
+pl-PL:
+  lineup_added_at: 'Dodano o {0:HH:mm}'
+  lineup_already_active: Kolejka na tym kanale jest już aktywna.
+  lineup_already_in: '{0} jest już w kolejce na pozycji {1}.'
+  lineup_cleared: 'Kolejka wyczyszczona (usunięto {0} użytkowników).'
+  lineup_created: Funkcja kolejki jest teraz aktywna na tym kanale.
+  lineup_empty: Kolejka jest pusta.
+  lineup_join_success: '{0} dołączył/a do kolejki na pozycji {1}.'
+  lineup_leave_success: Opuściłeś/aś kolejkę.
+  lineup_list_title: 'Kolejka na #{0}'
+  lineup_next_user: 'Następny: {0}'
+  lineup_not_in: Nie jesteś w kolejce.
+  lineup_remove_fail: '{0} nie jest w kolejce.'
+  lineup_removed: '{0} został/a usunięty/a z kolejki.'
+
+pt-BR:
+  lineup_added_at: 'Adicionado às {0:HH:mm}'
+  lineup_already_active: A fila neste canal já está ativa.
+  lineup_already_in: '{0} já está na fila na posição {1}.'
+  lineup_cleared: 'Fila limpa ({0} usuários removidos).'
+  lineup_created: O recurso de fila agora está ativo neste canal.
+  lineup_empty: A fila está vazia.
+  lineup_join_success: '{0} entrou na fila na posição {1}.'
+  lineup_leave_success: Você saiu da fila.
+  lineup_list_title: 'Fila para #{0}'
+  lineup_next_user: 'Próximo: {0}'
+  lineup_not_in: Você não está na fila.
+  lineup_remove_fail: '{0} não está na fila.'
+  lineup_removed: '{0} foi removido da fila.'
+
+ru-RU:
+  lineup_added_at: 'Добавлен в {0:HH:mm}'
+  lineup_already_active: Очередь в этом канале уже активна.
+  lineup_already_in: '{0} уже в очереди на позиции {1}.'
+  lineup_cleared: 'Очередь очищена ({0} пользователей удалено).'
+  lineup_created: Функция очереди теперь активна в этом канале.
+  lineup_empty: Очередь пуста.
+  lineup_join_success: '{0} присоединился к очереди на позиции {1}.'
+  lineup_leave_success: Вы покинули очередь.
+  lineup_list_title: 'Очередь для #{0}'
+  lineup_next_user: 'Следующий: {0}'
+  lineup_not_in: Вы не в очереди.
+  lineup_remove_fail: '{0} не в очереди.'
+  lineup_removed: '{0} был удалён из очереди.'
+
+sr-Cyrl-RS:
+  lineup_added_at: 'Додат у {0:HH:mm}'
+  lineup_already_active: Ред у овом каналу је већ активан.
+  lineup_already_in: '{0} је већ у реду на позицији {1}.'
+  lineup_cleared: 'Ред очишћен ({0} корисника уклоњено).'
+  lineup_created: Функција реда је сада активна у овом каналу.
+  lineup_empty: Ред је празан.
+  lineup_join_success: '{0} се придружио реду на позицији {1}.'
+  lineup_leave_success: Напустили сте ред.
+  lineup_list_title: 'Ред за #{0}'
+  lineup_next_user: 'Следећи: {0}'
+  lineup_not_in: Нисте у реду.
+  lineup_remove_fail: '{0} није у реду.'
+  lineup_removed: '{0} је уклоњен из реда.'
+
+tr-TR:
+  lineup_added_at: '{0:HH:mm} tarihinde eklendi'
+  lineup_already_active: Bu kanaldaki sıra zaten aktif.
+  lineup_already_in: '{0} zaten {1}. sırada.'
+  lineup_cleared: 'Sıra temizlendi ({0} kullanıcı çıkarıldı).'
+  lineup_created: Sıra özelliği artık bu kanalda aktif.
+  lineup_empty: Sıra boş.
+  lineup_join_success: '{0} sıraya {1}. pozisyonda katıldı.'
+  lineup_leave_success: Sıradan ayrıldın.
+  lineup_list_title: '#{0} için sıra'
+  lineup_next_user: 'Sıradaki: {0}'
+  lineup_not_in: Sırada değilsin.
+  lineup_remove_fail: '{0} sırada değil.'
+  lineup_removed: '{0} sıradan çıkarıldı.'
+
+ts-TS:
+  lineup_added_at: 'Added at {0:HH:mm}'
+  lineup_already_active: The lineup in this channel is already active, dummy.
+  lineup_already_in: '{0} is already in the lineup at position {1}. D-did you not notice?'
+  lineup_cleared: 'Lineup cleared ({0} users removed).'
+  lineup_created: Lineup feature is now active in this channel.
+  lineup_empty: The lineup is empty. How lonely.
+  lineup_join_success: '{0} has joined the lineup at position {1}.'
+  lineup_leave_success: You left the lineup. W-whatever.
+  lineup_list_title: 'Lineup for #{0}'
+  lineup_next_user: 'Next up: {0}. Hurry it up already!'
+  lineup_not_in: You're not in the lineup.
+  lineup_remove_fail: '{0} isn''t in the lineup. D-did you even check?'
+  lineup_removed: '{0} has been removed from the lineup.'
+
+uk-UA:
+  lineup_added_at: 'Додано о {0:HH:mm}'
+  lineup_already_active: Черга в цьому каналі вже активна.
+  lineup_already_in: '{0} вже в черзі на позиції {1}.'
+  lineup_cleared: 'Чергу очищено ({0} користувачів видалено).'
+  lineup_created: Функцію черги активовано в цьому каналі.
+  lineup_empty: Черга порожня.
+  lineup_join_success: '{0} приєднався до черги на позицію {1}.'
+  lineup_leave_success: Ти покинув чергу.
+  lineup_list_title: 'Черга для #{0}'
+  lineup_next_user: 'Наступний: {0}'
+  lineup_not_in: Тебе немає в черзі.
+  lineup_remove_fail: '{0} немає в черзі.'
+  lineup_removed: '{0} було видалено з черги.'
+
+vi-VN:
+  lineup_added_at: 'Đã thêm lúc {0:HH:mm}'
+  lineup_already_active: Hàng chờ trong kênh này đã được kích hoạt rồi.
+  lineup_already_in: '{0} đã ở trong hàng chờ tại vị trí {1}.'
+  lineup_cleared: 'Đã xóa hàng chờ ({0} người dùng bị loại bỏ).'
+  lineup_created: Tính năng hàng chờ đã được kích hoạt trong kênh này.
+  lineup_empty: Hàng chờ đang trống.
+  lineup_join_success: '{0} đã tham gia hàng chờ tại vị trí {1}.'
+  lineup_leave_success: Bạn đã rời khỏi hàng chờ.
+  lineup_list_title: 'Hàng chờ cho #{0}'
+  lineup_next_user: 'Tiếp theo: {0}'
+  lineup_not_in: Bạn không có trong hàng chờ.
+  lineup_remove_fail: '{0} không có trong hàng chờ.'
+  lineup_removed: '{0} đã bị loại khỏi hàng chờ.'
+
+zh-CN:
+  lineup_added_at: '於 {0:HH:mm} 加入'
+  lineup_already_active: 此頻道的排隊已經啟用。
+  lineup_already_in: '{0} 已在排隊中，位置為 {1}。'
+  lineup_cleared: '排隊已清除（{0} 位使用者已移除）。'
+  lineup_created: 排隊功能已在此頻道啟用。
+  lineup_empty: 排隊是空的。
+  lineup_join_success: '{0} 已加入排隊，位置為 {1}。'
+  lineup_leave_success: 你已離開排隊。
+  lineup_list_title: '#{0} 的排隊'
+  lineup_next_user: '下一位：{0}'
+  lineup_not_in: 你不在排隊中。
+  lineup_remove_fail: '{0} 不在排隊中。'
+  lineup_removed: '{0} 已從排隊中移除。'

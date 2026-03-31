@@ -1,0 +1,783 @@
+ar:
+  cant_dm: لا أستطيع إرسال رسالة خاصة لك. تأكد من أن الرسائل الخاصة مفتوحة. اذهب إلى **الخيارات (زر الترس) -> الخصوصية والأمان -> السماح بالرسائل المباشرة من أعضاء السيرفر**
+  color: اللون
+  desc: الوصف
+  empty_page: هذه الصفحة فارغة.
+  error: خطأ
+  error_occured: حدث خطأ.
+  expr_import_invalid_data: تعذر تحليل الملف. تأكد من أنه ملف .yml صالح
+  expr_import_no_input: إدخال غير صالح. لم يتم العثور على ملف مرفوع أو نص إدخال صالح.
+  expr_no_found_id: لم يتم العثور على تعبير بهذا المعرف.
+  hierarchy: لا يمكنك استخدام هذا الأمر على مستخدمين لديهم دور أعلى أو مساوٍ لدورك (أو دوري) في تسلسل الأدوار.
+  id: المعرف
+  insuf_perms_i: ليس لدي صلاحيات كافية.
+  insuf_perms_u: ليس لديك صلاحيات كافية.
+  invalid_input: إدخال غير صالح.
+  joined_discord: تاريخ الانضمام إلى Discord
+  joined_server: تاريخ الانضمام إلى السيرفر
+  leaderboard: لوحة المتصدرين
+  members: الأعضاء
+  msg_not_found: الرسالة غير موجودة.
+  must_be_in_voice: يجب أن تكون في قناة صوتية في هذا السيرفر.
+  name: الاسم
+  no_channel_found: لم يتم العثور على قناة.
+  no_search_results: لا توجد نتائج بحث.
+  no_user_on_this_page: لا يوجد مستخدمون في هذه الصفحة.
+  not_enough: 'ليس لديك ما يكفي من {0}'
+  not_found: غير موجود.
+  not_in_voice: أنت لست في قناة صوتية في هذا السيرفر.
+  owner: المالك
+  page: 'الصفحة {0}'
+  perm_prevent: 'الصلاحية رقم #{0} {1} تمنع هذا الإجراء.'
+  price: السعر
+  prompt_no: لا
+  prompt_yes: نعم
+  redacted_too_long: تم الحذف لأنه طويل جداً.
+  response: الاستجابة
+  trigger: المُحفّز
+  user_not_found: المستخدم غير موجود.
+  userrole_icon_fail: فشل في تعيين أيقونة الدور.
+  userrole_icon_invalid: لا يمكن أن تكون أيقونة الدور فارغة.
+  userrole_icon_missing_permissions: السيرفر لا يملك صلاحيات استخدام أيقونات الأدوار.
+  userrole_icon_success: 'تم حفظ الأيقونة للدور {0}.'
+  users: المستخدمون
+  module: 'الوحدة: {0}'
+  options: الخيارات
+  overloads: الاستخدامات البديلة
+  requires: يتطلب
+  usage: الاستخدام
+
+de-DE:
+  cant_dm: Ich kann keine Nachrichten an dich senden. Stelle sicher, dass deine Direktnachrichten öffentlich sind. Gehe zu **Benutzereinstellungen (Zahnrad) ->  Privatsphäre & Sicherheit -> Direktnachrichten von Servermitgliedern erlauben**
+  color: Farbe
+  desc: Beschreibung
+  empty_page: Diese Seite ist leer.
+  error: Fehler
+  error_occured: Ein Fehler ist aufgetreten.
+  expr_import_invalid_data: Kann Datei nicht Analysieren. Stelle sicher, dass es eine gültige .yml Datei ist
+  expr_import_no_input: Ungültiger Input. Kein gültiger Dateiupload oder Input Text gefunden.
+  expr_no_found_id: Kein Ausdruck mit dieser ID gefunden.
+  hierarchy: Du kannst diesen Command nicht an einen Nutzer mit einem höheren oder gleichwertigen Rang in der Hierarchi ausführen.
+  id: Id
+  insuf_perms_i: Ich habe unzureichende Berechtigungen.
+  insuf_perms_u: Du hast unzureichende Berechtigungen.
+  invalid_input: Ungültige Eingabe.
+  joined_discord: ist Discord beigetreten
+  joined_server: ist dem Server beigetreten
+  leaderboard: Rangliste
+  members: Mitglieder
+  msg_not_found: Nachricht wurde nicht gefunden.
+  must_be_in_voice: Du musst in einem Sprachkanal sein auf diesem Server.
+  name: Name
+  no_channel_found: Keinen Channel gefunden.
+  no_search_results: Keine Suchergebnisse.
+  no_user_on_this_page: Keine Nutzer auf dieser Seite.
+  not_enough: 'Du hast nicht genug {0}'
+  not_found: Nicht gefunden.
+  not_in_voice: Du bist nicht in einem Sprachkanal auf diesem Server.
+  owner: Besitzer
+  page: 'Seite {0}'
+  perm_prevent: 'Berechtigung Nummer #{0} {1} verhindert diese Aktion.'
+  price: Preis
+  prompt_no: Nein
+  prompt_yes: Ja
+  redacted_too_long: Wurde entfernt da es zu lang ist.
+  response: Antwort
+  trigger: Auslöser
+  user_not_found: Nutzer nicht gefunden.
+  userrole_icon_fail: Fehler beim Festlegen des Rollensymbols.
+  userrole_icon_invalid: Das Rollensymbol darf nicht leer sein.
+  userrole_icon_missing_permissions: Der Server hat keine Berechtigung zur Verwendung von Rollensymbolen.
+  userrole_icon_success: 'Das Symbol für {0} wurde gespeichert.'
+  users: Nutzer
+  module: 'Modul: {0}'
+  options: Optionen
+  overloads: Überladungen
+  requires: Benötigt
+  usage: Nutzung
+
+es-ES:
+  cant_dm: No puedo mensajearte por privado. Comprueba que tus MD están abiertos. Ve a **opciones (botón del engranaje) -> Privacidad y seguridad -> Permitir mensajes directos de los miembros del servidor**
+  color: Color
+  desc: Descripción
+  empty_page: Esta página está vacía.
+  error: Error
+  error_occured: Un error ocurrió.
+  expr_import_invalid_data: No se puede analizar el archivo, asegúrese que sea un archivo .yml válido.
+  expr_import_no_input: Entrada no válida. No se ha encontrado ningún archivo o texto de entrada válido.
+  expr_no_found_id: No existen expresiones con esa ID.
+  hierarchy: No puedes usar este comando en usuarios con un rol más alto o igual al tuyo.
+  id: ID
+  insuf_perms_i: No tengo suficientes permisos.
+  insuf_perms_u: No tienes los suficientes permisos.
+  invalid_input: Entrada no válida.
+  joined_discord: Ingresó a Discord
+  joined_server: Ingresó al servidor
+  leaderboard: Marcador
+  members: Miembros
+  msg_not_found: Mensaje no encontrado.
+  must_be_in_voice: Debes estar en un canal de voz en este servidor.
+  name: Nombre
+  no_channel_found: Canal no encontrado.
+  no_search_results: No hubo resultados de búsqueda.
+  no_user_on_this_page: No hay usuarios en esta página.
+  not_enough: 'No tienes suficientes {0}.'
+  not_found: No encontrada.
+  not_in_voice: No estás en un canal de voz en este servidor.
+  owner: Dueño
+  page: 'Página {0}'
+  perm_prevent: 'El permiso número #{0} {1} está impidiendo esta acción.'
+  price: Precio
+  prompt_no: 'No'
+  prompt_yes: Sí
+  redacted_too_long: Editada porque es muy larga.
+  response: Respuesta
+  trigger: Escribe
+  user_not_found: Usuario no encontrado.
+  userrole_icon_fail: Error al establecer el ícono del rol.
+  userrole_icon_invalid: El ícono del rol no puede estar vacío.
+  userrole_icon_missing_permissions: El servidor no tiene permisos para usar íconos de rol.
+  userrole_icon_success: 'El ícono de {0} ha sido guardado.'
+  users: Usuarios
+  module: 'Módulo: {0}'
+  options: Opciones
+  overloads: Sobrecargas
+  requires: Requiere
+  usage: Modo de uso
+
+fr-FR:
+  cant_dm: Je ne peux pas te dm. Assure-toi que tes MP sont ouverts. Va dans **options (bouton en forme de rouage) -> Confidentialité et sécurité -> Autoriser les messages directs des membres du serveur**
+  color: Couleur
+  desc: Description
+  empty_page: Cette page est vide.
+  error: Erreur
+  error_occured: Une erreur est survenue.
+  expr_import_invalid_data: Impossible d'analyser le fichier. Assurez-vous qu'il s'agisse d'un fichier .yml
+  expr_import_no_input: Saisie invalide. Aucun chargement de fichier ou saisie de texte trouvé.
+  expr_no_found_id: Aucune expression de trouvée avec cet id.
+  hierarchy: Vous ne pouvez pas utiliser cette commande sur des membres ayant un rôle supérieur ou égal au vôtre dans la hiérarchie.
+  id: Id
+  insuf_perms_i: Mes permissions sont insuffisantes.
+  insuf_perms_u: Vos permissions sont insuffisantes.
+  invalid_input: Entrée invalide.
+  joined_discord: A rejoint Discord
+  joined_server: A rejoint le serveur
+  leaderboard: Classement
+  members: Membres
+  msg_not_found: Message introuvable.
+  must_be_in_voice: Vous avez besoin d'être dans un salon vocal de ce serveur.
+  name: Nom
+  no_channel_found: Aucun salon trouvé.
+  no_search_results: Aucuns résultats de recherche
+  no_user_on_this_page: Aucun membre sur cette page.
+  not_enough: 'Vous n''avez pas assez de {0}'
+  not_found: Introuvable.
+  not_in_voice: Vous n'êtes pas dans un salon vocal sur ce serveur.
+  owner: Propriétaire
+  page: 'page {0}'
+  perm_prevent: 'Le numéro d''autorisation # {0} {1} empêche cette action.'
+  price: Prix
+  prompt_no: Non
+  prompt_yes: Oui
+  redacted_too_long: Révisé car trop long.
+  response: Réponse
+  trigger: Déclencheur
+  user_not_found: Utilisateur introuvable.
+  userrole_icon_fail: Échec de la définition de l'icône du rôle.
+  userrole_icon_invalid: L'icône du rôle ne peut pas être vide.
+  userrole_icon_missing_permissions: Le serveur n'a pas les permissions pour utiliser les icônes de rôle.
+  userrole_icon_success: 'L''icône de {0} a été sauvegardée.'
+  users: Membres
+  module: 'Module: {0}'
+  options: Options
+  overloads: Surcharges
+  requires: Requiert
+  usage: Usage
+
+id-ID:
+  cant_dm: Aku nggak bisa kirim DM ke kamu. Pastikan DM kamu terbuka. Pergi ke **opsi (tombol gerigi) -> Privasi & Keamanan -> Izinkan pesan langsung dari anggota server**
+  color: Warna
+  desc: Deskripsi
+  empty_page: Halaman ini kosong.
+  error: Error
+  error_occured: Terjadi error.
+  expr_import_invalid_data: Tidak bisa memproses file tersebut. Pastikan file-nya adalah file .yml yang valid
+  expr_import_no_input: Input tidak valid. Tidak ditemukan file upload atau teks input yang valid.
+  expr_no_found_id: Tidak ditemukan ekspresi dengan id tersebut.
+  hierarchy: Kamu nggak bisa menggunakan perintah ini pada pengguna yang memiliki role lebih tinggi atau setara dengan kamu (atau aku) di hierarki role.
+  id: Id
+  insuf_perms_i: Aku tidak punya izin yang cukup.
+  insuf_perms_u: Kamu tidak punya izin yang cukup.
+  invalid_input: Input tidak valid.
+  joined_discord: Bergabung di Discord
+  joined_server: Bergabung di server
+  leaderboard: Papan Peringkat
+  members: Anggota
+  msg_not_found: Pesan tidak ditemukan.
+  must_be_in_voice: Kamu harus berada di channel suara di server ini.
+  name: Nama
+  no_channel_found: Channel tidak ditemukan.
+  no_search_results: Tidak ada hasil pencarian.
+  no_user_on_this_page: Tidak ada pengguna di halaman ini.
+  not_enough: 'Kamu nggak punya cukup {0}'
+  not_found: Tidak ditemukan.
+  not_in_voice: Kamu tidak berada di channel suara di server ini.
+  owner: Pemilik
+  page: 'halaman {0}'
+  perm_prevent: 'Izin nomor #{0} {1} mencegah tindakan ini.'
+  price: Harga
+  prompt_no: Tidak
+  prompt_yes: Ya
+  redacted_too_long: Disembunyikan karena terlalu panjang.
+  response: Respons
+  trigger: Pemicu
+  user_not_found: Pengguna tidak ditemukan.
+  userrole_icon_fail: Gagal mengatur ikon role.
+  userrole_icon_invalid: Ikon role tidak boleh kosong.
+  userrole_icon_missing_permissions: Server tidak memiliki izin untuk menggunakan RoleIcons.
+  userrole_icon_success: 'Ikon untuk {0} telah disimpan.'
+  users: Pengguna
+  module: 'Modul: {0}'
+  options: Opsi
+  overloads: Overload
+  requires: Membutuhkan
+  usage: Penggunaan
+
+ja-JP:
+  cant_dm: DMを送信できません。DMが開放されていることを確認してください。**設定（歯車ボタン）→プライバシー・安全→サーバーメンバーからのダイレクトメッセージを許可**
+  color: 色
+  desc: 説明
+  empty_page: このページは空です。
+  error: エラー
+  error_occured: エラーが発生しました。
+  expr_import_invalid_data: ファイルを解析できません。有効な.ymlファイルであることを確認してください
+  expr_import_no_input: 無効な入力です。有効なファイルアップロードまたは入力テキストが見つかりません
+  expr_no_found_id: そのIDの式が見つかりません。
+  hierarchy: このコマンドは、自分の役割と同等か、それ以上の役割を持つユーザーには使用できません。
+  id: ID
+  insuf_perms_i: Botに十分な権限がありません。
+  insuf_perms_u: あなたに十分な権限がありません。
+  invalid_input: 不適切な入力。
+  joined_discord: Discord参加日
+  joined_server: サーバー参加日
+  leaderboard: リーダーボード
+  members: メンバー数
+  msg_not_found: メッセージが見つかりません。
+  must_be_in_voice: このサーバーのボイスチャンネルにいる必要があります。
+  name: 名前
+  no_channel_found: チャンネルが見つかりませんでした。
+  no_search_results: 検索結果はありません。
+  no_user_on_this_page: このページにユーザーはいません。
+  not_enough: '{0}が足りません'
+  not_found: 見つかりません。
+  not_in_voice: あなたはこのサーバー上の音声チャネルにいません。
+  owner: オーナー
+  page: '{0}ページ'
+  perm_prevent: '権限番号#{0} {1}がこのアクションを妨げています。'
+  price: 価格
+  prompt_no: いいえ
+  prompt_yes: はい
+  redacted_too_long: 非常に長いので編集されました。
+  response: 反応
+  trigger: トリガー
+  user_not_found: ユーザーが見つかりません。
+  userrole_icon_fail: ロールアイコンの設定に失敗しました。
+  userrole_icon_invalid: ロールアイコンは空にできません。
+  userrole_icon_missing_permissions: サーバーにロールアイコンを使用する権限がありません。
+  userrole_icon_success: '{0}のアイコンが保存されました。'
+  users: ユーザー
+  module: 'モジュール: {0}'
+  options: オプション
+  overloads: オーバーロード
+  requires: 必要条件
+  usage: 使用方法
+
+ko-KR:
+  cant_dm: DM을 보낼 수 없어요. DM이 열려 있는지 확인해 주세요. **설정(톱니바퀴 버튼) -> 개인정보 보호 및 보안 -> 서버 멤버로부터의 다이렉트 메시지 허용**을 켜 주세요.
+  color: 색상
+  desc: 설명
+  empty_page: 이 페이지는 비어 있어요.
+  error: 오류
+  error_occured: 오류가 발생했어요.
+  expr_import_invalid_data: 파일을 파싱할 수 없어요. 유효한 .yml 파일인지 확인해 주세요.
+  expr_import_no_input: 잘못된 입력이에요. 유효한 파일 업로드 또는 입력 텍스트를 찾을 수 없어요.
+  expr_no_found_id: 해당 ID의 표현식을 찾을 수 없어요.
+  hierarchy: 역할 계층에서 자신(또는 봇)보다 높거나 같은 역할을 가진 유저에게는 이 명령어를 사용할 수 없어요.
+  id: ID
+  insuf_perms_i: 봇의 권한이 부족해요.
+  insuf_perms_u: 당신의 권한이 부족해요.
+  invalid_input: 잘못된 입력이에요.
+  joined_discord: Discord 가입일
+  joined_server: 서버 가입일
+  leaderboard: 리더보드
+  members: 멤버
+  msg_not_found: 메시지를 찾을 수 없어요.
+  must_be_in_voice: 이 서버의 음성 채널에 접속해 있어야 해요.
+  name: 이름
+  no_channel_found: 채널을 찾을 수 없어요.
+  no_search_results: 검색 결과가 없어요.
+  no_user_on_this_page: 이 페이지에 유저가 없어요.
+  not_enough: '{0}이(가) 부족해요.'
+  not_found: 찾을 수 없어요.
+  not_in_voice: 이 서버의 음성 채널에 접속해 있지 않아요.
+  owner: 소유자
+  page: '페이지 {0}'
+  perm_prevent: '권한 #{0} {1}이(가) 이 동작을 막고 있어요.'
+  price: 가격
+  prompt_no: 아니요
+  prompt_yes: 네
+  redacted_too_long: 내용이 너무 길어서 생략되었어요.
+  response: 응답
+  trigger: 트리거
+  user_not_found: 유저를 찾을 수 없어요.
+  userrole_icon_fail: 역할 아이콘 설정에 실패했어요.
+  userrole_icon_invalid: 역할 아이콘은 비워둘 수 없어요.
+  userrole_icon_missing_permissions: 서버에 역할 아이콘을 사용할 권한이 없어요.
+  userrole_icon_success: '{0}의 아이콘이 저장되었어요.'
+  users: 유저
+  module: '모듈: {0}'
+  options: 옵션
+  overloads: 오버로드
+  requires: 필요 조건
+  usage: 사용법
+
+pl-PL:
+  cant_dm: Nie mogę wysłać ci wiadomości prywatnej. Upewnij się, że masz otwarte DM. Przejdź do **opcje (przycisk koła zębatego) -> Prywatność i bezpieczeństwo -> Zezwalaj na wiadomości bezpośrednie od członków serwera**
+  color: Kolor
+  desc: Opis
+  empty_page: Ta strona jest pusta.
+  error: Błąd
+  error_occured: Wystąpił błąd.
+  expr_import_invalid_data: Nie udało się przetworzyć pliku. Upewnij się, że to prawidłowy plik .yml
+  expr_import_no_input: Nieprawidłowe dane wejściowe. Nie znaleziono prawidłowego pliku ani tekstu.
+  expr_no_found_id: Nie znaleziono wyrażenia o tym id.
+  hierarchy: Nie możesz użyć tej komendy na użytkownikach z rolą wyższą lub równą twojej (lub mojej) w hierarchii ról.
+  id: Id
+  insuf_perms_i: Mam niewystarczające uprawnienia.
+  insuf_perms_u: Masz niewystarczające uprawnienia.
+  invalid_input: Nieprawidłowe dane wejściowe.
+  joined_discord: Dołączył do Discorda
+  joined_server: Dołączył do serwera
+  leaderboard: Ranking
+  members: Członkowie
+  msg_not_found: Nie znaleziono wiadomości.
+  must_be_in_voice: Musisz być na kanale głosowym na tym serwerze.
+  name: Nazwa
+  no_channel_found: Nie znaleziono kanału.
+  no_search_results: Brak wyników wyszukiwania.
+  no_user_on_this_page: Brak użytkowników na tej stronie.
+  not_enough: 'Nie masz wystarczająco {0}'
+  not_found: Nie znaleziono.
+  not_in_voice: Nie jesteś na kanale głosowym na tym serwerze.
+  owner: Właściciel
+  page: 'strona {0}'
+  perm_prevent: 'Uprawnienie nr #{0} {1} blokuje tę akcję.'
+  price: Cena
+  prompt_no: Nie
+  prompt_yes: Tak
+  redacted_too_long: Ukryto, bo jest za długie.
+  response: Odpowiedź
+  trigger: Wyzwalacz
+  user_not_found: Nie znaleziono użytkownika.
+  userrole_icon_fail: Nie udało się ustawić ikony roli.
+  userrole_icon_invalid: Ikona roli nie może być pusta.
+  userrole_icon_missing_permissions: Serwer nie ma uprawnień do używania ikon ról.
+  userrole_icon_success: 'Ikona dla {0} została zapisana.'
+  users: Użytkownicy
+  module: 'Moduł: {0}'
+  options: Opcje
+  overloads: Przeciążenia
+  requires: Wymaga
+  usage: Użycie
+
+pt-BR:
+  cant_dm: Eu não posso te mandar mensagem. Verifique que suas mensagens privadas estão abertas. Vá para **configurações -> Privacidade & Segurança -> Permitir mensagens diretas de membros do servidor**
+  color: Cor
+  desc: Descrição
+  empty_page: Essa página esta vazia.
+  error: Erro
+  error_occured: Ocorreu um erro.
+  expr_import_invalid_data: Incapaz de analisar arquivo. Verifique se é um arquivo .yml
+  expr_import_no_input: Entrada inválida. Nenhum arquivo ou entrada de texto válido encontrado.
+  expr_no_found_id: Não foi encontrada uma expressão com esse id.
+  hierarchy: Você não pode usar esse comando em usuários de cargo igual ou superior ao seu (ou meu) na hierarquia de cargos.
+  id: Id
+  insuf_perms_i: Não tenho permissões suficientes.
+  insuf_perms_u: Você não possui permissões suficientes.
+  invalid_input: Input inválida.
+  joined_discord: Entrou no Discord
+  joined_server: Entrou no servidor
+  leaderboard: Ranking
+  members: Membros
+  msg_not_found: Mensagem não encontrada.
+  must_be_in_voice: Você precisa estar em um canal de voz nesse servidor.
+  name: Nome
+  no_channel_found: Nenhum canal encontrado.
+  no_search_results: Nenhum resultado de pesquisa.
+  no_user_on_this_page: Nenhum usuário nessa página.
+  not_enough: 'Você não tem {0} suficiente.'
+  not_found: Não encontrado.
+  not_in_voice: Você não está em um canal de voz nesse servidor.
+  owner: Dono
+  page: 'Página {0}'
+  perm_prevent: 'Permissão número #{0} {1} está impedindo essa ação.'
+  price: Preço
+  prompt_no: Não
+  prompt_yes: Sim
+  redacted_too_long: O texto é longo demais.
+  response: Resposta
+  trigger: Gatilho
+  user_not_found: Usuário não encontrado.
+  userrole_icon_fail: Falha ao definir o ícone do cargo.
+  userrole_icon_invalid: O ícone do cargo não pode estar vazio.
+  userrole_icon_missing_permissions: O servidor não tem permissão para usar ícones de cargo.
+  userrole_icon_success: 'O ícone de {0} foi salvo.'
+  users: Usuários
+  module: 'Módulo: {0}'
+  options: Opções
+  overloads: Sobrecargas
+  requires: Requer
+  usage: Uso
+
+ru-RU:
+  cant_dm: Я не могу отправить ЛС. Убедитесь, что ваши ЛС открыты. Перейдите в ** параметры (кнопка с шестеренкой) -> Конфиденциальность и безопасность -> Разрешить прямые сообщения от участников сервера **
+  color: Цвет
+  desc: Описание
+  empty_page: Эта страница пуста.
+  error: Ошибка
+  error_occured: Произошла ошибка.
+  expr_import_invalid_data: Невозможно проанализировать файл. Убедитесь, что это действительный файл .yml
+  expr_import_no_input: Некорректный ввод. Не найдено ни одного допустимого файла для загрузки или ввода текста.
+  expr_no_found_id: Выражение с таким id не найдено.
+  hierarchy: Вы не можете использовать эту команду на пользователя с высшей или такой же ролью как у вас по правилам иерархии ролей.
+  id: Идентификатор
+  insuf_perms_i: У меня недостаточно прав.
+  insuf_perms_u: У вас недостаточно прав.
+  invalid_input: Неправильное значение
+  joined_discord: Зарегистрировался в Дискорде
+  joined_server: Зашел на сервер
+  leaderboard: Таблица лидеров
+  members: Участники
+  msg_not_found: Сообщение не найдено.
+  must_be_in_voice: Вам нужно быть в голосовом канале на этом сервере.
+  name: Имя
+  no_channel_found: Канал не найден.
+  no_search_results: Никаких результатов поиска не найдено.
+  no_user_on_this_page: На этой странице нет пользователей.
+  not_enough: 'У вас не хватает {0}'
+  not_found: Не найдено.
+  not_in_voice: Вы не находитесь в голосом канале на этом сервере
+  owner: Владелец
+  page: 'Страница {0}'
+  perm_prevent: 'Разрешение {1} под номером {0} предотвращает данное действие.'
+  price: Цена
+  prompt_no: Нет
+  prompt_yes: Да
+  redacted_too_long: Отредактировано, из-за того, что оно слишком длинное.
+  response: Отклик
+  trigger: Тригер
+  user_not_found: Пользователь не найден.
+  userrole_icon_fail: Не удалось установить иконку роли.
+  userrole_icon_invalid: Иконка роли не может быть пустой.
+  userrole_icon_missing_permissions: У сервера нет прав для использования иконок ролей.
+  userrole_icon_success: 'Иконка для {0} была сохранена.'
+  users: Пользователи
+  module: 'Модуль: {0}'
+  options: Параметры
+  overloads: Перегрузки
+  requires: Требуются
+  usage: Использование
+
+sr-Cyrl-RS:
+  cant_dm: Не могу да ти пошаљем поруку. Провери да ли су ти DM-ови отворени. Иди на **опције (дугме зупчаник) -> Приватност и безбедност -> Дозволи директне поруке од чланова сервера**
+  color: Боја
+  desc: Опис
+  empty_page: Ова страница је празна.
+  error: Грешка
+  error_occured: Догодила се грешка.
+  expr_import_invalid_data: Не могу да парсирам фајл. Провери да ли је валидан .yml фајл
+  expr_import_no_input: Неисправан унос. Није пронађен валидан фајл или текст.
+  expr_no_found_id: Није пронађен израз са тим ID-ом.
+  hierarchy: Не можеш да користиш ову команду на корисницима са улогом вишом или једнаком твојој (или мојој) у хијерархији улога.
+  id: Id
+  insuf_perms_i: Немам довољно дозвола.
+  insuf_perms_u: Немаш довољно дозвола.
+  invalid_input: Неисправан унос.
+  joined_discord: Придружио се Discord-у
+  joined_server: Придружио се серверу
+  leaderboard: Табела
+  members: Чланови
+  msg_not_found: Порука није пронађена.
+  must_be_in_voice: Мораш бити у гласовном каналу на овом серверу.
+  name: Име
+  no_channel_found: Канал није пронађен.
+  no_search_results: Нема резултата претраге.
+  no_user_on_this_page: Нема корисника на овој страници.
+  not_enough: 'Немаш довољно {0}'
+  not_found: Није пронађено.
+  not_in_voice: Ниси у гласовном каналу на овом серверу.
+  owner: Власник
+  page: 'страница {0}'
+  perm_prevent: 'Дозвола број #{0} {1} спречава ову акцију.'
+  price: Цена
+  prompt_no: Не
+  prompt_yes: Да
+  redacted_too_long: Уклоњено јер је предугачко.
+  response: Одговор
+  trigger: Окидач
+  user_not_found: Корисник није пронађен.
+  userrole_icon_fail: Постављање иконе улоге није успело.
+  userrole_icon_invalid: Икона улоге не може бити празна.
+  userrole_icon_missing_permissions: Сервер нема дозволе за коришћење икона улога.
+  userrole_icon_success: 'Икона за {0} је сачувана.'
+  users: Корисници
+  module: 'Модул: {0}'
+  options: Опције
+  overloads: Преоптерећења
+  requires: Захтева
+  usage: Употреба
+
+tr-TR:
+  cant_dm: Sana DM atamıyorum. DM'lerinin açık olduğundan emin ol. **Ayarlar (çark butonu) -> Gizlilik ve Güvenlik -> Sunucu üyelerinden gelen doğrudan mesajlara izin ver** seçeneğini aç.
+  color: Renk
+  desc: Açıklama
+  empty_page: Bu sayfa boş.
+  error: Hata
+  error_occured: Bir hata oluştu.
+  expr_import_invalid_data: Dosya ayrıştırılamadı. Geçerli bir .yml dosyası olduğundan emin ol.
+  expr_import_no_input: Geçersiz girdi. Geçerli bir dosya yüklemesi veya girdi metni bulunamadı.
+  expr_no_found_id: Bu id ile bir ifade bulunamadı.
+  hierarchy: Bu komutu rol hiyerarşisinde senden (veya benden) daha yüksek veya eşit bir role sahip kullanıcılarda kullanamazsın.
+  id: Id
+  insuf_perms_i: Yeterli izinlerim yok.
+  insuf_perms_u: Yeterli izinlerin yok.
+  invalid_input: Geçersiz girdi.
+  joined_discord: Discord'a katıldı
+  joined_server: Sunucuya katıldı
+  leaderboard: Sıralama
+  members: Üyeler
+  msg_not_found: Mesaj bulunamadı.
+  must_be_in_voice: Bu sunucuda bir sesli kanalda olmalısın.
+  name: İsim
+  no_channel_found: Kanal bulunamadı.
+  no_search_results: Arama sonucu bulunamadı.
+  no_user_on_this_page: Bu sayfada kullanıcı yok.
+  not_enough: 'Yeterli {0} sahip değilsin'
+  not_found: Bulunamadı.
+  not_in_voice: Bu sunucuda bir sesli kanalda değilsin.
+  owner: Sahip
+  page: 'sayfa {0}'
+  perm_prevent: '{0} numaralı {1} izni bu işlemi engelliyor.'
+  price: Fiyat
+  prompt_no: Hayır
+  prompt_yes: Evet
+  redacted_too_long: Çok uzun olduğu için gizlendi.
+  response: Yanıt
+  trigger: Tetikleyici
+  user_not_found: Kullanıcı bulunamadı.
+  userrole_icon_fail: Rol simgesi ayarlanamadı.
+  userrole_icon_invalid: Rol simgesi boş olamaz.
+  userrole_icon_missing_permissions: Sunucunun RoleIcons kullanma izni yok.
+  userrole_icon_success: '{0} için simge kaydedildi.'
+  users: Kullanıcılar
+  module: 'Modül: {0}'
+  options: Seçenekler
+  overloads: Aşırı yüklemeler
+  requires: Gerektirir
+  usage: Kullanım
+
+ts-TS:
+  cant_dm: I can't DM you. Make sure your DMs are open. Go to **options (cog button) -> Privacy & Safety -> Allow direct messages from server members**
+  color: Color
+  desc: Description
+  empty_page: This page is empty.
+  error: Error
+  error_occured: An error occurred. Not my fault.
+  expr_import_invalid_data: Unable to parse the file. Make sure it's a valid .yml file.
+  expr_import_no_input: Invalid input. No valid file upload or input text found.
+  expr_no_found_id: No expression found with that id.
+  hierarchy: You can't use this command on users with a role higher or equal than yours (or mine) in the role hierarchy. Hmph, I don't make the rules.
+  id: Id
+  insuf_perms_i: I have insufficient permissions. It's not a strength issue, okay?
+  insuf_perms_u: You have insufficient permissions. Don't even try.
+  invalid_input: Invalid input. Try again properly.
+  joined_discord: Joined Discord
+  joined_server: Joined server
+  leaderboard: Leaderboard
+  members: Members
+  msg_not_found: Message not found.
+  must_be_in_voice: You need to be in a voice channel on this server.
+  name: Name
+  no_channel_found: No channel found.
+  no_search_results: No search results.
+  no_user_on_this_page: No users on this page.
+  not_enough: 'You don''t have enough {0}.'
+  not_found: Not found.
+  not_in_voice: You're not in a voice channel on this server.
+  owner: Owner
+  page: 'page {0}'
+  perm_prevent: 'Permission number #{0} {1} is preventing this action.'
+  price: Price
+  prompt_no: 'No'
+  prompt_yes: 'Yes'
+  redacted_too_long: Redacted because it's too long.
+  response: Response
+  trigger: Trigger
+  user_not_found: User not found. B-baka, are you sure they exist?
+  userrole_icon_fail: Failed to set the role icon.
+  userrole_icon_invalid: The role icon cannot be empty. Don't waste my time.
+  userrole_icon_missing_permissions: The server does not have permissions to use RoleIcons.
+  userrole_icon_success: 'The icon for {0} has been saved.'
+  users: Users
+  module: 'Module: {0}'
+  options: Options
+  overloads: Overloads
+  requires: Requires
+  usage: Usage
+
+uk-UA:
+  cant_dm: Я не можу надіслати тобі особисте повідомлення. Переконайся, що DM відкриті. Перейди до **налаштувань (кнопка шестерінки) -> Конфіденційність -> Дозволити особисті повідомлення від учасників сервера**
+  color: Колір
+  desc: Опис
+  empty_page: Ця сторінка порожня.
+  error: Помилка
+  error_occured: Сталася помилка.
+  expr_import_invalid_data: Неможливо розібрати файл. Переконайся, що це валідний .yml файл
+  expr_import_no_input: Невірний ввід. Не знайдено валідного файлу або тексту.
+  expr_no_found_id: Не знайдено виразу з таким id.
+  hierarchy: Ти не можеш використовувати цю команду на користувачах з роллю вищою або рівною твоїй (або моїй) в ієрархії ролей.
+  id: Id
+  insuf_perms_i: У мене недостатньо прав.
+  insuf_perms_u: У тебе недостатньо прав.
+  invalid_input: Невірний ввід.
+  joined_discord: Приєднався до Discord
+  joined_server: Приєднався до сервера
+  leaderboard: Таблиця лідерів
+  members: Учасники
+  msg_not_found: Повідомлення не знайдено.
+  must_be_in_voice: Ти маєш бути в голосовому каналі на цьому сервері.
+  name: Назва
+  no_channel_found: Канал не знайдено.
+  no_search_results: Нічого не знайдено.
+  no_user_on_this_page: Немає користувачів на цій сторінці.
+  not_enough: 'У тебе недостатньо {0}'
+  not_found: Не знайдено.
+  not_in_voice: Ти не в голосовому каналі на цьому сервері.
+  owner: Власник
+  page: 'сторінка {0}'
+  perm_prevent: 'Дозвіл #{0} {1} блокує цю дію.'
+  price: Ціна
+  prompt_no: Ні
+  prompt_yes: Так
+  redacted_too_long: Приховано, бо занадто довге.
+  response: Відповідь
+  trigger: Тригер
+  user_not_found: Користувача не знайдено.
+  userrole_icon_fail: Не вдалося встановити іконку ролі.
+  userrole_icon_invalid: Іконка ролі не може бути порожньою.
+  userrole_icon_missing_permissions: Сервер не має прав на використання іконок ролей.
+  userrole_icon_success: 'Іконку для {0} збережено.'
+  users: Користувачі
+  module: 'Модуль: {0}'
+  options: Параметри
+  overloads: Перевантаження
+  requires: Потрібно
+  usage: Використання
+
+vi-VN:
+  cant_dm: Tôi không thể nhắn tin riêng cho bạn. Hãy đảm bảo DM của bạn đang mở. Vào **tùy chọn (nút bánh răng) -> Quyền riêng tư & An toàn -> Cho phép tin nhắn trực tiếp từ thành viên server**
+  color: Màu sắc
+  desc: Mô tả
+  empty_page: Trang này trống.
+  error: Lỗi
+  error_occured: Đã xảy ra lỗi.
+  expr_import_invalid_data: Không thể phân tích tệp. Hãy đảm bảo đó là tệp .yml hợp lệ
+  expr_import_no_input: Đầu vào không hợp lệ. Không tìm thấy tệp tải lên hoặc nội dung hợp lệ.
+  expr_no_found_id: Không tìm thấy biểu thức với id đó.
+  hierarchy: Bạn không thể dùng lệnh này trên người dùng có vai trò cao hơn hoặc bằng bạn (hoặc tôi) trong bậc vai trò.
+  id: Id
+  insuf_perms_i: Tôi không có đủ quyền.
+  insuf_perms_u: Bạn không có đủ quyền.
+  invalid_input: Đầu vào không hợp lệ.
+  joined_discord: Ngày tham gia Discord
+  joined_server: Ngày tham gia server
+  leaderboard: Bảng xếp hạng
+  members: Thành viên
+  msg_not_found: Không tìm thấy tin nhắn.
+  must_be_in_voice: Bạn cần ở trong một kênh thoại trên server này.
+  name: Tên
+  no_channel_found: Không tìm thấy kênh.
+  no_search_results: Không có kết quả tìm kiếm.
+  no_user_on_this_page: Không có người dùng trên trang này.
+  not_enough: 'Bạn không có đủ {0}'
+  not_found: Không tìm thấy.
+  not_in_voice: Bạn không ở trong kênh thoại trên server này.
+  owner: Chủ sở hữu
+  page: 'trang {0}'
+  perm_prevent: 'Quyền số #{0} {1} đang ngăn hành động này.'
+  price: Giá
+  prompt_no: Không
+  prompt_yes: Có
+  redacted_too_long: Đã ẩn vì quá dài.
+  response: Phản hồi
+  trigger: Kích hoạt
+  user_not_found: Không tìm thấy người dùng.
+  userrole_icon_fail: Không thể đặt biểu tượng vai trò.
+  userrole_icon_invalid: Biểu tượng vai trò không được để trống.
+  userrole_icon_missing_permissions: Server không có quyền sử dụng biểu tượng vai trò.
+  userrole_icon_success: 'Biểu tượng cho {0} đã được lưu.'
+  users: Người dùng
+  module: 'Mô-đun: {0}'
+  options: Tùy chọn
+  overloads: Cách dùng khác
+  requires: Yêu cầu
+  usage: Cách dùng
+
+zh-CN:
+  cant_dm: 我不能私訊你。確保您的 DM 已打開。轉到**設置->隱私&安全->允許來自伺服器成員的私人訊息**
+  color: 顏色
+  desc: 描述
+  empty_page: 本頁空白
+  error: 錯誤
+  error_occured: 發生了錯誤。
+  expr_import_invalid_data: 無法解析檔案，請確認是否為正確的 .yml 檔案
+  expr_import_no_input: 輸入錯誤，未找到正確的文字或檔案
+  expr_no_found_id: 未找到具有該 ID 的表達式。
+  hierarchy: 你不能對身分組階層高於或等於你的（或我的）用戶使用這個指令。
+  id: ID
+  insuf_perms_i: 我沒有足夠的權限。
+  insuf_perms_u: 您的權限不足。
+  invalid_input: 輸入錯誤
+  joined_discord: 已加入 Discord
+  joined_server: 已加入伺服器
+  leaderboard: 排行榜
+  members: 成員
+  msg_not_found: 未找到訊息。
+  must_be_in_voice: 你必須在這個伺服器上的語音頻道中
+  name: 名稱
+  no_channel_found: 找不到頻道。
+  no_search_results: 沒有搜尋結果。
+  no_user_on_this_page: 此頁面上沒有用戶。
+  not_enough: '你沒有足夠的 {0}'
+  not_found: 未找到。
+  not_in_voice: 您不在此伺服器上的語音頻道中。
+  owner: 擁有者
+  page: '第 {0} 頁'
+  perm_prevent: '#{0} {1} 阻止了此操作。'
+  price: 價格
+  prompt_no: 否
+  prompt_yes: 是
+  redacted_too_long: 訊息太長，已被刪減
+  response: 回覆
+  trigger: 觸發關鍵字詞
+  user_not_found: 未找到用戶。
+  userrole_icon_fail: 設定身分組圖示失敗。
+  userrole_icon_invalid: 身分組圖示不能為空。
+  userrole_icon_missing_permissions: 伺服器沒有使用身分組圖示的權限。
+  userrole_icon_success: '{0} 的圖示已儲存。'
+  users: 用戶
+  module: '模組：{0}'
+  options: 設定
+  overloads: 多載
+  requires: 需求
+  usage: 用法

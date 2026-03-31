@@ -1,0 +1,127 @@
+ar:
+  expires: ينتهي
+  patron_info: معلومات الداعم
+  patron_msg_sent: 'تم إرسال الرسائل إلى الداعمين من الفئة {1} وما فوقها. تم إرسال {1} بنجاح وفشل {2}.'
+  patron_not_enabled: نظام الدعم معطّل.
+  pledge: التعهد
+  tier: الفئة
+
+de-DE:
+  expires: Läuft ab
+  patron_info: Patron-Info
+  patron_msg_sent: 'Nachrichten an Patrons ab Stufe {1} gesendet. {1} erfolgreich gesendet und {2} fehlgeschlagen.'
+  patron_not_enabled: Das Patron-System ist deaktiviert.
+  pledge: Versprechen
+  tier: Stufe
+
+es-ES:
+  expires: Expira
+  patron_info: Info de patron
+  patron_msg_sent: 'Mensajes enviados a patrones del nivel {1} y superiores. {1} enviados correctamente y {2} fallidos.'
+  patron_not_enabled: El sistema de patrones esta desactivado.
+  pledge: Compromiso
+  tier: Nivel
+
+fr-FR:
+  expires: Expire
+  patron_info: Info de la·e contributeur·rice
+  patron_msg_sent: 'L''envoi de messages aux contributeur·rice·s de niveau {1} et au-delà a été effectué. {1} ont été envoyés avec succès et {2} ont échoué.'
+  patron_not_enabled: Le système de contribution est désactivé.
+  pledge: Promesse
+  tier: Niveau
+
+id-ID:
+  expires: Kedaluwarsa
+  patron_info: Info Patron
+  patron_msg_sent: 'Selesai mengirim pesan ke patron di tier {1} ke atas. {1} berhasil dikirim dan {2} gagal.'
+  patron_not_enabled: Sistem patron dinonaktifkan.
+  pledge: Pledge
+  tier: Tier
+
+ja-JP:
+  expires: 有効期限
+  patron_info: パトロン情報
+  patron_msg_sent: 'ティア{1}以上のパトロンにメッセージを送信しました。{1}件成功、{2}件失敗。'
+  patron_not_enabled: パトロンシステムは無効です。
+  pledge: プレッジ
+  tier: ティア
+
+ko-KR:
+  expires: 만료일
+  patron_info: 후원자 정보
+  patron_msg_sent: '티어 {1} 이상의 후원자에게 메시지 전송 완료. {1}건 성공, {2}건 실패.'
+  patron_not_enabled: 후원자 시스템이 비활성화되어 있어요.
+  pledge: 후원 금액
+  tier: 티어
+
+pl-PL:
+  expires: Wygasa
+  patron_info: Informacje o patronie
+  patron_msg_sent: 'Wysłano wiadomości do patronów na poziomie {1} i wyższym. {1} wysłano pomyślnie, {2} nie udało się.'
+  patron_not_enabled: System patronatu jest wyłączony.
+  pledge: Wsparcie
+  tier: Poziom
+
+pt-BR:
+  expires: Expira
+  patron_info: Info do Patrono
+  patron_msg_sent: 'Mensagens enviadas para patronos no nivel {1} ou acima. {1} enviadas com sucesso e {2} falharam.'
+  patron_not_enabled: O sistema de patronos esta desativado.
+  pledge: Contribuicao
+  tier: Nivel
+
+ru-RU:
+  expires: Истекает
+  patron_info: Информация о подписчике
+  patron_msg_sent: 'Отправка сообщений подписчикам уровня {1} и выше завершена. Успешно отправлено: {1}, с ошибкой: {2}.'
+  patron_not_enabled: Система подписок отключена.
+  pledge: Подписка
+  tier: Уровень
+
+sr-Cyrl-RS:
+  expires: Истиче
+  patron_info: Инфо о патрону
+  patron_msg_sent: 'Завршено слање порука патронима на и изнад нивоа {1}. {1} успешно послато и {2} неуспешно.'
+  patron_not_enabled: Патрон систем је искључен.
+  pledge: Донација
+  tier: Ниво
+
+tr-TR:
+  expires: Sona Eriyor
+  patron_info: Patron Bilgisi
+  patron_msg_sent: 'Tier {1} ve üzeri patronlara mesaj gönderme tamamlandı. {1} başarıyla gönderildi, {2} başarısız oldu.'
+  patron_not_enabled: Patron sistemi devre dışı.
+  pledge: Destek
+  tier: Seviye
+
+ts-TS:
+  expires: Expires
+  patron_info: Patron Info
+  patron_msg_sent: 'Done sending messages to patrons at and above tier {1}. {1} sent successfully and {2} failed.'
+  patron_not_enabled: The patron system is disabled.
+  pledge: Pledge
+  tier: Tier
+
+uk-UA:
+  expires: Закінчується
+  patron_info: Інфо про патрона
+  patron_msg_sent: 'Повідомлення надіслано патронам рівня {1} і вище. {1} успішно надіслано, {2} не вдалося.'
+  patron_not_enabled: Систему патронів вимкнено.
+  pledge: Внесок
+  tier: Рівень
+
+vi-VN:
+  expires: Hết hạn
+  patron_info: Thông Tin Patron
+  patron_msg_sent: 'Đã gửi xong tin nhắn đến các patron ở hạng {1} trở lên. {1} gửi thành công và {2} thất bại.'
+  patron_not_enabled: Hệ thống patron đang bị tắt.
+  pledge: Cam kết
+  tier: Hạng
+
+zh-CN:
+  expires: 到期时间
+  patron_info: 赞助者信息
+  patron_msg_sent: '已完成向 {1} 级及以上赞助者发送消息。{1} 条发送成功,{2} 条发送失败。'
+  patron_not_enabled: 赞助者系统已禁用。
+  pledge: 赞助金额
+  tier: 等级

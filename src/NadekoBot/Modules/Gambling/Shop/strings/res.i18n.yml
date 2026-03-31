@@ -1,0 +1,463 @@
+ar:
+  item: عنصر
+  out_of_stock: نفد من المخزون.
+  random_unique_item: عنصر فريد عشوائي.
+  shop: المتجر
+  shop_buy_error: خطأ في إرسال العنصر عبر الرسائل الخاصة. تم استرداد أموالك.
+  shop_command_invalid_context: تعذر استرداد المستخدم أو القناة أو الخادم لتنفيذ الأمر.
+  shop_item_add: تمت إضافة عنصر المتجر
+  shop_item_not_found: لم يتم العثور على عنصر في هذا الترتيب.
+  shop_item_purchase: تم شراء العنصر بنجاح.
+  shop_item_req_role_not_found: الدور المطلوب لهذا العنصر لم يعد موجودًا. يرجى التواصل مع مدير الخادم.
+  shop_item_req_role_unfulfilled: 'ليس لديك الدور المطلوب ''{0}'' لشراء هذا العنصر.'
+  shop_item_requires_role: 'يتطلب دور {0} للشراء'
+  shop_item_rm: تمت إزالة عنصر المتجر
+  shop_item_role_no_req: 'عنصر المتجر #{0} لن يتطلب دورًا بعد الآن.'
+  shop_item_role_req: 'عنصر المتجر #{0} سيتطلب الآن من المستخدمين امتلاك دور {1} للشراء.'
+  shop_item_wrong_type: هذا العنصر في المتجر لا يدعم إضافة عناصر.
+  shop_list_item_added: تمت إضافة العنصر بنجاح.
+  shop_list_item_not_unique: هذا العنصر مضاف بالفعل.
+  shop_none: لم يتم العثور على عناصر في المتجر في هذه الصفحة.
+  shop_purchase: 'شراء في خادم {0}'
+  shop_role: 'ستحصل على دور {0}.'
+  shop_role_already_bought: لقد اشتريت هذا الدور بالفعل.
+  shop_role_not_found: الدور المعروض للبيع لم يعد موجودًا.
+  shop_role_purchase: 'لقد اشتريت دور {0} بنجاح.'
+  shop_role_purchase_error: خطأ في تعيين الدور. تم استرداد مبلغ الشراء.
+  type: النوع
+  unique_items_left: '{0} عنصر فريد متبقي.'
+
+de-DE:
+  item: Gegenstand
+  out_of_stock: Nicht auf Lager.
+  random_unique_item: Zufälliger einzigartiger Gegenstand
+  shop: Shop
+  shop_buy_error: Fehler beim DMing des Gegenstandes. Dein Kauf wurde zurückerstattet.
+  shop_command_invalid_context: Benutzer, Kanal oder Server konnten nicht abgerufen werden, um den Befehl auszuführen.
+  shop_item_add: Shop Gegenstand hinzugefügt
+  shop_item_not_found: Kein Gegenstand in diesem Index gefunden.
+  shop_item_purchase: Kauf des Gegenstands erfolgreich.
+  shop_item_req_role_not_found: Die erforderliche Rolle für diesen Artikel existiert nicht mehr. Bitte kontaktiere den Serveradministrator.
+  shop_item_req_role_unfulfilled: 'Du hast nicht die erforderliche Rolle ''{0}'', um diesen Artikel zu kaufen.'
+  shop_item_requires_role: 'Erfordert Rolle {0} zum Kauf'
+  shop_item_rm: Shop Gegenstand entfernt
+  shop_item_role_no_req: 'Artikel #{0} im Shop erfordert keine Rolle mehr.'
+  shop_item_role_req: 'Artikel #{0} im Shop erfordert jetzt die Rolle {1} zum Kauf.'
+  shop_item_wrong_type: Dieser Geschäfts Eintrag unterstützt nicht das Hinzufügen von Gegenständen.
+  shop_list_item_added: Gegenstand erfolgreich hinzugefügt.
+  shop_list_item_not_unique: Dieser Gegenstand wurde schon hinzugefügt.
+  shop_none: Keine Shop Gegenstände auf dieser Seite gefunden.
+  shop_purchase: 'Gekauft auf dem Server {0}'
+  shop_role: 'Du wirst die Rolle {0} kriegen.'
+  shop_role_already_bought: Du hast diese Rolle bereits gekauft.
+  shop_role_not_found: Rolle die verkauft wird existiert nicht mehr.
+  shop_role_purchase: 'Du hast erfolgreich die Rolle {0} gekauft.'
+  shop_role_purchase_error: Fehler beim Zuweisen der Rolle. Dein Kauf wurde zurückerstattet.
+  type: Typ
+  unique_items_left: '{0} einzigartige Gegenstände sind übrig.'
+
+es-ES:
+  item: Objeto
+  out_of_stock: Sin existencias.
+  random_unique_item: Objeto aleatorio único
+  shop: Tienda
+  shop_buy_error: Error enviando el mensaje privado. Se te ha reembolsado.
+  shop_command_invalid_context: No se pudo recuperar el usuario, canal o servidor para ejecutar el comando.
+  shop_item_add: Objeto añadido.
+  shop_item_not_found: No se encontró ningún objeto.
+  shop_item_purchase: Compra satisfactoria.
+  shop_item_req_role_not_found: El rol requerido para este artículo ya no existe. Por favor, contacta al administrador del servidor.
+  shop_item_req_role_unfulfilled: 'No tienes el rol requerido ''{0}'' para comprar este artículo de la tienda.'
+  shop_item_requires_role: 'Requiere el rol {0} para comprar'
+  shop_item_rm: Objeto removido.
+  shop_item_role_no_req: 'El artículo #{0} de la tienda ya no requerirá un rol.'
+  shop_item_role_req: 'El artículo #{0} de la tienda ahora requerirá que los usuarios tengan el rol {1} para comprarlo.'
+  shop_item_wrong_type: No se admite ese tipo de objeto.
+  shop_list_item_added: Objeto añadido satisfactoriamente.
+  shop_list_item_not_unique: Ese objeto ya ha sido añadido.
+  shop_none: No hay objetos en esta página.
+  shop_purchase: 'Compra en el servidor {0}'
+  shop_role: 'Obtendrás el rol {0}.'
+  shop_role_already_bought: Ya compraste este rol.
+  shop_role_not_found: El rol que está siendo vendido no existe.
+  shop_role_purchase: 'Has comprado satisfactoriamente el rol {0}.'
+  shop_role_purchase_error: Error asignando el rol. Has recibido un reembolso.
+  type: Tipo
+  unique_items_left: '{0} objetos únicos restantes.'
+
+fr-FR:
+  item: Article
+  out_of_stock: En rupture de stock
+  random_unique_item: Objet aléatoire unique.
+  shop: Boutique
+  shop_buy_error: Échec de l'envoi de l'article par MP. Vous avez été remboursé.
+  shop_command_invalid_context: Impossible de récupérer l'utilisateur, le salon ou le serveur pour exécuter la commande.
+  shop_item_add: Article ajouté à la boutique
+  shop_item_not_found: Aucun article de cet index n'a été trouvé.
+  shop_item_purchase: Article acheté avec succès.
+  shop_item_req_role_not_found: Le rôle requis pour cet article n'existe plus. Veuillez contacter l'administrateur du serveur.
+  shop_item_req_role_unfulfilled: 'Vous n''avez pas le rôle requis ''{0}'' pour acheter cet article de la boutique.'
+  shop_item_requires_role: 'Nécessite le rôle {0} pour acheter'
+  shop_item_rm: Article supprimé de la boutique.
+  shop_item_role_no_req: 'L''article #{0} de la boutique ne nécessitera plus de rôle.'
+  shop_item_role_req: 'L''article #{0} de la boutique nécessitera maintenant que les utilisateurs aient le rôle {1} pour l''acheter.'
+  shop_item_wrong_type: Cette entrée de boutique ne prend pas en charge l'ajout d'articles.
+  shop_list_item_added: Article ajouté avec succès.
+  shop_list_item_not_unique: Cet article a déjà été ajouté.
+  shop_none: Aucun article de boutique trouvé sur cette page.
+  shop_purchase: 'Acheter sur le serveur {0}'
+  shop_role: 'Vous recevrez le rôle {0}.'
+  shop_role_already_bought: Vous avez déjà acheté ce rôle.
+  shop_role_not_found: Le rôle qui se vendait n'existe plus.
+  shop_role_purchase: 'Vous avez acheté le rôle {0}.'
+  shop_role_purchase_error: Une erreur est survenue lors de l'assignation du rôle. Votre achat a été remboursé.
+  type: Type
+  unique_items_left: 'Il reste {0} articles uniques.'
+
+id-ID:
+  item: Item
+  out_of_stock: Stok habis.
+  random_unique_item: Item unik acak.
+  shop: Toko
+  shop_buy_error: Gagal mengirim DM item. Uangmu telah dikembalikan.
+  shop_command_invalid_context: Tidak dapat menemukan pengguna, channel atau server untuk menjalankan perintah.
+  shop_item_add: Item toko ditambahkan
+  shop_item_not_found: Tidak ditemukan item pada indeks tersebut.
+  shop_item_purchase: Pembelian item berhasil.
+  shop_item_req_role_not_found: Role yang dibutuhkan untuk item ini sudah tidak ada. Silakan hubungi admin server.
+  shop_item_req_role_unfulfilled: 'Kamu tidak memiliki role ''{0}'' yang diperlukan untuk membeli item toko ini.'
+  shop_item_requires_role: 'Memerlukan role {0} untuk membeli'
+  shop_item_rm: Item toko dihapus
+  shop_item_role_no_req: 'Item toko #{0} tidak lagi memerlukan role.'
+  shop_item_role_req: 'Item toko #{0} sekarang mengharuskan pengguna memiliki role {1} untuk membelinya.'
+  shop_item_wrong_type: Entri toko tersebut tidak mendukung penambahan item.
+  shop_list_item_added: Item berhasil ditambahkan.
+  shop_list_item_not_unique: Item tersebut sudah ditambahkan.
+  shop_none: Tidak ada item toko ditemukan di halaman ini.
+  shop_purchase: 'Pembelian di server {0}'
+  shop_role: 'Kamu akan mendapatkan role {0}.'
+  shop_role_already_bought: Kamu sudah membeli role ini.
+  shop_role_not_found: Role yang dijual sudah tidak ada lagi.
+  shop_role_purchase: 'Kamu berhasil membeli role {0}.'
+  shop_role_purchase_error: Gagal memberikan role. Pembelianmu telah dikembalikan.
+  type: Tipe
+  unique_items_left: '{0} item unik tersisa.'
+
+ja-JP:
+  item: 項目
+  out_of_stock: 在庫切れ。
+  random_unique_item: ランダムユニークアイテム。
+  shop: ショップ
+  shop_buy_error: エラーDMing項目。あなたは払い戻されました。
+  shop_command_invalid_context: コマンドを実行するためのユーザー、チャンネル、またはサーバーを取得できません。
+  shop_item_add: ショップアイテムが追加されました
+  shop_item_not_found: その索引の項目が見つかりませんでした。
+  shop_item_purchase: 商品の購入に成功しました。
+  shop_item_req_role_not_found: このアイテムに必要なロールはもう存在しません。サーバー管理者に連絡してください。
+  shop_item_req_role_unfulfilled: 'このショップアイテムを購入するために必要なロール''{0}''を持っていません。'
+  shop_item_requires_role: '購入にはロール{0}が必要'
+  shop_item_rm: ショップアイテムが削除されました
+  shop_item_role_no_req: 'ショップアイテム#{0}にはロールが不要になりました。'
+  shop_item_role_req: 'ショップアイテム#{0}の購入にはロール{1}が必要になりました。'
+  shop_item_wrong_type: そのショップエントリーはアイテム追加をサポートしていません。
+  shop_list_item_added: アイテムが正常に追加されました。
+  shop_list_item_not_unique: その項目は既に追加されています。
+  shop_none: このページにはショップアイテムはありません。
+  shop_purchase: '{0}サーバーで購入'
+  shop_role: 'あなたは{0}ロールを取得します。'
+  shop_role_already_bought: このロールは既に購入済みです。
+  shop_role_not_found: 販売されている役割はもはや存在しません。
+  shop_role_purchase: '{0}ロールを購入しました。'
+  shop_role_purchase_error: ロールの割り当て中にエラーが発生しました。購入は払い戻されました。
+  type: タイプ
+  unique_items_left: '{0}個のアイテムが残っています。'
+
+ko-KR:
+  item: 아이템
+  out_of_stock: 품절이에요.
+  random_unique_item: 랜덤 고유 아이템.
+  shop: 상점
+  shop_buy_error: 아이템 DM 전송에 실패했어요. 환불 처리됐어요.
+  shop_command_invalid_context: 명령어를 실행하기 위한 유저, 채널 또는 서버 정보를 가져올 수 없어요.
+  shop_item_add: 상점 아이템이 추가됐어요
+  shop_item_not_found: 해당 번호의 아이템을 찾을 수 없어요.
+  shop_item_purchase: 아이템 구매에 성공했어요.
+  shop_item_req_role_not_found: 이 아이템에 필요한 역할이 더 이상 존재하지 않아요. 서버 관리자에게 문의하세요.
+  shop_item_req_role_unfulfilled: '이 상점 아이템을 구매하려면 ''{0}'' 역할이 필요해요.'
+  shop_item_requires_role: '구매하려면 {0} 역할이 필요해요'
+  shop_item_rm: 상점 아이템이 제거됐어요
+  shop_item_role_no_req: '상점 아이템 #{0}은(는) 더 이상 역할이 필요하지 않아요.'
+  shop_item_role_req: '상점 아이템 #{0}을(를) 구매하려면 이제 {1} 역할이 필요해요.'
+  shop_item_wrong_type: 해당 상점 항목은 아이템 추가를 지원하지 않아요.
+  shop_list_item_added: 아이템이 성공적으로 추가됐어요.
+  shop_list_item_not_unique: 해당 아이템은 이미 추가되어 있어요.
+  shop_none: 이 페이지에 상점 아이템이 없어요.
+  shop_purchase: '{0} 서버에서 구매'
+  shop_role: '{0} 역할을 받게 돼요.'
+  shop_role_already_bought: 이 역할은 이미 구매했어요.
+  shop_role_not_found: 판매 중인 역할이 더 이상 존재하지 않아요.
+  shop_role_purchase: '{0} 역할을 성공적으로 구매했어요.'
+  shop_role_purchase_error: 역할 지급 중 오류가 발생했어요. 구매가 환불 처리됐어요.
+  type: 유형
+  unique_items_left: '고유 아이템 {0}개 남음.'
+
+pl-PL:
+  item: Przedmiot
+  out_of_stock: Brak w magazynie.
+  random_unique_item: Losowy unikalny przedmiot.
+  shop: Sklep
+  shop_buy_error: Błąd przy wysyłaniu przedmiotu na DM. Otrzymałeś/aś zwrot.
+  shop_command_invalid_context: Nie udało się pobrać danych użytkownika, kanału lub serwera w celu wykonania komendy.
+  shop_item_add: Dodano przedmiot do sklepu
+  shop_item_not_found: Nie znaleziono przedmiotu pod tym indeksem.
+  shop_item_purchase: Zakup przedmiotu zakończony sukcesem.
+  shop_item_req_role_not_found: Wymagana rola do tego przedmiotu już nie istnieje. Skontaktuj się z administratorem serwera.
+  shop_item_req_role_unfulfilled: 'Nie masz wymaganej roli ''{0}'', żeby kupić ten przedmiot.'
+  shop_item_requires_role: 'Wymaga roli {0} do zakupu'
+  shop_item_rm: Usunięto przedmiot ze sklepu
+  shop_item_role_no_req: 'Przedmiot #{0} nie będzie już wymagał roli.'
+  shop_item_role_req: 'Przedmiot #{0} będzie teraz wymagał roli {1} do zakupu.'
+  shop_item_wrong_type: Ten wpis w sklepie nie obsługuje dodawania przedmiotów.
+  shop_list_item_added: Przedmiot został dodany.
+  shop_list_item_not_unique: Ten przedmiot jest już dodany.
+  shop_none: Nie znaleziono przedmiotów na tej stronie.
+  shop_purchase: 'Zakup na serwerze {0}'
+  shop_role: 'Otrzymasz rolę {0}.'
+  shop_role_already_bought: Już kupiłeś/aś tę rolę.
+  shop_role_not_found: Rola wystawiona na sprzedaż już nie istnieje.
+  shop_role_purchase: 'Pomyślnie zakupiono rolę {0}.'
+  shop_role_purchase_error: Błąd przy przypisywaniu roli. Zakup został zwrócony.
+  type: Typ
+  unique_items_left: 'Pozostało {0} unikalnych przedmiotów.'
+
+pt-BR:
+  item: Item
+  out_of_stock: Fora de estoque.
+  random_unique_item: Item único.
+  shop: Loja
+  shop_buy_error: Erro ao enviar item por mensagem direta. Você foi reembolsado.
+  shop_command_invalid_context: Não foi possível recuperar o usuário, canal ou servidor para executar o comando.
+  shop_item_add: Item adicionado à loja
+  shop_item_not_found: Nenhum item com esse índice foi encontrado.
+  shop_item_purchase: Compra de item realizada com sucesso.
+  shop_item_req_role_not_found: O cargo necessário para este item não existe mais. Por favor, contate o administrador do servidor.
+  shop_item_req_role_unfulfilled: 'Você não tem o cargo necessário ''{0}'' para comprar este item da loja.'
+  shop_item_requires_role: 'Requer o cargo {0} para comprar'
+  shop_item_rm: Item removido da loja com sucesso.
+  shop_item_role_no_req: 'O item #{0} da loja não exigirá mais um cargo.'
+  shop_item_role_req: 'O item #{0} da loja agora exigirá que os usuários tenham o cargo {1} para comprá-lo.'
+  shop_item_wrong_type: Essa tipo de item não suporta a adição de unidades.
+  shop_list_item_added: Item adicionado com sucesso.
+  shop_list_item_not_unique: Esse item já existe na loja.
+  shop_none: Nenhum item foi encontrado nessa página.
+  shop_purchase: 'Compra efetuada no servidor {0}'
+  shop_role: 'Você receberá o cargo {0}.'
+  shop_role_already_bought: Você já comprou este cargo.
+  shop_role_not_found: O cargo que está a venda não existe mais.
+  shop_role_purchase: 'Você comprou a cargo {0} com sucesso.'
+  shop_role_purchase_error: Erro ao atribuir o cargo. Sua compra foi reembolsada.
+  type: Tipo
+  unique_items_left: 'Restam {0} itens únicos.'
+
+ru-RU:
+  item: Вещь
+  out_of_stock: Нет в наличии
+  random_unique_item: Случайный уникальный предмет.
+  shop: Магазин
+  shop_buy_error: Произошла ошибка при отправке сообщения вам в ЛС. Ваши деньги были возвращены.
+  shop_command_invalid_context: Не удалось получить пользователя, канал или сервер для выполнения команды.
+  shop_item_add: Товар был добавлен в магазин
+  shop_item_not_found: Ни одного товара с этим номер не найдено.
+  shop_item_purchase: Товар был куплен успешно.
+  shop_item_req_role_not_found: Необходимая роль для этого товара больше не существует. Пожалуйста, свяжитесь с администратором сервера.
+  shop_item_req_role_unfulfilled: 'У вас нет необходимой роли ''{0}'' для покупки этого товара.'
+  shop_item_requires_role: 'Для покупки требуется роль {0}'
+  shop_item_rm: Товар был убран из магазина
+  shop_item_role_no_req: 'Товар #{0} в магазине больше не будет требовать роль.'
+  shop_item_role_req: 'Товар #{0} в магазине теперь будет требовать от пользователей наличие роли {1} для покупки.'
+  shop_item_wrong_type: Этот элемент магазина не поддерживает добавление товара.
+  shop_list_item_added: Товар был успешно добавлен.
+  shop_list_item_not_unique: Этот товар уже был добавлен.
+  shop_none: Никаких товаров не найдено на этой странице.
+  shop_purchase: 'Покупка на сервере {0}'
+  shop_role: 'Вы получите роль {0}'
+  shop_role_already_bought: Вы уже купили эту роль.
+  shop_role_not_found: Продаваемая роль больше не существует.
+  shop_role_purchase: 'Ты успешно приобрел роль {0}'
+  shop_role_purchase_error: Возникла ошибка при выдачи роли. Ваша покупка была отменена.
+  type: 'Вид:'
+  unique_items_left: 'Осталось {0} уникальных предметов.'
+
+sr-Cyrl-RS:
+  item: Ставка
+  out_of_stock: Нема на залихама.
+  random_unique_item: Насумична јединствена ставка.
+  shop: Продавница
+  shop_buy_error: Грешка при слању ставке у ДМ. Новац ти је враћен.
+  shop_command_invalid_context: Није могуће преузети корисника, канал или сервер за извршење команде.
+  shop_item_add: Ставка додата у продавницу
+  shop_item_not_found: Ставка на том индексу није пронађена.
+  shop_item_purchase: Куповина ставке успешна.
+  shop_item_req_role_not_found: Потребна улога за ову ставку више не постоји. Обрати се администратору сервера.
+  shop_item_req_role_unfulfilled: 'Немаш потребну улогу ''{0}'' да би купио/ла ову ставку.'
+  shop_item_requires_role: 'Потребна је {0} улога за куповину'
+  shop_item_rm: Ставка уклоњена из продавнице
+  shop_item_role_no_req: 'Ставка #{0} више неће захтевати улогу.'
+  shop_item_role_req: 'Ставка #{0} ће сада захтевати од корисника да имају {1} улогу да би је купили.'
+  shop_item_wrong_type: Тај унос у продавници не подржава додавање ставки.
+  shop_list_item_added: Ставка успешно додата.
+  shop_list_item_not_unique: Та ставка је већ додата.
+  shop_none: Нема ставки у продавници на овој страници.
+  shop_purchase: 'Куповина на серверу {0}'
+  shop_role: 'Добићеш {0} улогу.'
+  shop_role_already_bought: Већ си купио/ла ову улогу.
+  shop_role_not_found: Улога која се продаје више не постоји.
+  shop_role_purchase: 'Успешно си купио/ла {0} улогу.'
+  shop_role_purchase_error: Грешка при додели улоге. Куповина ти је рефундирана.
+  type: Тип
+  unique_items_left: 'Преостало {0} јединствених ставки.'
+
+tr-TR:
+  item: Ürün
+  out_of_stock: Stokta yok.
+  random_unique_item: Rastgele benzersiz ürün.
+  shop: Mağaza
+  shop_buy_error: Ürün DM ile gönderilemedi. Paran iade edildi.
+  shop_command_invalid_context: Komutu çalıştırmak için kullanıcı, kanal veya sunucu alınamadı.
+  shop_item_add: Mağaza ürünü eklendi
+  shop_item_not_found: Bu sırada ürün bulunamadı.
+  shop_item_purchase: Ürün satın alma başarılı.
+  shop_item_req_role_not_found: Bu ürün için gereken rol artık mevcut değil. Lütfen sunucu yöneticisiyle iletişime geç.
+  shop_item_req_role_unfulfilled: 'Bu mağaza ürününü satın almak için gereken ''{0}'' rolüne sahip değilsin.'
+  shop_item_requires_role: 'Satın almak için {0} rolü gerekli'
+  shop_item_rm: Mağaza ürünü kaldırıldı
+  shop_item_role_no_req: '#{0} numaralı mağaza ürünü artık bir rol gerektirmeyecek.'
+  shop_item_role_req: '#{0} numaralı mağaza ürününü satın almak için artık {1} rolüne sahip olmak gerekecek.'
+  shop_item_wrong_type: Bu mağaza girişi ürün eklemeyi desteklemiyor.
+  shop_list_item_added: Ürün başarıyla eklendi.
+  shop_list_item_not_unique: Bu ürün zaten eklenmiş.
+  shop_none: Bu sayfada mağaza ürünü bulunamadı.
+  shop_purchase: '{0} sunucusunda satın alma'
+  shop_role: '{0} rolünü alacaksın.'
+  shop_role_already_bought: Bu rolü zaten satın aldın.
+  shop_role_not_found: Satılan rol artık mevcut değil.
+  shop_role_purchase: '{0} rolünü başarıyla satın aldın.'
+  shop_role_purchase_error: Rol atanırken hata oluştu. Satın alman iade edildi.
+  type: Tür
+  unique_items_left: '{0} benzersiz ürün kaldı.'
+
+ts-TS:
+  item: Item
+  out_of_stock: Out of stock.
+  random_unique_item: Random unique item.
+  shop: Shop
+  shop_buy_error: Error DMing item. You've been refunded.
+  shop_command_invalid_context: Unable to retrieve user, channel or server.
+  shop_item_add: Shop item added.
+  shop_item_not_found: No item on that index found.
+  shop_item_purchase: Item purchase successful.
+  shop_item_req_role_not_found: The required role for this item doesn't exist anymore. Tell the admin.
+  shop_item_req_role_unfulfilled: 'You don''t have the required role ''{0}'' to buy this.'
+  shop_item_requires_role: 'Requires {0} role to purchase.'
+  shop_item_rm: Shop item removed.
+  shop_item_role_no_req: 'Shop item #{0} will no longer require a role.'
+  shop_item_role_req: 'Shop item #{0} will now require users to have a {1} role to purchase it.'
+  shop_item_wrong_type: That shop entry does not support item adding.
+  shop_list_item_added: Item successfully added.
+  shop_list_item_not_unique: That item is already added. Pay attention.
+  shop_none: No shop items found on this page.
+  shop_purchase: 'Purchase on {0} server'
+  shop_role: 'You will get {0} role.'
+  shop_role_already_bought: You already bought this role.
+  shop_role_not_found: Role which is being sold no longer exists.
+  shop_role_purchase: 'You''ve successfully purchased {0} role.'
+  shop_role_purchase_error: Error assigning role. Your purchase has been refunded.
+  type: Type
+  unique_items_left: '{0} unique items left.'
+
+uk-UA:
+  item: Предмет
+  out_of_stock: Немає в наявності.
+  random_unique_item: Випадковий унікальний предмет.
+  shop: Магазин
+  shop_buy_error: Помилка надсилання предмета в ОП. Кошти повернено.
+  shop_command_invalid_context: Не вдалося отримати інформацію про користувача, канал або сервер для виконання команди.
+  shop_item_add: Товар додано до магазину
+  shop_item_not_found: На цьому індексі нічого не знайдено.
+  shop_item_purchase: Покупку успішно здійснено.
+  shop_item_req_role_not_found: Необхідна роль для цього предмета більше не існує. Зверніться до адміністратора сервера.
+  shop_item_req_role_unfulfilled: 'У тебе немає необхідної ролі ''{0}'' для купівлі цього товару.'
+  shop_item_requires_role: 'Для купівлі потрібна роль {0}'
+  shop_item_rm: Товар видалено з магазину
+  shop_item_role_no_req: 'Товар #{0} більше не потребуватиме ролі.'
+  shop_item_role_req: 'Товар #{0} тепер вимагатиме від користувачів наявність ролі {1} для купівлі.'
+  shop_item_wrong_type: Цей тип запису магазину не підтримує додавання предметів.
+  shop_list_item_added: Предмет успішно додано.
+  shop_list_item_not_unique: Цей предмет вже додано.
+  shop_none: На цій сторінці немає товарів.
+  shop_purchase: 'Покупка на сервері {0}'
+  shop_role: 'Ти отримаєш роль {0}.'
+  shop_role_already_bought: Ти вже придбав цю роль.
+  shop_role_not_found: Роль, яка продається, більше не існує.
+  shop_role_purchase: 'Ти успішно придбав роль {0}.'
+  shop_role_purchase_error: Помилка призначення ролі. Покупку повернено.
+  type: Тип
+  unique_items_left: 'Залишилось {0} унікальних предметів.'
+
+vi-VN:
+  item: Vật phẩm
+  out_of_stock: Đã hết hàng.
+  random_unique_item: Vật phẩm độc đáo ngẫu nhiên.
+  shop: Cửa hàng
+  shop_buy_error: Lỗi khi gửi vật phẩm qua DM. Bạn đã được hoàn tiền.
+  shop_command_invalid_context: Không thể lấy thông tin người dùng, kênh hoặc máy chủ để thực hiện lệnh.
+  shop_item_add: Đã thêm vật phẩm vào cửa hàng
+  shop_item_not_found: Không tìm thấy vật phẩm ở vị trí đó.
+  shop_item_purchase: Mua vật phẩm thành công.
+  shop_item_req_role_not_found: Role yêu cầu cho vật phẩm này không còn tồn tại. Vui lòng liên hệ quản trị viên.
+  shop_item_req_role_unfulfilled: 'Bạn không có role ''{0}'' cần thiết để mua vật phẩm này.'
+  shop_item_requires_role: 'Cần có role {0} để mua'
+  shop_item_rm: Đã xoá vật phẩm khỏi cửa hàng
+  shop_item_role_no_req: 'Vật phẩm cửa hàng #{0} sẽ không còn yêu cầu role nữa.'
+  shop_item_role_req: 'Vật phẩm cửa hàng #{0} giờ sẽ yêu cầu người dùng có role {1} để mua.'
+  shop_item_wrong_type: Mục cửa hàng đó không hỗ trợ thêm vật phẩm.
+  shop_list_item_added: Đã thêm vật phẩm thành công.
+  shop_list_item_not_unique: Vật phẩm đó đã được thêm rồi.
+  shop_none: Không tìm thấy vật phẩm nào trên trang này.
+  shop_purchase: 'Mua hàng trên máy chủ {0}'
+  shop_role: 'Bạn sẽ nhận role {0}.'
+  shop_role_already_bought: Bạn đã mua role này rồi.
+  shop_role_not_found: Role đang được bán không còn tồn tại.
+  shop_role_purchase: 'Bạn đã mua thành công role {0}.'
+  shop_role_purchase_error: Lỗi khi gán role. Bạn đã được hoàn tiền.
+  type: Loại
+  unique_items_left: 'Còn {0} vật phẩm độc đáo.'
+
+zh-CN:
+  item: 物品
+  out_of_stock: 缺貨。
+  random_unique_item: 隨機獨特物品。
+  shop: 店鋪
+  shop_buy_error: 錯誤 DMing 項目。您已被退款。
+  shop_command_invalid_context: 無法取得使用者、頻道或伺服器來執行指令。
+  shop_item_add: 已添加商店商品
+  shop_item_not_found: 未找到該索引上的項目。
+  shop_item_purchase: 物品購買成功。
+  shop_item_req_role_not_found: 此商品所需的身分組已不存在。請聯繫伺服器管理員。
+  shop_item_req_role_unfulfilled: '您沒有購買此商店商品所需的身分組 ''{0}''。'
+  shop_item_requires_role: '購買需要身分組 {0}'
+  shop_item_rm: 商店商品已移除
+  shop_item_role_no_req: '商店商品 #{0} 將不再需要身分組。'
+  shop_item_role_req: '商店商品 #{0} 現在需要使用者擁有身分組 {1} 才能購買。'
+  shop_item_wrong_type: 該商店條目不支援添加項目。
+  shop_list_item_added: 項目已成功添加。
+  shop_list_item_not_unique: 該項目已添加。
+  shop_none: 在此頁面上未找到任何商店商品。
+  shop_purchase: '在 {0} 伺服器上購買'
+  shop_role: '您將獲得 {0} 角色。'
+  shop_role_already_bought: 你已經購買了這個身分組。
+  shop_role_not_found: 正在出售的身分組不再存在。
+  shop_role_purchase: '您已成功購買 {0} 身分組。'
+  shop_role_purchase_error: 分配身分組時出錯。您的購買已退款。
+  type: 類型
+  unique_items_left: '剩下 {0} 個獨特的項目。'

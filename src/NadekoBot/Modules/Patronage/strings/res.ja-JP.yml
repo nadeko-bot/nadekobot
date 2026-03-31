@@ -1,6 +1,0 @@
-expires: 有効期限
-patron_info: パトロン情報
-patron_msg_sent: 'ティア{1}以上のパトロンにメッセージを送信しました。{1}件成功、{2}件失敗。'
-patron_not_enabled: パトロンシステムは無効です。
-pledge: プレッジ
-tier: ティア

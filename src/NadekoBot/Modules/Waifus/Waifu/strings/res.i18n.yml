@@ -1,0 +1,1503 @@
+ar:
+  waifu_not_opted_in: هذا الشخص لم ينضم إلى عالم الوايفو بعد.
+  waifu_already_opted_in: أنت بالفعل وايفو!
+  waifu_opted_in: |-
+    مرحبًا بك في عالم الوايفو! تم تسجيلك الآن.
+    *ابحث عن مدير لتبدأ بكسب {0}.*
+  waifu_opted_out: لقد غادرت عالم الوايفو. إلى اللقاء!
+  waifu_insufficient_funds: ليس لديك أموال كافية لذلك.
+  waifu_has_fans: لا يزال لديك معجبون يدعمونك! اطلب منهم المغادرة قبل أن تتمكن من الانسحاب.
+  waifu_self_not_allowed: لا يمكنك فعل ذلك لنفسك!
+  waifu_not_found: هذا الوايفو غير موجود.
+  waifu_hugged: 'لقد منحت {0} عناقًا دافئًا!'
+  waifu_kissed: 'لقد قبّلت {0}!'
+  waifu_patted: 'لقد ربّتّ على {0} بلطف.'
+  waifu_nommed: 'لقد اطعمت {0}!'
+  waifu_pending_payout: 'لديك {0} من المدفوعات غير المحصّلة.'
+  waifu_no_pending_payout: ليس لديك مدفوعات معلّقة.
+  waifu_payout_claimed: 'لقد حصّلت {0}!'
+  waifu_already_backing: أنت بالفعل معجب بهذا الوايفو.
+  waifu_not_backing: أنت لا تدعم أي شخص حاليًا.
+  waifu_stopped_backing: لقد توقفت عن كونك معجبًا.
+  waifu_invalid_fee: 'يجب أن تكون الرسوم بين {0}% و {1}%.'
+  waifu_fee_set: 'تم تحديث الرسوم إلى {0}%.'
+  waifu_fans_title: 'معجبو {0}'
+  waifu_lb_title: 🏆 لوحة متصدري الوايفو (حسب السعر)
+  waifu_lb_title_backed: 🏆 لوحة متصدري الوايفو (حسب الدعم)
+  waifu_gift_shop_title: 🎁 متجر الهدايا اليوم
+  waifu_shop_refreshes: 'يتجدد خلال {0}'
+  waifu_item_not_found: 'هذا العنصر غير متوفر اليوم. استخدم `{0}wgiftshop` لرؤية ما هو متاح.'
+  waifu_gifted: 'أهديتَ {0}x {1} {2} لـ {3}! (+{4} {5})'
+  waifu_stat_food: طعام
+  waifu_stat_mood: مزاج
+  waifu_stop_backing_confirm: هل أنت متأكد أنك تريد التوقف عن الدعم؟ لن تكسب من التوزيعات بعد الآن.
+  waifu_switch_confirm: 'أنت حاليًا من معجبي {0}. هل تريد تحويل دعمك إلى {1} بدلاً من ذلك؟'
+  waifu_manager_exit_title: استقالة المدير
+  waifu_manager_exit_confirm: 'هل أنت متأكد أنك تريد الاستقالة من إدارة {0}؟ سينخفض سعر الوايفو إلى الحد الأدنى.'
+  waifu_goes_to_waifu: يذهب للوايفو
+  waifu_burned: محروق
+  waifu_outside_buy_window: شراء منصب المدير متاح فقط خلال أول 18 ساعة من الدورة.
+  waifu_price_too_low: عرضك منخفض جدا. الحد الأدنى للسعر هو 115% من سعر الوايفو الحالي.
+  waifu_bought_manager_title: 🏢 تم الحصول على منصب المدير!
+  waifu_bought_manager: 'أنت الآن مدير {0} مقابل {1:N0}!'
+  waifu_old_manager_refund: المدير السابق
+  waifu_over_cap: تجاوز الحد
+  waifu_no_manager_title: بحاجة إلى مدير!
+  waifu_no_manager_payout: 'لا أرباح بعد. بدون مدير، ينخفض السعر بنسبة {0}% كل دورة. كن أول من يدير!'
+  waifu_now_backing_hint: |-
+    أنت الآن من معجبي {0}!
+    *رصيد بنكك هو قوة دعمك -- كلما زاد ما تملكه، كلما زاد ما تكسبه.*
+  waifu_bank_balance: 'رصيدك البنكي: {0}'
+  waifu_not_participating_title: 🎀 نظام الوايفو
+  waifu_not_participating: |-
+    كن **وايفو** أو ادعم واحدة كـ **معجب** لكسب العملات!
+    
+    **كيف يعمل**
+    `{0}woptin` - سجّل كوايفو
+    `{0}wback @user` - ادعم وايفو برصيدك البنكي
+    `{0}wbuy @user` - كن مدير وايفو
+    
+    **الأدوار**
+    🎀 **وايفو** - تكسب رسومًا من كل دورة توزيع
+    🏢 **مدير** - يشتري المنصب، ويكسب حصة من رسوم الوايفو
+    👥 **معجب** - يدعم وايفو برصيده البنكي، ويكسب من مجمع المعجبين
+    
+    **الدورة**
+    كل 3.5 أيام، يتم توليد العوائد من الأموال المدعومة وتقسيمها بين الوايفو والمدير والمعجبين. حافظ على مزاج وايفوك 😊 وطعامها 🍔 مرتفعًا للحصول على توزيعات أفضل!
+  waifu_fan_not_waifu: 'أنت لست وايفو -- أنت معجب بـ **{0}**.'
+  waifu_gifts_received: الهدايا المستلمة
+  waifu_resigned_manager: 'لقد استقلت من إدارة {0}.'
+  waifu_not_managing: أنت لا تدير هذه الوايفو.
+  waifu_managing_title: 'الوايفو التي يديرها {0}'
+  waifu_managing_empty: لا يدير أي وايفو.
+  waifu_earned: '**الأرباح**: {0}'
+  waifu_cycle_title: '**الدورة #{0}**'
+  waifu_payout_time: 'التوزيع {0}'
+  waifu_field_backed_by: 👥 المعجبون
+  waifu_field_manager: 🏢 المدير
+  waifu_field_price: 💎 السعر
+  waifu_footer_fee: 'الرسوم: {0}%'
+  waifu_footer_actions: 'الإجراءات: {0}/{1}'
+  waifu_fan_count: '{0} معجبين'
+  waifu_unknown: غير معروف
+  waifu_optin_already: أنت بالفعل وايفو!
+  waifu_optin_no_funds: لا تملك أموالاً كافية!
+  waifu_optin_success: 'أنت الآن وايفو! استخدم `{0}waifu` لرؤية بطاقتك.'
+  waifu_btn_opt_in: انضمام
+  waifu_btn_collect: تحصيل
+  waifu_btn_my_waifus: زوجاتي
+  waifu_help_footer: 'استخدم {0}cmds waifu لعرض قائمة الأوامر'
+  waifu_backed_label: مدعومة
+  waifu_buy_confirm: 'هل تريد أن تصبح مدير **{0}** مقابل **{1}**؟'
+  waifu_btn_confirm: تأكيد
+  waifu_no_effect: بلا تأثير!
+
+de-DE:
+  waifu_not_opted_in: Diese Person ist noch nicht der Waifu-Welt beigetreten.
+  waifu_already_opted_in: Du bist bereits eine Waifu!
+  waifu_opted_in: |-
+    Willkommen in der Waifu-Welt! Du bist jetzt registriert.
+    *Finde einen Manager, um {0} zu verdienen.*
+  waifu_opted_out: Du hast die Waifu-Welt verlassen. Bis zum nächsten Mal!
+  waifu_insufficient_funds: Du hast nicht genug Geld dafür.
+  waifu_has_fans: Du hast noch Fans, die dich unterstützen! Bitte sie zu gehen, bevor du aussteigen kannst.
+  waifu_self_not_allowed: Das kannst du nicht mit dir selbst machen!
+  waifu_not_found: Diese Waifu existiert nicht.
+  waifu_hugged: 'Du hast {0} umarmt!'
+  waifu_kissed: 'Du hast {0} geküsst!'
+  waifu_patted: 'Du hast {0} gestreichelt.'
+  waifu_nommed: 'Du hast {0} gefuttert!'
+  waifu_pending_payout: 'Du hast {0} an nicht abgeholten Auszahlungen.'
+  waifu_no_pending_payout: Du hast keine ausstehenden Auszahlungen.
+  waifu_payout_claimed: 'Du hast {0} abgeholt!'
+  waifu_already_backing: Du bist bereits Fan dieser Waifu.
+  waifu_not_backing: Du unterstützt gerade niemanden.
+  waifu_stopped_backing: Du hast aufgehört, Fan zu sein.
+  waifu_invalid_fee: 'Die Gebühr muss zwischen {0}% und {1}% liegen.'
+  waifu_fee_set: 'Gebühr auf {0}% aktualisiert.'
+  waifu_fans_title: 'Fans von {0}'
+  waifu_lb_title: 🏆 Waifu-Rangliste (nach Preis)
+  waifu_lb_title_backed: 🏆 Waifu-Rangliste (nach Unterstützung)
+  waifu_gift_shop_title: 🎁 Heutiger Geschenkeladen
+  waifu_shop_refreshes: 'Aktualisiert in {0}'
+  waifu_item_not_found: 'Dieser Artikel ist heute nicht verfügbar. Benutze `{0}wgiftshop`, um das Angebot zu sehen.'
+  waifu_gifted: 'Du hast {0}x {1} {2} an {3} geschenkt! (+{4} {5})'
+  waifu_stat_food: Essen
+  waifu_stat_mood: Stimmung
+  waifu_stop_backing_confirm: Bist du sicher, dass du aufhören willst, Fan zu sein? Du wirst nicht mehr von Auszahlungen profitieren.
+  waifu_switch_confirm: 'Du bist derzeit Fan von {0}. Deine Unterstützung zu {1} wechseln?'
+  waifu_manager_exit_title: Manager-Rücktritt
+  waifu_manager_exit_confirm: 'Bist du sicher, dass du als Manager von {0} zurücktreten willst? Der Waifu-Preis fällt auf das Minimum.'
+  waifu_goes_to_waifu: Geht an Waifu
+  waifu_burned: Verbrannt
+  waifu_outside_buy_window: Manager-Käufe sind nur in den ersten 18 Stunden eines Zyklus verfügbar.
+  waifu_price_too_low: Dein Gebot ist zu niedrig. Der Mindestpreis beträgt 115% des aktuellen Waifu-Preises.
+  waifu_bought_manager_title: 🏢 Manager-Position Erworben!
+  waifu_bought_manager: 'Du bist jetzt Manager von {0} für {1:N0}!'
+  waifu_old_manager_refund: Alter Manager
+  waifu_over_cap: über dem Limit
+  waifu_no_manager_title: Braucht einen Manager!
+  waifu_no_manager_payout: 'Verdient noch nichts. Ohne Manager sinkt der Preis um {0}% pro Zyklus. Sei der Erste, der verwaltet!'
+  waifu_now_backing_hint: |-
+    Du bist jetzt Fan von {0}!
+    *Dein Bankguthaben ist deine Unterstützungskraft -- je mehr du hast, desto mehr verdienst du.*
+  waifu_bank_balance: 'Dein Bankguthaben: {0}'
+  waifu_not_participating_title: 🎀 Waifu-System
+  waifu_not_participating: |-
+    Werde eine **Waifu** oder unterstütze eine als **Fan**, um Währung zu verdienen!
+    
+    **So funktioniert es**
+    `{0}woptin` - registriere dich als Waifu
+    `{0}wback @user` - unterstütze eine Waifu mit deinem Bankguthaben
+    `{0}wbuy @user` - werde Manager einer Waifu
+    
+    **Rollen**
+    🎀 **Waifu** - verdient eine Gebühr aus jedem Auszahlungszyklus
+    🏢 **Manager** - kauft die Position, verdient einen Anteil der Waifu-Gebühr
+    👥 **Fan** - unterstützt eine Waifu mit Bankguthaben, verdient aus dem Fan-Pool
+    
+    **Zyklus**
+    Alle 3,5 Tage werden Erträge aus den unterstützten Mitteln generiert und zwischen Waifu, Manager und Fans aufgeteilt. Halte die Stimmung 😊 und das Essen 🍔 deiner Waifu hoch für bessere Auszahlungen!
+  waifu_fan_not_waifu: 'Du bist keine Waifu -- du bist Fan von **{0}**.'
+  waifu_gifts_received: Erhaltene Geschenke
+  waifu_resigned_manager: 'Du bist als Manager von {0} zurückgetreten.'
+  waifu_not_managing: Du verwaltest diese Waifu nicht.
+  waifu_managing_title: 'Von {0} verwaltete Waifus'
+  waifu_managing_empty: Verwaltet keine Waifus.
+  waifu_earned: '**Verdient**: {0}'
+  waifu_cycle_title: '**Zyklus #{0}**'
+  waifu_payout_time: 'Auszahlung {0}'
+  waifu_field_backed_by: 👥 Fans
+  waifu_field_manager: 🏢 Manager
+  waifu_field_price: 💎 Preis
+  waifu_footer_fee: 'Gebühr: {0}%'
+  waifu_footer_actions: 'Aktionen: {0}/{1}'
+  waifu_fan_count: '{0} Fans'
+  waifu_unknown: Unbekannt
+  waifu_optin_already: Du bist bereits eine Waifu!
+  waifu_optin_no_funds: Nicht genug Geld!
+  waifu_optin_success: 'Du bist jetzt eine Waifu! Benutze `{0}waifu`, um deine Karte zu sehen.'
+  waifu_btn_opt_in: Beitreten
+  waifu_btn_collect: Abholen
+  waifu_btn_my_waifus: Meine Waifus
+  waifu_help_footer: 'Benutze {0}cmds waifu für eine Liste von Befehlen'
+  waifu_backed_label: unterstützt
+  waifu_buy_confirm: 'Manager von **{0}** werden für **{1}**?'
+  waifu_btn_confirm: Bestätigen
+  waifu_no_effect: kein Effekt!
+
+es-ES:
+  waifu_not_opted_in: Esa persona aún no ha entrado al mundo waifu.
+  waifu_already_opted_in: ¡Ya eres una waifu!
+  waifu_opted_in: |-
+    ¡Bienvenida al mundo waifu! Ya estás registrada.
+    *Encuentra un manager para empezar a ganar {0}.*
+  waifu_opted_out: ¡Has dejado el mundo waifu. Hasta la próxima!
+  waifu_insufficient_funds: No tienes fondos suficientes para eso.
+  waifu_has_fans: ¡Todavía tienes fans apoyándote! Pídeles que se vayan antes de poder salir.
+  waifu_self_not_allowed: ¡No puedes hacer eso contigo misma!
+  waifu_not_found: Esa waifu no existe.
+  waifu_hugged: '¡Le diste un abrazo cálido a {0}!'
+  waifu_kissed: '¡Besaste a {0}!'
+  waifu_patted: 'Le hiciste cariño a {0}.'
+  waifu_nommed: 'Le diste de comer a {0}!'
+  waifu_pending_payout: 'Tienes {0} en pagos no cobrados.'
+  waifu_no_pending_payout: No tienes pagos pendientes.
+  waifu_payout_claimed: '¡Has cobrado {0}!'
+  waifu_already_backing: Ya eres fan de esta waifu.
+  waifu_not_backing: No estás apoyando a nadie en este momento.
+  waifu_stopped_backing: Has dejado de ser fan.
+  waifu_invalid_fee: 'La tarifa debe ser entre {0}% y {1}%.'
+  waifu_fee_set: 'Tarifa actualizada a {0}%.'
+  waifu_fans_title: 'Fans de {0}'
+  waifu_lb_title: 🏆 Ranking de Waifus (por precio)
+  waifu_lb_title_backed: 🏆 Ranking de Waifus (por apoyo)
+  waifu_gift_shop_title: 🎁 Tienda de Regalos de Hoy
+  waifu_shop_refreshes: 'Se actualiza en {0}'
+  waifu_item_not_found: 'Ese artículo no está disponible hoy. Usa `{0}wgiftshop` para ver qué hay en stock.'
+  waifu_gifted: '¡Le diste {0}x {1} {2} a {3}! (+{4} {5})'
+  waifu_stat_food: comida
+  waifu_stat_mood: humor
+  waifu_stop_backing_confirm: ¿Estás seguro de que quieres dejar de ser fan? Ya no ganarás de los pagos.
+  waifu_switch_confirm: '¿Actualmente eres fan de {0}. Cambiar tu apoyo a {1}?'
+  waifu_manager_exit_title: Renuncia de Manager
+  waifu_manager_exit_confirm: 'Seguro que quieres renunciar como manager de {0}? El precio de la waifu bajará al minimo.'
+  waifu_goes_to_waifu: Para la Waifu
+  waifu_burned: Quemado
+  waifu_outside_buy_window: Las compras de manager solo están disponibles durante las primeras 18 horas de un ciclo.
+  waifu_price_too_low: Tu oferta es demasiado baja. El precio minimo es el 115% del precio actual de la waifu.
+  waifu_bought_manager_title: 🏢 ¡Posición de Manager Adquirida!
+  waifu_bought_manager: '¡Ahora eres el manager de {0} por {1:N0}!'
+  waifu_old_manager_refund: Manager Anterior
+  waifu_over_cap: sobre el límite
+  waifu_no_manager_title: ¡Necesita un Manager!
+  waifu_no_manager_payout: 'No está ganando nada aún. Sin un manager, el precio baja {0}% cada ciclo. ¡Sé el primero en gestionar!'
+  waifu_now_backing_hint: |-
+    ¡Ahora eres fan de {0}!
+    *Tu saldo bancario es tu poder de apoyo -- cuanto más tengas, más ganarás.*
+  waifu_bank_balance: 'Tu saldo bancario: {0}'
+  waifu_not_participating_title: 🎀 Sistema Waifu
+  waifu_not_participating: |-
+    ¡Conviértete en una **Waifu** o apoya una como **Fan** para ganar monedas!
+    
+    **Cómo funciona**
+    `{0}woptin` - regístrate como waifu
+    `{0}wback @user` - apoya una waifu con tu saldo bancario
+    `{0}wbuy @user` - conviértete en manager de una waifu
+    
+    **Roles**
+    🎀 **Waifu** - gana una tarifa de cada ciclo de pago
+    🏢 **Manager** - compra la posición, gana una parte de la tarifa de la waifu
+    👥 **Fan** - apoya una waifu con saldo bancario, gana del pool de fans
+    
+    **Ciclo**
+    Cada 3,5 días, se generan retornos de los fondos apoyados y se dividen entre la waifu, manager y fans. ¡Mantén el humor 😊 y la comida 🍔 de tu waifu altos para mejores pagos!
+  waifu_fan_not_waifu: 'No eres una waifu -- eres fan de **{0}**.'
+  waifu_gifts_received: Regalos Recibidos
+  waifu_resigned_manager: 'Has renunciado como manager de {0}.'
+  waifu_not_managing: No estás gestionando esta waifu.
+  waifu_managing_title: 'Waifus gestionadas por {0}'
+  waifu_managing_empty: No está gestionando ninguna waifu.
+  waifu_earned: '**Ganado**: {0}'
+  waifu_cycle_title: '**Ciclo #{0}**'
+  waifu_payout_time: 'Pago {0}'
+  waifu_field_backed_by: 👥 Fans
+  waifu_field_manager: 🏢 Manager
+  waifu_field_price: 💎 Precio
+  waifu_footer_fee: 'Tarifa: {0}%'
+  waifu_footer_actions: 'Acciones: {0}/{1}'
+  waifu_fan_count: '{0} fans'
+  waifu_unknown: Desconocido
+  waifu_optin_already: ¡Ya eres una waifu!
+  waifu_optin_no_funds: ¡Fondos insuficientes!
+  waifu_optin_success: '¡Ahora eres una waifu! Usa `{0}waifu` para ver tu tarjeta.'
+  waifu_btn_opt_in: Entrar
+  waifu_btn_collect: Cobrar
+  waifu_btn_my_waifus: Mis Waifus
+  waifu_help_footer: 'Usa {0}cmds waifu para una lista de comandos'
+  waifu_backed_label: apoyado
+  waifu_buy_confirm: 'Convertirte en manager de **{0}** por **{1}**?'
+  waifu_btn_confirm: Confirmar
+  waifu_no_effect: sin efecto!
+
+fr-FR:
+  waifu_not_opted_in: Cette personne n'a pas encore rejoint le monde waifu.
+  waifu_already_opted_in: Vous êtes déjà une waifu !
+  waifu_opted_in: |-
+    Bienvenue dans le monde waifu ! Vous êtes maintenant inscrite.
+    *Trouvez un manager pour commencer à gagner {0}.*
+  waifu_opted_out: Vous avez quitté le monde waifu. À la prochaine !
+  waifu_insufficient_funds: Vous n'avez pas assez de fonds pour ça.
+  waifu_has_fans: Vous avez encore des fans qui vous soutiennent ! Demandez-leur de partir avant de pouvoir quitter.
+  waifu_self_not_allowed: Vous ne pouvez pas faire ça à vous-même !
+  waifu_not_found: Cette waifu n'existe pas.
+  waifu_hugged: 'Vous avez fait un câlin chaleureux à {0} !'
+  waifu_kissed: 'Vous avez embrassé {0} !'
+  waifu_patted: 'Vous avez caressé {0}.'
+  waifu_nommed: 'Tu as nourri {0} !'
+  waifu_pending_payout: 'Vous avez {0} en paiements non collectés.'
+  waifu_no_pending_payout: Vous n'avez pas de paiements en attente.
+  waifu_payout_claimed: 'Vous avez collecté {0} !'
+  waifu_already_backing: Vous êtes déjà fan de cette waifu.
+  waifu_not_backing: Vous ne soutenez personne en ce moment.
+  waifu_stopped_backing: Vous avez arrêté d'être fan.
+  waifu_invalid_fee: 'Les frais doivent être entre {0}% et {1}%.'
+  waifu_fee_set: 'Frais mis à jour à {0}%.'
+  waifu_fans_title: 'Fans de {0}'
+  waifu_lb_title: 🏆 Classement des Waifus (par prix)
+  waifu_lb_title_backed: 🏆 Classement des Waifus (par soutien)
+  waifu_gift_shop_title: 🎁 Boutique de Cadeaux du Jour
+  waifu_shop_refreshes: 'Se rafraîchit dans {0}'
+  waifu_item_not_found: 'Cet article n''est pas disponible aujourd''hui. Utilisez `{0}wgiftshop` pour voir ce qui est en stock.'
+  waifu_gifted: 'Vous avez donné {0}x {1} {2} à {3} ! (+{4} {5})'
+  waifu_stat_food: nourriture
+  waifu_stat_mood: humeur
+  waifu_stop_backing_confirm: Êtes-vous sûr de vouloir arrêter d'être fan ? Vous ne gagnerez plus des paiements.
+  waifu_switch_confirm: 'Vous êtes actuellement fan de {0}. Transférer votre soutien à {1} ?'
+  waifu_manager_exit_title: Démission de Manager
+  waifu_manager_exit_confirm: 'Voulez-vous vraiment quitter le poste de manager de {0} ? Le prix de la waifu chutera au minimum.'
+  waifu_goes_to_waifu: Pour la Waifu
+  waifu_burned: Brûlé
+  waifu_outside_buy_window: Les achats de manager ne sont disponibles que pendant les 18 premières heures d'un cycle.
+  waifu_price_too_low: Votre offre est trop basse. Le prix minimum est de 115% du prix actuel de la waifu.
+  waifu_bought_manager_title: 🏢 Position de Manager Acquise !
+  waifu_bought_manager: 'Vous êtes maintenant le manager de {0} pour {1:N0} !'
+  waifu_old_manager_refund: Ancien Manager
+  waifu_over_cap: au-dessus du plafond
+  waifu_no_manager_title: A Besoin d'un Manager !
+  waifu_no_manager_payout: 'Ne gagne rien encore. Sans manager, le prix baisse de {0}% à chaque cycle. Soyez le premier à gérer !'
+  waifu_now_backing_hint: |-
+    Vous êtes maintenant fan de {0} !
+    *Votre solde bancaire est votre pouvoir de soutien -- plus vous avez, plus vous gagnez.*
+  waifu_bank_balance: 'Votre solde bancaire : {0}'
+  waifu_not_participating_title: 🎀 Système Waifu
+  waifu_not_participating: |-
+    Devenez une **Waifu** ou soutenez-en une comme **Fan** pour gagner des monnaies !
+    
+    **Comment ça marche**
+    `{0}woptin` - inscrivez-vous comme waifu
+    `{0}wback @user` - soutenez une waifu avec votre solde bancaire
+    `{0}wbuy @user` - devenez manager d'une waifu
+    
+    **Rôles**
+    🎀 **Waifu** - gagne des frais à chaque cycle de paiement
+    🏢 **Manager** - achète la position, gagne une part des frais de la waifu
+    👥 **Fan** - soutient une waifu avec son solde bancaire, gagne du pool de fans
+    
+    **Cycle**
+    Tous les 3,5 jours, des retours sont générés des fonds soutenus et répartis entre la waifu, le manager et les fans. Gardez l'humeur 😊 et la nourriture 🍔 de votre waifu hauts pour de meilleurs paiements !
+  waifu_fan_not_waifu: 'Vous n''êtes pas une waifu -- vous êtes fan de **{0}**.'
+  waifu_gifts_received: Cadeaux Reçus
+  waifu_resigned_manager: 'Vous avez démissionné en tant que manager de {0}.'
+  waifu_not_managing: Vous ne gérez pas cette waifu.
+  waifu_managing_title: 'Waifus gérées par {0}'
+  waifu_managing_empty: Ne gère aucune waifu.
+  waifu_earned: '**Gagné** : {0}'
+  waifu_cycle_title: '**Cycle #{0}**'
+  waifu_payout_time: 'Paiement {0}'
+  waifu_field_backed_by: 👥 Fans
+  waifu_field_manager: 🏢 Manager
+  waifu_field_price: 💎 Prix
+  waifu_footer_fee: 'Frais : {0}%'
+  waifu_footer_actions: 'Actions : {0}/{1}'
+  waifu_fan_count: '{0} fans'
+  waifu_unknown: Inconnu
+  waifu_optin_already: Vous êtes déjà une waifu !
+  waifu_optin_no_funds: Fonds insuffisants !
+  waifu_optin_success: 'Vous êtes maintenant une waifu ! Utilisez `{0}waifu` pour voir votre carte.'
+  waifu_btn_opt_in: S'inscrire
+  waifu_btn_collect: Collecter
+  waifu_btn_my_waifus: Mes Waifus
+  waifu_help_footer: 'Utilisez {0}cmds waifu pour une liste de commandes'
+  waifu_backed_label: soutenu
+  waifu_buy_confirm: 'Devenir le manager de **{0}** pour **{1}** ?'
+  waifu_btn_confirm: Confirmer
+  waifu_no_effect: aucun effet !
+
+id-ID:
+  waifu_not_opted_in: Orang itu belum bergabung ke dunia waifu.
+  waifu_already_opted_in: Kamu sudah jadi waifu!
+  waifu_opted_in: |-
+    Selamat datang di dunia waifu! Kamu sekarang terdaftar.
+    *Cari manager untuk mulai menghasilkan {0}.*
+  waifu_opted_out: Kamu sudah keluar dari dunia waifu. Sampai jumpa lagi!
+  waifu_insufficient_funds: Kamu tidak punya cukup dana untuk itu.
+  waifu_has_fans: Kamu masih punya fans yang mendukung! Minta mereka pergi dulu sebelum kamu bisa keluar.
+  waifu_self_not_allowed: Kamu tidak bisa melakukan itu ke diri sendiri!
+  waifu_not_found: Waifu itu tidak ada.
+  waifu_hugged: 'Kamu memberi {0} pelukan hangat!'
+  waifu_kissed: 'Kamu mencium {0}!'
+  waifu_patted: 'Kamu mengelus {0} dengan lembut.'
+  waifu_nommed: 'Kamu memberi makan {0}!'
+  waifu_pending_payout: 'Kamu punya {0} pembayaran yang belum diambil.'
+  waifu_no_pending_payout: Kamu tidak punya pembayaran yang tertunda.
+  waifu_payout_claimed: 'Kamu telah mengambil {0}!'
+  waifu_already_backing: Kamu sudah jadi fans dari waifu ini.
+  waifu_not_backing: Kamu tidak sedang mendukung siapa pun saat ini.
+  waifu_stopped_backing: Kamu berhenti jadi fans.
+  waifu_invalid_fee: 'Biaya harus antara {0}% dan {1}%.'
+  waifu_fee_set: 'Biaya diperbarui menjadi {0}%.'
+  waifu_fans_title: 'Fans dari {0}'
+  waifu_lb_title: 🏆 Papan Peringkat Waifu (berdasarkan harga)
+  waifu_lb_title_backed: 🏆 Papan Peringkat Waifu (berdasarkan dukungan)
+  waifu_gift_shop_title: 🎁 Toko Hadiah Hari Ini
+  waifu_shop_refreshes: 'Diperbarui dalam {0}'
+  waifu_item_not_found: 'Item itu nggak tersedia hari ini. Pakai `{0}wgiftshop` untuk lihat yang ada.'
+  waifu_gifted: 'Kamu memberi {0}x {1} {2} ke {3}! (+{4} {5})'
+  waifu_stat_food: makanan
+  waifu_stat_mood: mood
+  waifu_stop_backing_confirm: Kamu yakin mau berhenti jadi fan? Kamu nggak akan dapat penghasilan dari pembagian lagi.
+  waifu_switch_confirm: 'Kamu saat ini jadi fan dari {0}. Pindah dukungan ke {1}?'
+  waifu_manager_exit_title: Pengunduran Diri Manajer
+  waifu_manager_exit_confirm: 'Yakin ingin mundur dari manajer {0}? Harga waifu akan turun ke minimum.'
+  waifu_goes_to_waifu: Untuk Waifu
+  waifu_burned: Dibakar
+  waifu_outside_buy_window: Pembelian manajer hanya tersedia selama 18 jam pertama dalam satu siklus.
+  waifu_price_too_low: Tawaranmu terlalu rendah. Harga minimum adalah 115% dari harga waifu saat ini.
+  waifu_bought_manager_title: 🏢 Posisi Manajer Didapatkan!
+  waifu_bought_manager: 'Kamu sekarang manajer dari {0} seharga {1:N0}!'
+  waifu_old_manager_refund: Manajer Lama
+  waifu_over_cap: melebihi batas
+  waifu_no_manager_title: Butuh Manajer!
+  waifu_no_manager_payout: 'Belum menghasilkan apa-apa. Tanpa manajer, harga turun {0}% setiap siklus. Jadilah yang pertama mengelola!'
+  waifu_now_backing_hint: |-
+    Kamu sekarang fan dari {0}!
+    *Saldo bankmu adalah kekuatan dukunganmu -- semakin banyak yang kamu simpan, semakin banyak yang kamu dapat.*
+  waifu_bank_balance: 'Saldo bankmu: {0}'
+  waifu_not_participating_title: 🎀 Sistem Waifu
+  waifu_not_participating: |-
+    Jadi **Waifu** atau dukung salah satu sebagai **Fan** untuk dapat mata uang!
+    
+    **Cara kerjanya**
+    `{0}woptin` - daftar sebagai waifu
+    `{0}wback @user` - dukung waifu dengan saldo bankmu
+    `{0}wbuy @user` - jadi manajer waifu
+    
+    **Peran**
+    🎀 **Waifu** - dapat bayaran dari setiap siklus pembagian
+    🏢 **Manajer** - membeli posisi, dapat bagian dari biaya waifu
+    👥 **Fan** - mendukung waifu dengan saldo bank, dapat dari pool fan
+    
+    **Siklus**
+    Setiap 3,5 hari, keuntungan dihasilkan dari dana dukungan dan dibagi antara waifu, manajer, dan fan. Jaga mood 😊 dan makanan 🍔 waifumu tetap tinggi untuk pembagian yang lebih besar!
+  waifu_fan_not_waifu: 'Kamu bukan waifu -- kamu fan dari **{0}**.'
+  waifu_gifts_received: Hadiah Diterima
+  waifu_resigned_manager: 'Kamu sudah mengundurkan diri sebagai manajer dari {0}.'
+  waifu_not_managing: Kamu nggak mengelola waifu ini.
+  waifu_managing_title: 'Waifu yang dikelola oleh {0}'
+  waifu_managing_empty: Nggak mengelola waifu mana pun.
+  waifu_earned: '**Didapat**: {0}'
+  waifu_cycle_title: '**Siklus #{0}**'
+  waifu_payout_time: 'Pembagian {0}'
+  waifu_field_backed_by: 👥 Penggemar
+  waifu_field_manager: 🏢 Manajer
+  waifu_field_price: 💎 Harga
+  waifu_footer_fee: 'Biaya: {0}%'
+  waifu_footer_actions: 'Aksi: {0}/{1}'
+  waifu_fan_count: '{0} fan'
+  waifu_unknown: Tidak diketahui
+  waifu_optin_already: Kamu sudah jadi waifu!
+  waifu_optin_no_funds: Dana nggak cukup!
+  waifu_optin_success: 'Kamu sekarang waifu! Pakai `{0}waifu` untuk lihat kartumu.'
+  waifu_btn_opt_in: Daftar
+  waifu_btn_collect: Kumpulkan
+  waifu_btn_my_waifus: Waifu Saya
+  waifu_help_footer: 'Pakai {0}cmds waifu untuk daftar perintah'
+  waifu_backed_label: didukung
+  waifu_buy_confirm: 'Menjadi manajer **{0}** seharga **{1}**?'
+  waifu_btn_confirm: Konfirmasi
+  waifu_no_effect: tidak ada efek!
+
+ja-JP:
+  waifu_not_opted_in: その人はまだワイフの世界に参加していません。
+  waifu_already_opted_in: あなたは既にワイフです！
+  waifu_opted_in: |-
+    ワイフの世界へようこそ！登録が完了しました。
+    *マネージャーを見つけて{0}を稼ぎ始めましょう。*
+  waifu_opted_out: ワイフの世界を去りました。またね！
+  waifu_insufficient_funds: 資金が不足しています。
+  waifu_has_fans: まだあなたを応援しているファンがいます！退出する前にファンに離れてもらってください。
+  waifu_self_not_allowed: 自分自身にはできません！
+  waifu_not_found: そのワイフは存在しません。
+  waifu_hugged: '{0}に温かいハグをしました！'
+  waifu_kissed: '{0}にキスしました！'
+  waifu_patted: '{0}を優しくなでました。'
+  waifu_nommed: '{0}にご飯をあげた!'
+  waifu_pending_payout: '未回収のペイアウトが{0}あります。'
+  waifu_no_pending_payout: 保留中のペイアウトはありません。
+  waifu_payout_claimed: '{0}を回収しました！'
+  waifu_already_backing: 既にこのワイフのファンです。
+  waifu_not_backing: 現在誰も応援していません。
+  waifu_stopped_backing: ファンをやめました。
+  waifu_invalid_fee: '手数料は{0}%から{1}%の間でなければなりません。'
+  waifu_fee_set: '手数料が{0}%に更新されました。'
+  waifu_fans_title: '{0}のファン'
+  waifu_lb_title: 🏆 ワイフランキング（価格順）
+  waifu_lb_title_backed: 🏆 ワイフランキング（応援順）
+  waifu_gift_shop_title: 🎁 今日のギフトショップ
+  waifu_shop_refreshes: '{0}後に更新'
+  waifu_item_not_found: 'そのアイテムは今日は利用できません。`{0}wgiftshop`で在庫を確認してください。'
+  waifu_gifted: '{3}に{0}x {1} {2}を贈りました！（+{4} {5}）'
+  waifu_stat_food: 食事
+  waifu_stat_mood: ムード
+  waifu_stop_backing_confirm: ファンをやめますか？ペイアウトからの収入がなくなります。
+  waifu_switch_confirm: '現在{0}のファンです。{1}に応援先を変更しますか？'
+  waifu_manager_exit_title: マネージャー辞任
+  waifu_manager_exit_confirm: '{0}のマネージャーを辞任してよろしいですか？waifuの価格は最低額に下がります。'
+  waifu_goes_to_waifu: Waifuへ
+  waifu_burned: バーン
+  waifu_outside_buy_window: マネージャーの購入はサイクルの最初の18時間のみ利用可能です。
+  waifu_price_too_low: 入札額が低すぎます。最低価格は現在のwaifu価格の115%です。
+  waifu_bought_manager_title: 🏢 マネージャーポジション獲得！
+  waifu_bought_manager: 'あなたは{1:N0}で{0}のマネージャーになりました！'
+  waifu_old_manager_refund: 前マネージャー
+  waifu_over_cap: 上限超過
+  waifu_no_manager_title: マネージャーが必要です！
+  waifu_no_manager_payout: 'まだ何も稼いでいません。マネージャーがいないと、価格は毎サイクル{0}%下がります。最初のマネージャーになりましょう！'
+  waifu_now_backing_hint: |-
+    あなたは{0}のファンになりました！
+    *銀行残高があなたの応援力です--多く持つほど、多く稼げます。*
+  waifu_bank_balance: 'あなたの銀行残高: {0}'
+  waifu_not_participating_title: 🎀 ワイフシステム
+  waifu_not_participating: |-
+    **ワイフ**になるか、**ファン**として応援して通貨を稼ぎましょう！
+    
+    **仕組み**
+    `{0}woptin` - ワイフとして登録
+    `{0}wback @user` - 銀行残高でワイフを応援
+    `{0}wbuy @user` - ワイフのマネージャーになる
+    
+    **役割**
+    🎀 **ワイフ** - 毎ペイアウトサイクルで手数料を獲得
+    🏢 **マネージャー** - ポジションを購入し、ワイフの手数料の一部を獲得
+    👥 **ファン** - 銀行残高でワイフを応援し、ファンプールから獲得
+    
+    **サイクル**
+    3.5日ごとに、応援された資金からリターンが生成され、ワイフ、マネージャー、ファンの間で分配されます。ワイフのムード😊と食事🍔を高く保って、より良いペイアウトを！
+  waifu_fan_not_waifu: 'あなたはワイフではありません--**{0}**のファンです。'
+  waifu_gifts_received: 受け取ったギフト
+  waifu_resigned_manager: '{0}のマネージャーを辞任しました。'
+  waifu_not_managing: このワイフを管理していません。
+  waifu_managing_title: '{0}が管理するワイフ'
+  waifu_managing_empty: ワイフを管理していません。
+  waifu_earned: '**獲得**: {0}'
+  waifu_cycle_title: '**サイクル #{0}**'
+  waifu_payout_time: 'ペイアウト {0}'
+  waifu_field_backed_by: 👥 ファン
+  waifu_field_manager: 🏢 マネージャー
+  waifu_field_price: 💎 価格
+  waifu_footer_fee: '手数料: {0}%'
+  waifu_footer_actions: 'アクション: {0}/{1}'
+  waifu_fan_count: '{0}人のファン'
+  waifu_unknown: 不明
+  waifu_optin_already: あなたは既にワイフです！
+  waifu_optin_no_funds: 資金不足！
+  waifu_optin_success: 'あなたはワイフになりました！`{0}waifu`でカードを確認しましょう。'
+  waifu_btn_opt_in: 参加
+  waifu_btn_collect: 回収
+  waifu_btn_my_waifus: マイワイフ
+  waifu_help_footer: '{0}cmds waifuでコマンド一覧を確認'
+  waifu_backed_label: 応援済み
+  waifu_buy_confirm: '**{0}** のマネージャーになりますか？費用: **{1}**'
+  waifu_btn_confirm: 確認
+  waifu_no_effect: 効果なし!
+
+ko-KR:
+  waifu_not_opted_in: 그 사람은 아직 와이푸 세계에 참여하지 않았어요.
+  waifu_already_opted_in: 이미 와이푸로 등록되어 있어요!
+  waifu_opted_in: |-
+    와이푸 세계에 오신 걸 환영해요! 등록이 완료되었어요.
+    *매니저를 찾아서 {0} 벌기를 시작하세요.*
+  waifu_opted_out: 와이푸 세계를 떠났어요. 다음에 또 만나요!
+  waifu_insufficient_funds: 자금이 부족해요.
+  waifu_has_fans: 아직 팬이 있어요! 탈퇴하려면 먼저 팬들에게 떠나달라고 해 주세요.
+  waifu_self_not_allowed: 자기 자신에게는 할 수 없어요!
+  waifu_not_found: 해당 와이푸가 존재하지 않아요.
+  waifu_hugged: '{0}에게 따뜻한 포옹을 해줬어요!'
+  waifu_kissed: '{0}에게 키스했어요!'
+  waifu_patted: '{0}을(를) 부드럽게 쓰다듬었어요.'
+  waifu_nommed: '{0}에게 밥을 줬어요!'
+  waifu_pending_payout: '미수령 보수가 {0} 있어요.'
+  waifu_no_pending_payout: 미수령 보수가 없어요.
+  waifu_payout_claimed: '{0}을(를) 수령했어요!'
+  waifu_already_backing: 이미 이 와이푸의 팬이에요.
+  waifu_not_backing: 현재 누구도 후원하고 있지 않아요.
+  waifu_stopped_backing: 팬 활동을 중단했어요.
+  waifu_invalid_fee: '수수료는 {0}%에서 {1}% 사이여야 해요.'
+  waifu_fee_set: '수수료가 {0}%로 업데이트되었어요.'
+  waifu_fans_title: '{0}의 팬'
+  waifu_lb_title: 🏆 와이푸 리더보드 (가격순)
+  waifu_lb_title_backed: 🏆 와이푸 리더보드 (후원 기준)
+  waifu_gift_shop_title: 🎁 오늘의 선물 가게
+  waifu_shop_refreshes: '{0} 후 갱신'
+  waifu_item_not_found: '오늘은 해당 아이템이 없어요. `{0}wgiftshop`으로 현재 판매 중인 아이템을 확인하세요.'
+  waifu_gifted: '{3}에게 {0}x {1} {2}을(를) 선물했어요! (+{4} {5})'
+  waifu_stat_food: 음식
+  waifu_stat_mood: 기분
+  waifu_stop_backing_confirm: 정말 팬을 그만두시겠어요? 더 이상 정산 수익을 받을 수 없게 돼요.
+  waifu_switch_confirm: '현재 {0}의 팬이에요. 대신 {1}에게 지지를 변경하시겠어요?'
+  waifu_manager_exit_title: 매니저 사임
+  waifu_manager_exit_confirm: '정말 {0}의 매니저를 그만두시겠어요? waifu 가격이 최소로 떨어져요.'
+  waifu_goes_to_waifu: Waifu에게
+  waifu_burned: 소각
+  waifu_outside_buy_window: 매니저 구매는 사이클 시작 후 18시간 이내에만 가능해요.
+  waifu_price_too_low: 입찰 금액이 너무 낮아요. 최소 가격은 현재 waifu 가격의 115%예요.
+  waifu_bought_manager_title: 🏢 매니저 자리 획득!
+  waifu_bought_manager: '이제 {0}의 매니저예요! 가격: {1:N0}'
+  waifu_old_manager_refund: 이전 매니저
+  waifu_over_cap: 한도 초과
+  waifu_no_manager_title: 매니저가 필요해요!
+  waifu_no_manager_payout: '아직 수익이 없어요. 매니저가 없으면 매 사이클마다 가격이 {0}%씩 떨어져요. 첫 매니저가 되어보세요!'
+  waifu_now_backing_hint: |-
+    이제 {0}의 팬이에요!
+    *은행 잔액이 후원 파워가 돼요 - 잔액이 많을수록 더 많이 벌어요.*
+  waifu_bank_balance: '은행 잔액: {0}'
+  waifu_not_participating_title: 🎀 와이푸 시스템
+  waifu_not_participating: |-
+    **와이푸**가 되거나 **팬**으로 지지하여 화폐를 벌어보세요!
+    
+    **사용 방법**
+    `{0}woptin` - 와이푸로 등록
+    `{0}wback @유저` - 은행 잔액으로 와이푸 후원
+    `{0}wbuy @유저` - 와이푸의 매니저가 되기
+    
+    **역할**
+    🎀 **와이푸** - 매 정산 사이클마다 수수료 수익
+    🏢 **매니저** - 자리를 구매하고, 와이푸 수수료의 일부를 수익으로 획득
+    👥 **팬** - 은행 잔액으로 와이푸를 후원하고, 팬 풀에서 수익 획득
+    
+    **사이클**
+    3.5일마다 후원 자금에서 수익이 생성되어 와이푸, 매니저, 팬에게 분배돼요. 와이푸의 기분 😊과 음식 🍔을 높게 유지하면 더 많은 정산을 받을 수 있어요!
+  waifu_fan_not_waifu: '당신은 와이푸가 아니라 **{0}**의 팬이에요.'
+  waifu_gifts_received: 받은 선물
+  waifu_resigned_manager: '{0}의 매니저를 사임했어요.'
+  waifu_not_managing: 이 와이푸를 관리하고 있지 않아요.
+  waifu_managing_title: '{0}이(가) 관리하는 와이푸'
+  waifu_managing_empty: 관리 중인 와이푸가 없어요.
+  waifu_earned: '**수익**: {0}'
+  waifu_cycle_title: '**사이클 #{0}**'
+  waifu_payout_time: '정산 {0}'
+  waifu_field_backed_by: 👥 팬
+  waifu_field_manager: 🏢 매니저
+  waifu_field_price: 💎 가격
+  waifu_footer_fee: '수수료: {0}%'
+  waifu_footer_actions: '행동: {0}/{1}'
+  waifu_fan_count: '팬 {0}명'
+  waifu_unknown: 알 수 없음
+  waifu_optin_already: 이미 와이푸예요!
+  waifu_optin_no_funds: 자금이 부족해요!
+  waifu_optin_success: '이제 와이푸가 되었어요! `{0}waifu`로 카드를 확인하세요.'
+  waifu_btn_opt_in: 참여하기
+  waifu_btn_collect: 수령하기
+  waifu_btn_my_waifus: 내 와이푸
+  waifu_help_footer: '{0}cmds waifu로 명령어 목록을 확인하세요'
+  waifu_backed_label: 후원
+  waifu_buy_confirm: '**{1}**에 **{0}**의 매니저가 되시겠습니까?'
+  waifu_btn_confirm: 확인
+  waifu_no_effect: 효과 없음!
+
+pl-PL:
+  waifu_not_opted_in: Ta osoba jeszcze nie dołączyła do świata waifu.
+  waifu_already_opted_in: Już jesteś waifu!
+  waifu_opted_in: |-
+    Witaj w świecie waifu! Zostałeś zarejestrowany.
+    *Znajdź menedżera, żeby zacząć zarabiać {0}.*
+  waifu_opted_out: Opuściłeś świat waifu. Do następnego razu!
+  waifu_insufficient_funds: Nie masz wystarczających środków na to.
+  waifu_has_fans: Nadal masz fanów, którzy cię wspierają! Poproś ich, żeby odeszli, zanim będziesz mógł się wypisać.
+  waifu_self_not_allowed: Nie możesz tego zrobić sobie!
+  waifu_not_found: Ta waifu nie istnieje.
+  waifu_hugged: 'Przytuliłeś {0}!'
+  waifu_kissed: 'Pocałowałeś {0}!'
+  waifu_patted: 'Pogłaskałeś {0}.'
+  waifu_nommed: 'Nakarmiles {0}!'
+  waifu_pending_payout: 'Masz {0} w nieodebranych wypłatach.'
+  waifu_no_pending_payout: Nie masz żadnych oczekujących wypłat.
+  waifu_payout_claimed: 'Odebrałeś {0}!'
+  waifu_already_backing: Już jesteś fanem tej waifu.
+  waifu_not_backing: Nie wspierasz teraz nikogo.
+  waifu_stopped_backing: Przestałeś być fanem.
+  waifu_invalid_fee: 'Prowizja musi wynosić od {0}% do {1}%.'
+  waifu_fee_set: 'Prowizja ustawiona na {0}%.'
+  waifu_fans_title: 'Fani {0}'
+  waifu_lb_title: 🏆 Ranking Waifu (wg ceny)
+  waifu_lb_title_backed: 🏆 Ranking Waifu (wg wsparcia)
+  waifu_gift_shop_title: 🎁 Dzisiejszy Sklep z Prezentami
+  waifu_shop_refreshes: 'Odświeża się za {0}'
+  waifu_item_not_found: 'Ten przedmiot nie jest dziś dostępny. Użyj `{0}wgiftshop`, żeby zobaczyć co jest w ofercie.'
+  waifu_gifted: 'Podarowałeś/aś {0}x {1} {2} dla {3}! (+{4} {5})'
+  waifu_stat_food: jedzenie
+  waifu_stat_mood: humor
+  waifu_stop_backing_confirm: Na pewno chcesz przestać być fanem? Nie będziesz już zarabiać z wypłat.
+  waifu_switch_confirm: 'Aktualnie wspierasz {0}. Chcesz przerzucić wsparcie na {1}?'
+  waifu_manager_exit_title: Rezygnacja Managera
+  waifu_manager_exit_confirm: 'Na pewno chcesz zrezygnować z bycia managerem {0}? Cena waifu spadnie do minimum.'
+  waifu_goes_to_waifu: Dla Waifu
+  waifu_burned: Spalone
+  waifu_outside_buy_window: Zakup pozycji managera jest dostępny tylko przez pierwsze 18 godzin cyklu.
+  waifu_price_too_low: Twoja oferta jest za niska. Minimalna cena to 115% aktualnej ceny waifu.
+  waifu_bought_manager_title: 🏢 Pozycja Managera Zdobyta!
+  waifu_bought_manager: 'Jesteś teraz managerem {0} za {1:N0}!'
+  waifu_old_manager_refund: Poprzedni Manager
+  waifu_over_cap: ponad limit
+  waifu_no_manager_title: Potrzebuje Managera!
+  waifu_no_manager_payout: 'Jeszcze nic nie zarabia. Bez managera cena spada o {0}% co cykl. Zostań pierwszym managerem!'
+  waifu_now_backing_hint: |-
+    Jesteś teraz fanem {0}!
+    *Twoje saldo bankowe to twoja siła wsparcia -- im więcej masz, tym więcej zarabiasz.*
+  waifu_bank_balance: 'Twoje saldo bankowe: {0}'
+  waifu_not_participating_title: 🎀 System Waifu
+  waifu_not_participating: |-
+    Zostań **Waifu** lub wspieraj jedną jako **Fan**, żeby zarabiać walutę!
+    
+    **Jak to działa**
+    `{0}woptin` - zarejestruj się jako waifu
+    `{0}wback @user` - wesprzyj waifu swoim saldem bankowym
+    `{0}wbuy @user` - zostań managerem waifu
+    
+    **Role**
+    🎀 **Waifu** - zarabia prowizję z każdego cyklu wypłat
+    🏢 **Manager** - kupuje pozycję, zarabia część prowizji waifu
+    👥 **Fan** - wspiera waifu saldem bankowym, zarabia z puli fanów
+    
+    **Cykl**
+    Co 3,5 dnia generowane są zyski ze wspieranych funduszy, dzielone między waifu, managera i fanów. Dbaj o humor 😊 i jedzenie 🍔 swojej waifu, żeby wypłaty były wyższe!
+  waifu_fan_not_waifu: 'Nie jesteś waifu -- jesteś fanem **{0}**.'
+  waifu_gifts_received: Otrzymane Prezenty
+  waifu_resigned_manager: 'Zrezygnowałeś/aś z bycia managerem {0}.'
+  waifu_not_managing: Nie zarządzasz tą waifu.
+  waifu_managing_title: 'Waifu zarządzane przez {0}'
+  waifu_managing_empty: Nie zarządzasz żadnymi waifu.
+  waifu_earned: '**Zarobiono**: {0}'
+  waifu_cycle_title: '**Cykl #{0}**'
+  waifu_payout_time: 'Wypłata {0}'
+  waifu_field_backed_by: 👥 Fani
+  waifu_field_manager: 🏢 Manager
+  waifu_field_price: 💎 Cena
+  waifu_footer_fee: 'Prowizja: {0}%'
+  waifu_footer_actions: 'Akcje: {0}/{1}'
+  waifu_fan_count: '{0} fanów'
+  waifu_unknown: Nieznany
+  waifu_optin_already: Już jesteś waifu!
+  waifu_optin_no_funds: Niewystarczające środki!
+  waifu_optin_success: 'Jesteś teraz waifu! Użyj `{0}waifu`, żeby zobaczyć swoją kartę.'
+  waifu_btn_opt_in: Dołącz
+  waifu_btn_collect: Odbierz
+  waifu_btn_my_waifus: Moje Waifu
+  waifu_help_footer: 'Użyj {0}cmds waifu, żeby zobaczyć listę komend'
+  waifu_backed_label: wspierane
+  waifu_buy_confirm: 'Zostać menedżerem **{0}** za **{1}**?'
+  waifu_btn_confirm: Potwierdź
+  waifu_no_effect: brak efektu!
+
+pt-BR:
+  waifu_not_opted_in: Essa pessoa ainda não entrou no mundo waifu.
+  waifu_already_opted_in: Você já é uma waifu!
+  waifu_opted_in: |-
+    Bem-vinda ao mundo waifu! Você agora está registrada.
+    *Encontre um manager para começar a ganhar {0}.*
+  waifu_opted_out: Você saiu do mundo waifu. Até a próxima!
+  waifu_insufficient_funds: Você não tem fundos suficientes para isso.
+  waifu_has_fans: Você ainda tem fãs te apoiando! Peça para eles saírem antes de poder sair.
+  waifu_self_not_allowed: Você não pode fazer isso consigo mesma!
+  waifu_not_found: Essa waifu não existe.
+  waifu_hugged: 'Você deu um abraço caloroso em {0}!'
+  waifu_kissed: 'Você beijou {0}!'
+  waifu_patted: 'Você fez carinho em {0}.'
+  waifu_nommed: 'Voce alimentou {0}!'
+  waifu_pending_payout: 'Você tem {0} em pagamentos não coletados.'
+  waifu_no_pending_payout: Você não tem pagamentos pendentes.
+  waifu_payout_claimed: 'Você coletou {0}!'
+  waifu_already_backing: Você já é fã desta waifu.
+  waifu_not_backing: Você não está apoiando ninguém no momento.
+  waifu_stopped_backing: Você parou de ser fã.
+  waifu_invalid_fee: 'A taxa deve ser entre {0}% e {1}%.'
+  waifu_fee_set: 'Taxa atualizada para {0}%.'
+  waifu_fans_title: 'Fãs de {0}'
+  waifu_lb_title: 🏆 Ranking de Waifus (por preço)
+  waifu_lb_title_backed: 🏆 Ranking de Waifus (por apoio)
+  waifu_gift_shop_title: 🎁 Loja de Presentes de Hoje
+  waifu_shop_refreshes: 'Atualiza em {0}'
+  waifu_item_not_found: 'Esse item não está disponível hoje. Use `{0}wgiftshop` para ver o que está em estoque.'
+  waifu_gifted: 'Você deu {0}x {1} {2} para {3}! (+{4} {5})'
+  waifu_stat_food: comida
+  waifu_stat_mood: humor
+  waifu_stop_backing_confirm: Tem certeza de que deseja parar de ser fã? Você não vai mais ganhar com os pagamentos.
+  waifu_switch_confirm: 'Você é atualmente fã de {0}. Mudar seu apoio para {1}?'
+  waifu_manager_exit_title: Renúncia de Manager
+  waifu_manager_exit_confirm: 'Tem certeza que quer renunciar ao cargo de manager de {0}? O preco da waifu cairá ao minimo.'
+  waifu_goes_to_waifu: Para a Waifu
+  waifu_burned: Queimado
+  waifu_outside_buy_window: Compras de manager só estão disponíveis durante as primeiras 18 horas de um ciclo.
+  waifu_price_too_low: Sua oferta é muito baixa. O preco minimo é 115% do preco atual da waifu.
+  waifu_bought_manager_title: 🏢 Posição de Manager Adquirida!
+  waifu_bought_manager: 'Você agora é o manager de {0} por {1:N0}!'
+  waifu_old_manager_refund: Manager Anterior
+  waifu_over_cap: acima do limite
+  waifu_no_manager_title: Precisa de um Manager!
+  waifu_no_manager_payout: 'Não está ganhando nada ainda. Sem um manager, o preço cai {0}% a cada ciclo. Seja o primeiro a gerenciar!'
+  waifu_now_backing_hint: |-
+    Você agora é fã de {0}!
+    *Seu saldo bancário é seu poder de apoio -- quanto mais você tem, mais você ganha.*
+  waifu_bank_balance: 'Seu saldo bancário: {0}'
+  waifu_not_participating_title: 🎀 Sistema Waifu
+  waifu_not_participating: |-
+    Torne-se uma **Waifu** ou apoie uma como **Fã** para ganhar moedas!
+    
+    **Como funciona**
+    `{0}woptin` - registre-se como waifu
+    `{0}wback @user` - apoie uma waifu com seu saldo bancário
+    `{0}wbuy @user` - torne-se manager de uma waifu
+    
+    **Cargos**
+    🎀 **Waifu** - ganha uma taxa de cada ciclo de pagamento
+    🏢 **Manager** - compra a posição, ganha uma parte da taxa da waifu
+    👥 **Fã** - apoia uma waifu com saldo bancário, ganha do pool de fãs
+    
+    **Ciclo**
+    A cada 3,5 dias, retornos são gerados dos fundos apoiados e divididos entre a waifu, manager e fãs. Mantenha o humor 😊 e a comida 🍔 da sua waifu altos para melhores pagamentos!
+  waifu_fan_not_waifu: 'Você não é uma waifu -- você é fã de **{0}**.'
+  waifu_gifts_received: Presentes Recebidos
+  waifu_resigned_manager: 'Você renunciou como manager de {0}.'
+  waifu_not_managing: Você não está gerenciando esta waifu.
+  waifu_managing_title: 'Waifus gerenciadas por {0}'
+  waifu_managing_empty: Não está gerenciando nenhuma waifu.
+  waifu_earned: '**Ganho**: {0}'
+  waifu_cycle_title: '**Ciclo #{0}**'
+  waifu_payout_time: 'Pagamento {0}'
+  waifu_field_backed_by: 👥 Fãs
+  waifu_field_manager: 🏢 Manager
+  waifu_field_price: 💎 Preço
+  waifu_footer_fee: 'Taxa: {0}%'
+  waifu_footer_actions: 'Ações: {0}/{1}'
+  waifu_fan_count: '{0} fãs'
+  waifu_unknown: Desconhecido
+  waifu_optin_already: Você já é uma waifu!
+  waifu_optin_no_funds: Fundos insuficientes!
+  waifu_optin_success: 'Você agora é uma waifu! Use `{0}waifu` para ver seu cartão.'
+  waifu_btn_opt_in: Entrar
+  waifu_btn_collect: Coletar
+  waifu_btn_my_waifus: Minhas Waifus
+  waifu_help_footer: 'Use {0}cmds waifu para uma lista de comandos'
+  waifu_backed_label: apoiado
+  waifu_buy_confirm: 'Se tornar gerente de **{0}** por **{1}**?'
+  waifu_btn_confirm: Confirmar
+  waifu_no_effect: sem efeito!
+
+ru-RU:
+  waifu_not_opted_in: Этот человек ещё не вступил в мир вайфу.
+  waifu_already_opted_in: Вы уже вайфу!
+  waifu_opted_in: |-
+    Добро пожаловать в мир вайфу! Вы зарегистрированы.
+    *Найдите менеджера, чтобы начать зарабатывать {0}.*
+  waifu_opted_out: Вы покинули мир вайфу. До встречи!
+  waifu_insufficient_funds: У вас недостаточно средств.
+  waifu_has_fans: У вас всё ещё есть фанаты! Попросите их уйти, прежде чем выйти.
+  waifu_self_not_allowed: Вы не можете сделать это с собой!
+  waifu_not_found: Эта вайфу не существует.
+  waifu_hugged: 'Вы обняли {0}!'
+  waifu_kissed: 'Вы поцеловали {0}!'
+  waifu_patted: 'Вы погладили {0}.'
+  waifu_nommed: 'Вы накормили {0}!'
+  waifu_pending_payout: 'У вас {0} несобранных выплат.'
+  waifu_no_pending_payout: У вас нет ожидающих выплат.
+  waifu_payout_claimed: 'Вы собрали {0}!'
+  waifu_already_backing: Вы уже фанат этой вайфу.
+  waifu_not_backing: Вы сейчас никого не поддерживаете.
+  waifu_stopped_backing: Вы перестали быть фанатом.
+  waifu_invalid_fee: 'Комиссия должна быть от {0}% до {1}%.'
+  waifu_fee_set: 'Комиссия обновлена до {0}%.'
+  waifu_fans_title: 'Фанаты {0}'
+  waifu_lb_title: 🏆 Рейтинг Вайфу (по цене)
+  waifu_lb_title_backed: 🏆 Рейтинг Вайфу (по поддержке)
+  waifu_gift_shop_title: 🎁 Магазин Подарков Сегодня
+  waifu_shop_refreshes: 'Обновляется через {0}'
+  waifu_item_not_found: 'Этот предмет сегодня недоступен. Используйте `{0}wgiftshop`, чтобы увидеть ассортимент.'
+  waifu_gifted: 'Вы подарили {0}x {1} {2} для {3}! (+{4} {5})'
+  waifu_stat_food: еда
+  waifu_stat_mood: настроение
+  waifu_stop_backing_confirm: Вы уверены, что хотите перестать быть фанатом? Вы больше не будете получать от выплат.
+  waifu_switch_confirm: 'Вы сейчас фанат {0}. Перенести поддержку на {1}?'
+  waifu_manager_exit_title: Уход Менеджера
+  waifu_manager_exit_confirm: 'Вы уверены, что хотите уйти с поста менеджера {0}? Цена вайфу упадет до минимума.'
+  waifu_goes_to_waifu: Вайфу
+  waifu_burned: Сожжено
+  waifu_outside_buy_window: Покупки менеджера доступны только в первые 18 часов цикла.
+  waifu_price_too_low: Ваша ставка слишком низкая. Минимальная цена - 115% от текущей цены вайфу.
+  waifu_bought_manager_title: 🏢 Позиция Менеджера Получена!
+  waifu_bought_manager: 'Вы теперь менеджер {0} за {1:N0}!'
+  waifu_old_manager_refund: Бывший менеджер
+  waifu_over_cap: сверх лимита
+  waifu_no_manager_title: Нужен Менеджер!
+  waifu_no_manager_payout: 'Пока ничего не зарабатывает. Без менеджера цена падает на {0}% каждый цикл. Станьте первым менеджером!'
+  waifu_now_backing_hint: |-
+    Вы теперь фанат {0}!
+    *Ваш банковский баланс - это ваша сила поддержки - чем больше вы храните, тем больше зарабатываете.*
+  waifu_bank_balance: 'Ваш банковский баланс: {0}'
+  waifu_not_participating_title: 🎀 Система Вайфу
+  waifu_not_participating: |-
+    Станьте **Вайфу** или поддержите одну как **Фанат**, чтобы зарабатывать валюту!
+    
+    **Как это работает**
+    `{0}woptin` - зарегистрируйтесь как вайфу
+    `{0}wback @user` - поддержите вайфу банковским балансом
+    `{0}wbuy @user` - станьте менеджером вайфу
+    
+    **Роли**
+    🎀 **Вайфу** - получает комиссию от каждого цикла выплат
+    🏢 **Менеджер** - покупает позицию, получает долю от комиссии вайфу
+    👥 **Фанат** - поддерживает вайфу балансом, получает из пула фанатов
+    
+    **Цикл**
+    Каждые 3,5 дня генерируются доходы из поддерживаемых фондов и распределяются между вайфу, менеджером и фанатами. Поддерживайте настроение 😊 и еду 🍔 вашей вайфу для лучших выплат!
+  waifu_fan_not_waifu: 'Вы не вайфу - вы фанат **{0}**.'
+  waifu_gifts_received: Полученные Подарки
+  waifu_resigned_manager: 'Вы ушли с поста менеджера {0}.'
+  waifu_not_managing: Вы не управляете этой вайфу.
+  waifu_managing_title: 'Вайфу под управлением {0}'
+  waifu_managing_empty: Не управляет ни одной вайфу.
+  waifu_earned: '**Заработано**: {0}'
+  waifu_cycle_title: '**Цикл #{0}**'
+  waifu_payout_time: 'Выплата {0}'
+  waifu_field_backed_by: 👥 Фанаты
+  waifu_field_manager: 🏢 Менеджер
+  waifu_field_price: 💎 Цена
+  waifu_footer_fee: 'Комиссия: {0}%'
+  waifu_footer_actions: 'Действия: {0}/{1}'
+  waifu_fan_count: '{0} фанатов'
+  waifu_unknown: Неизвестно
+  waifu_optin_already: Вы уже вайфу!
+  waifu_optin_no_funds: Недостаточно средств!
+  waifu_optin_success: 'Вы теперь вайфу! Используйте `{0}waifu`, чтобы увидеть свою карточку.'
+  waifu_btn_opt_in: Вступить
+  waifu_btn_collect: Собрать
+  waifu_btn_my_waifus: Мои вайфу
+  waifu_help_footer: 'Используйте {0}cmds waifu для списка команд'
+  waifu_backed_label: поддержано
+  waifu_buy_confirm: 'Стать менеджером **{0}** за **{1}**?'
+  waifu_btn_confirm: Подтвердить
+  waifu_no_effect: без эффекта!
+
+sr-Cyrl-RS:
+  waifu_not_opted_in: Та особа још није ушла у ваифу свет.
+  waifu_already_opted_in: Већ сте ваифу!
+  waifu_opted_in: |-
+    Добродошли у ваифу свет! Сада сте регистровани.
+    *Пронађите менаџера да почнете да зарађујете {0}.*
+  waifu_opted_out: Напустили сте ваифу свет. До следећег пута!
+  waifu_insufficient_funds: Немате довољно средстава за то.
+  waifu_has_fans: Још увек имате фанове који вас подржавају! Замолите их да оду пре него што можете да се одјавите.
+  waifu_self_not_allowed: Не можете то радити себи!
+  waifu_not_found: Тај ваифу не постоји.
+  waifu_hugged: 'Загрлили сте {0}!'
+  waifu_kissed: 'Пољубили сте {0}!'
+  waifu_patted: 'Нежно сте потапшали {0}.'
+  waifu_nommed: 'Нахранили сте {0}!'
+  waifu_pending_payout: 'Имате {0} у неприкупљеним исплатама.'
+  waifu_no_pending_payout: Немате исплате на чекању.
+  waifu_payout_claimed: 'Прикупили сте {0}!'
+  waifu_already_backing: Већ сте фан овог ваифуа.
+  waifu_not_backing: Тренутно не подржавате никога.
+  waifu_stopped_backing: Престали сте да будете фан.
+  waifu_invalid_fee: 'Провизија мора бити између {0}% и {1}%.'
+  waifu_fee_set: 'Провизија ажурирана на {0}%.'
+  waifu_fans_title: 'Фанови корисника {0}'
+  waifu_lb_title: 🏆 Ваифу ранг листа (по цени)
+  waifu_lb_title_backed: 🏆 Ранг-листа вајфу (по подршци)
+  waifu_gift_shop_title: 🎁 Данашња продавница поклона
+  waifu_shop_refreshes: 'Освежава се за {0}'
+  waifu_item_not_found: 'Тај предмет није доступан данас. Користи `{0}wgiftshop` да видиш шта има на стању.'
+  waifu_gifted: 'Поклонио/ла си {0}x {1} {2} кориснику {3}! (+{4} {5})'
+  waifu_stat_food: храна
+  waifu_stat_mood: расположење
+  waifu_stop_backing_confirm: Да ли си сигуран/на да желиш да престанеш да будеш фан? Више нећеш зарађивати од исплата.
+  waifu_switch_confirm: 'Тренутно си фан корисника {0}. Желиш да пребациш подршку на {1}?'
+  waifu_manager_exit_title: Оставка менаџера
+  waifu_manager_exit_confirm: 'Да ли си сигуран да желиш да се повучеш са позиције менаџера корисника {0}? Цена ће пасти на минимум.'
+  waifu_goes_to_waifu: За Вајфу
+  waifu_burned: Спаљено
+  waifu_outside_buy_window: Куповина менаџерске позиције је доступна само током првих 18 сати циклуса.
+  waifu_price_too_low: Твоја понуда је прениска. Минимална цена је 115% тренутне цене вајфу.
+  waifu_bought_manager_title: 🏢 Менаџерска позиција освојена!
+  waifu_bought_manager: 'Сада си менаџер корисника {0} за {1:N0}!'
+  waifu_old_manager_refund: Претходни менаџер
+  waifu_over_cap: преко лимита
+  waifu_no_manager_title: Потребан менаџер!
+  waifu_no_manager_payout: 'Још не зарађује ништа. Без менаџера, цена пада {0}% сваког циклуса. Буди први менаџер!'
+  waifu_now_backing_hint: |-
+    Сада си фан корисника {0}!
+    *Стање на банковном рачуну је твоја снага подршке - што више имаш, више зарађујеш.*
+  waifu_bank_balance: 'Стање на рачуну: {0}'
+  waifu_not_participating_title: 🎀 Вајфу систем
+  waifu_not_participating: |-
+    Постани **вајфу** или подржи некога као **фан** да зарадиш валуту!
+    
+    **Како функционише**
+    `{0}woptin` - региструј се као вајфу
+    `{0}wback @user` - подржи вајфу стањем на банковном рачуну
+    `{0}wbuy @user` - постани менаџер вајфу
+    
+    **Улоге**
+    🎀 **Вајфу** - зарађује провизију од сваког циклуса исплате
+    🏢 **Менаџер** - купује позицију, зарађује део провизије
+    👥 **Фан** - подржава вајфу стањем на рачуну, зарађује из фан фонда
+    
+    **Циклус**
+    Сваких 3.5 дана, приноси се генеришу из подржаних средстава и деле између вајфу, менаџера и фанова. Одржавај расположење 😊 и храну 🍔 свог вајфу на високом нивоу за боље исплате!
+  waifu_fan_not_waifu: 'Ниси вајфу - ти си фан корисника **{0}**.'
+  waifu_gifts_received: Примљени поклони
+  waifu_resigned_manager: 'Дао/ла си оставку као менаџер корисника {0}.'
+  waifu_not_managing: Не управљаш овим вајфу.
+  waifu_managing_title: 'Вајфу којима управља {0}'
+  waifu_managing_empty: Не управља ниједним вајфу.
+  waifu_earned: '**Зарађено**: {0}'
+  waifu_cycle_title: '**Циклус #{0}**'
+  waifu_payout_time: 'Исплата {0}'
+  waifu_field_backed_by: 👥 Фанови
+  waifu_field_manager: 🏢 Менаџер
+  waifu_field_price: 💎 Цена
+  waifu_footer_fee: 'Провизија: {0}%'
+  waifu_footer_actions: 'Акције: {0}/{1}'
+  waifu_fan_count: '{0} фанова'
+  waifu_unknown: Непознато
+  waifu_optin_already: Већ си вајфу!
+  waifu_optin_no_funds: Недовољно средстава!
+  waifu_optin_success: 'Сада си вајфу! Користи `{0}waifu` да видиш свој профил.'
+  waifu_btn_opt_in: Пријави се
+  waifu_btn_collect: Покупи
+  waifu_btn_my_waifus: Моје Waifus
+  waifu_help_footer: 'Користи {0}cmds waifu за листу команди'
+  waifu_backed_label: подржано
+  waifu_buy_confirm: 'Постати менаџер **{0}** за **{1}**?'
+  waifu_btn_confirm: Потврди
+  waifu_no_effect: без ефекта!
+
+tr-TR:
+  waifu_not_opted_in: Bu kişi henüz waifu dünyasına katılmamış.
+  waifu_already_opted_in: Zaten bir waifusun!
+  waifu_opted_in: |-
+    Waifu dünyasına hoş geldin! Artık kayıtlısın.
+    *{0} kazanmaya başlamak için bir menajer bul.*
+  waifu_opted_out: Waifu dünyasından ayrıldın. Bir dahaki sefere görüşürüz!
+  waifu_insufficient_funds: Bunun için yeterli paran yok.
+  waifu_has_fans: Hâlâ seni destekleyen fanların var! Çıkış yapmadan önce onlardan ayrılmalarını iste.
+  waifu_self_not_allowed: Bunu kendine yapamazsın!
+  waifu_not_found: Bu waifu mevcut değil.
+  waifu_hugged: '{0} kullanıcısına sıcak bir sarılma verdin!'
+  waifu_kissed: '{0} kullanıcısını öptün!'
+  waifu_patted: '{0} kullanıcısını nazikçe okşadın.'
+  waifu_nommed: '{0} kullanicisini besledin!'
+  waifu_pending_payout: 'Toplanmamış {0} ödemen var.'
+  waifu_no_pending_payout: Bekleyen ödemen yok.
+  waifu_payout_claimed: '{0} toplandı!'
+  waifu_already_backing: Zaten bu waifunun fanısın.
+  waifu_not_backing: Şu anda kimseyi desteklemiyorsun.
+  waifu_stopped_backing: Fan olmayı bıraktın.
+  waifu_invalid_fee: 'Ücret %{0} ile %{1} arasında olmalıdır.'
+  waifu_fee_set: 'Ücret %{0} olarak güncellendi.'
+  waifu_fans_title: '{0} Fanları'
+  waifu_lb_title: 🏆 Waifu Sıralaması (fiyata göre)
+  waifu_lb_title_backed: 🏆 Waifu Sıralaması (desteklemeye göre)
+  waifu_gift_shop_title: 🎁 Bugünün Hediye Dükkanı
+  waifu_shop_refreshes: '{0} sonra yenilenir'
+  waifu_item_not_found: 'Bu ürün bugün mevcut değil. Stokta ne olduğunu görmek için `{0}wgiftshop` kullan.'
+  waifu_gifted: '{3} kişisine {0}x {1} {2} hediye ettin! (+{4} {5})'
+  waifu_stat_food: yemek
+  waifu_stat_mood: ruh hali
+  waifu_stop_backing_confirm: Fan olmayı bırakmak istediğinden emin misin? Artık ödemelerden kazanç elde edemezsin.
+  waifu_switch_confirm: 'Şu anda {0} kişisinin fanısın. Desteğini {1} kişisine mi geçirmek istiyorsun?'
+  waifu_manager_exit_title: Yönetici İstifası
+  waifu_manager_exit_confirm: '{0} kisisinin yöneticiliğinden istifa etmek istediğinden emin misin? Waifu fiyatı minimuma düşecek.'
+  waifu_goes_to_waifu: Waifu'ya
+  waifu_burned: Yakıldı
+  waifu_outside_buy_window: Yönetici satın alımları yalnızca döngünün ilk 18 saatinde yapılabilir.
+  waifu_price_too_low: Teklifin çok düşük. Minimum fiyat, mevcut waifu fiyatının %115'idir.
+  waifu_bought_manager_title: 🏢 Yönetici Pozisyonu Alındı!
+  waifu_bought_manager: 'Artık {1:N0} karşılığında {0} kişisinin yöneticisisin!'
+  waifu_old_manager_refund: Eski Yönetici
+  waifu_over_cap: sınır aşıldı
+  waifu_no_manager_title: Yöneticiye İhtiyacı Var!
+  waifu_no_manager_payout: 'Henüz hiçbir kazanç yok. Yönetici olmadan fiyat her döngüde %{0} düşer. İlk yönetici sen ol!'
+  waifu_now_backing_hint: |-
+    Artık {0} kişisinin fanısın!
+    *Banka bakiyen destek gücündür -- ne kadar çok tutarsan, o kadar çok kazanırsın.*
+  waifu_bank_balance: 'Banka bakiyen: {0}'
+  waifu_not_participating_title: 🎀 Waifu Sistemi
+  waifu_not_participating: |-
+    **Waifu** ol veya bir tanesini **Fan** olarak destekle ve para kazan!
+    
+    **Nasıl çalışır**
+    `{0}woptin` - waifu olarak kayıt ol
+    `{0}wback @kullanıcı` - banka bakiyenle bir waifu'yu destekle
+    `{0}wbuy @kullanıcı` - bir waifu'nun yöneticisi ol
+    
+    **Roller**
+    🎀 **Waifu** - her ödeme döngüsünden ücret kazanır
+    🏢 **Yönetici** - pozisyonu satın alır, waifu ücretinden pay alır
+    👥 **Fan** - banka bakiyesiyle waifu'yu destekler, fan havuzundan kazanır
+    
+    **Döngü**
+    Her 3.5 günde bir, desteklenen fonlardan getiri oluşturulur ve waifu, yönetici ile fanlar arasında paylaştırılır. Daha iyi ödemeler için waifu'nun ruh halini 😊 ve yemeğini 🍔 yüksek tut!
+  waifu_fan_not_waifu: 'Sen bir waifu değilsin -- **{0}** kişisinin fanısın.'
+  waifu_gifts_received: Alınan Hediyeler
+  waifu_resigned_manager: '{0} kişisinin yöneticiliğinden istifa ettin.'
+  waifu_not_managing: Bu waifu'yu yönetmiyorsun.
+  waifu_managing_title: '{0} tarafından yönetilen waifular'
+  waifu_managing_empty: Hiçbir waifu yönetilmiyor.
+  waifu_earned: '**Kazanılan**: {0}'
+  waifu_cycle_title: '**Döngü #{0}**'
+  waifu_payout_time: 'Ödeme {0}'
+  waifu_field_backed_by: 👥 Hayranlar
+  waifu_field_manager: 🏢 Yönetici
+  waifu_field_price: 💎 Fiyat
+  waifu_footer_fee: 'Ücret: %{0}'
+  waifu_footer_actions: 'Aksiyonlar: {0}/{1}'
+  waifu_fan_count: '{0} fan'
+  waifu_unknown: Bilinmeyen
+  waifu_optin_already: Zaten bir waifu'sun!
+  waifu_optin_no_funds: Yeterli bakiye yok!
+  waifu_optin_success: 'Artık bir waifu''sun! Kartını görmek için `{0}waifu` kullan.'
+  waifu_btn_opt_in: Katıl
+  waifu_btn_collect: Topla
+  waifu_btn_my_waifus: Waifularım
+  waifu_help_footer: 'Komut listesi için {0}cmds waifu yaz'
+  waifu_backed_label: desteklenen
+  waifu_buy_confirm: '**{1}** karsiligi **{0}** adli waifunun yoneticisi olmak ister misin?'
+  waifu_btn_confirm: Onayla
+  waifu_no_effect: etkisi yok!
+
+ts-TS:
+  waifu_not_opted_in: That person hasn't joined the waifu world yet.
+  waifu_already_opted_in: You're already a waifu! D-did you forget?
+  waifu_opted_in: |-
+    Welcome to the waifu world! You're registered now.
+    *Find a manager to start earning {0}.*
+  waifu_opted_out: You've left the waifu world. W-well, see you around.
+  waifu_insufficient_funds: You don't have enough funds for that. Hmph.
+  waifu_has_fans: You still have fans backing you! Tell them to leave first.
+  waifu_self_not_allowed: You can't do that to yourself, b-baka!
+  waifu_not_found: That waifu doesn't exist.
+  waifu_hugged: 'You gave {0} a warm hug!'
+  waifu_kissed: 'You kissed {0}! W-whatever!'
+  waifu_patted: 'You gently patted {0}. H-how sweet... I mean, whatever.'
+  waifu_nommed: 'You fed {0}! I-it''s not like I''m jealous or anything!'
+  waifu_pending_payout: 'You have {0} in uncollected payouts.'
+  waifu_no_pending_payout: You have no pending payouts.
+  waifu_payout_claimed: 'You''ve collected {0}!'
+  waifu_already_backing: You're already a fan of this waifu. D-don't be so clingy!
+  waifu_not_backing: You're not backing anyone right now.
+  waifu_stopped_backing: You've stopped being a fan. Hmph.
+  waifu_invalid_fee: 'Fee must be between {0}% and {1}%.'
+  waifu_fee_set: 'Fee updated to {0}%.'
+  waifu_fans_title: 'Fans of {0}'
+  waifu_lb_title: 🏆 Waifu Leaderboard (by price)
+  waifu_lb_title_backed: 🏆 Waifu Leaderboard (by backing)
+  waifu_gift_shop_title: 🎁 Today's Gift Shop
+  waifu_shop_refreshes: 'Refreshes in {0}'
+  waifu_item_not_found: 'That item isn''t available today. Use `{0}wgiftshop` to see what''s in stock.'
+  waifu_gifted: 'You gave {0}x {1} {2} to {3}! (+{4} {5})'
+  waifu_stat_food: food
+  waifu_stat_mood: mood
+  waifu_stop_backing_confirm: Are you sure you want to stop being a fan? You won't earn from payouts anymore.
+  waifu_switch_confirm: 'You''re currently a fan of {0}. Switch your support to {1} instead? Make up your mind already.'
+  waifu_manager_exit_title: Manager Resignation
+  waifu_manager_exit_confirm: 'Are you sure you want to resign as manager of {0}? The waifu''s price will drop to the minimum.'
+  waifu_goes_to_waifu: Goes to Waifu
+  waifu_burned: Burned
+  waifu_outside_buy_window: Manager purchases are only available during the first 18 hours of a cycle. Read the rules next time.
+  waifu_price_too_low: Your bid is too low. The minimum price is 115% of the current waifu price. Do the math, b-baka!
+  waifu_bought_manager_title: 🏢 Manager Position Acquired!
+  waifu_bought_manager: 'You''re now the manager of {0} for {1:N0}!'
+  waifu_old_manager_refund: Old Manager
+  waifu_over_cap: over cap
+  waifu_no_manager_title: Needs a Manager!
+  waifu_no_manager_payout: Not earning anything yet. A manager is needed to start generating returns. Be the first to manage!
+  waifu_now_backing_hint: |-
+    You're now a fan of {0}!
+    *Your bank balance is your backing power - the more you hold, the more you earn.*
+  waifu_bank_balance: 'Your bank balance: {0}'
+  waifu_not_participating_title: 🎀 Waifu System
+  waifu_not_participating: |-
+    Become a **Waifu** or support one as a **Fan** to earn currency!
+    
+    **How it works**
+    `{0}woptin` - register as a waifu
+    `{0}wback @user` - back a waifu with your bank balance
+    `{0}wbuy @user` - become a waifu's manager
+    
+    **Roles**
+    🎀 **Waifu** - earns a fee from every payout cycle
+    🏢 **Manager** - buys the position, earns a cut of the waifu fee
+    👥 **Fan** - backs a waifu with bank balance, earns from the fan pool
+    
+    **Cycle**
+    Every 3.5 days, returns are generated from backed funds and split between the waifu, manager, and fans. Keep your waifu's mood 😊 and food 🍔 high for better payouts!
+  waifu_fan_not_waifu: 'You''re not a waifu - you''re a fan of **{0}**. Get it right.'
+  waifu_gifts_received: Gifts Received
+  waifu_resigned_manager: 'You''ve resigned as manager of {0}. Hmph, fine.'
+  waifu_not_managing: You're not managing this waifu.
+  waifu_managing_title: 'Waifus managed by {0}'
+  waifu_managing_empty: Not managing any waifus. How lazy.
+  waifu_earned: '**Earned**: {0}'
+  waifu_cycle_title: '**Cycle #{0}**'
+  waifu_payout_time: 'Payout {0}'
+  waifu_field_backed_by: 👥 Fans
+  waifu_field_manager: 🏢 Manager
+  waifu_field_price: 💎 Price
+  waifu_footer_fee: 'Fee: {0}%'
+  waifu_footer_actions: 'Actions: {0}/{1}'
+  waifu_fan_count: '{0} fans'
+  waifu_unknown: Unknown
+  waifu_optin_already: You're already a waifu!
+  waifu_optin_no_funds: Not enough funds! Hmph.
+  waifu_optin_success: 'You''re a waifu now! Use `{0}waifu` to see your card.'
+  waifu_btn_opt_in: Opt In
+  waifu_btn_collect: Collect
+  waifu_btn_my_waifus: My Waifus
+  waifu_help_footer: 'Use {0}cmds waifu for a list of commands.'
+  waifu_backed_label: backed
+  waifu_buy_confirm: 'B-become the manager of **{0}** for **{1}**?!'
+  waifu_btn_confirm: Confirm
+  waifu_no_effect: no effect!
+
+uk-UA:
+  waifu_not_opted_in: Ця людина ще не приєдналась до світу вайфу.
+  waifu_already_opted_in: Ти вже вайфу!
+  waifu_opted_in: |-
+    Ласкаво просимо до світу вайфу! Тебе зареєстровано.
+    *Знайди менеджера, щоб почати заробляти {0}.*
+  waifu_opted_out: Ти покинув(-ла) світ вайфу. До наступного разу!
+  waifu_insufficient_funds: У тебе недостатньо коштів для цього.
+  waifu_has_fans: У тебе ще є фанати! Попроси їх піти, перш ніж зможеш вийти.
+  waifu_self_not_allowed: Ти не можеш зробити це собі!
+  waifu_not_found: Ця вайфу не існує.
+  waifu_hugged: 'Ти тепло обійняв(-ла) {0}!'
+  waifu_kissed: 'Ти поцілував(-ла) {0}!'
+  waifu_patted: 'Ти ніжно погладив(-ла) {0}.'
+  waifu_nommed: 'Ти нагодував(-ла) {0}!'
+  waifu_pending_payout: 'У тебе {0} незібраних виплат.'
+  waifu_no_pending_payout: У тебе немає незібраних виплат.
+  waifu_payout_claimed: 'Ти зібрав(-ла) {0}!'
+  waifu_already_backing: Ти вже фанат цієї вайфу.
+  waifu_not_backing: Ти зараз нікого не підтримуєш.
+  waifu_stopped_backing: Ти перестав(-ла) бути фанатом.
+  waifu_invalid_fee: 'Комісія має бути від {0}% до {1}%.'
+  waifu_fee_set: 'Комісію оновлено до {0}%.'
+  waifu_fans_title: 'Фанати {0}'
+  waifu_lb_title: 🏆 Рейтинг вайфу (за ціною)
+  waifu_lb_title_backed: 🏆 Рейтинг вайфу (за підтримкою)
+  waifu_gift_shop_title: 🎁 Сьогоднішній магазин подарунків
+  waifu_shop_refreshes: 'Оновиться через {0}'
+  waifu_item_not_found: 'Цей предмет сьогодні недоступний. Використай `{0}wgiftshop`, щоб подивитися, що є в наявності.'
+  waifu_gifted: 'Ти подарував(-ла) {0}x {1} {2} для {3}! (+{4} {5})'
+  waifu_stat_food: їжа
+  waifu_stat_mood: настрій
+  waifu_stop_backing_confirm: Ти впевнений(-а), що хочеш перестати бути фанатом? Ти більше не будеш отримувати виплати.
+  waifu_switch_confirm: 'Ти зараз фанат {0}. Переключити підтримку на {1}?'
+  waifu_manager_exit_title: Відставка менеджера
+  waifu_manager_exit_confirm: 'Ти впевнений, що хочеш піти з посади менеджера {0}? Ціна вайфу впаде до мінімуму.'
+  waifu_goes_to_waifu: Для Вайфу
+  waifu_burned: Спалено
+  waifu_outside_buy_window: Купівля менеджера доступна лише протягом перших 18 годин циклу.
+  waifu_price_too_low: Твоя ставка занадто низька. Мінімальна ціна - 115% від поточної ціни вайфу.
+  waifu_bought_manager_title: 🏢 Посада менеджера отримана!
+  waifu_bought_manager: 'Тепер ти менеджер {0} за {1:N0}!'
+  waifu_old_manager_refund: Попередній менеджер
+  waifu_over_cap: понад ліміт
+  waifu_no_manager_title: Потрібен менеджер!
+  waifu_no_manager_payout: 'Поки що нічого не заробляє. Без менеджера ціна падає на {0}% кожен цикл. Стань першим менеджером!'
+  waifu_now_backing_hint: |-
+    Тепер ти фанат {0}!
+    *Баланс твого банку - це твоя сила підтримки. Чим більше маєш, тим більше заробляєш.*
+  waifu_bank_balance: 'Баланс твого банку: {0}'
+  waifu_not_participating_title: 🎀 Система вайфу
+  waifu_not_participating: |-
+    Стань **вайфу** або підтримай когось як **фанат**, щоб заробляти валюту!
+    
+    **Як це працює**
+    `{0}woptin` - зареєструватися як вайфу
+    `{0}wback @user` - підтримати вайфу своїм банківським балансом
+    `{0}wbuy @user` - стати менеджером вайфу
+    
+    **Ролі**
+    🎀 **Вайфу** - отримує комісію з кожного циклу виплат
+    🏢 **Менеджер** - купує позицію, отримує частку від комісії вайфу
+    👥 **Фанат** - підтримує вайфу банківським балансом, заробляє з фан-пулу
+    
+    **Цикл**
+    Кожні 3.5 дні генеруються прибутки з підтриманих коштів і розподіляються між вайфу, менеджером і фанатами. Тримай настрій 😊 та їжу 🍔 вайфу на високому рівні для кращих виплат!
+  waifu_fan_not_waifu: 'Ти не вайфу - ти фанат **{0}**.'
+  waifu_gifts_received: Отримані подарунки
+  waifu_resigned_manager: 'Ти пішов(-ла) з посади менеджера {0}.'
+  waifu_not_managing: Ти не керуєш цією вайфу.
+  waifu_managing_title: 'Вайфу під керівництвом {0}'
+  waifu_managing_empty: Не керує жодною вайфу.
+  waifu_earned: '**Зароблено**: {0}'
+  waifu_cycle_title: '**Цикл #{0}**'
+  waifu_payout_time: 'Виплата {0}'
+  waifu_field_backed_by: 👥 Фанати
+  waifu_field_manager: 🏢 Менеджер
+  waifu_field_price: 💎 Ціна
+  waifu_footer_fee: 'Комісія: {0}%'
+  waifu_footer_actions: 'Дії: {0}/{1}'
+  waifu_fan_count: '{0} фанатів'
+  waifu_unknown: Невідомо
+  waifu_optin_already: Ти вже вайфу!
+  waifu_optin_no_funds: Недостатньо коштів!
+  waifu_optin_success: 'Тепер ти вайфу! Використай `{0}waifu`, щоб переглянути свою картку.'
+  waifu_btn_opt_in: Приєднатися
+  waifu_btn_collect: Зібрати
+  waifu_btn_my_waifus: Мої Вайфу
+  waifu_help_footer: 'Використай {0}cmds waifu для списку команд'
+  waifu_backed_label: підтримано
+  waifu_buy_confirm: 'Стати менеджером **{0}** за **{1}**?'
+  waifu_btn_confirm: Підтвердити
+  waifu_no_effect: без ефекту!
+
+vi-VN:
+  waifu_not_opted_in: Người đó chưa tham gia thế giới waifu.
+  waifu_already_opted_in: Bạn đã là một waifu rồi!
+  waifu_opted_in: |-
+    Chào mừng đến thế giới waifu! Bạn đã đăng ký thành công.
+    *Tìm một quản lý để bắt đầu kiếm {0}.*
+  waifu_opted_out: Bạn đã rời khỏi thế giới waifu. Hẹn gặp lại!
+  waifu_insufficient_funds: Bạn không đủ tiền để làm điều đó.
+  waifu_has_fans: Bạn vẫn còn fan đang ủng hộ! Hãy nhờ họ rời đi trước khi bạn có thể rút lui.
+  waifu_self_not_allowed: Bạn không thể làm điều đó với chính mình!
+  waifu_not_found: Waifu đó không tồn tại.
+  waifu_hugged: 'Bạn đã ôm {0} thật ấm áp!'
+  waifu_kissed: 'Bạn đã hôn {0}!'
+  waifu_patted: 'Bạn đã nhẹ nhàng vỗ về {0}.'
+  waifu_nommed: 'Ban da cho {0} an!'
+  waifu_pending_payout: 'Bạn có {0} chưa nhận.'
+  waifu_no_pending_payout: Bạn không có khoản thanh toán nào đang chờ.
+  waifu_payout_claimed: 'Bạn đã nhận {0}!'
+  waifu_already_backing: Bạn đã là fan của waifu này rồi.
+  waifu_not_backing: Bạn hiện không ủng hộ ai.
+  waifu_stopped_backing: Bạn đã ngừng làm fan.
+  waifu_invalid_fee: 'Phí phải từ {0}% đến {1}%.'
+  waifu_fee_set: 'Phí đã cập nhật thành {0}%.'
+  waifu_fans_title: 'Fan của {0}'
+  waifu_lb_title: 🏆 Bảng xếp hạng Waifu (theo giá)
+  waifu_lb_title_backed: 🏆 Bảng xếp hạng Waifu (theo ủng hộ)
+  waifu_gift_shop_title: 🎁 Cửa hàng quà tặng hôm nay
+  waifu_shop_refreshes: 'Làm mới sau {0}'
+  waifu_item_not_found: 'Món đồ đó hôm nay không có. Dùng `{0}wgiftshop` để xem có gì trong cửa hàng.'
+  waifu_gifted: 'Bạn đã tặng {0}x {1} {2} cho {3}! (+{4} {5})'
+  waifu_stat_food: đồ ăn
+  waifu_stat_mood: tâm trạng
+  waifu_stop_backing_confirm: Bạn có chắc muốn ngừng làm fan không? Bạn sẽ không nhận được tiền từ các đợt trả thưởng nữa.
+  waifu_switch_confirm: 'Bạn đang là fan của {0}. Chuyển sang ủng hộ {1} thay thế?'
+  waifu_manager_exit_title: Từ chức quản lý
+  waifu_manager_exit_confirm: 'Ban có chắc muốn từ chức quản lý của {0}? Giá waifu sẽ giảm xuống mức tối thiểu.'
+  waifu_goes_to_waifu: Cho Waifu
+  waifu_burned: Đã đốt
+  waifu_outside_buy_window: Chỉ có thể mua vị trí quản lý trong 18 giờ đầu của chu kỳ.
+  waifu_price_too_low: Giá đặt của bạn quá thấp. Giá tối thiểu là 115% giá waifu hiện tại.
+  waifu_bought_manager_title: 🏢 Đã nhận vị trí quản lý!
+  waifu_bought_manager: 'Bạn giờ là quản lý của {0} với giá {1:N0}!'
+  waifu_old_manager_refund: Quản lý cũ
+  waifu_over_cap: vượt giới hạn
+  waifu_no_manager_title: Cần một quản lý!
+  waifu_no_manager_payout: 'Chưa kiếm được gì. Nếu không có quản lý, giá sẽ giảm {0}% mỗi chu kỳ. Hãy là người đầu tiên quản lý!'
+  waifu_now_backing_hint: |-
+    Bạn giờ là fan của {0}!
+    *Số dư ngân hàng của bạn chính là sức mạnh ủng hộ -- bạn giữ càng nhiều, bạn kiếm càng nhiều.*
+  waifu_bank_balance: 'Số dư ngân hàng của bạn: {0}'
+  waifu_not_participating_title: 🎀 Hệ thống Waifu
+  waifu_not_participating: |-
+    Trở thành **Waifu** hoặc ủng hộ một waifu với tư cách **Fan** để kiếm tiền!
+    
+    **Cách hoạt động**
+    `{0}woptin` - đăng ký làm waifu
+    `{0}wback @user` - ủng hộ waifu bằng số dư ngân hàng
+    `{0}wbuy @user` - trở thành quản lý của waifu
+    
+    **Vai trò**
+    🎀 **Waifu** - nhận phí từ mỗi đợt trả thưởng
+    🏢 **Quản lý** - mua vị trí, nhận một phần phí waifu
+    👥 **Fan** - ủng hộ waifu bằng số dư ngân hàng, kiếm từ quỹ fan
+    
+    **Chu kỳ**
+    Mỗi 3.5 ngày, lợi nhuận được tạo từ quỹ ủng hộ và chia cho waifu, quản lý và fan. Giữ tâm trạng 😊 và đồ ăn 🍔 của waifu cao để nhận thưởng tốt hơn!
+  waifu_fan_not_waifu: 'Bạn không phải waifu -- bạn là fan của **{0}**.'
+  waifu_gifts_received: Quà đã nhận
+  waifu_resigned_manager: 'Bạn đã từ chức quản lý của {0}.'
+  waifu_not_managing: Bạn không quản lý waifu này.
+  waifu_managing_title: 'Waifu được quản lý bởi {0}'
+  waifu_managing_empty: Chưa quản lý waifu nào.
+  waifu_earned: '**Đã kiếm**: {0}'
+  waifu_cycle_title: '**Chu kỳ #{0}**'
+  waifu_payout_time: 'Trả thưởng {0}'
+  waifu_field_backed_by: 👥 Người hâm mộ
+  waifu_field_manager: 🏢 Quản lý
+  waifu_field_price: 💎 Giá
+  waifu_footer_fee: 'Phí: {0}%'
+  waifu_footer_actions: 'Hành động: {0}/{1}'
+  waifu_fan_count: '{0} fan'
+  waifu_unknown: Không rõ
+  waifu_optin_already: Bạn đã là waifu rồi!
+  waifu_optin_no_funds: Không đủ tiền!
+  waifu_optin_success: 'Bạn giờ là waifu! Dùng `{0}waifu` để xem thẻ của bạn.'
+  waifu_btn_opt_in: Tham gia
+  waifu_btn_collect: Thu thập
+  waifu_btn_my_waifus: Waifu của tôi
+  waifu_help_footer: 'Dùng {0}cmds waifu để xem danh sách lệnh'
+  waifu_backed_label: ủng hộ
+  waifu_buy_confirm: 'Trở thành quản lý của **{0}** với giá **{1}**?'
+  waifu_btn_confirm: Xác nhận
+  waifu_no_effect: không hiệu lực!
+
+zh-CN:
+  waifu_not_opted_in: 該使用者尚未加入老婆世界。
+  waifu_already_opted_in: 你已經是老婆了！
+  waifu_opted_in: |-
+    歡迎來到老婆世界！你已註冊成功。
+    *找一位經理開始賺取 {0}。*
+  waifu_opted_out: 你已離開老婆世界。下次見！
+  waifu_insufficient_funds: 你的資金不足。
+  waifu_has_fans: 你還有粉絲在支持你！請他們先離開你才能退出。
+  waifu_self_not_allowed: 你不能對自己這麼做！
+  waifu_not_found: 該老婆不存在。
+  waifu_hugged: '你給了 {0} 一個溫暖的擁抱！'
+  waifu_kissed: '你親了 {0}！'
+  waifu_patted: '你輕輕摸了摸 {0}。'
+  waifu_nommed: '你喂了 {0}!'
+  waifu_pending_payout: '你有 {0} 未領取的收益。'
+  waifu_no_pending_payout: 你沒有待領取的收益。
+  waifu_payout_claimed: '你已領取 {0}！'
+  waifu_already_backing: 你已經是這位老婆的粉絲了。
+  waifu_not_backing: 你目前沒有支持任何人。
+  waifu_stopped_backing: 你已停止成為粉絲。
+  waifu_invalid_fee: '費率必須在 {0}% 到 {1}% 之間。'
+  waifu_fee_set: '費率已更新為 {0}%。'
+  waifu_fans_title: '{0} 的粉絲'
+  waifu_lb_title: 🏆 老婆排行榜（依價格）
+  waifu_lb_title_backed: 🏆 老婆排行榜（依支持）
+  waifu_gift_shop_title: 🎁 今日禮物商店
+  waifu_shop_refreshes: '{0} 後刷新'
+  waifu_item_not_found: '該物品今天不可用。使用 `{0}wgiftshop` 查看庫存。'
+  waifu_gifted: '你送了 {0}x {1} {2} 給 {3}！（+{4} {5}）'
+  waifu_stat_food: 食物
+  waifu_stat_mood: 心情
+  waifu_stop_backing_confirm: 你確定要停止成為粉絲嗎？你將不再從收益中獲利。
+  waifu_switch_confirm: '你目前是 {0} 的粉絲。要將支持轉移給 {1} 嗎？'
+  waifu_manager_exit_title: 經理辭職
+  waifu_manager_exit_confirm: '你确定要辞去 {0} 的经理吗？该 waifu 的价格会降到最低。'
+  waifu_goes_to_waifu: 给 Waifu
+  waifu_burned: 销毁
+  waifu_outside_buy_window: 經理購買僅在週期的前 18 小時內可用。
+  waifu_price_too_low: 你的出价太低了。最低价格是当前 waifu 价格的 115%。
+  waifu_bought_manager_title: 🏢 經理職位已取得！
+  waifu_bought_manager: '你現在是 {0} 的經理，花費 {1:N0}！'
+  waifu_old_manager_refund: 前经理
+  waifu_over_cap: 超過上限
+  waifu_no_manager_title: 需要經理！
+  waifu_no_manager_payout: '尚未賺取任何東西。沒有經理的話，價格每週期下降 {0}%。成為第一個經理吧！'
+  waifu_now_backing_hint: |-
+    你現在是 {0} 的粉絲了！
+    *你的銀行餘額就是你的支持力--持有越多，賺得越多。*
+  waifu_bank_balance: '你的銀行餘額：{0}'
+  waifu_not_participating_title: 🎀 老婆系統
+  waifu_not_participating: |-
+    成為**老婆**或作為**粉絲**支持一位來賺取貨幣！
+    
+    **運作方式**
+    `{0}woptin` - 註冊成為老婆
+    `{0}wback @user` - 用你的銀行餘額支持一位老婆
+    `{0}wbuy @user` - 成為老婆的經理
+    
+    **角色**
+    🎀 **老婆** - 每個收益週期獲得費用
+    🏢 **經理** - 購買職位，獲得老婆費用的一部分
+    👥 **粉絲** - 用銀行餘額支持老婆，從粉絲池中獲利
+    
+    **週期**
+    每 3.5 天，從支持的資金中產生收益，並在老婆、經理和粉絲之間分配。保持你的老婆心情 😊 和食物 🍔 高，以獲得更好的收益！
+  waifu_fan_not_waifu: '你不是老婆--你是 **{0}** 的粉絲。'
+  waifu_gifts_received: 收到的禮物
+  waifu_resigned_manager: '你已辭去 {0} 的經理職位。'
+  waifu_not_managing: 你沒有管理這位老婆。
+  waifu_managing_title: '{0} 管理的老婆'
+  waifu_managing_empty: 沒有管理任何老婆。
+  waifu_earned: '**獲得**：{0}'
+  waifu_cycle_title: '**週期 #{0}**'
+  waifu_payout_time: '收益 {0}'
+  waifu_field_backed_by: 👥 粉丝
+  waifu_field_manager: 🏢 經理
+  waifu_field_price: 💎 價格
+  waifu_footer_fee: '費率：{0}%'
+  waifu_footer_actions: '行動：{0}/{1}'
+  waifu_fan_count: '{0} 位粉絲'
+  waifu_unknown: 未知
+  waifu_optin_already: 你已經是老婆了！
+  waifu_optin_no_funds: 資金不足！
+  waifu_optin_success: '你現在是老婆了！使用 `{0}waifu` 查看你的卡片。'
+  waifu_btn_opt_in: 加入
+  waifu_btn_collect: 領取
+  waifu_btn_my_waifus: 我的老婆
+  waifu_help_footer: '使用 {0}cmds waifu 查看指令列表'
+  waifu_backed_label: 已支持
+  waifu_buy_confirm: '成为 **{0}** 的经理人，花费 **{1}**？'
+  waifu_btn_confirm: 确认
+  waifu_no_effect: 没有效果!

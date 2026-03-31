@@ -1,0 +1,191 @@
+ar:
+  atl_not_enabled: الترجمة التلقائية غير مفعلة في هذه القناة أو أنك أدخلت لغة غير صالحة.
+  atl_removed: تمت إزالة لغة الترجمة التلقائية الخاصة بك.
+  atl_set: 'تم تعيين لغة الترجمة التلقائية الخاصة بك إلى {0}>{1}'
+  atl_started: تم بدء الترجمة التلقائية للرسائل في هذه القناة.
+  atl_stopped: تم إيقاف الترجمة التلقائية للرسائل في هذه القناة.
+  bad_input_format: تنسيق إدخال غير صحيح، أو حدث خطأ ما.
+  invalid_lang: لغة المصدر أو الهدف غير صالحة.
+  supported_languages: اللغات المدعومة
+  trfl_disabled: تم تعطيل ترجمة الأعلام.
+  trfl_enabled: تم تفعيل ترجمة الأعلام في هذه القناة. التفاعل على رسالة بعلم سيترجمها إلى تلك اللغة.
+
+de-DE:
+  atl_not_enabled: Automatische Übersetzung ist auf diesem Kanal nicht aktiviert oder du hast eine ungültige Sprache angegeben.
+  atl_removed: Deine automatische Übersetzungssprache wurde entfernt.
+  atl_set: 'Deine Auto-Übersetzungs Sprache ist nun {0}>{1}'
+  atl_started: Automatische Übersetzung der Nachrichten in diesem Channel wurde gestartet.
+  atl_stopped: Automatische Übersetzung der Nachrichten in diesem Channel wurde gestoppt.
+  bad_input_format: Falsches Eingabeformat oder etwas ist schiefgelaufen.
+  invalid_lang: Ungültige Ausgangs- oder Zielsprache.
+  supported_languages: Unterstützte Sprachen
+  trfl_disabled: Flaggenübersetzung deaktiviert.
+  trfl_enabled: Flaggenübersetzung in diesem Kanal aktiviert. Auf eine Nachricht mit einer Flagge zu reagieren, übersetzt sie in diese Sprache.
+
+es-ES:
+  atl_not_enabled: La traducción automática no está activada en este canal o has proporcionado un idioma no válido.
+  atl_removed: Tu idioma de auto-traducción fue removido.
+  atl_set: 'Tu idioma de auto-traducción ha sido establecido a {0}>{1}'
+  atl_started: Los mensajes ahora serán automáticamente traducidos en este canal.
+  atl_stopped: Los mensajes ahora no serán automáticamente traducidos en este canal.
+  bad_input_format: Formato inválido, o algo fue mal.
+  invalid_lang: Idioma de origen o de destino no válido.
+  supported_languages: Idiomas Soportados
+  trfl_disabled: Traducción por bandera desactivada.
+  trfl_enabled: Traducción por bandera activada en este canal. Reaccionar a un mensaje con una bandera lo traducirá a ese idioma.
+
+fr-FR:
+  atl_not_enabled: La traduction automatique n'est pas activée sur ce salon ou l'un des langages saisi est invalide.
+  atl_removed: Votre langue de traduction automatique a été retirée.
+  atl_set: 'Votre langue de traduction automatique a été définie sur {0}>{1}'
+  atl_started: Début de la traduction automatique des messages sur ce salon.
+  atl_stopped: Arrêt de la traduction automatique des messages sur ce salon.
+  bad_input_format: Mauvais format d'entrée, ou quelque chose s'est mal passé.
+  invalid_lang: Langue source ou cible invalide.
+  supported_languages: Langues Supportées
+  trfl_disabled: Traduction par drapeau désactivée.
+  trfl_enabled: Traduction par drapeau activée sur ce salon. Réagir à un message avec un drapeau le traduira dans cette langue.
+
+id-ID:
+  atl_not_enabled: Terjemahan otomatis tidak diaktifkan di channel ini atau kamu memberikan bahasa yang tidak valid.
+  atl_removed: bahasa terjemahan otomatismu telah dihapus.
+  atl_set: 'Bahasa terjemahan otomatismu telah disetel ke {0}>{1}'
+  atl_started: Terjemahan otomatis pesan di channel ini telah dimulai.
+  atl_stopped: Terjemahan otomatis pesan di channel ini telah dihentikan.
+  bad_input_format: Format input salah, atau terjadi kesalahan.
+  invalid_lang: Bahasa sumber atau tujuan tidak valid.
+  supported_languages: Bahasa yang Didukung
+  trfl_disabled: Terjemahan bendera dinonaktifkan.
+  trfl_enabled: Terjemahan bendera diaktifkan di channel ini. Memberi reaksi bendera pada pesan akan menerjemahkannya ke bahasa tersebut.
+
+ja-JP:
+  atl_not_enabled: このチャンネルでは自動翻訳が有効になっていないか、無効な言語が指定されています。
+  atl_removed: あなたのメッセージの自動翻訳を停止しました。
+  atl_set: 'あなたのメッセージは{0}から{1}に自動翻訳されるようになりました。'
+  atl_started: このチャンネルで、メッセージ自動翻訳を開始しました。
+  atl_stopped: このチャンネルでのメッセージ自動翻訳を停止しました。
+  bad_input_format: 入力形式が正しくないか、何かが間違っていました。
+  invalid_lang: 翻訳元か翻訳先の言語が正しくありません。
+  supported_languages: サポート言語
+  trfl_disabled: フラグ翻訳が無効になりました。
+  trfl_enabled: このチャンネルでフラグ翻訳が有効になりました。メッセージにフラグでリアクションすると、その言語に翻訳されます。
+
+ko-KR:
+  atl_not_enabled: 이 채널에서 자동 번역이 활성화되지 않았거나 잘못된 언어를 입력했어요.
+  atl_removed: 자동 번역 언어가 제거되었어요.
+  atl_set: '자동 번역 언어가 {0}>{1}(으)로 설정되었어요.'
+  atl_started: 이 채널에서 메시지 자동 번역을 시작했어요.
+  atl_stopped: 이 채널에서 메시지 자동 번역을 중지했어요.
+  bad_input_format: 입력 형식이 잘못되었거나 문제가 발생했어요.
+  invalid_lang: 소스 또는 대상 언어가 잘못되었어요.
+  supported_languages: 지원 언어
+  trfl_disabled: 국기 번역이 비활성화되었어요.
+  trfl_enabled: 이 채널에서 국기 번역이 활성화되었어요. 메시지에 국기 이모지로 반응하면 해당 언어로 번역됩니다.
+
+pl-PL:
+  atl_not_enabled: Automatyczne tłumaczenie nie jest włączone na tym kanale lub podano nieprawidłowy język.
+  atl_removed: twój język automatycznego tłumaczenia został usunięty.
+  atl_set: 'Twój język automatycznego tłumaczenia został ustawiony na {0}>{1}'
+  atl_started: Uruchomiono automatyczne tłumaczenie wiadomości na tym kanale.
+  atl_stopped: Zatrzymano automatyczne tłumaczenie wiadomości na tym kanale.
+  bad_input_format: Nieprawidłowy format danych wejściowych lub coś poszło nie tak.
+  invalid_lang: Nieprawidłowy język źródłowy lub docelowy.
+  supported_languages: Obsługiwane języki
+  trfl_disabled: Tłumaczenie flag wyłączone.
+  trfl_enabled: Tłumaczenie flag włączone na tym kanale. Reagowanie na wiadomość flagą przetłumaczy ją na dany język.
+
+pt-BR:
+  atl_not_enabled: Tradução automática não está ativa neste canal ou você entrou uma língua inválida.
+  atl_removed: sua linguagem de auto tradução foi removida.
+  atl_set: 'Idioma de tradução automática definido para {0}>{1}'
+  atl_started: A tradução automática de mensagens começou neste canal.
+  atl_stopped: A tradução automática de mensagens foi interrompida neste canal.
+  bad_input_format: Entrada ruim, ou algo deu errado.
+  invalid_lang: Idioma ou fonte inválida.
+  supported_languages: Idiomas Suportados
+  trfl_disabled: Tradução por bandeira desativada.
+  trfl_enabled: Tradução por bandeira ativada neste canal. Reagir a uma mensagem com uma bandeira irá traduzi-la para esse idioma.
+
+ru-RU:
+  atl_not_enabled: Автоматический перевод не включен в этом канале, или вы указали неверный язык.
+  atl_removed: ваш язык автоматического перевода был удален.
+  atl_set: 'Ваш язык автоматического перевода был установлен на {0}> {1}'
+  atl_started: На этом канале запущен автоматический перевод сообщений.
+  atl_stopped: Остановлен автоматический перевод сообщений на этом канале.
+  bad_input_format: Неверный формат ввода или что-то пошло не так.
+  invalid_lang: Недействительный исходный или целевой язык.
+  supported_languages: Поддерживаемые Языки
+  trfl_disabled: Перевод по флагу отключён.
+  trfl_enabled: Перевод по флагу включён в этом канале. Реакция на сообщение флагом переведёт его на этот язык.
+
+sr-Cyrl-RS:
+  atl_not_enabled: Аутоматско превођење није укључено на овом каналу или си унео неважећи језик.
+  atl_removed: Твој језик за аутоматско превођење је уклоњен.
+  atl_set: 'Твој језик за аутоматско превођење је постављен на {0}>{1}'
+  atl_started: Покренуто аутоматско превођење порука на овом каналу.
+  atl_stopped: Заустављено аутоматско превођење порука на овом каналу.
+  bad_input_format: Лош формат уноса, или је нешто пошло по злу.
+  invalid_lang: Неважећи изворни или циљни језик.
+  supported_languages: Подржани језици
+  trfl_disabled: Превођење заставицама искључено.
+  trfl_enabled: Превођење заставицама укључено на овом каналу. Реаговање на поруку заставицом ће је превести на тај језик.
+
+tr-TR:
+  atl_not_enabled: Bu kanalda otomatik çeviri etkin değil veya geçersiz bir dil girdin.
+  atl_removed: Otomatik çeviri dilin kaldırıldı.
+  atl_set: 'Otomatik çeviri dilin {0}>{1} olarak ayarlandı'
+  atl_started: Bu kanalda mesajların otomatik çevirisi başlatıldı.
+  atl_stopped: Bu kanalda mesajların otomatik çevirisi durduruldu.
+  bad_input_format: Hatalı giriş formatı veya bir şeyler ters gitti.
+  invalid_lang: Geçersiz kaynak veya hedef dil.
+  supported_languages: Desteklenen Diller
+  trfl_disabled: Bayrak çevirisi devre dışı bırakıldı.
+  trfl_enabled: Bu kanalda bayrak çevirisi etkinleştirildi. Bir mesaja bayrak emojisiyle tepki vermek, mesajı o dile çevirecek.
+
+ts-TS:
+  atl_not_enabled: Auto-translate isn't enabled here, or you gave an invalid language.
+  atl_removed: Your auto-translate language has been removed.
+  atl_set: 'Your auto-translate language has been set to {0}>{1}.'
+  atl_started: Started auto-translating messages on this channel.
+  atl_stopped: Stopped auto-translating on this channel.
+  bad_input_format: Bad input format, or something went wrong.
+  invalid_lang: Invalid source or target language, b-baka!
+  supported_languages: Supported Languages
+  trfl_disabled: Flag translation disabled.
+  trfl_enabled: Flag translation enabled on this channel. React with a flag and it'll be translated.
+
+uk-UA:
+  atl_not_enabled: Автоматичний переклад не ввімкнено на цьому каналі, або вказано неправильну мову.
+  atl_removed: твою мову автоперекладу видалено.
+  atl_set: 'Твою мову автоперекладу встановлено на {0}>{1}'
+  atl_started: Автоматичний переклад повідомлень на цьому каналі розпочато.
+  atl_stopped: Автоматичний переклад повідомлень на цьому каналі зупинено.
+  bad_input_format: Неправильний формат вводу, або щось пішло не так.
+  invalid_lang: Неправильна мова джерела або перекладу.
+  supported_languages: Підтримувані мови
+  trfl_disabled: Переклад прапорцями вимкнено.
+  trfl_enabled: Переклад прапорцями ввімкнено на цьому каналі. Реакція прапорцем на повідомлення перекладе його на відповідну мову.
+
+vi-VN:
+  atl_not_enabled: Tự động dịch chưa được bật trên kênh này hoặc bạn đã cung cấp ngôn ngữ không hợp lệ.
+  atl_removed: Ngôn ngữ tự động dịch của bạn đã bị xóa.
+  atl_set: 'Ngôn ngữ tự động dịch của bạn đã được đặt thành {0}>{1}'
+  atl_started: Đã bật tự động dịch tin nhắn trên kênh này.
+  atl_stopped: Đã tắt tự động dịch tin nhắn trên kênh này.
+  bad_input_format: Định dạng đầu vào sai, hoặc có lỗi xảy ra.
+  invalid_lang: Ngôn ngữ nguồn hoặc đích không hợp lệ.
+  supported_languages: Ngôn ngữ được hỗ trợ
+  trfl_disabled: Đã tắt dịch theo cờ.
+  trfl_enabled: Đã bật dịch theo cờ trên kênh này. React bằng cờ quốc gia vào tin nhắn sẽ dịch sang ngôn ngữ đó.
+
+zh-CN:
+  atl_not_enabled: 此頻道未啟用自動翻譯，或者您提供的語言無效。
+  atl_removed: 您的自動翻譯語言已被刪除。
+  atl_set: '您的自動翻譯語言已設置為 {0}>{1}'
+  atl_started: 開始自動翻譯此頻道上的訊息。
+  atl_stopped: 停止自動翻譯此頻道上的消息。
+  bad_input_format: 輸入格式錯誤，或出現問題。
+  invalid_lang: 源語言或目標語言無效。
+  supported_languages: 支援的語言
+  trfl_disabled: 旗幟翻譯已停用。
+  trfl_enabled: 此頻道的旗幟翻譯已啟用。對訊息用旗幟回應將會翻譯成該語言。

@@ -1,5 +1,0 @@
-prune_already_running: Чишћење је већ у току на овом серверу.
-prune_cancelled: Чишћење је отказано.
-prune_not_found: Није пронађено активно чишћење на овом серверу.
-prune_patron: 'Брисање порука старијих од 2 недеље захтева [Patron Tier X](https://patreon.com/join/nadekobot) или више.'
-prune_progress: 'Чишћење... {0}/{1} порука обрисано.'

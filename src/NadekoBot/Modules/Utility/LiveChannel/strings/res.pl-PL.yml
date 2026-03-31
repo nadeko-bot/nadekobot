@@ -1,9 +1,0 @@
-livechannel_added: 'Pomyślnie dodano {0} jako kanał live.'
-livechannel_limit: 'Możesz mieć maksymalnie {0} kanałów live na serwerze.'
-livechannel_list_empty: Na tym serwerze nie skonfigurowano kanałów live.
-livechannel_list_title: 'Kanały live na {0}'
-livechannel_not_found: Kanał nie został znaleziony na liście kanałów live.
-livechannel_please_wait: Poczekaj do 10 minut, aż zmiany zaczną obowiązywać
-livechannel_removed: 'Pomyślnie usunięto {0} z kanałów live.'
-preview: Podgląd
-template: Szablon

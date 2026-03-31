@@ -1,0 +1,127 @@
+ar:
+  lang_list: قائمة اللغات
+  lang_set: 'لغة خادمك الآن هي {0} - {1}'
+  lang_set_bot: 'اللغة الافتراضية للبوت الآن هي {0} - {1}'
+  lang_set_bot_show: 'لغة البوت مضبوطة على {0} - {1}'
+  lang_set_fail: فشل تعيين اللغة. راجع مساعدة هذا الأمر.
+  lang_set_show: 'لغة هذا الخادم مضبوطة على {0} - {1}'
+
+de-DE:
+  lang_list: Liste aller Sprachen
+  lang_set: 'Die Sprache des Server ist {0} - {1}'
+  lang_set_bot: 'Standard Schauplatz des Bots ist jetzt {0} - {1}'
+  lang_set_bot_show: 'Bot''s Sprache ist {0} - {1}'
+  lang_set_fail: Setzen der Sprache fehlgeschlagen. Schaue die Hilfe dieses Befehls nochmal an.
+  lang_set_show: 'Die Sprache des Server''s ist nun {0} - {1}'
+
+es-ES:
+  lang_list: Lista de idiomas
+  lang_set: 'Idioma de este servidor configurado a {0} - {1}'
+  lang_set_bot: 'El idioma local del bot ahora es {0} - {1}'
+  lang_set_bot_show: 'Idioma del bot es {0} - {1}'
+  lang_set_fail: No se pudo establecer la configuración regional.  Revisa la ayuda de este comando.
+  lang_set_show: 'El lenguaje del servidor está establecido en: {0} - {1}'
+
+fr-FR:
+  lang_list: Liste des langues
+  lang_set: 'La localisation du serveur a été réglée sur {0} - {1}'
+  lang_set_bot: 'La localisation par défaut du bot est désormais {0} - {1}'
+  lang_set_bot_show: 'Le langage du bot a été réglé sur {0} - {1}'
+  lang_set_fail: Échec de la définition des paramètres régionaux. Revoyez l'aide de cette commande.
+  lang_set_show: 'La langue de ce serveur est définie sur {0} - {1}'
+
+id-ID:
+  lang_list: Daftar bahasa
+  lang_set: 'Locale server kamu sekarang {0} - {1}'
+  lang_set_bot: 'Locale default bot sekarang {0} - {1}'
+  lang_set_bot_show: 'Bahasa bot diatur ke {0} - {1}'
+  lang_set_fail: Gagal mengatur locale. Cek kembali bantuan perintah ini.
+  lang_set_show: 'Bahasa server ini diatur ke {0} - {1}'
+
+ja-JP:
+  lang_list: 言語一覧
+  lang_set: 'このサーバーの言語設定が{0} - {1}になりました'
+  lang_set_bot: 'Botのデフォルトの言語設定が{0} - {1}になりました'
+  lang_set_bot_show: 'Botの言語設定は{0} - {1}です。'
+  lang_set_fail: 言語設定に失敗しました。もう一度このコマンドのヘルプを確認してください。
+  lang_set_show: 'このサーバーの言語設定は{0} - {1}です。'
+
+ko-KR:
+  lang_list: 언어 목록
+  lang_set: '서버의 언어가 {0} - {1}(으)로 설정되었습니다'
+  lang_set_bot: '봇의 기본 언어가 {0} - {1}(으)로 설정되었습니다'
+  lang_set_bot_show: '봇의 언어는 {0} - {1}(으)로 설정되어 있습니다'
+  lang_set_fail: 언어 설정에 실패했습니다. 이 명령어의 도움말을 확인해주세요.
+  lang_set_show: '이 서버의 언어는 {0} - {1}(으)로 설정되어 있습니다'
+
+pl-PL:
+  lang_list: Lista języków
+  lang_set: 'Język tego serwera został ustawiony na {0} - {1}'
+  lang_set_bot: 'Domyślny język bota został ustawiony na {0} - {1}'
+  lang_set_bot_show: 'Język bota jest ustawiony na {0} - {1}'
+  lang_set_fail: Nie udało się ustawić języka. Sprawdź pomoc tej komendy.
+  lang_set_show: 'Język tego serwera jest ustawiony na {0} - {1}'
+
+pt-BR:
+  lang_list: Lista de idiomas
+  lang_set: 'O idioma do bot no servidor foi definido para {0} - {1}'
+  lang_set_bot: 'O idoma do bot foi definido para {0} - {1}'
+  lang_set_bot_show: 'O idioma do bot está definido como {0} - {1}'
+  lang_set_fail: Falha em configurar local. Consulte a ajuda desse comando.
+  lang_set_show: 'A linguagem desse servidor está configurada para {0} - {1}'
+
+ru-RU:
+  lang_list: Лист языков
+  lang_set: 'Язык сервера установлен на {0} - {1}'
+  lang_set_bot: 'Локализация бота по умолчанию теперь {0} - {1}'
+  lang_set_bot_show: 'Язык бота установлен на {0} - {1}'
+  lang_set_fail: Не удалось установить языковой стандарт. Еще раз обратитесь к этой команде помощи.
+  lang_set_show: 'Язык этого сервера установлен на {0} - {1}'
+
+sr-Cyrl-RS:
+  lang_list: Листа језика
+  lang_set: 'Локализација вашег сервера је сада {0} - {1}'
+  lang_set_bot: 'Подразумевана локализација бота је сада {0} - {1}'
+  lang_set_bot_show: 'Језик бота је постављен на {0} - {1}'
+  lang_set_fail: Неуспешно постављање локализације. Погледајте помоћ за ову команду.
+  lang_set_show: 'Језик овог сервера је постављен на {0} - {1}'
+
+tr-TR:
+  lang_list: Dil listesi
+  lang_set: 'Sunucunun dili artık {0} - {1}'
+  lang_set_bot: 'Botun varsayılan dili artık {0} - {1}'
+  lang_set_bot_show: 'Botun dili {0} - {1} olarak ayarlı'
+  lang_set_fail: Dil ayarlanamadı. Bu komutun yardım sayfasına bak.
+  lang_set_show: 'Bu sunucunun dili {0} - {1} olarak ayarlı'
+
+ts-TS:
+  lang_list: List of languages
+  lang_set: 'Your server''s locale is now {0} - {1}.'
+  lang_set_bot: 'Bot''s default locale is now {0} - {1}.'
+  lang_set_bot_show: 'Bot''s language is set to {0} - {1}.'
+  lang_set_fail: Failed setting locale. Check the command's help, b-baka!
+  lang_set_show: 'This server''s language is set to {0} - {1}.'
+
+uk-UA:
+  lang_list: Список мов
+  lang_set: 'Мову вашого сервера змінено на {0} - {1}'
+  lang_set_bot: 'Мову бота за замовчуванням змінено на {0} - {1}'
+  lang_set_bot_show: 'Мова бота встановлена на {0} - {1}'
+  lang_set_fail: Не вдалося змінити мову. Перегляньте довідку до цієї команди.
+  lang_set_show: 'Мова цього сервера встановлена на {0} - {1}'
+
+vi-VN:
+  lang_list: Danh sách ngôn ngữ
+  lang_set: 'Ngôn ngữ server của bạn giờ là {0} - {1}'
+  lang_set_bot: 'Ngôn ngữ mặc định của bot giờ là {0} - {1}'
+  lang_set_bot_show: 'Ngôn ngữ của bot được đặt là {0} - {1}'
+  lang_set_fail: Không thể đặt ngôn ngữ. Hãy xem lại hướng dẫn lệnh này.
+  lang_set_show: 'Ngôn ngữ của server này được đặt là {0} - {1}'
+
+zh-CN:
+  lang_list: 語言列表
+  lang_set: '當前伺服器語言是{0} - {1}'
+  lang_set_bot: '機器人默認語言是{0} - {1}'
+  lang_set_bot_show: '機器人的語言已設定成 {0} - {1}'
+  lang_set_fail: 設置語言環境失敗。重新訪問此命令的幫助。
+  lang_set_show: '此伺服器的語言設置為 {0} - {1}'

@@ -1,4 +1,0 @@
-createtextchan: 'O canal de texto {0} foi criado.'
-deltextchan: 'O canal de texto {0} foi excluído.'
-set_channel_name: Nome de canal redefinido com sucesso.
-set_topic: Novo tópico do canal selecionado.

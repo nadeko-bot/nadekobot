@@ -1,0 +1,95 @@
+ar:
+  createtextchan: 'تم إنشاء القناة النصية {0}.'
+  deltextchan: 'تم حذف القناة النصية {0}.'
+  set_channel_name: تم تعيين اسم القناة الجديد.
+  set_topic: تم تعيين موضوع القناة الجديد.
+
+de-DE:
+  createtextchan: 'Textkanal {0} wurde erstellt.'
+  deltextchan: 'Textkanal {0} gelöscht.'
+  set_channel_name: Neuer Kanal Name gesetzt.
+  set_topic: Neue Kanalbeschreibung festgelegt.
+
+es-ES:
+  createtextchan: 'Canal de texto {0} creado.'
+  deltextchan: 'Canal de texto {0} eliminado.'
+  set_channel_name: Nuevo nombre de canal configurado.
+  set_topic: Nuevo tema de canal establecido.
+
+fr-FR:
+  createtextchan: 'Salon textuel {0} créé.'
+  deltextchan: 'Salon textuel {0} supprimé.'
+  set_channel_name: Nouveau nom de salon défini.
+  set_topic: Nouveau thème du salon réglé.
+
+id-ID:
+  createtextchan: 'Channel teks {0} dibuat.'
+  deltextchan: 'Channel teks {0} dihapus.'
+  set_channel_name: Nama channel baru sudah dipasang.
+  set_topic: Topik channel baru sudah dipasang.
+
+ja-JP:
+  createtextchan: 'テキストチャンネル《{0}》が作成されました。'
+  deltextchan: 'テキストチャンネル《{0}》が削除されました。'
+  set_channel_name: 新しいチャンネル名が設定されました。
+  set_topic: 新しいチャンネルトピックが設定されました。
+
+ko-KR:
+  createtextchan: '텍스트 채널 {0}이(가) 생성되었어요.'
+  deltextchan: '텍스트 채널 {0}이(가) 삭제되었어요.'
+  set_channel_name: 새 채널 이름이 설정되었어요.
+  set_topic: 새 채널 주제가 설정되었어요.
+
+pl-PL:
+  createtextchan: 'Utworzono kanał tekstowy {0}.'
+  deltextchan: 'Usunięto kanał tekstowy {0}.'
+  set_channel_name: Ustawiono nową nazwę kanału.
+  set_topic: Ustawiono nowy temat kanału.
+
+pt-BR:
+  createtextchan: 'O canal de texto {0} foi criado.'
+  deltextchan: 'O canal de texto {0} foi excluído.'
+  set_channel_name: Nome de canal redefinido com sucesso.
+  set_topic: Novo tópico do canal selecionado.
+
+ru-RU:
+  createtextchan: 'Текстовый канал {0} создан.'
+  deltextchan: 'Текстовый канал {0} удален.'
+  set_channel_name: Установлено новое имя канала.
+  set_topic: Новая тема канала установлена.
+
+sr-Cyrl-RS:
+  createtextchan: 'Текстуални канал {0} креиран.'
+  deltextchan: 'Текстуални канал {0} обрисан.'
+  set_channel_name: Ново име канала постављено.
+  set_topic: Нова тема канала постављена.
+
+tr-TR:
+  createtextchan: 'Yazı kanalı {0} oluşturuldu.'
+  deltextchan: 'Yazı kanalı {0} silindi.'
+  set_channel_name: Yeni kanal adı ayarlandı.
+  set_topic: Yeni kanal konusu ayarlandı.
+
+ts-TS:
+  createtextchan: 'Text channel {0} created.'
+  deltextchan: 'Text channel {0} deleted. I-it''s not like I''ll miss it!'
+  set_channel_name: New channel name set.
+  set_topic: New channel topic set.
+
+uk-UA:
+  createtextchan: 'Текстовий канал {0} створено.'
+  deltextchan: 'Текстовий канал {0} видалено.'
+  set_channel_name: Нову назву каналу встановлено.
+  set_topic: Нову тему каналу встановлено.
+
+vi-VN:
+  createtextchan: 'Đã tạo kênh văn bản {0}.'
+  deltextchan: 'Đã xóa kênh văn bản {0}.'
+  set_channel_name: Đã đặt tên kênh mới.
+  set_topic: Đã đặt chủ đề kênh mới.
+
+zh-CN:
+  createtextchan: '成功創建文字頻道 {0}'
+  deltextchan: '文字頻道 {0} 已刪除。'
+  set_channel_name: 新的頻道名稱已設定
+  set_topic: 新頻道主題集。

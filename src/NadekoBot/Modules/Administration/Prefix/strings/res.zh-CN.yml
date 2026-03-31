@@ -1,4 +1,0 @@
-defprefix_current: '機器人預設前綴是 {0}'
-defprefix_new: '將默認機器人前綴從 {0} 更改為 {1}'
-prefix_current: '此伺服器上的前綴是 {0}'
-prefix_new: '將此伺服器上的前綴從 {0} 更改為 {1}'

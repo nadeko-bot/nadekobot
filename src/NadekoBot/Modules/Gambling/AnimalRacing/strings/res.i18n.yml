@@ -1,0 +1,223 @@
+ar:
+  animal_race: سباق الحيوانات
+  animal_race_already_started: سباق الحيوانات قيد التشغيل بالفعل.
+  animal_race_failed: فشل البدء لعدم وجود مشاركين كافيين.
+  animal_race_full: السباق ممتلئ! سيبدأ فوراً.
+  animal_race_join: '{0} انضم كـ {1}'
+  animal_race_join_bet: '{0} انضم كـ {1} وراهن بـ {2}!'
+  animal_race_join_instr: 'اكتب {0}jr للانضمام إلى السباق.'
+  animal_race_starting: 'يبدأ خلال {0} ثوانٍ أو عند امتلاء الغرفة.'
+  animal_race_starting_with_x: 'يبدأ بـ {0} مشاركين.'
+  animal_race_won: '{0} كـ {1} فاز بالسباق!'
+  animal_race_won_money: '{0} كـ {1} فاز بالسباق وحصل على {2}!'
+  race_not_exist: لا يوجد سباق على هذا الخادم
+
+de-DE:
+  animal_race: Tierrennen
+  animal_race_already_started: Tier Rennen ist bereits am laufen.
+  animal_race_failed: Rennen konnte aufgrund fehlender Teilnehmer nicht gestartet werden.
+  animal_race_full: Rennen ist voll! Startet sofort.
+  animal_race_join: '{0} tritt als {1} bei'
+  animal_race_join_bet: '{0} ist als ein {1} beigetreten und hat {2} gewettet!'
+  animal_race_join_instr: 'Tippe {0}Rennen um dem Rennen beizutreten'
+  animal_race_starting: 'Startet in {0} Sekunden wenn der Raum voll ist.'
+  animal_race_starting_with_x: 'Startet mit {0} Teilnehmern.'
+  animal_race_won: '{0} als {1} hat das Rennen gewonnen!'
+  animal_race_won_money: '{0} hat als {1} das Rennen und {2} gewonnen!'
+  race_not_exist: Auf diesem Server existiert kein Rennen
+
+es-ES:
+  animal_race: Carrera animal
+  animal_race_already_started: Una carrera de animales ya ha sido iniciada.
+  animal_race_failed: No se ha podido iniciar la carrera porque no había suficientes participantes.
+  animal_race_full: ¡La carrera está llena! Empezando inmediatamente.
+  animal_race_join: '{0} ha entrado como un {1}.'
+  animal_race_join_bet: '¡{0} se unió como un {1} y apostó {2}!'
+  animal_race_join_instr: 'Escribe {0}jr para entrar a la carrera.'
+  animal_race_starting: 'Empezando la carrera en {0} segundos o cuando ya no haya lugar.'
+  animal_race_starting_with_x: 'Empezando con {0} participantes.'
+  animal_race_won: '¡{0} como un {1} ganó la carrera!'
+  animal_race_won_money: '¡{0} como {1} ganó la carrera y {2}!'
+  race_not_exist: Ninguna carrera existe en este servidor
+
+fr-FR:
+  animal_race: Course d'animaux
+  animal_race_already_started: Course d'animaux toujours en cours.
+  animal_race_failed: Échec du lancement car il n'y avait pas assez de participants.
+  animal_race_full: La course est pleine! Départ imminent.
+  animal_race_join: '{0} a rejoint en tant que {1}'
+  animal_race_join_bet: '{0} rejoint en tant que {1} et parie {2} !'
+  animal_race_join_instr: 'Taper `{0}jr` pour rejoindre la course.'
+  animal_race_starting: 'Début dans {0} secondes ou quand la salle sera pleine.'
+  animal_race_starting_with_x: 'Démarrage avec {0} participants.'
+  animal_race_won: '{0} a gagné la course en tant que {1}!'
+  animal_race_won_money: '{0} en tant que {1} a gagné la course et {2}!'
+  race_not_exist: Aucune course n'existe dans ce serveur
+
+id-ID:
+  animal_race: Balapan Hewan
+  animal_race_already_started: Balapan Hewan sudah berjalan.
+  animal_race_failed: Gagal dimulai karena peserta tidak cukup.
+  animal_race_full: Balapan penuh! Langsung dimulai.
+  animal_race_join: '{0} bergabung sebagai {1}'
+  animal_race_join_bet: '{0} bergabung sebagai {1} dan bertaruh {2}!'
+  animal_race_join_instr: 'Ketik {0}jr untuk bergabung ke balapan.'
+  animal_race_starting: 'Dimulai dalam {0} detik atau saat ruangan penuh.'
+  animal_race_starting_with_x: 'Dimulai dengan {0} peserta.'
+  animal_race_won: '{0} sebagai {1} Memenangkan balapan!'
+  animal_race_won_money: '{0} sebagai {1} Memenangkan balapan dan {2}!'
+  race_not_exist: Tidak ada balapan di server ini
+
+ja-JP:
+  animal_race: アニマルレース
+  animal_race_already_started: アニマルレースは既に始まっています。
+  animal_race_failed: 参加者不足のため発走できませんでした。
+  animal_race_full: 参加者が揃いました！ まもなく発走します。
+  animal_race_join: '{0}は{1}として参加しました。'
+  animal_race_join_bet: '{0}は{1}として参加し、{2}を賭けました！'
+  animal_race_join_instr: 'レースに参加するには {0}jr と入力してください。'
+  animal_race_starting: '参加者が揃うか、{0}秒経過後に発走します。'
+  animal_race_starting_with_x: '参加者{0}人で発走します。'
+  animal_race_won: '{1}の{0}がレースに勝利しました！'
+  animal_race_won_money: '{1}の{0}がレースに勝利し、{2}獲得しました！'
+  race_not_exist: このサーバーでは、レースは開催されていません。
+
+ko-KR:
+  animal_race: 동물 레이스
+  animal_race_already_started: 동물 레이스가 이미 진행 중이에요.
+  animal_race_failed: 참가자가 부족하여 시작하지 못했어요.
+  animal_race_full: 레이스가 꽉 찼어요! 바로 시작할게요.
+  animal_race_join: '{0}님이 {1}(으)로 참가했어요'
+  animal_race_join_bet: '{0}님이 {1}(으)로 참가하고 {2}을(를) 걸었어요!'
+  animal_race_join_instr: '{0}jr을 입력해서 경주에 참가하세요.'
+  animal_race_starting: '{0}초 후 또는 방이 꽉 차면 시작해요.'
+  animal_race_starting_with_x: '{0}명의 참가자로 시작해요.'
+  animal_race_won: '{0}님이 {1}(으)로 경주에서 우승했어요!'
+  animal_race_won_money: '{0}님이 {1}(으)로 경주에서 우승하고 {2}을(를) 받았어요!'
+  race_not_exist: 이 서버에 진행 중인 경주가 없어요
+
+pl-PL:
+  animal_race: Wyścig zwierząt
+  animal_race_already_started: Wyścig zwierząt już trwa.
+  animal_race_failed: Nie udało się rozpocząć, ponieważ było za mało uczestników.
+  animal_race_full: Wyścig pełny! Rozpoczynam natychmiast.
+  animal_race_join: '{0} dołączył/a jako {1}'
+  animal_race_join_bet: '{0} dołączył/a jako {1} i postawił/a {2}!'
+  animal_race_join_instr: 'Wpisz {0}jr, żeby dołączyć do wyścigu.'
+  animal_race_starting: 'Start za {0} sekund lub gdy pokój będzie pełny.'
+  animal_race_starting_with_x: 'Start z {0} uczestnikami.'
+  animal_race_won: '{0} jako {1} wygrał/a wyścig!'
+  animal_race_won_money: '{0} jako {1} wygrał/a wyścig i {2}!'
+  race_not_exist: Na tym serwerze nie ma żadnego wyścigu
+
+pt-BR:
+  animal_race: Corrida de animais
+  animal_race_already_started: Já há uma Corrida de Animais em andamento.
+  animal_race_failed: Não foi possível iniciar a corrida por não haver participantes suficientes.
+  animal_race_full: A corrida está cheia! Começando imediatamente.
+  animal_race_join: '{0} entrou como {1}'
+  animal_race_join_bet: '{0} entrou como um {1} e apostou {2}!'
+  animal_race_join_instr: 'Digite {0}jr para participar da corrida.'
+  animal_race_starting: 'Iniciando em {0} segundos ou quando a sala estiver cheia.'
+  animal_race_starting_with_x: 'Começando com {0} participantes.'
+  animal_race_won: '{0} como {1} venceu a corrida!'
+  animal_race_won_money: '{0} como {1} Ganhou a corrida e {2}!'
+  race_not_exist: Não há corrida existente nesse servidor
+
+ru-RU:
+  animal_race: Гонка животных
+  animal_race_already_started: Animal Race уже запущен.
+  animal_race_failed: Не удалось начать гонку, из-за недостатка участников.
+  animal_race_full: Гонка заполнена! Начинаю немедленно.
+  animal_race_join: '{0} присоединился к гонке в роли {1}'
+  animal_race_join_bet: '{0} присоединился как {1} и сделал ставку {2}!'
+  animal_race_join_instr: 'Наберите {0}race, чтобы присоединиться к гонке.'
+  animal_race_starting: 'Гонка будет начата через {0} секунд или когда все места в ней будут заняты.'
+  animal_race_starting_with_x: 'Начиная с участников {0}.'
+  animal_race_won: '{0} в роли {1} , побеждает в гонке!'
+  animal_race_won_money: '{0} в качестве {1} Выиграл гонку и {2}!'
+  race_not_exist: На этом сервере нет гонок
+
+sr-Cyrl-RS:
+  animal_race: Трка животиња
+  animal_race_already_started: Трка животиња је већ у току.
+  animal_race_failed: Покретање није успело јер није било довољно учесника.
+  animal_race_full: Трка је пуна! Почиње одмах.
+  animal_race_join: '{0} се придружио/ла као {1}'
+  animal_race_join_bet: '{0} се придружио/ла као {1} и кладио/ла се {2}!'
+  animal_race_join_instr: 'Откуцај {0}jr да се придружиш трци.'
+  animal_race_starting: 'Почиње за {0} секунди или кад се соба напуни.'
+  animal_race_starting_with_x: 'Почиње са {0} учесника.'
+  animal_race_won: '{0} као {1} је победио/ла у трци!'
+  animal_race_won_money: '{0} као {1} је победио/ла у трци и освојио/ла {2}!'
+  race_not_exist: Не постоји трка на овом серверу
+
+tr-TR:
+  animal_race: Hayvan yarışı
+  animal_race_already_started: Hayvan Yarışı zaten devam ediyor.
+  animal_race_failed: Yeterli katılımcı olmadığı için başlatılamadı.
+  animal_race_full: Yarış dolu! Hemen başlıyor.
+  animal_race_join: '{0} bir {1} olarak katıldı'
+  animal_race_join_bet: '{0} bir {1} olarak katıldı ve {2} bahis koydu!'
+  animal_race_join_instr: 'Yarışa katılmak için {0}jr yaz.'
+  animal_race_starting: '{0} saniye içinde veya oda dolduğunda başlıyor.'
+  animal_race_starting_with_x: '{0} katılımcıyla başlıyor.'
+  animal_race_won: '{0} bir {1} olarak yarışı kazandı!'
+  animal_race_won_money: '{0} bir {1} olarak yarışı ve {2} kazandı!'
+  race_not_exist: Bu sunucuda devam eden bir yarış yok
+
+ts-TS:
+  animal_race: Animal race
+  animal_race_already_started: An Animal Race is already running. Be patient.
+  animal_race_failed: Failed to start since there weren't enough participants.
+  animal_race_full: Race is full! Starting immediately.
+  animal_race_join: '{0} joined as a {1}'
+  animal_race_join_bet: '{0} joined as a {1} and bet {2}!'
+  animal_race_join_instr: 'Type {0}jr to join the race.'
+  animal_race_starting: 'Starting in {0} seconds or when the room is full. D-don''t keep me waiting!'
+  animal_race_starting_with_x: 'Starting with {0} participants.'
+  animal_race_won: '{0} as {1} Won the race!'
+  animal_race_won_money: '{0} as {1} Won the race and {2}!'
+  race_not_exist: There's no race on this server.
+
+uk-UA:
+  animal_race: Перегони тварин
+  animal_race_already_started: Перегони тварин вже запущені.
+  animal_race_failed: Не вдалося почати, бо було недостатньо учасників.
+  animal_race_full: Перегони заповнені! Починаємо негайно.
+  animal_race_join: '{0} приєднався як {1}'
+  animal_race_join_bet: '{0} приєднався як {1} і поставив {2}!'
+  animal_race_join_instr: 'Напиши {0}jr, щоб приєднатися до перегонів.'
+  animal_race_starting: 'Старт через {0} секунд або коли кімната заповниться.'
+  animal_race_starting_with_x: 'Старт з {0} учасниками.'
+  animal_race_won: '{0} як {1} виграв перегони!'
+  animal_race_won_money: '{0} як {1} виграв перегони та {2}!'
+  race_not_exist: На цьому сервері немає активних перегонів
+
+vi-VN:
+  animal_race: Cuộc đua động vật
+  animal_race_already_started: Cuộc đua động vật đang diễn ra rồi.
+  animal_race_failed: Không thể bắt đầu vì không đủ người tham gia.
+  animal_race_full: Cuộc đua đã đầy! Bắt đầu ngay lập tức.
+  animal_race_join: '{0} đã tham gia với vai trò {1}'
+  animal_race_join_bet: '{0} đã tham gia với vai trò {1} và đặt cược {2}!'
+  animal_race_join_instr: 'Gõ {0}jr để tham gia cuộc đua.'
+  animal_race_starting: 'Bắt đầu sau {0} giây hoặc khi phòng đầy.'
+  animal_race_starting_with_x: 'Bắt đầu với {0} người tham gia.'
+  animal_race_won: '{0} với vai trò {1} đã thắng cuộc đua!'
+  animal_race_won_money: '{0} với vai trò {1} đã thắng cuộc đua và nhận {2}!'
+  race_not_exist: Không có cuộc đua nào trên máy chủ này
+
+zh-CN:
+  animal_race: 動物賽跑
+  animal_race_already_started: 動物競賽已經開始了。
+  animal_race_failed: 由於參賽者不足，比賽無法開始。
+  animal_race_full: 比賽已滿！馬上開始。
+  animal_race_join: '{0} 以 {1} 加入了'
+  animal_race_join_bet: '{0}作為{1}加入並下注{2}！'
+  animal_race_join_instr: '輸入 {0}jr 來加入比賽'
+  animal_race_starting: '將在 {0} 秒後或房間額滿時開始'
+  animal_race_starting_with_x: '從 {0} 名參與者開始。'
+  animal_race_won: '{0} 使用 {1} 贏得了競賽'
+  animal_race_won_money: '{0} 作為 {1} 贏得了比賽和 {2}！'
+  race_not_exist: 此伺服器上不存在種族

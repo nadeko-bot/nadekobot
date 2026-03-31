@@ -1,4 +1,0 @@
-cmdcd_add: '{0} komutu artık {1}s bekleme süresine sahip.'
-cmdcd_cleared: '{0} komutu artık bekleme süresine sahip değil ve mevcut tüm bekleme süreleri temizlendi.'
-cmdcd_none: Ayarlanmış komut bekleme süresi yok.
-invalid_second_param_between: 'Geçersiz ikinci parametre. ({0} ile {1} arasında bir sayı olmalıdır)'

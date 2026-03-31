@@ -1,0 +1,79 @@
+ar:
+  no_results: لم يتم العثور على نتائج.
+  results_in: '{0} نتيجة في {1} ثانية'
+  search_for: ''
+
+de-DE:
+  no_results: Keine Ergebnisse.
+  results_in: '{0} Ergebnisse in {1}s'
+  search_for: ''
+
+es-ES:
+  no_results: Sin resultados.
+  results_in: '{0} resultados en {1}s'
+  search_for: ''
+
+fr-FR:
+  no_results: Aucun résultats.
+  results_in: '{0} résulte en {1}s'
+  search_for: ''
+
+id-ID:
+  no_results: Tidak ada hasil ditemukan.
+  results_in: '{0} hasil dalam {1} detik'
+  search_for: ''
+
+ja-JP:
+  no_results: 結果が見つかりません。
+  results_in: '{0}件の結果（{1}秒）'
+  search_for: ''
+
+ko-KR:
+  no_results: 결과를 찾을 수 없어요.
+  results_in: '{0}개의 결과 ({1}초)'
+  search_for: ''
+
+pl-PL:
+  no_results: Brak wyników.
+  results_in: '{0} wyników w {1}s'
+  search_for: ''
+
+pt-BR:
+  no_results: Nenhum resultado encontrado.
+  results_in: '{0} resultados em {1}s'
+  search_for: ''
+
+ru-RU:
+  no_results: Нет результатов.
+  results_in: '{0} результатов за {1} сек.'
+  search_for: ''
+
+sr-Cyrl-RS:
+  no_results: Нема резултата.
+  results_in: '{0} резултата за {1}с'
+  search_for: ''
+
+tr-TR:
+  no_results: Sonuç bulunamadı.
+  results_in: '{0} sonuç {1} saniyede'
+  search_for: ''
+
+ts-TS:
+  no_results: No results found. Hmph.
+  results_in: '{0} results in {1}s'
+  search_for: ''
+
+uk-UA:
+  no_results: Нічого не знайдено.
+  results_in: '{0} результатів за {1}с'
+  search_for: ''
+
+vi-VN:
+  no_results: Không tìm thấy kết quả nào.
+  results_in: '{0} kết quả trong {1}s'
+  search_for: ''
+
+zh-CN:
+  no_results: 沒有結果
+  results_in: '{0} 个结果,用时 {1} 秒'
+  search_for: ''

@@ -1,8 +1,0 @@
-reprm: 'Suppression du message de lecture: {0}.'
-ropl_added: Ajoutés.
-ropl_disabled: Rotation du statut de jeu désactivée.
-ropl_enabled: Rotation du statut de jeu activée.
-ropl_list: |-
-  Voici une liste des statuts en rotation :
-  {0}
-ropl_not_set: Aucun statut en rotation réglé.

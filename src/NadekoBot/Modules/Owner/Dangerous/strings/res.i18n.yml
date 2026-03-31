@@ -1,0 +1,79 @@
+ar:
+  purge_user_confirm: 'هل أنت متأكد أنك تريد حذف بيانات {0} من قاعدة البيانات؟'
+  cleanup_done: 'بيانات {0} خادم لا تزال موجودة في قاعدة البيانات.'
+  sql_confirm_exec: تأكيد تنفيذ أمر SQL التالي
+
+de-DE:
+  purge_user_confirm: 'Bist du sicher, dass du {0} aus der Datenbank löschen willst?'
+  cleanup_done: 'Daten von {0} Servern verbleiben in der Datenbank.'
+  sql_confirm_exec: SQL-Ausführung bestätigen
+
+es-ES:
+  purge_user_confirm: '¿Seguro que quieres eliminar {0} de la base de datos?'
+  cleanup_done: 'Los datos de {0} servidores permanecen en la base de datos.'
+  sql_confirm_exec: Confirmar ejecución SQL
+
+fr-FR:
+  purge_user_confirm: 'Êtes-vous sûr·e de vouloir purger {0} de la base des données?'
+  cleanup_done: 'Les données de {0} serveurs restent dans la base de données.'
+  sql_confirm_exec: Confirmer l'exécution SQL
+
+id-ID:
+  purge_user_confirm: 'Apakah kamu yakin ingin menghapus data {0} dari database?'
+  cleanup_done: 'Data {0} guild tersisa di database.'
+  sql_confirm_exec: Konfirmasi eksekusi perintah SQL berikut
+
+ja-JP:
+  purge_user_confirm: '本当に{0}をデータベースからパージしますか？'
+  cleanup_done: '{0}サーバーのデータがデータベースに残っています。'
+  sql_confirm_exec: SQL実行を確認
+
+ko-KR:
+  purge_user_confirm: '정말로 데이터베이스에서 {0}을(를) 삭제하시겠습니까?'
+  cleanup_done: '데이터베이스에 {0}개 서버의 데이터가 남아 있습니다.'
+  sql_confirm_exec: 다음 SQL 명령어의 실행을 확인해주세요
+
+pl-PL:
+  purge_user_confirm: 'Czy na pewno chcesz usunąć {0} z bazy danych?'
+  cleanup_done: 'Dane {0} serwerów pozostały w bazie danych.'
+  sql_confirm_exec: Potwierdź wykonanie następującej komendy SQL
+
+pt-BR:
+  purge_user_confirm: 'Você tem certeza que deseja eliminar {0} da base de dados?'
+  cleanup_done: 'Dados de {0} servidores permanecem no banco de dados.'
+  sql_confirm_exec: Confirme a execução SQL
+
+ru-RU:
+  purge_user_confirm: 'Вы уверены, что хотите удалить {0} из базы данных?'
+  cleanup_done: 'Данные {0} серверов остаются в базе данных.'
+  sql_confirm_exec: Подтвердите выполнение SQL
+
+sr-Cyrl-RS:
+  purge_user_confirm: 'Да ли сте сигурни да желите да уклоните {0} из базе података?'
+  cleanup_done: 'Подаци о {0} серверима остају у бази података.'
+  sql_confirm_exec: Потврдите извршавање следеће SQL команде
+
+tr-TR:
+  purge_user_confirm: '{0} kullanıcısını veritabanından silmek istediğine emin misin?'
+  cleanup_done: 'Veritabanında {0} sunucunun verisi kaldı.'
+  sql_confirm_exec: Aşağıdaki SQL komutunun çalıştırılmasını onayla
+
+ts-TS:
+  purge_user_confirm: 'Are you sure you want to purge {0} from the database? Don''t blame me later!'
+  cleanup_done: '{0} guilds'' data remain in the database.'
+  sql_confirm_exec: Confirm SQL execution.
+
+uk-UA:
+  purge_user_confirm: 'Ви впевнені, що хочете видалити {0} з бази даних?'
+  cleanup_done: 'Дані {0} серверів залишилися в базі даних.'
+  sql_confirm_exec: Підтвердіть виконання наступної SQL команди
+
+vi-VN:
+  purge_user_confirm: 'Bạn có chắc muốn xóa dữ liệu của {0} khỏi cơ sở dữ liệu không?'
+  cleanup_done: 'Dữ liệu của {0} server còn lại trong cơ sở dữ liệu.'
+  sql_confirm_exec: Xác nhận thực thi lệnh SQL sau
+
+zh-CN:
+  purge_user_confirm: '請問你是否確定要從資料庫中完全刪除 {0} ？'
+  cleanup_done: '{0} 個伺服器的資料保留在資料庫中。'
+  sql_confirm_exec: 確認 SQL 執行

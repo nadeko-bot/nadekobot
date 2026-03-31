@@ -1,8 +1,0 @@
-curgen_disabled: Generowanie waluty zostało wyłączone na tym kanale.
-curgen_enabled: Generowanie waluty zostało włączone na tym kanale.
-curgen_pl: 'Pojawiło się {0} losowych {1}!'
-curgen_sn: 'Pojawił/a się losowy/a {0}!'
-pick_pl: 'Podnieś je wpisując `{0}pick`'
-pick_sn: 'Podnieś to wpisując `{0}pick`'
-picked: '{1} podniósł/podniosła {0}'
-planted: '{0} posadził/a {1}'

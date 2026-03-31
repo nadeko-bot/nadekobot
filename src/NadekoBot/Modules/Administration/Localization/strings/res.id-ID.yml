@@ -1,6 +1,0 @@
-lang_list: Daftar bahasa
-lang_set: 'Locale server kamu sekarang {0} - {1}'
-lang_set_bot: 'Locale default bot sekarang {0} - {1}'
-lang_set_bot_show: 'Bahasa bot diatur ke {0} - {1}'
-lang_set_fail: Gagal mengatur locale. Cek kembali bantuan perintah ini.
-lang_set_show: 'Bahasa server ini diatur ke {0} - {1}'

@@ -1,0 +1,239 @@
+ar:
+  abilities: القدرات
+  api_key_missing: مفتاح API مفقود.
+  height_weight: الطول/الوزن
+  height_weight_val: '{0}م/{1}كغ'
+  jokes_not_loaded: لم يتم تحميل النكت.
+  location: الموقع
+  magicitems_not_loaded: لم يتم تحميل العناصر السحرية.
+  pokemon_ability_none: لم يتم العثور على قدرة.
+  pokemon_none: لم يتم العثور على بوكيمون.
+  rating: التقييم
+  specify_search_params: يرجى تحديد معايير البحث.
+  status: الحالة
+  types: الأنواع
+
+de-DE:
+  abilities: Fähigkeiten
+  api_key_missing: Der API Key fehlt.
+  height_weight: Höhe/Größe
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Witze wurden nicht geladen.
+  location: Standort
+  magicitems_not_loaded: Magische Gegenstände nicht geladen.
+  pokemon_ability_none: Keine Fähigkeit gefunden.
+  pokemon_none: Kein Pokemon gefunden.
+  rating: Bewertung
+  specify_search_params: Bitte spezifiziere die Such-Parameter.
+  status: Status
+  types: Typen
+
+es-ES:
+  abilities: Habilidades
+  api_key_missing: No se ha especificado la clave de la API necesaria para este comando.
+  height_weight: Altura/Peso
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Bromas no cargadas.
+  location: Locación
+  magicitems_not_loaded: Objetos mágicos no cargados.
+  pokemon_ability_none: No se ha encontrado esa habilidad.
+  pokemon_none: No se ha encontrado ese Pokémon.
+  rating: Rating
+  specify_search_params: Por favor especifica los parámetros de búsqueda.
+  status: Estado
+  types: Tipos
+
+fr-FR:
+  abilities: Aptitudes
+  api_key_missing: La clé d'API est manquante.
+  height_weight: Taille/Poids
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Blagues non chargées.
+  location: Emplacement
+  magicitems_not_loaded: Objets magiques non chargés.
+  pokemon_ability_none: Aucune aptitude trouvée.
+  pokemon_none: Aucun pokémon trouvé.
+  rating: Évaluation
+  specify_search_params: Veuillez spécifier les paramètres de recherche.
+  status: Status
+  types: Types
+
+id-ID:
+  abilities: Kemampuan
+  api_key_missing: API key tidak ada.
+  height_weight: Tinggi/Berat
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Jokes belum dimuat.
+  location: Lokasi
+  magicitems_not_loaded: Magic Items belum dimuat.
+  pokemon_ability_none: Kemampuan tidak ditemukan.
+  pokemon_none: Pokemon tidak ditemukan.
+  rating: Rating
+  specify_search_params: Silakan tentukan parameter pencarian.
+  status: Status
+  types: Tipe
+
+ja-JP:
+  abilities: 能力
+  api_key_missing: APIキーがありません。
+  height_weight: 高さ／重さ
+  height_weight_val: '{0}m／{1}kg'
+  jokes_not_loaded: ジョークは読み込まれませんでした。
+  location: 場所
+  magicitems_not_loaded: マジックアイテムは読み込まれませんでした。
+  pokemon_ability_none: とくせいが見つかりませんでした。
+  pokemon_none: ポケモンが見つかりませんでした。
+  rating: レート
+  specify_search_params: 検索パラメータを指定してください。
+  status: 状態
+  types: タイプ
+
+ko-KR:
+  abilities: 능력
+  api_key_missing: API 키가 없어요.
+  height_weight: 키/몸무게
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: 농담이 로드되지 않았어요.
+  location: 위치
+  magicitems_not_loaded: 마법 아이템이 로드되지 않았어요.
+  pokemon_ability_none: 능력을 찾을 수 없어요.
+  pokemon_none: 포켓몬을 찾을 수 없어요.
+  rating: 평점
+  specify_search_params: 검색 조건을 입력해 주세요.
+  status: 상태
+  types: 타입
+
+pl-PL:
+  abilities: Umiejętności
+  api_key_missing: Brak klucza API.
+  height_weight: Wzrost/Waga
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Żarty nie zostały załadowane.
+  location: Lokalizacja
+  magicitems_not_loaded: Magiczne przedmioty nie zostały załadowane.
+  pokemon_ability_none: Nie znaleziono umiejętności.
+  pokemon_none: Nie znaleziono pokemona.
+  rating: Ocena
+  specify_search_params: Podaj parametry wyszukiwania.
+  status: Status
+  types: Typy
+
+pt-BR:
+  abilities: Habilidades
+  api_key_missing: Falta a chave API.
+  height_weight: Altura/Peso
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Piadas não carregadas.
+  location: Localização
+  magicitems_not_loaded: Itens mágicos não carregados.
+  pokemon_ability_none: Nenhuma habilidade foi encontrada.
+  pokemon_none: Nenhum pokemon foi encontrado.
+  rating: Avaliação
+  specify_search_params: Por favor, especifique os parâmetros de pesquisa.
+  status: Status
+  types: Tipos
+
+ru-RU:
+  abilities: Способности
+  api_key_missing: API ключ, необходимый для этой команды, не указан.
+  height_weight: Высота/вес
+  height_weight_val: '{0}метров/{1}килограммов'
+  jokes_not_loaded: Шутки не загружены.
+  location: Местоположение
+  magicitems_not_loaded: Магический предмет не загружен.
+  pokemon_ability_none: Никакой способности не найдено
+  pokemon_none: Покемон не найден
+  rating: Рейтинг
+  specify_search_params: Укажите параметры поиска.
+  status: Статус
+  types: 'Типы:'
+
+sr-Cyrl-RS:
+  abilities: Способности
+  api_key_missing: API кључ недостаје.
+  height_weight: Висина/Тежина
+  height_weight_val: '{0}м/{1}кг'
+  jokes_not_loaded: Шале нису учитане.
+  location: Локација
+  magicitems_not_loaded: Магични предмети нису учитани.
+  pokemon_ability_none: Способност није пронађена.
+  pokemon_none: Покемон није пронађен.
+  rating: Оцена
+  specify_search_params: Наведи параметре претраге.
+  status: Статус
+  types: Типови
+
+tr-TR:
+  abilities: Yetenekler
+  api_key_missing: API anahtarı eksik.
+  height_weight: Boy/Kilo
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Şakalar yüklenemedi.
+  location: Konum
+  magicitems_not_loaded: Sihirli Eşyalar yüklenemedi.
+  pokemon_ability_none: Yetenek bulunamadı.
+  pokemon_none: Pokémon bulunamadı.
+  rating: Puan
+  specify_search_params: Lütfen arama parametrelerini belirt.
+  status: Durum
+  types: Türler
+
+ts-TS:
+  abilities: Abilities
+  api_key_missing: The API key is missing.
+  height_weight: Height/Weight
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Jokes aren't loaded. Not that I wanted to make you laugh anyway.
+  location: Location
+  magicitems_not_loaded: Magic Items aren't loaded.
+  pokemon_ability_none: No ability found.
+  pokemon_none: Couldn't find that Pokemon. Are you sure you spelled it right?
+  rating: Rating
+  specify_search_params: Tell me what to search for. I'm not a mind reader.
+  status: Status
+  types: Types
+
+uk-UA:
+  abilities: Здібності
+  api_key_missing: API-ключ відсутній.
+  height_weight: Зріст/Вага
+  height_weight_val: '{0}м/{1}кг'
+  jokes_not_loaded: Жарти не завантажено.
+  location: Місцезнаходження
+  magicitems_not_loaded: Магічні предмети не завантажено.
+  pokemon_ability_none: Здібність не знайдено.
+  pokemon_none: Покемона не знайдено.
+  rating: Рейтинг
+  specify_search_params: Будь ласка, вкажи параметри пошуку.
+  status: Статус
+  types: Типи
+
+vi-VN:
+  abilities: Kỹ năng
+  api_key_missing: Thiếu khóa API.
+  height_weight: Chiều cao/Cân nặng
+  height_weight_val: '{0}m/{1}kg'
+  jokes_not_loaded: Chưa tải được truyện cười.
+  location: Vị trí
+  magicitems_not_loaded: Chưa tải được Vật phẩm ma thuật.
+  pokemon_ability_none: Không tìm thấy kỹ năng nào.
+  pokemon_none: Không tìm thấy pokémon nào.
+  rating: Đánh giá
+  specify_search_params: Vui lòng nhập từ khóa tìm kiếm.
+  status: Trạng thái
+  types: Loại
+
+zh-CN:
+  abilities: 能力
+  api_key_missing: 沒有指定這個指令所需要的 API代碼
+  height_weight: 高度/重量
+  height_weight_val: '{0}公尺/{1}公斤'
+  jokes_not_loaded: 笑話沒有加載成功。
+  location: 位置
+  magicitems_not_loaded: 魔法物品未加載。
+  pokemon_ability_none: 查無此技能
+  pokemon_none: 查無此神奇寶貝
+  rating: 評分
+  specify_search_params: 請指定搜索參數。
+  status: 狀態
+  types: 類型

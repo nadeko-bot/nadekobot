@@ -1,6 +1,0 @@
-reprm: '移除了自訂狀態：{0}'
-ropl_added: 添加。
-ropl_disabled: 禁用重複播放狀態。
-ropl_enabled: 啟用重複播放狀態。
-ropl_list: '以下是輪換狀態列表：{0}'
-ropl_not_set: 沒有設置重複播放狀態。

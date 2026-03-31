@@ -1,8 +1,0 @@
-reprm: 'Removed the playing message: {0}'
-ropl_added: Added.
-ropl_disabled: Rotating playing status disabled.
-ropl_enabled: Rotating playing status enabled. I-I set it up perfectly.
-ropl_list: |-
-  Here is a list of rotating statuses:
-  {0}
-ropl_not_set: No rotating playing statuses set. N-not that I was keeping track.

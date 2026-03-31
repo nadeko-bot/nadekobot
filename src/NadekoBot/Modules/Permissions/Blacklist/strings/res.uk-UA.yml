@@ -1,5 +1,0 @@
-blacklisted: '{0} з ID {1} додано до чорного списку'
-blacklisted_channels: Канали в чорному списку
-blacklisted_servers: Сервери в чорному списку
-blacklisted_users: Користувачі в чорному списку
-unblacklisted: '{0} з ID {1} видалено з чорного списку'

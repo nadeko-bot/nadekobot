@@ -1,5 +1,0 @@
-blacklisted: 'تمت إضافة {0} بالمعرّف {1} إلى القائمة السوداء'
-blacklisted_channels: القنوات المحظورة
-blacklisted_servers: الخوادم المحظورة
-blacklisted_users: المستخدمون المحظورون
-unblacklisted: 'تمت إزالة {0} بالمعرّف {1} من القائمة السوداء'

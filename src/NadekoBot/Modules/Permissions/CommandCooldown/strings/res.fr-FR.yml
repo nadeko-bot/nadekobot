@@ -1,4 +1,0 @@
-cmdcd_add: 'La commande {0} a désormais un temps de recharge de {1}s'
-cmdcd_cleared: 'La commande {0} ne possède plus de temps de recharge et tous ceux existants ont été retirés.'
-cmdcd_none: Aucun temps de recharge n'est programmé.
-invalid_second_param_between: 'Le second paramètre est invalide. (Doit être un nombre entre {0} et {1})'

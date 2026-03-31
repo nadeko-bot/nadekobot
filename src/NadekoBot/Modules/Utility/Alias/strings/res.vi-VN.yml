@@ -1,6 +1,0 @@
-alias_added: 'Gõ {0} giờ sẽ là bí danh của {1}.'
-alias_list: Danh sách bí danh
-alias_remove_fail: 'Trigger {0} không có bí danh.'
-alias_removed: 'Trigger {0} không còn bí danh nữa.'
-aliases_cleared: 'Tất cả {0} bí danh trên máy chủ này đã bị xóa.'
-aliases_none: Không tìm thấy bí danh nào

@@ -1,6 +1,0 @@
-dice_invalid_number: 'Invalid number specified. You can roll {0}-{1} dice at once.'
-dice_rolled: rolled {0}
-dice_rolled_num: 'Dice rolled: {0}'
-rolls: Rolls
-second_larger_than_first: Second number must be larger than the first one. B-basic math!
-total: Total

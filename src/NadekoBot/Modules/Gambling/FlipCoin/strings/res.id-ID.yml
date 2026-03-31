@@ -1,6 +1,0 @@
-betflip_guess: Kamu menebak dengan benar!
-flip_invalid: 'Angka yang dimasukkan tidak valid. Kamu bisa melempar 1 sampai {0} koin.'
-flip_results: 'Melempar {0} koin. {1} kepala, {2} ekor.'
-flipped: 'Melempar {0}'
-heads: Kepala
-tails: Ekor

@@ -1,5 +1,0 @@
-blacklisted: 'Blacklisted {0} with ID {1}.'
-blacklisted_channels: Blacklisted Channels
-blacklisted_servers: Blacklisted Servers
-blacklisted_users: Blacklisted Users
-unblacklisted: 'Unblacklisted {0} with ID {1}. D-don''t make me regret this.'

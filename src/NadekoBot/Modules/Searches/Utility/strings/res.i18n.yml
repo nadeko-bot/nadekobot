@@ -1,0 +1,63 @@
+ar:
+  original_url: الرابط الأصلي
+  short_url: الرابط المختصر
+
+de-DE:
+  original_url: Originaler Link
+  short_url: Gekürzte Url
+
+es-ES:
+  original_url: URL original
+  short_url: URL acortada
+
+fr-FR:
+  original_url: Url originale
+  short_url: Url raccourcie
+
+id-ID:
+  original_url: URL asli
+  short_url: URL pendek
+
+ja-JP:
+  original_url: 元のURL
+  short_url: 短縮したURL
+
+ko-KR:
+  original_url: 원본 URL
+  short_url: 단축 URL
+
+pl-PL:
+  original_url: Oryginalny url
+  short_url: Skrócony url
+
+pt-BR:
+  original_url: Link original
+  short_url: Link encurtado
+
+ru-RU:
+  original_url: Оригинальная ссылка
+  short_url: Короткая ссылка
+
+sr-Cyrl-RS:
+  original_url: Оригинални линк
+  short_url: Скраћени линк
+
+tr-TR:
+  original_url: Orijinal bağlantı
+  short_url: Kısa bağlantı
+
+ts-TS:
+  original_url: Original url
+  short_url: Short url
+
+uk-UA:
+  original_url: Оригінальне посилання
+  short_url: Коротке посилання
+
+vi-VN:
+  original_url: Url gốc
+  short_url: Url rút gọn
+
+zh-CN:
+  original_url: 原始網址
+  short_url: 短網址

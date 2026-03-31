@@ -1,6 +1,0 @@
-betflip_guess: Zgadłeś/aś!
-flip_invalid: 'Podano nieprawidłową liczbę. Możesz rzucić od 1 do {0} monet.'
-flip_results: 'Rzucono {0} monet. {1} orłów, {2} reszek.'
-flipped: 'Wyrzucono {0}'
-heads: Orzeł
-tails: Reszka

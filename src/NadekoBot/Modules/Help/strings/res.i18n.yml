@@ -1,0 +1,461 @@
+ar:
+  cmd_group_commands: 'مجموعة أوامر ''{0}'''
+  command_not_found: لا أستطيع العثور على هذا الأمر. يرجى التأكد من وجود الأمر قبل المحاولة مرة أخرى.
+  commandlist_regen: تم إعادة إنشاء قائمة الأوامر.
+  commands_instr: 'اكتب `{0}h اسم_الأمر` لرؤية المساعدة لذلك الأمر. مثال: `{0}h {0}8ball`'
+  guide: |-
+    **قائمة الأوامر**: <{0}>
+    **أدلة الاستضافة والتوثيق تجدها هنا**: <{1}>
+  list_of_modules: قائمة الوحدات
+  module_description_administration: الإشراف، معاقبة المستخدمين، إعداد الأدوار ذاتية التعيين ورسائل الترحيب
+  module_description_expressions: إعداد ردود مخصصة للبوت على كلمات أو عبارات معينة
+  module_description_gambling: راهن على رمي النرد، البلاك جاك، السلوتس، قلب العملة وغيرها
+  module_description_games: العب معلومات عامة، العد التصاعدي، حبل المشنقة، كونكت 4 وألعاب أخرى
+  module_description_help: احصل على مساعدة الأوامر والأوصاف وأمثلة الاستخدام
+  module_description_medusa: '**لمالك البوت فقط.** تحميل وإلغاء تحميل وإدارة الوحدات الديناميكية.'
+  module_description_missing: الوصف مفقود لهذه الوحدة.
+  module_description_music: شغّل الموسيقى من يوتيوب، ملفات محلية وبث إذاعي
+  module_description_owner: '**لمالك البوت فقط.** إدارة البوت، الوحدات الديناميكية، تغذية التصويت'
+  module_description_patronage: أوامر متعلقة بدعم البوت
+  module_description_permissions: إعداد صلاحيات الأوامر، تصفية الكلمات وتعيين فترات الانتظار للأوامر
+  module_description_searches: ابحث عن نكت، صور حيوانات، أنمي ومانغا
+  module_description_utility: إدارة الاقتباسات المخصصة، الرسائل المتكررة والتحقق من معلومات السيرفر
+  module_description_waifus: ادعم الوايفوز، أدرهم، أرسل هدايا واكسب عوائد
+  module_description_xp: اكسب نقاط خبرة بناءً على نشاط المحادثة، تحقق من بطاقات خبرة المستخدمين
+  module_footer: '{0}cmds {1}'
+  module_not_found: هذه الوحدة غير موجودة.
+  module_not_found_or_cant_exec: إما أن الوحدة غير موجودة، أو لا يمكنك تشغيل أي من الأوامر في الوحدة المحددة.
+  module_page_empty: لا توجد وحدة في هذه الصفحة.
+
+de-DE:
+  cmd_group_commands: 'Befehlsgruppe ''{0}'''
+  command_not_found: Ich kann diesen Befehl nicht finden. Bitte versichere dich, dass dieser Befehl existiert bevor du es nochmal ausprobierst.
+  commandlist_regen: Befehlsliste regeneriert.
+  commands_instr: 'Schreibe `{0}h CommandName` um die Hilfe für diesen spezifischen Command zu sehen, zum Beispiel `{0}h {0}8ball`'
+  guide: |-
+    **Liste der Kommandos**: <{0}>
+    **Hosting Leitfäden und Dokumentation können hier gefunden werden**: <{1}>
+  list_of_modules: Liste der Module
+  module_description_administration: Moderation, bestrafe Nutzer, richte selbst zuweisbare Rollen und Willkommensnachrichten ein
+  module_description_expressions: Richte eigene Bot-Antworten auf bestimmte Wörter oder Sätze ein
+  module_description_gambling: Wette auf Würfel würfe, Blackjack, Slots, Münzwürfe oder anderes
+  module_description_games: Spiele ein Quiz, Nunchi, Hangman, Connect4 und andere Spiele
+  module_description_help: Bekomme Hilfe für Befehle, Beschreibungen und Beispiele für deren Verwendung
+  module_description_medusa: '**Nur für Bot-Besitzer.** Lade, entlade und verwalte dynamische Module.'
+  module_description_missing: Beschreibung für dieses Module fehlt.
+  module_description_music: Spiele Musik von YouTube, lokalen Dateien und Radio Streams
+  module_description_owner: '**Nur für Bot-Besitzer.** Bot-Verwaltung, dynamische Module, Vote-Feed'
+  module_description_patronage: Befehle zur Unterstützung des Bots
+  module_description_permissions: Richte Berechtigungen für Befehle ein, filtere Wörter und richte Abklingzeiten für Befehle ein
+  module_description_searches: Suche nach Witzen, Bilder von Tieren, Anime und Manga
+  module_description_utility: Verwalte benutzerdefinierte Zitate, wiederholte Nachrichten und überprüfe Fakten über den Server
+  module_description_waifus: Unterstütze Waifus, verwalte sie, sende Geschenke und verdiene Rendite
+  module_description_xp: Erhalte XP basierend auf Chataktivität, prüfe Nutzer XP-karten
+  module_footer: '{0}cmds {1}'
+  module_not_found: Dieses Modul existiert nicht.
+  module_not_found_or_cant_exec: Entweder das Modul existiert nicht oder du kannst eine Befehle in diesem bestimmten Modul benutzen.
+  module_page_empty: Kein Modul auf dieser Seite.
+
+es-ES:
+  cmd_group_commands: 'Grupo de comandos ''{0}'''
+  command_not_found: No encuentro ese comando. Asegúrate de que exista antes de volver a intentar.
+  commandlist_regen: Lista de comandos regenerada.
+  commands_instr: 'Escribe `{0}h NombreDelComando` para recibir ayuda específica de ese comando. Ejemplo: `{0}h {0}8ball`.'
+  guide: |-
+    **Lista de comandos**: <{0}>
+    **Guías para hospedar y más pueden ser encontradas aquí**: <{1}>
+  list_of_modules: Lista de módulos
+  module_description_administration: Moderación, castigos, configuración de roles autoasignables y saludos
+  module_description_expressions: Configura respuestas personalizadas del bot a ciertas palabras o frases
+  module_description_gambling: Apuesta a las tiradas de dados, al blackjack, a las tragamonedas, al lanzamiento de monedas y a otros
+  module_description_games: Juega al trivial, al nunchi, al colgado, conecta4 y a otros juegos.
+  module_description_help: Obtén ayuda con los comandos, descripciones y ejemplos de uso.
+  module_description_medusa: '**Solo para el dueno del bot.** Cargar, descargar y gestionar modulos dinamicos.'
+  module_description_missing: Falta la descripción de este módulo.
+  module_description_music: Reproduce música de YouTube, archivos locales, SoundCloud y radios.
+  module_description_owner: '**Solo dueño del bot.** Gestión del bot, módulos dinámicos, feed de votos'
+  module_description_patronage: Comandos relacionados con el apoyo al bot
+  module_description_permissions: Ajusta permisos para los comandos, filtro de palabras y configura enfriamiento para los comandos.
+  module_description_searches: Busca bromas, imágenes de animales, anime y manga
+  module_description_utility: Administra citas personalizadas, repeticiones de mensajes y revisa datos sobre el servidor
+  module_description_waifus: Apoya waifus, gestiónalas, envía regalos y gana retornos
+  module_description_xp: Gana EXP según la actividad del chat, revisa la tarjeta de EXP de los usuarios.
+  module_footer: '{0}cmds {1}'
+  module_not_found: Ese módulo no existe.
+  module_not_found_or_cant_exec: O el módulo no existe, o no puedes ejecutar comandos del módulo especificado.
+  module_page_empty: No hay módulos en esta pagina
+
+fr-FR:
+  cmd_group_commands: 'Groupe de commande ''{0}'''
+  command_not_found: Je ne peux pas trouver cette commande. Vérifiez que cette commande existe avant de réessayer.
+  commandlist_regen: Liste de commandes régénérée.
+  commands_instr: 'Taper `{0}h NomCommande` pour voir l''aide de cette commande spécifique. Ex : `{0}h {0}8ball`'
+  guide: |-
+    **Liste de commandes** : <{0}>
+    **Des guides et documents d'hébergement peuvent être trouvés ici** : <{1}>
+  list_of_modules: Liste des modules
+  module_description_administration: Modération, punition des utilisateurs, configuration de rôles auto-assignables et messages d'accueil
+  module_description_expressions: Mise en place de réponses personnalisées du bot pour certains mots ou phrases
+  module_description_gambling: Pariez sur les lancers de dés, le blackjack, les machines à sous, les coinflips et autres
+  module_description_games: Jouez au trivia, nunchi, pendu, connect4 et à d'autres jeux
+  module_description_help: Obtenir de l'aide sur les commandes, des descriptions et des exemples d'utilisation
+  module_description_medusa: '**Unique au propriétaire du bot.** Charger, décharger et maintenez des modules dynamiques.'
+  module_description_missing: Description manquante pour ce module.
+  module_description_music: Jouez de la musique à partir de youtube, des fichiers locaux soundcloud et des flux radio
+  module_description_owner: '**Propriétaire du bot uniquement.** Gestion du bot, modules dynamiques, feed de votes'
+  module_description_patronage: Commandes liées au soutien du bot
+  module_description_permissions: Configurer les autorisations pour les commandes, filtrer les mots et configurer les temps de recharge des commandes
+  module_description_searches: Recherche de blagues, d'images d'animaux, d'anime et de manga
+  module_description_utility: Gérez les citations personnalisés, répéteurs et consulter les faits à propos du serveur
+  module_description_waifus: Soutenez des waifus, gérez-les, envoyez des cadeaux et gagnez des retours
+  module_description_xp: Gagnez de l'XP en fonction de l'activité de tchat, vérifiez les cartes XP des utilisateurs
+  module_footer: '{0}cmds {1}'
+  module_not_found: Ce module n'existe pas.
+  module_not_found_or_cant_exec: Soit ce module n'existe pas, soit vous ne pouvez exécuter aucunes de ces commandes dans le module spécifié.
+  module_page_empty: Aucun module dans cette page.
+
+id-ID:
+  cmd_group_commands: '''Grup perintah {0}'''
+  command_not_found: Aku tidak bisa menemukan perintah itu. Pastikan perintahnya benar sebelum mencoba lagi.
+  commandlist_regen: Daftar perintah sudah dibuat ulang.
+  commands_instr: 'Ketik `{0}h NamaPerintah` untuk melihat bantuan perintah tersebut. Contoh: `{0}h {0}8ball`'
+  guide: |-
+    **Daftar perintah**: <{0}>
+    **Panduan hosting dan dokumentasi bisa ditemukan di sini**: <{1}>
+  list_of_modules: Daftar modul
+  module_description_administration: Moderasi, hukum pengguna, atur role yang bisa dipilih sendiri dan pesan sambutan
+  module_description_expressions: Atur respons bot kustom untuk kata atau frasa tertentu
+  module_description_gambling: Taruhan dadu, blackjack, slot, lempar koin dan lainnya
+  module_description_games: Main trivia, countup, hangman, connect4 dan game lainnya
+  module_description_help: Dapatkan bantuan perintah, deskripsi dan contoh penggunaan
+  module_description_medusa: '**Khusus Pemilik Bot.** Muat, lepas dan kelola modul dinamis.'
+  module_description_missing: Deskripsi untuk modul ini belum tersedia.
+  module_description_music: Putar musik dari YouTube, file lokal dan radio streaming
+  module_description_owner: '**Khusus Pemilik Bot.** Manajemen bot, modul dinamis, feed voting'
+  module_description_patronage: Perintah yang berkaitan dengan dukungan untuk bot
+  module_description_permissions: Atur izin untuk perintah, filter kata dan atur cooldown perintah
+  module_description_searches: Cari lelucon, gambar hewan, anime dan manga
+  module_description_utility: Kelola kutipan kustom, pesan berulang dan cek informasi server
+  module_description_waifus: Dukung waifu, kelola mereka, kirim hadiah dan dapatkan keuntungan
+  module_description_xp: Dapatkan XP berdasarkan aktivitas chat, cek kartu XP pengguna
+  module_footer: '{0}cmds {1}'
+  module_not_found: Modul tersebut tidak ada.
+  module_not_found_or_cant_exec: Modul tersebut tidak ada, atau kamu tidak bisa menjalankan perintah apa pun di modul yang ditentukan.
+  module_page_empty: Tidak ada modul di halaman ini.
+
+ja-JP:
+  cmd_group_commands: '''{0}''コマンドグループ'
+  command_not_found: コマンドが見つかりません。コマンドが存在するか確認して、もう一度お試しください。
+  commandlist_regen: コマンドリストが再生成されました。
+  commands_instr: '`{0}h コマンド名`と入力すると、そのコマンドのヘルプが表示されます。例: `{0}h {0}8ball`'
+  guide: |-
+    **コマンド一覧**: <{0}>
+    **運営ガイドとドキュメントはこちら**: <{1}>
+  list_of_modules: モジュール一覧
+  module_description_administration: モデレーション、ユーザーの処罰、自己割り当てロールとグリートメッセージの設定
+  module_description_expressions: 特定の単語やフレーズに対するカスタムBot応答の設定
+  module_description_gambling: サイコロ、ブラックジャック、スロット、コイントスなどに賭ける
+  module_description_games: トリビア、カウントアップ、ハングマン、コネクト4などのゲームをプレイ
+  module_description_help: コマンドのヘルプ、説明、使用例を取得
+  module_description_medusa: '**Bot所有者のみ。**動的モジュールのロード、アンロード、管理。'
+  module_description_missing: このモジュールの説明がありません。
+  module_description_music: YouTube、ローカルファイル、ラジオストリームから音楽を再生
+  module_description_owner: '**Bot所有者のみ。**Bot管理、動的モジュール、投票フィード'
+  module_description_patronage: Botのサポートに関するコマンド
+  module_description_permissions: コマンドの権限設定、ワードフィルター、コマンドクールダウンの設定
+  module_description_searches: ジョーク、動物の画像、アニメやマンガを検索
+  module_description_utility: カスタム引用、繰り返しメッセージの管理、サーバー情報の確認
+  module_description_waifus: ワイフを支援し、管理し、ギフトを送り、リターンを稼ぐ
+  module_description_xp: チャット活動でXPを獲得、ユーザーのXPカードを確認
+  module_footer: '{0}cmds {1}'
+  module_not_found: そのモジュールは存在しません。
+  module_not_found_or_cant_exec: モジュールが存在しないか、指定されたモジュール内のコマンドを実行する権限がありません。
+  module_page_empty: このページにモジュールはありません。
+
+ko-KR:
+  cmd_group_commands: '''{0}'' 명령어 그룹'
+  command_not_found: 해당 명령어를 찾을 수 없어요. 명령어가 존재하는지 확인한 후 다시 시도해 주세요.
+  commandlist_regen: 명령어 목록이 재생성되었어요.
+  commands_instr: '특정 명령어의 도움말을 보려면 `{0}h 명령어이름`을 입력하세요. 예시: `{0}h {0}8ball`'
+  guide: |-
+    **명령어 목록**: <{0}>
+    **호스팅 가이드 및 문서는 여기에서 확인하세요**: <{1}>
+  list_of_modules: 모듈 목록
+  module_description_administration: 관리, 사용자 처벌, 자가 할당 역할 및 환영 메시지 설정
+  module_description_expressions: 특정 단어나 문구에 대한 봇의 커스텀 응답 설정
+  module_description_gambling: 주사위, 블랙잭, 슬롯, 동전 던지기 등에 배팅
+  module_description_games: 트리비아, 카운트업, 행맨, 사목 등의 게임 플레이
+  module_description_help: 명령어 도움말, 설명 및 사용 예시 확인
+  module_description_medusa: '**봇 소유자 전용.** 동적 모듈 로드, 언로드 및 관리.'
+  module_description_missing: 이 모듈에 대한 설명이 없어요.
+  module_description_music: 유튜브, 로컬 파일 및 라디오 스트림에서 음악 재생
+  module_description_owner: '**봇 소유자 전용.** 봇 관리, 동적 모듈, 투표 피드'
+  module_description_patronage: 봇 후원 관련 명령어
+  module_description_permissions: 명령어 권한, 단어 필터 및 명령어 쿨다운 설정
+  module_description_searches: 유머, 동물 이미지, 애니메이션 및 만화 검색
+  module_description_utility: 커스텀 인용구, 반복 메시지 관리 및 서버 정보 확인
+  module_description_waifus: 와이후 후원, 관리, 선물 보내기 및 수익 획득
+  module_description_xp: 채팅 활동으로 XP 획득, 사용자 XP 카드 확인
+  module_footer: '{0}cmds {1}'
+  module_not_found: 해당 모듈이 존재하지 않아요.
+  module_not_found_or_cant_exec: 해당 모듈이 존재하지 않거나, 지정된 모듈의 명령어를 실행할 권한이 없어요.
+  module_page_empty: 이 페이지에 모듈이 없어요.
+
+pl-PL:
+  cmd_group_commands: 'Grupa komend ''{0}'''
+  command_not_found: Nie mogę znaleźć tej komendy. Upewnij się, że komenda istnieje i spróbuj ponownie.
+  commandlist_regen: Lista komend została wygenerowana ponownie.
+  commands_instr: 'Wpisz `{0}h NazwaKomendy` aby zobaczyć pomoc dla danej komendy. np. `{0}h {0}8ball`'
+  guide: |-
+    **Lista komend**: <{0}>
+    **Poradniki hostingu i dokumentacja są tutaj**: <{1}>
+  list_of_modules: Lista modułów
+  module_description_administration: Moderacja, karanie użytkowników, konfiguracja samoprzypisywalnych ról i wiadomości powitalnych
+  module_description_expressions: Konfiguracja niestandardowych odpowiedzi bota na określone słowa lub frazy
+  module_description_gambling: Obstawiaj rzuty kośćmi, blackjacka, automaty, rzuty monetą i inne
+  module_description_games: Graj w trivię, countup, wisielca, connect4 i inne gry
+  module_description_help: Uzyskaj pomoc dotyczącą komend, opisy i przykłady użycia
+  module_description_medusa: '**Tylko dla właściciela bota.** Ładowanie, wyładowywanie i zarządzanie dynamicznymi modułami.'
+  module_description_missing: Brak opisu dla tego modułu.
+  module_description_music: Odtwarzaj muzykę z YouTube, lokalnych plików i strumieni radiowych
+  module_description_owner: '**Tylko dla właściciela bota.** Zarządzanie botem, dynamiczne moduły, kanał głosowań'
+  module_description_patronage: Komendy związane ze wspieraniem bota
+  module_description_permissions: Konfiguracja uprawnień dla komend, filtrowanie słów i ustawianie cooldownów komend
+  module_description_searches: Szukaj żartów, zdjęć zwierząt, anime i mangi
+  module_description_utility: Zarządzaj niestandardowymi cytatami, powtarzającymi się wiadomościami i sprawdzaj fakty o serwerze
+  module_description_waifus: Wspieraj waifu, zarządzaj nimi, wysyłaj prezenty i zarabiaj
+  module_description_xp: Zdobywaj XP na podstawie aktywności na czacie, sprawdzaj karty XP użytkowników
+  module_footer: '{0}cmds {1}'
+  module_not_found: Ten moduł nie istnieje.
+  module_not_found_or_cant_exec: Moduł nie istnieje, albo nie możesz uruchomić żadnej komendy z tego modułu.
+  module_page_empty: Brak modułu na tej stronie.
+
+pt-BR:
+  cmd_group_commands: 'Grupo de comandos ''{0}'''
+  command_not_found: Não consigo encontrar esse comando. Verifique se o comando existe e tente novamente.
+  commandlist_regen: Lista de comando gerada.
+  commands_instr: 'Digite `{0}h NomeDoCommando` para obter ajuda para o comando especificado. Ex: `{0}h {0}8ball`'
+  guide: |-
+    **Lista de comandos**: <{0}>
+    **Guias de Hosting a documentos podem ser encontrados aqui**: <{1}>
+  list_of_modules: Lista dos módulos
+  module_description_administration: Moderação, punir usuários, configurar cargos dados á si mesmo e mensagens de boas vindas
+  module_description_expressions: Configure respostas customizadas para certas palavras ou frases
+  module_description_gambling: Apostar em rolar de dados, blackjack, máquinas de casino, cara ou coroa e outros
+  module_description_games: Jogue trivia, nunchi, forca, conecte 4, e outros jogos
+  module_description_help: Pegar comando ajuda, descrições e exemplos de uso
+  module_description_medusa: '**Somente Dono do Bot.** Carregar, descarregar e gerenciar modulos dinamicos.'
+  module_description_missing: Descrição está faltando para este módulo.
+  module_description_music: Toque músicas do YouTube, arquivos locais do SoundCloud e rádios ao vivo
+  module_description_owner: '**Somente dono do bot.** Gerenciamento do bot, módulos dinâmicos, feed de votos'
+  module_description_patronage: Comandos relacionados ao apoio ao bot
+  module_description_permissions: Configure permissões para comandos, filtro de palavras e configure intervalo de comandos
+  module_description_searches: Procure por piadas, imagens de animais, anime e manga
+  module_description_utility: Controle falas customizadas, mensagens repetidas e veja fatos sobre o servidor
+  module_description_waifus: Apoie waifus, gerencie-as, envie presentes e ganhe retornos
+  module_description_xp: Ganhe xp baseado na atividade em chat, verifique cartão de xp do usuário
+  module_footer: '{0}cmds {1}'
+  module_not_found: Esse módulo não existe.
+  module_not_found_or_cant_exec: O módulo não existe ou você não pode executar qualquer um dos comandos no módulo especificado.
+  module_page_empty: Nenhum módulo nessa página.
+
+ru-RU:
+  cmd_group_commands: 'Группа команд ''{0}'''
+  command_not_found: Я не могу найти эту команду. Пожалуйста, убедись, что команда существует, перед тем, как пробовать снова.
+  commandlist_regen: Список команд восстановлен.
+  commands_instr: 'Наберите `{0}h команда` чтобы получить помощь по указанной команде. Например: `{0}h {0}ball`'
+  guide: |-
+    ** Список команд **: <{0}>
+    ** Руководства и документы по хостингу можно найти здесь **: <{1}>
+  list_of_modules: Список модулей
+  module_description_administration: Модерация, наказание пользователей, установка самопределяемых ролей и приветственные сообщения
+  module_description_expressions: Настройка пользовательских ответов бота на определенные слова или фразы
+  module_description_gambling: Ставки на броски костей, блэкджек, слоты, койнфлип и другие
+  module_description_games: Играйте в trivia, нунчи, виселица, коннект4 и другие игры
+  module_description_help: Получите справку по командам, описания и примеры использования
+  module_description_medusa: '**Только для владельца бота.** Загрузка, выгрузка и управление динамическими модулями.'
+  module_description_missing: Описание этого модуля отсутствует.
+  module_description_music: Воспроизведение музыки с YouTube, локальных файлов, звукового облака и радиопотоков
+  module_description_owner: '**Только для владельца бота.** Управление ботом, динамические модули, лента голосований'
+  module_description_patronage: Команды, связанные с поддержкой бота
+  module_description_permissions: Настройка разрешений для команд, фильтрация слов и настройка времени восстановления команд
+  module_description_searches: Поиск шуток, изображений животных, аниме и манги
+  module_description_utility: Управляйте кастомными цитатами, повторяйте сообщения и проверяйте факты о сервере
+  module_description_waifus: Поддерживайте вайфу, управляйте ими, отправляйте подарки и получайте доход
+  module_description_xp: Получайте опыт на основе активности в чате, проверяйте карты опыта пользователей
+  module_footer: '{0}cmds {1}'
+  module_not_found: Этот модуль не существует.
+  module_not_found_or_cant_exec: Этот модуль либо не существует, либо же Вы не можете воспользоваться никакими командами из данного модуля.
+  module_page_empty: На этой странице нет модуля.
+
+sr-Cyrl-RS:
+  cmd_group_commands: '''Група команди ''{0}'''
+  command_not_found: Не могу да пронађем ту команду. Провери да ли команда постоји пре него што покушаш поново.
+  commandlist_regen: Листа команди је регенерисана.
+  commands_instr: 'Укуцај `{0}h ИмеКоманде` да видиш помоћ за ту команду. нпр. `{0}h {0}8ball`'
+  guide: |-
+    **Листа команди**: <{0}>
+    **Водичи за хостовање и документација се налазе овде**: <{1}>
+  list_of_modules: Листа модула
+  module_description_administration: Модерација, кажњавање корисника, подешавање улога за самододелу и поруке добродошлице
+  module_description_expressions: Подеси прилагођене одговоре бота на одређене речи или фразе
+  module_description_gambling: Кладите се на бацање коцкица, блекџек, слотове, бацање новчића и друго
+  module_description_games: Играј тривију, countup, вешала, connect4 и друге игре
+  module_description_help: Добиј помоћ за команде, описе и примере коришћења
+  module_description_medusa: '**Само за власника бота.** Учитај, уклони и управљај динамичким модулима.'
+  module_description_missing: Опис недостаје за овај модул.
+  module_description_music: Пуштај музику са YouTube-а, локалних фајлова и радио стримова
+  module_description_owner: '**Само за власника бота.** Управљање ботом, динамички модули, фид гласова'
+  module_description_patronage: Команде везане за подршку боту
+  module_description_permissions: Подеси дозволе за команде, филтрирај речи и постави cooldown за команде
+  module_description_searches: Претражуј вицеве, слике животиња, аниме и мангу
+  module_description_utility: Управљај прилагођеним цитатима, понављајућим порукама и провери информације о серверу
+  module_description_waifus: Подржавај вајфуе, управљај њима, шаљи поклоне и зарађуј
+  module_description_xp: Зарађуј XP на основу активности у чету, провери XP картице корисника
+  module_footer: '{0}cmds {1}'
+  module_not_found: Тај модул не постоји.
+  module_not_found_or_cant_exec: Или модул не постоји, или не можеш да покренеш ниједну команду у наведеном модулу.
+  module_page_empty: Нема модула на овој страници.
+
+tr-TR:
+  cmd_group_commands: '''{0}'' komut grubu'
+  command_not_found: Bu komutu bulamıyorum. Lütfen tekrar denemeden önce komutun var olduğunu doğrula.
+  commandlist_regen: Komut listesi yeniden oluşturuldu.
+  commands_instr: 'Belirtilen komutun yardımını görmek için `{0}h KomutAdı` yaz. Örn: `{0}h {0}8ball`'
+  guide: |-
+    **Komut listesi**: <{0}>
+    **Kurulum rehberleri ve dökümantasyon burada**: <{1}>
+  list_of_modules: Modül listesi
+  module_description_administration: Moderasyon, kullanıcıları cezalandırma, otomatik atanabilir roller ve karşılama mesajları ayarlama
+  module_description_expressions: Belirli kelime veya cümlelere özel bot yanıtları ayarlama
+  module_description_gambling: Zar atma, blackjack, slot, yazı-tura ve diğerlerine bahis yapma
+  module_description_games: Trivia, sayı sayma, adam asmaca, connect4 ve diğer oyunları oyna
+  module_description_help: Komut yardımı, açıklamaları ve kullanım örnekleri al
+  module_description_medusa: '**Yalnızca Bot Sahibi.** Dinamik modülleri yükle, kaldır ve yönet.'
+  module_description_missing: Bu modül için açıklama eksik.
+  module_description_music: YouTube, yerel dosyalar ve radyo yayınlarından müzik çal
+  module_description_owner: '**Yalnızca Bot Sahibi.** Bot yönetimi, dinamik modüller, oylama akışı'
+  module_description_patronage: Botu desteklemeyle ilgili komutlar
+  module_description_permissions: Komutlar için izinler ayarla, kelimeleri filtrele ve komut bekleme süreleri belirle
+  module_description_searches: Fıkra, hayvan resimleri, anime ve manga ara
+  module_description_utility: Özel alıntıları, tekrarlayan mesajları yönet ve sunucu hakkında bilgi al
+  module_description_waifus: Waifu'ları destekle, yönet, hediye gönder ve kazanç elde et
+  module_description_xp: Sohbet aktivitesine göre xp kazan, kullanıcıların xp kartlarını kontrol et
+  module_footer: '{0}cmds {1}'
+  module_not_found: Bu modül mevcut değil.
+  module_not_found_or_cant_exec: Modül mevcut değil ya da belirtilen modüldeki komutların hiçbirini çalıştıramıyorsun.
+  module_page_empty: Bu sayfada modül yok.
+
+ts-TS:
+  cmd_group_commands: '''{0}'' command group'
+  command_not_found: That command doesn't exist. Double-check the name before trying again, okay?
+  commandlist_regen: Commandlist regenerated.
+  commands_instr: 'Type `{0}h CommandName` to see help for that command. E.g. `{0}h {0}8ball`'
+  guide: |-
+    **List of commands**: <{0}>
+    **Hosting guides and docs**: <{1}>
+  list_of_modules: List of modules
+  module_description_administration: Moderation, punish troublemakers, setup self-assignable roles and greet messages.
+  module_description_expressions: Setup custom bot responses to certain words or phrases.
+  module_description_gambling: Bet on dice rolls, blackjack, slots, coinflips and more. D-don't lose all your money.
+  module_description_games: Play trivia, countup, hangman, connect4 and other games.
+  module_description_help: Get command help, descriptions and usage examples. Not that you should need it.
+  module_description_medusa: '**Bot Owner only.** Load, unload and handle dynamic modules.'
+  module_description_missing: Description is missing for this module.
+  module_description_music: Play music from YouTube, local files and radio streams.
+  module_description_owner: '**Bot Owner only.** Bot management, dynamic modules, vote feed.'
+  module_description_patronage: Commands related to supporting the bot.
+  module_description_permissions: Setup perms for commands, filter words and set up command cooldowns.
+  module_description_searches: Search for jokes, animal images, anime and manga.
+  module_description_utility: Manage custom quotes, repeating messages and check server facts.
+  module_description_waifus: Back waifus, manage them, send gifts and earn returns. I-it's not like I want anyone to claim me!
+  module_description_xp: Gain xp based on chat activity, check users' xp cards.
+  module_footer: '{0}cmds {1}'
+  module_not_found: That module doesn't exist. Check the name.
+  module_not_found_or_cant_exec: Either the module doesn't exist, or you can't run any commands in it. Hmph.
+  module_page_empty: No module on this page.
+
+uk-UA:
+  cmd_group_commands: 'Група команд ''{0}'''
+  command_not_found: Не можу знайти цю команду. Переконайся, що команда існує, перш ніж спробувати знову.
+  commandlist_regen: Список команд перегенеровано.
+  commands_instr: 'Напиши `{0}h НазваКоманди`, щоб побачити довідку по цій команді. Наприклад: `{0}h {0}8ball`'
+  guide: |-
+    **Список команд**: <{0}>
+    **Гайди з хостингу та документація тут**: <{1}>
+  list_of_modules: Список модулів
+  module_description_administration: Модерація, покарання користувачів, налаштування ролей та привітальних повідомлень
+  module_description_expressions: Налаштування кастомних відповідей бота на певні слова чи фрази
+  module_description_gambling: Ставки на кубики, блекджек, слоти, підкидання монетки та інше
+  module_description_games: Грай у вікторину, countup, шибеницю, connect4 та інші ігри
+  module_description_help: Отримай довідку по командах, описи та приклади використання
+  module_description_medusa: '**Тільки для власника бота.** Завантаження, вивантаження та керування динамічними модулями.'
+  module_description_missing: Опис для цього модуля відсутній.
+  module_description_music: Відтворення музики з YouTube, локальних файлів та радіо потоків
+  module_description_owner: '**Тільки для власника бота.** Керування ботом, динамічні модулі, стрічка голосувань'
+  module_description_patronage: Команди, пов''язані з підтримкою бота
+  module_description_permissions: Налаштування дозволів для команд, фільтрація слів та кулдауни команд
+  module_description_searches: Пошук жартів, зображень тварин, аніме та манги
+  module_description_utility: Керування цитатами, повторюваними повідомленнями та перевірка фактів про сервер
+  module_description_waifus: Підтримуй вайфу, керуй ними, надсилай подарунки та отримуй прибуток
+  module_description_xp: Отримуй досвід за активність у чаті, переглядай картки досвіду користувачів
+  module_footer: '{0}cmds {1}'
+  module_not_found: Цей модуль не існує.
+  module_not_found_or_cant_exec: Або модуль не існує, або ти не можеш виконати жодну з команд у вказаному модулі.
+  module_page_empty: На цій сторінці немає модулів.
+
+vi-VN:
+  cmd_group_commands: 'Nhóm lệnh ''{0}'''
+  command_not_found: Mình không tìm thấy lệnh đó. Hãy kiểm tra lại xem lệnh có tồn tại trước khi thử lại nhé.
+  commandlist_regen: Đã tạo lại danh sách lệnh.
+  commands_instr: 'Gõ `{0}h TênLệnh` để xem hướng dẫn cho lệnh đó. Ví dụ: `{0}h {0}8ball`'
+  guide: |-
+    **Danh sách lệnh**: <{0}>
+    **Hướng dẫn cài đặt và tài liệu có tại đây**: <{1}>
+  list_of_modules: Danh sách module
+  module_description_administration: Quản lý, phạt người dùng, thiết lập vai trò tự gán và tin nhắn chào mừng
+  module_description_expressions: Thiết lập phản hồi tùy chỉnh của bot cho các từ hoặc cụm từ nhất định
+  module_description_gambling: Đặt cược xúc xắc, blackjack, slot, tung đồng xu và nhiều hơn nữa
+  module_description_games: Chơi trivia, đếm số, hangman, connect4 và các trò chơi khác
+  module_description_help: Xem hướng dẫn, mô tả và ví dụ sử dụng lệnh
+  module_description_medusa: '**Chỉ dành cho chủ bot.** Tải, gỡ và quản lý các module động.'
+  module_description_missing: Module này chưa có mô tả.
+  module_description_music: Phát nhạc từ YouTube, file local và luồng radio
+  module_description_owner: '**Chỉ dành cho chủ bot.** Quản lý bot, module động, feed bình chọn'
+  module_description_patronage: Các lệnh liên quan đến việc ủng hộ bot
+  module_description_permissions: Thiết lập quyền cho lệnh, lọc từ và đặt thời gian hồi lệnh
+  module_description_searches: Tìm kiếm truyện cười, hình ảnh động vật, anime và manga
+  module_description_utility: Quản lý câu trích dẫn, tin nhắn lặp lại và xem thông tin server
+  module_description_waifus: Đầu tư waifu, quản lý, tặng quà và kiếm lợi nhuận
+  module_description_xp: Nhận XP dựa trên hoạt động chat, xem thẻ XP của người dùng
+  module_footer: '{0}cmds {1}'
+  module_not_found: Module đó không tồn tại.
+  module_not_found_or_cant_exec: Module không tồn tại, hoặc bạn không thể chạy bất kỳ lệnh nào trong module đó.
+  module_page_empty: Không có module nào ở trang này.
+
+zh-CN:
+  cmd_group_commands: '''{0}'' 命令组'
+  command_not_found: 我無法找到該指令。請先確認該指令是否存在再嘗試。
+  commandlist_regen: 命令列表重新生成。
+  commands_instr: '輸入 `{0}h 指令` 來查看該指令的說明，例如 `{0}h {0}8ball`'
+  guide: '**命令列表**：<{0}> **可在此處找到託管指南和文檔**：<{1}>'
+  list_of_modules: 模組列表
+  module_description_administration: 管理、懲罰、設定可領取的身分組和歡迎訊息
+  module_description_expressions: 設置對某些單詞或短語的自定義機器人響應
+  module_description_gambling: 對骰子、二十一點、拉霸機、擲硬幣等下注
+  module_description_games: 遊玩 trivia、nunchi、hangman、connect4 和其他遊戲
+  module_description_help: 取得指令的幫助、說明和使用範例
+  module_description_medusa: '**仅限机器人所有者。** 加载、卸载和管理动态模块。'
+  module_description_missing: 這個模組缺少說明
+  module_description_music: 從Youtube、本地檔案、SoundCloud和電台播放音樂
+  module_description_owner: '**僅機器人擁有者。**機器人管理、動態模組、投票訂閱'
+  module_description_patronage: 與支持機器人相關的指令
+  module_description_permissions: 設定指令的權限、過濾文字、設定指令冷卻時間
+  module_description_searches: 搜尋笑話、動物的圖片、動漫和漫畫
+  module_description_utility: 管理客製化引言、重複訊息和查看伺服器的資訊
+  module_description_waifus: 支持老婆、管理她們、送禮物並賺取收益
+  module_description_xp: 根據聊天活動獲得經驗值、查看使用者的經驗卡
+  module_footer: '{0}cmds {1}'
+  module_not_found: 這個模組不存在
+  module_not_found_or_cant_exec: 這個模組不存在，或者你沒有權限使用這個模組的任何指令
+  module_page_empty: 本頁沒有任何模組

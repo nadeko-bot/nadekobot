@@ -1,0 +1,223 @@
+ar:
+  acro_ended_no_sub: انتهت اللعبة بدون أي مشاركات.
+  acro_no_votes_cast: لم يتم الإدلاء بأي أصوات. انتهت اللعبة بدون فائز.
+  acro_nym_was: 'كان الاختصار {0}.'
+  acro_running: لعبة Acrophobia قيد التشغيل بالفعل في هذه القناة.
+  acro_started: 'بدأت اللعبة. أنشئ جملة باستخدام الاختصار التالي: {0}.'
+  acro_started_footer: 'لديك {0} ثانية لتقديم مشاركتك.'
+  acro_vote: صوّت بكتابة رقم المشاركة
+  acro_vote_cast: '{0} أدلى بصوته!'
+  acro_winner: 'الفائز هو {0} بـ {1} نقطة.'
+  acro_winner_only: '{0} هو الفائز لكونه المشارك الوحيد!'
+  acrophobia: Acrophobia
+  submissions_closed: تم إغلاق المشاركات
+
+de-DE:
+  acro_ended_no_sub: Spiel beendet mit keinen einreichungen.
+  acro_no_votes_cast: Keine Abstimmung erfolgt. Spiel endete ohne Gewinner.
+  acro_nym_was: 'Akronym war {0}.'
+  acro_running: Akrophobie-Spiel ist bereits aktiv in diesem Raum.
+  acro_started: 'Das Spiel hat gestartet. Beginne einen Satz mit dem folgenden Akronym: {0}.'
+  acro_started_footer: 'Du hast {0} Sekunden um eine Idee einzureichen.'
+  acro_vote: Stimme durchs Schreiben einer Nummer der Vorlage ab
+  acro_vote_cast: '{0} hat seine Stimme abgegeben!'
+  acro_winner: '{0} ist Gewinner mit {1} Punkten.'
+  acro_winner_only: '{0} ist Gewinner, da nur eine Einreichung abgegeben wurde!'
+  acrophobia: Akrophobie
+  submissions_closed: Einreichungen geschlossen
+
+es-ES:
+  acro_ended_no_sub: El juego terminó sin entregas.
+  acro_no_votes_cast: No hay votos. El juego terminó sin ganador.
+  acro_nym_was: 'El acrónimo era {0}.'
+  acro_running: El juego de acrofobia ya está en ejecución en este canal.
+  acro_started: 'Se iniciará el juego. Crea una oración con el siguiente acrónimo: {0}.'
+  acro_started_footer: 'Tienes {0} segundos para enviar una.'
+  acro_vote: Vota escribiendo el número de la entrega.
+  acro_vote_cast: '¡{0} ha enviado su voto!'
+  acro_winner: 'El ganador es {0} con {1} puntos.'
+  acro_winner_only: '¡{0} es el ganador por ser el único usuario que envió una oración!'
+  acrophobia: Acrofobia
+  submissions_closed: Entregas cerradas
+
+fr-FR:
+  acro_ended_no_sub: La partie s'est terminée sans soumissions.
+  acro_no_votes_cast: Aucun votes émis. La partie s'est terminée avec aucun gagnant.
+  acro_nym_was: 'L''acronyme était {0}.'
+  acro_running: Une partie d'Acrophobia est déjà en cours dans ce salon.
+  acro_started: 'La partie a commencé. Créez une phrase avec l''acronyme suivant: {0}.'
+  acro_started_footer: 'Vous avez {0} secondes pour faire une soumission.'
+  acro_vote: Votez en tapant le numéro de la soumission
+  acro_vote_cast: '{0} a voté!'
+  acro_winner: 'Le gagnant est {0} avec {1} points.'
+  acro_winner_only: '{0} est le gagnant car il est le seul à avoir participé!'
+  acrophobia: Acrophobie
+  submissions_closed: Soumissions fermées
+
+id-ID:
+  acro_ended_no_sub: Permainan berakhir tanpa ada kiriman.
+  acro_no_votes_cast: Tidak ada suara. Permainan berakhir tanpa pemenang.
+  acro_nym_was: 'Akronimnya adalah {0}.'
+  acro_running: Permainan Acrophobia sudah berjalan di channel ini.
+  acro_started: 'Permainan dimulai. Buat kalimat dengan akronim berikut: {0}.'
+  acro_started_footer: 'Kamu punya {0} detik untuk mengirim jawaban.'
+  acro_vote: Voting dengan mengetik nomor kiriman
+  acro_vote_cast: '{0} sudah memberikan suaranya!'
+  acro_winner: 'Pemenangnya adalah {0} dengan {1} poin.'
+  acro_winner_only: '{0} adalah pemenang karena satu-satunya yang mengirim jawaban!'
+  acrophobia: Acrophobia
+  submissions_closed: Pengiriman jawaban ditutup
+
+ja-JP:
+  acro_ended_no_sub: 回答が無かったためゲームは終了しました。
+  acro_no_votes_cast: 投票がありませんでした。勝者無しでゲームは終了しました。
+  acro_nym_was: 'お題は{0}でした。'
+  acro_running: あいうえお作文ゲームは既にこのチャンネルで行われています。
+  acro_started: 'ゲームが始まりました。{0}を頭文字とした文章を作ってください。'
+  acro_started_footer: '回答制限時間は{0}秒です。'
+  acro_vote: 回答の番号を入力して投票してください
+  acro_vote_cast: '{0}が投票をしました！'
+  acro_winner: '勝者は{1}点の{0}です。'
+  acro_winner_only: '{0}しか回答を提出しなかったので勝者は{0}です！'
+  acrophobia: あいうえお作文ゲーム
+  submissions_closed: 回答の受付が終了しました
+
+ko-KR:
+  acro_ended_no_sub: 제출된 답변이 없어서 게임이 종료되었어요.
+  acro_no_votes_cast: 투표가 없어서 승자 없이 게임이 종료되었어요.
+  acro_nym_was: '두문자어는 {0}이었어요.'
+  acro_running: 이 채널에서 이미 아크로포비아 게임이 진행 중이에요.
+  acro_started: '게임이 시작되었어요. 다음 두문자어로 문장을 만들어 보세요: {0}.'
+  acro_started_footer: '{0}초 안에 답변을 제출해 주세요.'
+  acro_vote: 제출물 번호를 입력해서 투표하세요
+  acro_vote_cast: '{0}이(가) 투표했어요!'
+  acro_winner: '{0}이(가) {1}점으로 우승했어요.'
+  acro_winner_only: '{0}이(가) 유일한 참가자로 우승했어요!'
+  acrophobia: 아크로포비아
+  submissions_closed: 제출이 마감되었어요
+
+pl-PL:
+  acro_ended_no_sub: Gra zakończyła się bez żadnych zgłoszeń.
+  acro_no_votes_cast: Brak głosów. Gra zakończyła się bez zwycięzcy.
+  acro_nym_was: 'Akronim to {0}.'
+  acro_running: Gra w akrofonię już trwa na tym kanale.
+  acro_started: 'Gra rozpoczęta. Utwórz zdanie z następującego akronimu: {0}.'
+  acro_started_footer: 'Masz {0} sekund na zgłoszenie.'
+  acro_vote: Głosuj wpisując numer zgłoszenia
+  acro_vote_cast: '{0} oddał głos!'
+  acro_winner: 'Zwycięzcą jest {0} z {1} punktami.'
+  acro_winner_only: '{0} jest zwycięzcą, bo był jedyną osobą, która coś zgłosiła!'
+  acrophobia: Akrofobia
+  submissions_closed: Zgłoszenia zamknięte
+
+pt-BR:
+  acro_ended_no_sub: O jogo terminou sem submissões.
+  acro_no_votes_cast: Nenhum voto foi registrado. O jogo terminou sem vencedor.
+  acro_nym_was: 'O acrônimo é {0}.'
+  acro_running: Uma partida de Acrophobia já está em andamento nesse canal.
+  acro_started: 'Partida iniciada. Crie uma frase com o seguinte acrônimo: {0}.'
+  acro_started_footer: 'Você tem {0} segundos para fazer uma submissão.'
+  acro_vote: Vote digitando o número correspondente à submissão
+  acro_vote_cast: '{0} votou!'
+  acro_winner: 'O vencedor é {0} com {1} pontos.'
+  acro_winner_only: '{0} venceu por ser o único a fazer uma submissão!'
+  acrophobia: Acrophobia
+  submissions_closed: Submissões encerradas
+
+ru-RU:
+  acro_ended_no_sub: Игра была закончена без ответов.
+  acro_no_votes_cast: Никто не проголосовал. Игра была закончена без победителя.
+  acro_nym_was: 'Акроним был {0}.'
+  acro_running: Игра в Акрофобию уже проходит в этом канале.
+  acro_started: 'Игра началась. Составьте предложение со следующим акронимом: {0}.'
+  acro_started_footer: 'У вас есть {0} для того, что бы предложить свой вариант.'
+  acro_vote: Проголосовать можно просто написав номер ответа в чат
+  acro_vote_cast: '{0} отдал свой голос!'
+  acro_winner: 'Победитель {0} с {1} баллами.'
+  acro_winner_only: 'Победителем стал {0} - он всего один, кто дал ответ.'
+  acrophobia: Акрофобия
+  submissions_closed: Приём ответов был окончен.
+
+sr-Cyrl-RS:
+  acro_ended_no_sub: Игра завршена без поднесака.
+  acro_no_votes_cast: Нема гласова. Игра завршена без победника.
+  acro_nym_was: 'Акроним је био {0}.'
+  acro_running: Акрофобија игра већ траје на овом каналу.
+  acro_started: 'Игра је почела. Направи реченицу са следећим акронимом: {0}.'
+  acro_started_footer: 'Имаш {0} секунди да пошаљеш одговор.'
+  acro_vote: Гласај уписивањем броја поднеска
+  acro_vote_cast: '{0} је гласао/ла!'
+  acro_winner: 'Победник је {0} са {1} поена.'
+  acro_winner_only: '{0} је победник јер је једини корисник који је послао одговор!'
+  acrophobia: Акрофобија
+  submissions_closed: Поднесци затворени
+
+tr-TR:
+  acro_ended_no_sub: Oyun gönderim yapılmadan sona erdi.
+  acro_no_votes_cast: Oy kullanılmadı. Oyun kazanan olmadan sona erdi.
+  acro_nym_was: 'Kısaltma {0} idi.'
+  acro_running: Bu kanalda zaten bir Acrophobia oyunu çalışıyor.
+  acro_started: 'Oyun başladı. Şu kısaltmayla bir cümle oluştur: {0}.'
+  acro_started_footer: 'Gönderim yapmak için {0} saniyen var.'
+  acro_vote: Gönderimin numarasını yazarak oy ver
+  acro_vote_cast: '{0} oyunu kullandı!'
+  acro_winner: 'Kazanan {1} puanla {0}!'
+  acro_winner_only: '{0} tek gönderim yapan kişi olduğu için kazanan!'
+  acrophobia: Acrophobia
+  submissions_closed: Gönderimler kapandı
+
+ts-TS:
+  acro_ended_no_sub: Game ended with no submissions.
+  acro_no_votes_cast: Nobody voted. Game ended with no winner.
+  acro_nym_was: 'Acronym was {0}.'
+  acro_running: Acrophobia game is already running in this channel.
+  acro_started: 'Game started. Create a sentence with this acronym: {0}.'
+  acro_started_footer: 'You have {0} seconds to submit. H-hurry up!'
+  acro_vote: Vote by typing the number of the submission.
+  acro_vote_cast: '{0} cast their vote!'
+  acro_winner: 'Winner is {0} with {1} points.'
+  acro_winner_only: '{0} wins for being the only one who submitted!'
+  acrophobia: Acrophobia
+  submissions_closed: Submissions closed.
+
+uk-UA:
+  acro_ended_no_sub: Гра завершилась без відповідей.
+  acro_no_votes_cast: Ніхто не голосував. Гра завершилась без переможця.
+  acro_nym_was: 'Акронім був {0}.'
+  acro_running: Гра в акрофобію вже запущена в цьому каналі.
+  acro_started: 'Гру розпочато. Склади речення з таким акронімом: {0}.'
+  acro_started_footer: 'У тебе є {0} секунд для відповіді.'
+  acro_vote: Голосуй, набравши номер відповіді
+  acro_vote_cast: '{0} проголосував!'
+  acro_winner: 'Переможець - {0} з {1} очками.'
+  acro_winner_only: '{0} переміг як єдиний, хто дав відповідь!'
+  acrophobia: Акрофобія
+  submissions_closed: Приймання відповідей закрито
+
+vi-VN:
+  acro_ended_no_sub: Trò chơi kết thúc mà không có ai gửi bài.
+  acro_no_votes_cast: Không có ai bình chọn. Trò chơi kết thúc không có người thắng.
+  acro_nym_was: 'Từ viết tắt là {0}.'
+  acro_running: Trò Acrophobia đang chạy trong kênh này rồi.
+  acro_started: 'Trò chơi bắt đầu. Tạo một câu với từ viết tắt sau: {0}.'
+  acro_started_footer: 'Bạn có {0} giây để gửi bài.'
+  acro_vote: Bình chọn bằng cách nhập số thứ tự của bài dự thi
+  acro_vote_cast: '{0} đã bình chọn!'
+  acro_winner: 'Người thắng là {0} với {1} điểm.'
+  acro_winner_only: '{0} là người thắng vì là người duy nhất gửi bài!'
+  acrophobia: Acrophobia
+  submissions_closed: Đã đóng gửi bài
+
+zh-CN:
+  acro_ended_no_sub: 遊戲因為沒有投稿而結束
+  acro_no_votes_cast: 遊戲因為沒有投票而結束。沒有勝利者
+  acro_nym_was: '縮寫是{0}'
+  acro_running: 這個頻道已經有一個正在進行中的懼高症遊戲
+  acro_started: '遊戲開始。用以下的縮寫造句: {0}'
+  acro_started_footer: '倒數計時{0}秒，請提交你的投稿'
+  acro_vote: 在此頻道傳送投稿編號以投票
+  acro_vote_cast: '{0} 已投票'
+  acro_winner: '{0}以{1}分勝出'
+  acro_winner_only: '{0}因為沒有對手而勝利'
+  acrophobia: 懼高症遊戲
+  submissions_closed: 投稿截止

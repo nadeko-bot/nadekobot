@@ -1,0 +1,223 @@
+ar:
+  todo_add_max_limit: لقد وصلت إلى الحد الأقصى من المهام التي يمكنك إضافتها.
+  todo_archive_empty: ليس لديك مهام مؤرشفة.
+  todo_archive_list: قوائم المهام المؤرشفة
+  todo_archive_max_limit: لقد وصلت إلى الحد الأقصى من المهام المؤرشفة التي يمكنك الاحتفاظ بها.
+  todo_archive_not_found: قائمة المهام المؤرشفة غير موجودة.
+  todo_archived_list: قائمة المهام المؤرشفة
+  todo_cleared: تم مسح جميع المهام غير المؤرشفة.
+  todo_list: قائمة المهام
+  todo_list_empty: قائمة مهامك فارغة.
+  todo_no_todos: لا توجد مهام في قائمتك.
+  todo_not_found: المهمة غير موجودة.
+  todo_stats: '{0} عنصر | {1} مكتمل | {2} متبقٍ'
+
+de-DE:
+  todo_add_max_limit: Du hast die maximale Anzahl an Aufgaben erreicht.
+  todo_archive_empty: Du hast keine archivierten Aufgaben.
+  todo_archive_list: Archivierte Aufgabenlisten
+  todo_archive_max_limit: Du hast die maximale Anzahl archivierter Aufgaben erreicht.
+  todo_archive_not_found: Archivierte Aufgabenliste nicht gefunden.
+  todo_archived_list: Archivierte Aufgabenliste
+  todo_cleared: Alle nicht archivierten Aufgaben wurden gelöscht.
+  todo_list: Aufgabenliste
+  todo_list_empty: Deine Aufgabenliste ist leer.
+  todo_no_todos: Es gibt keine Aufgaben in deiner Liste.
+  todo_not_found: Aufgabe nicht gefunden.
+  todo_stats: '{0} Einträge | {1} erledigt | {2} übrig'
+
+es-ES:
+  todo_add_max_limit: Has alcanzado la cantidad máxima de tareas que puedes tener.
+  todo_archive_empty: No tienes tareas archivadas.
+  todo_archive_list: Listas de Tareas Archivadas
+  todo_archive_max_limit: Has alcanzado la cantidad máxima de tareas archivadas que puedes tener.
+  todo_archive_not_found: Lista de tareas archivada no encontrada.
+  todo_archived_list: Lista de Tareas Archivada
+  todo_cleared: Todas las tareas no archivadas han sido limpiadas.
+  todo_list: Lista de Tareas
+  todo_list_empty: Tu lista de tareas está vacía.
+  todo_no_todos: No hay tareas en tu lista.
+  todo_not_found: Tarea no encontrada.
+  todo_stats: '{0} elementos | {1} completados | {2} restantes'
+
+fr-FR:
+  todo_add_max_limit: Vous avez atteint le nombre maximum de tâches que vous pouvez avoir.
+  todo_archive_empty: Vous n'avez pas de tâches archivées.
+  todo_archive_list: Listes de Tâches Archivées
+  todo_archive_max_limit: Vous avez atteint le nombre maximum de tâches archivées que vous pouvez avoir.
+  todo_archive_not_found: Liste de tâches archivée non trouvée.
+  todo_archived_list: Liste de Tâches Archivée
+  todo_cleared: Toutes les tâches non archivées ont été effacées.
+  todo_list: Liste de Tâches
+  todo_list_empty: Votre liste de tâches est vide.
+  todo_no_todos: Il n'y a pas de tâches dans votre liste.
+  todo_not_found: Tâche non trouvée.
+  todo_stats: '{0} éléments | {1} complétés | {2} restants'
+
+id-ID:
+  todo_add_max_limit: Kamu sudah mencapai batas maksimal jumlah todo yang bisa dimiliki.
+  todo_archive_empty: Kamu tidak punya todo yang diarsipkan.
+  todo_archive_list: Daftar Todo Arsip
+  todo_archive_max_limit: Kamu sudah mencapai batas maksimal jumlah arsip todo yang bisa dimiliki.
+  todo_archive_not_found: Daftar todo arsip tidak ditemukan.
+  todo_archived_list: Daftar Todo Terarsip
+  todo_cleared: Semua todo yang belum diarsipkan sudah dihapus.
+  todo_list: Daftar Todo
+  todo_list_empty: Daftar todo kamu kosong.
+  todo_no_todos: Tidak ada todo di daftar todo kamu.
+  todo_not_found: Todo tidak ditemukan.
+  todo_stats: '{0} item | {1} selesai | {2} tersisa'
+
+ja-JP:
+  todo_add_max_limit: タスクの最大数に達しました。
+  todo_archive_empty: アーカイブされたタスクはありません。
+  todo_archive_list: アーカイブ済みタスクリスト
+  todo_archive_max_limit: アーカイブ済みタスクの最大数に達しました。
+  todo_archive_not_found: アーカイブ済みタスクリストが見つかりません。
+  todo_archived_list: アーカイブ済みタスクリスト
+  todo_cleared: 未アーカイブのタスクがすべてクリアされました。
+  todo_list: タスクリスト
+  todo_list_empty: タスクリストは空です。
+  todo_no_todos: タスクリストにタスクはありません。
+  todo_not_found: タスクが見つかりません。
+  todo_stats: '{0}件 | {1}完了 | {2}残り'
+
+ko-KR:
+  todo_add_max_limit: 추가할 수 있는 할 일의 최대 개수에 도달했어요.
+  todo_archive_empty: 보관된 할 일이 없어요.
+  todo_archive_list: 보관된 할 일 목록
+  todo_archive_max_limit: 보관할 수 있는 할 일의 최대 개수에 도달했어요.
+  todo_archive_not_found: 보관된 할 일 목록을 찾을 수 없어요.
+  todo_archived_list: 보관된 할 일 목록
+  todo_cleared: 보관되지 않은 모든 할 일이 삭제되었어요.
+  todo_list: 할 일 목록
+  todo_list_empty: 할 일 목록이 비어 있어요.
+  todo_no_todos: 할 일 목록에 항목이 없어요.
+  todo_not_found: 할 일을 찾을 수 없어요.
+  todo_stats: '{0}개 항목 | {1}개 완료 | {2}개 남음'
+
+pl-PL:
+  todo_add_max_limit: Osiągnąłeś maksymalną liczbę zadań.
+  todo_archive_empty: Nie masz zarchiwizowanych zadań.
+  todo_archive_list: Zarchiwizowane Listy Zadań
+  todo_archive_max_limit: Osiągnąłeś maksymalną liczbę zarchiwizowanych zadań.
+  todo_archive_not_found: Nie znaleziono zarchiwizowanej listy zadań.
+  todo_archived_list: Zarchiwizowana Lista Zadań
+  todo_cleared: Wszystkie niezarchiwizowane zadania zostały usunięte.
+  todo_list: Lista Zadań
+  todo_list_empty: Twoja lista zadań jest pusta.
+  todo_no_todos: Nie masz żadnych zadań na liście.
+  todo_not_found: Nie znaleziono zadania.
+  todo_stats: '{0} elementów | {1} ukończonych | {2} pozostałych'
+
+pt-BR:
+  todo_add_max_limit: Você atingiu o número máximo de tarefas que pode ter.
+  todo_archive_empty: Você não tem tarefas arquivadas.
+  todo_archive_list: Listas de Tarefas Arquivadas
+  todo_archive_max_limit: Você atingiu o número máximo de tarefas arquivadas que pode ter.
+  todo_archive_not_found: Lista de tarefas arquivada não encontrada.
+  todo_archived_list: Lista de Tarefas Arquivada
+  todo_cleared: Todas as tarefas não arquivadas foram limpas.
+  todo_list: Lista de Tarefas
+  todo_list_empty: Sua lista de tarefas está vazia.
+  todo_no_todos: Não há tarefas na sua lista.
+  todo_not_found: Tarefa não encontrada.
+  todo_stats: '{0} itens | {1} concluídos | {2} restantes'
+
+ru-RU:
+  todo_add_max_limit: Вы достигли максимального количества задач.
+  todo_archive_empty: У вас нет архивных задач.
+  todo_archive_list: Архивные Списки Задач
+  todo_archive_max_limit: Вы достигли максимального количества архивных задач.
+  todo_archive_not_found: Архивный список задач не найден.
+  todo_archived_list: Архивный Список Задач
+  todo_cleared: Все неархивные задачи были очищены.
+  todo_list: Список Задач
+  todo_list_empty: Ваш список задач пуст.
+  todo_no_todos: В вашем списке нет задач.
+  todo_not_found: Задача не найдена.
+  todo_stats: '{0} элементов | {1} выполнено | {2} осталось'
+
+sr-Cyrl-RS:
+  todo_add_max_limit: Достигли сте максималан број задатака које можете имати.
+  todo_archive_empty: Немате архивираних задатака.
+  todo_archive_list: Архивиране листе задатака
+  todo_archive_max_limit: Достигли сте максималан број архивираних задатака које можете имати.
+  todo_archive_not_found: Архивирана листа задатака није пронађена.
+  todo_archived_list: Архивирана листа задатака
+  todo_cleared: Сви неархивирани задаци су обрисани.
+  todo_list: Листа задатака
+  todo_list_empty: Ваша листа задатака је празна.
+  todo_no_todos: Нема задатака на вашој листи.
+  todo_not_found: Задатак није пронађен.
+  todo_stats: '{0} ставки | {1} завршено | {2} преостало'
+
+tr-TR:
+  todo_add_max_limit: Sahip olabileceğin maksimum yapılacaklar sayısına ulaştın.
+  todo_archive_empty: Arşivlenmiş yapılacakların yok.
+  todo_archive_list: Arşivlenmiş Yapılacaklar Listeleri
+  todo_archive_max_limit: Sahip olabileceğin maksimum arşivlenmiş yapılacaklar sayısına ulaştın.
+  todo_archive_not_found: Arşivlenmiş yapılacaklar listesi bulunamadı.
+  todo_archived_list: Arşivlenmiş Yapılacaklar Listesi
+  todo_cleared: Arşivlenmemiş tüm yapılacaklar temizlendi.
+  todo_list: Yapılacaklar Listesi
+  todo_list_empty: Yapılacaklar listen boş.
+  todo_no_todos: Yapılacaklar listende hiç madde yok.
+  todo_not_found: Yapılacak bulunamadı.
+  todo_stats: '{0} madde | {1} tamamlandı | {2} kalan'
+
+ts-TS:
+  todo_add_max_limit: You've reached the maximum number of todos. Hmph.
+  todo_archive_empty: Your archive is empty.
+  todo_archive_list: Archived Todo Lists
+  todo_archive_max_limit: You've maxed out your archived todos.
+  todo_archive_not_found: Couldn't find that archived list.
+  todo_archived_list: Archived Todo List
+  todo_cleared: All unarchived todos have been cleared.
+  todo_list: Todo List
+  todo_list_empty: Your todo list is empty.
+  todo_no_todos: There's nothing in your todo list, b-baka!
+  todo_not_found: Todo not found.
+  todo_stats: '{0} items | {1} completed | {2} remaining'
+
+uk-UA:
+  todo_add_max_limit: Ти досяг(-ла) максимальної кількості завдань.
+  todo_archive_empty: У тебе немає архівованих завдань.
+  todo_archive_list: Архівовані списки завдань
+  todo_archive_max_limit: Ти досяг(-ла) максимальної кількості архівованих завдань.
+  todo_archive_not_found: Архівований список завдань не знайдено.
+  todo_archived_list: Архівований список завдань
+  todo_cleared: Усі неархівовані завдання очищено.
+  todo_list: Список завдань
+  todo_list_empty: Твій список завдань порожній.
+  todo_no_todos: У твоєму списку завдань нічого немає.
+  todo_not_found: Завдання не знайдено.
+  todo_stats: '{0} елементів | {1} виконано | {2} залишилось'
+
+vi-VN:
+  todo_add_max_limit: Bạn đã đạt số lượng tối đa các mục todo có thể có.
+  todo_archive_empty: Bạn không có todo nào đã lưu trữ.
+  todo_archive_list: Danh sách Todo đã lưu trữ
+  todo_archive_max_limit: Bạn đã đạt số lượng tối đa các todo đã lưu trữ có thể có.
+  todo_archive_not_found: Không tìm thấy danh sách todo đã lưu trữ.
+  todo_archived_list: Danh sách Todo đã lưu trữ
+  todo_cleared: Tất cả todo chưa lưu trữ đã được xóa.
+  todo_list: Danh sách Todo
+  todo_list_empty: Danh sách todo của bạn đang trống.
+  todo_no_todos: Không có mục todo nào trong danh sách của bạn.
+  todo_not_found: Không tìm thấy todo.
+  todo_stats: '{0} mục | {1} hoàn thành | {2} còn lại'
+
+zh-CN:
+  todo_add_max_limit: 你已達到可擁有的最大待辦事項數量。
+  todo_archive_empty: 你沒有已封存的待辦事項。
+  todo_archive_list: 已封存的待辦事項列表
+  todo_archive_max_limit: 你已達到可擁有的最大已封存待辦事項數量。
+  todo_archive_not_found: 找不到已封存的待辦事項列表。
+  todo_archived_list: 已封存的待辦事項列表
+  todo_cleared: 所有未封存的待辦事項已清除。
+  todo_list: 待辦事項列表
+  todo_list_empty: 你的待辦事項列表是空的。
+  todo_no_todos: 你的待辦事項列表中沒有任何事項。
+  todo_not_found: 找不到待辦事項。
+  todo_stats: '{0} 項 | {1} 已完成 | {2} 剩餘'

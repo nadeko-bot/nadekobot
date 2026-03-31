@@ -1,0 +1,95 @@
+ar:
+  defprefix_current: 'بادئة البوت الافتراضية هي {0}'
+  defprefix_new: 'تم تغيير بادئة البوت الافتراضية من {0} إلى {1}'
+  prefix_current: 'البادئة في هذا السيرفر هي {0}'
+  prefix_new: 'تم تغيير البادئة في هذا السيرفر من {0} إلى {1}'
+
+de-DE:
+  defprefix_current: 'Standard Prefix des Bots ist {0}'
+  defprefix_new: 'Standard Bot Prefix wurde von {0} zu {1} geändert'
+  prefix_current: 'Prefix auf diesem Server ist {0}'
+  prefix_new: 'Prefix auf diesem Server wurde von {0} zu {1} geändert'
+
+es-ES:
+  defprefix_current: 'El prefijo por defecto es {0}'
+  defprefix_new: 'Cambiado prefijo predeterminado del bot de {0} a {1}'
+  prefix_current: 'El prefijo de este servidor es {0}'
+  prefix_new: 'Prefijo cambiado en este servidor de {0} a {1}'
+
+fr-FR:
+  defprefix_current: 'Le préfixe par défaut du bot est {0}'
+  defprefix_new: 'Préfixe par défaut du bot a été changé de {0} pour {1}'
+  prefix_current: 'Le préfixe sur ce serveur est {0}'
+  prefix_new: 'Préfixe changé de {0} à {1} sur ce serveur'
+
+id-ID:
+  defprefix_current: 'Prefix default bot saat ini adalah {0}'
+  defprefix_new: 'Prefix default bot diubah dari {0} ke {1}'
+  prefix_current: 'Prefix di server ini adalah {0}'
+  prefix_new: 'Prefix di server ini diubah dari {0} ke {1}'
+
+ja-JP:
+  defprefix_current: 'ボットのデフォルトプレフィックスは {0} です。'
+  defprefix_new: 'ボットのデフォルトプレフィックスが {0} から {1} に変更されました。'
+  prefix_current: 'このサーバーのプレフィックスは {0} です。'
+  prefix_new: 'このサーバーのデファルトプレフィックスが {0} から {1} に変更されました。'
+
+ko-KR:
+  defprefix_current: '기본 봇 접두사는 {0}이에요'
+  defprefix_new: '기본 봇 접두사가 {0}에서 {1}(으)로 변경되었어요'
+  prefix_current: '이 서버의 접두사는 {0}이에요'
+  prefix_new: '이 서버의 접두사가 {0}에서 {1}(으)로 변경되었어요'
+
+pl-PL:
+  defprefix_current: 'Domyślny prefix bota to {0}'
+  defprefix_new: 'Zmieniono domyślny prefix bota z {0} na {1}'
+  prefix_current: 'Prefix na tym serwerze to {0}'
+  prefix_new: 'Zmieniono prefix na tym serwerze z {0} na {1}'
+
+pt-BR:
+  defprefix_current: 'O prefixo padrão do bot é {0}'
+  defprefix_new: 'O prefixo padrão do bot foi alterado de {0} para {1}'
+  prefix_current: 'O prefixo nesse servidor é {0}'
+  prefix_new: 'Prefixo alterado neste servidor de {0} para {1}'
+
+ru-RU:
+  defprefix_current: 'Обычный префикс бота {0}'
+  defprefix_new: 'Префикс бота по умолчанию изменен с {0} на {1}'
+  prefix_current: 'Префикс на этом сервере {0}'
+  prefix_new: 'Префикс на этом сервере изменен с {0} на {1}'
+
+sr-Cyrl-RS:
+  defprefix_current: 'Подразумевани префикс бота је {0}'
+  defprefix_new: 'Подразумевани префикс бота промењен са {0} на {1}'
+  prefix_current: 'Префикс на овом серверу је {0}'
+  prefix_new: 'Префикс на овом серверу промењен са {0} на {1}'
+
+tr-TR:
+  defprefix_current: 'Varsayılan bot ön eki {0}'
+  defprefix_new: 'Varsayılan bot ön eki {0} yerine {1} olarak değiştirildi'
+  prefix_current: 'Bu sunucudaki ön ek {0}'
+  prefix_new: 'Bu sunucudaki ön ek {0} yerine {1} olarak değiştirildi'
+
+ts-TS:
+  defprefix_current: 'Default bot prefix is {0}'
+  defprefix_new: 'Changed default bot prefix from {0} to {1}. D-don''t mess it up!'
+  prefix_current: 'Prefix on this server is {0}'
+  prefix_new: 'Changed prefix on this server from {0} to {1}. You''re welcome.'
+
+uk-UA:
+  defprefix_current: 'Стандартний префікс бота - {0}'
+  defprefix_new: 'Стандартний префікс бота змінено з {0} на {1}'
+  prefix_current: 'Префікс на цьому сервері - {0}'
+  prefix_new: 'Префікс на цьому сервері змінено з {0} на {1}'
+
+vi-VN:
+  defprefix_current: 'Tiền tố mặc định của bot là {0}'
+  defprefix_new: 'Đã đổi tiền tố mặc định của bot từ {0} thành {1}'
+  prefix_current: 'Tiền tố trên máy chủ này là {0}'
+  prefix_new: 'Đã đổi tiền tố trên máy chủ này từ {0} thành {1}'
+
+zh-CN:
+  defprefix_current: '機器人預設前綴是 {0}'
+  defprefix_new: '將默認機器人前綴從 {0} 更改為 {1}'
+  prefix_current: '此伺服器上的前綴是 {0}'
+  prefix_new: '將此伺服器上的前綴從 {0} 更改為 {1}'

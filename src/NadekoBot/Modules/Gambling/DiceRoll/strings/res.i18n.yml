@@ -1,0 +1,127 @@
+ar:
+  dice_invalid_number: 'عدد غير صالح. يمكنك رمي {0}-{1} نرد في المرة الواحدة.'
+  dice_rolled: 'رمى {0}'
+  dice_rolled_num: 'نتيجة النرد: {0}'
+  rolls: الرميات
+  second_larger_than_first: يجب أن يكون الرقم الثاني أكبر من الأول.
+  total: المجموع
+
+de-DE:
+  dice_invalid_number: 'Ungültige Nummer wurde angegeben. Du kannst {0}-{1} Würfel auf einmal werfen.'
+  dice_rolled: 'würfelte {0}'
+  dice_rolled_num: 'Würfel geworfen: {0}'
+  rolls: Würfe
+  second_larger_than_first: Zweite Zahl muss größer sein als die erste.
+  total: Insgesamt
+
+es-ES:
+  dice_invalid_number: 'Número especificado no válido. Puedes lanzar {0}-{1} dados a la vez.'
+  dice_rolled: 'sacó {0}.'
+  dice_rolled_num: 'Dados lanzados: {0}'
+  rolls: Tiradas
+  second_larger_than_first: El segundo número debe ser más largo que el primero.
+  total: Total
+
+fr-FR:
+  dice_invalid_number: 'Nombre spécifié invalide. Vous pouvez jeter {0}-{1} dés à la fois.'
+  dice_rolled: 'tiré au sort {0}'
+  dice_rolled_num: 'Dés lancés: {0}'
+  rolls: Lancés
+  second_larger_than_first: Le deuxième chiffre doit être plus grand que le premier.
+  total: Total
+
+id-ID:
+  dice_invalid_number: 'Angka yang dimasukkan tidak valid. Kamu bisa melempar {0}-{1} dadu sekaligus.'
+  dice_rolled: 'melempar {0}'
+  dice_rolled_num: 'Dadu dilempar: {0}'
+  rolls: Lemparan
+  second_larger_than_first: Angka kedua harus lebih besar dari angka pertama.
+  total: Total
+
+ja-JP:
+  dice_invalid_number: '数が正しくありません。一度に{0}～{1}個のサイコロを振ることができます。'
+  dice_rolled: 'はサイコロを振り、{0}が出ました。'
+  dice_rolled_num: 'サイコロを振りました: {0}個'
+  rolls: ロール結果
+  second_larger_than_first: 2番目の数を、1番目の数よりも大きくしてください。
+  total: 合計
+
+ko-KR:
+  dice_invalid_number: '잘못된 숫자예요. 한 번에 {0}~{1}개의 주사위를 굴릴 수 있어요.'
+  dice_rolled: '{0}이(가) 나왔어요'
+  dice_rolled_num: '주사위 결과: {0}'
+  rolls: 굴리기
+  second_larger_than_first: 두 번째 숫자는 첫 번째 숫자보다 커야 해요.
+  total: 합계
+
+pl-PL:
+  dice_invalid_number: 'Podano nieprawidłową liczbę. Możesz rzucić od {0} do {1} kości naraz.'
+  dice_rolled: 'wyrzucił/a {0}'
+  dice_rolled_num: 'Wynik rzutu: {0}'
+  rolls: Rzuty
+  second_larger_than_first: Druga liczba musi być większa od pierwszej.
+  total: Suma
+
+pt-BR:
+  dice_invalid_number: 'Número inválido. Você pode rolar {0}-{1} dados de uma vez.'
+  dice_rolled: 'rolou {0}'
+  dice_rolled_num: 'Dados rolados: {0}'
+  rolls: Rolagens
+  second_larger_than_first: Segundo número deve ser maior que o primeiro.
+  total: Total
+
+ru-RU:
+  dice_invalid_number: 'Неправильное число. Вы можете бросить только {0}-{1} костей одновременно.'
+  dice_rolled: 'выпало {0}'
+  dice_rolled_num: 'Кости брошены: {0}'
+  rolls: Броски
+  second_larger_than_first: Второе число должно быть больше первого.
+  total: Всего
+
+sr-Cyrl-RS:
+  dice_invalid_number: 'Неважећи број. Можеш бацити {0}-{1} коцкица одједном.'
+  dice_rolled: 'бацио/ла {0}'
+  dice_rolled_num: 'Бачена коцкица: {0}'
+  rolls: Бацања
+  second_larger_than_first: Други број мора бити већи од првог.
+  total: Укупно
+
+tr-TR:
+  dice_invalid_number: 'Geçersiz sayı belirtildi. Aynı anda {0}-{1} zar atabilirsin.'
+  dice_rolled: '{0} atıldı'
+  dice_rolled_num: 'Atılan zar: {0}'
+  rolls: Atışlar
+  second_larger_than_first: İkinci sayı birinciden büyük olmalı.
+  total: Toplam
+
+ts-TS:
+  dice_invalid_number: 'Invalid number specified. You can roll {0}-{1} dice at once.'
+  dice_rolled: 'rolled {0}'
+  dice_rolled_num: 'Dice rolled: {0}'
+  rolls: Rolls
+  second_larger_than_first: Second number must be larger than the first one. B-basic math!
+  total: Total
+
+uk-UA:
+  dice_invalid_number: 'Неправильне число. Можна кидати від {0} до {1} кубиків за раз.'
+  dice_rolled: 'випало {0}'
+  dice_rolled_num: 'Кубик випав: {0}'
+  rolls: Кидки
+  second_larger_than_first: Друге число має бути більшим за перше.
+  total: Всього
+
+vi-VN:
+  dice_invalid_number: 'Số không hợp lệ. Bạn có thể tung {0}-{1} xúc xắc cùng lúc.'
+  dice_rolled: 'đã tung {0}'
+  dice_rolled_num: 'Xúc xắc tung được: {0}'
+  rolls: Lượt tung
+  second_larger_than_first: Số thứ hai phải lớn hơn số thứ nhất.
+  total: Tổng
+
+zh-CN:
+  dice_invalid_number: '指定的數字錯誤，你一次可以骰 {0} ~ {1} 顆骰子'
+  dice_rolled: '骰出了 {0}'
+  dice_rolled_num: '已投擲：{0}'
+  rolls: 掷骰结果
+  second_larger_than_first: 第二個數字必須大於第一個。
+  total: 總共

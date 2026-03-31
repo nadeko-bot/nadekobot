@@ -1,0 +1,47 @@
+ar:
+  imdb_fail: فشل في العثور على ذلك الفيلم.
+
+de-DE:
+  imdb_fail: Der Film konnte nicht gefunden werden.
+
+es-ES:
+  imdb_fail: Error encontrando esa película.
+
+fr-FR:
+  imdb_fail: Échec pour trouver ce film.
+
+id-ID:
+  imdb_fail: Gagal menemukan film tersebut.
+
+ja-JP:
+  imdb_fail: 指定された映画が見つかりませんでした。
+
+ko-KR:
+  imdb_fail: 해당 영화를 찾지 못했어요.
+
+pl-PL:
+  imdb_fail: Nie udało się znaleźć tego filmu.
+
+pt-BR:
+  imdb_fail: Não foi possível encontrar esse filme.
+
+ru-RU:
+  imdb_fail: Не удалось найти этот фильм.
+
+sr-Cyrl-RS:
+  imdb_fail: Нисам успео да пронађем тај филм.
+
+tr-TR:
+  imdb_fail: O film bulunamadı.
+
+ts-TS:
+  imdb_fail: Failed to find that movie.
+
+uk-UA:
+  imdb_fail: Не вдалося знайти цей фільм.
+
+vi-VN:
+  imdb_fail: Không tìm thấy phim đó.
+
+zh-CN:
+  imdb_fail: 找不到那部電影。

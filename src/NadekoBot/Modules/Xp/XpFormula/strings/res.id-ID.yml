@@ -1,9 +1,0 @@
-xpformula_current: Formula XP
-xpformula_set: Formula XP Diperbarui
-xpformula_desc: |-
-  |-
-    XP per level: **{0}** x (level + 1) + **{1}**
-xpformula_preview: Pratinjau Level
-xpformula_a_invalid: 'Kemiringan (a) harus antara {0} dan {1}.'
-xpformula_c_invalid: 'Basis (c) harus antara {0} dan {1}.'
-xpformula_invalid: Parameter formula tidak valid.

@@ -1,5 +1,0 @@
-blacklisted: '已經把 ID 為 {1} 的 {0} 加入黑名單'
-blacklisted_channels: 頻道黑名單
-blacklisted_servers: 伺服器黑名單
-blacklisted_users: 使用者黑名單
-unblacklisted: '已經把 ID 為 {1} 的 {0} 從黑名單中移除'

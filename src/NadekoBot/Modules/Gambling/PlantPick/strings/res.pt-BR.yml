@@ -1,8 +1,0 @@
-curgen_disabled: A geração de dinheiro foi desativada nesse canal.
-curgen_enabled: A geração de dinheiro ativada nesse canal.
-curgen_pl: '{0} {1} brotaram aleatoriamente!'
-curgen_sn: 'Uma {0} brotou aleatoriamente!'
-pick_pl: 'Pegue o item digitando `{0}pick`'
-pick_sn: 'Pegue digitando `{0}pick`'
-picked: '{1} coletou {0}'
-planted: '{0} plantou {1}'

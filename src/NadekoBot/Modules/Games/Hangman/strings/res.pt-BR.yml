@@ -1,4 +1,0 @@
-hangman_game_started: Jogo da forca iniciado
-hangman_running: Já existe um jogo da forca em andamento nesse canal.
-hangman_stopped: O jogo da forca foi encerrado.
-hangman_types: 'Lista dos temas disponíveis no "{0}hangman":'

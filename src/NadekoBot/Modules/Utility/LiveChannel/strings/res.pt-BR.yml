@@ -1,9 +1,0 @@
-livechannel_added: '{0} foi adicionado como canal ao vivo com sucesso.'
-livechannel_limit: 'Você pode ter no máximo {0} canais ao vivo por servidor.'
-livechannel_list_empty: Nenhum canal ao vivo configurado para este servidor.
-livechannel_list_title: 'Canais ao Vivo em {0}'
-livechannel_not_found: Canal não encontrado na lista de canais ao vivo.
-livechannel_please_wait: Por favor, aguarde até 10 minutos para que as alterações entrem em vigor
-livechannel_removed: '{0} foi removido dos canais ao vivo com sucesso.'
-preview: Pré-visualização
-template: Modelo

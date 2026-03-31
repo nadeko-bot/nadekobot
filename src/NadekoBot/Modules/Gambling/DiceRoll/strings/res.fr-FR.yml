@@ -1,6 +1,0 @@
-dice_invalid_number: 'Nombre spécifié invalide. Vous pouvez jeter {0}-{1} dés à la fois.'
-dice_rolled: 'tiré au sort {0}'
-dice_rolled_num: 'Dés lancés: {0}'
-rolls: Lancés
-second_larger_than_first: Le deuxième chiffre doit être plus grand que le premier.
-total: Total

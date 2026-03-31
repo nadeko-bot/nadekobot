@@ -1,0 +1,335 @@
+ar:
+  stream_message_reset: 'تم إعادة تعيين رسالة الإعلان لبث {0}.'
+  stream_message_set: 'تم تعيين رسالة الإعلان عند بدء بث {0}.'
+  stream_message_set_all: 'جميع عمليات البث المتابَعة ({0}) لديها الآن رسالة الإعلان المحددة.'
+  stream_no: لا يوجد بث بهذا الاسم.
+  stream_not_added: لم تتم إضافة البث. إما أن البث غير موجود، أو المنصة غير مدعومة، أو وصلت إلى الحد الأقصى لعدد عمليات البث المسموح بها.
+  stream_not_following: أنت لا تتابع هذا البث في هذا السيرفر.
+  stream_not_following_any: أنت لا تتابع أي بث.
+  stream_off_disabled: لن تظهر إشعارات البث بعد الآن عند انتهاء البث المباشر.
+  stream_off_enabled: ستظهر إشعارات البث الآن عند انتهاء البث المباشر.
+  stream_online_delete_disabled: لن يتم حذف إشعارات البث المباشر بعد الآن عند انتهاء البث.
+  stream_online_delete_enabled: سيتم حذف إشعارات البث المباشر الآن عند انتهاء البث.
+  stream_removed: 'تمت إزالة بث {0} ({1}) من الإشعارات.'
+  stream_tracked: سأقوم بإشعار هذه القناة عند بدء هذا البث المباشر.
+  streamer_offline: 'المُذيع {0} غير متصل.'
+  streaming: بث مباشر
+  streams_cleared: تمت إزالة جميع عمليات البث المتابَعة في هذا السيرفر.
+  streams_follow_title: عمليات البث التي تتابعها
+  streams_none: أنت لا تتابع أي بث في هذا السيرفر.
+  viewers: المشاهدون
+
+de-DE:
+  stream_message_reset: 'Ankündigungsnachricht für den Stream {0} wurde zurückgesetzt.'
+  stream_message_set: 'Ankündigungsnachricht wenn der Stream {0} online geht wurde festgelegt.'
+  stream_message_set_all: 'Alle {0} gefolgten Streams haben jetzt eine bestimmte Ankündigungsnachricht.'
+  stream_no: Kein solch Stream.
+  stream_not_added: Stream wurde nicht hinzugefügt. Entweder existiert der Stream nicht, die Plattform wird nicht unterstützt, oder du hast das Maximum der erlaubten Streams erreicht.
+  stream_not_following: Du folgst diesem Stream nicht auf diesem Server.
+  stream_not_following_any: Du folgst keinen Streams.
+  stream_off_disabled: Stream Benachrichtigungen werden nicht mehr gezeigt, wenn ein Stream offline geht.
+  stream_off_enabled: Stream Benachrichtigungen werden jetzt gezeigt, wenn ein Stream offline geht.
+  stream_online_delete_disabled: Online-Stream-Benachrichtigungen werden nicht mehr gelöscht, wenn der Stream offline geht.
+  stream_online_delete_enabled: Online-Stream-Benachrichtigungen werden jetzt gelöscht, wenn der Stream offline geht.
+  stream_removed: '{0}''s Stream ({1}) wurde von den Benachrichtigungen entfernt.'
+  stream_tracked: Ich werde diesen Kanal benachrichtigen, sobald dieser Stream online geht.
+  streamer_offline: 'Streamer {0} ist offline.'
+  streaming: Streamt
+  streams_cleared: Alle verfolgten Streams auf diesem Server wurden entfernt.
+  streams_follow_title: Streams denen du folgst
+  streams_none: Du bist folgst keinen Streams auf diesem Server.
+  viewers: Zuschauer
+
+es-ES:
+  stream_message_reset: 'El mensaje de anuncio para directos de {0} han sido reseteados.'
+  stream_message_set: 'Activado mensaje de anuncio cuando {0} esté transmitiendo.'
+  stream_message_set_all: 'Todos los {0} directos seguidos ahora tienen el mensaje de anuncio especificado.'
+  stream_no: No hay tal directo.
+  stream_not_added: El directo no fue añadido. O este no existe, o la plataforma no es soportada o has alcanzado el máximo de directos permitidos.
+  stream_not_following: No estás siguiendo transmisiones en este servidor.
+  stream_not_following_any: No estás siguiendo ningún directo.
+  stream_off_disabled: Las notificaciones de directos no mostrarán más cuándo un directo se ha acabado.
+  stream_off_enabled: Las notificaciones de directos ahora mostrarán cuándo un directo se ha acabado.
+  stream_online_delete_disabled: Las notificaciones de streams en linea ya no se eliminaran cuando el stream se desconecte.
+  stream_online_delete_enabled: Las notificaciones de streams en linea ahora se eliminaran cuando el stream se desconecte.
+  stream_removed: 'Removida la transmisión de {0} ({1}) de las notificaciones.'
+  stream_tracked: Notificaré en este canal cuando esta transmisión esté en línea.
+  streamer_offline: 'Streamer {0} está offline.'
+  streaming: Transmitiendo
+  streams_cleared: Todos los streams seguidos en este servidor se han eliminado.
+  streams_follow_title: Directos que estás siguiendo
+  streams_none: No estás siguiendo ningún directo en este servidor.
+  viewers: Espectadores
+
+fr-FR:
+  stream_message_reset: 'Le message d''annonce du stream {0} a été réinitialisé.'
+  stream_message_set: 'Un message d''annonce lorsque {0} stream passe en ligne a été défini.'
+  stream_message_set_all: 'Toutes les {0} diffusions suivies ont maintenant le message d''annonce spécifié.'
+  stream_no: Il n'y a pas de tel stream.
+  stream_not_added: Le stream n'a pas été ajouté. Soit le stream n'existe pas, soit cette plate-forme n'est pas prise en charge, soit vous avez atteint le nombre maximal de streams autorisés.
+  stream_not_following: Vous ne suivez pas ce stream sur ce serveur.
+  stream_not_following_any: Vous ne suivez aucune diffusion.
+  stream_off_disabled: Les notifications de streaming ne seront plus visibles quand un stream est mis hors-ligne.
+  stream_off_enabled: Les notifications de streaming seront visibles quand un stream est mis hors-ligne.
+  stream_online_delete_disabled: Les notifications de diffusions en ligne ne seront plus supprimées quand la diffusion sera hors ligne.
+  stream_online_delete_enabled: Aucune méduse de ce nom n'a été trouvée ou le fichier était invalide
+  stream_removed: 'Suppression du stream de {0} ({1}) des notifications.'
+  stream_tracked: J'informerai cette chaîne chaque fois que ce stream sera en ligne.
+  streamer_offline: 'Streamer {0} est hors-ligne.'
+  streaming: Streaming
+  streams_cleared: Tous les streams suivis sur ce serveur ont été supprimés.
+  streams_follow_title: Streams que vous suivez
+  streams_none: Vous ne suivez aucun stream sur ce serveur.
+  viewers: Les spectateurs
+
+id-ID:
+  stream_message_reset: 'Pesan pengumuman untuk stream {0} telah direset.'
+  stream_message_set: 'Pesan pengumuman saat stream {0} online telah disetel.'
+  stream_message_set_all: 'Semua {0} stream yang diikuti sekarang memiliki pesan pengumuman yang ditentukan.'
+  stream_no: Stream tersebut tidak ada.
+  stream_not_added: Stream tidak ditambahkan. Entah stream-nya tidak ada, platform tidak didukung, atau kamu sudah mencapai batas maksimum stream.
+  stream_not_following: Kamu tidak mengikuti stream tersebut di server ini.
+  stream_not_following_any: Kamu tidak mengikuti stream manapun.
+  stream_off_disabled: Notifikasi stream tidak akan lagi ditampilkan saat stream offline.
+  stream_off_enabled: Notifikasi stream sekarang akan ditampilkan saat stream offline.
+  stream_online_delete_disabled: Notifikasi stream online tidak akan lagi dihapus saat stream offline.
+  stream_online_delete_enabled: Notifikasi stream online sekarang akan dihapus saat stream offline.
+  stream_removed: 'Stream {0} ({1}) dihapus dari notifikasi.'
+  stream_tracked: Aku akan memberitahu channel ini setiap kali stream ini online.
+  streamer_offline: 'Streamer {0} sedang offline.'
+  streaming: Sedang Streaming
+  streams_cleared: Semua stream yang diikuti di server ini telah dihapus.
+  streams_follow_title: Stream yang kamu ikuti
+  streams_none: Kamu tidak mengikuti stream apapun di server ini.
+  viewers: Penonton
+
+ja-JP:
+  stream_message_reset: '{0}ストリームの通知メッセージがリセットされました。'
+  stream_message_set: '{0}ストリームがオンラインになった時の通知メッセージが設定されました。'
+  stream_message_set_all: 'フォロー中の{0}件のストリームすべてに指定されたアナウンスメッセージが設定されました。'
+  stream_no: 該当する配信はありません。
+  stream_not_added: ストリームは追加されませんでした。ストリームが存在しないか、プラットフォームがサポートされていないか、ストリームの最大数に達しています。
+  stream_not_following: このサーバーでそのストリームをフォローしていません。
+  stream_not_following_any: ストリームをフォローしていません。
+  stream_off_disabled: ストリームがオフラインになった時の通知は表示されなくなりました。
+  stream_off_enabled: ストリームがオフラインになった時の通知が表示されるようになりました。
+  stream_online_delete_disabled: ストリームがオフラインになっても、オンラインストリーム通知は削除されなくなります。
+  stream_online_delete_enabled: ストリームがオフラインになると、オンラインストリーム通知が削除されるようになります。
+  stream_removed: '{0}の配信（{1}）の通知設定が削除されました。'
+  stream_tracked: このチャンネルに、配信状態の変更が通知されるようになりました。
+  streamer_offline: '配信者{0}は現在配信していません。'
+  streaming: ストリーミング
+  streams_cleared: このサーバーでフォローしているすべてのストリームが削除されました。
+  streams_follow_title: フォロー中のストリーム
+  streams_none: このサーバーでは、あなたは配信をフォローしていません。
+  viewers: 視聴者数
+
+ko-KR:
+  stream_message_reset: '{0} 스트림의 알림 메시지가 초기화되었어요.'
+  stream_message_set: '{0} 스트림이 온라인이 될 때의 알림 메시지가 설정되었어요.'
+  stream_message_set_all: '팔로우 중인 모든 {0} 스트림에 지정한 알림 메시지가 설정되었어요.'
+  stream_no: 해당 스트림이 없어요.
+  stream_not_added: 스트림이 추가되지 않았어요. 스트림이 존재하지 않거나, 지원하지 않는 플랫폼이거나, 허용된 최대 스트림 수에 도달했을 수 있어요.
+  stream_not_following: 이 서버에서 해당 스트림을 팔로우하고 있지 않아요.
+  stream_not_following_any: 어떤 스트림도 팔로우하고 있지 않아요.
+  stream_off_disabled: 스트림이 오프라인이 될 때 더 이상 알림이 표시되지 않아요.
+  stream_off_enabled: 스트림이 오프라인이 될 때 알림이 표시됩니다.
+  stream_online_delete_disabled: 스트림이 오프라인이 되어도 온라인 알림이 더 이상 삭제되지 않아요.
+  stream_online_delete_enabled: 스트림이 오프라인이 되면 온라인 알림이 삭제됩니다.
+  stream_removed: '{0}의 스트림 ({1}) 알림이 제거되었어요.'
+  stream_tracked: 이 스트림이 온라인이 되면 이 채널에 알림을 보낼게요.
+  streamer_offline: '스트리머 {0}이(가) 오프라인이에요.'
+  streaming: 스트리밍 중
+  streams_cleared: 이 서버에서 팔로우 중인 모든 스트림이 제거되었어요.
+  streams_follow_title: 팔로우 중인 스트림
+  streams_none: 이 서버에서 팔로우 중인 스트림이 없어요.
+  viewers: 시청자
+
+pl-PL:
+  stream_message_reset: 'Wiadomość ogłoszenia dla streama {0} została zresetowana.'
+  stream_message_set: 'Wiadomość ogłoszenia, gdy stream {0} wchodzi na żywo, została ustawiona.'
+  stream_message_set_all: 'Wszystkie {0} obserwowane streamy mają teraz ustawioną podaną wiadomość ogłoszenia.'
+  stream_no: Nie ma takiego streama.
+  stream_not_added: Stream nie został dodany. Albo stream nie istnieje, platforma nie jest obsługiwana, albo osiągnięto maksymalną liczbę streamów.
+  stream_not_following: Nie obserwujesz tego streama na tym serwerze.
+  stream_not_following_any: Nie obserwujesz żadnych streamów.
+  stream_off_disabled: Powiadomienia o streamach nie będą już wyświetlane, gdy stream przejdzie offline.
+  stream_off_enabled: Powiadomienia o streamach będą teraz wyświetlane, gdy stream przejdzie offline.
+  stream_online_delete_disabled: Powiadomienia o streamach online nie będą już usuwane, gdy stream przejdzie offline.
+  stream_online_delete_enabled: Powiadomienia o streamach online będą teraz usuwane, gdy stream przejdzie offline.
+  stream_removed: 'Usunięto stream {0} ({1}) z powiadomień.'
+  stream_tracked: Powiadomię na tym kanale, gdy ten stream wejdzie na żywo.
+  streamer_offline: 'Streamer {0} jest offline.'
+  streaming: Streamuje
+  streams_cleared: Wszystkie obserwowane streamy na tym serwerze zostały usunięte.
+  streams_follow_title: Obserwowane streamy
+  streams_none: Nie obserwujesz żadnych streamów na tym serwerze.
+  viewers: Widzowie
+
+pt-BR:
+  stream_message_reset: 'A mensagem de anúncio para o stream {0} foi resetada.'
+  stream_message_set: 'A mensagem de anúncio quando a stream {0} ficar on-line foi definida.'
+  stream_message_set_all: 'Todas as {0} streams seguidas possuem agora um canal específico para as mensagens de anúncio.'
+  stream_no: Essa stream não existe.
+  stream_not_added: Stream não foi adicionada. Ou a stream não existe, a plataforma não é compatível ou você atingiu o número máximo de streams permitido.
+  stream_not_following: Você não segue essa stream nesse servidor.
+  stream_not_following_any: Você não está seguindo nenhuma stream.
+  stream_off_disabled: Notificações de streams não serão mais exibidas quando uma stream ficar off-line.
+  stream_off_enabled: Notificações de streams serão exibidas quando uma stream ficar off-line.
+  stream_online_delete_disabled: Notificacoes de stream online nao serao mais deletadas quando a stream ficar offline.
+  stream_online_delete_enabled: Notificacoes de stream online serao deletadas quando a stream ficar offline.
+  stream_removed: 'Stream de {0} ({1}) foi removida das notificações.'
+  stream_tracked: Notificarei este canal sempre que essa stream ficar online.
+  streamer_offline: 'Streamer {0} está offline.'
+  streaming: Transmitindo
+  streams_cleared: Todas as transmissões seguidas neste servidor foram removidas.
+  streams_follow_title: Streams que você está seguindo
+  streams_none: Você não segue qualquer stream nesse servidor.
+  viewers: Observadores
+
+ru-RU:
+  stream_message_reset: 'Сообщение с объявлением для стрима {0} было сброшено.'
+  stream_message_set: 'Сообщение с объявлением при переходе стрима {0} в онлайн установлено.'
+  stream_message_set_all: 'Все отслеживаемые стримы {0} теперь имеют указанное сообщение с объявлением.'
+  stream_no: Нет такого стрима.
+  stream_not_added: Стрим не добавлен. Стрим не существует, эта платформа не поддерживается, либо вы достигли максимально допустимого количества потоков.
+  stream_not_following: Вы не следите за стримом на этом сервере.
+  stream_not_following_any: Вы не следите ни за одним стримом.
+  stream_off_disabled: Уведомления о стримах не будут отображаться, когда поток переходит в автономный режим.
+  stream_off_enabled: Уведомления о стримах теперь будут отображаться, когда поток переходит в автономный режим.
+  stream_online_delete_disabled: Уведомления о стримах больше не будут удаляться, когда стрим завершается.
+  stream_online_delete_enabled: Уведомления о стримах теперь будут удаляться, когда стрим завершается.
+  stream_removed: 'Из уведомлений удален стрим {0} ({1}).'
+  stream_tracked: Я буду уведомлять этот канал, когда этот стрим появится в сети.
+  streamer_offline: 'Стример {0} не в сети.'
+  streaming: Стримит
+  streams_cleared: Все стримы, отслеживаемые на этом сервере, были удалены.
+  streams_follow_title: Стримы, за которыми вы следите
+  streams_none: Вы не следите за стримами на этом сервере.
+  viewers: Зрители
+
+sr-Cyrl-RS:
+  stream_message_reset: 'Порука обавештења за стрим {0} је ресетована.'
+  stream_message_set: 'Порука обавештења за када стрим {0} буде онлајн је постављена.'
+  stream_message_set_all: 'Свих {0} праћених стримова сада имају наведену поруку обавештења.'
+  stream_no: Нема таквог стрима.
+  stream_not_added: Стрим није додат. Или стрим не постоји, та платформа није подржана, или си достигао максималан број дозвољених стримова.
+  stream_not_following: Не пратиш тај стрим на овом серверу.
+  stream_not_following_any: Не пратиш ниједан стрим.
+  stream_off_disabled: Обавештења о стримовима више неће приказивати када стрим буде офлајн.
+  stream_off_enabled: Обавештења о стримовима ће сада приказивати када стрим буде офлајн.
+  stream_online_delete_disabled: Обавештења о онлајн стримовима се више неће брисати када стрим буде офлајн.
+  stream_online_delete_enabled: Обавештења о онлајн стримовима ће се сада брисати када стрим буде офлајн.
+  stream_removed: 'Уклоњен стрим корисника {0} ({1}) из обавештења.'
+  stream_tracked: Обавестићу овај канал кад год овај стрим буде онлајн.
+  streamer_offline: 'Стример {0} је офлајн.'
+  streaming: Стримује
+  streams_cleared: Сви праћени стримови на овом серверу су уклоњени.
+  streams_follow_title: Стримови које пратиш
+  streams_none: Не пратиш ниједан стрим на овом серверу.
+  viewers: Гледалаца
+
+tr-TR:
+  stream_message_reset: '{0} yayını için duyuru mesajı sıfırlandı.'
+  stream_message_set: '{0} yayını çevrimiçi olduğunda gösterilecek duyuru mesajı ayarlandı.'
+  stream_message_set_all: 'Takip edilen tüm {0} yayınları artık belirtilen duyuru mesajına sahip.'
+  stream_no: Böyle bir yayın yok.
+  stream_not_added: Yayın eklenemedi. Yayın mevcut değil, platform desteklenmiyor ya da izin verilen maksimum yayın sayısına ulaştın.
+  stream_not_following: Bu sunucuda o yayını takip etmiyorsun.
+  stream_not_following_any: Hiçbir yayını takip etmiyorsun.
+  stream_off_disabled: Yayın bildirimleri artık yayın çevrimdışı olduğunda gösterilmeyecek.
+  stream_off_enabled: Yayın bildirimleri artık yayın çevrimdışı olduğunda da gösterilecek.
+  stream_online_delete_disabled: Çevrimiçi yayın bildirimleri artık yayın çevrimdışı olduğunda silinmeyecek.
+  stream_online_delete_enabled: Çevrimiçi yayın bildirimleri artık yayın çevrimdışı olduğunda silinecek.
+  stream_removed: '{0} kullanıcısının yayını ({1}) bildirimlerden kaldırıldı.'
+  stream_tracked: Bu yayın çevrimiçi olduğunda bu kanala bildirim göndereceğim.
+  streamer_offline: '{0} yayıncısı çevrimdışı.'
+  streaming: Yayında
+  streams_cleared: Bu sunucuda takip edilen tüm yayınlar kaldırıldı.
+  streams_follow_title: Takip ettiğin yayınlar
+  streams_none: Bu sunucuda hiçbir yayını takip etmiyorsun.
+  viewers: İzleyiciler
+
+ts-TS:
+  stream_message_reset: 'Announcement message for {0} stream has been reset.'
+  stream_message_set: 'Announcement message for when {0} stream goes online has been set.'
+  stream_message_set_all: 'All {0} followed streams now have that announcement message.'
+  stream_no: That stream doesn't exist, b-baka.
+  stream_not_added: Couldn't add that stream. Either it doesn't exist, the platform isn't supported, or you've hit the limit.
+  stream_not_following: You're not following that stream on this server. Pay attention.
+  stream_not_following_any: You're not following any streams.
+  stream_off_disabled: Stream notifications will no longer show when a stream goes offline.
+  stream_off_enabled: Stream notifications will now show when a stream goes offline.
+  stream_online_delete_disabled: Online notifications won't be deleted when streams go offline anymore.
+  stream_online_delete_enabled: Online notifications will be deleted when the stream goes offline. Keeps things tidy.
+  stream_removed: 'Removed {0}''s stream ({1}) from notifications.'
+  stream_tracked: I'll notify this channel when this stream comes online.
+  streamer_offline: '{0} is offline.'
+  streaming: Streaming
+  streams_cleared: All followed streams on this server have been removed. D-don't make me do that again.
+  streams_follow_title: Streams you're following
+  streams_none: You're not following any streams here. How boring.
+  viewers: Viewers
+
+uk-UA:
+  stream_message_reset: 'Повідомлення для стріму {0} було скинуто.'
+  stream_message_set: 'Повідомлення при виході стріму {0} в онлайн було встановлено.'
+  stream_message_set_all: 'Для всіх {0} відстежуваних стрімів тепер встановлено вказане повідомлення.'
+  stream_no: Такого стріму немає.
+  stream_not_added: Стрім не додано. Або стрім не існує, платформа не підтримується, або ти досягнув максимальної кількості стрімів.
+  stream_not_following: Ти не стежиш за цим стрімом на цьому сервері.
+  stream_not_following_any: Ти не стежиш за жодним стрімом.
+  stream_off_disabled: Сповіщення про вихід стріму в офлайн більше не показуватимуться.
+  stream_off_enabled: Тепер показуватимуться сповіщення, коли стрім виходить в офлайн.
+  stream_online_delete_disabled: Сповіщення про онлайн-стрім більше не видалятимуться, коли стрім виходить в офлайн.
+  stream_online_delete_enabled: Тепер сповіщення про онлайн-стрім видалятимуться, коли стрім виходить в офлайн.
+  stream_removed: 'Стрім {0} ({1}) видалено зі сповіщень.'
+  stream_tracked: Я повідомлю цей канал, коли стрім вийде в онлайн.
+  streamer_offline: 'Стрімер {0} офлайн.'
+  streaming: Стрімить
+  streams_cleared: Усі стріми, за якими стежили на цьому сервері, видалено.
+  streams_follow_title: Стріми, за якими ти стежиш
+  streams_none: Ти не стежиш за жодним стрімом на цьому сервері.
+  viewers: Глядачі
+
+vi-VN:
+  stream_message_reset: 'Tin nhắn thông báo cho stream {0} đã được đặt lại.'
+  stream_message_set: 'Tin nhắn thông báo khi stream {0} lên sóng đã được thiết lập.'
+  stream_message_set_all: 'Tất cả {0} stream đang theo dõi giờ đều có tin nhắn thông báo đã chỉ định.'
+  stream_no: Không tìm thấy stream đó.
+  stream_not_added: Không thể thêm stream. Stream không tồn tại, nền tảng không được hỗ trợ, hoặc bạn đã đạt giới hạn số stream cho phép.
+  stream_not_following: Bạn không theo dõi stream đó trên máy chủ này.
+  stream_not_following_any: Bạn không theo dõi stream nào.
+  stream_off_disabled: Thông báo stream sẽ không hiện khi stream offline nữa.
+  stream_off_enabled: Thông báo stream sẽ hiện khi stream offline.
+  stream_online_delete_disabled: Thông báo stream online sẽ không bị xóa khi stream offline nữa.
+  stream_online_delete_enabled: Thông báo stream online sẽ bị xóa khi stream offline.
+  stream_removed: 'Đã xóa stream ({1}) của {0} khỏi thông báo.'
+  stream_tracked: Mình sẽ thông báo cho kênh này mỗi khi stream lên sóng.
+  streamer_offline: 'Streamer {0} đang offline.'
+  streaming: Đang stream
+  streams_cleared: Tất cả stream đang theo dõi trên máy chủ này đã bị xóa.
+  streams_follow_title: Các stream bạn đang theo dõi
+  streams_none: Bạn không theo dõi stream nào trên máy chủ này.
+  viewers: Người xem
+
+zh-CN:
+  stream_message_reset: '{0} 實況直播的公告消息已重置。'
+  stream_message_set: '已設置 {0} 實況直播上線時的提示訊息。'
+  stream_message_set_all: '全部共 {0} 個已追蹤的直播現在已擁有指定的廣播訊息'
+  stream_no: 沒有這樣的實況直播網址。
+  stream_not_added: 未成功添加實況。直播不存在，該平台不受支持，或者您已達到允許的最大訂閱數。
+  stream_not_following: 您沒有在此伺服器上關注該實況直播。
+  stream_not_following_any: 你沒有在追蹤任何直播
+  stream_off_disabled: 當實況直播離線時，實況通知將不再顯示。
+  stream_off_enabled: 直播通知現在將在直播下線時顯示。
+  stream_online_delete_disabled: 当直播下线时,直播上线通知将不再被删除。
+  stream_online_delete_enabled: 当直播下线时,直播上线通知将被删除。
+  stream_removed: '從通知列表中刪除了 {0} 的實況直播 ({1})。'
+  stream_tracked: 每當此實況直播上線時，我都會通知至此頻道。
+  streamer_offline: '實況直播 {0} 離線。'
+  streaming: 正在串流
+  streams_cleared: 此伺服器上跟踪的所有實況直播訂閱均已刪除。
+  streams_follow_title: 您正在關注的實況直播
+  streams_none: 您沒有關注此伺服器上的任何實況直播。
+  viewers: 觀眾

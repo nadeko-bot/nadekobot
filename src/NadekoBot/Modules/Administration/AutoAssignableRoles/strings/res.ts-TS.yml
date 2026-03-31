@@ -1,4 +1,0 @@
-aar_disabled: '**Auto assign role** on user join is now **disabled**.'
-aar_none: Users don't receive any roles when they join this server.
-aar_role_removed: 'Users will no longer receive {0} role when they join. Hmph, one less thing to handle.'
-aar_roles: 'The following roles are applied to new members: {0}'

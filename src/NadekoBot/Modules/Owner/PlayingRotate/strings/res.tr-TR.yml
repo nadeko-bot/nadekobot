@@ -1,8 +1,0 @@
-reprm: 'Oynatma mesajı kaldırıldı: {0}'
-ropl_added: Eklendi.
-ropl_disabled: Dönen oynatma durumu devre dışı bırakıldı.
-ropl_enabled: Dönen oynatma durumu etkinleştirildi.
-ropl_list: |-
-  Dönen durumların listesi:
-  {0}
-ropl_not_set: Dönen oynatma durumu ayarlanmamış.

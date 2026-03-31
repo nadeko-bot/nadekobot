@@ -1,4 +1,0 @@
-cmdcd_add: '指令 {0} 的冷卻時間已設定為 {1} 秒。'
-cmdcd_cleared: '指令 {0} 將沒有冷卻時間，現存的冷卻時間均已被移除'
-cmdcd_none: 尚未設定指令冷卻時間。
-invalid_second_param_between: '第二個參數錯誤，必須為 {0} 和 {1} 之間的數字'

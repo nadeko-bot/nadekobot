@@ -1,7 +1,0 @@
-linkfix_added: 'Links von {0} werden jetzt zu {1} korrigiert.'
-linkfix_already_exists: 'Eine Linkkorrektur für {0} existiert bereits.'
-linkfix_invalid_domains: Beide Domains, alt und neu, müssen gültig sein.
-linkfix_list_none: Für diesen Server wurden keine Linkkorrekturen konfiguriert.
-linkfix_list_title: Linkkorrekturen
-linkfix_not_found: 'Keine Linkkorrektur für {0} gefunden.'
-linkfix_removed: 'Die Linkkorrektur für {0} wurde entfernt.'

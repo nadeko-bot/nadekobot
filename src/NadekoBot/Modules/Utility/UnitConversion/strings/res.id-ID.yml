@@ -1,4 +1,0 @@
-convert: '{0} {1} sama dengan {2} {3}'
-convert_not_found: 'Tidak bisa mengonversi {0} ke {1}: satuan tidak ditemukan'
-convert_type_error: 'Tidak bisa mengonversi {0} ke {1}: tipe satuan tidak sama'
-convertlist: Satuan yang bisa digunakan oleh konverter

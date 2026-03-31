@@ -1,4 +1,0 @@
-xp_exclude_added: '{0}: تم استبعاد {1} من نظام XP.'
-xp_exclude_removed: '{0}: لم يعد {1} مستبعدًا من نظام XP.'
-xp_exclusion_none: لا توجد استثناءات محددة لهذا الخادم.
-xp_exclusion_title: استثناءات XP

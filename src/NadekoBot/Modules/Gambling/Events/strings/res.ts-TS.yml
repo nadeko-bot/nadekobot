@@ -1,9 +1,0 @@
-event_duration_footer: 'This event is active for up to {0} hours.'
-event_title: '{0} event started!'
-new_gamestatus_event: |-
-  Type the secret code in any channel to receive {1}
-  {2} left to be awarded. Hurry up already!
-new_reaction_event: |-
-  Add {0} reaction to this message to get {1}
-  {2} left to be awarded.
-start_event_fail: Event failed to start. Another event is running, or there was an error.

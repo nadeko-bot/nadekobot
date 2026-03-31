@@ -1,6 +1,0 @@
-dice_invalid_number: '指定的數字錯誤，你一次可以骰 {0} ~ {1} 顆骰子'
-dice_rolled: '骰出了 {0}'
-dice_rolled_num: '已投擲：{0}'
-rolls: ''
-second_larger_than_first: 第二個數字必須大於第一個。
-total: 總共

@@ -1,9 +1,0 @@
-event_duration_footer: 'O evento está ativo por {0} horas.'
-event_title: 'Um evento do tipo {0} foi iniciado!'
-new_gamestatus_event: |-
-  Digite o código secreto em qualquer canal para receber {1}
-  Restam {2}.
-new_reaction_event: |-
-  Clique na reação {0} para receber {1}
-  Restam {2}.
-start_event_fail: Falha ao iniciar o evento. Já há outro evento em execução ou ocorreu um erro ao iniciá-lo.

@@ -1,9 +1,0 @@
-feed_added: Đã thêm feed.
-feed_cant_parse: Không thể truy cập hoặc phân tích nội dung URL feed đó.
-feed_duplicate: Bạn đã theo dõi feed đó trên máy chủ này rồi.
-feed_invalid_url: URL feed không hợp lệ. Phải là URL http hoặc https tuyệt đối.
-feed_limit_reached: Bạn đã đạt số lượng feed tối đa cho phép trên mỗi máy chủ.
-feed_no_feed: Bạn chưa đăng ký feed nào trên máy chủ này.
-feed_out_of_range: Vị trí ngoài phạm vi.
-feed_removed: Đã xóa feed.
-feed_auto_removed: 'Feed `{0}` đã bị xóa tự động sau nhiều lần lấy dữ liệu thất bại.'

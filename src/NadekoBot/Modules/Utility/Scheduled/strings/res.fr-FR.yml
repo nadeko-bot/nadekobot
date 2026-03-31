@@ -1,9 +1,0 @@
-schedule_add_error: Vous avez déjà {0} commandes programmées. Veuillez en supprimer avant d'en ajouter d'autres.
-schedule_add_success: Commande programmée ajoutée avec succès.
-schedule_command: Commande
-schedule_delete_error: Erreur lors de la suppression de la commande programmée.
-schedule_deleted: 'Commande programmée #{0} supprimée avec succès.'
-schedule_id: ID
-schedule_list_none: Vous n'avez aucune commande programmée.
-schedule_list_title: Commandes Programmées
-schedule_when: S'exécute Le

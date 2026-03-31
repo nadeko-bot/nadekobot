@@ -1,6 +1,0 @@
-lang_list: Liste des langues
-lang_set: 'La localisation du serveur a été réglée sur {0} - {1}'
-lang_set_bot: 'La localisation par défaut du bot est désormais {0} - {1}'
-lang_set_bot_show: 'Le langage du bot a été réglé sur {0} - {1}'
-lang_set_fail: Échec de la définition des paramètres régionaux. Revoyez l'aide de cette commande.
-lang_set_show: 'La langue de ce serveur est définie sur {0} - {1}'

@@ -1,9 +1,0 @@
-feed_added: 피드가 추가되었어요.
-feed_cant_parse: 해당 피드 URL의 내용에 접근하거나 파싱할 수 없어요.
-feed_duplicate: 이 서버에서 이미 해당 피드를 구독하고 있어요.
-feed_invalid_url: 잘못된 피드 URL이에요. 절대 경로의 http 또는 https URL이어야 해요.
-feed_limit_reached: 서버당 허용된 최대 피드 수에 도달했어요.
-feed_no_feed: 이 서버에서 구독 중인 피드가 없어요.
-feed_out_of_range: 인덱스가 범위를 벗어났어요.
-feed_removed: 피드가 제거되었어요.
-feed_auto_removed: '피드 `{0}`이(가) 반복적인 가져오기 실패로 자동 제거되었어요.'

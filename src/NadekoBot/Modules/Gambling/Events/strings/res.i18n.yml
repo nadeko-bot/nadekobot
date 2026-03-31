@@ -1,0 +1,167 @@
+ar:
+  event_duration_footer: 'هذا الحدث نشط لمدة تصل إلى {0} ساعات.'
+  event_title: 'بدأ حدث {0}!'
+  new_gamestatus_event: |-
+    اكتب الرمز السري في أي قناة للحصول على {1}
+    متبقي {2} للتوزيع.
+  new_reaction_event: |-
+    أضف تفاعل {0} على هذه الرسالة للحصول على {1}
+    متبقي {2} للتوزيع.
+  start_event_fail: فشل بدء الحدث. هناك حدث آخر قيد التشغيل، أو حدث خطأ أثناء البدء.
+
+de-DE:
+  event_duration_footer: 'Die Veranstaltung enden in {0}st {1}m'
+  event_title: 'Ein Event des Types {0} wurde gestartet!'
+  new_gamestatus_event: 'Tippe den geheimen Code in einen beliebigen Kanal ein um {1} zu erhalten. {2} sind noch übrig.'
+  new_reaction_event: 'Füge die {0} Reaktion zu dieser Nachricht hinzu um {1} zu erhalten. {2} sind noch übrig.'
+  start_event_fail: Die Veranstaltung konnte nicht gestartet werden. Eine andere Veranstaltung ist bereits am laufen, oder es gab einen Fehler beim starten der Veranstaltung.
+
+es-ES:
+  event_duration_footer: 'El evento termina en {0}h {1}m.'
+  event_title: '¡Evento de {0} iniciado!'
+  new_gamestatus_event: |-
+    Escribe el código secreto en cualquier canal para recibir {1}.
+    Quedan {2}.
+  new_reaction_event: |-
+    Añade la reacción {0} a este mensaje para obtener {1}. 
+    Quedan {2}.
+  start_event_fail: No se pudo iniciar el evento, ya hay uno activo o hubo algún error.
+
+fr-FR:
+  event_duration_footer: 'L''événement se fini dans {0} heures.'
+  event_title: 'L''évènement {0} a commencé !'
+  new_gamestatus_event: |-
+    Écrivez le code secret dans n'importe quel salon pour recevoir {1}
+    {2} récompenses restantes.
+  new_reaction_event: |-
+    Ajoutez la réaction {0} à ce message pour avoir {1}
+    {2} récompenses restantes.
+  start_event_fail: Échec de l'événement. Un événement est déjà en cours, où il y a une erreur avec le démarrage de l'événement.
+
+id-ID:
+  event_duration_footer: 'Event ini aktif hingga {0} jam.'
+  event_title: 'Event {0} dimulai!'
+  new_gamestatus_event: |-
+    Ketik kode rahasia di channel mana pun untuk mendapatkan {1}
+    {2} tersisa untuk diberikan.
+  new_reaction_event: |-
+    Tambahkan reaksi {0} ke pesan ini untuk mendapatkan {1}
+    {2} tersisa untuk diberikan.
+  start_event_fail: Event gagal dimulai. Event lain sedang berjalan, atau terjadi kesalahan saat memulai event.
+
+ja-JP:
+  event_duration_footer: 'このイベントは最大{0}時間有効です。'
+  event_title: '{0}イベントが開始されました!'
+  new_gamestatus_event: |-
+    任意のチャンネルで秘密のコードを入力すると{1}を受け取れます
+    残り{2}人に付与可能。
+  new_reaction_event: |-
+    このメッセージに{0}リアクションを付けると{1}を受け取れます
+    残り{2}人に付与可能。
+  start_event_fail: イベントの開始に失敗しました。別のイベントが実行中か、開始時にエラーが発生しました。
+
+ko-KR:
+  event_duration_footer: '이 이벤트는 최대 {0}시간 동안 진행돼요.'
+  event_title: '{0} 이벤트가 시작됐어요!'
+  new_gamestatus_event: |-
+    아무 채널에서나 비밀 코드를 입력하면 {1}을(를) 받아요
+    남은 보상: {2}개
+  new_reaction_event: |-
+    이 메시지에 {0} 반응을 추가하면 {1}을(를) 받아요
+    남은 보상: {2}개
+  start_event_fail: 이벤트를 시작하지 못했어요. 다른 이벤트가 진행 중이거나 시작 중 오류가 발생했어요.
+
+pl-PL:
+  event_duration_footer: 'To wydarzenie trwa do {0} godzin.'
+  event_title: 'Wydarzenie {0} rozpoczęte!'
+  new_gamestatus_event: |-
+    Wpisz tajny kod na dowolnym kanale, żeby otrzymać {1}
+    Pozostało {2} do rozdania.
+  new_reaction_event: |-
+    Dodaj reakcję {0} do tej wiadomości, żeby otrzymać {1}
+    Pozostało {2} do rozdania.
+  start_event_fail: Nie udało się uruchomić wydarzenia. Inne wydarzenie jest w toku lub wystąpił błąd.
+
+pt-BR:
+  event_duration_footer: 'O evento está ativo por {0} horas.'
+  event_title: 'Um evento do tipo {0} foi iniciado!'
+  new_gamestatus_event: |-
+    Digite o código secreto em qualquer canal para receber {1}
+    Restam {2}.
+  new_reaction_event: |-
+    Clique na reação {0} para receber {1}
+    Restam {2}.
+  start_event_fail: Falha ao iniciar o evento. Já há outro evento em execução ou ocorreu um erro ao iniciá-lo.
+
+ru-RU:
+  event_duration_footer: 'Мероприятие закончится через {0}ч {1}м'
+  event_title: 'Событие типа {0} началось!'
+  new_gamestatus_event: |-
+    Введите секретный код в любом канале, чтобы получить {1}
+    {2} осталось для выдачи.
+  new_reaction_event: |-
+    Добавьте реакцию {0} к этому сообщению, чтобы получить {1}
+    Осталось {2}.
+  start_event_fail: Не удалось запустить мероприятие. Другое мероприятие уже было запущено, либо же произошла ошибка при запуске мероприятия
+
+sr-Cyrl-RS:
+  event_duration_footer: 'Овај догађај је активан до {0} сати.'
+  event_title: '{0} догађај је почео!'
+  new_gamestatus_event: |-
+    Откуцај тајни код у било ком каналу да добијеш {1}
+    Преостало {2} за доделу.
+  new_reaction_event: |-
+    Додај {0} реакцију на ову поруку да добијеш {1}
+    Преостало {2} за доделу.
+  start_event_fail: Догађај није успео да почне. Други догађај је у току или је дошло до грешке при покретању.
+
+tr-TR:
+  event_duration_footer: 'Bu etkinlik en fazla {0} saat aktif.'
+  event_title: '{0} etkinliği başladı!'
+  new_gamestatus_event: |-
+    {1} almak için gizli kodu herhangi bir kanalda yaz
+    Ödüllendirilecek {2} kaldı.
+  new_reaction_event: |-
+    {1} almak için bu mesaja {0} tepkisi ekle
+    Ödüllendirilecek {2} kaldı.
+  start_event_fail: Etkinlik başlatılamadı. Başka bir etkinlik devam ediyor veya başlatma sırasında bir hata oluştu.
+
+ts-TS:
+  event_duration_footer: 'This event is active for up to {0} hours.'
+  event_title: '{0} event started!'
+  new_gamestatus_event: |-
+    Type the secret code in any channel to receive {1}
+    {2} left to be awarded. Hurry up already!
+  new_reaction_event: |-
+    Add {0} reaction to this message to get {1}
+    {2} left to be awarded.
+  start_event_fail: Event failed to start. Another event is running, or there was an error.
+
+uk-UA:
+  event_duration_footer: 'Ця подія активна до {0} годин.'
+  event_title: 'Подія {0} розпочалася!'
+  new_gamestatus_event: |-
+    Напиши секретний код у будь-якому каналі, щоб отримати {1}
+    Залишилось нагород: {2}.
+  new_reaction_event: |-
+    Додай реакцію {0} до цього повідомлення, щоб отримати {1}
+    Залишилось нагород: {2}.
+  start_event_fail: Не вдалося розпочати подію. Інша подія вже запущена, або сталася помилка.
+
+vi-VN:
+  event_duration_footer: 'Sự kiện này hoạt động tối đa {0} giờ.'
+  event_title: 'Sự kiện {0} đã bắt đầu!'
+  new_gamestatus_event: |-
+    Gõ mã bí mật vào bất kỳ kênh nào để nhận {1}
+    Còn {2} phần thưởng.
+  new_reaction_event: |-
+    Thêm biểu tượng {0} vào tin nhắn này để nhận {1}
+    Còn {2} phần thưởng.
+  start_event_fail: Không thể bắt đầu sự kiện. Đang có sự kiện khác chạy, hoặc đã xảy ra lỗi.
+
+zh-CN:
+  event_duration_footer: '此活動的有效時間最長為 {0} 小時。'
+  event_title: '{0} 活動開始！'
+  new_gamestatus_event: '在任何頻道中輸入密碼，即可獲得 {1} {2} 待獎勵。'
+  new_reaction_event: '向此消息添加 {0} 反應以獲得 {1} {2} 待獎勵。'
+  start_event_fail: 活動未能啟動。目前有另一個活動正在進行，或者啟動該活動時出錯。

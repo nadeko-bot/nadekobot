@@ -1,6 +1,0 @@
-dice_invalid_number: 'Podano nieprawidłową liczbę. Możesz rzucić od {0} do {1} kości naraz.'
-dice_rolled: 'wyrzucił/a {0}'
-dice_rolled_num: 'Wynik rzutu: {0}'
-rolls: Rzuty
-second_larger_than_first: Druga liczba musi być większa od pierwszej.
-total: Suma

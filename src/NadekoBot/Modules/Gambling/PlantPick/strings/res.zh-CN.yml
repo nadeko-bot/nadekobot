@@ -1,8 +1,0 @@
-curgen_disabled: 已在此頻道上停用貨幣生成
-curgen_enabled: 已在此頻道上啟用貨幣生成
-curgen_pl: '{0}個隨機的{1}出現了!'
-curgen_sn: '一個隨機的{0}出現了!'
-pick_pl: '通過輸入"{0}pick"來選擇它們'
-pick_sn: '通過輸入"{0}pick"來選擇它'
-picked: '{1} 捡起了 {0}'
-planted: '{0}種下了{1}'

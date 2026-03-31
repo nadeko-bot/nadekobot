@@ -1,0 +1,159 @@
+ar:
+  curgen_disabled: تم تعطيل توليد العملات في هذه القناة.
+  curgen_enabled: تم تفعيل توليد العملات في هذه القناة.
+  curgen_pl: 'ظهرت {0} {1} عشوائية!'
+  curgen_sn: 'ظهرت {0} عشوائية!'
+  pick_pl: 'التقطها بكتابة `{0}pick`'
+  pick_sn: 'التقطها بكتابة `{0}pick`'
+  picked: '{1} التقط {0}'
+  planted: '{0} زرع {1}'
+
+de-DE:
+  curgen_disabled: Währungs Generation wurde für diesen Kanal deaktiviert.
+  curgen_enabled: Einkommens Generation wurde für diesen Kanal aktiviert.
+  curgen_pl: '{0} zufälliges {1} ist aufgetaucht!'
+  curgen_sn: 'Ein zufälliges {0} ist aufgetaucht!'
+  pick_pl: 'Schreibe {0} um sie aufzunehmen'
+  pick_sn: 'Schreibe {0} up es aufzuheben'
+  picked: '{1} hat {0} aufgehoben'
+  planted: '{0} hat {1} gepflanzt'
+
+es-ES:
+  curgen_disabled: La generación de moneda ha sido desactivada en este canal.
+  curgen_enabled: La generación de moneda ha sido habilitada en este canal.
+  curgen_pl: '¡{0} {1} ha aparecido!'
+  curgen_sn: '¡Ha aparecido {0}!'
+  pick_pl: 'Tómalos escribiendo `{0}pick`'
+  pick_sn: 'Tómalo escribiendo `{0}pick`'
+  picked: '{1} recogió {0}'
+  planted: '{0} plantó {1}.'
+
+fr-FR:
+  curgen_disabled: La génération de devises a été désactivée sur ce salon.
+  curgen_enabled: La génération de devises a été activée sur ce salon.
+  curgen_pl: '{0} {1} aléatoires sont apparues!'
+  curgen_sn: 'Une {0} aléatoire est apparue!'
+  pick_pl: 'Récupérez les en tapant `{0}pick`'
+  pick_sn: 'Récupérez la en tapant `{0}pick`'
+  picked: '{1} a ramassé {0}'
+  planted: '{0} a planté {1}'
+
+id-ID:
+  curgen_disabled: Generasi mata uang telah dinonaktifkan di channel ini.
+  curgen_enabled: Generasi mata uang telah diaktifkan di channel ini.
+  curgen_pl: '{0} {1} acak muncul!'
+  curgen_sn: 'Sebuah {0} acak muncul!'
+  pick_pl: 'Ambil mereka dengan mengetik `{0}pick`'
+  pick_sn: 'Ambil dengan mengetik `{0}pick`'
+  picked: '{1} mengambil {0}'
+  planted: '{0} menanam {1}'
+
+ja-JP:
+  curgen_disabled: このチャンネルでは通貨生成機能が無効になりました
+  curgen_enabled: このチャンネルでは通貨生成機能が有効になりました
+  curgen_pl: '{0}個のランダム{1}が登場しました！'
+  curgen_sn: 'ランダム{0}が出現！'
+  pick_pl: '拾うには、`{0}pick`と入力してください。'
+  pick_sn: '拾うには、`{0}pick`と入力してください。'
+  picked: '{1}は{0}を拾いました。'
+  planted: '{0}個植えました{1}'
+
+ko-KR:
+  curgen_disabled: 이 채널에서 화폐 생성이 비활성화됐어요.
+  curgen_enabled: 이 채널에서 화폐 생성이 활성화됐어요.
+  curgen_pl: '랜덤 {1} {0}개가 나타났어요!'
+  curgen_sn: '랜덤 {0}이(가) 나타났어요!'
+  pick_pl: '`{0}pick`을 입력해서 주워 가세요'
+  pick_sn: '`{0}pick`을 입력해서 주워 가세요'
+  picked: '{1}님이 {0}을(를) 주웠어요'
+  planted: '{0}님이 {1}을(를) 심었어요'
+
+pl-PL:
+  curgen_disabled: Generowanie waluty zostało wyłączone na tym kanale.
+  curgen_enabled: Generowanie waluty zostało włączone na tym kanale.
+  curgen_pl: 'Pojawiło się {0} losowych {1}!'
+  curgen_sn: 'Pojawił/a się losowy/a {0}!'
+  pick_pl: 'Podnieś je wpisując `{0}pick`'
+  pick_sn: 'Podnieś to wpisując `{0}pick`'
+  picked: '{1} podniósł/podniosła {0}'
+  planted: '{0} posadził/a {1}'
+
+pt-BR:
+  curgen_disabled: A geração de dinheiro foi desativada nesse canal.
+  curgen_enabled: A geração de dinheiro ativada nesse canal.
+  curgen_pl: '{0} {1} brotaram aleatoriamente!'
+  curgen_sn: 'Uma {0} brotou aleatoriamente!'
+  pick_pl: 'Pegue o item digitando `{0}pick`'
+  pick_sn: 'Pegue digitando `{0}pick`'
+  picked: '{1} coletou {0}'
+  planted: '{0} plantou {1}'
+
+ru-RU:
+  curgen_disabled: Генерация валюты была отключена в этом канале.
+  curgen_enabled: Генерация валюты была включена в этом канале.
+  curgen_pl: '{0} случайных {1} появились!'
+  curgen_sn: 'Случайный {0} появился!'
+  pick_pl: 'Для того, что бы собрать их, напишите {0}'
+  pick_sn: 'Для того, что бы собрать это, напишите {0}'
+  picked: '{1} поднял {0}'
+  planted: '{0} посадил {1}'
+
+sr-Cyrl-RS:
+  curgen_disabled: Генерисање валуте је искључено на овом каналу.
+  curgen_enabled: Генерисање валуте је укључено на овом каналу.
+  curgen_pl: '{0} насумичних {1} се појавило!'
+  curgen_sn: 'Насумично {0} се појавило!'
+  pick_pl: 'Покупи их тако што ћеш откуцати `{0}pick`'
+  pick_sn: 'Покупи га тако што ћеш откуцати `{0}pick`'
+  picked: '{1} је покупио/ла {0}'
+  planted: '{0} је посадио/ла {1}'
+
+tr-TR:
+  curgen_disabled: Para üretimi bu kanalda devre dışı bırakıldı.
+  curgen_enabled: Para üretimi bu kanalda etkinleştirildi.
+  curgen_pl: '{0} rastgele {1} belirdi!'
+  curgen_sn: 'Rastgele bir {0} belirdi!'
+  pick_pl: '`{0}pick` yazarak topla'
+  pick_sn: '`{0}pick` yazarak topla'
+  picked: '{1}, {0} topladı'
+  planted: '{0}, {1} ekti'
+
+ts-TS:
+  curgen_disabled: Currency generation has been disabled on this channel.
+  curgen_enabled: Currency generation has been enabled on this channel.
+  curgen_pl: '{0} random {1} appeared!'
+  curgen_sn: 'A random {0} appeared!'
+  pick_pl: 'Pick them up by typing `{0}pick`'
+  pick_sn: 'Pick it up by typing `{0}pick`'
+  picked: '{1} picked {0}'
+  planted: '{0} planted {1}'
+
+uk-UA:
+  curgen_disabled: Генерацію валюти вимкнено для цього каналу.
+  curgen_enabled: Генерацію валюти увімкнено для цього каналу.
+  curgen_pl: 'З''явилося {0} випадкових {1}!'
+  curgen_sn: 'З''явився випадковий {0}!'
+  pick_pl: 'Підбери їх, написавши `{0}pick`'
+  pick_sn: 'Підбери, написавши `{0}pick`'
+  picked: '{1} підібрав {0}'
+  planted: '{0} посадив {1}'
+
+vi-VN:
+  curgen_disabled: Đã tắt tạo tiền tệ trên kênh này.
+  curgen_enabled: Đã bật tạo tiền tệ trên kênh này.
+  curgen_pl: '{0} {1} ngẫu nhiên đã xuất hiện!'
+  curgen_sn: 'Một {0} ngẫu nhiên đã xuất hiện!'
+  pick_pl: 'Nhặt chúng bằng cách gõ `{0}pick`'
+  pick_sn: 'Nhặt nó bằng cách gõ `{0}pick`'
+  picked: '{1} đã nhặt {0}'
+  planted: '{0} đã trồng {1}'
+
+zh-CN:
+  curgen_disabled: 已在此頻道上停用貨幣生成
+  curgen_enabled: 已在此頻道上啟用貨幣生成
+  curgen_pl: '{0}個隨機的{1}出現了!'
+  curgen_sn: '一個隨機的{0}出現了!'
+  pick_pl: '通過輸入"{0}pick"來選擇它們'
+  pick_sn: '通過輸入"{0}pick"來選擇它'
+  picked: '{1} 捡起了 {0}'
+  planted: '{0}種下了{1}'

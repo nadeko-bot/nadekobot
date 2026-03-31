@@ -1,5 +1,0 @@
-set_srvr_banner: 已設定新的伺服器橫幅！
-set_srvr_icon: 已設定新的伺服器圖示！
-srvr_banner_invalid: 指定的圖片檔案類型無效。請確保您指定的是圖片直接連結。
-srvr_banner_invalid_url: 指定的 URL 無效。請確保您指定的是圖片直接連結。
-srvr_banner_too_large: 指定的圖片太大了！最大大小為 8MB。

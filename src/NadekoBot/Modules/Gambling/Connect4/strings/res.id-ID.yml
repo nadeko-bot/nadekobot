@@ -1,5 +1,0 @@
-connect4_created: Permainan Connect4 dibuat. Menunggu pemain lain untuk bergabung.
-connect4_draw: Permainan Connect4 berakhir seri.
-connect4_failed_to_start: Permainan Connect4 gagal dimulai karena tidak ada yang bergabung.
-connect4_player_to_move: 'Giliran bermain: {0}'
-connect4_won: '{0} memenangkan permainan Connect4 melawan {1}.'

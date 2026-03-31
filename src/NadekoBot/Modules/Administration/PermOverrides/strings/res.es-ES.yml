@@ -1,6 +1,0 @@
-perm_override: 'Los usuarios necesitarán el permiso {0} para poder usar el comando {1}.'
-perm_override_all: Se borraron todas las anulaciones de permisos de Discord.
-perm_override_all_confirm: ¿Seguro que desea eliminar **TODAS** las anulaciones de permiso en este servidor?  Esta acción es irreversible.
-perm_override_page_none: No hay anulaciones en esta página.
-perm_override_reset: Se borraron las anulaciones de permisos para este comando.
-perm_overrides: Anulaciones de permisos de Discord

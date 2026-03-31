@@ -1,0 +1,143 @@
+ar:
+  linkfix_added: 'سيتم الآن تصحيح الروابط من {0} إلى {1}.'
+  linkfix_already_exists: 'يوجد بالفعل تصحيح رابط لـ {0}.'
+  linkfix_invalid_domains: يجب أن يكون كلا النطاقين القديم والجديد صالحين.
+  linkfix_list_none: لم يتم تكوين أي تصحيحات روابط لهذا السيرفر.
+  linkfix_list_title: تصحيحات الروابط
+  linkfix_not_found: 'لم يتم العثور على تصحيح رابط لـ {0}.'
+  linkfix_removed: 'تم إزالة تصحيح الرابط لـ {0}.'
+
+de-DE:
+  linkfix_added: 'Links von {0} werden jetzt zu {1} korrigiert.'
+  linkfix_already_exists: 'Eine Linkkorrektur für {0} existiert bereits.'
+  linkfix_invalid_domains: Beide Domains, alt und neu, müssen gültig sein.
+  linkfix_list_none: Für diesen Server wurden keine Linkkorrekturen konfiguriert.
+  linkfix_list_title: Linkkorrekturen
+  linkfix_not_found: 'Keine Linkkorrektur für {0} gefunden.'
+  linkfix_removed: 'Die Linkkorrektur für {0} wurde entfernt.'
+
+es-ES:
+  linkfix_added: 'Los enlaces de {0} ahora serán corregidos a {1}.'
+  linkfix_already_exists: 'Ya existe una corrección de enlace para {0}.'
+  linkfix_invalid_domains: Ambos dominios, antiguo y nuevo, deben ser válidos.
+  linkfix_list_none: No se han configurado correcciones de enlaces para este servidor.
+  linkfix_list_title: Correcciones de Enlaces
+  linkfix_not_found: 'No se encontró corrección de enlace para {0}.'
+  linkfix_removed: 'La corrección de enlace para {0} ha sido eliminada.'
+
+fr-FR:
+  linkfix_added: 'Les liens de {0} seront maintenant corrigés vers {1}.'
+  linkfix_already_exists: 'Une correction de lien pour {0} existe déjà.'
+  linkfix_invalid_domains: Les deux domaines, ancien et nouveau, doivent être valides.
+  linkfix_list_none: Aucune correction de lien n'a été configurée pour ce serveur.
+  linkfix_list_title: Corrections de Liens
+  linkfix_not_found: 'Aucune correction de lien trouvée pour {0}.'
+  linkfix_removed: 'La correction de lien pour {0} a été supprimée.'
+
+id-ID:
+  linkfix_added: 'Link dari {0} sekarang akan diperbaiki ke {1}.'
+  linkfix_already_exists: 'Perbaikan link untuk {0} sudah ada.'
+  linkfix_invalid_domains: Domain lama dan baru harus valid.
+  linkfix_list_none: Belum ada perbaikan link yang dikonfigurasi untuk server ini.
+  linkfix_list_title: Perbaikan Link
+  linkfix_not_found: 'Perbaikan link untuk {0} tidak ditemukan.'
+  linkfix_removed: 'Perbaikan link untuk {0} telah dihapus.'
+
+ja-JP:
+  linkfix_added: '{0}からのリンクは{1}に修正されるようになります。'
+  linkfix_already_exists: '{0}のリンク修正は既に存在します。'
+  linkfix_invalid_domains: 古いドメインと新しいドメインの両方が有効である必要があります。
+  linkfix_list_none: このサーバーにリンク修正は設定されていません。
+  linkfix_list_title: リンク修正
+  linkfix_not_found: '{0}のリンク修正が見つかりません。'
+  linkfix_removed: '{0}のリンク修正が削除されました。'
+
+ko-KR:
+  linkfix_added: '{0}의 링크가 이제 {1}(으)로 변환돼요.'
+  linkfix_already_exists: '{0}에 대한 링크 수정이 이미 존재해요.'
+  linkfix_invalid_domains: 이전 도메인과 새 도메인 모두 유효해야 해요.
+  linkfix_list_none: 이 서버에 설정된 링크 수정이 없어요.
+  linkfix_list_title: 링크 수정
+  linkfix_not_found: '{0}에 대한 링크 수정을 찾을 수 없어요.'
+  linkfix_removed: '{0}에 대한 링크 수정이 제거되었어요.'
+
+pl-PL:
+  linkfix_added: 'Linki z {0} będą teraz naprawiane na {1}.'
+  linkfix_already_exists: 'Poprawka linków dla {0} już istnieje.'
+  linkfix_invalid_domains: Obie domeny (stara i nowa) muszą być prawidłowe.
+  linkfix_list_none: Na tym serwerze nie skonfigurowano żadnych poprawek linków.
+  linkfix_list_title: Poprawki linków
+  linkfix_not_found: 'Nie znaleziono poprawki linków dla {0}.'
+  linkfix_removed: 'Poprawka linków dla {0} została usunięta.'
+
+pt-BR:
+  linkfix_added: 'Links de {0} agora serão corrigidos para {1}.'
+  linkfix_already_exists: 'Já existe uma correção de link para {0}.'
+  linkfix_invalid_domains: Ambos os domínios antigo e novo devem ser válidos.
+  linkfix_list_none: Nenhuma correção de link foi configurada para este servidor.
+  linkfix_list_title: Correções de Link
+  linkfix_not_found: 'Nenhuma correção de link encontrada para {0}.'
+  linkfix_removed: 'A correção de link para {0} foi removida.'
+
+ru-RU:
+  linkfix_added: 'Ссылки с {0} теперь будут исправлены на {1}.'
+  linkfix_already_exists: 'Исправление ссылки для {0} уже существует.'
+  linkfix_invalid_domains: Оба домена, старый и новый, должны быть действительными.
+  linkfix_list_none: На этом сервере не настроены исправления ссылок.
+  linkfix_list_title: Исправления Ссылок
+  linkfix_not_found: 'Исправление ссылки для {0} не найдено.'
+  linkfix_removed: 'Исправление ссылки для {0} было удалено.'
+
+sr-Cyrl-RS:
+  linkfix_added: 'Линкови са {0} ће сада бити исправљени на {1}.'
+  linkfix_already_exists: 'Исправка линка за {0} већ постоји.'
+  linkfix_invalid_domains: Оба домена морају бити валидна.
+  linkfix_list_none: Нису конфигурисане исправке линкова за овај сервер.
+  linkfix_list_title: Исправке линкова
+  linkfix_not_found: 'Исправка линка за {0} није пронађена.'
+  linkfix_removed: 'Исправка линка за {0} је уклоњена.'
+
+tr-TR:
+  linkfix_added: '{0} bağlantıları artık {1} olarak düzeltilecek.'
+  linkfix_already_exists: '{0} için zaten bir bağlantı düzeltmesi var.'
+  linkfix_invalid_domains: Hem eski hem de yeni alan adları geçerli olmalı.
+  linkfix_list_none: Bu sunucu için bağlantı düzeltmesi yapılandırılmamış.
+  linkfix_list_title: Bağlantı Düzeltmeleri
+  linkfix_not_found: '{0} için bağlantı düzeltmesi bulunamadı.'
+  linkfix_removed: '{0} bağlantı düzeltmesi kaldırıldı.'
+
+ts-TS:
+  linkfix_added: 'Links from {0} will now be fixed to {1}.'
+  linkfix_already_exists: 'A link fix for {0} already exists. Pay attention!'
+  linkfix_invalid_domains: Both old and new domains must be valid.
+  linkfix_list_none: No link fixes configured for this server.
+  linkfix_list_title: Link Fixes
+  linkfix_not_found: 'No link fix found for {0}.'
+  linkfix_removed: 'Link fix for {0} has been removed.'
+
+uk-UA:
+  linkfix_added: 'Посилання з {0} тепер будуть виправлятися на {1}.'
+  linkfix_already_exists: 'Виправлення посилань для {0} вже існує.'
+  linkfix_invalid_domains: Обидва домени мають бути дійсними.
+  linkfix_list_none: На цьому сервері не налаштовано жодних виправлень посилань.
+  linkfix_list_title: Виправлення посилань
+  linkfix_not_found: 'Виправлення посилань для {0} не знайдено.'
+  linkfix_removed: 'Виправлення посилань для {0} видалено.'
+
+vi-VN:
+  linkfix_added: 'Các liên kết từ {0} giờ sẽ được chuyển sang {1}.'
+  linkfix_already_exists: 'Đã tồn tại một bản sửa liên kết cho {0}.'
+  linkfix_invalid_domains: Cả tên miền cũ và mới đều phải hợp lệ.
+  linkfix_list_none: Chưa có bản sửa liên kết nào được cấu hình cho máy chủ này.
+  linkfix_list_title: Sửa liên kết
+  linkfix_not_found: 'Không tìm thấy bản sửa liên kết cho {0}.'
+  linkfix_removed: 'Bản sửa liên kết cho {0} đã bị xóa.'
+
+zh-CN:
+  linkfix_added: '來自 {0} 的連結現在將被修正為 {1}。'
+  linkfix_already_exists: '{0} 的連結修正已存在。'
+  linkfix_invalid_domains: 舊域名和新域名都必須有效。
+  linkfix_list_none: 此伺服器未設定任何連結修正。
+  linkfix_list_title: 連結修正
+  linkfix_not_found: '找不到 {0} 的連結修正。'
+  linkfix_removed: '{0} 的連結修正已移除。'

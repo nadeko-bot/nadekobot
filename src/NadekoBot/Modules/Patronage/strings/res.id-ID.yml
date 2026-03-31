@@ -1,6 +1,0 @@
-expires: Kedaluwarsa
-patron_info: Info Patron
-patron_msg_sent: 'Selesai mengirim pesan ke patron di tier {1} ke atas. {1} berhasil dikirim dan {2} gagal.'
-patron_not_enabled: Sistem patron dinonaktifkan.
-pledge: Pledge
-tier: Tier

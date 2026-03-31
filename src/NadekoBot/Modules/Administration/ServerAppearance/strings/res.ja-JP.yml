@@ -1,5 +1,0 @@
-set_srvr_banner: 新しいサーバーバナーが設定されました！
-set_srvr_icon: 新しいサーバーアイコンが設定されました！
-srvr_banner_invalid: 指定された画像のファイルタイプが無効です。画像の直接URLを指定していることを確認してください。
-srvr_banner_invalid_url: 指定されたURLは無効です。画像の直接URLを指定していることを確認してください。
-srvr_banner_too_large: 指定された画像が大きすぎます！最大サイズは8MBです。

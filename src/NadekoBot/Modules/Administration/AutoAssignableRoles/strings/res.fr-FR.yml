@@ -1,4 +1,0 @@
-aar_disabled: L'**assignation automatique de rôles** aux nouveaux membres est **désactivée**.
-aar_none: Les utilisateurs ne reçoivent aucun rôle lorsqu'ils rejoignent ce serveur.
-aar_role_removed: 'Les membres ne seront plus assignés {0} au moment de joindre le serveur.'
-aar_roles: 'Les rôles suivants sont assignés aux membres qui joignent ce serveur: {0}'

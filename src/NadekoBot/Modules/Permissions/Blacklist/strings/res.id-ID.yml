@@ -1,5 +1,0 @@
-blacklisted: '{0} dengan ID {1} sudah dimasukkan ke daftar hitam'
-blacklisted_channels: Channel yang Diblokir
-blacklisted_servers: Server yang Diblokir
-blacklisted_users: Pengguna yang Diblokir
-unblacklisted: '{0} dengan ID {1} sudah dihapus dari daftar hitam'

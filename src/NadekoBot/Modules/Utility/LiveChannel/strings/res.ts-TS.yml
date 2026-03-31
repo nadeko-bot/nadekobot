@@ -1,9 +1,0 @@
-livechannel_added: 'Successfully added {0} as a live channel.'
-livechannel_limit: 'You can have at most {0} live channels per server.'
-livechannel_list_empty: No live channels configured for this server.
-livechannel_list_title: 'Live Channels in {0}'
-livechannel_not_found: That channel wasn't found in the live channels list.
-livechannel_please_wait: Please allow up to 10 minutes for changes to take effect. Be patient!
-livechannel_removed: 'Successfully removed {0} from live channels.'
-preview: Preview
-template: Template

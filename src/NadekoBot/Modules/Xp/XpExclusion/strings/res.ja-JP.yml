@@ -1,4 +1,0 @@
-xp_exclude_added: '{0}: {1}がXPシステムから除外されました。'
-xp_exclude_removed: '{0}: {1}はXPシステムから除外されなくなりました。'
-xp_exclusion_none: このサーバーに除外は設定されていません。
-xp_exclusion_title: XP除外

@@ -1,6 +1,0 @@
-dice_invalid_number: 'Số không hợp lệ. Bạn có thể tung {0}-{1} xúc xắc cùng lúc.'
-dice_rolled: 'đã tung {0}'
-dice_rolled_num: 'Xúc xắc tung được: {0}'
-rolls: Lượt tung
-second_larger_than_first: Số thứ hai phải lớn hơn số thứ nhất.
-total: Tổng

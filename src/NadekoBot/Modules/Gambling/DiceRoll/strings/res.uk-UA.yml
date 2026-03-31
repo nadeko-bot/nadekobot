@@ -1,6 +1,0 @@
-dice_invalid_number: 'Неправильне число. Можна кидати від {0} до {1} кубиків за раз.'
-dice_rolled: 'випало {0}'
-dice_rolled_num: 'Кубик випав: {0}'
-rolls: Кидки
-second_larger_than_first: Друге число має бути більшим за перше.
-total: Всього

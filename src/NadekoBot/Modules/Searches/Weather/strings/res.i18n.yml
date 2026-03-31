@@ -1,0 +1,175 @@
+ar:
+  city_not_found: لم يتم العثور على المدينة.
+  condition: الحالة
+  humidity: الرطوبة
+  latlong: خط العرض/الطول
+  min_max: الحد الأدنى/الأقصى
+  sunrise: الشروق
+  sunset: الغروب
+  temperature: درجة الحرارة
+  wind_speed: سرعة الرياح
+
+de-DE:
+  city_not_found: Stadt wurde nicht gefunden.
+  condition: Bedingung
+  humidity: Luftfeuchtigkeit
+  latlong: Breitengrad/Längengrad
+  min_max: Min/Max
+  sunrise: Sonnenaufgang
+  sunset: Sonnenuntergang
+  temperature: Temperatur
+  wind_speed: Windgeschwindigkeit
+
+es-ES:
+  city_not_found: Ciudad no encontrada.
+  condition: Condición
+  humidity: Humedad
+  latlong: Lat./Long.
+  min_max: Mín/Máx
+  sunrise: Salida del sol
+  sunset: Puesta del sol
+  temperature: Temperatura
+  wind_speed: Velocidad del viento
+
+fr-FR:
+  city_not_found: Ville introuvée.
+  condition: Condition
+  humidity: Humidité
+  latlong: Lat/Long
+  min_max: Min/Max
+  sunrise: Levé de soleil
+  sunset: Couché de soleil
+  temperature: Température
+  wind_speed: Vitesse du vent
+
+id-ID:
+  city_not_found: Kota tidak ditemukan.
+  condition: Kondisi
+  humidity: Kelembapan
+  latlong: Lat/Long
+  min_max: Min/Maks
+  sunrise: Matahari terbit
+  sunset: Matahari terbenam
+  temperature: Suhu
+  wind_speed: Kecepatan angin
+
+ja-JP:
+  city_not_found: 都市が見つかりませんでした。
+  condition: 天気
+  humidity: 湿度
+  latlong: 緯度／経度
+  min_max: 最低気温／最高気温
+  sunrise: 日の出
+  sunset: 日の入り
+  temperature: 温度
+  wind_speed: 風速
+
+ko-KR:
+  city_not_found: 도시를 찾을 수 없어요.
+  condition: 날씨
+  humidity: 습도
+  latlong: 위도/경도
+  min_max: 최저/최고
+  sunrise: 일출
+  sunset: 일몰
+  temperature: 온도
+  wind_speed: 풍속
+
+pl-PL:
+  city_not_found: Nie znaleziono miasta.
+  condition: Warunki
+  humidity: Wilgotność
+  latlong: Szer./Dł. geogr.
+  min_max: Min/Max
+  sunrise: Wschód słońca
+  sunset: Zachód słońca
+  temperature: Temperatura
+  wind_speed: Prędkość wiatru
+
+pt-BR:
+  city_not_found: Cidade não encontrada.
+  condition: Condição
+  humidity: Umidade
+  latlong: Lat/Long
+  min_max: Min/Max
+  sunrise: Nascer do sol
+  sunset: Pôr do sol
+  temperature: Temperatura
+  wind_speed: Velocidade do vento
+
+ru-RU:
+  city_not_found: Город не найден.
+  condition: Условие
+  humidity: Влажность
+  latlong: Широта/Долгота
+  min_max: Мин/Макс
+  sunrise: Восход солнца
+  sunset: Заход солнца
+  temperature: Температура
+  wind_speed: Скорость ветра
+
+sr-Cyrl-RS:
+  city_not_found: Град није пронађен.
+  condition: Стање
+  humidity: Влажност
+  latlong: Гео. ширина/дужина
+  min_max: Мин/Макс
+  sunrise: Излазак сунца
+  sunset: Залазак сунца
+  temperature: Температура
+  wind_speed: Брзина ветра
+
+tr-TR:
+  city_not_found: Şehir bulunamadı.
+  condition: Durum
+  humidity: Nem
+  latlong: Enlem/Boylam
+  min_max: Min/Maks
+  sunrise: Gün doğumu
+  sunset: Gün batımı
+  temperature: Sıcaklık
+  wind_speed: Rüzgar hızı
+
+ts-TS:
+  city_not_found: City not found.
+  condition: Condition
+  humidity: Humidity
+  latlong: Lat/Long
+  min_max: Min/Max
+  sunrise: Sunrise
+  sunset: Sunset
+  temperature: Temperature
+  wind_speed: Wind speed
+
+uk-UA:
+  city_not_found: Місто не знайдено.
+  condition: Стан
+  humidity: Вологість
+  latlong: Шир./Довг.
+  min_max: Мін./Макс.
+  sunrise: Схід сонця
+  sunset: Захід сонця
+  temperature: Температура
+  wind_speed: Швидкість вітру
+
+vi-VN:
+  city_not_found: Không tìm thấy thành phố.
+  condition: Thời tiết
+  humidity: Độ ẩm
+  latlong: Vĩ độ/Kinh độ
+  min_max: Thấp nhất/Cao nhất
+  sunrise: Bình minh
+  sunset: Hoàng hôn
+  temperature: Nhiệt độ
+  wind_speed: Tốc độ gió
+
+zh-CN:
+  city_not_found: 未找到城市。
+  condition: 情況
+  humidity: 濕度
+  latlong: 經緯度
+  min_max: 最小/最大
+  sunrise: 日出
+  sunset: 日落
+  temperature: 溫度
+  wind_speed: 風速

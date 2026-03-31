@@ -1,7 +1,0 @@
-linkfix_added: '{0}からのリンクは{1}に修正されるようになります。'
-linkfix_already_exists: '{0}のリンク修正は既に存在します。'
-linkfix_invalid_domains: 古いドメインと新しいドメインの両方が有効である必要があります。
-linkfix_list_none: このサーバーにリンク修正は設定されていません。
-linkfix_list_title: リンク修正
-linkfix_not_found: '{0}のリンク修正が見つかりません。'
-linkfix_removed: '{0}のリンク修正が削除されました。'

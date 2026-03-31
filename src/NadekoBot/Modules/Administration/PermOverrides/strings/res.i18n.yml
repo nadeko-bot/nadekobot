@@ -1,0 +1,127 @@
+ar:
+  perm_override: 'سيحتاج المستخدمون إلى صلاحية {0} لتشغيل أمر {1}.'
+  perm_override_all: تم مسح جميع تجاوزات صلاحيات Discord.
+  perm_override_all_confirm: هل أنت متأكد أنك تريد إزالة **جميع** تجاوزات صلاحيات Discord على هذا الخادم؟ هذا الإجراء لا يمكن التراجع عنه.
+  perm_override_page_none: لا توجد تجاوزات في هذه الصفحة.
+  perm_override_reset: تم مسح تجاوزات صلاحيات Discord لهذا الأمر.
+  perm_overrides: تجاوزات صلاحيات Discord
+
+de-DE:
+  perm_override: 'Nutzer benötigen die Berechtigung {0}, um den {1} Befehl auszuführen.'
+  perm_override_all: Alle Ausnahmen für Discord Berechtigungen wurden entfernt.
+  perm_override_all_confirm: Bist du dir sicher, dass du **ALLE** Ausnahmen für Discord Berechtigungen auf diesem Server entfernen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.
+  perm_override_page_none: Keine Ausnahmen auf dieser Seite.
+  perm_override_reset: Ausnahmen für Discord Berechtigungen für diesen Befehl wurden entfernt.
+  perm_overrides: Ausnahmen für Discord Berechtigungen
+
+es-ES:
+  perm_override: 'Los usuarios necesitarán el permiso {0} para poder usar el comando {1}.'
+  perm_override_all: Se borraron todas las anulaciones de permisos de Discord.
+  perm_override_all_confirm: ¿Seguro que desea eliminar **TODAS** las anulaciones de permiso en este servidor?  Esta acción es irreversible.
+  perm_override_page_none: No hay anulaciones en esta página.
+  perm_override_reset: Se borraron las anulaciones de permisos para este comando.
+  perm_overrides: Anulaciones de permisos de Discord
+
+fr-FR:
+  perm_override: 'Les utilisateurs auront besoin de l''autorisation {0} pour exécuter la commande {1}.'
+  perm_override_all: Toutes les dérogations d'autorisation de Discord ont été effacés.
+  perm_override_all_confirm: Êtes-vous sûr de vouloir supprimer **TOUTES** les dérogations d'autorisation de Discord sur ce serveur ? Cette action est irréversible.
+  perm_override_page_none: Aucune dérogation sur cette page.
+  perm_override_reset: Les dérogations d'autorisation de Discord pour cette commande ont été effacées.
+  perm_overrides: les dérogations d'autorisation de Discord
+
+id-ID:
+  perm_override: 'User memerlukan izin {0} untuk menjalankan perintah {1}.'
+  perm_override_all: Semua override izin Discord telah dihapus.
+  perm_override_all_confirm: Apakah kamu yakin ingin menghapus **SEMUA** override izin Discord di server ini? Tindakan ini tidak bisa dibatalkan.
+  perm_override_page_none: Tidak ada override di halaman ini.
+  perm_override_reset: Override Izin Discord untuk perintah ini telah dihapus.
+  perm_overrides: Override Izin Discord
+
+ja-JP:
+  perm_override: '{1}コマンドを実行するには{0}権限が必要になります。'
+  perm_override_all: すべてのDiscord権限オーバーライドがクリアされました。
+  perm_override_all_confirm: このサーバーの**すべて**のDiscord権限オーバーライドを削除しますか？この操作は元に戻せません。
+  perm_override_page_none: このページにオーバーライドはありません。
+  perm_override_reset: このコマンドのDiscord権限オーバーライドがクリアされました。
+  perm_overrides: Discord権限オーバーライド
+
+ko-KR:
+  perm_override: '유저가 {1} 명령어를 실행하려면 {0} 권한이 필요합니다.'
+  perm_override_all: 모든 Discord 권한 오버라이드가 초기화되었습니다.
+  perm_override_all_confirm: 이 서버의 **모든** Discord 권한 오버라이드를 정말로 제거하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+  perm_override_page_none: 이 페이지에 오버라이드가 없습니다.
+  perm_override_reset: 이 명령어의 Discord 권한 오버라이드가 초기화되었습니다.
+  perm_overrides: Discord 권한 오버라이드
+
+pl-PL:
+  perm_override: 'Użytkownicy będą potrzebować uprawnienia {0}, aby uruchomić komendę {1}.'
+  perm_override_all: Wszystkie nadpisania uprawnień Discord zostały usunięte.
+  perm_override_all_confirm: Czy na pewno chcesz usunąć **WSZYSTKIE** nadpisania uprawnień Discord na tym serwerze? Tej akcji nie można cofnąć.
+  perm_override_page_none: Brak nadpisań na tej stronie.
+  perm_override_reset: Nadpisania uprawnień Discord dla tej komendy zostały usunięte.
+  perm_overrides: Nadpisania uprawnień Discord
+
+pt-BR:
+  perm_override: 'Os usuários precisão ter a permissão {0} para usar o comando {1}.'
+  perm_override_all: Todas as permissões substitutivas foram limpas.
+  perm_override_all_confirm: Você tem certeza que quer remover **TODAS** as permissões substitutivas do Discord neste servidor? Essa ação é irreversível.
+  perm_override_page_none: Sem permissões substitutivas nesta página.
+  perm_override_reset: As permissões substitutivas do Discord foram limpas para este comando.
+  perm_overrides: Permissões substitutivas do Discord
+
+ru-RU:
+  perm_override: 'Для запуска команды {1} пользователям потребуется разрешение {0}.'
+  perm_override_all: Все переопределения разрешений для Discord были удалены.
+  perm_override_all_confirm: Вы уверены, что хотите удалить ** ВСЕ ** переопределения разрешений Discord на этом сервере? Это действие необратимо.
+  perm_override_page_none: На этой странице нет переопределения.
+  perm_override_reset: Переопределения разрешений Discord для этой команды были удалены.
+  perm_overrides: Переопределение разрешений в Discord
+
+sr-Cyrl-RS:
+  perm_override: 'Корисници ће морати да имају {0} дозволу да би покренули команду {1}.'
+  perm_override_all: Сва прегажења Discord дозвола су очишћена.
+  perm_override_all_confirm: Да ли сте сигурни да желите да уклоните **СВА** прегажења Discord дозвола на овом серверу? Ова акција је неповратна.
+  perm_override_page_none: Нема прегажења на овој страници.
+  perm_override_reset: Прегажења Discord дозвола за ову команду су очишћена.
+  perm_overrides: Прегажења Discord дозвола
+
+tr-TR:
+  perm_override: 'Kullanıcıların {1} komutunu çalıştırabilmesi için {0} iznine sahip olması gerekiyor.'
+  perm_override_all: Tüm Discord izin geçersiz kılmaları temizlendi.
+  perm_override_all_confirm: Bu sunucudaki **TÜM** Discord izin geçersiz kılmalarını kaldırmak istediğine emin misin? Bu işlem geri alınamaz.
+  perm_override_page_none: Bu sayfada geçersiz kılma yok.
+  perm_override_reset: Bu komut için Discord izin geçersiz kılmaları temizlendi.
+  perm_overrides: Discord İzin Geçersiz Kılmaları
+
+ts-TS:
+  perm_override: 'Users will need {0} permission in order to run {1} command.'
+  perm_override_all: All discord permission overrides have been cleared. I-I did a thorough job.
+  perm_override_all_confirm: Are you sure you want to remove **ALL** discord permission overrides on this server? This can't be undone, so don't come crying to me later!
+  perm_override_page_none: No overrides on this page.
+  perm_override_reset: Discord Permission Overrides for this command have been cleared.
+  perm_overrides: Discord Permission Overrides
+
+uk-UA:
+  perm_override: 'Для виконання команди {1} користувачам потрібен дозвіл {0}.'
+  perm_override_all: Усі перевизначення дозволів Discord було очищено.
+  perm_override_all_confirm: Ви впевнені, що хочете видалити **ВСІ** перевизначення дозволів Discord на цьому сервері? Цю дію не можна скасувати.
+  perm_override_page_none: На цій сторінці немає перевизначень.
+  perm_override_reset: Перевизначення дозволів Discord для цієї команди було очищено.
+  perm_overrides: Перевизначення дозволів Discord
+
+vi-VN:
+  perm_override: 'Người dùng sẽ cần quyền {0} để chạy lệnh {1}.'
+  perm_override_all: Tất cả ghi đè quyền Discord đã được xóa.
+  perm_override_all_confirm: Bạn có chắc muốn xóa **TẤT CẢ** ghi đè quyền Discord trên server này không? Hành động này không thể hoàn tác.
+  perm_override_page_none: Không có ghi đè nào trên trang này.
+  perm_override_reset: Ghi đè quyền Discord cho lệnh này đã được xóa.
+  perm_overrides: Ghi đè quyền Discord
+
+zh-CN:
+  perm_override: '用戶需要 {0} 權限才能運行 {1} 命令。'
+  perm_override_all: 所有 Discord 權限覆蓋已被清除。
+  perm_override_all_confirm: 您確定要刪除此伺服器上的 **ALL** Discord 權限覆蓋嗎？這個動作是不可逆的。
+  perm_override_page_none: 此頁面上沒有覆蓋。
+  perm_override_reset: 此命令的 Discord 權限覆蓋已被清除。
+  perm_overrides: Discord 權限覆蓋

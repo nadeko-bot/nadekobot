@@ -1,0 +1,271 @@
+ar:
+  channels: القنوات
+  created_at: تاريخ الإنشاء
+  custom_emojis: الرموز التعبيرية المخصصة
+  features: الميزات
+  hoisted: مُثبَّت
+  inv_expire: 'تنتهي خلال:'
+  inv_uses: 'الاستخدامات:'
+  invite_deleted: 'تم حذف الدعوة {0}.'
+  mentionable: قابل للإشارة
+  nickname: اللقب
+  no_invites: لا توجد دعوات في هذه الصفحة.
+  roles: الأدوار
+  server_info: معلومات السيرفر
+  text_channels: 'نصية: {0}'
+  voice_channels: 'صوتية: {0}'
+
+de-DE:
+  channels: Kanäle
+  created_at: Erstellt am
+  custom_emojis: Benutzerdefinierte Emojis
+  features: Funktionen
+  hoisted: Hervorgehoben
+  inv_expire: 'Läuft ab in:'
+  inv_uses: 'Nutzt:'
+  invite_deleted: 'Einladung {0} wurde gelöscht.'
+  mentionable: Erwähnbar
+  nickname: Spitzname
+  no_invites: Keine Einladungen auf dieser Seite.
+  roles: Rollen
+  server_info: Server Informationen
+  text_channels: 'Text: {0}'
+  voice_channels: 'Sprache: {0}'
+
+es-ES:
+  channels: Canales
+  created_at: Creada el
+  custom_emojis: Emojis personales
+  features: Características
+  hoisted: Destacado
+  inv_expire: 'Expira en:'
+  inv_uses: 'Usos:'
+  invite_deleted: 'La invitación {0} ha sido eliminada.'
+  mentionable: Mencionable
+  nickname: Apodo
+  no_invites: No hay invitaciones en esta página.
+  roles: Roles
+  server_info: Información del servidor
+  text_channels: 'Texto: {0}'
+  voice_channels: 'Voz: {0}'
+
+fr-FR:
+  channels: Salons
+  created_at: Créé à
+  custom_emojis: Emojis personnalisés
+  features: Fonctionnalités
+  hoisted: Mis en avant
+  inv_expire: 'Expire dans:'
+  inv_uses: 'Utilisations :'
+  invite_deleted: 'L''invitation {0} a été supprimée.'
+  mentionable: Mentionnable
+  nickname: Surnom
+  no_invites: Aucune invitation sur cette page.
+  roles: Rôles
+  server_info: Info du serveur
+  text_channels: 'Textuels : {0}'
+  voice_channels: 'Vocaux : {0}'
+
+id-ID:
+  channels: Channel
+  created_at: Dibuat pada
+  custom_emojis: Emoji kustom
+  features: Fitur
+  hoisted: Ditonjolkan
+  inv_expire: 'Kedaluwarsa dalam:'
+  inv_uses: 'Penggunaan:'
+  invite_deleted: 'Undangan {0} telah dihapus.'
+  mentionable: Bisa Dimention
+  nickname: Nama Panggilan
+  no_invites: Tidak ada undangan di halaman ini.
+  roles: Peran
+  server_info: Info server
+  text_channels: 'Teks: {0}'
+  voice_channels: 'Suara: {0}'
+
+ja-JP:
+  channels: チャンネル
+  created_at: 作成日
+  custom_emojis: カスタム絵文字
+  features: 特徴
+  hoisted: 分離表示
+  inv_expire: '有効期限:'
+  inv_uses: '使用回数:'
+  invite_deleted: '招待{0}が削除されました。'
+  mentionable: メンション可能
+  nickname: ニックネーム
+  no_invites: このページに招待はありません。
+  roles: 役割
+  server_info: サーバー情報
+  text_channels: 'テキスト: {0}'
+  voice_channels: 'ボイス: {0}'
+
+ko-KR:
+  channels: 채널
+  created_at: 생성일
+  custom_emojis: 커스텀 이모지
+  features: 기능
+  hoisted: 상단 고정
+  inv_expire: '만료까지:'
+  inv_uses: '사용 횟수:'
+  invite_deleted: '초대 {0}이(가) 삭제되었어요.'
+  mentionable: 멘션 가능
+  nickname: 닉네임
+  no_invites: 이 페이지에 초대가 없어요.
+  roles: 역할
+  server_info: 서버 정보
+  text_channels: '텍스트: {0}'
+  voice_channels: '음성: {0}'
+
+pl-PL:
+  channels: Kanały
+  created_at: Utworzono
+  custom_emojis: Niestandardowe emoji
+  features: Funkcje
+  hoisted: Wyróżniona
+  inv_expire: 'Wygasa za:'
+  inv_uses: 'Użycia:'
+  invite_deleted: 'Zaproszenie {0} zostało usunięte.'
+  mentionable: Wzmiankowana
+  nickname: Pseudonim
+  no_invites: Brak zaproszeń na tej stronie.
+  roles: Role
+  server_info: Info o serwerze
+  text_channels: 'Tekstowe: {0}'
+  voice_channels: 'Głosowe: {0}'
+
+pt-BR:
+  channels: Canais
+  created_at: Criado em
+  custom_emojis: Emojis personalizados
+  features: Atributos
+  hoisted: Destacado
+  inv_expire: 'Expira em:'
+  inv_uses: 'Usos:'
+  invite_deleted: 'O convite {0} foi excluído.'
+  mentionable: Mencionável
+  nickname: Apelido
+  no_invites: Não há convites nessa página.
+  roles: Cargos
+  server_info: Informações do servidor
+  text_channels: 'Texto: {0}'
+  voice_channels: 'Voz: {0}'
+
+ru-RU:
+  channels: Каналы
+  created_at: Создано
+  custom_emojis: Пользовательские эмодзи
+  features: Характеристики
+  hoisted: Выделенная
+  inv_expire: 'Истекает:'
+  inv_uses: 'Использует:'
+  invite_deleted: 'Приглашение {0} было удалено.'
+  mentionable: Упоминаемая
+  nickname: Псевдоним
+  no_invites: Нет приглашений на этой странице.
+  roles: Роли
+  server_info: Информация о сервере
+  text_channels: 'Текстовые: {0}'
+  voice_channels: 'Голосовые: {0}'
+
+sr-Cyrl-RS:
+  channels: Канали
+  created_at: Направљен
+  custom_emojis: Прилагођени емоџији
+  features: Функције
+  hoisted: Истакнута
+  inv_expire: 'Истиче за:'
+  inv_uses: 'Коришћења:'
+  invite_deleted: 'Позивница {0} је обрисана.'
+  mentionable: Може се тагнути
+  nickname: Надимак
+  no_invites: Нема позивница на овој страни.
+  roles: Улоге
+  server_info: Информације о серверу
+  text_channels: 'Текстуални: {0}'
+  voice_channels: 'Гласовни: {0}'
+
+tr-TR:
+  channels: Kanallar
+  created_at: Oluşturulma tarihi
+  custom_emojis: Özel emojiler
+  features: Özellikler
+  hoisted: Öne Çıkarılmış
+  inv_expire: 'Süresi doluyor:'
+  inv_uses: 'Kullanım:'
+  invite_deleted: '{0} daveti silindi.'
+  mentionable: Bahsedilebilir
+  nickname: Takma Ad
+  no_invites: Bu sayfada davet yok.
+  roles: Roller
+  server_info: Sunucu bilgisi
+  text_channels: 'Yazı: {0}'
+  voice_channels: 'Ses: {0}'
+
+ts-TS:
+  channels: Channels
+  created_at: Created at
+  custom_emojis: Custom emojis
+  features: Features
+  hoisted: Hoisted
+  inv_expire: 'Expires in:'
+  inv_uses: 'Uses:'
+  invite_deleted: 'Deleted invite {0}.'
+  mentionable: Mentionable
+  nickname: Nickname
+  no_invites: No invites on this page. Hmph.
+  roles: Roles
+  server_info: Server info
+  text_channels: 'Text: {0}'
+  voice_channels: 'Voice: {0}'
+
+uk-UA:
+  channels: Канали
+  created_at: Створено
+  custom_emojis: Користувацькі емодзі
+  features: Функції
+  hoisted: Виділена
+  inv_expire: 'Закінчується через:'
+  inv_uses: 'Використань:'
+  invite_deleted: 'Запрошення {0} було видалено.'
+  mentionable: Згадуваний
+  nickname: Нікнейм
+  no_invites: Немає запрошень на цій сторінці.
+  roles: Ролі
+  server_info: Інформація про сервер
+  text_channels: 'Текстових: {0}'
+  voice_channels: 'Голосових: {0}'
+
+vi-VN:
+  channels: Kênh
+  created_at: Ngày tạo
+  custom_emojis: Emoji tùy chỉnh
+  features: Tính năng
+  hoisted: Hiển thị riêng
+  inv_expire: 'Hết hạn sau:'
+  inv_uses: 'Lượt dùng:'
+  invite_deleted: 'Lời mời {0} đã bị xóa.'
+  mentionable: Có thể nhắc đến
+  nickname: Biệt danh
+  no_invites: Không có lời mời nào trên trang này.
+  roles: Vai trò
+  server_info: Thông tin máy chủ
+  text_channels: 'Kênh văn bản: {0}'
+  voice_channels: 'Kênh thoại: {0}'
+
+zh-CN:
+  channels: 頻道
+  created_at: 創建於
+  custom_emojis: 自訂表情符號
+  features: 特徵
+  hoisted: 置頂顯示
+  inv_expire: 剩餘有效時間：
+  inv_uses: 使用次數：
+  invite_deleted: '邀請 {0} 已被刪除。'
+  mentionable: 可提及
+  nickname: 暱稱
+  no_invites: 此頁面上沒有邀請。
+  roles: 身分組
+  server_info: 伺服器資訊
+  text_channels: '文字频道：{0}'
+  voice_channels: '语音频道：{0}'

@@ -1,9 +1,0 @@
-schedule_add_error: Kamu sudah punya {0} perintah terjadwal. Hapus beberapa sebelum menambahkan yang baru.
-schedule_add_success: Perintah terjadwal berhasil ditambahkan.
-schedule_command: Perintah
-schedule_delete_error: Gagal menghapus perintah terjadwal.
-schedule_deleted: 'Perintah terjadwal #{0} berhasil dihapus.'
-schedule_id: ID
-schedule_list_none: Kamu belum punya perintah terjadwal.
-schedule_list_title: Perintah Terjadwal
-schedule_when: Dijalankan Pada

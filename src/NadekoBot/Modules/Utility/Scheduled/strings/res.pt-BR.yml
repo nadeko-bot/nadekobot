@@ -1,9 +1,0 @@
-schedule_add_error: Você já tem {0} comandos agendados. Por favor, exclua alguns antes de adicionar mais.
-schedule_add_success: Comando agendado adicionado com sucesso.
-schedule_command: Comando
-schedule_delete_error: Erro ao excluir comando agendado.
-schedule_deleted: 'Comando agendado #{0} excluído com sucesso.'
-schedule_id: ID
-schedule_list_none: Você não tem nenhum comando agendado.
-schedule_list_title: Comandos Agendados
-schedule_when: Executa Em

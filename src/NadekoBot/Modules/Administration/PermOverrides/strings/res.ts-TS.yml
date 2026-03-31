@@ -1,8 +1,0 @@
-perm_override: 'Users will need {0} permission in order to run {1} command.'
-perm_override_all: All discord permission overrides have been cleared. I-I did a thorough job.
-perm_override_all_confirm: >-
-  Are you sure you want to remove **ALL** discord permission overrides on
-  this server? This can't be undone, so don't come crying to me later!
-perm_override_page_none: No overrides on this page.
-perm_override_reset: Discord Permission Overrides for this command have been cleared.
-perm_overrides: Discord Permission Overrides

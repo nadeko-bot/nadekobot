@@ -1,9 +1,0 @@
-livechannel_added: 'تمت إضافة {0} كقناة مباشرة بنجاح.'
-livechannel_limit: 'يمكنك الحصول على {0} قنوات مباشرة كحد أقصى لكل سيرفر.'
-livechannel_list_empty: لم يتم تكوين أي قنوات مباشرة لهذا السيرفر.
-livechannel_list_title: 'القنوات المباشرة في {0}'
-livechannel_not_found: لم يتم العثور على القناة في قائمة القنوات المباشرة.
-livechannel_please_wait: يُرجى الانتظار حتى 10 دقائق حتى تسري التغييرات
-livechannel_removed: 'تمت إزالة {0} من القنوات المباشرة بنجاح.'
-preview: معاينة
-template: قالب

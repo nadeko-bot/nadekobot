@@ -1,0 +1,943 @@
+ar:
+  avatar_changed: تم تغيير الصورة الرمزية
+  banned_pl: تم حظرهم
+  ch_name_change: تم تغيير اسم القناة
+  ch_old_name: الاسم القديم
+  ch_topic_change: تم تغيير موضوع القناة
+  content: المحتوى
+  kicked_pl: تم طردهم
+  log: 'يتم تسجيل حدث {0} في هذه القناة.'
+  log_all: يتم تسجيل جميع الأحداث في هذه القناة.
+  log_disabled: تم تعطيل التسجيل.
+  log_events: 'أحداث التسجيل التي يمكنك الاشتراك فيها:'
+  log_ignore_chan: 'سيتجاهل التسجيل القناة {0}'
+  log_ignore_user: 'سيتجاهل التسجيل المستخدم {0}'
+  log_ignored_channels: القنوات المتجاهَلة
+  log_ignored_users: المستخدمون المتجاهَلون
+  log_not_ignore_chan: 'لن يتجاهل التسجيل القناة {0} بعد الآن'
+  log_not_ignore_user: 'لن يتجاهل التسجيل المستخدم {0} بعد الآن'
+  log_stop: 'تم إيقاف تسجيل حدث {0}.'
+  msg_del: 'تم حذف رسالة في #{0}'
+  msg_update: 'تم تعديل رسالة في #{0}'
+  muted_pl: تم كتمهم
+  muted_sn: تم الكتم
+  new_msg: رسالة جديدة
+  new_nick: لقب جديد
+  new_topic: موضوع جديد
+  nick_change: تم تغيير اللقب
+  old_msg: الرسالة القديمة
+  old_nick: اللقب القديم
+  old_topic: الموضوع القديم
+  presence_updates: تحديثات الحالة
+  remove_roles_pl: تمت إزالة أدوارهم
+  soft_banned_pl: تم حظرهم مؤقتًا
+  text_chan_created: تم إنشاء قناة نصية.
+  text_chan_destroyed: تم حذف قناة نصية.
+  thread_created: تم إنشاء موضوع
+  thread_deleted: تم حذف موضوع
+  unmuted_sn: تم إلغاء الكتم
+  user_banned: تم حظر المستخدم
+  user_joined: انضم المستخدم
+  user_left: غادر المستخدم
+  user_role_add: تمت إضافة دور للمستخدم
+  user_role_rem: تمت إزالة دور المستخدم
+  user_status_change: '{0} أصبح الآن {1}'
+  user_unbanned: تم إلغاء حظر المستخدم
+  user_vjoined: 'انضم {0} إلى القناة الصوتية {1}.'
+  user_vleft: 'غادر {0} القناة الصوتية {1}.'
+  user_vmoved: 'انتقل {0} من القناة الصوتية {1} إلى {2}.'
+  username_changed: تم تغيير اسم المستخدم
+  voice_chan_created: تم إنشاء قناة صوتية
+  voice_chan_destroyed: تم حذف قناة صوتية
+  xmuted_text: 'المستخدم {0} من الدردشة النصية بواسطة {1}'
+  xmuted_text_and_voice: 'المستخدم {0} من الدردشة النصية والصوتية بواسطة {1}'
+  voice_server_deafened: صُمّ من الخادم
+  voice_server_muted: كُتم صوته من الخادم
+  voice_server_undeafened: أُلغي الصمم من الخادم
+  voice_server_unmuted: أُلغي كتم الصوت من الخادم
+  xmuted_voice: 'المستخدم {0} من الدردشة الصوتية {1}'
+
+de-DE:
+  avatar_changed: Avatar wurde geändert
+  banned_pl: gebannt
+  ch_name_change: Der Name des Channels wurde geändert.
+  ch_old_name: Alter Name
+  ch_topic_change: Kanal Thema geändert
+  content: Inhalt
+  kicked_pl: Gekickt
+  log: 'Protokolliert Ereignis {0} in diesem Channel.'
+  log_all: Alle Events werden nun in diesem Channel geloggt.
+  log_disabled: Protokollierung ausgeschaltet.
+  log_events: 'Protokoll Ereignisse die du Abonnieren kannst:'
+  log_ignore_chan: 'Logging wird Kanal {0} ignorieren'
+  log_ignore_user: 'Logging wird User {0} ignorieren'
+  log_ignored_channels: Ignorierte Kanäle
+  log_ignored_users: Ignorierte User
+  log_not_ignore_chan: 'Logging wird nicht länger Kanal {0} ignorieren'
+  log_not_ignore_user: 'Logging wird nicht länger User {0} ignorieren'
+  log_stop: 'Protokollierung des {0} Ereignisses wurde gestoppt.'
+  msg_del: 'Nachricht in {0} wurde gelöscht.'
+  msg_update: 'Nachricht in {0} wurde aktualisiert.'
+  muted_pl: Stummgeschaltet
+  muted_sn: Stummgeschaltet
+  new_msg: Neue Nachricht
+  new_nick: Neuer Nickname
+  new_topic: Neues Thema
+  nick_change: Nickname wurde geändert
+  old_msg: Alte Nachricht
+  old_nick: Alter Nichname
+  old_topic: Altes Thema
+  presence_updates: Gegenwärtige Updates
+  remove_roles_pl: wurden seine Rollen entfernt
+  soft_banned_pl: soft-banned
+  text_chan_created: Text channel erstellt
+  text_chan_destroyed: Text channel gelöscht
+  thread_created: Thread Erstellt
+  thread_deleted: Thread Gelöscht
+  unmuted_sn: Entstummt
+  user_banned: Nutzer gebannt
+  user_joined: Nutzer beigetreten
+  user_left: Nutzer gegangen
+  user_role_add: Nutzer wurde Rolle hinzugefügt
+  user_role_rem: Nutzer wurde Rolle entfernt
+  user_status_change: '{0} ist nun {1}'
+  user_unbanned: Nutzer entbannt
+  user_vjoined: '{0} ist Sprachkanal {1} beigetreten.'
+  user_vleft: '{0} hat Sprachkanal {1} verlassen.'
+  user_vmoved: '{0} wurde von Sprachkanal {1} zu {2} verschoben.'
+  username_changed: Nutzername geändert
+  voice_chan_created: Sprachkanal erstellt
+  voice_chan_destroyed: Sprachkanal zerstört
+  xmuted_text: 'Nutzer {0} vom Textkanal von {1}'
+  xmuted_text_and_voice: 'Nutzer {0} vom Text- und Sprachkanal von {1}'
+  voice_server_deafened: Server-Stummschaltung (Ton)
+  voice_server_muted: Server-Stummschaltung (Mikrofon)
+  voice_server_undeafened: Server-Stummschaltung (Ton) aufgehoben
+  voice_server_unmuted: Server-Stummschaltung (Mikrofon) aufgehoben
+  xmuted_voice: 'Benutzer {0} von dem Sprachkanal {1}'
+
+es-ES:
+  avatar_changed: Avatar cambiado
+  banned_pl: Vetado
+  ch_name_change: Nombre del canal cambiado
+  ch_old_name: Nombre anterior
+  ch_topic_change: Tema del canal cambiado
+  content: Contenido
+  kicked_pl: Expulsado
+  log: 'Registrando el evento {0} en este canal.'
+  log_all: Registrando todos los eventos en este canal.
+  log_disabled: Registros desactivados.
+  log_events: 'Registrar los eventos que puedes seguir en:'
+  log_ignore_chan: 'El registro ignorará el canal {0}'
+  log_ignore_user: 'El registro ignorará al usuario {0}'
+  log_ignored_channels: Canales ignorados
+  log_ignored_users: Usuarios ignorados
+  log_not_ignore_chan: 'El registro ya no ignorará el canal {0}'
+  log_not_ignore_user: 'El registró ya no ignorará al usuario {0}'
+  log_stop: 'Se detuvo el registro del evento {0}.'
+  msg_del: 'Mensaje borrado en #{0}'
+  msg_update: 'Mensaje editado en #{0}'
+  muted_pl: Silenciado
+  muted_sn: Silenciado
+  new_msg: Mensaje nuevo
+  new_nick: Nuevo apodo
+  new_topic: Nuevo tema
+  nick_change: Apodo cambiado
+  old_msg: Anterior mensaje
+  old_nick: Anterior apodo
+  old_topic: Anterior tema
+  presence_updates: Actualizaciones de presencia
+  remove_roles_pl: se les han retirado los roles
+  soft_banned_pl: bloqueado levemente
+  text_chan_created: Canal de texto creado.
+  text_chan_destroyed: Canal de texto eliminado.
+  thread_created: Hilo Creado
+  thread_deleted: Hilo Eliminado
+  unmuted_sn: Desilenciado
+  user_banned: Usuario bloqueado
+  user_joined: El usuario se unió
+  user_left: El usuario salió
+  user_role_add: Se añadió el rol al usuario
+  user_role_rem: Se eliminó el rol al usuario
+  user_status_change: '{0} ahora es {1}'
+  user_unbanned: Usuario desbloqueado
+  user_vjoined: '{0} se unió al canal de voz {1}.'
+  user_vleft: '{0} abandonó el canal de voz {1}.'
+  user_vmoved: '{0} se movió del canal de voz {1} al {2}.'
+  username_changed: Nombre de usuario cambiado
+  voice_chan_created: Canal de voz creado
+  voice_chan_destroyed: Canal de voz eliminado
+  xmuted_text: 'Usuario {0} del chat por {1}'
+  xmuted_text_and_voice: 'Usuario {0} del chat y de la llamada por {1}'
+  voice_server_deafened: Ensordecido por el servidor
+  voice_server_muted: Silenciado por el servidor
+  voice_server_undeafened: Desensordecido por el servidor
+  voice_server_unmuted: Desilenciado por el servidor
+  xmuted_voice: 'Usuario {0} de la llamada {1}'
+
+fr-FR:
+  avatar_changed: Avatar changé
+  banned_pl: banni
+  ch_name_change: Nom de salon modifié
+  ch_old_name: Ancien nom
+  ch_topic_change: Sujet du salon modifié
+  content: Contenu
+  kicked_pl: Kick
+  log: 'Journalisation des évènements de {0} dans ce salon.'
+  log_all: Journalisation de tous les évènements dans ce salon.
+  log_disabled: Journalisation désactivée.
+  log_events: 'Evènements de journalisation auxquels vous pouvez vous abonner :'
+  log_ignore_chan: 'La journalisation ignorera le salon {0}'
+  log_ignore_user: 'La journalisation ignorera le membre {0}'
+  log_ignored_channels: Salons ignorés
+  log_ignored_users: Utilisateurs ignorés
+  log_not_ignore_chan: 'La journalisation n''ignorera plus le salon {0}'
+  log_not_ignore_user: 'La journalisation n''ignorera plus le membre {0}'
+  log_stop: 'La journalisation de l''évènement {0} arrêtée.'
+  msg_del: 'Message supprimé dans #{0}'
+  msg_update: 'Message mis à jour dans #{0}'
+  muted_pl: Muets
+  muted_sn: Muet
+  new_msg: Nouveau message
+  new_nick: Nouveau surnom
+  new_topic: Nouveau sujet
+  nick_change: Surnom modifié
+  old_msg: Ancien message
+  old_nick: Ancien surnom
+  old_topic: Ancien sujet
+  presence_updates: Présence de mises à jour
+  remove_roles_pl: ont eu leurs rôles supprimés
+  soft_banned_pl: radié·e·s
+  text_chan_created: Salon textuel créé.
+  text_chan_destroyed: Salon textuel supprimé.
+  thread_created: Thread Créé
+  thread_deleted: Thread Supprimé
+  unmuted_sn: Parole rendue
+  user_banned: Utilisateur banni
+  user_joined: Un utilisateur à rejoint
+  user_left: Un utilisateur est parti
+  user_role_add: Rôle utilisateur ajouté
+  user_role_rem: Rôle utilisateur retiré
+  user_status_change: '{0} est maintenant {1}'
+  user_unbanned: Utilisateur débanni
+  user_vjoined: '{0} a rejoint le salon vocal{1}.'
+  user_vleft: '{0} a quitté le salon vocal {1}.'
+  user_vmoved: '{0} est passé du salon vocal {1} au salon vocal {2}.'
+  username_changed: Nom de membre changé
+  voice_chan_created: Salon vocal créé
+  voice_chan_destroyed: Salon vocal détruit
+  xmuted_text: 'Utilisateur {0} du salon textuel de {1}'
+  xmuted_text_and_voice: 'Utilisateur {0} du salon textuel et vocal par {1}'
+  voice_server_deafened: Rendu sourd par le serveur
+  voice_server_muted: Micro coupe par le serveur
+  voice_server_undeafened: Sourdine levee par le serveur
+  voice_server_unmuted: Micro reactive par le serveur
+  xmuted_voice: 'Utilisateur {0} du vocal {1}'
+
+id-ID:
+  avatar_changed: Avatar Diubah
+  banned_pl: dibanned
+  ch_name_change: Nama Channel Diubah
+  ch_old_name: Nama Lama
+  ch_topic_change: Topik Channel Diubah
+  content: Konten
+  kicked_pl: Di-kick
+  log: 'Mencatat event {0} di channel ini.'
+  log_all: Mencatat semua event di channel ini.
+  log_disabled: Pencatatan log dinonaktifkan.
+  log_events: 'Event log yang bisa kamu subscribe:'
+  log_ignore_chan: 'Pencatatan log akan mengabaikan channel {0}'
+  log_ignore_user: 'Pencatatan log akan mengabaikan user {0}'
+  log_ignored_channels: Channel yang Diabaikan
+  log_ignored_users: User yang Diabaikan
+  log_not_ignore_chan: 'Pencatatan log tidak lagi mengabaikan channel {0}'
+  log_not_ignore_user: 'Pencatatan log tidak lagi mengabaikan user {0}'
+  log_stop: 'Berhenti mencatat event {0}.'
+  msg_del: 'Pesan dihapus di #{0}'
+  msg_update: 'Pesan diperbarui di #{0}'
+  muted_pl: Di-mute
+  muted_sn: Di-mute
+  new_msg: Pesan baru
+  new_nick: Nickname baru
+  new_topic: Topik baru
+  nick_change: Nickname diubah
+  old_msg: Pesan lama
+  old_nick: Nickname lama
+  old_topic: Topik lama
+  presence_updates: Update kehadiran
+  remove_roles_pl: role-nya sudah dihapus
+  soft_banned_pl: di-softban
+  text_chan_created: Channel teks dibuat.
+  text_chan_destroyed: Channel teks dihapus.
+  thread_created: Thread Dibuat
+  thread_deleted: Thread Dihapus
+  unmuted_sn: Di-unmute
+  user_banned: User dibanned
+  user_joined: User bergabung
+  user_left: User keluar
+  user_role_add: Role user ditambahkan
+  user_role_rem: Role user dihapus
+  user_status_change: '{0} sekarang {1}'
+  user_unbanned: User di-unban
+  user_vjoined: '{0} bergabung ke voice channel {1}.'
+  user_vleft: '{0} meninggalkan voice channel {1}.'
+  user_vmoved: '{0} pindah dari voice channel {1} ke {2}.'
+  username_changed: Username diubah
+  voice_chan_created: Voice channel dibuat
+  voice_chan_destroyed: Voice channel dihapus
+  xmuted_text: 'User {0} dari chat teks oleh {1}'
+  xmuted_text_and_voice: 'User {0} dari chat teks dan voice oleh {1}'
+  voice_server_deafened: Ditulikan oleh server
+  voice_server_muted: Dibisukan oleh server
+  voice_server_undeafened: Pembisuan suara server dicabut
+  voice_server_unmuted: Pembisuan server dicabut
+  xmuted_voice: 'User {0} dari voice chat {1}'
+
+ja-JP:
+  avatar_changed: 画像が変更されました。
+  banned_pl: がBANされました
+  ch_name_change: チャンネル名が変更されました
+  ch_old_name: 古い名前
+  ch_topic_change: チャンネルトピックが変更されました
+  content: 内容
+  kicked_pl: キックド
+  log: 'このチャンネルに{0}イベントを記録します。'
+  log_all: このチャンネルのすべてのイベントを記録します。
+  log_disabled: イベントの記録が無効になりました。
+  log_events: '記録可能なイベント:'
+  log_ignore_chan: 'ログはチャンネル{0}を無視します'
+  log_ignore_user: 'ログはユーザー{0}を無視します'
+  log_ignored_channels: 無視されたチャンネル
+  log_ignored_users: 無視されたユーザー
+  log_not_ignore_chan: 'ログはチャンネル{0}を無視しなくなります'
+  log_not_ignore_user: 'ログはユーザー{0}を無視しなくなります'
+  log_stop: '{0}イベントの記録が停止されました。'
+  msg_del: '#{0} 内のメッセージが削除されました'
+  msg_update: '#{0} 内のメッセージが更新されました'
+  muted_pl: がミュートにされました
+  muted_sn: がミュートにされました
+  new_msg: 新しいメッセージ
+  new_nick: 新しいニックネーム
+  new_topic: 新しいトピック
+  nick_change: ニックネームが変更されました
+  old_msg: 古いメッセージ
+  old_nick: 古いニックネーム
+  old_topic: 古いトピック
+  presence_updates: ステータスが更新されました
+  remove_roles_pl: ロールが削除されました
+  soft_banned_pl: がソフトBANされました
+  text_chan_created: テキストチャンネルが作成されました。
+  text_chan_destroyed: テキストチャンネルが削除されました。
+  thread_created: スレッド作成
+  thread_deleted: スレッド削除
+  unmuted_sn: のミュートが解除されました
+  user_banned: ユーザーがBANされました
+  user_joined: ユーザーが参加しました
+  user_left: ユーザーが退出しました
+  user_role_add: ユーザーに役割を割り当てました
+  user_role_rem: ユーザーから役割を取り除きました
+  user_status_change: '{0}は{1}になりました'
+  user_unbanned: ユーザーのBANが解除されました
+  user_vjoined: '{0}はボイスチャンネル《{1}》に参加しました。'
+  user_vleft: '{0}はボイスチャンネル《{1}》から退出しました。'
+  user_vmoved: '{0}はボイスチャンネル《{1}》から《{2}》に移動しました。'
+  username_changed: ユーザー名が変更されました
+  voice_chan_created: ボイスチャンネルが作成されました
+  voice_chan_destroyed: ボイスチャンネルが削除されました
+  xmuted_text: 'テキストチャット上で、ユーザー{0}を{1}がミュートしました'
+  xmuted_text_and_voice: 'テキストチャットとボイスチャット上で、ユーザー{0}を{1}がミュートしました'
+  voice_server_deafened: サーバーによるスピーカーミュート
+  voice_server_muted: サーバーによるマイクミュート
+  voice_server_undeafened: サーバーによるスピーカーミュート解除
+  voice_server_unmuted: サーバーによるマイクミュート解除
+  xmuted_voice: 'ボイスチャット上で、ユーザー{0}を{1}がミュートしました'
+
+ko-KR:
+  avatar_changed: 아바타 변경됨
+  banned_pl: 차단됨
+  ch_name_change: 채널 이름 변경됨
+  ch_old_name: 이전 이름
+  ch_topic_change: 채널 주제 변경됨
+  content: 내용
+  kicked_pl: 추방됨
+  log: '이 채널에서 {0} 이벤트를 기록해요.'
+  log_all: 이 채널에서 모든 이벤트를 기록해요.
+  log_disabled: 로깅이 비활성화되었어요.
+  log_events: '구독할 수 있는 로그 이벤트:'
+  log_ignore_chan: '로깅이 채널 {0}을(를) 무시해요'
+  log_ignore_user: '로깅이 사용자 {0}을(를) 무시해요'
+  log_ignored_channels: 무시된 채널
+  log_ignored_users: 무시된 사용자
+  log_not_ignore_chan: '로깅이 더 이상 채널 {0}을(를) 무시하지 않아요'
+  log_not_ignore_user: '로깅이 더 이상 사용자 {0}을(를) 무시하지 않아요'
+  log_stop: '{0} 이벤트 기록을 중단했어요.'
+  msg_del: '#{0}에서 메시지가 삭제됨'
+  msg_update: '#{0}에서 메시지가 수정됨'
+  muted_pl: 뮤트됨
+  muted_sn: 뮤트됨
+  new_msg: 새 메시지
+  new_nick: 새 닉네임
+  new_topic: 새 주제
+  nick_change: 닉네임 변경됨
+  old_msg: 이전 메시지
+  old_nick: 이전 닉네임
+  old_topic: 이전 주제
+  presence_updates: 접속 상태 업데이트
+  remove_roles_pl: 역할이 제거되었어요
+  soft_banned_pl: 소프트 밴됨
+  text_chan_created: 텍스트 채널이 생성되었어요.
+  text_chan_destroyed: 텍스트 채널이 삭제되었어요.
+  thread_created: 스레드 생성됨
+  thread_deleted: 스레드 삭제됨
+  unmuted_sn: 뮤트 해제됨
+  user_banned: 사용자 차단됨
+  user_joined: 사용자 입장
+  user_left: 사용자 퇴장
+  user_role_add: 사용자 역할 추가됨
+  user_role_rem: 사용자 역할 제거됨
+  user_status_change: '{0}님이 이제 {1} 상태예요'
+  user_unbanned: 사용자 차단 해제됨
+  user_vjoined: '{0}님이 {1} 음성 채널에 입장했어요.'
+  user_vleft: '{0}님이 {1} 음성 채널에서 퇴장했어요.'
+  user_vmoved: '{0}님이 {1}에서 {2} 음성 채널로 이동했어요.'
+  username_changed: 사용자 이름 변경됨
+  voice_chan_created: 음성 채널 생성됨
+  voice_chan_destroyed: 음성 채널 삭제됨
+  xmuted_text: '사용자 {0}을(를) {1}이(가) 텍스트 채팅에서 처리함'
+  xmuted_text_and_voice: '사용자 {0}을(를) {1}이(가) 텍스트 및 음성 채팅에서 처리함'
+  voice_server_deafened: 서버에서 소리 차단됨
+  voice_server_muted: 서버에서 음소거됨
+  voice_server_undeafened: 서버에서 소리 차단 해제됨
+  voice_server_unmuted: 서버에서 음소거 해제됨
+  xmuted_voice: '사용자 {0}을(를) 음성 채팅에서 {1}'
+
+pl-PL:
+  avatar_changed: Zmieniono awatar
+  banned_pl: zbanowani
+  ch_name_change: Zmieniono nazwę kanału
+  ch_old_name: Stara nazwa
+  ch_topic_change: Zmieniono temat kanału
+  content: Treść
+  kicked_pl: Wyrzuceni
+  log: 'Logowanie zdarzenia {0} na tym kanale.'
+  log_all: Logowanie wszystkich zdarzeń na tym kanale.
+  log_disabled: Logowanie wyłączone.
+  log_events: 'Zdarzenia logowania, które możesz subskrybować:'
+  log_ignore_chan: 'Logowanie będzie ignorować kanał {0}'
+  log_ignore_user: 'Logowanie będzie ignorować użytkownika {0}'
+  log_ignored_channels: Ignorowane kanały
+  log_ignored_users: Ignorowani użytkownicy
+  log_not_ignore_chan: 'Logowanie nie będzie już ignorować kanału {0}'
+  log_not_ignore_user: 'Logowanie nie będzie już ignorować użytkownika {0}'
+  log_stop: 'Zatrzymano logowanie zdarzenia {0}.'
+  msg_del: 'Wiadomość usunięta w #{0}'
+  msg_update: 'Wiadomość zaktualizowana w #{0}'
+  muted_pl: Wyciszeni
+  muted_sn: Wyciszony
+  new_msg: Nowa wiadomość
+  new_nick: Nowy pseudonim
+  new_topic: Nowy temat
+  nick_change: Zmieniono pseudonim
+  old_msg: Stara wiadomość
+  old_nick: Stary pseudonim
+  old_topic: Stary temat
+  presence_updates: Aktualizacje obecności
+  remove_roles_pl: mieli usunięte role
+  soft_banned_pl: miękko zbanowani
+  text_chan_created: Utworzono kanał tekstowy.
+  text_chan_destroyed: Usunięto kanał tekstowy.
+  thread_created: Utworzono wątek
+  thread_deleted: Usunięto wątek
+  unmuted_sn: Odciszony
+  user_banned: Użytkownik zbanowany
+  user_joined: Użytkownik dołączył
+  user_left: Użytkownik opuścił serwer
+  user_role_add: Dodano rolę użytkownikowi
+  user_role_rem: Usunięto rolę użytkownikowi
+  user_status_change: '{0} ma teraz status {1}'
+  user_unbanned: Użytkownik odbanowany
+  user_vjoined: '{0} dołączył do kanału głosowego {1}.'
+  user_vleft: '{0} opuścił kanał głosowy {1}.'
+  user_vmoved: '{0} przeniósł się z {1} do kanału głosowego {2}.'
+  username_changed: Zmieniono nazwę użytkownika
+  voice_chan_created: Utworzono kanał głosowy
+  voice_chan_destroyed: Usunięto kanał głosowy
+  xmuted_text: 'Użytkownik {0} na czacie tekstowym przez {1}'
+  xmuted_text_and_voice: 'Użytkownik {0} na czacie tekstowym i głosowym przez {1}'
+  voice_server_deafened: Wyciszony przez serwer (gluszenie)
+  voice_server_muted: Wyciszony przez serwer (mikrofon)
+  voice_server_undeafened: Odgluszony przez serwer
+  voice_server_unmuted: Odciszony przez serwer (mikrofon)
+  xmuted_voice: 'Użytkownik {0} na czacie głosowym {1}'
+
+pt-BR:
+  avatar_changed: Avatar alterado
+  banned_pl: banido
+  ch_name_change: Nome do canal alterado
+  ch_old_name: Nome Antigo
+  ch_topic_change: Tópico do canal alterado
+  content: Conteúdo
+  kicked_pl: Expulso
+  log: 'Registrando evento {0} nesse canal.'
+  log_all: Registrando todos os eventos nesse canal.
+  log_disabled: Registros desabilitado.
+  log_events: 'Eventos de registro que você pode assinar:'
+  log_ignore_chan: 'O registro de logs passará a ignorar o canal {0}'
+  log_ignore_user: 'O registro de logs passará a ignorar o usuário {0}'
+  log_ignored_channels: Canais ignorados
+  log_ignored_users: Usuários ignorados
+  log_not_ignore_chan: 'O registro de logs não vai mais ignorar o canal {0}'
+  log_not_ignore_user: 'O registro de logs não vai mais ignorar o usuário {0}'
+  log_stop: 'Parando de registrar evento {0}.'
+  msg_del: 'Mensagem excluída em # {0}'
+  msg_update: 'Mensagem atualizada em # {0}'
+  muted_pl: Silenciado
+  muted_sn: Silenciado
+  new_msg: Nova mensagem
+  new_nick: Novo apelido
+  new_topic: Novo topico
+  nick_change: Apelido alterado
+  old_msg: Mensagem antiga
+  old_nick: Apelido antigo
+  old_topic: Tópico antigo
+  presence_updates: Atualizações de presença
+  remove_roles_pl: tiveram seus cargos removidos
+  soft_banned_pl: Banimento leve
+  text_chan_created: Canal de texto criado.
+  text_chan_destroyed: Canal de texto eliminado.
+  thread_created: Thread Criada
+  thread_deleted: Thread Excluída
+  unmuted_sn: Desmutado
+  user_banned: Usuário banido
+  user_joined: Usuário entrou
+  user_left: Usuário saiu
+  user_role_add: Cargo adicionado ao usuário
+  user_role_rem: Cargo removido do usuário
+  user_status_change: '{0} agora é {1}'
+  user_unbanned: Usuário desbanido
+  user_vjoined: '{0} entrou no canal de voz {1}.'
+  user_vleft: '{0} saiu do canal de voz {1}.'
+  user_vmoved: '{0} foi movido do canal de voz {1} para o {2}.'
+  username_changed: Nome de usuário mudado
+  voice_chan_created: Canal de voz criado
+  voice_chan_destroyed: Canal de voz eliminado
+  xmuted_text: 'Usuário {0} do canal de texto por {1}'
+  xmuted_text_and_voice: 'Usuário {0} do texto e canal de voz por {1}'
+  voice_server_deafened: Ensurdecido pelo servidor
+  voice_server_muted: Silenciado pelo servidor
+  voice_server_undeafened: Desensurdecido pelo servidor
+  voice_server_unmuted: Dessilenciado pelo servidor
+  xmuted_voice: 'Usuário {0} do canal de voz {1}'
+
+ru-RU:
+  avatar_changed: Аватар изменён
+  banned_pl: забанен
+  ch_name_change: Название канала изменено
+  ch_old_name: Старое название
+  ch_topic_change: Тема канала изменена
+  content: Содержание
+  kicked_pl: Изгнан
+  log: 'Регистрация события {0} на этом канале.'
+  log_all: Регистрация всех событий в этом канале.
+  log_disabled: Регистрация событий отключена.
+  log_events: 'Журнал событий, на которые вы можете подписаться:'
+  log_ignore_chan: 'Логирование будет игнорировать канал {0}'
+  log_ignore_user: 'Логирование будет игнорировать пользователя {0}'
+  log_ignored_channels: Игнорируемые каналы
+  log_ignored_users: Игнорируемые пользователи
+  log_not_ignore_chan: 'Логирование больше не будет игнорировать канал {0}'
+  log_not_ignore_user: 'Логирование больше не будет игнорировать пользователя {0}'
+  log_stop: 'Прекращено ведение журнала события {0}.'
+  msg_del: 'Сообщение удалено в #{0}'
+  msg_update: 'Сообщение обновлено в № {0}'
+  muted_pl: Приглушенный
+  muted_sn: Приглушенный
+  new_msg: Новое сообщение
+  new_nick: Новый ник
+  new_topic: Новая тема
+  nick_change: Псевдоним изменен
+  old_msg: Старое сообщение
+  old_nick: Старый ник
+  old_topic: Старая тема
+  presence_updates: Обновления присутствия
+  remove_roles_pl: были удалены их роли
+  soft_banned_pl: мягкий бан
+  text_chan_created: Текстовый канал создан.
+  text_chan_destroyed: Текстовый канал уничтожен.
+  thread_created: Тред Создан
+  thread_deleted: Тред Удалён
+  unmuted_sn: Звук включён
+  user_banned: Пользователь забанен
+  user_joined: Пользователь присоединился
+  user_left: Пользователь ушел
+  user_role_add: Роль пользователя добавлена
+  user_role_rem: Роль пользователя удалена
+  user_status_change: '{0} теперь {1}'
+  user_unbanned: Пользователь разбанен
+  user_vjoined: '{0} присоединился к голосовому каналу {1}.'
+  user_vleft: '{0} покинул голосовой канал {1}.'
+  user_vmoved: '{0} перемещен из голосового канала {1} в {2}.'
+  username_changed: Имя пользователя изменено
+  voice_chan_created: Голосовой канал создан
+  voice_chan_destroyed: Голосовой канал уничтожен
+  xmuted_text: 'Пользователь {0} из текстового чата, автор {1}'
+  xmuted_text_and_voice: 'Пользователь {0} из текстового и голосового чата, автор {1}'
+  voice_server_deafened: Заглушен сервером
+  voice_server_muted: Микрофон выключен сервером
+  voice_server_undeafened: Заглушение сервером снято
+  voice_server_unmuted: Микрофон включен сервером
+  xmuted_voice: 'Пользователь {0} из голосового чата {1}'
+
+sr-Cyrl-RS:
+  avatar_changed: Аватар промењен
+  banned_pl: банован(и)
+  ch_name_change: Име канала промењено
+  ch_old_name: Старо име
+  ch_topic_change: Тема канала промењена
+  content: Садржај
+  kicked_pl: Избачен(и)
+  log: 'Логовање догађаја {0} у овом каналу.'
+  log_all: Логовање свих догађаја у овом каналу.
+  log_disabled: Логовање искључено.
+  log_events: 'Догађаји за логовање на које можеш да се претплатиш:'
+  log_ignore_chan: 'Логовање ће игнорисати канал {0}'
+  log_ignore_user: 'Логовање ће игнорисати корисника {0}'
+  log_ignored_channels: Игнорисани канали
+  log_ignored_users: Игнорисани корисници
+  log_not_ignore_chan: 'Логовање више неће игнорисати канал {0}'
+  log_not_ignore_user: 'Логовање више неће игнорисати корисника {0}'
+  log_stop: 'Заустављено логовање догађаја {0}.'
+  msg_del: 'Порука обрисана у #{0}'
+  msg_update: 'Порука ажурирана у #{0}'
+  muted_pl: Мјутован(и)
+  muted_sn: Мјутован
+  new_msg: Нова порука
+  new_nick: Нови надимак
+  new_topic: Нова тема
+  nick_change: Надимак промењен
+  old_msg: Стара порука
+  old_nick: Стари надимак
+  old_topic: Стара тема
+  presence_updates: Ажурирања присуства
+  remove_roles_pl: улоге су им уклоњене
+  soft_banned_pl: софт-банован(и)
+  text_chan_created: Текстуални канал креиран.
+  text_chan_destroyed: Текстуални канал обрисан.
+  thread_created: Тема креирана
+  thread_deleted: Тема обрисана
+  unmuted_sn: Одмјутован
+  user_banned: Корисник банован
+  user_joined: Корисник се придружио
+  user_left: Корисник напустио сервер
+  user_role_add: Кориснику додата улога
+  user_role_rem: Кориснику уклоњена улога
+  user_status_change: '{0} је сада {1}'
+  user_unbanned: Корисник одбанован
+  user_vjoined: '{0} се придружио/ла гласовном каналу {1}.'
+  user_vleft: '{0} је напустио/ла гласовни канал {1}.'
+  user_vmoved: '{0} се преместио/ла из {1} у {2} гласовни канал.'
+  username_changed: Корисничко име промењено
+  voice_chan_created: Гласовни канал креиран
+  voice_chan_destroyed: Гласовни канал обрисан
+  xmuted_text: 'Корисник {0} из текстуалног чета од стране {1}'
+  xmuted_text_and_voice: 'Корисник {0} из текстуалног и гласовног чета од стране {1}'
+  voice_server_deafened: Утишан од стране сервера
+  voice_server_muted: Утишан микрофон од стране сервера
+  voice_server_undeafened: Укинуто утишавање од стране сервера
+  voice_server_unmuted: Укинуто утишавање микрофона од стране сервера
+  xmuted_voice: 'Корисник {0} из гласовног чета {1}'
+
+tr-TR:
+  avatar_changed: Avatar Değiştirildi
+  banned_pl: yasaklandı
+  ch_name_change: Kanal Adı Değiştirildi
+  ch_old_name: Eski Ad
+  ch_topic_change: Kanal Konusu Değiştirildi
+  content: İçerik
+  kicked_pl: Atıldı
+  log: '{0} olayı bu kanalda kaydediliyor.'
+  log_all: Tüm olaylar bu kanalda kaydediliyor.
+  log_disabled: Kayıt devre dışı bırakıldı.
+  log_events: 'Abone olabileceğin kayıt olayları:'
+  log_ignore_chan: 'Kayıt sistemi {0} kanalını yok sayacak'
+  log_ignore_user: 'Kayıt sistemi {0} kullanıcısını yok sayacak'
+  log_ignored_channels: Yok Sayılan Kanallar
+  log_ignored_users: Yok Sayılan Kullanıcılar
+  log_not_ignore_chan: 'Kayıt sistemi artık {0} kanalını yok saymayacak'
+  log_not_ignore_user: 'Kayıt sistemi artık {0} kullanıcısını yok saymayacak'
+  log_stop: '{0} olayının kaydı durduruldu.'
+  msg_del: '#{0} kanalında mesaj silindi'
+  msg_update: '#{0} kanalında mesaj güncellendi'
+  muted_pl: Susturuldu
+  muted_sn: Susturuldu
+  new_msg: Yeni mesaj
+  new_nick: Yeni takma ad
+  new_topic: Yeni konu
+  nick_change: Takma ad değiştirildi
+  old_msg: Eski mesaj
+  old_nick: Eski takma ad
+  old_topic: Eski konu
+  presence_updates: Durum güncellemeleri
+  remove_roles_pl: rolleri kaldırıldı
+  soft_banned_pl: geçici olarak yasaklandı
+  text_chan_created: Yazı kanalı oluşturuldu.
+  text_chan_destroyed: Yazı kanalı silindi.
+  thread_created: Konu Oluşturuldu
+  thread_deleted: Konu Silindi
+  unmuted_sn: Susturma Kaldırıldı
+  user_banned: Kullanıcı yasaklandı
+  user_joined: Kullanıcı katıldı
+  user_left: Kullanıcı ayrıldı
+  user_role_add: Kullanıcıya rol eklendi
+  user_role_rem: Kullanıcının rolü kaldırıldı
+  user_status_change: '{0} şimdi {1}'
+  user_unbanned: Kullanıcının yasağı kaldırıldı
+  user_vjoined: '{0}, {1} ses kanalına katıldı.'
+  user_vleft: '{0}, {1} ses kanalından ayrıldı.'
+  user_vmoved: '{0}, {1} ses kanalından {2} ses kanalına taşındı.'
+  username_changed: Kullanıcı adı değiştirildi
+  voice_chan_created: Ses kanalı oluşturuldu
+  voice_chan_destroyed: Ses kanalı silindi
+  xmuted_text: '{1} tarafından {0} kullanıcısının yazı sohbeti susturuldu'
+  xmuted_text_and_voice: '{1} tarafından {0} kullanıcısının yazı ve ses sohbeti susturuldu'
+  voice_server_deafened: Sunucu tarafindan sagir edildi
+  voice_server_muted: Sunucu tarafindan sesi kapatildi
+  voice_server_undeafened: Sunucu tarafindan sagirlik kaldirildi
+  voice_server_unmuted: Sunucu tarafindan ses acildi
+  xmuted_voice: '{1} tarafından {0} kullanıcısının ses sohbeti susturuldu'
+
+ts-TS:
+  avatar_changed: Avatar Changed
+  banned_pl: banned
+  ch_name_change: Channel Name Changed
+  ch_old_name: Old Name
+  ch_topic_change: Channel Topic Changed
+  content: Content
+  kicked_pl: Kicked
+  log: 'Logging {0} event in this channel.'
+  log_all: Logging all events in this channel. I-I'm just being thorough.
+  log_disabled: Logging disabled.
+  log_events: 'Log events you can subscribe to:'
+  log_ignore_chan: 'Logging will ignore channel {0}'
+  log_ignore_user: 'Logging will ignore user {0}'
+  log_ignored_channels: Ignored Channels
+  log_ignored_users: Ignored Users
+  log_not_ignore_chan: 'Logging will no longer ignore channel {0}'
+  log_not_ignore_user: 'Logging will no longer ignore user {0}'
+  log_stop: 'Stopped logging {0} event.'
+  msg_del: 'Message deleted in #{0}'
+  msg_update: 'Message updated in #{0}'
+  muted_pl: Muted
+  muted_sn: Muted
+  new_msg: New message
+  new_nick: New nickname
+  new_topic: New topic
+  nick_change: Nickname changed
+  old_msg: Old message
+  old_nick: Old nickname
+  old_topic: Old topic
+  presence_updates: Presence updates
+  remove_roles_pl: have had their roles removed
+  soft_banned_pl: soft-banned
+  text_chan_created: Text channel created.
+  text_chan_destroyed: Text channel destroyed.
+  thread_created: Thread Created
+  thread_deleted: Thread Deleted
+  unmuted_sn: Unmuted
+  user_banned: User banned. Hmph, they deserved it.
+  user_joined: User joined
+  user_left: User left
+  user_role_add: User's role added
+  user_role_rem: User's role removed
+  user_status_change: '{0} is now {1}'
+  user_unbanned: User unbanned
+  user_vjoined: '{0} has joined {1} voice channel.'
+  user_vleft: '{0} has left {1} voice channel.'
+  user_vmoved: '{0} moved from {1} to {2} voice channel.'
+  username_changed: Username changed
+  voice_chan_created: Voice channel created
+  voice_chan_destroyed: Voice channel destroyed
+  xmuted_text: 'User {0} from text chat by {1}'
+  xmuted_text_and_voice: 'User {0} from text and voice chat by {1}'
+  voice_server_deafened: Server deafened
+  voice_server_muted: Server voice muted
+  voice_server_undeafened: Server undeafened
+  voice_server_unmuted: Server voice unmuted
+  xmuted_voice: 'User {0} from voice chat {1}'
+
+uk-UA:
+  avatar_changed: Аватар змінено
+  banned_pl: забанено
+  ch_name_change: Назву каналу змінено
+  ch_old_name: Стара назва
+  ch_topic_change: Тему каналу змінено
+  content: Вміст
+  kicked_pl: Кікнуто
+  log: 'Логування події {0} у цьому каналі.'
+  log_all: Логування всіх подій у цьому каналі.
+  log_disabled: Логування вимкнено.
+  log_events: 'Події логування, на які можна підписатися:'
+  log_ignore_chan: 'Логування ігноруватиме канал {0}'
+  log_ignore_user: 'Логування ігноруватиме користувача {0}'
+  log_ignored_channels: Ігноровані канали
+  log_ignored_users: Ігноровані користувачі
+  log_not_ignore_chan: 'Логування більше не ігноруватиме канал {0}'
+  log_not_ignore_user: 'Логування більше не ігноруватиме користувача {0}'
+  log_stop: 'Логування події {0} зупинено.'
+  msg_del: 'Повідомлення видалено в #{0}'
+  msg_update: 'Повідомлення оновлено в #{0}'
+  muted_pl: Замучено
+  muted_sn: Замучено
+  new_msg: Нове повідомлення
+  new_nick: Новий нікнейм
+  new_topic: Нова тема
+  nick_change: Нікнейм змінено
+  old_msg: Старе повідомлення
+  old_nick: Старий нікнейм
+  old_topic: Стара тема
+  presence_updates: Оновлення присутності
+  remove_roles_pl: було знято ролі
+  soft_banned_pl: софт-банено
+  text_chan_created: Текстовий канал створено.
+  text_chan_destroyed: Текстовий канал видалено.
+  thread_created: Тред створено
+  thread_deleted: Тред видалено
+  unmuted_sn: Розмучено
+  user_banned: Користувача забанено
+  user_joined: Користувач приєднався
+  user_left: Користувач покинув сервер
+  user_role_add: Роль користувача додано
+  user_role_rem: Роль користувача знято
+  user_status_change: '{0} тепер {1}'
+  user_unbanned: Користувача розбанено
+  user_vjoined: '{0} приєднався до голосового каналу {1}.'
+  user_vleft: '{0} покинув голосовий канал {1}.'
+  user_vmoved: '{0} перемістився з {1} до {2} голосового каналу.'
+  username_changed: Ім'я користувача змінено
+  voice_chan_created: Голосовий канал створено
+  voice_chan_destroyed: Голосовий канал видалено
+  xmuted_text: 'Користувача {0} замучено в текстовому чаті {1}'
+  xmuted_text_and_voice: 'Користувача {0} замучено в текстовому та голосовому чаті {1}'
+  voice_server_deafened: Заглушено сервером
+  voice_server_muted: Мiкрофон вимкнено сервером
+  voice_server_undeafened: Заглушення сервером знято
+  voice_server_unmuted: Мiкрофон увiмкнено сервером
+  xmuted_voice: 'Користувача {0} замучено в голосовому чаті {1}'
+
+vi-VN:
+  avatar_changed: Đã đổi ảnh đại diện
+  banned_pl: đã bị cấm
+  ch_name_change: Tên kênh đã thay đổi
+  ch_old_name: Tên cũ
+  ch_topic_change: Chủ đề kênh đã thay đổi
+  content: Nội dung
+  kicked_pl: Đã bị đuổi
+  log: 'Đang ghi log sự kiện {0} trong kênh này.'
+  log_all: Đang ghi log tất cả sự kiện trong kênh này.
+  log_disabled: Đã tắt ghi log.
+  log_events: 'Các sự kiện log bạn có thể đăng ký:'
+  log_ignore_chan: 'Ghi log sẽ bỏ qua kênh {0}'
+  log_ignore_user: 'Ghi log sẽ bỏ qua người dùng {0}'
+  log_ignored_channels: Các kênh bị bỏ qua
+  log_ignored_users: Người dùng bị bỏ qua
+  log_not_ignore_chan: 'Ghi log sẽ không còn bỏ qua kênh {0} nữa'
+  log_not_ignore_user: 'Ghi log sẽ không còn bỏ qua người dùng {0} nữa'
+  log_stop: 'Đã dừng ghi log sự kiện {0}.'
+  msg_del: 'Tin nhắn đã bị xóa trong #{0}'
+  msg_update: 'Tin nhắn đã được cập nhật trong #{0}'
+  muted_pl: Đã bị tắt tiếng
+  muted_sn: Đã tắt tiếng
+  new_msg: Tin nhắn mới
+  new_nick: Biệt danh mới
+  new_topic: Chủ đề mới
+  nick_change: Biệt danh đã thay đổi
+  old_msg: Tin nhắn cũ
+  old_nick: Biệt danh cũ
+  old_topic: Chủ đề cũ
+  presence_updates: Cập nhật trạng thái hiện diện
+  remove_roles_pl: đã bị gỡ vai trò
+  soft_banned_pl: đã bị cấm tạm
+  text_chan_created: Đã tạo kênh văn bản.
+  text_chan_destroyed: Đã xóa kênh văn bản.
+  thread_created: Đã tạo luồng
+  thread_deleted: Đã xóa luồng
+  unmuted_sn: Đã bỏ tắt tiếng
+  user_banned: Người dùng bị cấm
+  user_joined: Người dùng đã tham gia
+  user_left: Người dùng đã rời đi
+  user_role_add: Đã thêm vai trò cho người dùng
+  user_role_rem: Đã gỡ vai trò của người dùng
+  user_status_change: '{0} hiện đang {1}'
+  user_unbanned: Người dùng đã được bỏ cấm
+  user_vjoined: '{0} đã tham gia kênh thoại {1}.'
+  user_vleft: '{0} đã rời khỏi kênh thoại {1}.'
+  user_vmoved: '{0} đã chuyển từ kênh thoại {1} sang {2}.'
+  username_changed: Tên người dùng đã thay đổi
+  voice_chan_created: Đã tạo kênh thoại
+  voice_chan_destroyed: Đã xóa kênh thoại
+  xmuted_text: 'Người dùng {0} khỏi chat văn bản bởi {1}'
+  xmuted_text_and_voice: 'Người dùng {0} khỏi chat văn bản và thoại bởi {1}'
+  voice_server_deafened: Bi tat am thanh boi may chu
+  voice_server_muted: Bi tat tieng boi may chu
+  voice_server_undeafened: Da bat am thanh boi may chu
+  voice_server_unmuted: Da bat tieng boi may chu
+  xmuted_voice: 'Người dùng {0} khỏi chat thoại {1}'
+
+zh-CN:
+  avatar_changed: 頭像更改了
+  banned_pl: 禁止
+  ch_name_change: 頻道名稱已更改
+  ch_old_name: 舊名稱
+  ch_topic_change: 頻道主題已更改
+  content: 內容
+  kicked_pl: 被踢
+  log: '在此頻道中記錄 {0} 事件。'
+  log_all: 記錄此頻道中的所有事件。
+  log_disabled: 日誌記錄已禁用。
+  log_events: 記錄您可以訂閱的事件：
+  log_ignore_chan: '日誌記錄將忽略頻道 {0}'
+  log_ignore_user: '日誌記錄將忽略用戶 {0}'
+  log_ignored_channels: 忽略的頻道
+  log_ignored_users: 忽略的用戶
+  log_not_ignore_chan: '日誌記錄將不再忽略頻道 {0}'
+  log_not_ignore_user: '日誌記錄將不再忽略用戶 {0}'
+  log_stop: '已停止記錄 {0} 事件。'
+  msg_del: '#{0} 中刪除的訊息'
+  msg_update: '訊息在 #{0} 中更新'
+  muted_pl: 靜音
+  muted_sn: 靜音
+  new_msg: 新消息
+  new_nick: 新暱稱
+  new_topic: 新話題
+  nick_change: 暱稱已更改
+  old_msg: 舊訊息
+  old_nick: 舊暱稱
+  old_topic: 舊主題
+  presence_updates: 狀態更新
+  remove_roles_pl: 的身分組受到剝奪
+  soft_banned_pl: 封禁
+  text_chan_created: 已創建文字通道。
+  text_chan_destroyed: 文字頻道已移除。
+  thread_created: 討論串已建立
+  thread_deleted: 討論串已刪除
+  unmuted_sn: 取消靜音
+  user_banned: 用戶被禁止
+  user_joined: 用戶加入
+  user_left: 用戶離開
+  user_role_add: 已添加用戶身分組
+  user_role_rem: 已移除用戶身分組
+  user_status_change: '{0} 現在是 {1}'
+  user_unbanned: 用戶解禁
+  user_vjoined: '{0} 已加入 {1} 個語音頻道。'
+  user_vleft: '{0} 已離開 {1} 個語音頻道。'
+  user_vmoved: '{0} 從 {1} 移至 {2} 語音通道。'
+  username_changed: 用戶名已更改
+  voice_chan_created: 已創建語音通道
+  voice_chan_destroyed: 語音頻道已移除
+  xmuted_text: '來自 {1} 的文字頻道的用戶 {0}'
+  xmuted_text_and_voice: '來自 {1} 的文字和語音頻道的用戶 {0}'
+  voice_server_deafened: 被服务器禁听
+  voice_server_muted: 被服务器静音
+  voice_server_undeafened: 被服务器取消禁听
+  voice_server_unmuted: 被服务器取消静音
+  xmuted_voice: '來自語音頻道 {1} 的用戶 {0}'

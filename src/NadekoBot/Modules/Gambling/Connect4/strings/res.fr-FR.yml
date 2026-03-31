@@ -1,5 +1,0 @@
-connect4_created: Création d'une partie de Connect4. En attente d'un joueur.
-connect4_draw: La partie de Connect4 a fini sur une égalité.
-connect4_failed_to_start: La partie de Connect4 n'a pas pu démarrer car personne ne l'a rejoint.
-connect4_player_to_move: 'Joueurs à déplacer: {0}'
-connect4_won: '{0} a gagné la partie de Connect4 contre {1}.'

@@ -1,9 +1,0 @@
-livechannel_added: '已成功將 {0} 新增為即時頻道。'
-livechannel_limit: '每個伺服器最多可有 {0} 個即時頻道。'
-livechannel_list_empty: 此伺服器未設定即時頻道。
-livechannel_list_title: '{0} 中的即時頻道'
-livechannel_not_found: 在即時頻道列表中未找到該頻道。
-livechannel_please_wait: 請等待最多 10 分鐘讓變更生效
-livechannel_removed: '已成功從即時頻道中移除 {0}。'
-preview: 預覽
-template: 範本

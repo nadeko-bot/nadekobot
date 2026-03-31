@@ -1,5 +1,0 @@
-prune_already_running: Prune sudah sedang berjalan di server ini.
-prune_cancelled: Prune dibatalkan.
-prune_not_found: Tidak ditemukan prune aktif di server ini.
-prune_patron: 'Menghapus pesan yang berumur 2 minggu atau lebih membutuhkan [Patron Tier X](https://patreon.com/join/nadekobot) atau lebih tinggi.'
-prune_progress: 'Sedang pruning... {0}/{1} pesan dihapus.'

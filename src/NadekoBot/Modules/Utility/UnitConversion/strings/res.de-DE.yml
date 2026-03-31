@@ -1,4 +1,0 @@
-convert: '{0} {1} ist gleich {2} {3}'
-convert_not_found: 'Kann {0} nicht in {1} konvertieren: Einheiten nicht gefunden'
-convert_type_error: 'Kann {0} nicht in {1} konvertieren: Art der Einheiten nicht gleich'
-convertlist: Einheiten die konvertiert werden können

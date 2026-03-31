@@ -1,6 +1,0 @@
-alias_added: '{0}을(를) 입력하면 이제 {1}의 별칭으로 동작해요.'
-alias_list: 별칭 목록
-alias_remove_fail: '트리거 {0}에 별칭이 없었어요.'
-alias_removed: '트리거 {0}의 별칭이 제거되었어요.'
-aliases_cleared: '이 서버의 모든 {0}개 별칭이 제거되었어요.'
-aliases_none: 별칭을 찾을 수 없어요

@@ -1,9 +1,0 @@
-xpformula_current: XP формула
-xpformula_set: XP формула ажурирана
-xpformula_desc: |-
-  |-
-    XP по нивоу: **{0}** x (ниво + 1) + **{1}**
-xpformula_preview: Преглед нивоа
-xpformula_a_invalid: 'Нагиб (a) мора бити између {0} и {1}.'
-xpformula_c_invalid: 'Основа (c) мора бити између {0} и {1}.'
-xpformula_invalid: Неважећи параметри формуле.

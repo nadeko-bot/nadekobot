@@ -1,0 +1,111 @@
+ar:
+  card_not_found: لم يتم العثور على تلك البطاقة.
+  cost: التكلفة
+  mashape_api_missing: لم يحدد مالك البوت مفتاح RapidApi. لا يمكنك استخدام هذه الميزة.
+  steam_api_missing: لم يحدد مالك البوت مفتاح SteamApiKey. لا يمكنك استخدام هذه الميزة.
+  store_url: رابط المتجر
+
+de-DE:
+  card_not_found: Diese Karte konnte nicht gefunden werden.
+  cost: Kosten
+  mashape_api_missing: Bot Besitzer hat MashapeApiKey nicht bestimmt. Du kannst diese Funktion nicht nutzen.
+  steam_api_missing: Bot Besitzer hat SteamApiKey nicht bestimmt. Du kannst diese Funktion nicht nutzen.
+  store_url: Shop url
+
+es-ES:
+  card_not_found: No se pudo encontrar esa carta.
+  cost: Costo
+  mashape_api_missing: El propietario del bot no especificó MashapeApiKey. No puedes usar esta opción.
+  steam_api_missing: El propietario del bot no especificó SteamApiKey. No puedes usar esta opción.
+  store_url: URL de la tienda
+
+fr-FR:
+  card_not_found: N'a pas pu trouver cette carte.
+  cost: Prix
+  mashape_api_missing: Le propriétaire du bot n'a pas spécifié MashapeApiKey. Vous ne pouvez pas utiliser cette fonctionalité.
+  steam_api_missing: Le propriétaire du bot n'a pas spécifié SteamApiKey. Vous ne pouvez pas utiliser cette fonctionalité.
+  store_url: URL de la boutique
+
+id-ID:
+  card_not_found: Kartu nggak ketemu.
+  cost: Harga
+  mashape_api_missing: Pemilik bot belum menyetel API key RapidApi. Kamu nggak bisa pakai fitur ini.
+  steam_api_missing: Pemilik bot belum menyetel SteamApiKey. Kamu nggak bisa pakai fitur ini.
+  store_url: URL toko
+
+ja-JP:
+  card_not_found: そのカードは見つかりませんでした。
+  cost: コスト
+  mashape_api_missing: ボットの所有者がMashapeApiKeyを指定していないため、この機能は使用できません。
+  steam_api_missing: ボットの所有者がSteamApiKeyを指定していないため、この機能は使用できません。
+  store_url: ストアへのURL
+
+ko-KR:
+  card_not_found: 해당 카드를 찾을 수 없어요.
+  cost: 비용
+  mashape_api_missing: 봇 소유자가 RapidApi API 키를 설정하지 않았어요. 이 기능을 사용할 수 없습니다.
+  steam_api_missing: 봇 소유자가 SteamApiKey를 설정하지 않았어요. 이 기능을 사용할 수 없습니다.
+  store_url: 스토어 URL
+
+pl-PL:
+  card_not_found: Nie znaleziono tej karty.
+  cost: Koszt
+  mashape_api_missing: Właściciel bota nie podał klucza API RapidApi. Nie możesz korzystać z tej funkcji.
+  steam_api_missing: Właściciel bota nie podał SteamApiKey. Nie możesz korzystać z tej funkcji.
+  store_url: Link do sklepu
+
+pt-BR:
+  card_not_found: Não consegui encontrar essa carta.
+  cost: Custo
+  mashape_api_missing: O proprietário do bot não especificou uma chave API do Mashape, portanto não é possível utilizar esse comando.
+  steam_api_missing: O proprietário do bot não especificou uma chave API do Steam, portanto não é possível utilizar esse comando.
+  store_url: Loja url
+
+ru-RU:
+  card_not_found: Не удалось найти эту карту.
+  cost: Цена
+  mashape_api_missing: Владелец бота не указал MashapeApiKey. Вы не можете использовать эту функцию.
+  steam_api_missing: Владелец бота не указал SteamApiKey. Вы не можете использовать эту функцию.
+  store_url: URL магазина
+
+sr-Cyrl-RS:
+  card_not_found: Нисам могао да пронађем ту карту.
+  cost: Цена
+  mashape_api_missing: Власник бота није навео RapidApi API кључ. Не можеш да користиш ову функцију.
+  steam_api_missing: Власник бота није навео SteamApiKey. Не можеш да користиш ову функцију.
+  store_url: Линк продавнице
+
+tr-TR:
+  card_not_found: O kart bulunamadı.
+  cost: Maliyet
+  mashape_api_missing: Bot sahibi RapidApi API anahtarını belirtmemiş. Bu özelliği kullanamazsın.
+  steam_api_missing: Bot sahibi SteamApiKey belirtmemiş. Bu özelliği kullanamazsın.
+  store_url: Mağaza bağlantısı
+
+ts-TS:
+  card_not_found: Couldn't find that card.
+  cost: Cost
+  mashape_api_missing: Bot owner didn't set up a RapidApi key. You can't use this right now.
+  steam_api_missing: Bot owner didn't set the SteamApiKey. You can't use this right now.
+  store_url: Store url
+
+uk-UA:
+  card_not_found: Не вдалося знайти цю картку.
+  cost: Вартість
+  mashape_api_missing: Власник бота не вказав API-ключ RapidApi. Ти не можеш використовувати цю функцію.
+  steam_api_missing: Власник бота не вказав SteamApiKey. Ти не можеш використовувати цю функцію.
+  store_url: Посилання на магазин
+
+vi-VN:
+  card_not_found: Không tìm thấy thẻ đó.
+  cost: Chi phí
+  mashape_api_missing: Chủ bot chưa thiết lập khóa API RapidApi. Bạn không thể sử dụng chức năng này.
+  steam_api_missing: Chủ bot chưa thiết lập SteamApiKey. Bạn không thể sử dụng chức năng này.
+  store_url: Url cửa hàng
+
+zh-CN:
+  card_not_found: 找不到那張卡。
+  cost: 花費
+  mashape_api_missing: 機器人所有者沒有指定 MashapeApiKey。您不能使用此功能。
+  steam_api_missing: 機器人所有者沒有指定 SteamApiKey。您不能使用此功能。
+  store_url: 店舖網址

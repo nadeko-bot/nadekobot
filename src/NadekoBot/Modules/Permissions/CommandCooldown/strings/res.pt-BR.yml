@@ -1,4 +1,0 @@
-cmdcd_add: 'O comando {0} agora possui cooldown de {1}s.'
-cmdcd_cleared: 'O comando {0} não possui mais cooldown e todos os cooldowns existentes foram removidos.'
-cmdcd_none: Nenhum cooldown de comando foi definido.
-invalid_second_param_between: 'Segundo parâmetro inválido. (Precisa ser um número entre {0} e {1})'

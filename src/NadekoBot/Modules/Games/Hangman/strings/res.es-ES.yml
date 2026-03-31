@@ -1,4 +1,0 @@
-hangman_game_started: Juego del ahorcado iniciado
-hangman_running: El juego del ahorcado ya se está ejecutando en este canal.
-hangman_stopped: Juego del ahorcado detenido.
-hangman_types: 'Lista de términos de `{0}hangman`:'

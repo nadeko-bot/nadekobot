@@ -1,9 +1,0 @@
-schedule_add_error: У тебе вже є {0} запланованих команд. Видали деякі перед додаванням нових.
-schedule_add_success: Заплановану команду успішно додано.
-schedule_command: Команда
-schedule_delete_error: Помилка видалення запланованої команди.
-schedule_deleted: 'Заплановану команду #{0} успішно видалено.'
-schedule_id: ID
-schedule_list_none: У тебе немає запланованих команд.
-schedule_list_title: Заплановані команди
-schedule_when: Виконається о

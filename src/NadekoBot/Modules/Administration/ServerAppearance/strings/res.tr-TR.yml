@@ -1,5 +1,0 @@
-set_srvr_banner: Yeni sunucu afişi ayarlandı!
-set_srvr_icon: Yeni sunucu simgesi ayarlandı!
-srvr_banner_invalid: Belirtilen görsel geçersiz bir dosya türüne sahip. Doğrudan bir görsel URL'si belirttiğinden emin ol.
-srvr_banner_invalid_url: Belirtilen URL geçerli değil. Doğrudan bir görsel URL'si belirttiğinden emin ol.
-srvr_banner_too_large: Belirtilen görsel çok büyük! Maksimum boyut 8MB.

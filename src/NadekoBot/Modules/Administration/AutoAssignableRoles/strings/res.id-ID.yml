@@ -1,4 +1,0 @@
-aar_disabled: '**Auto assign role** saat user bergabung sekarang **dinonaktifkan**.'
-aar_none: User tidak menerima role apapun saat bergabung ke server ini.
-aar_role_removed: 'User tidak akan lagi menerima role {0} saat bergabung ke server ini.'
-aar_roles: 'Role berikut diberikan ke user yang bergabung ke server ini: {0}'

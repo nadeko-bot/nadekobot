@@ -1,3 +1,0 @@
-timezone_guild: 'Bu sunucunun saat dilimi `{0}`'
-timezone_not_found: Saat dilimi bulunamadı. Mevcut saat dilimlerinin listesini görmek için "timezones" komutunu kullan.
-timezones_available: Mevcut Saat Dilimleri

@@ -1,0 +1,79 @@
+ar:
+  osu_api_key: مفتاح osu! API مطلوب.
+  osu_failed: فشل في استرجاع توقيع osu!.
+  osu_user_not_found: لم يتم العثور على المستخدم.
+
+de-DE:
+  osu_api_key: Ein osu! API Schlüssel wird benötigt.
+  osu_failed: Abrufen der osu! Signatur fehlgeschlagen.
+  osu_user_not_found: Nutzer wurde nicht gefunden.
+
+es-ES:
+  osu_api_key: Un osu! Clave de la API requerida.
+  osu_failed: Error recuperando la firma de osu!.
+  osu_user_not_found: Usuario no encontrado.
+
+fr-FR:
+  osu_api_key: Une clé API osu! est demandée.
+  osu_failed: Échec de récupération de la signature osu!.
+  osu_user_not_found: Membre introuvé.
+
+id-ID:
+  osu_api_key: API key osu! diperlukan.
+  osu_failed: Gagal mengambil signature osu!.
+  osu_user_not_found: Pengguna tidak ditemukan.
+
+ja-JP:
+  osu_api_key: osu!のAPIキーが必要です。
+  osu_failed: osu! シグネチャを取得できませんでした。
+  osu_user_not_found: ユーザーが見つかりません。
+
+ko-KR:
+  osu_api_key: osu! API 키가 필요합니다.
+  osu_failed: osu! 서명을 가져오는 데 실패했어요.
+  osu_user_not_found: 유저를 찾을 수 없어요.
+
+pl-PL:
+  osu_api_key: Wymagany jest klucz API osu!.
+  osu_failed: Nie udało się pobrać sygnatury osu!.
+  osu_user_not_found: Nie znaleziono użytkownika.
+
+pt-BR:
+  osu_api_key: Requer uma chave API de osu!
+  osu_failed: Falha ao obter assinatura osu!
+  osu_user_not_found: Usuário não encontrado.
+
+ru-RU:
+  osu_api_key: osu! Требуется ключ API.
+  osu_failed: Не удалось получить osu! подпись.
+  osu_user_not_found: Пользователь не найден.
+
+sr-Cyrl-RS:
+  osu_api_key: Потребан је osu! API кључ.
+  osu_failed: Неуспешно преузимање osu! потписа.
+  osu_user_not_found: Корисник није пронађен.
+
+tr-TR:
+  osu_api_key: Bir osu! API anahtarı gerekli.
+  osu_failed: osu! imzası alınamadı.
+  osu_user_not_found: Kullanıcı bulunamadı.
+
+ts-TS:
+  osu_api_key: An osu! API key is required.
+  osu_failed: Failed retrieving osu! signature.
+  osu_user_not_found: User not found.
+
+uk-UA:
+  osu_api_key: Потрібен API-ключ osu!
+  osu_failed: Не вдалося отримати підпис osu!
+  osu_user_not_found: Користувача не знайдено.
+
+vi-VN:
+  osu_api_key: Cần có khóa API osu!.
+  osu_failed: Không lấy được chữ ký osu!.
+  osu_user_not_found: Không tìm thấy người dùng.
+
+zh-CN:
+  osu_api_key: 為了獲取 osu！需要 API 密鑰。
+  osu_failed: 獲取 osu 簽名失敗！
+  osu_user_not_found: 未找到用戶。

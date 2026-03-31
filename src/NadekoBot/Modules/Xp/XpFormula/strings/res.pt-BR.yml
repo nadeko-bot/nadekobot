@@ -1,9 +1,0 @@
-xpformula_current: Formula de XP
-xpformula_set: Formula de XP atualizada
-xpformula_desc: |-
-  |-
-    XP por nivel: **{0}** x (nivel + 1) + **{1}**
-xpformula_preview: Preview de niveis
-xpformula_a_invalid: 'Inclinacao (a) deve estar entre {0} e {1}.'
-xpformula_c_invalid: 'Base (c) deve estar entre {0} e {1}.'
-xpformula_invalid: Parametros de formula invalidos.

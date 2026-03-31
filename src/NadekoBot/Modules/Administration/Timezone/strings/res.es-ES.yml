@@ -1,3 +1,0 @@
-timezone_guild: 'La zona horaria de este servidor es `{0}`.'
-timezone_not_found: Zona horaria no encontrada. Usa ".timezones" para ver la lista de husos horarios disponibles.
-timezones_available: Zonas horarias disponibles

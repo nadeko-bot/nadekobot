@@ -1,3 +1,0 @@
-purge_user_confirm: '정말로 데이터베이스에서 {0}을(를) 삭제하시겠습니까?'
-cleanup_done: '데이터베이스에 {0}개 서버의 데이터가 남아 있습니다.'
-sql_confirm_exec: 다음 SQL 명령어의 실행을 확인해주세요

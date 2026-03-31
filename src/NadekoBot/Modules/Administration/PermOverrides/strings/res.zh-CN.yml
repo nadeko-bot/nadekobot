@@ -1,6 +1,0 @@
-perm_override: '用戶需要 {0} 權限才能運行 {1} 命令。'
-perm_override_all: 所有 Discord 權限覆蓋已被清除。
-perm_override_all_confirm: 您確定要刪除此伺服器上的 **ALL** Discord 權限覆蓋嗎？這個動作是不可逆的。
-perm_override_page_none: 此頁面上沒有覆蓋。
-perm_override_reset: 此命令的 Discord 權限覆蓋已被清除。
-perm_overrides: Discord 權限覆蓋

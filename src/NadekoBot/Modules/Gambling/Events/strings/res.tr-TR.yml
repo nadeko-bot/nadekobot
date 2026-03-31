@@ -1,9 +1,0 @@
-event_duration_footer: 'Bu etkinlik en fazla {0} saat aktif.'
-event_title: '{0} etkinliği başladı!'
-new_gamestatus_event: |-
-  {1} almak için gizli kodu herhangi bir kanalda yaz
-  Ödüllendirilecek {2} kaldı.
-new_reaction_event: |-
-  {1} almak için bu mesaja {0} tepkisi ekle
-  Ödüllendirilecek {2} kaldı.
-start_event_fail: Etkinlik başlatılamadı. Başka bir etkinlik devam ediyor veya başlatma sırasında bir hata oluştu.

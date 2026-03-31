@@ -1,5 +1,0 @@
-connect4_created: Created a Connect4 game. Waiting for a player to join.
-connect4_draw: Connect4 game ended in a draw.
-connect4_failed_to_start: Connect4 game failed to start because nobody joined.
-connect4_player_to_move: 'Player to move: {0}'
-connect4_won: '{0} won the game of Connect4 against {1}. Hmph, I saw that coming.'

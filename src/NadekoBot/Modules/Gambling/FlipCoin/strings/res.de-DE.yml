@@ -1,6 +1,0 @@
-betflip_guess: Richtig geraten!
-flip_invalid: 'Ungültige Nummer angegeben. Du kannst 1 bis {0} Münzen werfen.'
-flip_results: 'Warf {0} Münzen. {1} Kopf, {2} Zahl.'
-flipped: 'warf {0}.'
-heads: Kopf
-tails: Zahl

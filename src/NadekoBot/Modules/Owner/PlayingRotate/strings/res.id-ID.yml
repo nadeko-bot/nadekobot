@@ -1,8 +1,0 @@
-reprm: 'Menghapus pesan playing: {0}'
-ropl_added: Ditambahkan.
-ropl_disabled: Status playing bergilir dinonaktifkan.
-ropl_enabled: Status playing bergilir diaktifkan.
-ropl_list: |-
-  Berikut daftar status bermain bergilir:
-  {0}
-ropl_not_set: Belum ada status bermain bergilir yang disetel.

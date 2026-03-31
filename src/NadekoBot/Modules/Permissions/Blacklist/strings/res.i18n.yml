@@ -1,0 +1,111 @@
+ar:
+  blacklisted: 'تمت إضافة {0} بالمعرّف {1} إلى القائمة السوداء'
+  blacklisted_channels: القنوات المحظورة
+  blacklisted_servers: الخوادم المحظورة
+  blacklisted_users: المستخدمون المحظورون
+  unblacklisted: 'تمت إزالة {0} بالمعرّف {1} من القائمة السوداء'
+
+de-DE:
+  blacklisted: 'Blacklisted {0} mit den IDs: {1}'
+  blacklisted_channels: Kanäle auf der Schwarzen Liste
+  blacklisted_servers: Server auf der Schwarzen Liste
+  blacklisted_users: Nutzer auf der Schwarzen Liste
+  unblacklisted: 'Von der schwarzen Liste runtergesetzt mit den IDs: {1}'
+
+es-ES:
+  blacklisted: 'Enviado a la lista negra a: {0} con la ID: {1}'
+  blacklisted_channels: Canales en la lista negra
+  blacklisted_servers: Servidores en la lista negra
+  blacklisted_users: Usuarios en la lista negra
+  unblacklisted: 'Removiendo de la lista negra a: {0} con la ID: {1}'
+
+fr-FR:
+  blacklisted: '{0} est inscrit sur la liste noire avec l''ID {1}'
+  blacklisted_channels: Salons sur la liste noire
+  blacklisted_servers: Serveurs sur la liste noire
+  blacklisted_users: Membres sur la liste noire
+  unblacklisted: '{0} est retiré de la liste noire avec l''ID {1}'
+
+id-ID:
+  blacklisted: '{0} dengan ID {1} sudah dimasukkan ke daftar hitam'
+  blacklisted_channels: Channel yang Diblokir
+  blacklisted_servers: Server yang Diblokir
+  blacklisted_users: Pengguna yang Diblokir
+  unblacklisted: '{0} dengan ID {1} sudah dihapus dari daftar hitam'
+
+ja-JP:
+  blacklisted: '{0}（ID: {1}）をブラックリストに登録しました。'
+  blacklisted_channels: ブラックリストチャンネル
+  blacklisted_servers: ブラックリストサーバー
+  blacklisted_users: ブラックリストユーザー
+  unblacklisted: '「{0}」（ID: {1}）をブラックリストから削除しました'
+
+ko-KR:
+  blacklisted: '{0} (ID: {1})을(를) 블랙리스트에 추가했어요.'
+  blacklisted_channels: 블랙리스트 채널
+  blacklisted_servers: 블랙리스트 서버
+  blacklisted_users: 블랙리스트 사용자
+  unblacklisted: '{0} (ID: {1})을(를) 블랙리스트에서 제거했어요.'
+
+pl-PL:
+  blacklisted: 'Dodano na czarną listę {0} o ID {1}'
+  blacklisted_channels: Zablokowane kanały
+  blacklisted_servers: Zablokowane serwery
+  blacklisted_users: Zablokowani użytkownicy
+  unblacklisted: 'Usunięto z czarnej listy {0} o ID {1}'
+
+pt-BR:
+  blacklisted: 'Os {0} com os seguintes IDs foram adicionados à lista negra: {1}'
+  blacklisted_channels: Canais na Lista Negra
+  blacklisted_servers: Servidores na Lista Negra
+  blacklisted_users: Usuários na Lista Negra
+  unblacklisted: 'Os {0} com os seguintes IDs foram removidos da lista negra: {1}'
+
+ru-RU:
+  blacklisted: 'Занесены в черный список {0} с идентификаторами: {1}'
+  blacklisted_channels: Каналы из черного списка
+  blacklisted_servers: Сервера из черного списка
+  blacklisted_users: Пользователи из черного списка
+  unblacklisted: 'Вынесены из черного списка {0} с идентификаторами: {1}'
+
+sr-Cyrl-RS:
+  blacklisted: '{0} са ID-јем {1} додат/а на црну листу'
+  blacklisted_channels: Канали на црној листи
+  blacklisted_servers: Сервери на црној листи
+  blacklisted_users: Корисници на црној листи
+  unblacklisted: '{0} са ID-јем {1} уклоњен/а са црне листе'
+
+tr-TR:
+  blacklisted: '{0} kara listeye eklendi, ID: {1}'
+  blacklisted_channels: Kara Listedeki Kanallar
+  blacklisted_servers: Kara Listedeki Sunucular
+  blacklisted_users: Kara Listedeki Kullanıcılar
+  unblacklisted: '{0} kara listeden çıkarıldı, ID: {1}'
+
+ts-TS:
+  blacklisted: 'Blacklisted {0} with ID {1}.'
+  blacklisted_channels: Blacklisted Channels
+  blacklisted_servers: Blacklisted Servers
+  blacklisted_users: Blacklisted Users
+  unblacklisted: 'Unblacklisted {0} with ID {1}. D-don''t make me regret this.'
+
+uk-UA:
+  blacklisted: '{0} з ID {1} додано до чорного списку'
+  blacklisted_channels: Канали в чорному списку
+  blacklisted_servers: Сервери в чорному списку
+  blacklisted_users: Користувачі в чорному списку
+  unblacklisted: '{0} з ID {1} видалено з чорного списку'
+
+vi-VN:
+  blacklisted: 'Đã chặn {0} với ID {1}'
+  blacklisted_channels: Các Kênh Bị Chặn
+  blacklisted_servers: Các Máy Chủ Bị Chặn
+  blacklisted_users: Các Người Dùng Bị Chặn
+  unblacklisted: 'Đã bỏ chặn {0} với ID {1}'
+
+zh-CN:
+  blacklisted: '已經把 ID 為 {1} 的 {0} 加入黑名單'
+  blacklisted_channels: 頻道黑名單
+  blacklisted_servers: 伺服器黑名單
+  blacklisted_users: 使用者黑名單
+  unblacklisted: '已經把 ID 為 {1} 的 {0} 從黑名單中移除'

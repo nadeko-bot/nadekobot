@@ -1,0 +1,239 @@
+ar:
+  userrole_assigned: 'تم تعيين الدور {1} لـ {0}.'
+  userrole_color_fail: 'فشل تعيين لون الدور. تأكد من استخدام رمز لون hex صالح (مثل #FF0000).'
+  userrole_color_success: 'تم تغيير لون {0} إلى {1}.'
+  userrole_list_for_user: 'أدوار المستخدم الخاصة بـ {0}'
+  userrole_list_title: أدوار المستخدمين في هذا الخادم
+  userrole_name_fail: فشل تعيين اسم الدور.
+  userrole_name_invalid: يجب ألا يكون اسم الدور فارغًا وأن يكون أقل من 100 حرف.
+  userrole_name_success: 'تم تغيير اسم دورك إلى {0}.'
+  userrole_no_permission: ليس لديك هذا الدور معيّنًا كدور مستخدم.
+  userrole_none: لم يتم تعيين أي أدوار مستخدمين في هذا الخادم.
+  userrole_none_user: 'ليس لدى {0} أي أدوار مستخدم معيّنة.'
+  userrole_not_found: الدور غير موجود أو غير معيّن لك.
+  userrole_removed: 'تمت إزالة {0} من الدور {1}.'
+
+de-DE:
+  userrole_assigned: '{0} hat die Rolle {1} erhalten.'
+  userrole_color_fail: 'Fehler beim Festlegen der Rollenfarbe. Stelle sicher, dass du einen gültigen Hex-Farbcode verwendest (z.B. #FF0000).'
+  userrole_color_success: 'Die Farbe von {0} wurde zu {1} geändert.'
+  userrole_list_for_user: 'Benutzerrollen von {0}'
+  userrole_list_title: Benutzerrollen auf diesem Server
+  userrole_name_fail: Fehler beim Festlegen des Rollennamens.
+  userrole_name_invalid: Der Rollenname darf nicht leer sein und muss weniger als 100 Zeichen haben.
+  userrole_name_success: 'Der Name deiner Rolle wurde zu {0} geändert.'
+  userrole_no_permission: Du hast diese Rolle nicht als Benutzerrolle zugewiesen.
+  userrole_none: Auf diesem Server wurden keine Benutzerrollen zugewiesen.
+  userrole_none_user: '{0} hat keine zugewiesenen Benutzerrollen.'
+  userrole_not_found: Rolle nicht gefunden oder nicht dir zugewiesen.
+  userrole_removed: '{0} wurde aus der Rolle {1} entfernt.'
+
+es-ES:
+  userrole_assigned: '{0} ha recibido el rol {1}.'
+  userrole_color_fail: 'Error al establecer el color del rol. Asegúrate de usar un código de color hex válido (ej.: #FF0000).'
+  userrole_color_success: 'El color de {0} ha sido cambiado a {1}.'
+  userrole_list_for_user: 'Roles de Usuario de {0}'
+  userrole_list_title: Roles de Usuario en este servidor
+  userrole_name_fail: Error al establecer el nombre del rol.
+  userrole_name_invalid: El nombre del rol no puede estar vacío y debe tener menos de 100 caracteres.
+  userrole_name_success: 'El nombre de tu rol ha sido cambiado a {0}.'
+  userrole_no_permission: No tienes este rol asignado como rol de usuario.
+  userrole_none: No se han asignado roles de usuario en este servidor.
+  userrole_none_user: '{0} no tiene roles de usuario asignados.'
+  userrole_not_found: Rol no encontrado o no asignado a ti.
+  userrole_removed: '{0} ha sido eliminado del rol {1}.'
+
+fr-FR:
+  userrole_assigned: '{0} a reçu le rôle {1}.'
+  userrole_color_fail: 'Échec de la définition de la couleur du rôle. Assurez-vous d''utiliser un code hex valide (ex. : #FF0000).'
+  userrole_color_success: 'La couleur de {0} a été changée en {1}.'
+  userrole_list_for_user: 'Rôles Utilisateur de {0}'
+  userrole_list_title: Rôles Utilisateur dans ce serveur
+  userrole_name_fail: Échec de la définition du nom du rôle.
+  userrole_name_invalid: Le nom du rôle ne peut pas être vide et doit faire moins de 100 caractères.
+  userrole_name_success: 'Le nom de votre rôle a été changé en {0}.'
+  userrole_no_permission: Vous n'avez pas ce rôle attribué comme rôle utilisateur.
+  userrole_none: Aucun rôle utilisateur n'a été attribué dans ce serveur.
+  userrole_none_user: '{0} n''a pas de rôles utilisateur attribués.'
+  userrole_not_found: Rôle non trouvé ou non attribué à vous.
+  userrole_removed: '{0} a été retiré du rôle {1}.'
+
+id-ID:
+  userrole_assigned: '{0} telah diberi role {1}.'
+  userrole_color_fail: 'Gagal mengatur warna role. Pastikan kamu menggunakan kode warna hex yang valid (contoh: #FF0000).'
+  userrole_color_success: 'Warna {0} telah diubah menjadi {1}.'
+  userrole_list_for_user: 'User Role milik {0}'
+  userrole_list_title: User Role di server ini
+  userrole_name_fail: Gagal mengatur nama role.
+  userrole_name_invalid: Nama role tidak boleh kosong dan harus kurang dari 100 karakter.
+  userrole_name_success: 'Nama role kamu telah diubah menjadi {0}.'
+  userrole_no_permission: Kamu tidak punya role ini sebagai user role.
+  userrole_none: Belum ada user role yang ditetapkan di server ini.
+  userrole_none_user: '{0} tidak punya user role.'
+  userrole_not_found: Role tidak ditemukan atau tidak ditetapkan ke kamu.
+  userrole_removed: '{0} telah dihapus dari role {1}.'
+
+ja-JP:
+  userrole_assigned: '{0}にロール{1}が割り当てられました。'
+  userrole_color_fail: 'ロールの色の設定に失敗しました。有効なHexカラーコードを使用してください（例: #FF0000）。'
+  userrole_color_success: '{0}の色が{1}に変更されました。'
+  userrole_list_for_user: '{0}のユーザーロール'
+  userrole_list_title: このサーバーのユーザーロール
+  userrole_name_fail: ロール名の設定に失敗しました。
+  userrole_name_invalid: ロール名は空にできず、100文字未満である必要があります。
+  userrole_name_success: 'ロール名が{0}に変更されました。'
+  userrole_no_permission: このロールはユーザーロールとして割り当てられていません。
+  userrole_none: このサーバーにユーザーロールは割り当てられていません。
+  userrole_none_user: '{0}にはユーザーロールが割り当てられていません。'
+  userrole_not_found: ロールが見つからないか、あなたに割り当てられていません。
+  userrole_removed: '{0}がロール{1}から削除されました。'
+
+ko-KR:
+  userrole_assigned: '{0}에게 {1} 역할이 부여되었어요.'
+  userrole_color_fail: '역할 색상 설정에 실패했어요. 올바른 HEX 색상 코드를 사용하고 있는지 확인해 주세요 (예: #FF0000).'
+  userrole_color_success: '{0}의 색상이 {1}(으)로 변경되었어요.'
+  userrole_list_for_user: '{0}의 유저 역할'
+  userrole_list_title: 이 서버의 유저 역할
+  userrole_name_fail: 역할 이름 설정에 실패했어요.
+  userrole_name_invalid: 역할 이름은 비어 있으면 안 되고, 100자 미만이어야 해요.
+  userrole_name_success: '역할 이름이 {0}(으)로 변경되었어요.'
+  userrole_no_permission: 이 역할은 유저 역할로 부여받지 않았어요.
+  userrole_none: 이 서버에 부여된 유저 역할이 없어요.
+  userrole_none_user: '{0}에게 부여된 유저 역할이 없어요.'
+  userrole_not_found: 역할을 찾을 수 없거나 부여되지 않았어요.
+  userrole_removed: '{0}에게서 {1} 역할이 제거되었어요.'
+
+pl-PL:
+  userrole_assigned: '{0} otrzymał rolę {1}.'
+  userrole_color_fail: 'Nie udało się ustawić koloru roli. Upewnij się, że używasz prawidłowego kodu koloru hex (np. #FF0000).'
+  userrole_color_success: 'Kolor roli {0} został zmieniony na {1}.'
+  userrole_list_for_user: 'Role użytkownika {0}'
+  userrole_list_title: Role użytkowników na tym serwerze
+  userrole_name_fail: Nie udało się ustawić nazwy roli.
+  userrole_name_invalid: Nazwa roli nie może być pusta i musi mieć mniej niż 100 znaków.
+  userrole_name_success: 'Nazwa twojej roli została zmieniona na {0}.'
+  userrole_no_permission: Nie masz tej roli przypisanej jako rola użytkownika.
+  userrole_none: Na tym serwerze nie przypisano żadnych ról użytkownika.
+  userrole_none_user: '{0} nie ma przypisanych ról użytkownika.'
+  userrole_not_found: Rola nie została znaleziona lub nie jest ci przypisana.
+  userrole_removed: '{0} został usunięty z roli {1}.'
+
+pt-BR:
+  userrole_assigned: '{0} recebeu o cargo {1}.'
+  userrole_color_fail: 'Falha ao definir a cor do cargo. Certifique-se de usar um código de cor hex válido (ex.: #FF0000).'
+  userrole_color_success: 'A cor de {0} foi alterada para {1}.'
+  userrole_list_for_user: 'Cargos de Usuário de {0}'
+  userrole_list_title: Cargos de Usuário neste servidor
+  userrole_name_fail: Falha ao definir o nome do cargo.
+  userrole_name_invalid: O nome do cargo não pode estar vazio e deve ter menos de 100 caracteres.
+  userrole_name_success: 'O nome do seu cargo foi alterado para {0}.'
+  userrole_no_permission: Você não tem este cargo atribuído como cargo de usuário.
+  userrole_none: Nenhum cargo de usuário foi atribuído neste servidor.
+  userrole_none_user: '{0} não tem cargos de usuário atribuídos.'
+  userrole_not_found: Cargo não encontrado ou não atribuído a você.
+  userrole_removed: '{0} foi removido do cargo {1}.'
+
+ru-RU:
+  userrole_assigned: '{0} получил роль {1}.'
+  userrole_color_fail: 'Не удалось установить цвет роли. Убедитесь, что используете допустимый hex-код цвета (например, #FF0000).'
+  userrole_color_success: 'Цвет {0} был изменён на {1}.'
+  userrole_list_for_user: 'Роли Пользователя {0}'
+  userrole_list_title: Роли Пользователей на этом сервере
+  userrole_name_fail: Не удалось установить имя роли.
+  userrole_name_invalid: Имя роли не может быть пустым и должно быть менее 100 символов.
+  userrole_name_success: 'Имя вашей роли было изменено на {0}.'
+  userrole_no_permission: У вас нет этой роли, назначенной как пользовательская.
+  userrole_none: На этом сервере не назначены пользовательские роли.
+  userrole_none_user: 'У {0} нет назначенных пользовательских ролей.'
+  userrole_not_found: Роль не найдена или не назначена вам.
+  userrole_removed: '{0} был удалён из роли {1}.'
+
+sr-Cyrl-RS:
+  userrole_assigned: '{0} је додељена улога {1}.'
+  userrole_color_fail: 'Неуспешно постављање боје улоге. Проверите да користите исправан хекс код боје (нпр. #FF0000).'
+  userrole_color_success: 'Боја улоге {0} је промењена у {1}.'
+  userrole_list_for_user: 'Корисничке улоге корисника {0}'
+  userrole_list_title: Корисничке улоге на овом серверу
+  userrole_name_fail: Неуспешно постављање имена улоге.
+  userrole_name_invalid: Име улоге не сме бити празно и мора имати мање од 100 карактера.
+  userrole_name_success: 'Име ваше улоге је промењено у {0}.'
+  userrole_no_permission: Немате ову улогу додељену као корисничку улогу.
+  userrole_none: На овом серверу нису додељене корисничке улоге.
+  userrole_none_user: '{0} нема додељених корисничких улога.'
+  userrole_not_found: Улога није пронађена или вам није додељена.
+  userrole_removed: '{0} је уклоњен/а из улоге {1}.'
+
+tr-TR:
+  userrole_assigned: '{0} kullanıcısına {1} rolü atandı.'
+  userrole_color_fail: 'Rol rengi ayarlanamadı. Geçerli bir hex renk kodu kullandığından emin ol (ör. #FF0000).'
+  userrole_color_success: '{0} rolünün rengi {1} olarak değiştirildi.'
+  userrole_list_for_user: '{0} Kullanıcısının Rolleri'
+  userrole_list_title: Bu sunucudaki kullanıcı rolleri
+  userrole_name_fail: Rol adı ayarlanamadı.
+  userrole_name_invalid: Rol adı boş olmamalı ve 100 karakterden kısa olmalıdır.
+  userrole_name_success: 'Rolünün adı {0} olarak değiştirildi.'
+  userrole_no_permission: Bu rol sana kullanıcı rolü olarak atanmamış.
+  userrole_none: Bu sunucuda hiç kullanıcı rolü atanmamış.
+  userrole_none_user: '{0} kullanıcısının atanmış kullanıcı rolü yok.'
+  userrole_not_found: Rol bulunamadı veya sana atanmamış.
+  userrole_removed: '{0} kullanıcısından {1} rolü kaldırıldı.'
+
+ts-TS:
+  userrole_assigned: '{0} has been given the role {1}.'
+  userrole_color_fail: 'That color didn''t work. Use a proper hex code like #FF0000.'
+  userrole_color_success: 'The color of {0} has been changed to {1}.'
+  userrole_list_for_user: '{0}''s User Roles'
+  userrole_list_title: User Roles in this server
+  userrole_name_fail: Couldn't change the role name.
+  userrole_name_invalid: The role name can't be empty or over 100 characters, dummy.
+  userrole_name_success: 'Your role name is now {0}.'
+  userrole_no_permission: You don't have that role assigned. Hmph.
+  userrole_none: No user roles have been assigned in this server.
+  userrole_none_user: '{0} has no assigned user roles.'
+  userrole_not_found: Role not found or not assigned to you.
+  userrole_removed: '{0} has been removed from the role {1}.'
+
+uk-UA:
+  userrole_assigned: '{0} отримав(-ла) роль {1}.'
+  userrole_color_fail: 'Не вдалося встановити колір ролі. Переконайся, що використовуєш правильний hex-код кольору (наприклад, #FF0000).'
+  userrole_color_success: 'Колір {0} змінено на {1}.'
+  userrole_list_for_user: 'Ролі користувача {0}'
+  userrole_list_title: Ролі користувачів на цьому сервері
+  userrole_name_fail: Не вдалося встановити назву ролі.
+  userrole_name_invalid: Назва ролі не може бути порожньою і має бути менше 100 символів.
+  userrole_name_success: 'Назву твоєї ролі змінено на {0}.'
+  userrole_no_permission: У тебе немає цієї ролі як ролі користувача.
+  userrole_none: На цьому сервері не призначено жодної ролі користувача.
+  userrole_none_user: '{0} не має призначених ролей користувача.'
+  userrole_not_found: Роль не знайдено або вона не призначена тобі.
+  userrole_removed: '{0} було знято роль {1}.'
+
+vi-VN:
+  userrole_assigned: '{0} đã được gán vai trò {1}.'
+  userrole_color_fail: 'Không thể đặt màu vai trò. Hãy chắc chắn bạn đang dùng mã màu hex hợp lệ (ví dụ: #FF0000).'
+  userrole_color_success: 'Màu của {0} đã được đổi thành {1}.'
+  userrole_list_for_user: 'Vai trò người dùng của {0}'
+  userrole_list_title: Vai trò người dùng trong server này
+  userrole_name_fail: Không thể đặt tên vai trò.
+  userrole_name_invalid: Tên vai trò không được để trống và phải dưới 100 ký tự.
+  userrole_name_success: 'Tên vai trò của bạn đã được đổi thành {0}.'
+  userrole_no_permission: Bạn không được gán vai trò này như một vai trò người dùng.
+  userrole_none: Chưa có vai trò người dùng nào được gán trong server này.
+  userrole_none_user: '{0} không có vai trò người dùng nào.'
+  userrole_not_found: Không tìm thấy vai trò hoặc vai trò chưa được gán cho bạn.
+  userrole_removed: '{0} đã bị xóa khỏi vai trò {1}.'
+
+zh-CN:
+  userrole_assigned: '{0} 已被分配身分組 {1}。'
+  userrole_color_fail: '設定身分組顏色失敗。請確保使用有效的十六進位色碼（例如 #FF0000）。'
+  userrole_color_success: '{0} 的顏色已更改為 {1}。'
+  userrole_list_for_user: '{0} 的使用者身分組'
+  userrole_list_title: 此伺服器中的使用者身分組
+  userrole_name_fail: 設定身分組名稱失敗。
+  userrole_name_invalid: 身分組名稱不能為空且必須少於 100 個字元。
+  userrole_name_success: '你的身分組名稱已更改為 {0}。'
+  userrole_no_permission: 你沒有此身分組作為使用者身分組分配。
+  userrole_none: 此伺服器中沒有分配任何使用者身分組。
+  userrole_none_user: '{0} 沒有已分配的使用者身分組。'
+  userrole_not_found: 找不到身分組或未分配給你。
+  userrole_removed: '{0} 已從身分組 {1} 中移除。'

@@ -1,0 +1,111 @@
+ar:
+  set_srvr_banner: تم تعيين بانر الخادم الجديد!
+  set_srvr_icon: تم تعيين أيقونة الخادم الجديدة!
+  srvr_banner_invalid: الصورة المحددة بصيغة غير صالحة. تأكد من تحديد رابط مباشر للصورة.
+  srvr_banner_invalid_url: الرابط المحدد غير صالح. تأكد من تحديد رابط مباشر للصورة.
+  srvr_banner_too_large: الصورة المحددة كبيرة جدًا! الحد الأقصى للحجم هو 8 ميغابايت.
+
+de-DE:
+  set_srvr_banner: Neues Server-Banner festgelegt!
+  set_srvr_icon: Neues Server-Icon festgelegt!
+  srvr_banner_invalid: Das angegebene Bild hat einen ungültigen Dateityp. Stelle sicher, dass du eine direkte Bild-URL angibst.
+  srvr_banner_invalid_url: Die angegebene URL ist nicht gültig. Stelle sicher, dass du eine direkte Bild-URL angibst.
+  srvr_banner_too_large: Das angegebene Bild ist zu groß! Maximale Größe ist 8MB.
+
+es-ES:
+  set_srvr_banner: ¡Nuevo banner del servidor establecido!
+  set_srvr_icon: ¡Nuevo ícono del servidor establecido!
+  srvr_banner_invalid: La imagen especificada tiene un tipo de archivo inválido. Asegúrate de especificar una URL directa de imagen.
+  srvr_banner_invalid_url: La URL especificada no es válida. Asegúrate de especificar una URL directa de imagen.
+  srvr_banner_too_large: ¡La imagen especificada es demasiado grande! El tamaño máximo es 8MB.
+
+fr-FR:
+  set_srvr_banner: Nouveau banner du serveur défini !
+  set_srvr_icon: Nouvelle icône du serveur définie !
+  srvr_banner_invalid: L'image spécifiée a un type de fichier invalide. Assurez-vous de spécifier une URL directe d'image.
+  srvr_banner_invalid_url: L'URL spécifiée n'est pas valide. Assurez-vous de spécifier une URL directe d'image.
+  srvr_banner_too_large: L'image spécifiée est trop grande ! La taille maximale est de 8 Mo.
+
+id-ID:
+  set_srvr_banner: Banner server baru sudah dipasang!
+  set_srvr_icon: Ikon server baru sudah dipasang!
+  srvr_banner_invalid: Gambar yang ditentukan punya tipe file yang tidak valid. Pastikan kamu memasukkan URL gambar langsung.
+  srvr_banner_invalid_url: URL yang ditentukan tidak valid. Pastikan kamu memasukkan URL gambar langsung.
+  srvr_banner_too_large: Gambar yang ditentukan terlalu besar! Ukuran maksimal 8MB.
+
+ja-JP:
+  set_srvr_banner: 新しいサーバーバナーが設定されました！
+  set_srvr_icon: 新しいサーバーアイコンが設定されました！
+  srvr_banner_invalid: 指定された画像のファイルタイプが無効です。画像の直接URLを指定していることを確認してください。
+  srvr_banner_invalid_url: 指定されたURLは無効です。画像の直接URLを指定していることを確認してください。
+  srvr_banner_too_large: 指定された画像が大きすぎます！最大サイズは8MBです。
+
+ko-KR:
+  set_srvr_banner: 새 서버 배너가 설정되었어요!
+  set_srvr_icon: 새 서버 아이콘이 설정되었어요!
+  srvr_banner_invalid: 지정된 이미지의 파일 형식이 올바르지 않아요. 직접 이미지 URL을 지정했는지 확인해 주세요.
+  srvr_banner_invalid_url: 지정된 URL이 유효하지 않아요. 직접 이미지 URL을 지정했는지 확인해 주세요.
+  srvr_banner_too_large: 지정된 이미지가 너무 커요! 최대 크기는 8MB예요.
+
+pl-PL:
+  set_srvr_banner: Ustawiono nowy baner serwera!
+  set_srvr_icon: Ustawiono nową ikonę serwera!
+  srvr_banner_invalid: Podany obraz ma nieprawidłowy format pliku. Upewnij się, że podajesz bezpośredni URL do obrazu.
+  srvr_banner_invalid_url: Podany URL jest nieprawidłowy. Upewnij się, że podajesz bezpośredni URL do obrazu.
+  srvr_banner_too_large: Podany obraz jest za duży! Maksymalny rozmiar to 8MB.
+
+pt-BR:
+  set_srvr_banner: Novo banner do servidor definido!
+  set_srvr_icon: Novo ícone do servidor definido!
+  srvr_banner_invalid: A imagem especificada tem um tipo de arquivo inválido. Certifique-se de especificar uma URL direta de imagem.
+  srvr_banner_invalid_url: A URL especificada não é válida. Certifique-se de especificar uma URL direta de imagem.
+  srvr_banner_too_large: A imagem especificada é muito grande! O tamanho máximo é 8MB.
+
+ru-RU:
+  set_srvr_banner: Новый баннер сервера установлен!
+  set_srvr_icon: Новая иконка сервера установлена!
+  srvr_banner_invalid: Указанное изображение имеет недопустимый тип файла. Убедитесь, что указываете прямую ссылку на изображение.
+  srvr_banner_invalid_url: Указанный URL недействителен. Убедитесь, что указываете прямую ссылку на изображение.
+  srvr_banner_too_large: Указанное изображение слишком большое! Максимальный размер - 8 МБ.
+
+sr-Cyrl-RS:
+  set_srvr_banner: Нови банер сервера је постављен!
+  set_srvr_icon: Нова иконица сервера је постављена!
+  srvr_banner_invalid: Наведена слика има неважећи формат. Проверите да ли сте навели директан линк ка слици.
+  srvr_banner_invalid_url: Наведени URL није валидан. Проверите да ли сте навели директан линк ка слици.
+  srvr_banner_too_large: Наведена слика је превелика! Максимална величина је 8MB.
+
+tr-TR:
+  set_srvr_banner: Yeni sunucu afişi ayarlandı!
+  set_srvr_icon: Yeni sunucu simgesi ayarlandı!
+  srvr_banner_invalid: Belirtilen görsel geçersiz bir dosya türüne sahip. Doğrudan bir görsel URL'si belirttiğinden emin ol.
+  srvr_banner_invalid_url: Belirtilen URL geçerli değil. Doğrudan bir görsel URL'si belirttiğinden emin ol.
+  srvr_banner_too_large: Belirtilen görsel çok büyük! Maksimum boyut 8MB.
+
+ts-TS:
+  set_srvr_banner: New server banner set!
+  set_srvr_icon: New server icon set!
+  srvr_banner_invalid: Specified image has an invalid filetype. Make sure you're specifying a direct image url.
+  srvr_banner_invalid_url: Specified url is not valid. Make sure you're specifying a direct image url, b-baka!
+  srvr_banner_too_large: Specified image is too large! Maximum size is 8MB.
+
+uk-UA:
+  set_srvr_banner: Новий банер сервера встановлено!
+  set_srvr_icon: Нову іконку сервера встановлено!
+  srvr_banner_invalid: Вказане зображення має невірний формат. Переконайся, що вказуєш пряме посилання на зображення.
+  srvr_banner_invalid_url: Вказане посилання недійсне. Переконайся, що вказуєш пряме посилання на зображення.
+  srvr_banner_too_large: Вказане зображення занадто велике! Максимальний розмір - 8МБ.
+
+vi-VN:
+  set_srvr_banner: Đã đặt banner máy chủ mới!
+  set_srvr_icon: Đã đặt icon máy chủ mới!
+  srvr_banner_invalid: Hình ảnh chỉ định không hợp lệ. Hãy chắc chắn bạn đang dùng đường dẫn trực tiếp đến hình ảnh.
+  srvr_banner_invalid_url: URL chỉ định không hợp lệ. Hãy chắc chắn bạn đang dùng đường dẫn trực tiếp đến hình ảnh.
+  srvr_banner_too_large: Hình ảnh chỉ định quá lớn! Kích thước tối đa là 8MB.
+
+zh-CN:
+  set_srvr_banner: 已設定新的伺服器橫幅！
+  set_srvr_icon: 已設定新的伺服器圖示！
+  srvr_banner_invalid: 指定的圖片檔案類型無效。請確保您指定的是圖片直接連結。
+  srvr_banner_invalid_url: 指定的 URL 無效。請確保您指定的是圖片直接連結。
+  srvr_banner_too_large: 指定的圖片太大了！最大大小為 8MB。

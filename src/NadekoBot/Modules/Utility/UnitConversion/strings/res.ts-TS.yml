@@ -1,4 +1,0 @@
-convert: '{0} {1} equals {2} {3}.'
-convert_not_found: 'Can''t convert {0} to {1} - units not found.'
-convert_type_error: 'Can''t convert {0} to {1} - they''re different unit types, b-baka!'
-convertlist: Units available for the converter.

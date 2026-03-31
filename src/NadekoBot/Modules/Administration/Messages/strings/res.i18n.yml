@@ -1,0 +1,95 @@
+ar:
+  autopublish_disable: لن يتم نشر الرسائل في هذه القناة تلقائيًا بعد الآن.
+  autopublish_enable: سيتم نشر جميع الرسائل المنشورة في هذه القناة تلقائيًا.
+  req_announcement_channel: يجب تنفيذ هذا الأمر في قناة إعلانات.
+  time_too_long: الوقت الذي حددته طويل جدًا.
+
+de-DE:
+  autopublish_disable: Nachrichten in diesem Kanal werden nicht mehr automatisch veröffentlicht.
+  autopublish_enable: Alle Nachrichten in diesem Kanal werden automatisch veröffentlicht.
+  req_announcement_channel: Dieser Befehl muss in einem Ankündigungskanal ausgeführt werden.
+  time_too_long: Die spezifizierte Zeit ist zu lang.
+
+es-ES:
+  autopublish_disable: Los mensajes en este canal ya no se publicarán automáticamente.
+  autopublish_enable: Todos los mensajes publicados en este canal se publicarán automáticamente.
+  req_announcement_channel: Este comando debe ejecutarse en un canal de Anuncios.
+  time_too_long: El tiempo especificado es mucho.
+
+fr-FR:
+  autopublish_disable: Les messages dans ce salon ne seront plus publiés automatiquement.
+  autopublish_enable: Tous les messages postés dans ce salon seront automatiquement publiés.
+  req_announcement_channel: Cette commande doit être exécutée dans un salon d'annonces.
+  time_too_long: Le temps spécifié est trop long.
+
+id-ID:
+  autopublish_disable: Pesan di channel ini tidak akan lagi dipublikasikan secara otomatis.
+  autopublish_enable: Semua pesan yang dikirim di channel ini akan dipublikasikan secara otomatis.
+  req_announcement_channel: Perintah ini harus dijalankan di channel Pengumuman.
+  time_too_long: Waktu yang kamu tentukan terlalu lama.
+
+ja-JP:
+  autopublish_disable: このチャンネルのメッセージは自動公開されなくなります。
+  autopublish_enable: このチャンネルに投稿されたすべてのメッセージが自動公開されます。
+  req_announcement_channel: このコマンドはアナウンスチャンネルで実行する必要があります。
+  time_too_long: 指定された時間が長すぎます。
+
+ko-KR:
+  autopublish_disable: 이 채널의 메시지가 더 이상 자동으로 게시되지 않습니다.
+  autopublish_enable: 이 채널에 게시되는 모든 메시지가 자동으로 게시됩니다.
+  req_announcement_channel: 이 명령어는 공지 채널에서 실행해야 합니다.
+  time_too_long: 지정한 시간이 너무 깁니다.
+
+pl-PL:
+  autopublish_disable: Wiadomości na tym kanale nie będą już automatycznie publikowane.
+  autopublish_enable: Wszystkie wiadomości wysłane na tym kanale będą automatycznie publikowane.
+  req_announcement_channel: Ta komenda musi zostać wykonana na kanale ogłoszeń.
+  time_too_long: Podany czas jest zbyt długi.
+
+pt-BR:
+  autopublish_disable: Mensagens neste canal não serão mais publicadas automaticamente.
+  autopublish_enable: Todas as mensagens postadas neste canal serão publicadas automaticamente.
+  req_announcement_channel: Este comando deve ser executado em um canal de Anúncios.
+  time_too_long: O tempo que você especificou é muito longo.
+
+ru-RU:
+  autopublish_disable: Сообщения в этом канале больше не будут публиковаться автоматически.
+  autopublish_enable: Все сообщения в этом канале будут автоматически публиковаться.
+  req_announcement_channel: Эта команда должна быть выполнена в канале объявлений.
+  time_too_long: Вы указали слишком много времени.
+
+sr-Cyrl-RS:
+  autopublish_disable: Поруке на овом каналу се више неће аутоматски објављивати.
+  autopublish_enable: Све поруке послате на овом каналу ће бити аутоматски објављене.
+  req_announcement_channel: Ова команда мора бити извршена у каналу за објаве.
+  time_too_long: Време које сте навели је предугачко.
+
+tr-TR:
+  autopublish_disable: Bu kanaldaki mesajlar artık otomatik olarak yayınlanmayacak.
+  autopublish_enable: Bu kanala gönderilen tüm mesajlar otomatik olarak yayınlanacak.
+  req_announcement_channel: Bu komut yalnızca bir Duyuru kanalında çalıştırılabilir.
+  time_too_long: Belirttiğin süre çok uzun.
+
+ts-TS:
+  autopublish_disable: Messages in this channel won't be automatically published anymore.
+  autopublish_enable: All messages posted in this channel will be automatically published.
+  req_announcement_channel: This command has to be run in an Announcement channel, b-baka!
+  time_too_long: Time you've specified is too long.
+
+uk-UA:
+  autopublish_disable: Повідомлення в цьому каналі більше не будуть автоматично публікуватися.
+  autopublish_enable: Усі повідомлення в цьому каналі будуть автоматично публікуватися.
+  req_announcement_channel: Цю команду потрібно виконувати в каналі оголошень.
+  time_too_long: Вказаний вами час занадто великий.
+
+vi-VN:
+  autopublish_disable: Tin nhắn trong kênh này sẽ không còn được tự động công bố nữa.
+  autopublish_enable: Tất cả tin nhắn đăng trong kênh này sẽ được tự động công bố.
+  req_announcement_channel: Lệnh này phải được thực thi trong kênh Thông báo.
+  time_too_long: Thời gian bạn chỉ định quá dài.
+
+zh-CN:
+  autopublish_disable: 此頻道的訊息將不再自動發布。
+  autopublish_enable: 此頻道發布的所有訊息將自動發布。
+  req_announcement_channel: 此指令必須在公告頻道中執行。
+  time_too_long: 您指定的時間太長。

@@ -1,7 +1,0 @@
-linkfix_added: '{0} bağlantıları artık {1} olarak düzeltilecek.'
-linkfix_already_exists: '{0} için zaten bir bağlantı düzeltmesi var.'
-linkfix_invalid_domains: Hem eski hem de yeni alan adları geçerli olmalı.
-linkfix_list_none: Bu sunucu için bağlantı düzeltmesi yapılandırılmamış.
-linkfix_list_title: Bağlantı Düzeltmeleri
-linkfix_not_found: '{0} için bağlantı düzeltmesi bulunamadı.'
-linkfix_removed: '{0} bağlantı düzeltmesi kaldırıldı.'

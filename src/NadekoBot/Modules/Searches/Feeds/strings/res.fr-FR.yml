@@ -1,9 +1,0 @@
-feed_added: Le flux est ajouté.
-feed_cant_parse: Impossible d'accéder ou d'analyser le contenu de cette URL de feed.
-feed_duplicate: Vous suivez déjà ce feed sur ce serveur.
-feed_invalid_url: URL de feed invalide. Elle doit être une URL absolue http ou https.
-feed_limit_reached: Vous avez atteint le nombre maximum de feeds autorisés par serveur.
-feed_no_feed: Vous n'avez souscrit à aucun fil d'actualité sur ce serveur.
-feed_out_of_range: L'index est en dehors de la plage disponible.
-feed_removed: Le flux est supprimé.
-feed_auto_removed: 'Le flux `{0}` a été automatiquement supprimé après des échecs répétés.'

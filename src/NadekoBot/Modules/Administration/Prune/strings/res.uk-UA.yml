@@ -1,5 +1,0 @@
-prune_already_running: На цьому сервері вже виконується очищення.
-prune_cancelled: Очищення скасовано.
-prune_not_found: На цьому сервері не знайдено активного очищення.
-prune_patron: 'Видалення повідомлень старших за 2 тижні потребує [Patron Tier X](https://patreon.com/join/nadekobot) або вище.'
-prune_progress: 'Очищення... {0}/{1} повідомлень видалено.'

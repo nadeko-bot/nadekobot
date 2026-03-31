@@ -1,9 +1,0 @@
-event_duration_footer: 'Sự kiện này hoạt động tối đa {0} giờ.'
-event_title: 'Sự kiện {0} đã bắt đầu!'
-new_gamestatus_event: |-
-  Gõ mã bí mật vào bất kỳ kênh nào để nhận {1}
-  Còn {2} phần thưởng.
-new_reaction_event: |-
-  Thêm biểu tượng {0} vào tin nhắn này để nhận {1}
-  Còn {2} phần thưởng.
-start_event_fail: Không thể bắt đầu sự kiện. Đang có sự kiện khác chạy, hoặc đã xảy ra lỗi.

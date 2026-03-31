@@ -1,4 +1,0 @@
-cmdcd_add: 'El comando {0} ahora tiene {1} de enfriamiento.'
-cmdcd_cleared: 'El comando {0} ya no tiene enfriamiento y todos los tiempos de enfriamiento han sido reiniciados.'
-cmdcd_none: No se ha configurado tiempo de enfriamiento.
-invalid_second_param_between: 'Segundo parámetro no válido. (Debe ser un número entre {0} y {1})'

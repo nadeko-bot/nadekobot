@@ -1,7 +1,0 @@
-linkfix_added: 'سيتم الآن تصحيح الروابط من {0} إلى {1}.'
-linkfix_already_exists: 'يوجد بالفعل تصحيح رابط لـ {0}.'
-linkfix_invalid_domains: يجب أن يكون كلا النطاقين القديم والجديد صالحين.
-linkfix_list_none: لم يتم تكوين أي تصحيحات روابط لهذا السيرفر.
-linkfix_list_title: تصحيحات الروابط
-linkfix_not_found: 'لم يتم العثور على تصحيح رابط لـ {0}.'
-linkfix_removed: 'تم إزالة تصحيح الرابط لـ {0}.'

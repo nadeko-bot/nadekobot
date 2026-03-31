@@ -1,0 +1,287 @@
+ar:
+  executes_in_colon: 'يُنفَّذ خلال:'
+  index_out_of_range: الفهرس خارج النطاق.
+  interval_colon: 'الفاصل الزمني:'
+  list_of_repeaters: قائمة المُكرِّرات
+  message_colon: 'الرسالة:'
+  no_redundant: لن يتم نشر رسالة مكررة.
+  repeat_invoke_none: لم يتم العثور على رسائل متكررة في هذا السيرفر.
+  repeater_created: تم إنشاء المُكرِّر
+  repeater_dont_skip_next: لن يتم تخطي التشغيل التالي لهذا المُكرِّر.
+  repeater_exceed_limit: 'لا يمكنك الحصول على أكثر من {0} مُكرِّرات لكل سيرفر.'
+  repeater_redundant_no: 'المُكرِّر **#{0}** لن ينشر رسائل مكررة بعد الآن.'
+  repeater_redundant_yes: 'المُكرِّر **#{0}** سينشر رسائل مكررة من الآن فصاعداً.'
+  repeater_remove_fail: فشلت إزالة المُكرِّر في ذلك الفهرس. إما أنك حددت فهرساً غير صالح، أو أن المُكرِّر كان في حالة تنفيذ في ذلك الوقت، وفي هذه الحالة، حاول مرة أخرى بعد بضع ثوانٍ.
+  repeater_removed: 'تمت إزالة المُكرِّر #{0}'
+  repeater_skip_next: سيتم تخطي التشغيل التالي لهذا المُكرِّر.
+  repeaters_none: لا توجد مُكرِّرات تعمل في هذا السيرفر.
+
+de-DE:
+  executes_in_colon: 'Wird ausgeführt in:'
+  index_out_of_range: Index außerhalb des Bereichs.
+  interval_colon: 'Interval:'
+  list_of_repeaters: Liste der Wiederholungen
+  message_colon: 'Nachricht:'
+  no_redundant: Werde keine mehrfachen Nachrichten senden.
+  repeat_invoke_none: Keine wiederholenden Nachrichten wurden auf diesem Server gefunden.
+  repeater_created: Repeater erstellt
+  repeater_dont_skip_next: Der nächste Durchlauf dieses Repeaters wird nicht übersprungen.
+  repeater_exceed_limit: 'Du kannst nicht mehr als {0} Repeater pro Server haben.'
+  repeater_redundant_no: 'Repeater **#{0}** wird keine überflüssigen Nachrichten mehr schicken.'
+  repeater_redundant_yes: 'Repeater **#{0}** wird von jetzt an überflüssige Nachrichten schicken.'
+  repeater_remove_fail: Entfernen des Repeaters in dem Register gescheitert. Entweder du hast ein ungültiges Register angegeben, oder der Repeater hat gerade etwas ausgeführt. In diesem Fall versuche es in ein paar Sekunden erneut.
+  repeater_removed: 'Repeater #{0} entfernt'
+  repeater_skip_next: Der nächste Durchlauf dieses Repeaters wird übersprungen.
+  repeaters_none: Keine Wiederholungen laufen auf diesem Server.
+
+es-ES:
+  executes_in_colon: 'Se ejecuta en:'
+  index_out_of_range: Entrada fuera de rango
+  interval_colon: 'Intervalo:'
+  list_of_repeaters: Lista de repetidores
+  message_colon: 'Mensaje:'
+  no_redundant: No publicará mensajes duplicados.
+  repeat_invoke_none: No hay repeticiones de mensajes en este servidor.
+  repeater_created: Repetidor creado
+  repeater_dont_skip_next: La proxima activacion de este repetidor no se saltara.
+  repeater_exceed_limit: 'No puedes tener más que {0} repetidores por servidor.'
+  repeater_redundant_no: 'Repetidor **#{0}** no publicará mensajes repetidos más.'
+  repeater_redundant_yes: 'Repetidor **#{0}** publicará mensajes repetidos de ahora en adelante.'
+  repeater_remove_fail: Error eliminando repetidor en ese índice. O has especificado un índice inválido, o el repetidor estuvo ejecutándose en ese momento. En este último caso, intentalo de nuevo en unos segundos.
+  repeater_removed: 'Repetidor #{0} eliminado'
+  repeater_skip_next: La proxima activacion de este repetidor se saltara.
+  repeaters_none: No hay repeticiones de mensajes en este servidor.
+
+fr-FR:
+  executes_in_colon: 'S''exécute dans :'
+  index_out_of_range: Index hors plage.
+  interval_colon: 'Intervalle:'
+  list_of_repeaters: Liste des répéteurs
+  message_colon: 'Message:'
+  no_redundant: Ne publiera pas de message en double.
+  repeat_invoke_none: Aucune répétition de messages trouvé sur ce serveur.
+  repeater_created: Répéteur créé
+  repeater_dont_skip_next: Le prochain rappel de ce répéteur ne sera pas ignoré.
+  repeater_exceed_limit: 'Vous ne pouvez avoir plus de {0} répéteurs par serveur.'
+  repeater_redundant_no: 'Répétiteur **#{0}** ne postera plus de messages redondants.'
+  repeater_redundant_yes: 'Répétiteur **#{0}** postera dorénavant des messages redondants.'
+  repeater_remove_fail: Échec de la suppression du répéteur sur cet index. Soit vous avez spécifié un index non valide, soit le répéteur était en cours d'exécution à ce moment-là, auquel cas, réessayez dans quelques secondes.
+  repeater_removed: 'Répéteur #{0} supprimé'
+  repeater_skip_next: Le prochain rappel de ce répéteur sera ignoré.
+  repeaters_none: Pas de répétiteur en cours sur ce serveur.
+
+id-ID:
+  executes_in_colon: 'Dijalankan dalam:'
+  index_out_of_range: Indeks di luar jangkauan.
+  interval_colon: 'Interval:'
+  list_of_repeaters: Daftar repeater
+  message_colon: 'Pesan:'
+  no_redundant: Tidak akan mengirim pesan duplikat.
+  repeat_invoke_none: Tidak ada pesan berulang yang ditemukan di server ini.
+  repeater_created: Repeater Dibuat
+  repeater_dont_skip_next: Trigger berikutnya dari repeater ini tidak akan dilewati.
+  repeater_exceed_limit: 'Kamu tidak bisa punya lebih dari {0} repeater per server.'
+  repeater_redundant_no: 'Repeater **#{0}** tidak akan mengirim pesan duplikat lagi.'
+  repeater_redundant_yes: 'Repeater **#{0}** akan mengirim pesan duplikat mulai sekarang.'
+  repeater_remove_fail: Gagal menghapus repeater pada indeks tersebut. Mungkin indeks yang kamu masukkan salah, atau repeater sedang dalam keadaan dijalankan, kalau begitu coba lagi dalam beberapa detik.
+  repeater_removed: 'Repeater #{0} Dihapus'
+  repeater_skip_next: Trigger berikutnya dari repeater ini akan dilewati.
+  repeaters_none: Tidak ada repeater yang berjalan di server ini.
+
+ja-JP:
+  executes_in_colon: '実行まで:'
+  index_out_of_range: インデックスが範囲外です。
+  interval_colon: '間隔:'
+  list_of_repeaters: 連投機一覧
+  message_colon: 'メッセージ:'
+  no_redundant: 重複メッセージは投稿しません。
+  repeat_invoke_none: このサーバーでは、連投するメッセージはありません。
+  repeater_created: リピーター作成
+  repeater_dont_skip_next: このリピーターの次のトリガーはスキップされなくなります。
+  repeater_exceed_limit: 'サーバーあたり{0}個以上のリピーターは設定できません。'
+  repeater_redundant_no: 'リピーター**#{0}**は重複メッセージを投稿しなくなります。'
+  repeater_redundant_yes: 'リピーター**#{0}**は今後重複メッセージを投稿します。'
+  repeater_remove_fail: そのインデックスのリピーターの削除に失敗しました。無効なインデックスを指定したか、リピーターが実行中だった可能性があります。数秒後に再試行してください。
+  repeater_removed: 'リピーター#{0}が削除されました'
+  repeater_skip_next: このリピーターの次のトリガーはスキップされます。
+  repeaters_none: このサーバーでは、実行中の連投機はありません。
+
+ko-KR:
+  executes_in_colon: '실행까지:'
+  index_out_of_range: 인덱스가 범위를 벗어났어요.
+  interval_colon: '간격:'
+  list_of_repeaters: 반복 메시지 목록
+  message_colon: '메시지:'
+  no_redundant: 중복 메시지를 보내지 않아요.
+  repeat_invoke_none: 이 서버에 반복 메시지가 없어요.
+  repeater_created: 반복 메시지가 생성되었어요
+  repeater_dont_skip_next: 이 반복 메시지의 다음 실행을 건너뛰지 않아요.
+  repeater_exceed_limit: '서버당 반복 메시지는 최대 {0}개까지 설정할 수 있어요.'
+  repeater_redundant_no: '반복 메시지 **#{0}**은(는) 더 이상 중복 메시지를 보내지 않아요.'
+  repeater_redundant_yes: '반복 메시지 **#{0}**은(는) 이제부터 중복 메시지도 보내요.'
+  repeater_remove_fail: 해당 인덱스의 반복 메시지를 제거하지 못했어요. 잘못된 인덱스를 지정했거나, 반복 메시지가 실행 중이었을 수 있어요. 실행 중이었다면 몇 초 후에 다시 시도해 주세요.
+  repeater_removed: '반복 메시지 #{0}이(가) 제거되었어요'
+  repeater_skip_next: 이 반복 메시지의 다음 실행을 건너뛸 거예요.
+  repeaters_none: 이 서버에서 실행 중인 반복 메시지가 없어요.
+
+pl-PL:
+  executes_in_colon: 'Wykonuje się za:'
+  index_out_of_range: Indeks poza zakresem.
+  interval_colon: 'Interwał:'
+  list_of_repeaters: Lista powtarzaczy
+  message_colon: 'Wiadomość:'
+  no_redundant: Nie wyśle duplikatu wiadomości.
+  repeat_invoke_none: Nie znaleziono powtarzających się wiadomości na tym serwerze.
+  repeater_created: Powtarzacz utworzony
+  repeater_dont_skip_next: Następne wyzwolenie tego powtarzacza nie zostanie pominięte.
+  repeater_exceed_limit: 'Nie możesz mieć więcej niż {0} powtarzaczy na serwerze.'
+  repeater_redundant_no: 'Powtarzacz **#{0}** nie będzie już wysyłał zbędnych wiadomości.'
+  repeater_redundant_yes: 'Powtarzacz **#{0}** będzie od teraz wysyłał zbędne wiadomości.'
+  repeater_remove_fail: Nie udało się usunąć powtarzacza o tym indeksie. Albo podałeś nieprawidłowy indeks, albo powtarzacz był w trakcie wykonywania - spróbuj ponownie za kilka sekund.
+  repeater_removed: 'Powtarzacz #{0} usunięty'
+  repeater_skip_next: Następne wyzwolenie tego powtarzacza zostanie pominięte.
+  repeaters_none: Na tym serwerze nie działa żaden powtarzacz.
+
+pt-BR:
+  executes_in_colon: 'Executa em:'
+  index_out_of_range: Índice fora do intervalo.
+  interval_colon: 'Intervalo:'
+  list_of_repeaters: Lista de repetidores
+  message_colon: 'Mensagem:'
+  no_redundant: Mensagens duplicadas não serão postadas.
+  repeat_invoke_none: Nenhum repetidor foi encontrado nesse servidor.
+  repeater_created: Repetidor criado
+  repeater_dont_skip_next: O proximo disparo deste repetidor nao sera pulado.
+  repeater_exceed_limit: 'Você não pode ter mais que {0} repetidores por servidor.'
+  repeater_redundant_no: 'Repetidor **#{0}** não irá postar mais mensagens redundantes.'
+  repeater_redundant_yes: 'Repetidor **#{0}** irá postar mensagens redundantes a partir de agora.'
+  repeater_remove_fail: Não foi possível remover o repetidor nesse índice. Ou o índice é inválido, ou o repetidor estava em execução no momento. Nesse caso, tente novamente em alguns segundos.
+  repeater_removed: 'Repetidor #{0} removido'
+  repeater_skip_next: O proximo disparo deste repetidor sera pulado.
+  repeaters_none: Não há repetidores ativos nesse servidor.
+
+ru-RU:
+  executes_in_colon: 'Выполняется в:'
+  index_out_of_range: Показатель вышел за пределы диапазона.
+  interval_colon: 'Интервал:'
+  list_of_repeaters: Список повторений
+  message_colon: 'Сообщение:'
+  no_redundant: Не буду публиковать повторяющееся сообщение.
+  repeat_invoke_none: На этом сервере не найдено никаких повторяющихся сообщений.
+  repeater_created: Повторитель создан
+  repeater_dont_skip_next: Следующий запуск этого повторителя не будет пропущен.
+  repeater_exceed_limit: 'У вас не может быть более {0} повторителей на сервер.'
+  repeater_redundant_no: 'Повторитель ** #{0} ** больше не будет публиковать повторяющиеся сообщения.'
+  repeater_redundant_yes: 'Повторитель ** #{0} ** будет публиковать повторяющиеся сообщения.'
+  repeater_remove_fail: Не удалось удалить повторитель по этому индексу. Либо вы указали недопустимый индекс, либо повторитель в это время находился в состоянии выполнения, и в этом случае повторите попытку через несколько секунд.
+  repeater_removed: 'Повторитель #{0} удален'
+  repeater_skip_next: Следующий запуск этого повторителя будет пропущен.
+  repeaters_none: Никаких повторений не включено на этом сервере.
+
+sr-Cyrl-RS:
+  executes_in_colon: 'Извршава се за:'
+  index_out_of_range: Индекс ван опсега.
+  interval_colon: 'Интервал:'
+  list_of_repeaters: Листа понављача
+  message_colon: 'Порука:'
+  no_redundant: Неће слати дупликат поруке.
+  repeat_invoke_none: Нису пронађене понављајуће поруке на овом серверу.
+  repeater_created: Понављач креиран
+  repeater_dont_skip_next: Следеће окидање овог понављача неће бити прескочено.
+  repeater_exceed_limit: 'Не можете имати више од {0} понављача по серверу.'
+  repeater_redundant_no: 'Понављач **#{0}** више неће слати редундантне поруке.'
+  repeater_redundant_yes: 'Понављач **#{0}** ће од сада слати редундантне поруке.'
+  repeater_remove_fail: Неуспешно уклањање понављача на том индексу. Или сте навели невалидан индекс, или се понављач извршавао у том тренутку - у том случају покушајте поново за пар секунди.
+  repeater_removed: 'Понављач #{0} уклоњен'
+  repeater_skip_next: Следеће окидање овог понављача ће бити прескочено.
+  repeaters_none: Нема покренутих понављача на овом серверу.
+
+tr-TR:
+  executes_in_colon: 'Çalıştırılacak:'
+  index_out_of_range: İndeks aralık dışında.
+  interval_colon: 'Aralık:'
+  list_of_repeaters: Tekrarlayıcı listesi
+  message_colon: 'Mesaj:'
+  no_redundant: Tekrarlayan mesajı göndermeyecek.
+  repeat_invoke_none: Bu sunucuda tekrarlayan mesaj bulunamadı.
+  repeater_created: Tekrarlayıcı Oluşturuldu
+  repeater_dont_skip_next: Bu tekrarlayıcının sonraki tetiklemesi atlanmayacak.
+  repeater_exceed_limit: 'Sunucu başına {0} tekrarlayıcıdan fazlasına sahip olamazsın.'
+  repeater_redundant_no: '**#{0}** numaralı tekrarlayıcı artık tekrarlayan mesajları göndermeyecek.'
+  repeater_redundant_yes: '**#{0}** numaralı tekrarlayıcı artık tekrarlayan mesajları gönderecek.'
+  repeater_remove_fail: O indeksteki tekrarlayıcı kaldırılamadı. Ya geçersiz bir indeks belirttin, ya da tekrarlayıcı o sırada çalışıyordu. Bu durumda birkaç saniye sonra tekrar dene.
+  repeater_removed: '#{0} Numaralı Tekrarlayıcı Kaldırıldı'
+  repeater_skip_next: Bu tekrarlayıcının sonraki tetiklemesi atlanacak.
+  repeaters_none: Bu sunucuda çalışan tekrarlayıcı yok.
+
+ts-TS:
+  executes_in_colon: 'Executes in:'
+  index_out_of_range: Index out of range, dummy.
+  interval_colon: 'Interval:'
+  list_of_repeaters: List of repeaters
+  message_colon: 'Message:'
+  no_redundant: Won't post duplicate messages.
+  repeat_invoke_none: No repeating messages found on this server.
+  repeater_created: Repeater created.
+  repeater_dont_skip_next: Next trigger of this repeater won't be skipped.
+  repeater_exceed_limit: 'You can''t have more than {0} repeaters per server. D-don''t be greedy!'
+  repeater_redundant_no: 'Repeater **#{0}** won''t post redundant messages anymore.'
+  repeater_redundant_yes: 'Repeater **#{0}** will post redundant messages from now on.'
+  repeater_remove_fail: Failed removing that repeater. Either the index is wrong or it was executing - try again in a few seconds.
+  repeater_removed: 'Repeater #{0} removed. Hmph!'
+  repeater_skip_next: Next trigger of this repeater will be skipped.
+  repeaters_none: No repeaters running on this server. How quiet.
+
+uk-UA:
+  executes_in_colon: 'Виконається через:'
+  index_out_of_range: Індекс за межами діапазону.
+  interval_colon: 'Інтервал:'
+  list_of_repeaters: Список повторювачів
+  message_colon: 'Повідомлення:'
+  no_redundant: Не публікуватиме дублікат повідомлення.
+  repeat_invoke_none: На цьому сервері не знайдено повторюваних повідомлень.
+  repeater_created: Повторювач створено
+  repeater_dont_skip_next: Наступний запуск цього повторювача не буде пропущено.
+  repeater_exceed_limit: 'Не можна мати більше ніж {0} повторювачів на сервер.'
+  repeater_redundant_no: 'Повторювач **#{0}** більше не публікуватиме дублікати повідомлень.'
+  repeater_redundant_yes: 'Повторювач **#{0}** тепер публікуватиме дублікати повідомлень.'
+  repeater_remove_fail: Не вдалося видалити повторювач за цим індексом. Або ти вказав невірний індекс, або повторювач виконувався в цей момент - спробуй знову через кілька секунд.
+  repeater_removed: 'Повторювач #{0} видалено'
+  repeater_skip_next: Наступний запуск цього повторювача буде пропущено.
+  repeaters_none: На цьому сервері немає активних повторювачів.
+
+vi-VN:
+  executes_in_colon: 'Thực hiện sau:'
+  index_out_of_range: Chỉ mục ngoài phạm vi.
+  interval_colon: 'Khoảng thời gian:'
+  list_of_repeaters: Danh sách tin nhắn lặp lại
+  message_colon: 'Tin nhắn:'
+  no_redundant: Sẽ không đăng tin nhắn trùng lặp.
+  repeat_invoke_none: Không tìm thấy tin nhắn lặp lại nào trên máy chủ này.
+  repeater_created: Đã tạo tin nhắn lặp lại
+  repeater_dont_skip_next: Lần kích hoạt tiếp theo của tin nhắn lặp lại này sẽ không bị bỏ qua.
+  repeater_exceed_limit: 'Bạn không thể có hơn {0} tin nhắn lặp lại mỗi máy chủ.'
+  repeater_redundant_no: 'Tin nhắn lặp lại **#{0}** sẽ không đăng tin nhắn trùng lặp nữa.'
+  repeater_redundant_yes: 'Tin nhắn lặp lại **#{0}** sẽ đăng tin nhắn trùng lặp từ bây giờ.'
+  repeater_remove_fail: Không thể xóa tin nhắn lặp lại tại vị trí đó. Có thể bạn đã chỉ định vị trí không hợp lệ, hoặc tin nhắn lặp lại đang trong trạng thái thực thi, trong trường hợp đó, hãy thử lại sau vài giây.
+  repeater_removed: 'Đã xóa tin nhắn lặp lại #{0}'
+  repeater_skip_next: Lần kích hoạt tiếp theo của tin nhắn lặp lại này sẽ bị bỏ qua.
+  repeaters_none: Không có tin nhắn lặp lại nào đang chạy trên máy chủ này.
+
+zh-CN:
+  executes_in_colon: 執行位置：
+  index_out_of_range: 索引超出範圍
+  interval_colon: 間隔：
+  list_of_repeaters: 中繼器列表
+  message_colon: 訊息：
+  no_redundant: 將不會發送重複的訊息
+  repeat_invoke_none: 在此伺服器上未找到重複消息。
+  repeater_created: 中繼器已創建
+  repeater_dont_skip_next: 此重复器的下次触发将不会被跳过。
+  repeater_exceed_limit: '一個伺服器最多只能有 {0} 條廣播訊息'
+  repeater_redundant_no: 'Repeater **#{0}** 不會再發布多餘的消息。'
+  repeater_redundant_yes: '從現在開始，Repeater **#{0}** 將發布多餘的消息。'
+  repeater_remove_fail: 廣播訊息移除失敗，請檢察索引並於幾秒後再試一次
+  repeater_removed: '中繼器 #{0} 已移除'
+  repeater_skip_next: 此重复器的下次触发将被跳过。
+  repeaters_none: 此伺服器上沒有運行中繼器。

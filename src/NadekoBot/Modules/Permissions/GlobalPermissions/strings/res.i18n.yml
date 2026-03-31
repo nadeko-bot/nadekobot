@@ -1,0 +1,207 @@
+ar:
+  blocked_commands: الأوامر المحظورة
+  blocked_modules: الوحدات المحظورة
+  dmcmd_add: 'تم تعطيل الأمر {0} في الرسائل الخاصة للبوت.'
+  dmcmd_remove: 'تم تفعيل الأمر {0} في الرسائل الخاصة للبوت.'
+  dmmod_add: 'تم تعطيل الوحدة {0} في الرسائل الخاصة للبوت.'
+  dmmod_remove: 'تم تفعيل الوحدة {0} في الرسائل الخاصة للبوت.'
+  gcmd_add: 'تم تعطيل الأمر {0} في جميع الخوادم.'
+  gcmd_remove: 'تم تفعيل الأمر {0} في جميع الخوادم.'
+  gmod_add: 'تم تعطيل الوحدة {0} في جميع الخوادم.'
+  gmod_remove: 'تم تفعيل الوحدة {0} في جميع الخوادم.'
+  lgp_none: لا توجد أوامر أو وحدات محظورة.
+
+de-DE:
+  blocked_commands: Blockierte Befehle
+  blocked_modules: Blockierte Module
+  dmcmd_add: 'Der Befehl {0} wurde in den Bot-DMs deaktiviert.'
+  dmcmd_remove: 'Der Befehl {0} wurde in den Bot-DMs aktiviert.'
+  dmmod_add: 'Das Modul {0} wurde in den Bot-DMs deaktiviert.'
+  dmmod_remove: 'Das Modul {0} wurde in den Bot-DMs aktiviert.'
+  gcmd_add: 'Befehl {0} wurde auf allen Servern deaktiviert.'
+  gcmd_remove: 'Befehl {0} wurde auf allen Servern aktiviert.'
+  gmod_add: 'Modul {0} wurde auf allen Server deaktiviert.'
+  gmod_remove: 'Modul {0} wurde auf allen Servern aktiviert.'
+  lgp_none: Keine geblockten Befehle oder Module.
+
+es-ES:
+  blocked_commands: Comandos bloqueados
+  blocked_modules: Módulos bloqueados
+  dmcmd_add: 'El comando {0} ha sido desactivado en los DMs del bot.'
+  dmcmd_remove: 'El comando {0} ha sido activado en los DMs del bot.'
+  dmmod_add: 'El módulo {0} ha sido desactivado en los DMs del bot.'
+  dmmod_remove: 'El módulo {0} ha sido activado en los DMs del bot.'
+  gcmd_add: 'El comando {0} ha sido desactivado en todos los servidores.'
+  gcmd_remove: 'El comando {0} ha sido activado en todos los servidores.'
+  gmod_add: 'El módulo {0} ha sido desactivado en todos los servidores.'
+  gmod_remove: 'El módulo {0} ha sido activado en todos los servidores.'
+  lgp_none: No hay comandos o módulos bloqueados.
+
+fr-FR:
+  blocked_commands: Commandes bloquées
+  blocked_modules: Modules bloqués
+  dmcmd_add: 'La commande {0} a été désactivée dans les DMs du bot.'
+  dmcmd_remove: 'La commande {0} a été activée dans les DMs du bot.'
+  dmmod_add: 'Le module {0} a été désactivé dans les DMs du bot.'
+  dmmod_remove: 'Le module {0} a été activé dans les DMs du bot.'
+  gcmd_add: 'La commande {0} a été **désactivée** sur tous les serveurs.'
+  gcmd_remove: 'La commande {0} a été **activée** sur tous les serveurs.'
+  gmod_add: 'Le module {0} a été **désactivé** sur tous les serveurs.'
+  gmod_remove: 'Le module {0} a été **activé** sur tout les serveurs.'
+  lgp_none: Aucunes commandes ou modules bloqués.
+
+id-ID:
+  blocked_commands: Perintah yang Diblokir
+  blocked_modules: Modul yang Diblokir
+  dmcmd_add: 'Perintah {0} sudah dinonaktifkan di DM bot.'
+  dmcmd_remove: 'Perintah {0} sudah diaktifkan di DM bot.'
+  dmmod_add: 'Modul {0} sudah dinonaktifkan di DM bot.'
+  dmmod_remove: 'Modul {0} sudah diaktifkan di DM bot.'
+  gcmd_add: 'Perintah {0} sudah dinonaktifkan di semua server.'
+  gcmd_remove: 'Perintah {0} sudah diaktifkan di semua server.'
+  gmod_add: 'Modul {0} sudah dinonaktifkan di semua server.'
+  gmod_remove: 'Modul {0} sudah diaktifkan di semua server.'
+  lgp_none: Tidak ada perintah atau modul yang diblokir.
+
+ja-JP:
+  blocked_commands: ブロックされたコマンド
+  blocked_modules: ブロックされたモジュール
+  dmcmd_add: 'コマンド{0}がBotのDMで無効になりました。'
+  dmcmd_remove: 'コマンド{0}がBotのDMで有効になりました。'
+  dmmod_add: 'モジュール{0}がBotのDMで無効になりました。'
+  dmmod_remove: 'モジュール{0}がBotのDMで有効になりました。'
+  gcmd_add: 'コマンド{0}はすべてのサーバーで無効になっています。'
+  gcmd_remove: 'すべてのサーバーでコマンド{0}が有効になっています。'
+  gmod_add: 'モジュール{0}はすべてのサーバーで無効になっています。'
+  gmod_remove: 'モジュール{0}はすべてのサーバーで有効になっています。'
+  lgp_none: ブロックされたコマンドやモジュールはありません。
+
+ko-KR:
+  blocked_commands: 차단된 명령어
+  blocked_modules: 차단된 모듈
+  dmcmd_add: '명령어 {0}이(가) 봇 DM에서 비활성화되었어요.'
+  dmcmd_remove: '명령어 {0}이(가) 봇 DM에서 활성화되었어요.'
+  dmmod_add: '모듈 {0}이(가) 봇 DM에서 비활성화되었어요.'
+  dmmod_remove: '모듈 {0}이(가) 봇 DM에서 활성화되었어요.'
+  gcmd_add: '명령어 {0}이(가) 모든 서버에서 비활성화되었어요.'
+  gcmd_remove: '명령어 {0}이(가) 모든 서버에서 활성화되었어요.'
+  gmod_add: '모듈 {0}이(가) 모든 서버에서 비활성화되었어요.'
+  gmod_remove: '모듈 {0}이(가) 모든 서버에서 활성화되었어요.'
+  lgp_none: 차단된 명령어나 모듈이 없어요.
+
+pl-PL:
+  blocked_commands: Zablokowane komendy
+  blocked_modules: Zablokowane moduły
+  dmcmd_add: 'Komenda {0} została wyłączona w wiadomościach prywatnych bota.'
+  dmcmd_remove: 'Komenda {0} została włączona w wiadomościach prywatnych bota.'
+  dmmod_add: 'Moduł {0} został wyłączony w wiadomościach prywatnych bota.'
+  dmmod_remove: 'Moduł {0} został włączony w wiadomościach prywatnych bota.'
+  gcmd_add: 'Komenda {0} została wyłączona na wszystkich serwerach.'
+  gcmd_remove: 'Komenda {0} została włączona na wszystkich serwerach.'
+  gmod_add: 'Moduł {0} został wyłączony na wszystkich serwerach.'
+  gmod_remove: 'Moduł {0} został włączony na wszystkich serwerach.'
+  lgp_none: Brak zablokowanych komend lub modułów.
+
+pt-BR:
+  blocked_commands: Comandos bloqueados
+  blocked_modules: Módulos bloqueados
+  dmcmd_add: 'O comando {0} foi desativado nas DMs do bot.'
+  dmcmd_remove: 'O comando {0} foi ativado nas DMs do bot.'
+  dmmod_add: 'O módulo {0} foi desativado nas DMs do bot.'
+  dmmod_remove: 'O módulo {0} foi ativado nas DMs do bot.'
+  gcmd_add: 'O comando {0} foi desativado em todos os servidores.'
+  gcmd_remove: 'O comando {0} foi ativado em todos os servidores.'
+  gmod_add: 'O módulo {0} foi desativado em todos os servidores.'
+  gmod_remove: 'O módulo {0} foi ativado em todos os servidores.'
+  lgp_none: Não há comandos ou módulos bloqueados.
+
+ru-RU:
+  blocked_commands: Заблокированные команды
+  blocked_modules: Заблокированные модули
+  dmcmd_add: 'Команда {0} отключена в ЛС бота.'
+  dmcmd_remove: 'Команда {0} включена в ЛС бота.'
+  dmmod_add: 'Модуль {0} отключён в ЛС бота.'
+  dmmod_remove: 'Модуль {0} включён в ЛС бота.'
+  gcmd_add: 'Команда {0} была отключена на всех серверах.'
+  gcmd_remove: 'Команда {0} была включена на всех серверах.'
+  gmod_add: 'Модуль {0} был отключен на всех серверах.'
+  gmod_remove: 'Модуль {0} был включен на всех серверах.'
+  lgp_none: Не найдено заблокированных команд или модулей.
+
+sr-Cyrl-RS:
+  blocked_commands: Блокиране команде
+  blocked_modules: Блокирани модули
+  dmcmd_add: 'Команда {0} је онемогућена у DM порукама бота.'
+  dmcmd_remove: 'Команда {0} је омогућена у DM порукама бота.'
+  dmmod_add: 'Модул {0} је онемогућен у DM порукама бота.'
+  dmmod_remove: 'Модул {0} је омогућен у DM порукама бота.'
+  gcmd_add: 'Команда {0} је онемогућена на свим серверима.'
+  gcmd_remove: 'Команда {0} је омогућена на свим серверима.'
+  gmod_add: 'Модул {0} је онемогућен на свим серверима.'
+  gmod_remove: 'Модул {0} је омогућен на свим серверима.'
+  lgp_none: Нема блокираних команди или модула.
+
+tr-TR:
+  blocked_commands: Engellenen Komutlar
+  blocked_modules: Engellenen Modüller
+  dmcmd_add: '{0} komutu bot DM''lerinde devre dışı bırakıldı.'
+  dmcmd_remove: '{0} komutu bot DM''lerinde etkinleştirildi.'
+  dmmod_add: '{0} modülü bot DM''lerinde devre dışı bırakıldı.'
+  dmmod_remove: '{0} modülü bot DM''lerinde etkinleştirildi.'
+  gcmd_add: '{0} komutu tüm sunucularda devre dışı bırakıldı.'
+  gcmd_remove: '{0} komutu tüm sunucularda etkinleştirildi.'
+  gmod_add: '{0} modülü tüm sunucularda devre dışı bırakıldı.'
+  gmod_remove: '{0} modülü tüm sunucularda etkinleştirildi.'
+  lgp_none: Engellenen komut veya modül yok.
+
+ts-TS:
+  blocked_commands: Blocked Commands
+  blocked_modules: Blocked Modules
+  dmcmd_add: 'Command {0} has been disabled in bot DMs.'
+  dmcmd_remove: 'Command {0} has been enabled in bot DMs.'
+  dmmod_add: 'Module {0} has been disabled in bot DMs. Hmph.'
+  dmmod_remove: 'Module {0} has been enabled in bot DMs.'
+  gcmd_add: 'Command {0} has been disabled on all servers.'
+  gcmd_remove: 'Command {0} has been enabled on all servers.'
+  gmod_add: 'Module {0} has been disabled on all servers.'
+  gmod_remove: 'Module {0} has been enabled on all servers. You''re welcome.'
+  lgp_none: No blocked commands or modules.
+
+uk-UA:
+  blocked_commands: Заблоковані команди
+  blocked_modules: Заблоковані модулі
+  dmcmd_add: 'Команду {0} вимкнено в особистих повідомленнях бота.'
+  dmcmd_remove: 'Команду {0} увімкнено в особистих повідомленнях бота.'
+  dmmod_add: 'Модуль {0} вимкнено в особистих повідомленнях бота.'
+  dmmod_remove: 'Модуль {0} увімкнено в особистих повідомленнях бота.'
+  gcmd_add: 'Команду {0} вимкнено на всіх серверах.'
+  gcmd_remove: 'Команду {0} увімкнено на всіх серверах.'
+  gmod_add: 'Модуль {0} вимкнено на всіх серверах.'
+  gmod_remove: 'Модуль {0} увімкнено на всіх серверах.'
+  lgp_none: Немає заблокованих команд або модулів.
+
+vi-VN:
+  blocked_commands: Các Lệnh Bị Chặn
+  blocked_modules: Các Module Bị Chặn
+  dmcmd_add: 'Lệnh {0} đã bị tắt trong DM của bot.'
+  dmcmd_remove: 'Lệnh {0} đã được bật trong DM của bot.'
+  dmmod_add: 'Module {0} đã bị tắt trong DM của bot.'
+  dmmod_remove: 'Module {0} đã được bật trong DM của bot.'
+  gcmd_add: 'Lệnh {0} đã bị tắt trên tất cả máy chủ.'
+  gcmd_remove: 'Lệnh {0} đã được bật trên tất cả máy chủ.'
+  gmod_add: 'Module {0} đã bị tắt trên tất cả máy chủ.'
+  gmod_remove: 'Module {0} đã được bật trên tất cả máy chủ.'
+  lgp_none: Không có lệnh hoặc module nào bị chặn.
+
+zh-CN:
+  blocked_commands: 已被封鎖的指令
+  blocked_modules: 已被封鎖的模組
+  dmcmd_add: '指令 {0} 已在機器人私訊中停用。'
+  dmcmd_remove: '指令 {0} 已在機器人私訊中啟用。'
+  dmmod_add: '模組 {0} 已在機器人私訊中停用。'
+  dmmod_remove: '模組 {0} 已在機器人私訊中啟用。'
+  gcmd_add: '已在所有伺服器上禁用命令 {0}。'
+  gcmd_remove: '命令 {0} 已在所有伺服器上啟用。'
+  gmod_add: '已在所有伺服器上禁用模組 {0}。'
+  gmod_remove: '模組 {0} 已在所有伺服器上啟用。'
+  lgp_none: 沒有禁用的命令或模組。

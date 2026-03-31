@@ -1,4 +1,0 @@
-cmdcd_add: 'Befehl {0} hat nun eine Abklingzeit von {1}s'
-cmdcd_cleared: 'Befehl {0} hat keine Wartezeit mehr und alle bestehenden Wartezeiten wurden entfernt.'
-cmdcd_none: Keine Kommandowartezeit gesetzt.
-invalid_second_param_between: 'Ungültiger zweiter Parameter. (Es muss eine Nummer zwischen {0} und {1} sein)'

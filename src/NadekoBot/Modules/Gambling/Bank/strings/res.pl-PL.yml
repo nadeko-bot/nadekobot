@@ -1,4 +1,0 @@
-bank_balance_other: 'Użytkownik {0} ma {1} w banku.'
-bank_deposited: 'Wpłaciłeś/aś {0} na swoje konto bankowe.'
-bank_withdraw_insuff: 'Nie masz wystarczająco {0} na koncie bankowym.'
-bank_withdrew: 'Wypłaciłeś/aś {0} ze swojego konta bankowego.'

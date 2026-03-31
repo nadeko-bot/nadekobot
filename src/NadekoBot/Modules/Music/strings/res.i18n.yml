@@ -1,0 +1,783 @@
+ar:
+  attempting_to_queue: 'جارٍ محاولة إضافة {0} مقطع إلى قائمة الانتظار...'
+  joined_voice: 'تم الانضمام إلى القناة الصوتية {0}.'
+  autodc_disable: لن أقوم بالانفصال عن القناة الصوتية بعد الآن عند عدم وجود مقاطع أخرى للتشغيل.
+  autodc_enable: سأقوم بالانفصال عن القناة الصوتية عند عدم وجود مقاطع أخرى للتشغيل.
+  autoplaying: يتم إضافة مقاطع ذات صلة تلقائيًا.
+  current_music_quality: 'جودة الموسيقى الحالية المعيّنة هي: {0}'
+  dir_queue_complete: اكتملت إضافة المجلد إلى قائمة الانتظار.
+  fairplay: ''
+  from_position: من الموضع
+  music_autoplay_off: تم تعطيل التشغيل التلقائي للموسيقى.
+  music_autoplay_on: تم تفعيل التشغيل التلقائي للموسيقى. سأقوم بإضافة مقاطع ذات صلة تلقائيًا بعد انتهاء كل مقطع.
+  music_fairplay: تم إعادة ترتيب قائمة الانتظار بشكل عادل.
+  music_quality_set: 'تم تعيين جودة الموسيقى إلى {0}. ستحتاج إلى إيقاف وإعادة تشغيل مشغّل الموسيقى ليتم تطبيق التغيير.'
+  no_last_queued_found: لم يتم العثور على آخر مقطع تم إضافته.
+  no_lyrics_found: لم يتم العثور على كلمات الأغنية.
+  no_player: لا يوجد مشغّل موسيقى نشط.
+  not_with_bot_in_voice: أنت لست في نفس القناة الصوتية مع البوت.
+  now_playing: قيد التشغيل الآن
+  player_queue: 'قائمة انتظار المشغّل - الصفحة {0}/{1}'
+  playlist_delete_fail: فشل حذف قائمة التشغيل. إما أنها غير موجودة، أو أنك لست مؤلفها.
+  playlist_deleted: تم حذف قائمة التشغيل.
+  playlist_name_too_long: يجب ألا يزيد اسم قائمة التشغيل عن 20 حرفا.
+  playlist_id_not_found: قائمة التشغيل بهذا المعرّف غير موجودة.
+  playlist_queue_complete: اكتملت إضافة قائمة التشغيل إلى قائمة الانتظار.
+  playlist_saved: تم حفظ قائمة التشغيل
+  playlists: '`#{0}` - **{1}** بواسطة *{2}* ({3} مقطع)'
+  playlists_page: 'الصفحة {0} من قوائم التشغيل المحفوظة'
+  queue: قائمة الانتظار
+  queue_cleared: تم مسح قائمة انتظار الموسيقى.
+  queue_search_results: اكتب رقم نتيجة البحث لإضافة ذلك المقطع إلى قائمة الانتظار.
+  queue_shuffled: تم خلط قائمة انتظار الموسيقى.
+  queue_stopped: 'المشغّل متوقف. استخدم الأمر {0} لبدء التشغيل.'
+  queued_track: مقطع مُضاف
+  removed_track: مقطع محذوف
+  removed_track_error: لا يوجد مقطع في هذا الترتيب
+  repeating_none: سيتوقف المشغّل عند الوصول إلى نهاية قائمة الانتظار.
+  repeating_queue: سيقوم المشغّل بتكرار قائمة الانتظار.
+  repeating_track: سيقوم المشغّل بتكرار نفس المقطع.
+  set_music_channel: سأقوم الآن بعرض المقاطع قيد التشغيل والمنتهية والمتوقفة والمحذوفة في هذه القناة.
+  song_skips_after: ''
+  to_position: إلى الموضع
+  track_moved: تم نقل المقطع
+  track_not_found: لم يتم العثور على مقطع.
+  unset_music_channel: سأقوم الآن بعرض المقاطع قيد التشغيل والمنتهية والمتوقفة والمحذوفة لمشغّلات الموسيقى الجديدة في القناة التي بدأت فيها الموسيقى.
+  volume_input_invalid: يجب أن يكون مستوى الصوت بين 0 و100
+  volume_set: 'تم تعيين مستوى الصوت إلى {0}%'
+  wrongsong_success: 'عفوًا! تم حذف الأغنية الخاطئة: {0}'
+
+de-DE:
+  attempting_to_queue: 'Versuche {0} Lieder in die Warteschlange zu setzen...'
+  joined_voice: 'Sprachkanal {0} beigetreten.'
+  autodc_disable: Ich werde nicht mehr den Sprachkanal verlassen, sobald es keine Lieder mehr zu spielen gibt.
+  autodc_enable: Ich werde den Sprachkanal verlassen, sobald es keine Lieder mehr zu spielen gibt.
+  autoplaying: Fügt automatisch verwandte Titel hinzu.
+  current_music_quality: 'Aktuelle Musikqualität: {0}'
+  dir_queue_complete: Verzeichnis Warteschlange komplett.
+  fairplay: ''
+  from_position: Von Position
+  music_autoplay_off: Musik-Autoplay deaktiviert.
+  music_autoplay_on: Musik-Autoplay aktiviert. Ich werde automatisch verwandte Titel nach jedem Titel in die Warteschlange stellen.
+  music_fairplay: Die Musikwarteschlange wurde fair neu geordnet.
+  music_quality_set: 'Musikqualität wurde auf {0} gestellt. Du musst den Musikplayer zerstören und neu starten damit die Änderungen übernommen werden.'
+  no_last_queued_found: Kein zuletzt hinzugefügter Track gefunden.
+  no_lyrics_found: Keine Songtexte gefunden.
+  no_player: Keine aktiven Musik Spieler.
+  not_with_bot_in_voice: Du bist nicht im selben Voice Channel wie der Bot.
+  now_playing: Spielt jetzt
+  player_queue: 'Abspiel Liste - Seite {0}/{1}'
+  playlist_delete_fail: Löschen der Playlist fehlgeschlagen. Entweder existiert sie nicht, oder du bist nicht ihr Autor.
+  playlist_deleted: Playlist gelöscht.
+  playlist_name_too_long: Der Playlist-Name darf maximal 20 Zeichen lang sein.
+  playlist_id_not_found: Eine Playlist mit dieser ID existiert nicht.
+  playlist_queue_complete: Playlist Warteschlange fertig.
+  playlist_saved: Playlist gespeichert
+  playlists: '`#{0}` - **{1}** von *{2}* ({3} Lieder)'
+  playlists_page: 'Seite {0} der gespeicherten Playlists'
+  queue: Warteschlange
+  queue_cleared: Musik Warteschlange wurde gelöscht.
+  queue_search_results: Gib die Nummer des Suchergebnisses ein, um diesen Track zur Warteschlange hinzuzufügen.
+  queue_shuffled: Musik Warteschlange wurde gemischt
+  queue_stopped: 'Player ist pausiert. Benutze den {0} Befehl um die Wiedergabe zu starten.'
+  queued_track: Titel in Warteschlange
+  removed_track: Titel entfernt
+  removed_track_error: Ein Titel an diesem Index existiert nicht
+  repeating_none: Player wird anhalten, sobald das Ende der Warteschlange erreicht ist.
+  repeating_queue: Player wird die Warteschlange wiederholen.
+  repeating_track: Wiederhole Lied
+  set_music_channel: Ich werde jetzt spielende, abgeschlossene, pausierte und entfernte Lieder in diesem Kanal wiedergeben.
+  song_skips_after: ''
+  to_position: Zu Position
+  track_moved: Titel verschoben
+  track_not_found: Kein Titel gefunden.
+  unset_music_channel: Ich werde jetzt spielende, abgeschlossene, pausierte und entfernte Lieder von dem neu erstellten Musikplayer in dem Kanal, in dem die Musik gestartet wurde, wiedergeben.
+  volume_input_invalid: Lautstärke muss zwischen 0 und 100 liegen
+  volume_set: 'Lautstärke auf {0}% gesetzt.'
+  wrongsong_success: 'Ups! Falscher Song entfernt: {0}'
+
+es-ES:
+  attempting_to_queue: 'Intentando añadir a la cola {0} canciones...'
+  joined_voice: 'Se unió al canal de voz {0}.'
+  autodc_disable: Ya no me desconectaré del canal de voz cuando no queden canciones por reproducir.
+  autodc_enable: Me desconectaré del canal de voz cuando no queden más canciones por reproducir.
+  autoplaying: Añade automáticamente pistas relacionadas.
+  current_music_quality: 'Actualmente la calidad de música está establecida en: {0}'
+  dir_queue_complete: Cola de directorio completa.
+  fairplay: ''
+  from_position: Desde la posición
+  music_autoplay_off: Reproducción automática desactivada.
+  music_autoplay_on: Reproducción automática activada. Pondré en cola automáticamente las pistas relacionadas después de que cada pista termine de reproducirse.
+  music_fairplay: La cola de música ha sido reorganizada de forma justa.
+  music_quality_set: 'La calidad de la música se ha establecido en {0}. Tendrás que eliminar y reiniciar el reproductor de música para que el cambio surta efecto.'
+  no_last_queued_found: No se encontró ninguna pista añadida recientemente.
+  no_lyrics_found: No se encontraron letras.
+  no_player: No hay reproducción activa.
+  not_with_bot_in_voice: No estás en el mismo canal de voz que el bot.
+  now_playing: Reproduciendo
+  player_queue: 'Cola - Página {0}/{1}'
+  playlist_delete_fail: Error eliminando esa lista. Puede que no exista, o que tú no seas su autor.
+  playlist_deleted: Lista de reproducción eliminada.
+  playlist_name_too_long: El nombre de la lista no puede tener más de 20 caracteres.
+  playlist_id_not_found: No existe una lista con esa ID.
+  playlist_queue_complete: Lista de reproducción añadida a la cola.
+  playlist_saved: Lista guardada
+  playlists: '`#{0}` - **{1}** por *{2}* ({3} canciones)'
+  playlists_page: 'Página {0} de las playlist guardadas'
+  queue: Cola
+  queue_cleared: Cola de música limpia.
+  queue_search_results: Escribe el número del resultado de búsqueda para añadir esa pista a la cola.
+  queue_shuffled: Cola de canciones mezclada.
+  queue_stopped: 'El reproductor se detuvo. Usa el comando {0} para volver a reproducir.'
+  queued_track: Pista en cola
+  removed_track: Pista eliminada
+  removed_track_error: La pista en ese índice no existe
+  repeating_none: El reproductor se detendrá cuando se alcance el final de la cola.
+  repeating_queue: El reproductor repetirá la cola.
+  repeating_track: Repitiendo pista
+  set_music_channel: Ahora mostraré las canciones reproducidas, terminadas, pausadas y eliminadas en este canal.
+  song_skips_after: ''
+  to_position: A la posición
+  track_moved: Pista movida
+  track_not_found: No encontré ninguna pista.
+  unset_music_channel: Ahora mostraré las canciones reproducidas, terminadas, pausadas y eliminadas de los reproductores de música recién creados en el canal desde el que se inició la música.
+  volume_input_invalid: Volumen debe estar entre 0 y 100
+  volume_set: 'Volumen configurado al {0} %.'
+  wrongsong_success: '¡Ups! Canción incorrecta eliminada: {0}'
+
+fr-FR:
+  attempting_to_queue: 'Tentative d''ajout de {0} morceaux à la file d''attente...'
+  joined_voice: 'Rejoint le salon vocal {0}.'
+  autodc_disable: Je ne me déconnecterai plus du salon vocal lorsqu'il n'y aura plus de morceaux à jouer.
+  autodc_enable: Je me déconnecterai du salon vocal lorsqu'il n'y aura plus de morceaux à jouer.
+  autoplaying: Ajout automatique des pistes relatives.
+  current_music_quality: 'Qualité de musique actuellement réglée sur : {0}'
+  dir_queue_complete: File d'attente du répertoire terminée.
+  fairplay: ''
+  from_position: De la position
+  music_autoplay_off: Lecture automatique désactivée.
+  music_autoplay_on: Lecture automatique activée. Les pistes s'enchaîneront automatiquement à la fin de chaque lectures.
+  music_fairplay: La file de musique a été réorganisée équitablement.
+  music_quality_set: 'La qualité de la musique a été définie sur {0}. Vous devrez arrêter et redémarrer le lecteur de musique pour que le changement prenne effet.'
+  no_last_queued_found: Aucune piste récemment ajoutée trouvée.
+  no_lyrics_found: Aucune parole trouvée.
+  no_player: Aucun lecteur de musique actif.
+  not_with_bot_in_voice: Vous n'êtes pas dans le même salon vocal que le bot.
+  now_playing: Lecture en cours
+  player_queue: 'File d''attente du lecteur - Page {0}/{1}'
+  playlist_delete_fail: Échec de la suppression de cette liste de lecture. Soit elle n'existe pas, soit vous n'en êtes pas l'auteur.
+  playlist_deleted: Liste de lecture supprimée.
+  playlist_name_too_long: Le nom de la liste de lecture ne doit pas dépasser 20 caractères.
+  playlist_id_not_found: Une liste de lecture avec cet ID n'existe pas.
+  playlist_queue_complete: La file d'attente de la liste de lecture est terminée.
+  playlist_saved: Liste de lecture sauvegardée
+  playlists: '`#{0}` - *{1}** par *{2}* ({3} chansons)'
+  playlists_page: 'Page {0} des listes de lecture enregistrées'
+  queue: File d'attente
+  queue_cleared: File d'attente de musique effacée.
+  queue_search_results: Tapez le numéro du résultat de recherche pour ajouter cette piste à la file.
+  queue_shuffled: La file d'attente de musique a été mélangée.
+  queue_stopped: 'La lecture est arrêtée. Utilisez la commande {0} pour commencer à jouer.'
+  queued_track: Piste ajoutée à la liste d'attente
+  removed_track: Piste retirée
+  removed_track_error: La piste n'existe pas sur cet index
+  repeating_none: Le lecteur s'arrêtera une fois la fin de la file d'attente atteinte.
+  repeating_queue: Le lecteur va répéter la file d'attente.
+  repeating_track: Le lecteur continuera de jouer la même piste.
+  set_music_channel: Je vais maintenant sortir les chansons en cours de lecture, terminées, mises en pause et supprimées sur ce salon.
+  song_skips_after: ''
+  to_position: À la position
+  track_moved: La piste a été déplacée
+  track_not_found: Aucune piste n'a été trouvée.
+  unset_music_channel: Je vais maintenant afficher les chansons en cours de lecture, terminées, mises en pause et supprimées des lecteurs de musique nouvellement créés dans le salon à partir de laquelle la musique a été lancée.
+  volume_input_invalid: Le volume doit être entre 0 et 100
+  volume_set: 'Volume mis à {0}%'
+  wrongsong_success: 'Oups ! Mauvaise chanson supprimée : {0}'
+
+id-ID:
+  attempting_to_queue: 'Mencoba mengantrikan {0} lagu...'
+  joined_voice: 'Bergabung ke voice channel {0}.'
+  autodc_disable: Aku tidak akan lagi keluar dari voice channel saat tidak ada lagu yang tersisa.
+  autodc_enable: Aku akan keluar dari voice channel saat tidak ada lagu yang tersisa.
+  autoplaying: Otomatis menambahkan lagu terkait.
+  current_music_quality: 'Kualitas musik saat ini: {0}'
+  dir_queue_complete: Antrean direktori selesai.
+  fairplay: ''
+  from_position: Dari posisi
+  music_autoplay_off: Autoplay musik dinonaktifkan.
+  music_autoplay_on: Autoplay musik diaktifkan. Aku akan otomatis mengantrikan lagu terkait setelah setiap lagu selesai diputar.
+  music_fairplay: Antrean musik sudah diurutkan ulang secara adil.
+  music_quality_set: 'Kualitas musik sudah diatur ke {0}. Kamu harus menghentikan dan memulai ulang pemutar musik agar perubahan berlaku.'
+  no_last_queued_found: Lagu terakhir yang diantrikan tidak ditemukan.
+  no_lyrics_found: Lirik tidak ditemukan.
+  no_player: Tidak ada pemutar musik yang aktif.
+  not_with_bot_in_voice: Kamu tidak berada di voice channel yang sama dengan bot.
+  now_playing: Sedang diputar
+  player_queue: 'Antrean pemutar - Halaman {0}/{1}'
+  playlist_delete_fail: Gagal menghapus playlist tersebut. Playlist tidak ada, atau kamu bukan pembuatnya.
+  playlist_deleted: Playlist dihapus.
+  playlist_name_too_long: Nama playlist tidak boleh lebih dari 20 karakter.
+  playlist_id_not_found: Playlist dengan ID tersebut tidak ada.
+  playlist_queue_complete: Antrean playlist selesai.
+  playlist_saved: Playlist disimpan
+  playlists: '`#{0}` - **{1}** oleh *{2}* ({3} lagu)'
+  playlists_page: 'Halaman {0} dari playlist tersimpan'
+  queue: Antrean
+  queue_cleared: Antrean musik dikosongkan.
+  queue_search_results: Ketik nomor hasil pencarian untuk mengantrikan lagu tersebut.
+  queue_shuffled: Antrean musik sudah diacak.
+  queue_stopped: 'Pemutar dihentikan. Gunakan perintah {0} untuk mulai memutar.'
+  queued_track: Lagu diantrikan
+  removed_track: Lagu dihapus
+  removed_track_error: Lagu di indeks tersebut tidak ada
+  repeating_none: Pemutar akan berhenti saat antrean habis.
+  repeating_queue: Pemutar akan mengulang antrean.
+  repeating_track: Pemutar akan terus mengulang lagu yang sama.
+  set_music_channel: Aku sekarang akan menampilkan lagu yang diputar, selesai, dijeda dan dihapus di channel ini.
+  song_skips_after: ''
+  to_position: Ke posisi
+  track_moved: Lagu dipindahkan
+  track_not_found: Lagu tidak ditemukan.
+  unset_music_channel: Aku sekarang akan menampilkan lagu yang diputar, selesai, dijeda dan dihapus di channel tempat musik dimulai.
+  volume_input_invalid: Volume harus antara 0 dan 100
+  volume_set: 'Volume diatur ke {0}%'
+  wrongsong_success: 'Ups! Lagu yang salah dihapus: {0}'
+
+ja-JP:
+  attempting_to_queue: 'キューに{0}曲追加しようとしています...'
+  joined_voice: 'ボイスチャンネル {0} に参加しました。'
+  autodc_disable: 再生する曲がなくなってもボイスチャンネルから切断しません。
+  autodc_enable: 再生する曲がなくなればボイスチャンネルから切断します。
+  autoplaying: 自動再生
+  current_music_quality: '現在の音楽品質は{0}です'
+  dir_queue_complete: ディレクトリからの読み込みが完了しました。
+  fairplay: ''
+  from_position: '変更前:'
+  music_autoplay_off: 音楽の自動再生が無効になりました。
+  music_autoplay_on: 音楽の自動再生が有効になりました。各トラックの再生後、関連するトラックを自動的にキューに追加します。
+  music_fairplay: 音楽キューが公平に並べ替えられました。
+  music_quality_set: '音楽品質が{0}に設定されました。変更を反映するにはミュージックプレイヤーを破棄して再起動する必要があります。'
+  no_last_queued_found: 最後にキューに追加されたトラックが見つかりません。
+  no_lyrics_found: 歌詞が見つかりません。
+  no_player: 有効な音楽プレーヤーがありません。
+  not_with_bot_in_voice: Botと同じボイスチャンネルにいません。
+  now_playing: 再生中の曲
+  player_queue: 'プレーヤーキュー - ページ {0}/{1}'
+  playlist_delete_fail: 再生リストを削除できませんでした。。指定された再生リストが存在しないか、削除する権限がありません。
+  playlist_deleted: 再生リストが削除されました。
+  playlist_name_too_long: 再生リスト名は20文字以内にしてください。
+  playlist_id_not_found: 指定されたIDの再生リストが存在しません。
+  playlist_queue_complete: 再生リストからの読み込みが完了しました。
+  playlist_saved: 再生リストを保存しました
+  playlists: '`#{0}` - 「**{1}**」 作者: *{2}* （全{3}曲）'
+  playlists_page: '保存された再生リストの{0}ページ目'
+  queue: キュー
+  queue_cleared: キューが消去されました。
+  queue_search_results: 検索結果の番号を入力して、そのトラックをキューに追加してください。
+  queue_shuffled: 音楽キューがシャッフルされました。
+  queue_stopped: 'プレイヤーは停止しました。 {0} コマンドで再生します。'
+  queued_track: キューに追加されたトラック
+  removed_track: 削除されたトラック
+  removed_track_error: そのインデックスのトラックは存在しません
+  repeating_none: キューの最後に到達するとプレイヤーは停止します。
+  repeating_queue: プレイヤーはキューを繰り返します。
+  repeating_track: この曲を繰り返し再生します。
+  set_music_channel: このBotにより、このチャンネルでは音楽の再生・停止・一時停止・削除が可能になりました。
+  song_skips_after: ''
+  to_position: '変更後:'
+  track_moved: トラックが移動されました
+  track_not_found: トラックが見つかりません。
+  unset_music_channel: 新しく作成された音楽プレイヤーの再生中・終了・一時停止・削除のトラック情報は、音楽が開始されたチャンネルに出力されます。
+  volume_input_invalid: 音量は0～100の数字である必要があります。
+  volume_set: '音量を{0}%に設定しました'
+  wrongsong_success: 'おっと！間違った曲を削除しました: {0}'
+
+ko-KR:
+  attempting_to_queue: '{0}개의 트랙을 대기열에 추가하는 중...'
+  joined_voice: '음성 채널 {0}에 참가했어요.'
+  autodc_disable: 더 이상 재생할 트랙이 없어도 음성 채널에서 나가지 않을게요.
+  autodc_enable: 더 이상 재생할 트랙이 없으면 음성 채널에서 나갈게요.
+  autoplaying: 관련 트랙을 자동으로 추가해요.
+  current_music_quality: '현재 설정된 음악 품질: {0}'
+  dir_queue_complete: 디렉토리 대기열 추가 완료.
+  fairplay: ''
+  from_position: 이동 전 위치
+  music_autoplay_off: 음악 자동재생이 비활성화되었어요.
+  music_autoplay_on: 음악 자동재생이 활성화되었어요. 각 트랙 재생이 끝나면 관련 트랙을 자동으로 대기열에 추가할게요.
+  music_fairplay: 음악 대기열이 공정하게 재정렬되었어요.
+  music_quality_set: '음악 품질이 {0}(으)로 설정되었어요. 변경 사항을 적용하려면 음악 플레이어를 종료하고 다시 시작해야 해요.'
+  no_last_queued_found: 마지막으로 대기열에 추가된 트랙을 찾을 수 없어요.
+  no_lyrics_found: 가사를 찾을 수 없어요.
+  no_player: 활성화된 음악 플레이어가 없어요.
+  not_with_bot_in_voice: 봇과 같은 음성 채널에 있지 않아요.
+  now_playing: 지금 재생 중
+  player_queue: '플레이어 대기열 - {0}/{1} 페이지'
+  playlist_delete_fail: 해당 재생목록을 삭제하지 못했어요. 재생목록이 존재하지 않거나, 작성자가 아닐 수 있어요.
+  playlist_deleted: 재생목록이 삭제되었어요.
+  playlist_name_too_long: 재생목록 이름은 20자 이내여야 해요.
+  playlist_id_not_found: 해당 ID의 재생목록이 존재하지 않아요.
+  playlist_queue_complete: 재생목록 대기열 추가 완료.
+  playlist_saved: 재생목록이 저장되었어요
+  playlists: '`#{0}` - **{1}** by *{2}* ({3}개 트랙)'
+  playlists_page: '저장된 재생목록 {0} 페이지'
+  queue: 대기열
+  queue_cleared: 음악 대기열이 초기화되었어요.
+  queue_search_results: 검색 결과 번호를 입력해서 해당 트랙을 대기열에 추가하세요.
+  queue_shuffled: 음악 대기열이 셔플되었어요.
+  queue_stopped: '플레이어가 중지되었어요. {0} 명령어를 사용해서 재생을 시작하세요.'
+  queued_track: 대기열에 추가된 트랙
+  removed_track: 제거된 트랙
+  removed_track_error: 해당 인덱스에 트랙이 존재하지 않아요
+  repeating_none: 대기열 끝에 도달하면 플레이어가 중지돼요.
+  repeating_queue: 플레이어가 대기열을 반복 재생해요.
+  repeating_track: 플레이어가 같은 트랙을 계속 반복 재생해요.
+  set_music_channel: 이제 이 채널에서 재생, 종료, 일시정지 및 제거된 트랙 정보를 출력할게요.
+  song_skips_after: ''
+  to_position: 이동 후 위치
+  track_moved: 트랙이 이동되었어요
+  track_not_found: 트랙을 찾을 수 없어요.
+  unset_music_channel: 이제 새로 생성된 음악 플레이어의 재생, 종료, 일시정지 및 제거된 트랙 정보를 음악이 시작된 채널에서 출력할게요.
+  volume_input_invalid: 볼륨은 0에서 100 사이여야 해요
+  volume_set: '볼륨이 {0}%로 설정되었어요'
+  wrongsong_success: '이런! 잘못된 곡 제거됨: {0}'
+
+pl-PL:
+  attempting_to_queue: 'Próba dodania {0} utworów do kolejki...'
+  joined_voice: 'Dołączono do kanału głosowego {0}.'
+  autodc_disable: Nie będę już rozłączać się z kanału głosowego, gdy nie ma więcej utworów do odtworzenia.
+  autodc_enable: Rozłączę się z kanału głosowego, gdy nie będzie więcej utworów do odtworzenia.
+  autoplaying: Automatycznie dodaje powiązane utwory.
+  current_music_quality: 'Aktualnie ustawiona jakość muzyki to: {0}'
+  dir_queue_complete: Kolejkowanie katalogu zakończone.
+  fairplay: ''
+  from_position: Z pozycji
+  music_autoplay_off: Automatyczne odtwarzanie wyłączone.
+  music_autoplay_on: Automatyczne odtwarzanie włączone. Automatycznie dodam powiązane utwory po zakończeniu każdego utworu.
+  music_fairplay: Kolejka muzyki została sprawiedliwie uporządkowana.
+  music_quality_set: 'Jakość muzyki ustawiona na {0}. Musisz zniszczyć i ponownie uruchomić odtwarzacz, aby zmiana zaczęła obowiązywać.'
+  no_last_queued_found: Nie znaleziono ostatnio dodanego utworu.
+  no_lyrics_found: Nie znaleziono tekstu piosenki.
+  no_player: Brak aktywnego odtwarzacza muzyki.
+  not_with_bot_in_voice: Nie jesteś na tym samym kanale głosowym co bot.
+  now_playing: Teraz odtwarzane
+  player_queue: 'Kolejka odtwarzacza - Strona {0}/{1}'
+  playlist_delete_fail: Nie udało się usunąć playlisty. Nie istnieje lub nie jesteś jej autorem.
+  playlist_deleted: Playlista usunięta.
+  playlist_name_too_long: Nazwa playlisty nie może mieć więcej niż 20 znaków.
+  playlist_id_not_found: Playlista o tym ID nie istnieje.
+  playlist_queue_complete: Kolejkowanie playlisty zakończone.
+  playlist_saved: Playlista zapisana
+  playlists: '`#{0}` - **{1}** od *{2}* ({3} utworów)'
+  playlists_page: 'Strona {0} zapisanych playlist'
+  queue: Kolejka
+  queue_cleared: Kolejka muzyki wyczyszczona.
+  queue_search_results: Wpisz numer wyniku wyszukiwania, aby dodać utwór do kolejki.
+  queue_shuffled: Kolejka muzyki została przetasowana.
+  queue_stopped: 'Odtwarzacz jest zatrzymany. Użyj komendy {0}, aby rozpocząć odtwarzanie.'
+  queued_track: Dodano utwór do kolejki
+  removed_track: Usunięto utwór
+  removed_track_error: Utwór na tym indeksie nie istnieje
+  repeating_none: Odtwarzacz zatrzyma się po dotarciu do końca kolejki.
+  repeating_queue: Odtwarzacz będzie powtarzał kolejkę.
+  repeating_track: Odtwarzacz będzie powtarzał ten sam utwór.
+  set_music_channel: Od teraz będę wyświetlać informacje o odtwarzanych, zakończonych, wstrzymanych i usuniętych utworach na tym kanale.
+  song_skips_after: ''
+  to_position: Na pozycję
+  track_moved: Utwór przeniesiony
+  track_not_found: Nie znaleziono utworu.
+  unset_music_channel: Od teraz będę wyświetlać informacje o odtwarzanych, zakończonych, wstrzymanych i usuniętych utworach na kanale, z którego uruchomiono muzykę.
+  volume_input_invalid: Głośność musi być między 0 a 100
+  volume_set: 'Głośność ustawiona na {0}%'
+  wrongsong_success: 'Ups! Usunięto zły utwór: {0}'
+
+pt-BR:
+  attempting_to_queue: 'Tentando adicionar {0} músicas à fila...'
+  joined_voice: 'Entrou no canal de voz {0}.'
+  autodc_disable: Não me desconectarei do canal de voz quando não houver mais músicas para serem reproduzidas.
+  autodc_enable: Desconectarei do canal de voz quando não houver mais músicas para reproduzir.
+  autoplaying: Trilhas similares automaticamente adicionadas.
+  current_music_quality: 'A atual qualidade musical definida é: {0}'
+  dir_queue_complete: Diretório adicionado à fila.
+  fairplay: ''
+  from_position: Da posição
+  music_autoplay_off: Autoplay desativado.
+  music_autoplay_on: Autoplay ativo. Tocarei automaticamente a fila de trilhas similares ao fim de cada trilha.
+  music_fairplay: A fila de música foi reorganizada de forma justa.
+  music_quality_set: 'A qualidade da música foi definida par {0}. Você terá que destruir e reiniciar o reprodutor para que as alterações tenham efeito.'
+  no_last_queued_found: Nenhuma faixa adicionada recentemente encontrada.
+  no_lyrics_found: Nenhuma letra encontrada.
+  no_player: Não há música em reprodução.
+  not_with_bot_in_voice: Você não está no mesmo canal de voz que o bot.
+  now_playing: Reproduzindo agora
+  player_queue: 'Fila de Músicas - Página {0}/{1}'
+  playlist_delete_fail: Falha ao deletar a playlist. Ela não existe ou você não é o criador.
+  playlist_deleted: Playlist deletada.
+  playlist_name_too_long: O nome da playlist deve ter no máximo 20 caracteres.
+  playlist_id_not_found: Não existe uma playlist com essa ID.
+  playlist_queue_complete: Playlist adicionada à fila.
+  playlist_saved: Playlist salva
+  playlists: '''#{0}'' - **{1}** por *{2}* ({3} músicas)'
+  playlists_page: 'Página {0} de playlists salvas'
+  queue: Fila
+  queue_cleared: Fila de músicas limpa.
+  queue_search_results: Digite o número do resultado da pesquisa para adicionar essa faixa à fila.
+  queue_shuffled: A fila de música está em modo aleatório.
+  queue_stopped: 'Player foi pausado. Use o comando {0} para começar a tocar.'
+  queued_track: Trilha adiciona a fila
+  removed_track: Trilha removida
+  removed_track_error: A trilha não existe neste índice
+  repeating_none: O reprodutor será interrompido quando o fim da lista de reprodução for atingida.
+  repeating_queue: O reprodutor repetirá a lista de reprodução.
+  repeating_track: A música ficará sendo repetida.
+  set_music_channel: A partir de agora, mostrarei músicas em andamento, concluídas, pausadas e removidas somente neste canal.
+  song_skips_after: ''
+  to_position: Para a posição
+  track_moved: Trilha movida
+  track_not_found: Trilha não encontrada.
+  unset_music_channel: A partir de agora, mostrarei músicas em andamento, concluídas, pausadas e removidas no canal em que a música for iniciada.
+  volume_input_invalid: Volume deve estar entre 0 e 100
+  volume_set: 'Volume ajustado para {0}%'
+  wrongsong_success: 'Ops! Música errada removida: {0}'
+
+ru-RU:
+  attempting_to_queue: 'Пробую поставить в очередь {0} песен...'
+  joined_voice: 'Присоединился к голосовому каналу {0}.'
+  autodc_disable: Я больше не буду отключаться от голосового канала, когда больше нет песен для воспроизведения.
+  autodc_enable: Я отключусь от голосового канала, когда больше не будет песен для воспроизведения.
+  autoplaying: Автоматически добавляет похожие треки.
+  current_music_quality: 'Текущее качество музыки: {0}'
+  dir_queue_complete: Очередь каталогов завершена.
+  fairplay: ''
+  from_position: С позиции
+  music_autoplay_off: Автовоспроизведение музыки отключено.
+  music_autoplay_on: Автовоспроизведение музыки включено. Я буду автоматически добавлять похожие треки после окончания каждого трека.
+  music_fairplay: Очередь музыки была справедливо переупорядочена.
+  music_quality_set: 'Качество музыки установлено на {0}. Вам нужно будет уничтожить и перезапустить музыкальный проигрыватель, чтобы изменения вступили в силу.'
+  no_last_queued_found: Последний добавленный трек не найден.
+  no_lyrics_found: Текст песни не найден.
+  no_player: Отсутствует активный музыкальный проигрыватель.
+  not_with_bot_in_voice: Вы не находитесь в том же голосовом канале, что и бот.
+  now_playing: Сейчас играет
+  player_queue: 'Очередь воспроизведения - Страница {0}/{1}'
+  playlist_delete_fail: Не удалось удалить этот плейлист. Его либо не существует, либо вы не являетесь его автором.
+  playlist_deleted: Плейлист удален.
+  playlist_name_too_long: Название плейлиста должно быть не длиннее 20 символов.
+  playlist_id_not_found: Плейлист с таким ID не существует.
+  playlist_queue_complete: Добавление плейлиста в очередь воспроизведения завершено.
+  playlist_saved: Плейлист сохранен
+  playlists: '`#{0}` - **{1}** от *{2}* ({3} песен)'
+  playlists_page: 'Страница {0} сохраненных плейлистов'
+  queue: Очередь
+  queue_cleared: Очередь музыки очищена.
+  queue_search_results: Введите номер результата поиска, чтобы добавить этот трек в очередь.
+  queue_shuffled: Музыкальная очередь была перемешана.
+  queue_stopped: 'Плеер остановлен. Используйте команду {0}, чтобы начать играть.'
+  queued_track: Трек добавлен в очередь
+  removed_track: Трек удален
+  removed_track_error: Трека с таким индексом не существует
+  repeating_none: Плеер остановится, как только будет достигнут конец очереди.
+  repeating_queue: Плеер повторит очередь.
+  repeating_track: Повторяю песню
+  set_music_channel: Теперь я выведу проигранные, завершенные, приостановленные и удаленные песни на этом канале.
+  song_skips_after: ''
+  to_position: На позицию
+  track_moved: Трек перемещен
+  track_not_found: Трек не найден.
+  unset_music_channel: Теперь я выведу проигранные, завершенные, приостановленные и удаленные песни вновь созданных музыкальных проигрывателей в канале, с которого была начата музыка.
+  volume_input_invalid: Объем должен быть от 0 до 100
+  volume_set: 'Громкость установлена на {0}%'
+  wrongsong_success: 'Ой! Неправильная песня удалена: {0}'
+
+sr-Cyrl-RS:
+  attempting_to_queue: 'Покушавам да додам {0} нумера у ред...'
+  joined_voice: 'Придружио се гласовном каналу {0}.'
+  autodc_disable: Више се нећу дисконектовати из гласовног канала кад нема више нумера за пуштање.
+  autodc_enable: Дисконектоваћу се из гласовног канала кад нема више нумера за пуштање.
+  autoplaying: Аутоматски додаје сличне нумере.
+  current_music_quality: 'Тренутно подешен квалитет музике је: {0}'
+  dir_queue_complete: Ред фасцикле завршен.
+  fairplay: ''
+  from_position: Са позиције
+  music_autoplay_off: Аутоматско пуштање музике искључено.
+  music_autoplay_on: Аутоматско пуштање музике укључено. Аутоматски ћу додавати сличне нумере после сваке завршене.
+  music_fairplay: Ред музике је фер преуређен.
+  music_quality_set: 'Квалитет музике је подешен на {0}. Мораш уништити и поново покренути музички плејер да би промена ступила на снагу.'
+  no_last_queued_found: Није пронађена последња додата нумера.
+  no_lyrics_found: Текст песме није пронађен.
+  no_player: Нема активног музичког плејера.
+  not_with_bot_in_voice: Ниси у истом гласовном каналу као бот.
+  now_playing: Тренутно свира
+  player_queue: 'Ред плејера - Страница {0}/{1}'
+  playlist_delete_fail: Брисање плејлисте није успело. Или не постоји, или ниси њен аутор.
+  playlist_deleted: Плејлиста обрисана.
+  playlist_name_too_long: Назив плејлисте не сме бити дужи од 20 карактера.
+  playlist_id_not_found: Плејлиста са тим ID-ом не постоји.
+  playlist_queue_complete: Ред плејлисте завршен.
+  playlist_saved: Плејлиста сачувана
+  playlists: '`#{0}` - **{1}** од *{2}* ({3} нумера)'
+  playlists_page: 'Страница {0} сачуваних плејлиста'
+  queue: Ред
+  queue_cleared: Ред музике очишћен.
+  queue_search_results: Укуцај број резултата претраге да додаш ту нумеру у ред.
+  queue_shuffled: Ред музике је измешан.
+  queue_stopped: 'Плејер је заустављен. Користи команду {0} да почнеш са пуштањем.'
+  queued_track: Нумера додата у ред
+  removed_track: Нумера уклоњена
+  removed_track_error: Нумера на том индексу не постоји
+  repeating_none: Плејер ће стати кад се дође до краја реда.
+  repeating_queue: Плејер ће понављати ред.
+  repeating_track: Плејер ће наставити да понавља исту нумеру.
+  set_music_channel: Сад ћу приказивати пуштене, завршене, паузиране и уклоњене нумере у овом каналу.
+  song_skips_after: ''
+  to_position: На позицију
+  track_moved: Нумера померена
+  track_not_found: Нумера није пронађена.
+  unset_music_channel: Сад ћу приказивати пуштене, завршене, паузиране и уклоњене нумере новокреираних музичких плејера у каналу из ког је музика покренута.
+  volume_input_invalid: Јачина звука мора бити између 0 и 100
+  volume_set: 'Јачина звука подешена на {0}%'
+  wrongsong_success: 'Упс! Погрешна нумера уклоњена: {0}'
+
+tr-TR:
+  attempting_to_queue: '{0} parça sıraya ekleniyor...'
+  joined_voice: 'Ses kanalına katıldı: {0}.'
+  autodc_disable: Çalacak parça kalmadığında artık ses kanalından ayrılmayacağım.
+  autodc_enable: Çalacak parça kalmadığında ses kanalından ayrılacağım.
+  autoplaying: İlgili parçaları otomatik olarak ekler.
+  current_music_quality: 'Şu anki müzik kalitesi: {0}'
+  dir_queue_complete: Klasör sıraya ekleme tamamlandı.
+  fairplay: ''
+  from_position: Başlangıç pozisyonu
+  music_autoplay_off: Müzik otomatik çalma devre dışı.
+  music_autoplay_on: Müzik otomatik çalma etkin. Her parça bittikten sonra otomatik olarak ilgili parçaları sıraya ekleyeceğim.
+  music_fairplay: Müzik sırası adil olarak yeniden sıralandı.
+  music_quality_set: 'Müzik kalitesi {0} olarak ayarlandı. Değişikliğin geçerli olması için müzik oynatıcıyı kapatıp yeniden başlatman gerekiyor.'
+  no_last_queued_found: Son sıraya eklenen parça bulunamadı.
+  no_lyrics_found: Şarkı sözü bulunamadı.
+  no_player: Aktif müzik oynatıcı yok.
+  not_with_bot_in_voice: Botla aynı ses kanalında değilsin.
+  now_playing: Şu an çalıyor
+  player_queue: 'Oynatıcı sırası - Sayfa {0}/{1}'
+  playlist_delete_fail: Çalma listesi silinemedi. Ya mevcut değil ya da yazarı sen değilsin.
+  playlist_deleted: Çalma listesi silindi.
+  playlist_name_too_long: Çalma listesi adı en fazla 20 karakter olmalıdır.
+  playlist_id_not_found: Bu ID'ye sahip çalma listesi mevcut değil.
+  playlist_queue_complete: Çalma listesi sıraya ekleme tamamlandı.
+  playlist_saved: Çalma listesi kaydedildi
+  playlists: '`#{0}` - **{1}** *{2}* tarafından ({3} parça)'
+  playlists_page: 'Kayıtlı çalma listelerinin {0}. sayfası'
+  queue: Sıra
+  queue_cleared: Müzik sırası temizlendi.
+  queue_search_results: Sıraya eklemek istediğin parçanın numarasını yaz.
+  queue_shuffled: Müzik sırası karıştırıldı.
+  queue_stopped: 'Oynatıcı durduruldu. Çalmaya başlamak için {0} komutunu kullan.'
+  queued_track: Sıraya eklenen parça
+  removed_track: Kaldırılan parça
+  removed_track_error: Bu indekste parça yok
+  repeating_none: Oynatıcı sıranın sonuna gelince duracak.
+  repeating_queue: Oynatıcı sırayı tekrarlayacak.
+  repeating_track: Oynatıcı aynı parçayı tekrarlamaya devam edecek.
+  set_music_channel: Bundan sonra çalınan, biten, duraklatılan ve kaldırılan parçaları bu kanalda göstereceğim.
+  song_skips_after: ''
+  to_position: Hedef pozisyon
+  track_moved: Parça taşındı
+  track_not_found: Parça bulunamadı.
+  unset_music_channel: Bundan sonra çalınan, biten, duraklatılan ve kaldırılan parçaları yeni oluşturulan müzik oynatıcılarında müziğin başlatıldığı kanalda göstereceğim.
+  volume_input_invalid: Ses seviyesi 0 ile 100 arasında olmalı
+  volume_set: 'Ses seviyesi %{0} olarak ayarlandı'
+  wrongsong_success: 'Hay aksi! Yanlış şarkı kaldırıldı: {0}'
+
+ts-TS:
+  attempting_to_queue: 'Attempting to queue {0} tracks...'
+  joined_voice: 'Joined voice channel {0}.'
+  autodc_disable: I'll stay in the voice channel even when there's nothing to play.
+  autodc_enable: I'll disconnect from voice when there's nothing left to play.
+  autoplaying: Automatically adding related tracks.
+  current_music_quality: 'Currently set music quality is: {0}'
+  dir_queue_complete: Directory queue complete.
+  fairplay: ''
+  from_position: From position
+  music_autoplay_off: Music autoplay disabled.
+  music_autoplay_on: Music autoplay enabled. I'll automatically queue related tracks after each one finishes.
+  music_fairplay: Music queue has been fairly reordered. I-I'm always fair.
+  music_quality_set: 'Music quality set to {0}. You''ll need to restart the music player for it to take effect.'
+  no_last_queued_found: No last queued track found. Did you even queue anything?
+  no_lyrics_found: Couldn't find any lyrics.
+  no_player: No active music player. Start one first.
+  not_with_bot_in_voice: You're not in the same voice channel as me. H-hurry up and join!
+  now_playing: Now playing
+  player_queue: 'Player queue - Page {0}/{1}'
+  playlist_delete_fail: Failed to delete that playlist. It either doesn't exist, or you're not the author.
+  playlist_deleted: Playlist deleted.
+  playlist_name_too_long: Playlist name can't be longer than 20 characters, got it?
+  playlist_id_not_found: A playlist with that ID doesn't exist. Check your numbers.
+  playlist_queue_complete: Playlist queue complete.
+  playlist_saved: Playlist saved.
+  playlists: '`#{0}` - **{1}** by *{2}* ({3} tracks)'
+  playlists_page: 'Page {0} of saved playlists'
+  queue: Queue
+  queue_cleared: Music queue cleared.
+  queue_search_results: Type the number of the search result to queue that track.
+  queue_shuffled: Music queue has been shuffled.
+  queue_stopped: 'Player is stopped. Use {0} to start playing.'
+  queued_track: Track queued.
+  removed_track: Track removed.
+  removed_track_error: There's no track at that index, b-baka!
+  repeating_none: Player will stop once the queue ends.
+  repeating_queue: Player will repeat the queue. Over and over.
+  repeating_track: Player will keep repeating the same track. You really like this one, huh?
+  set_music_channel: I'll output track info in this channel now.
+  song_skips_after: ''
+  to_position: To position
+  track_moved: Track moved.
+  track_not_found: No track found. Are you sure you typed it right?
+  unset_music_channel: I'll output track info in whatever channel music starts from now.
+  volume_input_invalid: Volume must be between 0 and 100.
+  volume_set: 'Volume set to {0}%'
+  wrongsong_success: 'Wrong song removed: {0}'
+
+uk-UA:
+  attempting_to_queue: 'Спроба додати в чергу {0} треків...'
+  joined_voice: 'Приєднався до голосового каналу {0}.'
+  autodc_disable: Я більше не буду від''єднуватися від голосового каналу, коли треки закінчаться.
+  autodc_enable: Я від''єднаюся від голосового каналу, коли треки закінчаться.
+  autoplaying: Автоматично додає пов''язані треки.
+  current_music_quality: 'Поточна якість музики: {0}'
+  dir_queue_complete: Чергу з директорії додано.
+  fairplay: ''
+  from_position: З позиції
+  music_autoplay_off: Автоматичне відтворення вимкнено.
+  music_autoplay_on: Автоматичне відтворення увімкнено. Я буду автоматично додавати пов''язані треки після кожного.
+  music_fairplay: Чергу музики було справедливо перевпорядковано.
+  music_quality_set: 'Якість музики встановлено на {0}. Потрібно зупинити та перезапустити плеєр, щоб зміни набули чинності.'
+  no_last_queued_found: Не знайдено останній доданий трек.
+  no_lyrics_found: Текст пісні не знайдено.
+  no_player: Немає активного музичного плеєра.
+  not_with_bot_in_voice: Ти не в тому ж голосовому каналі, що й бот.
+  now_playing: Зараз грає
+  player_queue: 'Черга плеєра - Сторінка {0}/{1}'
+  playlist_delete_fail: Не вдалося видалити цей плейлист. Він або не існує, або ти не його автор.
+  playlist_deleted: Плейлист видалено.
+  playlist_name_too_long: Назва плейлиста не повинна перевищувати 20 символів.
+  playlist_id_not_found: Плейлист з таким ID не існує.
+  playlist_queue_complete: Плейлист додано в чергу.
+  playlist_saved: Плейлист збережено
+  playlists: '`#{0}` - **{1}** від *{2}* ({3} треків)'
+  playlists_page: 'Сторінка {0} збережених плейлистів'
+  queue: Черга
+  queue_cleared: Чергу музики очищено.
+  queue_search_results: Напиши номер результату пошуку, щоб додати цей трек у чергу.
+  queue_shuffled: Чергу музики перемішано.
+  queue_stopped: 'Плеєр зупинено. Використай команду {0}, щоб почати відтворення.'
+  queued_track: Трек додано в чергу
+  removed_track: Трек видалено
+  removed_track_error: Трек з таким індексом не існує
+  repeating_none: Плеєр зупиниться, коли черга закінчиться.
+  repeating_queue: Плеєр буде повторювати чергу.
+  repeating_track: Плеєр буде повторювати цей трек.
+  set_music_channel: Тепер я буду виводити інформацію про відтворення, завершення, паузу та видалення треків у цьому каналі.
+  song_skips_after: ''
+  to_position: На позицію
+  track_moved: Трек переміщено
+  track_not_found: Трек не знайдено.
+  unset_music_channel: Тепер я буду виводити інформацію про відтворення, завершення, паузу та видалення треків нових плеєрів у каналі, де було запущено музику.
+  volume_input_invalid: Гучність має бути від 0 до 100
+  volume_set: 'Гучність встановлено на {0}%'
+  wrongsong_success: 'Ой! Неправильний трек видалено: {0}'
+
+vi-VN:
+  attempting_to_queue: 'Đang thử thêm {0} bài vào hàng đợi...'
+  joined_voice: 'Đã tham gia kênh thoại {0}.'
+  autodc_disable: Mình sẽ không rời kênh thoại khi hết bài hát nữa.
+  autodc_enable: Mình sẽ rời kênh thoại khi hết bài hát.
+  autoplaying: Tự động thêm các bài liên quan.
+  current_music_quality: 'Chất lượng nhạc hiện tại: {0}'
+  dir_queue_complete: Đã thêm xong thư mục vào hàng đợi.
+  fairplay: ''
+  from_position: Từ vị trí
+  music_autoplay_off: Đã tắt tự động phát nhạc.
+  music_autoplay_on: Đã bật tự động phát nhạc. Mình sẽ tự động thêm bài liên quan sau khi mỗi bài kết thúc.
+  music_fairplay: Hàng đợi nhạc đã được sắp xếp lại công bằng.
+  music_quality_set: 'Chất lượng nhạc đã được đặt thành {0}. Bạn cần tắt và khởi động lại trình phát nhạc để thay đổi có hiệu lực.'
+  no_last_queued_found: Không tìm thấy bài hát cuối cùng trong hàng đợi.
+  no_lyrics_found: Không tìm thấy lời bài hát.
+  no_player: Không có trình phát nhạc nào đang hoạt động.
+  not_with_bot_in_voice: Bạn không ở cùng kênh thoại với bot.
+  now_playing: Đang phát
+  player_queue: 'Hàng đợi phát nhạc - Trang {0}/{1}'
+  playlist_delete_fail: Không thể xóa playlist đó. Playlist không tồn tại hoặc bạn không phải tác giả.
+  playlist_deleted: Đã xóa playlist.
+  playlist_name_too_long: Tên playlist không được dài quá 20 ký tự.
+  playlist_id_not_found: Playlist với ID đó không tồn tại.
+  playlist_queue_complete: Đã thêm xong playlist vào hàng đợi.
+  playlist_saved: Đã lưu playlist
+  playlists: '`#{0}` - **{1}** bởi *{2}* ({3} bài)'
+  playlists_page: 'Trang {0} các playlist đã lưu'
+  queue: Hàng đợi
+  queue_cleared: Đã xóa hàng đợi nhạc.
+  queue_search_results: Gõ số thứ tự của kết quả tìm kiếm để thêm bài đó vào hàng đợi.
+  queue_shuffled: Hàng đợi nhạc đã được xáo trộn.
+  queue_stopped: 'Trình phát đã dừng. Dùng lệnh {0} để bắt đầu phát.'
+  queued_track: Đã thêm bài vào hàng đợi
+  removed_track: Đã xóa bài hát
+  removed_track_error: Không có bài hát nào ở vị trí đó
+  repeating_none: Trình phát sẽ dừng khi hết hàng đợi.
+  repeating_queue: Trình phát sẽ lặp lại hàng đợi.
+  repeating_track: Trình phát sẽ tiếp tục lặp lại bài hát hiện tại.
+  set_music_channel: Mình sẽ gửi thông báo phát, kết thúc, tạm dừng và xóa bài hát ở kênh này.
+  song_skips_after: ''
+  to_position: Đến vị trí
+  track_moved: Đã di chuyển bài hát
+  track_not_found: Không tìm thấy bài hát.
+  unset_music_channel: Mình sẽ gửi thông báo phát, kết thúc, tạm dừng và xóa bài hát ở kênh mà nhạc được bắt đầu phát.
+  volume_input_invalid: Âm lượng phải từ 0 đến 100
+  volume_set: 'Đã đặt âm lượng thành {0}%'
+  wrongsong_success: 'Ối! Đã xóa nhầm bài: {0}'
+
+zh-CN:
+  attempting_to_queue: '正在嘗試將 {0} 首歌加入播放清單'
+  joined_voice: '已加入語音頻道 {0}。'
+  autodc_disable: 我將不會在沒有任何歌曲可以播放時退出語音頻道
+  autodc_enable: 我將會在沒有任何歌曲可以播放時退出語音頻道
+  autoplaying: 自動添加相關曲目。
+  current_music_quality: '目前設定的音樂播放品質為：{0}'
+  dir_queue_complete: 目錄列隊完成。
+  fairplay: ''
+  from_position: 從位置
+  music_autoplay_off: 音樂自動播放已禁用。
+  music_autoplay_on: 啟用音樂自動播放。每首曲目播放完畢後，我會自動將相關曲目排隊。
+  music_fairplay: 音樂佇列已公平重新排序。
+  music_quality_set: '音樂播放品質已被設定為 {0}，設定將在完全停止(destroy)並重新啟動音樂播放器後生效'
+  no_last_queued_found: 找不到最近加入佇列的曲目。
+  no_lyrics_found: 找不到歌詞。
+  no_player: 沒有運作中的音樂撥放器。
+  not_with_bot_in_voice: 你和機器人並未處在相同的語音頻道中
+  now_playing: 現在播放
+  player_queue: '撥放列表 - {0}/{1} 頁'
+  playlist_delete_fail: 未能刪除該播放列表。它並不存在，或者你不是它的持有者。
+  playlist_deleted: 播放列表已刪除。
+  playlist_name_too_long: 播放列表名称不能超过20个字符。
+  playlist_id_not_found: 具有該 ID 的播放列表不存在。
+  playlist_queue_complete: 播放清單載入完畢
+  playlist_saved: 播放列表已保存
+  playlists: '`#{0}` - **{1}** *{2}*（{3} 首曲目）'
+  playlists_page: '已保存播放列表的第 {0} 頁'
+  queue: 列隊
+  queue_cleared: 音樂列隊已清除。
+  queue_search_results: 輸入搜尋結果的編號以將該曲目加入佇列。
+  queue_shuffled: 音樂列隊已重置。
+  queue_stopped: '播放器停止。使用 {0} 命令開始播放。'
+  queued_track: 排隊的曲目
+  removed_track: 刪除的曲目
+  removed_track_error: 該播放清單上的曲目不存在
+  repeating_none: 播放器將在播放清單結束後停止
+  repeating_queue: 撥放器將會循環播放播放清單
+  repeating_track: 播放器將會持續重複同一首歌
+  set_music_channel: 我現在將在該頻道中輸出正在播放、已完成、已暫停和已刪除的曲目。
+  song_skips_after: ''
+  to_position: 定位
+  track_moved: 曲目移動
+  track_not_found: 未找到曲目。
+  unset_music_channel: 我現在將在音樂開始的頻道中輸出新創建的音樂播放器的播放、完成、暫停和刪除的曲目。
+  volume_input_invalid: 音量必須在 0 到 100 之間
+  volume_set: '音量設定為 {0}%'
+  wrongsong_success: '糟糕！錯誤的歌曲已移除：{0}'

@@ -1,0 +1,175 @@
+ar:
+  livechannel_added: 'تمت إضافة {0} كقناة مباشرة بنجاح.'
+  livechannel_limit: 'يمكنك الحصول على {0} قنوات مباشرة كحد أقصى لكل سيرفر.'
+  livechannel_list_empty: لم يتم تكوين أي قنوات مباشرة لهذا السيرفر.
+  livechannel_list_title: 'القنوات المباشرة في {0}'
+  livechannel_not_found: لم يتم العثور على القناة في قائمة القنوات المباشرة.
+  livechannel_please_wait: يُرجى الانتظار حتى 10 دقائق حتى تسري التغييرات
+  livechannel_removed: 'تمت إزالة {0} من القنوات المباشرة بنجاح.'
+  preview: معاينة
+  template: قالب
+
+de-DE:
+  livechannel_added: '{0} wurde erfolgreich als Live-Kanal hinzugefügt.'
+  livechannel_limit: 'Du kannst maximal {0} Live-Kanäle pro Server haben.'
+  livechannel_list_empty: Keine Live-Kanäle für diesen Server konfiguriert.
+  livechannel_list_title: 'Live-Kanäle in {0}'
+  livechannel_not_found: Kanal wurde nicht in der Live-Kanalliste gefunden.
+  livechannel_please_wait: Bitte warte bis zu 10 Minuten, bis die Änderungen wirksam werden
+  livechannel_removed: '{0} wurde erfolgreich aus den Live-Kanälen entfernt.'
+  preview: Vorschau
+  template: Vorlage
+
+es-ES:
+  livechannel_added: '{0} ha sido añadido como canal en vivo con éxito.'
+  livechannel_limit: 'Puedes tener como máximo {0} canales en vivo por servidor.'
+  livechannel_list_empty: No hay canales en vivo configurados para este servidor.
+  livechannel_list_title: 'Canales en Vivo en {0}'
+  livechannel_not_found: El canal no fue encontrado en la lista de canales en vivo.
+  livechannel_please_wait: Por favor, espera hasta 10 minutos para que los cambios surtan efecto
+  livechannel_removed: '{0} ha sido eliminado de los canales en vivo con éxito.'
+  preview: Vista Previa
+  template: Plantilla
+
+fr-FR:
+  livechannel_added: '{0} a été ajouté comme salon en direct avec succès.'
+  livechannel_limit: 'Vous pouvez avoir au maximum {0} salons en direct par serveur.'
+  livechannel_list_empty: Aucun salon en direct configuré pour ce serveur.
+  livechannel_list_title: 'Salons en Direct dans {0}'
+  livechannel_not_found: Le salon n'a pas été trouvé dans la liste des salons en direct.
+  livechannel_please_wait: Veuillez attendre jusqu'à 10 minutes pour que les changements prennent effet
+  livechannel_removed: '{0} a été retiré des salons en direct avec succès.'
+  preview: Aperçu
+  template: Modèle
+
+id-ID:
+  livechannel_added: 'Berhasil menambahkan {0} sebagai live channel.'
+  livechannel_limit: 'Kamu bisa punya maksimal {0} live channel per server.'
+  livechannel_list_empty: Belum ada live channel yang dikonfigurasi untuk server ini.
+  livechannel_list_title: 'Live Channel di {0}'
+  livechannel_not_found: Channel tidak ditemukan dalam daftar live channel.
+  livechannel_please_wait: Mohon tunggu hingga 10 menit agar perubahan berlaku
+  livechannel_removed: 'Berhasil menghapus {0} dari live channel.'
+  preview: Pratinjau
+  template: Template
+
+ja-JP:
+  livechannel_added: '{0}がライブチャンネルとして正常に追加されました。'
+  livechannel_limit: 'サーバーあたり最大{0}個のライブチャンネルを設定できます。'
+  livechannel_list_empty: このサーバーにライブチャンネルは設定されていません。
+  livechannel_list_title: '{0}のライブチャンネル'
+  livechannel_not_found: チャンネルがライブチャンネルリストに見つかりません。
+  livechannel_please_wait: 変更が反映されるまで最大10分お待ちください
+  livechannel_removed: '{0}がライブチャンネルから正常に削除されました。'
+  preview: プレビュー
+  template: テンプレート
+
+ko-KR:
+  livechannel_added: '{0}이(가) 라이브 채널로 추가되었어요.'
+  livechannel_limit: '서버당 최대 {0}개의 라이브 채널을 설정할 수 있어요.'
+  livechannel_list_empty: 이 서버에 설정된 라이브 채널이 없어요.
+  livechannel_list_title: '{0}의 라이브 채널'
+  livechannel_not_found: 라이브 채널 목록에서 해당 채널을 찾을 수 없어요.
+  livechannel_please_wait: 변경 사항이 적용되기까지 최대 10분이 걸릴 수 있어요
+  livechannel_removed: '{0}이(가) 라이브 채널에서 제거되었어요.'
+  preview: 미리보기
+  template: 템플릿
+
+pl-PL:
+  livechannel_added: 'Pomyślnie dodano {0} jako kanał live.'
+  livechannel_limit: 'Możesz mieć maksymalnie {0} kanałów live na serwerze.'
+  livechannel_list_empty: Na tym serwerze nie skonfigurowano kanałów live.
+  livechannel_list_title: 'Kanały live na {0}'
+  livechannel_not_found: Kanał nie został znaleziony na liście kanałów live.
+  livechannel_please_wait: Poczekaj do 10 minut, aż zmiany zaczną obowiązywać
+  livechannel_removed: 'Pomyślnie usunięto {0} z kanałów live.'
+  preview: Podgląd
+  template: Szablon
+
+pt-BR:
+  livechannel_added: '{0} foi adicionado como canal ao vivo com sucesso.'
+  livechannel_limit: 'Você pode ter no máximo {0} canais ao vivo por servidor.'
+  livechannel_list_empty: Nenhum canal ao vivo configurado para este servidor.
+  livechannel_list_title: 'Canais ao Vivo em {0}'
+  livechannel_not_found: Canal não encontrado na lista de canais ao vivo.
+  livechannel_please_wait: Por favor, aguarde até 10 minutos para que as alterações entrem em vigor
+  livechannel_removed: '{0} foi removido dos canais ao vivo com sucesso.'
+  preview: Pré-visualização
+  template: Modelo
+
+ru-RU:
+  livechannel_added: '{0} успешно добавлен как живой канал.'
+  livechannel_limit: 'Вы можете иметь не более {0} живых каналов на сервер.'
+  livechannel_list_empty: На этом сервере не настроены живые каналы.
+  livechannel_list_title: 'Живые Каналы в {0}'
+  livechannel_not_found: Канал не найден в списке живых каналов.
+  livechannel_please_wait: Пожалуйста, подождите до 10 минут, чтобы изменения вступили в силу
+  livechannel_removed: '{0} успешно удалён из живых каналов.'
+  preview: Предпросмотр
+  template: Шаблон
+
+sr-Cyrl-RS:
+  livechannel_added: 'Успешно додат {0} као живи канал.'
+  livechannel_limit: 'Можете имати највише {0} живих канала по серверу.'
+  livechannel_list_empty: Нису конфигурисани живи канали за овај сервер.
+  livechannel_list_title: 'Живи канали у {0}'
+  livechannel_not_found: Канал није пронађен у листи живих канала.
+  livechannel_please_wait: Сачекајте до 10 минута да промене ступе на снагу
+  livechannel_removed: 'Успешно уклоњен {0} из живих канала.'
+  preview: Преглед
+  template: Шаблон
+
+tr-TR:
+  livechannel_added: '{0} başarıyla canlı kanal olarak eklendi.'
+  livechannel_limit: 'Sunucu başına en fazla {0} canlı kanal olabilir.'
+  livechannel_list_empty: Bu sunucu için yapılandırılmış canlı kanal yok.
+  livechannel_list_title: '{0} Canlı Kanalları'
+  livechannel_not_found: Kanal, canlı kanal listesinde bulunamadı.
+  livechannel_please_wait: Değişikliklerin etkili olması için lütfen 10 dakikaya kadar bekle
+  livechannel_removed: '{0} canlı kanallardan başarıyla kaldırıldı.'
+  preview: Önizleme
+  template: Şablon
+
+ts-TS:
+  livechannel_added: 'Successfully added {0} as a live channel.'
+  livechannel_limit: 'You can have at most {0} live channels per server.'
+  livechannel_list_empty: No live channels configured for this server.
+  livechannel_list_title: 'Live Channels in {0}'
+  livechannel_not_found: That channel wasn't found in the live channels list.
+  livechannel_please_wait: Please allow up to 10 minutes for changes to take effect. Be patient!
+  livechannel_removed: 'Successfully removed {0} from live channels.'
+  preview: Preview
+  template: Template
+
+uk-UA:
+  livechannel_added: 'Успішно додано {0} як живий канал.'
+  livechannel_limit: 'Можна мати щонайбільше {0} живих каналів на сервер.'
+  livechannel_list_empty: На цьому сервері не налаштовано живих каналів.
+  livechannel_list_title: 'Живі канали на {0}'
+  livechannel_not_found: Канал не знайдено у списку живих каналів.
+  livechannel_please_wait: Зачекай до 10 хвилин, поки зміни набудуть чинності
+  livechannel_removed: 'Успішно видалено {0} з живих каналів.'
+  preview: Попередній перегляд
+  template: Шаблон
+
+vi-VN:
+  livechannel_added: 'Đã thêm {0} làm kênh trực tiếp thành công.'
+  livechannel_limit: 'Bạn chỉ có thể có tối đa {0} kênh trực tiếp mỗi máy chủ.'
+  livechannel_list_empty: Chưa có kênh trực tiếp nào được cấu hình cho máy chủ này.
+  livechannel_list_title: 'Kênh trực tiếp trong {0}'
+  livechannel_not_found: Không tìm thấy kênh trong danh sách kênh trực tiếp.
+  livechannel_please_wait: Vui lòng chờ tối đa 10 phút để thay đổi có hiệu lực
+  livechannel_removed: 'Đã xóa {0} khỏi kênh trực tiếp thành công.'
+  preview: Xem trước
+  template: Mẫu
+
+zh-CN:
+  livechannel_added: '已成功將 {0} 新增為即時頻道。'
+  livechannel_limit: '每個伺服器最多可有 {0} 個即時頻道。'
+  livechannel_list_empty: 此伺服器未設定即時頻道。
+  livechannel_list_title: '{0} 中的即時頻道'
+  livechannel_not_found: 在即時頻道列表中未找到該頻道。
+  livechannel_please_wait: 請等待最多 10 分鐘讓變更生效
+  livechannel_removed: '已成功從即時頻道中移除 {0}。'
+  preview: 預覽
+  template: 範本

@@ -1,8 +1,0 @@
-curgen_disabled: La génération de devises a été désactivée sur ce salon.
-curgen_enabled: La génération de devises a été activée sur ce salon.
-curgen_pl: '{0} {1} aléatoires sont apparues!'
-curgen_sn: 'Une {0} aléatoire est apparue!'
-pick_pl: 'Récupérez les en tapant `{0}pick`'
-pick_sn: 'Récupérez la en tapant `{0}pick`'
-picked: '{1} a ramassé {0}'
-planted: '{0} a planté {1}'

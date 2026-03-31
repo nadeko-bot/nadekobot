@@ -1,3 +1,0 @@
-purge_user_confirm: '{0} kullanıcısını veritabanından silmek istediğine emin misin?'
-cleanup_done: 'Veritabanında {0} sunucunun verisi kaldı.'
-sql_confirm_exec: Aşağıdaki SQL komutunun çalıştırılmasını onayla

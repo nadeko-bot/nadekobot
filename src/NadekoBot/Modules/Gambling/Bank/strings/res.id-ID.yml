@@ -1,4 +1,0 @@
-bank_balance_other: 'Pengguna {0} memiliki {1} di bank.'
-bank_deposited: 'Kamu menyetor {0} ke rekening bankmu.'
-bank_withdraw_insuff: 'Kamu tidak punya cukup {0} di rekening bankmu.'
-bank_withdrew: 'Kamu menarik {0} dari rekening bankmu.'

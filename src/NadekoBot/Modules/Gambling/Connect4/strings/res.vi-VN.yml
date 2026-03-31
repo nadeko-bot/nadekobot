@@ -1,5 +1,0 @@
-connect4_created: Đã tạo trò Connect4. Đang chờ người chơi tham gia.
-connect4_draw: Ván Connect4 kết thúc hoà.
-connect4_failed_to_start: Ván Connect4 không thể bắt đầu vì không ai tham gia.
-connect4_player_to_move: 'Lượt đi của: {0}'
-connect4_won: '{0} đã thắng ván Connect4 với {1}.'

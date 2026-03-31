@@ -1,6 +1,0 @@
-perm_override: 'Nutzer benötigen die Berechtigung {0}, um den {1} Befehl auszuführen.'
-perm_override_all: Alle Ausnahmen für Discord Berechtigungen wurden entfernt.
-perm_override_all_confirm: Bist du dir sicher, dass du **ALLE** Ausnahmen für Discord Berechtigungen auf diesem Server entfernen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.
-perm_override_page_none: Keine Ausnahmen auf dieser Seite.
-perm_override_reset: Ausnahmen für Discord Berechtigungen für diesen Befehl wurden entfernt.
-perm_overrides: Ausnahmen für Discord Berechtigungen

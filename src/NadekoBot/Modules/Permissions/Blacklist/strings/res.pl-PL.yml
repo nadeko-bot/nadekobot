@@ -1,5 +1,0 @@
-blacklisted: 'Dodano na czarną listę {0} o ID {1}'
-blacklisted_channels: Zablokowane kanały
-blacklisted_servers: Zablokowane serwery
-blacklisted_users: Zablokowani użytkownicy
-unblacklisted: 'Usunięto z czarnej listy {0} o ID {1}'

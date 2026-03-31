@@ -1,4 +1,0 @@
-xp_exclude_added: '{0}: {1} XP sisteminden çıkarıldı.'
-xp_exclude_removed: '{0}: {1} artık XP sisteminden çıkarılmış değil.'
-xp_exclusion_none: Bu sunucu için ayarlanmış hiçbir istisna yok.
-xp_exclusion_title: XP İstisnaları

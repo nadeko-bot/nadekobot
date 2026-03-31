@@ -1,9 +1,0 @@
-feed_added: Akış eklendi.
-feed_cant_parse: O akış URL'sine erişilemiyor veya içeriği ayrıştırılamıyor.
-feed_duplicate: Bu sunucuda zaten o akışı takip ediyorsun.
-feed_invalid_url: Geçersiz akış URL'si. Mutlak bir http veya https URL'si olmalıdır.
-feed_limit_reached: Sunucu başına izin verilen maksimum akış sayısına ulaştın.
-feed_no_feed: Bu sunucuda herhangi bir akışa abone olmadın.
-feed_out_of_range: İndeks aralık dışında.
-feed_removed: Akış kaldırıldı.
-feed_auto_removed: '`{0}` akışı tekrarlanan bağlantı hataları nedeniyle otomatik olarak kaldırıldı.'

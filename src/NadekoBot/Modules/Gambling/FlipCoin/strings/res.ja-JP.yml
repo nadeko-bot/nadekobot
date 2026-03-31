@@ -1,6 +1,0 @@
-betflip_guess: 当たりました！
-flip_invalid: '無効な番号が指定されました。1～{0}個のコインを投げることが可能です。'
-flip_results: ''
-flipped: 'はコインを投げ、{0}が出ました。'
-heads: 表
-tails: 裏

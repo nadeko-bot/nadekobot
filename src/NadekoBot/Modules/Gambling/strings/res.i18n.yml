@@ -1,0 +1,655 @@
+ar:
+  available_tests: الاختبارات المتاحة
+  awarded: '{2} منح {0} لـ {1}'
+  bank_balance: 'لديك {0} في حسابك البنكي.'
+  bet: رهان
+  betroll_win: 'تهانينا! حصلت على أكثر من {0}'
+  better_luck: حظًا أوفر في المرة القادمة ^_^
+  curtr_award: 'مُنح من مالك البوت {0} [{1}]'
+  curtr_gift: 'هدية من {0} [{1}]'
+  curtr_take: 'أُخذ من مالك البوت {0} [{1}]'
+  gifted: '{2} أهدى {0} لـ {1}'
+  has: '{0} لديه {1}'
+  mass_award: 'تم منح {0} لـ {1} مستخدم من دور {2}.'
+  mass_take: 'تم أخذ {0} من {1} مستخدم في دور {2}.'
+  max_bet_limit: 'لا يمكنك المراهنة بأكثر من {0}'
+  min_bet_limit: 'لا يمكنك المراهنة بأقل من {0}'
+  raffled_user: المستخدم المُختار عشوائيًا
+  rakeback_available: 'لديك {0} استرداد متاح. اضغط الزر للمطالبة.'
+  rakeback_claimed: 'لقد طالبت بـ {0} كاسترداد!'
+  rakeback_none: ليس لديك أي استرداد للمطالبة به بعد.
+  remind_timely: 'سأذكرك بمكافأتك الدورية {0}'
+  roll2: رمي
+  rps_draw: 'تعادل! كلاكما اختار {0}'
+  rps_win: '{0} فاز! {1} يتغلب على {2}'
+  take: 'تم أخذ {0} بنجاح من {1}'
+  take_fail: 'لم يتمكن من أخذ {0} من {1} لأن المستخدم لا يملك هذا القدر من {2}!'
+  test_results_for: 'نتائج الاختبار لـ {0}'
+  timely: 'لقد طالبت بـ {0} الخاصة بك. يمكنك المطالبة مجددًا خلال {1} ساعة'
+  timely_already_claimed: 'لقد طالبت بمكافأتك الدورية بالفعل. يمكنك الحصول عليها مجددًا {0}.'
+  timely_button: اضغط الزر للمطالبة بمكافأتك الدورية.
+  timely_none: لم يحدد مالك البوت مكافأة دورية.
+  timely_reset: سيتمكن جميع المستخدمين من المطالبة بالعملة الدورية مجددًا.
+  timely_set: 'سيتمكن المستخدمون من المطالبة بـ {0} كل {1} ساعة'
+  timely_set_none: لن يتمكن المستخدمون من المطالبة بأي عملة دورية.
+  timely_time: حان وقت مكافأتك الدورية.
+  transaction: معاملة عملة
+  transactions: 'معاملات المستخدم {0}'
+  vote_suggest: 'التصويت للبوت سيمنحك {0}!'
+  winlb: لوحة متصدري أكبر المكاسب
+  won: فاز
+
+de-DE:
+  available_tests: Verfügbare Tests
+  awarded: '{2} hat {1} mit {0} belohnt'
+  bank_balance: 'Du hast {0} auf deinem Bankkonto.'
+  bet: Einsatz
+  betroll_win: 'Herzlichen Glückwunsch! Du hast über {0} gewürfelt'
+  better_luck: Viel Glück beim nächsten Mal ^-^
+  curtr_award: 'Vergeben von Bot-Besitzer {0} [{1}]'
+  curtr_gift: 'Geschenk von {0} [{1}]'
+  curtr_take: 'Genommen von Bot-Besitzer {0} [{1}]'
+  gifted: '{2} hat {0} an {1} verschenkt'
+  has: '{0} hat {1}'
+  mass_award: 'Es wurden {0} an {1} Nutzer von der Rolle {2} verteilt'
+  mass_take: 'Habe {0} von {1} Nutzern in {2} Rolle genommen.'
+  max_bet_limit: 'Du kannst nicht mehr als {0} wetten'
+  min_bet_limit: 'Du kannst nicht weniger als {0} wetten'
+  raffled_user: Nutzer verlost
+  rakeback_available: 'Du hast {0} Rakeback verfügbar. Klicke den Button, um es abzuholen.'
+  rakeback_claimed: 'Du hast {0} als Rakeback erhalten!'
+  rakeback_none: Du hast noch kein Rakeback zum Abholen.
+  remind_timely: 'Ich werde dich an deine Timely-Belohnung erinnern {0}'
+  roll2: Würfeln
+  rps_draw: 'Es ist Unentschieden! Beide haben {0} gewählt'
+  rps_win: '{0} gewinnt! {1} schlägt {2}'
+  take: 'Erfolgreich {0} von {1} genommen'
+  take_fail: 'konnte nicht {0} von {1} nehmen, weil der Nutzer nicht so viel {2} hat!'
+  test_results_for: 'Testergebnisse für {0}'
+  timely: 'Du hast deine {0} eingefordert. Du kannst dieser erneut in {1} Stunden einfordern.'
+  timely_already_claimed: 'Du hast bereits deinen timely reward eingefordert. Du kannst dies wieder tun in {0}.'
+  timely_button: Klicke den Button, um deine periodische Belohnung abzuholen.
+  timely_none: Der Bot Owner hat keinen timely reward spezifiziert.
+  timely_reset: Alle Nutzer werden wieder die Möglichkeit haben die timely Währung einzufordern.
+  timely_set: 'Nutzer werden {0} alle {1} Stunden einfordern können.'
+  timely_set_none: Nutzer werden nicht die Möglichkeit haben die timely Währung einfordern zu können.
+  timely_time: Es ist Zeit für deine Timely-Belohnung.
+  transaction: Währungstransaktion
+  transactions: 'Transaktion von dem Nutzer {0}'
+  vote_suggest: 'Für den Bot zu stimmen bringt dir {0}!'
+  winlb: Rangliste der Größten Gewinne
+  won: Gewonnen
+
+es-ES:
+  available_tests: Pruebas disponibles
+  awarded: '{2} le otorgó {0} a {1}'
+  bank_balance: 'Tienes {0} en tu cuenta del banco.'
+  bet: Apuesta
+  betroll_win: '¡Felicidades! Sacaste por encima de {0}'
+  better_luck: Mejor suerte la próxima.
+  curtr_award: 'Regaladas por el dueño del bot {0} [{1}]'
+  curtr_gift: 'Regalo de {0} [{1}]'
+  curtr_take: 'Retiradas por el dueño del bot {0} [{1}]'
+  gifted: '{2} le regaló {0} a {1}'
+  has: '{0} tiene {1}.'
+  mass_award: 'Regalados {0} a {1} usuarios en el rol {2}.'
+  mass_take: 'Tomado {0} de {1} usuarios en el rol {2}.'
+  max_bet_limit: 'No puedes apostar más de {0}.'
+  min_bet_limit: 'No puedes apostar menos de {0}.'
+  raffled_user: Usuario escogido
+  rakeback_available: 'Tienes {0} de rakeback disponible. Haz clic en el botón para reclamar.'
+  rakeback_claimed: '¡Has reclamado {0} como rakeback!'
+  rakeback_none: Aún no tienes rakeback para reclamar.
+  remind_timely: 'Te recordare tu recompensa de timely {0}'
+  roll2: Tirada
+  rps_draw: '¡Es un empate! Ambos escogieron {0}'
+  rps_win: '¡{0} gana! {1} vence a {2}'
+  take: 'le ha quitado {0} a {1}'
+  take_fail: 'no pudo quitarle {0} a {1} porque el usuario no tiene {2}'
+  test_results_for: 'Resultados de prueba para {0}'
+  timely: 'Has reclamado tus {0}. Puedes reclamar nuevamente en {1}h.'
+  timely_already_claimed: 'Ya has reclamado tu recompensa diaria. Puedes reclamarla nuevamente en {0}.'
+  timely_button: Haz clic en el botón para reclamar tu recompensa periódica.
+  timely_none: El dueño del bot no especificó una recompensa diaria.
+  timely_reset: Todos los usuarios podrán reclamar nuevamente la recompensa diaria.
+  timely_set: 'Los usuarios podrán reclamar {0} cada {1}h.'
+  timely_set_none: Los usuarios no podrán reclamar ninguna recompensa diaria.
+  timely_time: Es hora de tu recompensa de timely.
+  transaction: Transacciones de moneda
+  transactions: 'Transacciones del usuario {0}'
+  vote_suggest: '¡Votar por el bot te dará {0}!'
+  winlb: Ranking de Mayores Victorias
+  won: Ganó
+
+fr-FR:
+  available_tests: Tests disponibles
+  awarded: '{2} a attribué {0} à {1}'
+  bank_balance: 'Vous disposez de {0} sur votre compte bancaire.'
+  bet: Mise
+  betroll_win: 'Félicitations ! Vous avez lancé au-dessus de {0}'
+  better_luck: Vous aurez plus de chance la prochaine fois ^_^
+  curtr_award: 'Récompensé par le propriétaire du bot {0} [{1}]'
+  curtr_gift: 'Cadeau de {0} [{1}]'
+  curtr_take: 'Pris par le propriétaire du bot {0} [{1}]'
+  gifted: '{2} a offert {0} à {1}'
+  has: '{0} a {1}'
+  mass_award: 'Une récompense de {0} sera accordée aux {1} utilisateurs disposant du rôle {2}.'
+  mass_take: 'Pris {0} de {1} utilisateurs du rôle {2}.'
+  max_bet_limit: 'Vous ne pouvez pas parier plus de {0}'
+  min_bet_limit: 'Vous ne pouvez pas parier moins de {0}'
+  raffled_user: Utilisateur tiré au sort
+  rakeback_available: 'Vous avez {0} de rakeback disponible. Cliquez sur le bouton pour réclamer.'
+  rakeback_claimed: 'Vous avez réclamé {0} en rakeback !'
+  rakeback_none: Vous n'avez pas encore de rakeback à réclamer.
+  remind_timely: 'Je vous notifierai afin d''obtenir votre prochaine récompense {0}'
+  roll2: Lancé
+  rps_draw: 'C''est un match nul! Les deux ont choisi {0}'
+  rps_win: '{0} a gagné! {1} bat {2}'
+  take: 'a pris avec succès {0} de {1}'
+  take_fail: 'Impossibilité de prendre {0} de {1} car l''utilisateur n''a pas autant de {2} !'
+  test_results_for: 'Résultats du test pour {0}'
+  timely: 'Vous venez de réclamer vos {0}. Vous pourrez réclamer à nouveau dans {1}h.'
+  timely_already_claimed: 'Vous avez déjà obtenu votre récompense opportune. Vous ne pourrez l''obtenir de nouveau que {0}.'
+  timely_button: Cliquez sur le bouton pour réclamer votre récompense périodique.
+  timely_none: Le propriétaire de ce bot n'a pas spécifié de récompense opportune.
+  timely_reset: Tous les utilisateurs pourront réclamer leurs récompenses opportunes de nouveau.
+  timely_set: 'Les utilisateurs pourront réclamer {0} toutes les {1}h.'
+  timely_set_none: Les utilisateurs ne pourront réclamer aucune récompense opportune.
+  timely_time: C'est l'heure votre récompense opportune.
+  transaction: Transaction monétaire
+  transactions: 'Transactions de l''utilisateur {0}'
+  vote_suggest: 'Voter pour le bot vous donnera {0} !'
+  winlb: Classement des Plus Grandes Victoires
+  won: Gagné
+
+id-ID:
+  available_tests: Tes yang Tersedia
+  awarded: '{2} telah memberikan {0} kepada {1}'
+  bank_balance: 'Kamu memiliki {0} di rekening bankmu.'
+  bet: Taruhan
+  betroll_win: 'Selamat! Kamu melempar di atas {0}'
+  better_luck: Semoga beruntung lain kali ^_^
+  curtr_award: 'Diberikan oleh pemilik bot {0} [{1}]'
+  curtr_gift: 'Hadiah dari {0} [{1}]'
+  curtr_take: 'Diambil oleh pemilik bot {0} [{1}]'
+  gifted: '{2} telah menghadiahkan {0} kepada {1}'
+  has: '{0} memiliki {1}'
+  mass_award: 'Memberikan {0} kepada {1} pengguna dari role {2}.'
+  mass_take: 'Mengambil {0} dari {1} pengguna di role {2}.'
+  max_bet_limit: 'Kamu tidak bisa bertaruh lebih dari {0}'
+  min_bet_limit: 'Kamu tidak bisa bertaruh kurang dari {0}'
+  raffled_user: Pengguna yang terpilih
+  rakeback_available: 'Kamu memiliki {0} rakeback tersedia. Klik tombol untuk mengklaim.'
+  rakeback_claimed: 'Kamu telah mengklaim {0} sebagai rakeback!'
+  rakeback_none: Kamu belum punya rakeback yang bisa diklaim.
+  remind_timely: 'Aku akan mengingatkanmu tentang hadiah timely-mu {0}'
+  roll2: Roll
+  rps_draw: 'Seri! Keduanya memilih {0}'
+  rps_win: '{0} menang! {1} mengalahkan {2}'
+  take: 'berhasil mengambil {0} dari {1}'
+  take_fail: 'gagal mengambil {0} dari {1} karena pengguna tidak punya sebanyak itu {2}!'
+  test_results_for: 'Hasil tes untuk {0}'
+  timely: 'Kamu sudah mengklaim {0}-mu. Kamu bisa klaim lagi dalam {1} jam'
+  timely_already_claimed: 'Kamu sudah mengklaim hadiah timely-mu. Kamu bisa mendapatkannya lagi {0}.'
+  timely_button: Klik tombol untuk mengklaim hadiah timely-mu.
+  timely_none: Pemilik bot belum menentukan hadiah timely.
+  timely_reset: Semua pengguna akan bisa mengklaim mata uang timely lagi.
+  timely_set: 'Pengguna akan bisa mengklaim {0} setiap {1} jam'
+  timely_set_none: Pengguna tidak akan bisa mengklaim mata uang timely apapun.
+  timely_time: Waktunya hadiah timely-mu.
+  transaction: Transaksi Mata Uang
+  transactions: 'Transaksi pengguna {0}'
+  vote_suggest: 'Voting untuk bot ini akan memberimu {0}!'
+  winlb: Papan Peringkat Kemenangan Terbesar
+  won: Menang
+
+ja-JP:
+  available_tests: 利用可能なテスト
+  awarded: '{2}は{1}に{0}を授与しました'
+  bank_balance: '銀行口座に{0}あります。'
+  bet: ベット
+  betroll_win: 'おめでとうございます！{0}以上を出しました'
+  better_luck: 次は運が良いといいですね ^_^
+  curtr_award: 'Bot所有者{0}から付与 [{1}]'
+  curtr_gift: '{0}からのギフト [{1}]'
+  curtr_take: 'Bot所有者{0}により取得 [{1}]'
+  gifted: '{2}は{1}に{0}をプレゼントしました'
+  has: '{0}は{1}持っています。'
+  mass_award: '役割《{2}》の{1}人のユーザーに{0}を授与しました。'
+  mass_take: 'ロール{2}の{1}人のユーザーから{0}を取得しました。'
+  max_bet_limit: '{0}より大きい賭けはできません'
+  min_bet_limit: '{0}より小さい賭けはできません'
+  raffled_user: ユーザーを抽選しました
+  rakeback_available: '{0}のレーキバックが利用可能です。ボタンをクリックして受け取りましょう。'
+  rakeback_claimed: '{0}をレーキバックとして受け取りました！'
+  rakeback_none: まだ受け取れるレーキバックはありません。
+  remind_timely: 'タイムリー報酬について{0}にリマインドします'
+  roll2: ロール
+  rps_draw: '引き分け! 両方とも{0}を出しました'
+  rps_win: '{0}の勝ち! {1}は{2}に勝ちます'
+  take: '{1}から{0}を正常に受け取りました'
+  take_fail: '{1}の持っている{2}が足りないので、{0}を受け取ることができませんでした！'
+  test_results_for: '{0}のテスト結果'
+  timely: 'あなたは {0} を請求しました。再び請求できるのは {1}時間後です。'
+  timely_already_claimed: 'あなたは既にタイムリー報酬を請求しています。 {0}後に再び獲得できます。'
+  timely_button: ボタンをクリックしてタイムリー報酬を受け取りましょう。
+  timely_none: ボット所有者はタイムリー報酬を指定していません。
+  timely_reset: 全てのユーザーは再びタイムリー通貨を請求することができるようになります。
+  timely_set: 'ユーザーは {1}時間ごとに {0} を請求できます。'
+  timely_set_none: ユーザーはどのタイムリー通貨も請求することができなくなります。
+  timely_time: タイムリー報酬の時間です。
+  transaction: 通貨取引
+  transactions: 'ユーザー{0}の取引履歴'
+  vote_suggest: 'Botに投票すると{0}がもらえます！'
+  winlb: 最大勝利ランキング
+  won: 勝利
+
+ko-KR:
+  available_tests: 사용 가능한 테스트
+  awarded: '{2}님이 {1}에게 {0}을(를) 지급했어요'
+  bank_balance: '은행 계좌에 {0}이(가) 있어요.'
+  bet: 배팅
+  betroll_win: '축하해요! {0} 이상을 굴렸어요'
+  better_luck: 다음에는 더 좋은 결과가 있을 거예요 ^_^
+  curtr_award: '봇 소유자 {0}이(가) 지급 [{1}]'
+  curtr_gift: '{0}의 선물 [{1}]'
+  curtr_take: '봇 소유자 {0}이(가) 회수 [{1}]'
+  gifted: '{2}님이 {1}에게 {0}을(를) 선물했어요'
+  has: '{0}님은 {1}을(를) 가지고 있어요'
+  mass_award: '{2} 역할의 {1}명의 유저에게 {0}을(를) 지급했어요.'
+  mass_take: '{2} 역할의 {1}명의 유저에게서 {0}을(를) 회수했어요.'
+  max_bet_limit: '{0}보다 많이 걸 수 없어요'
+  min_bet_limit: '{0}보다 적게 걸 수 없어요'
+  raffled_user: 추첨된 유저
+  rakeback_available: '레이크백 {0}을(를) 받을 수 있어요. 버튼을 눌러서 수령하세요.'
+  rakeback_claimed: '레이크백 {0}을(를) 수령했어요!'
+  rakeback_none: 아직 받을 수 있는 레이크백이 없어요.
+  remind_timely: '{0} 후에 타임리 보상을 알려드릴게요'
+  roll2: 굴리기
+  rps_draw: '무승부! 둘 다 {0}을(를) 선택했어요'
+  rps_win: '{0} 승리! {1}이(가) {2}을(를) 이겼어요'
+  take: '{1}에게서 {0}을(를) 성공적으로 회수했어요'
+  take_fail: '{1}에게 {2}이(가) 충분하지 않아서 {0}을(를) 회수할 수 없었어요!'
+  test_results_for: '{0}의 테스트 결과'
+  timely: '{0}을(를) 받았어요. {1}시간 후에 다시 받을 수 있어요'
+  timely_already_claimed: '이미 타임리 보상을 받으셨어요. {0} 후에 다시 받을 수 있어요.'
+  timely_button: 버튼을 눌러서 타임리 보상을 받으세요.
+  timely_none: 봇 소유자가 타임리 보상을 설정하지 않았어요.
+  timely_reset: 모든 사용자가 다시 타임리 화폐를 받을 수 있게 되었어요.
+  timely_set: '사용자가 {1}시간마다 {0}을(를) 받을 수 있어요'
+  timely_set_none: 사용자가 타임리 화폐를 받을 수 없게 설정되었어요.
+  timely_time: 타임리 보상을 받을 시간이에요.
+  transaction: 화폐 거래
+  transactions: '사용자 {0}의 거래 내역'
+  vote_suggest: '봇에 투표하면 {0}을(를) 받을 수 있어요!'
+  winlb: 최고 승리 리더보드
+  won: 승리
+
+pl-PL:
+  available_tests: Dostępne testy
+  awarded: '{2} przyznał/a {0} dla {1}'
+  bank_balance: 'Masz {0} na koncie bankowym.'
+  bet: Zakład
+  betroll_win: 'Gratulacje! Wyrzuciłeś/aś powyżej {0}'
+  better_luck: Więcej szczęścia następnym razem ^_^
+  curtr_award: 'Przyznane przez właściciela bota {0} [{1}]'
+  curtr_gift: 'Prezent od {0} [{1}]'
+  curtr_take: 'Zabrane przez właściciela bota {0} [{1}]'
+  gifted: '{2} podarował/a {0} dla {1}'
+  has: '{0} ma {1}'
+  mass_award: 'Przyznano {0} dla {1} użytkowników z roli {2}.'
+  mass_take: 'Zabrano {0} od {1} użytkowników z roli {2}.'
+  max_bet_limit: 'Nie możesz postawić więcej niż {0}'
+  min_bet_limit: 'Nie możesz postawić mniej niż {0}'
+  raffled_user: Wylosowany użytkownik
+  rakeback_available: 'Masz {0} rakeback do odebrania. Kliknij przycisk, żeby odebrać.'
+  rakeback_claimed: 'Odebrałeś/aś {0} jako rakeback!'
+  rakeback_none: Nie masz jeszcze żadnego rakeback do odebrania.
+  remind_timely: 'Przypomnę ci o nagrodzie timely {0}'
+  roll2: Rzut
+  rps_draw: 'Remis! Oboje wybrali {0}'
+  rps_win: '{0} wygrał! {1} bije {2}'
+  take: 'pomyślnie zabrano {0} od {1}'
+  take_fail: 'nie udało się zabrać {0} od {1}, bo użytkownik nie ma tyle {2}!'
+  test_results_for: 'Wyniki testu dla {0}'
+  timely: 'Odebrałeś swoje {0}. Możesz odebrać ponownie za {1}h'
+  timely_already_claimed: 'Już odebrałeś swoją nagrodę timely. Możesz ją odebrać ponownie {0}.'
+  timely_button: Kliknij przycisk, aby odebrać nagrodę timely.
+  timely_none: Właściciel bota nie ustawił nagrody timely.
+  timely_reset: Wszyscy użytkownicy będą mogli ponownie odebrać walutę timely.
+  timely_set: 'Użytkownicy będą mogli odbierać {0} co {1}h'
+  timely_set_none: Użytkownicy nie będą mogli odbierać żadnej waluty timely.
+  timely_time: Czas na twoją nagrodę timely.
+  transaction: Transakcja walutowa
+  transactions: 'Transakcje użytkownika {0}'
+  vote_suggest: 'Głosowanie na bota da ci {0}!'
+  winlb: Ranking największych wygranych
+  won: Wygrana
+
+pt-BR:
+  available_tests: Testes Disponiveis
+  awarded: '{2} premiou {0} para {1}'
+  bank_balance: 'Voce tem {0} na sua conta bancaria.'
+  bet: Aposta
+  betroll_win: 'Parabéns! Você rolou acima de {0}'
+  better_luck: Melhor sorte na próxima vez ^-^
+  curtr_award: 'Premiado pelo dono do bot {0} [{1}]'
+  curtr_gift: 'Presente de {0} [{1}]'
+  curtr_take: 'Levado pelo dono do bot {0} [{1}]'
+  gifted: '{2} presenteou {0} para {1}'
+  has: '{0} tem {1}'
+  mass_award: 'Concedeu {0} a {1} usuários do cargo {2}.'
+  mass_take: '{0} tirados de {1} usuários com cargo {2}.'
+  max_bet_limit: 'Você não pode apostar mais de {0}'
+  min_bet_limit: 'Você não pode apostar menos de {0}'
+  raffled_user: Usuário sorteado
+  rakeback_available: 'Você tem {0} de rakeback disponível. Clique no botão para resgatar.'
+  rakeback_claimed: 'Você resgatou {0} como rakeback!'
+  rakeback_none: Você ainda não tem rakeback para resgatar.
+  remind_timely: 'Vou te lembrar da sua recompensa periodica {0}'
+  roll2: Rolar
+  rps_draw: 'Um empate! Ambos escolheram {0}'
+  rps_win: '{0} ganhou! {1} derrota {2}'
+  take: 'Retirou {0} de {1} com sucesso'
+  take_fail: 'foi impossível retirar {0} de {1} porque o usuário não tem tudo isso {2}!'
+  test_results_for: 'Resultados do teste para {0}'
+  timely: 'Você reivindicou {0}. Você pode reivindicar novamente em {1}h'
+  timely_already_claimed: 'Você já reivindicou sua recompensa. Você pode reinvidicar novamente em {0}.'
+  timely_button: Clique no botão para resgatar sua recompensa periódica.
+  timely_none: O dono do bot não definiu uma recompensa periódica.
+  timely_reset: Agora, usuários poderão reivindicar recompensas periodicamente.
+  timely_set: 'Usuários poderão reivindicar {0} a cada {1}h'
+  timely_set_none: Usuários não podem mais reivindicar dinheiro periodicamente.
+  timely_time: Esta na hora da sua recompensa periodica.
+  transaction: Transação Monetária
+  transactions: 'Transações do usuário {0}'
+  vote_suggest: 'Votar pelo bot vai te dar {0}!'
+  winlb: Ranking de Maiores Vitórias
+  won: Ganhou
+
+ru-RU:
+  available_tests: Доступные тесты
+  awarded: '{2} наградил {1} суммой {0}'
+  bank_balance: 'У вас {0} на банковском счете.'
+  bet: Ставка
+  betroll_win: 'Поздравляем! Вы выбросили выше {0}'
+  better_luck: Удачи в следующий раз ^-^
+  curtr_award: 'Выдано владельцем бота {0} [{1}]'
+  curtr_gift: 'Подарок от {0} [{1}]'
+  curtr_take: 'Забрано владельцем бота {0} [{1}]'
+  gifted: '{2} подарил {0} пользователю {1}'
+  has: 'У {0} есть {1}'
+  mass_award: '{1} пользователей с ролью {2} получили вознаграждение в виде {0}'
+  mass_take: 'Взято {0} от {1} пользователей в роли {2}.'
+  max_bet_limit: 'Вы не можете сделать ставку, больше {0}'
+  min_bet_limit: 'Вы не можете сделать ставку, меньше {0}'
+  raffled_user: Победитель лотереи
+  rakeback_available: 'У вас {0} доступного рейкбэка. Нажмите кнопку, чтобы забрать.'
+  rakeback_claimed: 'Вы забрали {0} рейкбэка!'
+  rakeback_none: У вас пока нет рейкбэка для получения.
+  remind_timely: 'Я напомню вам о вашей ежедневной награде {0}'
+  roll2: Бросок
+  rps_draw: 'Это ничья! Двое выбрали {0}'
+  rps_win: '{0} выигрывает! {1} побеждает {2}'
+  take: 'успешно взял {0} из {1}'
+  take_fail: 'не удалось взять {0} из {1}, потому что у пользователя не так много {2}!'
+  test_results_for: 'Результаты тестов для {0}'
+  timely: 'Вы получили свои {0}. Вы сможете получить их снова через {1}ч'
+  timely_already_claimed: 'Вы уже получали свою суточную награду. Ее можно будет получить еще раз через {0}.'
+  timely_button: Нажмите кнопку, чтобы получить свою периодическую награду.
+  timely_none: Владелец бота не указал суточную награду.
+  timely_reset: Пользователи снова смогут получить суточную валюту.
+  timely_set: 'Пользователи смогут получить {0} каждые {1}ч'
+  timely_set_none: Пользователи больше не смогут получить суточную валюту.
+  timely_time: Пора получить вашу ежедневную награду.
+  transaction: Транзакция валюты
+  transactions: 'Операции пользователя {0}'
+  vote_suggest: 'Голосование за бота принесёт вам {0}!'
+  winlb: Рейтинг Крупнейших Выигрышей
+  won: Выиграл
+
+sr-Cyrl-RS:
+  available_tests: Доступни тестови
+  awarded: '{2} је доделио/ла {0} кориснику {1}'
+  bank_balance: 'Имаш {0} на свом банковном рачуну.'
+  bet: Улог
+  betroll_win: 'Честитам! Бацио/ла си изнад {0}'
+  better_luck: Више среће следећи пут ^_^
+  curtr_award: 'Доделио власник бота {0} [{1}]'
+  curtr_gift: 'Поклон од {0} [{1}]'
+  curtr_take: 'Одузео власник бота {0} [{1}]'
+  gifted: '{2} је поклонио/ла {0} кориснику {1}'
+  has: '{0} има {1}'
+  mass_award: 'Додељено {0} за {1} корисника из {2} улоге.'
+  mass_take: 'Одузето {0} од {1} корисника у {2} улози.'
+  max_bet_limit: 'Не можеш се кладити више од {0}'
+  min_bet_limit: 'Не можеш се кладити мање од {0}'
+  raffled_user: Извучени корисник
+  rakeback_available: 'Имаш {0} рејкбека на располагању. Кликни дугме да преузмеш.'
+  rakeback_claimed: 'Преузео/ла си {0} као рејкбек!'
+  rakeback_none: Немаш још рејкбек за преузимање.
+  remind_timely: 'Подсетићу те на твоју временску награду {0}'
+  roll2: Баци
+  rps_draw: 'Нерешено! Обоје сте изабрали {0}'
+  rps_win: '{0} победи! {1} побеђује {2}'
+  take: 'успешно одузето {0} од {1}'
+  take_fail: 'није могуће одузети {0} од {1} јер корисник нема толико {2}!'
+  test_results_for: 'Резултати тестирања за {0}'
+  timely: 'Преузео/ла си својих {0}. Можеш поново за {1}h'
+  timely_already_claimed: 'Већ си преузео/ла своју временску награду. Можеш је добити поново {0}.'
+  timely_button: Кликни на дугме да преузмеш своју временску награду.
+  timely_none: Власник бота није одредио временску награду.
+  timely_reset: Сви корисници ће моћи поново да преузму временску валуту.
+  timely_set: 'Корисници ће моћи да преузму {0} сваких {1}h'
+  timely_set_none: Корисници неће моћи да преузимају временску валуту.
+  timely_time: Време је за твоју временску награду.
+  transaction: Валутна трансакција
+  transactions: 'Трансакције корисника {0}'
+  vote_suggest: 'Гласање за бота ти доноси {0}!'
+  winlb: Листа највећих добитака
+  won: Добитак
+
+tr-TR:
+  available_tests: Mevcut Testler
+  awarded: '{2}, {1} kullanıcısına {0} ödüllendirdi'
+  bank_balance: 'Banka hesabında {0} var.'
+  bet: Bahis
+  betroll_win: 'Tebrikler! {0} üzeri attın'
+  better_luck: Bir dahaki sefere bol şans ^_^
+  curtr_award: 'Bot sahibi {0} tarafından ödüllendirildi [{1}]'
+  curtr_gift: '{0} tarafından hediye [{1}]'
+  curtr_take: 'Bot sahibi {0} tarafından alındı [{1}]'
+  gifted: '{2}, {1} kullanıcısına {0} hediye etti'
+  has: '{0} kullanıcısının {1} var'
+  mass_award: '{2} rolündeki {1} kullanıcıya {0} ödüllendirildi.'
+  mass_take: '{2} rolündeki {1} kullanıcıdan {0} alındı.'
+  max_bet_limit: '{0} üzerinde bahis koyamazsın'
+  min_bet_limit: '{0} altında bahis koyamazsın'
+  raffled_user: Çekiliş kazananı
+  rakeback_available: '{0} rakeback''in mevcut. Talep etmek için butona tıkla.'
+  rakeback_claimed: 'Rakeback olarak {0} talep ettin!'
+  rakeback_none: Henüz talep edebileceğin bir rakeback yok.
+  remind_timely: 'Zamanında ödülünü hatırlatacağım {0}'
+  roll2: Zar At
+  rps_draw: 'Berabere! İkiniz de {0} seçti'
+  rps_win: '{0} kazandı! {1}, {2} yener'
+  take: '{1} kullanıcısından {0} başarıyla alındı'
+  take_fail: '{1} kullanıcısından {0} alınamadı çünkü kullanıcının yeterli {2} yok!'
+  test_results_for: '{0} için test sonuçları'
+  timely: '{0} ödülünü aldın. Tekrar {1}s sonra alabilirsin'
+  timely_already_claimed: 'Zamanında ödülünü zaten aldın. Tekrar {0} alabilirsin.'
+  timely_button: Zamanında ödülünü almak için butona tıkla.
+  timely_none: Bot sahibi zamanında ödülü belirlememiş.
+  timely_reset: Tüm kullanıcılar tekrar zamanında para talep edebilecek.
+  timely_set: 'Kullanıcılar her {1}s''de bir {0} alabilecek'
+  timely_set_none: Kullanıcılar zamanında para talep edemeyecek.
+  timely_time: Zamanında ödülünü alma vakti geldi.
+  transaction: Para İşlemi
+  transactions: '{0} kullanıcısının işlemleri'
+  vote_suggest: 'Bota oy vermek sana {0} kazandıracak!'
+  winlb: En Büyük Kazançlar Sıralaması
+  won: Kazandı
+
+ts-TS:
+  available_tests: Available Tests
+  awarded: '{2} has awarded {0} to {1}'
+  bank_balance: 'You have {0} in your bank account.'
+  bet: Bet
+  betroll_win: 'Congratulations! You rolled above {0}'
+  better_luck: Better luck next time.
+  curtr_award: 'Awarded by bot owner {0} [{1}]'
+  curtr_gift: 'Gift from {0} [{1}]'
+  curtr_take: 'Taken by bot owner {0} [{1}]'
+  gifted: '{2} has gifted {0} to {1}'
+  has: '{0} has {1}'
+  mass_award: 'Awarded {0} to {1} users from {2} role.'
+  mass_take: 'Taken {0} from {1} users in {2} role.'
+  max_bet_limit: 'You can''t bet more than {0}.'
+  min_bet_limit: 'You can''t bet less than {0}.'
+  raffled_user: Raffled user
+  rakeback_available: 'You have {0} rakeback available. Click the button to claim.'
+  rakeback_claimed: 'You''ve claimed {0} as rakeback! D-don''t spend it all at once.'
+  rakeback_none: You don't have any rakeback to claim yet.
+  remind_timely: 'I will remind you about your timely reward {0}'
+  roll2: Roll
+  rps_draw: 'It''s a draw! Both picked {0}'
+  rps_win: '{0} won! {1} beats {2}'
+  take: 'Successfully took {0} from {1}'
+  take_fail: 'Was unable to take {0} from {1} because they don''t have that much {2}!'
+  test_results_for: 'Test results for {0}'
+  timely: 'You''ve claimed your {0}. You can claim again in {1}h'
+  timely_already_claimed: 'You''ve already claimed your timely reward. You can get it again {0}.'
+  timely_button: Click the button to claim your timely reward.
+  timely_none: Bot owner didn't specify a timely reward. Hmph.
+  timely_reset: All users can claim timely currency again.
+  timely_set: 'Users can claim {0} every {1}h'
+  timely_set_none: Users will not be able to claim any timely currency.
+  timely_time: It's time for your timely reward.
+  transaction: Currency Transaction
+  transactions: 'Transactions of user {0}'
+  vote_suggest: 'Voting for the bot will get you {0}!'
+  winlb: Biggest Wins Leaderboard
+  won: Won
+
+uk-UA:
+  available_tests: Доступні тести
+  awarded: '{2} нагородив {1} сумою {0}'
+  bank_balance: 'У тебе {0} на банківському рахунку.'
+  bet: Ставка
+  betroll_win: 'Вітаю! Ти викинув більше {0}'
+  better_luck: Пощастить наступного разу ^_^
+  curtr_award: 'Нагороджено власником бота {0} [{1}]'
+  curtr_gift: 'Подарунок від {0} [{1}]'
+  curtr_take: 'Забрано власником бота {0} [{1}]'
+  gifted: '{2} подарував {0} для {1}'
+  has: '{0} має {1}'
+  mass_award: 'Нагороджено {0} для {1} користувачів з ролі {2}.'
+  mass_take: 'Забрано {0} у {1} користувачів з ролі {2}.'
+  max_bet_limit: 'Не можна ставити більше {0}'
+  min_bet_limit: 'Не можна ставити менше {0}'
+  raffled_user: Випадковий користувач
+  rakeback_available: 'У тебе є {0} рейкбеку. Натисни кнопку, щоб забрати.'
+  rakeback_claimed: 'Ти забрав {0} як рейкбек!'
+  rakeback_none: В тебе поки немає рейкбеку для отримання.
+  remind_timely: 'Я нагадаю тобі про нагороду за час {0}'
+  roll2: Кидок
+  rps_draw: 'Нічия! Обидва обрали {0}'
+  rps_win: '{0} переміг! {1} б''є {2}'
+  take: 'успішно забрано {0} у {1}'
+  take_fail: 'не вдалося забрати {0} у {1}, бо в користувача немає стільки {2}!'
+  test_results_for: 'Результати тесту для {0}'
+  timely: 'Ти отримав свої {0}. Можеш отримати знову через {1}г'
+  timely_already_claimed: 'Ти вже отримав свою нагороду за час. Зможеш отримати знову {0}.'
+  timely_button: Натисни кнопку, щоб отримати свою нагороду за час.
+  timely_none: Власник бота не вказав нагороду за час.
+  timely_reset: Усі користувачі зможуть знову отримати валюту за час.
+  timely_set: 'Користувачі зможуть отримувати {0} кожні {1}г'
+  timely_set_none: Користувачі не зможуть отримувати валюту за час.
+  timely_time: Час для твоєї нагороди за час.
+  transaction: Валютна транзакція
+  transactions: 'Транзакції користувача {0}'
+  vote_suggest: 'Голосування за бота принесе тобі {0}!'
+  winlb: Таблиця найбільших виграшів
+  won: Виграв
+
+vi-VN:
+  available_tests: Các bài kiểm tra có sẵn
+  awarded: '{2} đã thưởng {0} cho {1}'
+  bank_balance: 'Bạn có {0} trong tài khoản ngân hàng.'
+  bet: Cược
+  betroll_win: 'Chúc mừng! Bạn đã tung được trên {0}'
+  better_luck: Chúc may mắn lần sau nhé ^_^
+  curtr_award: 'Được thưởng bởi chủ bot {0} [{1}]'
+  curtr_gift: 'Quà tặng từ {0} [{1}]'
+  curtr_take: 'Bị thu bởi chủ bot {0} [{1}]'
+  gifted: '{2} đã tặng {0} cho {1}'
+  has: '{0} có {1}'
+  mass_award: 'Đã thưởng {0} cho {1} người dùng từ role {2}.'
+  mass_take: 'Đã thu {0} từ {1} người dùng trong role {2}.'
+  max_bet_limit: 'Bạn không thể cược nhiều hơn {0}'
+  min_bet_limit: 'Bạn không thể cược ít hơn {0}'
+  raffled_user: Người dùng được rút thăm
+  rakeback_available: 'Bạn có {0} rakeback có thể nhận. Nhấn nút để nhận.'
+  rakeback_claimed: 'Bạn đã nhận {0} tiền rakeback!'
+  rakeback_none: Bạn chưa có rakeback nào để nhận.
+  remind_timely: 'Mình sẽ nhắc bạn về phần thưởng timely {0}'
+  roll2: Tung xúc xắc
+  rps_draw: 'Hòa rồi! Cả hai đều chọn {0}'
+  rps_win: '{0} thắng! {1} thắng {2}'
+  take: 'đã lấy thành công {0} từ {1}'
+  take_fail: 'không thể lấy {0} từ {1} vì người dùng không có đủ {2}!'
+  test_results_for: 'Kết quả kiểm tra cho {0}'
+  timely: 'Bạn đã nhận {0}. Bạn có thể nhận lại sau {1}h'
+  timely_already_claimed: 'Bạn đã nhận phần thưởng timely rồi. Bạn có thể nhận lại {0}.'
+  timely_button: Nhấn nút để nhận phần thưởng timely.
+  timely_none: Chủ bot chưa đặt phần thưởng timely.
+  timely_reset: Tất cả người dùng sẽ có thể nhận tiền timely lại.
+  timely_set: 'Người dùng sẽ có thể nhận {0} mỗi {1}h'
+  timely_set_none: Người dùng sẽ không thể nhận tiền timely.
+  timely_time: Đã đến lúc nhận phần thưởng timely rồi.
+  transaction: Giao dịch tiền tệ
+  transactions: 'Giao dịch của người dùng {0}'
+  vote_suggest: 'Vote cho bot sẽ giúp bạn nhận được {0}!'
+  winlb: Bảng xếp hạng thắng lớn nhất
+  won: Thắng
+
+zh-CN:
+  available_tests: 可用测试
+  awarded: '{2} 已将 {0} 授予 {1}'
+  bank_balance: '你的银行账户中有 {0}。'
+  bet: 下注
+  betroll_win: '恭喜！你擲出了高於 {0} 的點數'
+  better_luck: 下次好運 ^_^
+  curtr_award: '由機器人所有者 {0} [{1}] 授予'
+  curtr_gift: '{0} [{1}] 的禮物'
+  curtr_take: '由機器人所有者 {0} [{1}] 拍攝'
+  gifted: '{2} 已将 {0} 赠送给 {1}'
+  has: '{0} 擁有 {1}'
+  mass_award: '獎勵了 {0} 予 {2} 身分組中的 {1} 位使用者'
+  mass_take: '已從身分組 {2} 中的使用者 {1} 上取走 {0}'
+  max_bet_limit: '你不能下注超過 {0}'
+  min_bet_limit: '你不能下注低於 {0}'
+  raffled_user: 已抽獎的使用者
+  rakeback_available: '你有 {0} 的返水可領取。點擊按鈕領取。'
+  rakeback_claimed: '你已領取 {0} 返水！'
+  rakeback_none: 你還沒有可領取的返水。
+  remind_timely: '我会在 {0} 提醒你领取每日奖励'
+  roll2: 掷骰
+  rps_draw: '平手!兩邊都出{0}'
+  rps_win: '{0}勝利! {1}對上{2}'
+  take: '成功從 {1} 取得 {0}'
+  take_fail: '無法從 {1} 中取出 {0}，因為用戶沒有那麼多 {2}！'
+  test_results_for: '{0} 的测试结果'
+  timely: '您已認領您的 {0}。您可以在 {1}h 內再次申領'
+  timely_already_claimed: '您已經領取了及時的獎勵。您可以在 {0} 中再次獲取它。'
+  timely_button: 點擊按鈕領取你的定時獎勵。
+  timely_none: 機器人所有者沒有指定及時的獎勵。
+  timely_reset: 所有用戶將能夠再次及時領取貨幣。
+  timely_set: '用戶每 {1} 小時可以申領 {0}'
+  timely_set_none: 用戶將無法領取任何及時的貨幣。
+  timely_time: 你的每日奖励时间到了。
+  transaction: 貨幣交易
+  transactions: '{0} 的交易紀錄'
+  vote_suggest: '為機器人投票將獲得 {0}！'
+  winlb: 最大勝利排行榜
+  won: 勝利

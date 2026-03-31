@@ -1,6 +1,0 @@
-lang_list: 語言列表
-lang_set: '當前伺服器語言是{0} - {1}'
-lang_set_bot: '機器人默認語言是{0} - {1}'
-lang_set_bot_show: '機器人的語言已設定成 {0} - {1}'
-lang_set_fail: 設置語言環境失敗。重新訪問此命令的幫助。
-lang_set_show: '此伺服器的語言設置為 {0} - {1}'

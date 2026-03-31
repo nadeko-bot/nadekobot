@@ -1,0 +1,175 @@
+ar:
+  schedule_add_error: 'لديك بالفعل {0} أوامر مجدولة. يُرجى حذف بعضها قبل إضافة المزيد.'
+  schedule_add_success: تمت إضافة الأمر المجدول بنجاح.
+  schedule_command: الأمر
+  schedule_delete_error: خطأ في حذف الأمر المجدول.
+  schedule_deleted: 'تم حذف الأمر المجدول #{0} بنجاح.'
+  schedule_id: المعرّف
+  schedule_list_none: ليس لديك أي أوامر مجدولة.
+  schedule_list_title: الأوامر المجدولة
+  schedule_when: يُنفَّذ في
+
+de-DE:
+  schedule_add_error: 'Du hast bereits {0} geplante Befehle. Bitte lösche einige, bevor du weitere hinzufügst.'
+  schedule_add_success: Geplanter Befehl erfolgreich hinzugefügt.
+  schedule_command: Befehl
+  schedule_delete_error: Fehler beim Löschen des geplanten Befehls.
+  schedule_deleted: 'Geplanter Befehl #{0} erfolgreich gelöscht.'
+  schedule_id: ID
+  schedule_list_none: Du hast keine geplanten Befehle.
+  schedule_list_title: Geplante Befehle
+  schedule_when: Wird ausgeführt am
+
+es-ES:
+  schedule_add_error: 'Ya tienes {0} comandos programados. Por favor, elimina algunos antes de añadir más.'
+  schedule_add_success: Comando programado añadido con éxito.
+  schedule_command: Comando
+  schedule_delete_error: Error al eliminar comando programado.
+  schedule_deleted: 'Comando programado #{0} eliminado con éxito.'
+  schedule_id: ID
+  schedule_list_none: No tienes ningún comando programado.
+  schedule_list_title: Comandos Programados
+  schedule_when: Se Ejecuta En
+
+fr-FR:
+  schedule_add_error: 'Vous avez déjà {0} commandes programmées. Veuillez en supprimer avant d''en ajouter d''autres.'
+  schedule_add_success: Commande programmée ajoutée avec succès.
+  schedule_command: Commande
+  schedule_delete_error: Erreur lors de la suppression de la commande programmée.
+  schedule_deleted: 'Commande programmée #{0} supprimée avec succès.'
+  schedule_id: ID
+  schedule_list_none: Vous n'avez aucune commande programmée.
+  schedule_list_title: Commandes Programmées
+  schedule_when: S'exécute Le
+
+id-ID:
+  schedule_add_error: 'Kamu sudah punya {0} perintah terjadwal. Hapus beberapa sebelum menambahkan yang baru.'
+  schedule_add_success: Perintah terjadwal berhasil ditambahkan.
+  schedule_command: Perintah
+  schedule_delete_error: Gagal menghapus perintah terjadwal.
+  schedule_deleted: 'Perintah terjadwal #{0} berhasil dihapus.'
+  schedule_id: ID
+  schedule_list_none: Kamu belum punya perintah terjadwal.
+  schedule_list_title: Perintah Terjadwal
+  schedule_when: Dijalankan Pada
+
+ja-JP:
+  schedule_add_error: '既に{0}つのスケジュールコマンドがあります。追加する前にいくつか削除してください。'
+  schedule_add_success: スケジュールコマンドが正常に追加されました。
+  schedule_command: コマンド
+  schedule_delete_error: スケジュールコマンドの削除中にエラーが発生しました。
+  schedule_deleted: 'スケジュールコマンド#{0}が正常に削除されました。'
+  schedule_id: ID
+  schedule_list_none: スケジュールコマンドはありません。
+  schedule_list_title: スケジュールコマンド
+  schedule_when: 実行日時
+
+ko-KR:
+  schedule_add_error: '이미 {0}개의 예약 명령어가 있어요. 더 추가하려면 기존 항목을 삭제해 주세요.'
+  schedule_add_success: 예약 명령어가 추가되었어요.
+  schedule_command: 명령어
+  schedule_delete_error: 예약 명령어를 삭제하는 중 오류가 발생했어요.
+  schedule_deleted: '예약 명령어 #{0}이(가) 삭제되었어요.'
+  schedule_id: ID
+  schedule_list_none: 예약된 명령어가 없어요.
+  schedule_list_title: 예약 명령어
+  schedule_when: 실행 시각
+
+pl-PL:
+  schedule_add_error: 'Masz już {0} zaplanowanych komend. Usuń jakieś, zanim dodasz nowe.'
+  schedule_add_success: Zaplanowana komenda została pomyślnie dodana.
+  schedule_command: Komenda
+  schedule_delete_error: Błąd podczas usuwania zaplanowanej komendy.
+  schedule_deleted: 'Zaplanowana komenda #{0} została pomyślnie usunięta.'
+  schedule_id: ID
+  schedule_list_none: Nie masz żadnych zaplanowanych komend.
+  schedule_list_title: Zaplanowane komendy
+  schedule_when: Wykonuje się o
+
+pt-BR:
+  schedule_add_error: 'Você já tem {0} comandos agendados. Por favor, exclua alguns antes de adicionar mais.'
+  schedule_add_success: Comando agendado adicionado com sucesso.
+  schedule_command: Comando
+  schedule_delete_error: Erro ao excluir comando agendado.
+  schedule_deleted: 'Comando agendado #{0} excluído com sucesso.'
+  schedule_id: ID
+  schedule_list_none: Você não tem nenhum comando agendado.
+  schedule_list_title: Comandos Agendados
+  schedule_when: Executa Em
+
+ru-RU:
+  schedule_add_error: 'У вас уже {0} запланированных команд. Пожалуйста, удалите некоторые перед добавлением новых.'
+  schedule_add_success: Запланированная команда успешно добавлена.
+  schedule_command: Команда
+  schedule_delete_error: Ошибка при удалении запланированной команды.
+  schedule_deleted: 'Запланированная команда #{0} успешно удалена.'
+  schedule_id: ID
+  schedule_list_none: У вас нет запланированных команд.
+  schedule_list_title: Запланированные Команды
+  schedule_when: Выполняется В
+
+sr-Cyrl-RS:
+  schedule_add_error: 'Већ имате {0} заказаних команди. Обришите неке пре додавања нових.'
+  schedule_add_success: Заказана команда успешно додата.
+  schedule_command: Команда
+  schedule_delete_error: Грешка при брисању заказане команде.
+  schedule_deleted: 'Заказана команда #{0} успешно обрисана.'
+  schedule_id: ИД
+  schedule_list_none: Немате ниједну заказану команду.
+  schedule_list_title: Заказане команде
+  schedule_when: Извршава се у
+
+tr-TR:
+  schedule_add_error: 'Zaten {0} zamanlanmış komutun var. Daha fazla eklemek için lütfen bazılarını sil.'
+  schedule_add_success: Zamanlanmış komut başarıyla eklendi.
+  schedule_command: Komut
+  schedule_delete_error: Zamanlanmış komut silinirken hata oluştu.
+  schedule_deleted: '#{0} numaralı zamanlanmış komut başarıyla silindi.'
+  schedule_id: ID
+  schedule_list_none: Zamanlanmış komutun yok.
+  schedule_list_title: Zamanlanmış Komutlar
+  schedule_when: Çalıştırılacağı Zaman
+
+ts-TS:
+  schedule_add_error: 'You already have {0} scheduled commands. Delete some first.'
+  schedule_add_success: Scheduled command added.
+  schedule_command: Command
+  schedule_delete_error: Error deleting that scheduled command. Hmph.
+  schedule_deleted: 'Scheduled command #{0} deleted.'
+  schedule_id: ID
+  schedule_list_none: You don't have any scheduled commands.
+  schedule_list_title: Scheduled Commands
+  schedule_when: Executes At
+
+uk-UA:
+  schedule_add_error: 'У тебе вже є {0} запланованих команд. Видали деякі перед додаванням нових.'
+  schedule_add_success: Заплановану команду успішно додано.
+  schedule_command: Команда
+  schedule_delete_error: Помилка видалення запланованої команди.
+  schedule_deleted: 'Заплановану команду #{0} успішно видалено.'
+  schedule_id: ID
+  schedule_list_none: У тебе немає запланованих команд.
+  schedule_list_title: Заплановані команди
+  schedule_when: Виконається о
+
+vi-VN:
+  schedule_add_error: 'Bạn đã có {0} lệnh hẹn giờ. Vui lòng xóa bớt trước khi thêm mới.'
+  schedule_add_success: Đã thêm lệnh hẹn giờ thành công.
+  schedule_command: Lệnh
+  schedule_delete_error: Lỗi khi xóa lệnh hẹn giờ.
+  schedule_deleted: 'Đã xóa lệnh hẹn giờ #{0} thành công.'
+  schedule_id: ID
+  schedule_list_none: Bạn chưa có lệnh hẹn giờ nào.
+  schedule_list_title: Lệnh hẹn giờ
+  schedule_when: Thực hiện lúc
+
+zh-CN:
+  schedule_add_error: '你已有 {0} 個排程指令。請先刪除一些再新增。'
+  schedule_add_success: 排程指令已成功新增。
+  schedule_command: 指令
+  schedule_delete_error: 刪除排程指令時發生錯誤。
+  schedule_deleted: '排程指令 #{0} 已成功刪除。'
+  schedule_id: ID
+  schedule_list_none: 你沒有任何排程指令。
+  schedule_list_title: 排程指令
+  schedule_when: 執行於

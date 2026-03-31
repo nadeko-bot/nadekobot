@@ -1,4 +1,0 @@
-convert: '{0} {1}, {2} {3} değerindedir'
-convert_not_found: '{0} biriminden {1} birimine dönüştürülemiyor: birimler bulunamadı'
-convert_type_error: '{0} biriminden {1} birimine dönüştürülemiyor: birim türleri eşleşmiyor'
-convertlist: Dönüştürücü tarafından kullanılabilecek birimler

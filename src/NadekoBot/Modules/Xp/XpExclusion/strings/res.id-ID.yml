@@ -1,4 +1,0 @@
-xp_exclude_added: '{0}: {1} telah dikecualikan dari sistem XP.'
-xp_exclude_removed: '{0}: {1} tidak lagi dikecualikan dari sistem XP.'
-xp_exclusion_none: Tidak ada pengecualian yang diatur untuk server ini.
-xp_exclusion_title: Pengecualian XP

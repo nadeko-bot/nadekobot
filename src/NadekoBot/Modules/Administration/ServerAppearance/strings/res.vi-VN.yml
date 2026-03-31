@@ -1,5 +1,0 @@
-set_srvr_banner: Đã đặt banner máy chủ mới!
-set_srvr_icon: Đã đặt icon máy chủ mới!
-srvr_banner_invalid: Hình ảnh chỉ định không hợp lệ. Hãy chắc chắn bạn đang dùng đường dẫn trực tiếp đến hình ảnh.
-srvr_banner_invalid_url: URL chỉ định không hợp lệ. Hãy chắc chắn bạn đang dùng đường dẫn trực tiếp đến hình ảnh.
-srvr_banner_too_large: Hình ảnh chỉ định quá lớn! Kích thước tối đa là 8MB.

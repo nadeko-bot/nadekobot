@@ -1,4 +1,0 @@
-convert: '{0} {1} est égal à {2} {3}'
-convert_not_found: 'Impossible de convertir {0} vers {1}: unités introuvables'
-convert_type_error: 'Impossible de convertir {0} vers {1}: le type d''unité n''est pas égal'
-convertlist: Unités qui peuvent être converties par le convertisseur

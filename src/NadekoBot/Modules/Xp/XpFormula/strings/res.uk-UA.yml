@@ -1,9 +1,0 @@
-xpformula_current: Формула XP
-xpformula_set: Формулу XP оновлено
-xpformula_desc: |-
-  |-
-    XP за рiвень: **{0}** x (рiвень + 1) + **{1}**
-xpformula_preview: Попереднiй перегляд рiвнiв
-xpformula_a_invalid: 'Нахил (a) має бути вiд {0} до {1}.'
-xpformula_c_invalid: 'Базове значення (c) має бути вiд {0} до {1}.'
-xpformula_invalid: Невiрнi параметри формули.

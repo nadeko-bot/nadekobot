@@ -1,6 +1,0 @@
-perm_override: 'Người dùng sẽ cần quyền {0} để chạy lệnh {1}.'
-perm_override_all: Tất cả ghi đè quyền Discord đã được xóa.
-perm_override_all_confirm: Bạn có chắc muốn xóa **TẤT CẢ** ghi đè quyền Discord trên server này không? Hành động này không thể hoàn tác.
-perm_override_page_none: Không có ghi đè nào trên trang này.
-perm_override_reset: Ghi đè quyền Discord cho lệnh này đã được xóa.
-perm_overrides: Ghi đè quyền Discord

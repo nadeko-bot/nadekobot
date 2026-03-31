@@ -1,9 +1,0 @@
-xpformula_current: XP 公式
-xpformula_set: XP 公式已更新
-xpformula_desc: |-
-  |-
-    每级所需 XP: **{0}** x (等级 + 1) + **{1}**
-xpformula_preview: 等级预览
-xpformula_a_invalid: '斜率 (a) 必须在 {0} 到 {1} 之间。'
-xpformula_c_invalid: '基础值 (c) 必须在 {0} 到 {1} 之间。'
-xpformula_invalid: 无效的公式参数。

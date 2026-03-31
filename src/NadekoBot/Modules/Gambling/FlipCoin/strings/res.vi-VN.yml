@@ -1,6 +1,0 @@
-betflip_guess: Bạn đoán đúng rồi!
-flip_invalid: 'Số không hợp lệ. Bạn có thể tung từ 1 đến {0} đồng xu.'
-flip_results: 'Đã tung {0} đồng xu. {1} mặt ngửa, {2} mặt sấp.'
-flipped: 'Đã tung {0}'
-heads: Mặt ngửa
-tails: Mặt sấp

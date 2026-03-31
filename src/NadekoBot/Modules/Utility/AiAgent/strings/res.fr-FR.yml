@@ -1,4 +1,0 @@
-agent_no_query: Tu dois fournir une requête pour l'agent IA.
-agent_cancelled: Ta session d'agent a été annulée.
-agent_no_session: Tu n'as pas de session d'agent active à annuler.
-agent_not_allowed: Tu n'as pas la permission d'utiliser l'agent IA.

@@ -1,9 +1,0 @@
-schedule_add_error: 你已有 {0} 個排程指令。請先刪除一些再新增。
-schedule_add_success: 排程指令已成功新增。
-schedule_command: 指令
-schedule_delete_error: 刪除排程指令時發生錯誤。
-schedule_deleted: '排程指令 #{0} 已成功刪除。'
-schedule_id: ID
-schedule_list_none: 你沒有任何排程指令。
-schedule_list_title: 排程指令
-schedule_when: 執行於

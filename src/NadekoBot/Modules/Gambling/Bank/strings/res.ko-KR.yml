@@ -1,4 +1,0 @@
-bank_balance_other: '유저 {0}님의 은행 잔고는 {1}이에요.'
-bank_deposited: '{0}을(를) 은행 계좌에 입금했어요.'
-bank_withdraw_insuff: '은행 계좌에 {0}이(가) 충분하지 않아요.'
-bank_withdrew: '은행 계좌에서 {0}을(를) 출금했어요.'

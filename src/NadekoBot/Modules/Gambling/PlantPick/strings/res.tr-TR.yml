@@ -1,8 +1,0 @@
-curgen_disabled: Para üretimi bu kanalda devre dışı bırakıldı.
-curgen_enabled: Para üretimi bu kanalda etkinleştirildi.
-curgen_pl: '{0} rastgele {1} belirdi!'
-curgen_sn: 'Rastgele bir {0} belirdi!'
-pick_pl: '`{0}pick` yazarak topla'
-pick_sn: '`{0}pick` yazarak topla'
-picked: '{1}, {0} topladı'
-planted: '{0}, {1} ekti'

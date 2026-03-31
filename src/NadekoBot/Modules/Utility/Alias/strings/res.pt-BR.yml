@@ -1,6 +1,0 @@
-alias_added: 'Digitando {0} agora será um apelido de {1}.'
-alias_list: Lista de atalhos
-alias_remove_fail: 'Gatilho {0} não tinha um apelido.'
-alias_removed: 'Gatilho {0} não tem mais apelido.'
-aliases_cleared: 'Todos os apelidos {0} foram removidos nesse servidor.'
-aliases_none: Nehum apelido encontrado

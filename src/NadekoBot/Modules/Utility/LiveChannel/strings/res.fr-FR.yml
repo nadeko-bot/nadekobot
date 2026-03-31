@@ -1,9 +1,0 @@
-livechannel_added: '{0} a été ajouté comme salon en direct avec succès.'
-livechannel_limit: 'Vous pouvez avoir au maximum {0} salons en direct par serveur.'
-livechannel_list_empty: Aucun salon en direct configuré pour ce serveur.
-livechannel_list_title: 'Salons en Direct dans {0}'
-livechannel_not_found: Le salon n'a pas été trouvé dans la liste des salons en direct.
-livechannel_please_wait: Veuillez attendre jusqu'à 10 minutes pour que les changements prennent effet
-livechannel_removed: '{0} a été retiré des salons en direct avec succès.'
-preview: Aperçu
-template: Modèle

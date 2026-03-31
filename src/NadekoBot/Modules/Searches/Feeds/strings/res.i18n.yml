@@ -1,0 +1,175 @@
+ar:
+  feed_added: تمت إضافة التغذية.
+  feed_cant_parse: تعذّر الوصول إلى محتوى رابط التغذية أو تحليله.
+  feed_duplicate: أنت تتابع هذه التغذية بالفعل في هذا الخادم.
+  feed_invalid_url: رابط التغذية غير صالح. يجب أن يكون رابط http أو https مطلق.
+  feed_limit_reached: لقد وصلت إلى الحد الأقصى لعدد التغذيات المسموح بها لكل خادم.
+  feed_no_feed: لم تشترك في أي تغذية في هذا الخادم.
+  feed_out_of_range: الفهرس خارج النطاق.
+  feed_removed: تمت إزالة التغذية.
+  feed_auto_removed: 'تمت إزالة التغذية `{0}` تلقائياً بعد فشل متكرر في جلبها.'
+
+de-DE:
+  feed_added: Feed wurde hinzugefügt.
+  feed_cant_parse: Der Inhalt dieser Feed-URL konnte nicht abgerufen oder analysiert werden.
+  feed_duplicate: Du folgst diesem Feed bereits auf diesem Server.
+  feed_invalid_url: Ungültige Feed-URL. Es muss eine absolute http- oder https-URL sein.
+  feed_limit_reached: Du hast die maximale Anzahl erlaubter Feeds pro Server erreicht.
+  feed_no_feed: Du bist auf diesem Server keinen Feeds am folgen.
+  feed_out_of_range: Kennziffer außerhalb des gültigen Bereichs.
+  feed_removed: Feed wurde entfernt.
+  feed_auto_removed: 'Feed `{0}` wurde nach wiederholten Abruffehlern automatisch entfernt.'
+
+es-ES:
+  feed_added: Contenido agregado.
+  feed_cant_parse: No se pudo acceder o analizar el contenido de esa URL de feed.
+  feed_duplicate: Ya estás siguiendo ese feed en este servidor.
+  feed_invalid_url: URL de feed inválida. Debe ser una URL absoluta http o https.
+  feed_limit_reached: Has alcanzado el número máximo de feeds permitidos por servidor.
+  feed_no_feed: No te has suscrito a ningún contenido en este servidor.
+  feed_out_of_range: Índice fuera de rango.
+  feed_removed: Contenido removido.
+  feed_auto_removed: 'El feed `{0}` fue eliminado automáticamente tras fallos repetidos al obtenerlo.'
+
+fr-FR:
+  feed_added: Le flux est ajouté.
+  feed_cant_parse: Impossible d'accéder ou d'analyser le contenu de cette URL de feed.
+  feed_duplicate: Vous suivez déjà ce feed sur ce serveur.
+  feed_invalid_url: URL de feed invalide. Elle doit être une URL absolue http ou https.
+  feed_limit_reached: Vous avez atteint le nombre maximum de feeds autorisés par serveur.
+  feed_no_feed: Vous n'avez souscrit à aucun fil d'actualité sur ce serveur.
+  feed_out_of_range: L'index est en dehors de la plage disponible.
+  feed_removed: Le flux est supprimé.
+  feed_auto_removed: 'Le flux `{0}` a été automatiquement supprimé après des échecs répétés.'
+
+id-ID:
+  feed_added: Feed berhasil ditambahkan.
+  feed_cant_parse: Tidak bisa mengakses atau mengurai konten URL feed tersebut.
+  feed_duplicate: Kamu sudah mengikuti feed tersebut di server ini.
+  feed_invalid_url: URL feed tidak valid. Harus berupa URL http atau https absolut.
+  feed_limit_reached: Kamu sudah mencapai batas maksimum feed yang diizinkan per server.
+  feed_no_feed: Kamu belum berlangganan feed apapun di server ini.
+  feed_out_of_range: Indeks di luar jangkauan.
+  feed_removed: Feed berhasil dihapus.
+  feed_auto_removed: 'Feed `{0}` dihapus secara otomatis setelah berulang kali gagal mengambil data.'
+
+ja-JP:
+  feed_added: フィードが追加されました。
+  feed_cant_parse: そのフィードURLの内容にアクセスまたは解析できません。
+  feed_duplicate: このサーバーでは既にそのフィードをフォローしています。
+  feed_invalid_url: 無効なフィードURLです。絶対httpまたはhttps URLである必要があります。
+  feed_limit_reached: サーバーあたりのフィードの最大数に達しました。
+  feed_no_feed: このサーバーでフィードを購読していません。
+  feed_out_of_range: インデックスが範囲外です。
+  feed_removed: フィードが削除されました。
+  feed_auto_removed: 'フィード `{0}` は取得の失敗が繰り返されたため、自動的に削除されました。'
+
+ko-KR:
+  feed_added: 피드가 추가되었어요.
+  feed_cant_parse: 해당 피드 URL의 내용에 접근하거나 파싱할 수 없어요.
+  feed_duplicate: 이 서버에서 이미 해당 피드를 구독하고 있어요.
+  feed_invalid_url: 잘못된 피드 URL이에요. 절대 경로의 http 또는 https URL이어야 해요.
+  feed_limit_reached: 서버당 허용된 최대 피드 수에 도달했어요.
+  feed_no_feed: 이 서버에서 구독 중인 피드가 없어요.
+  feed_out_of_range: 인덱스가 범위를 벗어났어요.
+  feed_removed: 피드가 제거되었어요.
+  feed_auto_removed: '피드 `{0}`이(가) 반복적인 가져오기 실패로 자동 제거되었어요.'
+
+pl-PL:
+  feed_added: Dodano feed.
+  feed_cant_parse: Nie można uzyskać dostępu ani sparsować zawartości tego feedu.
+  feed_duplicate: Ten feed jest już śledzony na tym serwerze.
+  feed_invalid_url: Nieprawidłowy URL feedu. Musi to być bezwzględny adres http lub https.
+  feed_limit_reached: Osiągnięto maksymalną liczbę feedów dozwolonych na serwerze.
+  feed_no_feed: Nie subskrybujesz żadnych feedów na tym serwerze.
+  feed_out_of_range: Indeks poza zakresem.
+  feed_removed: Usunięto feed.
+  feed_auto_removed: 'Feed `{0}` został automatycznie usunięty po wielokrotnych błędach pobierania.'
+
+pt-BR:
+  feed_added: Feed adicionado.
+  feed_cant_parse: Não foi possível acessar ou analisar o conteúdo dessa URL de feed.
+  feed_duplicate: Você já está seguindo esse feed neste servidor.
+  feed_invalid_url: URL de feed inválida. Deve ser uma URL absoluta http ou https.
+  feed_limit_reached: Você atingiu o número máximo de feeds permitidos por servidor.
+  feed_no_feed: Não há qualquer feed inscrito nesse servidor.
+  feed_out_of_range: Índice fora de alcance.
+  feed_removed: Feed removido.
+  feed_auto_removed: 'O feed `{0}` foi removido automaticamente após falhas repetidas ao buscá-lo.'
+
+ru-RU:
+  feed_added: Лента добавлена.
+  feed_cant_parse: Не удалось получить доступ или разобрать содержимое этого URL-фида.
+  feed_duplicate: Вы уже подписаны на этот фид на этом сервере.
+  feed_invalid_url: Недопустимый URL фида. Должен быть абсолютным URL http или https.
+  feed_limit_reached: Вы достигли максимального количества фидов на сервер.
+  feed_no_feed: Вы еще не подписаны ни на одну ленту новостей на этом сервере
+  feed_out_of_range: Указатель находится за пределами диапазона
+  feed_removed: Лента новостей была удалена
+  feed_auto_removed: 'Лента `{0}` была автоматически удалена из-за повторяющихся ошибок при получении.'
+
+sr-Cyrl-RS:
+  feed_added: Фид додат.
+  feed_cant_parse: Није могуће приступити или парсирати садржај тог фид URL-а.
+  feed_duplicate: Већ пратиш тај фид на овом серверу.
+  feed_invalid_url: Неважећи фид URL. Мора бити апсолутни http или https URL.
+  feed_limit_reached: Достигнут је максималан број фидова дозвољених по серверу.
+  feed_no_feed: Ниси претплаћен ни на један фид на овом серверу.
+  feed_out_of_range: Индекс ван опсега.
+  feed_removed: Фид уклоњен.
+  feed_auto_removed: 'Фид `{0}` је аутоматски уклоњен након поновљених грешака при преузимању.'
+
+tr-TR:
+  feed_added: Akış eklendi.
+  feed_cant_parse: O akış URL'sine erişilemiyor veya içeriği ayrıştırılamıyor.
+  feed_duplicate: Bu sunucuda zaten o akışı takip ediyorsun.
+  feed_invalid_url: Geçersiz akış URL'si. Mutlak bir http veya https URL'si olmalıdır.
+  feed_limit_reached: Sunucu başına izin verilen maksimum akış sayısına ulaştın.
+  feed_no_feed: Bu sunucuda herhangi bir akışa abone olmadın.
+  feed_out_of_range: İndeks aralık dışında.
+  feed_removed: Akış kaldırıldı.
+  feed_auto_removed: '`{0}` akışı tekrarlanan bağlantı hataları nedeniyle otomatik olarak kaldırıldı.'
+
+ts-TS:
+  feed_added: Feed added.
+  feed_cant_parse: Can't access or parse that feed URL. Give me a proper one.
+  feed_duplicate: You're already following that feed on this server.
+  feed_invalid_url: Invalid feed URL. It has to be an absolute http or https URL.
+  feed_limit_reached: You've hit the max number of feeds per server.
+  feed_no_feed: You haven't subscribed to any feeds on this server.
+  feed_out_of_range: Index out of range, b-baka!
+  feed_removed: Feed removed.
+  feed_auto_removed: 'Feed `{0}` was removed because it kept failing... not like I wanted to keep it or anything!'
+
+uk-UA:
+  feed_added: Стрічку додано.
+  feed_cant_parse: Не вдалося отримати або розпарсити вміст цього URL стрічки.
+  feed_duplicate: Ви вже підписані на цю стрічку на цьому сервері.
+  feed_invalid_url: Невірний URL стрічки. Має бути абсолютний http або https URL.
+  feed_limit_reached: Ви досягли максимальної кількості стрічок на сервер.
+  feed_no_feed: Ви не підписані на жодну стрічку на цьому сервері.
+  feed_out_of_range: Індекс поза межами.
+  feed_removed: Стрічку видалено.
+  feed_auto_removed: 'Стрічку `{0}` було автоматично видалено через повторювані помилки отримання.'
+
+vi-VN:
+  feed_added: Đã thêm feed.
+  feed_cant_parse: Không thể truy cập hoặc phân tích nội dung URL feed đó.
+  feed_duplicate: Bạn đã theo dõi feed đó trên máy chủ này rồi.
+  feed_invalid_url: URL feed không hợp lệ. Phải là URL http hoặc https tuyệt đối.
+  feed_limit_reached: Bạn đã đạt số lượng feed tối đa cho phép trên mỗi máy chủ.
+  feed_no_feed: Bạn chưa đăng ký feed nào trên máy chủ này.
+  feed_out_of_range: Vị trí ngoài phạm vi.
+  feed_removed: Đã xóa feed.
+  feed_auto_removed: 'Feed `{0}` đã bị xóa tự động sau nhiều lần lấy dữ liệu thất bại.'
+
+zh-CN:
+  feed_added: 添加了新訂閱。
+  feed_cant_parse: 無法存取或解析該訂閱源 URL 的內容。
+  feed_duplicate: 你已在此伺服器上追蹤該訂閱源。
+  feed_invalid_url: 無效的訂閱源 URL。必須是絕對的 http 或 https URL。
+  feed_limit_reached: 你已達到每個伺服器允許的最大訂閱源數量。
+  feed_no_feed: 您尚未訂閱此伺服器上的任何訂閱源。
+  feed_out_of_range: 索引超出範圍。
+  feed_removed: 訂閱源被移除。
+  feed_auto_removed: '订阅源 `{0}` 因多次获取失败已被自动移除。'

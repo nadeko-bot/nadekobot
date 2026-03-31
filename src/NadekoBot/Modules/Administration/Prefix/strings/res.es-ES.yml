@@ -1,4 +1,0 @@
-defprefix_current: 'El prefijo por defecto es {0}'
-defprefix_new: 'Cambiado prefijo predeterminado del bot de {0} a {1}'
-prefix_current: 'El prefijo de este servidor es {0}'
-prefix_new: 'Prefijo cambiado en este servidor de {0} a {1}'

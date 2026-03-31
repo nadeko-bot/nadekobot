@@ -1,5 +1,0 @@
-prune_already_running: 此伺服器已有清理正在進行中。
-prune_cancelled: 清理已取消。
-prune_not_found: 在此伺服器上未找到進行中的清理。
-prune_patron: '刪除 2 週或更久的訊息需要 [Patron Tier X](https://patreon.com/join/nadekobot) 或更高等級。'
-prune_progress: '清理中... 已刪除 {0}/{1} 則訊息。'

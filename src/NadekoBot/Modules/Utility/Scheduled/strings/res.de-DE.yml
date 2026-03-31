@@ -1,9 +1,0 @@
-schedule_add_error: Du hast bereits {0} geplante Befehle. Bitte lösche einige, bevor du weitere hinzufügst.
-schedule_add_success: Geplanter Befehl erfolgreich hinzugefügt.
-schedule_command: Befehl
-schedule_delete_error: Fehler beim Löschen des geplanten Befehls.
-schedule_deleted: 'Geplanter Befehl #{0} erfolgreich gelöscht.'
-schedule_id: ID
-schedule_list_none: Du hast keine geplanten Befehle.
-schedule_list_title: Geplante Befehle
-schedule_when: Wird ausgeführt am

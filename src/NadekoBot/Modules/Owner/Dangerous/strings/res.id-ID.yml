@@ -1,3 +1,0 @@
-purge_user_confirm: 'Apakah kamu yakin ingin menghapus data {0} dari database?'
-cleanup_done: 'Data {0} guild tersisa di database.'
-sql_confirm_exec: Konfirmasi eksekusi perintah SQL berikut

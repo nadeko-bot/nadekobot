@@ -1,0 +1,447 @@
+ar:
+  boost_off: تم تعطيل إعلانات التعزيز.
+  boost_on: تم تفعيل إعلانات التعزيز في هذه القناة.
+  boostdel_off: تم تعطيل الحذف التلقائي لرسائل التعزيز.
+  boostdel_on: 'سيتم حذف رسائل التعزيز بعد {0} ثانية.'
+  boostmsg_cur: 'رسالة التعزيز الحالية: {0}'
+  boostmsg_enable: 'فعّل رسائل التعزيز بكتابة {0}'
+  boostmsg_new: تم تعيين رسالة تعزيز جديدة.
+  bye_off: تم تعطيل إعلانات الوداع.
+  bye_on: تم تفعيل إعلانات الوداع في هذه القناة.
+  byedel_off: تم تعطيل الحذف التلقائي لرسائل الوداع.
+  byedel_on: 'سيتم حذف رسائل الوداع بعد {0} ثانية.'
+  byemsg_cur: 'رسالة الوداع الحالية: {0}'
+  byemsg_enable: 'فعّل رسائل الوداع بكتابة {0}'
+  byemsg_new: تم تعيين رسالة وداع جديدة.
+  greet_off: تم تعطيل إعلانات الترحيب.
+  greet_on: تم تفعيل إعلانات الترحيب في هذه القناة.
+  greetdel_off: تم تعطيل الحذف التلقائي لرسائل الترحيب.
+  greetdel_on: 'سيتم حذف رسائل الترحيب بعد {0} ثانية.'
+  greetdm_off: تم تعطيل إعلانات الترحيب عبر الرسائل الخاصة.
+  greetdm_on: تم تفعيل إعلانات الترحيب عبر الرسائل الخاصة.
+  greetdmmsg_cur: 'رسالة الترحيب الخاصة الحالية: {0}'
+  greetdmmsg_enable: 'فعّل رسائل الترحيب الخاصة بكتابة {0}'
+  greetdmmsg_new: تم تعيين رسالة ترحيب خاصة جديدة.
+  greetmsg_cur: 'رسالة الترحيب الحالية: {0}'
+  greetmsg_enable: 'فعّل رسائل الترحيب بكتابة {0}'
+  greetmsg_new: تم تعيين رسالة ترحيب جديدة.
+
+de-DE:
+  boost_off: Boost-Ankündigungen deaktiviert.
+  boost_on: Boost-Ankündigungen in diesem Kanal aktiviert.
+  boostdel_off: Automatisches Löschen von Boost-Nachrichten wurde deaktiviert.
+  boostdel_on: 'Boost-Nachrichten werden nach {0} Sekunden gelöscht.'
+  boostmsg_cur: 'Aktuelle Boost-Nachricht: {0}'
+  boostmsg_enable: 'Aktiviere Boost-Nachrichten mit {0}'
+  boostmsg_new: Neue Boost-Nachricht gesetzt.
+  bye_off: Abschiedansagen ausgeschaltet.
+  bye_on: Abschiedansagen in diesem Kanal angeschaltet.
+  byedel_off: Die automatische Löschung der Verabschiedungs Nachrichten wurde deaktiviert.
+  byedel_on: 'Verabschiedungs Nachrichten werden nach {0} Sekunden gelöscht.'
+  byemsg_cur: 'Derzeitige Verabschiedungs Nachricht: {0}'
+  byemsg_enable: 'Beim schreiben von {0} werden die Verabschiedungs Nachrichten aktiviert.'
+  byemsg_new: Neue Verabschiedungs Nachricht gesetzt
+  greet_off: Willkommensnachrichten deaktivert.
+  greet_on: Willkommensnachrichten in diesem Kanal aktiviert.
+  greetdel_off: Automatisches Löschen der Willkommensnachrichten wurde deaktiviert.
+  greetdel_on: 'Willkommensnachrichten werden nach {0} Sekunden gelöscht.'
+  greetdm_off: DM Willkommensnachricht deaktiviert.
+  greetdm_on: DM Willkommensnachricht aktiviert.
+  greetdmmsg_cur: 'Derzeitige DM Willkommensnachricht: {0}'
+  greetdmmsg_enable: 'Aktiviere DM Willkommensnachrichten durch das Schreiben von {0}'
+  greetdmmsg_new: Neue DM Willkommensnachricht gesetzt
+  greetmsg_cur: 'Derzeitige Willkommensnachricht: {0}'
+  greetmsg_enable: 'Aktiviere Willkommensnachrichten durch das Schreiben von {0}'
+  greetmsg_new: Neue Willkommensnachricht gesetzt
+
+es-ES:
+  boost_off: Los anuncios de Aumentos se han desactivado.
+  boost_on: Los anuncios de Aumentos se han activado en este canal.
+  boostdel_off: Se ha desactivado la eliminación automática de mensajes de Aumento.
+  boostdel_on: 'Los mensajes de Aumento se eliminarán después de {0} segundos.'
+  boostmsg_cur: 'Mensaje de Aumento actual: {0}'
+  boostmsg_enable: 'Active los mensajes de Aumento tecleando {0}'
+  boostmsg_new: Nuevo mensaje de Aumento configurado.
+  bye_off: Anuncios de despedidas desactivados.
+  bye_on: Anuncios de despedida habilitados en este canal.
+  byedel_off: La eliminación automática de los mensajes de despedida ha sido desactivada.
+  byedel_on: 'Los mensajes de despedida se eliminarán luego de {0} segundos.'
+  byemsg_cur: 'Mensaje de despedida actual: {0}'
+  byemsg_enable: 'Habilita los mensajes de despedida escribiendo {0}'
+  byemsg_new: Nuevo mensaje de despedida configurado.
+  greet_off: Anuncios de bienvenida desactivados.
+  greet_on: Anuncios de bienvenida activados en este canal.
+  greetdel_off: Eliminación automática de mensajes de bienvenida desactivada.
+  greetdel_on: 'Los mensajes de bienvenida serán eliminados luego de {0} segundos.'
+  greetdm_off: Anuncios de bienvenida privados desactivados.
+  greetdm_on: Anuncios de bienvenida privados habilitados.
+  greetdmmsg_cur: 'Mensaje de bienvenida privado actual: {0}'
+  greetdmmsg_enable: 'Habilita los mensajes de bienvenida privados escribiendo {0}'
+  greetdmmsg_new: Nuevo mensaje de bienvenida privado configurado.
+  greetmsg_cur: 'Mensaje de bienvenida actual: {0}'
+  greetmsg_enable: 'Habilita los mensajes de bienvenida escribiendo {0}'
+  greetmsg_new: Nuevo mensaje de bienvenida configurado.
+
+fr-FR:
+  boost_off: Annonces Boost désactivées.
+  boost_on: Annonces Boost activées dans ce salon.
+  boostdel_off: La suppression automatique des messages Boost a été désactivée.
+  boostdel_on: 'Les messages Boost seront supprimés après {0} secondes.'
+  boostmsg_cur: 'Message Boost actuel: {0}'
+  boostmsg_enable: 'Activez les messages Boost en tapant {0}'
+  boostmsg_new: Nouveau message Boost défini.
+  bye_off: Annonces de d'au revoir désactivées.
+  bye_on: Annonces d'au revoir désactivées dans ce salon.
+  byedel_off: La suppression automatique des messages de départ a été désactivée.
+  byedel_on: 'Les messages d''au revoir seront supprimés après {0} secondes.'
+  byemsg_cur: 'Message d''au revoir actuel : {0}'
+  byemsg_enable: 'Activez les messages d''au revoir en tapant {0}'
+  byemsg_new: Nouveau message d'au revoir réglé.
+  greet_off: Annonces de bienvenue désactivées.
+  greet_on: Annonces de bienvenue activées dans ce salon.
+  greetdel_off: La suppression automatique des messages de bienvenue a été désactivée.
+  greetdel_on: 'Les messages de bienvenue seront supprimés après {0} secondes.'
+  greetdm_off: Annonces de bienvenue en MP désactivées.
+  greetdm_on: Annonces de bienvenue en MP activées.
+  greetdmmsg_cur: 'MP de bienvenue actuel : {0}'
+  greetdmmsg_enable: 'Activez les MP de bienvenue en tapant {0}'
+  greetdmmsg_new: Nouveau MP de bienvenue réglé.
+  greetmsg_cur: 'Message de bienvenue actuel : {0}'
+  greetmsg_enable: 'Activez les messages de bienvenue en tapant {0}'
+  greetmsg_new: Nouveau message d'accueil défini.
+
+id-ID:
+  boost_off: Pengumuman boost dinonaktifkan.
+  boost_on: Pengumuman boost diaktifkan di channel ini.
+  boostdel_off: Penghapusan otomatis pesan boost telah dinonaktifkan.
+  boostdel_on: 'Pesan boost akan dihapus setelah {0} detik.'
+  boostmsg_cur: 'Pesan boost saat ini: {0}'
+  boostmsg_enable: 'Aktifkan pesan boost dengan mengetik {0}'
+  boostmsg_new: Pesan boost baru telah diatur.
+  bye_off: Pengumuman bye dinonaktifkan.
+  bye_on: Pengumuman bye diaktifkan di channel ini.
+  byedel_off: Penghapusan otomatis pesan bye telah dinonaktifkan.
+  byedel_on: 'Pesan bye akan dihapus setelah {0} detik.'
+  byemsg_cur: 'Pesan bye saat ini: {0}'
+  byemsg_enable: 'Aktifkan pesan bye dengan mengetik {0}'
+  byemsg_new: Pesan bye baru telah diatur.
+  greet_off: Pengumuman greet dinonaktifkan.
+  greet_on: Pengumuman greet diaktifkan di channel ini.
+  greetdel_off: Penghapusan otomatis pesan greet telah dinonaktifkan.
+  greetdel_on: 'Pesan greet akan dihapus setelah {0} detik.'
+  greetdm_off: Pengumuman greet DM dinonaktifkan.
+  greetdm_on: Pengumuman greet DM diaktifkan.
+  greetdmmsg_cur: 'Pesan greet DM saat ini: {0}'
+  greetdmmsg_enable: 'Aktifkan pesan greet DM dengan mengetik {0}'
+  greetdmmsg_new: Pesan greet DM baru telah diatur.
+  greetmsg_cur: 'Pesan greet saat ini: {0}'
+  greetmsg_enable: 'Aktifkan pesan greet dengan mengetik {0}'
+  greetmsg_new: Pesan greet baru telah diatur.
+
+ja-JP:
+  boost_off: ブーストアナウンスが無効になりました。
+  boost_on: このチャンネルでブーストアナウンスが有効になりました。
+  boostdel_off: ブーストメッセージの自動削除が無効になりました。
+  boostdel_on: 'ブーストメッセージは{0}秒後に削除されます。'
+  boostmsg_cur: '現在のブーストメッセージ: {0}'
+  boostmsg_enable: '{0}と入力してブーストメッセージを有効にしてください'
+  boostmsg_new: 新しいブーストメッセージが設定されました。
+  bye_off: 退出時のお知らせが無効になりました。
+  bye_on: このチャンネルでの退出時のお知らせが有効になりました。
+  byedel_off: 退出時メッセージの自動削除が無効になりました。
+  byedel_on: '退出時メッセージは{0}秒後に削除されます。'
+  byemsg_cur: '現在の退出時メッセージ: {0}'
+  byemsg_enable: '退出時メッセージを有効にするには、{0}と入力してください。'
+  byemsg_new: 新しい退出時メッセージが設定されました。
+  greet_off: 参加時のお知らせが無効になりました。
+  greet_on: このチャンネルでの参加時のお知らせが有効になりました。
+  greetdel_off: 参加時メッセージの自動削除が無効になりました。
+  greetdel_on: '参加時メッセージは{0}秒後に削除されます。'
+  greetdm_off: DM経由の参加時のお知らせが無効になりました。
+  greetdm_on: DM経由の参加時のお知らせが有効になりました。
+  greetdmmsg_cur: '現在の参加時DMメッセージ: {0}'
+  greetdmmsg_enable: '参加時DMメッセージを有効にするには、{0}と入力してください。'
+  greetdmmsg_new: 新しい参加時DMメッセージが設定されました。
+  greetmsg_cur: '現在の参加時メッセージ: {0}'
+  greetmsg_enable: '参加時メッセージを有効にするには、{0}と入力してください。'
+  greetmsg_new: 新しい参加時メッセージが設定されました。
+
+ko-KR:
+  boost_off: 부스트 알림이 비활성화되었습니다.
+  boost_on: 이 채널에서 부스트 알림이 활성화되었습니다.
+  boostdel_off: 부스트 메시지 자동 삭제가 비활성화되었습니다.
+  boostdel_on: '부스트 메시지가 {0}초 후에 삭제됩니다.'
+  boostmsg_cur: '현재 부스트 메시지: {0}'
+  boostmsg_enable: '{0}을(를) 입력하여 부스트 메시지를 활성화하세요'
+  boostmsg_new: 새 부스트 메시지가 설정되었습니다.
+  bye_off: 퇴장 알림이 비활성화되었습니다.
+  bye_on: 이 채널에서 퇴장 알림이 활성화되었습니다.
+  byedel_off: 퇴장 메시지 자동 삭제가 비활성화되었습니다.
+  byedel_on: '퇴장 메시지가 {0}초 후에 삭제됩니다.'
+  byemsg_cur: '현재 퇴장 메시지: {0}'
+  byemsg_enable: '{0}을(를) 입력하여 퇴장 메시지를 활성화하세요'
+  byemsg_new: 새 퇴장 메시지가 설정되었습니다.
+  greet_off: 환영 알림이 비활성화되었습니다.
+  greet_on: 이 채널에서 환영 알림이 활성화되었습니다.
+  greetdel_off: 환영 메시지 자동 삭제가 비활성화되었습니다.
+  greetdel_on: '환영 메시지가 {0}초 후에 삭제됩니다.'
+  greetdm_off: DM 환영 알림이 비활성화되었습니다.
+  greetdm_on: DM 환영 알림이 활성화되었습니다.
+  greetdmmsg_cur: '현재 DM 환영 메시지: {0}'
+  greetdmmsg_enable: '{0}을(를) 입력하여 DM 환영 메시지를 활성화하세요'
+  greetdmmsg_new: 새 DM 환영 메시지가 설정되었습니다.
+  greetmsg_cur: '현재 환영 메시지: {0}'
+  greetmsg_enable: '{0}을(를) 입력하여 환영 메시지를 활성화하세요'
+  greetmsg_new: 새 환영 메시지가 설정되었습니다.
+
+pl-PL:
+  boost_off: Ogłoszenia o boostach wyłączone.
+  boost_on: Ogłoszenia o boostach włączone na tym kanale.
+  boostdel_off: Automatyczne usuwanie wiadomości o boostach zostało wyłączone.
+  boostdel_on: 'Wiadomości o boostach będą usuwane po {0} sekundach.'
+  boostmsg_cur: 'Aktualna wiadomość o booście: {0}'
+  boostmsg_enable: 'Włącz wiadomości o boostach wpisując {0}'
+  boostmsg_new: Ustawiono nową wiadomość o booście.
+  bye_off: Ogłoszenia pożegnalne wyłączone.
+  bye_on: Ogłoszenia pożegnalne włączone na tym kanale.
+  byedel_off: Automatyczne usuwanie wiadomości pożegnalnych zostało wyłączone.
+  byedel_on: 'Wiadomości pożegnalne będą usuwane po {0} sekundach.'
+  byemsg_cur: 'Aktualna wiadomość pożegnalna: {0}'
+  byemsg_enable: 'Włącz wiadomości pożegnalne wpisując {0}'
+  byemsg_new: Ustawiono nową wiadomość pożegnalną.
+  greet_off: Ogłoszenia powitalne wyłączone.
+  greet_on: Ogłoszenia powitalne włączone na tym kanale.
+  greetdel_off: Automatyczne usuwanie wiadomości powitalnych zostało wyłączone.
+  greetdel_on: 'Wiadomości powitalne będą usuwane po {0} sekundach.'
+  greetdm_off: Powitania przez DM wyłączone.
+  greetdm_on: Powitania przez DM włączone.
+  greetdmmsg_cur: 'Aktualna wiadomość powitalna DM: {0}'
+  greetdmmsg_enable: 'Włącz wiadomości powitalne DM wpisując {0}'
+  greetdmmsg_new: Ustawiono nową wiadomość powitalną DM.
+  greetmsg_cur: 'Aktualna wiadomość powitalna: {0}'
+  greetmsg_enable: 'Włącz wiadomości powitalne wpisując {0}'
+  greetmsg_new: Ustawiono nową wiadomość powitalną.
+
+pt-BR:
+  boost_off: Os anúncios de impulsionamento foram desativados.
+  boost_on: Os anúncios de impulsionamento foram ativados neste canal.
+  boostdel_off: A deleção automática dos anúncios de impulsionamento foi desativada.
+  boostdel_on: 'Anúncios de impulsionamento serão deletados após {0} segundos.'
+  boostmsg_cur: 'Mensagem atual de impulsionamento: {0}'
+  boostmsg_enable: 'Ative os anúncios de impulsionamento digitando {0}'
+  boostmsg_new: Nova mensagem de impulsionamento definida.
+  bye_off: A mensagem de despedida foi desativada.
+  bye_on: A mensagem de despedida foi ativada nesse canal.
+  byedel_off: A exclusão automática de mensagens de despedida foi desativada.
+  byedel_on: 'Mensagens de despedida serão excluídas após {0} segundos.'
+  byemsg_cur: 'Mensagem de despedida atual: {0}'
+  byemsg_enable: 'Digite {0} para ativar a mensagem de despedida.'
+  byemsg_new: Nova mensagem de despedida definida com sucesso.
+  greet_off: A mensagem de boas-vindas foi desativada.
+  greet_on: A mensagem de boas-vindas foi ativada nesse canal.
+  greetdel_off: Mensagens de boas-vindas não serão mais automaticamente excluídas.
+  greetdel_on: 'Mensagens de boas-vindas serão excluídas após {0} segundos.'
+  greetdm_off: A mensagem direta de boas-vindas foi desativada.
+  greetdm_on: A mensagem direta de boas-vindas foi ativada.
+  greetdmmsg_cur: 'Mensagem direta de boas-vindas atual: {0}'
+  greetdmmsg_enable: 'Digite {0} para ativar a mensagem direta de boas-vindas.'
+  greetdmmsg_new: A mensagem direta de boas-vindas foi definida com sucesso.
+  greetmsg_cur: 'Mensagem de boas-vindas atual: {0}'
+  greetmsg_enable: 'Digite {0} para ativar a mensagem de boas-vindas.'
+  greetmsg_new: Mensagem de boas-vindas definida com sucesso.
+
+ru-RU:
+  boost_off: Буст-объявления отключены.
+  boost_on: На этом канале включены объявления бустов.
+  boostdel_off: Автоматическое удаление буст-сообщений отключено.
+  boostdel_on: 'Бусте сообщения будут удалены через {0} секунд.'
+  boostmsg_cur: 'Текущее буст сообщение: {0}'
+  boostmsg_enable: 'Включите буст сообщения, набрав {0}'
+  boostmsg_new: Новый набор буст сообщений.
+  bye_off: Прощальное сообщение отключено
+  bye_on: Прощальное сообщение включено для этого канала
+  byedel_off: Автоматическое удаление прощальных сообщений отключено
+  byedel_on: 'Прощальное сообщение будет удалено через {0} секунд.'
+  byemsg_cur: 'Текущее прощальное сообщение: {0}'
+  byemsg_enable: 'Активировать прощальное сообщение, набрав {0}'
+  byemsg_new: Новое прощальное сообщение установлено
+  greet_off: Приветственное объявление отключено.
+  greet_on: Приветственное объявление включено на этом канале.
+  greetdel_off: Автоматическое удаление приветственного сообщения отключено.
+  greetdel_on: 'Приветственное сообщение будет удалено через {0} секунд.'
+  greetdm_off: Приветственное ЛС сообщение отключено.
+  greetdm_on: Приветственное ЛС сообщение включено.
+  greetdmmsg_cur: 'Текущее приветственное сообщение в ЛС: {0}'
+  greetdmmsg_enable: 'Напечатайте {0}, чтобы активировать приветственное сообщение в ЛС'
+  greetdmmsg_new: Новое приветственное ЛС сообщение установлено.
+  greetmsg_cur: 'Текущее приветственное сообщение: {0}'
+  greetmsg_enable: 'Включено приветственное сообщение по нажатию {0}'
+  greetmsg_new: Новое приветственное сообщение установленно.
+
+sr-Cyrl-RS:
+  boost_off: Обавештења о бустовању искључена.
+  boost_on: Обавештења о бустовању укључена на овом каналу.
+  boostdel_off: Аутоматско брисање порука о бустовању је искључено.
+  boostdel_on: 'Поруке о бустовању ће бити обрисане после {0} секунди.'
+  boostmsg_cur: 'Тренутна порука о бустовању: {0}'
+  boostmsg_enable: 'Укључите поруке о бустовању куцањем {0}'
+  boostmsg_new: Нова порука о бустовању је постављена.
+  bye_off: Обавештења о одласку искључена.
+  bye_on: Обавештења о одласку укључена на овом каналу.
+  byedel_off: Аутоматско брисање порука о одласку је искључено.
+  byedel_on: 'Поруке о одласку ће бити обрисане после {0} секунди.'
+  byemsg_cur: 'Тренутна порука о одласку: {0}'
+  byemsg_enable: 'Укључите поруке о одласку куцањем {0}'
+  byemsg_new: Нова порука о одласку је постављена.
+  greet_off: Обавештења о добродошлици искључена.
+  greet_on: Обавештења о добродошлици укључена на овом каналу.
+  greetdel_off: Аутоматско брисање порука добродошлице је искључено.
+  greetdel_on: 'Поруке добродошлице ће бити обрисане после {0} секунди.'
+  greetdm_off: ДМ обавештења о добродошлици искључена.
+  greetdm_on: ДМ обавештења о добродошлици укључена.
+  greetdmmsg_cur: 'Тренутна ДМ порука добродошлице: {0}'
+  greetdmmsg_enable: 'Укључите ДМ поруке добродошлице куцањем {0}'
+  greetdmmsg_new: Нова ДМ порука добродошлице је постављена.
+  greetmsg_cur: 'Тренутна порука добродошлице: {0}'
+  greetmsg_enable: 'Укључите поруке добродошлице куцањем {0}'
+  greetmsg_new: Нова порука добродошлице је постављена.
+
+tr-TR:
+  boost_off: Boost duyuruları devre dışı bırakıldı.
+  boost_on: Bu kanalda boost duyuruları etkinleştirildi.
+  boostdel_off: Boost mesajlarının otomatik silinmesi devre dışı bırakıldı.
+  boostdel_on: 'Boost mesajları {0} saniye sonra silinecek.'
+  boostmsg_cur: 'Mevcut boost mesajı: {0}'
+  boostmsg_enable: 'Boost mesajlarını etkinleştirmek için {0} yaz'
+  boostmsg_new: Yeni boost mesajı ayarlandı.
+  bye_off: Veda duyuruları devre dışı bırakıldı.
+  bye_on: Bu kanalda veda duyuruları etkinleştirildi.
+  byedel_off: Veda mesajlarının otomatik silinmesi devre dışı bırakıldı.
+  byedel_on: 'Veda mesajları {0} saniye sonra silinecek.'
+  byemsg_cur: 'Mevcut veda mesajı: {0}'
+  byemsg_enable: 'Veda mesajlarını etkinleştirmek için {0} yaz'
+  byemsg_new: Yeni veda mesajı ayarlandı.
+  greet_off: Karşılama duyuruları devre dışı bırakıldı.
+  greet_on: Bu kanalda karşılama duyuruları etkinleştirildi.
+  greetdel_off: Karşılama mesajlarının otomatik silinmesi devre dışı bırakıldı.
+  greetdel_on: 'Karşılama mesajları {0} saniye sonra silinecek.'
+  greetdm_off: DM karşılama duyuruları devre dışı bırakıldı.
+  greetdm_on: DM karşılama duyuruları etkinleştirildi.
+  greetdmmsg_cur: 'Mevcut DM karşılama mesajı: {0}'
+  greetdmmsg_enable: 'DM karşılama mesajlarını etkinleştirmek için {0} yaz'
+  greetdmmsg_new: Yeni DM karşılama mesajı ayarlandı.
+  greetmsg_cur: 'Mevcut karşılama mesajı: {0}'
+  greetmsg_enable: 'Karşılama mesajlarını etkinleştirmek için {0} yaz'
+  greetmsg_new: Yeni karşılama mesajı ayarlandı.
+
+ts-TS:
+  boost_off: Boost announcements disabled.
+  boost_on: Boost announcements enabled on this channel.
+  boostdel_off: Automatic deletion of boost messages has been disabled.
+  boostdel_on: 'Boost messages will be deleted after {0} seconds.'
+  boostmsg_cur: 'Current boost message: {0}'
+  boostmsg_enable: 'Enable boost messages by typing {0}'
+  boostmsg_new: New boost message set.
+  bye_off: Bye announcements disabled. I-I'm not sad when people leave, okay?
+  bye_on: Bye announcements enabled on this channel.
+  byedel_off: Automatic deletion of bye messages has been disabled.
+  byedel_on: 'Bye messages will be deleted after {0} seconds. I''m just keeping things clean.'
+  byemsg_cur: 'Current bye message: {0}'
+  byemsg_enable: 'Enable bye messages by typing {0}'
+  byemsg_new: New bye message set.
+  greet_off: Greet announcements disabled.
+  greet_on: Greet announcements enabled on this channel.
+  greetdel_off: Automatic deletion of greet messages has been disabled.
+  greetdel_on: 'Greet messages will be deleted after {0} seconds.'
+  greetdm_off: DM greet announcements disabled.
+  greetdm_on: DM greet announcements enabled. I-I'll DM new members, but not because I care!
+  greetdmmsg_cur: 'Current DM greet message: {0}'
+  greetdmmsg_enable: 'Enable DM greet messages by typing {0}'
+  greetdmmsg_new: New DM greet message set. Hmph, it better be good.
+  greetmsg_cur: 'Current greet message: {0}'
+  greetmsg_enable: 'Enable greet messages by typing {0}'
+  greetmsg_new: New greet message set.
+
+uk-UA:
+  boost_off: Оголошення про бусти вимкнено.
+  boost_on: Оголошення про бусти увімкнено в цьому каналі.
+  boostdel_off: Автоматичне видалення повідомлень про бусти вимкнено.
+  boostdel_on: 'Повідомлення про бусти будуть видалені через {0} секунд.'
+  boostmsg_cur: 'Поточне повідомлення про буст: {0}'
+  boostmsg_enable: 'Увімкніть повідомлення про бусти, набравши {0}'
+  boostmsg_new: Нове повідомлення про буст встановлено.
+  bye_off: Оголошення про вихід вимкнено.
+  bye_on: Оголошення про вихід увімкнено в цьому каналі.
+  byedel_off: Автоматичне видалення повідомлень про вихід вимкнено.
+  byedel_on: 'Повідомлення про вихід будуть видалені через {0} секунд.'
+  byemsg_cur: 'Поточне повідомлення про вихід: {0}'
+  byemsg_enable: 'Увімкніть повідомлення про вихід, набравши {0}'
+  byemsg_new: Нове повідомлення про вихід встановлено.
+  greet_off: Оголошення про привітання вимкнено.
+  greet_on: Оголошення про привітання увімкнено в цьому каналі.
+  greetdel_off: Автоматичне видалення привітальних повідомлень вимкнено.
+  greetdel_on: 'Привітальні повідомлення будуть видалені через {0} секунд.'
+  greetdm_off: Привітання в особисті повідомлення вимкнено.
+  greetdm_on: Привітання в особисті повідомлення увімкнено.
+  greetdmmsg_cur: 'Поточне привітання в ОП: {0}'
+  greetdmmsg_enable: 'Увімкніть привітання в ОП, набравши {0}'
+  greetdmmsg_new: Нове привітання в ОП встановлено.
+  greetmsg_cur: 'Поточне привітальне повідомлення: {0}'
+  greetmsg_enable: 'Увімкніть привітальні повідомлення, набравши {0}'
+  greetmsg_new: Нове привітальне повідомлення встановлено.
+
+vi-VN:
+  boost_off: Đã tắt thông báo boost.
+  boost_on: Đã bật thông báo boost trên kênh này.
+  boostdel_off: Đã tắt tự động xóa tin nhắn boost.
+  boostdel_on: 'Tin nhắn boost sẽ bị xóa sau {0} giây.'
+  boostmsg_cur: 'Tin nhắn boost hiện tại: {0}'
+  boostmsg_enable: 'Bật tin nhắn boost bằng cách gõ {0}'
+  boostmsg_new: Đã đặt tin nhắn boost mới.
+  bye_off: Đã tắt thông báo tạm biệt.
+  bye_on: Đã bật thông báo tạm biệt trên kênh này.
+  byedel_off: Đã tắt tự động xóa tin nhắn tạm biệt.
+  byedel_on: 'Tin nhắn tạm biệt sẽ bị xóa sau {0} giây.'
+  byemsg_cur: 'Tin nhắn tạm biệt hiện tại: {0}'
+  byemsg_enable: 'Bật tin nhắn tạm biệt bằng cách gõ {0}'
+  byemsg_new: Đã đặt tin nhắn tạm biệt mới.
+  greet_off: Đã tắt thông báo chào mừng.
+  greet_on: Đã bật thông báo chào mừng trên kênh này.
+  greetdel_off: Đã tắt tự động xóa tin nhắn chào mừng.
+  greetdel_on: 'Tin nhắn chào mừng sẽ bị xóa sau {0} giây.'
+  greetdm_off: Đã tắt thông báo chào mừng qua DM.
+  greetdm_on: Đã bật thông báo chào mừng qua DM.
+  greetdmmsg_cur: 'Tin nhắn chào mừng DM hiện tại: {0}'
+  greetdmmsg_enable: 'Bật tin nhắn chào mừng DM bằng cách gõ {0}'
+  greetdmmsg_new: Đã đặt tin nhắn chào mừng DM mới.
+  greetmsg_cur: 'Tin nhắn chào mừng hiện tại: {0}'
+  greetmsg_enable: 'Bật tin nhắn chào mừng bằng cách gõ {0}'
+  greetmsg_new: Đã đặt tin nhắn chào mừng mới.
+
+zh-CN:
+  boost_off: 增強公告已禁用。
+  boost_on: 在此頻道上啟用了 Boost 公告。
+  boostdel_off: 加速消息的自動刪除已被禁用。
+  boostdel_on: '速推消息將在 {0} 秒後被刪除。'
+  boostmsg_cur: '當前增強消息：{0}'
+  boostmsg_enable: '通過輸入 {0} 啟用速推消息'
+  boostmsg_new: 新的提升消息集。
+  bye_off: 已停用離開訊息功能
+  bye_on: 此頻道已開啟離開通知。
+  byedel_off: 離開訊息將不再被自動刪除
+  byedel_on: '離開訊息訊息過 {0} 秒後將被自動刪除'
+  byemsg_cur: '当前离开消息：{0}'
+  byemsg_enable: '使用 {0} 指令來開啟離開訊息'
+  byemsg_new: 新的離開訊息已被設定。
+  greet_off: 已關閉歡迎訊息
+  greet_on: 已在此頻道啟用歡迎訊息
+  greetdel_off: 已停用自動刪除歡迎訊息
+  greetdel_on: '歡迎訊息將於{0}秒後被刪除'
+  greetdm_off: 已停用私訊歡迎訊息
+  greetdm_on: 已啟用私訊歡迎訊息
+  greetdmmsg_cur: '現在的私人訊息的問候訊息：{0}'
+  greetdmmsg_enable: '傳送{0}以啟用私訊歡迎訊息'
+  greetdmmsg_new: 已設定新的私訊歡迎訊息
+  greetmsg_cur: '現在的歡迎訊息：{0}'
+  greetmsg_enable: '傳送{0}以啟用歡迎訊息'
+  greetmsg_new: 已設置新的問候訊息。

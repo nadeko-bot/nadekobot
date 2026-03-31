@@ -1,0 +1,63 @@
+ar:
+  finished_track: انتهى المقطع
+  playing_track: 'جارٍ تشغيل المقطع #{0}'
+
+de-DE:
+  finished_track: Titel beendet
+  playing_track: 'Spiele Titel #{0}'
+
+es-ES:
+  finished_track: Pista terminada
+  playing_track: 'Reproduciendo pista #{0}'
+
+fr-FR:
+  finished_track: Piste finie
+  playing_track: 'Lecture de la piste #{0}'
+
+id-ID:
+  finished_track: Lagu Selesai
+  playing_track: 'Memutar lagu #{0}'
+
+ja-JP:
+  finished_track: トラック終了
+  playing_track: 'トラック#{0}を再生中'
+
+ko-KR:
+  finished_track: 트랙 종료
+  playing_track: '트랙 #{0} 재생 중'
+
+pl-PL:
+  finished_track: Utwór zakończony
+  playing_track: 'Odtwarzanie utworu #{0}'
+
+pt-BR:
+  finished_track: Trilha Acabada
+  playing_track: 'Tocando a trilha #{0}'
+
+ru-RU:
+  finished_track: Трек завершен
+  playing_track: 'Воспроизведение трека #{0}'
+
+sr-Cyrl-RS:
+  finished_track: Нумера завршена
+  playing_track: 'Пуштам нумеру #{0}'
+
+tr-TR:
+  finished_track: Parça Bitti
+  playing_track: '#{0} numaralı parça çalınıyor'
+
+ts-TS:
+  finished_track: Track finished.
+  playing_track: 'Playing track #{0}'
+
+uk-UA:
+  finished_track: Трек завершено
+  playing_track: 'Зараз грає трек #{0}'
+
+vi-VN:
+  finished_track: Bài hát đã kết thúc
+  playing_track: 'Đang phát bài #{0}'
+
+zh-CN:
+  finished_track: 已成功加入曲目
+  playing_track: '播放曲目 #{0}'

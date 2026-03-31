@@ -1,0 +1,591 @@
+ar:
+  acrm_fail: لم يتم العثور على الأمر التلقائي في الفهرس المحدد.
+  autocmd_add: 'سيتم تنفيذ الأمر {0} كل {1} ثانية في هذه القناة.'
+  autocmdlist_none: لا توجد أوامر تلقائية في هذه الصفحة.
+  bot_name: 'تم تغيير اسم البوت إلى {0}'
+  bot_status: 'تم تغيير حالة البوت إلى {0}'
+  bot_strings_reloaded: تم إعادة تحميل نصوص البوت.
+  cache_users_done: 'تمت إضافة {0} مستخدم وتحديث {1} مستخدم.'
+  cache_users_pending: جارٍ تحديث المستخدمين، يرجى الانتظار...
+  command_text: نص الأمر
+  deleted_x_servers: 'تم حذف {0} سيرفر.'
+  dm_from: رسالة خاصة من
+  fw_enabled: ستتلقى الرسائل الخاصة المحولة من الآن.
+  fw_disabled: لن تتلقى الرسائل الخاصة المحولة بعد الآن.
+  fw_enabled_but_channel: 'ستتلقى الرسائل الخاصة المحولة، لكن التحويل إلى القناة نشط حاليًا وله الأولوية. قم بتعطيله باستخدام {0} أولًا.'
+  fwch_start: أي رسالة تُرسل إلى الرسائل الخاصة للبوت سيتم تحويلها إلى هذه القناة.
+  fwch_stop: لن يتم تحويل الرسائل المرسلة إلى الرسائل الخاصة للبوت إلى هذه القناة بعد الآن.
+  fwch_notify: 'تم تحويل الرسائل الخاصة إلى قناة بواسطة {0}. تم إيقاف التحويل الفردي مؤقتًا أثناء ذلك.'
+  interval: الفاصل الزمني
+  invalid_format: صيغة الإدخال غير صالحة.
+  no_shard_id: لم يتم العثور على شارد بهذا المُعرّف.
+  no_shards_on_page: لا توجد شاردات في هذه الصفحة.
+  restart_fail: يجب إعداد RestartCommand في ملف creds.yml الخاص بك
+  restarting: جارٍ إعادة التشغيل.
+  scadd: تمت إضافة أمر بدء تشغيل جديد.
+  scrm: تمت إزالة أمر بدء التشغيل بنجاح.
+  scrm_fail: لم يتم العثور على أمر بدء التشغيل.
+  server: السيرفر
+  set_activity: تم تعيين نشاط جديد!
+  set_avatar: تم تعيين صورة رمزية جديدة!
+  set_banner: تم تعيين بانر جديد!
+  set_stream: تم تعيين بث جديد!
+  shard_reconnecting: 'جارٍ إعادة اتصال الشارد {0}.'
+  shutting_down: جارٍ الإيقاف
+  startcmdlist_none: لا توجد أوامر بدء تشغيل في هذه الصفحة.
+  startcmds_cleared: تم مسح جميع أوامر بدء التشغيل.
+
+de-DE:
+  acrm_fail: Automatischer Befehl für das angegebene Register nicht gefunden.
+  autocmd_add: 'Der Befehl {0} wird alle {1}s in diesem Kanal ausgeführt.'
+  autocmdlist_none: Keine automatischen Befehle auf dieser Seite.
+  bot_name: 'Der Name des Bots wurde zu {0} geändert.'
+  bot_status: 'Der Status des Bots wurde zu {0} geändert.'
+  bot_strings_reloaded: Bot Strings wurden neu geladen.
+  cache_users_done: '{0} Benutzer wurden hinzugefügt und {1} Benutzer wurden aktualisiert.'
+  cache_users_pending: Benutzer werden aktualisiert, bitte warten...
+  command_text: Befehl Text
+  deleted_x_servers: '{0} Server gelöscht.'
+  dm_from: DM von
+  fw_enabled: Du wirst ab jetzt weitergeleitete DMs erhalten.
+  fw_disabled: Du wirst keine weitergeleiteten DMs mehr erhalten.
+  fw_enabled_but_channel: 'Du wirst weitergeleitete DMs erhalten, aber die Kanalweiterleitung ist aktiv und hat Vorrang. Deaktiviere sie zuerst mit {0}.'
+  fwch_start: Jede Nachricht, die an die DMs des Bots gesendet wird, wird an diesen Kanal weitergeleitet.
+  fwch_stop: Nachrichten, die an die DMs des Bots gesendet werden, werden nicht mehr an diesen Kanal weitergeleitet.
+  fwch_notify: 'DM-Weiterleitung wurde von {0} auf einen Kanal umgeleitet. Deine individuelle DM-Weiterleitung ist währenddessen pausiert.'
+  interval: Interval
+  invalid_format: Ungültiges Eingabeformat.
+  no_shard_id: Keine Shard mit dieser ID gefunden.
+  no_shards_on_page: Keine Shards auf dieser Seite.
+  restart_fail: Du musst den RestartCommand in deinen creds.yml einrichten.
+  restarting: Am Neustarten.
+  scadd: Neuer Startbefehl hinzugefügt.
+  scrm: Startbefehl wurde erfolgreich entfernt.
+  scrm_fail: Startbefehl nicht gefunden.
+  server: Server
+  set_activity: Neue Aktivität festgelegt!
+  set_avatar: Neuer Avatar festgelegt!
+  set_banner: Neues Banner festgelegt!
+  set_stream: Neuer Stream festgelegt!
+  shard_reconnecting: 'Shard {0} verbindet wieder'
+  shutting_down: Sich schließen.
+  startcmdlist_none: Keine Startbefehle auf dieser Seite.
+  startcmds_cleared: Alle Startbefehle wurden entfernt.
+
+es-ES:
+  acrm_fail: No hay comandos en en la página especificada.
+  autocmd_add: 'El comando {0} se ejecutará cada {1}s en este canal.'
+  autocmdlist_none: No hay comandos automáticos en esta página.
+  bot_name: 'El nombre del bot fue cambiado a {0}'
+  bot_status: 'Estado del bot cambiado a {0}'
+  bot_strings_reloaded: Se han recargado las cadenas del bots.
+  cache_users_done: '{0} usuarios fueron añadidos y {1} usuarios fueron actualizados.'
+  cache_users_pending: Actualizando usuarios, por favor espera...
+  command_text: Comando de texto
+  deleted_x_servers: 'Se han eliminado {0} servidores.'
+  dm_from: Mensaje privado de
+  fw_enabled: Ahora recibirás los DMs reenviados.
+  fw_disabled: Ya no recibirás los DMs reenviados.
+  fw_enabled_but_channel: 'Recibirás los DMs reenviados, pero el reenvío a canal está activo y tiene prioridad. Desactívalo primero con {0}.'
+  fwch_start: Cualquier mensaje enviado a los DMs del bot será reenviado a este canal.
+  fwch_stop: Los mensajes enviados a los DMs del bot ya no serán reenviados a este canal.
+  fwch_notify: 'El reenvío de DMs ha sido redirigido a un canal por {0}. Tu reenvío individual de DMs está pausado mientras esto esté activo.'
+  interval: Intervalo
+  invalid_format: Formato no válido.
+  no_shard_id: No se encontró ningún fragmento con esa ID.
+  no_shards_on_page: No hay fragmentos en esta página.
+  restart_fail: Debes configurar un comando de reinicio en tu creds.yml
+  restarting: Reiniciando.
+  scadd: Nuevo comando de inicio añadido.
+  scrm: Comando de inicio removido satisfactoriamente.
+  scrm_fail: Comando de inicio no encontrado.
+  server: Servidor
+  set_activity: ¡Nueva actividad establecida!
+  set_avatar: ¡Nuevo avatar establecido!
+  set_banner: ¡Nuevo banner establecido!
+  set_stream: ¡Nuevo stream establecido!
+  shard_reconnecting: 'Reconectando fragmento {0}.'
+  shutting_down: Apagando...
+  startcmdlist_none: No hay comandos de inicio en esta página.
+  startcmds_cleared: Eliminados todos los comandos de inicio.
+
+fr-FR:
+  acrm_fail: Commande automatique introuvable sur l'index spécifié.
+  autocmd_add: 'La commande {0} s''exécutera toutes les {1} secondes dans ce salon.'
+  autocmdlist_none: Aucune commande automatique sur cette page.
+  bot_name: 'Le nom du bot a été changé pour {0}'
+  bot_status: 'Le statut du bot a été changé pour {0}'
+  bot_strings_reloaded: Les chaînes de caractères du bot ont été mises à jour.
+  cache_users_done: '{0} utilisateurs ont été ajoutés et {1} utilisateurs ont été mis à jour.'
+  cache_users_pending: Mise à jour des utilisateurs, veuillez patienter...
+  command_text: Commande textuelle
+  deleted_x_servers: '{0} serveurs supprimés.'
+  dm_from: MP de
+  fw_enabled: Tu recevras les MPs transférés à partir de maintenant.
+  fw_disabled: Tu ne recevras plus les MPs transférés.
+  fw_enabled_but_channel: 'Tu recevras les MPs transférés, mais le transfert vers un salon est actif et prioritaire. Désactive-le d''abord avec {0}.'
+  fwch_start: Tout message envoyé dans les DMs du bot sera transféré vers ce salon.
+  fwch_stop: Les messages envoyés dans les DMs du bot ne seront plus transférés vers ce salon.
+  fwch_notify: 'Le transfert de MPs a été redirigé vers un salon par {0}. Ton transfert individuel de MPs est suspendu tant que cela est actif.'
+  interval: Intervalle
+  invalid_format: Format d'entrée invalide.
+  no_shard_id: Aucun fragment avec cet ID n'a été trouvée.
+  no_shards_on_page: Aucun fragment dans cette page.
+  restart_fail: Vous devez régler RestartCommand dans votre creds.yml
+  restarting: Redémarrage.
+  scadd: Nouvelle commande de démarrage ajoutée.
+  scrm: Commande de démarrage retirée avec succès.
+  scrm_fail: Commande de démarrage non trouvée.
+  server: Serveur
+  set_activity: Nouvelle activité définie !
+  set_avatar: Nouvel avatar défini!
+  set_banner: Nouveau banner défini !
+  set_stream: Nouveau stream défini!
+  shard_reconnecting: 'Le fragment {0} se reconnecte.'
+  shutting_down: Arrêt
+  startcmdlist_none: Aucune commandes de démarrage trouvée sur cette page.
+  startcmds_cleared: Toutes les commandes de démarrage ont été effacées.
+
+id-ID:
+  acrm_fail: Auto command tidak ditemukan di index yang ditentukan.
+  autocmd_add: 'Perintah {0} akan dijalankan setiap {1} detik di channel ini.'
+  autocmdlist_none: Tidak ada auto command di halaman ini.
+  bot_name: 'Nama bot diubah menjadi {0}'
+  bot_status: 'Status bot diubah menjadi {0}'
+  bot_strings_reloaded: String bot telah dimuat ulang.
+  cache_users_done: '{0} pengguna ditambahkan dan {1} pengguna diperbarui.'
+  cache_users_pending: Sedang memperbarui pengguna, mohon tunggu...
+  command_text: Teks Perintah
+  deleted_x_servers: '{0} server dihapus.'
+  dm_from: DM dari
+  fw_enabled: Kamu sekarang akan menerima DM yang diteruskan.
+  fw_disabled: Kamu tidak akan lagi menerima DM yang diteruskan.
+  fw_enabled_but_channel: 'Kamu akan menerima DM yang diteruskan, tetapi penerusan ke channel sedang aktif dan lebih diutamakan. Nonaktifkan dulu dengan {0}.'
+  fwch_start: Semua pesan yang dikirim ke DM bot akan diteruskan ke channel ini.
+  fwch_stop: Pesan yang dikirim ke DM bot tidak lagi diteruskan ke channel ini.
+  fwch_notify: 'Penerusan DM telah dialihkan ke channel oleh {0}. Penerusan DM individual kamu dijeda selama ini aktif.'
+  interval: Interval
+  invalid_format: Format input tidak valid.
+  no_shard_id: Tidak ditemukan shard dengan ID tersebut.
+  no_shards_on_page: Tidak ada shard di halaman ini.
+  restart_fail: Kamu harus menyiapkan RestartCommand di creds.yml
+  restarting: Memulai ulang.
+  scadd: Startup command baru ditambahkan.
+  scrm: Startup command berhasil dihapus.
+  scrm_fail: Startup command tidak ditemukan.
+  server: Server
+  set_activity: Aktivitas baru disetel!
+  set_avatar: Avatar baru disetel!
+  set_banner: Banner baru disetel!
+  set_stream: Stream baru disetel!
+  shard_reconnecting: 'Shard {0} sedang reconnecting.'
+  shutting_down: Mematikan
+  startcmdlist_none: Tidak ada startup command di halaman ini.
+  startcmds_cleared: Semua startup command dihapus.
+
+ja-JP:
+  acrm_fail: 指定されたインデックスに自動コマンドが見つかりません。
+  autocmd_add: 'コマンド{0}がこのチャンネルで{1}秒ごとに実行されます。'
+  autocmdlist_none: このページには自動コマンドがありません。
+  bot_name: 'Bot名が《{0}》に変更されました'
+  bot_status: 'Botのステータスが{0}に変更されました'
+  bot_strings_reloaded: Botの文字列が再読み込みされました。
+  cache_users_done: '{0}人のユーザーが追加され、{1}人のユーザーが更新されました。'
+  cache_users_pending: ユーザーを更新中、お待ちください...
+  command_text: コマンドテキスト
+  deleted_x_servers: '{0}サーバーを削除しました。'
+  dm_from: 'ダイレクトメッセージ 送信者:'
+  fw_enabled: 転送されたDMを受け取るようになりました。
+  fw_disabled: 転送されたDMを受け取らないようになりました。
+  fw_enabled_but_channel: '転送されたDMを受け取るようになりましたが、チャンネル転送が有効で優先されます。先に{0}で無効にしてください。'
+  fwch_start: Botに送信されたDMはすべてこのチャンネルに転送されます。
+  fwch_stop: Botに送信されたDMはこのチャンネルに転送されなくなります。
+  fwch_notify: '{0}によりDM転送がチャンネルにリダイレクトされました。この間、個別のDM転送は一時停止されます。'
+  interval: 間隔
+  invalid_format: 入力フォーマットが無効です。
+  no_shard_id: そのIDのShardが見つかりませんでした。
+  no_shards_on_page: このページにシャードはありません。
+  restart_fail: Restartコマンドをcreds.ymlで設定しなければなりません。
+  restarting: 再起動しています。
+  scadd: 新しい起動コマンドが追加されました。
+  scrm: 起動コマンドが正常に削除されました。
+  scrm_fail: 起動コマンドが見つかりません。
+  server: サーバー
+  set_activity: 新しいアクティビティが設定されました！
+  set_avatar: 新しいアバターが設定されました！
+  set_banner: 新しいバナーが設定されました！
+  set_stream: 新しいストリームが設定されました！
+  shard_reconnecting: 'Shard {0}は再接続中です。'
+  shutting_down: シャットダウンしています
+  startcmdlist_none: このページには起動コマンドはありません。
+  startcmds_cleared: すべての起動コマンドをクリアしました。
+
+ko-KR:
+  acrm_fail: 지정된 인덱스에서 자동 명령을 찾을 수 없어요.
+  autocmd_add: '명령어 {0}이(가) 이 채널에서 {1}초마다 실행돼요.'
+  autocmdlist_none: 이 페이지에 자동 명령이 없어요.
+  bot_name: '봇 이름이 {0}(으)로 변경되었어요'
+  bot_status: '봇 상태가 {0}(으)로 변경되었어요'
+  bot_strings_reloaded: 봇 문자열이 다시 로드되었어요.
+  cache_users_done: '{0}명의 유저가 추가되고 {1}명의 유저가 업데이트되었어요.'
+  cache_users_pending: 유저를 업데이트하는 중이에요, 잠시 기다려 주세요...
+  command_text: 명령어 텍스트
+  deleted_x_servers: '{0}개의 서버가 삭제되었어요.'
+  dm_from: DM 발신
+  fw_enabled: 이제 전달된 DM을 받게 됩니다.
+  fw_disabled: 더 이상 전달된 DM을 받지 않습니다.
+  fw_enabled_but_channel: '전달된 DM을 받게 되지만, 채널 전달이 활성화되어 있어 우선됩니다. 먼저 {0}으로 비활성화하세요.'
+  fwch_start: 봇의 DM으로 전송된 모든 메시지가 이 채널로 전달돼요.
+  fwch_stop: 봇의 DM으로 전송된 메시지가 더 이상 이 채널로 전달되지 않아요.
+  fwch_notify: '{0}에 의해 DM 전달이 채널로 리다이렉트되었습니다. 이 기간 동안 개별 DM 전달은 일시 중지됩니다.'
+  interval: 간격
+  invalid_format: 잘못된 입력 형식이에요.
+  no_shard_id: 해당 ID의 샤드를 찾을 수 없어요.
+  no_shards_on_page: 이 페이지에 샤드가 없어요.
+  restart_fail: creds.yml에서 RestartCommand를 설정해야 해요
+  restarting: 재시작 중.
+  scadd: 새 시작 명령이 추가되었어요.
+  scrm: 시작 명령이 성공적으로 제거되었어요.
+  scrm_fail: 시작 명령을 찾을 수 없어요.
+  server: 서버
+  set_activity: 새 활동이 설정되었어요!
+  set_avatar: 새 아바타가 설정되었어요!
+  set_banner: 새 배너가 설정되었어요!
+  set_stream: 새 스트림이 설정되었어요!
+  shard_reconnecting: '샤드 {0} 재연결 중.'
+  shutting_down: 종료 중
+  startcmdlist_none: 이 페이지에 시작 명령이 없어요.
+  startcmds_cleared: 모든 시작 명령이 초기화되었어요.
+
+pl-PL:
+  acrm_fail: Nie znaleziono automatycznej komendy pod podanym indeksem.
+  autocmd_add: 'Komenda {0} będzie wykonywana co {1}s na tym kanale.'
+  autocmdlist_none: Brak automatycznych komend na tej stronie.
+  bot_name: 'Nazwa bota zmieniona na {0}'
+  bot_status: 'Status bota zmieniony na {0}'
+  bot_strings_reloaded: Ciągi tekstowe bota zostały przeładowane.
+  cache_users_done: 'Dodano {0} użytkowników i zaktualizowano {1} użytkowników.'
+  cache_users_pending: Aktualizowanie użytkowników, proszę czekać...
+  command_text: Tekst komendy
+  deleted_x_servers: 'Usunięto {0} serwerów.'
+  dm_from: Wiadomość prywatna od
+  fw_enabled: Od teraz będziesz otrzymywać przekazywane wiadomości prywatne.
+  fw_disabled: Nie będziesz już otrzymywać przekazywanych wiadomości prywatnych.
+  fw_enabled_but_channel: 'Będziesz otrzymywać przekazywane wiadomości prywatne, ale przekazywanie na kanał jest aktywne i ma priorytet. Wyłącz je najpierw za pomocą {0}.'
+  fwch_start: Każda wiadomość wysłana do bota w DM będzie przekazywana na ten kanał.
+  fwch_stop: Wiadomości wysłane do bota w DM nie będą już przekazywane na ten kanał.
+  fwch_notify: 'Przekazywanie wiadomości prywatnych zostało przekierowane na kanał przez {0}. Twoje indywidualne przekazywanie jest wstrzymane, póki to jest aktywne.'
+  interval: Interwał
+  invalid_format: Nieprawidłowy format danych wejściowych.
+  no_shard_id: Nie znaleziono sharda o takim ID.
+  no_shards_on_page: Brak shardów na tej stronie.
+  restart_fail: Musisz ustawić RestartCommand w swoim creds.yml
+  restarting: Restartowanie.
+  scadd: Dodano nową komendę startową.
+  scrm: Komenda startowa pomyślnie usunięta.
+  scrm_fail: Nie znaleziono komendy startowej.
+  server: Serwer
+  set_activity: Nowa aktywność ustawiona!
+  set_avatar: Nowy avatar ustawiony!
+  set_banner: Nowy baner ustawiony!
+  set_stream: Nowy stream ustawiony!
+  shard_reconnecting: 'Shard {0} ponownie się łączy.'
+  shutting_down: Wyłączanie
+  startcmdlist_none: Brak komend startowych na tej stronie.
+  startcmds_cleared: Wyczyszczono wszystkie komendy startowe.
+
+pt-BR:
+  acrm_fail: Comando automático não encontrado com o índice especificado.
+  autocmd_add: 'O comando {0} será executado a cada {1}s neste canal.'
+  autocmdlist_none: Nenhum comando automático nessa página.
+  bot_name: 'O nome do bot foi alterado para {0}'
+  bot_status: 'O status do bot foi alterado para {0}'
+  bot_strings_reloaded: As strings do bot foram recarregadas.
+  cache_users_done: '{0} usuários foram adicionados e {1} usuários foram atualizados.'
+  cache_users_pending: Atualizando usuários, por favor aguarde...
+  command_text: Comando de Texto
+  deleted_x_servers: 'Servidores deletados {0}.'
+  dm_from: DM de
+  fw_enabled: Agora você receberá DMs encaminhadas.
+  fw_disabled: Você não receberá mais DMs encaminhadas.
+  fw_enabled_but_channel: 'Você receberá DMs encaminhadas, mas o encaminhamento para canal está ativo e tem prioridade. Desative-o primeiro com {0}.'
+  fwch_start: Qualquer mensagem enviada nas DMs do bot será encaminhada para este canal.
+  fwch_stop: Mensagens enviadas nas DMs do bot não serão mais encaminhadas para este canal.
+  fwch_notify: 'O encaminhamento de DMs foi redirecionado para um canal por {0}. Seu encaminhamento individual de DMs está pausado enquanto isso estiver ativo.'
+  interval: Intervalo
+  invalid_format: Input inválido.
+  no_shard_id: Nenhuma shard com esse ID encontrado.
+  no_shards_on_page: Nenhum shard nessa página.
+  restart_fail: Você precisa configurar o RestartCommand no arquivo creds.yml
+  restarting: Reiniciando.
+  scadd: Comando de inicialização adicionado com sucesso.
+  scrm: Comando de inicialização removido com sucesso.
+  scrm_fail: Comando de inicialização não encontrado.
+  server: Servidor
+  set_activity: Nova atividade definida!
+  set_avatar: Nova foto selecionada!
+  set_banner: Novo banner definido!
+  set_stream: Nova stream selecionada!
+  shard_reconnecting: 'Shard {0} reconectando.'
+  shutting_down: Desligando
+  startcmdlist_none: Não há comandos de inicialização nessa página.
+  startcmds_cleared: Todos os comandos de inicialização foram removidos.
+
+ru-RU:
+  acrm_fail: Автоматическая команда не найдена в указанном индексе.
+  autocmd_add: 'Команда {0} будет выполняться каждые {1} в этом канале.'
+  autocmdlist_none: На этой странице нет автоматических команд.
+  bot_name: 'Имя бота изменено на {0}'
+  bot_status: 'Статус бота изменен на {0}'
+  bot_strings_reloaded: Строки бота были перезагружены.
+  cache_users_done: '{0} пользователей добавлено и {1} пользователей обновлено.'
+  cache_users_pending: Обновление пользователей, пожалуйста подождите...
+  command_text: Текст команды
+  deleted_x_servers: 'Удалено серверов: {0}.'
+  dm_from: ЛС от
+  fw_enabled: Теперь вы будете получать пересланные ЛС.
+  fw_disabled: Вы больше не будете получать пересланные ЛС.
+  fw_enabled_but_channel: 'Вы будете получать пересланные ЛС, но пересылка в канал активна и имеет приоритет. Сначала отключите её с помощью {0}.'
+  fwch_start: Любое сообщение, отправленное в ЛС бота, будет переслано в этот канал.
+  fwch_stop: Сообщения, отправленные в ЛС бота, больше не будут пересылаться в этот канал.
+  fwch_notify: 'Пересылка ЛС была перенаправлена в канал пользователем {0}. Ваша индивидуальная пересылка ЛС приостановлена, пока это активно.'
+  interval: Интервал
+  invalid_format: Неверный вводимый формат
+  no_shard_id: Осколок с таким ID не обнаружен.
+  no_shards_on_page: На этой странице нет осколков.
+  restart_fail: Вы должны настроить RestartCommand в своем creds.yml
+  restarting: Перезагрузка.
+  scadd: Новая команда, которая будет исполнятся при запуске успешно добавлена.
+  scrm: Команда, которая будет исполнятся при запуске успешно убрана.
+  scrm_fail: Команда авто-запуска не найдена.
+  server: Сервер
+  set_activity: Новая активность установлена!
+  set_avatar: Новый аватар установлен!
+  set_banner: Новый баннер установлен!
+  set_stream: Новый стрим установлен!
+  shard_reconnecting: 'Осколок {0} повторно подключается.'
+  shutting_down: Выключаюсь
+  startcmdlist_none: Никаких команд авто-запуска на этой странице.
+  startcmds_cleared: Очищены все команды авто-запуска.
+
+sr-Cyrl-RS:
+  acrm_fail: Аутоматска команда није пронађена на наведеном индексу.
+  autocmd_add: 'Команда {0} ће се извршавати сваких {1}с у овом каналу.'
+  autocmdlist_none: Нема аутоматских команди на овој страници.
+  bot_name: 'Име бота промењено у {0}'
+  bot_status: 'Статус бота промењен у {0}'
+  bot_strings_reloaded: Стрингови бота су поново учитани.
+  cache_users_done: '{0} корисника је додато и {1} корисника је ажурирано.'
+  cache_users_pending: Ажурирање корисника, сачекај...
+  command_text: Текст команде
+  deleted_x_servers: 'Обрисано {0} сервера.'
+  dm_from: ДМ од
+  fw_enabled: Од сад ћете примати прослеђене ДМ-ове.
+  fw_disabled: Више нећете примати прослеђене ДМ-ове.
+  fw_enabled_but_channel: 'Примаћете прослеђене ДМ-ове, али прослеђивање у канал је активно и има приоритет. Прво га искључите са {0}.'
+  fwch_start: Свака порука послата боту у ДМ биће прослеђена у овај канал.
+  fwch_stop: Поруке послате боту у ДМ више неће бити прослеђиване у овај канал.
+  fwch_notify: 'Прослеђивање ДМ-ова је преусмерено у канал од стране {0}. Ваше индивидуално прослеђивање је паузирано док је ово активно.'
+  interval: Интервал
+  invalid_format: Неважећи формат уноса.
+  no_shard_id: Није пронађен шард са тим ID-ом.
+  no_shards_on_page: Нема шардова на овој страници.
+  restart_fail: Мораш да подесиш RestartCommand у свом creds.yml
+  restarting: Рестартовање.
+  scadd: Нова стартна команда додата.
+  scrm: Стартна команда успешно уклоњена.
+  scrm_fail: Стартна команда није пронађена.
+  server: Сервер
+  set_activity: Нова активност постављена!
+  set_avatar: Нови аватар постављен!
+  set_banner: Нови банер постављен!
+  set_stream: Нови стрим постављен!
+  shard_reconnecting: 'Шард {0} се поново повезује.'
+  shutting_down: Гашење
+  startcmdlist_none: Нема стартних команди на овој страници.
+  startcmds_cleared: Све стартне команде обрисане.
+
+tr-TR:
+  acrm_fail: Belirtilen dizinde otomatik komut bulunamadı.
+  autocmd_add: '{0} komutu bu kanalda her {1} saniyede bir çalıştırılacak.'
+  autocmdlist_none: Bu sayfada otomatik komut yok.
+  bot_name: 'Botun adı {0} olarak değiştirildi'
+  bot_status: 'Bot durumu {0} olarak değiştirildi'
+  bot_strings_reloaded: Bot dizeleri yeniden yüklendi.
+  cache_users_done: '{0} kullanıcı eklendi ve {1} kullanıcı güncellendi.'
+  cache_users_pending: Kullanıcılar güncelleniyor, lütfen bekle...
+  command_text: Komut Metni
+  deleted_x_servers: '{0} sunucu silindi.'
+  dm_from: DM gönderen
+  fw_enabled: Artık iletilen DM'leri alacaksınız.
+  fw_disabled: Artık iletilen DM'leri almayacaksınız.
+  fw_enabled_but_channel: 'İletilen DM''leri alacaksınız, ancak kanal yönlendirmesi aktif ve öncelikli. Önce {0} ile devre dışı bırakın.'
+  fwch_start: Botun DM'lerine gönderilen tüm mesajlar bu kanala iletilecek.
+  fwch_stop: Botun DM'lerine gönderilen mesajlar artık bu kanala iletilmeyecek.
+  fwch_notify: 'DM yönlendirmesi {0} tarafından bir kanala yönlendirildi. Bu aktifken bireysel DM yönlendirmeniz duraklatıldı.'
+  interval: Aralık
+  invalid_format: Geçersiz giriş biçimi.
+  no_shard_id: Bu kimliğe sahip shard bulunamadı.
+  no_shards_on_page: Bu sayfada shard yok.
+  restart_fail: creds.yml dosyanızda RestartCommand ayarlamalısınız
+  restarting: Yeniden başlatılıyor.
+  scadd: Yeni başlangıç komutu eklendi.
+  scrm: Başlangıç komutu başarıyla kaldırıldı.
+  scrm_fail: Başlangıç komutu bulunamadı.
+  server: Sunucu
+  set_activity: Yeni aktivite ayarlandı!
+  set_avatar: Yeni avatar ayarlandı!
+  set_banner: Yeni banner ayarlandı!
+  set_stream: Yeni yayın ayarlandı!
+  shard_reconnecting: 'Shard {0} yeniden bağlanıyor.'
+  shutting_down: Kapatılıyor
+  startcmdlist_none: Bu sayfada başlangıç komutu yok.
+  startcmds_cleared: Tüm başlangıç komutları temizlendi.
+
+ts-TS:
+  acrm_fail: Auto command not found on the specified index.
+  autocmd_add: 'The command {0} will execute every {1}s in this channel.'
+  autocmdlist_none: No auto commands on this page.
+  bot_name: 'Bot''s name changed to {0}. I-it''s a nice name, I guess.'
+  bot_status: 'Bot status changed to {0}'
+  bot_strings_reloaded: Bot strings have been reloaded.
+  cache_users_done: '{0} users were added and {1} users were updated.'
+  cache_users_pending: Updating users, please wait...
+  command_text: Command Text
+  deleted_x_servers: 'Deleted {0} servers.'
+  dm_from: DM from
+  fw_enabled: Fine, I'll forward DMs to you from now on.
+  fw_disabled: Hmph, fine. I won't send you forwarded DMs anymore.
+  fw_enabled_but_channel: 'Fine, I''ll forward DMs to you... but channel forwarding is active and takes priority. Disable it with {0} first, okay?'
+  fwch_start: Any message sent to bot's DMs will be forwarded to this channel.
+  fwch_stop: Messages sent to bot's DMs will no longer be forwarded to this channel.
+  fwch_notify: 'Hmph, {0} redirected DM forwarding to a channel. Your individual forwarding is paused while this is active.'
+  interval: Interval
+  invalid_format: Invalid input format.
+  no_shard_id: No shard with that ID found.
+  no_shards_on_page: No shards on this page.
+  restart_fail: You must setup RestartCommand in your creds.yml
+  restarting: Restarting.
+  scadd: New startup command added.
+  scrm: Startup command successfully removed.
+  scrm_fail: Startup command not found. Pay attention!
+  server: Server
+  set_activity: New activity set!
+  set_avatar: New avatar set!
+  set_banner: New banner set!
+  set_stream: New stream set!
+  shard_reconnecting: 'Shard {0} reconnecting.'
+  shutting_down: Shutting down. I-I'll be back!
+  startcmdlist_none: No startup commands on this page.
+  startcmds_cleared: Cleared all startup commands.
+
+uk-UA:
+  acrm_fail: Автокоманда за вказаним індексом не знайдена.
+  autocmd_add: 'Команда {0} виконуватиметься кожні {1}с у цьому каналі.'
+  autocmdlist_none: На цій сторінці немає автокоманд.
+  bot_name: 'Ім''я бота змінено на {0}'
+  bot_status: 'Статус бота змінено на {0}'
+  bot_strings_reloaded: Рядки бота перезавантажено.
+  cache_users_done: '{0} користувачів додано та {1} користувачів оновлено.'
+  cache_users_pending: Оновлення користувачів, зачекай...
+  command_text: Текст команди
+  deleted_x_servers: 'Видалено {0} серверів.'
+  dm_from: ОП від
+  fw_enabled: Тепер ви отримуватимете переслані ОП.
+  fw_disabled: Ви більше не отримуватимете переслані ОП.
+  fw_enabled_but_channel: 'Ви отримуватимете переслані ОП, але пересилання в канал активне і має пріоритет. Спочатку вимкніть його за допомогою {0}.'
+  fwch_start: Будь-яке повідомлення, надіслане боту в ОП, буде переслано в цей канал.
+  fwch_stop: Повідомлення, надіслані боту в ОП, більше не пересилатимуться в цей канал.
+  fwch_notify: 'Пересилання ОП було перенаправлено в канал користувачем {0}. Ваше індивідуальне пересилання призупинено, поки це активне.'
+  interval: Інтервал
+  invalid_format: Невірний формат вводу.
+  no_shard_id: Шард з таким ID не знайдено.
+  no_shards_on_page: На цій сторінці немає шардів.
+  restart_fail: Потрібно налаштувати RestartCommand у creds.yml
+  restarting: Перезапуск.
+  scadd: Додано нову команду запуску.
+  scrm: Команду запуску успішно видалено.
+  scrm_fail: Команду запуску не знайдено.
+  server: Сервер
+  set_activity: Нову активність встановлено!
+  set_avatar: Новий аватар встановлено!
+  set_banner: Новий банер встановлено!
+  set_stream: Новий стрім встановлено!
+  shard_reconnecting: 'Шард {0} перепідключається.'
+  shutting_down: Вимкнення
+  startcmdlist_none: На цій сторінці немає команд запуску.
+  startcmds_cleared: Усі команди запуску очищено.
+
+vi-VN:
+  acrm_fail: Không tìm thấy lệnh tự động ở chỉ mục đã chỉ định.
+  autocmd_add: 'Lệnh {0} sẽ được thực thi mỗi {1} giây trong kênh này.'
+  autocmdlist_none: Không có lệnh tự động nào trên trang này.
+  bot_name: 'Tên bot đã được đổi thành {0}'
+  bot_status: 'Trạng thái bot đã được đổi thành {0}'
+  bot_strings_reloaded: Đã tải lại chuỗi bot.
+  cache_users_done: 'Đã thêm {0} người dùng và cập nhật {1} người dùng.'
+  cache_users_pending: Đang cập nhật người dùng, vui lòng đợi...
+  command_text: Nội dung lệnh
+  deleted_x_servers: 'Đã xóa {0} máy chủ.'
+  dm_from: Tin nhắn riêng từ
+  fw_enabled: Bạn sẽ nhận được tin nhắn riêng được chuyển tiếp từ bây giờ.
+  fw_disabled: Bạn sẽ không còn nhận được tin nhắn riêng được chuyển tiếp nữa.
+  fw_enabled_but_channel: 'Bạn sẽ nhận được tin nhắn riêng được chuyển tiếp, nhưng chuyển tiếp kênh đang hoạt động và được ưu tiên. Tắt nó trước bằng {0}.'
+  fwch_start: Mọi tin nhắn gửi đến DM của bot sẽ được chuyển tiếp đến kênh này.
+  fwch_stop: Tin nhắn gửi đến DM của bot sẽ không còn được chuyển tiếp đến kênh này nữa.
+  fwch_notify: 'Chuyển tiếp DM đã được chuyển hướng đến một kênh bởi {0}. Chuyển tiếp DM cá nhân của bạn tạm dừng khi tính năng này hoạt động.'
+  interval: Khoảng thời gian
+  invalid_format: Định dạng nhập không hợp lệ.
+  no_shard_id: Không tìm thấy shard với ID đó.
+  no_shards_on_page: Không có shard nào trên trang này.
+  restart_fail: Bạn cần thiết lập RestartCommand trong creds.yml
+  restarting: Đang khởi động lại.
+  scadd: Đã thêm lệnh khởi động mới.
+  scrm: Đã xóa lệnh khởi động thành công.
+  scrm_fail: Không tìm thấy lệnh khởi động.
+  server: Máy chủ
+  set_activity: Đã thiết lập hoạt động mới!
+  set_avatar: Đã thiết lập ảnh đại diện mới!
+  set_banner: Đã thiết lập banner mới!
+  set_stream: Đã thiết lập stream mới!
+  shard_reconnecting: 'Shard {0} đang kết nối lại.'
+  shutting_down: Đang tắt
+  startcmdlist_none: Không có lệnh khởi động nào trên trang này.
+  startcmds_cleared: Đã xóa tất cả lệnh khởi động.
+
+zh-CN:
+  acrm_fail: 未找到指定的索引上的自動執行指令
+  autocmd_add: '命令 {0} 將在此頻道中每隔 {1} 執行一次。'
+  autocmdlist_none: 此頁面上沒有自動命令。
+  bot_name: '機器人的名稱更改為 {0}'
+  bot_status: '機器人狀態更改為 {0}'
+  bot_strings_reloaded: 機器人字串已重新加載。
+  cache_users_done: '已新增 {0} 位使用者，已更新 {1} 位使用者。'
+  cache_users_pending: 正在更新使用者，請稍候...
+  command_text: 命令文本
+  deleted_x_servers: '已刪除 {0} 個伺服器。'
+  dm_from: 私信來自
+  fw_enabled: 你现在会收到转发的私信了。
+  fw_disabled: 你将不再收到转发的私信。
+  fw_enabled_but_channel: '你会收到转发的私信，但频道转发目前处于启用状态且优先级更高。请先用 {0} 关闭它。'
+  fwch_start: 發送給機器人私訊的任何訊息都將轉發到此頻道。
+  fwch_stop: 發送給機器人私訊的訊息將不再轉發到此頻道。
+  fwch_notify: '{0} 已将私信转发重定向到了一个频道。在此期间，你的个人私信转发已暂停。'
+  interval: 間隔
+  invalid_format: 無效的輸入格式。
+  no_shard_id: 未找到該 ID。
+  no_shards_on_page: 此頁面上沒有分片。
+  restart_fail: 你需要在你的 `creds.yml` 檔案中設定 `RestartCommand`
+  restarting: 正在重新啟動
+  scadd: 添加了新的啟動命令。
+  scrm: 啟動命令已成功刪除。
+  scrm_fail: 未找到啟動命令。
+  server: 伺服器
+  set_activity: 已設定新活動！
+  set_avatar: 新頭像套裝！
+  set_banner: 已設定新橫幅！
+  set_stream: 新實況設置！
+  shard_reconnecting: '分片 {0} 重新連接。'
+  shutting_down: 正在關閉
+  startcmdlist_none: 此頁面上沒有啟動命令。
+  startcmds_cleared: 清除所有啟動命令。

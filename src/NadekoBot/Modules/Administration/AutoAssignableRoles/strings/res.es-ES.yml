@@ -1,4 +1,0 @@
-aar_disabled: Los usuarios que ingresen al servidor no recibirán roles automáticamente.
-aar_none: Los usuarios no recibirán ningún rol cuando entren al servidor.
-aar_role_removed: 'Los usuarios ya no recibirán el rol {0} cuando entren a este servidor.'
-aar_roles: 'Los usuarios recibirán los siguientes roles al entrar al servidor: {0}'

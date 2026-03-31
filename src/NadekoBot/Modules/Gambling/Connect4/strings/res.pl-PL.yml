@@ -1,5 +1,0 @@
-connect4_created: Utworzono grę Connect4. Czekam na drugiego gracza.
-connect4_draw: Gra Connect4 zakończyła się remisem.
-connect4_failed_to_start: Gra Connect4 nie wystartowała, bo nikt nie dołączył.
-connect4_player_to_move: 'Ruch gracza: {0}'
-connect4_won: '{0} wygrał/a grę Connect4 przeciwko {1}.'

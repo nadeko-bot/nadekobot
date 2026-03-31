@@ -1,9 +1,0 @@
-livechannel_added: '{0} başarıyla canlı kanal olarak eklendi.'
-livechannel_limit: 'Sunucu başına en fazla {0} canlı kanal olabilir.'
-livechannel_list_empty: Bu sunucu için yapılandırılmış canlı kanal yok.
-livechannel_list_title: '{0} Canlı Kanalları'
-livechannel_not_found: Kanal, canlı kanal listesinde bulunamadı.
-livechannel_please_wait: Değişikliklerin etkili olması için lütfen 10 dakikaya kadar bekle
-livechannel_removed: '{0} canlı kanallardan başarıyla kaldırıldı.'
-preview: Önizleme
-template: Şablon

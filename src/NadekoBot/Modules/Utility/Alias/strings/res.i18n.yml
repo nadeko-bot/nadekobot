@@ -1,0 +1,127 @@
+ar:
+  alias_added: 'كتابة {0} ستكون الآن اختصارًا لـ {1}.'
+  alias_list: قائمة الاختصارات
+  alias_remove_fail: 'المشغّل {0} لم يكن لديه اختصار.'
+  alias_removed: 'المشغّل {0} لم يعد لديه اختصار.'
+  aliases_cleared: 'تمت إزالة جميع الاختصارات ({0}) في هذا السيرفر.'
+  aliases_none: لم يتم العثور على اختصار
+
+de-DE:
+  alias_added: '{0} ist nun ein Alias für {1}.'
+  alias_list: Liste der Aliasse
+  alias_remove_fail: 'Auslöser {0} hatte kein Alias.'
+  alias_removed: 'Auslöser {0} hat kein Alias mehr.'
+  aliases_cleared: 'Alle {0} Aliases auf diesem Server wurden entfernt.'
+  aliases_none: Kein Alias gefunden
+
+es-ES:
+  alias_added: 'Escribir {0} ahora será un alias de {1}.'
+  alias_list: Lista de alias
+  alias_remove_fail: '{0} no era un alias.'
+  alias_removed: 'El comando {0} ya no tiene un alias.'
+  aliases_cleared: 'Todos los alias {0} en este servidor han sido eliminados.'
+  aliases_none: No se ha encontrado alias.
+
+fr-FR:
+  alias_added: 'Taper {0} sera désormais un alias de {1}.'
+  alias_list: Liste des pseudonymes
+  alias_remove_fail: 'Le déclencheur {0} n''avait pas d''alias.'
+  alias_removed: 'Le déclencheur {0} n''a plus d''alias.'
+  aliases_cleared: 'Tous les alias {0} de ce serveur ont été enlevés.'
+  aliases_none: Aucun pseudonyme trouvé
+
+id-ID:
+  alias_added: 'Mengetik {0} sekarang akan menjadi alias dari {1}.'
+  alias_list: Daftar alias
+  alias_remove_fail: 'Trigger {0} tidak punya alias.'
+  alias_removed: 'Trigger {0} tidak lagi memiliki alias.'
+  aliases_cleared: 'Semua {0} alias di server ini telah dihapus.'
+  aliases_none: Tidak ada alias ditemukan
+
+ja-JP:
+  alias_added: '{0}を入力すると、{1}のエイリアスになります。'
+  alias_list: エイリアスのリスト
+  alias_remove_fail: 'トリガ{0}にエイリアスがありませんでした。'
+  alias_removed: 'トリガ{0}にエイリアスがありません。'
+  aliases_cleared: 'このサーバーの全{0}個のエイリアスが削除されました。'
+  aliases_none: エイリアスがありません。
+
+ko-KR:
+  alias_added: '{0}을(를) 입력하면 이제 {1}의 별칭으로 동작해요.'
+  alias_list: 별칭 목록
+  alias_remove_fail: '트리거 {0}에 별칭이 없었어요.'
+  alias_removed: '트리거 {0}의 별칭이 제거되었어요.'
+  aliases_cleared: '이 서버의 모든 {0}개 별칭이 제거되었어요.'
+  aliases_none: 별칭을 찾을 수 없어요
+
+pl-PL:
+  alias_added: 'Wpisanie {0} będzie teraz aliasem dla {1}.'
+  alias_list: Lista aliasów
+  alias_remove_fail: 'Wyzwalacz {0} nie miał aliasu.'
+  alias_removed: 'Wyzwalacz {0} nie ma już aliasu.'
+  aliases_cleared: 'Wszystkie aliasy ({0}) na tym serwerze zostały usunięte.'
+  aliases_none: Nie znaleziono aliasów
+
+pt-BR:
+  alias_added: 'Digitando {0} agora será um apelido de {1}.'
+  alias_list: Lista de atalhos
+  alias_remove_fail: 'Gatilho {0} não tinha um apelido.'
+  alias_removed: 'Gatilho {0} não tem mais apelido.'
+  aliases_cleared: 'Todos os apelidos {0} foram removidos nesse servidor.'
+  aliases_none: Nehum apelido encontrado
+
+ru-RU:
+  alias_added: 'Ввод {0} теперь будет псевдонимом {1}.'
+  alias_list: Список псевдонимов
+  alias_remove_fail: 'У триггера {0} нет псевдонима.'
+  alias_removed: 'Триггер {0} больше не имеет псевдонима.'
+  aliases_cleared: 'Все псевдонимы {0} на этом сервере удалены.'
+  aliases_none: Псевдоним не найден
+
+sr-Cyrl-RS:
+  alias_added: 'Куцање {0} ће сада бити алијас за {1}.'
+  alias_list: Листа алијаса
+  alias_remove_fail: 'Тригер {0} није имао алијас.'
+  alias_removed: 'Тригер {0} више нема алијас.'
+  aliases_cleared: 'Свих {0} алијаса на овом серверу су уклоњени.'
+  aliases_none: Алијас није пронађен
+
+tr-TR:
+  alias_added: '{0} yazmak artık {1} komutunun kısayolu olacak.'
+  alias_list: Kısayol listesi
+  alias_remove_fail: '{0} tetikleyicisinin bir kısayolu yoktu.'
+  alias_removed: '{0} tetikleyicisinin artık bir kısayolu yok.'
+  aliases_cleared: 'Bu sunucudaki tüm {0} kısayol kaldırıldı.'
+  aliases_none: Kısayol bulunamadı
+
+ts-TS:
+  alias_added: 'Typing {0} will now work as an alias for {1}.'
+  alias_list: List of aliases
+  alias_remove_fail: 'Trigger {0} didn''t have an alias. Check before you ask, b-baka!'
+  alias_removed: 'Removed the alias for trigger {0}.'
+  aliases_cleared: 'All {0} aliases on this server have been removed. Hmph.'
+  aliases_none: No aliases found.
+
+uk-UA:
+  alias_added: 'Введення {0} тепер буде аліасом для {1}.'
+  alias_list: Список аліасів
+  alias_remove_fail: 'Тригер {0} не мав аліаса.'
+  alias_removed: 'Тригер {0} більше не має аліаса.'
+  aliases_cleared: 'Усі {0} аліасів на цьому сервері видалено.'
+  aliases_none: Аліасів не знайдено
+
+vi-VN:
+  alias_added: 'Gõ {0} giờ sẽ là bí danh của {1}.'
+  alias_list: Danh sách bí danh
+  alias_remove_fail: 'Trigger {0} không có bí danh.'
+  alias_removed: 'Trigger {0} không còn bí danh nữa.'
+  aliases_cleared: 'Tất cả {0} bí danh trên máy chủ này đã bị xóa.'
+  aliases_none: Không tìm thấy bí danh nào
+
+zh-CN:
+  alias_added: '鍵入 {0} 現在將是 {1} 的別名。'
+  alias_list: 別名列表
+  alias_remove_fail: '觸發器 {0} 沒有別名。'
+  alias_removed: '觸發器 {0} 不再有別名。'
+  aliases_cleared: '此伺服器上的所有 {0} 別名均已刪除。'
+  aliases_none: 找不到別名

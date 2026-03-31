@@ -1,6 +1,0 @@
-dice_invalid_number: 'Número inválido. Você pode rolar {0}-{1} dados de uma vez.'
-dice_rolled: 'rolou {0}'
-dice_rolled_num: 'Dados rolados: {0}'
-rolls: ''
-second_larger_than_first: Segundo número deve ser maior que o primeiro.
-total: Total

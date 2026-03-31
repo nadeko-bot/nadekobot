@@ -1,4 +1,0 @@
-aar_disabled: '**Tự động gán role** khi người dùng tham gia đã được **tắt**.'
-aar_none: Người dùng không nhận được role nào khi tham gia server này.
-aar_role_removed: 'Người dùng sẽ không còn nhận role {0} khi tham gia server này nữa.'
-aar_roles: 'Các role sau được gán cho người dùng khi tham gia server này: {0}'

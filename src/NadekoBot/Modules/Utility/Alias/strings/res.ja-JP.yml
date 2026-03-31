@@ -1,6 +1,0 @@
-alias_added: '{0}を入力すると、{1}のエイリアスになります。'
-alias_list: エイリアスのリスト
-alias_remove_fail: 'トリガ{0}にエイリアスがありませんでした。'
-alias_removed: 'トリガ{0}にエイリアスがありません。'
-aliases_cleared: ''
-aliases_none: エイリアスがありません。

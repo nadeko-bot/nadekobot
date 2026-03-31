@@ -1,0 +1,191 @@
+ar:
+  xp_rate_amount_invalid: يجب أن تكون القيمة بين 0 و1000.
+  xp_rate_channel_reset: 'تم إعادة تعيين معدل XP للقناة {0}.'
+  xp_rate_channel_set: 'تم تعيين معدل XP للقناة **{0}** إلى **{1}** XP لكل **{2}** دقيقة.'
+  xp_rate_channels: معدلات XP للقنوات
+  xp_rate_cooldown_invalid: يجب أن يكون وقت الانتظار بين 0 و1440.
+  xp_rate_none: لا توجد تعديلات على معدل XP في هذا الخادم.
+  xp_rate_server: معدلات XP للخادم
+  xp_rate_server_reset: تم إعادة تعيين معدل XP للخادم إلى الإعدادات الافتراضية العامة.
+  xp_rate_server_set: 'تم تعيين معدل XP للخادم إلى **{0}** XP لكل **{1}** دقيقة.'
+  xp_rate_str: '`{0}:` {1} XP كل {2} دقيقة.'
+
+de-DE:
+  xp_rate_amount_invalid: Der Betrag muss zwischen 0 und 1000 liegen.
+  xp_rate_channel_reset: 'Die XP-Rate von Kanal {0} wurde zurückgesetzt.'
+  xp_rate_channel_set: 'XP-Rate von Kanal **{0}** auf **{1}** XP alle **{2}** Min. gesetzt.'
+  xp_rate_channels: XP-Raten nach Kanal
+  xp_rate_cooldown_invalid: Der Cooldown muss zwischen 0 und 1440 liegen.
+  xp_rate_none: Keine XP-Raten-Überschreibungen auf diesem Server.
+  xp_rate_server: Server-XP-Raten
+  xp_rate_server_reset: Die Server-XP-Rate wurde auf globale Standardwerte zurückgesetzt.
+  xp_rate_server_set: 'Server-XP-Rate auf **{0}** XP alle **{1}** Min. gesetzt.'
+  xp_rate_str: '`{0}:` {1} XP alle {2} Min.'
+
+es-ES:
+  xp_rate_amount_invalid: La cantidad debe ser entre 0 y 1000.
+  xp_rate_channel_reset: 'La tasa de XP del canal {0} ha sido restablecida.'
+  xp_rate_channel_set: 'Tasa de XP del canal **{0}** establecida a **{1}** xp cada **{2}** min.'
+  xp_rate_channels: Tasas de XP por canal
+  xp_rate_cooldown_invalid: El cooldown debe ser entre 0 y 1440.
+  xp_rate_none: No hay modificaciones de tasa de XP en este servidor.
+  xp_rate_server: Tasas de XP del servidor
+  xp_rate_server_reset: La tasa de XP del servidor ha sido restablecida a los valores globales.
+  xp_rate_server_set: 'Tasa de XP del servidor establecida a **{0}** xp cada **{1}** min.'
+  xp_rate_str: '`{0}:` {1} xp cada {2} min.'
+
+fr-FR:
+  xp_rate_amount_invalid: La quantité doit être entre 0 et 1000.
+  xp_rate_channel_reset: 'Le taux d''XP du salon {0} a été réinitialisé.'
+  xp_rate_channel_set: 'Taux d''XP du salon **{0}** défini à **{1}** xp toutes les **{2}** min.'
+  xp_rate_channels: Taux d'XP par salon
+  xp_rate_cooldown_invalid: Le cooldown doit être entre 0 et 1440.
+  xp_rate_none: Aucune modification de taux d'XP sur ce serveur.
+  xp_rate_server: Taux d'XP du serveur
+  xp_rate_server_reset: Le taux d'XP du serveur a été réinitialisé aux valeurs globales.
+  xp_rate_server_set: 'Taux d''XP du serveur défini à **{0}** xp toutes les **{1}** min.'
+  xp_rate_str: '`{0} :` {1} xp toutes les {2} min.'
+
+id-ID:
+  xp_rate_amount_invalid: Jumlah harus antara 0 dan 1000.
+  xp_rate_channel_reset: 'Rate XP channel {0} telah direset.'
+  xp_rate_channel_set: 'Rate XP channel **{0}** diatur ke **{1}** xp setiap **{2}** menit.'
+  xp_rate_channels: Rate XP channel
+  xp_rate_cooldown_invalid: Cooldown harus antara 0 dan 1440.
+  xp_rate_none: Tidak ada override rate XP di server ini.
+  xp_rate_server: Rate XP server
+  xp_rate_server_reset: Rate XP server telah direset ke default global.
+  xp_rate_server_set: 'Rate XP server diatur ke **{0}** xp setiap **{1}** menit.'
+  xp_rate_str: '`{0}:` {1} xp setiap {2} menit.'
+
+ja-JP:
+  xp_rate_amount_invalid: 量は0から1000の間でなければなりません。
+  xp_rate_channel_reset: 'チャンネル{0}のXPレートがリセットされました。'
+  xp_rate_channel_set: 'チャンネル**{0}**のXPレートが**{2}**分ごとに**{1}** XPに設定されました。'
+  xp_rate_channels: チャンネルXPレート
+  xp_rate_cooldown_invalid: クールダウンは0から1440の間でなければなりません。
+  xp_rate_none: このサーバーにXPレートのオーバーライドはありません。
+  xp_rate_server: サーバーXPレート
+  xp_rate_server_reset: サーバーXPレートがグローバルデフォルトにリセットされました。
+  xp_rate_server_set: 'サーバーXPレートが**{1}**分ごとに**{0}** XPに設定されました。'
+  xp_rate_str: '`{0}:` {2}分ごとに{1} XP'
+
+ko-KR:
+  xp_rate_amount_invalid: 양은 0에서 1000 사이여야 합니다.
+  xp_rate_channel_reset: '채널 {0}의 XP 비율이 초기화되었습니다.'
+  xp_rate_channel_set: '채널 **{0}**의 XP 비율이 **{2}**분마다 **{1}** XP로 설정되었습니다.'
+  xp_rate_channels: 채널 XP 비율
+  xp_rate_cooldown_invalid: 쿨다운은 0에서 1440 사이여야 합니다.
+  xp_rate_none: 이 서버에 XP 비율 재정의가 없습니다.
+  xp_rate_server: 서버 XP 비율
+  xp_rate_server_reset: 서버 XP 비율이 전역 기본값으로 초기화되었습니다.
+  xp_rate_server_set: '서버 XP 비율이 **{1}**분마다 **{0}** XP로 설정되었습니다.'
+  xp_rate_str: '`{0}:` {2}분마다 {1} XP'
+
+pl-PL:
+  xp_rate_amount_invalid: Ilość musi być między 0 a 1000.
+  xp_rate_channel_reset: 'Tempo XP kanału {0} zostało zresetowane.'
+  xp_rate_channel_set: 'Tempo XP kanału **{0}** ustawione na **{1}** xp co **{2}** min.'
+  xp_rate_channels: Tempo XP kanałów
+  xp_rate_cooldown_invalid: Cooldown musi być między 0 a 1440.
+  xp_rate_none: Brak nadpisań tempa XP na tym serwerze.
+  xp_rate_server: Tempo XP serwera
+  xp_rate_server_reset: Tempo XP serwera zostało zresetowane do globalnych wartości domyślnych.
+  xp_rate_server_set: 'Tempo XP serwera ustawione na **{0}** xp co **{1}** min.'
+  xp_rate_str: '`{0}:` {1} xp co {2} min.'
+
+pt-BR:
+  xp_rate_amount_invalid: A quantidade deve ser entre 0 e 1000.
+  xp_rate_channel_reset: 'A taxa de XP do canal {0} foi redefinida.'
+  xp_rate_channel_set: 'Taxa de XP do canal **{0}** definida para **{1}** xp a cada **{2}** min.'
+  xp_rate_channels: Taxas de XP por canal
+  xp_rate_cooldown_invalid: O cooldown deve ser entre 0 e 1440.
+  xp_rate_none: Nenhuma substituição de taxa de XP neste servidor.
+  xp_rate_server: Taxas de XP do servidor
+  xp_rate_server_reset: A taxa de XP do servidor foi redefinida para os padrões globais.
+  xp_rate_server_set: 'Taxa de XP do servidor definida para **{0}** xp a cada **{1}** min.'
+  xp_rate_str: '`{0}:` {1} xp a cada {2} min.'
+
+ru-RU:
+  xp_rate_amount_invalid: Количество должно быть от 0 до 1000.
+  xp_rate_channel_reset: 'Ставка XP канала {0} сброшена.'
+  xp_rate_channel_set: 'Ставка XP канала **{0}** установлена на **{1}** xp каждые **{2}** мин.'
+  xp_rate_channels: Ставки XP по каналам
+  xp_rate_cooldown_invalid: Кулдаун должен быть от 0 до 1440.
+  xp_rate_none: На этом сервере нет переопределений ставки XP.
+  xp_rate_server: Ставки XP сервера
+  xp_rate_server_reset: Ставка XP сервера сброшена до глобальных значений.
+  xp_rate_server_set: 'Ставка XP сервера установлена на **{0}** xp каждые **{1}** мин.'
+  xp_rate_str: '`{0}:` {1} xp каждые {2} мин.'
+
+sr-Cyrl-RS:
+  xp_rate_amount_invalid: Количина мора бити између 0 и 1000.
+  xp_rate_channel_reset: 'Стопа XP-а за канал {0} је ресетована.'
+  xp_rate_channel_set: 'Стопа XP-а за канал **{0}** постављена на **{1}** XP на сваких **{2}** мин.'
+  xp_rate_channels: Стопе XP-а по каналима
+  xp_rate_cooldown_invalid: Кулдаун мора бити између 0 и 1440.
+  xp_rate_none: Нема промењених стопа XP-а на овом серверу.
+  xp_rate_server: Серверске стопе XP-а
+  xp_rate_server_reset: Серверска стопа XP-а је ресетована на глобалне подразумеване вредности.
+  xp_rate_server_set: 'Серверска стопа XP-а постављена на **{0}** XP на сваких **{1}** мин.'
+  xp_rate_str: '`{0}:` {1} XP на сваких {2} мин.'
+
+tr-TR:
+  xp_rate_amount_invalid: Miktar 0 ile 1000 arasında olmalı.
+  xp_rate_channel_reset: 'Kanal {0} xp oranı sıfırlandı.'
+  xp_rate_channel_set: 'Kanal **{0}** xp oranı her **{2}** dakikada **{1}** xp olarak ayarlandı.'
+  xp_rate_channels: Kanal xp oranları
+  xp_rate_cooldown_invalid: Bekleme süresi 0 ile 1440 arasında olmalı.
+  xp_rate_none: Bu sunucuda xp oranı geçersiz kılması yok.
+  xp_rate_server: Sunucu xp oranları
+  xp_rate_server_reset: Sunucu xp oranı küresel varsayılanlara sıfırlandı.
+  xp_rate_server_set: 'Sunucu xp oranı her **{1}** dakikada **{0}** xp olarak ayarlandı.'
+  xp_rate_str: '`{0}:` her {2} dakikada {1} xp.'
+
+ts-TS:
+  xp_rate_amount_invalid: Amount must be between 0 and 1000.
+  xp_rate_channel_reset: 'Channel {0} xp rate has been reset.'
+  xp_rate_channel_set: 'Channel **{0}** xp rate set to **{1}** xp per every **{2}** min.'
+  xp_rate_channels: Channel xp rates
+  xp_rate_cooldown_invalid: Cooldown must be between 0 and 1440. Get it right, b-baka!
+  xp_rate_none: No xp rate overrides on this server.
+  xp_rate_server: Server xp rates
+  xp_rate_server_reset: Server xp rate has been reset to global defaults.
+  xp_rate_server_set: 'Server xp rate set to **{0}** xp per every **{1}** min.'
+  xp_rate_str: '`{0}:` {1} xp every {2} min.'
+
+uk-UA:
+  xp_rate_amount_invalid: Кількість має бути від 0 до 1000.
+  xp_rate_channel_reset: 'Рейт XP для каналу {0} було скинуто.'
+  xp_rate_channel_set: 'Рейт XP каналу **{0}** встановлено на **{1}** xp кожні **{2}** хв.'
+  xp_rate_channels: Рейти XP по каналах
+  xp_rate_cooldown_invalid: Кулдаун має бути від 0 до 1440.
+  xp_rate_none: На цьому сервері немає змінених рейтів XP.
+  xp_rate_server: Серверні рейти XP
+  xp_rate_server_reset: Серверний рейт XP скинуто до глобальних значень.
+  xp_rate_server_set: 'Серверний рейт XP встановлено на **{0}** xp кожні **{1}** хв.'
+  xp_rate_str: '`{0}:` {1} xp кожні {2} хв.'
+
+vi-VN:
+  xp_rate_amount_invalid: Số lượng phải nằm trong khoảng từ 0 đến 1000.
+  xp_rate_channel_reset: 'Tỉ lệ xp của kênh {0} đã được đặt lại.'
+  xp_rate_channel_set: 'Tỉ lệ xp kênh **{0}** đã được đặt thành **{1}** xp mỗi **{2}** phút.'
+  xp_rate_channels: Tỉ lệ xp theo kênh
+  xp_rate_cooldown_invalid: Thời gian hồi phải nằm trong khoảng từ 0 đến 1440.
+  xp_rate_none: Không có tùy chỉnh tỉ lệ xp nào trên máy chủ này.
+  xp_rate_server: Tỉ lệ xp máy chủ
+  xp_rate_server_reset: Tỉ lệ xp máy chủ đã được đặt lại về mặc định toàn cục.
+  xp_rate_server_set: 'Tỉ lệ xp máy chủ đã được đặt thành **{0}** xp mỗi **{1}** phút.'
+  xp_rate_str: '`{0}:` {1} xp mỗi {2} phút.'
+
+zh-CN:
+  xp_rate_amount_invalid: 數量必須在 0 到 1000 之間。
+  xp_rate_channel_reset: '頻道 {0} 的 XP 速率已重置。'
+  xp_rate_channel_set: '頻道 **{0}** 的 XP 速率設定為每 **{2}** 分鐘 **{1}** XP。'
+  xp_rate_channels: 頻道 XP 速率
+  xp_rate_cooldown_invalid: 冷卻時間必須在 0 到 1440 之間。
+  xp_rate_none: 此伺服器沒有 XP 速率覆寫。
+  xp_rate_server: 伺服器 XP 速率
+  xp_rate_server_reset: 伺服器 XP 速率已重置為全域預設值。
+  xp_rate_server_set: '伺服器 XP 速率設定為每 **{1}** 分鐘 **{0}** XP。'
+  xp_rate_str: '`{0}:` 每 {2} 分鐘 {1} XP'

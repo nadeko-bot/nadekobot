@@ -1,0 +1,111 @@
+ar:
+  connect4_created: تم إنشاء لعبة Connect4. في انتظار لاعب للانضمام.
+  connect4_draw: انتهت لعبة Connect4 بالتعادل.
+  connect4_failed_to_start: فشلت لعبة Connect4 في البدء لأن لا أحد انضم.
+  connect4_player_to_move: 'دور اللاعب: {0}'
+  connect4_won: '{0} فاز بلعبة Connect4 ضد {1}.'
+
+de-DE:
+  connect4_created: Vier Gewinnt Spiel wurde erstellt. Warte auf einen Spieler der beitritt.
+  connect4_draw: Vier Gewinnt Spiel endete in einem Unentschieden.
+  connect4_failed_to_start: Vier Gewinnt Spiel konnte nicht gestartet werden, da keiner beigetreten ist.
+  connect4_player_to_move: 'Spieler am Zug: {0}'
+  connect4_won: '{0} hat das Vier Gewinnt Spiel gegen {1} gewonnen.'
+
+es-ES:
+  connect4_created: Creado el juego de Conecta 4. Esperando jugadores.
+  connect4_draw: El juego Conecta 4 terminó en empate.
+  connect4_failed_to_start: El juego Conecta 4 no ha podido iniciarse porque nadie se unió.
+  connect4_player_to_move: 'Movimiento del jugador: {0}'
+  connect4_won: '{0} ganó el juego contra {1}.'
+
+fr-FR:
+  connect4_created: Création d'une partie de Connect4. En attente d'un joueur.
+  connect4_draw: La partie de Connect4 a fini sur une égalité.
+  connect4_failed_to_start: La partie de Connect4 n'a pas pu démarrer car personne ne l'a rejoint.
+  connect4_player_to_move: 'Joueurs à déplacer: {0}'
+  connect4_won: '{0} a gagné la partie de Connect4 contre {1}.'
+
+id-ID:
+  connect4_created: Permainan Connect4 dibuat. Menunggu pemain lain untuk bergabung.
+  connect4_draw: Permainan Connect4 berakhir seri.
+  connect4_failed_to_start: Permainan Connect4 gagal dimulai karena tidak ada yang bergabung.
+  connect4_player_to_move: 'Giliran bermain: {0}'
+  connect4_won: '{0} memenangkan permainan Connect4 melawan {1}.'
+
+ja-JP:
+  connect4_created: Connect4のゲームが作成されました。参加者を待っています。
+  connect4_draw: Connect4のゲームは引き分けで終了しました。
+  connect4_failed_to_start: 誰も参加しなかったため、Connect4のゲームを開始できませんでした。
+  connect4_player_to_move: '次の手番: {0}'
+  connect4_won: '{0}が{1}とのConnect4で勝利しました。'
+
+ko-KR:
+  connect4_created: 사목 게임을 만들었어요. 참가할 플레이어를 기다리고 있어요.
+  connect4_draw: 사목 게임이 무승부로 끝났어요.
+  connect4_failed_to_start: 아무도 참가하지 않아서 사목 게임을 시작하지 못했어요.
+  connect4_player_to_move: '이동할 플레이어: {0}'
+  connect4_won: '{0}님이 {1}님을 상대로 사목 게임에서 승리했어요.'
+
+pl-PL:
+  connect4_created: Utworzono grę Connect4. Czekam na drugiego gracza.
+  connect4_draw: Gra Connect4 zakończyła się remisem.
+  connect4_failed_to_start: Gra Connect4 nie wystartowała, bo nikt nie dołączył.
+  connect4_player_to_move: 'Ruch gracza: {0}'
+  connect4_won: '{0} wygrał/a grę Connect4 przeciwko {1}.'
+
+pt-BR:
+  connect4_created: criou uma partida de Connect4. Aguardando alguém a entrar.
+  connect4_draw: A partida de Connect4 terminou em empate.
+  connect4_failed_to_start: A partida de Connect4 não iniciou porque ninguém entrou.
+  connect4_player_to_move: 'É a vez do(a): {0}'
+  connect4_won: '{0} venceu a partida de Connect4 contra {1}.'
+
+ru-RU:
+  connect4_created: Игра в Connect4 была создана. Ожидается игрок.
+  connect4_draw: Игра в Connect4 закончилась ничьей.
+  connect4_failed_to_start: Невозможно было начать игру в Connect4, поскольку никто не присоединился.
+  connect4_player_to_move: 'Ход игрока: {0}'
+  connect4_won: '{0} победил игру в Connect4 против {1}.'
+
+sr-Cyrl-RS:
+  connect4_created: Направљена је Connect4 игра. Чека се играч да се придружи.
+  connect4_draw: Connect4 игра је завршена нерешено.
+  connect4_failed_to_start: Connect4 игра није почела јер се нико није придружио.
+  connect4_player_to_move: 'На потезу: {0}'
+  connect4_won: '{0} је победио/ла {1} у Connect4 игри.'
+
+tr-TR:
+  connect4_created: Connect4 oyunu oluşturuldu. Bir oyuncunun katılması bekleniyor.
+  connect4_draw: Connect4 oyunu berabere bitti.
+  connect4_failed_to_start: Kimse katılmadığı için Connect4 oyunu başlatılamadı.
+  connect4_player_to_move: 'Sıra: {0}'
+  connect4_won: '{0}, {1} karşısında Connect4 oyununu kazandı.'
+
+ts-TS:
+  connect4_created: Created a Connect4 game. Waiting for a player to join.
+  connect4_draw: Connect4 game ended in a draw.
+  connect4_failed_to_start: Connect4 game failed to start because nobody joined.
+  connect4_player_to_move: 'Player to move: {0}'
+  connect4_won: '{0} won the game of Connect4 against {1}. Hmph, I saw that coming.'
+
+uk-UA:
+  connect4_created: Створено гру Connect4. Чекаємо, поки хтось приєднається.
+  connect4_draw: Гра Connect4 закінчилася нічиєю.
+  connect4_failed_to_start: Гру Connect4 не вдалося розпочати, бо ніхто не приєднався.
+  connect4_player_to_move: 'Хід гравця: {0}'
+  connect4_won: '{0} переміг {1} у грі Connect4.'
+
+vi-VN:
+  connect4_created: Đã tạo trò Connect4. Đang chờ người chơi tham gia.
+  connect4_draw: Ván Connect4 kết thúc hoà.
+  connect4_failed_to_start: Ván Connect4 không thể bắt đầu vì không ai tham gia.
+  connect4_player_to_move: 'Lượt đi của: {0}'
+  connect4_won: '{0} đã thắng ván Connect4 với {1}.'
+
+zh-CN:
+  connect4_created: 已建立一個四子棋遊戲。等待玩家加入。
+  connect4_draw: 四子棋遊戲終止於平手。
+  connect4_failed_to_start: 由於沒有玩家參與，四子棋遊戲無法開始。
+  connect4_player_to_move: '要移動的玩家：{0}'
+  connect4_won: '{0} 贏得了與 {1} 的 Connect4 比賽。'

@@ -1,0 +1,63 @@
+ar:
+  bj_created: '{0} أنشأ لعبة بلاك جاك جديدة في هذه القناة.'
+  bj_joined: '{0} انضم إلى لعبة بلاك جاك'
+
+de-DE:
+  bj_created: '{0} hat ein neues Blackjack Spiel in diesem Kanal gestartet.'
+  bj_joined: '{0} ist dem Blackjack Spiel beigetreten.'
+
+es-ES:
+  bj_created: '{0} ha creado un nuevo juego de Blackjack en este canal.'
+  bj_joined: '{0} se ha unido al juego de Blackjack.'
+
+fr-FR:
+  bj_created: '{0} a créé une nouvelle partie de BlackJack dans ce salon.'
+  bj_joined: '{0} a rejoint la partie de BlackJack'
+
+id-ID:
+  bj_created: '{0} membuat permainan BlackJack baru di channel ini.'
+  bj_joined: '{0} bergabung ke permainan BlackJack'
+
+ja-JP:
+  bj_created: '{0}がこのチャンネルでブラックジャックのゲームを作成しました。'
+  bj_joined: '{0}がブラックジャックのゲームに参加しました'
+
+ko-KR:
+  bj_created: '{0}님이 이 채널에 새 블랙잭 게임을 만들었어요.'
+  bj_joined: '{0}님이 블랙잭 게임에 참가했어요'
+
+pl-PL:
+  bj_created: '{0} utworzył/a nową grę w BlackJacka na tym kanale.'
+  bj_joined: '{0} dołączył/a do gry w BlackJacka'
+
+pt-BR:
+  bj_created: '{0} criou uma nova partida de BlackJack nesse canal.'
+  bj_joined: '{0} juntou-se à partida de BlackJack.'
+
+ru-RU:
+  bj_created: '{0} создал новую игру в Блэк Джек на этом канале.'
+  bj_joined: '{0} присоединился к игре в Блэк Джек'
+
+sr-Cyrl-RS:
+  bj_created: '{0} је направио/ла нову BlackJack игру на овом каналу.'
+  bj_joined: '{0} се придружио/ла BlackJack игри'
+
+tr-TR:
+  bj_created: '{0} bu kanalda yeni bir BlackJack oyunu başlattı.'
+  bj_joined: '{0} BlackJack oyununa katıldı'
+
+ts-TS:
+  bj_created: '{0} has created a new BlackJack game in this channel.'
+  bj_joined: '{0} has joined the BlackJack game.'
+
+uk-UA:
+  bj_created: '{0} створив нову гру в Блекджек у цьому каналі.'
+  bj_joined: '{0} приєднався до гри в Блекджек'
+
+vi-VN:
+  bj_created: '{0} đã tạo một ván BlackJack mới trong kênh này.'
+  bj_joined: '{0} đã tham gia ván BlackJack'
+
+zh-CN:
+  bj_created: '{0} 在这个频道创建了一场新的二十一点游戏。'
+  bj_joined: '{0} 已加入二十一点游戏'

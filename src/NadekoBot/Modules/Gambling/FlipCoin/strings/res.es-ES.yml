@@ -1,6 +1,0 @@
-betflip_guess: ¡Acertaste!
-flip_invalid: 'Número especificado no válido. Puedes voltear 1 a {0} monedas.'
-flip_results: '{0} monedas lanzadas. {1} cara, {2} cruz.'
-flipped: 'salió {0}.'
-heads: Cara
-tails: Cruz

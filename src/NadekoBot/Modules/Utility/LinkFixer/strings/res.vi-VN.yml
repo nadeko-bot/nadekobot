@@ -1,7 +1,0 @@
-linkfix_added: 'Các liên kết từ {0} giờ sẽ được chuyển sang {1}.'
-linkfix_already_exists: 'Đã tồn tại một bản sửa liên kết cho {0}.'
-linkfix_invalid_domains: Cả tên miền cũ và mới đều phải hợp lệ.
-linkfix_list_none: Chưa có bản sửa liên kết nào được cấu hình cho máy chủ này.
-linkfix_list_title: Sửa liên kết
-linkfix_not_found: 'Không tìm thấy bản sửa liên kết cho {0}.'
-linkfix_removed: 'Bản sửa liên kết cho {0} đã bị xóa.'

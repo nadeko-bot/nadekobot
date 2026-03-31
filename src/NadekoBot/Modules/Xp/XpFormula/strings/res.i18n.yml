@@ -1,0 +1,175 @@
+ar:
+  xpformula_current: صيغة XP
+  xpformula_set: تم تحديث صيغة XP
+  xpformula_desc: |-
+    |-
+      XP لكل مستوى: **{0}** x (المستوى + 1) + **{1}**
+  xpformula_preview: معاينة المستويات
+  xpformula_a_invalid: 'يجب ان يكون الميل (a) بين {0} و {1}.'
+  xpformula_c_invalid: 'يجب ان تكون القاعدة (c) بين {0} و {1}.'
+  xpformula_invalid: معاملات الصيغة غير صالحة.
+
+de-DE:
+  xpformula_current: XP-Formel
+  xpformula_set: XP-Formel aktualisiert
+  xpformula_desc: |-
+    |-
+      XP pro Level: **{0}** x (Level + 1) + **{1}**
+  xpformula_preview: Level-Vorschau
+  xpformula_a_invalid: 'Steigung (a) muss zwischen {0} und {1} liegen.'
+  xpformula_c_invalid: 'Basis (c) muss zwischen {0} und {1} liegen.'
+  xpformula_invalid: Ungultige Formelparameter.
+
+es-ES:
+  xpformula_current: Formula de XP
+  xpformula_set: Formula de XP actualizada
+  xpformula_desc: |-
+    |-
+      XP por nivel: **{0}** x (nivel + 1) + **{1}**
+  xpformula_preview: Vista previa de niveles
+  xpformula_a_invalid: 'La pendiente (a) debe estar entre {0} y {1}.'
+  xpformula_c_invalid: 'La base (c) debe estar entre {0} y {1}.'
+  xpformula_invalid: Parametros de formula no validos.
+
+fr-FR:
+  xpformula_current: Formule XP
+  xpformula_set: Formule XP mise a jour
+  xpformula_desc: |-
+    |-
+      XP par niveau : **{0}** x (niveau + 1) + **{1}**
+  xpformula_preview: Apercu des niveaux
+  xpformula_a_invalid: 'La pente (a) doit etre entre {0} et {1}.'
+  xpformula_c_invalid: 'La base (c) doit etre entre {0} et {1}.'
+  xpformula_invalid: Parametres de formule invalides.
+
+id-ID:
+  xpformula_current: Formula XP
+  xpformula_set: Formula XP Diperbarui
+  xpformula_desc: |-
+    |-
+      XP per level: **{0}** x (level + 1) + **{1}**
+  xpformula_preview: Pratinjau Level
+  xpformula_a_invalid: 'Kemiringan (a) harus antara {0} dan {1}.'
+  xpformula_c_invalid: 'Basis (c) harus antara {0} dan {1}.'
+  xpformula_invalid: Parameter formula tidak valid.
+
+ja-JP:
+  xpformula_current: XP計算式
+  xpformula_set: XP計算式を更新しました
+  xpformula_desc: |-
+    |-
+      レベルごとのXP: **{0}** x (レベル + 1) + **{1}**
+  xpformula_preview: レベルプレビュー
+  xpformula_a_invalid: '傾き (a) は {0} から {1} の間で指定してください。'
+  xpformula_c_invalid: '基礎値 (c) は {0} から {1} の間で指定してください。'
+  xpformula_invalid: 無効な計算式パラメータです。
+
+ko-KR:
+  xpformula_current: XP 공식
+  xpformula_set: XP 공식 업데이트됨
+  xpformula_desc: |-
+    |-
+      레벨당 XP: **{0}** x (레벨 + 1) + **{1}**
+  xpformula_preview: 레벨 미리보기
+  xpformula_a_invalid: '기울기 (a)는 {0}에서 {1} 사이여야 합니다.'
+  xpformula_c_invalid: '기본값 (c)은 {0}에서 {1} 사이여야 합니다.'
+  xpformula_invalid: 잘못된 공식 매개변수입니다.
+
+pl-PL:
+  xpformula_current: Formula XP
+  xpformula_set: Formula XP zaktualizowana
+  xpformula_desc: |-
+    |-
+      XP na poziom: **{0}** x (poziom + 1) + **{1}**
+  xpformula_preview: Podglad poziomow
+  xpformula_a_invalid: 'Nachylenie (a) musi byc miedzy {0} a {1}.'
+  xpformula_c_invalid: 'Baza (c) musi byc miedzy {0} a {1}.'
+  xpformula_invalid: Nieprawidlowe parametry formuly.
+
+pt-BR:
+  xpformula_current: Formula de XP
+  xpformula_set: Formula de XP atualizada
+  xpformula_desc: |-
+    |-
+      XP por nivel: **{0}** x (nivel + 1) + **{1}**
+  xpformula_preview: Preview de niveis
+  xpformula_a_invalid: 'Inclinacao (a) deve estar entre {0} e {1}.'
+  xpformula_c_invalid: 'Base (c) deve estar entre {0} e {1}.'
+  xpformula_invalid: Parametros de formula invalidos.
+
+ru-RU:
+  xpformula_current: Формула XP
+  xpformula_set: Формула XP обновлена
+  xpformula_desc: |-
+    |-
+      XP за уровень: **{0}** x (уровень + 1) + **{1}**
+  xpformula_preview: Предпросмотр уровней
+  xpformula_a_invalid: 'Наклон (a) должен быть от {0} до {1}.'
+  xpformula_c_invalid: 'База (c) должна быть от {0} до {1}.'
+  xpformula_invalid: Неверные параметры формулы.
+
+sr-Cyrl-RS:
+  xpformula_current: XP формула
+  xpformula_set: XP формула ажурирана
+  xpformula_desc: |-
+    |-
+      XP по нивоу: **{0}** x (ниво + 1) + **{1}**
+  xpformula_preview: Преглед нивоа
+  xpformula_a_invalid: 'Нагиб (a) мора бити између {0} и {1}.'
+  xpformula_c_invalid: 'Основа (c) мора бити између {0} и {1}.'
+  xpformula_invalid: Неважећи параметри формуле.
+
+tr-TR:
+  xpformula_current: XP Formulu
+  xpformula_set: XP Formulu Guncellendi
+  xpformula_desc: |-
+    |-
+      Seviye basina XP: **{0}** x (seviye + 1) + **{1}**
+  xpformula_preview: Seviye Onizlemesi
+  xpformula_a_invalid: 'Egim (a) {0} ile {1} arasinda olmalidir.'
+  xpformula_c_invalid: 'Taban (c) {0} ile {1} arasinda olmalidir.'
+  xpformula_invalid: Gecersiz formul parametreleri.
+
+ts-TS:
+  xpformula_current: XP Formula
+  xpformula_set: XP Formula Updated... hmph
+  xpformula_desc: |-
+    |-
+      XP per level: **{0}** x (level + 1) + **{1}**
+  xpformula_preview: Level Preview
+  xpformula_a_invalid: 'Slope (a) must be between {0} and {1}, got it?'
+  xpformula_c_invalid: 'Base (c) must be between {0} and {1}... obviously.'
+  xpformula_invalid: Invalid formula parameters... b-baka.
+
+uk-UA:
+  xpformula_current: Формула XP
+  xpformula_set: Формулу XP оновлено
+  xpformula_desc: |-
+    |-
+      XP за рiвень: **{0}** x (рiвень + 1) + **{1}**
+  xpformula_preview: Попереднiй перегляд рiвнiв
+  xpformula_a_invalid: 'Нахил (a) має бути вiд {0} до {1}.'
+  xpformula_c_invalid: 'Базове значення (c) має бути вiд {0} до {1}.'
+  xpformula_invalid: Невiрнi параметри формули.
+
+vi-VN:
+  xpformula_current: Cong thuc XP
+  xpformula_set: Cong thuc XP da cap nhat
+  xpformula_desc: |-
+    |-
+      XP moi cap: **{0}** x (cap + 1) + **{1}**
+  xpformula_preview: Xem truoc cap do
+  xpformula_a_invalid: 'Do doc (a) phai nam trong khoang {0} den {1}.'
+  xpformula_c_invalid: 'Gia tri co so (c) phai nam trong khoang {0} den {1}.'
+  xpformula_invalid: Tham so cong thuc khong hop le.
+
+zh-CN:
+  xpformula_current: XP 公式
+  xpformula_set: XP 公式已更新
+  xpformula_desc: |-
+    |-
+      每级所需 XP: **{0}** x (等级 + 1) + **{1}**
+  xpformula_preview: 等级预览
+  xpformula_a_invalid: '斜率 (a) 必须在 {0} 到 {1} 之间。'
+  xpformula_c_invalid: '基础值 (c) 必须在 {0} 到 {1} 之间。'
+  xpformula_invalid: 无效的公式参数。

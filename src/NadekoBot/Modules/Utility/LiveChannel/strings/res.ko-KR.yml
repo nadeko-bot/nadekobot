@@ -1,9 +1,0 @@
-livechannel_added: '{0}이(가) 라이브 채널로 추가되었어요.'
-livechannel_limit: '서버당 최대 {0}개의 라이브 채널을 설정할 수 있어요.'
-livechannel_list_empty: 이 서버에 설정된 라이브 채널이 없어요.
-livechannel_list_title: '{0}의 라이브 채널'
-livechannel_not_found: 라이브 채널 목록에서 해당 채널을 찾을 수 없어요.
-livechannel_please_wait: 변경 사항이 적용되기까지 최대 10분이 걸릴 수 있어요
-livechannel_removed: '{0}이(가) 라이브 채널에서 제거되었어요.'
-preview: 미리보기
-template: 템플릿

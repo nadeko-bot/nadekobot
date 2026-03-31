@@ -1,6 +1,0 @@
-perm_override: 'Les utilisateurs auront besoin de l''autorisation {0} pour exécuter la commande {1}.'
-perm_override_all: Toutes les dérogations d'autorisation de Discord ont été effacés.
-perm_override_all_confirm: Êtes-vous sûr de vouloir supprimer **TOUTES** les dérogations d'autorisation de Discord sur ce serveur ? Cette action est irréversible.
-perm_override_page_none: Aucune dérogation sur cette page.
-perm_override_reset: Les dérogations d'autorisation de Discord pour cette commande ont été effacées.
-perm_overrides: les dérogations d'autorisation de Discord

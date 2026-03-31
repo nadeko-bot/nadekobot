@@ -1,5 +1,0 @@
-blacklisted: '{0} (ID: {1})을(를) 블랙리스트에 추가했어요.'
-blacklisted_channels: 블랙리스트 채널
-blacklisted_servers: 블랙리스트 서버
-blacklisted_users: 블랙리스트 사용자
-unblacklisted: '{0} (ID: {1})을(를) 블랙리스트에서 제거했어요.'

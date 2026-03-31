@@ -1,6 +1,0 @@
-alias_added: '{0} ist nun ein Alias für {1}.'
-alias_list: Liste der Aliasse
-alias_remove_fail: 'Auslöser {0} hatte kein Alias.'
-alias_removed: 'Auslöser {0} hat kein Alias mehr.'
-aliases_cleared: 'Alle {0} Aliases auf diesem Server wurden entfernt.'
-aliases_none: Kein Alias gefunden

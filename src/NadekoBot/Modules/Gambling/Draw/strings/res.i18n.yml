@@ -1,0 +1,143 @@
+ar:
+  card: بطاقة
+  cards: بطاقات
+  cards_left: '{0} بطاقة متبقية في المجموعة.'
+  deck_reshuffled: تم إعادة خلط المجموعة.
+  guess: تخمين
+  hand_value: قيمة اليد
+  no_more_cards: لا توجد بطاقات متبقية في المجموعة.
+
+de-DE:
+  card: Karte
+  cards: Karten
+  cards_left: '{0} Karten im Deck übrig.'
+  deck_reshuffled: Deck neu gemischt.
+  guess: Raten
+  hand_value: Handwert
+  no_more_cards: Keine Karten mehr im Deck.
+
+es-ES:
+  card: Carta
+  cards: Cartas
+  cards_left: '{0} cartas en la baraja.'
+  deck_reshuffled: Baraja reorganizada.
+  guess: Adivinar
+  hand_value: Valor de la mano
+  no_more_cards: No hay más cartas en la baraja.
+
+fr-FR:
+  card: Carte
+  cards: Cartes
+  cards_left: '{0} cartes restantes dans le jeu.'
+  deck_reshuffled: Cartes mélangées.
+  guess: Deviner
+  hand_value: Valeur de la main
+  no_more_cards: Plus de cartes dans le deck.
+
+id-ID:
+  card: Kartu
+  cards: Kartu
+  cards_left: '{0} kartu tersisa di dek.'
+  deck_reshuffled: Dek dikocok ulang.
+  guess: Tebakan
+  hand_value: Nilai tangan
+  no_more_cards: Tidak ada lagi kartu di dek.
+
+ja-JP:
+  card: カード
+  cards: カード
+  cards_left: 'デッキに{0}枚のカードが残っています。'
+  deck_reshuffled: 山札がシャッフルされました。
+  guess: 推測
+  hand_value: ハンドの値
+  no_more_cards: 山札にはもうカードがありません。
+
+ko-KR:
+  card: 카드
+  cards: 카드
+  cards_left: '덱에 {0}장의 카드가 남아 있어요.'
+  deck_reshuffled: 덱을 다시 섞었어요.
+  guess: 추측
+  hand_value: 핸드 값
+  no_more_cards: 덱에 카드가 더 이상 없어요.
+
+pl-PL:
+  card: Karta
+  cards: Karty
+  cards_left: 'W talii zostało {0} kart.'
+  deck_reshuffled: Talia przetasowana.
+  guess: Zgadnij
+  hand_value: Wartość ręki
+  no_more_cards: Brak kart w talii.
+
+pt-BR:
+  card: Carta
+  cards: Cartas
+  cards_left: '{0} cartas restantes no baralho.'
+  deck_reshuffled: Deck reembaralhado.
+  guess: Adivinhar
+  hand_value: Valor da mao
+  no_more_cards: Não há mais cartas no baralho.
+
+ru-RU:
+  card: Карта
+  cards: Карты
+  cards_left: 'В колоде осталось {0} карт.'
+  deck_reshuffled: Колода перетасована.
+  guess: Угадай
+  hand_value: Значение руки
+  no_more_cards: В колоде больше нет карт.
+
+sr-Cyrl-RS:
+  card: Карта
+  cards: Карте
+  cards_left: '{0} карата преостало у шпилу.'
+  deck_reshuffled: Шпил је промешан.
+  guess: Погоди
+  hand_value: Вредност руке
+  no_more_cards: Нема више карата у шпилу.
+
+tr-TR:
+  card: Kart
+  cards: Kartlar
+  cards_left: 'Destede {0} kart kaldı.'
+  deck_reshuffled: Deste yeniden karıştırıldı.
+  guess: Tahmin
+  hand_value: El değeri
+  no_more_cards: Destede başka kart kalmadı.
+
+ts-TS:
+  card: Card
+  cards: Cards
+  cards_left: '{0} cards left in the deck.'
+  deck_reshuffled: Deck reshuffled.
+  guess: Guess
+  hand_value: Hand value
+  no_more_cards: No more cards in the deck.
+
+uk-UA:
+  card: Карта
+  cards: Карти
+  cards_left: 'В колоді залишилось {0} карт.'
+  deck_reshuffled: Колоду перетасовано.
+  guess: Вгадай
+  hand_value: Значення руки
+  no_more_cards: В колоді більше немає карт.
+
+vi-VN:
+  card: Lá bài
+  cards: Các lá bài
+  cards_left: 'Còn {0} lá bài trong bộ.'
+  deck_reshuffled: Đã xáo lại bộ bài.
+  guess: Đoán
+  hand_value: Giá trị tay bài
+  no_more_cards: Không còn lá bài nào trong bộ.
+
+zh-CN:
+  card: 牌
+  cards: 牌组
+  cards_left: '牌組中還剩 {0} 張牌。'
+  deck_reshuffled: 重新洗牌。
+  guess: 猜
+  hand_value: 手牌点数
+  no_more_cards: 牌堆裡沒有更多的牌了。

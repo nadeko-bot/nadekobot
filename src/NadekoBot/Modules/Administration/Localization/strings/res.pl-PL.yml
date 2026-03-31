@@ -1,6 +1,0 @@
-lang_list: Lista języków
-lang_set: 'Język tego serwera został ustawiony na {0} - {1}'
-lang_set_bot: 'Domyślny język bota został ustawiony na {0} - {1}'
-lang_set_bot_show: 'Język bota jest ustawiony na {0} - {1}'
-lang_set_fail: Nie udało się ustawić języka. Sprawdź pomoc tej komendy.
-lang_set_show: 'Język tego serwera jest ustawiony na {0} - {1}'

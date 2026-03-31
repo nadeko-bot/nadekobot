@@ -1,8 +1,0 @@
-reprm: '재생 메시지가 제거되었습니다: {0}'
-ropl_added: 추가되었습니다.
-ropl_disabled: 순환 재생 상태가 비활성화되었습니다.
-ropl_enabled: 순환 재생 상태가 활성화되었습니다.
-ropl_list: |-
-  순환 상태 목록:
-  {0}
-ropl_not_set: 설정된 순환 상태가 없어요.

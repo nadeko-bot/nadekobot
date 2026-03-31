@@ -1,0 +1,95 @@
+ar:
+  slot_jackpot: 'واااااو!!! تهانينا!!! x{0}'
+  slot_single: '{0} واحدة، x{1}'
+  slot_three: 'رائع! محظوظ! ثلاثة متشابهة! x{0}'
+  slot_two: 'أحسنت! اثنان {0} - الرهان x{1}'
+
+de-DE:
+  slot_jackpot: 'WOAAHHHHHH!!! Glückwünsch!!! x{0}'
+  slot_single: 'Eine Einzige {0}, x{1}'
+  slot_three: 'Wow! Du hast Glück! Drei der selben Art! x{0}'
+  slot_two: 'Gute Arbeit! Zwei {0} - Wette x{1}'
+
+es-ES:
+  slot_jackpot: '¡Guaaaauuu! ¡Felicitaciones! x{0}'
+  slot_single: 'Solo una {0}, x{1}'
+  slot_three: '¡Vaya! ¡Qué suerte! ¡Tres iguales! x{0}'
+  slot_two: '¡Buen trabajo! Dos {0} - apostado x{1}'
+
+fr-FR:
+  slot_jackpot: 'WOAAHHHHHHH !!! Félicitations!!! x{0}'
+  slot_single: 'Un simple {0}, x{1}'
+  slot_three: 'Wow! Chanceux! Un brelan! x{0}'
+  slot_two: 'Bon travail! Deux {0} - pari x{1}'
+
+id-ID:
+  slot_jackpot: 'WOAAHHHHHH!!! Selamat!!! x{0}'
+  slot_single: 'Satu {0}, x{1}'
+  slot_three: 'Wow! Beruntung! Tiga sama! x{0}'
+  slot_two: 'Bagus! Dua {0} - taruhan x{1}'
+
+ja-JP:
+  slot_jackpot: 'ヒヤッホォォォウ！！！ おめでとう！ 倍率 {0}倍'
+  slot_single: '{0}1個, 倍率 {1}倍'
+  slot_three: 'ラッキーだね！ 3個出たぞ！ 倍率 {0}倍'
+  slot_two: '調子いいね！ {0}2個 - 倍率 {1}倍'
+
+ko-KR:
+  slot_jackpot: '대박!!! 축하해요!!! x{0}'
+  slot_single: '{0} 하나, x{1}'
+  slot_three: '와! 럭키! 같은 거 세 개! x{0}'
+  slot_two: '잘했어요! {0} 두 개 - 배팅 x{1}'
+
+pl-PL:
+  slot_jackpot: 'ŁAAAŁ!!! Gratulacje!!! x{0}'
+  slot_single: 'Jeden {0}, x{1}'
+  slot_three: 'Wow! Szczęściarz! Trzy takie same! x{0}'
+  slot_two: 'Dobra robota! Dwa {0} - zakład x{1}'
+
+pt-BR:
+  slot_jackpot: 'UHUUUULLLL!!! Parabéns!!! x{0}'
+  slot_single: 'Um único {0}, x{1}'
+  slot_three: 'Uhul! Que sorte! Três do mesmo tipo! x{0}'
+  slot_two: 'Opa! Dois {0} - ganha x{1}'
+
+ru-RU:
+  slot_jackpot: 'ВАААААААУУУ!!! Поздравляем!!! x{0}'
+  slot_single: 'Один {0}, x{1}'
+  slot_three: 'Вау! Удачливый! Три одной масти! x{0}'
+  slot_two: 'Хорошая робота! Два {0} - ставка x{1}'
+
+sr-Cyrl-RS:
+  slot_jackpot: 'ВОООООО!!! Честитам!!! x{0}'
+  slot_single: 'Један {0}, x{1}'
+  slot_three: 'Вау! Срећко! Три исте! x{0}'
+  slot_two: 'Свака част! Два {0} - улог x{1}'
+
+tr-TR:
+  slot_jackpot: 'VAAAYYYY!!! Tebrikler!!! x{0}'
+  slot_single: 'Tek bir {0}, x{1}'
+  slot_three: 'Vay be! Şanslısın! Üç aynı! x{0}'
+  slot_two: 'Güzel! İki {0} - bahis x{1}'
+
+ts-TS:
+  slot_jackpot: 'WOAAHHHHHH!!! Congratulations!!! x{0}'
+  slot_single: 'A single {0}, x{1}'
+  slot_three: 'Wow! Lucky! Three of a kind! x{0}'
+  slot_two: 'Two {0} - bet x{1}... n-not bad, I guess.'
+
+uk-UA:
+  slot_jackpot: 'ВААААУУУ!!! Вітаю!!! x{0}'
+  slot_single: 'Один {0}, x{1}'
+  slot_three: 'Ого! Пощастило! Три однакових! x{0}'
+  slot_two: 'Непогано! Два {0} - ставка x{1}'
+
+vi-VN:
+  slot_jackpot: 'OOAAAHHHH!!! Chúc mừng!!! x{0}'
+  slot_single: 'Một {0}, x{1}'
+  slot_three: 'Wow! May mắn quá! Ba cái giống nhau! x{0}'
+  slot_two: 'Tốt lắm! Hai {0} - cược x{1}'
+
+zh-CN:
+  slot_jackpot: '哇塞！恭喜你！！×{0}'
+  slot_single: '一個 {0}, {1}倍'
+  slot_three: '哇!真幸運!三個同花! {0} 倍'
+  slot_two: '不错！两个 {0} - 赌注 x{1}'

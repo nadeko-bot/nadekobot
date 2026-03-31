@@ -1,0 +1,207 @@
+ar:
+  category: الفئة
+  trivia_already_running: لعبة المعلومات العامة قيد التشغيل بالفعل على هذا السيرفر.
+  trivia_ended: انتهت لعبة المعلومات العامة
+  trivia_game: لعبة المعلومات العامة
+  trivia_guess: '{0} خمّن الإجابة! الإجابة كانت: {1}'
+  trivia_none: لا توجد لعبة معلومات عامة قيد التشغيل على هذا السيرفر.
+  trivia_points: '{0} لديه {1} نقطة'
+  trivia_quit: 'يمكنك إيقاف لعبة المعلومات العامة بكتابة {0}'
+  trivia_stopping: سيتم الإيقاف بعد هذا السؤال.
+  trivia_times_up: 'انتهى الوقت! الإجابة الصحيحة كانت {0}'
+  trivia_win: '{0} خمّن الإجابة وفاز باللعبة! الإجابة كانت: {1}'
+
+de-DE:
+  category: Kategorie
+  trivia_already_running: Quizspiel läuft bereits auf diesem Server.
+  trivia_ended: Trivia-Spiel beendet
+  trivia_game: Quizspiel
+  trivia_guess: '{0} hat es erraten! Die Antwort war: {1}'
+  trivia_none: Kein Quiz läuft auf diesem Server.
+  trivia_points: '{0} hat {1} Punkte'
+  trivia_quit: 'Du kannst das Quiz mit {0} beenden'
+  trivia_stopping: Quiz wird nach dieser Frage vorrüber sein.
+  trivia_times_up: 'Zeit abgelaufen! Die richtige Antwort war {0}'
+  trivia_win: '{0} hat richtig geraten und hat das Spiel GEWONNEN! Die Antwort lautete: {1}'
+
+es-ES:
+  category: Categoría
+  trivia_already_running: Ya se está ejecutando la trivia en este servidor.
+  trivia_ended: El juego de trivia ha terminado
+  trivia_game: Juego de la trivia
+  trivia_guess: '¡{0} adivinó! La respuesta era: {1}.'
+  trivia_none: No se está ejecutando una trivia en este servidor.
+  trivia_points: '{0} tiene {1} puntos.'
+  trivia_quit: 'Puedes detener la trivia escribiendo {0}'
+  trivia_stopping: La trivia se detendrá luego de esta pregunta.
+  trivia_times_up: '¡Tiempo! La respuesta correcta era {0}.'
+  trivia_win: '¡{0} adivinó y ganó el juego! La respuesta era: {1}'
+
+fr-FR:
+  category: Catégorie
+  trivia_already_running: Une partie de Trivial Pursuit est déjà en cours sur ce serveur.
+  trivia_ended: Le jeu de culture générale est terminé
+  trivia_game: Jeu du Trivial Pursuit
+  trivia_guess: '{0} a deviné! La réponse était: {1}'
+  trivia_none: Aucun Trivial Pursuit est en cours sur ce serveur
+  trivia_points: '{0} a {1} points'
+  trivia_quit: 'Vous pouvez arrêter le trivia en tapant {0}'
+  trivia_stopping: La partie prendra fin après cette question.
+  trivia_times_up: 'Fin du temps imparti ! La bonne réponse était {0}'
+  trivia_win: '{0} a deviné et GAGNE le jeu ! La réponse était : {1}'
+
+id-ID:
+  category: Kategori
+  trivia_already_running: Permainan Trivia sudah berjalan di server ini.
+  trivia_ended: Permainan Trivia berakhir
+  trivia_game: Permainan Trivia
+  trivia_guess: '{0} berhasil menebak! Jawabannya adalah: {1}'
+  trivia_none: Tidak ada trivia yang sedang berjalan di server ini.
+  trivia_points: '{0} punya {1} poin'
+  trivia_quit: 'Kamu bisa menghentikan trivia dengan mengetik {0}'
+  trivia_stopping: Berhenti setelah pertanyaan ini.
+  trivia_times_up: 'Waktu habis! Jawaban yang benar adalah {0}'
+  trivia_win: '{0} berhasil menebak dan MENANG! Jawabannya adalah: {1}'
+
+ja-JP:
+  category: カテゴリー
+  trivia_already_running: トリビアゲームは既にこのサーバーで行われています。
+  trivia_ended: トリビアゲームが終了しました
+  trivia_game: トリビアゲーム
+  trivia_guess: '{0}のお答えのとおり！ 正解は {1} でした。'
+  trivia_none: トリビアゲームはこのサーバーでは行われていません。
+  trivia_points: '{0}は{1}ポイント持っています。'
+  trivia_quit: '{0}と入力するとトリビアを停止できます'
+  trivia_stopping: この質問のあと終了します。
+  trivia_times_up: '時間切れです。正解は {0} でした。'
+  trivia_win: '{0}のお答えのとおり！ そしてあなたの勝ちです！！  正解は {1} でした。'
+
+ko-KR:
+  category: 카테고리
+  trivia_already_running: 이 서버에서 이미 트리비아 게임이 진행 중이에요.
+  trivia_ended: 트리비아 게임이 종료되었어요
+  trivia_game: 트리비아 게임
+  trivia_guess: '{0}님이 맞혔어요! 정답은: {1}'
+  trivia_none: 이 서버에서 진행 중인 트리비아가 없어요.
+  trivia_points: '{0}님은 {1}점이에요'
+  trivia_quit: '{0}을 입력하면 트리비아를 중지할 수 있어요'
+  trivia_stopping: 이 문제가 끝나면 중지돼요.
+  trivia_times_up: '시간 초과! 정답은 {0}이었어요'
+  trivia_win: '{0}님이 맞히고 게임에서 우승했어요! 정답은: {1}'
+
+pl-PL:
+  category: Kategoria
+  trivia_already_running: Gra trivia już trwa na tym serwerze.
+  trivia_ended: Gra trivia zakończona
+  trivia_game: Gra Trivia
+  trivia_guess: '{0} odgadł/a! Odpowiedź brzmiała: {1}'
+  trivia_none: Na tym serwerze nie działa żadna gra trivia.
+  trivia_points: '{0} ma {1} punktów'
+  trivia_quit: 'Możesz zatrzymać trivię wpisując {0}'
+  trivia_stopping: Zatrzymanie po tym pytaniu.
+  trivia_times_up: 'Czas minął! Poprawna odpowiedź to {0}'
+  trivia_win: '{0} odgadł/a i WYGRAŁ/A grę! Odpowiedź brzmiała: {1}'
+
+pt-BR:
+  category: Categoria
+  trivia_already_running: Já há um quiz em andamento nesse servidor.
+  trivia_ended: Jogo de trivia encerrado
+  trivia_game: Quiz
+  trivia_guess: '{0} acertou! A resposta é: {1}'
+  trivia_none: Não há um quiz em andamento nesse servidor.
+  trivia_points: '{0} tem {1} pontos'
+  trivia_quit: 'Você pode interromper o trivia digitando {0}'
+  trivia_stopping: Encerrando após essa pergunta.
+  trivia_times_up: 'Tempo esgotado! A resposta era {0}'
+  trivia_win: '{0} acertou e ganhou o jogo! A resposta era: {1}'
+
+ru-RU:
+  category: Категория
+  trivia_already_running: Викторина уже запущена на этом сервере.
+  trivia_ended: Игра в викторину окончена
+  trivia_game: Викторина
+  trivia_guess: '{0} угадал! Ответ был: {1}'
+  trivia_none: Никакой Викторины не происходит на этом сервере.
+  trivia_points: '{0} имеет {1} баллов'
+  trivia_quit: 'Вы можете остановить trivia, набрав {0}'
+  trivia_stopping: Викторина закончится после этого вопроса.
+  trivia_times_up: 'Время вышло! Правильный ответ был {0}'
+  trivia_win: '{0} угадали и ВЫИГРАЛИ в игре! Ответ был: {1}'
+
+sr-Cyrl-RS:
+  category: Категорија
+  trivia_already_running: Тривија игра већ траје на овом серверу.
+  trivia_ended: Тривија игра завршена
+  trivia_game: Тривија игра
+  trivia_guess: '{0} је погодио/ла! Одговор је био: {1}'
+  trivia_none: Нема покренуте тривије на овом серверу.
+  trivia_points: '{0} има {1} поена'
+  trivia_quit: 'Можеш зауставити тривију куцањем {0}'
+  trivia_stopping: Заустављам после овог питања.
+  trivia_times_up: 'Време је истекло! Тачан одговор је био {0}'
+  trivia_win: '{0} је погодио/ла и ПОБЕДИО/ЛА у игри! Одговор је био: {1}'
+
+tr-TR:
+  category: Kategori
+  trivia_already_running: Bu sunucuda zaten bir trivia oyunu çalışıyor.
+  trivia_ended: Trivia oyunu sona erdi
+  trivia_game: Trivia Oyunu
+  trivia_guess: '{0} bildi! Cevap: {1}'
+  trivia_none: Bu sunucuda çalışan bir trivia yok.
+  trivia_points: '{0} kullanıcısının {1} puanı var'
+  trivia_quit: 'Trivia''yı durdurmak için {0} yazabilirsin'
+  trivia_stopping: Bu sorudan sonra durduruluyor.
+  trivia_times_up: 'Süre doldu! Doğru cevap {0} idi'
+  trivia_win: '{0} bildi ve OYUNU KAZANDI! Cevap: {1}'
+
+ts-TS:
+  category: Category
+  trivia_already_running: Trivia game is already running on this server.
+  trivia_ended: Trivia game ended.
+  trivia_game: Trivia Game
+  trivia_guess: '{0} got it right! The answer was: {1}'
+  trivia_none: There's no trivia running on this server.
+  trivia_points: '{0} has {1} points'
+  trivia_quit: 'You can stop trivia by typing {0}'
+  trivia_stopping: Stopping after this question.
+  trivia_times_up: 'Time''s up! The answer was {0}. I knew it the whole time, obviously.'
+  trivia_win: '{0} guessed it and WON the game! The answer was: {1}'
+
+uk-UA:
+  category: Категорія
+  trivia_already_running: Гра у вікторину вже запущена на цьому сервері.
+  trivia_ended: Гру у вікторину завершено
+  trivia_game: Вікторина
+  trivia_guess: '{0} вгадав! Відповідь була: {1}'
+  trivia_none: На цьому сервері не запущена вікторина.
+  trivia_points: '{0} має {1} очок'
+  trivia_quit: 'Ти можеш зупинити вікторину, написавши {0}'
+  trivia_stopping: Зупиниться після цього питання.
+  trivia_times_up: 'Час вийшов! Правильна відповідь була {0}'
+  trivia_win: '{0} вгадав і ВИГРАВ гру! Відповідь була: {1}'
+
+vi-VN:
+  category: Thể loại
+  trivia_already_running: Trò Trivia đang chạy trên server này rồi.
+  trivia_ended: Trò Trivia kết thúc
+  trivia_game: Trò Trivia
+  trivia_guess: '{0} đã đoán đúng! Đáp án là: {1}'
+  trivia_none: Không có trò chơi trivia nào đang chạy trên server này.
+  trivia_points: '{0} có {1} điểm'
+  trivia_quit: 'Bạn có thể dừng trivia bằng cách gõ {0}'
+  trivia_stopping: Sẽ dừng sau câu hỏi này.
+  trivia_times_up: 'Hết thời gian! Đáp án đúng là {0}'
+  trivia_win: '{0} đã đoán đúng và THẮNG trò chơi! Đáp án là: {1}'
+
+zh-CN:
+  category: 分類
+  trivia_already_running: 問答遊戲正在此伺服器上進行
+  trivia_ended: 问答游戏已结束
+  trivia_game: 問答遊戲
+  trivia_guess: '{0}猜對了!答案是{1}'
+  trivia_none: 目前沒有問答遊戲在此伺服器上進行
+  trivia_points: '{0}有{1}分'
+  trivia_quit: '您可以通過鍵入 {0} 來停止賽事'
+  trivia_stopping: 於此問題後遊戲結束
+  trivia_times_up: '時間到!正確答案為 {0}'
+  trivia_win: '{0} 猜對了並贏得了比賽！答案是：{1}'

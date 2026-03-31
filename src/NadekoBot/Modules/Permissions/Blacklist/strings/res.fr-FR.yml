@@ -1,5 +1,0 @@
-blacklisted: '{0} est inscrit sur la liste noire avec l''ID {1}'
-blacklisted_channels: Salons sur la liste noire
-blacklisted_servers: Serveurs sur la liste noire
-blacklisted_users: Membres sur la liste noire
-unblacklisted: '{0} est retiré de la liste noire avec l''ID {1}'

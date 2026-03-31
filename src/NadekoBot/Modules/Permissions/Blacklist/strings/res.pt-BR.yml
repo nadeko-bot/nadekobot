@@ -1,5 +1,0 @@
-blacklisted: 'Os {0} com os seguintes IDs foram adicionados à lista negra: {1}'
-blacklisted_channels: Canais na Lista Negra
-blacklisted_servers: Servidores na Lista Negra
-blacklisted_users: Usuários na Lista Negra
-unblacklisted: 'Os {0} com os seguintes IDs foram removidos da lista negra: {1}'

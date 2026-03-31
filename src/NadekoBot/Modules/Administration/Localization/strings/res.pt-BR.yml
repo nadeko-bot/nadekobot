@@ -1,6 +1,0 @@
-lang_list: Lista de idiomas
-lang_set: 'O idioma do bot no servidor foi definido para {0} - {1}'
-lang_set_bot: 'O idoma do bot foi definido para {0} - {1}'
-lang_set_bot_show: 'O idioma do bot está definido como {0} - {1}'
-lang_set_fail: Falha em configurar local. Consulte a ajuda desse comando.
-lang_set_show: 'A linguagem desse servidor está configurada para {0} - {1}'

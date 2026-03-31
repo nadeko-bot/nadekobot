@@ -1,9 +1,0 @@
-feed_added: ''
-feed_cant_parse: そのフィードURLの内容にアクセスまたは解析できません。
-feed_duplicate: このサーバーでは既にそのフィードをフォローしています。
-feed_invalid_url: 無効なフィードURLです。絶対httpまたはhttps URLである必要があります。
-feed_limit_reached: サーバーあたりのフィードの最大数に達しました。
-feed_no_feed: ''
-feed_out_of_range: ''
-feed_removed: ''
-feed_auto_removed: 'フィード `{0}` は取得の失敗が繰り返されたため、自動的に削除されました。'

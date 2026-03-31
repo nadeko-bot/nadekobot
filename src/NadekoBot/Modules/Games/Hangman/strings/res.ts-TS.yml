@@ -1,4 +1,0 @@
-hangman_game_started: Hangman game started.
-hangman_running: Hangman game already running on this channel.
-hangman_stopped: Hangman game stopped.
-hangman_types: 'List of "{0}hangman" term types:'

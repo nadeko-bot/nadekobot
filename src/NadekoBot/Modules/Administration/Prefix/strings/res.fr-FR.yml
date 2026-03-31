@@ -1,4 +1,0 @@
-defprefix_current: 'Le préfixe par défaut du bot est {0}'
-defprefix_new: 'Préfixe par défaut du bot a été changé de {0} pour {1}'
-prefix_current: 'Le préfixe sur ce serveur est {0}'
-prefix_new: 'Préfixe changé de {0} à {1} sur ce serveur'

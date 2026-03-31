@@ -1,0 +1,223 @@
+ar:
+  giveaway_cancelled: تم إلغاء الهدية.
+  giveaway_duration_invalid: لا يمكن أن تكون مدة الهدية أقل من دقيقة واحدة أو أكثر من 30 يومًا
+  giveaway_ended: انتهت الهدية
+  giveaway_list: قائمة الهدايا النشطة
+  giveaway_max_amount_reached: لقد وصلت إلى الحد الأقصى لعدد الهدايا المسموح بها في هذا السيرفر.
+  giveaway_not_found: لم يتم العثور على الهدية.
+  giveaway_started: بدأت الهدية!
+  giveaway_starting: جارٍ بدء الهدية...
+  lasts_until: تستمر حتى
+  no_givaways: لا توجد هدايا نشطة في هذا السيرفر.
+  winner: الفائز
+  winners_count: عدد الفائزين
+
+de-DE:
+  giveaway_cancelled: Verlosung abgebrochen.
+  giveaway_duration_invalid: Eine Verlosung darf nicht kürzer als 1 Minute oder länger als 30 Tage sein
+  giveaway_ended: Verlosung beendet
+  giveaway_list: Liste aktiver Verlosungen
+  giveaway_max_amount_reached: Du hast die maximale Anzahl an Verlosungen auf diesem Server erreicht.
+  giveaway_not_found: Verlosung nicht gefunden.
+  giveaway_started: Verlosung Gestartet!
+  giveaway_starting: Verlosung wird gestartet...
+  lasts_until: Dauert Bis
+  no_givaways: Es gibt keine aktiven Verlosungen auf diesem Server.
+  winner: Gewinner
+  winners_count: Gewinner
+
+es-ES:
+  giveaway_cancelled: Sorteo cancelado.
+  giveaway_duration_invalid: El sorteo no puede durar menos de 1 minuto o más de 30 días
+  giveaway_ended: Sorteo finalizado
+  giveaway_list: Lista de sorteos activos
+  giveaway_max_amount_reached: Has alcanzado la cantidad máxima de sorteos que puedes tener en este servidor.
+  giveaway_not_found: Sorteo no encontrado.
+  giveaway_started: ¡Sorteo Iniciado!
+  giveaway_starting: Iniciando sorteo...
+  lasts_until: Dura Hasta
+  no_givaways: No hay sorteos activos en este servidor.
+  winner: Ganador
+  winners_count: Ganadores
+
+fr-FR:
+  giveaway_cancelled: Concours annulé.
+  giveaway_duration_invalid: Le concours ne peut pas durer moins d'une minute ou plus de 30 jours
+  giveaway_ended: Concours terminé
+  giveaway_list: Liste des concours actifs
+  giveaway_max_amount_reached: Vous avez atteint le nombre maximum de concours que vous pouvez avoir sur ce serveur.
+  giveaway_not_found: Concours non trouvé.
+  giveaway_started: Concours Lancé !
+  giveaway_starting: Lancement du concours...
+  lasts_until: Dure Jusqu'à
+  no_givaways: Il n'y a pas de concours actifs sur ce serveur.
+  winner: Gagnant
+  winners_count: Gagnants
+
+id-ID:
+  giveaway_cancelled: Giveaway dibatalkan.
+  giveaway_duration_invalid: Giveaway tidak boleh kurang dari 1 menit atau lebih dari 30 hari
+  giveaway_ended: Giveaway selesai
+  giveaway_list: Daftar giveaway aktif
+  giveaway_max_amount_reached: Kamu sudah mencapai batas maksimum giveaway di server ini.
+  giveaway_not_found: Giveaway tidak ditemukan.
+  giveaway_started: Giveaway Dimulai!
+  giveaway_starting: Memulai giveaway...
+  lasts_until: Berlangsung Sampai
+  no_givaways: Tidak ada giveaway aktif di server ini.
+  winner: Pemenang
+  winners_count: Jumlah Pemenang
+
+ja-JP:
+  giveaway_cancelled: プレゼント企画がキャンセルされました。
+  giveaway_duration_invalid: プレゼント企画は1分未満または30日以上にはできません
+  giveaway_ended: プレゼント企画終了
+  giveaway_list: アクティブなプレゼント企画一覧
+  giveaway_max_amount_reached: このサーバーのプレゼント企画の最大数に達しました。
+  giveaway_not_found: プレゼント企画が見つかりません。
+  giveaway_started: プレゼント企画開始！
+  giveaway_starting: プレゼント企画を開始中...
+  lasts_until: 終了予定
+  no_givaways: このサーバーにアクティブなプレゼント企画はありません。
+  winner: 当選者
+  winners_count: 当選者数
+
+ko-KR:
+  giveaway_cancelled: 경품 추첨이 취소되었어요.
+  giveaway_duration_invalid: 경품 추첨 기간은 1분보다 짧거나 30일보다 길 수 없어요
+  giveaway_ended: 경품 추첨 종료
+  giveaway_list: 진행 중인 경품 추첨 목록
+  giveaway_max_amount_reached: 이 서버에서 가능한 최대 경품 추첨 수에 도달했어요.
+  giveaway_not_found: 경품 추첨을 찾을 수 없어요.
+  giveaway_started: 경품 추첨 시작!
+  giveaway_starting: 경품 추첨을 시작하는 중...
+  lasts_until: 종료 시각
+  no_givaways: 이 서버에 진행 중인 경품 추첨이 없어요.
+  winner: 당첨자
+  winners_count: 당첨자 수
+
+pl-PL:
+  giveaway_cancelled: Giveaway anulowany.
+  giveaway_duration_invalid: Giveaway nie może trwać krócej niż 1 minutę ani dłużej niż 30 dni
+  giveaway_ended: Giveaway zakończony
+  giveaway_list: Lista aktywnych giveawayów
+  giveaway_max_amount_reached: Osiągnięto maksymalną liczbę giveawayów na tym serwerze.
+  giveaway_not_found: Nie znaleziono giveawaya.
+  giveaway_started: Giveaway wystartował!
+  giveaway_starting: Rozpoczynanie giveawaya...
+  lasts_until: Trwa do
+  no_givaways: Nie ma aktywnych giveawayów na tym serwerze.
+  winner: Zwycięzca
+  winners_count: Zwycięzcy
+
+pt-BR:
+  giveaway_cancelled: Sorteio cancelado.
+  giveaway_duration_invalid: O sorteio não pode durar menos de 1 minuto ou mais de 30 dias
+  giveaway_ended: Sorteio encerrado
+  giveaway_list: Lista de sorteios ativos
+  giveaway_max_amount_reached: Você atingiu o número máximo de sorteios que pode ter neste servidor.
+  giveaway_not_found: Sorteio não encontrado.
+  giveaway_started: Sorteio Iniciado!
+  giveaway_starting: Iniciando sorteio...
+  lasts_until: Dura Até
+  no_givaways: Não há sorteios ativos neste servidor.
+  winner: Vencedor
+  winners_count: Vencedores
+
+ru-RU:
+  giveaway_cancelled: Розыгрыш отменён.
+  giveaway_duration_invalid: Розыгрыш не может длиться менее 1 минуты или более 30 дней
+  giveaway_ended: Розыгрыш завершён
+  giveaway_list: Список активных розыгрышей
+  giveaway_max_amount_reached: Вы достигли максимального количества розыгрышей на этом сервере.
+  giveaway_not_found: Розыгрыш не найден.
+  giveaway_started: Розыгрыш Начат!
+  giveaway_starting: Запуск розыгрыша...
+  lasts_until: Длится До
+  no_givaways: На этом сервере нет активных розыгрышей.
+  winner: Победитель
+  winners_count: Победители
+
+sr-Cyrl-RS:
+  giveaway_cancelled: Гивеавеј је отказан.
+  giveaway_duration_invalid: Гивеавеј не може бити краћи од 1 минута или дужи од 30 дана
+  giveaway_ended: Гивеавеј је завршен
+  giveaway_list: Листа активних гивеавеја
+  giveaway_max_amount_reached: Достигао си максималан број гивеавеја на овом серверу.
+  giveaway_not_found: Гивеавеј није пронађен.
+  giveaway_started: Гивеавеј је почео!
+  giveaway_starting: Покрећем гивеавеј...
+  lasts_until: Траје до
+  no_givaways: Нема активних гивеавеја на овом серверу.
+  winner: Победник
+  winners_count: Победника
+
+tr-TR:
+  giveaway_cancelled: Çekiliş iptal edildi.
+  giveaway_duration_invalid: Çekiliş 1 dakikadan kısa veya 30 günden uzun olamaz
+  giveaway_ended: Çekiliş sona erdi
+  giveaway_list: Aktif çekilişlerin listesi
+  giveaway_max_amount_reached: Bu sunucuda yapabileceğin maksimum çekiliş sayısına ulaştın.
+  giveaway_not_found: Çekiliş bulunamadı.
+  giveaway_started: Çekiliş Başladı!
+  giveaway_starting: Çekiliş başlatılıyor...
+  lasts_until: Bitiş Zamanı
+  no_givaways: Bu sunucuda aktif çekiliş yok.
+  winner: Kazanan
+  winners_count: Kazananlar
+
+ts-TS:
+  giveaway_cancelled: Giveaway cancelled.
+  giveaway_duration_invalid: The giveaway can't be shorter than 1 minute or longer than 30 days.
+  giveaway_ended: Giveaway ended!
+  giveaway_list: List of active giveaways
+  giveaway_max_amount_reached: You've hit the max number of giveaways for this server. Hmph.
+  giveaway_not_found: Couldn't find that giveaway.
+  giveaway_started: Giveaway started!
+  giveaway_starting: Starting giveaway...
+  lasts_until: Lasts Until
+  no_givaways: There are no active giveaways on this server.
+  winner: Winner
+  winners_count: Winners
+
+uk-UA:
+  giveaway_cancelled: Розіграш скасовано.
+  giveaway_duration_invalid: Розіграш не може тривати менше 1 хвилини або довше 30 днів
+  giveaway_ended: Розіграш завершено
+  giveaway_list: Список активних розіграшів
+  giveaway_max_amount_reached: Ти досягнув максимальної кількості розіграшів на цьому сервері.
+  giveaway_not_found: Розіграш не знайдено.
+  giveaway_started: Розіграш розпочато!
+  giveaway_starting: Починаю розіграш...
+  lasts_until: Діє до
+  no_givaways: На цьому сервері немає активних розіграшів.
+  winner: Переможець
+  winners_count: Переможці
+
+vi-VN:
+  giveaway_cancelled: Đã hủy giveaway.
+  giveaway_duration_invalid: Giveaway không được ngắn hơn 1 phút hoặc dài hơn 30 ngày
+  giveaway_ended: Giveaway đã kết thúc
+  giveaway_list: Danh sách giveaway đang hoạt động
+  giveaway_max_amount_reached: Bạn đã đạt giới hạn số giveaway tối đa trên máy chủ này.
+  giveaway_not_found: Không tìm thấy giveaway.
+  giveaway_started: Giveaway đã bắt đầu!
+  giveaway_starting: Đang khởi tạo giveaway...
+  lasts_until: Kéo dài đến
+  no_givaways: Không có giveaway nào đang hoạt động trên máy chủ này.
+  winner: Người thắng
+  winners_count: Số người thắng
+
+zh-CN:
+  giveaway_cancelled: 抽獎已取消。
+  giveaway_duration_invalid: 抽獎不能少於 1 分鐘或超過 30 天
+  giveaway_ended: 抽獎已結束
+  giveaway_list: 進行中的抽獎列表
+  giveaway_max_amount_reached: 你已達到此伺服器可擁有的最大抽獎數量。
+  giveaway_not_found: 找不到抽獎。
+  giveaway_started: 抽獎已開始！
+  giveaway_starting: 正在開始抽獎...
+  lasts_until: 持續至
+  no_givaways: 此伺服器沒有進行中的抽獎。
+  winner: 獲獎者
+  winners_count: 獲獎者

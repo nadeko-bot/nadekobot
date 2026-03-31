@@ -1,6 +1,0 @@
-betflip_guess: Você acertou!
-flip_invalid: 'Número invalido especificado. Você pode virar 1 a {0} moedas.'
-flip_results: 'Girou {0} moedas. {1} caras, {2} coroas.'
-flipped: 'inverteu {0}.'
-heads: Cara
-tails: Coroa

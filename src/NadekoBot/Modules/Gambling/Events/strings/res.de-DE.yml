@@ -1,5 +1,0 @@
-event_duration_footer: 'Die Veranstaltung enden in {0}st {1}m'
-event_title: 'Ein Event des Types {0} wurde gestartet!'
-new_gamestatus_event: 'Tippe den geheimen Code in einen beliebigen Kanal ein um {1} zu erhalten. {2} sind noch übrig.'
-new_reaction_event: 'Füge die {0} Reaktion zu dieser Nachricht hinzu um {1} zu erhalten. {2} sind noch übrig.'
-start_event_fail: Die Veranstaltung konnte nicht gestartet werden. Eine andere Veranstaltung ist bereits am laufen, oder es gab einen Fehler beim starten der Veranstaltung.

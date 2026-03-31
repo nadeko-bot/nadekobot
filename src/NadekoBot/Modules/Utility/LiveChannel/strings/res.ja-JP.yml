@@ -1,9 +1,0 @@
-livechannel_added: '{0}がライブチャンネルとして正常に追加されました。'
-livechannel_limit: 'サーバーあたり最大{0}個のライブチャンネルを設定できます。'
-livechannel_list_empty: このサーバーにライブチャンネルは設定されていません。
-livechannel_list_title: '{0}のライブチャンネル'
-livechannel_not_found: チャンネルがライブチャンネルリストに見つかりません。
-livechannel_please_wait: 変更が反映されるまで最大10分お待ちください
-livechannel_removed: '{0}がライブチャンネルから正常に削除されました。'
-preview: プレビュー
-template: テンプレート

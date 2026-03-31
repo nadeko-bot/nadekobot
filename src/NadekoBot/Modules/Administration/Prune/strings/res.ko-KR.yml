@@ -1,5 +1,0 @@
-prune_already_running: 이 서버에서 이미 정리가 진행 중이에요.
-prune_cancelled: 정리가 취소되었어요.
-prune_not_found: 이 서버에서 진행 중인 정리를 찾을 수 없어요.
-prune_patron: '2주 이상 된 메시지 삭제는 [Patron Tier X](https://patreon.com/join/nadekobot) 이상이 필요해요.'
-prune_progress: '정리 중... {0}/{1}개 메시지 삭제됨.'

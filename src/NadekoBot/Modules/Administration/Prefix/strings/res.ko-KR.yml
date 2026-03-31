@@ -1,4 +1,0 @@
-defprefix_current: '기본 봇 접두사는 {0}이에요'
-defprefix_new: '기본 봇 접두사가 {0}에서 {1}(으)로 변경되었어요'
-prefix_current: '이 서버의 접두사는 {0}이에요'
-prefix_new: '이 서버의 접두사가 {0}에서 {1}(으)로 변경되었어요'

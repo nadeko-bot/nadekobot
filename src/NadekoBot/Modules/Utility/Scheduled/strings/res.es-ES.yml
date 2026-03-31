@@ -1,9 +1,0 @@
-schedule_add_error: Ya tienes {0} comandos programados. Por favor, elimina algunos antes de añadir más.
-schedule_add_success: Comando programado añadido con éxito.
-schedule_command: Comando
-schedule_delete_error: Error al eliminar comando programado.
-schedule_deleted: 'Comando programado #{0} eliminado con éxito.'
-schedule_id: ID
-schedule_list_none: No tienes ningún comando programado.
-schedule_list_title: Comandos Programados
-schedule_when: Se Ejecuta En

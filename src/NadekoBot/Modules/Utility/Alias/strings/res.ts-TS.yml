@@ -1,6 +1,0 @@
-alias_added: 'Typing {0} will now work as an alias for {1}.'
-alias_list: List of aliases
-alias_remove_fail: 'Trigger {0} didn''t have an alias. Check before you ask, b-baka!'
-alias_removed: 'Removed the alias for trigger {0}.'
-aliases_cleared: 'All {0} aliases on this server have been removed. Hmph.'
-aliases_none: No aliases found.

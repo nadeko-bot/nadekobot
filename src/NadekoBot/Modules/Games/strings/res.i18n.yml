@@ -1,0 +1,63 @@
+ar:
+  _8ball: كرة 8
+  question: السؤال
+
+de-DE:
+  _8ball: 8ball
+  question: Frage
+
+es-ES:
+  _8ball: 8ball
+  question: Pregunta
+
+fr-FR:
+  _8ball: 8ball
+  question: Question
+
+id-ID:
+  _8ball: 8ball
+  question: Pertanyaan
+
+ja-JP:
+  _8ball: 8ボール
+  question: 質問
+
+ko-KR:
+  _8ball: 8ball
+  question: 질문
+
+pl-PL:
+  _8ball: 8ball
+  question: Pytanie
+
+pt-BR:
+  _8ball: 8ball
+  question: Pergunta
+
+ru-RU:
+  _8ball: 8ball
+  question: Вопрос
+
+sr-Cyrl-RS:
+  _8ball: 8ball
+  question: Питање
+
+tr-TR:
+  _8ball: 8ball
+  question: Soru
+
+ts-TS:
+  _8ball: 8ball
+  question: Question
+
+uk-UA:
+  _8ball: 8ball
+  question: Питання
+
+vi-VN:
+  _8ball: 8ball
+  question: Câu hỏi
+
+zh-CN:
+  _8ball: 8ball
+  question: 問題

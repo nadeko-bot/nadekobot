@@ -1,3 +1,0 @@
-timezone_guild: 'Le fuseau horaire de ce serveur est `{0}`'
-timezone_not_found: Fuseau horaire introuvable. Utilisez la commande "fuseau horaire" pour voir la liste des fuseaux horaires disponibles.
-timezones_available: Fuseaux horaires disponibles.

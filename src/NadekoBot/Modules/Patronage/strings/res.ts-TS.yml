@@ -1,6 +1,0 @@
-expires: Expires
-patron_info: Patron Info
-patron_msg_sent: 'Done sending messages to patrons at and above tier {1}. {1} sent successfully and {2} failed.'
-patron_not_enabled: The patron system is disabled.
-pledge: Pledge
-tier: Tier

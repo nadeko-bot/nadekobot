@@ -1,0 +1,239 @@
+ar:
+  invalid_img_size: 'يجب أن تكون الصورة بحجم {0}x{1} بكسل.'
+  nc_hint: 'استخدم الأمر `{0}nczoom x y` للتكبير. حجم الصورة {1}x{2} بكسل.'
+  nc_insuff_payment: دفع غير صالح.
+  nc_nuke_confirm: 'هل أنت متأكد من حذف جميع البكسلات المملوكة لـ {0}؟ هذا لا يمكن التراجع عنه.'
+  nc_nuke_done: 'تم حذف {0} بكسل.'
+  nc_nuke_none: هذا المستخدم لا يملك أي بكسلات.
+  nc_pixel: 'البكسل {0}'
+  nc_pixel_not_found: البكسل غير موجود
+  nc_pixel_set: 'تم تعيين البكسل {0} بنجاح!'
+  nc_pixel_set_confirm: 'هل أنت متأكد من تعيين البكسل {0}؟ سيكلفك ذلك {1}'
+  nc_position: الموضع
+  nc_pixel_owner: المالك
+  no_attach_found: لم يتم العثور على مرفق. يرجى إرسال الصورة مع هذا الأمر.
+
+de-DE:
+  invalid_img_size: 'Das Bild muss {0}x{1} Pixel groß sein.'
+  nc_hint: 'Benutze den Befehl `{0}nczoom x y` zum Zoomen. Das Bild ist {1}x{2} Pixel.'
+  nc_insuff_payment: Ungültige Zahlung.
+  nc_nuke_confirm: 'Bist du sicher, dass du alle Pixel von {0} entfernen willst? Das kann nicht ruckgangig gemacht werden.'
+  nc_nuke_done: '{0} Pixel entfernt.'
+  nc_nuke_none: Dieser Benutzer besitzt keine Pixel.
+  nc_pixel: 'Pixel {0}'
+  nc_pixel_not_found: Pixel nicht gefunden
+  nc_pixel_set: 'Pixel {0} erfolgreich gesetzt!'
+  nc_pixel_set_confirm: 'Bist du sicher, dass du Pixel {0} setzen willst? Es kostet dich {1}'
+  nc_position: Position
+  nc_pixel_owner: Besitzer
+  no_attach_found: Kein Anhang gefunden. Bitte sende das Bild zusammen mit diesem Befehl.
+
+es-ES:
+  invalid_img_size: 'La imagen debe ser de {0}x{1} píxeles.'
+  nc_hint: 'Usa el comando `{0}nczoom x y` para hacer zoom. La imagen es de {1}x{2} píxeles.'
+  nc_insuff_payment: Pago inválido.
+  nc_nuke_confirm: 'Estas seguro de que quieres eliminar todos los pixeles de {0}? Esto es irreversible.'
+  nc_nuke_done: '{0} pixeles eliminados.'
+  nc_nuke_none: Ese usuario no tiene ningun pixel.
+  nc_pixel: 'Píxel {0}'
+  nc_pixel_not_found: Píxel no encontrado
+  nc_pixel_set: '¡Píxel {0} establecido con éxito!'
+  nc_pixel_set_confirm: '¿Estás seguro de que quieres establecer el píxel {0}? Te costará {1}'
+  nc_position: Posición
+  nc_pixel_owner: Propietario
+  no_attach_found: No se encontró ningún adjunto. Por favor, envía la imagen junto con este comando.
+
+fr-FR:
+  invalid_img_size: 'L''image doit faire {0}x{1} pixels.'
+  nc_hint: 'Utilisez la commande `{0}nczoom x y` pour zoomer. L''image fait {1}x{2} pixels.'
+  nc_insuff_payment: Paiement invalide.
+  nc_nuke_confirm: 'Es-tu sur de vouloir supprimer tous les pixels de {0} ? C''est irreversible.'
+  nc_nuke_done: '{0} pixels supprimes.'
+  nc_nuke_none: Cet utilisateur ne possede aucun pixel.
+  nc_pixel: 'Pixel {0}'
+  nc_pixel_not_found: Pixel non trouvé
+  nc_pixel_set: 'Pixel {0} défini avec succès !'
+  nc_pixel_set_confirm: 'Êtes-vous sûr de vouloir définir le pixel {0} ? Ça vous coûtera {1}'
+  nc_position: Position
+  nc_pixel_owner: Propriétaire
+  no_attach_found: Aucune pièce jointe trouvée. Veuillez envoyer l'image avec cette commande.
+
+id-ID:
+  invalid_img_size: 'Gambar harus berukuran {0}x{1} piksel.'
+  nc_hint: 'Gunakan perintah `{0}nczoom x y` untuk memperbesar. Gambar berukuran {1}x{2} piksel.'
+  nc_insuff_payment: Pembayaran tidak valid.
+  nc_nuke_confirm: 'Apakah kamu yakin ingin menghapus semua piksel milik {0}? Ini tidak bisa dibatalkan.'
+  nc_nuke_done: '{0} piksel dihapus.'
+  nc_nuke_none: Pengguna ini tidak memiliki piksel.
+  nc_pixel: 'Piksel {0}'
+  nc_pixel_not_found: Piksel tidak ditemukan
+  nc_pixel_set: 'Piksel {0} berhasil diatur!'
+  nc_pixel_set_confirm: 'Apakah kamu yakin ingin mengatur piksel {0}? Biayanya {1}'
+  nc_position: Posisi
+  nc_pixel_owner: Pemilik
+  no_attach_found: Tidak ada lampiran ditemukan. Silakan kirim gambar bersamaan dengan perintah ini.
+
+ja-JP:
+  invalid_img_size: '画像は{0}x{1}ピクセルである必要があります。'
+  nc_hint: '`{0}nczoom x y`コマンドでズームできます。画像は{1}x{2}ピクセルです。'
+  nc_insuff_payment: 支払いが無効です。
+  nc_nuke_confirm: '{0}の全ピクセルを削除しますか？この操作は元に戻せません。'
+  nc_nuke_done: '{0}ピクセルを削除しました。'
+  nc_nuke_none: そのユーザーはピクセルを所有していません。
+  nc_pixel: 'ピクセル{0}'
+  nc_pixel_not_found: ピクセルが見つかりません
+  nc_pixel_set: 'ピクセル{0}が正常に設定されました！'
+  nc_pixel_set_confirm: 'ピクセル{0}を設定しますか？費用は{1}です'
+  nc_position: 位置
+  nc_pixel_owner: 所有者
+  no_attach_found: 添付ファイルが見つかりません。このコマンドと一緒に画像を送信してください。
+
+ko-KR:
+  invalid_img_size: '이미지 크기는 {0}x{1} 픽셀이어야 해요.'
+  nc_hint: '`{0}nczoom x y` 명령어로 확대할 수 있어요. 이미지 크기는 {1}x{2} 픽셀이에요.'
+  nc_insuff_payment: 잘못된 결제에요.
+  nc_nuke_confirm: '{0}의 모든 픽셀을 삭제하시겠어요? 되돌릴 수 없어요.'
+  nc_nuke_done: '{0}개의 픽셀을 삭제했어요.'
+  nc_nuke_none: 그 유저는 소유한 픽셀이 없어요.
+  nc_pixel: '픽셀 {0}'
+  nc_pixel_not_found: 픽셀을 찾을 수 없어요
+  nc_pixel_set: '픽셀 {0}이(가) 성공적으로 설정되었어요!'
+  nc_pixel_set_confirm: '픽셀 {0}을(를) 설정하시겠어요? 비용은 {1}이에요'
+  nc_position: 위치
+  nc_pixel_owner: 소유자
+  no_attach_found: 첨부 파일을 찾을 수 없어요. 이 명령어와 함께 이미지를 보내주세요.
+
+pl-PL:
+  invalid_img_size: 'Obraz musi mieć wymiary {0}x{1} pikseli.'
+  nc_hint: 'Użyj komendy `{0}nczoom x y`, aby przybliżyć. Obraz ma {1}x{2} pikseli.'
+  nc_insuff_payment: Nieprawidłowa płatność.
+  nc_nuke_confirm: 'Czy na pewno chcesz usunac wszystkie piksele nalezace do {0}? Tego nie mozna cofnac.'
+  nc_nuke_done: 'Usunieto {0} pikseli.'
+  nc_nuke_none: Ten uzytkownik nie posiada zadnych pikseli.
+  nc_pixel: 'Piksel {0}'
+  nc_pixel_not_found: Nie znaleziono piksela
+  nc_pixel_set: 'Piksel {0} ustawiony pomyślnie!'
+  nc_pixel_set_confirm: 'Czy na pewno chcesz ustawić piksel {0}? Będzie cię to kosztować {1}'
+  nc_position: Pozycja
+  nc_pixel_owner: Właściciel
+  no_attach_found: Nie znaleziono załącznika. Wyślij obraz razem z tą komendą.
+
+pt-BR:
+  invalid_img_size: 'A imagem deve ter {0}x{1} pixels.'
+  nc_hint: 'Use o comando `{0}nczoom x y` para dar zoom. A imagem tem {1}x{2} pixels.'
+  nc_insuff_payment: Pagamento inválido.
+  nc_nuke_confirm: 'Tem certeza de que deseja destruir todos os pixels de {0}? Isso e irreversivel.'
+  nc_nuke_done: '{0} pixels destruidos.'
+  nc_nuke_none: Esse usuario nao possui nenhum pixel.
+  nc_pixel: 'Pixel {0}'
+  nc_pixel_not_found: Pixel não encontrado
+  nc_pixel_set: 'Pixel {0} definido com sucesso!'
+  nc_pixel_set_confirm: 'Tem certeza de que deseja definir o pixel {0}? Vai custar {1}'
+  nc_position: Posição
+  nc_pixel_owner: Dono
+  no_attach_found: Nenhum anexo encontrado. Por favor, envie a imagem junto com este comando.
+
+ru-RU:
+  invalid_img_size: 'Изображение должно быть {0}x{1} пикселей.'
+  nc_hint: 'Используйте команду `{0}nczoom x y` для увеличения. Изображение {1}x{2} пикселей.'
+  nc_insuff_payment: Недостаточная оплата.
+  nc_nuke_confirm: 'Вы уверены, что хотите удалить все пиксели пользователя {0}? Это необратимо.'
+  nc_nuke_done: 'Удалено {0} пикселей.'
+  nc_nuke_none: У этого пользователя нет пикселей.
+  nc_pixel: 'Пиксель {0}'
+  nc_pixel_not_found: Пиксель не найден
+  nc_pixel_set: 'Пиксель {0} успешно установлен!'
+  nc_pixel_set_confirm: 'Вы уверены, что хотите установить пиксель {0}? Это будет стоить {1}'
+  nc_position: Позиция
+  nc_pixel_owner: Владелец
+  no_attach_found: Вложение не найдено. Пожалуйста, отправьте изображение вместе с этой командой.
+
+sr-Cyrl-RS:
+  invalid_img_size: 'Слика мора бити {0}x{1} пиксела.'
+  nc_hint: 'Користи `{0}nczoom x y` команду да зумираш. Слика је {1}x{2} пиксела.'
+  nc_insuff_payment: Неважећа уплата.
+  nc_nuke_confirm: 'Да ли си сигуран/на да желиш да обришеш све пикселе корисника {0}? Ово је неповратно.'
+  nc_nuke_done: 'Обрисано {0} пиксела.'
+  nc_nuke_none: Тај корисник не поседује ниједан пиксел.
+  nc_pixel: 'Пиксел {0}'
+  nc_pixel_not_found: Пиксел није пронађен
+  nc_pixel_set: 'Пиксел {0} успешно постављен!'
+  nc_pixel_set_confirm: 'Да ли си сигуран/на да желиш да поставиш пиксел {0}? Коштаће те {1}'
+  nc_position: Позиција
+  nc_pixel_owner: Власник
+  no_attach_found: Прилог није пронађен. Пошаљи слику заједно са овом командом.
+
+tr-TR:
+  invalid_img_size: 'Görsel {0}x{1} piksel olmalıdır.'
+  nc_hint: 'Yakınlaştırmak için `{0}nczoom x y` komutunu kullan. Görsel {1}x{2} piksel.'
+  nc_insuff_payment: Geçersiz ödeme.
+  nc_nuke_confirm: '{0} kullanicisinin tum piksellerini silmek istediginize emin misiniz? Bu geri alinamaz.'
+  nc_nuke_done: '{0} piksel silindi.'
+  nc_nuke_none: Bu kullanicinin hiç pikseli yok.
+  nc_pixel: 'Piksel {0}'
+  nc_pixel_not_found: Piksel bulunamadı
+  nc_pixel_set: 'Piksel {0} başarıyla ayarlandı!'
+  nc_pixel_set_confirm: 'Piksel {0} ayarlamak istediğine emin misin? Maliyeti {1}'
+  nc_position: Konum
+  nc_pixel_owner: Sahip
+  no_attach_found: Ek bulunamadı. Lütfen bu komutla birlikte görseli gönder.
+
+ts-TS:
+  invalid_img_size: 'Image must be {0}x{1} pixels.'
+  nc_hint: 'Use `{0}nczoom x y` to zoom in. Image is {1}x{2} pixels.'
+  nc_insuff_payment: Invalid payment.
+  nc_nuke_confirm: 'You sure you want to nuke all of {0}''s pixels? Can''t undo this.'
+  nc_nuke_done: 'Nuked {0} pixels.'
+  nc_nuke_none: That user doesn't own any pixels.
+  nc_pixel: 'Pixel {0}'
+  nc_pixel_not_found: Pixel not found. Look more carefully.
+  nc_pixel_set: 'Pixel {0} set successfully!'
+  nc_pixel_set_confirm: 'Are you sure you want to set pixel {0}? It will cost you {1}'
+  nc_position: Position
+  nc_pixel_owner: Owner
+  no_attach_found: No attachment found. Send the image with the command.
+
+uk-UA:
+  invalid_img_size: 'Зображення має бути {0}x{1} пікселів.'
+  nc_hint: 'Використовуй команду `{0}nczoom x y`, щоб збільшити. Зображення {1}x{2} пікселів.'
+  nc_insuff_payment: Невірна оплата.
+  nc_nuke_confirm: 'Ви впевнені, що хочете видалити всі пікселі користувача {0}? Це незворотно.'
+  nc_nuke_done: 'Видалено {0} пікселів.'
+  nc_nuke_none: Цей користувач не володіє жодним пікселем.
+  nc_pixel: 'Піксель {0}'
+  nc_pixel_not_found: Піксель не знайдено
+  nc_pixel_set: 'Піксель {0} успішно встановлено!'
+  nc_pixel_set_confirm: 'Ти впевнений, що хочеш встановити піксель {0}? Це коштуватиме тобі {1}'
+  nc_position: Позиція
+  nc_pixel_owner: Власник
+  no_attach_found: Вкладення не знайдено. Будь ласка, надішли зображення разом із цією командою.
+
+vi-VN:
+  invalid_img_size: 'Ảnh phải có kích thước {0}x{1} pixel.'
+  nc_hint: 'Dùng lệnh `{0}nczoom x y` để phóng to. Ảnh có kích thước {1}x{2} pixel.'
+  nc_insuff_payment: Thanh toán không hợp lệ.
+  nc_nuke_confirm: 'Ban co chac muon xoa tat ca pixel cua {0} khong? Hanh dong nay khong the hoan tac.'
+  nc_nuke_done: 'Da xoa {0} pixel.'
+  nc_nuke_none: Nguoi dung do khong so huu pixel nao.
+  nc_pixel: 'Pixel {0}'
+  nc_pixel_not_found: Không tìm thấy pixel
+  nc_pixel_set: 'Pixel {0} đã được đặt thành công!'
+  nc_pixel_set_confirm: 'Bạn có chắc muốn đặt pixel {0} không? Sẽ tốn {1}'
+  nc_position: Vị trí
+  nc_pixel_owner: Chủ sở hữu
+  no_attach_found: Không tìm thấy tệp đính kèm. Vui lòng gửi ảnh kèm theo lệnh này.
+
+zh-CN:
+  invalid_img_size: '圖片必須為 {0}x{1} 像素。'
+  nc_hint: '使用 `{0}nczoom x y` 指令來放大。圖片為 {1}x{2} 像素。'
+  nc_insuff_payment: 支付無效。
+  nc_nuke_confirm: '你确定要清除 {0} 拥有的所有像素吗？此操作不可撤销。'
+  nc_nuke_done: '已清除 {0} 个像素。'
+  nc_nuke_none: 该用户没有任何像素。
+  nc_pixel: '像素 {0}'
+  nc_pixel_not_found: 找不到像素
+  nc_pixel_set: '像素 {0} 設定成功！'
+  nc_pixel_set_confirm: '你確定要設定像素 {0} 嗎？這將花費 {1}'
+  nc_position: 位置
+  nc_pixel_owner: 所有者
+  no_attach_found: 找不到附件。請隨此指令一起發送圖片。

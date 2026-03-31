@@ -19,8 +19,9 @@ public class MergeStringsTask : Task
     [Required]
     public string OutputDir { get; set; } = string.Empty;
 
-    private readonly Regex _resRegex = new(@"res(?:\.(?<lang>.+))?\.yml$", RegexOptions.IgnoreCase);
-    private readonly Regex _cmdRegex = new(@"cmds(?:\.(?<lang>.+))?\.yml$", RegexOptions.IgnoreCase);
+    private readonly Regex _resRegex = new(@"^res(?:\.(?<lang>.+))?\.yml$", RegexOptions.IgnoreCase);
+    private readonly Regex _cmdRegex = new(@"^cmds(?:\.(?<lang>.+))?\.yml$", RegexOptions.IgnoreCase);
+    private const string I18N_FILENAME = "res.i18n.yml";
 
     IDeserializer deserializer = new DeserializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -191,7 +192,6 @@ public class MergeStringsTask : Task
     {
         try
         {
-            // lang → merged dictionary
             var mergedByLang = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
             var processedFileCount = 0;
 
@@ -199,8 +199,48 @@ public class MergeStringsTask : Task
             {
                 var filePath = item.ItemSpec;
                 var fileName = Path.GetFileName(filePath);
-                var match = _resRegex.Match(fileName);
 
+                if (string.Equals(fileName, I18N_FILENAME, StringComparison.OrdinalIgnoreCase))
+                {
+                    try
+                    {
+                        var text = File.ReadAllText(filePath);
+                        var i18nData = deserializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(text);
+                        if (i18nData == null) continue;
+
+                        foreach (var langEntry in i18nData)
+                        {
+                            var lang = langEntry.Key;
+                            var incoming = langEntry.Value;
+                            if (incoming == null) continue;
+
+                            if (!mergedByLang.TryGetValue(lang, out var existing))
+                            {
+                                mergedByLang[lang] = new(incoming, StringComparer.OrdinalIgnoreCase);
+                            }
+                            else
+                            {
+                                foreach (var kv in incoming)
+                                    existing[kv.Key] = kv.Value;
+                            }
+                        }
+
+                        processedFileCount++;
+                    }
+                    catch (YamlException yex)
+                    {
+                        Log.LogError($"YAML parsing error in '{filePath}': {yex.Message}");
+                        Log.LogError(yex.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogError($"Error processing '{filePath}': {ex.Message}");
+                    }
+
+                    continue;
+                }
+
+                var match = _resRegex.Match(fileName);
                 if (!match.Success)
                 {
                     Log.LogMessage(MessageImportance.Low,
@@ -208,23 +248,21 @@ public class MergeStringsTask : Task
                     continue;
                 }
 
-                var lang = match.Groups["lang"].Value;
+                var matchedLang = match.Groups["lang"].Value;
 
                 try
                 {
-                    var text = File.ReadAllText(filePath);
-                    var incoming = deserializer.Deserialize<Dictionary<string, string>>(text);
+                    var text2 = File.ReadAllText(filePath);
+                    var incoming2 = deserializer.Deserialize<Dictionary<string, string>>(text2);
 
-                    if (!mergedByLang.TryGetValue(lang, out var existing))
+                    if (!mergedByLang.TryGetValue(matchedLang, out var existing2))
                     {
-                        // First file for this lang
-                        mergedByLang[lang] = new(incoming, StringComparer.OrdinalIgnoreCase);
+                        mergedByLang[matchedLang] = new(incoming2, StringComparer.OrdinalIgnoreCase);
                     }
                     else
                     {
-                        // Merge: union of keys, incoming wins on conflicts
-                        foreach (var kv in incoming)
-                            existing[kv.Key] = kv.Value;
+                        foreach (var kv in incoming2)
+                            existing2[kv.Key] = kv.Value;
                     }
 
                     processedFileCount++;
@@ -246,7 +284,6 @@ public class MergeStringsTask : Task
                 return false;
             }
 
-            // Write merged YAML out
             var outResDir = Path.Combine(OutputDir, "responses");
             Directory.CreateDirectory(outResDir);
 

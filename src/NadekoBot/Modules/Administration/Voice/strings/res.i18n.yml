@@ -1,0 +1,207 @@
+ar:
+  createvoich: 'تم إنشاء القناة الصوتية {0}.'
+  deafen: تم كتم الصوت بنجاح.
+  delvoich: 'تم حذف القناة الصوتية {0}.'
+  gvc_disabled: تم تعطيل ميزة قناة صوت اللعبة في هذا الخادم.
+  gvc_enabled: '{0} أصبحت قناة صوت اللعبة الآن.'
+  no_vcroles: لا توجد أدوار قنوات صوتية.
+  undeafen: تم إلغاء كتم الصوت بنجاح.
+  vc_role_list: أدوار القنوات الصوتية
+  vcrole_added: 'المستخدمون الذين ينضمون إلى القناة الصوتية {0} سيحصلون على دور {1}.'
+  vcrole_not_found: هذه القناة الصوتية ليس لديها دور مرتبط.
+  vcrole_removed: 'المستخدمون الذين ينضمون إلى القناة الصوتية {0} لن يحصلوا على دور بعد الآن.'
+
+de-DE:
+  createvoich: 'Sprachkanal {0} wurde erstellt.'
+  deafen: Erfolgreich taub gestellt.
+  delvoich: 'Sprachkanal {0} gelöscht.'
+  gvc_disabled: Das Spiel Sprachkanal Feature wurde auf diesem Server deaktiviert
+  gvc_enabled: '{0} ist jetzt ein Spiel Sprachkanal.'
+  no_vcroles: Es gibt keine Sprachkanal-Rollen
+  undeafen: Erfolgreiches entfernen der Hörunfähigkeit.
+  vc_role_list: Sprachkanal-Rollen
+  vcrole_added: 'Benutzer, welche dem Sprach Kanal {0} beitreten werden die Rolle {1} kriegen.'
+  vcrole_not_found: Dieser Sprachkanal hat keine Sprachkanal Rolle.
+  vcrole_removed: 'Benutzer, welche dem Sprach Kanal {0} beitreten werden keine Rolle mehr kriegen.'
+
+es-ES:
+  createvoich: 'Canal de voz {0} creado.'
+  deafen: Ensordecimiento exitoso.
+  delvoich: 'Canal de voz {0} eliminado.'
+  gvc_disabled: El canal de juego por voz ha sido desactivado.
+  gvc_enabled: '{0} ahora es un canal de juego por voz.'
+  no_vcroles: No hay roles para el canal de voz.
+  undeafen: Se ha eliminado el ensordecimiento.
+  vc_role_list: Roles para el canal de voz
+  vcrole_added: 'Los usuarios que entren al canal de voz {0} obtendrán el rol {1}.'
+  vcrole_not_found: El canal de voz no tiene el rol de canal de voz (VcRole).
+  vcrole_removed: 'Los usuarios que entren al canal de voz {0} ya no obtendrán un rol.'
+
+fr-FR:
+  createvoich: 'Salon vocal {0} créé.'
+  deafen: Mise en sourdine effectuée.
+  delvoich: 'Salon vocal {0} supprimé.'
+  gvc_disabled: La fonctionnalité Salon Vocal de Jeu a été désactivée sur ce serveur.
+  gvc_enabled: '{0} est désormais un Salon Vocal de Jeu.'
+  no_vcroles: Il n'y a pas de rôles pour les salons vocaux.
+  undeafen: Mise en sourdine désactivée avec succès.
+  vc_role_list: Rôles du salon vocal
+  vcrole_added: 'Les utilisateurs qui rejoindront le salon vocal {0} obtiendront le rôle {1}.'
+  vcrole_not_found: Ce salon vocal n'a pas de VcRole.
+  vcrole_removed: 'Les utilisateurs qui rejoindront le salon vocal {0} n''obtiendront plus de rôle.'
+
+id-ID:
+  createvoich: 'Channel suara {0} telah dibuat.'
+  deafen: Berhasil di-deafen.
+  delvoich: 'Channel suara {0} telah dihapus.'
+  gvc_disabled: Fitur Game Voice Channel telah dinonaktifkan di server ini.
+  gvc_enabled: '{0} sekarang menjadi Game Voice Channel.'
+  no_vcroles: Tidak ada role channel suara.
+  undeafen: Berhasil di-undeafen.
+  vc_role_list: Daftar role channel suara
+  vcrole_added: 'Pengguna yang bergabung ke channel suara {0} akan mendapatkan role {1}.'
+  vcrole_not_found: Channel suara tersebut tidak memiliki VcRole.
+  vcrole_removed: 'Pengguna yang bergabung ke channel suara {0} tidak akan lagi mendapatkan role.'
+
+ja-JP:
+  createvoich: 'ボイスチャンネル《{0}》が作成されました。'
+  deafen: 指定されたユーザーのスピーカーがミュートにされました。
+  delvoich: 'ボイスチャンネル《{0}》 が削除されました。'
+  gvc_disabled: このサーバーでGame Voice Channel機能が無効になっています。
+  gvc_enabled: '{0}はゲーム音声チャンネルです。'
+  no_vcroles: ボイスチャンネル用の役割はありません。
+  undeafen: 指定されたユーザーのスピーカーのミュートが解除されました。
+  vc_role_list: ボイスチャンネル用の役割
+  vcrole_added: 'ボイスチャンネル《{0}》に参加するユーザーに、役割《{1}》が割り当てられるようになりました。'
+  vcrole_not_found: そのボイスチャンネルにはVcRoleがありません。
+  vcrole_removed: 'ボイスチャンネル《{0}》に参加するユーザーには、役割《{1}》が割り当てられなくなりました。'
+
+ko-KR:
+  createvoich: '음성 채널 {0}이(가) 생성되었어요.'
+  deafen: 헤드셋 음소거 완료.
+  delvoich: '음성 채널 {0}이(가) 삭제되었어요.'
+  gvc_disabled: 이 서버에서 게임 음성 채널 기능이 비활성화되었습니다.
+  gvc_enabled: '{0}이(가) 게임 음성 채널로 설정되었습니다.'
+  no_vcroles: 음성 채널 역할이 없어요.
+  undeafen: 헤드셋 음소거 해제 완료.
+  vc_role_list: 음성 채널 역할
+  vcrole_added: '{0} 음성 채널에 접속하면 {1} 역할이 부여돼요.'
+  vcrole_not_found: 해당 음성 채널에 VcRole이 설정되어 있지 않아요.
+  vcrole_removed: '{0} 음성 채널에 접속해도 더 이상 역할이 부여되지 않아요.'
+
+pl-PL:
+  createvoich: 'Kanał głosowy {0} został utworzony.'
+  deafen: Wyciszenie zakończone sukcesem.
+  delvoich: 'Kanał głosowy {0} został usunięty.'
+  gvc_disabled: Funkcja Game Voice Channel została wyłączona na tym serwerze.
+  gvc_enabled: '{0} jest teraz kanałem Game Voice Channel.'
+  no_vcroles: Brak ról kanałów głosowych.
+  undeafen: Odciszenie zakończone sukcesem.
+  vc_role_list: Role kanałów głosowych
+  vcrole_added: 'Użytkownicy dołączający do kanału głosowego {0} otrzymają rolę {1}.'
+  vcrole_not_found: Ten kanał głosowy nie ma przypisanej roli VcRole.
+  vcrole_removed: 'Użytkownicy dołączający do kanału głosowego {0} nie będą już otrzymywać roli.'
+
+pt-BR:
+  createvoich: 'O canal de voz {0} foi criado.'
+  deafen: Ensurdecido com sucesso.
+  delvoich: 'O canal de voz {0} foi excluído.'
+  gvc_disabled: A função Canal de Voz de Jogo foi desativada nesse servidor.
+  gvc_enabled: '{0} agora é um Canal de Voz de Jogo.'
+  no_vcroles: Não há cargos de canal de voz.
+  undeafen: Desensurdecido com sucesso.
+  vc_role_list: Cargos de canal de voz
+  vcrole_added: 'Os usuários que se juntarem ao canal de voz {0} receberão o cargo {1}.'
+  vcrole_not_found: Esse canal não possui um cargo de voz.
+  vcrole_removed: 'Os usuários que se juntarem ao canal de voz {0} não receberão mais o cargo.'
+
+ru-RU:
+  createvoich: 'Голосовой канал {0} создан.'
+  deafen: Успешно заглушен.
+  delvoich: 'Голосовой канал {0} удален.'
+  gvc_disabled: Функция Игровых голосовых каналов была отключена на этом сервере.
+  gvc_enabled: '{0} теперь Игровой голосовой канал.'
+  no_vcroles: Нет никаких установленных ролей для голосовых каналов.
+  undeafen: Заглушение было убрано.
+  vc_role_list: Роли голосовых каналов
+  vcrole_added: 'Пользователи, которые присоединятся в голосовой канал {0}, будут получать роль {1}'
+  vcrole_not_found: Этот голосовой канал не имеет роли VcRole.
+  vcrole_removed: 'Пользователи, которые присоединятся в голосовой канал {0}, больше будут получать роль {1}'
+
+sr-Cyrl-RS:
+  createvoich: 'Гласовни канал {0} је креиран.'
+  deafen: Утишавање успешно.
+  delvoich: 'Гласовни канал {0} је обрисан.'
+  gvc_disabled: Функција гејм војс канала је искључена на овом серверу.
+  gvc_enabled: '{0} је сада гејм војс канал.'
+  no_vcroles: Нема гласовних улога за канале.
+  undeafen: Утишавање уклоњено.
+  vc_role_list: Улоге за гласовне канале
+  vcrole_added: 'Корисници који се придруже гласовном каналу {0} добиће улогу {1}.'
+  vcrole_not_found: Тај гласовни канал нема VcRole.
+  vcrole_removed: 'Корисници који се придруже гласовном каналу {0} више неће добијати улогу.'
+
+tr-TR:
+  createvoich: '{0} sesli kanalı oluşturuldu.'
+  deafen: Sağırlaştırma başarılı.
+  delvoich: '{0} sesli kanalı silindi.'
+  gvc_disabled: Oyun Sesli Kanalı özelliği bu sunucuda devre dışı bırakıldı.
+  gvc_enabled: '{0} artık bir Oyun Sesli Kanalı.'
+  no_vcroles: Sesli kanal rolü yok.
+  undeafen: Sağırlaştırma kaldırıldı.
+  vc_role_list: Sesli kanal rolleri
+  vcrole_added: '{0} sesli kanalına katılan kullanıcılar {1} rolünü alacak.'
+  vcrole_not_found: Bu sesli kanalda bir VcRole yok.
+  vcrole_removed: '{0} sesli kanalına katılan kullanıcılar artık rol almayacak.'
+
+ts-TS:
+  createvoich: 'Voice channel {0} created.'
+  deafen: Deafen successful. Hmph!
+  delvoich: 'Voice channel {0} deleted.'
+  gvc_disabled: Game Voice Channel feature has been disabled on this server.
+  gvc_enabled: '{0} is a Game Voice Channel now. I set it up perfectly, obviously.'
+  no_vcroles: There are no voice channel roles.
+  undeafen: Undeafen successful. You're welcome.
+  vc_role_list: Voice channel roles
+  vcrole_added: 'Users who join {0} voice channel will get {1} role. I set it up nicely, obviously.'
+  vcrole_not_found: That voice channel doesn't have a VcRole.
+  vcrole_removed: 'Users who join {0} voice channel will no longer get a role.'
+
+uk-UA:
+  createvoich: 'Голосовий канал {0} створено.'
+  deafen: Заглушення успішне.
+  delvoich: 'Голосовий канал {0} видалено.'
+  gvc_disabled: Функцію ігрового голосового каналу вимкнено на цьому сервері.
+  gvc_enabled: '{0} тепер є ігровим голосовим каналом.'
+  no_vcroles: Голосових ролей немає.
+  undeafen: Заглушення знято.
+  vc_role_list: Голосові ролі каналів
+  vcrole_added: 'Користувачі, які приєднаються до голосового каналу {0}, отримають роль {1}.'
+  vcrole_not_found: Цей голосовий канал не має VcRole.
+  vcrole_removed: 'Користувачі, які приєднаються до голосового каналу {0}, більше не отримуватимуть роль.'
+
+vi-VN:
+  createvoich: 'Đã tạo kênh thoại {0}.'
+  deafen: Tắt tiếng thành công.
+  delvoich: 'Đã xóa kênh thoại {0}.'
+  gvc_disabled: Tính năng Kênh thoại theo game đã được tắt trên server này.
+  gvc_enabled: '{0} giờ là Kênh thoại theo game.'
+  no_vcroles: Không có vai trò kênh thoại nào.
+  undeafen: Bỏ tắt tiếng thành công.
+  vc_role_list: Danh sách vai trò kênh thoại
+  vcrole_added: 'Người dùng tham gia kênh thoại {0} sẽ nhận được vai trò {1}.'
+  vcrole_not_found: Kênh thoại đó không có VcRole.
+  vcrole_removed: 'Người dùng tham gia kênh thoại {0} sẽ không còn nhận vai trò nữa.'
+
+zh-CN:
+  createvoich: '成功創建語音頻道 {0}'
+  deafen: 成功拒聽
+  delvoich: '語音頻道 {0} 已刪除。'
+  gvc_disabled: 此伺服器上已禁用遊戲語音頻道功能。
+  gvc_enabled: '{0} 現在是遊戲語音頻道。'
+  no_vcroles: 沒有語音頻道身分組。
+  undeafen: 成功解除拒聽
+  vc_role_list: 語音頻道身分組
+  vcrole_added: '加入 {0} 語音頻道的用戶將獲得 {1} 身分組。'
+  vcrole_not_found: 該語音通道沒有 VcRole。
+  vcrole_removed: '加入 {0} 語音頻道的用戶將不再獲得身分組。'

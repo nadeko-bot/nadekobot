@@ -1,0 +1,401 @@
+ar:
+  adsarm_disable: 'لن يقوم البوت بحذف ردود `{0}iam` و `{0}iamn` بعد الآن.'
+  adsarm_enable: 'تم تفعيل الحذف التلقائي لردود `{0}iam` و `{0}iamn`.'
+  choose_one: اختر واحدًا
+  group_name_added: 'المجموعة #{0} أصبح لها اسم الآن: {1}'
+  group_name_removed: 'المجموعة #{0} لم يعد لها اسم.'
+  requires_role: 'يتطلب رتبة: {0}'
+  role_added: 'تمت إضافة الرتبة {0} إلى القائمة في المجموعة {1}.'
+  sar_group_deleted: 'تم حذف المجموعة {0}.'
+  sar_group_not_found: لا توجد مجموعة بهذا الرقم.
+  self_assign_already: 'لديك رتبة {0} بالفعل.'
+  self_assign_excl: رتب التعيين الذاتي أصبحت حصرية الآن!
+  self_assign_group_role_req: 'يمكن للمستخدمين الآن تعيين رتبة ذاتيًا من المجموعة {0} فقط إذا كانت لديهم رتبة {1}.'
+  self_assign_level_req: 'الدور ذاتي التعيين {0} يتطلب الآن مستوى خادم {1} على الأقل.'
+  self_assign_list: 'يوجد {0} من الأدوار ذاتية التعيين'
+  self_assign_no_excl: الأدوار ذاتية التعيين لم تعد حصرية!
+  self_assign_not: هذا الدور ليس ذاتي التعيين.
+  self_assign_not_have: 'ليس لديك دور {0}.'
+  self_assign_not_level: 'هذا الدور ذاتي التعيين يتطلب مستوى خادم {0} على الأقل.'
+  self_assign_perms: لا أستطيع إضافة هذا الدور لك. `لا يمكنني إضافة أدوار لأصحاب الخادم أو أدوار أعلى من دوري في التسلسل الهرمي.`
+  self_assign_rem: 'تمت إزالة {0} من قائمة الأدوار ذاتية التعيين.'
+  self_assign_remove: 'لم يعد لديك دور {0}.'
+  self_assign_role_req: 'تحتاج دور {0} لتتمكن من تعيين دور لنفسك من المجموعة {1}'
+  self_assign_success: 'لديك الآن دور {0}.'
+
+de-DE:
+  adsarm_disable: 'Der Bot wird nichtmehr `{0}iam` und `{0}iamn` Antworten löschen.'
+  adsarm_enable: 'Automatisches Löschen von `{0}iam` und `{0}iamn` Antworten wurde aktiviert.'
+  choose_one: Wähle eines
+  group_name_added: 'Gruppe #{0} hat nun den Namen: {1}'
+  group_name_removed: 'Gruppe #{0} hat keinen Namen mehr.'
+  requires_role: 'Erfordert Rolle: {0}'
+  role_added: 'Rolle {0} wurde zur Liste in Gruppe {1} hinzugefügt.'
+  sar_group_deleted: 'Gruppe {0} gelöscht.'
+  sar_group_not_found: Gruppe mit dieser Nummer existiert nicht.
+  self_assign_already: 'Du hast schon die {0} Rolle.'
+  self_assign_excl: Selbst hinzufügbare Rollen sind nun exklusiv
+  self_assign_group_role_req: 'Benutzer können sich jetzt nur eine Rolle aus Gruppe {0} zuweisen, wenn sie die Rolle {1} haben.'
+  self_assign_level_req: 'Selbst zuweisbare Rolle {0} benötigt mindestens Server-Level {1}.'
+  self_assign_list: 'Es gibt {0} selbst hinzufügbare Rollen'
+  self_assign_no_excl: Selbst hinzufügbare Rollen sind nun nicht exklusiv
+  self_assign_not: Diese Rolle kann man sich nicht selbst hinzufügen
+  self_assign_not_have: 'Du hast die Rolle {0} nicht.'
+  self_assign_not_level: 'Diese Selbst zuweisbare Rolle benötigt mindestens server level {0}.'
+  self_assign_perms: Ich kann dir diese Rolle nicht hinzufügen. `Ich kann keine Rollen an Besitzer oder Rollen höher als meine Rolle in der Rollenhierarchie vergeben.`
+  self_assign_rem: '{0} wurde entfernt von der Liste der selbst-zuweisbaren Rollen.'
+  self_assign_remove: 'Du hast nichtmehr die {0} Rolle.'
+  self_assign_role_req: 'Du brauchst die Rolle {0}, um dir eine Rolle aus Gruppe {1} zuzuweisen'
+  self_assign_success: 'Du hast jetzt die {0} Rolle.'
+
+es-ES:
+  adsarm_disable: 'El bot ya no eliminará las respuestas de `{0}iam` y `{0}iamn`.'
+  adsarm_enable: 'La eliminación automática de `{0}iam` y `{0}iamn` ha sido activada.'
+  choose_one: Elige uno
+  group_name_added: 'El grupo #{0} ahora tiene el nombre: {1}'
+  group_name_removed: 'El grupo #{0} ya no tiene nombre.'
+  requires_role: 'Requiere el rol: {0}'
+  role_added: 'El rol {0} ha sido agregado a la lista en el grupo {1}.'
+  sar_group_deleted: 'Grupo {0} eliminado.'
+  sar_group_not_found: No existe un grupo con ese número.
+  self_assign_already: 'Ya tienes el rol {0}.'
+  self_assign_excl: ¡Los roles autoasignables ahora son exclusivos!
+  self_assign_group_role_req: 'Los usuarios ahora pueden auto-asignarse un rol del grupo {0} solo si tienen el rol {1}.'
+  self_assign_level_req: 'El rol autoasignable {0} ahora requiere ser nivel {1} en el servidor.'
+  self_assign_list: 'Hay {0} roles autoasignables'
+  self_assign_no_excl: ¡Los roles autoasignables ya no son exclusivos!
+  self_assign_not: Ese rol no es autoasignable.
+  self_assign_not_have: 'No tienes el rol {0}.'
+  self_assign_not_level: 'Ese rol autoasignable requiere ser nivel {0} en el servidor.'
+  self_assign_perms: No pude añadirte ese rol. `No puedo añadir roles a administradores o roles más altos que el mío en la jerarquía.`
+  self_assign_rem: '{0} ha sido eliminado de la lista de roles autoasignables.'
+  self_assign_remove: 'Ya no tienes el rol {0}.'
+  self_assign_role_req: 'Necesitas el rol {0} para auto-asignarte un rol del grupo {1}'
+  self_assign_success: 'Ahora tienes el rol {0}.'
+
+fr-FR:
+  adsarm_disable: 'Le bot ne supprimera plus les réponses `{0}iam` et `{0}iamn`.'
+  adsarm_enable: 'L''effacement automatique des réponses `{0}iam` et `{0}iamn` a été activé.'
+  choose_one: Choisissez un
+  group_name_added: 'Le groupe #{0} a maintenant un nom : {1}'
+  group_name_removed: 'Le groupe #{0} n''a plus de nom.'
+  requires_role: 'Nécessite le rôle : {0}'
+  role_added: 'Le rôle {0} a été ajouté à la liste du groupe {1}.'
+  sar_group_deleted: 'Groupe {0} supprimé.'
+  sar_group_not_found: Le groupe avec ce numéro n'existe pas.
+  self_assign_already: 'Vous disposez déjà du rôle {0}.'
+  self_assign_excl: Les rôles auto-attribués sont désormais exclusifs!
+  self_assign_group_role_req: 'Les utilisateurs peuvent maintenant s''auto-attribuer un rôle du groupe {0} uniquement s''ils ont le rôle {1}.'
+  self_assign_level_req: 'Le rôle auto-assignable {0} requiert désormais, à minima, le niveau {1} sur le serveur.'
+  self_assign_list: 'Il y a {0} rôles auto-attribués'
+  self_assign_no_excl: Les rôles auto-attribués ne sont désormais plus exclusifs!
+  self_assign_not: Ce rôle n'est pas auto-attribuable.
+  self_assign_not_have: 'Vous ne disposez pas du rôle {0}.'
+  self_assign_not_level: 'Ce rôle auto-assignable requiert au moins le niveau {0} sur le serveur.'
+  self_assign_perms: Je suis dans l'incapacité de t'ajouter ce rôle. `« Je ne peux pas ajouter de rôles aux propriétaires ou aux autres supérieurs au mien dans la hiérarchie des rôles. »`
+  self_assign_rem: '{0} a été supprimé de la liste des rôles auto-attribuable.'
+  self_assign_remove: 'Vous ne disposez plus du rôle {0}.'
+  self_assign_role_req: 'Vous avez besoin du rôle {0} pour vous auto-attribuer un rôle du groupe {1}'
+  self_assign_success: 'Vous disposez désormais du rôle {0}.'
+
+id-ID:
+  adsarm_disable: 'Bot tidak lagi menghapus respons `{0}iam` dan `{0}iamn`.'
+  adsarm_enable: 'Penghapusan otomatis respons `{0}iam` dan `{0}iamn` telah diaktifkan.'
+  choose_one: Pilih satu
+  group_name_added: 'Grup #{0} sekarang punya nama: {1}'
+  group_name_removed: 'Grup #{0} tidak lagi punya nama.'
+  requires_role: 'Membutuhkan role: {0}'
+  role_added: 'Role {0} telah ditambahkan ke daftar di grup {1}.'
+  sar_group_deleted: 'Grup {0} dihapus.'
+  sar_group_not_found: Grup dengan nomor tersebut tidak ada.
+  self_assign_already: 'Kamu sudah punya role {0}.'
+  self_assign_excl: Self-assigned role sekarang bersifat eksklusif!
+  self_assign_group_role_req: 'Pengguna sekarang bisa self-assign role dari grup {0} hanya jika mereka punya role {1}.'
+  self_assign_level_req: 'Role self-assign {0} sekarang membutuhkan minimal level server {1}.'
+  self_assign_list: 'Ada {0} role yang bisa di-assign sendiri'
+  self_assign_no_excl: Role self-assign sekarang tidak eksklusif!
+  self_assign_not: Role itu tidak bisa di-assign sendiri.
+  self_assign_not_have: 'Kamu nggak punya role {0}.'
+  self_assign_not_level: 'Role self-assign itu membutuhkan minimal level server {0}.'
+  self_assign_perms: Aku nggak bisa menambahkan role itu ke kamu. `Aku nggak bisa menambahkan role ke pemilik server atau role yang lebih tinggi dari role-ku di hierarki role.`
+  self_assign_rem: '{0} sudah dihapus dari daftar role self-assign.'
+  self_assign_remove: 'Kamu sudah tidak memiliki role {0}.'
+  self_assign_role_req: 'Kamu butuh role {0} untuk bisa assign sendiri role dari grup {1}'
+  self_assign_success: 'Kamu sekarang punya role {0}.'
+
+ja-JP:
+  adsarm_disable: 'Botは`{0}iam`と`{0}iamn`の応答を自動削除しなくなりました。'
+  adsarm_enable: '`{0}iam`と`{0}iamn`の応答の自動削除が有効になりました。'
+  choose_one: 1つ選んでください
+  group_name_added: 'グループ#{0}の名前が{1}に設定されました'
+  group_name_removed: 'グループ#{0}の名前が削除されました。'
+  requires_role: '必要なロール: {0}'
+  role_added: '役割《{0}》が《{1}》グループのリストに追加されました。'
+  sar_group_deleted: 'グループ{0}が削除されました。'
+  sar_group_not_found: その番号のグループは存在しません。
+  self_assign_already: '役割《{0}》が既に割り当てられています。'
+  self_assign_excl: 自己割り当て可能な役割は排他的になりました！
+  self_assign_group_role_req: 'ユーザーはロール{1}を持っている場合にのみ、グループ{0}からロールを自己割り当てできるようになりました。'
+  self_assign_level_req: '自己割り当て役割 {0} は少なくともサーバーレベル {1} を必要とします。'
+  self_assign_list: '自己割り当て可能な役割が{0}個あります。'
+  self_assign_no_excl: 自己割り当て可能な役割は排他的ではなくなりました！
+  self_assign_not: その役割は自己割り当て可能ではありません。
+  self_assign_not_have: '役割《{0}》が割り当てられていません。'
+  self_assign_not_level: 'その自己割り当て役割は少なくともサーバーレベル {0} を必要とします。'
+  self_assign_perms: その役割を追加することができません。 `このBotは、Bot自身と同等か、それ以上の役割を持つ所有者や他のユーザーに、役割を追加することはできません。`
+  self_assign_rem: '自己割り当て可能な役割一覧から《{0}》が削除されました。'
+  self_assign_remove: 'あなたから役割《{0}》が取り除かれました。'
+  self_assign_role_req: 'グループ{1}からロールを自己割り当てするにはロール{0}が必要です'
+  self_assign_success: 'あなたに役割《{0}》が割り当てられました。'
+
+ko-KR:
+  adsarm_disable: '봇이 더 이상 `{0}iam`과 `{0}iamn` 응답을 삭제하지 않아요.'
+  adsarm_enable: '`{0}iam`과 `{0}iamn` 응답의 자동 삭제가 활성화되었어요.'
+  choose_one: 하나를 선택하세요
+  group_name_added: '그룹 #{0}의 이름이 설정되었어요: {1}'
+  group_name_removed: '그룹 #{0}의 이름이 제거되었어요.'
+  requires_role: '필요한 역할: {0}'
+  role_added: '역할 {0}이(가) 그룹 {1}의 목록에 추가되었어요.'
+  sar_group_deleted: '그룹 {0}이(가) 삭제되었어요.'
+  sar_group_not_found: 해당 번호의 그룹이 존재하지 않아요.
+  self_assign_already: '이미 {0} 역할을 가지고 있어요.'
+  self_assign_excl: 자기 부여 역할이 이제 배타적이에요!
+  self_assign_group_role_req: '이제 그룹 {0}에서 역할을 자기 부여하려면 {1} 역할이 있어야 해요.'
+  self_assign_level_req: '자체 할당 역할 {0}은(는) 이제 최소 서버 레벨 {1}이(가) 필요해요.'
+  self_assign_list: '자체 할당 가능한 역할이 {0}개 있어요'
+  self_assign_no_excl: 자체 할당 역할이 더 이상 독점적이지 않아요!
+  self_assign_not: 해당 역할은 자체 할당 가능한 역할이 아니에요.
+  self_assign_not_have: '{0} 역할을 가지고 있지 않아요.'
+  self_assign_not_level: '해당 자체 할당 역할은 최소 서버 레벨 {0}이(가) 필요해요.'
+  self_assign_perms: 해당 역할을 추가할 수 없어요. `서버 소유자이거나 역할 계층에서 제 역할보다 높은 역할에는 역할을 추가할 수 없어요.`
+  self_assign_rem: '{0}이(가) 자체 할당 가능한 역할 목록에서 제거되었어요.'
+  self_assign_remove: '더 이상 {0} 역할을 가지고 있지 않아요.'
+  self_assign_role_req: '그룹 {1}에서 역할을 자체 할당하려면 {0} 역할이 필요해요'
+  self_assign_success: '이제 {0} 역할을 가지고 있어요.'
+
+pl-PL:
+  adsarm_disable: 'Bot nie będzie już usuwać odpowiedzi `{0}iam` i `{0}iamn`.'
+  adsarm_enable: 'Automatyczne usuwanie odpowiedzi `{0}iam` i `{0}iamn` zostało włączone.'
+  choose_one: Wybierz jedną
+  group_name_added: 'Grupa #{0} ma teraz nazwę: {1}'
+  group_name_removed: 'Grupa #{0} nie ma już nazwy.'
+  requires_role: 'Wymagana rola: {0}'
+  role_added: 'Rola {0} została dodana do listy w grupie {1}.'
+  sar_group_deleted: 'Grupa {0} usunięta.'
+  sar_group_not_found: Grupa o takim numerze nie istnieje.
+  self_assign_already: 'Masz już rolę {0}.'
+  self_assign_excl: Role do samodzielnego przypisania są teraz ekskluzywne!
+  self_assign_group_role_req: 'Użytkownicy mogą teraz samodzielnie przypisać rolę z grupy {0} tylko jeśli mają rolę {1}.'
+  self_assign_level_req: 'Samodzielnie przypisywalna rola {0} wymaga teraz co najmniej poziomu serwera {1}.'
+  self_assign_list: 'Dostępnych jest {0} samodzielnie przypisywalnych ról'
+  self_assign_no_excl: Samodzielnie przypisywalne role nie są już ekskluzywne!
+  self_assign_not: Ta rola nie jest samodzielnie przypisywalna.
+  self_assign_not_have: 'Nie masz roli {0}.'
+  self_assign_not_level: 'Ta samodzielnie przypisywalna rola wymaga co najmniej poziomu serwera {0}.'
+  self_assign_perms: Nie mogę przypisać ci tej roli. `Nie mogę dodawać ról właścicielom ani ról wyższych niż moja w hierarchii ról.`
+  self_assign_rem: '{0} została usunięta z listy samodzielnie przypisywalnych ról.'
+  self_assign_remove: 'Nie masz już roli {0}.'
+  self_assign_role_req: 'Potrzebujesz roli {0}, aby przypisać sobie rolę z grupy {1}'
+  self_assign_success: 'Masz teraz rolę {0}.'
+
+pt-BR:
+  adsarm_disable: 'As notificações para `{0} iam` e` {0} iamn` não serão mais excluídas.'
+  adsarm_enable: 'A exclusão automática de notificações para `{0} iam` e` {0} iamn` foi ativada.'
+  choose_one: Escolha um
+  group_name_added: 'O grupo #{0} possui um nome agora: {1}'
+  group_name_removed: 'O grupo #{0} não possui mais um nome.'
+  requires_role: 'Requer o cargo: {0}'
+  role_added: 'O cargo {0} foi adicionado à lista no grupo {1}.'
+  sar_group_deleted: 'Grupo {0} excluído.'
+  sar_group_not_found: Grupo com esse número não existe.
+  self_assign_already: 'Você já possui o cargo {0}.'
+  self_assign_excl: Agora todos os cargos auto-atribuíveis são exclusivos!
+  self_assign_group_role_req: 'Agora os usuários podem se atribuir um cargo do grupo {0} apenas se tiverem o cargo {1}.'
+  self_assign_level_req: 'O cargo auto-atribuível {0} agora requer pelo menos nível de servidor {1}.'
+  self_assign_list: 'Há {0} cargos auto-atribuíveis'
+  self_assign_no_excl: Agora cargos auto-atribuíveis não são mais exclusivos!
+  self_assign_not: Esse cargo não é auto-atribuível.
+  self_assign_not_have: 'Você não possui o cargo {0}.'
+  self_assign_not_level: 'Esse cargo auto-atribuível requer pelo menos nível de servidor {0}.'
+  self_assign_perms: Não consigo adicionar esse cargo a você. `Não posso adicionar cargos a usuários com cargos acima do meu na hierarquia de cargos.`
+  self_assign_rem: '{0} foi removido da lista de cargos auto-atribuíveis.'
+  self_assign_remove: 'Você não possui mais o cargo {0}'
+  self_assign_role_req: 'Você precisa do cargo {0} para se atribuir um cargo do grupo {1}'
+  self_assign_success: 'Agora você possui o cargo {0}.'
+
+ru-RU:
+  adsarm_disable: 'Бот больше не будет удалять ответы на команды `{0}iam` и `{0}iamn`.'
+  adsarm_enable: 'Автоматическое удаление ответов на команды `{0}iam` и `{0}iamn` было включено.'
+  choose_one: Выберите один
+  group_name_added: 'Группа #{0} теперь имеет название: {1}'
+  group_name_removed: 'Группа #{0} больше не имеет названия.'
+  requires_role: 'Требуется роль: {0}'
+  role_added: 'Роль {0} была добавлена в список в групп {1}.'
+  sar_group_deleted: 'Группа {0} удалена.'
+  sar_group_not_found: Группа с таким номером не существует.
+  self_assign_already: 'У вас уже есть роль {0}.'
+  self_assign_excl: Само-назначаемые роли теперь эксклюзивные!
+  self_assign_group_role_req: 'Теперь пользователи могут назначить себе роль из группы {0} только при наличии роли {1}.'
+  self_assign_level_req: 'Само-назначаемая роль {0} теперь требует {1} уровень на сервере.'
+  self_assign_list: 'Всего {0} самостоятельно назначаемых ролей.'
+  self_assign_no_excl: Само-назначаемые роли теперь не эксклюзивные!
+  self_assign_not: Эта роль не может быть самостоятельно назначена.
+  self_assign_not_have: 'Вы не имеете роли {0}.'
+  self_assign_not_level: 'Эта само-назначаемая роль требует хотя бы {0} уровень на сервере.'
+  self_assign_perms: Я не могу назначить вам эту роль. `Я не могу добавлять роли владельцам или другим ролям, которые выше чем я в ролевой иерархии.`
+  self_assign_rem: '{0} было удалено из списка само-назначаемых ролей.'
+  self_assign_remove: 'У вас больше нет роли {0}.'
+  self_assign_role_req: 'Вам нужна роль {0}, чтобы назначить себе роль из группы {1}'
+  self_assign_success: 'У вас появилась роль {0}.'
+
+sr-Cyrl-RS:
+  adsarm_disable: 'Бот више неће брисати `{0}iam` и `{0}iamn` одговоре.'
+  adsarm_enable: 'Аутоматско брисање `{0}iam` и `{0}iamn` одговора је омогућено.'
+  choose_one: Изабери једну
+  group_name_added: 'Група #{0} сада има име: {1}'
+  group_name_removed: 'Група #{0} више нема име.'
+  requires_role: 'Потребна улога: {0}'
+  role_added: 'Улога {0} је додата у листу у групи {1}.'
+  sar_group_deleted: 'Група {0} обрисана.'
+  sar_group_not_found: Група са тим бројем не постоји.
+  self_assign_already: 'Већ имаш улогу {0}.'
+  self_assign_excl: Самододељиве улоге су сада ексклузивне!
+  self_assign_group_role_req: 'Корисници сада могу да самододеле улогу из групе {0} само ако имају улогу {1}.'
+  self_assign_level_req: 'Самододељива улога {0} сада захтева најмање ниво сервера {1}.'
+  self_assign_list: 'Постоји {0} самододељивих улога'
+  self_assign_no_excl: Самододељиве улоге више нису ексклузивне!
+  self_assign_not: Та улога није самододељива.
+  self_assign_not_have: 'Немаш улогу {0}.'
+  self_assign_not_level: 'Та самододељива улога захтева најмање ниво сервера {0}.'
+  self_assign_perms: Не могу да ти додам ту улогу. `Не могу да додајем улоге власницима или улоге које су више од моје у хијерархији улога.`
+  self_assign_rem: '{0} је уклоњена са листе самододељивих улога.'
+  self_assign_remove: 'Више немаш улогу {0}.'
+  self_assign_role_req: 'Потребна ти је улога {0} да би себи доделио/ла улогу из групе {1}'
+  self_assign_success: 'Сада имаш улогу {0}.'
+
+tr-TR:
+  adsarm_disable: 'Bot artık `{0}iam` ve `{0}iamn` yanıtlarını silmeyecek.'
+  adsarm_enable: '`{0}iam` ve `{0}iamn` yanıtlarının otomatik silinmesi etkinleştirildi.'
+  choose_one: Birini seç
+  group_name_added: '#{0} numaralı grubun adı artık: {1}'
+  group_name_removed: '#{0} numaralı grubun artık bir adı yok.'
+  requires_role: 'Gerekli rol: {0}'
+  role_added: '{0} rolü {1} grubundaki listeye eklendi.'
+  sar_group_deleted: '{0} grubu silindi.'
+  sar_group_not_found: Bu numarada bir grup bulunmuyor.
+  self_assign_already: 'Zaten {0} rolüne sahipsin.'
+  self_assign_excl: Kendine atanan roller artık birbirini dışlıyor!
+  self_assign_group_role_req: 'Kullanıcılar artık {0} grubundan bir rol atamak için {1} rolüne sahip olmalıdır.'
+  self_assign_level_req: 'Kendine atanabilir rol {0} artık en az sunucu seviyesi {1} gerektiriyor.'
+  self_assign_list: '{0} adet kendine atanabilir rol var'
+  self_assign_no_excl: Kendine atanan roller artık özel değil!
+  self_assign_not: Bu rol kendine atanabilir değil.
+  self_assign_not_have: '{0} rolüne sahip değilsin.'
+  self_assign_not_level: 'Bu kendine atanabilir rol en az sunucu seviyesi {0} gerektiriyor.'
+  self_assign_perms: Bu rolü sana ekleyemiyorum. `Sahiplere veya rol hiyerarşisinde benim rolümden yüksek rollere rol ekleyemem.`
+  self_assign_rem: '{0} kendine atanabilir roller listesinden kaldırıldı.'
+  self_assign_remove: 'Artık {0} rolüne sahip değilsin.'
+  self_assign_role_req: '{1} grubundan kendine rol atayabilmek için {0} rolüne sahip olman gerekiyor'
+  self_assign_success: 'Artık {0} rolüne sahipsin.'
+
+ts-TS:
+  adsarm_disable: 'Bot will no longer delete `{0}iam` and `{0}iamn` responses.'
+  adsarm_enable: 'Automatic deletion of `{0}iam` and `{0}iamn` responses has been enabled.'
+  choose_one: Choose one already!
+  group_name_added: 'Group #{0} now has a name: {1}'
+  group_name_removed: 'Group #{0} no longer has a name.'
+  requires_role: 'Requires role: {0}'
+  role_added: 'Role {0} has been added to the list in group {1}.'
+  sar_group_deleted: 'Group {0} deleted.'
+  sar_group_not_found: Group with that number doesn't exist, b-baka!
+  self_assign_already: 'You already have {0} role. Were you not paying attention?'
+  self_assign_excl: Self assigned roles are now exclusive!
+  self_assign_group_role_req: 'Users can now self-assign a role from group {0} only if they have {1} role.'
+  self_assign_level_req: 'Self assignable role {0} now requires at least server level {1}.'
+  self_assign_list: 'There are {0} self assignable roles.'
+  self_assign_no_excl: Self assigned roles are now not exclusive!
+  self_assign_not: That role is not self-assignable.
+  self_assign_not_have: 'You don''t have {0} role.'
+  self_assign_not_level: 'That self-assignable role requires at least server level {0}.'
+  self_assign_perms: I am unable to add that role to you. `I can't add roles to owners or other roles higher than my role in the role hierarchy.`
+  self_assign_rem: '{0} has been removed from the list of self-assignable roles.'
+  self_assign_remove: 'You no longer have {0} role.'
+  self_assign_role_req: 'You need {0} role in order to assign yourself a role from group {1}.'
+  self_assign_success: 'You now have {0} role. D-don''t thank me or anything.'
+
+uk-UA:
+  adsarm_disable: 'Бот більше не видалятиме відповіді на `{0}iam` та `{0}iamn`.'
+  adsarm_enable: 'Автоматичне видалення відповідей на `{0}iam` та `{0}iamn` увімкнено.'
+  choose_one: Обери одну
+  group_name_added: 'Група #{0} тепер має назву: {1}'
+  group_name_removed: 'Група #{0} більше не має назви.'
+  requires_role: 'Потрібна роль: {0}'
+  role_added: 'Роль {0} додано до списку в групі {1}.'
+  sar_group_deleted: 'Групу {0} видалено.'
+  sar_group_not_found: Групи з таким номером не існує.
+  self_assign_already: 'У тебе вже є роль {0}.'
+  self_assign_excl: Ролі для самопризначення тепер ексклюзивні!
+  self_assign_group_role_req: 'Тепер користувачі можуть самостійно призначити собі роль із групи {0}, лише якщо мають роль {1}.'
+  self_assign_level_req: 'Роль {0}, яку можна самостійно призначити, тепер вимагає щонайменше серверний рівень {1}.'
+  self_assign_list: 'Є {0} ролей для самопризначення'
+  self_assign_no_excl: Ролі для самопризначення тепер не ексклюзивні!
+  self_assign_not: Цю роль не можна самостійно призначити.
+  self_assign_not_have: 'У тебе немає ролі {0}.'
+  self_assign_not_level: 'Ця роль для самопризначення вимагає щонайменше серверний рівень {0}.'
+  self_assign_perms: Не можу додати тобі цю роль. `Я не можу додавати ролі власникам або ролі, які вищі за мою в ієрархії ролей.`
+  self_assign_rem: '{0} було видалено зі списку ролей для самопризначення.'
+  self_assign_remove: 'У тебе більше немає ролі {0}.'
+  self_assign_role_req: 'Тобі потрібна роль {0}, щоб призначити собі роль з групи {1}'
+  self_assign_success: 'Тепер у тебе є роль {0}.'
+
+vi-VN:
+  adsarm_disable: 'Bot sẽ không còn xóa phản hồi `{0}iam` và `{0}iamn` nữa.'
+  adsarm_enable: 'Đã bật tự động xóa phản hồi `{0}iam` và `{0}iamn`.'
+  choose_one: Chọn một
+  group_name_added: 'Nhóm #{0} giờ có tên: {1}'
+  group_name_removed: 'Nhóm #{0} không còn tên nữa.'
+  requires_role: 'Yêu cầu role: {0}'
+  role_added: 'Role {0} đã được thêm vào danh sách trong nhóm {1}.'
+  sar_group_deleted: 'Nhóm {0} đã bị xóa.'
+  sar_group_not_found: Không tồn tại nhóm với số đó.
+  self_assign_already: 'Bạn đã có role {0} rồi.'
+  self_assign_excl: Role tự gán giờ là duy nhất!
+  self_assign_group_role_req: 'Người dùng giờ chỉ có thể tự gán role từ nhóm {0} nếu họ có role {1}.'
+  self_assign_level_req: 'Vai trò tự gán {0} giờ yêu cầu ít nhất cấp máy chủ {1}.'
+  self_assign_list: 'Có {0} vai trò tự gán'
+  self_assign_no_excl: Các vai trò tự gán giờ không còn loại trừ nhau nữa!
+  self_assign_not: Vai trò đó không thể tự gán.
+  self_assign_not_have: 'Bạn không có vai trò {0}.'
+  self_assign_not_level: 'Vai trò tự gán đó yêu cầu ít nhất cấp máy chủ {0}.'
+  self_assign_perms: Mình không thể thêm vai trò đó cho bạn. `Mình không thể thêm vai trò cho chủ sở hữu hoặc các vai trò cao hơn vai trò của mình trong cấp bậc.`
+  self_assign_rem: '{0} đã được xóa khỏi danh sách vai trò tự gán.'
+  self_assign_remove: 'Bạn không còn vai trò {0} nữa.'
+  self_assign_role_req: 'Bạn cần vai trò {0} để tự gán vai trò từ nhóm {1}'
+  self_assign_success: 'Bạn giờ đã có vai trò {0}.'
+
+zh-CN:
+  adsarm_disable: '針對 `{0}iam` 和 `{0}iamn` 回應的自動刪除已被停用'
+  adsarm_enable: '針對 `{0}iam` 和 `{0}iamn` 回應的自動刪除已被啟用'
+  choose_one: 選擇一個
+  group_name_added: '群組 #{0} 擁有新名稱：{1}'
+  group_name_removed: '群組 #{0} 不再擁有名稱'
+  requires_role: '需要身分組：{0}'
+  role_added: '身分組 {0} 已被加入群組 {1} 的清單'
+  sar_group_deleted: '群組 {0} 已刪除。'
+  sar_group_not_found: 該編號的群組不存在。
+  self_assign_already: '你已經擁有了 {0} 身份組'
+  self_assign_excl: 目前自我設定身份組具備排他性!
+  self_assign_group_role_req: '使用者現在只有在擁有身分組 {1} 時才能從群組 {0} 自行分配身分組。'
+  self_assign_level_req: '自分配身分組 {0} 現在至少需要伺服器級別 {1}。'
+  self_assign_list: '目前有 {0} 個可自我設定的身分組'
+  self_assign_no_excl: 自我設定身分組已不具有排他性
+  self_assign_not: 該身份組不能被自我設定。
+  self_assign_not_have: '你尚未擁有 {0} 身份組。'
+  self_assign_not_level: '該自我設定身份組需達到伺服器等級 {0} 。'
+  self_assign_perms: |-
+    我無法對你新增那個身分組
+    `我無法對伺服器擁有者或者位階高於我的身分組的使用者新增身分組`
+  self_assign_rem: '已於 自助身分組 列表中移除 {0}'
+  self_assign_remove: '您再也不具備 {0} 身分組。'
+  self_assign_role_req: '您需要身分組 {0} 才能從群組 {1} 自行分配身分組'
+  self_assign_success: '您現在是 {0} 身分組的成員了。'

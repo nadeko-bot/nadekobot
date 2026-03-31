@@ -1,3 +1,0 @@
-timezone_guild: 'O fuso horário desse servidor é `{0}`'
-timezone_not_found: Fuso horário não encontrado. Use o comando "timezones" para ver a lista de fusos horários disponíveis.
-timezones_available: Fusos horários disponíveis

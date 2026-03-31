@@ -1,8 +1,0 @@
-curgen_disabled: 이 채널에서 화폐 생성이 비활성화됐어요.
-curgen_enabled: 이 채널에서 화폐 생성이 활성화됐어요.
-curgen_pl: '랜덤 {1} {0}개가 나타났어요!'
-curgen_sn: '랜덤 {0}이(가) 나타났어요!'
-pick_pl: '`{0}pick`을 입력해서 주워 가세요'
-pick_sn: '`{0}pick`을 입력해서 주워 가세요'
-picked: '{1}님이 {0}을(를) 주웠어요'
-planted: '{0}님이 {1}을(를) 심었어요'

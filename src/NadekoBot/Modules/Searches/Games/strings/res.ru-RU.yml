@@ -1,5 +1,0 @@
-card_not_found: Не удалось найти эту карту.
-cost: Цена
-mashape_api_missing: Владелец бота не указал MashapeApiKey. Вы не можете использовать эту функцию.
-steam_api_missing: Владелец бота не указал SteamApiKey. Вы не можете использовать эту функцию.
-store_url: URL магазина

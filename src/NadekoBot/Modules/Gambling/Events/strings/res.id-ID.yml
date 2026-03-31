@@ -1,9 +1,0 @@
-event_duration_footer: 'Event ini aktif hingga {0} jam.'
-event_title: 'Event {0} dimulai!'
-new_gamestatus_event: |-
-  Ketik kode rahasia di channel mana pun untuk mendapatkan {1}
-  {2} tersisa untuk diberikan.
-new_reaction_event: |-
-  Tambahkan reaksi {0} ke pesan ini untuk mendapatkan {1}
-  {2} tersisa untuk diberikan.
-start_event_fail: Event gagal dimulai. Event lain sedang berjalan, atau terjadi kesalahan saat memulai event.

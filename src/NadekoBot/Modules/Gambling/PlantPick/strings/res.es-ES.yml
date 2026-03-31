@@ -1,8 +1,0 @@
-curgen_disabled: La generación de moneda ha sido desactivada en este canal.
-curgen_enabled: La generación de moneda ha sido habilitada en este canal.
-curgen_pl: '¡{0} {1} ha aparecido!'
-curgen_sn: '¡Ha aparecido {0}!'
-pick_pl: 'Tómalos escribiendo `{0}pick`'
-pick_sn: 'Tómalo escribiendo `{0}pick`'
-picked: '{1} recogió {0}'
-planted: '{0} plantó {1}.'

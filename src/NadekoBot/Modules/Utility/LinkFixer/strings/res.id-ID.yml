@@ -1,7 +1,0 @@
-linkfix_added: 'Link dari {0} sekarang akan diperbaiki ke {1}.'
-linkfix_already_exists: 'Perbaikan link untuk {0} sudah ada.'
-linkfix_invalid_domains: Domain lama dan baru harus valid.
-linkfix_list_none: Belum ada perbaikan link yang dikonfigurasi untuk server ini.
-linkfix_list_title: Perbaikan Link
-linkfix_not_found: 'Perbaikan link untuk {0} tidak ditemukan.'
-linkfix_removed: 'Perbaikan link untuk {0} telah dihapus.'

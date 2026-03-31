@@ -1,0 +1,143 @@
+ar:
+  change_7d_24h: التغيير (7 أيام / 24 ساعة)
+  circulating_supply: العرض المتداول
+  crypto_not_found: لم يتم العثور على عملة رقمية بهذا الاسم.
+  did_you_mean: 'هل تقصد {0}؟'
+  market_cap: القيمة السوقية
+  market_cap_dominance: الهيمنة
+  volume_24h: الحجم (24 ساعة)
+
+de-DE:
+  change_7d_24h: Ändere (7d/24h)
+  circulating_supply: Umlaufmenge
+  crypto_not_found: Kryptowährung mit dem Namen wurde nicht gefunden.
+  did_you_mean: 'Meintest du {0}?'
+  market_cap: Markt Obergrenze
+  market_cap_dominance: Dominanz
+  volume_24h: Volumen (24h)
+
+es-ES:
+  change_7d_24h: Cambio (7d/24h)
+  circulating_supply: Acciones en circulación
+  crypto_not_found: No encontré una criptomoneda con ese nombre.
+  did_you_mean: '¿Quisiste decir {0}?'
+  market_cap: Capitalización del mercado
+  market_cap_dominance: Dominio
+  volume_24h: Volumen (24h)
+
+fr-FR:
+  change_7d_24h: Change (7j/24h)
+  circulating_supply: Devises en circulation
+  crypto_not_found: Aucune cryptomonnaie trouvée avec ce nom.
+  did_you_mean: 'Vouliez-vous dire {0} ?'
+  market_cap: Capitalisation Boursière
+  market_cap_dominance: Prédominance
+  volume_24h: Volume (24h)
+
+id-ID:
+  change_7d_24h: Perubahan (7h / 24j)
+  circulating_supply: Suplai Beredar
+  crypto_not_found: CryptoCurrency dengan nama tersebut tidak ditemukan.
+  did_you_mean: 'Maksud kamu {0}?'
+  market_cap: Kapitalisasi Pasar
+  market_cap_dominance: Dominasi
+  volume_24h: Volume (24j)
+
+ja-JP:
+  change_7d_24h: 変動 (7日 / 24時間)
+  circulating_supply: 流通供給量
+  crypto_not_found: その名前の暗号通貨は見つかりませんでした。
+  did_you_mean: 'もしかして: {0}?'
+  market_cap: 時価総額
+  market_cap_dominance: ドミナンス
+  volume_24h: 出来高 (24時間)
+
+ko-KR:
+  change_7d_24h: 변동률 (7일 / 24시간)
+  circulating_supply: 유통량
+  crypto_not_found: 해당 이름의 암호화폐를 찾을 수 없어요.
+  did_you_mean: '혹시 {0}을(를) 찾으셨나요?'
+  market_cap: 시가총액
+  market_cap_dominance: 점유율
+  volume_24h: 거래량 (24시간)
+
+pl-PL:
+  change_7d_24h: Zmiana (7d / 24h)
+  circulating_supply: Podaż w obiegu
+  crypto_not_found: Nie znaleziono kryptowaluty o tej nazwie.
+  did_you_mean: 'Czy chodziło ci o {0}?'
+  market_cap: Kapitalizacja rynkowa
+  market_cap_dominance: Dominacja
+  volume_24h: Wolumen (24h)
+
+pt-BR:
+  change_7d_24h: Variação (7d / 24h)
+  circulating_supply: Circulating Supply
+  crypto_not_found: Uma criptomoeda com esse nome não foi encontrada.
+  did_you_mean: 'Você quis dizer {0}?'
+  market_cap: Valor de mercado
+  market_cap_dominance: Dominância
+  volume_24h: Volume (24h)
+
+ru-RU:
+  change_7d_24h: Изменения (7д/24ч)
+  circulating_supply: Объем в обращении
+  crypto_not_found: Криптовалюта с этим названием не была найдена.
+  did_you_mean: 'Вы имеете в виду {0}?'
+  market_cap: Рыночная капитализация
+  market_cap_dominance: Доминирование
+  volume_24h: Объем (24ч)
+
+sr-Cyrl-RS:
+  change_7d_24h: Промена (7д / 24ч)
+  circulating_supply: Укупна количина у оптицају
+  crypto_not_found: Криптовалута са тим именом није пронађена.
+  did_you_mean: 'Да ли си мислио/ла на {0}?'
+  market_cap: Тржишна капитализација
+  market_cap_dominance: Доминација
+  volume_24h: Обим (24ч)
+
+tr-TR:
+  change_7d_24h: Değişim (7g / 24s)
+  circulating_supply: Dolaşımdaki Arz
+  crypto_not_found: O isimde bir kripto para bulunamadı.
+  did_you_mean: '{0} mu demek istedin?'
+  market_cap: Piyasa Değeri
+  market_cap_dominance: Pazar Hakimiyeti
+  volume_24h: Hacim (24s)
+
+ts-TS:
+  change_7d_24h: Change (7d / 24h)
+  circulating_supply: Circulating Supply
+  crypto_not_found: Couldn't find a cryptocurrency with that name.
+  did_you_mean: 'Did you mean {0}?'
+  market_cap: Market Cap
+  market_cap_dominance: Dominance
+  volume_24h: Volume (24h)
+
+uk-UA:
+  change_7d_24h: Зміна (7д / 24г)
+  circulating_supply: В обігу
+  crypto_not_found: Криптовалюту з такою назвою не знайдено.
+  did_you_mean: 'Можливо, ви мали на увазі {0}?'
+  market_cap: Ринкова капіталізація
+  market_cap_dominance: Домінування
+  volume_24h: Обсяг (24г)
+
+vi-VN:
+  change_7d_24h: Thay đổi (7 ngày / 24 giờ)
+  circulating_supply: Lượng Lưu Hành
+  crypto_not_found: Không tìm thấy tiền mã hóa với tên đó.
+  did_you_mean: 'Bạn có phải ý là {0} không?'
+  market_cap: Vốn Hóa Thị Trường
+  market_cap_dominance: Thống Trị
+  volume_24h: Khối Lượng (24 giờ)
+
+zh-CN:
+  change_7d_24h: 變化（7 天 / 24 小時）
+  circulating_supply: 流通供應
+  crypto_not_found: 未找到具有該名稱的 CryptoCurrency。
+  did_you_mean: '您是說 {0} 嗎？'
+  market_cap: 市值
+  market_cap_dominance: 支配地位
+  volume_24h: 體積（24 小時）

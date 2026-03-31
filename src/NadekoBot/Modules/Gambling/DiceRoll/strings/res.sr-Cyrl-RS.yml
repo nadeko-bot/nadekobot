@@ -1,6 +1,0 @@
-dice_invalid_number: 'Неважећи број. Можеш бацити {0}-{1} коцкица одједном.'
-dice_rolled: 'бацио/ла {0}'
-dice_rolled_num: 'Бачена коцкица: {0}'
-rolls: Бацања
-second_larger_than_first: Други број мора бити већи од првог.
-total: Укупно

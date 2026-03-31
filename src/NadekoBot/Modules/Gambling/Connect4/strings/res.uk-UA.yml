@@ -1,5 +1,0 @@
-connect4_created: Створено гру Connect4. Чекаємо, поки хтось приєднається.
-connect4_draw: Гра Connect4 закінчилася нічиєю.
-connect4_failed_to_start: Гру Connect4 не вдалося розпочати, бо ніхто не приєднався.
-connect4_player_to_move: 'Хід гравця: {0}'
-connect4_won: '{0} переміг {1} у грі Connect4.'

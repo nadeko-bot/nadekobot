@@ -1,4 +1,0 @@
-cmdcd_add: 'Perintah {0} sekarang punya cooldown {1} detik.'
-cmdcd_cleared: 'Perintah {0} sudah tidak punya cooldown dan semua cooldown yang ada sudah dihapus.'
-cmdcd_none: Tidak ada cooldown perintah yang diatur.
-invalid_second_param_between: 'Parameter kedua tidak valid. (Harus berupa angka antara {0} dan {1})'

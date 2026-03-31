@@ -1,6 +1,0 @@
-lang_list: Danh sách ngôn ngữ
-lang_set: 'Ngôn ngữ server của bạn giờ là {0} - {1}'
-lang_set_bot: 'Ngôn ngữ mặc định của bot giờ là {0} - {1}'
-lang_set_bot_show: 'Ngôn ngữ của bot được đặt là {0} - {1}'
-lang_set_fail: Không thể đặt ngôn ngữ. Hãy xem lại hướng dẫn lệnh này.
-lang_set_show: 'Ngôn ngữ của server này được đặt là {0} - {1}'

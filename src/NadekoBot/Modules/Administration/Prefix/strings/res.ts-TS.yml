@@ -1,4 +1,0 @@
-defprefix_current: Default bot prefix is {0}
-defprefix_new: 'Changed default bot prefix from {0} to {1}. D-don''t mess it up!'
-prefix_current: Prefix on this server is {0}
-prefix_new: 'Changed prefix on this server from {0} to {1}. You''re welcome.'

@@ -1,0 +1,223 @@
+ar:
+  stream_role_bl_add: 'المستخدم {0} لن يحصل أبداً على دور البث.'
+  stream_role_bl_add_fail: 'المستخدم {0} موجود بالفعل في القائمة السوداء.'
+  stream_role_bl_rem: 'المستخدم {0} لم يعد في القائمة السوداء.'
+  stream_role_bl_rem_fail: 'المستخدم {0} ليس في القائمة السوداء.'
+  stream_role_disabled: تم تعطيل ميزة دور البث.
+  stream_role_enabled: 'عندما يبدأ مستخدم من دور {0} بالبث، سأمنحه دور {1}.'
+  stream_role_kw_reset: تمت إعادة تعيين الكلمة المفتاحية لدور البث.
+  stream_role_kw_set: 'يجب أن يتضمن المُذيعون الآن الكلمة المفتاحية {0} للحصول على الدور.'
+  stream_role_wl_add: 'المستخدم {0} سيحصل على دور البث حتى لو لم تكن الكلمة المفتاحية موجودة في عنوان البث.'
+  stream_role_wl_add_fail: 'المستخدم {0} موجود بالفعل في القائمة البيضاء.'
+  stream_role_wl_rem: 'المستخدم {0} لم يعد في القائمة البيضاء.'
+  stream_role_wl_rem_fail: 'المستخدم {0} ليس في القائمة البيضاء.'
+
+de-DE:
+  stream_role_bl_add: 'Benutzer {0} wird niemals eine Stream Rolle erhalten.'
+  stream_role_bl_add_fail: 'Der Benutzer {0} ist bereits geblacklisted.'
+  stream_role_bl_rem: 'Der Benutzer {0} ist nun nichtmehr geblacklisted.'
+  stream_role_bl_rem_fail: 'Der Benutzer {0} ist nicht geblacklisted.'
+  stream_role_disabled: Stream Rollen Funktionen wurde deaktiviert.
+  stream_role_enabled: 'Wenn ein Nutzer der Rolle {0} anfängt zu Streamen, werde ich ihm die Rolle {1} geben.'
+  stream_role_kw_reset: Das Schlüsselwort wurde zurückgesetzt.
+  stream_role_kw_set: 'Streamer benötigen das Schlüsselwort {0} um die Streamer Rolle zu erhalten.'
+  stream_role_wl_add: 'Der Benutzer {0} wird die Stream Rolle erhalten, selbst wenn dieser nicht das Schlüsselwort im Stream Titel hat.'
+  stream_role_wl_add_fail: 'Der Benutzer {0} ist bereits gewhitelisted.'
+  stream_role_wl_rem: 'Der Benutzer {0} ist nun nicht mehr gewhitelisted. '
+  stream_role_wl_rem_fail: 'Der Nutzer {0} ist nicht auf der Whitelist.'
+
+es-ES:
+  stream_role_bl_add: 'El usuario {0} no recibirá jamás el rol de transmisor.'
+  stream_role_bl_add_fail: 'El usuario {0} ya está en la lista negra.'
+  stream_role_bl_rem: 'El usuario {0} ya no está en la lista negra.'
+  stream_role_bl_rem_fail: 'El usuario {0} no está en la lista negra.'
+  stream_role_disabled: Rol de transmisión desactivado.
+  stream_role_enabled: 'Cuando un usuario del rol {0} empiece a transmitir, les daré el rol {1}.'
+  stream_role_kw_reset: Clave de rol de transmisión reiniciada.
+  stream_role_kw_set: 'Los que transmitan ahora requerirán la clave {0} para recibir el rol.'
+  stream_role_wl_add: 'El usuario {0} recibirá el rol de transmisor aunque no tengan la clave en el título de la transmisión.'
+  stream_role_wl_add_fail: 'El usuario {0} ya está en la lista blanca.'
+  stream_role_wl_rem: 'El usuario {0} ya no está en la lista blanca.'
+  stream_role_wl_rem_fail: 'El usuario {0} no está en la lista blanca.'
+
+fr-FR:
+  stream_role_bl_add: 'L''utilisateur {0} ne recevra jamais le rôle de diffuseur.'
+  stream_role_bl_add_fail: 'L''utilisateur {0} est déjà sur la liste noire.'
+  stream_role_bl_rem: 'L''utilisateur {0} n''est plus sur la liste noire.'
+  stream_role_bl_rem_fail: 'L''utilisateur {0} n''est pas sur la liste noire.'
+  stream_role_disabled: La fonction de rôle diffuseur a été **désactivée**.
+  stream_role_enabled: 'Lorsqu''un utilisateur du rôle {0} commence à diffuser, je lui donne le rôle {1}.'
+  stream_role_kw_reset: Réinitialisation des mots-clés du rôle diffuseur.
+  stream_role_kw_set: 'Les diffuseurs nécessitent désormais le mot-clé {0} pour recevoir le rôle.'
+  stream_role_wl_add: 'L''utilisateur {0} recevra le rôle de diffuseur même s''il manque le mot-clé dans le titre du stream.'
+  stream_role_wl_add_fail: 'L''utilisateur {0} est déjà sur la liste blanche.'
+  stream_role_wl_rem: 'L''utilisateur {0} n''est plus sur liste blanche.'
+  stream_role_wl_rem_fail: 'L''utilisateur  {0} n''est pas sur liste blanche.'
+
+id-ID:
+  stream_role_bl_add: 'Pengguna {0} tidak akan pernah mendapatkan stream role.'
+  stream_role_bl_add_fail: 'Pengguna {0} sudah masuk daftar hitam.'
+  stream_role_bl_rem: 'Pengguna {0} sudah tidak masuk daftar hitam lagi.'
+  stream_role_bl_rem_fail: 'Pengguna {0} tidak ada di daftar hitam.'
+  stream_role_disabled: Fitur stream role telah dinonaktifkan.
+  stream_role_enabled: 'Ketika pengguna dari peran {0} mulai streaming, aku akan memberikan mereka peran {1}.'
+  stream_role_kw_reset: Kata kunci stream role direset.
+  stream_role_kw_set: 'Streamer sekarang harus punya kata kunci {0} agar bisa mendapatkan peran tersebut.'
+  stream_role_wl_add: 'Pengguna {0} akan mendapatkan stream role meskipun tidak punya kata kunci di judul stream.'
+  stream_role_wl_add_fail: 'Pengguna {0} sudah masuk daftar putih.'
+  stream_role_wl_rem: 'Pengguna {0} sudah tidak masuk daftar putih lagi.'
+  stream_role_wl_rem_fail: 'Pengguna {0} tidak ada di whitelist.'
+
+ja-JP:
+  stream_role_bl_add: 'ユーザー {0} はストリーム役割を今後受け取りません。'
+  stream_role_bl_add_fail: 'ユーザー {0} はすでにブラックリストに登録されています。'
+  stream_role_bl_rem: 'ユーザー {0} はブラックリストから削除されました。'
+  stream_role_bl_rem_fail: 'ユーザー {0} はブラックリストに登録されていません。'
+  stream_role_disabled: ストリーム役割の昨日は無効化されています。
+  stream_role_enabled: '{0}ロールのユーザーが配信を開始すると、{1}ロールが付与されます。'
+  stream_role_kw_reset: ストリーム役割のキーワードがリセットされました。
+  stream_role_kw_set: 'ストリーム者は役割を受け取るためにキーワード {0} が必要です。'
+  stream_role_wl_add: 'ユーザー {0} はストリームタイトルにキーワードが含まれていなくてもストリーム役割を受け取ります。'
+  stream_role_wl_add_fail: 'ユーザー {0} はすでにホワイトリストに登録されています。'
+  stream_role_wl_rem: 'ユーザー {0} はホワイトリストから削除されました。'
+  stream_role_wl_rem_fail: 'ユーザー {0} はホワイトリストに登録されていません。'
+
+ko-KR:
+  stream_role_bl_add: '{0}님은 스트림 역할을 받지 않아요.'
+  stream_role_bl_add_fail: '{0}님은 이미 블랙리스트에 있어요.'
+  stream_role_bl_rem: '{0}님이 블랙리스트에서 제거되었어요.'
+  stream_role_bl_rem_fail: '{0}님은 블랙리스트에 없어요.'
+  stream_role_disabled: 스트림 역할 기능이 비활성화되었어요.
+  stream_role_enabled: '{0} 역할의 사용자가 방송을 시작하면 {1} 역할을 부여할게요.'
+  stream_role_kw_reset: 스트림 역할 키워드가 초기화되었어요.
+  stream_role_kw_set: '스트리머가 역할을 받으려면 방송 제목에 {0} 키워드가 필요해요.'
+  stream_role_wl_add: '{0}님은 방송 제목에 키워드가 없어도 스트림 역할을 받을 수 있어요.'
+  stream_role_wl_add_fail: '{0}님은 이미 화이트리스트에 있어요.'
+  stream_role_wl_rem: '{0}님이 화이트리스트에서 제거되었어요.'
+  stream_role_wl_rem_fail: '유저 {0}은(는) 화이트리스트에 없어요.'
+
+pl-PL:
+  stream_role_bl_add: 'Użytkownik {0} nigdy nie otrzyma roli streamera.'
+  stream_role_bl_add_fail: 'Użytkownik {0} jest już na czarnej liście.'
+  stream_role_bl_rem: 'Użytkownik {0} nie jest już na czarnej liście.'
+  stream_role_bl_rem_fail: 'Użytkownik {0} nie jest na czarnej liście.'
+  stream_role_disabled: Funkcja roli streamera została wyłączona.
+  stream_role_enabled: 'Gdy użytkownik z roli {0} zacznie streamować, dam mu rolę {1}.'
+  stream_role_kw_reset: Słowo kluczowe roli streamera zresetowane.
+  stream_role_kw_set: 'Streamerzy muszą teraz mieć słowo kluczowe {0}, aby otrzymać rolę.'
+  stream_role_wl_add: 'Użytkownik {0} otrzyma rolę streamera, nawet jeśli nie ma słowa kluczowego w tytule streama.'
+  stream_role_wl_add_fail: 'Użytkownik {0} jest już na białej liście.'
+  stream_role_wl_rem: 'Użytkownik {0} nie jest już na białej liście.'
+  stream_role_wl_rem_fail: 'Użytkownik {0} nie jest na białej liście.'
+
+pt-BR:
+  stream_role_bl_add: 'O usuário {0} nunca receberá o cargo de streaming.'
+  stream_role_bl_add_fail: 'O usuário {0} já está na lista negra.'
+  stream_role_bl_rem: 'O usuário {0} foi removido da lista negra.'
+  stream_role_bl_rem_fail: 'O usuário {0} não está na lista negra.'
+  stream_role_disabled: O cargo de streaming foi desativado.
+  stream_role_enabled: 'O cargo {1} será atribuído ao usuário do cargo {0} que iniciar um streaming.'
+  stream_role_kw_reset: A palavra-chave para o cargo de streaming foi removida.
+  stream_role_kw_set: 'Streamers precisarão da palavra-chave {0} no título do stream para receber o cargo.'
+  stream_role_wl_add: 'O usuário {0} receberá o cargo de streaming mesmo se não houver a palavra-chave no título do stream.'
+  stream_role_wl_add_fail: 'Usuário {0} já está na lista branca.'
+  stream_role_wl_rem: 'Usuário {0} foi removido da lista branca.'
+  stream_role_wl_rem_fail: 'Usuário {0} não está na lista branca.'
+
+ru-RU:
+  stream_role_bl_add: 'Пользователь {0} никогда не получит стримерскую роль.'
+  stream_role_bl_add_fail: 'Пользователь {0} уже находится в черном списке.'
+  stream_role_bl_rem: 'Пользователь {0} больше не находится в черном списке.'
+  stream_role_bl_rem_fail: 'Пользователь {0} не в черном списке.'
+  stream_role_disabled: Функция стримерской роли была отключена.
+  stream_role_enabled: 'Когда пользователи с ролью {0} запустят стрим, я добавлю им роль {1}.'
+  stream_role_kw_reset: Ключевое слово для получения роли стримера было сброшено.
+  stream_role_kw_set: 'Стримерам теперь нужно ключевое слово {0}, что бы получить роль.'
+  stream_role_wl_add: 'Пользователь {0} теперь будет получать роль стримера, даже если в его названии трансляции нет ключевого слова.'
+  stream_role_wl_add_fail: 'Пользователь {0} уже находится в белом списке.'
+  stream_role_wl_rem: 'Пользователь {0} больше не находится в белом списке.'
+  stream_role_wl_rem_fail: 'Пользователь {0} не в белом списке.'
+
+sr-Cyrl-RS:
+  stream_role_bl_add: 'Корисник {0} никада неће добити стрим улогу.'
+  stream_role_bl_add_fail: 'Корисник {0} је већ на црној листи.'
+  stream_role_bl_rem: 'Корисник {0} више није на црној листи.'
+  stream_role_bl_rem_fail: 'Корисник {0} није на црној листи.'
+  stream_role_disabled: Функција стрим улоге је онемогућена.
+  stream_role_enabled: 'Када корисник из улоге {0} почне да стримује, даћу му улогу {1}.'
+  stream_role_kw_reset: Кључна реч за стрим улогу ресетована.
+  stream_role_kw_set: 'Стримери сада морају имати кључну реч {0} да би добили улогу.'
+  stream_role_wl_add: 'Корисник {0} ће добити стрим улогу чак и ако нема кључну реч у наслову стрима.'
+  stream_role_wl_add_fail: 'Корисник {0} је већ на белој листи.'
+  stream_role_wl_rem: 'Корисник {0} више није на белој листи.'
+  stream_role_wl_rem_fail: 'Корисник {0} није на белој листи.'
+
+tr-TR:
+  stream_role_bl_add: '{0} kullanıcısı asla yayın rolü almayacak.'
+  stream_role_bl_add_fail: '{0} kullanıcısı zaten kara listede.'
+  stream_role_bl_rem: '{0} kullanıcısı artık kara listede değil.'
+  stream_role_bl_rem_fail: '{0} kullanıcısı kara listede değil.'
+  stream_role_disabled: Yayın rolü özelliği devre dışı bırakıldı.
+  stream_role_enabled: '{0} rolündeki bir kullanıcı yayın yapmaya başladığında, ona {1} rolünü vereceğim.'
+  stream_role_kw_reset: Yayın rolü anahtar kelimesi sıfırlandı.
+  stream_role_kw_set: 'Yayıncıların rolü alabilmesi için artık {0} anahtar kelimesine sahip olmaları gerekiyor.'
+  stream_role_wl_add: '{0} kullanıcısı, yayın başlığında anahtar kelime olmasa bile yayın rolünü alacak.'
+  stream_role_wl_add_fail: '{0} kullanıcısı zaten beyaz listede.'
+  stream_role_wl_rem: '{0} kullanıcısı artık beyaz listede değil.'
+  stream_role_wl_rem_fail: '{0} kullanıcısı beyaz listede değil.'
+
+ts-TS:
+  stream_role_bl_add: 'User {0} will never receive the stream role.'
+  stream_role_bl_add_fail: 'User {0} is already blacklisted. D-did you forget?'
+  stream_role_bl_rem: 'User {0} is no longer blacklisted.'
+  stream_role_bl_rem_fail: 'User {0} isn''t blacklisted. Check first next time!'
+  stream_role_disabled: Stream role feature has been disabled.
+  stream_role_enabled: 'When someone from {0} role starts streaming, I''ll give them {1} role.'
+  stream_role_kw_reset: Stream role keyword has been reset.
+  stream_role_kw_set: 'Streamers now need {0} keyword to get the role.'
+  stream_role_wl_add: 'User {0} will get the stream role even without the keyword.'
+  stream_role_wl_add_fail: 'User {0} is already whitelisted. Pay attention!'
+  stream_role_wl_rem: 'User {0} is no longer whitelisted.'
+  stream_role_wl_rem_fail: '{0} isn''t on the whitelist. Check first, b-baka!'
+
+uk-UA:
+  stream_role_bl_add: 'Користувач {0} ніколи не отримає стрім-роль.'
+  stream_role_bl_add_fail: 'Користувач {0} вже у чорному списку.'
+  stream_role_bl_rem: 'Користувач {0} більше не у чорному списку.'
+  stream_role_bl_rem_fail: 'Користувач {0} не у чорному списку.'
+  stream_role_disabled: Функцію стрім-ролі вимкнено.
+  stream_role_enabled: 'Коли користувач з ролі {0} почне стрімити, я дам йому роль {1}.'
+  stream_role_kw_reset: Ключове слово для стрім-ролі скинуто.
+  stream_role_kw_set: 'Стрімери тепер повинні мати ключове слово {0}, щоб отримати роль.'
+  stream_role_wl_add: 'Користувач {0} отримає стрім-роль навіть без ключового слова в назві стріму.'
+  stream_role_wl_add_fail: 'Користувач {0} вже у білому списку.'
+  stream_role_wl_rem: 'Користувач {0} більше не у білому списку.'
+  stream_role_wl_rem_fail: 'Користувач {0} не в білому списку.'
+
+vi-VN:
+  stream_role_bl_add: 'Người dùng {0} sẽ không bao giờ nhận được vai trò stream.'
+  stream_role_bl_add_fail: 'Người dùng {0} đã bị chặn rồi.'
+  stream_role_bl_rem: 'Người dùng {0} không còn bị chặn nữa.'
+  stream_role_bl_rem_fail: 'Người dùng {0} không nằm trong danh sách chặn.'
+  stream_role_disabled: Tính năng vai trò stream đã bị tắt.
+  stream_role_enabled: 'Khi một người dùng có vai trò {0} bắt đầu stream, mình sẽ trao cho họ vai trò {1}.'
+  stream_role_kw_reset: Đã đặt lại từ khóa vai trò stream.
+  stream_role_kw_set: 'Các streamer giờ cần có từ khóa {0} để nhận được vai trò.'
+  stream_role_wl_add: 'Người dùng {0} sẽ nhận được vai trò stream ngay cả khi tiêu đề stream không có từ khóa.'
+  stream_role_wl_add_fail: 'Người dùng {0} đã nằm trong danh sách cho phép rồi.'
+  stream_role_wl_rem: 'Người dùng {0} không còn trong danh sách cho phép nữa.'
+  stream_role_wl_rem_fail: 'Người dùng {0} không nằm trong danh sách trắng.'
+
+zh-CN:
+  stream_role_bl_add: '用戶 {0} 永遠不會收到實況身分組。'
+  stream_role_bl_add_fail: '用戶 {0} 已列入黑名單。'
+  stream_role_bl_rem: '用戶 {0} 不再被列入黑名單。'
+  stream_role_bl_rem_fail: '用戶 {0} 未列入黑名單。'
+  stream_role_disabled: 實況身分組功能已被禁用。
+  stream_role_enabled: '當來自 {0} 身分組的用戶開始直播實況時，我會給他們 {1} 身分組。'
+  stream_role_kw_reset: 實況身分組關鍵字重置。
+  stream_role_kw_set: '主播現在需要 {0} 關鍵字才能接收身分組。'
+  stream_role_wl_add: '用戶 {0} 將收到實況直播身分組，即使他們在直播標題中沒有關鍵字。'
+  stream_role_wl_add_fail: '用戶 {0} 已列入白名單。'
+  stream_role_wl_rem: '用戶 {0} 不再列入白名單。'
+  stream_role_wl_rem_fail: '用戶 {0} 未列入白名單。'

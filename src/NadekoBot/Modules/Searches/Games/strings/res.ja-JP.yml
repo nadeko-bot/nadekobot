@@ -1,5 +1,0 @@
-card_not_found: そのカードは見つかりませんでした。
-cost: コスト
-mashape_api_missing: ボットの所有者がMashapeApiKeyを指定していないため、この機能は使用できません。
-steam_api_missing: ボットの所有者がSteamApiKeyを指定していないため、この機能は使用できません。
-store_url: ストアへのURL

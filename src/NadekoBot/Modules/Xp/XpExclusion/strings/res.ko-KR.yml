@@ -1,4 +1,0 @@
-xp_exclude_added: '{0}: {1}이(가) XP 시스템에서 제외되었습니다.'
-xp_exclude_removed: '{0}: {1}은(는) 더 이상 XP 시스템에서 제외되지 않습니다.'
-xp_exclusion_none: 이 서버에 설정된 제외 항목이 없습니다.
-xp_exclusion_title: XP 제외 목록

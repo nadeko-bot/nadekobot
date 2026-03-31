@@ -1,6 +1,0 @@
-betflip_guess: 맞혔어요!
-flip_invalid: '잘못된 숫자예요. 1부터 {0}까지의 동전을 던질 수 있어요.'
-flip_results: '동전 {0}개를 던졌어요. 앞면 {1}개, 뒷면 {2}개.'
-flipped: '{0}이(가) 나왔어요'
-heads: 앞면
-tails: 뒷면

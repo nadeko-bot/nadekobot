@@ -1,0 +1,95 @@
+ar:
+  convert: '{0} {1} يساوي {2} {3}'
+  convert_not_found: 'تعذّر تحويل {0} إلى {1}: الوحدات غير موجودة'
+  convert_type_error: 'تعذّر تحويل {0} إلى {1}: نوعا الوحدة غير متطابقين'
+  convertlist: الوحدات التي يمكن استخدامها مع المحوّل
+
+de-DE:
+  convert: '{0} {1} ist gleich {2} {3}'
+  convert_not_found: 'Kann {0} nicht in {1} konvertieren: Einheiten nicht gefunden'
+  convert_type_error: 'Kann {0} nicht in {1} konvertieren: Art der Einheiten nicht gleich'
+  convertlist: Einheiten die konvertiert werden können
+
+es-ES:
+  convert: '{0} {1} es igual a {2} {3}'
+  convert_not_found: 'No pude convertir {0} a {1}: Unidades no encontradas'
+  convert_type_error: 'No pude convertir {0} a  {1}: el tipo de unidad no es igual.'
+  convertlist: Unidades que pueden ser usadas por el conversor
+
+fr-FR:
+  convert: '{0} {1} est égal à {2} {3}'
+  convert_not_found: 'Impossible de convertir {0} vers {1}: unités introuvables'
+  convert_type_error: 'Impossible de convertir {0} vers {1}: le type d''unité n''est pas égal'
+  convertlist: Unités qui peuvent être converties par le convertisseur
+
+id-ID:
+  convert: '{0} {1} sama dengan {2} {3}'
+  convert_not_found: 'Tidak bisa mengonversi {0} ke {1}: satuan tidak ditemukan'
+  convert_type_error: 'Tidak bisa mengonversi {0} ke {1}: tipe satuan tidak sama'
+  convertlist: Satuan yang bisa digunakan oleh konverter
+
+ja-JP:
+  convert: '{0} {1} は {2} {3}'
+  convert_not_found: '{0}から{1}に変換できません: 単位がみつかりません'
+  convert_type_error: '{0}から{1}に変換できません: 単位の種類が同じではありません'
+  convertlist: コンバータで使用できる単位
+
+ko-KR:
+  convert: '{0} {1}은(는) {2} {3}과(와) 같아요'
+  convert_not_found: '{0}을(를) {1}(으)로 변환할 수 없어요: 단위를 찾을 수 없어요'
+  convert_type_error: '{0}을(를) {1}(으)로 변환할 수 없어요: 단위 유형이 같지 않아요'
+  convertlist: 변환기에서 사용할 수 있는 단위 목록
+
+pl-PL:
+  convert: '{0} {1} to {2} {3}'
+  convert_not_found: 'Nie można przekonwertować {0} na {1}: nie znaleziono jednostek'
+  convert_type_error: 'Nie można przekonwertować {0} na {1}: typy jednostek nie są takie same'
+  convertlist: Jednostki dostępne do konwersji
+
+pt-BR:
+  convert: '{0} {1} equivale a {2} {3}'
+  convert_not_found: 'Não foi possível converter {0} para {1}: unidades não encontradas'
+  convert_type_error: 'Não foi possível converter {0} para {1}: os tipos de unidade não são comparáveis'
+  convertlist: Unidades com as quais o conversor trabalha
+
+ru-RU:
+  convert: '{0} {1} равно {2} {3}'
+  convert_not_found: 'Невозможно преобразовать {0} в {1}: единиц измерения не найдено'
+  convert_type_error: 'Невозможно преобразовать {0} в {1}: типы единиц измерения не равны'
+  convertlist: Единицы, которые можно использовать при конвертировании
+
+sr-Cyrl-RS:
+  convert: '{0} {1} је једнако {2} {3}'
+  convert_not_found: 'Не могу конвертовати {0} у {1}: јединице нису пронађене'
+  convert_type_error: 'Не могу конвертовати {0} у {1}: типови јединица нису исти'
+  convertlist: Јединице које конвертер може да користи
+
+tr-TR:
+  convert: '{0} {1}, {2} {3} değerindedir'
+  convert_not_found: '{0} biriminden {1} birimine dönüştürülemiyor: birimler bulunamadı'
+  convert_type_error: '{0} biriminden {1} birimine dönüştürülemiyor: birim türleri eşleşmiyor'
+  convertlist: Dönüştürücü tarafından kullanılabilecek birimler
+
+ts-TS:
+  convert: '{0} {1} equals {2} {3}.'
+  convert_not_found: 'Can''t convert {0} to {1} - units not found.'
+  convert_type_error: 'Can''t convert {0} to {1} - they''re different unit types, b-baka!'
+  convertlist: Units available for the converter.
+
+uk-UA:
+  convert: '{0} {1} дорівнює {2} {3}'
+  convert_not_found: 'Не вдалося конвертувати {0} в {1}: одиниці не знайдено'
+  convert_type_error: 'Не вдалося конвертувати {0} в {1}: типи одиниць не збігаються'
+  convertlist: Одиниці, які можна використовувати для конвертації
+
+vi-VN:
+  convert: '{0} {1} bằng {2} {3}'
+  convert_not_found: 'Không thể chuyển đổi {0} sang {1}: không tìm thấy đơn vị'
+  convert_type_error: 'Không thể chuyển đổi {0} sang {1}: loại đơn vị không giống nhau'
+  convertlist: Các đơn vị có thể dùng cho bộ chuyển đổi
+
+zh-CN:
+  convert: '{0} {1} 等於 {2} {3}'
+  convert_not_found: '無法把 {0} 轉換為 {1}：未知的單位'
+  convert_type_error: '無法把 {0} 轉換為 {1}：單位種類不同'
+  convertlist: 轉換器可用的單位

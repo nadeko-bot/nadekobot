@@ -1,9 +1,0 @@
-feed_added: Feed wurde hinzugefügt.
-feed_cant_parse: Der Inhalt dieser Feed-URL konnte nicht abgerufen oder analysiert werden.
-feed_duplicate: Du folgst diesem Feed bereits auf diesem Server.
-feed_invalid_url: Ungültige Feed-URL. Es muss eine absolute http- oder https-URL sein.
-feed_limit_reached: Du hast die maximale Anzahl erlaubter Feeds pro Server erreicht.
-feed_no_feed: Du bist auf diesem Server keinen Feeds am folgen.
-feed_out_of_range: Kennziffer außerhalb des gültigen Bereichs.
-feed_removed: Feed wurde entfernt.
-feed_auto_removed: 'Feed `{0}` wurde nach wiederholten Abruffehlern automatisch entfernt.'

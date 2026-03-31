@@ -1,4 +1,0 @@
-bank_balance_other: '{0} kullanıcısının bankada {1} var.'
-bank_deposited: 'Banka hesabına {0} yatırdın.'
-bank_withdraw_insuff: 'Banka hesabında yeterli {0} yok.'
-bank_withdrew: 'Banka hesabından {0} çektin.'

@@ -1,9 +1,0 @@
-xpformula_current: Formula XP
-xpformula_set: Formula XP zaktualizowana
-xpformula_desc: |-
-  |-
-    XP na poziom: **{0}** x (poziom + 1) + **{1}**
-xpformula_preview: Podglad poziomow
-xpformula_a_invalid: 'Nachylenie (a) musi byc miedzy {0} a {1}.'
-xpformula_c_invalid: 'Baza (c) musi byc miedzy {0} a {1}.'
-xpformula_invalid: Nieprawidlowe parametry formuly.

@@ -1,9 +1,0 @@
-livechannel_added: 'Успешно додат {0} као живи канал.'
-livechannel_limit: 'Можете имати највише {0} живих канала по серверу.'
-livechannel_list_empty: Нису конфигурисани живи канали за овај сервер.
-livechannel_list_title: 'Живи канали у {0}'
-livechannel_not_found: Канал није пронађен у листи живих канала.
-livechannel_please_wait: Сачекајте до 10 минута да промене ступе на снагу
-livechannel_removed: 'Успешно уклоњен {0} из живих канала.'
-preview: Преглед
-template: Шаблон

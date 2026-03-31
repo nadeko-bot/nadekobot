@@ -1,0 +1,349 @@
+ar:
+  anti_alt_status: |-
+    أي مستخدم ينضم إلى السيرفر بحساب عمره أقل من {0} سيتم تطبيق الإجراء التالي عليه: {1}
+    تمت معاقبتهم حتى الآن: {2}
+  prot_active: الحمايات النشطة
+  prot_cant_use_time: لا يمكنك تحديد مدة لإجراء العقوبة هذا.
+  prot_disable: 'تم **تعطيل** {0} في هذا السيرفر.'
+  prot_enable: 'تم تفعيل {0}'
+  prot_none: لا توجد حماية مفعّلة.
+  protection_not_running: 'حماية {0} غير مفعّلة.'
+  punishment_unsupported: 'لا يمكنك استخدام إجراء العقوبة {0} مع هذه الميزة.'
+  raid_cnt: 'يجب أن يكون حد المستخدمين بين {0} و {1}.'
+  raid_stats: 'إذا انضم {0} مستخدم أو أكثر خلال {1} ثانية، سأقوم بـ {2}.'
+  raid_time: 'يجب أن يكون الوقت بين {0} و {1} ثانية.'
+  spam_ignore: '{0} سيتجاهل هذه القناة.'
+  spam_not_ignore: '{0} لن يتجاهل هذه القناة بعد الآن.'
+  spam_stats: |-
+    إذا أرسل مستخدم {0} رسائل متطابقة متتالية، سأقوم بـ {1}.
+        __القنوات المتجاهلة__: {2}
+  honeypot_off: تم تعطيل مصيدة العسل.
+  honeypot_on: تم تفعيل مصيدة العسل في هذه القناة.
+
+de-DE:
+  anti_alt_status: |-
+    Nutzer, die diesem Server beitreten, deren Account nicht älter als {0} ist, werden folgende Aktion erhalten: {1}
+    Soweit bestraft: {2}
+  prot_active: Aktive Schutzmaßnahmen.
+  prot_cant_use_time: Du kannst keine Dauer für Bestrafungs-Aktionen festlegen.
+  prot_disable: '{0}  wurde **deaktiviert** auf diesem Server'
+  prot_enable: '{0} aktiviert'
+  prot_none: Keine Schutzmaßnahmen aktiviert.
+  protection_not_running: '{0} Schutz ist nicht eingeschaltet.'
+  punishment_unsupported: 'Du kannst {0} Bestrafung mit dieser Funktion nicht benutzen.'
+  raid_cnt: 'Nutzer Grenzwert muss zwischen {0} und {1} sein.'
+  raid_stats: 'Wenn {0} oder mehr Mitglieder in {1} Sekunde beitreten, werde ich sie {2}.'
+  raid_time: 'Zeit muss zwischen {0} und {1} Sekunde sein.'
+  spam_ignore: '{0} wird diesen Kanal ignorieren.'
+  spam_not_ignore: '{0} wird nicht mehr diesen Kanal ignorieren.'
+  spam_stats: |-
+    Wenn ein Nutzer {0} gleiche Nachrichten in Folge schickt, werde ich ihn {1}.
+    __IgnorierteKanäle__: {2}
+  honeypot_off: Honeypot deaktiviert.
+  honeypot_on: Honeypot in diesem Kanal aktiviert.
+
+es-ES:
+  anti_alt_status: |-
+    Cualquier usuario que ingrese al servidor con una cuenta de una antiguedad no mayor que {0} se le aplicará la siguiente acción: {1}
+    Castigados hasta ahora: {2}
+  prot_active: Protecciones activas
+  prot_cant_use_time: No puedes especificar la duración para este castigo.
+  prot_disable: '{0} ha sido **desactivado** en este servidor.'
+  prot_enable: '{0} activado'
+  prot_none: No hay protección activa.
+  protection_not_running: 'La protección {0} no está activada.'
+  punishment_unsupported: 'No puedes usar el castigo {0} aquí.'
+  raid_cnt: 'Umbral del usuario debe ser entre {0} y {1}.'
+  raid_stats: 'Si {0} o más usuarios ingresan entre {1} segundos, los voy a {2}.'
+  raid_time: 'El tiempo debe ser entre {0} y {1} segundos.'
+  spam_ignore: '{0} ignorará este canal.'
+  spam_not_ignore: '{0} ya no ignorará este canal.'
+  spam_stats: |-
+    Si un usuario publica {0} mensajes iguales seguidos, voy a: {1}.
+     __IgnoredChannels__: {2}
+  honeypot_off: Honeypot desactivado.
+  honeypot_on: Honeypot activado en este canal.
+
+fr-FR:
+  anti_alt_status: |-
+    Chaque membre joignant le serveur avec un compte datant de moins de {0} sera sujet à l'action suivante : {1} 
+    Nombre de sanctions à ce jour : {2}
+  prot_active: Protections actives
+  prot_cant_use_time: Vous ne pouvez pas spécifier de durée pour cette sanction.
+  prot_disable: '{0} a été **désactivé** sur ce serveur.'
+  prot_enable: '{0} Activé'
+  prot_none: Aucune protection d'activée.
+  protection_not_running: 'Protection {0} n''est pas activée'
+  punishment_unsupported: 'Vous ne pouvez pas utiliser {0} action de punition avec cette fonctionnalité.'
+  raid_cnt: 'Le seuil d''utilisateurs doit être entre {0} et {1}.'
+  raid_stats: 'Si {0} utilisateurs ou plus rejoignent en {1} secondes, ils seront {2}.'
+  raid_time: 'La durée doit être définie entre {0} et {1} secondes.'
+  spam_ignore: '{0} ignorera ce salon.'
+  spam_not_ignore: '{0} n''ignorera plus ce salon.'
+  spam_stats: |-
+    Si un utilisateur publie {0} messages identiques à la fois, il sera {1}.
+        __Salons Ignorés__: {2}
+  honeypot_off: Honeypot désactivé.
+  honeypot_on: Honeypot activé sur ce salon.
+
+id-ID:
+  anti_alt_status: |-
+    Pengguna yang bergabung ke server dengan akun yang belum berumur lebih dari {0} akan dikenakan tindakan berikut: {1}
+    Sudah dihukum sejauh ini: {2}
+  prot_active: Proteksi aktif
+  prot_cant_use_time: Kamu nggak bisa menentukan durasi untuk tindakan hukuman ini.
+  prot_disable: '{0} telah **dinonaktifkan** di server ini.'
+  prot_enable: '{0} Diaktifkan'
+  prot_none: Tidak ada proteksi yang diaktifkan.
+  protection_not_running: 'Proteksi {0} tidak diaktifkan.'
+  punishment_unsupported: 'Kamu nggak bisa menggunakan tindakan hukuman {0} dengan fitur ini.'
+  raid_cnt: 'Batas pengguna harus antara {0} dan {1}.'
+  raid_stats: 'Jika {0} atau lebih pengguna bergabung dalam {1} detik, saya akan {2} mereka.'
+  raid_time: 'Waktu harus antara {0} dan {1} detik.'
+  spam_ignore: '{0} akan mengabaikan channel ini.'
+  spam_not_ignore: '{0} tidak lagi mengabaikan channel ini.'
+  spam_stats: |-
+    Jika pengguna mengirim {0} pesan yang sama berturut-turut, saya akan {1} mereka.
+        __Channel yang Diabaikan__: {2}
+  honeypot_off: Honeypot dinonaktifkan.
+  honeypot_on: Honeypot diaktifkan di channel ini.
+
+ja-JP:
+  anti_alt_status: |-
+    {0}より古くないアカウントでサーバーに参加するユーザーには、以下のアクションが適用されます: {1}
+    これまでの処罰数: {2}
+  prot_active: アクティブな保護
+  prot_cant_use_time: この処罰アクションには期間を指定できません。
+  prot_disable: 'このサーバーでは{0}が**無効**になりました。'
+  prot_enable: '{0}が有効になりました'
+  prot_none: 有効な保護はありません。
+  protection_not_running: '{0}保護は有効になっていません。'
+  punishment_unsupported: 'この機能では{0}処罰アクションを使用できません。'
+  raid_cnt: 'ユーザーのしきい値は{0}～{1}の間である必要があります。'
+  raid_stats: '{1}秒以内に{0}名以上のユーザーが参加した場合、そのユーザーらに対し{2}を行います。'
+  raid_time: '時間は{0}〜{1}秒の間である必要があります。'
+  spam_ignore: '{0}はこのチャンネルを無視するようになりました。'
+  spam_not_ignore: '{0}はこのチャンネルを無視しなくなりました。'
+  spam_stats: |-
+    ユーザーが連続して同じメッセージを{0}個投稿した場合は、ユーザーに対し{1}を行います。
+     __例外設定されているチャンネル__: {2}
+  honeypot_off: ハニーポットが無効になりました。
+  honeypot_on: このチャンネルでハニーポットが有効になりました。
+
+ko-KR:
+  anti_alt_status: |-
+    계정 생성일이 {0} 이내인 유저가 서버에 가입하면 다음 조치가 적용돼요: {1}
+    지금까지 조치된 수: {2}
+  prot_active: 활성화된 보호 기능
+  prot_cant_use_time: 이 처벌 조치에는 기간을 지정할 수 없어요.
+  prot_disable: '{0}이(가) 이 서버에서 **비활성화**되었어요.'
+  prot_enable: '{0} 활성화됨'
+  prot_none: 활성화된 보호 기능이 없어요.
+  protection_not_running: '{0} 보호 기능이 활성화되어 있지 않아요.'
+  punishment_unsupported: '이 기능에는 {0} 처벌 조치를 사용할 수 없어요.'
+  raid_cnt: '유저 임계값은 {0}에서 {1} 사이여야 해요.'
+  raid_stats: '{0}명 이상의 유저가 {1}초 이내에 접속하면 {2} 조치를 취할게요.'
+  raid_time: '시간은 {0}초에서 {1}초 사이여야 해요.'
+  spam_ignore: '{0}이(가) 이 채널을 무시할 거예요.'
+  spam_not_ignore: '{0}이(가) 더 이상 이 채널을 무시하지 않아요.'
+  spam_stats: |-
+    유저가 같은 메시지를 연속 {0}번 보내면 {1} 조치를 취할게요.
+        __무시된 채널__: {2}
+  honeypot_off: 허니팟이 비활성화되었습니다.
+  honeypot_on: 이 채널에서 허니팟이 활성화되었습니다.
+
+pl-PL:
+  anti_alt_status: |-
+    Każdy użytkownik dołączający do serwera z kontem młodszym niż {0} otrzyma następującą karę: {1}
+    Ukaranych do tej pory: {2}
+  prot_active: Aktywne zabezpieczenia
+  prot_cant_use_time: Nie możesz określić czasu trwania dla tej kary.
+  prot_disable: '{0} zostało **wyłączone** na tym serwerze.'
+  prot_enable: '{0} włączone'
+  prot_none: Brak włączonych zabezpieczeń.
+  protection_not_running: 'Zabezpieczenie {0} nie jest włączone.'
+  punishment_unsupported: 'Nie możesz użyć kary {0} z tą funkcją.'
+  raid_cnt: 'Próg użytkowników musi wynosić od {0} do {1}.'
+  raid_stats: 'Jeśli {0} lub więcej użytkowników dołączy w ciągu {1} sekund, zastosuję wobec nich {2}.'
+  raid_time: 'Czas musi wynosić od {0} do {1} sekund.'
+  spam_ignore: '{0} będzie ignorować ten kanał.'
+  spam_not_ignore: '{0} nie będzie już ignorować tego kanału.'
+  spam_stats: |-
+    Jeśli użytkownik wyśle {0} takich samych wiadomości z rzędu, zastosuję wobec niego {1}.
+        __Ignorowane kanały__: {2}
+  honeypot_off: Honeypot wyłączony.
+  honeypot_on: Honeypot włączony na tym kanale.
+
+pt-BR:
+  anti_alt_status: |-
+    Qualquer usuário que se juntar ao servidor com uma conta mais nova que {0} receberá as seguintes sanções: {1}
+    Sancionados até agora: {2}
+  prot_active: Proteções ativas
+  prot_cant_use_time: Você não pode especificar uma duração para esta ação de punição.
+  prot_disable: '{0} foi **desativado** nesse servidor.'
+  prot_enable: '{0} ativado'
+  prot_none: Nenhuma proteção ativa.
+  protection_not_running: 'A proteção {0} não está habilitada.'
+  punishment_unsupported: 'Essa função não suporta punições do tipo {0}.'
+  raid_cnt: 'O número de usuários deve estar entre {0} e {1}.'
+  raid_stats: 'Se {0} ou mais usuários entrarem no servidor em um intervalo de {1} segundos, aplicarei {2} a eles.'
+  raid_time: 'O tempo deve ser entre {0} e {1} segundos.'
+  spam_ignore: '{0} ignorará esse canal.'
+  spam_not_ignore: '{0} deixará de ignorar esse canal.'
+  spam_stats: |-
+    Se um usuário postar {0} mensagens iguais seguidas, aplicarei um {1}.
+         __IgnoredChannels__: {2}
+  honeypot_off: Honeypot desativado.
+  honeypot_on: Honeypot ativado neste canal.
+
+ru-RU:
+  anti_alt_status: |-
+    К любому пользователю, присоединяющемуся к серверу с учетной записью не старше {0}, будет применено следующее действие: {1}
+    На данный момент наказаны: {2}
+  prot_active: Активные защиты
+  prot_cant_use_time: Вы не можете указать продолжительность этого наказания.
+  prot_disable: '{0} был **отключен** на этом сервере.'
+  prot_enable: '{0} Включен.'
+  prot_none: Защита не включена.
+  protection_not_running: 'Защита {0} не включена.'
+  punishment_unsupported: 'С этой функцией нельзя использовать действие наказания {0}.'
+  raid_cnt: 'Порог пользователя должен быть между {0} и {1}'
+  raid_stats: 'Если {0} или больше пользователей присоединятся  через {1} секунд, я их {2}.'
+  raid_time: 'Время должно быть между {0} и {1} секунд.'
+  spam_ignore: '{0} будет игнорировать этот канал.'
+  spam_not_ignore: '{0} больше не будет игнорировать этот канал.'
+  spam_stats: 'Если пользователь публикует {0} одинаковых сообщений подряд, я {1} их. __Игнорируемые каналы__: {2}'
+  honeypot_off: Ловушка отключена.
+  honeypot_on: Ловушка включена в этом канале.
+
+sr-Cyrl-RS:
+  anti_alt_status: |-
+    Сваки корисник који се придружи серверу са налогом млађим од {0} добиће следећу казну: {1}
+    Кажњено до сад: {2}
+  prot_active: Активне заштите
+  prot_cant_use_time: Не можеш да одредиш трајање за ову казнену акцију.
+  prot_disable: '{0} је **онемогућен** на овом серверу.'
+  prot_enable: '{0} укључен'
+  prot_none: Нема укључених заштита.
+  protection_not_running: '{0} заштита није укључена.'
+  punishment_unsupported: 'Не можеш да користиш {0} казнену акцију са овом функцијом.'
+  raid_cnt: 'Праг корисника мора бити између {0} и {1}.'
+  raid_stats: 'Ако се {0} или више корисника придружи у року од {1} секунди, ја ћу им применити {2}.'
+  raid_time: 'Време мора бити између {0} и {1} секунди.'
+  spam_ignore: '{0} ће игнорисати овај канал.'
+  spam_not_ignore: '{0} више неће игнорисати овај канал.'
+  spam_stats: |-
+    Ако корисник пошаље {0} истих порука заредом, ја ћу им применити {1}.
+        __Игнорисани канали__: {2}
+  honeypot_off: Honeypot искључен.
+  honeypot_on: Honeypot укључен на овом каналу.
+
+tr-TR:
+  anti_alt_status: |-
+    Sunucuya {0} süresinden daha eski olmayan bir hesapla katılan kullanıcılara şu işlem uygulanacak: {1}
+    Şimdiye kadar cezalandırılan: {2}
+  prot_active: Aktif korumalar
+  prot_cant_use_time: Bu ceza eylemi için süre belirleyemezsin.
+  prot_disable: '{0} bu sunucuda **devre dışı bırakıldı**.'
+  prot_enable: '{0} Etkinleştirildi'
+  prot_none: Etkin koruma yok.
+  protection_not_running: '{0} koruması etkin değil.'
+  punishment_unsupported: 'Bu özellikle {0} ceza eylemini kullanamazsın.'
+  raid_cnt: 'Kullanıcı eşiği {0} ile {1} arasında olmalıdır.'
+  raid_stats: '{0} veya daha fazla kullanıcı {1} saniye içinde katılırsa, onları {2} edeceğim.'
+  raid_time: 'Süre {0} ile {1} saniye arasında olmalıdır.'
+  spam_ignore: '{0} bu kanalı görmezden gelecek.'
+  spam_not_ignore: '{0} artık bu kanalı görmezden gelmeyecek.'
+  spam_stats: |-
+    Bir kullanıcı üst üste {0} aynı mesajı gönderirse, onu {1} edeceğim.
+        __Görmezden Gelinen Kanallar__: {2}
+  honeypot_off: Honeypot devre dışı bırakıldı.
+  honeypot_on: Bu kanalda honeypot etkinleştirildi.
+
+ts-TS:
+  anti_alt_status: |-
+    Any user joining with an account younger than {0} will have the following action applied: {1}
+    Punished so far: {2}
+  prot_active: Active protections
+  prot_cant_use_time: You can't specify a duration for this punishment action.
+  prot_disable: '{0} has been **disabled** on this server.'
+  prot_enable: '{0} Enabled'
+  prot_none: No protection enabled. I-I'm not worried about your server or anything.
+  protection_not_running: '{0} protection is not enabled. Pay attention!'
+  punishment_unsupported: 'You can''t use {0} punishment action with this feature.'
+  raid_cnt: 'User threshold must be between {0} and {1}.'
+  raid_stats: 'If {0} or more users join within {1} seconds, I will {2} them.'
+  raid_time: 'Time must be between {0} and {1} seconds.'
+  spam_ignore: '{0} will ignore this channel.'
+  spam_not_ignore: '{0} will no longer ignore this channel.'
+  spam_stats: |-
+    If a user posts {0} same messages in a row, I will {1} them.
+        __IgnoredChannels__: {2}
+  honeypot_off: Honeypot disabled.
+  honeypot_on: Honeypot enabled on this channel. The trap is set.
+
+uk-UA:
+  anti_alt_status: |-
+    До будь-якого користувача, який приєднується до сервера з акаунтом молодшим за {0}, буде застосовано таку дію: {1}
+    Покарано до цього часу: {2}
+  prot_active: Активні захисти
+  prot_cant_use_time: Ти не можеш вказати тривалість для цього виду покарання.
+  prot_disable: '{0} було **вимкнено** на цьому сервері.'
+  prot_enable: '{0} увімкнено'
+  prot_none: Жоден захист не увімкнено.
+  protection_not_running: 'Захист {0} не увімкнено.'
+  punishment_unsupported: 'Ти не можеш використовувати покарання {0} з цією функцією.'
+  raid_cnt: 'Поріг користувачів має бути від {0} до {1}.'
+  raid_stats: 'Якщо {0} або більше користувачів приєднаються протягом {1} секунд, я застосую до них {2}.'
+  raid_time: 'Час має бути від {0} до {1} секунд.'
+  spam_ignore: '{0} тепер ігноруватиме цей канал.'
+  spam_not_ignore: '{0} більше не ігноруватиме цей канал.'
+  spam_stats: |-
+    Якщо користувач надсилає {0} однакових повідомлень підряд, я застосую до нього {1}.
+        __Ігноровані канали__: {2}
+  honeypot_off: Пастку вимкнено.
+  honeypot_on: Пастку увімкнено в цьому каналі.
+
+vi-VN:
+  anti_alt_status: |-
+    Bất kỳ người dùng nào tham gia máy chủ với tài khoản chưa đủ {0} sẽ bị áp dụng hành động sau: {1}
+    Đã xử phạt: {2}
+  prot_active: Các biện pháp bảo vệ đang hoạt động
+  prot_cant_use_time: Bạn không thể chỉ định thời hạn cho hành động phạt này.
+  prot_disable: '{0} đã bị **vô hiệu hóa** trên máy chủ này.'
+  prot_enable: '{0} đã được bật'
+  prot_none: Không có biện pháp bảo vệ nào được bật.
+  protection_not_running: 'Bảo vệ {0} chưa được bật.'
+  punishment_unsupported: 'Bạn không thể sử dụng hành động phạt {0} với tính năng này.'
+  raid_cnt: 'Ngưỡng người dùng phải nằm trong khoảng {0} đến {1}.'
+  raid_stats: 'Nếu {0} người dùng trở lên tham gia trong vòng {1} giây, tôi sẽ {2} họ.'
+  raid_time: 'Thời gian phải nằm trong khoảng {0} đến {1} giây.'
+  spam_ignore: '{0} sẽ bỏ qua kênh này.'
+  spam_not_ignore: '{0} sẽ không còn bỏ qua kênh này nữa.'
+  spam_stats: |-
+    Nếu người dùng gửi {0} tin nhắn giống nhau liên tiếp, tôi sẽ {1} họ.
+        __Kênh bị bỏ qua__: {2}
+  honeypot_off: Đã tắt honeypot.
+  honeypot_on: Đã bật honeypot trên kênh này.
+
+zh-CN:
+  anti_alt_status: |-
+    帳號註冊時間少於 {0} 的使用者將會受到以下處置：{1}
+    目前已處置：{2}
+  prot_active: 啟動保護指令
+  prot_cant_use_time: 您無法指定此懲罰操作的持續時間。
+  prot_disable: '在這個伺服器上**已停用** {0}'
+  prot_enable: '已啟動 {0}'
+  prot_none: 沒有被啟用的保護指令
+  protection_not_running: '{0} 防護未啟用'
+  punishment_unsupported: '您不能通過此功能使用 {0} 懲罰操作。'
+  raid_cnt: '使用者數量閥值需要介於 {0} 和 {1} 之間'
+  raid_stats: '如果 {1} 秒內有超過 {0} 個使用者加入，我會把他們 {2}'
+  raid_time: '時間必須介於 {0} 和 {1} 秒'
+  spam_ignore: '{0} 將會忽略這個頻道'
+  spam_not_ignore: '{0} 將不會忽略這個頻道'
+  spam_stats: |-
+    如果一個使用者連需傳送 {0} 次相同的訊息，我會把他們 {1}
+    __忽略的頻道__：{2}
+  honeypot_off: 蜜罐已停用。
+  honeypot_on: 蜜罐已在此頻道啟用。

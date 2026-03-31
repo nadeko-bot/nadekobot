@@ -1,0 +1,527 @@
+ar:
+  acm_disable: 'تم تعطيل استخدام جميع الوحدات في القناة {0}.'
+  acm_enable: 'تم تفعيل استخدام جميع الوحدات في القناة {0}.'
+  arm_disable: 'تم تعطيل استخدام جميع الوحدات للدور {0}.'
+  arm_enable: 'تم تفعيل استخدام جميع الوحدات للدور {0}.'
+  asm_disable: تم تعطيل استخدام جميع الوحدات في هذا الخادم.
+  asm_enable: تم تفعيل استخدام جميع الوحدات في هذا الخادم.
+  aum_disable: 'تم تعطيل استخدام جميع الوحدات للمستخدم {0}.'
+  aum_enable: 'تم تفعيل استخدام جميع الوحدات للمستخدم {0}.'
+  cx_disable: 'تم تعطيل استخدام {0} {1} في القناة {2}.'
+  cx_enable: 'تم تفعيل استخدام {0} {1} في القناة {2}.'
+  global_perms_reset: تمت إعادة تعيين الصلاحيات العامة.
+  moved_permission: 'تم نقل الصلاحية {0} من #{1} إلى #{2}'
+  of_command: أمر
+  of_module: وحدة
+  perm_not_found: 'لا يمكن العثور على الصلاحية في الفهرس #{0}'
+  perm_out_of_range: لم يتم العثور على صلاحية في هذا الفهرس.
+  permrole: 'دور الصلاحيات الحالي هو {0}.'
+  permrole_changed: 'يحتاج المستخدمون الآن إلى دور {0} لتعديل الصلاحيات.'
+  permrole_not_set: لم يتم تعيين دور الصلاحيات.
+  permrole_reset: تمت إعادة تعيين دور الصلاحيات.
+  perms_reset: تمت إعادة تعيين صلاحيات هذا الخادم.
+  removed: 'تمت إزالة الصلاحية #{0} - {1}'
+  rx_disable: 'تم تعطيل استخدام {0} {1} للدور {2}.'
+  rx_enable: 'تم تفعيل استخدام {0} {1} للدور {2}.'
+  sx_disable: 'تم تعطيل استخدام {0} {1} في هذا الخادم.'
+  sx_enable: 'تم تفعيل استخدام {0} {1} في هذا الخادم.'
+  uneditable: غير قابل للتعديل
+  ux_disable: 'تم تعطيل استخدام {0} {1} للمستخدم {2}.'
+  ux_enable: 'تم تفعيل استخدام {0} {1} للمستخدم {2}.'
+  verbose_false: لن أعرض تحذيرات الصلاحيات بعد الآن.
+  verbose_true: سأعرض تحذيرات الصلاحيات من الآن.
+
+de-DE:
+  acm_disable: 'BenutzungALLER MODULE in Kanal {0} abgeschaltet.'
+  acm_enable: 'Benutzung ALLER MODULE in Kanal {0} eingeschaltet.'
+  arm_disable: 'Benutzung ALLER MODULE für Rolle {0} abgeschaltet.'
+  arm_enable: 'Benutzung ALLER MODULE für Rolle {0} eingeschaltet.'
+  asm_disable: Benutzung ALLER MODULE auf diesem Server abgeschaltet.
+  asm_enable: Benutzung ALLER MODULE auf diesem Server eingeschaltet.
+  aum_disable: 'Benutzung ALLER MODULE für Benutzer {0} abgeschaltet.'
+  aum_enable: 'Benutzung ALLER MODULE für Benutzer {0} eingeschaltet.'
+  cx_disable: 'Deaktivieren des Benutzen von {0} {1} im Kanal {2}.'
+  cx_enable: 'Aktivieren des Benutzen von {0} {1} im Kanal {2}.'
+  global_perms_reset: Globale Berechtigungen wurden zurückgesetzt.
+  moved_permission: 'Bewegen der Berechtigung {0} von #{1} zu #{2}'
+  of_command: Befehl
+  of_module: Modul
+  perm_not_found: 'Kann keine Berechtigungen im Index finden #{0}'
+  perm_out_of_range: Keine Berechtigungen in diesem Index gefunden.
+  permrole: 'Derzeitige Berechtigungs Rolle ist {0}.'
+  permrole_changed: 'Benutzer benötigen nun die Rolle {0} um Berechtigungen zu bearbeiten.'
+  permrole_not_set: Berechtigungsrolle ist nicht gesetzt.
+  permrole_reset: Berechtigungsrolle wurde zurückgesetzt.
+  perms_reset: Berechtigungen für diesen Server wurden zurückgesetzt.
+  removed: 'Entfernen der Berechtigungen #{0} - {1}'
+  rx_disable: 'Deaktivieren des Benutzen von {0} {1} für die Rolle {2}.'
+  rx_enable: 'Aktivieren des Benutzers von {0} {1} für die Rolle {2}.'
+  sx_disable: 'Deaktivieren des Benutzers von {0} {1} für die Rolle {2}.'
+  sx_enable: 'Aktivieren des Benutzen von {0} {1} auf diesem Server.'
+  uneditable: Uneditierbar
+  ux_disable: 'Deaktivieren des Benutzen von {0} {1} für {2} Nutzer.'
+  ux_enable: 'Aktivieren des Benutzen von {0} {1} für den Nutzer {2}.'
+  verbose_false: Ich werde keine Berechtigungswarnungen mehr zeigen.
+  verbose_true: Ich werde nun Berechtigungswarnungen zeigen.
+
+es-ES:
+  acm_disable: 'Desactivado el uso de todos los módulos en el canal {0}.'
+  acm_enable: 'Activado el uso de todos los módulos en el canal {0}.'
+  arm_disable: 'Desactivado el uso de todos los módulos para el rol {0}.'
+  arm_enable: 'Activado el uso de todos los módulos para el rol {0}.'
+  asm_disable: Desactivado el uso de todos los módulos en este servidor.
+  asm_enable: Activado el uso de todo los módulos en este servidor.
+  aum_disable: 'Desactivado el uso de todos los módulos para el usuario {0}.'
+  aum_enable: 'Activado el uso de todos los módulos para el usuario {0}.'
+  cx_disable: 'Desactivado el uso del {0} {1} en el canal {2}.'
+  cx_enable: 'Activado el uso de {0} {1} en el canal {2}.'
+  global_perms_reset: Los permisos globales se han reiniciado.
+  moved_permission: 'Permiso {0} movido de #{1} a #{2}'
+  of_command: comando
+  of_module: módulo
+  perm_not_found: 'No puedo encontrar el permiso en #{0}.'
+  perm_out_of_range: No se encontraron permisos con esa búsqueda.
+  permrole: 'El rol de permisos actual es {0}'
+  permrole_changed: 'Los usuarios ahora requieren el rol {0} para editar permisos.'
+  permrole_not_set: El rol de permisos no está configurado.
+  permrole_reset: El rol de permisos se ha reiniciado.
+  perms_reset: Los permisos de este servidor se han reiniciado.
+  removed: 'permisos removidos #{0} - {1}'
+  rx_disable: 'Desactivado el uso de {0} {1} para el rol {2}.'
+  rx_enable: 'Activado el uso de {0} {1} para el rol {2}.'
+  sx_disable: 'Desactivado el uso de {0} {1} en este servidor.'
+  sx_enable: 'Activado el uso de {0} {1} en este servidor.'
+  uneditable: ineditable
+  ux_disable: 'Desactivado el uso de {1} {0} para el usuario {2}.'
+  ux_enable: 'Activado el uso de {0} {1} para el usuario {2}.'
+  verbose_false: No mostraré más advertencias de permisos.
+  verbose_true: Desde ahora mostraré las advertencias de permisos.
+
+fr-FR:
+  acm_disable: 'Utilisation de TOUS LES MODULES **désactivée** sur le salon {0}.'
+  acm_enable: 'Utilisation de TOUS LES MODULES **activée** sur le salon {0}.'
+  arm_disable: 'Utilisation de TOUS LES MODULES **désactivée** pour le rôle {0}.'
+  arm_enable: 'Utilisation de TOUS LES MODULES **activée** pour le rôle {0}.'
+  asm_disable: Utilisation de TOUS LES MODULES **désactivée** sur ce serveur.
+  asm_enable: Utilisation de TOUS LES MODULES **activée** sur ce serveur.
+  aum_disable: 'Utilisation de TOUS LES MODULES **désactivée** pour le membre {0}.'
+  aum_enable: 'Utilisation de TOUS LES MODULES **activée** pour le membre {0}.'
+  cx_disable: 'L''utilisation de {0} {1} est désactivée sur le salon {2}.'
+  cx_enable: 'L''utilisation de {0} {1} est autorisée sur le salon {2}.'
+  global_perms_reset: Les permissions globales ont été réinitialisées.
+  moved_permission: 'Permission {0} déplacée de {1} à {2}'
+  of_command: commande
+  of_module: module
+  perm_not_found: 'Impossible de trouver de permission dans l''index #{0}'
+  perm_out_of_range: Aucune permission trouvée sur cet index.
+  permrole: 'Le rôle de permissions actuel est {0}.'
+  permrole_changed: 'Les utilisateurs ont désormais besoin du rôle {0} pour modifier les permissions.'
+  permrole_not_set: Le rôle de permission n'est pas défini.
+  permrole_reset: Le rôle de permission est réinitialisé.
+  perms_reset: Les permissions pour ce serveur ont été réinitialisées.
+  removed: 'permission retirée #{0} - {1}'
+  rx_disable: 'Usage désactivé de {0} {1} pour {2} rôle.'
+  rx_enable: 'Usage activé de {0} {1} pour {2} rôle.'
+  sx_disable: 'Usage désactivé de {0} {1} sur ce serveur.'
+  sx_enable: 'Usage activé de {0} {1} sur ce serveur.'
+  uneditable: non modifiable
+  ux_disable: 'Usage désactivé de {0} {1} pour {2} utilisateur.'
+  ux_enable: 'Usage activé de {0} {1} pour {2} utilisateur.'
+  verbose_false: Je n'afficherai plus les alertes de permissions.
+  verbose_true: J'afficherai dorénavant les alertes de permissions.
+
+id-ID:
+  acm_disable: 'Penggunaan SEMUA MODUL dinonaktifkan di channel {0}.'
+  acm_enable: 'Penggunaan SEMUA MODUL diaktifkan di channel {0}.'
+  arm_disable: 'Penggunaan SEMUA MODUL dinonaktifkan untuk role {0}.'
+  arm_enable: 'Penggunaan SEMUA MODUL diaktifkan untuk role {0}.'
+  asm_disable: Penggunaan SEMUA MODUL dinonaktifkan di server ini.
+  asm_enable: Penggunaan SEMUA MODUL diaktifkan di server ini.
+  aum_disable: 'Penggunaan SEMUA MODUL dinonaktifkan untuk pengguna {0}.'
+  aum_enable: 'Penggunaan SEMUA MODUL diaktifkan untuk pengguna {0}.'
+  cx_disable: 'Penggunaan {0} {1} dinonaktifkan di channel {2}.'
+  cx_enable: 'Penggunaan {0} {1} diaktifkan di channel {2}.'
+  global_perms_reset: Izin global sudah direset.
+  moved_permission: 'Izin {0} dipindahkan dari #{1} ke #{2}'
+  of_command: perintah
+  of_module: modul
+  perm_not_found: 'Tidak bisa menemukan izin di indeks #{0}'
+  perm_out_of_range: Tidak ditemukan izin di indeks tersebut.
+  permrole: 'Role izin saat ini adalah {0}.'
+  permrole_changed: 'Pengguna sekarang membutuhkan role {0} untuk mengedit izin.'
+  permrole_not_set: Role izin belum diatur.
+  permrole_reset: Role izin sudah direset.
+  perms_reset: Izin untuk server ini sudah direset.
+  removed: 'izin #{0} dihapus - {1}'
+  rx_disable: 'Penggunaan {0} {1} dinonaktifkan untuk role {2}.'
+  rx_enable: 'Penggunaan {0} {1} diaktifkan untuk role {2}.'
+  sx_disable: 'Penggunaan {0} {1} dinonaktifkan di server ini.'
+  sx_enable: 'Penggunaan {0} {1} diaktifkan di server ini.'
+  uneditable: tidak bisa diedit
+  ux_disable: 'Penggunaan {0} {1} dinonaktifkan untuk pengguna {2}.'
+  ux_enable: 'Penggunaan {0} {1} diaktifkan untuk pengguna {2}.'
+  verbose_false: Aku tidak akan menampilkan peringatan izin lagi.
+  verbose_true: Sekarang aku akan menampilkan peringatan izin.
+
+ja-JP:
+  acm_disable: '《{0}》チャンネルでは、**すべてのモジュール**の使用が無効になりました。'
+  acm_enable: '《{0}》チャンネルでは、**すべてのモジュール**の使用が有効になりました。'
+  arm_disable: '役割《 {0}》による、**すべてのモジュール**の使用が無効になりました。'
+  arm_enable: '役割《 {0}》による、**すべてのモジュール**の使用が有効になりました。'
+  asm_disable: このサーバーでは、**すべてのモジュール**の使用が無効になりました。
+  asm_enable: このサーバーでは、**すべてのモジュール**の使用が有効になりました。
+  aum_disable: '{0}による、**すべてのモジュール**の使用が無効になりました。'
+  aum_enable: '{0}による、**すべてのモジュール**の使用が有効になりました。'
+  cx_disable: '《{2}》チャンネルでは、{0}{1}の使用が無効になりました。'
+  cx_enable: '《{2}》チャンネルでは、{0}{1}の使用が有効になりました。'
+  global_perms_reset: グローバル権限がリセットされました。
+  moved_permission: '{1}番目の権限設定「{0}」を{2}番目に移動しました'
+  of_command: コマンド
+  of_module: モジュール
+  perm_not_found: 'インデックス#{0}の権限が見つかりません'
+  perm_out_of_range: 指定された番号には権限設定がありません。
+  permrole: '現在の権限設定用役割は《{0}》です。'
+  permrole_changed: '権限設定用役割が《{0}》に変更されました。'
+  permrole_not_set: 権限ロールが設定されていません。
+  permrole_reset: 権限ロールがリセットされました。
+  perms_reset: このサーバーの権限がリセットされました。
+  removed: '{0}番目の権限設定「{1}」を削除しました。'
+  rx_disable: '役割《 {2}》による、{0}{1}の使用が無効になりました。'
+  rx_enable: '役割《 {2}》による、{0}{1}の使用が有効になりました。'
+  sx_disable: 'このサーバーでは、{0}{1}の使用が無効になりました。'
+  sx_enable: 'このサーバーでは、{0}{1}の使用が有効になりました。'
+  uneditable: 編集不可能
+  ux_disable: '{2}による、{0}{1}の使用が無効になりました。'
+  ux_enable: '{2}による、{0}{1}の使用が有効になりました。'
+  verbose_false: このBotによる権限不足エラーを表示しないようにしました。
+  verbose_true: このBotによる権限不足エラーを表示するようにしました。
+
+ko-KR:
+  acm_disable: '채널 {0}에서 모든 모듈 사용이 비활성화되었어요.'
+  acm_enable: '채널 {0}에서 모든 모듈 사용이 활성화되었어요.'
+  arm_disable: '역할 {0}에 대해 모든 모듈 사용이 비활성화되었어요.'
+  arm_enable: '역할 {0}에 대해 모든 모듈 사용이 활성화되었어요.'
+  asm_disable: 이 서버에서 모든 모듈 사용이 비활성화되었어요.
+  asm_enable: 이 서버에서 모든 모듈 사용이 활성화되었어요.
+  aum_disable: '사용자 {0}에 대해 모든 모듈 사용이 비활성화되었어요.'
+  aum_enable: '사용자 {0}에 대해 모든 모듈 사용이 활성화되었어요.'
+  cx_disable: '채널 {2}에서 {0} {1} 사용이 비활성화되었어요.'
+  cx_enable: '채널 {2}에서 {0} {1} 사용이 활성화되었어요.'
+  global_perms_reset: 글로벌 권한이 초기화되었어요.
+  moved_permission: '권한 {0}을(를) #{1}에서 #{2}(으)로 이동했어요.'
+  of_command: 명령어
+  of_module: 모듈
+  perm_not_found: '인덱스 #{0}에서 권한을 찾을 수 없어요.'
+  perm_out_of_range: 해당 인덱스에서 권한을 찾을 수 없어요.
+  permrole: '현재 권한 역할은 {0}이에요.'
+  permrole_changed: '이제 권한을 수정하려면 {0} 역할이 필요해요.'
+  permrole_not_set: 권한 역할이 설정되지 않았어요.
+  permrole_reset: 권한 역할이 초기화되었어요.
+  perms_reset: 이 서버의 권한이 초기화되었어요.
+  removed: '권한 #{0} - {1}을(를) 제거했어요.'
+  rx_disable: '역할 {2}에 대해 {0} {1} 사용이 비활성화되었어요.'
+  rx_enable: '역할 {2}에 대해 {0} {1} 사용이 활성화되었어요.'
+  sx_disable: '이 서버에서 {0} {1} 사용이 비활성화되었어요.'
+  sx_enable: '이 서버에서 {0} {1} 사용이 활성화되었어요.'
+  uneditable: 수정 불가
+  ux_disable: '사용자 {2}에 대해 {0} {1} 사용이 비활성화되었어요.'
+  ux_enable: '사용자 {2}에 대해 {0} {1} 사용이 활성화되었어요.'
+  verbose_false: 더 이상 권한 경고를 표시하지 않을게요.
+  verbose_true: 이제 권한 경고를 표시할게요.
+
+pl-PL:
+  acm_disable: 'Wyłączono używanie WSZYSTKICH MODUŁÓW na kanale {0}.'
+  acm_enable: 'Włączono używanie WSZYSTKICH MODUŁÓW na kanale {0}.'
+  arm_disable: 'Wyłączono używanie WSZYSTKICH MODUŁÓW dla roli {0}.'
+  arm_enable: 'Włączono używanie WSZYSTKICH MODUŁÓW dla roli {0}.'
+  asm_disable: Wyłączono używanie WSZYSTKICH MODUŁÓW na tym serwerze.
+  asm_enable: Włączono używanie WSZYSTKICH MODUŁÓW na tym serwerze.
+  aum_disable: 'Wyłączono używanie WSZYSTKICH MODUŁÓW dla użytkownika {0}.'
+  aum_enable: 'Włączono używanie WSZYSTKICH MODUŁÓW dla użytkownika {0}.'
+  cx_disable: 'Wyłączono używanie {0} {1} na kanale {2}.'
+  cx_enable: 'Włączono używanie {0} {1} na kanale {2}.'
+  global_perms_reset: Globalne uprawnienia zostały zresetowane.
+  moved_permission: 'Przeniesiono uprawnienie {0} z #{1} na #{2}'
+  of_command: komendy
+  of_module: modułu
+  perm_not_found: 'Nie znaleziono uprawnienia pod indeksem #{0}'
+  perm_out_of_range: Nie znaleziono uprawnienia pod tym indeksem.
+  permrole: 'Obecna rola uprawnień to {0}.'
+  permrole_changed: 'Użytkownicy potrzebują teraz roli {0}, aby edytować uprawnienia.'
+  permrole_not_set: Rola uprawnień nie jest ustawiona.
+  permrole_reset: Rola uprawnień została zresetowana.
+  perms_reset: Uprawnienia dla tego serwera zostały zresetowane.
+  removed: 'usunięto uprawnienie #{0} - {1}'
+  rx_disable: 'Wyłączono używanie {0} {1} dla roli {2}.'
+  rx_enable: 'Włączono używanie {0} {1} dla roli {2}.'
+  sx_disable: 'Wyłączono używanie {0} {1} na tym serwerze.'
+  sx_enable: 'Włączono używanie {0} {1} na tym serwerze.'
+  uneditable: nieedytowalne
+  ux_disable: 'Wyłączono używanie {0} {1} dla użytkownika {2}.'
+  ux_enable: 'Włączono używanie {0} {1} dla użytkownika {2}.'
+  verbose_false: Nie będę już pokazywać ostrzeżeń o uprawnieniach.
+  verbose_true: Od teraz będę pokazywać ostrzeżenia o uprawnieniach.
+
+pt-BR:
+  acm_disable: 'TODOS OS MÓDULOS foram desativados no canal {0}.'
+  acm_enable: 'TODOS OS MÓDULOS foram ativados no canal {0}.'
+  arm_disable: 'TODOS OS MÓDULOS foram desativados para o cargo {0}.'
+  arm_enable: 'TODOS OS MÓDULOS foram ativados para o cargo {0}.'
+  asm_disable: TODOS OS MÓDULOS foram desativados nesse servidor.
+  asm_enable: TODOS OS MÓDULOS foram ativados nesse servidor.
+  aum_disable: 'TODOS OS MÓDULOS foram desativados para o usuário {0}.'
+  aum_enable: 'TODOS OS MÓDULOS foram ativados para o usuário {0}.'
+  cx_disable: 'O comando {0} {1} foi desativado no canal {2}.'
+  cx_enable: 'O comando {0} {1} foi ativado no canal {2}.'
+  global_perms_reset: Permissões globais foram resetadas.
+  moved_permission: 'Permissão {0} movida de #{1} para #{2}'
+  of_command: comando
+  of_module: módulo
+  perm_not_found: 'Não consigo encontrar a permissão no índice #{0}'
+  perm_out_of_range: Nenhuma permissão encontrada nesse índice.
+  permrole: 'O cargo de permissão atual é {0}.'
+  permrole_changed: 'Agora usuários precisam do cargo {0} para editar permissões.'
+  permrole_not_set: Não há um cargo de permissão definido.
+  permrole_reset: O cargo de permissão foi resetado.
+  perms_reset: As permissões para esse servidor foram resetadas.
+  removed: 'Permissão removida #{0} - {1}'
+  rx_disable: 'O comando {0} {1} foi desativado para o cargo {2}.'
+  rx_enable: 'O comando {0} {1} foi ativado para o cargo {2}.'
+  sx_disable: 'O uso de {0} {1} foi desativado nesse servidor.'
+  sx_enable: 'Uso de {0} {1} ativado neste servidor.'
+  uneditable: não editável
+  ux_disable: 'O {1} {0} foi desativado para o usuário {2}.'
+  ux_enable: 'O {1} {0} foi ativado para o usuário {2}.'
+  verbose_false: Avisos de permissão não serão mais exibidos.
+  verbose_true: Avisos de permissão serão exibidos a partir de agora.
+
+ru-RU:
+  acm_disable: 'Выключено использование ВСЕХ МОДУЛЕЙ в канале {0}.'
+  acm_enable: 'Включено использование ВСЕХ МОДУЛЕЙ в канале {0}.'
+  arm_disable: 'Выключено использование ВСЕХ МОДУЛЕЙ для роли {0}.'
+  arm_enable: 'Включено использование ВСЕХ МОДУЛЕЙ для роли {0}.'
+  asm_disable: Использование ВСЕХ МОДУЛЕЙ на этом сервере было отключено.
+  asm_enable: Использование ВСЕХ МОДУЛЕЙ на этом сервере было включено.
+  aum_disable: 'Отключено использование ВСЕХ МОДУЛЕЙ для пользователя {0}.'
+  aum_enable: 'Включено использование ВСЕХ МОДУЛЕЙ для пользователя {0}.'
+  cx_disable: 'Заблокировано использование {0} {1} в канале {2}.'
+  cx_enable: 'Разблокировано использование {0} {1} в канале {2}.'
+  global_perms_reset: Глобальные разрешения были сброшены.
+  moved_permission: 'Передано разрешение {0} с #{1} в #{2}'
+  of_command: команда
+  of_module: модуль
+  perm_not_found: 'Не могу найти разрешение с номером #{0}'
+  perm_out_of_range: Не найдено разрешения с таким номером.
+  permrole: 'Текущая роль разрешений - {0}.'
+  permrole_changed: 'Пользователям требуется роль {0} для редактирования разрешений.'
+  permrole_not_set: Роль разрешений не указана.
+  permrole_reset: Роль разрешений сброшена.
+  perms_reset: Разрешения для этого сервера были обнулены.
+  removed: 'удалил разрешение #{0} - {1}'
+  rx_disable: 'Отключено использование {0} {1} для роли {2}.'
+  rx_enable: 'Включено использование {0} {1} для роли {2}.'
+  sx_disable: 'Отключено использование {0} {1} на этом сервере.'
+  sx_enable: 'Включено использование {0} {1} на этом сервере.'
+  uneditable: нередактируемы
+  ux_disable: 'Заблокировано использование {0} {1} для пользователя {2}.'
+  ux_enable: 'Разблокировано использование {0} {1} для пользователя {2}.'
+  verbose_false: Я больше не буду показывать предупреждения о разрешениях.
+  verbose_true: Я теперь буду показывать предупреждения о разрешениях.
+
+sr-Cyrl-RS:
+  acm_disable: 'Онемогућено коришћење СВИХ МОДУЛА на каналу {0}.'
+  acm_enable: 'Омогућено коришћење СВИХ МОДУЛА на каналу {0}.'
+  arm_disable: 'Онемогућено коришћење СВИХ МОДУЛА за улогу {0}.'
+  arm_enable: 'Омогућено коришћење СВИХ МОДУЛА за улогу {0}.'
+  asm_disable: Онемогућено коришћење СВИХ МОДУЛА на овом серверу.
+  asm_enable: Омогућено коришћење СВИХ МОДУЛА на овом серверу.
+  aum_disable: 'Онемогућено коришћење СВИХ МОДУЛА за корисника {0}.'
+  aum_enable: 'Омогућено коришћење СВИХ МОДУЛА за корисника {0}.'
+  cx_disable: 'Онемогућено коришћење {0} {1} на каналу {2}.'
+  cx_enable: 'Омогућено коришћење {0} {1} на каналу {2}.'
+  global_perms_reset: Глобалне дозволе су ресетоване.
+  moved_permission: 'Померена дозвола {0} са #{1} на #{2}'
+  of_command: команда
+  of_module: модул
+  perm_not_found: 'Не могу да нађем дозволу на индексу #{0}'
+  perm_out_of_range: Није пронађена дозвола на том индексу.
+  permrole: 'Тренутна улога за дозволе је {0}.'
+  permrole_changed: 'Корисници сада морају имати улогу {0} да би мењали дозволе.'
+  permrole_not_set: Улога за дозволе није постављена.
+  permrole_reset: Улога за дозволе је ресетована.
+  perms_reset: Дозволе за овај сервер су ресетоване.
+  removed: 'уклоњена дозвола #{0} - {1}'
+  rx_disable: 'Онемогућено коришћење {0} {1} за улогу {2}.'
+  rx_enable: 'Омогућено коришћење {0} {1} за улогу {2}.'
+  sx_disable: 'Онемогућено коришћење {0} {1} на овом серверу.'
+  sx_enable: 'Омогућено коришћење {0} {1} на овом серверу.'
+  uneditable: не може се мењати
+  ux_disable: 'Онемогућено коришћење {0} {1} за корисника {2}.'
+  ux_enable: 'Омогућено коришћење {0} {1} за корисника {2}.'
+  verbose_false: Више нећу приказивати упозорења о дозволама.
+  verbose_true: Сада ћу приказивати упозорења о дозволама.
+
+tr-TR:
+  acm_disable: '{0} kanalında TÜM MODÜLLERİN kullanımı devre dışı bırakıldı.'
+  acm_enable: '{0} kanalında TÜM MODÜLLERİN kullanımı etkinleştirildi.'
+  arm_disable: '{0} rolü için TÜM MODÜLLERİN kullanımı devre dışı bırakıldı.'
+  arm_enable: '{0} rolü için TÜM MODÜLLERİN kullanımı etkinleştirildi.'
+  asm_disable: Bu sunucuda TÜM MODÜLLERİN kullanımı devre dışı bırakıldı.
+  asm_enable: Bu sunucuda TÜM MODÜLLERİN kullanımı etkinleştirildi.
+  aum_disable: '{0} kullanıcısı için TÜM MODÜLLERİN kullanımı devre dışı bırakıldı.'
+  aum_enable: '{0} kullanıcısı için TÜM MODÜLLERİN kullanımı etkinleştirildi.'
+  cx_disable: '{2} kanalında {0} {1} kullanımı devre dışı bırakıldı.'
+  cx_enable: '{2} kanalında {0} {1} kullanımı etkinleştirildi.'
+  global_perms_reset: Global izinler sıfırlandı.
+  moved_permission: '{0} izni #{1}''den #{2}''ye taşındı'
+  of_command: komut
+  of_module: modül
+  perm_not_found: '#{0} indeksinde izin bulunamadı'
+  perm_out_of_range: O indekste izin bulunamadı.
+  permrole: 'Şu anki izin rolü {0}.'
+  permrole_changed: 'Kullanıcıların izinleri düzenlemek için artık {0} rolüne sahip olması gerekiyor.'
+  permrole_not_set: İzin rolü ayarlanmamış.
+  permrole_reset: İzin rolü sıfırlandı.
+  perms_reset: Bu sunucunun izinleri sıfırlandı.
+  removed: '#{0} izni kaldırıldı - {1}'
+  rx_disable: '{2} rolü için {0} {1} kullanımı devre dışı bırakıldı.'
+  rx_enable: '{2} rolü için {0} {1} kullanımı etkinleştirildi.'
+  sx_disable: 'Bu sunucuda {0} {1} kullanımı devre dışı bırakıldı.'
+  sx_enable: 'Bu sunucuda {0} {1} kullanımı etkinleştirildi.'
+  uneditable: düzenlenemez
+  ux_disable: '{2} kullanıcısı için {0} {1} kullanımı devre dışı bırakıldı.'
+  ux_enable: '{2} kullanıcısı için {0} {1} kullanımı etkinleştirildi.'
+  verbose_false: Artık izin uyarılarını göstermeyeceğim.
+  verbose_true: Artık izin uyarılarını göstereceğim.
+
+ts-TS:
+  acm_disable: 'Disabled usage of ALL MODULES on channel {0}.'
+  acm_enable: 'Enabled usage of ALL MODULES on channel {0}.'
+  arm_disable: 'Disabled usage of ALL MODULES for role {0}.'
+  arm_enable: 'Enabled usage of ALL MODULES for role {0}.'
+  asm_disable: Disabled usage of ALL MODULES on this server.
+  asm_enable: Enabled usage of ALL MODULES on this server. You better appreciate it.
+  aum_disable: 'Disabled usage of ALL MODULES for user {0}. It had to be done.'
+  aum_enable: 'Enabled usage of ALL MODULES for user {0}.'
+  cx_disable: 'Disabled usage of {0} {1} on channel {2}.'
+  cx_enable: 'Enabled usage of {0} {1} on channel {2}.'
+  global_perms_reset: Global permissions have been reset.
+  moved_permission: 'Moved permission {0} from #{1} to #{2}.'
+  of_command: command
+  of_module: module
+  perm_not_found: 'Can''t find any permission at index #{0}!'
+  perm_out_of_range: No permission found at that index. Check properly.
+  permrole: 'Current permissions role is {0}.'
+  permrole_changed: 'Users now need the {0} role to edit permissions.'
+  permrole_not_set: Permission role isn't set.
+  permrole_reset: Permission role has been reset. Hmph.
+  perms_reset: Permissions for this server are reset.
+  removed: 'Removed permission #{0} - {1}'
+  rx_disable: 'Disabled usage of {0} {1} for {2} role.'
+  rx_enable: 'Enabled usage of {0} {1} for {2} role.'
+  sx_disable: 'Disabled usage of {0} {1} on this server.'
+  sx_enable: 'Enabled usage of {0} {1} on this server.'
+  uneditable: uneditable
+  ux_disable: 'Disabled usage of {0} {1} for {2} user.'
+  ux_enable: 'Enabled usage of {0} {1} for {2} user.'
+  verbose_false: I'll stop showing permission warnings.
+  verbose_true: I'll show permission warnings now. S-someone has to keep you informed.
+
+uk-UA:
+  acm_disable: 'Використання ВСІХ МОДУЛІВ на каналі {0} вимкнено.'
+  acm_enable: 'Використання ВСІХ МОДУЛІВ на каналі {0} увімкнено.'
+  arm_disable: 'Використання ВСІХ МОДУЛІВ для ролі {0} вимкнено.'
+  arm_enable: 'Використання ВСІХ МОДУЛІВ для ролі {0} увімкнено.'
+  asm_disable: Використання ВСІХ МОДУЛІВ на цьому сервері вимкнено.
+  asm_enable: Використання ВСІХ МОДУЛІВ на цьому сервері увімкнено.
+  aum_disable: 'Використання ВСІХ МОДУЛІВ для користувача {0} вимкнено.'
+  aum_enable: 'Використання ВСІХ МОДУЛІВ для користувача {0} увімкнено.'
+  cx_disable: 'Використання {0} {1} на каналі {2} вимкнено.'
+  cx_enable: 'Використання {0} {1} на каналі {2} увімкнено.'
+  global_perms_reset: Глобальні дозволи скинуто.
+  moved_permission: 'Дозвіл {0} переміщено з #{1} на #{2}'
+  of_command: команди
+  of_module: модуля
+  perm_not_found: 'Не вдалося знайти дозвіл за індексом #{0}'
+  perm_out_of_range: За цим індексом дозвіл не знайдено.
+  permrole: 'Поточна роль дозволів - {0}.'
+  permrole_changed: 'Тепер для редагування дозволів потрібна роль {0}.'
+  permrole_not_set: Роль дозволів не встановлено.
+  permrole_reset: Роль дозволів скинуто.
+  perms_reset: Дозволи для цього сервера скинуто.
+  removed: 'видалено дозвіл #{0} - {1}'
+  rx_disable: 'Використання {0} {1} для ролі {2} вимкнено.'
+  rx_enable: 'Використання {0} {1} для ролі {2} увімкнено.'
+  sx_disable: 'Використання {0} {1} на цьому сервері вимкнено.'
+  sx_enable: 'Використання {0} {1} на цьому сервері увімкнено.'
+  uneditable: незмінне
+  ux_disable: 'Використання {0} {1} для користувача {2} вимкнено.'
+  ux_enable: 'Використання {0} {1} для користувача {2} увімкнено.'
+  verbose_false: Я більше не показуватиму попередження про дозволи.
+  verbose_true: Тепер я показуватиму попередження про дозволи.
+
+vi-VN:
+  acm_disable: 'Đã tắt sử dụng TẤT CẢ MODULE trên kênh {0}.'
+  acm_enable: 'Đã bật sử dụng TẤT CẢ MODULE trên kênh {0}.'
+  arm_disable: 'Đã tắt sử dụng TẤT CẢ MODULE cho vai trò {0}.'
+  arm_enable: 'Đã bật sử dụng TẤT CẢ MODULE cho vai trò {0}.'
+  asm_disable: Đã tắt sử dụng TẤT CẢ MODULE trên máy chủ này.
+  asm_enable: Đã bật sử dụng TẤT CẢ MODULE trên máy chủ này.
+  aum_disable: 'Đã tắt sử dụng TẤT CẢ MODULE cho người dùng {0}.'
+  aum_enable: 'Đã bật sử dụng TẤT CẢ MODULE cho người dùng {0}.'
+  cx_disable: 'Đã tắt sử dụng {0} {1} trên kênh {2}.'
+  cx_enable: 'Đã bật sử dụng {0} {1} trên kênh {2}.'
+  global_perms_reset: Quyền toàn cục đã được đặt lại.
+  moved_permission: 'Đã di chuyển quyền {0} từ #{1} sang #{2}'
+  of_command: lệnh
+  of_module: module
+  perm_not_found: 'Không tìm thấy quyền ở vị trí #{0}'
+  perm_out_of_range: Không tìm thấy quyền ở vị trí đó.
+  permrole: 'Vai trò quyền hiện tại là {0}.'
+  permrole_changed: 'Người dùng giờ cần vai trò {0} để chỉnh sửa quyền.'
+  permrole_not_set: Vai trò quyền chưa được thiết lập.
+  permrole_reset: Vai trò quyền đã được đặt lại.
+  perms_reset: Quyền của máy chủ này đã được đặt lại.
+  removed: 'đã xóa quyền #{0} - {1}'
+  rx_disable: 'Đã tắt sử dụng {0} {1} cho vai trò {2}.'
+  rx_enable: 'Đã bật sử dụng {0} {1} cho vai trò {2}.'
+  sx_disable: 'Đã tắt sử dụng {0} {1} trên máy chủ này.'
+  sx_enable: 'Đã bật sử dụng {0} {1} trên máy chủ này.'
+  uneditable: không thể chỉnh sửa
+  ux_disable: 'Đã tắt sử dụng {0} {1} cho người dùng {2}.'
+  ux_enable: 'Đã bật sử dụng {0} {1} cho người dùng {2}.'
+  verbose_false: Mình sẽ không hiển thị cảnh báo quyền nữa.
+  verbose_true: Mình sẽ hiển thị cảnh báo quyền từ giờ.
+
+zh-CN:
+  acm_disable: '已在頻道 {0} 中停用全部模組'
+  acm_enable: '已在頻道 {0} 中啟用全部模組'
+  arm_disable: '已對身分組 {0} 停用全部模組'
+  arm_enable: '已對身分組 {0} 停用全部模組'
+  asm_disable: 已在這個伺服器上停用全部模組
+  asm_enable: 已在這個伺服器上啟用全部模組
+  aum_disable: '已對使用者 {0} 停用全部模組'
+  aum_enable: '已對使用者 {0} 啟用全部模組'
+  cx_disable: '在頻道 {2} 上停用了 {0} {1}'
+  cx_enable: '在頻道 {2} 上啟用了 {0} {1}'
+  global_perms_reset: 全局權限已重置。
+  moved_permission: '已將權限 {0} 由 #{1} 移動到 #{2}'
+  of_command: 指令
+  of_module: 模組
+  perm_not_found: '無法找到索引為 #{0} 的權限'
+  perm_out_of_range: 在該索引並未找到任何權限
+  permrole: '目前權限身分為 {0}'
+  permrole_changed: '使用者將需要 {0} 身分組才能更改權限設定'
+  permrole_not_set: 權限身分未設定
+  permrole_reset: 權限身分已被重置
+  perms_reset: 此伺服器的權限已重置。
+  removed: '權限已移除：#{0} - {1}'
+  rx_disable: '已對身分組 {2} 停用了 {0} {1}'
+  rx_enable: '已對身分組 {2} 啟用了 {0} {1}'
+  sx_disable: '已在這個伺服器上停用了 {0} {1}'
+  sx_enable: '已在這個伺服器上啟用了 {0} {1}'
+  uneditable: 不可編輯
+  ux_disable: '禁止{2}使用{0}{1}'
+  ux_enable: '開放{2}使用{0}{1}'
+  verbose_false: 機器人將不再顯示權限警告
+  verbose_true: 機器人將顯示權限警告

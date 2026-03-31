@@ -1,6 +1,0 @@
-perm_override: 'Kullanıcıların {1} komutunu çalıştırabilmesi için {0} iznine sahip olması gerekiyor.'
-perm_override_all: Tüm Discord izin geçersiz kılmaları temizlendi.
-perm_override_all_confirm: Bu sunucudaki **TÜM** Discord izin geçersiz kılmalarını kaldırmak istediğine emin misin? Bu işlem geri alınamaz.
-perm_override_page_none: Bu sayfada geçersiz kılma yok.
-perm_override_reset: Bu komut için Discord izin geçersiz kılmaları temizlendi.
-perm_overrides: Discord İzin Geçersiz Kılmaları

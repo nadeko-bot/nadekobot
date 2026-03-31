@@ -1,0 +1,95 @@
+ar:
+  xp_exclude_added: '{0}: تم استبعاد {1} من نظام XP.'
+  xp_exclude_removed: '{0}: لم يعد {1} مستبعدًا من نظام XP.'
+  xp_exclusion_none: لا توجد استثناءات محددة لهذا الخادم.
+  xp_exclusion_title: استثناءات XP
+
+de-DE:
+  xp_exclude_added: '{0}: {1} wurde vom XP-System ausgeschlossen.'
+  xp_exclude_removed: '{0}: {1} ist nicht mehr vom XP-System ausgeschlossen.'
+  xp_exclusion_none: Für diesen Server sind keine Ausschlüsse festgelegt.
+  xp_exclusion_title: XP-Ausschlüsse
+
+es-ES:
+  xp_exclude_added: '{0}: {1} ha sido excluido del sistema de XP.'
+  xp_exclude_removed: '{0}: {1} ya no está excluido del sistema de XP.'
+  xp_exclusion_none: No hay exclusiones configuradas para este servidor.
+  xp_exclusion_title: Exclusiones de XP
+
+fr-FR:
+  xp_exclude_added: '{0} : {1} a été exclu du système d''XP.'
+  xp_exclude_removed: '{0} : {1} n''est plus exclu du système d''XP.'
+  xp_exclusion_none: Il n'y a pas d'exclusions définies pour ce serveur.
+  xp_exclusion_title: Exclusions d'XP
+
+id-ID:
+  xp_exclude_added: '{0}: {1} telah dikecualikan dari sistem XP.'
+  xp_exclude_removed: '{0}: {1} tidak lagi dikecualikan dari sistem XP.'
+  xp_exclusion_none: Tidak ada pengecualian yang diatur untuk server ini.
+  xp_exclusion_title: Pengecualian XP
+
+ja-JP:
+  xp_exclude_added: '{0}: {1}がXPシステムから除外されました。'
+  xp_exclude_removed: '{0}: {1}はXPシステムから除外されなくなりました。'
+  xp_exclusion_none: このサーバーに除外は設定されていません。
+  xp_exclusion_title: XP除外
+
+ko-KR:
+  xp_exclude_added: '{0}: {1}이(가) XP 시스템에서 제외되었습니다.'
+  xp_exclude_removed: '{0}: {1}은(는) 더 이상 XP 시스템에서 제외되지 않습니다.'
+  xp_exclusion_none: 이 서버에 설정된 제외 항목이 없습니다.
+  xp_exclusion_title: XP 제외 목록
+
+pl-PL:
+  xp_exclude_added: '{0}: {1} został wykluczony z systemu XP.'
+  xp_exclude_removed: '{0}: {1} nie jest już wykluczony z systemu XP.'
+  xp_exclusion_none: Na tym serwerze nie ustawiono żadnych wykluczeń.
+  xp_exclusion_title: Wykluczenia XP
+
+pt-BR:
+  xp_exclude_added: '{0}: {1} foi excluído do sistema de XP.'
+  xp_exclude_removed: '{0}: {1} não está mais excluído do sistema de XP.'
+  xp_exclusion_none: Não há exclusões definidas para este servidor.
+  xp_exclusion_title: Exclusões de XP
+
+ru-RU:
+  xp_exclude_added: '{0}: {1} был исключён из системы XP.'
+  xp_exclude_removed: '{0}: {1} больше не исключён из системы XP.'
+  xp_exclusion_none: На этом сервере нет исключений.
+  xp_exclusion_title: Исключения XP
+
+sr-Cyrl-RS:
+  xp_exclude_added: '{0}: {1} је искључен/а из XP система.'
+  xp_exclude_removed: '{0}: {1} више није искључен/а из XP система.'
+  xp_exclusion_none: Нема постављених искључења за овај сервер.
+  xp_exclusion_title: XP искључења
+
+tr-TR:
+  xp_exclude_added: '{0}: {1} XP sisteminden çıkarıldı.'
+  xp_exclude_removed: '{0}: {1} artık XP sisteminden çıkarılmış değil.'
+  xp_exclusion_none: Bu sunucu için ayarlanmış hiçbir istisna yok.
+  xp_exclusion_title: XP İstisnaları
+
+ts-TS:
+  xp_exclude_added: '{0}: {1} has been excluded from the XP system.'
+  xp_exclude_removed: '{0}: {1} is no longer excluded from the XP system.'
+  xp_exclusion_none: There are no exclusions set for this server.
+  xp_exclusion_title: XP Exclusions
+
+uk-UA:
+  xp_exclude_added: '{0}: {1} було виключено з системи XP.'
+  xp_exclude_removed: '{0}: {1} більше не виключено з системи XP.'
+  xp_exclusion_none: На цьому сервері немає жодних виключень.
+  xp_exclusion_title: Виключення XP
+
+vi-VN:
+  xp_exclude_added: '{0}: {1} đã bị loại khỏi hệ thống XP.'
+  xp_exclude_removed: '{0}: {1} không còn bị loại khỏi hệ thống XP nữa.'
+  xp_exclusion_none: Không có loại trừ nào được đặt cho máy chủ này.
+  xp_exclusion_title: Loại Trừ XP
+
+zh-CN:
+  xp_exclude_added: '{0}：{1} 已被排除在 XP 系統之外。'
+  xp_exclude_removed: '{0}：{1} 不再被排除在 XP 系統之外。'
+  xp_exclusion_none: 此伺服器沒有設定排除項目。
+  xp_exclusion_title: XP 排除

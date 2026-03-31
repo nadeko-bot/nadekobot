@@ -16,7 +16,8 @@ public partial class Games
 
         private static string Draw(HangmanGame.State state)
         {
-            var head = state.Errors >= 1 ? "O" : " ";
+            var head = state.Errors >= 1 ? (state.Failed ? "X" : "O") : " ";
+            var rope = state.Errors >= 1 ? "│" : " ";
             var torso = state.Errors >= 2 ? "|" : " ";
             var leftArm = state.Errors >= 3 ? "/" : " ";
             var rightArm = state.Errors >= 4 ? "\\" : " ";
@@ -25,11 +26,12 @@ public partial class Games
 
             return $"""
                     ```
-                     ┌─────┐
-                     │     {head}
-                     │     {leftArm}{torso}{rightArm}
-                     │      {leftLeg} {rightLeg}
-                    ─┴─
+                      ┌──────┐
+                      │/     {rope}
+                      │      {head}
+                      │     {leftArm}{torso}{rightArm}
+                      │     {leftLeg} {rightLeg}
+                    ──┴──────────
                     ```
                     """;
         }

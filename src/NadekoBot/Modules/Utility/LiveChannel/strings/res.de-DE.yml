@@ -1,9 +1,0 @@
-livechannel_added: '{0} wurde erfolgreich als Live-Kanal hinzugefügt.'
-livechannel_limit: 'Du kannst maximal {0} Live-Kanäle pro Server haben.'
-livechannel_list_empty: Keine Live-Kanäle für diesen Server konfiguriert.
-livechannel_list_title: 'Live-Kanäle in {0}'
-livechannel_not_found: Kanal wurde nicht in der Live-Kanalliste gefunden.
-livechannel_please_wait: Bitte warte bis zu 10 Minuten, bis die Änderungen wirksam werden
-livechannel_removed: '{0} wurde erfolgreich aus den Live-Kanälen entfernt.'
-preview: Vorschau
-template: Vorlage

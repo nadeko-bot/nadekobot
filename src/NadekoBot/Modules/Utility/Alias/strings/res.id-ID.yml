@@ -1,6 +1,0 @@
-alias_added: 'Mengetik {0} sekarang akan menjadi alias dari {1}.'
-alias_list: Daftar alias
-alias_remove_fail: 'Trigger {0} tidak punya alias.'
-alias_removed: 'Trigger {0} tidak lagi memiliki alias.'
-aliases_cleared: 'Semua {0} alias di server ini telah dihapus.'
-aliases_none: Tidak ada alias ditemukan

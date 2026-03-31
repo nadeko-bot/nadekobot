@@ -1,0 +1,47 @@
+ar:
+  bot_nick: 'تم تغيير لقب البوت إلى {0}'
+
+de-DE:
+  bot_nick: 'Der Nickname des Bots wurde zu {0} geändert'
+
+es-ES:
+  bot_nick: 'El apodo del bot cambió a {0}'
+
+fr-FR:
+  bot_nick: 'Surnom du bot a été changé pour {0}'
+
+id-ID:
+  bot_nick: 'Nickname bot diubah menjadi {0}'
+
+ja-JP:
+  bot_nick: 'ボットのニックネームが {0} に変更されました。'
+
+ko-KR:
+  bot_nick: '봇의 닉네임이 {0}(으)로 변경되었습니다'
+
+pl-PL:
+  bot_nick: 'Nick bota zmieniony na {0}'
+
+pt-BR:
+  bot_nick: 'O nickname do bot foi alterado para {0}'
+
+ru-RU:
+  bot_nick: 'Псевдоним бота изменен на {0}'
+
+sr-Cyrl-RS:
+  bot_nick: 'Надимак бота је промењен у {0}'
+
+tr-TR:
+  bot_nick: 'Botun takma adı {0} olarak değiştirildi'
+
+ts-TS:
+  bot_nick: 'Bot''s nickname changed to {0}. D-don''t say it''s cute!'
+
+uk-UA:
+  bot_nick: 'Нікнейм бота змінено на {0}'
+
+vi-VN:
+  bot_nick: 'Biệt danh của bot đã đổi thành {0}'
+
+zh-CN:
+  bot_nick: 'Bot 的暱稱更改為 {0}'

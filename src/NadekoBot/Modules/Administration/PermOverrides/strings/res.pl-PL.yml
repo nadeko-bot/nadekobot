@@ -1,6 +1,0 @@
-perm_override: 'Użytkownicy będą potrzebować uprawnienia {0}, aby uruchomić komendę {1}.'
-perm_override_all: Wszystkie nadpisania uprawnień Discord zostały usunięte.
-perm_override_all_confirm: Czy na pewno chcesz usunąć **WSZYSTKIE** nadpisania uprawnień Discord na tym serwerze? Tej akcji nie można cofnąć.
-perm_override_page_none: Brak nadpisań na tej stronie.
-perm_override_reset: Nadpisania uprawnień Discord dla tej komendy zostały usunięte.
-perm_overrides: Nadpisania uprawnień Discord

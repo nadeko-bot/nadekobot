@@ -1,9 +1,0 @@
-schedule_add_error: Већ имате {0} заказаних команди. Обришите неке пре додавања нових.
-schedule_add_success: Заказана команда успешно додата.
-schedule_command: Команда
-schedule_delete_error: Грешка при брисању заказане команде.
-schedule_deleted: 'Заказана команда #{0} успешно обрисана.'
-schedule_id: ИД
-schedule_list_none: Немате ниједну заказану команду.
-schedule_list_title: Заказане команде
-schedule_when: Извршава се у

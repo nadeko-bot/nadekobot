@@ -1,0 +1,95 @@
+ar:
+  aar_disabled: '**الإسناد التلقائي للأدوار** عند انضمام المستخدم أصبح **معطّلًا** الآن.'
+  aar_none: لا يحصل المستخدمون على أي أدوار عند انضمامهم لهذا الخادم.
+  aar_role_removed: 'لن يحصل المستخدمون على دور {0} بعد الآن عند انضمامهم لهذا الخادم.'
+  aar_roles: 'الأدوار التالية تُمنح للمستخدمين عند انضمامهم لهذا الخادم: {0}'
+
+de-DE:
+  aar_disabled: Nutzer, die diesen Server beitreten, erhalten keine Rollen automatisch.
+  aar_none: Nutzer erhalten keine Rollen wenn sie diesem Server beitreten.
+  aar_role_removed: 'Die Nutzer erhalten die {0} Rolle nicht mehr wenn sie diesem Server beitreten.'
+  aar_roles: 'Die folgenden Rollen werden den Nutzern hinzugefügt wenn sie diesem Server beitreten: {0}'
+
+es-ES:
+  aar_disabled: Los usuarios que ingresen al servidor no recibirán roles automáticamente.
+  aar_none: Los usuarios no recibirán ningún rol cuando entren al servidor.
+  aar_role_removed: 'Los usuarios ya no recibirán el rol {0} cuando entren a este servidor.'
+  aar_roles: 'Los usuarios recibirán los siguientes roles al entrar al servidor: {0}'
+
+fr-FR:
+  aar_disabled: L'**assignation automatique de rôles** aux nouveaux membres est **désactivée**.
+  aar_none: Les utilisateurs ne reçoivent aucun rôle lorsqu'ils rejoignent ce serveur.
+  aar_role_removed: 'Les membres ne seront plus assignés {0} au moment de joindre le serveur.'
+  aar_roles: 'Les rôles suivants sont assignés aux membres qui joignent ce serveur: {0}'
+
+id-ID:
+  aar_disabled: '**Auto assign role** saat user bergabung sekarang **dinonaktifkan**.'
+  aar_none: User tidak menerima role apapun saat bergabung ke server ini.
+  aar_role_removed: 'User tidak akan lagi menerima role {0} saat bergabung ke server ini.'
+  aar_roles: 'Role berikut diberikan ke user yang bergabung ke server ini: {0}'
+
+ja-JP:
+  aar_disabled: ユーザー参加時の**役割の自動付与**が**無効**になりました。
+  aar_none: ユーザーがこのサーバーに参加しても、ロールは付与されません。
+  aar_role_removed: 'ユーザーがこのサーバーに参加しても、{0}ロールは付与されなくなります。'
+  aar_roles: 'このサーバーに参加するユーザーに以下のロールが適用されます: {0}'
+
+ko-KR:
+  aar_disabled: '**자동 역할 부여** 기능이 **비활성화**되었습니다.'
+  aar_none: 이 서버에 참여하는 유저에게 부여되는 역할이 없습니다.
+  aar_role_removed: '이 서버에 참여하는 유저에게 더 이상 {0} 역할이 부여되지 않습니다.'
+  aar_roles: '이 서버에 참여하는 유저에게 다음 역할이 부여됩니다: {0}'
+
+pl-PL:
+  aar_disabled: '**Automatyczne przypisywanie roli** przy dołączeniu użytkownika jest teraz **wyłączone**.'
+  aar_none: Użytkownicy nie otrzymują żadnych ról, gdy dołączają do tego serwera.
+  aar_role_removed: 'Użytkownicy nie będą już otrzymywać roli {0} po dołączeniu do tego serwera.'
+  aar_roles: 'Następujące role są przypisywane użytkownikom, którzy dołączają do tego serwera: {0}'
+
+pt-BR:
+  aar_disabled: '**Cargos automáticos** para usuários que entrarem está **desativado**'
+  aar_none: Os usuários não recebem nenhum cargo quando se juntam ao servidor.
+  aar_role_removed: 'Os usuários não receberão mais o cargo {0} quando se juntarem a esse servidor.'
+  aar_roles: 'Os seguintes cargos são aplicados aos usuários que se juntarem ao servidor: {0}'
+
+ru-RU:
+  aar_disabled: Пользователь, который присоединился к серверу не получил ни одной роли автоматически
+  aar_none: При присоединении к этому серверу пользователи не получают никаких ролей.
+  aar_role_removed: 'Пользователи больше не будут получать роль {0}, когда присоединятся к этому серверу.'
+  aar_roles: 'К пользователям, присоединяющимся к этому серверу, применяются следующие роли: {0}'
+
+sr-Cyrl-RS:
+  aar_disabled: '**Аутоматско додељивање улоге** при придруживању корисника је сада **искључено**.'
+  aar_none: Корисници не добијају никакве улоге када се придруже овом серверу.
+  aar_role_removed: 'Корисници више неће добијати улогу {0} када се придруже овом серверу.'
+  aar_roles: 'Следеће улоге се додељују корисницима који се придруже овом серверу: {0}'
+
+tr-TR:
+  aar_disabled: '**Otomatik rol atama** artık **devre dışı**.'
+  aar_none: Kullanıcılar bu sunucuya katıldığında herhangi bir rol almıyor.
+  aar_role_removed: 'Kullanıcılar bu sunucuya katıldığında artık {0} rolünü almayacak.'
+  aar_roles: 'Bu sunucuya katılan kullanıcılara şu roller veriliyor: {0}'
+
+ts-TS:
+  aar_disabled: '**Auto assign role** on user join is now **disabled**.'
+  aar_none: Users don't receive any roles when they join this server.
+  aar_role_removed: 'Users will no longer receive {0} role when they join. Hmph, one less thing to handle.'
+  aar_roles: 'The following roles are applied to new members: {0}'
+
+uk-UA:
+  aar_disabled: '**Автоматичне призначення ролі** при вході користувача тепер **вимкнено**.'
+  aar_none: Користувачі не отримують жодної ролі, коли приєднуються до цього сервера.
+  aar_role_removed: 'Користувачі більше не отримуватимуть роль {0} при приєднанні до цього сервера.'
+  aar_roles: 'Наступні ролі надаються користувачам, які приєднуються до цього сервера: {0}'
+
+vi-VN:
+  aar_disabled: '**Tự động gán role** khi người dùng tham gia đã được **tắt**.'
+  aar_none: Người dùng không nhận được role nào khi tham gia server này.
+  aar_role_removed: 'Người dùng sẽ không còn nhận role {0} khi tham gia server này nữa.'
+  aar_roles: 'Các role sau được gán cho người dùng khi tham gia server này: {0}'
+
+zh-CN:
+  aar_disabled: 加入本伺服器的使用者不會再獲得身份組
+  aar_none: 使用者加入伺服器時不會獲得任何身分組
+  aar_role_removed: '使用者在加入這個伺服器時將不再獲得 {0} 身分組'
+  aar_roles: '加入這個伺服器的使用者將會獲得以下身分組：{0}'

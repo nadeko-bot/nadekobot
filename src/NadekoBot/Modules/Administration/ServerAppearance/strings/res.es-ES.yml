@@ -1,5 +1,0 @@
-set_srvr_banner: ¡Nuevo banner del servidor establecido!
-set_srvr_icon: ¡Nuevo ícono del servidor establecido!
-srvr_banner_invalid: La imagen especificada tiene un tipo de archivo inválido. Asegúrate de especificar una URL directa de imagen.
-srvr_banner_invalid_url: La URL especificada no es válida. Asegúrate de especificar una URL directa de imagen.
-srvr_banner_too_large: ¡La imagen especificada es demasiado grande! El tamaño máximo es 8MB.

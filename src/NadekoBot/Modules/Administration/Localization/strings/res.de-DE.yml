@@ -1,6 +1,0 @@
-lang_list: Liste aller Sprachen
-lang_set: 'Die Sprache des Server ist {0} - {1}'
-lang_set_bot: 'Standard Schauplatz des Bots ist jetzt {0} - {1}'
-lang_set_bot_show: 'Bot''s Sprache ist {0} - {1}'
-lang_set_fail: Setzen der Sprache fehlgeschlagen. Schaue die Hilfe dieses Befehls nochmal an.
-lang_set_show: 'Die Sprache des Server''s ist nun {0} - {1}'

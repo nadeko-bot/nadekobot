@@ -1,6 +1,0 @@
-perm_override: 'سيحتاج المستخدمون إلى صلاحية {0} لتشغيل أمر {1}.'
-perm_override_all: تم مسح جميع تجاوزات صلاحيات Discord.
-perm_override_all_confirm: هل أنت متأكد أنك تريد إزالة **جميع** تجاوزات صلاحيات Discord على هذا الخادم؟ هذا الإجراء لا يمكن التراجع عنه.
-perm_override_page_none: لا توجد تجاوزات في هذه الصفحة.
-perm_override_reset: تم مسح تجاوزات صلاحيات Discord لهذا الأمر.
-perm_overrides: تجاوزات صلاحيات Discord

@@ -1,6 +1,0 @@
-alias_added: 'Escribir {0} ahora será un alias de {1}.'
-alias_list: Lista de alias
-alias_remove_fail: '{0} no era un alias.'
-alias_removed: 'El comando {0} ya no tiene un alias.'
-aliases_cleared: 'Todos los alias {0} en este servidor han sido eliminados.'
-aliases_none: No se ha encontrado alias.

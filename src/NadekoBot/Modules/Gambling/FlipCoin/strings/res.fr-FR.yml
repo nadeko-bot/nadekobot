@@ -1,6 +1,0 @@
-betflip_guess: Vous avez deviné !
-flip_invalid: 'Chiffre spécifié invalide. Vous pouvez retourner entre 1 et {0} pièces.'
-flip_results: 'a jeté {0} pièces. {1} faces, {2} piles.'
-flipped: 'a retourné {0}.'
-heads: Face
-tails: Pile

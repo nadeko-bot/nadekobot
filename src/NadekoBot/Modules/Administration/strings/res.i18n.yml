@@ -1,0 +1,63 @@
+ar:
+  attachments: المرفقات
+  channel: القناة
+
+de-DE:
+  attachments: Anhänge
+  channel: Kanal
+
+es-ES:
+  attachments: Adjuntos.
+  channel: Canal
+
+fr-FR:
+  attachments: Pièces jointes
+  channel: Salon
+
+id-ID:
+  attachments: Lampiran
+  channel: Channel
+
+ja-JP:
+  attachments: 添付ファイル
+  channel: チャンネル
+
+ko-KR:
+  attachments: 첨부 파일
+  channel: 채널
+
+pl-PL:
+  attachments: Załączniki
+  channel: Kanał
+
+pt-BR:
+  attachments: Anexos
+  channel: Canal
+
+ru-RU:
+  attachments: Вложения
+  channel: Канал
+
+sr-Cyrl-RS:
+  attachments: Прилози
+  channel: Канал
+
+tr-TR:
+  attachments: Ekler
+  channel: Kanal
+
+ts-TS:
+  attachments: Attachments
+  channel: Channel
+
+uk-UA:
+  attachments: Вкладення
+  channel: Канал
+
+vi-VN:
+  attachments: Tệp đính kèm
+  channel: Kênh
+
+zh-CN:
+  attachments: 附件
+  channel: 頻道

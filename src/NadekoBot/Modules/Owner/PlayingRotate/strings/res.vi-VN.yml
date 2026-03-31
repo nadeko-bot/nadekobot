@@ -1,8 +1,0 @@
-reprm: 'Đã xóa tin nhắn trạng thái: {0}'
-ropl_added: Đã thêm.
-ropl_disabled: Đã tắt trạng thái xoay vòng.
-ropl_enabled: Đã bật trạng thái xoay vòng.
-ropl_list: |-
-  Đây là danh sách các trạng thái xoay vòng:
-  {0}
-ropl_not_set: Chưa thiết lập trạng thái chơi xoay vòng nào.

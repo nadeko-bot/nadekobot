@@ -1,4 +1,0 @@
-convert: '{0} {1} 等於 {2} {3}'
-convert_not_found: '無法把 {0} 轉換為 {1}：未知的單位'
-convert_type_error: '無法把 {0} 轉換為 {1}：單位種類不同'
-convertlist: 轉換器可用的單位

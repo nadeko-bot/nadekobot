@@ -1,4 +1,0 @@
-bank_balance_other: 'ユーザー{0}の銀行残高は{1}です。'
-bank_deposited: '{0}を銀行口座に預けました。'
-bank_withdraw_insuff: '銀行口座に十分な{0}がありません。'
-bank_withdrew: '銀行口座から{0}を引き出しました。'

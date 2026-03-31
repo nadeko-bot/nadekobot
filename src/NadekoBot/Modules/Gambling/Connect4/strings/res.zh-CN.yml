@@ -1,5 +1,0 @@
-connect4_created: 已建立一個四子棋遊戲。等待玩家加入。
-connect4_draw: 四子棋遊戲終止於平手。
-connect4_failed_to_start: 由於沒有玩家參與，四子棋遊戲無法開始。
-connect4_player_to_move: '要移動的玩家：{0}'
-connect4_won: '{0} 贏得了與 {1} 的 Connect4 比賽。'

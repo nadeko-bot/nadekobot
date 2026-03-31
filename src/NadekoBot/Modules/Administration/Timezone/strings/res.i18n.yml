@@ -1,0 +1,79 @@
+ar:
+  timezone_guild: 'المنطقة الزمنية لهذا الخادم هي `{0}`'
+  timezone_not_found: لم يتم العثور على المنطقة الزمنية. استخدم أمر "timezones" لعرض قائمة المناطق الزمنية المتاحة.
+  timezones_available: المناطق الزمنية المتاحة
+
+de-DE:
+  timezone_guild: 'Zeitzone für dieser Server ist `{0}`'
+  timezone_not_found: Zeitzone nicht gefunden. Benutze den "Zeitzonen" Command um eine Liste der vorhandenen Zeitzonen zu sehen.
+  timezones_available: Verfügbare Zeitzonen.
+
+es-ES:
+  timezone_guild: 'La zona horaria de este servidor es `{0}`.'
+  timezone_not_found: Zona horaria no encontrada. Usa ".timezones" para ver la lista de husos horarios disponibles.
+  timezones_available: Zonas horarias disponibles
+
+fr-FR:
+  timezone_guild: 'Le fuseau horaire de ce serveur est `{0}`'
+  timezone_not_found: Fuseau horaire introuvable. Utilisez la commande "fuseau horaire" pour voir la liste des fuseaux horaires disponibles.
+  timezones_available: Fuseaux horaires disponibles.
+
+id-ID:
+  timezone_guild: 'Timezone untuk guild ini adalah `{0}`'
+  timezone_not_found: Timezone tidak ditemukan. Gunakan perintah "timezones" untuk melihat daftar timezone yang tersedia.
+  timezones_available: Timezone yang Tersedia
+
+ja-JP:
+  timezone_guild: 'このギルドのタイムゾーンは `{0}` です。'
+  timezone_not_found: タイムゾーンが見つかりませんでした。"timezones" コマンドを用いて利用可能なタイムゾーンを確認してください。
+  timezones_available: 利用可能なタイムゾーン
+
+ko-KR:
+  timezone_guild: '이 서버의 시간대는 `{0}`이에요'
+  timezone_not_found: 시간대를 찾을 수 없어요. "timezones" 명령어를 사용하여 사용 가능한 시간대 목록을 확인해 주세요.
+  timezones_available: 사용 가능한 시간대
+
+pl-PL:
+  timezone_guild: 'Strefa czasowa tego serwera to `{0}`'
+  timezone_not_found: Nie znaleziono strefy czasowej. Użyj komendy "timezones", aby zobaczyć listę dostępnych stref czasowych.
+  timezones_available: Dostępne strefy czasowe
+
+pt-BR:
+  timezone_guild: 'O fuso horário desse servidor é `{0}`'
+  timezone_not_found: Fuso horário não encontrado. Use o comando "timezones" para ver a lista de fusos horários disponíveis.
+  timezones_available: Fusos horários disponíveis
+
+ru-RU:
+  timezone_guild: 'Часовой пояс для этого сервера `{0}`'
+  timezone_not_found: Часовой пояс не найден. Используйте команду "timezones", что бы увидеть список доступных часовых поясов.
+  timezones_available: Доступные часовые пояса
+
+sr-Cyrl-RS:
+  timezone_guild: 'Временска зона за овај сервер је `{0}`'
+  timezone_not_found: Временска зона није пронађена. Користи команду "timezones" да видиш листу доступних временских зона.
+  timezones_available: Доступне временске зоне
+
+tr-TR:
+  timezone_guild: 'Bu sunucunun saat dilimi `{0}`'
+  timezone_not_found: Saat dilimi bulunamadı. Mevcut saat dilimlerinin listesini görmek için "timezones" komutunu kullan.
+  timezones_available: Mevcut Saat Dilimleri
+
+ts-TS:
+  timezone_guild: 'Timezone for this guild is `{0}`'
+  timezone_not_found: Timezone not found. Use "timezones" command to see the available list. I-I'm only telling you because you obviously need help!
+  timezones_available: Available Timezones
+
+uk-UA:
+  timezone_guild: 'Часовий пояс для цього сервера - `{0}`'
+  timezone_not_found: Часовий пояс не знайдено. Використай команду "timezones", щоб побачити список доступних часових поясів.
+  timezones_available: Доступні часові пояси
+
+vi-VN:
+  timezone_guild: 'Múi giờ của máy chủ này là `{0}`'
+  timezone_not_found: Không tìm thấy múi giờ. Dùng lệnh "timezones" để xem danh sách các múi giờ khả dụng.
+  timezones_available: Các múi giờ khả dụng
+
+zh-CN:
+  timezone_guild: '該伺服器的時區是`{0}`'
+  timezone_not_found: 未找到時區。使用"timezones"命令查看可用時區列表。
+  timezones_available: 可用時區

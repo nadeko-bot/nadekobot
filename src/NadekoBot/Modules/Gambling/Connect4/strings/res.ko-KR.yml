@@ -1,5 +1,0 @@
-connect4_created: 사목 게임을 만들었어요. 참가할 플레이어를 기다리고 있어요.
-connect4_draw: 사목 게임이 무승부로 끝났어요.
-connect4_failed_to_start: 아무도 참가하지 않아서 사목 게임을 시작하지 못했어요.
-connect4_player_to_move: '이동할 플레이어: {0}'
-connect4_won: '{0}님이 {1}님을 상대로 사목 게임에서 승리했어요.'

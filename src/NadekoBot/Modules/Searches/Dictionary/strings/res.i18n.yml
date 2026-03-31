@@ -1,0 +1,111 @@
+ar:
+  _class: الصنف
+  definition: التعريف
+  example: مثال
+  ud_error: فشل العثور على تعريف لهذا المصطلح.
+  word: كلمة
+
+de-DE:
+  _class: Klasse
+  definition: Erklärung
+  example: Beispiel
+  ud_error: Definition des Begriffs wurde nicht gefunden.
+  word: Wort
+
+es-ES:
+  _class: Clase
+  definition: Definición
+  example: Ejemplo
+  ud_error: No he podido encontrar una definición para ese término.
+  word: Palabra
+
+fr-FR:
+  _class: Classe
+  definition: Définition
+  example: Exemple
+  ud_error: Échec de la recherche de la définition de ce terme.
+  word: Mot
+
+id-ID:
+  _class: Kelas
+  definition: Definisi
+  example: Contoh
+  ud_error: Gagal menemukan definisi untuk istilah tersebut.
+  word: Kata
+
+ja-JP:
+  _class: クラス
+  definition: 定義
+  example: 例
+  ud_error: 指定された語句の定義が見つかりませんでした。
+  word: 単語
+
+ko-KR:
+  _class: 품사
+  definition: 정의
+  example: 예문
+  ud_error: 해당 용어의 정의를 찾지 못했어요.
+  word: 단어
+
+pl-PL:
+  _class: Klasa
+  definition: Definicja
+  example: Przykład
+  ud_error: Nie udało się znaleźć definicji tego terminu.
+  word: Słowo
+
+pt-BR:
+  _class: Classe
+  definition: Definição
+  example: Exemplo
+  ud_error: Falha ao encontrar uma definição para esse termo.
+  word: Palavra
+
+ru-RU:
+  _class: Класс
+  definition: Значение
+  example: Пример
+  ud_error: Не удалось найти определение для этого термина.
+  word: Слово
+
+sr-Cyrl-RS:
+  _class: Класа
+  definition: Дефиниција
+  example: Пример
+  ud_error: Нисам успео да пронађем дефиницију за тај појам.
+  word: Реч
+
+tr-TR:
+  _class: Sınıf
+  definition: Tanım
+  example: Örnek
+  ud_error: O terim için tanım bulunamadı.
+  word: Kelime
+
+ts-TS:
+  _class: Class
+  definition: Definition
+  example: Example
+  ud_error: Failed finding a definition for that term.
+  word: Word
+
+uk-UA:
+  _class: Клас
+  definition: Визначення
+  example: Приклад
+  ud_error: Не вдалося знайти визначення для цього терміну.
+  word: Слово
+
+vi-VN:
+  _class: Loại từ
+  definition: Định nghĩa
+  example: Ví dụ
+  ud_error: Không tìm thấy định nghĩa cho từ đó.
+  word: Từ
+
+zh-CN:
+  _class: 類別
+  definition: 定義
+  example: 範例
+  ud_error: 未能找到該術語的定義。
+  word: 文字

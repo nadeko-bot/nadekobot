@@ -1,0 +1,95 @@
+ar:
+  hangman_game_started: بدأت لعبة الرجل المشنوق
+  hangman_running: لعبة الرجل المشنوق قيد التشغيل بالفعل في هذه القناة.
+  hangman_stopped: تم إيقاف لعبة الرجل المشنوق.
+  hangman_types: 'قائمة أنواع مصطلحات "{0}hangman":'
+
+de-DE:
+  hangman_game_started: Hängemännchen gestartet
+  hangman_running: Hängemännchen läuft bereits in diesem Raum.
+  hangman_stopped: Galgenmännchen Spiel gestoppt
+  hangman_types: 'Liste an "{0}Galgenmännchen" Wort Typen:'
+
+es-ES:
+  hangman_game_started: Juego del ahorcado iniciado
+  hangman_running: El juego del ahorcado ya se está ejecutando en este canal.
+  hangman_stopped: Juego del ahorcado detenido.
+  hangman_types: 'Lista de términos de `{0}hangman`:'
+
+fr-FR:
+  hangman_game_started: La partie de pendu a commencée
+  hangman_running: Une partie de pendu est déjà en cours dans ce salon.
+  hangman_stopped: Jeu du pendu arrêté.
+  hangman_types: 'Liste des types de termes "{0}hangman":'
+
+id-ID:
+  hangman_game_started: Permainan Hangman dimulai
+  hangman_running: Permainan Hangman sudah berjalan di channel ini.
+  hangman_stopped: Permainan Hangman dihentikan.
+  hangman_types: 'Daftar tipe kata "{0}hangman":'
+
+ja-JP:
+  hangman_game_started: ハングマンゲームが始まりました。
+  hangman_running: ハングマンゲームはすでにこのチャンネルで開始されています。
+  hangman_stopped: ハングマンゲームは停止しました。
+  hangman_types: '「{0}hangman」の出題分野一覧:'
+
+ko-KR:
+  hangman_game_started: 행맨 게임이 시작되었어요
+  hangman_running: 이 채널에서 이미 행맨 게임이 진행 중이에요.
+  hangman_stopped: 행맨 게임이 중지되었어요.
+  hangman_types: '"{0}hangman" 단어 유형 목록:'
+
+pl-PL:
+  hangman_game_started: Gra w wisielca rozpoczęta
+  hangman_running: Gra w wisielca już trwa na tym kanale.
+  hangman_stopped: Gra w wisielca zatrzymana.
+  hangman_types: 'Lista typów haseł "{0}hangman":'
+
+pt-BR:
+  hangman_game_started: Jogo da forca iniciado
+  hangman_running: Já existe um jogo da forca em andamento nesse canal.
+  hangman_stopped: O jogo da forca foi encerrado.
+  hangman_types: 'Lista dos temas disponíveis no "{0}hangman":'
+
+ru-RU:
+  hangman_game_started: Игра в Виселицу начата!
+  hangman_running: Игра в Виселицу уже происходит в этом канале.
+  hangman_stopped: Игра в Виселицу была остановлена.
+  hangman_types: 'Список типов терминов "{0}hangman":'
+
+sr-Cyrl-RS:
+  hangman_game_started: Игра вешала је почела
+  hangman_running: Игра вешала већ траје на овом каналу.
+  hangman_stopped: Игра вешала заустављена.
+  hangman_types: 'Листа типова појмова за "{0}hangman":'
+
+tr-TR:
+  hangman_game_started: Adam asmaca oyunu başladı
+  hangman_running: Bu kanalda zaten bir adam asmaca oyunu çalışıyor.
+  hangman_stopped: Adam asmaca oyunu durduruldu.
+  hangman_types: '"{0}hangman" kelime türleri listesi:'
+
+ts-TS:
+  hangman_game_started: Hangman game started.
+  hangman_running: Hangman game already running on this channel.
+  hangman_stopped: Hangman game stopped.
+  hangman_types: 'List of "{0}hangman" term types:'
+
+uk-UA:
+  hangman_game_started: Гру у шибеницю розпочато
+  hangman_running: Гра у шибеницю вже йде в цьому каналі.
+  hangman_stopped: Гру у шибеницю зупинено.
+  hangman_types: 'Список типів слів для "{0}hangman":'
+
+vi-VN:
+  hangman_game_started: Trò đoán chữ đã bắt đầu
+  hangman_running: Trò đoán chữ đang chạy trên kênh này rồi.
+  hangman_stopped: Trò đoán chữ đã dừng.
+  hangman_types: 'Danh sách loại từ của "{0}hangman":'
+
+zh-CN:
+  hangman_game_started: 吊死鬼遊戲開始
+  hangman_running: 吊死鬼遊戲正在此頻道上進行
+  hangman_stopped: 猜單詞小遊戲停止了。
+  hangman_types: '"{0}hangman"的單字類別列表 :'

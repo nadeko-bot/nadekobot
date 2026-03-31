@@ -1,9 +1,0 @@
-event_duration_footer: 'L''événement se fini dans {0} heures.'
-event_title: 'L''évènement {0} a commencé !'
-new_gamestatus_event: |-
-  Écrivez le code secret dans n'importe quel salon pour recevoir {1}
-  {2} récompenses restantes.
-new_reaction_event: |-
-  Ajoutez la réaction {0} à ce message pour avoir {1}
-  {2} récompenses restantes.
-start_event_fail: Échec de l'événement. Un événement est déjà en cours, où il y a une erreur avec le démarrage de l'événement.

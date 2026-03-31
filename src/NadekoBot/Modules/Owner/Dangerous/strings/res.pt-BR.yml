@@ -1,3 +1,0 @@
-purge_user_confirm: 'Você tem certeza que deseja eliminar {0} da base de dados?'
-cleanup_done: 'Dados de {0} servidores permanecem no banco de dados.'
-sql_confirm_exec: Confirme a execução SQL

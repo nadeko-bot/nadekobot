@@ -1,0 +1,607 @@
+ar:
+  available_commands: الأوامر المتاحة
+  buy: شراء
+  cur_reward_added: 'المستخدمون الذين يصلون إلى المستوى {0} سيحصلون على {1}.'
+  cur_reward_cleared: 'الوصول إلى المستوى {0} لن يمنح أي {1} بعد الآن.'
+  in_use: قيد الاستخدام
+  level_set: 'تم تعيين مستوى المستخدم {0} إلى {1} في هذا الخادم.'
+  level_up_rewards: مكافآت رفع المستوى
+  level_x: 'المستوى {0}'
+  modified: 'تم تعديل XP الخادم للمستخدم {0} بمقدار {1}'
+  no_level_up_rewards: لا توجد مكافآت رفع مستوى في هذه الصفحة.
+  reset: إعادة تعيين XP
+  reset_server: تم إعادة تعيين XP لجميع المستخدمين في الخادم.
+  reset_server_confirm: هل أنت متأكد أنك تريد إعادة تعيين XP لجميع المستخدمين في الخادم؟
+  reset_user: 'تم إعادة تعيين XP للمستخدم ذي المعرّف {0} في هذا الخادم.'
+  reset_user_confirm: هل أنت متأكد أنك تريد إعادة تعيين XP للمستخدم المحدد في هذا الخادم؟
+  role_not_found: 'لم يتم العثور على الرتبة: {0}'
+  server_leaderboard: لوحة متصدري XP في الخادم
+  template_reloaded: تم إعادة تحميل قالب XP.
+  use: استخدام
+  xp_lose_role: 'فقدان رتبة {0}.'
+  xp_receive_role: 'الحصول على رتبة {0}.'
+  xp_role_reward_add_role: 'المستخدمون الذين يصلون إلى المستوى {0} سيحصلون على رتبة {1}.'
+  xp_role_reward_cleared: 'الوصول إلى المستوى {0} لن يمنح رتبة بعد الآن.'
+  xp_role_reward_remove_role: 'المستخدمون الذين يصلون إلى المستوى {0} سيفقدون رتبة {1}.'
+  xp_shop_disabled: متجر XP معطّل من قبل المالك، أو لا توجد عناصر للبيع.
+  xp_shop_item_cant_use: لا يمكنك استخدام هذا العنصر لأنه غير موجود أو لا تملكه.
+  xpadd_users: 'تمت إضافة {0} XP خادم إلى {1} مستخدم.'
+  xprewsreset_confirm: هل أنت متأكد أنك تريد حذف جميع مكافآت رفع مستوى XP من هذا الخادم؟ لا يمكن التراجع عن هذا الإجراء.
+  xpshop_already_owned: أنت تمتلك هذا العنصر بالفعل.
+  xpshop_buy_success: 'تم شراء `{0}/{1}` بنجاح'
+  xpshop_item_not_found: لا يوجد عنصر بهذا المفتاح.
+  xpt_level: المستوى
+  xpt_rank: الترتيب
+  xpt_progress: التقدم
+  xpt_total_xp: إجمالي XP
+  xpt_club: النادي
+
+de-DE:
+  available_commands: Verfügbare Befehle
+  buy: Kaufen
+  cur_reward_added: 'Benutzer die das Level {0} erreichen werden {1} erhalten. '
+  cur_reward_cleared: 'Das Erreichen des Levels {0} wird nicht mehr mit {1} belohnt.'
+  in_use: In Benutzung
+  level_set: 'Level von Benutzer {0} auf {1} auf diesem Server gesetzt.'
+  level_up_rewards: Level Up Belohnungen
+  level_x: 'Level {0}'
+  modified: 'Server XP wurde von Nutzer {0} um {1} bearbeitet.'
+  no_level_up_rewards: Keine Level up Belohnung auf dieser Seite.
+  reset: XP Reset
+  reset_server: XP von allen Nutzern auf diesem Server wurde zurückgesetzt.
+  reset_server_confirm: Bist du sicher, dass du die XP von allen Nutzern auf diesem Server zurücksetzen möchtest?
+  reset_user: 'Nutzer mit der ID {0} wurde die XP auf diesem Server zurückgesetzt.'
+  reset_user_confirm: Bist du sicher, dass du die XP vom definierten Nutzer auf diesem Server zurücksetzen möchtest?
+  role_not_found: 'Rolle nicht gefunden: {0}'
+  server_leaderboard: Server XP Rangliste
+  template_reloaded: Xp Vorlage wurde neu geladen.
+  use: Benutzen
+  xp_lose_role: 'Verliere die {0} Rolle'
+  xp_receive_role: 'Erhalte die {0} Rolle.'
+  xp_role_reward_add_role: 'Benutzer die das Level {0} erreichen werden die Rolle {1} erhalten.'
+  xp_role_reward_cleared: 'Das erreichen von Level {0} wird nicht mehr mit einer Rolle belohnt.'
+  xp_role_reward_remove_role: 'Benutzer die das Level {0} erreichen werden die {1} Rolle verlieren.'
+  xp_shop_disabled: Der XP-Shop ist vom Besitzer deaktiviert oder es gibt keine Artikel zum Verkauf.
+  xp_shop_item_cant_use: Du kannst diesen Artikel nicht verwenden, da er nicht existiert oder dir nicht gehört.
+  xpadd_users: '{0} Server-XP zu {1} Benutzern hinzugefügt.'
+  xprewsreset_confirm: Bist du sicher, dass du ALLE XP Level-Up Belohnungen von diesem Server löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.
+  xpshop_already_owned: Du besitzt diesen Artikel bereits.
+  xpshop_buy_success: '`{0}/{1}` erfolgreich gekauft'
+  xpshop_item_not_found: Ein Artikel mit diesem Schlüssel existiert nicht.
+  xpt_level: Level
+  xpt_rank: Rang
+  xpt_progress: Fortschritt
+  xpt_total_xp: Gesamt-XP
+  xpt_club: Club
+
+es-ES:
+  available_commands: Comandos disponibles
+  buy: Comprar
+  cur_reward_added: 'Los usuarios que alcancen el nivel {0} recibirán {1}.'
+  cur_reward_cleared: 'Alcanzar el nivel {0} ya no recompensará {1}.'
+  in_use: En uso
+  level_set: 'El nivel del usuario {0} ha sido establecido a {1} en este servidor.'
+  level_up_rewards: Recompensas por subir de nivel
+  level_x: 'Nivel {0}'
+  modified: 'La EXP en el servidor del usuario {0} ha sido modificada por {1}'
+  no_level_up_rewards: No hay recompensa por subir de nivel en esta página.
+  reset: Reinicio de EXP
+  reset_server: La EXP de todos los usuarios en el servidor ha sido reiniciada.
+  reset_server_confirm: ¿Seguro que desea restablecer la EXP de todos los usuarios del servidor?
+  reset_user: 'La EXP del usuario con ID {0} ha sido restablecida en este servidor.'
+  reset_user_confirm: ¿Seguro que desea restablecer la EXP del usuario especificado en este servidor?
+  role_not_found: 'Rol no encontrado: {0}'
+  server_leaderboard: Marcador de EXP del servidor
+  template_reloaded: La plantilla de EXP ha sido recargada.
+  use: Usar
+  xp_lose_role: 'Perderá el rol {0}.'
+  xp_receive_role: 'Recibirá el rol {0}.'
+  xp_role_reward_add_role: 'Los usuarios que alcancen el nivel {0} recibirán el rol {1}.'
+  xp_role_reward_cleared: 'Alcanzar el nivel {0} ya no recompensará un rol.'
+  xp_role_reward_remove_role: 'Los usuarios que alcancen el nivel {0} perderán el rol {1}.'
+  xp_shop_disabled: La tienda de XP esta desactivada por el dueno, o no hay articulos a la venta.
+  xp_shop_item_cant_use: No puedes usar este articulo porque no existe o no lo tienes.
+  xpadd_users: 'Se han agregado {0} XP de servidor a {1} usuarios.'
+  xprewsreset_confirm: ¿Seguro que deseas eliminar TODOS las recompensas por subir de nivel de este servidor? Esta acción es irreversible.
+  xpshop_already_owned: Ya tienes este articulo.
+  xpshop_buy_success: 'Has comprado `{0}/{1}` correctamente'
+  xpshop_item_not_found: No existe un articulo con esa clave.
+  xpt_level: Nivel
+  xpt_rank: Rango
+  xpt_progress: Progreso
+  xpt_total_xp: XP Total
+  xpt_club: Club
+
+fr-FR:
+  available_commands: Commandes disponibles
+  buy: Acheter
+  cur_reward_added: 'Les utilisateurs atteignants le niveau {0} recevront {1}.'
+  cur_reward_cleared: 'Atteindre le niveau {0} n''offrera plus aucune {1}.'
+  in_use: En utilisation
+  level_set: 'Le niveau de l''utilisateur {0} a été défini à {1} sur ce serveur.'
+  level_up_rewards: Récompenses de monté de niveau
+  level_x: 'Niveau {0}'
+  modified: 'XP de l''utilisateur {0} modifié par {1}'
+  no_level_up_rewards: Pas de récompenses de niveau supérieur sur cette page.
+  reset: Réinitialisation de l'XP
+  reset_server: L'XP de tous les utilisateurs sur le serveur a été réinitialisé.
+  reset_server_confirm: Êtes-vous sûr de vouloir réinitialiser l'XP de tous les utilisateurs du serveur ?
+  reset_user: 'L''utilisateur avec l''identifiant {0} a vu son XP réinitialisé sur ce serveur.'
+  reset_user_confirm: Êtes-vous sûr de vouloir réinitialiser l'XP de l'utilisateur spécifié sur ce serveur ?
+  role_not_found: 'Rôle introuvable : {0}'
+  server_leaderboard: Classement XP du serveur
+  template_reloaded: Le modèle XP a été rechargé.
+  use: Utiliser
+  xp_lose_role: 'Perd le rôle {0}'
+  xp_receive_role: 'Reçoit le rôle {0}.'
+  xp_role_reward_add_role: 'L''utilisateur qui atteint le niveau {0} recevra le rôle {1}.'
+  xp_role_reward_cleared: 'Atteindre le niveau {0} ne récompensera plus d''un rôle.'
+  xp_role_reward_remove_role: 'Les utilisateurs qui atteindront le niveau {0} perdront le rôle {1}.'
+  xp_shop_disabled: Le magasin d'XP est désactivé par le propriétaire, ou il n'y a aucun item à vendre.
+  xp_shop_item_cant_use: Vous ne pouvez pas utiliser cet item car il ne vous appartient pas ou il n'existe pas.
+  xpadd_users: 'Ajout de {0} XP du serveur à l''utilisateur {1}.'
+  xprewsreset_confirm: Êtes-vous sûr de vouloir supprimer TOUTES les récompenses de niveau xp de ce serveur ? Cette action est irréversible.
+  xpshop_already_owned: Vous disposez déjà de cet item.
+  xpshop_buy_success: 'Vous avez acheté avec succès `{0}/{1}`'
+  xpshop_item_not_found: Aucun item disposant de cette clé n'existe.
+  xpt_level: Niveau
+  xpt_rank: Classement
+  xpt_progress: Progression
+  xpt_total_xp: XP total
+  xpt_club: Club
+
+id-ID:
+  available_commands: Perintah yang Tersedia
+  buy: Beli
+  cur_reward_added: 'Pengguna yang mencapai level {0} akan menerima {1}.'
+  cur_reward_cleared: 'Mencapai level {0} tidak lagi memberikan {1}.'
+  in_use: Sedang dipakai
+  level_set: 'Level pengguna {0} diatur ke {1} di server ini.'
+  level_up_rewards: Hadiah Naik Level
+  level_x: 'Level {0}'
+  modified: 'XP server pengguna {0} diubah sebesar {1}'
+  no_level_up_rewards: Tidak ada hadiah naik level di halaman ini.
+  reset: Reset Xp
+  reset_server: XP semua pengguna di server telah direset.
+  reset_server_confirm: Kamu yakin ingin mereset XP semua pengguna di server ini?
+  reset_user: 'Pengguna dengan id {0} telah direset XP-nya di server ini.'
+  reset_user_confirm: Kamu yakin ingin mereset XP pengguna yang dipilih di server ini?
+  role_not_found: 'Role tidak ditemukan: {0}'
+  server_leaderboard: Papan Peringkat XP Server
+  template_reloaded: Template Xp telah dimuat ulang.
+  use: Pakai
+  xp_lose_role: 'Kehilangan role {0}.'
+  xp_receive_role: 'Menerima role {0}.'
+  xp_role_reward_add_role: 'Pengguna yang mencapai level {0} akan menerima role {1}.'
+  xp_role_reward_cleared: 'Mencapai level {0} tidak lagi memberikan role.'
+  xp_role_reward_remove_role: 'Pengguna yang mencapai level {0} akan kehilangan role {1}.'
+  xp_shop_disabled: Toko Xp dinonaktifkan oleh pemilik, atau tidak ada item yang dijual.
+  xp_shop_item_cant_use: Kamu tidak bisa menggunakan item ini karena tidak ada atau kamu tidak memilikinya.
+  xpadd_users: 'Menambahkan {0} XP server ke {1} pengguna.'
+  xprewsreset_confirm: Kamu yakin ingin menghapus SEMUA hadiah naik level XP dari server ini? Tindakan ini tidak bisa dibatalkan.
+  xpshop_already_owned: Kamu sudah memiliki item ini.
+  xpshop_buy_success: 'Berhasil membeli `{0}/{1}`'
+  xpshop_item_not_found: Item dengan key tersebut tidak ditemukan.
+  xpt_level: Level
+  xpt_rank: Peringkat
+  xpt_progress: Progres
+  xpt_total_xp: Total XP
+  xpt_club: Klub
+
+ja-JP:
+  available_commands: 利用可能なコマンド
+  buy: 購入
+  cur_reward_added: 'レベル{0}に到達したユーザーは{1}を受け取ります。'
+  cur_reward_cleared: 'レベル{0}に到達しても{1}は付与されなくなりました。'
+  in_use: 使用中
+  level_set: 'ユーザー{0}のレベルがこのサーバーで{1}に設定されました。'
+  level_up_rewards: レベルアップ報酬
+  level_x: 'レベル {0}'
+  modified: '{1} によってユーザー {0} のサーバーXPが修正されました。'
+  no_level_up_rewards: このページにはレベルアップ報酬がありません。
+  reset: XPリセット
+  reset_server: サーバーの全ユーザーのXPがリセットされました。
+  reset_server_confirm: 本当にサーバーの全ユーザーのXPをリセットしますか?
+  reset_user: 'ID {0}のユーザーのXPがこのサーバーでリセットされました。'
+  reset_user_confirm: 本当に指定されたユーザーのこのサーバーでのXPをリセットしますか?
+  role_not_found: 'ロールが見つかりません: {0}'
+  server_leaderboard: サーバーXPリーダーボード
+  template_reloaded: XPテンプレートが再読み込みされました。
+  use: 使用
+  xp_lose_role: 'ロール{0}を失います。'
+  xp_receive_role: 'ロール{0}を獲得します。'
+  xp_role_reward_add_role: 'レベル{0}に到達したユーザーはロール{1}を獲得します。'
+  xp_role_reward_cleared: 'レベル{0}に到達してもロール報酬はなくなりました。'
+  xp_role_reward_remove_role: 'レベル{0}に到達したユーザーはロール{1}を失います。'
+  xp_shop_disabled: XPショップはオーナーにより無効になっているか、販売アイテムがありません。
+  xp_shop_item_cant_use: このアイテムは存在しないか、所有していないため使用できません。
+  xpadd_users: '{1}人のユーザーに{0}のサーバーXPを追加しました。'
+  xprewsreset_confirm: このサーバーの**すべて**のXPレベルアップ報酬を削除しますか？この操作は元に戻せません。
+  xpshop_already_owned: このアイテムは既に所有しています。
+  xpshop_buy_success: '`{0}/{1}`を正常に購入しました'
+  xpshop_item_not_found: そのキーのアイテムは存在しません。
+  xpt_level: レベル
+  xpt_rank: ランク
+  xpt_progress: 進捗
+  xpt_total_xp: 合計XP
+  xpt_club: クラブ
+
+ko-KR:
+  available_commands: 사용 가능한 명령어
+  buy: 구매
+  cur_reward_added: '레벨 {0}에 도달한 유저는 {1}을(를) 받게 됩니다.'
+  cur_reward_cleared: '레벨 {0}에 도달해도 더 이상 {1}을(를) 보상으로 받지 않습니다.'
+  in_use: 사용 중
+  level_set: '유저 {0}의 레벨이 이 서버에서 {1}(으)로 설정되었습니다.'
+  level_up_rewards: 레벨업 보상
+  level_x: '레벨 {0}'
+  modified: '유저 {0}의 서버 XP가 {1}만큼 변경되었습니다'
+  no_level_up_rewards: 이 페이지에 레벨업 보상이 없습니다.
+  reset: XP 초기화
+  reset_server: 서버 내 모든 유저의 XP가 초기화되었습니다.
+  reset_server_confirm: 정말로 서버 내 모든 유저의 XP를 초기화하시겠습니까?
+  reset_user: 'ID가 {0}인 유저의 XP가 이 서버에서 초기화되었습니다.'
+  reset_user_confirm: 정말로 지정된 유저의 XP를 이 서버에서 초기화하시겠습니까?
+  role_not_found: '역할을 찾을 수 없습니다: {0}'
+  server_leaderboard: 서버 XP 리더보드
+  template_reloaded: XP 템플릿이 다시 로드되었습니다.
+  use: 사용
+  xp_lose_role: '{0} 역할을 잃습니다.'
+  xp_receive_role: '{0} 역할을 받습니다.'
+  xp_role_reward_add_role: '레벨 {0}에 도달한 유저는 {1} 역할을 받게 됩니다.'
+  xp_role_reward_cleared: '레벨 {0}에 도달해도 더 이상 역할을 보상으로 받지 않습니다.'
+  xp_role_reward_remove_role: '레벨 {0}에 도달한 유저는 {1} 역할을 잃게 됩니다.'
+  xp_shop_disabled: XP 상점이 소유자에 의해 비활성화되었거나 판매 중인 아이템이 없습니다.
+  xp_shop_item_cant_use: 이 아이템은 존재하지 않거나 소유하고 있지 않아 사용할 수 없습니다.
+  xpadd_users: '{1}명의 유저에게 서버 XP {0}을(를) 추가했습니다.'
+  xprewsreset_confirm: 정말로 이 서버의 모든 XP 레벨업 보상을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+  xpshop_already_owned: 이미 이 아이템을 소유하고 있습니다.
+  xpshop_buy_success: '`{0}/{1}` 구매에 성공했습니다'
+  xpshop_item_not_found: 해당 키의 아이템이 존재하지 않습니다.
+  xpt_level: 레벨
+  xpt_rank: 순위
+  xpt_progress: 진행
+  xpt_total_xp: 총 XP
+  xpt_club: 클럽
+
+pl-PL:
+  available_commands: Dostępne komendy
+  buy: Kup
+  cur_reward_added: 'Użytkownicy, którzy osiągną poziom {0}, otrzymają {1}.'
+  cur_reward_cleared: 'Osiągnięcie poziomu {0} nie będzie już nagradzane {1}.'
+  in_use: W użyciu
+  level_set: 'Poziom użytkownika {0} ustawiony na {1} na tym serwerze.'
+  level_up_rewards: Nagrody za awans
+  level_x: 'Poziom {0}'
+  modified: 'Zmodyfikowano XP serwera użytkownika {0} o {1}'
+  no_level_up_rewards: Brak nagród za awans na tej stronie.
+  reset: Reset XP
+  reset_server: XP wszystkich użytkowników na serwerze zostało zresetowane.
+  reset_server_confirm: Czy na pewno chcesz zresetować XP wszystkich użytkowników na serwerze?
+  reset_user: 'Użytkownik o id {0} miał zresetowane XP na tym serwerze.'
+  reset_user_confirm: Czy na pewno chcesz zresetować XP wskazanego użytkownika na tym serwerze?
+  role_not_found: 'Nie znaleziono roli: {0}'
+  server_leaderboard: Ranking XP serwera
+  template_reloaded: Szablon XP został przeładowany.
+  use: Użyj
+  xp_lose_role: 'Utrata roli {0}.'
+  xp_receive_role: 'Otrzymanie roli {0}.'
+  xp_role_reward_add_role: 'Użytkownicy, którzy osiągną poziom {0}, otrzymają rolę {1}.'
+  xp_role_reward_cleared: 'Osiągnięcie poziomu {0} nie będzie już nagradzane rolą.'
+  xp_role_reward_remove_role: 'Użytkownicy, którzy osiągną poziom {0}, stracą rolę {1}.'
+  xp_shop_disabled: Sklep XP jest wyłączony przez właściciela lub nie ma żadnych przedmiotów na sprzedaż.
+  xp_shop_item_cant_use: Nie możesz użyć tego przedmiotu, ponieważ nie istnieje lub go nie posiadasz.
+  xpadd_users: 'Dodano {0} XP serwera dla {1} użytkowników.'
+  xprewsreset_confirm: Czy na pewno chcesz usunąć WSZYSTKIE nagrody za awans XP z tego serwera? Ta akcja jest nieodwracalna.
+  xpshop_already_owned: Już posiadasz ten przedmiot.
+  xpshop_buy_success: 'Pomyślnie zakupiono `{0}/{1}`'
+  xpshop_item_not_found: Przedmiot o takim kluczu nie istnieje.
+  xpt_level: Poziom
+  xpt_rank: Ranga
+  xpt_progress: Postęp
+  xpt_total_xp: Całkowite XP
+  xpt_club: Klub
+
+pt-BR:
+  available_commands: Comandos Disponiveis
+  buy: Comprar
+  cur_reward_added: 'Usuários que atingirem o nível {0} receberão {1}.'
+  cur_reward_cleared: 'Usuários não serão mais recompensados com {1} ao atingirem o nível {0}.'
+  in_use: Em uso
+  level_set: 'O nível do usuário {0} foi definido para {1} neste servidor.'
+  level_up_rewards: Recompensas de nível
+  level_x: 'Nível {0}'
+  modified: 'O XP do usuário {0} foi modificado por {1} neste servidor'
+  no_level_up_rewards: Não há recompensas de nível nesta página.
+  reset: Redefinição de Xp
+  reset_server: O XP de todos os usuários do servidor foi resetado.
+  reset_server_confirm: Você tem certeza que deseja resetar o XP de todos os usuários neste servidor?
+  reset_user: 'O usuário com ID {0} teve o XP resetado neste servidor.'
+  reset_user_confirm: Você tem certeza que deseja resetar o XP do usuário especificado neste servidor?
+  role_not_found: 'Cargo não encontrado: {0}'
+  server_leaderboard: Classificação de XP do servidor
+  template_reloaded: Cartão de XP recarregado.
+  use: Usar
+  xp_lose_role: 'Remove o cargo {0}.'
+  xp_receive_role: 'Recebe o cargo {0}.'
+  xp_role_reward_add_role: 'Usuários que atingirem o nível {0} receberão o cargo {1}.'
+  xp_role_reward_cleared: 'Atingir o nível {0} não irá mas entregar um cargo.'
+  xp_role_reward_remove_role: 'Usuários que atingirem o nível {0} perderão o cargo {1}.'
+  xp_shop_disabled: A loja de XP esta desativada pelo dono, ou nao ha itens a venda.
+  xp_shop_item_cant_use: Voce nao pode usar este item pois ele nao existe ou voce nao o possui.
+  xpadd_users: 'Adicionado {0} XP de servidor para {1} usuarios.'
+  xprewsreset_confirm: Você tem certeza que quer deletar TODO as recompensas de subir de nível deste servidor? Essa ação não é reversível.
+  xpshop_already_owned: Voce ja possui este item.
+  xpshop_buy_success: 'Compra de `{0}/{1}` realizada com sucesso'
+  xpshop_item_not_found: Um item com essa chave nao existe.
+  xpt_level: Nível
+  xpt_rank: Ranking
+  xpt_progress: Progresso
+  xpt_total_xp: XP Total
+  xpt_club: Clube
+
+ru-RU:
+  available_commands: Доступные команды
+  buy: Купить
+  cur_reward_added: 'Пользователи, которые достигнут {0} уровень, получат {1}.'
+  cur_reward_cleared: 'Достижение {0} уровня, больше не будет награждаться {1}.'
+  in_use: Используется
+  level_set: 'Уровень пользователя {0} установлен на {1} на этом сервере.'
+  level_up_rewards: Награды за повышение уровня
+  level_x: 'Уровень {0}'
+  modified: 'Изменен сервер XP пользователя {0} пользователем {1}'
+  no_level_up_rewards: На этой странице нет вознаграждения за повышение уровня.
+  reset: Сброс ХР
+  reset_server: ХР всех пользователей на сервере сброшена.
+  reset_server_confirm: Вы уверены, что хотите сбросить XP всех пользователей на сервере?
+  reset_user: 'Пользователь с идентификатором {0} сбросил свой XP на этом сервере.'
+  reset_user_confirm: Вы уверены, что хотите сбросить XP указанного пользователя на этом сервере?
+  role_not_found: 'Роль не найдена: {0}'
+  server_leaderboard: Таблица лидеров XP на сервере
+  template_reloaded: Шаблон XР был перезагружен.
+  use: Использовать
+  xp_lose_role: 'Потеряна роль {0}'
+  xp_receive_role: 'Получена роль {0}'
+  xp_role_reward_add_role: 'Пользователи, которые достигнут {0} уровень, получат роль {1}.'
+  xp_role_reward_cleared: 'Достижение уровня {0} больше не будет вознаграждать роль.'
+  xp_role_reward_remove_role: 'Пользователи, которые достигнут {0} уровень, потеряют роль {1}.'
+  xp_shop_disabled: Магазин опыта отключен владельцем или нет товаров в продаже.
+  xp_shop_item_cant_use: Вы не можете использовать этот предмет, так как он не существует или не принадлежит вам.
+  xpadd_users: 'Добавлено {0} серверного опыта для {1} пользователей.'
+  xprewsreset_confirm: Вы уверены, что хотите удалить ВСЕ награды за повышение уровня опыта с этого сервера? Это действие необратимо.
+  xpshop_already_owned: Вы уже владеете этим предметом.
+  xpshop_buy_success: 'Успешно куплено `{0}/{1}`'
+  xpshop_item_not_found: Предмет с таким ключом не существует.
+  xpt_level: Уровень
+  xpt_rank: Ранг
+  xpt_progress: Прогресс
+  xpt_total_xp: Всего XP
+  xpt_club: Клуб
+
+sr-Cyrl-RS:
+  available_commands: Доступне команде
+  buy: Купи
+  cur_reward_added: 'Корисници који достигну ниво {0} добиће {1}.'
+  cur_reward_cleared: 'Достизање нивоа {0} више неће награђивати {1}.'
+  in_use: У употреби
+  level_set: 'Ниво корисника {0} постављен на {1} на овом серверу.'
+  level_up_rewards: Награде за напредовање
+  level_x: 'Ниво {0}'
+  modified: 'Промењен серверски XP корисника {0} за {1}'
+  no_level_up_rewards: Нема награда за напредовање на овој страници.
+  reset: Ресетовање XP-а
+  reset_server: XP свих корисника на серверу је ресетован.
+  reset_server_confirm: Да ли си сигуран/на да желиш да ресетујеш XP свих корисника на серверу?
+  reset_user: 'Кориснику са ID-јем {0} је ресетован XP на овом серверу.'
+  reset_user_confirm: Да ли си сигуран/на да желиш да ресетујеш XP наведеног корисника на овом серверу?
+  role_not_found: 'Улога није пронађена: {0}'
+  server_leaderboard: Серверска XP табела
+  template_reloaded: XP шаблон је поново учитан.
+  use: Користи
+  xp_lose_role: 'Губиш улогу {0}.'
+  xp_receive_role: 'Добијаш улогу {0}.'
+  xp_role_reward_add_role: 'Корисници који достигну ниво {0} добиће улогу {1}.'
+  xp_role_reward_cleared: 'Достизање нивоа {0} више неће награђивати улогом.'
+  xp_role_reward_remove_role: 'Корисници који достигну ниво {0} изгубиће улогу {1}.'
+  xp_shop_disabled: XP продавница је онемогућена од стране власника, или нема ствари на продају.
+  xp_shop_item_cant_use: Не можеш да користиш ову ставку јер не постоји или је не поседујеш.
+  xpadd_users: 'Додато {0} серверског XP-а за {1} корисника.'
+  xprewsreset_confirm: Да ли си сигуран/на да желиш да обришеш СВЕ награде за напредовање на овом серверу? Ова радња је неповратна.
+  xpshop_already_owned: Већ поседујеш ову ставку.
+  xpshop_buy_success: 'Успешно купљено `{0}/{1}`'
+  xpshop_item_not_found: Ставка са тим кључем не постоји.
+  xpt_level: Ниво
+  xpt_rank: Ранг
+  xpt_progress: Напредак
+  xpt_total_xp: Укупно XP
+  xpt_club: Клуб
+
+tr-TR:
+  available_commands: Mevcut Komutlar
+  buy: Satın Al
+  cur_reward_added: '{0}. seviyeye ulaşan kullanıcılar {1} alacak.'
+  cur_reward_cleared: '{0}. seviyeye ulaşmak artık {1} ödülü vermeyecek.'
+  in_use: Kullanımda
+  level_set: '{0} kullanıcısının seviyesi bu sunucuda {1} olarak ayarlandı.'
+  level_up_rewards: Seviye Atlama Ödülleri
+  level_x: 'Seviye {0}'
+  modified: '{0} kullanıcısının sunucu XP''si {1} kadar değiştirildi'
+  no_level_up_rewards: Bu sayfada seviye atlama ödülü yok.
+  reset: Xp Sıfırlama
+  reset_server: Sunucudaki tüm kullanıcıların XP'si sıfırlandı.
+  reset_server_confirm: Sunucudaki tüm kullanıcıların XP'sini sıfırlamak istediğinden emin misin?
+  reset_user: '{0} ID''li kullanıcının bu sunucudaki XP''si sıfırlandı.'
+  reset_user_confirm: Belirtilen kullanıcının bu sunucudaki XP'sini sıfırlamak istediğinden emin misin?
+  role_not_found: 'Rol bulunamadı: {0}'
+  server_leaderboard: Sunucu XP Sıralaması
+  template_reloaded: Xp şablonu yeniden yüklendi.
+  use: Kullan
+  xp_lose_role: '{0} rolünü kaybet.'
+  xp_receive_role: '{0} rolünü al.'
+  xp_role_reward_add_role: '{0}. seviyeye ulaşan kullanıcılar {1} rolünü alacak.'
+  xp_role_reward_cleared: '{0}. seviyeye ulaşmak artık rol ödülü vermeyecek.'
+  xp_role_reward_remove_role: '{0}. seviyeye ulaşan kullanıcılar {1} rolünü kaybedecek.'
+  xp_shop_disabled: Xp dükkanı sahip tarafından devre dışı bırakıldı veya satışta ürün yok.
+  xp_shop_item_cant_use: Bu öğeyi kullanamazsın çünkü mevcut değil ya da sana ait değil.
+  xpadd_users: '{1} kullanıcıya {0} sunucu XP''si eklendi.'
+  xprewsreset_confirm: Bu sunucudaki TÜM xp seviye atlama ödüllerini silmek istediğinden emin misin? Bu işlem geri alınamaz.
+  xpshop_already_owned: Bu öğeye zaten sahipsin.
+  xpshop_buy_success: '`{0}/{1}` başarıyla satın alındı'
+  xpshop_item_not_found: Bu anahtara sahip bir öğe mevcut değil.
+  xpt_level: Seviye
+  xpt_rank: Sıralama
+  xpt_progress: İlerleme
+  xpt_total_xp: Toplam XP
+  xpt_club: Kulüp
+
+ts-TS:
+  available_commands: Available Commands
+  buy: Buy
+  cur_reward_added: 'Users who reach level {0} will receive {1}.'
+  cur_reward_cleared: 'Reaching level {0} will no longer reward any {1}. Hmph.'
+  in_use: In use
+  level_set: 'Level of user {0} set to {1} on this server.'
+  level_up_rewards: Level Up Rewards
+  level_x: 'Level {0}'
+  modified: 'Modified server XP of the user {0} by {1}.'
+  no_level_up_rewards: No level up rewards on this page.
+  reset: Xp Reset
+  reset_server: XP of all users on the server has been reset.
+  reset_server_confirm: Are you sure you want to reset the XP of all users on the server? D-don't blame me if you regret it.
+  reset_user: 'User with id {0} has had their XP reset on this server. Hmph, they probably deserved it.'
+  reset_user_confirm: Are you sure you want to reset this user's XP on this server?
+  role_not_found: 'Role not found: {0}. D-did you type it right?'
+  server_leaderboard: Server XP Leaderboard
+  template_reloaded: Xp template has been reloaded.
+  use: Use
+  xp_lose_role: 'Lose {0} role.'
+  xp_receive_role: 'Receive {0} role.'
+  xp_role_reward_add_role: 'Users who reach level {0} will receive {1} role.'
+  xp_role_reward_cleared: 'Reaching level {0} will no longer reward a role.'
+  xp_role_reward_remove_role: 'Users who reach level {0} will lose {1} role. Rules are rules.'
+  xp_shop_disabled: Xp shop is disabled by the owner, or there are no items for sale.
+  xp_shop_item_cant_use: You can't use this item as it doesn't exist or you don't own it. Hmph.
+  xpadd_users: 'Added {0} server XP to {1} users.'
+  xprewsreset_confirm: Are you sure you want to delete ALL xp level up rewards from this server? This action is irreversible.
+  xpshop_already_owned: You already own this item. W-were you not paying attention?
+  xpshop_buy_success: 'Successfully purchased `{0}/{1}`.'
+  xpshop_item_not_found: An item with that key doesn't exist. D-did you even check?
+  xpt_level: Level
+  xpt_rank: Rank
+  xpt_progress: Progress
+  xpt_total_xp: Total XP
+  xpt_club: Club
+
+uk-UA:
+  available_commands: Доступні команди
+  buy: Купити
+  cur_reward_added: 'Користувачі, які досягнуть рівня {0}, отримають {1}.'
+  cur_reward_cleared: 'Досягнення рівня {0} більше не дає нагороду {1}.'
+  in_use: Використовується
+  level_set: 'Рівень користувача {0} встановлено на {1} на цьому сервері.'
+  level_up_rewards: Нагороди за підвищення рівня
+  level_x: 'Рівень {0}'
+  modified: 'Змінено серверний XP користувача {0} на {1}'
+  no_level_up_rewards: На цій сторінці немає нагород за підвищення рівня.
+  reset: Скидання XP
+  reset_server: XP усіх користувачів на сервері було скинуто.
+  reset_server_confirm: Ви впевнені, що хочете скинути XP усіх користувачів на сервері?
+  reset_user: 'XP користувача з id {0} було скинуто на цьому сервері.'
+  reset_user_confirm: Ви впевнені, що хочете скинути XP вказаного користувача на цьому сервері?
+  role_not_found: 'Роль не знайдено: {0}'
+  server_leaderboard: Серверна таблиця лідерів XP
+  template_reloaded: Шаблон XP було перезавантажено.
+  use: Використати
+  xp_lose_role: 'Втратити роль {0}.'
+  xp_receive_role: 'Отримати роль {0}.'
+  xp_role_reward_add_role: 'Користувачі, які досягнуть рівня {0}, отримають роль {1}.'
+  xp_role_reward_cleared: 'Досягнення рівня {0} більше не дає роль.'
+  xp_role_reward_remove_role: 'Користувачі, які досягнуть рівня {0}, втратять роль {1}.'
+  xp_shop_disabled: XP магазин вимкнено власником, або немає товарів у продажу.
+  xp_shop_item_cant_use: Ви не можете використати цей предмет - він не існує або не належить вам.
+  xpadd_users: 'Додано {0} серверного XP для {1} користувачів.'
+  xprewsreset_confirm: Ви впевнені, що хочете видалити ВСІ нагороди за підвищення рівня XP на цьому сервері? Цю дію не можна скасувати.
+  xpshop_already_owned: Ви вже маєте цей предмет.
+  xpshop_buy_success: 'Успішно придбано `{0}/{1}`'
+  xpshop_item_not_found: Предмет із таким ключем не існує.
+  xpt_level: Рівень
+  xpt_rank: Ранг
+  xpt_progress: Прогрес
+  xpt_total_xp: Загально XP
+  xpt_club: Клуб
+
+vi-VN:
+  available_commands: Lệnh Có Sẵn
+  buy: Mua
+  cur_reward_added: 'Người dùng đạt cấp {0} sẽ nhận được {1}.'
+  cur_reward_cleared: 'Đạt cấp {0} sẽ không còn nhận được {1} nữa.'
+  in_use: Đang sử dụng
+  level_set: 'Cấp của người dùng {0} đã được đặt thành {1} trên máy chủ này.'
+  level_up_rewards: Phần Thưởng Lên Cấp
+  level_x: 'Cấp {0}'
+  modified: 'Đã thay đổi XP máy chủ của người dùng {0} thêm {1}'
+  no_level_up_rewards: Không có phần thưởng lên cấp nào ở trang này.
+  reset: Đặt Lại Xp
+  reset_server: XP của tất cả người dùng trên máy chủ đã được đặt lại.
+  reset_server_confirm: Bạn có chắc muốn đặt lại XP của tất cả người dùng trên máy chủ không?
+  reset_user: 'Người dùng có id {0} đã được đặt lại XP trên máy chủ này.'
+  reset_user_confirm: Bạn có chắc muốn đặt lại XP của người dùng được chỉ định trên máy chủ này không?
+  role_not_found: 'Không tìm thấy vai trò: {0}'
+  server_leaderboard: Bảng Xếp Hạng XP Máy Chủ
+  template_reloaded: Mẫu Xp đã được tải lại.
+  use: Sử dụng
+  xp_lose_role: 'Mất vai trò {0}.'
+  xp_receive_role: 'Nhận vai trò {0}.'
+  xp_role_reward_add_role: 'Người dùng đạt cấp {0} sẽ nhận được vai trò {1}.'
+  xp_role_reward_cleared: 'Đạt cấp {0} sẽ không còn nhận được vai trò nữa.'
+  xp_role_reward_remove_role: 'Người dùng đạt cấp {0} sẽ mất vai trò {1}.'
+  xp_shop_disabled: Cửa hàng Xp đã bị chủ sở hữu tắt, hoặc không có vật phẩm nào đang bán.
+  xp_shop_item_cant_use: Bạn không thể sử dụng vật phẩm này vì nó không tồn tại hoặc bạn không sở hữu nó.
+  xpadd_users: 'Đã thêm {0} XP máy chủ cho {1} người dùng.'
+  xprewsreset_confirm: Bạn có chắc muốn xóa TẤT CẢ phần thưởng lên cấp xp khỏi máy chủ này không? Hành động này không thể hoàn tác.
+  xpshop_already_owned: Bạn đã sở hữu vật phẩm này rồi.
+  xpshop_buy_success: 'Đã mua thành công `{0}/{1}`'
+  xpshop_item_not_found: Không tồn tại vật phẩm nào với khóa đó.
+  xpt_level: Cấp
+  xpt_rank: Hạng
+  xpt_progress: Tiến độ
+  xpt_total_xp: Tổng XP
+  xpt_club: Câu lạc bộ
+
+zh-CN:
+  available_commands: 可用命令
+  buy: 购买
+  cur_reward_added: '達到級別 {0} 的用戶將收到 {1}。'
+  cur_reward_cleared: '達到等級 {0} 將不再獎勵任何 {1}。'
+  in_use: 使用中
+  level_set: '使用者 {0} 在此伺服器的等級已設定為 {1}。'
+  level_up_rewards: 升級獎勵
+  level_x: '{0} 級'
+  modified: '已將 {0} 的經驗值修改 {1}'
+  no_level_up_rewards: 此頁面沒有升級獎勵。
+  reset: 經驗值重置
+  reset_server: 所有用戶在這個伺服器上的經驗值已被重置
+  reset_server_confirm: 你確定你要重置這個伺服器上所有用戶的經驗值嗎？
+  reset_user: 'ID為 {0} 的用戶在這個伺服器上的經驗值已被重置'
+  reset_user_confirm: 你確定你要重置這個用戶在這個伺服器上的經驗值嗎？
+  role_not_found: '找不到身分組：{0}'
+  server_leaderboard: 伺服器 XP 排行榜
+  template_reloaded: 經驗值模板已被重新載入
+  use: 使用
+  xp_lose_role: '失去 {0} 身分組。'
+  xp_receive_role: '接收 {0} 身分組。'
+  xp_role_reward_add_role: '達到等級 {0} 的使用者會得到 {1} 身份組'
+  xp_role_reward_cleared: '達到等級 {0} 時將不再獲得身分組為獎勵'
+  xp_role_reward_remove_role: '達到等級 {0} 的使用者會喪失 {1} 身份組'
+  xp_shop_disabled: 经验商店已被所有者禁用,或没有出售的物品。
+  xp_shop_item_cant_use: 无法使用此物品,它不存在或你未拥有它。
+  xpadd_users: '已为 {1} 名用户添加 {0} 服务器经验。'
+  xprewsreset_confirm: 你是否確定要從這個伺服器刪除全部升級獎勵？這項操作不可復原
+  xpshop_already_owned: 你已经拥有此物品了。
+  xpshop_buy_success: '成功购买 `{0}/{1}`'
+  xpshop_item_not_found: 不存在该标识的物品。
+  xpt_level: 等级
+  xpt_rank: 排名
+  xpt_progress: 进度
+  xpt_total_xp: 总经验
+  xpt_club: 俱乐部

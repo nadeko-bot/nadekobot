@@ -1,0 +1,447 @@
+ar:
+  fish_buy_success: تم شراء العنصر بنجاح!
+  fish_cant_uneq_potion: لا يمكنك إزالة تجهيز الجرعة.
+  fish_catches: '{0} صيدة إجمالًا'
+  fish_caught: 'لقد اصطدت {0}!'
+  fish_inv_title: حقيبة الصيد
+  fish_item_not_found: العنصر غير موجود.
+  fish_items_title: متجر الصيد
+  fish_lb_title: لوحة متصدري الصيد
+  fish_list_title: الصيد
+  fish_nothing: لم تصطد شيئًا، حاول مجددًا.
+  fish_quality: الجودة
+  fish_skill_up: 'ارتفعت مهارة الصيد إلى **{0} / {1}**'
+  fish_spot: الموقع
+  fish_tod: الوقت من اليوم
+  fish_unequip_success: تم إزالة تجهيز العنصر بنجاح!
+  fish_unique: 'تم اصطياد {0} سمكة فريدة'
+  fish_use_success: تم تجهيز العنصر بنجاح!
+  fish_waiting: جارٍ الصيد...
+  fish_weather: الطقس
+  fish_weather_duration: 'تستمر كل فترة طقس لمدة {0} ساعات.'
+  fish_weather_forecast: التوقعات
+  fish_currency_found: 'لقد اصطدت {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: ليس لديك عملة تغيير موقع.
+  fish_spot_changed: 'تم تغيير موقع الصيد إلى {0}!'
+  fish_level_too_low: 'تحتاج إلى مستوى مهارة صيد **{0}** لشراء هذا العنصر.'
+
+de-DE:
+  fish_buy_success: Artikel erfolgreich gekauft!
+  fish_cant_uneq_potion: Du kannst einen Trank nicht ablegen.
+  fish_catches: '{0} Fänge insgesamt'
+  fish_caught: 'Du hast einen {0} gefangen!'
+  fish_inv_title: Angel-Inventar
+  fish_item_not_found: Artikel nicht gefunden.
+  fish_items_title: Angel-Shop
+  fish_lb_title: Angel-Rangliste
+  fish_list_title: Angeln
+  fish_nothing: Du hast nichts gefangen, versuche es erneut.
+  fish_quality: Qualität
+  fish_skill_up: 'Angelfähigkeit auf **{0} / {1}** erhöht'
+  fish_spot: Ort
+  fish_tod: Tageszeit
+  fish_unequip_success: Artikel erfolgreich abgelegt!
+  fish_unique: '{0} einzigartige Fische gefangen'
+  fish_use_success: Artikel erfolgreich angelegt!
+  fish_waiting: Angeln...
+  fish_weather: Wetter
+  fish_weather_duration: 'Jede Wetterperiode dauert {0} Stunden.'
+  fish_weather_forecast: Vorhersage
+  fish_currency_found: 'Du hast {0} gefischt!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: Du hast keine Ortswechsel-Münze.
+  fish_spot_changed: 'Der Angelort wurde zu {0} geändert!'
+  fish_level_too_low: 'Du brauchst Angelfähigkeit Stufe **{0}**, um diesen Gegenstand zu kaufen.'
+
+es-ES:
+  fish_buy_success: ¡Artículo comprado con éxito!
+  fish_cant_uneq_potion: No puedes desequipar una poción.
+  fish_catches: '{0} capturas en total'
+  fish_caught: '¡Pescaste un {0}!'
+  fish_inv_title: Inventario de Pesca
+  fish_item_not_found: Artículo no encontrado.
+  fish_items_title: Tienda de Pesca
+  fish_lb_title: Ranking de Pesca
+  fish_list_title: Pesca
+  fish_nothing: No pescaste nada, inténtalo de nuevo.
+  fish_quality: Calidad
+  fish_skill_up: 'Habilidad de pesca aumentó a **{0} / {1}**'
+  fish_spot: Lugar
+  fish_tod: Hora del Día
+  fish_unequip_success: ¡Artículo desequipado con éxito!
+  fish_unique: 'Pescaste {0} peces únicos'
+  fish_use_success: ¡Artículo equipado con éxito!
+  fish_waiting: Pescando...
+  fish_weather: Clima
+  fish_weather_duration: 'Cada periodo climático dura {0} horas.'
+  fish_weather_forecast: Pronóstico
+  fish_currency_found: '¡Pescaste {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: No tienes una moneda de cambio de lugar.
+  fish_spot_changed: '¡El lugar de pesca ha sido cambiado a {0}!'
+  fish_level_too_low: 'Necesitas nivel de habilidad de pesca **{0}** para comprar este objeto.'
+
+fr-FR:
+  fish_buy_success: Article acheté avec succès !
+  fish_cant_uneq_potion: Vous ne pouvez pas déséquiper une potion.
+  fish_catches: '{0} prises au total'
+  fish_caught: 'Vous avez pêché un {0} !'
+  fish_inv_title: Inventaire de Pêche
+  fish_item_not_found: Article non trouvé.
+  fish_items_title: Boutique de Pêche
+  fish_lb_title: Classement de Pêche
+  fish_list_title: Pêche
+  fish_nothing: Vous n'avez rien pêché, réessayez.
+  fish_quality: Qualité
+  fish_skill_up: 'Compétence de pêche augmentée à **{0} / {1}**'
+  fish_spot: Lieu
+  fish_tod: Heure de la Journée
+  fish_unequip_success: Article déséquipé avec succès !
+  fish_unique: 'Pêché {0} poissons uniques'
+  fish_use_success: Article équipé avec succès !
+  fish_waiting: En train de pêcher...
+  fish_weather: Météo
+  fish_weather_duration: 'Chaque période météo dure {0} heures.'
+  fish_weather_forecast: Prévisions
+  fish_currency_found: 'Vous avez pêché {0} !'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: Vous n'avez pas de pièce de changement de lieu.
+  fish_spot_changed: 'Le lieu de pêche a été changé en {0} !'
+  fish_level_too_low: 'Tu as besoin du niveau de compétence de pêche **{0}** pour acheter cet objet.'
+
+id-ID:
+  fish_buy_success: Item berhasil dibeli!
+  fish_cant_uneq_potion: Kamu tidak bisa melepas potion.
+  fish_catches: '{0} total tangkapan'
+  fish_caught: 'Kamu menangkap {0}!'
+  fish_inv_title: Inventaris Memancing
+  fish_item_not_found: Item tidak ditemukan.
+  fish_items_title: Toko Memancing
+  fish_lb_title: Papan Peringkat Memancing
+  fish_list_title: Memancing
+  fish_nothing: Kamu tidak menangkap apa-apa, coba lagi.
+  fish_quality: Kualitas
+  fish_skill_up: 'Skill memancing naik ke **{0} / {1}**'
+  fish_spot: Lokasi
+  fish_tod: Waktu
+  fish_unequip_success: Item berhasil dilepas!
+  fish_unique: 'Menangkap {0} ikan unik'
+  fish_use_success: Item berhasil dipasang!
+  fish_waiting: Memancing...
+  fish_weather: Cuaca
+  fish_weather_duration: 'Setiap periode cuaca berlangsung selama {0} jam.'
+  fish_weather_forecast: Prakiraan
+  fish_currency_found: 'Kamu memancing {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: Kamu tidak punya koin pengubah lokasi.
+  fish_spot_changed: 'Lokasi memancing telah diubah ke {0}!'
+  fish_level_too_low: 'Kamu butuh level skill memancing **{0}** untuk membeli item ini.'
+
+ja-JP:
+  fish_buy_success: アイテムを購入しました！
+  fish_cant_uneq_potion: ポーションは外せません。
+  fish_catches: '合計{0}回の釣果'
+  fish_caught: '{0}を釣りました！'
+  fish_inv_title: 釣りインベントリ
+  fish_item_not_found: アイテムが見つかりません。
+  fish_items_title: 釣りショップ
+  fish_lb_title: 釣りランキング
+  fish_list_title: 釣り
+  fish_nothing: 何も釣れませんでした。もう一度試してみてください。
+  fish_quality: 品質
+  fish_skill_up: '釣りスキルが**{0} / {1}**に上昇しました'
+  fish_spot: スポット
+  fish_tod: 時間帯
+  fish_unequip_success: アイテムを外しました！
+  fish_unique: '{0}種のユニークな魚を釣りました'
+  fish_use_success: アイテムを装備しました！
+  fish_waiting: 釣り中...
+  fish_weather: 天気
+  fish_weather_duration: '各天気期間は{0}時間続きます。'
+  fish_weather_forecast: 予報
+  fish_currency_found: '{0}を釣り上げました！'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: スポット変更コインを持っていません。
+  fish_spot_changed: '釣りスポットが{0}に変更されました！'
+  fish_level_too_low: 'このアイテムを購入するには釣りスキルレベル **{0}** が必要です。'
+
+ko-KR:
+  fish_buy_success: 아이템을 성공적으로 구매했어요!
+  fish_cant_uneq_potion: 포션은 해제할 수 없어요.
+  fish_catches: '총 {0}회 낚시'
+  fish_caught: '{0}을(를) 낚았어요!'
+  fish_inv_title: 낚시 인벤토리
+  fish_item_not_found: 아이템을 찾을 수 없어요.
+  fish_items_title: 낚시 상점
+  fish_lb_title: 낚시 리더보드
+  fish_list_title: 낚시
+  fish_nothing: 아무것도 잡지 못했어요, 다시 시도해 보세요.
+  fish_quality: 품질
+  fish_skill_up: '낚시 스킬이 **{0} / {1}**(으)로 올랐어요'
+  fish_spot: 낚시터
+  fish_tod: 시간대
+  fish_unequip_success: 아이템을 성공적으로 해제했어요!
+  fish_unique: '{0}종의 고유한 물고기를 잡았어요'
+  fish_use_success: 아이템을 성공적으로 장착했어요!
+  fish_waiting: 낚시 중...
+  fish_weather: 날씨
+  fish_weather_duration: '각 날씨는 {0}시간 동안 지속돼요.'
+  fish_weather_forecast: 일기예보
+  fish_currency_found: '{0}을(를) 낚았어요!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: 낚시터 변경 코인이 없어요.
+  fish_spot_changed: '낚시터가 {0}(으)로 변경되었어요!'
+  fish_level_too_low: '이 아이템을 구매하려면 낚시 스킬 레벨 **{0}**이(가) 필요합니다.'
+
+pl-PL:
+  fish_buy_success: Przedmiot kupiony pomyślnie!
+  fish_cant_uneq_potion: Nie możesz zdjąć mikstury.
+  fish_catches: '{0} złowionych ryb łącznie'
+  fish_caught: 'Złowiłeś {0}!'
+  fish_inv_title: Ekwipunek wędkarski
+  fish_item_not_found: Nie znaleziono przedmiotu.
+  fish_items_title: Sklep wędkarski
+  fish_lb_title: Ranking wędkarzy
+  fish_list_title: Wędkarstwo
+  fish_nothing: Nic nie złowiłeś, spróbuj ponownie.
+  fish_quality: Jakość
+  fish_skill_up: 'Umiejętność wędkowania wzrosła do **{0} / {1}**'
+  fish_spot: Łowisko
+  fish_tod: Pora dnia
+  fish_unequip_success: Przedmiot zdjęty pomyślnie!
+  fish_unique: 'Złowiono {0} unikalnych ryb'
+  fish_use_success: Przedmiot założony pomyślnie!
+  fish_waiting: Łowienie...
+  fish_weather: Pogoda
+  fish_weather_duration: 'Każdy okres pogodowy trwa {0} godzin.'
+  fish_weather_forecast: Prognoza
+  fish_currency_found: 'Wyłowiłeś {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: Nie masz monety zmiany łowiska.
+  fish_spot_changed: 'Łowisko zostało zmienione na {0}!'
+  fish_level_too_low: 'Potrzebujesz poziomu umiejętności wędkarstwa **{0}**, aby kupić ten przedmiot.'
+
+pt-BR:
+  fish_buy_success: Item comprado com sucesso!
+  fish_cant_uneq_potion: Você não pode desequipar uma poção.
+  fish_catches: '{0} capturas no total'
+  fish_caught: 'Você pescou um {0}!'
+  fish_inv_title: Inventário de Pesca
+  fish_item_not_found: Item não encontrado.
+  fish_items_title: Loja de Pesca
+  fish_lb_title: Ranking de Pesca
+  fish_list_title: Pescaria
+  fish_nothing: Você não pescou nada, tente novamente.
+  fish_quality: Qualidade
+  fish_skill_up: 'Habilidade de pesca aumentou para **{0} / {1}**'
+  fish_spot: Local
+  fish_tod: Hora do Dia
+  fish_unequip_success: Item desequipado com sucesso!
+  fish_unique: 'Pescou {0} peixes únicos'
+  fish_use_success: Item equipado com sucesso!
+  fish_waiting: Pescando...
+  fish_weather: Clima
+  fish_weather_duration: 'Cada período climático dura {0} horas.'
+  fish_weather_forecast: Previsão
+  fish_currency_found: 'Você pescou {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: Você não tem uma moeda de troca de local.
+  fish_spot_changed: 'O local de pesca foi alterado para {0}!'
+  fish_level_too_low: 'Você precisa do nível de habilidade de pesca **{0}** para comprar este item.'
+
+ru-RU:
+  fish_buy_success: Предмет успешно куплен!
+  fish_cant_uneq_potion: Вы не можете снять зелье.
+  fish_catches: '{0} поимок всего'
+  fish_caught: 'Вы поймали {0}!'
+  fish_inv_title: Инвентарь Рыбалки
+  fish_item_not_found: Предмет не найден.
+  fish_items_title: Магазин Рыбалки
+  fish_lb_title: Рейтинг Рыбалки
+  fish_list_title: Рыбалка
+  fish_nothing: Вы ничего не поймали, попробуйте снова.
+  fish_quality: Качество
+  fish_skill_up: 'Навык рыбалки увеличен до **{0} / {1}**'
+  fish_spot: Место
+  fish_tod: Время Суток
+  fish_unequip_success: Предмет успешно снят!
+  fish_unique: 'Поймано {0} уникальных рыб'
+  fish_use_success: Предмет успешно экипирован!
+  fish_waiting: Рыбачим...
+  fish_weather: Погода
+  fish_weather_duration: 'Каждый период погоды длится {0} часов.'
+  fish_weather_forecast: Прогноз
+  fish_currency_found: 'Вы выловили {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: У вас нет монеты смены места.
+  fish_spot_changed: 'Место рыбалки изменено на {0}!'
+  fish_level_too_low: 'Для покупки этого предмета нужен уровень навыка рыбалки **{0}**.'
+
+sr-Cyrl-RS:
+  fish_buy_success: Предмет успешно купљен!
+  fish_cant_uneq_potion: Не можеш скинути напитак.
+  fish_catches: '{0} улова укупно'
+  fish_caught: 'Уловио/ла си {0}!'
+  fish_inv_title: Инвентар за пецање
+  fish_item_not_found: Предмет није пронађен.
+  fish_items_title: Продавница за пецање
+  fish_lb_title: Листа најбољих пецароша
+  fish_list_title: Пецање
+  fish_nothing: Ништа ниси уловио/ла, пробај поново.
+  fish_quality: Квалитет
+  fish_skill_up: 'Вештина пецања повећана на **{0} / {1}**'
+  fish_spot: Место
+  fish_tod: Доба дана
+  fish_unequip_success: Предмет успешно скинут!
+  fish_unique: 'Уловљено {0} јединствених риба'
+  fish_use_success: Предмет успешно опремљен!
+  fish_waiting: Пецам...
+  fish_weather: Време
+  fish_weather_duration: 'Сваки временски период траје {0} сати.'
+  fish_weather_forecast: Прогноза
+  fish_currency_found: 'Уловио си {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: Немаш новчић за промену места.
+  fish_spot_changed: 'Место за пецање промењено на {0}!'
+  fish_level_too_low: 'Потребан ти је ниво вештине пецања **{0}** да купиш овај предмет.'
+
+tr-TR:
+  fish_buy_success: Eşya başarıyla satın alındı!
+  fish_cant_uneq_potion: İksiri çıkaramazsın.
+  fish_catches: 'Toplam {0} yakalama'
+  fish_caught: 'Bir {0} yakaladın!'
+  fish_inv_title: Balıkçılık Envanteri
+  fish_item_not_found: Eşya bulunamadı.
+  fish_items_title: Balıkçılık Dükkanı
+  fish_lb_title: Balıkçılık Sıralaması
+  fish_list_title: Balıkçılık
+  fish_nothing: Hiçbir şey yakalayamadın, tekrar dene.
+  fish_quality: Kalite
+  fish_skill_up: 'Balıkçılık becerisi **{0} / {1}** olarak arttı'
+  fish_spot: Nokta
+  fish_tod: Günün Saati
+  fish_unequip_success: Eşya başarıyla çıkarıldı!
+  fish_unique: '{0} benzersiz balık yakalandı'
+  fish_use_success: Eşya başarıyla kuşanıldı!
+  fish_waiting: Balık tutuyorsun...
+  fish_weather: Hava Durumu
+  fish_weather_duration: 'Her hava periyodu {0} saat sürer.'
+  fish_weather_forecast: Tahmin
+  fish_currency_found: '{0} tuttun!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: Nokta değiştirme jetonun yok.
+  fish_spot_changed: 'Balıkçılık noktası {0} olarak değiştirildi!'
+  fish_level_too_low: 'Bu ürünü satın almak için **{0}** balıkçılık beceri seviyesine ihtiyacın var.'
+
+ts-TS:
+  fish_buy_success: Item purchased successfully!
+  fish_cant_uneq_potion: You can't unequip a potion.
+  fish_catches: '{0} catches total'
+  fish_caught: 'You caught a {0}!'
+  fish_inv_title: Fishing Inventory
+  fish_item_not_found: Item not found.
+  fish_items_title: Fishing Shop
+  fish_lb_title: Fishing Leaderboard
+  fish_list_title: Fishing
+  fish_nothing: You caught nothing, try again.
+  fish_quality: Quality
+  fish_skill_up: 'Fishing skill increased to **{0} / {1}**'
+  fish_spot: Spot
+  fish_tod: Time of Day
+  fish_unequip_success: Item unequipped successfully!
+  fish_unique: 'Caught {0} unique fish'
+  fish_use_success: Item equipped! N-not that I helped or anything.
+  fish_waiting: Fishing...
+  fish_weather: Weather
+  fish_weather_duration: 'Each weather period lasts for {0} hours.'
+  fish_weather_forecast: Forecast
+  fish_currency_found: 'You fished out {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: You don't have a spot change coin.
+  fish_spot_changed: 'The fishing spot has been changed to {0}!'
+  fish_level_too_low: 'H-hmph, kamu butuh level skill memancing **{0}** dulu baru boleh beli barang ini!'
+
+uk-UA:
+  fish_buy_success: Предмет успішно придбано!
+  fish_cant_uneq_potion: Ти не можеш зняти зілля.
+  fish_catches: '{0} зловлено всього'
+  fish_caught: 'Ти зловив {0}!'
+  fish_inv_title: Рибальський інвентар
+  fish_item_not_found: Предмет не знайдено.
+  fish_items_title: Рибальська крамниця
+  fish_lb_title: Рибальська таблиця лідерів
+  fish_list_title: Рибалка
+  fish_nothing: Ти нічого не зловив, спробуй ще раз.
+  fish_quality: Якість
+  fish_skill_up: 'Навичка рибалки зросла до **{0} / {1}**'
+  fish_spot: Місце
+  fish_tod: Час доби
+  fish_unequip_success: Предмет успішно знято!
+  fish_unique: 'Зловлено {0} унікальних риб'
+  fish_use_success: Предмет успішно екіпіровано!
+  fish_waiting: Рибалю...
+  fish_weather: Погода
+  fish_weather_duration: 'Кожен період погоди триває {0} годин.'
+  fish_weather_forecast: Прогноз
+  fish_currency_found: 'Ви виловили {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: У тебе немає монети зміни місця.
+  fish_spot_changed: 'Місце рибалки змінено на {0}!'
+  fish_level_too_low: 'Для покупки цього предмета потрібен рівень навички рибалки **{0}**.'
+
+vi-VN:
+  fish_buy_success: Mua vật phẩm thành công!
+  fish_cant_uneq_potion: Bạn không thể tháo thuốc.
+  fish_catches: 'Tổng cộng {0} lần câu'
+  fish_caught: 'Bạn câu được một con {0}!'
+  fish_inv_title: Kho đồ câu cá
+  fish_item_not_found: Không tìm thấy vật phẩm.
+  fish_items_title: Cửa hàng câu cá
+  fish_lb_title: Bảng xếp hạng câu cá
+  fish_list_title: Câu cá
+  fish_nothing: Bạn không câu được gì, thử lại nhé.
+  fish_quality: Chất lượng
+  fish_skill_up: 'Kỹ năng câu cá tăng lên **{0} / {1}**'
+  fish_spot: Địa điểm
+  fish_tod: Thời gian trong ngày
+  fish_unequip_success: Tháo vật phẩm thành công!
+  fish_unique: 'Đã câu được {0} loại cá khác nhau'
+  fish_use_success: Trang bị vật phẩm thành công!
+  fish_waiting: Đang câu cá...
+  fish_weather: Thời tiết
+  fish_weather_duration: 'Mỗi giai đoạn thời tiết kéo dài {0} giờ.'
+  fish_weather_forecast: Dự báo
+  fish_currency_found: 'Bạn câu được {0}!'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: Bạn không có xu đổi địa điểm.
+  fish_spot_changed: 'Địa điểm câu cá đã được đổi thành {0}!'
+  fish_level_too_low: 'Bạn cần cấp độ kỹ năng câu cá **{0}** để mua vật phẩm này.'
+
+zh-CN:
+  fish_buy_success: 物品購買成功！
+  fish_cant_uneq_potion: 你無法卸下藥水。
+  fish_catches: '共 {0} 次釣獲'
+  fish_caught: '你釣到了 {0}！'
+  fish_inv_title: 釣魚背包
+  fish_item_not_found: 找不到物品。
+  fish_items_title: 釣魚商店
+  fish_lb_title: 釣魚排行榜
+  fish_list_title: 釣魚
+  fish_nothing: 什麼也沒釣到，再試一次。
+  fish_quality: 品質
+  fish_skill_up: '釣魚技能提升至 **{0} / {1}**'
+  fish_spot: 地點
+  fish_tod: 時段
+  fish_unequip_success: 物品已成功卸下！
+  fish_unique: '釣到 {0} 種獨特的魚'
+  fish_use_success: 物品已成功裝備！
+  fish_waiting: 釣魚中...
+  fish_weather: 天氣
+  fish_weather_duration: '每個天氣週期持續 {0} 小時。'
+  fish_weather_forecast: 預報
+  fish_currency_found: '你釣到了 {0}！'
+  fish_stars: '{0} {1}'
+  fish_spot_coin_none: 你沒有地點更換幣。
+  fish_spot_changed: '釣魚地點已更改為 {0}！'
+  fish_level_too_low: '你需要钓鱼技能等级 **{0}** 才能购买此物品。'

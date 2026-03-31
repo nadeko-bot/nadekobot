@@ -1,3 +1,0 @@
-purge_user_confirm: '請問你是否確定要從資料庫中完全刪除 {0} ？'
-cleanup_done: '{0} 個伺服器的資料保留在資料庫中。'
-sql_confirm_exec: 確認 SQL 執行

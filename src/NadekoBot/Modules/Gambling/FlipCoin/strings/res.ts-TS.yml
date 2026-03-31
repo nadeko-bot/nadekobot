@@ -1,6 +1,0 @@
-betflip_guess: You guessed it! Hmph, lucky.
-flip_invalid: Invalid number specified. You can flip 1 to {0} coins.
-flip_results: Flipped {0} coins. {1} heads, {2} tails.
-flipped: Flipped {0}
-heads: Head
-tails: Tail

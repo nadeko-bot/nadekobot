@@ -1,5 +1,0 @@
-card_not_found: Couldn't find that card.
-cost: Cost
-mashape_api_missing: Bot owner didn't set up a RapidApi key. You can't use this right now.
-steam_api_missing: Bot owner didn't set the SteamApiKey. You can't use this right now.
-store_url: Store url

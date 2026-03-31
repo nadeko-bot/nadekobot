@@ -1,0 +1,63 @@
+ar:
+  calcops: 'قائمة الدوال في أمر {0}calc'
+  result: النتيجة
+
+de-DE:
+  calcops: 'Liste der Funktionen im {0}calc Befehl'
+  result: Ergebnis
+
+es-ES:
+  calcops: 'Lista de funciones en el comando {0}calc'
+  result: Resultado
+
+fr-FR:
+  calcops: 'Liste des fonctions dans {0} commande calc'
+  result: Résultat
+
+id-ID:
+  calcops: 'Daftar fungsi di perintah {0}calc'
+  result: Hasil
+
+ja-JP:
+  calcops: '{0}calcコマンド用の関数一覧'
+  result: 結果
+
+ko-KR:
+  calcops: '{0}calc 명령어에서 사용 가능한 함수 목록'
+  result: 결과
+
+pl-PL:
+  calcops: 'Lista funkcji w komendzie {0}calc'
+  result: Wynik
+
+pt-BR:
+  calcops: 'Lista de funções em {0}calc comando'
+  result: Resultado
+
+ru-RU:
+  calcops: 'Список функций в команде {0}calc'
+  result: Результат
+
+sr-Cyrl-RS:
+  calcops: 'Листа функција у команди {0}calc'
+  result: Резултат
+
+tr-TR:
+  calcops: '{0}calc komutundaki fonksiyonların listesi'
+  result: Sonuç
+
+ts-TS:
+  calcops: 'Here are the functions for the {0}calc command. D-don''t say I never help you.'
+  result: Result
+
+uk-UA:
+  calcops: 'Список функцій команди {0}calc'
+  result: Результат
+
+vi-VN:
+  calcops: 'Danh sách hàm trong lệnh {0}calc'
+  result: Kết quả
+
+zh-CN:
+  calcops: '{0}calc 命令中的函數列表'
+  result: 結果

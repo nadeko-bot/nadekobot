@@ -1,7 +1,0 @@
-linkfix_added: 'Линкови са {0} ће сада бити исправљени на {1}.'
-linkfix_already_exists: 'Исправка линка за {0} већ постоји.'
-linkfix_invalid_domains: Оба домена морају бити валидна.
-linkfix_list_none: Нису конфигурисане исправке линкова за овај сервер.
-linkfix_list_title: Исправке линкова
-linkfix_not_found: 'Исправка линка за {0} није пронађена.'
-linkfix_removed: 'Исправка линка за {0} је уклоњена.'

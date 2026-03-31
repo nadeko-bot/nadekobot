@@ -1,5 +1,0 @@
-connect4_created: تم إنشاء لعبة Connect4. في انتظار لاعب للانضمام.
-connect4_draw: انتهت لعبة Connect4 بالتعادل.
-connect4_failed_to_start: فشلت لعبة Connect4 في البدء لأن لا أحد انضم.
-connect4_player_to_move: 'دور اللاعب: {0}'
-connect4_won: '{0} فاز بلعبة Connect4 ضد {1}.'

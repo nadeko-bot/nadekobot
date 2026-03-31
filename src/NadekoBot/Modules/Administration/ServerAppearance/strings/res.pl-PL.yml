@@ -1,5 +1,0 @@
-set_srvr_banner: Ustawiono nowy baner serwera!
-set_srvr_icon: Ustawiono nową ikonę serwera!
-srvr_banner_invalid: Podany obraz ma nieprawidłowy format pliku. Upewnij się, że podajesz bezpośredni URL do obrazu.
-srvr_banner_invalid_url: Podany URL jest nieprawidłowy. Upewnij się, że podajesz bezpośredni URL do obrazu.
-srvr_banner_too_large: Podany obraz jest za duży! Maksymalny rozmiar to 8MB.

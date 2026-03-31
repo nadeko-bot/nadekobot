@@ -1,0 +1,559 @@
+ar:
+  btnrole_exclusive: يمكن للمستخدمين الآن اختيار رتبة واحدة فقط من تلك الرسالة.
+  btnrole_message_max: تم بلوغ الحد الأقصى. يمكنك إضافة حتى 25 رتبة زر لكل رسالة.
+  btnrole_multiple: يمكن للمستخدمين الآن اختيار أي عدد من رتب الأزرار من تلك الرسالة.
+  btnrole_none: لا توجد رتب أزرار في هذه الصفحة.
+  btnrole_not_found: لم يتم العثور على رتبة زر في تلك الرسالة.
+  btnrole_removeall_not_found: تمت إزالة رتبة الزر بنجاح لكن لم يتم العثور على الرسالة.
+  btnrole_removed: تمت إزالة رتبة الزر.
+  cr: 'تم إنشاء الرتبة {0} بنجاح'
+  dr: 'تم حذف الرتبة {0}.'
+  invalid_message_id: مُعرّف الرسالة غير صالح.
+  invalid_message_link: يجب أن يكون رابط الرسالة لرسالة هذا البوت. لا يمكن للبوت إضافة أزرار لرسائل مستخدمين آخرين.
+  rar: 'تمت إزالة جميع الرتب من المستخدم {0} بنجاح'
+  rar_err: فشلت إزالة الرتب. لا أملك الصلاحيات الكافية.
+  rc: 'تم تغيير لون الرتبة {0}.'
+  rc_perms: حدث خطأ بسبب لون غير صالح أو صلاحيات غير كافية.
+  remrole: 'تمت إزالة الرتبة {0} من المستخدم {1} بنجاح'
+  remrole_err: فشلت إزالة الرتبة. لا أملك الصلاحيات الكافية.
+  renrole: تمت إعادة تسمية الرتبة.
+  renrole_err: فشلت إعادة تسمية الرتبة. لا أملك الصلاحيات الكافية.
+  renrole_perms: لا يمكنك تعديل رتب أعلى من أعلى رتبة لديك أو لدي.
+  rero_message_not_found: لم يتم العثور على الرسالة المحددة. تأكد من أنك حددت رسالة من هذه القناة.
+  rero_not_found: لم يتم العثور على إدخال رتبة التفاعل لتلك الرتبة في الرسالة المحددة.
+  rero_select_to_delete: اختر إدخال رتبة التفاعل لحذفه.
+  rero_deleted: تم حذف إدخال رتبة التفاعل.
+  rero_select_to_edit: اختر إدخال رتبة التفاعل لتغيير الإيموت الخاص به.
+  rero_emote_changed: تم تغيير إيموت رتبة التفاعل.
+  rolehoist_disabled: 'لم تعد الرتبة {0} تُعرض بشكل منفصل عن الأعضاء المتصلين.'
+  rolehoist_enabled: 'أصبحت الرتبة {0} تُعرض الآن بشكل منفصل عن الأعضاء المتصلين.'
+  setrole: 'تمت إضافة الرتبة {0} إلى المستخدم {1} بنجاح'
+  setrole_err: فشلت إضافة الرتبة. لا أملك الصلاحيات الكافية.
+  sticky_roles_disabled: تم تعطيل الرتب الثابتة.
+  sticky_roles_enabled: تم تفعيل الرتب الثابتة. سيتم استعادة رتب المستخدمين الذين غادروا عند عودتهم إلى السيرفر.
+  temp_role_added: 'تم منح المستخدم {0} رتبة {1} مؤقتًا. تنتهي صلاحية الرتبة {2}'
+
+de-DE:
+  btnrole_exclusive: Benutzer können jetzt nur eine der Rollen aus dieser Nachricht wählen.
+  btnrole_message_max: Limit erreicht. Du kannst bis zu 25 Buttonrollen pro Nachricht haben.
+  btnrole_multiple: Benutzer können jetzt beliebig viele Buttonrollen aus dieser Nachricht wählen.
+  btnrole_none: Auf dieser Seite gibt es keine Buttonrollen.
+  btnrole_not_found: Keine Buttonrolle in dieser Nachricht gefunden.
+  btnrole_removeall_not_found: Buttonrolle erfolgreich entfernt, aber die Nachricht wurde nicht gefunden.
+  btnrole_removed: Buttonrolle entfernt.
+  cr: 'Rolle {0} erfolgreich erstellt'
+  dr: 'Rolle {0} wurde gelöscht.'
+  invalid_message_id: Ungültige Nachrichten-ID.
+  invalid_message_link: Der Nachrichtenlink muss eine Nachricht des Bots sein. Der Bot kann keine Buttons zu Nachrichten anderer Benutzer hinzufügen.
+  rar: 'Erfolgreich alle Rollen des Nutzers {0} entfernt.'
+  rar_err: Entfernen der Rollen fehlgeschlagen. Ich habe keine ausreichende Berechtigungen.
+  rc: 'Farbe der Rolle {0} wurde geändert.'
+  rc_perms: Ein Fehler ist aufgetreten durch eine ungültige Farbe oder unzureichenden Berechtigungen.
+  remrole: 'Erfolgreich entfernte Rolle {0} von Nutzer {1}'
+  remrole_err: Entfernen der Rolle fehlgeschlagen. Ich habe keine ausreichende Berechtigungen.
+  renrole: Rolle umbenannt.
+  renrole_err: Umbenennen der Rolle fehlgeschlagen. Ich habe keine ausreichende Berechtigungen.
+  renrole_perms: Du kannst keine Rollen bearbeiten, die höher als deine oder meine höchste Rolle liegen.
+  rero_message_not_found: Die angegebene Nachricht wurde nicht gefunden. Stelle sicher, dass du eine Nachricht aus diesem Kanal angegeben hast.
+  rero_not_found: Kein Reaktionsrollen-Eintrag für diese Rolle in der angegebenen Nachricht gefunden.
+  rero_select_to_delete: Wähle einen Reaktionsrollen-Eintrag zum Löschen aus.
+  rero_deleted: Reaktionsrollen-Eintrag gelöscht.
+  rero_select_to_edit: Wähle einen Reaktionsrollen-Eintrag aus, um das Emote zu ändern.
+  rero_emote_changed: Reaktionsrollen-Emote geändert.
+  rolehoist_disabled: 'Rollte {0} wird nicht mehr separat von online Nutzern angezeigt.'
+  rolehoist_enabled: 'Rolle {0} wird nun separat von online Nutzern angezeigt.'
+  setrole: 'Erfolgreich die Rolle {0} dem Benutzer {1} hinzugefügt.'
+  setrole_err: Hinzufügen der Rolle fehlgeschlagen. Ich habe keine ausreichende Berechtigungen.
+  sticky_roles_disabled: Permanente Rollen deaktiviert.
+  sticky_roles_enabled: Permanente Rollen aktiviert. Die Rollen von Benutzern, die den Server verlassen, werden bei Rückkehr wiederhergestellt.
+  temp_role_added: 'Benutzer {0} hat die Rolle {1} vorübergehend erhalten. Die Rolle läuft ab {2}'
+
+es-ES:
+  btnrole_exclusive: Los usuarios ahora solo pueden elegir uno de los roles de ese mensaje.
+  btnrole_message_max: Límite alcanzado. Puedes tener hasta 25 roles por botón por mensaje.
+  btnrole_multiple: Los usuarios ahora pueden elegir cualquier cantidad de roles por botón de ese mensaje.
+  btnrole_none: No hay roles por botón en esta página.
+  btnrole_not_found: No se encontró ningún rol por botón en ese mensaje.
+  btnrole_removeall_not_found: Rol por botón eliminado con éxito, pero no se encontró el mensaje.
+  btnrole_removed: Rol por botón eliminado.
+  cr: 'Rol {0} creado con éxito.'
+  dr: 'El rol {0} ha sido eliminado.'
+  invalid_message_id: ID de mensaje inválido.
+  invalid_message_link: El enlace del mensaje debe ser un mensaje del Bot. El bot no puede agregar botones a mensajes de otros usuarios.
+  rar: 'Se han removido todos los roles del usuario {0}.'
+  rar_err: Error eliminando roles. No tengo los permisos necesarios.
+  rc: 'El color del rol {0} ha sido cambiado.'
+  rc_perms: Error ocurrido debido a color inválido o falta de permisos.
+  remrole: 'Eliminado exitosamente el rol {0} del usuario {1}'
+  remrole_err: Error eliminando el rol. No tengo los permisos necesarios.
+  renrole: Rol renombrado.
+  renrole_err: Error renombrando el rol. No tengo los permisos necesarios.
+  renrole_perms: No puede editar roles más altos que el suyo o mi rol más alto en la jerarquía.
+  rero_message_not_found: No se encontró el mensaje especificado. Asegúrate de haber especificado un mensaje de este canal.
+  rero_not_found: No se encontró ninguna entrada de rol de reacción para ese rol en el mensaje especificado.
+  rero_select_to_delete: Selecciona una entrada de rol de reacción para eliminar.
+  rero_deleted: Entrada de rol de reacción eliminada.
+  rero_select_to_edit: Selecciona una entrada de rol de reacción para cambiar el emote.
+  rero_emote_changed: Emote del rol de reacción cambiado.
+  rolehoist_disabled: 'El rol {0} ya no se muestra separado de los miembros en línea.'
+  rolehoist_enabled: 'El rol {0} ahora se muestra separado de los miembros en línea.'
+  setrole: 'Añadido satisfactoriamente el rol {0} al usuario {1}.'
+  setrole_err: Error añadiendo el rol. No tengo los permisos necesarios.
+  sticky_roles_disabled: Roles fijos desactivados.
+  sticky_roles_enabled: Roles fijos activados. Los roles de los usuarios que se vayan serán restaurados cuando vuelvan al servidor.
+  temp_role_added: 'El usuario {0} ha recibido el rol {1} temporalmente. El rol expira {2}'
+
+fr-FR:
+  btnrole_exclusive: Les utilisateurs ne peuvent maintenant choisir qu'un seul des rôles de ce message.
+  btnrole_message_max: Limite atteinte. Vous pouvez avoir jusqu'à 25 rôles par bouton par message.
+  btnrole_multiple: Les utilisateurs peuvent maintenant choisir n'importe quel nombre de rôles par bouton de ce message.
+  btnrole_none: Il n'y a pas de rôles par bouton sur cette page.
+  btnrole_not_found: Aucun rôle par bouton trouvé sur ce message.
+  btnrole_removeall_not_found: Rôle par bouton supprimé avec succès, mais le message n'a pas été trouvé.
+  btnrole_removed: Rôle par bouton supprimé.
+  cr: 'Le rôle {0} a été créé avec succès.'
+  dr: 'Le rôle {0} a été supprimé.'
+  invalid_message_id: ID de message invalide.
+  invalid_message_link: Le lien du message doit être un message du Bot. Le bot ne peut pas ajouter de boutons aux messages d'autres utilisateurs.
+  rar: 'Tous les rôles de l''utilisateur {0} ont été retirés avec succès.'
+  rar_err: Échec de la suppression des rôles. Permissions insuffisantes.
+  rc: 'La couleur de {0} a été changée.'
+  rc_perms: Une erreur est survenue suite à une couleur invalide ou des permissions insuffisantes.
+  remrole: 'Le rôle {0} a été retiré de l''utilisateur {1} avec succès.'
+  remrole_err: Échec du retrait du rôle. Permissions insuffisantes.
+  renrole: Rôle renommé.
+  renrole_err: Échec du renommage du rôle. Permissions insuffisantes.
+  renrole_perms: Vous ne pouvez pas modifier des rôles supérieurs au votre, ou mon plus haut.
+  rero_message_not_found: Le message spécifié n'a pas été trouvé. Assurez-vous d'avoir spécifié un message de ce salon.
+  rero_not_found: Aucune entrée de rôle de réaction trouvée pour ce rôle sur le message spécifié.
+  rero_select_to_delete: Sélectionne une entrée de rôle de réaction à supprimer.
+  rero_deleted: Entrée de rôle de réaction supprimée.
+  rero_select_to_edit: Sélectionne une entrée de rôle de réaction pour changer l'emote.
+  rero_emote_changed: Emote du rôle de réaction changé.
+  rolehoist_disabled: 'Le rôle {0} n''est maintenant plus affiché séparément des autres membres.'
+  rolehoist_enabled: 'Le rôle {0} est maintenant affiché séparrément des autres membres.'
+  setrole: 'Ajout du rôle {0} à l''utilisateur {1} avec succès.'
+  setrole_err: Échec de l'ajour de rôle. Mes permissions sont insuffisantes.
+  sticky_roles_disabled: Rôles persistants désactivés.
+  sticky_roles_enabled: Rôles persistants activés. Les rôles des utilisateurs qui partent seront restaurés quand ils reviendront sur le serveur.
+  temp_role_added: 'L''utilisateur {0} a reçu le rôle {1} temporairement. Le rôle expire {2}'
+
+id-ID:
+  btnrole_exclusive: Pengguna sekarang hanya bisa memilih satu role dari pesan itu.
+  btnrole_message_max: Batas tercapai. Kamu bisa memiliki maksimal 25 button role per pesan.
+  btnrole_multiple: Pengguna sekarang bisa memilih berapa pun button role dari pesan itu.
+  btnrole_none: Tidak ada button role di halaman ini.
+  btnrole_not_found: Tidak ditemukan button role di pesan itu.
+  btnrole_removeall_not_found: Button role berhasil dihapus tapi pesannya tidak ditemukan.
+  btnrole_removed: Button role dihapus.
+  cr: 'Berhasil membuat role {0}'
+  dr: 'Role {0} telah dihapus.'
+  invalid_message_id: ID Pesan tidak valid.
+  invalid_message_link: Link pesan harus merupakan pesan Bot ini. Bot tidak bisa menambahkan tombol ke pesan pengguna lain.
+  rar: 'Berhasil menghapus semua role dari pengguna {0}'
+  rar_err: Gagal menghapus role. Izin saya tidak mencukupi.
+  rc: 'Warna role {0} telah diubah.'
+  rc_perms: Terjadi error karena warna tidak valid atau izin tidak mencukupi.
+  remrole: 'Berhasil menghapus role {0} dari pengguna {1}'
+  remrole_err: Gagal menghapus role. Izin saya tidak mencukupi.
+  renrole: Role berhasil di-rename.
+  renrole_err: Gagal me-rename role. Izin saya tidak mencukupi.
+  renrole_perms: Kamu nggak bisa mengedit role yang lebih tinggi dari role tertinggi kamu atau saya.
+  rero_message_not_found: Pesan yang ditentukan tidak ditemukan. Pastikan kamu menentukan pesan dari channel ini.
+  rero_not_found: Tidak ditemukan entri reaction role untuk role tersebut di pesan yang ditentukan.
+  rero_select_to_delete: Pilih entri reaction role yang ingin dihapus.
+  rero_deleted: Entri reaction role dihapus.
+  rero_select_to_edit: Pilih entri reaction role yang ingin diubah emote-nya.
+  rero_emote_changed: Emote reaction role diubah.
+  rolehoist_disabled: 'Role {0} tidak lagi ditampilkan terpisah dari anggota online.'
+  rolehoist_enabled: 'Role {0} sekarang ditampilkan terpisah dari anggota online.'
+  setrole: 'Berhasil menambahkan role {0} ke pengguna {1}'
+  setrole_err: Gagal menambahkan role. Izin saya tidak mencukupi.
+  sticky_roles_disabled: Sticky roles dinonaktifkan.
+  sticky_roles_enabled: Sticky roles diaktifkan. Role pengguna yang keluar akan dikembalikan saat mereka bergabung kembali ke server.
+  temp_role_added: 'Pengguna {0} telah diberikan role {1} secara sementara. Role berakhir {2}'
+
+ja-JP:
+  btnrole_exclusive: ユーザーはそのメッセージのロールから1つだけ選べるようになりました。
+  btnrole_message_max: 上限に達しました。メッセージあたり最大25個のボタンロールを設定できます。
+  btnrole_multiple: ユーザーはそのメッセージから任意の数のボタンロールを選べるようになりました。
+  btnrole_none: このページにボタンロールはありません。
+  btnrole_not_found: そのメッセージにボタンロールは見つかりませんでした。
+  btnrole_removeall_not_found: ボタンロールは正常に削除されましたが、メッセージが見つかりませんでした。
+  btnrole_removed: ボタンロールが削除されました。
+  cr: '役割《{0}》が作成されました'
+  dr: 'ロール{0}が削除されました。'
+  invalid_message_id: 無効なメッセージIDです。
+  invalid_message_link: メッセージリンクはこのBotのメッセージである必要があります。他のユーザーのメッセージにボタンを追加することはできません。
+  rar: '{0}からすべての役割を削除しました。'
+  rar_err: 役割を削除できませんでした。必要な権限がBotにありません。
+  rc: '役割《{0}》の色が変更されました。'
+  rc_perms: 色が無効であるか、権限が不足しているために、エラーが発生しました。
+  remrole: '{1}から役割《{0}》を削除しました'
+  remrole_err: 役割を削除できませんでした。必要な権限がBotにありません。
+  renrole: 役割の名前を変更しました。
+  renrole_err: 役割の名前を変更できませんでした。必要な権限がBotにありません。
+  renrole_perms: 自分自身に割り当てられている最高の役割よりも上位の役割は編集できません。
+  rero_message_not_found: 指定されたメッセージが見つかりませんでした。このチャンネルのメッセージを指定していることを確認してください。
+  rero_not_found: 指定されたメッセージにそのロールのリアクションロール設定が見つかりませんでした。
+  rero_select_to_delete: 削除するリアクションロールの設定を選択してください。
+  rero_deleted: リアクションロールの設定が削除されました。
+  rero_select_to_edit: エモートを変更するリアクションロールの設定を選択してください。
+  rero_emote_changed: リアクションロールのエモートが変更されました。
+  rolehoist_disabled: 'ロール{0}はオンラインメンバーとは別に表示されなくなりました。'
+  rolehoist_enabled: 'ロール{0}はオンラインメンバーとは別に表示されるようになりました。'
+  setrole: '{1}に役割《{0}》を追加しました'
+  setrole_err: 役割の割り当てに失敗しました。必要な権限がBotにありません。
+  sticky_roles_disabled: 固定ロールが無効になりました。
+  sticky_roles_enabled: 固定ロールが有効になりました。退出したユーザーのロールは再参加時に復元されます。
+  temp_role_added: 'ユーザー{0}にロール{1}が一時的に付与されました。ロールの有効期限は{2}'
+
+ko-KR:
+  btnrole_exclusive: 이제 해당 메시지에서 역할을 하나만 선택할 수 있어요.
+  btnrole_message_max: 한도에 도달했어요. 메시지당 최대 25개의 버튼 역할을 설정할 수 있어요.
+  btnrole_multiple: 이제 해당 메시지에서 여러 개의 버튼 역할을 선택할 수 있어요.
+  btnrole_none: 이 페이지에 버튼 역할이 없어요.
+  btnrole_not_found: 해당 메시지에서 버튼 역할을 찾을 수 없어요.
+  btnrole_removeall_not_found: 버튼 역할이 제거되었지만 메시지를 찾을 수 없었어요.
+  btnrole_removed: 버튼 역할이 제거되었어요.
+  cr: '역할 {0}이(가) 성공적으로 생성되었어요'
+  dr: '역할 {0}이(가) 삭제되었어요.'
+  invalid_message_id: 잘못된 메시지 ID예요.
+  invalid_message_link: 메시지 링크는 이 봇의 메시지여야 해요. 봇은 다른 유저의 메시지에 버튼을 추가할 수 없어요.
+  rar: '유저 {0}의 모든 역할을 성공적으로 제거했어요'
+  rar_err: 역할 제거에 실패했어요. 권한이 부족해요.
+  rc: '역할 {0}의 색상이 변경되었어요.'
+  rc_perms: 잘못된 색상이거나 권한이 부족하여 오류가 발생했어요.
+  remrole: '유저 {1}에게서 역할 {0}을(를) 성공적으로 제거했어요'
+  remrole_err: 역할 제거에 실패했어요. 권한이 부족해요.
+  renrole: 역할 이름이 변경되었어요.
+  renrole_err: 역할 이름 변경에 실패했어요. 권한이 부족해요.
+  renrole_perms: 당신이나 봇의 최상위 역할보다 높은 역할은 수정할 수 없어요.
+  rero_message_not_found: 지정된 메시지를 찾을 수 없어요. 이 채널의 메시지를 지정했는지 확인해 주세요.
+  rero_not_found: 지정된 메시지에서 해당 역할의 반응 역할 항목을 찾을 수 없어요.
+  rero_select_to_delete: 삭제할 반응 역할 항목을 선택해 주세요.
+  rero_deleted: 반응 역할 항목이 삭제되었어요.
+  rero_select_to_edit: 이모트를 변경할 반응 역할 항목을 선택해 주세요.
+  rero_emote_changed: 반응 역할 이모트가 변경되었어요.
+  rolehoist_disabled: '역할 {0}이(가) 더 이상 온라인 멤버와 별도로 표시되지 않아요.'
+  rolehoist_enabled: '역할 {0}이(가) 이제 온라인 멤버와 별도로 표시돼요.'
+  setrole: '유저 {1}에게 역할 {0}을(를) 성공적으로 추가했어요'
+  setrole_err: 역할 추가에 실패했어요. 권한이 부족해요.
+  sticky_roles_disabled: 고정 역할이 비활성화되었어요.
+  sticky_roles_enabled: 고정 역할이 활성화되었어요. 서버를 떠난 유저가 다시 돌아오면 역할이 복원돼요.
+  temp_role_added: '유저 {0}에게 임시로 {1} 역할이 부여되었어요. 역할 만료일: {2}'
+
+pl-PL:
+  btnrole_exclusive: Użytkownicy mogą teraz wybrać tylko jedną z ról z tej wiadomości.
+  btnrole_message_max: Osiągnięto limit. Możesz mieć maksymalnie 25 ról przyciskowych na wiadomość.
+  btnrole_multiple: Użytkownicy mogą teraz wybrać dowolną liczbę ról przyciskowych z tej wiadomości.
+  btnrole_none: Na tej stronie nie ma żadnych ról przyciskowych.
+  btnrole_not_found: Nie znaleziono roli przyciskowej w tej wiadomości.
+  btnrole_removeall_not_found: Rola przyciskowa została usunięta, ale wiadomość nie została znaleziona.
+  btnrole_removed: Rola przyciskowa usunięta.
+  cr: 'Pomyślnie utworzono rolę {0}'
+  dr: 'Rola {0} została usunięta.'
+  invalid_message_id: Nieprawidłowy identyfikator wiadomości.
+  invalid_message_link: Link do wiadomości musi prowadzić do wiadomości tego bota. Bot nie może dodawać przycisków do wiadomości innych użytkowników.
+  rar: 'Pomyślnie usunięto wszystkie role użytkownika {0}'
+  rar_err: Nie udało się usunąć ról. Mam niewystarczające uprawnienia.
+  rc: 'Kolor roli {0} został zmieniony.'
+  rc_perms: Wystąpił błąd z powodu nieprawidłowego koloru lub niewystarczających uprawnień.
+  remrole: 'Pomyślnie usunięto rolę {0} użytkownikowi {1}'
+  remrole_err: Nie udało się usunąć roli. Mam niewystarczające uprawnienia.
+  renrole: Nazwa roli zmieniona.
+  renrole_err: Nie udało się zmienić nazwy roli. Mam niewystarczające uprawnienia.
+  renrole_perms: Nie możesz edytować ról wyższych niż Twoja lub moja najwyższa rola.
+  rero_message_not_found: Nie znaleziono wskazanej wiadomości. Upewnij się, że podałeś wiadomość z tego kanału.
+  rero_not_found: Nie znaleziono wpisu roli reakcji dla tej roli w podanej wiadomości.
+  rero_select_to_delete: Wybierz wpis roli reakcji do usunięcia.
+  rero_deleted: Wpis roli reakcji usunięty.
+  rero_select_to_edit: Wybierz wpis roli reakcji, aby zmienić emotkę.
+  rero_emote_changed: Emotka roli reakcji zmieniona.
+  rolehoist_disabled: 'Rola {0} nie jest już wyświetlana oddzielnie od online członków.'
+  rolehoist_enabled: 'Rola {0} jest teraz wyświetlana oddzielnie od online członków.'
+  setrole: 'Pomyślnie dodano rolę {0} użytkownikowi {1}'
+  setrole_err: Nie udało się dodać roli. Mam niewystarczające uprawnienia.
+  sticky_roles_disabled: Trwałe role wyłączone.
+  sticky_roles_enabled: Trwałe role włączone. Role użytkowników, którzy opuszczą serwer, zostaną przywrócone po ponownym dołączeniu.
+  temp_role_added: 'Użytkownik {0} otrzymał tymczasowo rolę {1}. Rola wygasa {2}'
+
+pt-BR:
+  btnrole_exclusive: Agora os usuários podem escolher apenas um dos cargos dessa mensagem.
+  btnrole_message_max: Limite atingido. Você pode ter até 25 cargos por botão por mensagem.
+  btnrole_multiple: Agora os usuários podem escolher qualquer número de cargos por botão dessa mensagem.
+  btnrole_none: Não há cargos por botão nesta página.
+  btnrole_not_found: Nenhum cargo por botão encontrado nessa mensagem.
+  btnrole_removeall_not_found: Cargo por botão removido com sucesso, mas a mensagem não foi encontrada.
+  btnrole_removed: Cargo por botão removido.
+  cr: 'Cargo {0} criado com sucesso'
+  dr: 'O cargo {0} foi excluído.'
+  invalid_message_id: ID de mensagem inválido.
+  invalid_message_link: O link da mensagem deve ser de uma mensagem do Bot. O bot não pode adicionar botões a mensagens de outros usuários.
+  rar: 'Todos os cargos do usuário {0} foram removidos com sucesso.'
+  rar_err: Falha ao remover cargos. Não tenho permissões suficientes.
+  rc: 'A cor do cargo {0} foi alterada.'
+  rc_perms: Erro ocorreu por conta de cor inválida ou permissões insuficientes.
+  remrole: 'Cargo {0} removido do usuário {1} com sucesso'
+  remrole_err: Falha em retirar cargo. Eu tenho permissões insuficientes.
+  renrole: Cargo renomeado.
+  renrole_err: Falha em renomear cargo. Eu tenho permissões insuficientes.
+  renrole_perms: Você não pode editar cargos mais altos que você ou o meu cargo mais alto.
+  rero_message_not_found: A mensagem especificada não foi encontrada. Verifique se você especificou uma mensagem deste canal.
+  rero_not_found: Nenhuma entrada de cargo de reação encontrada para esse cargo na mensagem especificada.
+  rero_select_to_delete: Selecione uma entrada de cargo de reação para excluir.
+  rero_deleted: Entrada de cargo de reação excluída.
+  rero_select_to_edit: Selecione uma entrada de cargo de reação para alterar o emote.
+  rero_emote_changed: Emote do cargo de reação alterado.
+  rolehoist_disabled: 'O cargo {0} não será mais exibido separadamente dos membros online.'
+  rolehoist_enabled: 'Agora o cargo {0} será exibido separadamente dos membros online.'
+  setrole: 'O cargo {0} foi adicionado ao usuário {1} com sucesso.'
+  setrole_err: Falha em adicionar cargo. Eu tenho permissões insuficientes.
+  sticky_roles_disabled: Cargos fixos desativados.
+  sticky_roles_enabled: Cargos fixos ativados. Os cargos dos usuários que saírem serão restaurados quando voltarem ao servidor.
+  temp_role_added: 'O usuário {0} recebeu o cargo {1} temporariamente. O cargo expira {2}'
+
+ru-RU:
+  btnrole_exclusive: Теперь пользователи могут выбрать только одну из ролей этого сообщения.
+  btnrole_message_max: Лимит достигнут. Вы можете иметь до 25 кнопочных ролей на сообщение.
+  btnrole_multiple: Теперь пользователи могут выбрать любое количество кнопочных ролей из этого сообщения.
+  btnrole_none: На этой странице нет кнопочных ролей.
+  btnrole_not_found: Кнопочная роль не найдена в этом сообщении.
+  btnrole_removeall_not_found: Кнопочная роль успешно удалена, но сообщение не найдено.
+  btnrole_removed: Кнопочная роль удалена.
+  cr: 'Роль {0} успешно создана '
+  dr: 'Роль {0}  удалена.'
+  invalid_message_id: Недействительный ID сообщения.
+  invalid_message_link: Ссылка на сообщение должна быть сообщением бота. Бот не может добавлять кнопки к сообщениям других пользователей.
+  rar: 'Успешно удалены все роли с пользователя {0}'
+  rar_err: Не удалось удалить роли. У меня недостаточно прав.
+  rc: 'Цвет {0} был изменен.'
+  rc_perms: Ошибка произошла из-за недопустимого цвета или недостаточных разрешений.
+  remrole: 'Успешно удалена роль {0} пользователя {1}'
+  remrole_err: Не удалось удалить роль. У меня недостаточно прав.
+  renrole: Роль была переименована
+  renrole_err: Не удалось переименовать роль. У меня недостаточно прав.
+  renrole_perms: Вы не можете редактировать роли выше своей или моей высшей роли.
+  rero_message_not_found: Указанное сообщение не найдено. Убедитесь, что вы указали сообщение из этого канала.
+  rero_not_found: Запись реакционной роли для этой роли в указанном сообщении не найдена.
+  rero_select_to_delete: Выберите запись реакционной роли для удаления.
+  rero_deleted: Запись реакционной роли удалена.
+  rero_select_to_edit: Выберите запись реакционной роли, чтобы изменить эмоцию.
+  rero_emote_changed: Эмоция реакционной роли изменена.
+  rolehoist_disabled: 'Роль {0} больше не отображается отдельно от онлайн-участников.'
+  rolehoist_enabled: 'Роль {0} теперь отображается отдельно от онлайн-участников.'
+  setrole: 'Успешно добавил роль {0} пользователю {1}'
+  setrole_err: Не удалось добавить роль. У меня недостаточно прав.
+  sticky_roles_disabled: Постоянные роли отключены.
+  sticky_roles_enabled: Постоянные роли включены. Роли пользователей, которые уходят, будут восстановлены при возвращении на сервер.
+  temp_role_added: 'Пользователь {0} получил роль {1} временно. Роль истекает {2}'
+
+sr-Cyrl-RS:
+  btnrole_exclusive: Корисници сада могу да изаберу само једну од улога са те поруке.
+  btnrole_message_max: Достигнут лимит. Можеш имати до 25 дугмића за улоге по поруци.
+  btnrole_multiple: Корисници сада могу да изаберу било који број улога са те поруке.
+  btnrole_none: Нема дугмића за улоге на овој страници.
+  btnrole_not_found: Није пронађен дугмић за улогу на тој поруци.
+  btnrole_removeall_not_found: Дугмић за улогу успешно уклоњен, али порука није пронађена.
+  btnrole_removed: Дугмић за улогу уклоњен.
+  cr: 'Улога {0} успешно креирана'
+  dr: 'Улога {0} је обрисана.'
+  invalid_message_id: Неважећи ID поруке.
+  invalid_message_link: Линк поруке мора бити порука овог бота. Бот не може да додаје дугмиће на поруке других корисника.
+  rar: 'Успешно уклоњене све улоге са корисника {0}'
+  rar_err: Неуспешно уклањање улога. Немам довољно дозвола.
+  rc: 'Боја улоге {0} је промењена.'
+  rc_perms: Грешка услед неважеће боје или недовољних дозвола.
+  remrole: 'Улога {0} успешно уклоњена са корисника {1}'
+  remrole_err: Неуспешно уклањање улоге. Немам довољно дозвола.
+  renrole: Улога преименована.
+  renrole_err: Неуспешно преименовање улоге. Немам довољно дозвола.
+  renrole_perms: Не можеш да мењаш улоге које су више од твоје или моје највише улоге.
+  rero_message_not_found: Наведена порука није пронађена. Провери да ли си навео поруку из овог канала.
+  rero_not_found: Није пронађена ставка реакционе улоге за ту улогу на наведеној поруци.
+  rero_select_to_delete: Изабери ставку реакционе улоге за брисање.
+  rero_deleted: Ставка реакционе улоге обрисана.
+  rero_select_to_edit: Изабери ставку реакционе улоге да промениш емот.
+  rero_emote_changed: Емот реакционе улоге промењен.
+  rolehoist_disabled: 'Улога {0} се више не приказује одвојено од онлајн чланова.'
+  rolehoist_enabled: 'Улога {0} се сада приказује одвојено од онлајн чланова.'
+  setrole: 'Улога {0} успешно додата кориснику {1}'
+  setrole_err: Неуспешно додавање улоге. Немам довољно дозвола.
+  sticky_roles_disabled: Лепљиве улоге онемогућене.
+  sticky_roles_enabled: Лепљиве улоге омогућене. Улоге корисника који напусте сервер биће враћене кад се поново придруже.
+  temp_role_added: 'Кориснику {0} је привремено додата улога {1}. Улога истиче {2}'
+
+tr-TR:
+  btnrole_exclusive: Kullanıcılar artık o mesajdan yalnızca bir rol seçebilir.
+  btnrole_message_max: Sınıra ulaşıldı. Mesaj başına en fazla 25 buton rolü olabilir.
+  btnrole_multiple: Kullanıcılar artık o mesajdan birden fazla buton rolü seçebilir.
+  btnrole_none: Bu sayfada buton rolü yok.
+  btnrole_not_found: O mesajda buton rolü bulunamadı.
+  btnrole_removeall_not_found: Buton rolü başarıyla kaldırıldı ama mesaj bulunamadı.
+  btnrole_removed: Buton rolü kaldırıldı.
+  cr: '{0} rolü başarıyla oluşturuldu'
+  dr: '{0} rolü silindi.'
+  invalid_message_id: Geçersiz Mesaj Kimliği.
+  invalid_message_link: Mesaj bağlantısı bu Botun mesajı olmalıdır. Bot, diğer kullanıcıların mesajlarına buton ekleyemez.
+  rar: '{0} kullanıcısından tüm roller başarıyla kaldırıldı'
+  rar_err: Roller kaldırılamadı. Yeterli yetkim yok.
+  rc: '{0} rolünün rengi değiştirildi.'
+  rc_perms: Geçersiz renk veya yetersiz yetki nedeniyle hata oluştu.
+  remrole: '{1} kullanıcısından {0} rolü başarıyla kaldırıldı'
+  remrole_err: Rol kaldırılamadı. Yeterli yetkim yok.
+  renrole: Rol yeniden adlandırıldı.
+  renrole_err: Rol yeniden adlandırılamadı. Yeterli yetkim yok.
+  renrole_perms: Senin veya benim en yüksek rolümden üst sıradaki rolleri düzenleyemezsin.
+  rero_message_not_found: Belirtilen mesaj bulunamadı. Bu kanaldaki bir mesajı belirttiğinden emin ol.
+  rero_not_found: Belirtilen mesajda o rol için reaksiyon rolü girişi bulunamadı.
+  rero_select_to_delete: Silmek için bir reaksiyon rolü girişi seç.
+  rero_deleted: Reaksiyon rolü girişi silindi.
+  rero_select_to_edit: Emotu değiştirmek için bir reaksiyon rolü girişi seç.
+  rero_emote_changed: Reaksiyon rolü emotu değiştirildi.
+  rolehoist_disabled: '{0} rolü artık çevrimiçi üyelerden ayrı gösterilmiyor.'
+  rolehoist_enabled: '{0} rolü artık çevrimiçi üyelerden ayrı gösteriliyor.'
+  setrole: '{1} kullanıcısına {0} rolü başarıyla eklendi'
+  setrole_err: Rol eklenemedi. Yeterli yetkim yok.
+  sticky_roles_disabled: Yapışkan roller devre dışı bırakıldı.
+  sticky_roles_enabled: Yapışkan roller etkinleştirildi. Ayrılan kullanıcıların rolleri sunucuya tekrar katıldıklarında geri yüklenecek.
+  temp_role_added: '{0} kullanıcısına geçici olarak {1} rolü verildi. Rolün süresi {2} tarihinde doluyor'
+
+ts-TS:
+  btnrole_exclusive: Users can now pick only one of the roles from that message.
+  btnrole_message_max: Limit reached. You may have up to 25 button roles per message.
+  btnrole_multiple: Users can now pick any number of button roles from that message.
+  btnrole_none: There are no button roles on this page.
+  btnrole_not_found: No button role found on that message.
+  btnrole_removeall_not_found: Button role removed but the message wasn't found.
+  btnrole_removed: Button role removed.
+  cr: 'Successfully created role {0}'
+  dr: 'Role {0} has been deleted. Hmph!'
+  invalid_message_id: Invalid Message Id, b-baka!
+  invalid_message_link: The message link must be this Bot's message. The bot can't add buttons to other users' messages.
+  rar: 'Successfully removed all roles from user {0}'
+  rar_err: Failed to remove roles. I have insufficient permissions.
+  rc: 'Color of {0} role has been changed.'
+  rc_perms: Error occurred due to invalid color or insufficient permissions.
+  remrole: 'Successfully removed role {0} from user {1}'
+  remrole_err: Failed to remove role. I have insufficient permissions. Hmph!
+  renrole: Role renamed.
+  renrole_err: Failed to rename role. I have insufficient permissions.
+  renrole_perms: You can't edit roles higher than either your, or my highest role.
+  rero_message_not_found: The specified message wasn't found. Make sure you specified the message from this channel.
+  rero_not_found: No reaction role entry found for that role on the specified message.
+  rero_select_to_delete: Select a reaction role entry to delete.
+  rero_deleted: Reaction role entry deleted. Hmph, don't make me do this again.
+  rero_select_to_edit: Select a reaction role entry to change the emote for.
+  rero_emote_changed: Reaction role emote changed. It's not like I did it for you or anything...
+  rolehoist_disabled: 'Role {0} is no longer displayed separately from online members.'
+  rolehoist_enabled: 'Role {0} is now displayed separately from online members. I set it up nicely, obviously.'
+  setrole: 'Successfully added role {0} to user {1}'
+  setrole_err: Failed to add role. I have insufficient permissions.
+  sticky_roles_disabled: Sticky roles disabled.
+  sticky_roles_enabled: Sticky roles enabled. Leaving users' roles will be restored when they rejoin the server.
+  temp_role_added: 'User {0} has been given {1} role temporarily. The role expires {2}'
+
+uk-UA:
+  btnrole_exclusive: Тепер користувачі можуть обрати лише одну роль з цього повідомлення.
+  btnrole_message_max: Ліміт досягнуто. Можна мати до 25 кнопкових ролей на одне повідомлення.
+  btnrole_multiple: Тепер користувачі можуть обрати будь-яку кількість кнопкових ролей з цього повідомлення.
+  btnrole_none: На цій сторінці немає кнопкових ролей.
+  btnrole_not_found: У цьому повідомленні не знайдено кнопкової ролі.
+  btnrole_removeall_not_found: Кнопкову роль видалено, але повідомлення не знайдено.
+  btnrole_removed: Кнопкову роль видалено.
+  cr: 'Роль {0} успішно створено'
+  dr: 'Роль {0} видалено.'
+  invalid_message_id: Невірний ID повідомлення.
+  invalid_message_link: Посилання має вести на повідомлення цього бота. Бот не може додавати кнопки до повідомлень інших користувачів.
+  rar: 'Усі ролі успішно знято з користувача {0}'
+  rar_err: Не вдалося зняти ролі. Мені бракує прав.
+  rc: 'Колір ролі {0} змінено.'
+  rc_perms: Помилка через невірний колір або недостатні права.
+  remrole: 'Роль {0} успішно знято з користувача {1}'
+  remrole_err: Не вдалося зняти роль. Мені бракує прав.
+  renrole: Роль перейменовано.
+  renrole_err: Не вдалося перейменувати роль. Мені бракує прав.
+  renrole_perms: Ти не можеш редагувати ролі, які вищі за твою або мою найвищу роль.
+  rero_message_not_found: Вказане повідомлення не знайдено. Переконайся, що ти вказав повідомлення з цього каналу.
+  rero_not_found: Запис ролі реакції для цієї ролі у вказаному повідомленні не знайдено.
+  rero_select_to_delete: Обери запис ролі реакції для видалення.
+  rero_deleted: Запис ролі реакції видалено.
+  rero_select_to_edit: Обери запис ролі реакції, щоб змінити емоцію.
+  rero_emote_changed: Емоцію ролі реакції змінено.
+  rolehoist_disabled: 'Роль {0} більше не відображається окремо від учасників онлайн.'
+  rolehoist_enabled: 'Роль {0} тепер відображається окремо від учасників онлайн.'
+  setrole: 'Роль {0} успішно додано користувачу {1}'
+  setrole_err: Не вдалося додати роль. Мені бракує прав.
+  sticky_roles_disabled: Закріплені ролі вимкнено.
+  sticky_roles_enabled: Закріплені ролі увімкнено. Ролі користувачів, які покинули сервер, будуть відновлені при поверненні.
+  temp_role_added: 'Користувачу {0} тимчасово надано роль {1}. Роль закінчується {2}'
+
+vi-VN:
+  btnrole_exclusive: Người dùng giờ chỉ có thể chọn một role từ tin nhắn đó.
+  btnrole_message_max: Đã đạt giới hạn. Bạn có thể có tối đa 25 button role mỗi tin nhắn.
+  btnrole_multiple: Người dùng giờ có thể chọn bất kỳ số lượng button role nào từ tin nhắn đó.
+  btnrole_none: Không có button role nào trên trang này.
+  btnrole_not_found: Không tìm thấy button role trên tin nhắn đó.
+  btnrole_removeall_not_found: Đã xóa button role thành công nhưng không tìm thấy tin nhắn.
+  btnrole_removed: Đã xóa button role.
+  cr: 'Đã tạo role {0} thành công'
+  dr: 'Role {0} đã bị xóa.'
+  invalid_message_id: ID tin nhắn không hợp lệ.
+  invalid_message_link: Link tin nhắn phải là tin nhắn của Bot. Bot không thể thêm nút vào tin nhắn của người khác.
+  rar: 'Đã xóa thành công tất cả role khỏi người dùng {0}'
+  rar_err: Không thể xóa role. Tôi không có đủ quyền.
+  rc: 'Đã đổi màu role {0}.'
+  rc_perms: Có lỗi xảy ra do màu không hợp lệ hoặc không đủ quyền.
+  remrole: 'Đã xóa thành công role {0} khỏi người dùng {1}'
+  remrole_err: Không thể xóa role. Tôi không có đủ quyền.
+  renrole: Đã đổi tên role.
+  renrole_err: Không thể đổi tên role. Tôi không có đủ quyền.
+  renrole_perms: Bạn không thể chỉnh sửa role cao hơn role cao nhất của bạn hoặc của tôi.
+  rero_message_not_found: Không tìm thấy tin nhắn được chỉ định. Hãy đảm bảo bạn đã chọn tin nhắn từ kênh này.
+  rero_not_found: Không tìm thấy mục reaction role cho role đó trên tin nhắn đã chỉ định.
+  rero_select_to_delete: Chọn mục reaction role để xóa.
+  rero_deleted: Đã xóa mục reaction role.
+  rero_select_to_edit: Chọn mục reaction role để thay đổi emote.
+  rero_emote_changed: Đã thay đổi emote reaction role.
+  rolehoist_disabled: 'Role {0} không còn được hiển thị riêng biệt khỏi thành viên trực tuyến nữa.'
+  rolehoist_enabled: 'Role {0} giờ sẽ được hiển thị riêng biệt khỏi thành viên trực tuyến.'
+  setrole: 'Đã thêm thành công role {0} cho người dùng {1}'
+  setrole_err: Không thể thêm role. Tôi không có đủ quyền.
+  sticky_roles_disabled: Đã tắt role dính.
+  sticky_roles_enabled: Đã bật role dính. Role của người dùng rời đi sẽ được khôi phục khi họ tham gia lại máy chủ.
+  temp_role_added: 'Người dùng {0} đã được gán role {1} tạm thời. Role hết hạn vào {2}'
+
+zh-CN:
+  btnrole_exclusive: 使用者現在只能從該訊息中選擇一個身分組。
+  btnrole_message_max: 已達上限。每則訊息最多可有 25 個按鈕身分組。
+  btnrole_multiple: 使用者現在可以從該訊息中選擇任意數量的按鈕身分組。
+  btnrole_none: 此頁面沒有按鈕身分組。
+  btnrole_not_found: 該訊息上未找到按鈕身分組。
+  btnrole_removeall_not_found: 按鈕身分組已成功移除，但未找到訊息。
+  btnrole_removed: 按鈕身分組已移除。
+  cr: '成功創建身份組 {0}'
+  dr: '成功刪除身份組 {0}'
+  invalid_message_id: 無效的訊息 ID。
+  invalid_message_link: 訊息連結必須是此機器人的訊息。機器人無法在其他使用者的訊息上新增按鈕。
+  rar: '已成功移除 {0} 用戶的所有身份組'
+  rar_err: 無法刪除角色。我沒有足夠的權限。
+  rc: '{0} 的身分組顏色已變更。'
+  rc_perms: 由於顏色無效或權限不足而發生錯誤。
+  remrole: '已成功從用戶 {1} 中刪除身分組 {0}'
+  remrole_err: 無法移除身分組。我沒有足夠的權限。
+  renrole: 已更改身份組名稱
+  renrole_err: 重命名身分組失敗。我沒有足夠的權限。
+  renrole_perms: 您不能編輯高於您或我的最高身分組的身分組。
+  rero_message_not_found: 找不到指定的訊息。請確保您指定的是此頻道的訊息。
+  rero_not_found: 在指定的消息上没有找到该身份组的反应角色条目。
+  rero_select_to_delete: 选择要删除的反应角色条目。
+  rero_deleted: 反应角色条目已删除。
+  rero_select_to_edit: 选择要更改表情的反应角色条目。
+  rero_emote_changed: 反应角色表情已更改。
+  rolehoist_disabled: '身分組 {0} 不再與在線成員分開顯示。'
+  rolehoist_enabled: '身分組 {0} 現在與在線成員分開顯示。'
+  setrole: '成功為用戶 {1} 添加了 {0} 身分組。'
+  setrole_err: 添加身分組失敗。我沒有足夠的權限。
+  sticky_roles_disabled: 固定身分組已停用。
+  sticky_roles_enabled: 固定身分組已啟用。離開的使用者重新加入伺服器時將恢復其身分組。
+  temp_role_added: '使用者 {0} 已暫時獲得身分組 {1}。身分組將於 {2} 到期'

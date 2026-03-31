@@ -1,8 +1,0 @@
-curgen_disabled: Đã tắt tạo tiền tệ trên kênh này.
-curgen_enabled: Đã bật tạo tiền tệ trên kênh này.
-curgen_pl: '{0} {1} ngẫu nhiên đã xuất hiện!'
-curgen_sn: 'Một {0} ngẫu nhiên đã xuất hiện!'
-pick_pl: 'Nhặt chúng bằng cách gõ `{0}pick`'
-pick_sn: 'Nhặt nó bằng cách gõ `{0}pick`'
-picked: '{1} đã nhặt {0}'
-planted: '{0} đã trồng {1}'

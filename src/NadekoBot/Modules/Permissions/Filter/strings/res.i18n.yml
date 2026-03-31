@@ -1,0 +1,287 @@
+ar:
+  filter_word_add: 'تمت إضافة الكلمة {0} إلى قائمة الكلمات المفلترة.'
+  filter_word_list: قائمة الكلمات المفلترة
+  filter_word_remove: 'تمت إزالة الكلمة {0} من قائمة الكلمات المفلترة.'
+  fw_cleared: تمت إزالة جميع الكلمات المفلترة وإعدادات قنوات الكلمات المفلترة.
+  invite_filter_channel_off: تم تعطيل تصفية الدعوات في هذه القناة.
+  invite_filter_channel_on: تم تفعيل تصفية الدعوات في هذه القناة.
+  invite_filter_server_off: تم تعطيل تصفية الدعوات في هذا الخادم.
+  invite_filter_server_on: تم تفعيل تصفية الدعوات في هذا الخادم.
+  link_filter_channel_off: تم تعطيل تصفية الروابط في هذه القناة.
+  link_filter_channel_on: تم تفعيل تصفية الروابط في هذه القناة.
+  link_filter_server_off: تم تعطيل تصفية الروابط في هذا الخادم.
+  link_filter_server_on: تم تفعيل تصفية الروابط في هذا الخادم.
+  word_filter_channel_off: تم تعطيل تصفية الكلمات في هذه القناة.
+  word_filter_channel_on: تم تفعيل تصفية الكلمات في هذه القناة.
+  word_filter_server_off: تم تعطيل تصفية الكلمات في هذا الخادم.
+  word_filter_server_on: تم تفعيل تصفية الكلمات في هذا الخادم.
+
+de-DE:
+  filter_word_add: 'Das Wort {0} wurde zu der Liste an gefilterten Wörtern hinzugefügt.'
+  filter_word_list: Liste der gefilterten Wörter
+  filter_word_remove: 'Wort {0} wurde von der Liste der gefilterten Wörter entfernt.'
+  fw_cleared: Alle gefiltereten Wörter und Kanaleinstellungen gelöscht.
+  invite_filter_channel_off: Einladungsfilterung wurde in diesem Kanal deaktiviert.
+  invite_filter_channel_on: Einladungsfilterung wurde in diesem Kanalaktiviert.
+  invite_filter_server_off: Einladungsfilterung wurde in diesem Server deaktiviert.
+  invite_filter_server_on: Einladungsfilterung wurde in diesem Server aktiviert.
+  link_filter_channel_off: Link-Filterung wurde in diesem Channel ausgeschaltet.
+  link_filter_channel_on: Link-Filterung wurde in diesem Channel eingeschaltet.
+  link_filter_server_off: Link-Filterung wurde auf diesem Server ausgeschaltet.
+  link_filter_server_on: Link-Filterung wurde auf diesem Server eingeschaltet.
+  word_filter_channel_off: Wort Filterung wurde in diesem Kanal deaktiviert.
+  word_filter_channel_on: Wort Filterung wurde in diesem Kanal aktiviert.
+  word_filter_server_off: Wort Filterung wurde auf diesem Server deaktiviert.
+  word_filter_server_on: Wort Filterung wurde auf diesem Server aktiviert.
+
+es-ES:
+  filter_word_add: 'Se ha añadido la palabra {0} a la lista de palabras filtradas.'
+  filter_word_list: Lista de palabras filtradas
+  filter_word_remove: 'Removida la palabra {0} de la lista de palabras filtradas.'
+  fw_cleared: Se han eliminado todas las palabras filtradas y la configuración del canal de palabras filtradas.
+  invite_filter_channel_off: Filtro de invitaciones desactivado en este canal.
+  invite_filter_channel_on: Filtro de invitaciones activado en este canal.
+  invite_filter_server_off: Filtro de invitaciones desactivado en este servidor.
+  invite_filter_server_on: Filtro de invitaciones activado en este servidor.
+  link_filter_channel_off: Filtro de enlaces desactivado en este canal.
+  link_filter_channel_on: Filtro de enlaces activado en este canal.
+  link_filter_server_off: Filtro de enlaces desactivado en este servidor.
+  link_filter_server_on: Filtro de enlaces activado en este servidor.
+  word_filter_channel_off: Filtro de groserías desactivado en este canal.
+  word_filter_channel_on: Filtro de groserías activado en este canal.
+  word_filter_server_off: Filtro de groserías desactivado en este servidor.
+  word_filter_server_on: Filtro de groserías activado en este servidor.
+
+fr-FR:
+  filter_word_add: 'Le mot {0} a été ajouté à la liste des mots filtrés.'
+  filter_word_list: Liste des mots filtrés
+  filter_word_remove: 'Le mot {0} a été retiré de la liste des mots filtrés.'
+  fw_cleared: Suppression de tous les mots filtrés et des réglages de mots filtrés du salon.
+  invite_filter_channel_off: Le filtre d'invitation est désactivé sur ce salon.
+  invite_filter_channel_on: Filtre d'invitation activé sur ce salon.
+  invite_filter_server_off: Filtre d'invitation désactivé sur ce serveur.
+  invite_filter_server_on: Filtre d'invitation activé sur ce serveur.
+  link_filter_channel_off: Filtrage des liens désactivé sur ce salon.
+  link_filter_channel_on: Filtrage des liens activé sur ce salon.
+  link_filter_server_off: Filtrage des liens désactivé sur ce serveur.
+  link_filter_server_on: Filtrage des liens activé sur ce serveur.
+  word_filter_channel_off: Le filtre du langage est désactivé sur ce salon.
+  word_filter_channel_on: Le filtre du langage est activé sur ce salon.
+  word_filter_server_off: Le filtre du langage est désactivé sur ce serveur.
+  word_filter_server_on: Le filtre du langage est activé sur ce serveur.
+
+id-ID:
+  filter_word_add: 'Kata {0} ditambahkan ke daftar kata yang difilter.'
+  filter_word_list: Daftar kata yang difilter
+  filter_word_remove: 'Kata {0} dihapus dari daftar kata yang difilter.'
+  fw_cleared: Semua kata yang difilter dan pengaturan channel filter kata sudah dihapus.
+  invite_filter_channel_off: Filter undangan dinonaktifkan di channel ini.
+  invite_filter_channel_on: Filter undangan diaktifkan di channel ini.
+  invite_filter_server_off: Filter undangan dinonaktifkan di server ini.
+  invite_filter_server_on: Filter undangan diaktifkan di server ini.
+  link_filter_channel_off: Filter link dinonaktifkan di channel ini.
+  link_filter_channel_on: Filter link diaktifkan di channel ini.
+  link_filter_server_off: Filter link dinonaktifkan di server ini.
+  link_filter_server_on: Filter link diaktifkan di server ini.
+  word_filter_channel_off: Filter kata dinonaktifkan di channel ini.
+  word_filter_channel_on: Filter kata diaktifkan di channel ini.
+  word_filter_server_off: Filter kata dinonaktifkan di server ini.
+  word_filter_server_on: Filter kata diaktifkan di server ini.
+
+ja-JP:
+  filter_word_add: 'フィルター対象語句一覧に「{0}」を追加しました。'
+  filter_word_list: フィルター対象語句一覧
+  filter_word_remove: 'フィルター対象語句一覧から「{0}」を削除しました。'
+  fw_cleared: すべてのフィルター単語とフィルター単語のチャンネル設定が削除されました。
+  invite_filter_channel_off: このチャンネルでは、招待のフィルタリングが無効になりました。
+  invite_filter_channel_on: このチャンネルでは、招待のフィルタリングが有効になりました。
+  invite_filter_server_off: このサーバーでは、招待のフィルタリングが無効になりました。
+  invite_filter_server_on: このサーバーでは、招待のフィルタリングが有効になりました。
+  link_filter_channel_off: このチャンネルのリンクフィルタリングが無効になりました。
+  link_filter_channel_on: このチャンネルのリンクフィルタリングが有効になりました。
+  link_filter_server_off: このサーバーのリンクフィルタリングが無効になりました。
+  link_filter_server_on: このサーバーのリンクフィルタリングが有効になりました。
+  word_filter_channel_off: このチャンネルでは、語句のフィルタリングが無効になりました。
+  word_filter_channel_on: このチャンネルでは、語句のフィルタリングが有効になりました。
+  word_filter_server_off: このサーバーでは、語句のフィルタリングが無効になりました。
+  word_filter_server_on: このサーバーでは、語句のフィルタリングが有効になりました。
+
+ko-KR:
+  filter_word_add: '필터링 단어 목록에 {0} 단어를 추가했어요.'
+  filter_word_list: 필터링 단어 목록
+  filter_word_remove: '필터링 단어 목록에서 {0} 단어를 제거했어요.'
+  fw_cleared: 모든 필터링 단어와 필터링 단어 채널 설정을 제거했어요.
+  invite_filter_channel_off: 이 채널에서 초대 링크 필터링이 비활성화되었어요.
+  invite_filter_channel_on: 이 채널에서 초대 링크 필터링이 활성화되었어요.
+  invite_filter_server_off: 이 서버에서 초대 링크 필터링이 비활성화되었어요.
+  invite_filter_server_on: 이 서버에서 초대 링크 필터링이 활성화되었어요.
+  link_filter_channel_off: 이 채널에서 링크 필터링이 비활성화되었어요.
+  link_filter_channel_on: 이 채널에서 링크 필터링이 활성화되었어요.
+  link_filter_server_off: 이 서버에서 링크 필터링이 비활성화되었어요.
+  link_filter_server_on: 이 서버에서 링크 필터링이 활성화되었어요.
+  word_filter_channel_off: 이 채널에서 단어 필터링이 비활성화되었어요.
+  word_filter_channel_on: 이 채널에서 단어 필터링이 활성화되었어요.
+  word_filter_server_off: 이 서버에서 단어 필터링이 비활성화되었어요.
+  word_filter_server_on: 이 서버에서 단어 필터링이 활성화되었어요.
+
+pl-PL:
+  filter_word_add: 'Dodano słowo {0} do listy filtrowanych słów.'
+  filter_word_list: Lista filtrowanych słów
+  filter_word_remove: 'Usunięto słowo {0} z listy filtrowanych słów.'
+  fw_cleared: Usunięto wszystkie filtrowane słowa i ustawienia kanałów filtrowania słów.
+  invite_filter_channel_off: Filtrowanie zaproszeń wyłączone na tym kanale.
+  invite_filter_channel_on: Filtrowanie zaproszeń włączone na tym kanale.
+  invite_filter_server_off: Filtrowanie zaproszeń wyłączone na tym serwerze.
+  invite_filter_server_on: Filtrowanie zaproszeń włączone na tym serwerze.
+  link_filter_channel_off: Filtrowanie linków wyłączone na tym kanale.
+  link_filter_channel_on: Filtrowanie linków włączone na tym kanale.
+  link_filter_server_off: Filtrowanie linków wyłączone na tym serwerze.
+  link_filter_server_on: Filtrowanie linków włączone na tym serwerze.
+  word_filter_channel_off: Filtrowanie słów wyłączone na tym kanale.
+  word_filter_channel_on: Filtrowanie słów włączone na tym kanale.
+  word_filter_server_off: Filtrowanie słów wyłączone na tym serwerze.
+  word_filter_server_on: Filtrowanie słów włączone na tym serwerze.
+
+pt-BR:
+  filter_word_add: 'A palavra {0} foi adicionada à lista de palavras filtradas.'
+  filter_word_list: Lista de Palavras Filtradas
+  filter_word_remove: 'A palavra {0} foi removida da lista de palavras filtradas.'
+  fw_cleared: Removido todos os filtros e configurações de filtros de palavras do canal.
+  invite_filter_channel_off: O filtro de convites foi desativado nesse canal.
+  invite_filter_channel_on: O filtro de convites foi ativado nesse canal.
+  invite_filter_server_off: O filtro de convites foi desativado nesse servidor.
+  invite_filter_server_on: O filtro de convites foi ativado nesse servidor.
+  link_filter_channel_off: A filtragem de links foi desabilitada neste canal.
+  link_filter_channel_on: A filtragem de links foi ativada neste canal.
+  link_filter_server_off: A filtragem de links foi desabilitada neste servidor.
+  link_filter_server_on: A filtragem de links foi habilitada neste servidor.
+  word_filter_channel_off: O filtro de palavras foi desativado nesse canal.
+  word_filter_channel_on: O filtro de palavras foi ativado nesse canal.
+  word_filter_server_off: O filtro de palavras foi desativado nesse servidor.
+  word_filter_server_on: O filtro de palavras foi ativado nesse servidor.
+
+ru-RU:
+  filter_word_add: 'Слово {0} было добавлено в список фильтрующихся слов.'
+  filter_word_list: Список слов в фильтре
+  filter_word_remove: 'Слово {0} было удалено из списка фильтрующихся слов.'
+  fw_cleared: Удалены все отфильтрованные слова и настройки фильтров каналов.
+  invite_filter_channel_off: Фильтрация приглашений была отключена в этом канале.
+  invite_filter_channel_on: Фильтрация приглашений была включена в этом канале.
+  invite_filter_server_off: Фильтрация приглашений была отключена на этом сервере.
+  invite_filter_server_on: Фильтрация приглашений была включена на этом сервере.
+  link_filter_channel_off: Фильтрация ссылок отключена на этом канале.
+  link_filter_channel_on: Фильтрация ссылок включена на этом канале.
+  link_filter_server_off: Фильтрация ссылок отключена на этом сервере.
+  link_filter_server_on: Фильтрация ссылок включена на этом сервере.
+  word_filter_channel_off: Фильтрация слов была отключена для этого канале.
+  word_filter_channel_on: Фильтрация слов была включена для этого канала.
+  word_filter_server_off: Фильтрация слов была отключена для этого сервера.
+  word_filter_server_on: Фильтрация слов была включена для этого сервера.
+
+sr-Cyrl-RS:
+  filter_word_add: 'Реч {0} додата на листу филтрираних речи.'
+  filter_word_list: Листа филтрираних речи
+  filter_word_remove: 'Реч {0} уклоњена са листе филтрираних речи.'
+  fw_cleared: Уклоњене све филтриране речи и подешавања филтрираних речи по каналима.
+  invite_filter_channel_off: Филтрирање позивница искључено на овом каналу.
+  invite_filter_channel_on: Филтрирање позивница укључено на овом каналу.
+  invite_filter_server_off: Филтрирање позивница искључено на овом серверу.
+  invite_filter_server_on: Филтрирање позивница укључено на овом серверу.
+  link_filter_channel_off: Филтрирање линкова искључено на овом каналу.
+  link_filter_channel_on: Филтрирање линкова укључено на овом каналу.
+  link_filter_server_off: Филтрирање линкова искључено на овом серверу.
+  link_filter_server_on: Филтрирање линкова укључено на овом серверу.
+  word_filter_channel_off: Филтрирање речи искључено на овом каналу.
+  word_filter_channel_on: Филтрирање речи укључено на овом каналу.
+  word_filter_server_off: Филтрирање речи искључено на овом серверу.
+  word_filter_server_on: Филтрирање речи укључено на овом серверу.
+
+tr-TR:
+  filter_word_add: '{0} kelimesi filtrelenen kelimeler listesine eklendi.'
+  filter_word_list: Filtrelenen kelimeler listesi
+  filter_word_remove: '{0} kelimesi filtrelenen kelimeler listesinden kaldırıldı.'
+  fw_cleared: Tüm filtrelenen kelimeler ve filtrelenen kelime kanal ayarları kaldırıldı.
+  invite_filter_channel_off: Bu kanalda davet filtreleme devre dışı bırakıldı.
+  invite_filter_channel_on: Bu kanalda davet filtreleme etkinleştirildi.
+  invite_filter_server_off: Bu sunucuda davet filtreleme devre dışı bırakıldı.
+  invite_filter_server_on: Bu sunucuda davet filtreleme etkinleştirildi.
+  link_filter_channel_off: Bu kanalda bağlantı filtreleme devre dışı bırakıldı.
+  link_filter_channel_on: Bu kanalda bağlantı filtreleme etkinleştirildi.
+  link_filter_server_off: Bu sunucuda bağlantı filtreleme devre dışı bırakıldı.
+  link_filter_server_on: Bu sunucuda bağlantı filtreleme etkinleştirildi.
+  word_filter_channel_off: Bu kanalda kelime filtreleme devre dışı bırakıldı.
+  word_filter_channel_on: Bu kanalda kelime filtreleme etkinleştirildi.
+  word_filter_server_off: Bu sunucuda kelime filtreleme devre dışı bırakıldı.
+  word_filter_server_on: Bu sunucuda kelime filtreleme etkinleştirildi.
+
+ts-TS:
+  filter_word_add: 'Added word {0} to the filtered words list.'
+  filter_word_list: List of filtered words
+  filter_word_remove: 'Removed word {0} from the filtered words list.'
+  fw_cleared: Removed all filtered words and channel settings. Clean slate.
+  invite_filter_channel_off: Invite filtering disabled on this channel.
+  invite_filter_channel_on: Invite filtering enabled on this channel.
+  invite_filter_server_off: Invite filtering disabled on this server.
+  invite_filter_server_on: Invite filtering enabled on this server. Hmph, someone has to keep order.
+  link_filter_channel_off: Link filtering disabled on this channel.
+  link_filter_channel_on: Link filtering enabled on this channel.
+  link_filter_server_off: Link filtering disabled on this server.
+  link_filter_server_on: Link filtering enabled on this server. Just being careful.
+  word_filter_channel_off: Word filtering disabled on this channel.
+  word_filter_channel_on: Word filtering enabled on this channel.
+  word_filter_server_off: Word filtering disabled on this server.
+  word_filter_server_on: Word filtering enabled on this server.
+
+uk-UA:
+  filter_word_add: 'Слово {0} додано до списку відфільтрованих слів.'
+  filter_word_list: Список відфільтрованих слів
+  filter_word_remove: 'Слово {0} видалено зі списку відфільтрованих слів.'
+  fw_cleared: Видалено всі відфільтровані слова та налаштування фільтрації каналів.
+  invite_filter_channel_off: Фільтрацію запрошень на цьому каналі вимкнено.
+  invite_filter_channel_on: Фільтрацію запрошень на цьому каналі увімкнено.
+  invite_filter_server_off: Фільтрацію запрошень на цьому сервері вимкнено.
+  invite_filter_server_on: Фільтрацію запрошень на цьому сервері увімкнено.
+  link_filter_channel_off: Фільтрацію посилань на цьому каналі вимкнено.
+  link_filter_channel_on: Фільтрацію посилань на цьому каналі увімкнено.
+  link_filter_server_off: Фільтрацію посилань на цьому сервері вимкнено.
+  link_filter_server_on: Фільтрацію посилань на цьому сервері увімкнено.
+  word_filter_channel_off: Фільтрацію слів на цьому каналі вимкнено.
+  word_filter_channel_on: Фільтрацію слів на цьому каналі увімкнено.
+  word_filter_server_off: Фільтрацію слів на цьому сервері вимкнено.
+  word_filter_server_on: Фільтрацію слів на цьому сервері увімкнено.
+
+vi-VN:
+  filter_word_add: 'Đã thêm từ {0} vào danh sách từ bị lọc.'
+  filter_word_list: Danh sách từ bị lọc
+  filter_word_remove: 'Đã xóa từ {0} khỏi danh sách từ bị lọc.'
+  fw_cleared: Đã xóa tất cả từ bị lọc và cài đặt lọc từ theo kênh.
+  invite_filter_channel_off: Đã tắt lọc lời mời trên kênh này.
+  invite_filter_channel_on: Đã bật lọc lời mời trên kênh này.
+  invite_filter_server_off: Đã tắt lọc lời mời trên máy chủ này.
+  invite_filter_server_on: Đã bật lọc lời mời trên máy chủ này.
+  link_filter_channel_off: Đã tắt lọc liên kết trên kênh này.
+  link_filter_channel_on: Đã bật lọc liên kết trên kênh này.
+  link_filter_server_off: Đã tắt lọc liên kết trên máy chủ này.
+  link_filter_server_on: Đã bật lọc liên kết trên máy chủ này.
+  word_filter_channel_off: Đã tắt lọc từ trên kênh này.
+  word_filter_channel_on: Đã bật lọc từ trên kênh này.
+  word_filter_server_off: Đã tắt lọc từ trên máy chủ này.
+  word_filter_server_on: Đã bật lọc từ trên máy chủ này.
+
+zh-CN:
+  filter_word_add: '{0} 已加入過濾詞彙列表'
+  filter_word_list: 過濾詞彙列表
+  filter_word_remove: '{0} 已被從過濾詞彙列表中移除'
+  fw_cleared: 已移除所有過濾字元及過濾設定
+  invite_filter_channel_off: 邀請過濾已在這個頻道上停用
+  invite_filter_channel_on: 邀請過濾已在這個頻道上啟用
+  invite_filter_server_off: 邀請過濾已在這個伺服器上停用
+  invite_filter_server_on: 邀請過濾已在這個伺服器上啟用
+  link_filter_channel_off: 此頻道上禁用網址過濾。
+  link_filter_channel_on: 在此頻道上啟用了網址過濾。
+  link_filter_server_off: 此伺服器上禁用網址過濾。
+  link_filter_server_on: 此伺服器上啟用網址過濾。
+  word_filter_channel_off: 此頻道已停用文字過濾
+  word_filter_channel_on: 此頻道已啟用文字過濾
+  word_filter_server_off: 此伺服器已停用文字過濾
+  word_filter_server_on: 此伺服器已啟用文字過濾

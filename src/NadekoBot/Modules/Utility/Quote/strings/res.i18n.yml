@@ -1,0 +1,207 @@
+ar:
+  created_by: 'أنشأه {0}'
+  quote_added_new: 'تمت إضافة الاقتباس #{0}.'
+  quote_deleted: 'تم حذف الاقتباس #{0}.'
+  quote_edited: تم تعديل الاقتباس
+  quote_id: 'الاقتباس {0}'
+  quotes_deleted: 'تم حذف جميع الاقتباسات بالكلمة المفتاحية {0}.'
+  quotes_deleted_count: 'تم حذف {0} اقتباسات.'
+  quotes_notfound: لم يتم العثور على اقتباسات مطابقة لمعرّف الاقتباس المحدد.
+  quotes_page: 'صفحة {0} من الاقتباسات'
+  quotes_page_none: لم يتم العثور على اقتباسات في تلك الصفحة.
+  quotes_remove_none: لم يتم العثور على اقتباسات يمكنك إزالتها.
+
+de-DE:
+  created_by: 'Erstellt von {0}'
+  quote_added_new: 'Zitat #{0} wurde hinzugefügt.'
+  quote_deleted: 'Zitat #{0} gelöscht.'
+  quote_edited: Zitat Bearbeitet
+  quote_id: 'Zitat {0}'
+  quotes_deleted: 'Alle Zitate mit dem Stichwort {0} wurden gelöscht.'
+  quotes_deleted_count: '{0} Zitate gelöscht.'
+  quotes_notfound: Keine Zitate gefunden zu der angegebenen Zitat ID.
+  quotes_page: 'Seite {0} der Zitate'
+  quotes_page_none: Keine Zitate auf dieser Seite gefunden.
+  quotes_remove_none: Keine Zitate gefunden die du entfernen kannst.
+
+es-ES:
+  created_by: 'Creada por {0}'
+  quote_added_new: 'Cita #{0} añadida.'
+  quote_deleted: 'Cita #{0} eliminada.'
+  quote_edited: Cita Editada
+  quote_id: 'Cita {0}'
+  quotes_deleted: 'Eliminadas todas las citas con la clave {0}.'
+  quotes_deleted_count: '{0} citas eliminadas.'
+  quotes_notfound: No hay citas que coincidan con la ID especificada.
+  quotes_page: 'Página {0} de citas'
+  quotes_page_none: No se han encontrado citas en esta página.
+  quotes_remove_none: No se han encontrado citas que se puedan borrar.
+
+fr-FR:
+  created_by: 'Créé par {0}'
+  quote_added_new: 'Citation #{0} ajoutée.'
+  quote_deleted: 'Citation #{0} supprimée.'
+  quote_edited: Citation Modifiée
+  quote_id: 'Citation {0}'
+  quotes_deleted: 'Suppression de toutes les citations avec le mot-clé {0}.'
+  quotes_deleted_count: '{0} citations supprimées.'
+  quotes_notfound: Aucune citation ne correspond à l'ID fourni.
+  quotes_page: 'Page {0} de citations'
+  quotes_page_none: Aucune citation trouvée sur cette page.
+  quotes_remove_none: Aucune citation que vous pouvez enlever n'a été trouvée.
+
+id-ID:
+  created_by: 'Dibuat oleh {0}'
+  quote_added_new: 'Quote #{0} ditambahkan.'
+  quote_deleted: 'Quote #{0} dihapus.'
+  quote_edited: Quote Diedit
+  quote_id: 'Quote {0}'
+  quotes_deleted: 'Semua quote dengan kata kunci {0} telah dihapus.'
+  quotes_deleted_count: '{0} quote dihapus.'
+  quotes_notfound: Tidak ada quote yang cocok dengan ID quote yang ditentukan.
+  quotes_page: 'Halaman {0} dari quote'
+  quotes_page_none: Tidak ada quote yang ditemukan di halaman itu.
+  quotes_remove_none: Tidak ada quote yang bisa kamu hapus.
+
+ja-JP:
+  created_by: '{0}が作成'
+  quote_added_new: '引用#{0}が追加されました。'
+  quote_deleted: '{0}番目の引用句を削除しました。'
+  quote_edited: 引用が編集されました
+  quote_id: '引用 {0}'
+  quotes_deleted: 'キーワード「{0}」の引用句を全て削除しました。'
+  quotes_deleted_count: '{0}件の引用が削除されました。'
+  quotes_notfound: 指定された見積もりIDに一致する見積もりは見つかりませんでした。
+  quotes_page: '引用句 {0}ページ目'
+  quotes_page_none: 指定されたページには引用句がありません。
+  quotes_remove_none: 削除できる引用句が見つかりませんでした。
+
+ko-KR:
+  created_by: '{0}이(가) 생성'
+  quote_added_new: '명언 #{0}이(가) 추가되었어요.'
+  quote_deleted: '명언 #{0}이(가) 삭제되었어요.'
+  quote_edited: 명언이 수정되었어요
+  quote_id: '명언 {0}'
+  quotes_deleted: '{0} 키워드의 모든 명언이 삭제되었어요.'
+  quotes_deleted_count: '명언 {0}개가 삭제되었어요.'
+  quotes_notfound: 지정한 명언 ID와 일치하는 명언을 찾을 수 없어요.
+  quotes_page: '명언 {0} 페이지'
+  quotes_page_none: 해당 페이지에 명언이 없어요.
+  quotes_remove_none: 삭제할 수 있는 명언을 찾을 수 없어요.
+
+pl-PL:
+  created_by: 'Utworzono przez {0}'
+  quote_added_new: 'Cytat #{0} dodany.'
+  quote_deleted: 'Cytat #{0} usunięty.'
+  quote_edited: Cytat edytowany
+  quote_id: 'Cytat {0}'
+  quotes_deleted: 'Usunięto wszystkie cytaty ze słowem kluczowym {0}.'
+  quotes_deleted_count: 'Usunięto {0} cytatów.'
+  quotes_notfound: Nie znaleziono cytatów pasujących do podanego ID.
+  quotes_page: 'Strona {0} cytatów'
+  quotes_page_none: Nie znaleziono cytatów na tej stronie.
+  quotes_remove_none: Nie znaleziono cytatów, które możesz usunąć.
+
+pt-BR:
+  created_by: 'Criado por {0}'
+  quote_added_new: 'Citação #{0} adicionada.'
+  quote_deleted: 'Citação #{0} excluída.'
+  quote_edited: Citação Editada
+  quote_id: 'Citação {0}'
+  quotes_deleted: 'Todas citações com palavra-chave {0} foram deletadas.'
+  quotes_deleted_count: '{0} citações excluídas.'
+  quotes_notfound: Nenhuma citação encontrada com o ID especificado.
+  quotes_page: 'Página {0} das citações'
+  quotes_page_none: Nenhuma citação foi encontrada nessa página.
+  quotes_remove_none: Não encontramos citações que podem ser removidas.
+
+ru-RU:
+  created_by: 'Создано {0}'
+  quote_added_new: 'Цитата #{0} добавлена.'
+  quote_deleted: 'Цитата #{0} удалена.'
+  quote_edited: Цитата Отредактирована
+  quote_id: 'Цитата {0}'
+  quotes_deleted: 'Удалены все цитаты с ключевым словом {0}.'
+  quotes_deleted_count: 'Удалено {0} цитат.'
+  quotes_notfound: Цитаты, соответствующие указанному ID цитаты, не найдены.
+  quotes_page: 'Страница цитат {0}'
+  quotes_page_none: На этой странице цитат не найдено.
+  quotes_remove_none: Не найдено цитат, которые можно удалить.
+
+sr-Cyrl-RS:
+  created_by: 'Креирао {0}'
+  quote_added_new: 'Цитат #{0} додат.'
+  quote_deleted: 'Цитат #{0} обрисан.'
+  quote_edited: Цитат измењен
+  quote_id: 'Цитат {0}'
+  quotes_deleted: 'Обрисани сви цитати са кључном речи {0}.'
+  quotes_deleted_count: 'Обрисано {0} цитата.'
+  quotes_notfound: Нису пронађени цитати који одговарају наведеном ID-у.
+  quotes_page: 'Страна {0} цитата'
+  quotes_page_none: Нису пронађени цитати на тој страни.
+  quotes_remove_none: Нису пронађени цитати које можете уклонити.
+
+tr-TR:
+  created_by: '{0} tarafından oluşturuldu'
+  quote_added_new: '#{0} numaralı alıntı eklendi.'
+  quote_deleted: '#{0} numaralı alıntı silindi.'
+  quote_edited: Alıntı Düzenlendi
+  quote_id: 'Alıntı {0}'
+  quotes_deleted: '{0} anahtar kelimesine sahip tüm alıntılar silindi.'
+  quotes_deleted_count: '{0} alıntı silindi.'
+  quotes_notfound: Belirtilen alıntı kimliğiyle eşleşen alıntı bulunamadı.
+  quotes_page: 'Alıntılar sayfa {0}'
+  quotes_page_none: Bu sayfada alıntı bulunamadı.
+  quotes_remove_none: Kaldırabileceğin alıntı bulunamadı.
+
+ts-TS:
+  created_by: 'Created by {0}'
+  quote_added_new: 'Quote #{0} added.'
+  quote_deleted: 'Quote #{0} deleted.'
+  quote_edited: Quote edited.
+  quote_id: 'Quote {0}'
+  quotes_deleted: 'Deleted all quotes with {0} keyword.'
+  quotes_deleted_count: 'Deleted {0} quotes. That was a lot of work, b-baka!'
+  quotes_notfound: No quotes found matching that ID.
+  quotes_page: 'Page {0} of quotes'
+  quotes_page_none: No quotes found on that page.
+  quotes_remove_none: No quotes found that you can remove. Hmph.
+
+uk-UA:
+  created_by: 'Створив {0}'
+  quote_added_new: 'Цитату #{0} додано.'
+  quote_deleted: 'Цитату #{0} видалено.'
+  quote_edited: Цитату відредаговано
+  quote_id: 'Цитата {0}'
+  quotes_deleted: 'Видалено всі цитати з ключовим словом {0}.'
+  quotes_deleted_count: 'Видалено {0} цитат.'
+  quotes_notfound: Не знайдено цитат з вказаним ID.
+  quotes_page: 'Сторінка {0} цитат'
+  quotes_page_none: На цій сторінці цитат не знайдено.
+  quotes_remove_none: Не знайдено цитат, які ти можеш видалити.
+
+vi-VN:
+  created_by: 'Tạo bởi {0}'
+  quote_added_new: 'Đã thêm trích dẫn #{0}.'
+  quote_deleted: 'Đã xóa trích dẫn #{0}.'
+  quote_edited: Đã sửa trích dẫn
+  quote_id: 'Trích dẫn {0}'
+  quotes_deleted: 'Đã xóa tất cả trích dẫn với từ khóa {0}.'
+  quotes_deleted_count: 'Đã xóa {0} trích dẫn.'
+  quotes_notfound: Không tìm thấy trích dẫn nào khớp với ID đã chỉ định.
+  quotes_page: 'Trang {0} trích dẫn'
+  quotes_page_none: Không tìm thấy trích dẫn nào trên trang đó.
+  quotes_remove_none: Không tìm thấy trích dẫn nào mà bạn có thể xóa.
+
+zh-CN:
+  created_by: '由 {0} 創建'
+  quote_added_new: '添加了引用 #{0}。'
+  quote_deleted: '已刪除引文 #{0}'
+  quote_edited: 引言已編輯
+  quote_id: '引言 {0}'
+  quotes_deleted: '刪除了所有帶有 {0} 關鍵字的引號。'
+  quotes_deleted_count: '已刪除 {0} 則引言。'
+  quotes_notfound: 找不到與指定的報價 ID 匹配的報價。
+  quotes_page: '第 {0} 頁報價'
+  quotes_page_none: 在該頁面上沒有找到報價。
+  quotes_remove_none: 沒有找到可以刪除的引號。

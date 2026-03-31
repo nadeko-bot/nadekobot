@@ -1,4 +1,0 @@
-aar_disabled: Nutzer, die diesen Server beitreten, erhalten keine Rollen automatisch.
-aar_none: Nutzer erhalten keine Rollen wenn sie diesem Server beitreten.
-aar_role_removed: 'Die Nutzer erhalten die {0} Rolle nicht mehr wenn sie diesem Server beitreten.'
-aar_roles: 'Die folgenden Rollen werden den Nutzern hinzugefügt wenn sie diesem Server beitreten: {0}'

@@ -1,7 +1,0 @@
-linkfix_added: 'Links from {0} will now be fixed to {1}.'
-linkfix_already_exists: 'A link fix for {0} already exists. Pay attention!'
-linkfix_invalid_domains: Both old and new domains must be valid.
-linkfix_list_none: No link fixes configured for this server.
-linkfix_list_title: Link Fixes
-linkfix_not_found: 'No link fix found for {0}.'
-linkfix_removed: 'Link fix for {0} has been removed.'

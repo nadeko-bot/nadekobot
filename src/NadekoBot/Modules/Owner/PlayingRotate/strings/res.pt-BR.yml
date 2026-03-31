@@ -1,8 +1,0 @@
-reprm: 'Mensagem de status removida: {0}'
-ropl_added: Adicionado.
-ropl_disabled: Rotação de status disabilitado.
-ropl_enabled: Rotação de status habilitado.
-ropl_list: |-
-  Aqui é uma lista de status rotativos:
-  {0}
-ropl_not_set: Nenhum status rotativo selecionado.

@@ -1,9 +1,0 @@
-schedule_add_error: 이미 {0}개의 예약 명령어가 있어요. 더 추가하려면 기존 항목을 삭제해 주세요.
-schedule_add_success: 예약 명령어가 추가되었어요.
-schedule_command: 명령어
-schedule_delete_error: 예약 명령어를 삭제하는 중 오류가 발생했어요.
-schedule_deleted: '예약 명령어 #{0}이(가) 삭제되었어요.'
-schedule_id: ID
-schedule_list_none: 예약된 명령어가 없어요.
-schedule_list_title: 예약 명령어
-schedule_when: 실행 시각

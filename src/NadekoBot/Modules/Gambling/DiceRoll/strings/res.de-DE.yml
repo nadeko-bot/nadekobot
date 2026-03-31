@@ -1,6 +1,0 @@
-dice_invalid_number: 'Ungültige Nummer wurde angegeben. Du kannst {0}-{1} Würfel auf einmal werfen.'
-dice_rolled: 'würfelte {0}'
-dice_rolled_num: 'Würfel geworfen: {0}'
-rolls: ''
-second_larger_than_first: Zweite Zahl muss größer sein als die erste.
-total: Insgesamt

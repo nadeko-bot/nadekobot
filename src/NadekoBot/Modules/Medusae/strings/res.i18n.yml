@@ -1,0 +1,319 @@
+ar:
+  commands_count: 'الأوامر ({0})'
+  list_of_medusae: قائمة الميدوسا
+  list_of_unloaded: قائمة الميدوسا المتاحة
+  loaded_medusae: الميدوسا المحمّلة
+  medusa_already_loaded: 'الميدوسا {0} محمّلة بالفعل'
+  medusa_empty: لم يتم تحميل الميدوسا لأنها لا تحتوي على أي سنيكس.
+  medusa_info: معلومات الميدوسا
+  medusa_invalid_not_found: لم يتم العثور على ميدوسا بهذا الاسم أو أن الملف غير صالح
+  medusa_loaded: 'تم تحميل الميدوسا {0}.'
+  medusa_name_not_found: ميدوسا بهذا الاسم غير موجودة أو غير محمّلة.
+  medusa_not_loaded: ميدوسا بهذا الاسم غير محمّلة.
+  medusa_possibly_cant_unload: من المحتمل أن الميدوسا لم يتم إلغاء تحميلها بالكامل. يرجى إعادة تشغيل البوت إذا ظهرت مشاكل.
+  medusa_reload_failed: 'فشل إعادة تحميل الميدوسا {0}. حاول تحميلها يدويًا.'
+  medusa_reloaded: 'تم إعادة تحميل الميدوسا {0}.'
+  medusa_unloaded: 'تم إلغاء تحميل الميدوسا {0}.'
+  no_medusa_available: لا توجد ميدوسا متاحة.
+  no_medusa_loaded: لا توجد ميدوسا محمّلة.
+  sneks_count: 'السنيكس ({0})'
+
+de-DE:
+  commands_count: 'Befehle ({0})'
+  list_of_medusae: Liste der Medusen
+  list_of_unloaded: Liste der verfügbaren Medusen
+  loaded_medusae: Geladene Medusen
+  medusa_already_loaded: 'Medusa {0} ist bereits geladen'
+  medusa_empty: Medusa wurde nicht geladen, da sie keine Sneks enthielt.
+  medusa_info: Medusa-Informationen
+  medusa_invalid_not_found: Medusa mit diesem Namen wurde nicht gefunden oder die Datei war ungültig
+  medusa_loaded: 'Medusa {0} wurde geladen.'
+  medusa_name_not_found: Medusa mit diesem Namen existiert nicht oder ist nicht geladen.
+  medusa_not_loaded: Medusa mit diesem Namen ist nicht geladen.
+  medusa_possibly_cant_unload: Medusa ist wahrscheinlich nicht vollständig entladen. Bitte starte den Bot neu, falls Probleme auftreten.
+  medusa_reload_failed: 'Fehler beim Neuladen der Medusa {0}. Versuche sie manuell zu laden.'
+  medusa_reloaded: 'Medusa {0} wurde neu geladen.'
+  medusa_unloaded: 'Medusa {0} wurde entladen.'
+  no_medusa_available: Keine Medusa verfügbar.
+  no_medusa_loaded: Es sind keine Medusen geladen.
+  sneks_count: 'Sneks ({0})'
+
+es-ES:
+  commands_count: 'Comandos ({0})'
+  list_of_medusae: Lista de Medusas
+  list_of_unloaded: Lista de Medusas disponibles
+  loaded_medusae: Medusas cargadas
+  medusa_already_loaded: 'La Medusa {0} ya esta cargada'
+  medusa_empty: La Medusa no se cargo porque no contenia ningun Snek.
+  medusa_info: Informacion de Medusa
+  medusa_invalid_not_found: No se encontro una Medusa con ese nombre o el archivo no es valido
+  medusa_loaded: 'La Medusa {0} ha sido cargada.'
+  medusa_name_not_found: No existe una Medusa con ese nombre o no esta cargada.
+  medusa_not_loaded: La Medusa con ese nombre no esta cargada.
+  medusa_possibly_cant_unload: Probablemente la Medusa no se descargo completamente. Por favor reinicia el bot si surgen problemas.
+  medusa_reload_failed: 'Error al recargar la medusa {0}. Intenta cargarla manualmente.'
+  medusa_reloaded: 'La medusa {0} ha sido recargada.'
+  medusa_unloaded: 'La Medusa {0} ha sido descargada.'
+  no_medusa_available: No hay medusas disponibles.
+  no_medusa_loaded: No hay medusas cargadas.
+  sneks_count: 'Sneks ({0})'
+
+fr-FR:
+  commands_count: 'Commandes ({0})'
+  list_of_medusae: Liste des méduses
+  list_of_unloaded: Liste des méduses disponible
+  loaded_medusae: Méduses chargées
+  medusa_already_loaded: 'La méduse {0} est déjà chargée'
+  medusa_empty: La méduse n'a pas été chargée puisqu'elle ne contient aucun Sneks.
+  medusa_info: Information de la méduse
+  medusa_invalid_not_found: Aucune méduse de ce nom n'a été trouvée ou le fichier était invalide
+  medusa_loaded: 'La méduse {0} a été chargée.'
+  medusa_name_not_found: Une méduse de ce nom n'existe pas ou n'est pas chargée.
+  medusa_not_loaded: La méduse de ce nom n'est pas chargée.
+  medusa_possibly_cant_unload: La méduse n'est probablement pas entièrement chargée. Redémarrez le bot si le problème persiste.
+  medusa_reload_failed: 'Échec du rechargement de la medusa {0}. Essayez de la charger manuellement.'
+  medusa_reloaded: 'La medusa {0} a été rechargée.'
+  medusa_unloaded: 'La méduse {0} a été déchargée.'
+  no_medusa_available: Aucune méduse de disponible.
+  no_medusa_loaded: Aucunes méduses de chargées.
+  sneks_count: 'Sneks ({0})'
+
+id-ID:
+  commands_count: 'Perintah ({0})'
+  list_of_medusae: Daftar Medusa
+  list_of_unloaded: Daftar Medusa yang Tersedia
+  loaded_medusae: Medusa yang Dimuat
+  medusa_already_loaded: 'Medusa {0} sudah dimuat'
+  medusa_empty: Medusa tidak dimuat karena tidak berisi Snek apa pun.
+  medusa_info: Informasi Medusa
+  medusa_invalid_not_found: Medusa dengan nama tersebut tidak ditemukan atau filenya tidak valid
+  medusa_loaded: 'Medusa {0} sudah berhasil dimuat.'
+  medusa_name_not_found: Medusa dengan nama tersebut tidak ada atau belum dimuat.
+  medusa_not_loaded: Medusa dengan nama tersebut belum dimuat.
+  medusa_possibly_cant_unload: Medusa mungkin belum sepenuhnya dilepas. Silakan restart bot jika ada masalah.
+  medusa_reload_failed: 'Gagal memuat ulang medusa {0}. Coba muat secara manual.'
+  medusa_reloaded: 'Medusa {0} sudah dimuat ulang.'
+  medusa_unloaded: 'Medusa {0} sudah dilepas.'
+  no_medusa_available: Tidak ada medusa yang tersedia.
+  no_medusa_loaded: Tidak ada medusa yang dimuat.
+  sneks_count: 'Snek ({0})'
+
+ja-JP:
+  commands_count: 'コマンド ({0})'
+  list_of_medusae: メデューサ一覧
+  list_of_unloaded: 利用可能なメデューサ一覧
+  loaded_medusae: ロード済みメデューサ
+  medusa_already_loaded: 'メデューサ{0}は既にロード済みです'
+  medusa_empty: メデューサにSneksが含まれていなかったため、ロードされませんでした。
+  medusa_info: メデューサ情報
+  medusa_invalid_not_found: その名前のメデューサが見つからないか、ファイルが無効です
+  medusa_loaded: 'メデューサ{0}がロードされました。'
+  medusa_name_not_found: その名前のメデューサは存在しないか、ロードされていません。
+  medusa_not_loaded: その名前のメデューサはロードされていません。
+  medusa_possibly_cant_unload: メデューサが完全にアンロードされていない可能性があります。問題が発生した場合はBotを再起動してください。
+  medusa_reload_failed: 'メデューサ{0}のリロードに失敗しました。手動でロードしてみてください。'
+  medusa_reloaded: 'メデューサ{0}がリロードされました。'
+  medusa_unloaded: 'メデューサ{0}がアンロードされました。'
+  no_medusa_available: 利用可能なメデューサはありません。
+  no_medusa_loaded: ロードされたメデューサはありません。
+  sneks_count: 'Sneks ({0})'
+
+ko-KR:
+  commands_count: '명령어 ({0})'
+  list_of_medusae: 메두사 목록
+  list_of_unloaded: 사용 가능한 메두사 목록
+  loaded_medusae: 로드된 메두사
+  medusa_already_loaded: '메두사 {0}은(는) 이미 로드되어 있어요'
+  medusa_empty: 메두사에 Snek이 포함되어 있지 않아서 로드되지 않았어요.
+  medusa_info: 메두사 정보
+  medusa_invalid_not_found: 해당 이름의 메두사를 찾을 수 없거나 파일이 유효하지 않아요
+  medusa_loaded: '메두사 {0}이(가) 로드되었어요.'
+  medusa_name_not_found: 해당 이름의 메두사가 존재하지 않거나 로드되지 않았어요.
+  medusa_not_loaded: 해당 이름의 메두사가 로드되어 있지 않아요.
+  medusa_possibly_cant_unload: 메두사가 완전히 언로드되지 않았을 수 있어요. 문제가 발생하면 봇을 재시작해 주세요.
+  medusa_reload_failed: '메두사 {0} 리로드에 실패했어요. 수동으로 로드해 보세요.'
+  medusa_reloaded: '메두사 {0}이(가) 리로드되었어요.'
+  medusa_unloaded: '메두사 {0}이(가) 언로드되었어요.'
+  no_medusa_available: 사용 가능한 메두사가 없어요.
+  no_medusa_loaded: 로드된 메두사가 없어요.
+  sneks_count: 'Snek ({0})'
+
+pl-PL:
+  commands_count: 'Komendy ({0})'
+  list_of_medusae: Lista Meduz
+  list_of_unloaded: Lista dostępnych Meduz
+  loaded_medusae: Załadowane Meduzy
+  medusa_already_loaded: 'Meduza {0} jest już załadowana'
+  medusa_empty: Meduza nie została załadowana, ponieważ nie zawierała żadnych Sneków.
+  medusa_info: Informacje o Meduzie
+  medusa_invalid_not_found: Nie znaleziono Meduzy o tej nazwie lub plik był nieprawidłowy
+  medusa_loaded: 'Meduza {0} została załadowana.'
+  medusa_name_not_found: Meduza o tej nazwie nie istnieje lub nie jest załadowana.
+  medusa_not_loaded: Meduza o tej nazwie nie jest załadowana.
+  medusa_possibly_cant_unload: Meduza prawdopodobnie nie została w pełni wyładowana. Uruchom ponownie bota, jeśli wystąpią problemy.
+  medusa_reload_failed: 'Nie udało się przeładować meduzy {0}. Spróbuj załadować ją ręcznie.'
+  medusa_reloaded: 'Meduza {0} została przeładowana.'
+  medusa_unloaded: 'Meduza {0} została wyładowana.'
+  no_medusa_available: Brak dostępnych meduz.
+  no_medusa_loaded: Nie ma załadowanych meduz.
+  sneks_count: 'Sneki ({0})'
+
+pt-BR:
+  commands_count: 'Comandos ({0})'
+  list_of_medusae: Lista de Medusas
+  list_of_unloaded: Lista de Medusas Disponiveis
+  loaded_medusae: Medusas Carregadas
+  medusa_already_loaded: 'A Medusa {0} ja esta carregada'
+  medusa_empty: A Medusa nao foi carregada pois nao continha nenhum Snek.
+  medusa_info: Informacoes da Medusa
+  medusa_invalid_not_found: Medusa com esse nome nao foi encontrada ou o arquivo e invalido
+  medusa_loaded: 'Medusa {0} foi carregada.'
+  medusa_name_not_found: Medusa com esse nome nao existe ou nao esta carregada.
+  medusa_not_loaded: Medusa com esse nome nao esta carregada.
+  medusa_possibly_cant_unload: A Medusa provavelmente nao foi totalmente descarregada. Reinicie o bot se houver problemas.
+  medusa_reload_failed: 'Falha ao recarregar a medusa {0}. Tente carregá-la manualmente.'
+  medusa_reloaded: 'A medusa {0} foi recarregada.'
+  medusa_unloaded: 'Medusa {0} foi descarregada.'
+  no_medusa_available: Nenhuma medusa disponivel.
+  no_medusa_loaded: Nao ha medusas carregadas.
+  sneks_count: 'Sneks ({0})'
+
+ru-RU:
+  commands_count: 'Команды ({0})'
+  list_of_medusae: Список медуз
+  list_of_unloaded: Список доступных медуз
+  loaded_medusae: Загруженные медузы
+  medusa_already_loaded: 'Медуза {0} уже загружена'
+  medusa_empty: Медуза не была загружена, так как не содержит ни одного снека.
+  medusa_info: Информация о медузе
+  medusa_invalid_not_found: Медуза с таким именем не найдена или файл поврежден
+  medusa_loaded: 'Медуза {0} загружена.'
+  medusa_name_not_found: Медуза с таким именем не существует или не загружена.
+  medusa_not_loaded: Медуза с таким именем не загружена.
+  medusa_possibly_cant_unload: Медуза, возможно, не полностью выгружена. Перезапустите бота, если возникнут проблемы.
+  medusa_reload_failed: 'Не удалось перезагрузить медузу {0}. Попробуйте загрузить её вручную.'
+  medusa_reloaded: 'Медуза {0} была перезагружена.'
+  medusa_unloaded: 'Медуза {0} выгружена.'
+  no_medusa_available: Нет доступных медуз.
+  no_medusa_loaded: Нет загруженных медуз.
+  sneks_count: 'Снеки ({0})'
+
+sr-Cyrl-RS:
+  commands_count: 'Команде ({0})'
+  list_of_medusae: Листа медуза
+  list_of_unloaded: Листа доступних медуза
+  loaded_medusae: Учитане медузе
+  medusa_already_loaded: 'Медуза {0} је већ учитана'
+  medusa_empty: Медуза није учитана јер не садржи ниједног Снека.
+  medusa_info: Информације о медузи
+  medusa_invalid_not_found: Медуза са тим именом није пронађена или је фајл неважећи
+  medusa_loaded: 'Медуза {0} је учитана.'
+  medusa_name_not_found: Медуза са тим именом не постоји или није учитана.
+  medusa_not_loaded: Медуза са тим именом није учитана.
+  medusa_possibly_cant_unload: Медуза вероватно није потпуно уклоњена. Рестартуј бота ако се појаве проблеми.
+  medusa_reload_failed: 'Неуспешно поновно учитавање медузе {0}. Покушај да је учиташ ручно.'
+  medusa_reloaded: 'Медуза {0} је поново учитана.'
+  medusa_unloaded: 'Медуза {0} је уклоњена.'
+  no_medusa_available: Нема доступних медуза.
+  no_medusa_loaded: Нема учитаних медуза.
+  sneks_count: 'Снекови ({0})'
+
+tr-TR:
+  commands_count: 'Komutlar ({0})'
+  list_of_medusae: Medusa Listesi
+  list_of_unloaded: Mevcut Medusa Listesi
+  loaded_medusae: Yüklü Medusa'lar
+  medusa_already_loaded: '{0} Medusa zaten yüklü'
+  medusa_empty: Medusa herhangi bir Snek içermediği için yüklenmedi.
+  medusa_info: Medusa Bilgisi
+  medusa_invalid_not_found: Bu isimde bir Medusa bulunamadı veya dosya geçersiz
+  medusa_loaded: '{0} Medusa yüklendi.'
+  medusa_name_not_found: Bu isimde bir Medusa mevcut değil veya yüklü değil.
+  medusa_not_loaded: Bu isimde bir Medusa yüklü değil.
+  medusa_possibly_cant_unload: Medusa muhtemelen tamamen kaldırılmadı. Sorun olursa lütfen botu yeniden başlat.
+  medusa_reload_failed: '{0} Medusa yeniden yüklenemedi. Manuel olarak yüklemeyi dene.'
+  medusa_reloaded: '{0} Medusa yeniden yüklendi.'
+  medusa_unloaded: '{0} Medusa kaldırıldı.'
+  no_medusa_available: Mevcut medusa yok.
+  no_medusa_loaded: Yüklü medusa yok.
+  sneks_count: 'Snek''ler ({0})'
+
+ts-TS:
+  commands_count: 'Commands ({0})'
+  list_of_medusae: List of Medusae
+  list_of_unloaded: List of Available Medusae
+  loaded_medusae: Loaded Medusae
+  medusa_already_loaded: 'Medusa {0} is already loaded. Pay attention!'
+  medusa_empty: The Medusa wasn't loaded because it didn't contain any Sneks.
+  medusa_info: Medusa Information
+  medusa_invalid_not_found: Couldn't find a Medusa with that name, or the file was invalid.
+  medusa_loaded: 'Medusa {0} has been loaded.'
+  medusa_name_not_found: A Medusa with that name doesn't exist or isn't loaded.
+  medusa_not_loaded: That Medusa isn't loaded.
+  medusa_possibly_cant_unload: The Medusa probably isn't fully unloaded. Restart the bot if issues arise.
+  medusa_reload_failed: 'Failed to reload medusa {0}. Try loading it manually.'
+  medusa_reloaded: 'Medusa {0} has been reloaded.'
+  medusa_unloaded: 'Medusa {0} has been unloaded.'
+  no_medusa_available: No medusa available. Hmph.
+  no_medusa_loaded: There are no loaded medusae.
+  sneks_count: 'Sneks ({0})'
+
+uk-UA:
+  commands_count: 'Команди ({0})'
+  list_of_medusae: Список Медуз
+  list_of_unloaded: Список доступних Медуз
+  loaded_medusae: Завантажені Медузи
+  medusa_already_loaded: 'Медуза {0} вже завантажена'
+  medusa_empty: Медуза не була завантажена, бо не містила жодних Sneks.
+  medusa_info: Інформація про Медузу
+  medusa_invalid_not_found: Медузу з такою назвою не знайдено або файл був некоректним
+  medusa_loaded: 'Медузу {0} завантажено.'
+  medusa_name_not_found: Медуза з такою назвою не існує або не завантажена.
+  medusa_not_loaded: Медуза з такою назвою не завантажена.
+  medusa_possibly_cant_unload: Медуза, ймовірно, не повністю вивантажена. Перезапусти бота, якщо виникнуть проблеми.
+  medusa_reload_failed: 'Не вдалося перезавантажити медузу {0}. Спробуй завантажити її вручну.'
+  medusa_reloaded: 'Медузу {0} перезавантажено.'
+  medusa_unloaded: 'Медузу {0} вивантажено.'
+  no_medusa_available: Немає доступних медуз.
+  no_medusa_loaded: Немає завантажених медуз.
+  sneks_count: 'Sneks ({0})'
+
+vi-VN:
+  commands_count: 'Lệnh ({0})'
+  list_of_medusae: Danh sách Medusae
+  list_of_unloaded: Danh sách Medusae có sẵn
+  loaded_medusae: Medusae đã tải
+  medusa_already_loaded: 'Medusa {0} đã được tải rồi'
+  medusa_empty: Medusa không được tải vì không chứa Snek nào.
+  medusa_info: Thông tin Medusa
+  medusa_invalid_not_found: Không tìm thấy Medusa với tên đó hoặc file không hợp lệ
+  medusa_loaded: 'Medusa {0} đã được tải.'
+  medusa_name_not_found: Medusa với tên đó không tồn tại hoặc chưa được tải.
+  medusa_not_loaded: Medusa với tên đó chưa được tải.
+  medusa_possibly_cant_unload: Medusa có thể chưa được gỡ hoàn toàn. Hãy khởi động lại bot nếu gặp sự cố.
+  medusa_reload_failed: 'Không thể tải lại medusa {0}. Hãy thử tải thủ công.'
+  medusa_reloaded: 'Medusa {0} đã được tải lại.'
+  medusa_unloaded: 'Medusa {0} đã được gỡ.'
+  no_medusa_available: Không có medusa nào khả dụng.
+  no_medusa_loaded: Không có medusae nào đã tải.
+  sneks_count: 'Snek ({0})'
+
+zh-CN:
+  commands_count: '命令 ({0})'
+  list_of_medusae: Medusa 列表
+  list_of_unloaded: 可用 Medusa 列表
+  loaded_medusae: 已加载的 Medusa
+  medusa_already_loaded: 'Medusa {0} 已经加载过了'
+  medusa_empty: Medusa 未加载,因为它不包含任何 Snek。
+  medusa_info: Medusa 信息
+  medusa_invalid_not_found: 找不到该名称的 Medusa 或文件无效
+  medusa_loaded: 'Medusa {0} 已加载。'
+  medusa_name_not_found: 不存在该名称的 Medusa 或它未被加载。
+  medusa_not_loaded: 该名称的 Medusa 未加载。
+  medusa_possibly_cant_unload: Medusa 可能未完全卸载。如果出现问题请重启机器人。
+  medusa_reload_failed: '重新載入 medusa {0} 失敗。請嘗試手動載入。'
+  medusa_reloaded: 'Medusa {0} 已重新載入。'
+  medusa_unloaded: 'Medusa {0} 已卸载。'
+  no_medusa_available: 没有可用的 Medusa。
+  no_medusa_loaded: 没有已加载的 Medusa。
+  sneks_count: 'Snek ({0})'

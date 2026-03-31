@@ -1,5 +1,0 @@
-blacklisted: 'Enviado a la lista negra a: {0} con la ID: {1}'
-blacklisted_channels: Canales en la lista negra
-blacklisted_servers: Servidores en la lista negra
-blacklisted_users: Usuarios en la lista negra
-unblacklisted: 'Removiendo de la lista negra a: {0} con la ID: {1}'

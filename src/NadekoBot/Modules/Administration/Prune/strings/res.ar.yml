@@ -1,5 +1,0 @@
-prune_already_running: عملية حذف جارية بالفعل في هذا السيرفر.
-prune_cancelled: تم إلغاء عملية الحذف.
-prune_not_found: لم يتم العثور على عملية حذف نشطة في هذا السيرفر.
-prune_patron: 'حذف الرسائل التي مضى عليها أسبوعان أو أكثر يتطلب [Patron Tier X](https://patreon.com/join/nadekobot) أو أعلى.'
-prune_progress: 'جارٍ الحذف... تم حذف {0}/{1} رسالة.'

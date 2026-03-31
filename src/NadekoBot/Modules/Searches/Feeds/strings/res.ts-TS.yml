@@ -1,9 +1,0 @@
-feed_added: Feed added.
-feed_cant_parse: Can't access or parse that feed URL. Give me a proper one.
-feed_duplicate: You're already following that feed on this server.
-feed_invalid_url: Invalid feed URL. It has to be an absolute http or https URL.
-feed_limit_reached: You've hit the max number of feeds per server.
-feed_no_feed: You haven't subscribed to any feeds on this server.
-feed_out_of_range: Index out of range, b-baka!
-feed_removed: Feed removed.
-feed_auto_removed: 'Feed `{0}` was removed because it kept failing... not like I wanted to keep it or anything!'
