@@ -2,8 +2,7 @@ using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Modules.Waifus.Waifu;
 
-[Cloneable]
-public sealed partial class WaifuConfig : ICloneable<WaifuConfig>
+public sealed class WaifuConfig
 {
     [Comment("DO NOT CHANGE")]
     public int Version { get; set; } = 7;
@@ -86,8 +85,7 @@ public sealed partial class WaifuConfig : ICloneable<WaifuConfig>
         ];
 }
 
-[Cloneable]
-public sealed partial class WaifuGiftItemConfig : ICloneable<WaifuGiftItemConfig>
+public sealed class WaifuGiftItemConfig
 {
     public Guid Id { get; set; }
     public string Emoji { get; set; } = string.Empty;

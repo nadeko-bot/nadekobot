@@ -14,36 +14,46 @@ public class SearchesConfigService : ConfigServiceBase<SearchesConfig>
         : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
         AddParsedProp("webEngine",
-            sc => sc.WebSearchEngine,
+            static sc => sc.WebSearchEngine,
+            static (sc, v) => sc.WebSearchEngine = v,
             ConfigParsers.InsensitiveEnum,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Which engine should .search command use");
 
         AddParsedProp("imgEngine",
-            sc => sc.ImgSearchEngine,
+            static sc => sc.ImgSearchEngine,
+            static (sc, v) => sc.ImgSearchEngine = v,
             ConfigParsers.InsensitiveEnum,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Which engine should .image command use");
 
         AddParsedProp("ytProvider",
-            sc => sc.YtProvider,
+            static sc => sc.YtProvider,
+            static (sc, v) => sc.YtProvider = v,
             ConfigParsers.InsensitiveEnum,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Which search provider will be used for the .youtube and .q commands");
 
         AddParsedProp("followedStreams.maxCount",
-            sc => sc.FollowedStreams.MaxCount,
+            static sc => sc.FollowedStreams.MaxCount,
+            static (sc, v) => sc.FollowedStreams.MaxCount = v,
             int.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Maximum number of streams that each server can follow. -1 for infinite");
 
         AddParsedProp("feeds.maxCount",
-            sc => sc.MaxFeeds,
+            static sc => sc.MaxFeeds,
+            static (sc, v) => sc.MaxFeeds = v,
             int.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Maximum number of feeds per server");
 
         Migrate();
     }
 
     private void Migrate()
     {
-        if (data.Version < 1)
+        if (Data.Version < 1)
         {
             ModifyConfig(c =>
             {
@@ -52,7 +62,7 @@ public class SearchesConfigService : ConfigServiceBase<SearchesConfig>
             });
         }
 
-        if (data.Version < 5)
+        if (Data.Version < 5)
         {
             ModifyConfig(c =>
             {

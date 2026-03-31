@@ -20,7 +20,7 @@ public sealed class ImagesConfig : ConfigServiceBase<ImageUrls>
 
     private void Migrate()
     {
-        if (data.Version < 10)
+        if (Data.Version < 10)
         {
             ModifyConfig(c =>
             {
@@ -30,7 +30,7 @@ public sealed class ImagesConfig : ConfigServiceBase<ImageUrls>
             });
         }
 
-        if (data.Version < 11)
+        if (Data.Version < 11)
         {
             ModifyConfig(c =>
             {

@@ -938,9 +938,10 @@
         ".reroremove",
         ".rerorm"
       ],
-      "Description": "Remove all reaction roles from message specified by the id",
+      "Description": "Remove reaction roles from a message specified by its id.\nIf a role is specified, only entries for that role are removed.\nIf multiple entries exist for that role, you will be shown a paginated\nlist to pick which one to remove.\nIf no role is specified, all reaction roles on that message are removed.",
       "Usage": [
-        ".reroremove 971276352684691500"
+        ".reroremove 971276352684691500",
+        ".reroremove 971276352684691500 @Gamer"
       ],
       "Submodule": "ReactionRoleCommands",
       "Module": "Administration",
@@ -973,6 +974,22 @@
       "Description": "Transfers reaction roles from one message to another by specifying their ids. If the target message has reaction roles specified already, the reaction roles will be MERGED, not overwritten.",
       "Usage": [
         ".rerotransfer 971276352684691466 971427748448964628"
+      ],
+      "Submodule": "ReactionRoleCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageRoles Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".reroemote",
+        ".reroe"
+      ],
+      "Description": "Changes the emote for an existing reaction role entry on the specified\nmessage.\nIf multiple entries exist for the given role, you will be shown a paginated\nlist to pick which one to change.",
+      "Usage": [
+        ".reroemote 971276352684691466 @Gamer 😊"
       ],
       "Submodule": "ReactionRoleCommands",
       "Module": "Administration",
@@ -8092,7 +8109,7 @@
         ".scha",
         ".schadd"
       ],
-      "Description": "Schedules a command to be executed after the specified amount of time.\nYou can schedule up to 5 commands at a time.",
+      "Description": "Schedules a command to be executed after the specified amount of time.\nYou can schedule up to 5 commands at a time (configurable via `.config utility maxScheduledPerUser`).",
       "Usage": [
         ".scheduleadd 1h5m .say Hello after 1 hour and 5 minutes",
         ".scheduleadd 3h .br all"
@@ -8774,6 +8791,21 @@
     }
   ],
   "Xp": [
+    {
+      "Aliases": [
+        ".experiencetext",
+        ".xpt"
+      ],
+      "Description": "Shows your xp stats as a text embed. Accessible alternative to the image-based xp card.\nSpecify the user to show that user's stats instead.",
+      "Usage": [
+        ".experiencetext",
+        ".experiencetext @someguy"
+      ],
+      "Submodule": "Xp",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": []
+    },
     {
       "Aliases": [
         ".experience",

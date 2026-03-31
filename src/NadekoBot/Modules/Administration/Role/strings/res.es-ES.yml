@@ -19,6 +19,11 @@ renrole: Rol renombrado.
 renrole_err: Error renombrando el rol. No tengo los permisos necesarios.
 renrole_perms: No puede editar roles más altos que el suyo o mi rol más alto en la jerarquía.
 rero_message_not_found: No se encontró el mensaje especificado. Asegúrate de haber especificado un mensaje de este canal.
+rero_not_found: No se encontró ninguna entrada de rol de reacción para ese rol en el mensaje especificado.
+rero_select_to_delete: Selecciona una entrada de rol de reacción para eliminar.
+rero_deleted: Entrada de rol de reacción eliminada.
+rero_select_to_edit: Selecciona una entrada de rol de reacción para cambiar el emote.
+rero_emote_changed: Emote del rol de reacción cambiado.
 rolehoist_disabled: 'El rol {0} ya no se muestra separado de los miembros en línea.'
 rolehoist_enabled: 'El rol {0} ahora se muestra separado de los miembros en línea.'
 setrole: 'Añadido satisfactoriamente el rol {0} al usuario {1}.'

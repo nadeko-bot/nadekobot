@@ -1,9 +1,8 @@
-﻿using NadekoBot.Common.Yml;
+using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Modules.Games;
 
-[Cloneable]
-public sealed partial class FishConfig : ICloneable<FishConfig>
+public sealed class FishConfig
 {
     [Comment("DO NOT CHANGE")]
     public int Version { get; set; } = 2;

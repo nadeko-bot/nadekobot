@@ -19,6 +19,11 @@ renrole: Rol yeniden adlandırıldı.
 renrole_err: Rol yeniden adlandırılamadı. Yeterli yetkim yok.
 renrole_perms: Senin veya benim en yüksek rolümden üst sıradaki rolleri düzenleyemezsin.
 rero_message_not_found: Belirtilen mesaj bulunamadı. Bu kanaldaki bir mesajı belirttiğinden emin ol.
+rero_not_found: Belirtilen mesajda o rol için reaksiyon rolü girişi bulunamadı.
+rero_select_to_delete: Silmek için bir reaksiyon rolü girişi seç.
+rero_deleted: Reaksiyon rolü girişi silindi.
+rero_select_to_edit: Emotu değiştirmek için bir reaksiyon rolü girişi seç.
+rero_emote_changed: Reaksiyon rolü emotu değiştirildi.
 rolehoist_disabled: '{0} rolü artık çevrimiçi üyelerden ayrı gösterilmiyor.'
 rolehoist_enabled: '{0} rolü artık çevrimiçi üyelerden ayrı gösteriliyor.'
 setrole: '{1} kullanıcısına {0} rolü başarıyla eklendi'

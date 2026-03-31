@@ -19,6 +19,11 @@ renrole: Role berhasil di-rename.
 renrole_err: Gagal me-rename role. Izin saya tidak mencukupi.
 renrole_perms: Kamu nggak bisa mengedit role yang lebih tinggi dari role tertinggi kamu atau saya.
 rero_message_not_found: Pesan yang ditentukan tidak ditemukan. Pastikan kamu menentukan pesan dari channel ini.
+rero_not_found: Tidak ditemukan entri reaction role untuk role tersebut di pesan yang ditentukan.
+rero_select_to_delete: Pilih entri reaction role yang ingin dihapus.
+rero_deleted: Entri reaction role dihapus.
+rero_select_to_edit: Pilih entri reaction role yang ingin diubah emote-nya.
+rero_emote_changed: Emote reaction role diubah.
 rolehoist_disabled: 'Role {0} tidak lagi ditampilkan terpisah dari anggota online.'
 rolehoist_enabled: 'Role {0} sekarang ditampilkan terpisah dari anggota online.'
 setrole: 'Berhasil menambahkan role {0} ke pengguna {1}'

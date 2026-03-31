@@ -19,6 +19,11 @@ renrole: Nazwa roli zmieniona.
 renrole_err: Nie udało się zmienić nazwy roli. Mam niewystarczające uprawnienia.
 renrole_perms: Nie możesz edytować ról wyższych niż Twoja lub moja najwyższa rola.
 rero_message_not_found: Nie znaleziono wskazanej wiadomości. Upewnij się, że podałeś wiadomość z tego kanału.
+rero_not_found: Nie znaleziono wpisu roli reakcji dla tej roli w podanej wiadomości.
+rero_select_to_delete: Wybierz wpis roli reakcji do usunięcia.
+rero_deleted: Wpis roli reakcji usunięty.
+rero_select_to_edit: Wybierz wpis roli reakcji, aby zmienić emotkę.
+rero_emote_changed: Emotka roli reakcji zmieniona.
 rolehoist_disabled: 'Rola {0} nie jest już wyświetlana oddzielnie od online członków.'
 rolehoist_enabled: 'Rola {0} jest teraz wyświetlana oddzielnie od online członków.'
 setrole: 'Pomyślnie dodano rolę {0} użytkownikowi {1}'

@@ -1,9 +1,8 @@
-﻿using NadekoBot.Common.Yml;
+using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Modules.Patronage;
 
-[Cloneable]
-public partial class PatronConfigData : ICloneable<PatronConfigData>
+public sealed class PatronConfigData
 {
     [Comment("DO NOT CHANGE")]
     public int Version { get; set; } = 3;

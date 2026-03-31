@@ -1,10 +1,9 @@
-﻿#nullable enable
+#nullable enable
 using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Medusa;
 
-[Cloneable]
-public sealed partial class MedusaConfig : ICloneable<MedusaConfig>
+public sealed class MedusaConfig
 {
     [Comment("""DO NOT CHANGE""")]
     public int Version { get; set; } = 1;

@@ -2,8 +2,7 @@ using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Modules.Utility;
 
-[Cloneable]
-public sealed partial class UtilityConfig : ICloneable<UtilityConfig>
+public sealed class UtilityConfig
 {
     [Comment("DO NOT CHANGE")]
     public int Version { get; set; } = 1;

@@ -1,10 +1,8 @@
-#nullable disable
 using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Modules.Games.Common;
 
-[Cloneable]
-public sealed partial class GamesConfig : ICloneable<GamesConfig>
+public sealed class GamesConfig
 {
     [Comment("DO NOT CHANGE")]
     public int Version { get; set; } = 6;
@@ -103,15 +101,13 @@ public sealed partial class GamesConfig : ICloneable<GamesConfig>
     ];
 }
 
-[Cloneable]
-public sealed partial class HangmanConfig
+public sealed class HangmanConfig
 {
     [Comment("The amount of currency awarded to the winner of a hangman game")]
     public long CurrencyReward { get; set; }
 }
 
-[Cloneable]
-public sealed partial class TriviaConfig
+public sealed class TriviaConfig
 {
     [Comment("The amount of currency awarded to the winner of the trivia game.")]
     public long CurrencyReward { get; set; }
@@ -123,9 +119,8 @@ public sealed partial class TriviaConfig
     public int MinimumWinReq { get; set; } = 1;
 }
 
-[Cloneable]
-public sealed partial class RaceAnimal
+public sealed class RaceAnimal
 {
-    public string Icon { get; set; }
-    public string Name { get; set; }
+    public string Icon { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 }

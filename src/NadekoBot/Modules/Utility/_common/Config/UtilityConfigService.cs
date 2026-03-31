@@ -14,29 +14,35 @@ public sealed class UtilityConfigService : ConfigServiceBase<UtilityConfig>
         : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
         AddParsedProp("maxRepeaters",
-            c => c.MaxRepeaters,
+            static c => c.MaxRepeaters,
+            static (c, v) => c.MaxRepeaters = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val > 0);
+            "Maximum number of repeating messages per server. Default 5",
+            static val => val > 0);
 
         AddParsedProp("maxScheduledPerUser",
-            c => c.MaxScheduledPerUser,
+            static c => c.MaxScheduledPerUser,
+            static (c, v) => c.MaxScheduledPerUser = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val > 0);
+            "Maximum number of scheduled commands per user per server. Default 5",
+            static val => val > 0);
 
         AddParsedProp("maxLiveChannels",
-            c => c.MaxLiveChannels,
+            static c => c.MaxLiveChannels,
+            static (c, v) => c.MaxLiveChannels = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val > 0);
+            "Default maximum number of live channels per server. Default 5",
+            static val => val > 0);
 
         Migrate();
     }
 
     private void Migrate()
     {
-        if (data.Version < 1)
+        if (Data.Version < 1)
             ModifyConfig(c => { c.Version = 1; });
     }
 }

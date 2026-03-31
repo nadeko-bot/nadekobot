@@ -15,31 +15,32 @@ public class PatronageConfig : ConfigServiceBase<PatronConfigData>
     public PatronageConfig(IConfigSeria serializer, IPubSub pubSub) : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
         AddParsedProp("enabled",
-            x => x.IsEnabled,
+            static x => x.IsEnabled,
+            static (x, v) => x.IsEnabled = v,
             bool.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Whether the patronage feature is enabled");
 
         Migrate();
     }
 
     private void Migrate()
     {
-        ModifyConfig(c =>
+        if (Data.Version == 1)
         {
-            if (c.Version == 1)
+            ModifyConfig(c =>
             {
                 c.Version = 2;
                 c.IsEnabled = false;
-            }
-        });
-        
-        
-        ModifyConfig(c =>
+            });
+        }
+
+        if (Data.Version == 2)
         {
-            if (c.Version == 2)
+            ModifyConfig(c =>
             {
                 c.Version = 3;
-            }
-        });
+            });
+        }
     }
 }

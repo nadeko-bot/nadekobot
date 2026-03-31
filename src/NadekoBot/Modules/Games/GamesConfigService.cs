@@ -1,4 +1,3 @@
-#nullable disable
 using NadekoBot.Common.Configs;
 using NadekoBot.Modules.Games.Common;
 
@@ -14,27 +13,33 @@ public sealed class GamesConfigService : ConfigServiceBase<GamesConfig>
         : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
         AddParsedProp("trivia.min_win_req",
-            gs => gs.Trivia.MinimumWinReq,
+            static gs => gs.Trivia.MinimumWinReq,
+            static (gs, v) => gs.Trivia.MinimumWinReq = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val > 0);
+            "Users won't be able to start trivia games which have a smaller win requirement than this",
+            static val => val > 0);
         AddParsedProp("trivia.currency_reward",
-            gs => gs.Trivia.CurrencyReward,
+            static gs => gs.Trivia.CurrencyReward,
+            static (gs, v) => gs.Trivia.CurrencyReward = v,
             long.TryParse,
             ConfigPrinters.ToString,
-            val => val >= 0);
+            "The amount of currency awarded to the winner of the trivia game",
+            static val => val >= 0);
         AddParsedProp("hangman.currency_reward",
-            gs => gs.Hangman.CurrencyReward,
+            static gs => gs.Hangman.CurrencyReward,
+            static (gs, v) => gs.Hangman.CurrencyReward = v,
             long.TryParse,
             ConfigPrinters.ToString,
-            val => val >= 0);
+            "The amount of currency awarded to the winner of a hangman game",
+            static val => val >= 0);
 
         Migrate();
     }
 
     private void Migrate()
     {
-        if (data.Version < 1)
+        if (Data.Version < 1)
         {
             ModifyConfig(c =>
             {
@@ -46,7 +51,7 @@ public sealed class GamesConfigService : ConfigServiceBase<GamesConfig>
             });
         }
 
-        if (data.Version < 5)
+        if (Data.Version < 5)
         {
             ModifyConfig(c =>
             {
@@ -54,7 +59,7 @@ public sealed class GamesConfigService : ConfigServiceBase<GamesConfig>
             });
         }
 
-        if (data.Version < 6)
+        if (Data.Version < 6)
         {
             ModifyConfig(c =>
             {

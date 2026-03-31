@@ -17,29 +17,35 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
         : base(filePath, serializer, pubSub, _changeKey)
     {
         AddParsedProp("minprice",
-            c => c.MinPrice,
+            static c => c.MinPrice,
+            static (c, v) => c.MinPrice = v,
             long.TryParse,
             ConfigPrinters.ToString,
-            val => val >= 0);
+            "Minimum price a waifu can have. Default 1000",
+            static val => val >= 0);
 
         AddParsedProp("optincost",
-            c => c.OptInCost,
+            static c => c.OptInCost,
+            static (c, v) => c.OptInCost = v,
             long.TryParse,
             ConfigPrinters.ToString,
-            val => val >= 0);
+            "Cost to opt into the waifu system. Default 10000",
+            static val => val >= 0);
 
         AddParsedProp("decay",
-            c => c.ManagerlessDecayPercent,
+            static c => c.ManagerlessDecayPercent,
+            static (c, v) => c.ManagerlessDecayPercent = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val is >= 0 and <= 100);
+            "Price decay percentage per cycle for waifus without a manager (0-100). Default 10",
+            static val => val is >= 0 and <= 100);
 
         Migrate();
     }
 
     private void Migrate()
     {
-        if (data.Version < 1)
+        if (Data.Version < 1)
         {
             ModifyConfig(c =>
             {
@@ -49,7 +55,7 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
             BackupOldWaifuConfig();
         }
 
-        if (data.Version < 2)
+        if (Data.Version < 2)
         {
             ModifyConfig(c =>
             {
@@ -65,7 +71,7 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
                 c.ManagerCutPercent = 0.15;
             });
         }
-        if (data.Version < 3)
+        if (Data.Version < 3)
         {
             ModifyConfig(c =>
             {
@@ -73,7 +79,7 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
                 c.CycleHours = 24.0;
             });
         }
-        if (data.Version < 5)
+        if (Data.Version < 5)
         {
             ModifyConfig(c =>
             {
@@ -81,7 +87,7 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
             });
         }
 
-        if (data.Version < 6)
+        if (Data.Version < 6)
         {
             ModifyConfig(c =>
             {
@@ -90,7 +96,7 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
             });
         }
 
-        if (data.Version < 7)
+        if (Data.Version < 7)
         {
             ModifyConfig(c =>
             {

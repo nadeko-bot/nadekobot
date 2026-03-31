@@ -19,6 +19,11 @@ renrole: Đã đổi tên role.
 renrole_err: Không thể đổi tên role. Tôi không có đủ quyền.
 renrole_perms: Bạn không thể chỉnh sửa role cao hơn role cao nhất của bạn hoặc của tôi.
 rero_message_not_found: Không tìm thấy tin nhắn được chỉ định. Hãy đảm bảo bạn đã chọn tin nhắn từ kênh này.
+rero_not_found: Không tìm thấy mục reaction role cho role đó trên tin nhắn đã chỉ định.
+rero_select_to_delete: Chọn mục reaction role để xóa.
+rero_deleted: Đã xóa mục reaction role.
+rero_select_to_edit: Chọn mục reaction role để thay đổi emote.
+rero_emote_changed: Đã thay đổi emote reaction role.
 rolehoist_disabled: 'Role {0} không còn được hiển thị riêng biệt khỏi thành viên trực tuyến nữa.'
 rolehoist_enabled: 'Role {0} giờ sẽ được hiển thị riêng biệt khỏi thành viên trực tuyến.'
 setrole: 'Đã thêm thành công role {0} cho người dùng {1}'

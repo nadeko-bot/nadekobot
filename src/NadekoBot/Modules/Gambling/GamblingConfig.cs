@@ -1,4 +1,3 @@
-#nullable disable
 using NadekoBot.Common.Yml;
 using SixLabors.ImageSharp.PixelFormats;
 using YamlDotNet.Serialization;
@@ -6,8 +5,7 @@ using Color = SixLabors.ImageSharp.Color;
 
 namespace NadekoBot.Modules.Gambling.Common;
 
-[Cloneable]
-public sealed partial class GamblingConfig : ICloneable<GamblingConfig>
+public sealed class GamblingConfig
 {
     [Comment("""DO NOT CHANGE""")]
     public int Version { get; set; } = 13;
@@ -112,8 +110,7 @@ public class CurrencyConfig
     public int TransactionsLifetime { get; set; } = 0;
 }
 
-[Cloneable]
-public partial class TimelyConfig
+public sealed class TimelyConfig
 {
     [Comment("""
              How much currency will the users get every time they run .timely command
@@ -141,15 +138,13 @@ public enum TimelyProt
     Captcha
 }
 
-[Cloneable]
-public partial class BetFlipConfig
+public sealed class BetFlipConfig
 {
     [Comment("""Bet multiplier if user guesses correctly""")]
     public decimal Multiplier { get; set; } = 1.95M;
 }
 
-[Cloneable]
-public partial class BetRollConfig
+public sealed class BetRollConfig
 {
     [Comment("""
              When betroll is played, user will roll a number 0-100.
@@ -179,8 +174,7 @@ public partial class BetRollConfig
         ];
 }
 
-[Cloneable]
-public partial class GenerationConfig
+public sealed class GenerationConfig
 {
     [Comment("""
              when currency is generated, should it also have a random password
@@ -209,8 +203,7 @@ public partial class GenerationConfig
     public int MaxAmount { get; set; } = 1;
 }
 
-[Cloneable]
-public partial class DecayConfig
+public sealed class DecayConfig
 {
     [Comment("""
              Percentage of user's current currency which will be deducted every 24h. 
@@ -228,8 +221,7 @@ public partial class DecayConfig
     public int HourInterval { get; set; } = 24;
 }
 
-[Cloneable]
-public partial class LuckyLadderSettings
+public sealed class LuckyLadderSettings
 {
     [Comment("""Self-Explanatory. Has to have 8 values, otherwise the command won't work.""")]
     public decimal[] Multipliers { get; set; }
@@ -244,15 +236,13 @@ public sealed class SlotsConfig
     public Rgba32 CurrencyFontColor { get; set; } = Color.Red;
 }
 
-[Cloneable]
-public sealed partial class BetRollPair
+public sealed class BetRollPair
 {
     public int WhenAbove { get; set; }
     public float MultiplyBy { get; set; }
 }
 
-[Cloneable]
-public sealed partial class BotCutConfig
+public sealed class BotCutConfig
 {
     [Comment("""
              Shop sale cut percentage.
@@ -264,8 +254,7 @@ public sealed partial class BotCutConfig
     public decimal ShopSaleCut { get; set; } = 0.1m;
 }
 
-[Cloneable]
-public sealed partial class BoostBonusConfig
+public sealed class BoostBonusConfig
 {
     [Comment("Users will receive a bonus if they boost any of these servers")]
     public List<ulong> GuildIds { get; set; } = new();

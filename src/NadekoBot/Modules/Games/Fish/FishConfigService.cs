@@ -16,46 +16,55 @@ public sealed class FishConfigService : ConfigServiceBase<FishConfig>
         : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
         AddParsedProp("captcha",
-            static (conf) => conf.RequireCaptcha,
+            static conf => conf.RequireCaptcha,
+            static (conf, v) => conf.RequireCaptcha = v,
             bool.TryParse,
             ConfigPrinters.ToString);
 
         AddParsedProp("chance.nothing",
-            static (conf) => conf.Chance.Nothing,
+            static conf => conf.Chance.Nothing,
+            static (conf, v) => conf.Chance.Nothing = v,
             int.TryParse,
             ConfigPrinters.ToString);
 
         AddParsedProp("chance.fish",
-            static (conf) => conf.Chance.Fish,
+            static conf => conf.Chance.Fish,
+            static (conf, v) => conf.Chance.Fish = v,
             int.TryParse,
             ConfigPrinters.ToString);
 
         AddParsedProp("chance.trash",
-            static (conf) => conf.Chance.Trash,
+            static conf => conf.Chance.Trash,
+            static (conf, v) => conf.Chance.Trash = v,
             int.TryParse,
             ConfigPrinters.ToString);
 
         AddParsedProp("chance.currency",
-            static (conf) => conf.Chance.Currency,
+            static conf => conf.Chance.Currency,
+            static (conf, v) => conf.Chance.Currency = v,
             int.TryParse,
             ConfigPrinters.ToString);
 
         AddParsedProp("currency.min",
-            static (conf) => conf.CurrencyMin,
+            static conf => conf.CurrencyMin,
+            static (conf, v) => conf.CurrencyMin = v,
             long.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Min currency awarded when fishing out currency.");
 
         AddParsedProp("currency.max",
-            static (conf) => conf.CurrencyMax,
+            static conf => conf.CurrencyMax,
+            static (conf, v) => conf.CurrencyMax = v,
             long.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Max currency awarded when fishing out currency.");
 
         Migrate();
     }
 
     private void Migrate()
     {
-        if (data.Version < 11)
+        if (Data.Version < 11)
         {
             ModifyConfig(c =>
             {
@@ -118,7 +127,7 @@ public sealed class FishConfigService : ConfigServiceBase<FishConfig>
             });
         }
 
-        if (data.Version < 12)
+        if (Data.Version < 12)
         {
             ModifyConfig(c =>
             {

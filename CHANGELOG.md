@@ -6,7 +6,24 @@
 
 ### Added
 
-- New `data/utility.yml` config file with configurable per-server limits for repeaters, scheduled commands, and live channels (`.config utility` to view/edit)
+- New `data/utility.yml` config file with configurable per-server limits for repeaters, scheduled commands, and live channels 
+  - Use `.config utility` to view/edit
+- Added `.xpt` command - text-based embed alternative to `.xp` image card
+- Added `.reroe` command to change the emote for an existing reaction role entry
+
+
+### Changed
+
+- `.rerorm` now accepts an optional role to remove a specific role's entries from a reaction role message (with paginated selection when multiple emotes map to the same role)
+
+### Fixed
+
+- Fixed XP formula defaulting to (0, 0) instead of (9, 27)
+
+### Dev
+
+- Reworked config system: `.Data` now returns a volatile reference (zero allocations) instead of cloning on every read. Writes use `Lock` + atomic swap. Removed `[Cloneable]` and `ICloneable<T>` from all config types. Fixed double-publish bug in `SetSetting`.
+- Removed expression tree traversal and `PropertyInfo` reflection from `AddParsedProp`. All config property access now uses direct static lambdas.
 
 ## [7.1.17] - 30.03.2026
 

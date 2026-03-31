@@ -1,4 +1,3 @@
-#nullable disable
 namespace NadekoBot.Modules.Utility;
 
 public partial class Utility
@@ -35,7 +34,7 @@ public partial class Utility
 
         [Cmd]
         [OwnerOnly]
-        public async Task Config(string name = null, string prop = null, [Leftover] string value = null)
+        public async Task Config(string? name = null, string? prop = null, [Leftover] string? value = null)
         {
             var configNames = _settingServices.Select(x => x.Name);
 

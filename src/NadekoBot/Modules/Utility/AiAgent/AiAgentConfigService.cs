@@ -16,51 +16,65 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
         : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
         AddParsedProp("enabled",
-            c => c.Enabled,
+            static c => c.Enabled,
+            static (c, v) => c.Enabled = v,
             bool.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Whether the AI agent feature is enabled. Default false");
 
         AddParsedProp("model",
-            c => c.ModelName,
+            static c => c.ModelName,
+            static (c, v) => c.ModelName = v,
             ConfigParsers.String,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Which model to use for the agent");
 
         AddParsedProp("maxtools",
-            c => c.MaxToolCalls,
+            static c => c.MaxToolCalls,
+            static (c, v) => c.MaxToolCalls = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val is > 0 and <= 50);
+            "Maximum number of tool calls the agent can make per invocation",
+            static val => val is > 0 and <= 50);
 
         AddParsedProp("maxtokens",
-            c => c.MaxTokens,
+            static c => c.MaxTokens,
+            static (c, v) => c.MaxTokens = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val is > 100 and <= 16384);
+            "Maximum tokens for LLM responses",
+            static val => val is > 100 and <= 16384);
 
         AddParsedProp("temperature",
-            c => c.Temperature,
+            static c => c.Temperature,
+            static (c, v) => c.Temperature = v,
             double.TryParse,
             ConfigPrinters.ToString,
-            val => val is >= 0 and <= 2);
+            "Temperature for LLM responses",
+            static val => val is >= 0 and <= 2);
 
         AddParsedProp("memory",
-            c => c.ChannelMessageMemory,
+            static c => c.ChannelMessageMemory,
+            static (c, v) => c.ChannelMessageMemory = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val is >= 0 and <= 100);
+            "Number of recent messages per channel the agent remembers",
+            static val => val is >= 0 and <= 100);
 
         AddParsedProp("memoryexpiry",
-            c => c.MemoryIdleExpiryMinutes,
+            static c => c.MemoryIdleExpiryMinutes,
+            static (c, v) => c.MemoryIdleExpiryMinutes = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            val => val is >= 1 and <= 1440);
+            "Minutes of inactivity before channel memory expires",
+            static val => val is >= 1 and <= 1440);
 
         Migrate();
     }
 
     private void Migrate()
     {
-        if (data.Version < 2)
+        if (Data.Version < 2)
         {
             ModifyConfig(c =>
             {
@@ -68,7 +82,7 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             });
         }
 
-        if (data.Version < 3)
+        if (Data.Version < 3)
         {
             ModifyConfig(c =>
             {

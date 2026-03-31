@@ -1,5 +1,3 @@
-#nullable disable
-
 using NadekoBot.Common.Yml;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Globalization;
@@ -8,8 +6,7 @@ using YamlDotNet.Serialization;
 
 namespace NadekoBot.Common.Configs;
 
-[Cloneable]
-public sealed partial class BotConfig : ICloneable<BotConfig>
+public sealed class BotConfig
 {
     [Comment("""DO NOT CHANGE""")]
     public int Version { get; set; } = 10;
@@ -154,8 +151,7 @@ public sealed partial class BotConfig : ICloneable<BotConfig>
         => Prefix + text;
 }
 
-[Cloneable]
-public sealed partial class BlockedConfig
+public sealed class BlockedConfig
 {
     public HashSet<string> Commands { get; set; }
     public HashSet<string> Modules { get; set; }
@@ -167,8 +163,7 @@ public sealed partial class BlockedConfig
     }
 }
 
-[Cloneable]
-public partial class ColorConfig
+public sealed class ColorConfig
 {
     [Comment("""Color used for embed responses when command successfully executes""")]
     public Rgba32 Ok { get; set; }

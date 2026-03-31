@@ -19,6 +19,11 @@ renrole: Rolle umbenannt.
 renrole_err: Umbenennen der Rolle fehlgeschlagen. Ich habe keine ausreichende Berechtigungen.
 renrole_perms: Du kannst keine Rollen bearbeiten, die höher als deine oder meine höchste Rolle liegen.
 rero_message_not_found: Die angegebene Nachricht wurde nicht gefunden. Stelle sicher, dass du eine Nachricht aus diesem Kanal angegeben hast.
+rero_not_found: Kein Reaktionsrollen-Eintrag für diese Rolle in der angegebenen Nachricht gefunden.
+rero_select_to_delete: Wähle einen Reaktionsrollen-Eintrag zum Löschen aus.
+rero_deleted: Reaktionsrollen-Eintrag gelöscht.
+rero_select_to_edit: Wähle einen Reaktionsrollen-Eintrag aus, um das Emote zu ändern.
+rero_emote_changed: Reaktionsrollen-Emote geändert.
 rolehoist_disabled: 'Rollte {0} wird nicht mehr separat von online Nutzern angezeigt.'
 rolehoist_enabled: 'Rolle {0} wird nun separat von online Nutzern angezeigt.'
 setrole: 'Erfolgreich die Rolle {0} dem Benutzer {1} hinzugefügt.'

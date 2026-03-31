@@ -15,33 +15,43 @@ public sealed class XpConfigService : ConfigServiceBase<XpConfig>
         : base(FILE_PATH, serializer, pubSub, _changeKey)
     {
         AddParsedProp("txt.cooldown",
-            conf => conf.TextXpCooldown,
+            static conf => conf.TextXpCooldown,
+            static (conf, v) => conf.TextXpCooldown = v,
             int.TryParse,
-            (f) => f.ToString("F2"),
-            x => x > 0);
+            static (f) => f.ToString("F2"),
+            "How often can the users receive XP, in seconds",
+            static x => x > 0);
 
         AddParsedProp("txt.permsg",
-            conf => conf.TextXpPerMessage,
+            static conf => conf.TextXpPerMessage,
+            static (conf, v) => conf.TextXpPerMessage = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            x => x >= 0);
+            "How much XP will the users receive per message",
+            static x => x >= 0);
 
         AddParsedProp("txt.perimage",
-            conf => conf.TextXpFromImage,
+            static conf => conf.TextXpFromImage,
+            static (conf, v) => conf.TextXpFromImage = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            x => x > 0);
+            "Amount of xp users gain from posting an image",
+            static x => x > 0);
 
         AddParsedProp("voice.perminute",
-            conf => conf.VoiceXpPerMinute,
+            static conf => conf.VoiceXpPerMinute,
+            static (conf, v) => conf.VoiceXpPerMinute = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            x => x >= 0);
+            "Average amount of xp earned per minute in VC",
+            static x => x >= 0);
 
         AddParsedProp("shop.is_enabled",
-            conf => conf.Shop.IsEnabled,
+            static conf => conf.Shop.IsEnabled,
+            static (conf, v) => conf.Shop.IsEnabled = v,
             bool.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Whether the xp shop is enabled");
 
         Migrate();
     }

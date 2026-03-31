@@ -19,6 +19,11 @@ renrole: Rôle renommé.
 renrole_err: Échec du renommage du rôle. Permissions insuffisantes.
 renrole_perms: Vous ne pouvez pas modifier des rôles supérieurs au votre, ou mon plus haut.
 rero_message_not_found: Le message spécifié n'a pas été trouvé. Assurez-vous d'avoir spécifié un message de ce salon.
+rero_not_found: Aucune entrée de rôle de réaction trouvée pour ce rôle sur le message spécifié.
+rero_select_to_delete: Sélectionne une entrée de rôle de réaction à supprimer.
+rero_deleted: Entrée de rôle de réaction supprimée.
+rero_select_to_edit: Sélectionne une entrée de rôle de réaction pour changer l'emote.
+rero_emote_changed: Emote du rôle de réaction changé.
 rolehoist_disabled: 'Le rôle {0} n''est maintenant plus affiché séparément des autres membres.'
 rolehoist_enabled: 'Le rôle {0} est maintenant affiché séparrément des autres membres.'
 setrole: 'Ajout du rôle {0} à l''utilisateur {1} avec succès.'

@@ -2,8 +2,7 @@ using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-[Cloneable]
-public sealed partial class AiAgentConfig : ICloneable<AiAgentConfig>
+public sealed class AiAgentConfig
 {
     [Comment("DO NOT CHANGE")]
     public int Version { get; set; } = 3;

@@ -1,9 +1,8 @@
-﻿using NadekoBot.Common.Yml;
+using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Modules.Searches;
 
-[Cloneable]
-public partial class SearchesConfig : ICloneable<SearchesConfig>
+public sealed class SearchesConfig
 {
     [Comment("DO NOT CHANGE")]
     public int Version { get; set; } = 5;

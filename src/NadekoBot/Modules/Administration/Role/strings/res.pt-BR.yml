@@ -19,6 +19,11 @@ renrole: Cargo renomeado.
 renrole_err: Falha em renomear cargo. Eu tenho permissões insuficientes.
 renrole_perms: Você não pode editar cargos mais altos que você ou o meu cargo mais alto.
 rero_message_not_found: A mensagem especificada não foi encontrada. Verifique se você especificou uma mensagem deste canal.
+rero_not_found: Nenhuma entrada de cargo de reação encontrada para esse cargo na mensagem especificada.
+rero_select_to_delete: Selecione uma entrada de cargo de reação para excluir.
+rero_deleted: Entrada de cargo de reação excluída.
+rero_select_to_edit: Selecione uma entrada de cargo de reação para alterar o emote.
+rero_emote_changed: Emote do cargo de reação alterado.
 rolehoist_disabled: 'O cargo {0} não será mais exibido separadamente dos membros online.'
 rolehoist_enabled: 'Agora o cargo {0} será exibido separadamente dos membros online.'
 setrole: 'O cargo {0} foi adicionado ao usuário {1} com sucesso.'

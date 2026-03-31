@@ -19,6 +19,11 @@ renrole: 已更改身份組名稱
 renrole_err: 重命名身分組失敗。我沒有足夠的權限。
 renrole_perms: 您不能編輯高於您或我的最高身分組的身分組。
 rero_message_not_found: 找不到指定的訊息。請確保您指定的是此頻道的訊息。
+rero_not_found: 在指定的消息上没有找到该身份组的反应角色条目。
+rero_select_to_delete: 选择要删除的反应角色条目。
+rero_deleted: 反应角色条目已删除。
+rero_select_to_edit: 选择要更改表情的反应角色条目。
+rero_emote_changed: 反应角色表情已更改。
 rolehoist_disabled: '身分組 {0} 不再與在線成員分開顯示。'
 rolehoist_enabled: '身分組 {0} 現在與在線成員分開顯示。'
 setrole: '成功為用戶 {1} 添加了 {0} 身分組。'

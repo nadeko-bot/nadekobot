@@ -2,8 +2,7 @@ using NadekoBot.Common.Yml;
 
 namespace NadekoBot.Modules.Music;
 
-[Cloneable]
-public sealed partial class AudioFileCacheConfig : ICloneable<AudioFileCacheConfig>
+public sealed class AudioFileCacheConfig
 {
     [Comment("DO NOT CHANGE")]
     public int Version { get; set; } = 1;

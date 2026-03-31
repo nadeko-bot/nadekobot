@@ -19,6 +19,11 @@ renrole: 역할 이름이 변경되었어요.
 renrole_err: 역할 이름 변경에 실패했어요. 권한이 부족해요.
 renrole_perms: 당신이나 봇의 최상위 역할보다 높은 역할은 수정할 수 없어요.
 rero_message_not_found: 지정된 메시지를 찾을 수 없어요. 이 채널의 메시지를 지정했는지 확인해 주세요.
+rero_not_found: 지정된 메시지에서 해당 역할의 반응 역할 항목을 찾을 수 없어요.
+rero_select_to_delete: 삭제할 반응 역할 항목을 선택해 주세요.
+rero_deleted: 반응 역할 항목이 삭제되었어요.
+rero_select_to_edit: 이모트를 변경할 반응 역할 항목을 선택해 주세요.
+rero_emote_changed: 반응 역할 이모트가 변경되었어요.
 rolehoist_disabled: '역할 {0}이(가) 더 이상 온라인 멤버와 별도로 표시되지 않아요.'
 rolehoist_enabled: '역할 {0}이(가) 이제 온라인 멤버와 별도로 표시돼요.'
 setrole: '유저 {1}에게 역할 {0}을(를) 성공적으로 추가했어요'

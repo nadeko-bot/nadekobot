@@ -17,8 +17,10 @@ public sealed class AudioFileCacheConfigService : ConfigServiceBase<AudioFileCac
     {
         AddParsedProp("maxcachesizegb",
             static c => c.MaxCacheSizeGb,
+            static (c, v) => c.MaxCacheSizeGb = v,
             int.TryParse,
             ConfigPrinters.ToString,
+            "Maximum total cache size in gigabytes. Minimum 1. Default 20",
             static val => val >= 1);
 
         Migrate();
@@ -26,7 +28,7 @@ public sealed class AudioFileCacheConfigService : ConfigServiceBase<AudioFileCac
 
     private void Migrate()
     {
-        if (data.Version < 1)
+        if (Data.Version < 1)
             ModifyConfig(c => { c.Version = 1; });
     }
 }
