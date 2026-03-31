@@ -29,3 +29,8 @@ xprewsreset_confirm: Ви впевнені, що хочете видалити �
 xpshop_already_owned: Ви вже маєте цей предмет.
 xpshop_buy_success: 'Успішно придбано `{0}/{1}`'
 xpshop_item_not_found: Предмет із таким ключем не існує.
+xpt_level: Рівень
+xpt_rank: Ранг
+xpt_progress: Прогрес
+xpt_total_xp: Загально XP
+xpt_club: Клуб

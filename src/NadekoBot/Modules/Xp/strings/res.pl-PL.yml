@@ -29,3 +29,8 @@ xprewsreset_confirm: Czy na pewno chcesz usunąć WSZYSTKIE nagrody za awans XP 
 xpshop_already_owned: Już posiadasz ten przedmiot.
 xpshop_buy_success: 'Pomyślnie zakupiono `{0}/{1}`'
 xpshop_item_not_found: Przedmiot o takim kluczu nie istnieje.
+xpt_level: Poziom
+xpt_rank: Ranga
+xpt_progress: Postęp
+xpt_total_xp: Całkowite XP
+xpt_club: Klub

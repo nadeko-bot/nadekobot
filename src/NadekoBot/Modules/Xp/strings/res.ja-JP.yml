@@ -29,3 +29,8 @@ xprewsreset_confirm: このサーバーの**すべて**のXPレベルアップ�
 xpshop_already_owned: このアイテムは既に所有しています。
 xpshop_buy_success: '`{0}/{1}`を正常に購入しました'
 xpshop_item_not_found: そのキーのアイテムは存在しません。
+xpt_level: レベル
+xpt_rank: ランク
+xpt_progress: 進捗
+xpt_total_xp: 合計XP
+xpt_club: クラブ

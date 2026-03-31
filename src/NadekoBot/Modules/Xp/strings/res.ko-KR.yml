@@ -29,3 +29,8 @@ xprewsreset_confirm: 정말로 이 서버의 모든 XP 레벨업 보상을 삭�
 xpshop_already_owned: 이미 이 아이템을 소유하고 있습니다.
 xpshop_buy_success: '`{0}/{1}` 구매에 성공했습니다'
 xpshop_item_not_found: 해당 키의 아이템이 존재하지 않습니다.
+xpt_level: 레벨
+xpt_rank: 순위
+xpt_progress: 진행
+xpt_total_xp: 총 XP
+xpt_club: 클럽

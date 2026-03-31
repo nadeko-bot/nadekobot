@@ -41,15 +41,41 @@ public partial class Xp : NadekoModule<XpService>
         _xpFormula = xpFormula;
     }
 
-    // [Cmd]
-    // [RequireContext(ContextType.Guild)]
-    // public async Task ExperienceText([Leftover] IUser? user = null)
-    // {
-    //     user ??= ctx.User;
-    //     var xp = await _service.GetUserStatsAsync((IGuildUser)user);
-    //     await ctx.Channel.TriggerTypingAsync();
-    //     await ctx.Channel.SendMessageAsync(_templateService.GetXpText(xp));
-    // }
+    private static string BuildProgressBar(double fraction, int length, char filled = '\u25B0', char empty = '\u25B1')
+    {
+        var filledCount = (int)Math.Round(fraction * length);
+        filledCount = Math.Clamp(filledCount, 0, length);
+        return new string(filled, filledCount) + new string(empty, length - filledCount);
+    }
+
+    [Cmd]
+    [RequireContext(ContextType.Guild)]
+    public async Task ExperienceText([Leftover] IUser? user = null)
+    {
+        user ??= ctx.User;
+        var stats = await _service.GetUserStatsAsync((IGuildUser)user);
+        var guild = stats.Guild;
+
+        var percent = guild.RequiredXp > 0
+            ? (int)Math.Round(guild.LevelXp * 100.0 / guild.RequiredXp)
+            : 100;
+        var bar = BuildProgressBar(percent / 100.0, 10);
+
+        var clubName = stats.User.Club?.ToString() ?? "-";
+
+        var eb = CreateEmbed()
+            .WithOkColor()
+            .WithTitle($"@{stats.User}")
+            .WithThumbnailUrl(user.RealAvatarUrl(256).ToString())
+            .AddField(GetText(strs.xpt_level), stats.Guild.Level.ToString(), true)
+            .AddField(GetText(strs.xpt_rank), $"#{stats.GuildRanking}", true)
+            .AddField(GetText(strs.xpt_progress),
+                $"`{bar}` {percent}%\n{guild.LevelXp:N0} / {guild.RequiredXp:N0} XP")
+            .AddField(GetText(strs.xpt_total_xp), $"{guild.TotalXp:N0}", true)
+            .AddField(GetText(strs.xpt_club), clubName, true);
+
+        await Response().Embed(eb).SendAsync();
+    }
 
     [Cmd]
     [RequireContext(ContextType.Guild)]

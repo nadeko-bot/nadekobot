@@ -6,6 +6,16 @@ experience:
   params:
     - user:
         desc: Optional name, mention or ID of the user
+experiencetext:
+  desc: |-
+    Shows your xp stats as a text embed. Accessible alternative to the image-based xp card.
+    Specify the user to show that user's stats instead.
+  ex:
+    - ''
+    - '@someguy'
+  params:
+    - user:
+        desc: Optional name, mention or ID of the user
 xpadd:
   desc: >-
     Adds server XP to a single user or all users with a role on this server.

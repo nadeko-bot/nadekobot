@@ -25,9 +25,12 @@ xp_role_reward_remove_role: 'Users who reach level {0} will lose {1} role. Rules
 xp_shop_disabled: Xp shop is disabled by the owner, or there are no items for sale.
 xp_shop_item_cant_use: You can't use this item as it doesn't exist or you don't own it. Hmph.
 xpadd_users: 'Added {0} server XP to {1} users.'
-xprewsreset_confirm: >-
-  Are you sure you want to delete ALL xp level up rewards from this server? This
-  action is irreversible.
+xprewsreset_confirm: Are you sure you want to delete ALL xp level up rewards from this server? This action is irreversible.
 xpshop_already_owned: You already own this item. W-were you not paying attention?
 xpshop_buy_success: 'Successfully purchased `{0}/{1}`.'
 xpshop_item_not_found: An item with that key doesn't exist. D-did you even check?
+xpt_level: Level
+xpt_rank: Rank
+xpt_progress: Progress
+xpt_total_xp: Total XP
+xpt_club: Club

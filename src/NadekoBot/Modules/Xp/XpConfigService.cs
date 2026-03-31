@@ -1,4 +1,3 @@
-﻿#nullable disable
 using NadekoBot.Common.Configs;
 using NadekoBot.Db.Models;
 
@@ -49,7 +48,7 @@ public sealed class XpConfigService : ConfigServiceBase<XpConfig>
 
     private void Migrate()
     {
-        if (data.Version < 11)
+        if (Data.Version < 11)
         {
             ModifyConfig(c => { c.Version = 11; });
         }

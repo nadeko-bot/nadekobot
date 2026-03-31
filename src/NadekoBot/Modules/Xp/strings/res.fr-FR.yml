@@ -29,3 +29,8 @@ xprewsreset_confirm: Êtes-vous sûr de vouloir supprimer TOUTES les récompense
 xpshop_already_owned: Vous disposez déjà de cet item.
 xpshop_buy_success: 'Vous avez acheté avec succès `{0}/{1}`'
 xpshop_item_not_found: Aucun item disposant de cette clé n'existe.
+xpt_level: Niveau
+xpt_rank: Classement
+xpt_progress: Progression
+xpt_total_xp: XP total
+xpt_club: Club

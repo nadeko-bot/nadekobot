@@ -29,3 +29,8 @@ xprewsreset_confirm: Bạn có chắc muốn xóa TẤT CẢ phần thưởng l�
 xpshop_already_owned: Bạn đã sở hữu vật phẩm này rồi.
 xpshop_buy_success: 'Đã mua thành công `{0}/{1}`'
 xpshop_item_not_found: Không tồn tại vật phẩm nào với khóa đó.
+xpt_level: Cấp
+xpt_rank: Hạng
+xpt_progress: Tiến độ
+xpt_total_xp: Tổng XP
+xpt_club: Câu lạc bộ

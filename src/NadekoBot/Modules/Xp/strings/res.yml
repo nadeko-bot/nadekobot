@@ -31,3 +31,8 @@ xprewsreset_confirm: >-
 xpshop_already_owned: You already own this item.
 xpshop_buy_success: Successfully purchased `{0}/{1}`
 xpshop_item_not_found: An item with that key doesn't exist.
+xpt_level: Level
+xpt_rank: Rank
+xpt_progress: Progress
+xpt_total_xp: Total XP
+xpt_club: Club

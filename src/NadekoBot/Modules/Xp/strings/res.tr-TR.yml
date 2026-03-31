@@ -29,3 +29,8 @@ xprewsreset_confirm: Bu sunucudaki TÜM xp seviye atlama ödüllerini silmek ist
 xpshop_already_owned: Bu öğeye zaten sahipsin.
 xpshop_buy_success: '`{0}/{1}` başarıyla satın alındı'
 xpshop_item_not_found: Bu anahtara sahip bir öğe mevcut değil.
+xpt_level: Seviye
+xpt_rank: Sıralama
+xpt_progress: İlerleme
+xpt_total_xp: Toplam XP
+xpt_club: Kulüp

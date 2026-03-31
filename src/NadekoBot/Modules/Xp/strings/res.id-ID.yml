@@ -29,3 +29,8 @@ xprewsreset_confirm: Kamu yakin ingin menghapus SEMUA hadiah naik level XP dari 
 xpshop_already_owned: Kamu sudah memiliki item ini.
 xpshop_buy_success: 'Berhasil membeli `{0}/{1}`'
 xpshop_item_not_found: Item dengan key tersebut tidak ditemukan.
+xpt_level: Level
+xpt_rank: Peringkat
+xpt_progress: Progres
+xpt_total_xp: Total XP
+xpt_club: Klub

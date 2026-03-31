@@ -1,6 +1,9 @@
 experience:
   - experience
   - xp
+experiencetext:
+  - experiencetext
+  - xpt
 xpadd:
   - xpadd
 xpcurrencyreward:

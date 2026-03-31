@@ -29,3 +29,8 @@ xprewsreset_confirm: هل أنت متأكد أنك تريد حذف جميع مك
 xpshop_already_owned: أنت تمتلك هذا العنصر بالفعل.
 xpshop_buy_success: 'تم شراء `{0}/{1}` بنجاح'
 xpshop_item_not_found: لا يوجد عنصر بهذا المفتاح.
+xpt_level: المستوى
+xpt_rank: الترتيب
+xpt_progress: التقدم
+xpt_total_xp: إجمالي XP
+xpt_club: النادي

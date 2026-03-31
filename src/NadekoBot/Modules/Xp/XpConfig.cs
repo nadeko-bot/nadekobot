@@ -4,8 +4,7 @@ using NadekoBot.Db.Models;
 
 namespace NadekoBot.Modules.Xp;
 
-[Cloneable]
-public sealed partial class XpConfig : ICloneable<XpConfig>
+public sealed class XpConfig
 {
     [Comment("""DO NOT CHANGE""")]
     public int Version { get; set; } = 11;

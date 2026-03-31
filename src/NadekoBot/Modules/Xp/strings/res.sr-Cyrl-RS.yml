@@ -29,3 +29,8 @@ xprewsreset_confirm: Да ли си сигуран/на да желиш да о�
 xpshop_already_owned: Већ поседујеш ову ставку.
 xpshop_buy_success: 'Успешно купљено `{0}/{1}`'
 xpshop_item_not_found: Ставка са тим кључем не постоји.
+xpt_level: Ниво
+xpt_rank: Ранг
+xpt_progress: Напредак
+xpt_total_xp: Укупно XP
+xpt_club: Клуб

@@ -731,7 +731,9 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                 //xp bar
                 if (template.User.Xp.Bar.Show)
                 {
-                    var xpPercent = guild.LevelXp / (float)guild.RequiredXp;
+                    var xpPercent = guild.RequiredXp > 0
+                        ? Math.Clamp(guild.LevelXp / (float)guild.RequiredXp, 0f, 1f)
+                        : 1f;
                     DrawXpBar(xpPercent, template.User.Xp.Bar.Guild, img);
                 }
 
@@ -852,6 +854,9 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
     private void DrawXpBar(float percent, XpBar info, Image<Rgba32> img)
     {
+        if (percent <= 0f || float.IsNaN(percent))
+            return;
+
         var x1 = info.PointA.X;
         var y1 = info.PointA.Y;
 
