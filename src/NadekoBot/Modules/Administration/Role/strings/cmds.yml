@@ -156,14 +156,41 @@ rerolist:
     - page:
         desc: The number of the page to retrieve, starting from 1.
 reroremove:
-  desc: Remove all reaction roles from message specified by the id
+  desc: |-
+    Remove reaction roles from a message specified by its id.
+    If a role is specified, only entries for that role are removed.
+    If multiple entries exist for that role, you will be shown a paginated
+    list to pick which one to remove.
+    If no role is specified, all reaction roles on that message are removed.
   ex:
     - 971276352684691500
+    - 971276352684691500 @Gamer
   params:
     - messageId:
-        desc: >-
+        desc: |-
           The ID of a specific message that contains reaction roles to be
           removed.
+    - messageId:
+        desc: |-
+          The ID of a specific message that contains reaction roles to be
+          removed.
+      role:
+        desc: The specific role to remove from the reaction role message.
+reroemote:
+  desc: |-
+    Changes the emote for an existing reaction role entry on the specified
+    message.
+    If multiple entries exist for the given role, you will be shown a paginated
+    list to pick which one to change.
+  ex:
+    - 971276352684691466 @Gamer 😊
+  params:
+    - messageId:
+        desc: The ID of the message containing the reaction role.
+      role:
+        desc: The role whose emote you want to change.
+      newEmoteStr:
+        desc: The new emote to use for this reaction role.
 rerotransfer:
   desc: >-
     Transfers reaction roles from one message to another by specifying their

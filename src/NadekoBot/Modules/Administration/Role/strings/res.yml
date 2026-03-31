@@ -23,6 +23,11 @@ renrole_perms: You can't edit roles higher than either your, or my highest role.
 rero_message_not_found: >-
   The specified message wasn't found. Make sure you've specified the message
   from this channel.
+rero_not_found: No reaction role entry found for that role on the specified message.
+rero_select_to_delete: Select a reaction role entry to delete.
+rero_deleted: Reaction role entry deleted.
+rero_select_to_edit: Select a reaction role entry to change the emote for.
+rero_emote_changed: Reaction role emote changed.
 rolehoist_disabled: Role {0} is no longer displayed separately from online members.
 rolehoist_enabled: Role {0} is now displayed separately from online members.
 setrole: Successfully added role {0} to user {1}

@@ -1,4 +1,5 @@
-﻿using NadekoBot.Modules.Administration.Services;
+﻿using NadekoBot.Db.Models;
+using NadekoBot.Modules.Administration.Services;
 
 namespace NadekoBot.Modules.Administration;
 
@@ -121,13 +122,115 @@ public partial class Administration
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
         [BotPerm(GuildPerm.ManageRoles)]
-        public async Task ReRoRemove(ulong messageId)
+        public async Task ReRoRemove(ulong messageId, IRole? role = null)
         {
-            var succ = await _rero.RemoveReactionRoles(ctx.Guild.Id, messageId);
-            if (succ)
-                await ctx.OkAsync();
-            else
+            if (role is null)
+            {
+                var succ = await _rero.RemoveReactionRoles(ctx.Guild.Id, messageId);
+                if (succ)
+                    await ctx.OkAsync();
+                else
+                    await ctx.ErrorAsync();
+                return;
+            }
+
+            var entries = await _rero.GetReactionRolesForRoleAsync(ctx.Guild.Id, messageId, role.Id);
+            if (entries.Count == 0)
+            {
+                await Response().Error(strs.rero_not_found).SendAsync();
+                return;
+            }
+
+            if (entries.Count == 1)
+            {
+                await ReRoRemoveEntryInternalAsync(messageId, entries.First());
+                return;
+            }
+
+            var items = entries.ToArray();
+            await Response()
+                  .Paginated()
+                  .Items(items)
+                  .PageSize(1)
+                  .Page((pageItems, _) =>
+                  {
+                      var entry = pageItems.FirstOrDefault();
+                      if (entry is null)
+                          return CreateEmbed().WithErrorColor().WithDescription(GetText(strs.rero_not_found));
+
+                      return CreateEmbed()
+                          .WithOkColor()
+                          .WithTitle(GetText(strs.rero_select_to_delete))
+                          .AddField("Emote", entry.Emote, true)
+                          .AddField("Role", ctx.Guild.GetRole(entry.RoleId)?.Mention ?? entry.RoleId.ToString(), true)
+                          .AddField("Group", entry.Group.ToString(), true)
+                          .AddField("Level Req", entry.LevelReq.ToString(), true);
+                  })
+                  .Interaction(currentPage =>
+                  {
+                      var entry = items.Skip(currentPage).FirstOrDefault();
+                      if (entry is null)
+                          return Task.FromResult<NadekoInteractionBase>(null);
+
+                      var inter = _inter.Create(ctx.User.Id,
+                          new ButtonBuilder()
+                              .WithStyle(ButtonStyle.Danger)
+                              .WithEmote(new Emoji("\U0001f5d1\ufe0f"))
+                              .WithCustomId("rero:delete"),
+                          async (smc) =>
+                          {
+                              var oldEmote = await _rero.RemoveReactionRoleAsync(
+                                  ctx.Guild.Id,
+                                  messageId,
+                                  entry.Emote);
+
+                              if (oldEmote is not null)
+                              {
+                                  var msg = await ctx.Channel.GetMessageAsync(messageId);
+                                  if (msg is not null)
+                                  {
+                                      try { await msg.RemoveReactionAsync(oldEmote.ToIEmote(), ctx.Client.CurrentUser); }
+                                      catch { }
+                                  }
+                              }
+
+                              await smc.Message.ModifyAsync(mp =>
+                              {
+                                  mp.Embed = CreateEmbed()
+                                      .WithOkColor()
+                                      .WithTitle(GetText(strs.rero_deleted))
+                                      .AddField("Emote", entry.Emote, true)
+                                      .AddField("Role",
+                                          ctx.Guild.GetRole(entry.RoleId)?.Mention ?? entry.RoleId.ToString(), true)
+                                      .Build();
+                                  mp.Components = new ComponentBuilder().Build();
+                              });
+                          },
+                          clearAfter: false);
+
+                      return Task.FromResult(inter);
+                  })
+                  .SendAsync();
+        }
+
+        private async Task ReRoRemoveEntryInternalAsync(ulong messageId, ReactionRoleV2 entry)
+        {
+            var oldEmote = await _rero.RemoveReactionRoleAsync(ctx.Guild.Id, messageId, entry.Emote);
+
+            if (oldEmote is null)
+            {
                 await ctx.ErrorAsync();
+                return;
+            }
+
+            var msg = await ctx.Channel.GetMessageAsync(messageId);
+            if (msg is not null)
+            {
+                try { await msg.RemoveReactionAsync(oldEmote.ToIEmote(), ctx.Client.CurrentUser); }
+                catch { }
+            }
+
+            await ctx.OkAsync();
         }
 
         [Cmd]
@@ -168,6 +271,135 @@ public partial class Administration
                     await msg.AddReactionAsync(r);
                 }
             }
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.ManageRoles)]
+        [BotPerm(GuildPerm.ManageRoles)]
+        public async Task ReRoEmote(ulong messageId, IRole role, string newEmoteStr)
+        {
+            if (ctx.User.Id != ctx.Guild.OwnerId
+                && ((IGuildUser)ctx.User).GetRoles().Max(x => x.Position) <= role.Position)
+            {
+                await Response().Error(strs.hierarchy).SendAsync();
+                return;
+            }
+
+            var msg = await ctx.Channel.GetMessageAsync(messageId);
+            if (msg is null)
+            {
+                await Response().Error(strs.rero_message_not_found).SendAsync();
+                return;
+            }
+
+            var newEmote = newEmoteStr.ToIEmote();
+
+            var entries = await _rero.GetReactionRolesForRoleAsync(ctx.Guild.Id, messageId, role.Id);
+            if (entries.Count == 0)
+            {
+                await Response().Error(strs.rero_not_found).SendAsync();
+                return;
+            }
+
+            if (entries.Count == 1)
+            {
+                await ReRoEmoteInternalAsync(msg, entries.First(), newEmoteStr, newEmote);
+                return;
+            }
+
+            var items = entries.ToArray();
+            await Response()
+                  .Paginated()
+                  .Items(items)
+                  .PageSize(1)
+                  .Page((pageItems, _) =>
+                  {
+                      var entry = pageItems.FirstOrDefault();
+                      if (entry is null)
+                          return CreateEmbed().WithErrorColor().WithDescription(GetText(strs.rero_not_found));
+
+                      return CreateEmbed()
+                          .WithOkColor()
+                          .WithTitle(GetText(strs.rero_select_to_edit))
+                          .AddField("Emote", entry.Emote, true)
+                          .AddField("Role", ctx.Guild.GetRole(entry.RoleId)?.Mention ?? entry.RoleId.ToString(), true)
+                          .AddField("Group", entry.Group.ToString(), true)
+                          .AddField("Level Req", entry.LevelReq.ToString(), true);
+                  })
+                  .Interaction(currentPage =>
+                  {
+                      var entry = items.Skip(currentPage).FirstOrDefault();
+                      if (entry is null)
+                          return Task.FromResult<NadekoInteractionBase>(null);
+
+                      var inter = _inter.Create(ctx.User.Id,
+                          new ButtonBuilder()
+                              .WithStyle(ButtonStyle.Primary)
+                              .WithEmote(new Emoji("\u2705"))
+                              .WithCustomId("rero:emote"),
+                          async (smc) =>
+                          {
+                              var oldEmote = await _rero.ChangeReactionRoleEmoteAsync(
+                                  ctx.Guild.Id,
+                                  messageId,
+                                  entry.Emote,
+                                  newEmoteStr);
+
+                              if (oldEmote is not null)
+                              {
+                                  try { await msg.RemoveReactionAsync(oldEmote.ToIEmote(), ctx.Client.CurrentUser); }
+                                  catch { }
+
+                                  try { await msg.AddReactionAsync(newEmote); }
+                                  catch { }
+                              }
+
+                              await smc.Message.ModifyAsync(mp =>
+                              {
+                                  mp.Embed = CreateEmbed()
+                                      .WithOkColor()
+                                      .WithTitle(GetText(strs.rero_emote_changed))
+                                      .AddField("Old Emote", entry.Emote, true)
+                                      .AddField("New Emote", newEmoteStr, true)
+                                      .AddField("Role",
+                                          ctx.Guild.GetRole(entry.RoleId)?.Mention ?? entry.RoleId.ToString(), true)
+                                      .Build();
+                                  mp.Components = new ComponentBuilder().Build();
+                              });
+                          },
+                          clearAfter: false);
+
+                      return Task.FromResult(inter);
+                  })
+                  .SendAsync();
+        }
+
+        private async Task ReRoEmoteInternalAsync(
+            IMessage msg,
+            ReactionRoleV2 entry,
+            string newEmoteStr,
+            IEmote newEmote)
+        {
+            var oldEmote = await _rero.ChangeReactionRoleEmoteAsync(
+                ctx.Guild.Id,
+                msg.Id,
+                entry.Emote,
+                newEmoteStr);
+
+            if (oldEmote is null)
+            {
+                await ctx.ErrorAsync();
+                return;
+            }
+
+            try { await msg.RemoveReactionAsync(oldEmote.ToIEmote(), ctx.Client.CurrentUser); }
+            catch { }
+
+            try { await msg.AddReactionAsync(newEmote); }
+            catch { }
+
+            await ctx.OkAsync();
         }
     }
 }

@@ -388,4 +388,72 @@ public sealed class ReactionRolesService : IReadyExecutor, INService, IReactionR
 
         return updated.Select(x => x.Emote.ToIEmote()).ToList();
     }
+
+    public async Task<IReadOnlyCollection<ReactionRoleV2>> GetReactionRolesForRoleAsync(
+        ulong guildId,
+        ulong messageId,
+        ulong roleId)
+    {
+        await using var ctx = _db.GetDbContext();
+        return await ctx.GetTable<ReactionRoleV2>()
+                        .Where(x => x.GuildId == guildId
+                                    && x.MessageId == messageId
+                                    && x.RoleId == roleId)
+                        .ToListAsyncLinqToDB();
+    }
+
+    public async Task<string?> RemoveReactionRoleAsync(ulong guildId, ulong messageId, string emote)
+    {
+        await using var ctx = _db.GetDbContext();
+        var deleted = await ctx.GetTable<ReactionRoleV2>()
+                               .Where(x => x.GuildId == guildId
+                                            && x.MessageId == messageId
+                                            && x.Emote == emote)
+                               .DeleteWithOutputAsync(x => x.Emote);
+
+        if (deleted.Length == 0)
+            return null;
+
+        lock (_cacheLock)
+        {
+            if (_cache.TryGetValue(messageId, out var list))
+            {
+                list.RemoveAll(x => x.Emote == emote);
+                if (list.Count == 0)
+                    _cache.TryRemove(messageId, out _);
+            }
+        }
+
+        return deleted[0];
+    }
+
+    public async Task<string?> ChangeReactionRoleEmoteAsync(
+        ulong guildId,
+        ulong messageId,
+        string oldEmote,
+        string newEmote)
+    {
+        await using var ctx = _db.GetDbContext();
+        var updated = await ctx.GetTable<ReactionRoleV2>()
+                               .Where(x => x.GuildId == guildId
+                                            && x.MessageId == messageId
+                                            && x.Emote == oldEmote)
+                               .Set(x => x.Emote, newEmote)
+                               .UpdateWithOutputAsync((old, @new) => old.Emote);
+
+        if (updated.Length == 0)
+            return null;
+
+        lock (_cacheLock)
+        {
+            if (_cache.TryGetValue(messageId, out var list))
+            {
+                var entry = list.FirstOrDefault(x => x.Emote == oldEmote);
+                if (entry is not null)
+                    entry.Emote = newEmote;
+            }
+        }
+
+        return updated[0];
+    }
 }

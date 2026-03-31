@@ -36,6 +36,9 @@ reroadd:
 rerodeleteall:
   - rerodeleteall
   - rerodela
+reroemote:
+  - reroemote
+  - reroe
 rerolist:
   - rerolist
   - reroli
