@@ -4,9 +4,11 @@
 
 ## WIP
 
+## [7.1.18] - 01.04.2026
+
 ### Added
 
-- New `data/utility.yml` config file with configurable per-server limits for repeaters, scheduled commands, and live channels 
+- New `data/utility.yml` config file with configurable per-server limits for repeaters, scheduled commands, and live channels
   - Use `.config utility` to view/edit
 - Added `.xpt` command - text-based embed alternative to `.xp` image card
 - Added `.reroe` command to change the emote for an existing reaction role entry

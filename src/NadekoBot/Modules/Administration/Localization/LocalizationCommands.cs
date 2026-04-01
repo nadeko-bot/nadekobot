@@ -9,26 +9,7 @@ public partial class Administration
     [Group]
     public partial class LocalizationCommands : NadekoModule
     {
-        private static readonly FrozenDictionary<string, string> _supportedLocales = new Dictionary<string, string>
-        {
-            { "ar", "العربية" },
-            { "zh-CN", "简体中文, 中华人民共和国" },
-            { "en-US", "English, United States" },
-            { "fr-FR", "Français, France" },
-            { "de-DE", "Deutsch, Deutschland" },
-            { "id-ID", "Bahasa Indonesia, Indonesia" },
-            { "ja-JP", "日本語, 日本" },
-            { "ko-KR", "한국어, 대한민국" },
-            { "pl-PL", "Polski, Polska" },
-            { "pt-BR", "Português Brasileiro, Brasil" },
-            { "ru-RU", "Русский, Россия" },
-            { "sr-Cyrl-RS", "Српски, Србија" },
-            { "es-ES", "Español, España" },
-            { "tr-TR", "Türkçe, Türkiye" },
-            { "ts-TS", "Tsundere, You Baka" },
-            { "uk-UA", "Українська, Україна" },
-            { "vi-VN", "Tiếng Việt, Việt Nam" }
-        }.ToFrozenDictionary();
+        private static readonly FrozenDictionary<string, string> _supportedLocales = SupportedLocales.All;
 
         [Cmd]
         [RequireContext(ContextType.Guild)]

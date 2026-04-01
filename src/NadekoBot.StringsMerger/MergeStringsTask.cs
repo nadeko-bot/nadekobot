@@ -31,6 +31,7 @@ public class MergeStringsTask : Task
     ISerializer serializer = new SerializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull)
+        .WithQuotingNecessaryStrings(quoteYaml1_1Strings: true)
         .Build();
 
     public override bool Execute()

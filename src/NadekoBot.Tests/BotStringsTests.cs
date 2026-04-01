@@ -241,14 +241,7 @@ namespace NadekoBot.Tests
         [Test]
         public void OnlySupportedLocalesHaveStrings()
         {
-            var locCmdType = typeof(Bot).Assembly
-                .GetTypes()
-                .First(t => t.Name == "LocalizationCommands");
-
-            var field = locCmdType.GetField("_supportedLocales",
-                BindingFlags.NonPublic | BindingFlags.Static)!;
-
-            var supported = ((IReadOnlyDictionary<string, string>)field.GetValue(null)!).Keys.ToHashSet();
+            var supported = SupportedLocales.All.Keys.ToHashSet();
 
             var stringsSource = new LocalFileStringsSource(responsesPath, commandsPath);
             var allLocales = stringsSource.GetResponseStrings().Keys.ToHashSet();

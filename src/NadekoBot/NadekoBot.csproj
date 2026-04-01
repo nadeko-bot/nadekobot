@@ -110,6 +110,7 @@
 
     <ItemGroup>
         <AdditionalFiles Include="Modules/**/strings/res*.yml" />
+        <AdditionalFiles Include="_common/Localization/supported-locales.json" />
     </ItemGroup>
 
     <ItemGroup>
