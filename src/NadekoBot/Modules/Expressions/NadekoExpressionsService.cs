@@ -240,7 +240,10 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         // maybe this message is an expression
         var expr = TryGetExpression(msg);
 
-        if (expr is null || expr.Response == "-")
+        if (expr is null)
+            return false;
+
+        if (expr.Response == "-" && string.IsNullOrEmpty(expr.Reactions))
             return false;
 
         try
@@ -284,27 +287,31 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
                 return true;
             }
 
-            var cu = sg.CurrentUser;
+            IUserMessage? sentMsg = null;
+            if (expr.Response != "-")
+            {
+                var cu = sg.CurrentUser;
 
-            var channel = expr.DmResponse ? await msg.Author.CreateDMChannelAsync() : msg.Channel;
+                var channel = expr.DmResponse ? await msg.Author.CreateDMChannelAsync() : msg.Channel;
 
-            // have no perms to speak in that channel
-            if (channel is ITextChannel tc && !cu.GetPermissions(tc).SendMessages)
-                return false;
+                if (channel is ITextChannel tc && !cu.GetPermissions(tc).SendMessages)
+                    return false;
 
-            var sentMsg = await Send(expr, msg, channel);
+                sentMsg = await Send(expr, msg, channel);
+            }
 
+            var reactionTarget = sentMsg ?? msg;
             var reactions = expr.GetReactions();
             foreach (var reaction in reactions)
             {
                 try
                 {
-                    await sentMsg.AddReactionAsync(reaction.ToIEmote());
+                    await reactionTarget.AddReactionAsync(reaction.ToIEmote());
                 }
                 catch
                 {
                     Log.Warning("Unable to add reactions to message {Message} in server {GuildId}",
-                        sentMsg.Id,
+                        reactionTarget.Id,
                         expr.GuildId);
                     break;
                 }

@@ -12,6 +12,7 @@
   - Use `.config utility` to view/edit
 - Added `.xpt` command - text-based embed alternative to `.xp` image card
 - Added `.reroe` command to change the emote for an existing reaction role entry
+- Expressions with a `-` response and reactions set will now react to the trigger message instead of being fully suppressed
 
 
 ### Changed
