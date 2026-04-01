@@ -439,9 +439,9 @@ public sealed class ReactionRolesService : IReadyExecutor, INService, IReactionR
                                             && x.MessageId == messageId
                                             && x.Emote == oldEmote)
                                .Set(x => x.Emote, newEmote)
-                               .UpdateWithOutputAsync((old, @new) => old.Emote);
+                               .UpdateAsync();
 
-        if (updated.Length == 0)
+        if (updated == 0)
             return null;
 
         lock (_cacheLock)
@@ -454,6 +454,6 @@ public sealed class ReactionRolesService : IReadyExecutor, INService, IReactionR
             }
         }
 
-        return updated[0];
+        return oldEmote;
     }
 }

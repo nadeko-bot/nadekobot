@@ -107,39 +107,45 @@ renamerole:
       roleToEdit:
         desc: The role being edited or updated.
 reroadd:
-  desc: >-
+  desc: |-
     Specify a message id, emote and a role name to have the bot assign the
     specified role to the user who reacts to the specified message (in this
     channel) with the specified emoji.
-
     You can optionally specify an exclusivity group. Default is group 0 which is
     non-exclusive. Other groups are exclusive. Exclusive groups will let the
     user only have one of the roles specified in that group.
-
     You can optionally specify a level requirement after a group. Users who
     don't meet the level requirement will not receive the role.
-
     You can have up to 50 reaction roles per server in total.
   ex:
     - 971276352684691466 😊 gamer
     - 971276352684691466 😢 emo 1
     - 971276352684691466 🤔 philosopher 5 20
-    - 971276352684691466 👨 normie 5 20
   params:
-    - emoteStr:
+    - messageId:
+        desc: The ID of the message that users must react to in order to receive the specified role.
+      emoteStr:
         desc: The emoji used by users to react and trigger the role assignment.
-      group:
-        desc: The number of the exclusivity group.
-      levelReq:
-        desc: >-
-          The minimum amount of experience points required for a user to be
-          eligible for the assigned role.
-      messageId:
-        desc: >-
-          The ID of the message that users must react to in order to receive the
-          specified role.
       role:
         desc: The role that is assigned to users who react with the specified emoji.
+    - messageId:
+        desc: The ID of the message that users must react to in order to receive the specified role.
+      emoteStr:
+        desc: The emoji used by users to react and trigger the role assignment.
+      role:
+        desc: The role that is assigned to users who react with the specified emoji.
+      group:
+        desc: The number of the exclusivity group. Group 0 is non-exclusive, other groups are exclusive.
+    - messageId:
+        desc: The ID of the message that users must react to in order to receive the specified role.
+      emoteStr:
+        desc: The emoji used by users to react and trigger the role assignment.
+      role:
+        desc: The role that is assigned to users who react with the specified emoji.
+      group:
+        desc: The number of the exclusivity group. Group 0 is non-exclusive, other groups are exclusive.
+      levelReq:
+        desc: The minimum level required for a user to be eligible for the assigned role.
 rerodeleteall:
   desc: Deletes all reaction roles on the server. This action is irreversible.
   ex:
@@ -183,14 +189,14 @@ reroemote:
     If multiple entries exist for the given role, you will be shown a paginated
     list to pick which one to change.
   ex:
-    - 971276352684691466 @Gamer 😊
+    - 971276352684691466 😊 @Gamer
   params:
     - messageId:
         desc: The ID of the message containing the reaction role.
-      role:
-        desc: The role whose emote you want to change.
       newEmoteStr:
         desc: The new emote to use for this reaction role.
+      role:
+        desc: The role whose emote you want to change.
 rerotransfer:
   desc: >-
     Transfers reaction roles from one message to another by specifying their

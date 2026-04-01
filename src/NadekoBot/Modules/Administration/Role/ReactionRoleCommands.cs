@@ -277,7 +277,7 @@ public partial class Administration
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
         [BotPerm(GuildPerm.ManageRoles)]
-        public async Task ReRoEmote(ulong messageId, IRole role, string newEmoteStr)
+        public async Task ReRoEmote(ulong messageId, string newEmoteStr, IRole role)
         {
             if (ctx.User.Id != ctx.Guild.OwnerId
                 && ((IGuildUser)ctx.User).GetRoles().Max(x => x.Position) <= role.Position)
