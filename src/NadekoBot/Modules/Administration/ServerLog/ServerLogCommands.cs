@@ -34,6 +34,16 @@ public partial class Administration
                       ?? new List<IgnoredLogItem>();
             var usrs = settings?.LogIgnores.Where(x => x.ItemType == IgnoredItemType.User).ToList()
                        ?? new List<IgnoredLogItem>();
+            var cats = settings?.LogIgnores.Where(x => x.ItemType == IgnoredItemType.Category).ToList()
+                       ?? new List<IgnoredLogItem>();
+
+            var catNames = new List<string>();
+            foreach (var cat in cats)
+            {
+                var catChannel = await ctx.Guild.GetChannelAsync(cat.LogItemId);
+                var name = catChannel?.Name ?? cat.LogItemId.ToString();
+                catNames.Add($"{cat.LogItemId} | {name}");
+            }
 
             var eb = CreateEmbed()
                         .WithOkColor()
@@ -44,7 +54,11 @@ public partial class Administration
                         .AddField(GetText(strs.log_ignored_users),
                             usrs.Count == 0
                                 ? "-"
-                                : string.Join('\n', usrs.Select(x => $"{x.LogItemId} | <@{x.LogItemId}>")));
+                                : string.Join('\n', usrs.Select(x => $"{x.LogItemId} | <@{x.LogItemId}>")))
+                        .AddField(GetText(strs.log_ignored_categories),
+                            cats.Count == 0
+                                ? "-"
+                                : string.Join('\n', catNames));
 
             await Response().Embed(eb).SendAsync();
         }
@@ -69,6 +83,28 @@ public partial class Administration
                 await Response()
                       .Confirm(
                           strs.log_not_ignore_chan(Format.Bold(target.Mention + "(" + target.Id + ")")))
+                      .SendAsync();
+            }
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.Administrator)]
+        [OwnerOnly]
+        public async Task LogIgnore([Leftover] ICategoryChannel target)
+        {
+            var removed = _service.LogIgnore(ctx.Guild.Id, target.Id, IgnoredItemType.Category);
+
+            if (!removed)
+            {
+                await Response()
+                      .Confirm(strs.log_ignore_category(Format.Bold(target.Name + "(" + target.Id + ")")))
+                      .SendAsync();
+            }
+            else
+            {
+                await Response()
+                      .Confirm(strs.log_not_ignore_category(Format.Bold(target.Name + "(" + target.Id + ")")))
                       .SendAsync();
             }
         }

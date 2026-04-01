@@ -136,7 +136,9 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 var ch = sch.Value;
 
                 if (!GuildLogSettings.TryGetValue(ch.Guild.Id, out var logSetting)
-                    || logSetting.ThreadDeletedId is null)
+                    || logSetting.ThreadDeletedId is null
+                    || IsChannelIgnored(logSetting, ch.Id,
+                        (ch.ParentChannel as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
@@ -166,7 +168,9 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
             try
             {
                 if (!GuildLogSettings.TryGetValue(ch.Guild.Id, out var logSetting)
-                    || logSetting.ThreadCreatedId is null)
+                    || logSetting.ThreadCreatedId is null
+                    || IsChannelIgnored(logSetting, ch.Id,
+                        (ch.ParentChannel as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
@@ -235,6 +239,21 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     {
         GuildLogSettings.TryGetValue(guildId, out var logSetting);
         return logSetting;
+    }
+
+    private static bool IsChannelIgnored(LogSetting logSetting, ulong channelId, ulong? categoryId)
+    {
+        var ignores = logSetting.LogIgnores;
+        for (var i = 0; i < ignores.Count; i++)
+        {
+            var ilc = ignores[i];
+            if (ilc.LogItemId == channelId && ilc.ItemType == IgnoredItemType.Channel)
+                return true;
+            if (categoryId is not null && ilc.LogItemId == categoryId.Value && ilc.ItemType == IgnoredItemType.Category)
+                return true;
+        }
+
+        return false;
     }
 
     public void AddDeleteIgnore(ulong messageId)
@@ -696,8 +715,8 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 if (!GuildLogSettings.TryGetValue(before.Guild.Id, out var logSetting)
                     || logSetting.ChannelUpdatedId is null
-                    || logSetting.LogIgnores.Any(ilc
-                        => ilc.LogItemId == after.Id && ilc.ItemType == IgnoredItemType.Channel))
+                    || IsChannelIgnored(logSetting, after.Id,
+                        (after as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
@@ -746,8 +765,8 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 if (!GuildLogSettings.TryGetValue(ch.Guild.Id, out var logSetting)
                     || logSetting.ChannelDestroyedId is null
-                    || logSetting.LogIgnores.Any(ilc
-                        => ilc.LogItemId == ch.Id && ilc.ItemType == IgnoredItemType.Channel))
+                    || IsChannelIgnored(logSetting, ch.Id,
+                        (ch as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
@@ -784,7 +803,9 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                     return;
 
                 if (!GuildLogSettings.TryGetValue(ch.Guild.Id, out var logSetting)
-                    || logSetting.ChannelCreatedId is null)
+                    || logSetting.ChannelCreatedId is null
+                    || IsChannelIgnored(logSetting, ch.Id,
+                        (ch as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
@@ -838,6 +859,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                     || logSetting.LogVoicePresenceId is null
                     || logSetting.LogIgnores.Any(
                         ilc => ilc.LogItemId == iusr.Id && ilc.ItemType == IgnoredItemType.User))
+                    return;
+
+                var vcId = afterVch?.Id ?? beforeVch?.Id ?? 0;
+                var vcCategoryId = (afterVch as INestedChannel)?.CategoryId
+                                   ?? (beforeVch as INestedChannel)?.CategoryId;
+                if (vcId != 0 && IsChannelIgnored(logSetting, vcId, vcCategoryId))
                     return;
 
                 ITextChannel? logChannel;
@@ -1129,8 +1156,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 if (!GuildLogSettings.TryGetValue(channel.Guild.Id, out var logSetting)
                     || logSetting.MessageDeletedId is null
-                    || logSetting.LogIgnores.Any(ilc
-                        => ilc.LogItemId == channel.Id && ilc.ItemType == IgnoredItemType.Channel))
+                    || IsChannelIgnored(logSetting, channel.Id, channel.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
@@ -1190,8 +1216,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 if (!GuildLogSettings.TryGetValue(channel.Guild.Id, out var logSetting)
                     || logSetting.MessageUpdatedId is null
-                    || logSetting.LogIgnores.Any(ilc
-                        => ilc.LogItemId == channel.Id && ilc.ItemType == IgnoredItemType.Channel))
+                    || IsChannelIgnored(logSetting, channel.Id, channel.CategoryId))
                     return;
 
                 ITextChannel? logChannel;

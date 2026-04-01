@@ -16,20 +16,24 @@ logevents:
   params:
     - {}
 logignore:
-  desc: >-
+  desc: |-
     Toggles whether the `{0}log` and `{0}logserver` commands ignore the
-    specified channel or user. Provide no arguments to see the list of currently
-    ignored users and channels.
+    specified channel, user, or category. When a category is ignored, all
+    channels within it are excluded from logging. Provide no arguments to
+    see the list of currently ignored users, channels, and categories.
   ex:
     - ''
     - '@SomeUser'
     - '#some-channel'
+    - 'Tickets'
   params:
     - {}
     - target:
-        desc: The channel to ignore.
+        desc: "The channel to ignore."
     - target:
-        desc: The user to ignore.
+        desc: "The category to ignore."
+    - target:
+        desc: "The user to ignore."
 logserver:
   desc: >-
     Enables or Disables ALL log events. If enabled, all log events will log to

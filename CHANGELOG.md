@@ -2,7 +2,24 @@
 
 *a,c,f,r,o,d*
 
-## WIP
+## [7.1.20] - TBD
+
+
+
+## [7.1.19] - 01.04.2026
+
+### Added
+
+- `.logignore` now accepts category channels - all channels within an ignored category are excluded from logging
+
+### Changed
+
+- `.reroe` parameter order changed to match `.reroa` convention: messageId, emote, role (was messageId, role, emote)
+- Expressions with a `-` response and reactions set will now react to the trigger message instead of being fully suppressed
+
+### Fixed
+
+- Fixed `.reroe` not working with sqlite
 
 ## [7.1.18] - 01.04.2026
 
@@ -12,7 +29,6 @@
   - Use `.config utility` to view/edit
 - Added `.xpt` command - text-based embed alternative to `.xp` image card
 - Added `.reroe` command to change the emote for an existing reaction role entry
-- Expressions with a `-` response and reactions set will now react to the trigger message instead of being fully suppressed
 
 
 ### Changed

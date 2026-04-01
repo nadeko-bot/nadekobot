@@ -903,12 +903,11 @@
         ".reroadd",
         ".reroa"
       ],
-      "Description": "Specify a message id, emote and a role name to have the bot assign the specified role to the user who reacts to the specified message (in this channel) with the specified emoji.\nYou can optionally specify an exclusivity group. Default is group 0 which is non-exclusive. Other groups are exclusive. Exclusive groups will let the user only have one of the roles specified in that group.\nYou can optionally specify a level requirement after a group. Users who don't meet the level requirement will not receive the role.\nYou can have up to 50 reaction roles per server in total.",
+      "Description": "Specify a message id, emote and a role name to have the bot assign the\nspecified role to the user who reacts to the specified message (in this\nchannel) with the specified emoji.\nYou can optionally specify an exclusivity group. Default is group 0 which is\nnon-exclusive. Other groups are exclusive. Exclusive groups will let the\nuser only have one of the roles specified in that group.\nYou can optionally specify a level requirement after a group. Users who\ndon't meet the level requirement will not receive the role.\nYou can have up to 50 reaction roles per server in total.",
       "Usage": [
         ".reroadd 971276352684691466 😊 gamer",
         ".reroadd 971276352684691466 😢 emo 1",
-        ".reroadd 971276352684691466 🤔 philosopher 5 20",
-        ".reroadd 971276352684691466 👨 normie 5 20"
+        ".reroadd 971276352684691466 🤔 philosopher 5 20"
       ],
       "Submodule": "ReactionRoleCommands",
       "Module": "Administration",
@@ -989,7 +988,7 @@
       ],
       "Description": "Changes the emote for an existing reaction role entry on the specified\nmessage.\nIf multiple entries exist for the given role, you will be shown a paginated\nlist to pick which one to change.",
       "Usage": [
-        ".reroemote 971276352684691466 @Gamer 😊"
+        ".reroemote 971276352684691466 😊 @Gamer"
       ],
       "Submodule": "ReactionRoleCommands",
       "Module": "Administration",
@@ -1412,11 +1411,12 @@
       "Aliases": [
         ".logignore"
       ],
-      "Description": "Toggles whether the `.log` and `.logserver` commands ignore the specified channel or user. Provide no arguments to see the list of currently ignored users and channels.",
+      "Description": "Toggles whether the `.log` and `.logserver` commands ignore the\nspecified channel, user, or category. When a category is ignored, all\nchannels within it are excluded from logging. Provide no arguments to\nsee the list of currently ignored users, channels, and categories.",
       "Usage": [
         ".logignore",
         ".logignore @SomeUser",
-        ".logignore #some-channel"
+        ".logignore #some-channel",
+        ".logignore Tickets"
       ],
       "Submodule": "LogCommands",
       "Module": "Administration",

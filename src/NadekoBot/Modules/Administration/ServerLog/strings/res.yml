@@ -13,6 +13,9 @@ log_ignore_chan: Logging will ignore channel {0}
 log_ignore_user: Logging will ignore user {0}
 log_ignored_channels: Ignored Channels
 log_ignored_users: Ignored Users
+log_ignored_categories: Ignored Categories
+log_ignore_category: Logging will ignore category {0}
+log_not_ignore_category: Logging will no longer ignore category {0}
 log_not_ignore_chan: Logging will no longer ignore channel {0}
 log_not_ignore_user: Logging will no longer ignore user {0}
 log_stop: Stopped logging {0} event.

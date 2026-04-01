@@ -12,5 +12,6 @@ public class IgnoredLogItem : DbEntity
 public enum IgnoredItemType
 {
     Channel,
-    User
+    User,
+    Category
 }

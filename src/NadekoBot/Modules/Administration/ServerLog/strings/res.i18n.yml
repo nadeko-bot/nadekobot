@@ -14,6 +14,9 @@ ar:
   log_ignore_user: 'سيتجاهل التسجيل المستخدم {0}'
   log_ignored_channels: القنوات المتجاهَلة
   log_ignored_users: المستخدمون المتجاهَلون
+  log_ignored_categories: الفئات المتجاهَلة
+  log_ignore_category: 'سيتجاهل التسجيل الفئة {0}'
+  log_not_ignore_category: 'لن يتجاهل التسجيل الفئة {0} بعد الآن'
   log_not_ignore_chan: 'لن يتجاهل التسجيل القناة {0} بعد الآن'
   log_not_ignore_user: 'لن يتجاهل التسجيل المستخدم {0} بعد الآن'
   log_stop: 'تم إيقاف تسجيل حدث {0}.'
@@ -73,6 +76,9 @@ de-DE:
   log_ignore_user: 'Logging wird User {0} ignorieren'
   log_ignored_channels: Ignorierte Kanäle
   log_ignored_users: Ignorierte User
+  log_ignored_categories: Ignorierte Kategorien
+  log_ignore_category: 'Logging wird Kategorie {0} ignorieren'
+  log_not_ignore_category: 'Logging wird nicht länger Kategorie {0} ignorieren'
   log_not_ignore_chan: 'Logging wird nicht länger Kanal {0} ignorieren'
   log_not_ignore_user: 'Logging wird nicht länger User {0} ignorieren'
   log_stop: 'Protokollierung des {0} Ereignisses wurde gestoppt.'
@@ -132,6 +138,9 @@ es-ES:
   log_ignore_user: 'El registro ignorará al usuario {0}'
   log_ignored_channels: Canales ignorados
   log_ignored_users: Usuarios ignorados
+  log_ignored_categories: Categorías ignoradas
+  log_ignore_category: 'El registro ignorará la categoría {0}'
+  log_not_ignore_category: 'El registro ya no ignorará la categoría {0}'
   log_not_ignore_chan: 'El registro ya no ignorará el canal {0}'
   log_not_ignore_user: 'El registró ya no ignorará al usuario {0}'
   log_stop: 'Se detuvo el registro del evento {0}.'
@@ -191,6 +200,9 @@ fr-FR:
   log_ignore_user: 'La journalisation ignorera le membre {0}'
   log_ignored_channels: Salons ignorés
   log_ignored_users: Utilisateurs ignorés
+  log_ignored_categories: Catégories ignorées
+  log_ignore_category: 'La journalisation ignorera la catégorie {0}'
+  log_not_ignore_category: 'La journalisation n''ignorera plus la catégorie {0}'
   log_not_ignore_chan: 'La journalisation n''ignorera plus le salon {0}'
   log_not_ignore_user: 'La journalisation n''ignorera plus le membre {0}'
   log_stop: 'La journalisation de l''évènement {0} arrêtée.'
@@ -250,6 +262,9 @@ id-ID:
   log_ignore_user: 'Pencatatan log akan mengabaikan user {0}'
   log_ignored_channels: Channel yang Diabaikan
   log_ignored_users: User yang Diabaikan
+  log_ignored_categories: Kategori yang Diabaikan
+  log_ignore_category: 'Pencatatan log akan mengabaikan kategori {0}'
+  log_not_ignore_category: 'Pencatatan log tidak lagi mengabaikan kategori {0}'
   log_not_ignore_chan: 'Pencatatan log tidak lagi mengabaikan channel {0}'
   log_not_ignore_user: 'Pencatatan log tidak lagi mengabaikan user {0}'
   log_stop: 'Berhenti mencatat event {0}.'
@@ -309,6 +324,9 @@ ja-JP:
   log_ignore_user: 'ログはユーザー{0}を無視します'
   log_ignored_channels: 無視されたチャンネル
   log_ignored_users: 無視されたユーザー
+  log_ignored_categories: 無視されたカテゴリ
+  log_ignore_category: 'ログはカテゴリ{0}を無視します'
+  log_not_ignore_category: 'ログはカテゴリ{0}を無視しなくなります'
   log_not_ignore_chan: 'ログはチャンネル{0}を無視しなくなります'
   log_not_ignore_user: 'ログはユーザー{0}を無視しなくなります'
   log_stop: '{0}イベントの記録が停止されました。'
@@ -368,6 +386,9 @@ ko-KR:
   log_ignore_user: '로깅이 사용자 {0}을(를) 무시해요'
   log_ignored_channels: 무시된 채널
   log_ignored_users: 무시된 사용자
+  log_ignored_categories: 무시된 카테고리
+  log_ignore_category: '로깅이 카테고리 {0}을(를) 무시해요'
+  log_not_ignore_category: '로깅이 더 이상 카테고리 {0}을(를) 무시하지 않아요'
   log_not_ignore_chan: '로깅이 더 이상 채널 {0}을(를) 무시하지 않아요'
   log_not_ignore_user: '로깅이 더 이상 사용자 {0}을(를) 무시하지 않아요'
   log_stop: '{0} 이벤트 기록을 중단했어요.'
@@ -427,6 +448,9 @@ pl-PL:
   log_ignore_user: 'Logowanie będzie ignorować użytkownika {0}'
   log_ignored_channels: Ignorowane kanały
   log_ignored_users: Ignorowani użytkownicy
+  log_ignored_categories: Ignorowane kategorie
+  log_ignore_category: 'Logowanie będzie ignorować kategorię {0}'
+  log_not_ignore_category: 'Logowanie nie będzie już ignorować kategorii {0}'
   log_not_ignore_chan: 'Logowanie nie będzie już ignorować kanału {0}'
   log_not_ignore_user: 'Logowanie nie będzie już ignorować użytkownika {0}'
   log_stop: 'Zatrzymano logowanie zdarzenia {0}.'
@@ -486,6 +510,9 @@ pt-BR:
   log_ignore_user: 'O registro de logs passará a ignorar o usuário {0}'
   log_ignored_channels: Canais ignorados
   log_ignored_users: Usuários ignorados
+  log_ignored_categories: Categorias ignoradas
+  log_ignore_category: 'O registro de logs vai ignorar a categoria {0}'
+  log_not_ignore_category: 'O registro de logs não vai mais ignorar a categoria {0}'
   log_not_ignore_chan: 'O registro de logs não vai mais ignorar o canal {0}'
   log_not_ignore_user: 'O registro de logs não vai mais ignorar o usuário {0}'
   log_stop: 'Parando de registrar evento {0}.'
@@ -545,6 +572,9 @@ ru-RU:
   log_ignore_user: 'Логирование будет игнорировать пользователя {0}'
   log_ignored_channels: Игнорируемые каналы
   log_ignored_users: Игнорируемые пользователи
+  log_ignored_categories: Игнорируемые категории
+  log_ignore_category: 'Логирование будет игнорировать категорию {0}'
+  log_not_ignore_category: 'Логирование больше не будет игнорировать категорию {0}'
   log_not_ignore_chan: 'Логирование больше не будет игнорировать канал {0}'
   log_not_ignore_user: 'Логирование больше не будет игнорировать пользователя {0}'
   log_stop: 'Прекращено ведение журнала события {0}.'
@@ -604,6 +634,9 @@ sr-Cyrl-RS:
   log_ignore_user: 'Логовање ће игнорисати корисника {0}'
   log_ignored_channels: Игнорисани канали
   log_ignored_users: Игнорисани корисници
+  log_ignored_categories: Игнорисане категорије
+  log_ignore_category: 'Логовање ће игнорисати категорију {0}'
+  log_not_ignore_category: 'Логовање више неће игнорисати категорију {0}'
   log_not_ignore_chan: 'Логовање више неће игнорисати канал {0}'
   log_not_ignore_user: 'Логовање више неће игнорисати корисника {0}'
   log_stop: 'Заустављено логовање догађаја {0}.'
@@ -663,6 +696,9 @@ tr-TR:
   log_ignore_user: 'Kayıt sistemi {0} kullanıcısını yok sayacak'
   log_ignored_channels: Yok Sayılan Kanallar
   log_ignored_users: Yok Sayılan Kullanıcılar
+  log_ignored_categories: Yok Sayılan Kategoriler
+  log_ignore_category: 'Kayıt sistemi {0} kategorisini yok sayacak'
+  log_not_ignore_category: 'Kayıt sistemi artık {0} kategorisini yok saymayacak'
   log_not_ignore_chan: 'Kayıt sistemi artık {0} kanalını yok saymayacak'
   log_not_ignore_user: 'Kayıt sistemi artık {0} kullanıcısını yok saymayacak'
   log_stop: '{0} olayının kaydı durduruldu.'
@@ -722,6 +758,9 @@ ts-TS:
   log_ignore_user: 'Logging will ignore user {0}'
   log_ignored_channels: Ignored Channels
   log_ignored_users: Ignored Users
+  log_ignored_categories: Ignored Categories
+  log_ignore_category: 'Logging will ignore category {0}'
+  log_not_ignore_category: 'Logging will no longer ignore category {0}'
   log_not_ignore_chan: 'Logging will no longer ignore channel {0}'
   log_not_ignore_user: 'Logging will no longer ignore user {0}'
   log_stop: 'Stopped logging {0} event.'
@@ -781,6 +820,9 @@ uk-UA:
   log_ignore_user: 'Логування ігноруватиме користувача {0}'
   log_ignored_channels: Ігноровані канали
   log_ignored_users: Ігноровані користувачі
+  log_ignored_categories: Ігноровані категорії
+  log_ignore_category: 'Логування ігноруватиме категорію {0}'
+  log_not_ignore_category: 'Логування більше не ігноруватиме категорію {0}'
   log_not_ignore_chan: 'Логування більше не ігноруватиме канал {0}'
   log_not_ignore_user: 'Логування більше не ігноруватиме користувача {0}'
   log_stop: 'Логування події {0} зупинено.'
@@ -840,6 +882,9 @@ vi-VN:
   log_ignore_user: 'Ghi log sẽ bỏ qua người dùng {0}'
   log_ignored_channels: Các kênh bị bỏ qua
   log_ignored_users: Người dùng bị bỏ qua
+  log_ignored_categories: Các danh mục bị bỏ qua
+  log_ignore_category: 'Ghi log sẽ bỏ qua danh mục {0}'
+  log_not_ignore_category: 'Ghi log sẽ không còn bỏ qua danh mục {0} nữa'
   log_not_ignore_chan: 'Ghi log sẽ không còn bỏ qua kênh {0} nữa'
   log_not_ignore_user: 'Ghi log sẽ không còn bỏ qua người dùng {0} nữa'
   log_stop: 'Đã dừng ghi log sự kiện {0}.'
@@ -899,6 +944,9 @@ zh-CN:
   log_ignore_user: '日誌記錄將忽略用戶 {0}'
   log_ignored_channels: 忽略的頻道
   log_ignored_users: 忽略的用戶
+  log_ignored_categories: 忽略的分类
+  log_ignore_category: '日志记录将忽略分类 {0}'
+  log_not_ignore_category: '日志记录将不再忽略分类 {0}'
   log_not_ignore_chan: '日誌記錄將不再忽略頻道 {0}'
   log_not_ignore_user: '日誌記錄將不再忽略用戶 {0}'
   log_stop: '已停止記錄 {0} 事件。'
