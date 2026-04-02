@@ -22,9 +22,9 @@ public sealed class AnimeSearchService(IBotCache cache, IHttpClientFactory httpF
               manga { count meanScore chaptersRead volumesRead }
             }
             favourites {
-              anime { pageInfo { total } }
-              manga { pageInfo { total } }
-              characters { pageInfo { total } }
+              anime(page: 1, perPage: 2) { nodes { title { romaji english } } }
+              manga(page: 1, perPage: 2) { nodes { title { romaji english } } }
+              characters(page: 1, perPage: 2) { nodes { name { full } } }
             }
           }
         }

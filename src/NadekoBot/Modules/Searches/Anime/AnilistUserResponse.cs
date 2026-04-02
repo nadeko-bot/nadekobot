@@ -89,23 +89,50 @@ public sealed class AnilistMangaStats
 public sealed class AnilistUserFavourites
 {
     [JsonPropertyName("anime")]
-    public AnilistFavouriteConnection? Anime { get; set; }
+    public AnilistMediaFavConnection? Anime { get; set; }
 
     [JsonPropertyName("manga")]
-    public AnilistFavouriteConnection? Manga { get; set; }
+    public AnilistMediaFavConnection? Manga { get; set; }
 
     [JsonPropertyName("characters")]
-    public AnilistFavouriteConnection? Characters { get; set; }
+    public AnilistCharacterFavConnection? Characters { get; set; }
 }
 
-public sealed class AnilistFavouriteConnection
+public sealed class AnilistMediaFavConnection
 {
-    [JsonPropertyName("pageInfo")]
-    public AnilistPageInfo? PageInfo { get; set; }
+    [JsonPropertyName("nodes")]
+    public AnilistMediaNode[]? Nodes { get; set; }
 }
 
-public sealed class AnilistPageInfo
+public sealed class AnilistCharacterFavConnection
 {
-    [JsonPropertyName("total")]
-    public int Total { get; set; }
+    [JsonPropertyName("nodes")]
+    public AnilistCharacterNode[]? Nodes { get; set; }
+}
+
+public sealed class AnilistMediaNode
+{
+    [JsonPropertyName("title")]
+    public AnilistMediaTitle? Title { get; set; }
+}
+
+public sealed class AnilistMediaTitle
+{
+    [JsonPropertyName("romaji")]
+    public string? Romaji { get; set; }
+
+    [JsonPropertyName("english")]
+    public string? English { get; set; }
+}
+
+public sealed class AnilistCharacterNode
+{
+    [JsonPropertyName("name")]
+    public AnilistCharacterName? Name { get; set; }
+}
+
+public sealed class AnilistCharacterName
+{
+    [JsonPropertyName("full")]
+    public string? Full { get; set; }
 }

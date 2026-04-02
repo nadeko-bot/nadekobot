@@ -117,6 +117,25 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
         if (cmd.Preconditions.Any(x => x is OwnerOnlyAttribute))
             toReturn.Add("Bot Owner Only");
 
+        var patronAttr = cmd.Preconditions
+                            .OfType<PatronOnlyAttribute>()
+                            .FirstOrDefault()
+                         ?? cmd.Module.Preconditions
+                               .OfType<PatronOnlyAttribute>()
+                               .FirstOrDefault()
+                         ?? cmd.Module.GetTopLevelModule()
+                               .Preconditions
+                               .OfType<PatronOnlyAttribute>()
+                               .FirstOrDefault();
+
+        if (patronAttr is not null)
+        {
+            if (patronAttr.MinTier != NadekoBot.Modules.Patronage.PatronTier.None)
+                toReturn.Add($"Patron Tier {patronAttr.MinTier}+");
+            else
+                toReturn.Add("Patron Only");
+        }
+
         if (cmd.Preconditions.Any(x => x is NoPublicBotAttribute)
             || cmd.Module
                   .Preconditions

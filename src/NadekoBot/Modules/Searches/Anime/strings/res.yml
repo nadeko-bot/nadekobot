@@ -1,19 +1,17 @@
+anime: Anime
+manga: Manga
+characters: Characters
 chapters: Chapters
 episodes: Episodes
-failed_finding_anime: Failed finding that anime.
-failed_finding_manga: Failed finding that manga.
+volumes: Volumes
 genres: Genres
 score: 'Score:'
+failed_finding_anime: Failed finding that anime.
+failed_finding_manga: Failed finding that manga.
 anilist_user_not_found: "AniList user not found."
 anilist_anime_stats: "Anime Stats"
 anilist_manga_stats: "Manga Stats"
 anilist_total_entries: "Total Entries"
-anilist_episodes_watched: "Episodes Watched"
 anilist_watch_time: "Watch Time"
 anilist_mean_score: "Mean Score"
-anilist_chapters_read: "Chapters Read"
-anilist_volumes_read: "Volumes Read"
 anilist_favourites: "Favourites"
-anilist_fav_anime: "Anime"
-anilist_fav_manga: "Manga"
-anilist_fav_characters: "Characters"

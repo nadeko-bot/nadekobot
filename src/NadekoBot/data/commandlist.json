@@ -5895,6 +5895,22 @@
     },
     {
       "Aliases": [
+        ".anilist",
+        ".al",
+        ".ali"
+      ],
+      "Description": "Shows the AniList profile for the specified user, including anime and manga statistics, favourites, and bio.",
+      "Usage": [
+        ".anilist Josh",
+        ".anilist MrAnime"
+      ],
+      "Submodule": "AnimeSearchCommands",
+      "Module": "Searches",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
         ".manga",
         ".mang",
         ".mq"

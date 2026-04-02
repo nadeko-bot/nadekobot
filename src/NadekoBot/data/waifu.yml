@@ -1,5 +1,5 @@
 # DO NOT CHANGE
-version: 7
+version: 8
 # Minimum price a waifu can have. Default 1000
 minPrice: 1000
 # Cost to opt into the waifu system. Default 10000
@@ -12,8 +12,6 @@ cycleHours: 24
 baseReturnRate: 0.17
 # Default max backed amount for computing returns. Default 1000000
 defaultReturnsCap: 1000000
-# Hours after cycle start when manager purchases are allowed. Default 18
-buyWindowHours: 18
 # Base mood points gained from a hug action. Default 50
 baseMoodIncrease: 50
 # Base food points gained from a nom action. Default 50

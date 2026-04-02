@@ -53,7 +53,7 @@ public class WaifuIntegrationTests
         // Buy manager - opt-in price was 10000, so waifu price = 10000/10 = 1000
         // Required = ceil(1000 * 1.15) = 1150
         var buy = await _svc.BuyManagerAsync(3001, 1001, 1150);
-        Assert.That(buy.IsT5, Is.True);
+        Assert.That(buy.IsT4, Is.True);
 
         // Boost stats and set bank balances for meaningful cycle payouts
         await using (var ctx = _db.GetDbContext())
@@ -116,8 +116,8 @@ public class WaifuIntegrationTests
         // User B buys at reduced price: ceil(1000*1.15)=1150
         _cs.ClearReceivedCalls();
         var buy = await _svc.BuyManagerAsync(2001, 1001, 1150);
-        Assert.That(buy.IsT5, Is.True);
-        Assert.That(buy.AsT5.Value.PricePaid, Is.EqualTo(1150));
+        Assert.That(buy.IsT4, Is.True);
+        Assert.That(buy.AsT4.Value.PricePaid, Is.EqualTo(1150));
 
         await using (var ctx = _db.GetDbContext())
         {

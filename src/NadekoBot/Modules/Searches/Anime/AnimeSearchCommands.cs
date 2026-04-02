@@ -66,20 +66,29 @@ public partial class Searches
                 .WithThumbnailUrl(user.Avatar?.Large ?? string.Empty)
                 .AddField(GetText(strs.anilist_anime_stats),
                     $"""
-                    {GetText(strs.anilist_total_entries)}: **{animeStats?.Count ?? 0}**
-                    {GetText(strs.anilist_episodes_watched)}: **{animeStats?.EpisodesWatched ?? 0}**
-                    {GetText(strs.anilist_watch_time)}: **{watchDays}d {watchHours}h**
-                    {GetText(strs.anilist_mean_score)}: **{animeStats?.MeanScore ?? 0:0.#}**
+                    `{GetText(strs.anilist_total_entries)}`
+                    {animeStats?.Count ?? 0}
+                    `{GetText(strs.episodes)}`
+                    {animeStats?.EpisodesWatched ?? 0}
+                    `{GetText(strs.anilist_watch_time)}`
+                    {watchDays}d {watchHours}h
+                    `{GetText(strs.anilist_mean_score)}`
+                    {animeStats?.MeanScore ?? 0:0.#}
                     """,
                     true)
                 .AddField(GetText(strs.anilist_manga_stats),
                     $"""
-                    {GetText(strs.anilist_total_entries)}: **{mangaStats?.Count ?? 0}**
-                    {GetText(strs.anilist_chapters_read)}: **{mangaStats?.ChaptersRead ?? 0}**
-                    {GetText(strs.anilist_volumes_read)}: **{mangaStats?.VolumesRead ?? 0}**
-                    {GetText(strs.anilist_mean_score)}: **{mangaStats?.MeanScore ?? 0:0.#}**
+                    `{GetText(strs.anilist_total_entries)}`
+                    {mangaStats?.Count ?? 0}
+                    `{GetText(strs.chapters)}`
+                    {mangaStats?.ChaptersRead ?? 0}
+                    `{GetText(strs.volumes)}`
+                    {mangaStats?.VolumesRead ?? 0}
+                    `{GetText(strs.anilist_mean_score)}`
+                    {mangaStats?.MeanScore ?? 0:0.#}
                     """,
                     true);
+                ;
 
             if (!string.IsNullOrWhiteSpace(user.About))
             {
@@ -89,15 +98,40 @@ public partial class Searches
                 embed.WithDescription(about);
             }
 
-            var favAnime = user.Favourites?.Anime?.PageInfo?.Total ?? 0;
-            var favManga = user.Favourites?.Manga?.PageInfo?.Total ?? 0;
-            var favChars = user.Favourites?.Characters?.PageInfo?.Total ?? 0;
+            var favAnime = user.Favourites?.Anime?.Nodes;
+            var favManga = user.Favourites?.Manga?.Nodes;
+            var favChars = user.Favourites?.Characters?.Nodes;
 
-            if (favAnime > 0 || favManga > 0 || favChars > 0)
+            var hasFavs = favAnime is { Length: > 0 }
+                          || favManga is { Length: > 0 }
+                          || favChars is { Length: > 0 };
+
+            if (hasFavs)
             {
-                embed.AddField(GetText(strs.anilist_favourites),
-                    $"{GetText(strs.anilist_fav_anime)} {favAnime} | {GetText(strs.anilist_fav_manga)} {favManga} | {GetText(strs.anilist_fav_characters)} {favChars}",
-                    true);
+                var sb = new System.Text.StringBuilder();
+
+                if (favAnime is { Length: > 0 })
+                {
+                    sb.AppendLine($"`{GetText(strs.anime)}`");
+                    foreach (var node in favAnime)
+                        sb.AppendLine($"{node.Title?.English ?? node.Title?.Romaji ?? "?"}");
+                }
+
+                if (favManga is { Length: > 0 })
+                {
+                    sb.AppendLine($"`{GetText(strs.manga)}`");
+                    foreach (var node in favManga)
+                        sb.AppendLine($"{node.Title?.English ?? node.Title?.Romaji ?? "?"}");
+                }
+
+                if (favChars is { Length: > 0 })
+                {
+                    sb.AppendLine($"`{GetText(strs.characters)}`");
+                    foreach (var node in favChars)
+                        sb.AppendLine($"{node.Name?.Full ?? "?"}");
+                }
+
+                embed.AddField(GetText(strs.anilist_favourites), sb.ToString().TrimEnd());
             }
 
             if (!string.IsNullOrWhiteSpace(user.BannerImage))

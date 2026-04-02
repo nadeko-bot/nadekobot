@@ -50,9 +50,9 @@ public class WaifuManagerTests
         }
 
         var result = await _svc.BuyManagerAsync(2001, 1001, 1150);
-        Assert.That(result.IsT5, Is.True, "Expected Success<BuyManagerInfo>");
+        Assert.That(result.IsT4, Is.True, "Expected Success<BuyManagerInfo>");
 
-        var info = result.AsT5.Value;
+        var info = result.AsT4.Value;
         Assert.That(info.PricePaid, Is.EqualTo(1150));
         Assert.That(info.OldManagerId, Is.Null);
         Assert.That(info.OldManagerRefund, Is.EqualTo(0));
@@ -81,9 +81,9 @@ public class WaifuManagerTests
         }
 
         var result = await _svc.BuyManagerAsync(2001, 1001, 2300);
-        Assert.That(result.IsT5, Is.True, "Expected Success");
+        Assert.That(result.IsT4, Is.True, "Expected Success");
 
-        var info = result.AsT5.Value;
+        var info = result.AsT4.Value;
         Assert.That(info.OldManagerRefund, Is.EqualTo(2000));
         Assert.That(info.WaifuPayout, Is.EqualTo(150));
         Assert.That(info.Burned, Is.EqualTo(150));
@@ -100,7 +100,7 @@ public class WaifuManagerTests
 
         // Min required = 1150, bid 1000
         var result = await _svc.BuyManagerAsync(2001, 1001, 1000);
-        Assert.That(result.IsT3, Is.True, "Expected ErrPriceTooLow");
+        Assert.That(result.IsT2, Is.True, "Expected ErrPriceTooLow");
         await _cs.DidNotReceive().RemoveAsync(Arg.Any<ulong>(), Arg.Any<long>(), Arg.Any<TxData?>());
         await _cs.DidNotReceive().AddAsync(Arg.Any<ulong>(), Arg.Any<long>(), Arg.Any<TxData?>());
     }
@@ -116,7 +116,7 @@ public class WaifuManagerTests
         }
 
         var result = await _svc.BuyManagerAsync(2001, 1001, 1150);
-        Assert.That(result.IsT1, Is.True, "Expected ErrInsufficientFunds");
+        Assert.That(result.IsT0, Is.True, "Expected ErrInsufficientFunds");
         await _cs.DidNotReceive().AddAsync(Arg.Any<ulong>(), Arg.Any<long>(), Arg.Any<TxData?>());
     }
 
@@ -190,10 +190,10 @@ public class WaifuManagerTests
         }
 
         var result1 = await _svc.BuyManagerAsync(2001, 1001, 1150);
-        Assert.That(result1.IsT5, Is.True, "Expected Success for first waifu");
+        Assert.That(result1.IsT4, Is.True, "Expected Success for first waifu");
 
         var result2 = await _svc.BuyManagerAsync(2001, 1002, 1150);
-        Assert.That(result2.IsT5, Is.True, "Expected Success for second waifu");
+        Assert.That(result2.IsT4, Is.True, "Expected Success for second waifu");
 
         await using (var ctx = _db.GetDbContext())
         {
@@ -215,9 +215,9 @@ public class WaifuManagerTests
         }
 
         var result = await _svc.BuyManagerAsync(2001, 1001, 5000);
-        Assert.That(result.IsT5, Is.True);
+        Assert.That(result.IsT4, Is.True);
 
-        var info = result.AsT5.Value;
+        var info = result.AsT4.Value;
         Assert.That(info.PricePaid, Is.EqualTo(5000));
         Assert.That(info.WaifuPayout, Is.EqualTo(2500));
         Assert.That(info.Burned, Is.EqualTo(2500));

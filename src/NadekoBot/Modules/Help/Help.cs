@@ -358,6 +358,12 @@ public sealed partial class Help : NadekoModule<HelpService>
                     if (isOwnerOnly)
                         prepend = " \\👑";
 
+                    var isPatronOnly = x.Preconditions.Any(static p => p is PatronOnlyAttribute)
+                        || x.Module.Preconditions.Any(static p => p is PatronOnlyAttribute)
+                        || x.Module.GetTopLevelModule().Preconditions.Any(static p => p is PatronOnlyAttribute);
+                    if (isPatronOnly)
+                        prepend += " \\❤️";
+
                     //if cross is specified, and the command doesn't satisfy the requirements, cross it out
                     if (opts.View == CommandsOptions.ViewType.Cross)
                     {
