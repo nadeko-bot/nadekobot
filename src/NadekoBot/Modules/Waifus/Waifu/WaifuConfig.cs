@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Waifus.Waifu;
 public sealed class WaifuConfig
 {
     [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 7;
+    public int Version { get; set; } = 8;
 
     [Comment("Minimum price a waifu can have. Default 1000")]
     public long MinPrice { get; set; } = 1_000;
@@ -24,9 +24,6 @@ public sealed class WaifuConfig
 
     [Comment("Default max backed amount for computing returns. Default 1000000")]
     public long DefaultReturnsCap { get; set; } = 1_000_000;
-
-    [Comment("Hours after cycle start when manager purchases are allowed. Default 18")]
-    public int BuyWindowHours { get; set; } = 18;
 
     [Comment("Base mood points gained from a hug action. Default 50")]
     public int BaseMoodIncrease { get; set; } = 50;

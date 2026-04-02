@@ -36,7 +36,6 @@ ar:
   waifu_manager_exit_confirm: 'هل أنت متأكد أنك تريد الاستقالة من إدارة {0}؟ سينخفض سعر الوايفو إلى الحد الأدنى.'
   waifu_goes_to_waifu: يذهب للوايفو
   waifu_burned: محروق
-  waifu_outside_buy_window: شراء منصب المدير متاح فقط خلال أول 18 ساعة من الدورة.
   waifu_price_too_low: عرضك منخفض جدا. الحد الأدنى للسعر هو 115% من سعر الوايفو الحالي.
   waifu_bought_manager_title: 🏢 تم الحصول على منصب المدير!
   waifu_bought_manager: 'أنت الآن مدير {0} مقابل {1:N0}!'
@@ -130,7 +129,6 @@ de-DE:
   waifu_manager_exit_confirm: 'Bist du sicher, dass du als Manager von {0} zurücktreten willst? Der Waifu-Preis fällt auf das Minimum.'
   waifu_goes_to_waifu: Geht an Waifu
   waifu_burned: Verbrannt
-  waifu_outside_buy_window: Manager-Käufe sind nur in den ersten 18 Stunden eines Zyklus verfügbar.
   waifu_price_too_low: Dein Gebot ist zu niedrig. Der Mindestpreis beträgt 115% des aktuellen Waifu-Preises.
   waifu_bought_manager_title: 🏢 Manager-Position Erworben!
   waifu_bought_manager: 'Du bist jetzt Manager von {0} für {1:N0}!'
@@ -224,7 +222,6 @@ es-ES:
   waifu_manager_exit_confirm: 'Seguro que quieres renunciar como manager de {0}? El precio de la waifu bajará al minimo.'
   waifu_goes_to_waifu: Para la Waifu
   waifu_burned: Quemado
-  waifu_outside_buy_window: Las compras de manager solo están disponibles durante las primeras 18 horas de un ciclo.
   waifu_price_too_low: Tu oferta es demasiado baja. El precio minimo es el 115% del precio actual de la waifu.
   waifu_bought_manager_title: 🏢 ¡Posición de Manager Adquirida!
   waifu_bought_manager: '¡Ahora eres el manager de {0} por {1:N0}!'
@@ -318,7 +315,6 @@ fr-FR:
   waifu_manager_exit_confirm: 'Voulez-vous vraiment quitter le poste de manager de {0} ? Le prix de la waifu chutera au minimum.'
   waifu_goes_to_waifu: Pour la Waifu
   waifu_burned: Brûlé
-  waifu_outside_buy_window: Les achats de manager ne sont disponibles que pendant les 18 premières heures d'un cycle.
   waifu_price_too_low: Votre offre est trop basse. Le prix minimum est de 115% du prix actuel de la waifu.
   waifu_bought_manager_title: 🏢 Position de Manager Acquise !
   waifu_bought_manager: 'Vous êtes maintenant le manager de {0} pour {1:N0} !'
@@ -412,7 +408,6 @@ id-ID:
   waifu_manager_exit_confirm: 'Yakin ingin mundur dari manajer {0}? Harga waifu akan turun ke minimum.'
   waifu_goes_to_waifu: Untuk Waifu
   waifu_burned: Dibakar
-  waifu_outside_buy_window: Pembelian manajer hanya tersedia selama 18 jam pertama dalam satu siklus.
   waifu_price_too_low: Tawaranmu terlalu rendah. Harga minimum adalah 115% dari harga waifu saat ini.
   waifu_bought_manager_title: 🏢 Posisi Manajer Didapatkan!
   waifu_bought_manager: 'Kamu sekarang manajer dari {0} seharga {1:N0}!'
@@ -506,7 +501,6 @@ ja-JP:
   waifu_manager_exit_confirm: '{0}のマネージャーを辞任してよろしいですか？waifuの価格は最低額に下がります。'
   waifu_goes_to_waifu: Waifuへ
   waifu_burned: バーン
-  waifu_outside_buy_window: マネージャーの購入はサイクルの最初の18時間のみ利用可能です。
   waifu_price_too_low: 入札額が低すぎます。最低価格は現在のwaifu価格の115%です。
   waifu_bought_manager_title: 🏢 マネージャーポジション獲得！
   waifu_bought_manager: 'あなたは{1:N0}で{0}のマネージャーになりました！'
@@ -600,7 +594,6 @@ ko-KR:
   waifu_manager_exit_confirm: '정말 {0}의 매니저를 그만두시겠어요? waifu 가격이 최소로 떨어져요.'
   waifu_goes_to_waifu: Waifu에게
   waifu_burned: 소각
-  waifu_outside_buy_window: 매니저 구매는 사이클 시작 후 18시간 이내에만 가능해요.
   waifu_price_too_low: 입찰 금액이 너무 낮아요. 최소 가격은 현재 waifu 가격의 115%예요.
   waifu_bought_manager_title: 🏢 매니저 자리 획득!
   waifu_bought_manager: '이제 {0}의 매니저예요! 가격: {1:N0}'
@@ -694,7 +687,6 @@ pl-PL:
   waifu_manager_exit_confirm: 'Na pewno chcesz zrezygnować z bycia managerem {0}? Cena waifu spadnie do minimum.'
   waifu_goes_to_waifu: Dla Waifu
   waifu_burned: Spalone
-  waifu_outside_buy_window: Zakup pozycji managera jest dostępny tylko przez pierwsze 18 godzin cyklu.
   waifu_price_too_low: Twoja oferta jest za niska. Minimalna cena to 115% aktualnej ceny waifu.
   waifu_bought_manager_title: 🏢 Pozycja Managera Zdobyta!
   waifu_bought_manager: 'Jesteś teraz managerem {0} za {1:N0}!'
@@ -788,7 +780,6 @@ pt-BR:
   waifu_manager_exit_confirm: 'Tem certeza que quer renunciar ao cargo de manager de {0}? O preco da waifu cairá ao minimo.'
   waifu_goes_to_waifu: Para a Waifu
   waifu_burned: Queimado
-  waifu_outside_buy_window: Compras de manager só estão disponíveis durante as primeiras 18 horas de um ciclo.
   waifu_price_too_low: Sua oferta é muito baixa. O preco minimo é 115% do preco atual da waifu.
   waifu_bought_manager_title: 🏢 Posição de Manager Adquirida!
   waifu_bought_manager: 'Você agora é o manager de {0} por {1:N0}!'
@@ -882,7 +873,6 @@ ru-RU:
   waifu_manager_exit_confirm: 'Вы уверены, что хотите уйти с поста менеджера {0}? Цена вайфу упадет до минимума.'
   waifu_goes_to_waifu: Вайфу
   waifu_burned: Сожжено
-  waifu_outside_buy_window: Покупки менеджера доступны только в первые 18 часов цикла.
   waifu_price_too_low: Ваша ставка слишком низкая. Минимальная цена - 115% от текущей цены вайфу.
   waifu_bought_manager_title: 🏢 Позиция Менеджера Получена!
   waifu_bought_manager: 'Вы теперь менеджер {0} за {1:N0}!'
@@ -976,7 +966,6 @@ sr-Cyrl-RS:
   waifu_manager_exit_confirm: 'Да ли си сигуран да желиш да се повучеш са позиције менаџера корисника {0}? Цена ће пасти на минимум.'
   waifu_goes_to_waifu: За Вајфу
   waifu_burned: Спаљено
-  waifu_outside_buy_window: Куповина менаџерске позиције је доступна само током првих 18 сати циклуса.
   waifu_price_too_low: Твоја понуда је прениска. Минимална цена је 115% тренутне цене вајфу.
   waifu_bought_manager_title: 🏢 Менаџерска позиција освојена!
   waifu_bought_manager: 'Сада си менаџер корисника {0} за {1:N0}!'
@@ -1070,7 +1059,6 @@ tr-TR:
   waifu_manager_exit_confirm: '{0} kisisinin yöneticiliğinden istifa etmek istediğinden emin misin? Waifu fiyatı minimuma düşecek.'
   waifu_goes_to_waifu: Waifu'ya
   waifu_burned: Yakıldı
-  waifu_outside_buy_window: Yönetici satın alımları yalnızca döngünün ilk 18 saatinde yapılabilir.
   waifu_price_too_low: Teklifin çok düşük. Minimum fiyat, mevcut waifu fiyatının %115'idir.
   waifu_bought_manager_title: 🏢 Yönetici Pozisyonu Alındı!
   waifu_bought_manager: 'Artık {1:N0} karşılığında {0} kişisinin yöneticisisin!'
@@ -1164,7 +1152,6 @@ ts-TS:
   waifu_manager_exit_confirm: 'Are you sure you want to resign as manager of {0}? The waifu''s price will drop to the minimum.'
   waifu_goes_to_waifu: Goes to Waifu
   waifu_burned: Burned
-  waifu_outside_buy_window: Manager purchases are only available during the first 18 hours of a cycle. Read the rules next time.
   waifu_price_too_low: Your bid is too low. The minimum price is 115% of the current waifu price. Do the math, b-baka!
   waifu_bought_manager_title: 🏢 Manager Position Acquired!
   waifu_bought_manager: 'You''re now the manager of {0} for {1:N0}!'
@@ -1258,7 +1245,6 @@ uk-UA:
   waifu_manager_exit_confirm: 'Ти впевнений, що хочеш піти з посади менеджера {0}? Ціна вайфу впаде до мінімуму.'
   waifu_goes_to_waifu: Для Вайфу
   waifu_burned: Спалено
-  waifu_outside_buy_window: Купівля менеджера доступна лише протягом перших 18 годин циклу.
   waifu_price_too_low: Твоя ставка занадто низька. Мінімальна ціна - 115% від поточної ціни вайфу.
   waifu_bought_manager_title: 🏢 Посада менеджера отримана!
   waifu_bought_manager: 'Тепер ти менеджер {0} за {1:N0}!'
@@ -1352,7 +1338,6 @@ vi-VN:
   waifu_manager_exit_confirm: 'Ban có chắc muốn từ chức quản lý của {0}? Giá waifu sẽ giảm xuống mức tối thiểu.'
   waifu_goes_to_waifu: Cho Waifu
   waifu_burned: Đã đốt
-  waifu_outside_buy_window: Chỉ có thể mua vị trí quản lý trong 18 giờ đầu của chu kỳ.
   waifu_price_too_low: Giá đặt của bạn quá thấp. Giá tối thiểu là 115% giá waifu hiện tại.
   waifu_bought_manager_title: 🏢 Đã nhận vị trí quản lý!
   waifu_bought_manager: 'Bạn giờ là quản lý của {0} với giá {1:N0}!'
@@ -1446,7 +1431,6 @@ zh-CN:
   waifu_manager_exit_confirm: '你确定要辞去 {0} 的经理吗？该 waifu 的价格会降到最低。'
   waifu_goes_to_waifu: 给 Waifu
   waifu_burned: 销毁
-  waifu_outside_buy_window: 經理購買僅在週期的前 18 小時內可用。
   waifu_price_too_low: 你的出价太低了。最低价格是当前 waifu 价格的 115%。
   waifu_bought_manager_title: 🏢 經理職位已取得！
   waifu_bought_manager: '你現在是 {0} 的經理，花費 {1:N0}！'

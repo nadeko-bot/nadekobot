@@ -63,7 +63,6 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
                 c.CycleHours = 84.0;
                 c.BaseReturnRate = 0.17;
                 c.DefaultReturnsCap = 1_000_000;
-                c.BuyWindowHours = 18;
                 c.BaseMoodIncrease = 50;
                 c.MaxDailyActions = 2;
                 c.MaxGiftCount = 100;
@@ -102,6 +101,14 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
             {
                 c.Version = 7;
                 c.BaseFoodIncrease = 50;
+            });
+        }
+
+        if (Data.Version < 8)
+        {
+            ModifyConfig(c =>
+            {
+                c.Version = 8;
             });
         }
     }

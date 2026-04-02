@@ -351,6 +351,19 @@ public partial class Waifus
 
     private async Task WaifuLeaderboardInternalAsync(WaifuLbOrder order)
     {
+        var firstPage = await svc.GetLeaderboardAsync(order, 0, 9);
+        if (firstPage.Count == 0)
+        {
+            var helpEmbed = CreateEmbed()
+                .WithOkColor()
+                .WithTitle(GetText(strs.waifu_not_participating_title))
+                .WithDescription(GetText(strs.waifu_not_participating(prefix)))
+                .WithFooter(GetText(strs.waifu_help_footer(prefix)));
+
+            await Response().Embed(helpEmbed).SendAsync();
+            return;
+        }
+
         var currSign = cp.GetCurrencySign();
         var title = order == WaifuLbOrder.Price
             ? GetText(strs.waifu_lb_title)
@@ -363,35 +376,20 @@ public partial class Waifus
             .PageSize(9)
             .Page((items, page) =>
             {
+                var sb = new StringBuilder();
+                foreach (var e in items)
+                {
+                    var name = e.Username ?? GetText(strs.waifu_unknown);
+                    sb.AppendLine($"**{name}**");
+                    sb.AppendLine($"🆔 `{e.UserId}`");
+                    sb.AppendLine($"💰 {CurrencyHelper.N(e.Price, Culture, currSign)}");
+                    sb.AppendLine();
+                }
+
                 var eb = CreateEmbed()
                     .WithOkColor()
-                    .WithTitle(title);
-
-                foreach (var (e, i) in items.Select((e, i) => (e, i)))
-                {
-                    var globalRank = page * 9 + i + 1;
-
-                    int efficiency;
-                    if (!e.HasManager)
-                    {
-                        efficiency = 0;
-                    }
-                    else
-                    {
-                        var statMultiplier = (e.Mood + e.Food) / 2000.0;
-                        var capMultiplier = e.SnapshotTotalBacked > 0
-                            ? Math.Min(1.0, e.ReturnsCap / (double)e.SnapshotTotalBacked)
-                            : 1.0;
-                        efficiency = (int)Math.Round(statMultiplier * capMultiplier * 100);
-                    }
-
-                    var value = $"{CurrencyHelper.N(e.Price, Culture, currSign)}\n"
-                              + $"🆔 `{e.UserId}`\n"
-                              + $"⚡ {efficiency}%\n"
-                              + $"💰 {CurrencyHelper.N(e.SnapshotTotalBacked, Culture, currSign)}";
-
-                    eb.AddField($"#{globalRank} {e.Username ?? GetText(strs.waifu_unknown)}", value, true);
-                }
+                    .WithTitle(title)
+                    .WithDescription(sb.ToString());
 
                 return eb;
             })
@@ -528,7 +526,6 @@ public partial class Waifus
         var res = await svc.BuyManagerAsync(ctx.User.Id, targetUserId, amount);
 
         await res.Match(
-            _ => Response().Error(strs.waifu_outside_buy_window).SendAsync(),
             _ => Response().Error(strs.waifu_insufficient_funds).SendAsync(),
             _ => Response().Error(strs.waifu_not_found).SendAsync(),
             _ => Response().Error(strs.waifu_price_too_low).SendAsync(),

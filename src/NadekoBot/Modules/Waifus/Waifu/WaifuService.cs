@@ -25,7 +25,6 @@ public readonly struct ErrNotBacking;
 public readonly struct ErrHasFans;
 public readonly struct ErrNotManager;
 public readonly struct ErrInvalidPercent;
-public readonly struct ErrOutsideBuyWindow;
 public readonly struct ErrPriceTooLow;
 
 [GenerateOneOf]
@@ -55,7 +54,7 @@ public readonly struct ErrItemNotAvailable;
 public sealed partial class GiftResult : OneOfBase<ErrSelfNotAllowed, ErrInsufficientFunds, ErrWaifuNotFound, ErrItemNotAvailable, Success<WaifuGiftItem>>;
 
 [GenerateOneOf]
-public sealed partial class BuyManagerResult : OneOfBase<ErrOutsideBuyWindow, ErrInsufficientFunds, ErrWaifuNotFound, ErrPriceTooLow, ErrSelfNotAllowed, Success<BuyManagerInfo>>;
+public sealed partial class BuyManagerResult : OneOfBase<ErrInsufficientFunds, ErrWaifuNotFound, ErrPriceTooLow, ErrSelfNotAllowed, Success<BuyManagerInfo>>;
 
 [GenerateOneOf]
 public sealed partial class ResignManagerResult : OneOfBase<ErrNotManager, Success>;
@@ -169,12 +168,6 @@ public sealed class WaifuService(
     /// </summary>
     public DateTime GetNextCycleTime()
         => GetCycleStartTime(GetCurrentCycle() + 1);
-
-    /// <summary>
-    /// Checks if we're within the buy window (first N hours of cycle).
-    /// </summary>
-    public bool IsWithinBuyWindow()
-        => _timeProvider.GetUtcNow().UtcDateTime < GetCycleStartTime().AddHours(configService.Data.BuyWindowHours);
 
     /// <summary>
     /// Gets the fraction of the current cycle that has elapsed (0.0 to 1.0).
@@ -555,9 +548,6 @@ public sealed class WaifuService(
 
         await using var ctx = db.GetDbContext();
         var conf = configService.Data;
-
-        if (!IsWithinBuyWindow())
-            return new ErrOutsideBuyWindow();
 
         var wi = await ctx.GetTable<WaifuInfo>()
             .Where(x => x.UserId == waifuUserId)
