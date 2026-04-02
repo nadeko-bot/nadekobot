@@ -4,15 +4,67 @@ using System.Net.Http.Json;
 
 namespace NadekoBot.Modules.Searches.Services;
 
-public class AnimeSearchService : INService
+public sealed class AnimeSearchService(IBotCache cache, IHttpClientFactory httpFactory) : INService
 {
-    private readonly IBotCache _cache;
-    private readonly IHttpClientFactory _httpFactory;
+    private const string ANILIST_GRAPHQL_URL = "https://graphql.anilist.co";
 
-    public AnimeSearchService(IBotCache cache, IHttpClientFactory httpFactory)
+    private const string ANILIST_USER_QUERY = """
+        query ($name: String) {
+          User(name: $name) {
+            id
+            name
+            siteUrl
+            avatar { large }
+            bannerImage
+            about
+            statistics {
+              anime { count meanScore minutesWatched episodesWatched }
+              manga { count meanScore chaptersRead volumesRead }
+            }
+            favourites {
+              anime { pageInfo { total } }
+              manga { pageInfo { total } }
+              characters { pageInfo { total } }
+            }
+          }
+        }
+        """;
+
+    public async Task<AnilistUser> GetAnilistUserAsync(string username)
     {
-        _cache = cache;
-        _httpFactory = httpFactory;
+        if (string.IsNullOrWhiteSpace(username))
+            return null;
+
+        var cacheKey = new TypedKey<AnilistUser>($"anilist_user:{username}");
+
+        var cached = await cache.GetAsync(cacheKey);
+        if (cached.TryPickT0(out var cachedUser, out _))
+            return cachedUser;
+
+        try
+        {
+            using var http = httpFactory.CreateClient();
+            var response = await http.PostAsJsonAsync(ANILIST_GRAPHQL_URL, new
+            {
+                query = ANILIST_USER_QUERY,
+                variables = new { name = username }
+            });
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var result = await response.Content.ReadFromJsonAsync<AnilistUserResponse>();
+            var user = result?.Data?.User;
+
+            if (user is not null)
+                await cache.AddAsync(cacheKey, user, expiry: TimeSpan.FromHours(1));
+
+            return user;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     public async Task<AnimeResult> GetAnimeData(string query)
@@ -28,13 +80,13 @@ public class AnimeSearchService : INService
             var suffix = Uri.EscapeDataString(query.Replace("/", " ", StringComparison.InvariantCulture));
             var link = $"https://aniapi.nadeko.bot/anime/{suffix}";
             link = link.ToLowerInvariant();
-            var result = await _cache.GetAsync(GetKey(link));
+            var result = await cache.GetAsync(GetKey(link));
             if (!result.TryPickT0(out var data, out _))
             {
-                using var http = _httpFactory.CreateClient();
+                using var http = httpFactory.CreateClient();
                 data = await http.GetFromJsonAsync<AnimeResult>(link);
 
-                await _cache.AddAsync(GetKey(link), data, expiry: TimeSpan.FromHours(12));
+                await cache.AddAsync(GetKey(link), data, expiry: TimeSpan.FromHours(12));
             }
 
             return data;
@@ -59,13 +111,13 @@ public class AnimeSearchService : INService
                        + Uri.EscapeDataString(query.Replace("/", " ", StringComparison.InvariantCulture));
             link = link.ToLowerInvariant();
             
-            var result = await _cache.GetAsync(GetKey(link));
+            var result = await cache.GetAsync(GetKey(link));
             if (!result.TryPickT0(out var data, out _))
             {
-                using var http = _httpFactory.CreateClient();
+                using var http = httpFactory.CreateClient();
                 data = await http.GetFromJsonAsync<MangaResult>(link);
 
-                await _cache.AddAsync(GetKey(link), data, expiry: TimeSpan.FromHours(3));
+                await cache.AddAsync(GetKey(link), data, expiry: TimeSpan.FromHours(3));
             }
 
 

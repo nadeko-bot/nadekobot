@@ -40,6 +40,73 @@ public partial class Searches
         }
 
         [Cmd]
+        public async Task Anilist([Leftover] string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                return;
+
+            var user = await _service.GetAnilistUserAsync(username);
+
+            if (user is null)
+            {
+                await Response().Error(strs.anilist_user_not_found).SendAsync();
+                return;
+            }
+
+            var animeStats = user.Statistics?.Anime;
+            var mangaStats = user.Statistics?.Manga;
+
+            var watchDays = animeStats is not null ? animeStats.MinutesWatched / 1440 : 0;
+            var watchHours = animeStats is not null ? animeStats.MinutesWatched % 1440 / 60 : 0;
+
+            var embed = CreateEmbed()
+                .WithOkColor()
+                .WithTitle(user.Name)
+                .WithUrl(user.SiteUrl)
+                .WithThumbnailUrl(user.Avatar?.Large ?? string.Empty)
+                .AddField(GetText(strs.anilist_anime_stats),
+                    $"""
+                    {GetText(strs.anilist_total_entries)}: **{animeStats?.Count ?? 0}**
+                    {GetText(strs.anilist_episodes_watched)}: **{animeStats?.EpisodesWatched ?? 0}**
+                    {GetText(strs.anilist_watch_time)}: **{watchDays}d {watchHours}h**
+                    {GetText(strs.anilist_mean_score)}: **{animeStats?.MeanScore ?? 0:0.#}**
+                    """,
+                    true)
+                .AddField(GetText(strs.anilist_manga_stats),
+                    $"""
+                    {GetText(strs.anilist_total_entries)}: **{mangaStats?.Count ?? 0}**
+                    {GetText(strs.anilist_chapters_read)}: **{mangaStats?.ChaptersRead ?? 0}**
+                    {GetText(strs.anilist_volumes_read)}: **{mangaStats?.VolumesRead ?? 0}**
+                    {GetText(strs.anilist_mean_score)}: **{mangaStats?.MeanScore ?? 0:0.#}**
+                    """,
+                    true);
+
+            if (!string.IsNullOrWhiteSpace(user.About))
+            {
+                var about = user.About.Length > 300
+                    ? string.Concat(user.About.AsSpan(0, 300), "...")
+                    : user.About;
+                embed.WithDescription(about);
+            }
+
+            var favAnime = user.Favourites?.Anime?.PageInfo?.Total ?? 0;
+            var favManga = user.Favourites?.Manga?.PageInfo?.Total ?? 0;
+            var favChars = user.Favourites?.Characters?.PageInfo?.Total ?? 0;
+
+            if (favAnime > 0 || favManga > 0 || favChars > 0)
+            {
+                embed.AddField(GetText(strs.anilist_favourites),
+                    $"{GetText(strs.anilist_fav_anime)} {favAnime} | {GetText(strs.anilist_fav_manga)} {favManga} | {GetText(strs.anilist_fav_characters)} {favChars}",
+                    true);
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.BannerImage))
+                embed.WithImageUrl(user.BannerImage);
+
+            await Response().Embed(embed).SendAsync();
+        }
+
+        [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task Manga([Leftover] string query)
         {

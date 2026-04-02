@@ -5,6 +5,15 @@ anime:
   params:
     - query:
         desc: The search term used to find a specific anime on Anilist.
+anilist:
+  desc: |-
+    Shows the AniList profile for the specified user, including anime and manga statistics, favourites, and bio.
+  ex:
+    - 'Josh'
+    - 'MrAnime'
+  params:
+    - username:
+        desc: "The AniList username to look up."
 manga:
   desc: Queries anilist for a manga and shows the first result.
   ex:

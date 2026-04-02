@@ -5,6 +5,19 @@ ar:
   failed_finding_manga: فشل العثور على هذه المانغا.
   genres: الأنواع
   score: 'التقييم:'
+  anilist_user_not_found: لم يتم العثور على مستخدم AniList.
+  anilist_anime_stats: إحصائيات الأنمي
+  anilist_manga_stats: إحصائيات المانغا
+  anilist_total_entries: إجمالي المدخلات
+  anilist_episodes_watched: الحلقات المشاهدة
+  anilist_watch_time: وقت المشاهدة
+  anilist_mean_score: متوسط التقييم
+  anilist_chapters_read: الفصول المقروءة
+  anilist_volumes_read: المجلدات المقروءة
+  anilist_favourites: المفضلات
+  anilist_fav_anime: أنمي
+  anilist_fav_manga: مانغا
+  anilist_fav_characters: الشخصيات
 
 de-DE:
   chapters: Kapitel
@@ -13,6 +26,19 @@ de-DE:
   failed_finding_manga: Die Mango konnte nicht gefunden werden.
   genres: Genre
   score: 'Punkte:'
+  anilist_user_not_found: AniList-Benutzer nicht gefunden.
+  anilist_anime_stats: Anime-Statistiken
+  anilist_manga_stats: Manga-Statistiken
+  anilist_total_entries: Einträge gesamt
+  anilist_episodes_watched: Episoden gesehen
+  anilist_watch_time: Wiedergabezeit
+  anilist_mean_score: Durchschnittsbewertung
+  anilist_chapters_read: Kapitel gelesen
+  anilist_volumes_read: Bände gelesen
+  anilist_favourites: Favoriten
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Charaktere
 
 es-ES:
   chapters: Capítulos
@@ -21,6 +47,19 @@ es-ES:
   failed_finding_manga: Error encontrando ese manga.
   genres: Géneros
   score: 'Puntuación:'
+  anilist_user_not_found: Usuario de AniList no encontrado.
+  anilist_anime_stats: Estadísticas de Anime
+  anilist_manga_stats: Estadísticas de Manga
+  anilist_total_entries: Total de Entradas
+  anilist_episodes_watched: Episodios Vistos
+  anilist_watch_time: Tiempo Visto
+  anilist_mean_score: Puntuación Media
+  anilist_chapters_read: Capítulos Leídos
+  anilist_volumes_read: Volúmenes Leídos
+  anilist_favourites: Favoritos
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Personajes
 
 fr-FR:
   chapters: Chapitres
@@ -29,6 +68,19 @@ fr-FR:
   failed_finding_manga: Échec pour trouver ce manga.
   genres: Genres
   score: 'Score:'
+  anilist_user_not_found: Utilisateur AniList introuvable.
+  anilist_anime_stats: Stats Anime
+  anilist_manga_stats: Stats Manga
+  anilist_total_entries: Total
+  anilist_episodes_watched: Épisodes vus
+  anilist_watch_time: Temps de visionnage
+  anilist_mean_score: Note moyenne
+  anilist_chapters_read: Chapitres lus
+  anilist_volumes_read: Volumes lus
+  anilist_favourites: Favoris
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Personnages
 
 id-ID:
   chapters: Chapter
@@ -37,6 +89,19 @@ id-ID:
   failed_finding_manga: Gagal menemukan manga tersebut.
   genres: Genre
   score: 'Skor:'
+  anilist_user_not_found: Pengguna AniList tidak ditemukan.
+  anilist_anime_stats: Statistik Anime
+  anilist_manga_stats: Statistik Manga
+  anilist_total_entries: Total Entri
+  anilist_episodes_watched: Episode Ditonton
+  anilist_watch_time: Waktu Tonton
+  anilist_mean_score: Skor Rata-rata
+  anilist_chapters_read: Chapter Dibaca
+  anilist_volumes_read: Volume Dibaca
+  anilist_favourites: Favorit
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Karakter
 
 ja-JP:
   chapters: チャプター数
@@ -45,6 +110,19 @@ ja-JP:
   failed_finding_manga: 指定されたマンガが見つかりませんでした。
   genres: ジャンル
   score: '評価:'
+  anilist_user_not_found: AniListユーザーが見つかりませんでした。
+  anilist_anime_stats: アニメの統計
+  anilist_manga_stats: マンガの統計
+  anilist_total_entries: 総エントリ数
+  anilist_episodes_watched: 視聴エピソード数
+  anilist_watch_time: 視聴時間
+  anilist_mean_score: 平均スコア
+  anilist_chapters_read: 読んだチャプター数
+  anilist_volumes_read: 読んだ巻数
+  anilist_favourites: お気に入り
+  anilist_fav_anime: アニメ
+  anilist_fav_manga: マンガ
+  anilist_fav_characters: キャラクター
 
 ko-KR:
   chapters: 챕터
@@ -53,6 +131,19 @@ ko-KR:
   failed_finding_manga: 해당 만화를 찾지 못했어요.
   genres: 장르
   score: '점수:'
+  anilist_user_not_found: AniList 사용자를 찾을 수 없습니다.
+  anilist_anime_stats: 애니메 통계
+  anilist_manga_stats: 만화 통계
+  anilist_total_entries: 총 항목 수
+  anilist_episodes_watched: 시청한 에피소드
+  anilist_watch_time: 시청 시간
+  anilist_mean_score: 평균 점수
+  anilist_chapters_read: 읽은 챕터
+  anilist_volumes_read: 읽은 볼륨
+  anilist_favourites: 즐겨찾기
+  anilist_fav_anime: 애니메
+  anilist_fav_manga: 만화
+  anilist_fav_characters: 캐릭터
 
 pl-PL:
   chapters: Rozdziały
@@ -61,6 +152,19 @@ pl-PL:
   failed_finding_manga: Nie udało się znaleźć tej mangi.
   genres: Gatunki
   score: 'Ocena:'
+  anilist_user_not_found: Nie znaleziono użytkownika AniList.
+  anilist_anime_stats: Statystyki Anime
+  anilist_manga_stats: Statystyki Manga
+  anilist_total_entries: Łącznie wpisów
+  anilist_episodes_watched: Obejrzane odcinki
+  anilist_watch_time: Czas oglądania
+  anilist_mean_score: Średnia ocena
+  anilist_chapters_read: Przeczytane rozdziały
+  anilist_volumes_read: Przeczytane tomy
+  anilist_favourites: Ulubione
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Postacie
 
 pt-BR:
   chapters: Capítulos
@@ -69,6 +173,19 @@ pt-BR:
   failed_finding_manga: Não foi possível encontrar esse manga.
   genres: Gêneros
   score: 'Pontuação:'
+  anilist_user_not_found: Usuário do AniList não encontrado.
+  anilist_anime_stats: Estatísticas de Anime
+  anilist_manga_stats: Estatísticas de Manga
+  anilist_total_entries: Total de Entradas
+  anilist_episodes_watched: Episódios Assistidos
+  anilist_watch_time: Tempo Assistido
+  anilist_mean_score: Pontuação Média
+  anilist_chapters_read: Capítulos Lidos
+  anilist_volumes_read: Volumes Lidos
+  anilist_favourites: Favoritos
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Personagens
 
 ru-RU:
   chapters: Главы
@@ -77,6 +194,19 @@ ru-RU:
   failed_finding_manga: Не удалось найти эту мангу.
   genres: Жанры
   score: 'Счет:'
+  anilist_user_not_found: Пользователь AniList не найден.
+  anilist_anime_stats: Статистика Аниме
+  anilist_manga_stats: Статистика Манга
+  anilist_total_entries: Всего записей
+  anilist_episodes_watched: Просмотрено серий
+  anilist_watch_time: Время просмотра
+  anilist_mean_score: Средняя оценка
+  anilist_chapters_read: Прочитано глав
+  anilist_volumes_read: Прочитано томов
+  anilist_favourites: Избранное
+  anilist_fav_anime: Аниме
+  anilist_fav_manga: Манга
+  anilist_fav_characters: Персонажи
 
 sr-Cyrl-RS:
   chapters: Поглавља
@@ -85,6 +215,19 @@ sr-Cyrl-RS:
   failed_finding_manga: Нисам успео да пронађем ту мангу.
   genres: Жанрови
   score: 'Оцена:'
+  anilist_user_not_found: AniList корисник није пронађен.
+  anilist_anime_stats: Статистика Аниме
+  anilist_manga_stats: Статистика Манга
+  anilist_total_entries: Укупно уноса
+  anilist_episodes_watched: Одгледано епизода
+  anilist_watch_time: Време гледања
+  anilist_mean_score: Просечна оцена
+  anilist_chapters_read: Прочитано поглавља
+  anilist_volumes_read: Прочитано томова
+  anilist_favourites: Омиљено
+  anilist_fav_anime: Аниме
+  anilist_fav_manga: Манга
+  anilist_fav_characters: Ликови
 
 tr-TR:
   chapters: Bölümler
@@ -93,6 +236,19 @@ tr-TR:
   failed_finding_manga: O manga bulunamadı.
   genres: Türler
   score: 'Puan:'
+  anilist_user_not_found: AniList kullanıcısı bulunamadı.
+  anilist_anime_stats: Anime İstatistikleri
+  anilist_manga_stats: Manga İstatistikleri
+  anilist_total_entries: Toplam Girdi
+  anilist_episodes_watched: İzlenen Bölümler
+  anilist_watch_time: İzleme Süresi
+  anilist_mean_score: Ortalama Puan
+  anilist_chapters_read: Okunan Bölümler
+  anilist_volumes_read: Okunan Ciltler
+  anilist_favourites: Favoriler
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Karakterler
 
 ts-TS:
   chapters: Chapters
@@ -101,6 +257,19 @@ ts-TS:
   failed_finding_manga: Failed finding that manga. Hmph.
   genres: Genres
   score: 'Score:'
+  anilist_user_not_found: I-it's not like I couldn't find that AniList user or anything!
+  anilist_anime_stats: Anime Stats
+  anilist_manga_stats: Manga Stats
+  anilist_total_entries: Total Entries
+  anilist_episodes_watched: Episodes Watched
+  anilist_watch_time: Watch Time
+  anilist_mean_score: Mean Score
+  anilist_chapters_read: Chapters Read
+  anilist_volumes_read: Volumes Read
+  anilist_favourites: F-favorites... hmph
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Characters
 
 uk-UA:
   chapters: Розділи
@@ -109,6 +278,19 @@ uk-UA:
   failed_finding_manga: Не вдалося знайти цю мангу.
   genres: Жанри
   score: 'Оцінка:'
+  anilist_user_not_found: Користувача AniList не знайдено.
+  anilist_anime_stats: Статистика Аніме
+  anilist_manga_stats: Статистика Манга
+  anilist_total_entries: Всього записів
+  anilist_episodes_watched: Переглянуто серій
+  anilist_watch_time: Час перегляду
+  anilist_mean_score: Середня оцінка
+  anilist_chapters_read: Прочитано розділів
+  anilist_volumes_read: Прочитано томів
+  anilist_favourites: Обране
+  anilist_fav_anime: Аніме
+  anilist_fav_manga: Манга
+  anilist_fav_characters: Персонажі
 
 vi-VN:
   chapters: Số chương
@@ -117,6 +299,19 @@ vi-VN:
   failed_finding_manga: Không tìm thấy manga đó.
   genres: Thể loại
   score: 'Điểm:'
+  anilist_user_not_found: Không tìm thấy người dùng AniList.
+  anilist_anime_stats: Thống kê Anime
+  anilist_manga_stats: Thống kê Manga
+  anilist_total_entries: Tổng số mục
+  anilist_episodes_watched: Số tập đã xem
+  anilist_watch_time: Thời gian xem
+  anilist_mean_score: Điểm trung bình
+  anilist_chapters_read: Số chương đã đọc
+  anilist_volumes_read: Số tập đã đọc
+  anilist_favourites: Yêu thích
+  anilist_fav_anime: Anime
+  anilist_fav_manga: Manga
+  anilist_fav_characters: Nhân vật
 
 zh-CN:
   chapters: 章節
@@ -125,3 +320,16 @@ zh-CN:
   failed_finding_manga: 找不到那個漫畫。
   genres: 類別
   score: 分數：
+  anilist_user_not_found: 未找到 AniList 用户。
+  anilist_anime_stats: 动漫统计
+  anilist_manga_stats: 漫画统计
+  anilist_total_entries: 总条目数
+  anilist_episodes_watched: 已看集数
+  anilist_watch_time: 观看时长
+  anilist_mean_score: 平均评分
+  anilist_chapters_read: 已读章节
+  anilist_volumes_read: 已读卷数
+  anilist_favourites: 收藏
+  anilist_fav_anime: 动漫
+  anilist_fav_manga: 漫画
+  anilist_fav_characters: 角色
