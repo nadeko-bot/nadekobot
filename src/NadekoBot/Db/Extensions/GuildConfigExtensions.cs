@@ -49,27 +49,6 @@ public static class GuildConfigExtensions
         return srs;
     }
 
-    public static LogSetting LogSettingsFor(this DbContext ctx, ulong guildId)
-    {
-        var logSetting = ctx.Set<LogSetting>()
-            .AsQueryable()
-            .Include(x => x.LogIgnores)
-            .Where(x => x.GuildId == guildId)
-            .FirstOrDefault();
-
-        if (logSetting is null)
-        {
-            ctx.Set<LogSetting>()
-                .Add(logSetting = new()
-                {
-                    GuildId = guildId
-                });
-            ctx.SaveChanges();
-        }
-
-        return logSetting;
-    }
-
 
     public static IEnumerable<GuildConfig> PermissionsForAll(this DbSet<GuildConfig> configs, List<ulong> include)
     {

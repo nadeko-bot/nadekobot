@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations.Sqlite
 {
     [DbContext(typeof(SqliteContext))]
-    [Migration("20260330200040_init")]
+    [Migration("20260403222128_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -1067,32 +1067,6 @@ namespace NadekoBot.Migrations.Sqlite
                     b.ToTable("HoneyPotChannels");
                 });
 
-            modelBuilder.Entity("NadekoBot.Db.Models.IgnoredLogItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("DateAdded")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ItemType")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong>("LogItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LogSettingId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LogSettingId", "LogItemId", "ItemType")
-                        .IsUnique();
-
-                    b.ToTable("IgnoredLogChannels");
-                });
-
             modelBuilder.Entity("NadekoBot.Db.Models.ImageOnlyChannel", b =>
                 {
                     b.Property<int>("Id")
@@ -1170,78 +1144,50 @@ namespace NadekoBot.Migrations.Sqlite
                     b.ToTable("LiveChannelConfig");
                 });
 
-            modelBuilder.Entity("NadekoBot.Db.Models.LogSetting", b =>
+            modelBuilder.Entity("NadekoBot.Db.Models.LogChannel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<ulong?>("ChannelCreatedId")
+                    b.Property<ulong>("ChannelId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("ChannelDestroyedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("ChannelUpdatedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("DateAdded")
-                        .HasColumnType("TEXT");
 
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<ulong?>("LogOtherId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("LogUserPresenceId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("LogVoicePresenceId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("LogVoicePresenceTTSId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("LogWarnsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("MessageDeletedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("MessageUpdatedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("ThreadCreatedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("ThreadDeletedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("UserBannedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("UserJoinedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("UserLeftId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("UserMutedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("UserUnbannedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("UserUpdatedId")
+                    b.Property<int>("LogType")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GuildId")
+                    b.HasIndex("GuildId", "LogType")
                         .IsUnique();
 
-                    b.ToTable("LogSettings");
+                    b.ToTable("LogChannels");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.LogIgnore", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ItemType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("LogItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "LogItemId", "ItemType")
+                        .IsUnique();
+
+                    b.ToTable("LogIgnores");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.MusicPlayerSettings", b =>
@@ -3187,17 +3133,6 @@ namespace NadekoBot.Migrations.Sqlite
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NadekoBot.Db.Models.IgnoredLogItem", b =>
-                {
-                    b.HasOne("NadekoBot.Db.Models.LogSetting", "LogSetting")
-                        .WithMany("LogIgnores")
-                        .HasForeignKey("LogSettingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LogSetting");
-                });
-
             modelBuilder.Entity("NadekoBot.Db.Models.Permissionv2", b =>
                 {
                     b.HasOne("NadekoBot.Db.Models.GuildConfig", null)
@@ -3321,11 +3256,6 @@ namespace NadekoBot.Migrations.Sqlite
                     b.Navigation("FilterWordsChannelIds");
 
                     b.Navigation("FilteredWords");
-                });
-
-            modelBuilder.Entity("NadekoBot.Db.Models.LogSetting", b =>
-                {
-                    b.Navigation("LogIgnores");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.MusicPlaylist", b =>

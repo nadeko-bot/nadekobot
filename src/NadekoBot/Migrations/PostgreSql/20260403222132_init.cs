@@ -610,35 +610,33 @@ namespace NadekoBot.Migrations.PostgreSql
                 });
 
             migrationBuilder.CreateTable(
-                name: "logsettings",
+                name: "logchannels",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    logotherid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    messageupdatedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    messagedeletedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    userjoinedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    userleftid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    userbannedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    userunbannedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    userupdatedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    channelcreatedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    channeldestroyedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    channelupdatedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    threaddeletedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    threadcreatedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    usermutedid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    loguserpresenceid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    logvoicepresenceid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    logvoicepresencettsid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    logwarnsid = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    dateadded = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    logtype = table.Column<int>(type: "integer", nullable: false),
+                    channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_logsettings", x => x.id);
+                    table.PrimaryKey("pk_logchannels", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "logignores",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    logitemid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    itemtype = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_logignores", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1616,28 +1614,6 @@ namespace NadekoBot.Migrations.PostgreSql
                 });
 
             migrationBuilder.CreateTable(
-                name: "ignoredlogchannels",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    logsettingid = table.Column<int>(type: "integer", nullable: false),
-                    logitemid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    itemtype = table.Column<int>(type: "integer", nullable: false),
-                    dateadded = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_ignoredlogchannels", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_ignoredlogchannels_logsettings_logsettingid",
-                        column: x => x.logsettingid,
-                        principalTable: "logsettings",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "playlistsong",
                 columns: table => new
                 {
@@ -2103,12 +2079,6 @@ namespace NadekoBot.Migrations.PostgreSql
                 column: "guildid");
 
             migrationBuilder.CreateIndex(
-                name: "ix_ignoredlogchannels_logsettingid_logitemid_itemtype",
-                table: "ignoredlogchannels",
-                columns: new[] { "logsettingid", "logitemid", "itemtype" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "ix_imageonlychannels_channelid",
                 table: "imageonlychannels",
                 column: "channelid",
@@ -2137,9 +2107,15 @@ namespace NadekoBot.Migrations.PostgreSql
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ix_logsettings_guildid",
-                table: "logsettings",
-                column: "guildid",
+                name: "ix_logchannels_guildid_logtype",
+                table: "logchannels",
+                columns: new[] { "guildid", "logtype" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_logignores_guildid_logitemid_itemtype",
+                table: "logignores",
+                columns: new[] { "guildid", "logitemid", "itemtype" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -2662,9 +2638,6 @@ namespace NadekoBot.Migrations.PostgreSql
                 name: "honeypotchannels");
 
             migrationBuilder.DropTable(
-                name: "ignoredlogchannels");
-
-            migrationBuilder.DropTable(
                 name: "imageonlychannels");
 
             migrationBuilder.DropTable(
@@ -2675,6 +2648,12 @@ namespace NadekoBot.Migrations.PostgreSql
 
             migrationBuilder.DropTable(
                 name: "livechannelconfig");
+
+            migrationBuilder.DropTable(
+                name: "logchannels");
+
+            migrationBuilder.DropTable(
+                name: "logignores");
 
             migrationBuilder.DropTable(
                 name: "musicplayersettings");
@@ -2837,9 +2816,6 @@ namespace NadekoBot.Migrations.PostgreSql
 
             migrationBuilder.DropTable(
                 name: "giveawaymodel");
-
-            migrationBuilder.DropTable(
-                name: "logsettings");
 
             migrationBuilder.DropTable(
                 name: "guildconfigs");

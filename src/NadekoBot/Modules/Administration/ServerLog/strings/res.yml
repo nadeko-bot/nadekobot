@@ -39,6 +39,7 @@ thread_created: Thread Created
 thread_deleted: Thread Deleted
 unmuted_sn: Unmuted
 user_banned: User banned
+user_honeypot: User caught by honeypot
 user_joined: User joined
 user_left: User left
 user_role_add: User's role added

@@ -1,4 +1,4 @@
-﻿using NadekoBot.Common.TypeReaders.Models;
+using NadekoBot.Common.TypeReaders.Models;
 using NadekoBot.Db.Models;
 
 namespace NadekoBot.Modules.Administration;
@@ -28,14 +28,11 @@ public partial class Administration
         [OwnerOnly]
         public async Task LogIgnore()
         {
-            var settings = _service.GetGuildLogSettings(ctx.Guild.Id);
+            var ignores = _service.GetLogIgnores(ctx.Guild.Id);
 
-            var chs = settings?.LogIgnores.Where(x => x.ItemType == IgnoredItemType.Channel).ToList()
-                      ?? new List<IgnoredLogItem>();
-            var usrs = settings?.LogIgnores.Where(x => x.ItemType == IgnoredItemType.User).ToList()
-                       ?? new List<IgnoredLogItem>();
-            var cats = settings?.LogIgnores.Where(x => x.ItemType == IgnoredItemType.Category).ToList()
-                       ?? new List<IgnoredLogItem>();
+            var chs = ignores.Where(x => x.ItemType == IgnoredItemType.Channel).ToList();
+            var usrs = ignores.Where(x => x.ItemType == IgnoredItemType.User).ToList();
+            var cats = ignores.Where(x => x.ItemType == IgnoredItemType.Category).ToList();
 
             var catNames = new List<string>();
             foreach (var cat in cats)
@@ -137,61 +134,18 @@ public partial class Administration
         [OwnerOnly]
         public async Task LogEvents()
         {
-            var logSetting = _service.GetGuildLogSettings(ctx.Guild.Id);
             var str = string.Join("\n",
                 Enum.GetNames<LogType>()
                     .Select(x =>
                     {
-                        var val = logSetting is null ? null : GetLogProperty(logSetting, Enum.Parse<LogType>(x));
+                        var logType = Enum.Parse<LogType>(x);
+                        var val = _service.GetLogChannelId(ctx.Guild.Id, logType);
                         if (val is not null)
                             return $"{Format.Bold(x)} <#{val}>";
                         return Format.Bold(x);
                     }));
 
             await Response().Confirm(Format.Bold(GetText(strs.log_events)) + "\n" + str).SendAsync();
-        }
-
-        private static ulong? GetLogProperty(LogSetting l, LogType type)
-        {
-            switch (type)
-            {
-                case LogType.Other:
-                    return l.LogOtherId;
-                case LogType.MessageUpdated:
-                    return l.MessageUpdatedId;
-                case LogType.MessageDeleted:
-                    return l.MessageDeletedId;
-                case LogType.UserJoined:
-                    return l.UserJoinedId;
-                case LogType.UserLeft:
-                    return l.UserLeftId;
-                case LogType.UserBanned:
-                    return l.UserBannedId;
-                case LogType.UserUnbanned:
-                    return l.UserUnbannedId;
-                case LogType.UserUpdated:
-                    return l.UserUpdatedId;
-                case LogType.ChannelCreated:
-                    return l.ChannelCreatedId;
-                case LogType.ChannelDestroyed:
-                    return l.ChannelDestroyedId;
-                case LogType.ChannelUpdated:
-                    return l.ChannelUpdatedId;
-                case LogType.UserPresence:
-                    return l.LogUserPresenceId;
-                case LogType.VoicePresence:
-                    return l.LogVoicePresenceId;
-                case LogType.UserMuted:
-                    return l.UserMutedId;
-                case LogType.UserWarned:
-                    return l.LogWarnsId;
-                case LogType.ThreadDeleted:
-                    return l.ThreadDeletedId;
-                case LogType.ThreadCreated:
-                    return l.ThreadCreatedId;
-                default:
-                    return null;
-            }
         }
 
         [Cmd]

@@ -611,35 +611,33 @@ namespace NadekoBot.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
-                name: "LogSettings",
+                name: "LogChannels",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
-                    LogOtherId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    MessageUpdatedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    MessageDeletedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    UserJoinedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    UserLeftId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    UserBannedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    UserUnbannedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    UserUpdatedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    ChannelCreatedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    ChannelDestroyedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    ChannelUpdatedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    ThreadDeletedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    ThreadCreatedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    UserMutedId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    LogUserPresenceId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    LogVoicePresenceId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    LogVoicePresenceTTSId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    LogWarnsId = table.Column<ulong>(type: "INTEGER", nullable: true),
-                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    LogType = table.Column<int>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LogSettings", x => x.Id);
+                    table.PrimaryKey("PK_LogChannels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LogIgnores",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    LogItemId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ItemType = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LogIgnores", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1619,28 +1617,6 @@ namespace NadekoBot.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
-                name: "IgnoredLogChannels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    LogSettingId = table.Column<int>(type: "INTEGER", nullable: false),
-                    LogItemId = table.Column<ulong>(type: "INTEGER", nullable: false),
-                    ItemType = table.Column<int>(type: "INTEGER", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IgnoredLogChannels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_IgnoredLogChannels_LogSettings_LogSettingId",
-                        column: x => x.LogSettingId,
-                        principalTable: "LogSettings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PlaylistSong",
                 columns: table => new
                 {
@@ -2106,12 +2082,6 @@ namespace NadekoBot.Migrations.Sqlite
                 column: "GuildId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IgnoredLogChannels_LogSettingId_LogItemId_ItemType",
-                table: "IgnoredLogChannels",
-                columns: new[] { "LogSettingId", "LogItemId", "ItemType" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ImageOnlyChannels_ChannelId",
                 table: "ImageOnlyChannels",
                 column: "ChannelId",
@@ -2140,9 +2110,15 @@ namespace NadekoBot.Migrations.Sqlite
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_LogSettings_GuildId",
-                table: "LogSettings",
-                column: "GuildId",
+                name: "IX_LogChannels_GuildId_LogType",
+                table: "LogChannels",
+                columns: new[] { "GuildId", "LogType" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LogIgnores_GuildId_LogItemId_ItemType",
+                table: "LogIgnores",
+                columns: new[] { "GuildId", "LogItemId", "ItemType" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -2665,9 +2641,6 @@ namespace NadekoBot.Migrations.Sqlite
                 name: "HoneyPotChannels");
 
             migrationBuilder.DropTable(
-                name: "IgnoredLogChannels");
-
-            migrationBuilder.DropTable(
                 name: "ImageOnlyChannels");
 
             migrationBuilder.DropTable(
@@ -2678,6 +2651,12 @@ namespace NadekoBot.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "LiveChannelConfig");
+
+            migrationBuilder.DropTable(
+                name: "LogChannels");
+
+            migrationBuilder.DropTable(
+                name: "LogIgnores");
 
             migrationBuilder.DropTable(
                 name: "MusicPlayerSettings");
@@ -2840,9 +2819,6 @@ namespace NadekoBot.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "GiveawayModel");
-
-            migrationBuilder.DropTable(
-                name: "LogSettings");
 
             migrationBuilder.DropTable(
                 name: "GuildConfigs");

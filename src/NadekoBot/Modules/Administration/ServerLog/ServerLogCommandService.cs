@@ -1,4 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Frozen;
+using LinqToDB;
+using LinqToDB.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Modules.Administration.Services;
@@ -8,10 +10,11 @@ namespace NadekoBot.Modules.Administration;
 
 public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 #if !GLOBAL_NADEKO
-        , INService // don't load this service on global nadeko
+        , INService
 #endif
 {
-    public ConcurrentDictionary<ulong, LogSetting> GuildLogSettings { get; }
+    private ConcurrentDictionary<ulong, FrozenDictionary<LogType, ulong>> _logChannels = new();
+    private ConcurrentDictionary<ulong, IReadOnlyList<LogIgnore>> _logIgnores = new();
 
     private ConcurrentDictionary<ITextChannel, System.Collections.Concurrent.ConcurrentQueue<string>> PresenceUpdates { get; } = new();
     private readonly DiscordSocketClient _client;
@@ -24,6 +27,8 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     private readonly IMemoryCache _memoryCache;
 
     private readonly ConcurrentHashSet<ulong> _ignoreMessageIds = [];
+    private readonly ConcurrentHashSet<(ulong GuildId, ulong UserId)> _ignoreBanIds = [];
+    private readonly ConcurrentHashSet<(ulong GuildId, ulong UserId)> _ignoreUnbanIds = [];
     private readonly UserPunishService _punishService;
     private readonly IMessageSenderService _sender;
 
@@ -51,23 +56,36 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         using (var uow = db.GetDbContext())
         {
             var guildIds = client.Guilds.Select(x => x.Id).ToList();
-            var configs = uow.Set<LogSetting>().AsQueryable()
-                .AsNoTracking()
+
+            var channels = uow.GetTable<LogChannel>()
                 .Where(x => guildIds.Contains(x.GuildId))
-                .Include(ls => ls.LogIgnores)
                 .ToList();
 
-            GuildLogSettings = configs.ToDictionary(ls => ls.GuildId).ToConcurrent();
+            _logChannels = channels
+                .GroupBy(x => x.GuildId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.ToFrozenDictionary(x => x.LogType, x => x.ChannelId))
+                .ToConcurrent();
+
+            var ignores = uow.GetTable<LogIgnore>()
+                .Where(x => guildIds.Contains(x.GuildId))
+                .ToList();
+
+            _logIgnores = ignores
+                .GroupBy(x => x.GuildId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => (IReadOnlyList<LogIgnore>)g.ToList())
+                .ToConcurrent();
         }
 
-        //_client.MessageReceived += _client_MessageReceived;
         _client.MessageUpdated += _client_MessageUpdated;
         _client.MessageDeleted += _client_MessageDeleted;
         _client.UserBanned += _client_UserBanned;
         _client.UserUnbanned += _client_UserUnbanned;
         _client.UserJoined += _client_UserJoined;
         _client.UserLeft += _client_UserLeft;
-        // _client.PresenceUpdated += _client_UserPresenceUpdated;
         _client.UserVoiceStateUpdated += _client_UserVoiceStateUpdated;
         _client.GuildMemberUpdated += _client_GuildUserUpdated;
         _client.PresenceUpdated += _client_PresenceUpdated;
@@ -88,23 +106,108 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         _punishService.OnUserWarned += PunishServiceOnOnUserWarned;
     }
 
+    private bool TryGetLogChannelId(ulong guildId, LogType logType, out ulong channelId)
+    {
+        channelId = 0;
+        return _logChannels.TryGetValue(guildId, out var dict) && dict.TryGetValue(logType, out channelId);
+    }
+
+    private bool IsUserIgnored(ulong guildId, ulong userId)
+    {
+        if (!_logIgnores.TryGetValue(guildId, out var ignores))
+            return false;
+
+        for (var i = 0; i < ignores.Count; i++)
+        {
+            if (ignores[i].LogItemId == userId && ignores[i].ItemType == IgnoredItemType.User)
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool IsChannelIgnored(ulong guildId, ulong channelId, ulong? categoryId)
+    {
+        if (!_logIgnores.TryGetValue(guildId, out var ignores))
+            return false;
+
+        for (var i = 0; i < ignores.Count; i++)
+        {
+            var ilc = ignores[i];
+            if (ilc.LogItemId == channelId && ilc.ItemType == IgnoredItemType.Channel)
+                return true;
+            if (categoryId is not null && ilc.LogItemId == categoryId.Value && ilc.ItemType == IgnoredItemType.Category)
+                return true;
+        }
+
+        return false;
+    }
+
+    private async Task<ITextChannel?> TryGetLogChannel(IGuild guild, LogType logType)
+    {
+        if (!TryGetLogChannelId(guild.Id, logType, out var channelId))
+            return null;
+
+        var channel = await guild.GetTextChannelAsync(channelId);
+
+        if (channel is null)
+        {
+            await UnsetLogChannelInternalAsync(guild.Id, logType);
+            return null;
+        }
+
+        return channel;
+    }
+
+    private async Task UnsetLogChannelInternalAsync(ulong guildId, LogType logType)
+    {
+        await using var ctx = _db.GetDbContext();
+        await ctx.GetTable<LogChannel>()
+            .Where(x => x.GuildId == guildId && x.LogType == logType)
+            .DeleteAsync();
+
+        RefreshLogChannelCacheInternal(guildId, ctx);
+    }
+
+    private void RefreshLogChannelCacheInternal(ulong guildId, NadekoContext ctx)
+    {
+        var channels = ctx.GetTable<LogChannel>()
+            .Where(x => x.GuildId == guildId)
+            .ToList();
+
+        if (channels.Count == 0)
+            _logChannels.TryRemove(guildId, out _);
+        else
+            _logChannels[guildId] = channels.ToFrozenDictionary(x => x.LogType, x => x.ChannelId);
+    }
+
+    private void RefreshIgnoreCacheInternal(ulong guildId, NadekoContext ctx)
+    {
+        var ignores = ctx.GetTable<LogIgnore>()
+            .Where(x => x.GuildId == guildId)
+            .ToList();
+
+        if (ignores.Count == 0)
+            _logIgnores.TryRemove(guildId, out _);
+        else
+            _logIgnores[guildId] = ignores;
+    }
+
     private async Task _client_PresenceUpdated(SocketUser user, SocketPresence? before, SocketPresence? after)
     {
         if (user is not SocketGuildUser gu)
             return;
 
-        if (!GuildLogSettings.TryGetValue(gu.Guild.Id, out var logSetting)
+        if (!TryGetLogChannelId(gu.Guild.Id, LogType.UserPresence, out _)
             || before is null
             || after is null
-            || logSetting.LogIgnores.Any(ilc => ilc.LogItemId == gu.Id && ilc.ItemType == IgnoredItemType.User))
+            || IsUserIgnored(gu.Guild.Id, gu.Id))
             return;
 
         ITextChannel? logChannel;
 
         if (!user.IsBot
-            && logSetting.LogUserPresenceId is not null
-            && (logChannel =
-                await TryGetLogChannel(gu.Guild, logSetting, LogType.UserPresence)) is not null)
+            && (logChannel = await TryGetLogChannel(gu.Guild, LogType.UserPresence)) is not null)
         {
             if (before.Status != after.Status)
             {
@@ -135,14 +238,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 var ch = sch.Value;
 
-                if (!GuildLogSettings.TryGetValue(ch.Guild.Id, out var logSetting)
-                    || logSetting.ThreadDeletedId is null
-                    || IsChannelIgnored(logSetting, ch.Id,
-                        (ch.ParentChannel as INestedChannel)?.CategoryId))
+                if (!TryGetLogChannelId(ch.Guild.Id, LogType.ThreadDeleted, out _)
+                    || IsChannelIgnored(ch.Guild.Id, ch.Id, (ch.ParentChannel as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(ch.Guild, logSetting, LogType.ThreadDeleted)) is null)
+                if ((logChannel = await TryGetLogChannel(ch.Guild, LogType.ThreadDeleted)) is null)
                     return;
 
                 var title = GetText(logChannel.Guild, strs.thread_deleted);
@@ -167,14 +268,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         {
             try
             {
-                if (!GuildLogSettings.TryGetValue(ch.Guild.Id, out var logSetting)
-                    || logSetting.ThreadCreatedId is null
-                    || IsChannelIgnored(logSetting, ch.Id,
-                        (ch.ParentChannel as INestedChannel)?.CategoryId))
+                if (!TryGetLogChannelId(ch.Guild.Id, LogType.ThreadCreated, out _)
+                    || IsChannelIgnored(ch.Guild.Id, ch.Id, (ch.ParentChannel as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(ch.Guild, logSetting, LogType.ThreadCreated)) is null)
+                if ((logChannel = await TryGetLogChannel(ch.Guild, LogType.ThreadCreated)) is null)
                     return;
 
                 var title = GetText(logChannel.Guild, strs.thread_created);
@@ -235,49 +334,72 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         }
     }
 
-    public LogSetting? GetGuildLogSettings(ulong guildId)
+    public IReadOnlyList<LogIgnore> GetLogIgnores(ulong guildId)
     {
-        GuildLogSettings.TryGetValue(guildId, out var logSetting);
-        return logSetting;
+        _logIgnores.TryGetValue(guildId, out var ignores);
+        return ignores ?? [];
     }
 
-    private static bool IsChannelIgnored(LogSetting logSetting, ulong channelId, ulong? categoryId)
-    {
-        var ignores = logSetting.LogIgnores;
-        for (var i = 0; i < ignores.Count; i++)
-        {
-            var ilc = ignores[i];
-            if (ilc.LogItemId == channelId && ilc.ItemType == IgnoredItemType.Channel)
-                return true;
-            if (categoryId is not null && ilc.LogItemId == categoryId.Value && ilc.ItemType == IgnoredItemType.Category)
-                return true;
-        }
-
-        return false;
-    }
+    public ulong? GetLogChannelId(ulong guildId, LogType logType)
+        => TryGetLogChannelId(guildId, logType, out var id) ? id : null;
 
     public void AddDeleteIgnore(ulong messageId)
         => _ignoreMessageIds.Add(messageId);
 
-    public bool LogIgnore(ulong gid, ulong itemId, IgnoredItemType itemType)
+    public void AddBanIgnore(ulong guildId, ulong userId)
+    {
+        _ignoreBanIds.Add((guildId, userId));
+        _ignoreUnbanIds.Add((guildId, userId));
+    }
+
+    public async Task LogHoneypot(IGuild guild, IUser user)
+    {
+        if (!TryGetLogChannelId(guild.Id, LogType.Honeypot, out _))
+            return;
+
+        ITextChannel? logChannel;
+        if ((logChannel = await TryGetLogChannel(guild, LogType.Honeypot)) is null)
+            return;
+
+        var embed = _sender.CreateEmbed()
+            .WithOkColor()
+            .WithTitle("🍯 " + GetText(logChannel.Guild, strs.user_honeypot))
+            .WithDescription(user.ToString()!)
+            .AddField("Id", user.Id.ToString())
+            .WithFooter(CurrentTime(guild));
+
+        var avatarUrl = user.GetAvatarUrl();
+        if (Uri.IsWellFormedUriString(avatarUrl, UriKind.Absolute))
+            embed.WithThumbnailUrl(avatarUrl);
+
+        await _sender.Response(logChannel).Embed(embed).SendAsync();
+    }
+
+    public bool LogIgnore(ulong guildId, ulong itemId, IgnoredItemType itemType)
     {
         using var uow = _db.GetDbContext();
-        var logSetting = uow.LogSettingsFor(gid);
-        var removed = logSetting.LogIgnores.RemoveAll(x => x.ItemType == itemType && itemId == x.LogItemId);
 
-        if (removed == 0)
+        var deleted = uow.GetTable<LogIgnore>()
+            .Where(x => x.GuildId == guildId && x.LogItemId == itemId && x.ItemType == itemType)
+            .DeleteAsync()
+            .GetAwaiter()
+            .GetResult();
+
+        if (deleted == 0)
         {
-            var toAdd = new IgnoredLogItem
-            {
-                LogItemId = itemId,
-                ItemType = itemType
-            };
-            logSetting.LogIgnores.Add(toAdd);
+            uow.GetTable<LogIgnore>()
+                .InsertAsync(() => new LogIgnore
+                {
+                    GuildId = guildId,
+                    LogItemId = itemId,
+                    ItemType = itemType
+                })
+                .GetAwaiter()
+                .GetResult();
         }
 
-        uow.SaveChanges();
-        GuildLogSettings.AddOrUpdate(gid, logSetting, (_, _) => logSetting);
-        return removed > 0;
+        RefreshIgnoreCacheInternal(guildId, uow);
+        return deleted > 0;
     }
 
     private string GetText(IGuild guild, LocStr str)
@@ -303,28 +425,36 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     public async Task LogServer(ulong guildId, ulong channelId, bool value)
     {
         await using var uow = _db.GetDbContext();
-        var logSetting = uow.LogSettingsFor(guildId);
 
-        logSetting.LogOtherId = logSetting.MessageUpdatedId = logSetting.MessageDeletedId = logSetting.UserJoinedId =
-            logSetting.UserLeftId = logSetting.UserBannedId = logSetting.UserUnbannedId = logSetting.UserUpdatedId =
-                logSetting.ChannelCreatedId = logSetting.ChannelDestroyedId = logSetting.ChannelUpdatedId =
-                    logSetting.LogUserPresenceId = logSetting.LogVoicePresenceId = logSetting.UserMutedId =
-                        logSetting.ThreadCreatedId = logSetting.ThreadDeletedId
-                            = logSetting.LogWarnsId = value ? channelId : null;
-        await uow.SaveChangesAsync();
-        GuildLogSettings.AddOrUpdate(guildId, _ => logSetting, (_, _) => logSetting);
+        await uow.GetTable<LogChannel>()
+            .Where(x => x.GuildId == guildId)
+            .DeleteAsync();
+
+        if (value)
+        {
+            var logTypes = Enum.GetValues<LogType>();
+            var rows = logTypes.Select(t => new LogChannel
+            {
+                GuildId = guildId,
+                LogType = t,
+                ChannelId = channelId
+            }).ToArray();
+
+            await uow.BulkCopyAsync(rows);
+        }
+
+        RefreshLogChannelCacheInternal(guildId, uow);
     }
-
 
     private async Task PunishServiceOnOnUserWarned(Warning arg)
     {
-        if (!GuildLogSettings.TryGetValue(arg.GuildId, out var logSetting) || logSetting.LogWarnsId is null)
+        if (!TryGetLogChannelId(arg.GuildId, LogType.UserWarned, out _))
             return;
 
         var g = _client.GetGuild(arg.GuildId);
 
         ITextChannel? logChannel;
-        if ((logChannel = await TryGetLogChannel(g, logSetting, LogType.UserWarned)) is null)
+        if ((logChannel = await TryGetLogChannel(g, LogType.UserWarned)) is null)
             return;
 
         var embed = _sender.CreateEmbed()
@@ -349,11 +479,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 var g = after.Guild;
 
-                if (!GuildLogSettings.TryGetValue(g.Id, out var logSetting) || logSetting.UserUpdatedId is null || logSetting.LogIgnores.Any(ilc => ilc.LogItemId == after.Id && ilc.ItemType == IgnoredItemType.User))
+                if (!TryGetLogChannelId(g.Id, LogType.UserUpdated, out _)
+                    || IsUserIgnored(g.Id, after.Id))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(g, logSetting, LogType.UserUpdated)) is null)
+                if ((logChannel = await TryGetLogChannel(g, LogType.UserUpdated)) is null)
                     return;
 
                 var embed = _sender.CreateEmbed();
@@ -395,73 +526,40 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         return Task.CompletedTask;
     }
 
-    public bool Log(ulong gid, ulong? cid, LogType type /*, string options*/)
+    public bool Log(ulong gid, ulong? cid, LogType type)
     {
-        ulong? channelId = null;
-        using (var uow = _db.GetDbContext())
-        {
-            var logSetting = uow.LogSettingsFor(gid);
-            GuildLogSettings.AddOrUpdate(gid, _ => logSetting, (_, _) => logSetting);
-            switch (type)
-            {
-                case LogType.Other:
-                    channelId = logSetting.LogOtherId = logSetting.LogOtherId is null ? cid : default;
-                    break;
-                case LogType.MessageUpdated:
-                    channelId = logSetting.MessageUpdatedId = logSetting.MessageUpdatedId is null ? cid : default;
-                    break;
-                case LogType.MessageDeleted:
-                    channelId = logSetting.MessageDeletedId = logSetting.MessageDeletedId is null ? cid : default;
-                    //logSetting.DontLogBotMessageDeleted = (options == "nobot");
-                    break;
-                case LogType.UserJoined:
-                    channelId = logSetting.UserJoinedId = logSetting.UserJoinedId is null ? cid : default;
-                    break;
-                case LogType.UserLeft:
-                    channelId = logSetting.UserLeftId = logSetting.UserLeftId is null ? cid : default;
-                    break;
-                case LogType.UserBanned:
-                    channelId = logSetting.UserBannedId = logSetting.UserBannedId is null ? cid : default;
-                    break;
-                case LogType.UserUnbanned:
-                    channelId = logSetting.UserUnbannedId = logSetting.UserUnbannedId is null ? cid : default;
-                    break;
-                case LogType.UserUpdated:
-                    channelId = logSetting.UserUpdatedId = logSetting.UserUpdatedId is null ? cid : default;
-                    break;
-                case LogType.UserMuted:
-                    channelId = logSetting.UserMutedId = logSetting.UserMutedId is null ? cid : default;
-                    break;
-                case LogType.ChannelCreated:
-                    channelId = logSetting.ChannelCreatedId = logSetting.ChannelCreatedId is null ? cid : default;
-                    break;
-                case LogType.ChannelDestroyed:
-                    channelId = logSetting.ChannelDestroyedId = logSetting.ChannelDestroyedId is null ? cid : default;
-                    break;
-                case LogType.ChannelUpdated:
-                    channelId = logSetting.ChannelUpdatedId = logSetting.ChannelUpdatedId is null ? cid : default;
-                    break;
-                case LogType.UserPresence:
-                    channelId = logSetting.LogUserPresenceId = logSetting.LogUserPresenceId is null ? cid : default;
-                    break;
-                case LogType.VoicePresence:
-                    channelId = logSetting.LogVoicePresenceId = logSetting.LogVoicePresenceId is null ? cid : default;
-                    break;
-                case LogType.UserWarned:
-                    channelId = logSetting.LogWarnsId = logSetting.LogWarnsId is null ? cid : default;
-                    break;
-                case LogType.ThreadDeleted:
-                    channelId = logSetting.ThreadDeletedId = logSetting.ThreadDeletedId is null ? cid : default;
-                    break;
-                case LogType.ThreadCreated:
-                    channelId = logSetting.ThreadCreatedId = logSetting.ThreadCreatedId is null ? cid : default;
-                    break;
-            }
+        using var uow = _db.GetDbContext();
 
-            uow.SaveChanges();
+        var deleted = uow.GetTable<LogChannel>()
+            .Where(x => x.GuildId == gid && x.LogType == type)
+            .DeleteAsync()
+            .GetAwaiter()
+            .GetResult();
+
+        if (deleted > 0)
+        {
+            RefreshLogChannelCacheInternal(gid, uow);
+            return false;
         }
 
-        return channelId is not null;
+        if (cid is null)
+        {
+            RefreshLogChannelCacheInternal(gid, uow);
+            return false;
+        }
+
+        uow.GetTable<LogChannel>()
+            .InsertAsync(() => new LogChannel
+            {
+                GuildId = gid,
+                LogType = type,
+                ChannelId = cid.Value
+            })
+            .GetAwaiter()
+            .GetResult();
+
+        RefreshLogChannelCacheInternal(gid, uow);
+        return true;
     }
 
     private void MuteCommands_UserMuted(
@@ -473,11 +571,11 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         {
             try
             {
-                if (!GuildLogSettings.TryGetValue(usr.Guild.Id, out var logSetting) || logSetting.UserMutedId is null)
+                if (!TryGetLogChannelId(usr.Guild.Id, LogType.UserMuted, out _))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(usr.Guild, logSetting, LogType.UserMuted)) is null)
+                if ((logChannel = await TryGetLogChannel(usr.Guild, LogType.UserMuted)) is null)
                     return;
                 var mutes = string.Empty;
                 var mutedLocalized = GetText(logChannel.Guild, strs.muted_sn);
@@ -500,7 +598,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                     .WithTitle($"{usr.Username}#{usr.Discriminator} | {usr.Id}")
                     .WithFooter(CurrentTime(usr.Guild))
                     .WithOkColor();
-                
+
                 if (!string.IsNullOrWhiteSpace(reason))
                     embed.WithDescription(reason);
 
@@ -521,11 +619,11 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         {
             try
             {
-                if (!GuildLogSettings.TryGetValue(usr.Guild.Id, out var logSetting) || logSetting.UserMutedId is null)
+                if (!TryGetLogChannelId(usr.Guild.Id, LogType.UserMuted, out _))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(usr.Guild, logSetting, LogType.UserMuted)) is null)
+                if ((logChannel = await TryGetLogChannel(usr.Guild, LogType.UserMuted)) is null)
                     return;
 
                 var mutes = string.Empty;
@@ -571,12 +669,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 if (users.Length == 0)
                     return;
 
-                if (!GuildLogSettings.TryGetValue(users.First().Guild.Id, out var logSetting)
-                    || logSetting.LogOtherId is null)
+                var guildId = users.First().Guild.Id;
+                if (!TryGetLogChannelId(guildId, LogType.Other, out _))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(users.First().Guild, logSetting, LogType.Other)) is null)
+                if ((logChannel = await TryGetLogChannel(users.First().Guild, LogType.Other)) is null)
                     return;
 
                 var punishment = string.Empty;
@@ -643,53 +741,51 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 if (before is null)
                     return;
 
-                if (!GuildLogSettings.TryGetValue(before.Guild.Id, out var logSetting)
-                    || logSetting.LogIgnores.Any(ilc
-                        => ilc.LogItemId == after.Id && ilc.ItemType == IgnoredItemType.User))
+                if (!TryGetLogChannelId(before.Guild.Id, LogType.UserUpdated, out _)
+                    || IsUserIgnored(before.Guild.Id, after.Id))
                     return;
 
                 ITextChannel? logChannel;
-                if (logSetting.UserUpdatedId is not null
-                    && (logChannel = await TryGetLogChannel(before.Guild, logSetting, LogType.UserUpdated)) is not null)
+                if ((logChannel = await TryGetLogChannel(before.Guild, LogType.UserUpdated)) is null)
+                    return;
+
+                var embed = _sender.CreateEmbed()
+                    .WithOkColor()
+                    .WithFooter(CurrentTime(before.Guild))
+                    .WithTitle($"{before.Username}#{before.Discriminator} | {before.Id}");
+                if (before.Nickname != after.Nickname)
                 {
-                    var embed = _sender.CreateEmbed()
-                        .WithOkColor()
-                        .WithFooter(CurrentTime(before.Guild))
-                        .WithTitle($"{before.Username}#{before.Discriminator} | {before.Id}");
-                    if (before.Nickname != after.Nickname)
+                    embed.WithAuthor("👥 " + GetText(logChannel.Guild, strs.nick_change))
+                        .AddField(GetText(logChannel.Guild, strs.old_nick),
+                            $"{before.Nickname}#{before.Discriminator}")
+                        .AddField(GetText(logChannel.Guild, strs.new_nick),
+                            $"{after.Nickname}#{after.Discriminator}");
+
+                    await _sender.Response(logChannel).Embed(embed).SendAsync();
+                }
+                else if (!before.Roles.SequenceEqual(after.Roles))
+                {
+                    if (before.Roles.Count < after.Roles.Count)
                     {
-                        embed.WithAuthor("👥 " + GetText(logChannel.Guild, strs.nick_change))
-                            .AddField(GetText(logChannel.Guild, strs.old_nick),
-                                $"{before.Nickname}#{before.Discriminator}")
-                            .AddField(GetText(logChannel.Guild, strs.new_nick),
-                                $"{after.Nickname}#{after.Discriminator}");
+                        var diffRoles = after.Roles.Where(r => !before.Roles.Contains(r)).Select(r => r.Name);
+                        embed.WithAuthor("⚔ " + GetText(logChannel.Guild, strs.user_role_add))
+                            .WithDescription(string.Join(", ", diffRoles).SanitizeMentions());
 
                         await _sender.Response(logChannel).Embed(embed).SendAsync();
                     }
-                    else if (!before.Roles.SequenceEqual(after.Roles))
+                    else if (before.Roles.Count > after.Roles.Count)
                     {
-                        if (before.Roles.Count < after.Roles.Count)
+                        await Task.Delay(1000);
+                        var diffRoles = before.Roles.Where(r => !after.Roles.Contains(r) && !IsRoleDeleted(r.Id))
+                            .Select(r => r.Name)
+                            .ToList();
+
+                        if (diffRoles.Any())
                         {
-                            var diffRoles = after.Roles.Where(r => !before.Roles.Contains(r)).Select(r => r.Name);
-                            embed.WithAuthor("⚔ " + GetText(logChannel.Guild, strs.user_role_add))
+                            embed.WithAuthor("⚔ " + GetText(logChannel.Guild, strs.user_role_rem))
                                 .WithDescription(string.Join(", ", diffRoles).SanitizeMentions());
 
                             await _sender.Response(logChannel).Embed(embed).SendAsync();
-                        }
-                        else if (before.Roles.Count > after.Roles.Count)
-                        {
-                            await Task.Delay(1000);
-                            var diffRoles = before.Roles.Where(r => !after.Roles.Contains(r) && !IsRoleDeleted(r.Id))
-                                .Select(r => r.Name)
-                                .ToList();
-
-                            if (diffRoles.Any())
-                            {
-                                embed.WithAuthor("⚔ " + GetText(logChannel.Guild, strs.user_role_rem))
-                                    .WithDescription(string.Join(", ", diffRoles).SanitizeMentions());
-
-                                await _sender.Response(logChannel).Embed(embed).SendAsync();
-                            }
                         }
                     }
                 }
@@ -713,14 +809,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 var after = (IGuildChannel)cafter;
 
-                if (!GuildLogSettings.TryGetValue(before.Guild.Id, out var logSetting)
-                    || logSetting.ChannelUpdatedId is null
-                    || IsChannelIgnored(logSetting, after.Id,
-                        (after as INestedChannel)?.CategoryId))
+                if (!TryGetLogChannelId(before.Guild.Id, LogType.ChannelUpdated, out _)
+                    || IsChannelIgnored(before.Guild.Id, after.Id, (after as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(before.Guild, logSetting, LogType.ChannelUpdated)) is null)
+                if ((logChannel = await TryGetLogChannel(before.Guild, LogType.ChannelUpdated)) is null)
                     return;
 
                 var embed = _sender.CreateEmbed().WithOkColor().WithFooter(CurrentTime(before.Guild));
@@ -763,14 +857,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 if (ich is not IGuildChannel ch)
                     return;
 
-                if (!GuildLogSettings.TryGetValue(ch.Guild.Id, out var logSetting)
-                    || logSetting.ChannelDestroyedId is null
-                    || IsChannelIgnored(logSetting, ch.Id,
-                        (ch as INestedChannel)?.CategoryId))
+                if (!TryGetLogChannelId(ch.Guild.Id, LogType.ChannelDestroyed, out _)
+                    || IsChannelIgnored(ch.Guild.Id, ch.Id, (ch as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(ch.Guild, logSetting, LogType.ChannelDestroyed)) is null)
+                if ((logChannel = await TryGetLogChannel(ch.Guild, LogType.ChannelDestroyed)) is null)
                     return;
 
                 string title;
@@ -802,14 +894,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 if (ich is not IGuildChannel ch)
                     return;
 
-                if (!GuildLogSettings.TryGetValue(ch.Guild.Id, out var logSetting)
-                    || logSetting.ChannelCreatedId is null
-                    || IsChannelIgnored(logSetting, ch.Id,
-                        (ch as INestedChannel)?.CategoryId))
+                if (!TryGetLogChannelId(ch.Guild.Id, LogType.ChannelCreated, out _)
+                    || IsChannelIgnored(ch.Guild.Id, ch.Id, (ch as INestedChannel)?.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(ch.Guild, logSetting, LogType.ChannelCreated)) is null)
+                if ((logChannel = await TryGetLogChannel(ch.Guild, LogType.ChannelCreated)) is null)
                     return;
                 string title;
                 if (ch is IVoiceChannel)
@@ -855,20 +945,18 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 if (beforeVch == afterVch)
                     return;
 
-                if (!GuildLogSettings.TryGetValue(usr.Guild.Id, out var logSetting)
-                    || logSetting.LogVoicePresenceId is null
-                    || logSetting.LogIgnores.Any(
-                        ilc => ilc.LogItemId == iusr.Id && ilc.ItemType == IgnoredItemType.User))
+                if (!TryGetLogChannelId(usr.Guild.Id, LogType.VoicePresence, out _)
+                    || IsUserIgnored(usr.Guild.Id, iusr.Id))
                     return;
 
                 var vcId = afterVch?.Id ?? beforeVch?.Id ?? 0;
                 var vcCategoryId = (afterVch as INestedChannel)?.CategoryId
                                    ?? (beforeVch as INestedChannel)?.CategoryId;
-                if (vcId != 0 && IsChannelIgnored(logSetting, vcId, vcCategoryId))
+                if (vcId != 0 && IsChannelIgnored(usr.Guild.Id, vcId, vcCategoryId))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(usr.Guild, logSetting, LogType.VoicePresence)) is null)
+                if ((logChannel = await TryGetLogChannel(usr.Guild, LogType.VoicePresence)) is null)
                     return;
 
                 var str = string.Empty;
@@ -918,14 +1006,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         bool serverMuteChanged,
         bool serverDeafChanged)
     {
-        if (!GuildLogSettings.TryGetValue(usr.Guild.Id, out var logSetting)
-            || logSetting.UserMutedId is null
-            || logSetting.LogIgnores.Any(
-                ilc => ilc.LogItemId == usr.Id && ilc.ItemType == IgnoredItemType.User))
+        if (!TryGetLogChannelId(usr.Guild.Id, LogType.UserMuted, out _)
+            || IsUserIgnored(usr.Guild.Id, usr.Id))
             return;
 
         ITextChannel? logChannel;
-        if ((logChannel = await TryGetLogChannel(usr.Guild, logSetting, LogType.UserMuted)) is null)
+        if ((logChannel = await TryGetLogChannel(usr.Guild, LogType.UserMuted)) is null)
             return;
 
         var modName = "Unknown";
@@ -985,14 +1071,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         {
             try
             {
-                if (!GuildLogSettings.TryGetValue(guild.Id, out var logSetting)
-                    || logSetting.UserLeftId is null
-                    || logSetting.LogIgnores.Any(ilc
-                        => ilc.LogItemId == usr.Id && ilc.ItemType == IgnoredItemType.User))
+                if (!TryGetLogChannelId(guild.Id, LogType.UserLeft, out _)
+                    || IsUserIgnored(guild.Id, usr.Id))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(guild, logSetting, LogType.UserLeft)) is null)
+                if ((logChannel = await TryGetLogChannel(guild, LogType.UserLeft)) is null)
                     return;
                 var embed = _sender.CreateEmbed()
                     .WithOkColor()
@@ -1020,11 +1104,11 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         {
             try
             {
-                if (!GuildLogSettings.TryGetValue(usr.Guild.Id, out var logSetting) || logSetting.UserJoinedId is null)
+                if (!TryGetLogChannelId(usr.Guild.Id, LogType.UserJoined, out _))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(usr.Guild, logSetting, LogType.UserJoined)) is null)
+                if ((logChannel = await TryGetLogChannel(usr.Guild, LogType.UserJoined)) is null)
                     return;
 
                 var embed = _sender.CreateEmbed()
@@ -1059,14 +1143,15 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         {
             try
             {
-                if (!GuildLogSettings.TryGetValue(guild.Id, out var logSetting)
-                    || logSetting.UserUnbannedId is null
-                    || logSetting.LogIgnores.Any(ilc
-                        => ilc.LogItemId == usr.Id && ilc.ItemType == IgnoredItemType.User))
+                if (_ignoreUnbanIds.TryRemove((guild.Id, usr.Id)))
+                    return;
+
+                if (!TryGetLogChannelId(guild.Id, LogType.UserUnbanned, out _)
+                    || IsUserIgnored(guild.Id, usr.Id))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(guild, logSetting, LogType.UserUnbanned)) is null)
+                if ((logChannel = await TryGetLogChannel(guild, LogType.UserUnbanned)) is null)
                     return;
                 var embed = _sender.CreateEmbed()
                     .WithOkColor()
@@ -1094,14 +1179,15 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         {
             try
             {
-                if (!GuildLogSettings.TryGetValue(guild.Id, out var logSetting)
-                    || logSetting.UserBannedId is null
-                    || logSetting.LogIgnores.Any(ilc
-                        => ilc.LogItemId == usr.Id && ilc.ItemType == IgnoredItemType.User))
+                if (_ignoreBanIds.TryRemove((guild.Id, usr.Id)))
+                    return;
+
+                if (!TryGetLogChannelId(guild.Id, LogType.UserBanned, out _)
+                    || IsUserIgnored(guild.Id, usr.Id))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(guild, logSetting, LogType.UserBanned)) == null)
+                if ((logChannel = await TryGetLogChannel(guild, LogType.UserBanned)) == null)
                     return;
 
 
@@ -1154,13 +1240,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 if (ch is not ITextChannel channel)
                     return;
 
-                if (!GuildLogSettings.TryGetValue(channel.Guild.Id, out var logSetting)
-                    || logSetting.MessageDeletedId is null
-                    || IsChannelIgnored(logSetting, channel.Id, channel.CategoryId))
+                if (!TryGetLogChannelId(channel.Guild.Id, LogType.MessageDeleted, out _)
+                    || IsChannelIgnored(channel.Guild.Id, channel.Id, channel.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(channel.Guild, logSetting, LogType.MessageDeleted)) is null
+                if ((logChannel = await TryGetLogChannel(channel.Guild, LogType.MessageDeleted)) is null
                     || logChannel.Id == msg.Id)
                     return;
 
@@ -1214,13 +1299,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 if (before.Author.IsBot)
                     return;
 
-                if (!GuildLogSettings.TryGetValue(channel.Guild.Id, out var logSetting)
-                    || logSetting.MessageUpdatedId is null
-                    || IsChannelIgnored(logSetting, channel.Id, channel.CategoryId))
+                if (!TryGetLogChannelId(channel.Guild.Id, LogType.MessageUpdated, out _)
+                    || IsChannelIgnored(channel.Guild.Id, channel.Id, channel.CategoryId))
                     return;
 
                 ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(channel.Guild, logSetting, LogType.MessageUpdated)) is null
+                if ((logChannel = await TryGetLogChannel(channel.Guild, LogType.MessageUpdated)) is null
                     || logChannel.Id == after.Channel.Id)
                     return;
 
@@ -1247,143 +1331,5 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
             }
         });
         return Task.CompletedTask;
-    }
-
-    private async Task<ITextChannel?> TryGetLogChannel(IGuild guild, LogSetting logSetting, LogType logChannelType)
-    {
-        ulong? id = null;
-        switch (logChannelType)
-        {
-            case LogType.Other:
-                id = logSetting.LogOtherId;
-                break;
-            case LogType.MessageUpdated:
-                id = logSetting.MessageUpdatedId;
-                break;
-            case LogType.MessageDeleted:
-                id = logSetting.MessageDeletedId;
-                break;
-            case LogType.UserJoined:
-                id = logSetting.UserJoinedId;
-                break;
-            case LogType.UserLeft:
-                id = logSetting.UserLeftId;
-                break;
-            case LogType.UserBanned:
-                id = logSetting.UserBannedId;
-                break;
-            case LogType.UserUnbanned:
-                id = logSetting.UserUnbannedId;
-                break;
-            case LogType.UserUpdated:
-                id = logSetting.UserUpdatedId;
-                break;
-            case LogType.ChannelCreated:
-                id = logSetting.ChannelCreatedId;
-                break;
-            case LogType.ChannelDestroyed:
-                id = logSetting.ChannelDestroyedId;
-                break;
-            case LogType.ChannelUpdated:
-                id = logSetting.ChannelUpdatedId;
-                break;
-            case LogType.UserPresence:
-                id = logSetting.LogUserPresenceId;
-                break;
-            case LogType.VoicePresence:
-                id = logSetting.LogVoicePresenceId;
-                break;
-            case LogType.UserMuted:
-                id = logSetting.UserMutedId;
-                break;
-            case LogType.UserWarned:
-                id = logSetting.LogWarnsId;
-                break;
-            case LogType.ThreadCreated:
-                id = logSetting.ThreadCreatedId;
-                break;
-            case LogType.ThreadDeleted:
-                id = logSetting.ThreadDeletedId;
-                break;
-        }
-
-        if (id is null or 0)
-        {
-            UnsetLogSetting(guild.Id, logChannelType);
-            return null;
-        }
-
-        var channel = await guild.GetTextChannelAsync(id.Value);
-
-        if (channel is null)
-        {
-            UnsetLogSetting(guild.Id, logChannelType);
-            return null;
-        }
-
-        return channel;
-    }
-
-    private void UnsetLogSetting(ulong guildId, LogType logChannelType)
-    {
-        using var uow = _db.GetDbContext();
-        var newLogSetting = uow.LogSettingsFor(guildId);
-        switch (logChannelType)
-        {
-            case LogType.Other:
-                newLogSetting.LogOtherId = null;
-                break;
-            case LogType.MessageUpdated:
-                newLogSetting.MessageUpdatedId = null;
-                break;
-            case LogType.MessageDeleted:
-                newLogSetting.MessageDeletedId = null;
-                break;
-            case LogType.UserJoined:
-                newLogSetting.UserJoinedId = null;
-                break;
-            case LogType.UserLeft:
-                newLogSetting.UserLeftId = null;
-                break;
-            case LogType.UserBanned:
-                newLogSetting.UserBannedId = null;
-                break;
-            case LogType.UserUnbanned:
-                newLogSetting.UserUnbannedId = null;
-                break;
-            case LogType.UserUpdated:
-                newLogSetting.UserUpdatedId = null;
-                break;
-            case LogType.UserMuted:
-                newLogSetting.UserMutedId = null;
-                break;
-            case LogType.ChannelCreated:
-                newLogSetting.ChannelCreatedId = null;
-                break;
-            case LogType.ChannelDestroyed:
-                newLogSetting.ChannelDestroyedId = null;
-                break;
-            case LogType.ChannelUpdated:
-                newLogSetting.ChannelUpdatedId = null;
-                break;
-            case LogType.UserPresence:
-                newLogSetting.LogUserPresenceId = null;
-                break;
-            case LogType.VoicePresence:
-                newLogSetting.LogVoicePresenceId = null;
-                break;
-            case LogType.UserWarned:
-                newLogSetting.LogWarnsId = null;
-                break;
-            case LogType.ThreadCreated:
-                newLogSetting.ThreadCreatedId = null;
-                break;
-            case LogType.ThreadDeleted:
-                newLogSetting.ThreadDeletedId = null;
-                break;
-        }
-
-        GuildLogSettings.AddOrUpdate(guildId, newLogSetting, (_, _) => newLogSetting);
-        uow.SaveChanges();
     }
 }

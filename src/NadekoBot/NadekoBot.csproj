@@ -102,7 +102,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\NadekoBot.StringsMerger\NadekoBot.StringsMerger.csproj" />
+        <ProjectReference Include="..\NadekoBot.StringsMerger\NadekoBot.StringsMerger.csproj" GlobalPropertiesToRemove="OutputPath" />
         <ProjectReference Include="..\Nadeko.Medusa\Nadeko.Medusa.csproj" />
         <ProjectReference Include="..\NadekoBot.Voice\NadekoBot.Voice.csproj" />
         <ProjectReference Include="..\NadekoBot.Generators\NadekoBot.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />

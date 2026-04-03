@@ -1,14 +1,17 @@
-﻿using NadekoBot.Db.Models;
+using NadekoBot.Db.Models;
 
 namespace NadekoBot.Common;
 
 public interface ILogCommandService
 {
     void AddDeleteIgnore(ulong xId);
+    void AddBanIgnore(ulong guildId, ulong userId);
     Task LogServer(ulong guildId, ulong channelId, bool actionValue);
     bool LogIgnore(ulong guildId, ulong itemId, IgnoredItemType itemType);
-    LogSetting? GetGuildLogSettings(ulong guildId);
+    IReadOnlyList<LogIgnore> GetLogIgnores(ulong guildId);
+    ulong? GetLogChannelId(ulong guildId, LogType logType);
     bool Log(ulong guildId, ulong? channelId, LogType type);
+    Task LogHoneypot(IGuild guild, IUser user);
 }
 
 public enum LogType
@@ -28,7 +31,7 @@ public enum LogType
     VoicePresence,
     UserMuted,
     UserWarned,
-    
     ThreadDeleted,
-    ThreadCreated
+    ThreadCreated,
+    Honeypot
 }

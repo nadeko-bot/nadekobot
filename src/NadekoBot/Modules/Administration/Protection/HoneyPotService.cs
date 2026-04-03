@@ -1,5 +1,6 @@
 ﻿using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
+using NadekoBot.Common;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using System.Threading.Channels;
@@ -10,6 +11,7 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
 {
     private readonly DbService _db;
     private readonly CommandHandler _handler;
+    private readonly ILogCommandService _logService;
 
     private ConcurrentHashSet<ulong> _channels = new();
 
@@ -21,10 +23,11 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
             SingleWriter = false,
         });
 
-    public HoneyPotService(DbService db, CommandHandler handler)
+    public HoneyPotService(DbService db, CommandHandler handler, ILogCommandService logService)
     {
         _db = db;
         _handler = handler;
+        _logService = logService;
     }
 
     public async Task<bool> ToggleHoneypotChannel(ulong guildId, ulong channelId)
@@ -71,8 +74,10 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
                 try
                 {
                     Log.Information("Honeypot caught user {User} [{UserId}]", user, user.Id);
+                    _logService.AddBanIgnore(user.Guild.Id, user.Id);
                     await user.BanAsync(pruneDays: 1, reason: "Honeypot");
                     await user.Guild.RemoveBanAsync(user.Id);
+                    await _logService.LogHoneypot(user.Guild, user);
                 }
                 catch (Exception e)
                 {

@@ -40,6 +40,7 @@ ar:
   thread_deleted: تم حذف موضوع
   unmuted_sn: تم إلغاء الكتم
   user_banned: تم حظر المستخدم
+  user_honeypot: تم اصطياد المستخدم بواسطة مصيدة
   user_joined: انضم المستخدم
   user_left: غادر المستخدم
   user_role_add: تمت إضافة دور للمستخدم
@@ -102,6 +103,7 @@ de-DE:
   thread_deleted: Thread Gelöscht
   unmuted_sn: Entstummt
   user_banned: Nutzer gebannt
+  user_honeypot: Nutzer vom Honeypot erwischt
   user_joined: Nutzer beigetreten
   user_left: Nutzer gegangen
   user_role_add: Nutzer wurde Rolle hinzugefügt
@@ -164,6 +166,7 @@ es-ES:
   thread_deleted: Hilo Eliminado
   unmuted_sn: Desilenciado
   user_banned: Usuario bloqueado
+  user_honeypot: Usuario atrapado por el honeypot
   user_joined: El usuario se unió
   user_left: El usuario salió
   user_role_add: Se añadió el rol al usuario
@@ -226,6 +229,7 @@ fr-FR:
   thread_deleted: Thread Supprimé
   unmuted_sn: Parole rendue
   user_banned: Utilisateur banni
+  user_honeypot: Utilisateur attrapé par le pot de miel
   user_joined: Un utilisateur à rejoint
   user_left: Un utilisateur est parti
   user_role_add: Rôle utilisateur ajouté
@@ -288,6 +292,7 @@ id-ID:
   thread_deleted: Thread Dihapus
   unmuted_sn: Di-unmute
   user_banned: User dibanned
+  user_honeypot: User tertangkap honeypot
   user_joined: User bergabung
   user_left: User keluar
   user_role_add: Role user ditambahkan
@@ -350,6 +355,7 @@ ja-JP:
   thread_deleted: スレッド削除
   unmuted_sn: のミュートが解除されました
   user_banned: ユーザーがBANされました
+  user_honeypot: ユーザーがハニーポットに引っかかりました
   user_joined: ユーザーが参加しました
   user_left: ユーザーが退出しました
   user_role_add: ユーザーに役割を割り当てました
@@ -412,6 +418,7 @@ ko-KR:
   thread_deleted: 스레드 삭제됨
   unmuted_sn: 뮤트 해제됨
   user_banned: 사용자 차단됨
+  user_honeypot: 사용자가 허니팟에 걸림
   user_joined: 사용자 입장
   user_left: 사용자 퇴장
   user_role_add: 사용자 역할 추가됨
@@ -474,6 +481,7 @@ pl-PL:
   thread_deleted: Usunięto wątek
   unmuted_sn: Odciszony
   user_banned: Użytkownik zbanowany
+  user_honeypot: Użytkownik złapany przez honeypot
   user_joined: Użytkownik dołączył
   user_left: Użytkownik opuścił serwer
   user_role_add: Dodano rolę użytkownikowi
@@ -536,6 +544,7 @@ pt-BR:
   thread_deleted: Thread Excluída
   unmuted_sn: Desmutado
   user_banned: Usuário banido
+  user_honeypot: Usuário pego pelo honeypot
   user_joined: Usuário entrou
   user_left: Usuário saiu
   user_role_add: Cargo adicionado ao usuário
@@ -598,6 +607,7 @@ ru-RU:
   thread_deleted: Тред Удалён
   unmuted_sn: Звук включён
   user_banned: Пользователь забанен
+  user_honeypot: Пользователь попался на ловушку
   user_joined: Пользователь присоединился
   user_left: Пользователь ушел
   user_role_add: Роль пользователя добавлена
@@ -660,6 +670,7 @@ sr-Cyrl-RS:
   thread_deleted: Тема обрисана
   unmuted_sn: Одмјутован
   user_banned: Корисник банован
+  user_honeypot: Корисник ухваћен замком
   user_joined: Корисник се придружио
   user_left: Корисник напустио сервер
   user_role_add: Кориснику додата улога
@@ -722,6 +733,7 @@ tr-TR:
   thread_deleted: Konu Silindi
   unmuted_sn: Susturma Kaldırıldı
   user_banned: Kullanıcı yasaklandı
+  user_honeypot: Kullanıcı honeypot tarafından yakalandı
   user_joined: Kullanıcı katıldı
   user_left: Kullanıcı ayrıldı
   user_role_add: Kullanıcıya rol eklendi
@@ -784,6 +796,7 @@ ts-TS:
   thread_deleted: Thread Deleted
   unmuted_sn: Unmuted
   user_banned: User banned. Hmph, they deserved it.
+  user_honeypot: User caught by honeypot. Hmph, saw that coming.
   user_joined: User joined
   user_left: User left
   user_role_add: User's role added
@@ -846,6 +859,7 @@ uk-UA:
   thread_deleted: Тред видалено
   unmuted_sn: Розмучено
   user_banned: Користувача забанено
+  user_honeypot: Користувач потрапив у пастку
   user_joined: Користувач приєднався
   user_left: Користувач покинув сервер
   user_role_add: Роль користувача додано
@@ -908,6 +922,7 @@ vi-VN:
   thread_deleted: Đã xóa luồng
   unmuted_sn: Đã bỏ tắt tiếng
   user_banned: Người dùng bị cấm
+  user_honeypot: Người dùng bị bẫy honeypot bắt
   user_joined: Người dùng đã tham gia
   user_left: Người dùng đã rời đi
   user_role_add: Đã thêm vai trò cho người dùng
@@ -970,6 +985,7 @@ zh-CN:
   thread_deleted: 討論串已刪除
   unmuted_sn: 取消靜音
   user_banned: 用戶被禁止
+  user_honeypot: 用户被蜜罐捕获
   user_joined: 用戶加入
   user_left: 用戶離開
   user_role_add: 已添加用戶身分組

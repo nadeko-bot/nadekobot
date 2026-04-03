@@ -2,21 +2,32 @@
 
 *a,c,f,r,o,d*
 
-## [7.1.20] - TBD
+## [7.1.21] - 03.04.2026
 
 ### Added
 
-- Patron-only commands infrastructure: commands/modules can be marked with `[PatronOnly]` attribute to require active patron status, shown with a heart icon in `.cmds` and as a requirement in `.h`
+- `.log Honeypot` to toggle honeypot logging to a specific channel
+  - Honeypot bans/unbans no longer trigger UserBanned/UserUnbanned events for `.log`
 
-### Changed
+### Dev
 
-- `.wlb` leaderboard now uses a cleaner description layout: bold name, ID, and price per entry instead of embed fields with efficiency and backing stats
+- Replaced `LogSetting` wide table with `LogChannel` and `LogIgnore` tables
+- Added `[PatronOnly]` attribute to require active patron status, shown with a heart icon in `.cmds` and as a requirement in `.h`
+  - No commands are patron only right now
 
 ### Removed
 
 - Removed the manager purchase buy window restriction (managers can now be purchased at any time during a cycle since payouts use cycle-start snapshots)
 
+## [7.1.20] - 03.04.2026
 
+### Added
+
+- `.anilist` command
+
+### Changed
+
+- `.wlb` leaderboard now has a better layout
 
 ## [7.1.19] - 01.04.2026
 

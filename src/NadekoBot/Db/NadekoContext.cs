@@ -32,8 +32,8 @@ public abstract class NadekoContext : DbContext
 
 
     //logging
-    public DbSet<LogSetting> LogSettings { get; set; }
-    public DbSet<IgnoredLogItem> IgnoredLogChannels { get; set; }
+    public DbSet<LogChannel> LogChannels { get; set; }
+    public DbSet<LogIgnore> LogIgnores { get; set; }
 
     public DbSet<RotatingPlayingStatus> RotatingStatus { get; set; }
     public DbSet<BlacklistEntry> Blacklist { get; set; }
@@ -439,26 +439,6 @@ public abstract class NadekoContext : DbContext
                 })
                 .IsUnique();
         });
-
-        #endregion
-
-        #region LogSettings
-
-        modelBuilder.Entity<LogSetting>(ls => ls.HasIndex(x => x.GuildId).IsUnique());
-
-        modelBuilder.Entity<LogSetting>(ls => ls
-            .HasMany(x => x.LogIgnores)
-            .WithOne(x => x.LogSetting)
-            .OnDelete(DeleteBehavior.Cascade));
-
-        modelBuilder.Entity<IgnoredLogItem>(ili => ili
-            .HasIndex(x => new
-            {
-                x.LogSettingId,
-                x.LogItemId,
-                x.ItemType
-            })
-            .IsUnique());
 
         #endregion
 

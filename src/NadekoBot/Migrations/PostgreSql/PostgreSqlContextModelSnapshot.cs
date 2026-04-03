@@ -1425,41 +1425,6 @@ namespace NadekoBot.Migrations.PostgreSql
                     b.ToTable("honeypotchannels", (string)null);
                 });
 
-            modelBuilder.Entity("NadekoBot.Db.Models.IgnoredLogItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("DateAdded")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("dateadded");
-
-                    b.Property<int>("ItemType")
-                        .HasColumnType("integer")
-                        .HasColumnName("itemtype");
-
-                    b.Property<decimal>("LogItemId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("logitemid");
-
-                    b.Property<int>("LogSettingId")
-                        .HasColumnType("integer")
-                        .HasColumnName("logsettingid");
-
-                    b.HasKey("Id")
-                        .HasName("pk_ignoredlogchannels");
-
-                    b.HasIndex("LogSettingId", "LogItemId", "ItemType")
-                        .IsUnique()
-                        .HasDatabaseName("ix_ignoredlogchannels_logsettingid_logitemid_itemtype");
-
-                    b.ToTable("ignoredlogchannels", (string)null);
-                });
-
             modelBuilder.Entity("NadekoBot.Db.Models.ImageOnlyChannel", b =>
                 {
                     b.Property<int>("Id")
@@ -1563,7 +1528,7 @@ namespace NadekoBot.Migrations.PostgreSql
                     b.ToTable("livechannelconfig", (string)null);
                 });
 
-            modelBuilder.Entity("NadekoBot.Db.Models.LogSetting", b =>
+            modelBuilder.Entity("NadekoBot.Db.Models.LogChannel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1572,94 +1537,57 @@ namespace NadekoBot.Migrations.PostgreSql
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal?>("ChannelCreatedId")
+                    b.Property<decimal>("ChannelId")
                         .HasColumnType("numeric(20,0)")
-                        .HasColumnName("channelcreatedid");
-
-                    b.Property<decimal?>("ChannelDestroyedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("channeldestroyedid");
-
-                    b.Property<decimal?>("ChannelUpdatedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("channelupdatedid");
-
-                    b.Property<DateTime?>("DateAdded")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("dateadded");
+                        .HasColumnName("channelid");
 
                     b.Property<decimal>("GuildId")
                         .HasColumnType("numeric(20,0)")
                         .HasColumnName("guildid");
 
-                    b.Property<decimal?>("LogOtherId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("logotherid");
-
-                    b.Property<decimal?>("LogUserPresenceId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("loguserpresenceid");
-
-                    b.Property<decimal?>("LogVoicePresenceId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("logvoicepresenceid");
-
-                    b.Property<decimal?>("LogVoicePresenceTTSId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("logvoicepresencettsid");
-
-                    b.Property<decimal?>("LogWarnsId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("logwarnsid");
-
-                    b.Property<decimal?>("MessageDeletedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("messagedeletedid");
-
-                    b.Property<decimal?>("MessageUpdatedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("messageupdatedid");
-
-                    b.Property<decimal?>("ThreadCreatedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("threadcreatedid");
-
-                    b.Property<decimal?>("ThreadDeletedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("threaddeletedid");
-
-                    b.Property<decimal?>("UserBannedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("userbannedid");
-
-                    b.Property<decimal?>("UserJoinedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("userjoinedid");
-
-                    b.Property<decimal?>("UserLeftId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("userleftid");
-
-                    b.Property<decimal?>("UserMutedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("usermutedid");
-
-                    b.Property<decimal?>("UserUnbannedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("userunbannedid");
-
-                    b.Property<decimal?>("UserUpdatedId")
-                        .HasColumnType("numeric(20,0)")
-                        .HasColumnName("userupdatedid");
+                    b.Property<int>("LogType")
+                        .HasColumnType("integer")
+                        .HasColumnName("logtype");
 
                     b.HasKey("Id")
-                        .HasName("pk_logsettings");
+                        .HasName("pk_logchannels");
 
-                    b.HasIndex("GuildId")
+                    b.HasIndex("GuildId", "LogType")
                         .IsUnique()
-                        .HasDatabaseName("ix_logsettings_guildid");
+                        .HasDatabaseName("ix_logchannels_guildid_logtype");
 
-                    b.ToTable("logsettings", (string)null);
+                    b.ToTable("logchannels", (string)null);
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.LogIgnore", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("GuildId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("guildid");
+
+                    b.Property<int>("ItemType")
+                        .HasColumnType("integer")
+                        .HasColumnName("itemtype");
+
+                    b.Property<decimal>("LogItemId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("logitemid");
+
+                    b.HasKey("Id")
+                        .HasName("pk_logignores");
+
+                    b.HasIndex("GuildId", "LogItemId", "ItemType")
+                        .IsUnique()
+                        .HasDatabaseName("ix_logignores_guildid_logitemid_itemtype");
+
+                    b.ToTable("logignores", (string)null);
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.MusicPlayerSettings", b =>
@@ -4248,18 +4176,6 @@ namespace NadekoBot.Migrations.PostgreSql
                         .HasConstraintName("fk_giveawayuser_giveawaymodel_giveawayid");
                 });
 
-            modelBuilder.Entity("NadekoBot.Db.Models.IgnoredLogItem", b =>
-                {
-                    b.HasOne("NadekoBot.Db.Models.LogSetting", "LogSetting")
-                        .WithMany("LogIgnores")
-                        .HasForeignKey("LogSettingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_ignoredlogchannels_logsettings_logsettingid");
-
-                    b.Navigation("LogSetting");
-                });
-
             modelBuilder.Entity("NadekoBot.Db.Models.Permissionv2", b =>
                 {
                     b.HasOne("NadekoBot.Db.Models.GuildConfig", null)
@@ -4392,11 +4308,6 @@ namespace NadekoBot.Migrations.PostgreSql
                     b.Navigation("FilterWordsChannelIds");
 
                     b.Navigation("FilteredWords");
-                });
-
-            modelBuilder.Entity("NadekoBot.Db.Models.LogSetting", b =>
-                {
-                    b.Navigation("LogIgnores");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.MusicPlaylist", b =>
