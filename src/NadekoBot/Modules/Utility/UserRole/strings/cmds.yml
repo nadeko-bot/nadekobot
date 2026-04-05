@@ -1,5 +1,7 @@
 userroleassign:
-  desc: Assigns a role to a user that can later be modified by that user.
+  desc: |-
+    Assigns a role to a user and gives them ownership of it.
+    The role must already exist on the server. Once assigned, the user can freely customize the role's name, color, and icon without needing any special permissions.
   ex:
     - '@User @Role'
   params:
@@ -8,7 +10,9 @@ userroleassign:
       role:
         desc: The role to assign.
 userrolecolor:
-  desc: Changes the color of your assigned role.
+  desc: |-
+    Changes the color of a role that has been assigned to you via {0}userroleassign.
+    You don't need any special permissions - just ownership of the role.
   ex:
     - '@Role #ff0000'
   params:
@@ -17,7 +21,11 @@ userrolecolor:
       role:
         desc: The assigned role to change the color of.
 userroleicon:
-  desc: Changes the icon of your assigned role.
+  desc: |-
+    Changes the icon of a role that has been assigned to you via {0}userroleassign.
+    You don't need any special permissions - just ownership of the role.
+    You can provide either an image URL (png/jpeg/webp, max 256KB) or a server emoji.
+    The server must have a high enough boost level to support role icons.
   ex:
     - '@Role :server_emoji_here:'
   params:
@@ -30,7 +38,9 @@ userroleicon:
       serverEmoji:
         desc: The server emoji to be used as a new icon for the role.
 userrolelist:
-  desc: Lists all user roles in the server, or for a specific user.
+  desc: |-
+    Lists all userrole assignments in the server.
+    You can optionally specify a user to only see their assignments.
   ex:
     - ''
     - '@User'
@@ -39,13 +49,15 @@ userrolelist:
     - user:
         desc: The user whose roles to list.
 userrolemy:
-  desc: Lists all of the user roles assigned to you.
+  desc: Lists all roles that have been assigned to you via {0}userroleassign.
   ex:
     - ''
   params:
     - {}
 userrolename:
-  desc: Changes the name of your assigned role.
+  desc: |-
+    Changes the name of a role that has been assigned to you via {0}userroleassign.
+    You don't need any special permissions - just ownership of the role.
   ex:
     - '@Role New Role Name'
   params:
@@ -54,7 +66,9 @@ userrolename:
       role:
         desc: The assigned role to rename.
 userroleremove:
-  desc: Removes a previously assigned role from a user.
+  desc: |-
+    Removes ownership of a previously assigned role from a user.
+    You can use the role ID instead of mentioning it, which is useful if the role has been deleted from the server.
   ex:
     - '@User @Role'
     - '@User 123456789012345678'

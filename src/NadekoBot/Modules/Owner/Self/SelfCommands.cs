@@ -26,6 +26,7 @@ public partial class Owner
         private readonly ICoordinator _coord;
         private readonly DbService _db;
         private readonly IBotActivityService _bas;
+        private readonly IBotCredsProvider _credsProvider;
 
         public SelfCommands(
             DiscordSocketClient client,
@@ -33,7 +34,8 @@ public partial class Owner
             IBotStrings strings,
             ICoordinator coord,
             IMedusaLoaderService medusaLoader,
-            IBotActivityService bas)
+            IBotActivityService bas,
+            IBotCredsProvider credsProvider)
         {
             _client = client;
             _db = db;
@@ -41,6 +43,7 @@ public partial class Owner
             _coord = coord;
             _medusaLoader = medusaLoader;
             _bas = bas;
+            _credsProvider = credsProvider;
         }
 
 
@@ -572,6 +575,14 @@ public partial class Owner
         public async Task CoordReload()
         {
             await _coord.Reload();
+            await ctx.OkAsync();
+        }
+
+        [Cmd]
+        [OwnerOnly]
+        public async Task CredsReload()
+        {
+            _credsProvider.Reload();
             await ctx.OkAsync();
         }
 

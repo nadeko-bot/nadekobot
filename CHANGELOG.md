@@ -2,6 +2,29 @@
 
 *a,c,f,r,o,d*
 
+
+## TBD
+
+-
+
+## [7.1.22] - 05.04.2026
+
+### Added
+
+- `.credsreload` owner command to hot-reload credentials from `data/creds.yml`
+- AI agent can now ask clarifying questions before acting (`ask_user` tool)
+- `.log AvatarUpdated`, `.log UsernameUpdated`, `.log NicknameUpdated` for fine-grained control over user update logging
+  - Existing `UserUpdated` subscribers are auto-migrated to all three new types
+  - `UserUpdated` renamed to `RolesUpdated` (now only logs role changes)
+
+### Changed
+
+- Improved userrole command descriptions
+
+### Dev
+
+- Removed unused file watcher on `creds.yml`
+
 ## [7.1.21] - 03.04.2026
 
 ### Added

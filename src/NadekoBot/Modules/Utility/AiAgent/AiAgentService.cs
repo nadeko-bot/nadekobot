@@ -368,43 +368,50 @@ public sealed class AiAgentService(
 
             if (result.TryPickT0(out var success, out var error))
             {
-                IUserMessage sentMsg;
-                var smart = SmartText.CreateFrom(success.Response);
-
-                if (smart is SmartEmbedText or SmartEmbedTextArray)
+                if (success.AskPending)
                 {
-                    sentMsg = await sender.Response(channel)
-                        .Text(smart)
-                        .SendAsync();
+                    conversationTracker.Open(message.Author.Id, channel.Id);
                 }
                 else
                 {
-                    var eb = sender.CreateEmbed(guild.Id)
-                                   .WithOkColor()
-                                   .WithDescription(success.Response.TrimTo(4096));
+                    IUserMessage sentMsg;
+                    var smart = SmartText.CreateFrom(success.Response);
 
-                    if (success.ToolCallCount > 0)
-                        eb.WithFooter($"Tools used: {success.ToolCallCount}" +
-                                      (success.WasCancelled ? " (cancelled)" : ""));
+                    if (smart is SmartEmbedText or SmartEmbedTextArray)
+                    {
+                        sentMsg = await sender.Response(channel)
+                            .Text(smart)
+                            .SendAsync();
+                    }
+                    else
+                    {
+                        var eb = sender.CreateEmbed(guild.Id)
+                                       .WithOkColor()
+                                       .WithDescription(success.Response.TrimTo(4096));
 
-                    sentMsg = await sender.Response(channel)
-                        .Embed(eb)
-                        .SendAsync();
+                        if (success.ToolCallCount > 0)
+                            eb.WithFooter($"Tools used: {success.ToolCallCount}" +
+                                          (success.WasCancelled ? " (cancelled)" : ""));
+
+                        sentMsg = await sender.Response(channel)
+                            .Embed(eb)
+                            .SendAsync();
+                    }
+
+                    if (_channelBuffers.TryGetValue(channel.Id, out var buf))
+                    {
+                        var botUser = await guild.GetCurrentUserAsync();
+                        buf.Push(new MessageSnapshot(
+                            sentMsg.Id,
+                            botUser.Id,
+                            PromptSanitizer.Sanitize(botUser.DisplayName),
+                            success.Response.TrimTo(MAX_SNAPSHOT_CONTENT_LENGTH) ?? "",
+                            DateTimeOffset.UtcNow));
+                    }
+
+                    if (!context.SessionClosed)
+                        conversationTracker.Open(message.Author.Id, channel.Id);
                 }
-
-                if (_channelBuffers.TryGetValue(channel.Id, out var buf))
-                {
-                    var botUser = await guild.GetCurrentUserAsync();
-                    buf.Push(new MessageSnapshot(
-                        sentMsg.Id,
-                        botUser.Id,
-                        PromptSanitizer.Sanitize(botUser.DisplayName),
-                        success.Response.TrimTo(MAX_SNAPSHOT_CONTENT_LENGTH) ?? "",
-                        DateTimeOffset.UtcNow));
-                }
-
-                if (!context.SessionClosed)
-                    conversationTracker.Open(message.Author.Id, channel.Id);
             }
             else
             {

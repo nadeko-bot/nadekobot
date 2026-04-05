@@ -15,11 +15,8 @@ public sealed partial class CommandListGenerator(
 {
     public async Task OnReadyAsync()
     {
-        await Task.Delay(10_000);
-
-#if DEBUG
+        await Task.Delay(5_000);
         await GenerateCommandListAsync(".", CultureInfo.InvariantCulture);
-#endif
     }
 
     public async Task<Stream> GenerateCommandListAsync(string prefix, CultureInfo culture)

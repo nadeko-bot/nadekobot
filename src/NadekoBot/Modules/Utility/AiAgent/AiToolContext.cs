@@ -35,4 +35,9 @@ public sealed class AiToolContext
     /// Set by close_session tool to prevent the session from being re-opened after the agent responds
     /// </summary>
     public bool SessionClosed { get; set; }
+
+    /// <summary>
+    /// Set by ask_user tool to signal that the agent loop should end and wait for the user's reply
+    /// </summary>
+    public bool AskPending { get; set; }
 }

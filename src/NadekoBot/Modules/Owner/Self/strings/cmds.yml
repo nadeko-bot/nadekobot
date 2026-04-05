@@ -40,6 +40,12 @@ coordreload:
     - ''
   params:
     - {}
+credsreload:
+  desc: Reloads bot credentials from data/creds.yml.
+  ex:
+    - ''
+  params:
+    - {}
 deleteemptyservers:
   desc: Deletes all servers in which the bot is the only member.
   ex:

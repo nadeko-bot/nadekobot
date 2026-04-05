@@ -13,7 +13,9 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 /// Downloads the embedding model on first use and builds an in-memory vector index.
 /// </summary>
 public sealed class CommandSearchService(
-    IHttpClientFactory httpFactory) : INService, IReadyExecutor
+    IHttpClientFactory httpFactory,
+    ShardData shardData,
+    IPubSub pubSub) : INService, IReadyExecutor
 {
     private const string MODEL_DIR = "data/ai/models/all-MiniLM-L6-v2";
     private const string MODEL_FILE = "model.onnx";
@@ -35,11 +37,14 @@ public sealed class CommandSearchService(
     private static readonly string _vocabUrl =
         "https://huggingface.co/Xenova/all-MiniLM-L6-v2/resolve/main/vocab.txt";
 
+    private static readonly TypedKey<bool> _reloadKey = new("cmdsearch.reload");
+
     private float[][]? _embeddings;
     private CommandEntry[]? _commands;
     private InferenceSession? _session;
     private BertTokenizer? _tokenizer;
     private volatile bool _ready;
+    private byte[]? _currentHash;
 
     // Classification head weights (loaded from intent-head.bin)
     private float[]? _w1;       // [HIDDEN_DIM * EMBEDDING_DIM] row-major
@@ -59,7 +64,12 @@ public sealed class CommandSearchService(
 
     public Task OnReadyAsync()
     {
+        _ = pubSub.Sub(_reloadKey, OnReloadRequestedAsync);
         _ = Task.Run(InitializeAsync);
+
+        if (shardData.ShardId == 0)
+            _ = Task.Run(WatchForChangesInternalAsync);
+
         return Task.CompletedTask;
     }
 
@@ -69,72 +79,29 @@ public sealed class CommandSearchService(
         {
             Log.Information("CommandSearch: Waiting for commandlist.json...");
 
-            for (var i = 0; i < 30; i++)
+            for (var i = 0; i < 24; i++)
             {
                 if (File.Exists(COMMAND_LIST_PATH))
                     break;
-                await Task.Delay(2000);
+                await Task.Delay(5_000);
             }
 
             if (!File.Exists(COMMAND_LIST_PATH))
             {
-                Log.Warning("CommandSearch: Command list not found at {Path}, semantic search disabled", COMMAND_LIST_PATH);
-                return;
-            }
-
-            var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
-            var cmdListHash = SHA256.HashData(cmdListBytes);
-
-            Log.Information("CommandSearch: Loading command list...");
-            var commands = LoadCommandList(cmdListBytes);
-            if (commands.Length == 0)
-            {
-                Log.Warning("CommandSearch: No commands found, semantic search disabled");
+                Log.Warning("CommandSearch: Command list not found at {Path}, waiting for watcher to pick it up", COMMAND_LIST_PATH);
                 return;
             }
 
             await EnsureModelDownloadedAsync();
 
-            var modelPath = Path.Combine(MODEL_DIR, MODEL_FILE);
-            var vocabPath = Path.Combine(MODEL_DIR, VOCAB_FILE);
-
-            if (!File.Exists(modelPath) || !File.Exists(vocabPath))
-            {
-                Log.Warning("CommandSearch: Model files missing after download, semantic search disabled");
+            var result = await LoadAndEmbedInternalAsync();
+            if (result is null)
                 return;
-            }
 
-            EnsureOnnxLoaded(modelPath, vocabPath);
-
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-
-            if (TryLoadCachedEmbeddings(cmdListHash, commands.Length, out var cachedEmbeddings))
-            {
-                sw.Stop();
-                Log.Information("CommandSearch: Loaded {Count} cached embeddings in {Elapsed}ms",
-                    commands.Length, sw.ElapsedMilliseconds);
-
-                _commands = commands;
-                _embeddings = cachedEmbeddings;
-            }
-            else
-            {
-                Log.Information("CommandSearch: Embedding {Count} commands...", commands.Length);
-                sw.Restart();
-                var embeddings = new float[commands.Length][];
-                for (var i = 0; i < commands.Length; i++)
-                    embeddings[i] = Embed(commands[i].SearchText);
-
-                sw.Stop();
-
-                _commands = commands;
-                _embeddings = embeddings;
-
-                SaveCachedEmbeddings(cmdListHash, embeddings);
-
-                Log.Information("CommandSearch: Index ready - {Count} commands embedded in {Elapsed}ms",
-                    commands.Length, sw.ElapsedMilliseconds);
-            }
+            var (commands, embeddings, hash) = result.Value;
+            _commands = commands;
+            _embeddings = embeddings;
+            _currentHash = hash;
 
             LoadClassificationHead();
 
@@ -146,6 +113,140 @@ public sealed class CommandSearchService(
         {
             Log.Error(ex, "CommandSearch: Failed to initialize");
         }
+    }
+
+    private async Task WatchForChangesInternalAsync()
+    {
+        using var timer = new PeriodicTimer(TimeSpan.FromMinutes(5));
+        while (await timer.WaitForNextTickAsync())
+        {
+            try
+            {
+                if (!File.Exists(COMMAND_LIST_PATH))
+                    continue;
+
+                var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
+                var cmdListHash = SHA256.HashData(cmdListBytes);
+
+                if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
+                    continue;
+
+                Log.Information("CommandSearch: Detected commandlist.json change, reloading...");
+
+                await EnsureModelDownloadedAsync();
+
+                var result = await LoadAndEmbedInternalAsync();
+                if (result is null)
+                    continue;
+
+                var (commands, embeddings, hash) = result.Value;
+                _commands = commands;
+                _embeddings = embeddings;
+                _currentHash = hash;
+
+                if (!_headReady)
+                    LoadClassificationHead();
+
+                _ready = true;
+
+                Log.Information("CommandSearch: Reloaded {Count} commands", commands.Length);
+
+                await pubSub.Pub(_reloadKey, true);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "CommandSearch: Error watching for commandlist.json changes");
+            }
+        }
+    }
+
+    private async ValueTask OnReloadRequestedAsync(bool _)
+    {
+        try
+        {
+            if (!File.Exists(COMMAND_LIST_PATH))
+                return;
+
+            var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
+            var cmdListHash = SHA256.HashData(cmdListBytes);
+
+            if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
+                return;
+
+            Log.Information("CommandSearch: Reload notification received, reloading...");
+
+            await EnsureModelDownloadedAsync();
+
+            var result = await LoadAndEmbedInternalAsync();
+            if (result is null)
+                return;
+
+            var (commands, embeddings, hash) = result.Value;
+            _commands = commands;
+            _embeddings = embeddings;
+            _currentHash = hash;
+
+            if (!_headReady)
+                LoadClassificationHead();
+
+            _ready = true;
+
+            Log.Information("CommandSearch: Reloaded {Count} commands via notification", commands.Length);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "CommandSearch: Error reloading on notification");
+        }
+    }
+
+    private async Task<(CommandEntry[] Commands, float[][] Embeddings, byte[] Hash)?> LoadAndEmbedInternalAsync()
+    {
+        var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
+        var cmdListHash = SHA256.HashData(cmdListBytes);
+
+        var commands = LoadCommandList(cmdListBytes);
+        if (commands.Length == 0)
+        {
+            Log.Warning("CommandSearch: No commands found in commandlist.json");
+            return null;
+        }
+
+        var modelPath = Path.Combine(MODEL_DIR, MODEL_FILE);
+        var vocabPath = Path.Combine(MODEL_DIR, VOCAB_FILE);
+
+        if (!File.Exists(modelPath) || !File.Exists(vocabPath))
+        {
+            Log.Warning("CommandSearch: Model files missing, semantic search disabled");
+            return null;
+        }
+
+        EnsureOnnxLoaded(modelPath, vocabPath);
+
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+
+        if (TryLoadCachedEmbeddings(cmdListHash, commands.Length, out var cachedEmbeddings))
+        {
+            sw.Stop();
+            Log.Information("CommandSearch: Loaded {Count} cached embeddings in {Elapsed}ms",
+                commands.Length, sw.ElapsedMilliseconds);
+
+            return (commands, cachedEmbeddings, cmdListHash);
+        }
+
+        Log.Information("CommandSearch: Embedding {Count} commands...", commands.Length);
+        sw.Restart();
+        var embeddings = new float[commands.Length][];
+        for (var i = 0; i < commands.Length; i++)
+            embeddings[i] = Embed(commands[i].SearchText);
+
+        sw.Stop();
+
+        SaveCachedEmbeddings(cmdListHash, embeddings);
+
+        Log.Information("CommandSearch: Index ready - {Count} commands embedded in {Elapsed}ms",
+            commands.Length, sw.ElapsedMilliseconds);
+
+        return (commands, embeddings, cmdListHash);
     }
 
     private void EnsureOnnxLoaded(string modelPath, string vocabPath)

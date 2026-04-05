@@ -1451,7 +1451,10 @@
       "Description": "Toggles logging event. Disables it if it is active anywhere on the server. Enables if it isn't active. Use `.logevents` to see a list of all events you can subscribe to.",
       "Usage": [
         ".log userpresence",
-        ".log userbanned"
+        ".log userbanned",
+        ".log avatarupdated",
+        ".log usernameupdated",
+        ".log nicknameupdated"
       ],
       "Submodule": "LogCommands",
       "Module": "Administration",
@@ -5283,6 +5286,21 @@
       "Description": "Reloads coordinator config",
       "Usage": [
         ".coordreload"
+      ],
+      "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".credsreload"
+      ],
+      "Description": "Reloads bot credentials from data/creds.yml.",
+      "Usage": [
+        ".credsreload"
       ],
       "Submodule": "SelfCommands",
       "Module": "Owner",

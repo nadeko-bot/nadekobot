@@ -23,7 +23,7 @@ public enum LogType
     UserLeft,
     UserBanned,
     UserUnbanned,
-    UserUpdated,
+    RolesUpdated,
     ChannelCreated,
     ChannelDestroyed,
     ChannelUpdated,
@@ -33,5 +33,8 @@ public enum LogType
     UserWarned,
     ThreadDeleted,
     ThreadCreated,
-    Honeypot
+    Honeypot,
+    AvatarUpdated,
+    UsernameUpdated,
+    NicknameUpdated
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NadekoBot.Migrations.PostgreSql
 {
     [DbContext(typeof(PostgreSqlContext))]
-    [Migration("20260403222132_init")]
+    [Migration("20260405102255_init")]
     partial class init
     {
         /// <inheritdoc />

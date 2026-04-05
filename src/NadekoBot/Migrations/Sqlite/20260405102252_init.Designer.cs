@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations.Sqlite
 {
     [DbContext(typeof(SqliteContext))]
-    [Migration("20260403222128_init")]
+    [Migration("20260405102252_init")]
     partial class init
     {
         /// <inheritdoc />

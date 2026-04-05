@@ -23,6 +23,11 @@ public sealed class AiAgentResult
     /// Whether the session was cancelled by the user
     /// </summary>
     public required bool WasCancelled { get; init; }
+
+    /// <summary>
+    /// Whether the agent paused to ask the user a question via ask_user tool
+    /// </summary>
+    public bool AskPending { get; init; }
 }
 
 /// <summary>

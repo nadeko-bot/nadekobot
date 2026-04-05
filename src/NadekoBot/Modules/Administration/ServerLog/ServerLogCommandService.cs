@@ -479,28 +479,39 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
                 var g = after.Guild;
 
-                if (!TryGetLogChannelId(g.Id, LogType.UserUpdated, out _)
-                    || IsUserIgnored(g.Id, after.Id))
+                if (IsUserIgnored(g.Id, after.Id))
                     return;
-
-                ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(g, LogType.UserUpdated)) is null)
-                    return;
-
-                var embed = _sender.CreateEmbed();
 
                 if (before.Username != after.Username)
                 {
-                    embed.WithTitle("👥 " + GetText(g, strs.username_changed))
+                    if (!TryGetLogChannelId(g.Id, LogType.UsernameUpdated, out _))
+                        return;
+
+                    ITextChannel? logChannel;
+                    if ((logChannel = await TryGetLogChannel(g, LogType.UsernameUpdated)) is null)
+                        return;
+
+                    var embed = _sender.CreateEmbed()
+                        .WithTitle("👥 " + GetText(g, strs.username_changed))
                         .WithDescription($"{before.Username} | {before.Id}")
                         .AddField("Old Name", $"{before.Username}", true)
                         .AddField("New Name", $"{after.Username}", true)
                         .WithFooter(CurrentTime(g))
                         .WithOkColor();
+
+                    await _sender.Response(logChannel).Embed(embed).SendAsync();
                 }
                 else if (before.AvatarId != after.AvatarId)
                 {
-                    embed.WithTitle("👥" + GetText(g, strs.avatar_changed))
+                    if (!TryGetLogChannelId(g.Id, LogType.AvatarUpdated, out _))
+                        return;
+
+                    ITextChannel? logChannel;
+                    if ((logChannel = await TryGetLogChannel(g, LogType.AvatarUpdated)) is null)
+                        return;
+
+                    var embed = _sender.CreateEmbed()
+                        .WithTitle("👥" + GetText(g, strs.avatar_changed))
                         .WithDescription($"{before.Username}#{before.Discriminator} | {before.Id}")
                         .WithFooter(CurrentTime(g))
                         .WithOkColor();
@@ -512,11 +523,9 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                     var aav = after.RealAvatarUrl();
                     if (aav.IsAbsoluteUri)
                         embed.WithImageUrl(aav.ToString());
-                }
-                else
-                    return;
 
-                await _sender.Response(logChannel).Embed(embed).SendAsync();
+                    await _sender.Response(logChannel).Embed(embed).SendAsync();
+                }
             }
             catch
             {
@@ -741,21 +750,23 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 if (before is null)
                     return;
 
-                if (!TryGetLogChannelId(before.Guild.Id, LogType.UserUpdated, out _)
-                    || IsUserIgnored(before.Guild.Id, after.Id))
+                if (IsUserIgnored(before.Guild.Id, after.Id))
                     return;
 
-                ITextChannel? logChannel;
-                if ((logChannel = await TryGetLogChannel(before.Guild, LogType.UserUpdated)) is null)
-                    return;
-
-                var embed = _sender.CreateEmbed()
-                    .WithOkColor()
-                    .WithFooter(CurrentTime(before.Guild))
-                    .WithTitle($"{before.Username}#{before.Discriminator} | {before.Id}");
                 if (before.Nickname != after.Nickname)
                 {
-                    embed.WithAuthor("👥 " + GetText(logChannel.Guild, strs.nick_change))
+                    if (!TryGetLogChannelId(before.Guild.Id, LogType.NicknameUpdated, out _))
+                        return;
+
+                    ITextChannel? logChannel;
+                    if ((logChannel = await TryGetLogChannel(before.Guild, LogType.NicknameUpdated)) is null)
+                        return;
+
+                    var embed = _sender.CreateEmbed()
+                        .WithOkColor()
+                        .WithFooter(CurrentTime(before.Guild))
+                        .WithTitle($"{before.Username}#{before.Discriminator} | {before.Id}")
+                        .WithAuthor("👥 " + GetText(logChannel.Guild, strs.nick_change))
                         .AddField(GetText(logChannel.Guild, strs.old_nick),
                             $"{before.Nickname}#{before.Discriminator}")
                         .AddField(GetText(logChannel.Guild, strs.new_nick),
@@ -765,6 +776,18 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 }
                 else if (!before.Roles.SequenceEqual(after.Roles))
                 {
+                    if (!TryGetLogChannelId(before.Guild.Id, LogType.RolesUpdated, out _))
+                        return;
+
+                    ITextChannel? logChannel;
+                    if ((logChannel = await TryGetLogChannel(before.Guild, LogType.RolesUpdated)) is null)
+                        return;
+
+                    var embed = _sender.CreateEmbed()
+                        .WithOkColor()
+                        .WithFooter(CurrentTime(before.Guild))
+                        .WithTitle($"{before.Username}#{before.Discriminator} | {before.Id}");
+
                     if (before.Roles.Count < after.Roles.Count)
                     {
                         var diffRoles = after.Roles.Where(r => !before.Roles.Contains(r)).Select(r => r.Name);

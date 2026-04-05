@@ -141,6 +141,17 @@ public sealed class AiAgentSession(
                     Content = result
                 });
             }
+
+            if (context.AskPending)
+            {
+                return new AiAgentResult
+                {
+                    Response = "",
+                    ToolCallCount = totalToolCalls,
+                    WasCancelled = false,
+                    AskPending = true
+                };
+            }
         }
 
         return new AiAgentResult

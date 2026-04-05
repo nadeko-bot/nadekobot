@@ -56,7 +56,7 @@ public sealed class BotCredsProvider : IBotCredsProvider
                     CredsExamplePath);
             }
 
-            _config = new ConfigurationBuilder().AddYamlFile(CredsPath, false, true)
+            _config = new ConfigurationBuilder().AddYamlFile(CredsPath, false, false)
                 .AddEnvironmentVariables("bot_")
                 .Build();
         }

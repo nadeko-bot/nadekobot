@@ -13,6 +13,8 @@ cacheusers:
   - cacheusers
 coordreload:
   - coordreload
+credsreload:
+  - credsreload
 deleteemptyservers:
   - deleteemptyservers
 die:

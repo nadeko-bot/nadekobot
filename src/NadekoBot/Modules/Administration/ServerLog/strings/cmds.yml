@@ -6,6 +6,9 @@ log:
   ex:
     - userpresence
     - userbanned
+    - avatarupdated
+    - usernameupdated
+    - nicknameupdated
   params:
     - type:
         desc: The type of log event to toggle.
