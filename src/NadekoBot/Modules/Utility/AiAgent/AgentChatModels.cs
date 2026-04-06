@@ -9,7 +9,12 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 public sealed class AgentChatRequest
 {
     [JsonPropertyName("model")]
-    public required string Model { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Model { get; init; }
+
+    [JsonPropertyName("models")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? Models { get; init; }
 
     [JsonPropertyName("messages")]
     public required List<AgentChatMessage> Messages { get; init; }

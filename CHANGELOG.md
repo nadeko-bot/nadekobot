@@ -7,6 +7,10 @@
 
 ### Added
 
+- Custom HTTP headers support in AI agent config (e.g. `X-OpenRouter-Title`)
+- `models` fallback list in AI agent config for providers like OpenRouter that support multi-model routing
+    - `model` takes precedence
+- `.patrons` owner-only command to list all active patrons grouped by tier
 - `.honeypot` now supports punishment modes: `.honeypot ban` for permanent ban, `.honeypot softban` (default) for ban + unban
 
 ### Fixed

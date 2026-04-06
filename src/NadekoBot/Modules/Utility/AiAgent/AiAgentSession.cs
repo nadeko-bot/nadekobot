@@ -63,7 +63,8 @@ public sealed class AiAgentSession(
 
             var request = new AgentChatRequest
             {
-                Model = config.ModelName,
+                Model = config.Models is { Count: > 0 } ? null : config.ModelName,
+                Models = config.Models is { Count: > 0 } ? config.Models : null,
                 Messages = messages,
                 Tools = toolSchemas.Count > 0 ? toolSchemas.ToList() : null,
                 MaxTokens = config.MaxTokens,
@@ -180,6 +181,12 @@ public sealed class AiAgentSession(
         {
             url = config.ApiUrl.TrimEnd('/') + "/v1/chat/completions";
             http.DefaultRequestHeaders.Authorization = new("Bearer", creds.AiApiKey);
+        }
+
+        if (config.CustomHeaders is { Count: > 0 } headers)
+        {
+            foreach (var (key, value) in headers)
+                http.DefaultRequestHeaders.TryAddWithoutValidation(key, value);
         }
 
         try

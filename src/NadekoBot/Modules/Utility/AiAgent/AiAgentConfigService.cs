@@ -89,5 +89,13 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
                 c.Version = 3;
             });
         }
+
+        if (Data.Version < 4)
+        {
+            ModifyConfig(c =>
+            {
+                c.Version = 4;
+            });
+        }
     }
 }

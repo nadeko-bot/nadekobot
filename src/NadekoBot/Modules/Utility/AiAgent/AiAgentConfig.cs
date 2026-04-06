@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 public sealed class AiAgentConfig
 {
     [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 3;
+    public int Version { get; set; } = 4;
 
     [Comment("Whether the AI agent feature is enabled. Default false")]
     public bool Enabled { get; set; } = false;
@@ -18,6 +18,13 @@ public sealed class AiAgentConfig
 
     [Comment("Which model to use for the agent. Must support tool/function calling.")]
     public string ModelName { get; set; } = "gpt-5.4";
+
+    [Comment("""
+             Optional list of model IDs for providers that support fallback routing (e.g. OpenRouter).
+             If set, this is sent as "models" instead of "model" in the request body.
+             Example: ["openai/gpt-5.4", "anthropic/claude-opus-4", "google/gemini-3.1-pro"]
+             """)]
+    public List<string> Models { get; set; } = [];
 
     [Comment("Maximum number of tool calls the agent can make per invocation. Default 10")]
     public int MaxToolCalls { get; set; } = 10;
@@ -86,4 +93,14 @@ public sealed class AiAgentConfig
 
     [Comment("Seconds after an agent response during which the user's messages go directly to the agent. Default 120")]
     public int FollowUpWindowSeconds { get; set; } = 120;
+
+    [Comment("""
+             Custom HTTP headers sent with every LLM request.
+             Useful for provider-specific headers like X-OpenRouter-Title.
+             Example: { "X-OpenRouter-Title": "Nadeko" }
+             """)]
+    public Dictionary<string, string> CustomHeaders { get; set; } = new()
+    {
+        ["X-OpenRouter-Title"] = "Nadeko"
+    };
 }

@@ -33,6 +33,8 @@ public interface IPatronageService
     Task<bool> LimitHitAsync(string name, ulong userId, int def);
     Task<int> GetUserLimit(string name, ulong userId, int def );
     
+    Task<IReadOnlyList<(PatronTier Tier, IReadOnlyList<(ulong UserId, string? Username)> Patrons)>> GetActivePatronsByTierAsync();
+    
     PatronConfigData GetConfig();
     int PercentBonus(Patron? user);
     int PercentBonus(long amount);
