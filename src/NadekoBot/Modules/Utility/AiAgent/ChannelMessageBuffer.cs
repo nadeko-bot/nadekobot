@@ -87,4 +87,29 @@ public sealed class ChannelMessageBuffer
     {
         get { lock (_lock) return _count; }
     }
+
+    /// <summary>
+    /// Builds XML-formatted channel history, excluding the specified message.
+    /// All user content is XML-escaped to prevent Discord markup from breaking the structure.
+    /// </summary>
+    public string? BuildHistoryXml(ulong channelId, string channelName, ulong excludeMessageId)
+    {
+        var snapshots = GetMessages();
+        if (snapshots.Length == 0)
+            return null;
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"<channel_history channel_id=\"{channelId}\" channel_name=\"{PromptSanitizer.XmlEscape(channelName)}\">");
+
+        foreach (var s in snapshots)
+        {
+            if (s.MessageId == excludeMessageId)
+                continue;
+
+            sb.AppendLine($"<msg id=\"{s.MessageId}\" author=\"{PromptSanitizer.XmlEscape(s.AuthorName)}\" author_id=\"{s.AuthorId}\" time=\"{s.Timestamp.ToUnixTimeSeconds()}\">{PromptSanitizer.XmlEscape(s.Content)}</msg>");
+        }
+
+        sb.Append("</channel_history>");
+        return sb.ToString();
+    }
 }

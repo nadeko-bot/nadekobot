@@ -525,32 +525,15 @@ public sealed class AiAgentService(
         return sb.ToString();
     }
 
-    /// <summary>
-    /// Builds XML-formatted channel history from the buffer, excluding the trigger message.
-    /// Returns null if no history exists.
-    /// </summary>
     private string? BuildChannelHistoryXml(ITextChannel channel, ulong triggerMessageId)
     {
         if (!_channelBuffers.TryGetValue(channel.Id, out var buffer))
             return null;
 
-        var snapshots = buffer.GetMessages();
-        if (snapshots.Length == 0)
-            return null;
-
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"<channel_history channel_id=\"{channel.Id}\" channel_name=\"{PromptSanitizer.Sanitize(channel.Name)}\">");
-
-        foreach (var s in snapshots)
-        {
-            if (s.MessageId == triggerMessageId)
-                continue;
-
-            sb.AppendLine($"<msg id=\"{s.MessageId}\" author=\"{s.AuthorName}\" author_id=\"{s.AuthorId}\" time=\"{s.Timestamp.ToUnixTimeSeconds()}\">{s.Content}</msg>");
-        }
-
-        sb.Append("</channel_history>");
-        return sb.ToString();
+        return buffer.BuildHistoryXml(
+            channel.Id,
+            PromptSanitizer.Sanitize(channel.Name),
+            triggerMessageId);
     }
 
     /// <summary>

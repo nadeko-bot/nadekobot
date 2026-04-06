@@ -1415,6 +1415,10 @@ namespace NadekoBot.Migrations.PostgreSql
                         .HasColumnType("numeric(20,0)")
                         .HasColumnName("guildid");
 
+                    b.Property<int>("Action")
+                        .HasColumnType("integer")
+                        .HasColumnName("action");
+
                     b.Property<decimal>("ChannelId")
                         .HasColumnType("numeric(20,0)")
                         .HasColumnName("channelid");

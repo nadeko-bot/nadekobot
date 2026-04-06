@@ -18,7 +18,7 @@ ar:
     إذا أرسل مستخدم {0} رسائل متطابقة متتالية، سأقوم بـ {1}.
         __القنوات المتجاهلة__: {2}
   honeypot_off: تم تعطيل مصيدة العسل.
-  honeypot_on: تم تفعيل مصيدة العسل في هذه القناة.
+  honeypot_on: 'تم تفعيل مصيدة العسل في هذه القناة. الإجراء: **{0}**'
 
 de-DE:
   anti_alt_status: |-
@@ -40,7 +40,7 @@ de-DE:
     Wenn ein Nutzer {0} gleiche Nachrichten in Folge schickt, werde ich ihn {1}.
     __IgnorierteKanäle__: {2}
   honeypot_off: Honeypot deaktiviert.
-  honeypot_on: Honeypot in diesem Kanal aktiviert.
+  honeypot_on: 'Honeypot in diesem Kanal aktiviert. Aktion: **{0}**'
 
 es-ES:
   anti_alt_status: |-
@@ -62,7 +62,7 @@ es-ES:
     Si un usuario publica {0} mensajes iguales seguidos, voy a: {1}.
      __IgnoredChannels__: {2}
   honeypot_off: Honeypot desactivado.
-  honeypot_on: Honeypot activado en este canal.
+  honeypot_on: 'Honeypot activado en este canal. Acción: **{0}**'
 
 fr-FR:
   anti_alt_status: |-
@@ -84,7 +84,7 @@ fr-FR:
     Si un utilisateur publie {0} messages identiques à la fois, il sera {1}.
         __Salons Ignorés__: {2}
   honeypot_off: Honeypot désactivé.
-  honeypot_on: Honeypot activé sur ce salon.
+  honeypot_on: 'Honeypot activé sur ce salon. Action : **{0}**'
 
 id-ID:
   anti_alt_status: |-
@@ -106,7 +106,7 @@ id-ID:
     Jika pengguna mengirim {0} pesan yang sama berturut-turut, saya akan {1} mereka.
         __Channel yang Diabaikan__: {2}
   honeypot_off: Honeypot dinonaktifkan.
-  honeypot_on: Honeypot diaktifkan di channel ini.
+  honeypot_on: 'Honeypot diaktifkan di channel ini. Tindakan: **{0}**'
 
 ja-JP:
   anti_alt_status: |-
@@ -128,7 +128,7 @@ ja-JP:
     ユーザーが連続して同じメッセージを{0}個投稿した場合は、ユーザーに対し{1}を行います。
      __例外設定されているチャンネル__: {2}
   honeypot_off: ハニーポットが無効になりました。
-  honeypot_on: このチャンネルでハニーポットが有効になりました。
+  honeypot_on: 'このチャンネルでハニーポットが有効になりました。アクション: **{0}**'
 
 ko-KR:
   anti_alt_status: |-
@@ -150,7 +150,7 @@ ko-KR:
     유저가 같은 메시지를 연속 {0}번 보내면 {1} 조치를 취할게요.
         __무시된 채널__: {2}
   honeypot_off: 허니팟이 비활성화되었습니다.
-  honeypot_on: 이 채널에서 허니팟이 활성화되었습니다.
+  honeypot_on: '이 채널에서 허니팟이 활성화되었습니다. 조치: **{0}**'
 
 pl-PL:
   anti_alt_status: |-
@@ -172,7 +172,7 @@ pl-PL:
     Jeśli użytkownik wyśle {0} takich samych wiadomości z rzędu, zastosuję wobec niego {1}.
         __Ignorowane kanały__: {2}
   honeypot_off: Honeypot wyłączony.
-  honeypot_on: Honeypot włączony na tym kanale.
+  honeypot_on: 'Honeypot włączony na tym kanale. Akcja: **{0}**'
 
 pt-BR:
   anti_alt_status: |-
@@ -194,7 +194,7 @@ pt-BR:
     Se um usuário postar {0} mensagens iguais seguidas, aplicarei um {1}.
          __IgnoredChannels__: {2}
   honeypot_off: Honeypot desativado.
-  honeypot_on: Honeypot ativado neste canal.
+  honeypot_on: 'Honeypot ativado neste canal. Ação: **{0}**'
 
 ru-RU:
   anti_alt_status: |-
@@ -214,7 +214,7 @@ ru-RU:
   spam_not_ignore: '{0} больше не будет игнорировать этот канал.'
   spam_stats: 'Если пользователь публикует {0} одинаковых сообщений подряд, я {1} их. __Игнорируемые каналы__: {2}'
   honeypot_off: Ловушка отключена.
-  honeypot_on: Ловушка включена в этом канале.
+  honeypot_on: 'Ловушка включена в этом канале. Действие: **{0}**'
 
 sr-Cyrl-RS:
   anti_alt_status: |-
@@ -236,7 +236,7 @@ sr-Cyrl-RS:
     Ако корисник пошаље {0} истих порука заредом, ја ћу им применити {1}.
         __Игнорисани канали__: {2}
   honeypot_off: Honeypot искључен.
-  honeypot_on: Honeypot укључен на овом каналу.
+  honeypot_on: 'Honeypot укључен на овом каналу. Акција: **{0}**'
 
 tr-TR:
   anti_alt_status: |-
@@ -258,7 +258,7 @@ tr-TR:
     Bir kullanıcı üst üste {0} aynı mesajı gönderirse, onu {1} edeceğim.
         __Görmezden Gelinen Kanallar__: {2}
   honeypot_off: Honeypot devre dışı bırakıldı.
-  honeypot_on: Bu kanalda honeypot etkinleştirildi.
+  honeypot_on: 'Bu kanalda honeypot etkinleştirildi. Eylem: **{0}**'
 
 ts-TS:
   anti_alt_status: |-
@@ -280,7 +280,7 @@ ts-TS:
     If a user posts {0} same messages in a row, I will {1} them.
         __IgnoredChannels__: {2}
   honeypot_off: Honeypot disabled.
-  honeypot_on: Honeypot enabled on this channel. The trap is set.
+  honeypot_on: 'Honeypot enabled on this channel. Action: **{0}**... the trap is set.'
 
 uk-UA:
   anti_alt_status: |-
@@ -302,7 +302,7 @@ uk-UA:
     Якщо користувач надсилає {0} однакових повідомлень підряд, я застосую до нього {1}.
         __Ігноровані канали__: {2}
   honeypot_off: Пастку вимкнено.
-  honeypot_on: Пастку увімкнено в цьому каналі.
+  honeypot_on: 'Пастку увімкнено в цьому каналі. Дія: **{0}**'
 
 vi-VN:
   anti_alt_status: |-
@@ -324,7 +324,7 @@ vi-VN:
     Nếu người dùng gửi {0} tin nhắn giống nhau liên tiếp, tôi sẽ {1} họ.
         __Kênh bị bỏ qua__: {2}
   honeypot_off: Đã tắt honeypot.
-  honeypot_on: Đã bật honeypot trên kênh này.
+  honeypot_on: 'Đã bật honeypot trên kênh này. Hành động: **{0}**'
 
 zh-CN:
   anti_alt_status: |-
@@ -346,4 +346,4 @@ zh-CN:
     如果一個使用者連需傳送 {0} 次相同的訊息，我會把他們 {1}
     __忽略的頻道__：{2}
   honeypot_off: 蜜罐已停用。
-  honeypot_on: 蜜罐已在此頻道啟用。
+  honeypot_on: '蜜罐已在此频道启用。操作: **{0}**'

@@ -149,14 +149,18 @@ antispamignore:
   params:
     - {}
 honeypot:
-  desc: >-
-    Toggles honeypot on the current channel.
+  desc: |-
+    Toggles honeypot on the current channel (softban by default), or sets a specific action.
 
-    Anyone sending a message in this channel will be soft banned. (Banned and
-    then unbanned)
+    Anyone sending a message in this channel will be punished with the configured action.
+    Softban bans and immediately unbans the user. Ban permanently bans the user.
 
     This is useful for automatically getting rid of spam bots.
   ex:
     - ''
+    - 'ban'
+    - 'softban'
   params:
     - {}
+    - action:
+        desc: "The punishment action to apply. Available: softban, ban."

@@ -5,7 +5,13 @@
 
 ## TBD
 
--
+### Added
+
+- `.honeypot` now supports punishment modes: `.honeypot ban` for permanent ban, `.honeypot softban` (default) for ban + unban
+
+### Fixed
+
+- AI agent channel history no longer breaks when messages contain Discord emojis, mentions, or other angle-bracket markup
 
 ## [7.1.22] - 05.04.2026
 

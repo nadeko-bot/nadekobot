@@ -15,6 +15,10 @@ public sealed class DummyLogCommandService : ILogCommandService
     {
     }
 
+    public void AddUnbanIgnore(ulong guildId, ulong userId)
+    {
+    }
+
     public Task LogServer(ulong guildId, ulong channelId, bool actionValue)
         => Task.CompletedTask;
 

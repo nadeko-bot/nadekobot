@@ -308,9 +308,19 @@ public partial class Administration
             var enabled = await honeyPotService.ToggleHoneypotChannel(ctx.Guild.Id, ctx.Channel.Id);
 
             if (enabled)
-                await Response().Confirm(strs.honeypot_on).SendAsync();
+                await Response().Confirm(strs.honeypot_on(HoneypotAction.Softban)).SendAsync();
             else
                 await Response().Confirm(strs.honeypot_off).SendAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        public async Task Honeypot(HoneypotAction action)
+        {
+            await honeyPotService.SetHoneypotChannel(ctx.Guild.Id, ctx.Channel.Id, action);
+            await Response().Confirm(strs.honeypot_on(action)).SendAsync();
         }
     }
 }

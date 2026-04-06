@@ -541,7 +541,8 @@ namespace NadekoBot.Migrations.PostgreSql
                 columns: table => new
                 {
                     guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                    channelid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    action = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

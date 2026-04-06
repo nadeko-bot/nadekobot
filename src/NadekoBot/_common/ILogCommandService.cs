@@ -6,6 +6,7 @@ public interface ILogCommandService
 {
     void AddDeleteIgnore(ulong xId);
     void AddBanIgnore(ulong guildId, ulong userId);
+    void AddUnbanIgnore(ulong guildId, ulong userId);
     Task LogServer(ulong guildId, ulong channelId, bool actionValue);
     bool LogIgnore(ulong guildId, ulong itemId, IgnoredItemType itemType);
     IReadOnlyList<LogIgnore> GetLogIgnores(ulong guildId);

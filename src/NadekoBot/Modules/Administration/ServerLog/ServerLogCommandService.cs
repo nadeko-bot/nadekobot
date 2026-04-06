@@ -349,6 +349,9 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     public void AddBanIgnore(ulong guildId, ulong userId)
     {
         _ignoreBanIds.Add((guildId, userId));
+    }
+    public void AddUnbanIgnore(ulong guildId, ulong userId)
+    {
         _ignoreUnbanIds.Add((guildId, userId));
     }
 

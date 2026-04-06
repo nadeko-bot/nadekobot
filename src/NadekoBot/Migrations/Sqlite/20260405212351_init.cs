@@ -542,7 +542,8 @@ namespace NadekoBot.Migrations.Sqlite
                 {
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false)
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Action = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
