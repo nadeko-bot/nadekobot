@@ -1,4 +1,5 @@
-﻿using NadekoBot.Modules.Patronage;
+﻿using System.Text;
+using NadekoBot.Modules.Patronage;
 
 namespace NadekoBot.Modules.Help;
 
@@ -26,6 +27,46 @@ public partial class Help
         [OwnerOnly]
         public Task Patron(IUser user)
             => InternalPatron(user);
+
+        [Cmd]
+        [OwnerOnly]
+        public async Task Patrons()
+        {
+            if (!_pConf.Data.IsEnabled)
+            {
+                await Response().Error(strs.patron_not_enabled).SendAsync();
+                return;
+            }
+
+            var grouped = await _service.GetActivePatronsByTierAsync();
+
+            if (grouped.Count == 0)
+            {
+                await Response().Error(strs.patrons_none).SendAsync();
+                return;
+            }
+
+            var sb = new StringBuilder();
+            foreach (var (tier, patrons) in grouped)
+            {
+                sb.AppendLine($"**{tier.ToFullName()}**");
+                foreach (var (userId, username) in patrons)
+                {
+                    var name = username ?? userId.ToString();
+                    sb.AppendLine($"**{name}**");
+                    sb.AppendLine($"\U0001f194 `{userId}`");
+                }
+
+                sb.AppendLine();
+            }
+
+            var eb = CreateEmbed()
+                .WithOkColor()
+                .WithTitle(GetText(strs.patrons_title))
+                .WithDescription(sb.ToString());
+
+            await Response().Embed(eb).SendAsync();
+        }
 
         [Cmd]
         [Priority(0)]

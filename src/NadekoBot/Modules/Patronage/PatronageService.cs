@@ -236,6 +236,49 @@ public sealed class PatronageService
         return PatronUserToPatron(max);
     }
 
+    public async Task<IReadOnlyList<(PatronTier Tier, IReadOnlyList<(ulong UserId, string? Username)> Patrons)>> GetActivePatronsByTierAsync()
+    {
+        await using var ctx = _db.GetDbContext();
+
+        var patrons = await ctx.GetTable<PatronUser>()
+            .Where(x => x.ValidThru > DateTime.UtcNow)
+            .LeftJoin(ctx.GetTable<DiscordUser>(),
+                (p, du) => p.UserId == du.UserId,
+                (p, du) => new
+                {
+                    p.UserId,
+                    Username = du.Username,
+                    p.AmountCents,
+                    p.ValidThru,
+                })
+            .OrderByDescending(x => x.AmountCents)
+            .ThenBy(x => x.UserId)
+            .ToListAsyncLinqToDB();
+
+        return patrons
+            .GroupBy(x => CalculateTierFromCents(x.AmountCents))
+            .Where(static g => g.Key != PatronTier.None)
+            .OrderByDescending(static g => g.Key)
+            .Select(static g => (
+                Tier: g.Key,
+                Patrons: (IReadOnlyList<(ulong UserId, string? Username)>)g
+                    .Select(static x => (x.UserId, x.Username))
+                    .ToList()))
+            .ToList();
+    }
+
+    private static PatronTier CalculateTierFromCents(int amountCents)
+        => amountCents switch
+        {
+            >= 10_000 => PatronTier.C,
+            >= 5_000 => PatronTier.L,
+            >= 2_000 => PatronTier.XX,
+            >= 1_000 => PatronTier.X,
+            >= 500 => PatronTier.V,
+            >= 100 => PatronTier.I,
+            _ => PatronTier.None,
+        };
+
     private Func<string, ulong, TypedKey<int>> Limitkey
         => (name, userId) => new($"patron_limit:{userId}:{name}");
 
@@ -302,16 +345,7 @@ public sealed class PatronageService
         if (user.ValidThru.IsBeforeToday())
             return PatronTier.None;
 
-        return user.AmountCents switch
-        {
-            >= 10_000 => PatronTier.C,
-            >= 5_000 => PatronTier.L,
-            >= 2_000 => PatronTier.XX,
-            >= 1_000 => PatronTier.X,
-            >= 500 => PatronTier.V,
-            >= 100 => PatronTier.I,
-            _ => 0,
-        };
+        return CalculateTierFromCents(user.AmountCents);
     }
 
     public int PercentBonus(Patron? maybePatron)

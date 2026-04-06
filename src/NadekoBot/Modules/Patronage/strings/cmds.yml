@@ -8,6 +8,12 @@ patron:
     - {}
     - user:
         desc: The ID or handle of the user whose patronage status is being checked.
+patrons:
+  desc: "Lists all active patrons grouped by tier. Owner only."
+  ex:
+    - ''
+  params:
+    - {}
 patronmessage:
   desc: |-
     Sends a message to all patrons of the specified tier and higher.

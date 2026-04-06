@@ -1,5 +1,7 @@
 patron:
   - patron
+patrons:
+  - patrons
 patronmessage:
   - patronmessage
   - patronmsg

@@ -4,5 +4,7 @@ patron_msg_sent: >-
   Done sending messages to patrons at and above tier {1}. {1} successfully sent
   and {2} failed.
 patron_not_enabled: Patron system is disabled.
+patrons_none: There are no active patrons.
+patrons_title: Active Patrons
 pledge: Pledge
 tier: Tier
