@@ -18,6 +18,9 @@ public sealed class AiAgentSession(
         PropertyNameCaseInsensitive = true
     };
 
+    private static readonly JsonElement _ephemeralCacheControl =
+        JsonDocument.Parse("""{"type":"ephemeral"}""").RootElement.Clone();
+
     /// <summary>
     /// Run the agent loop until the LLM produces a final text response or the step limit is hit
     /// </summary>
@@ -68,7 +71,8 @@ public sealed class AiAgentSession(
                 Messages = messages,
                 Tools = toolSchemas.Count > 0 ? toolSchemas.ToList() : null,
                 MaxTokens = config.MaxTokens,
-                Temperature = config.Temperature
+                Temperature = config.Temperature,
+                CacheControl = _ephemeralCacheControl
             };
 
             var response = await CallLlmAsync(config, request, ct);

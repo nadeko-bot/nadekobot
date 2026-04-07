@@ -13,6 +13,22 @@ namespace NadekoBot.Migrations.PostgreSql
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "aiagentguildskill",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guildid = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    instruction = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    isenabled = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_aiagentguildskill", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "antialtsetting",
                 columns: table => new
                 {
@@ -1865,6 +1881,17 @@ namespace NadekoBot.Migrations.PostgreSql
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_aiagentguildskill_guildid",
+                table: "aiagentguildskill",
+                column: "guildid");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_aiagentguildskill_guildid_name",
+                table: "aiagentguildskill",
+                columns: new[] { "guildid", "name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_antialtsetting_guildid",
                 table: "antialtsetting",
                 column: "guildid",
@@ -2532,6 +2559,9 @@ namespace NadekoBot.Migrations.PostgreSql
             migrationBuilder.DropForeignKey(
                 name: "fk_discorduser_clubs_clubid",
                 table: "discorduser");
+
+            migrationBuilder.DropTable(
+                name: "aiagentguildskill");
 
             migrationBuilder.DropTable(
                 name: "antialtsetting");

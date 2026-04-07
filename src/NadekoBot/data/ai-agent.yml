@@ -1,12 +1,16 @@
 # DO NOT CHANGE
-version: 3
+version: 4
 # Whether the AI agent feature is enabled. Default false
-enabled: false
+enabled: true
 # Base URL for the OpenAI-compatible API.
 # DO NOT add /v1/chat/completions suffix.
 apiUrl: https://openrouter.ai/api
 # Which model to use for the agent. Must support tool/function calling.
 modelName: openai/gpt-5.4
+# Optional list of model IDs for providers that support fallback routing (e.g. OpenRouter).
+# If set, this is sent as "models" instead of "model" in the request body.
+# Example: ["openai/gpt-5.4", "anthropic/claude-opus-4", "google/gemini-3.1-pro"]
+models: []
 # Maximum number of tool calls the agent can make per invocation. Default 10
 maxToolCalls: 10
 # Maximum tokens for LLM responses. Default 2048
@@ -56,3 +60,8 @@ memoryIdleExpiryMinutes: 30
 nameTriggerEnabled: true
 # Seconds after an agent response during which the user's messages go directly to the agent. Default 120
 followUpWindowSeconds: 120
+# Custom HTTP headers sent with every LLM request.
+# Useful for provider-specific headers like X-OpenRouter-Title.
+# Example: { "X-OpenRouter-Title": "Nadeko" }
+customHeaders:
+  X-OpenRouter-Title: Nadeko

@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations.Sqlite
 {
     [DbContext(typeof(SqliteContext))]
-    [Migration("20260405212351_init")]
+    [Migration("20260407082124_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -19,6 +19,38 @@ namespace NadekoBot.Migrations.Sqlite
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.1");
+
+            modelBuilder.Entity("NadekoBot.Db.Models.AiAgentGuildSkill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Instruction")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
+
+                    b.HasIndex("GuildId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("AiAgentGuildSkill");
+                });
 
             modelBuilder.Entity("NadekoBot.Db.Models.AntiAltSetting", b =>
                 {

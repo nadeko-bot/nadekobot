@@ -28,6 +28,10 @@ public sealed class AgentChatRequest
 
     [JsonPropertyName("max_tokens")]
     public int MaxTokens { get; init; } = 2048;
+
+    [JsonPropertyName("cache_control")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public JsonElement? CacheControl { get; init; }
 }
 
 /// <summary>

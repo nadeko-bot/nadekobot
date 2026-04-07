@@ -16,3 +16,41 @@ agentcancel:
     - ''
   params:
     - { }
+agentskilladd:
+  desc: |-
+    Adds a named skill to the AI agent for this server.
+    Skills are custom instructions that get included in every agent interaction.
+    Maximum 10 skills per server, 1000 characters per instruction.
+  ex:
+    - 'moderator Always enforce the server rules strictly and warn users before taking action'
+    - 'greeter Welcome new users warmly and point them to the #rules channel'
+  params:
+    - name:
+        desc: "Short name for the skill"
+      instruction:
+        desc: "The instruction text for the agent to follow"
+agentskillremove:
+  desc: |-
+    Permanently removes a skill from the AI agent for this server.
+  ex:
+    - 'moderator'
+  params:
+    - name:
+        desc: "Name of the skill to remove"
+agentskilltoggle:
+  desc: |-
+    Enables or disables a skill without removing it.
+    Disabled skills are not included in agent interactions.
+  ex:
+    - 'moderator'
+  params:
+    - name:
+        desc: "Name of the skill to toggle"
+agentskilllist:
+  desc: |-
+    Lists all configured AI agent skills for this server.
+    Shows each skill's name, status, and a preview of the instruction.
+  ex:
+    - ''
+  params:
+    - { }

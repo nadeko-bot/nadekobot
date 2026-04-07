@@ -2,20 +2,24 @@
 
 *a,c,f,r,o,d*
 
+## [7.1.23] - TBD
 
-## TBD
+## [7.1.22] - 07.04.2026
 
 ### Added
 
-- Custom HTTP headers support in AI agent config (e.g. `X-OpenRouter-Title`)
-- `models` fallback list in AI agent config for providers like OpenRouter that support multi-model routing
-    - `model` takes precedence
+- Bunch of ai agent stuff
+    - Custom HTTP headers support in AI agent config (e.g. `X-OpenRouter-Title`)
+    - `models` fallback list of models - `model` takes precedence
+- Per-server AI agent skills: named, toggleable instruction slots that guide agent behavior
+  - `.agentskilladd`, `.agentskillremove`, `.agentskilltoggle`, `.agentskilllist` (admin-only)
 - `.patrons` owner-only command to list all active patrons grouped by tier
 - `.honeypot` now supports punishment modes: `.honeypot ban` for permanent ban, `.honeypot softban` (default) for ban + unban
 
 ### Fixed
 
 - AI agent channel history no longer breaks when messages contain Discord emojis, mentions, or other angle-bracket markup
+- Music queue and now-playing embeds no longer break when video titles contain markdown characters (`*`, `_`, `~`, etc.)
 
 ## [7.1.22] - 05.04.2026
 

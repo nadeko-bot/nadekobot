@@ -775,9 +775,11 @@
       "Aliases": [
         ".honeypot"
       ],
-      "Description": "Toggles honeypot on the current channel.\nAnyone sending a message in this channel will be soft banned. (Banned and then unbanned)\nThis is useful for automatically getting rid of spam bots.",
+      "Description": "Toggles honeypot on the current channel (softban by default), or sets a specific action.\n\nAnyone sending a message in this channel will be punished with the configured action.\nSoftban bans and immediately unbans the user. Ban permanently bans the user.\n\nThis is useful for automatically getting rid of spam bots.",
       "Usage": [
-        ".honeypot"
+        ".honeypot",
+        ".honeypot ban",
+        ".honeypot softban"
       ],
       "Submodule": "ProtectionCommands",
       "Module": "Administration",
@@ -3937,6 +3939,22 @@
       "Module": "Help",
       "Options": null,
       "Requirements": [
+        "Only Public Bot"
+      ]
+    },
+    {
+      "Aliases": [
+        ".patrons"
+      ],
+      "Description": "Lists all active patrons grouped by tier. Owner only.",
+      "Usage": [
+        ".patrons"
+      ],
+      "Submodule": "Patronage",
+      "Module": "Help",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
         "Only Public Bot"
       ]
     },
@@ -7177,6 +7195,76 @@
     },
     {
       "Aliases": [
+        ".agentskilladd",
+        ".aiskilladd",
+        ".aisa"
+      ],
+      "Description": "Adds a named skill to the AI agent for this server.\nSkills are custom instructions that get included in every agent interaction.\nMaximum 10 skills per server, 1000 characters per instruction.",
+      "Usage": [
+        ".agentskilladd moderator Always enforce the server rules strictly and warn users before taking action",
+        ".agentskilladd greeter Welcome new users warmly and point them to the #rules channel"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentskillremove",
+        ".aiskillremove",
+        ".aisr"
+      ],
+      "Description": "Permanently removes a skill from the AI agent for this server.",
+      "Usage": [
+        ".agentskillremove moderator"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentskilltoggle",
+        ".aiskilltoggle",
+        ".aist"
+      ],
+      "Description": "Enables or disables a skill without removing it.\nDisabled skills are not included in agent interactions.",
+      "Usage": [
+        ".agentskilltoggle moderator"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentskilllist",
+        ".aiskilllist",
+        ".aiskills",
+        ".aisl"
+      ],
+      "Description": "Lists all configured AI agent skills for this server.\nShows each skill's name, status, and a preview of the instruction.",
+      "Usage": [
+        ".agentskilllist"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".aliasesclear",
         ".aliasclear"
       ],
@@ -8443,7 +8531,7 @@
         ".ura",
         ".uradd"
       ],
-      "Description": "Assigns a role to a user that can later be modified by that user.",
+      "Description": "Assigns a role to a user and gives them ownership of it.\nThe role must already exist on the server. Once assigned, the user can freely customize the role's name, color, and icon without needing any special permissions.",
       "Usage": [
         ".userroleassign @User @Role"
       ],
@@ -8461,7 +8549,7 @@
         ".urdel",
         ".urrm"
       ],
-      "Description": "Removes a previously assigned role from a user.",
+      "Description": "Removes ownership of a previously assigned role from a user.\nYou can use the role ID instead of mentioning it, which is useful if the role has been deleted from the server.",
       "Usage": [
         ".userroleremove @User @Role",
         ".userroleremove @User 123456789012345678"
@@ -8478,7 +8566,7 @@
         ".userrolelist",
         ".url"
       ],
-      "Description": "Lists all user roles in the server, or for a specific user.",
+      "Description": "Lists all userrole assignments in the server.\nYou can optionally specify a user to only see their assignments.",
       "Usage": [
         ".userrolelist",
         ".userrolelist @User"
@@ -8495,7 +8583,7 @@
         ".userrolemy",
         ".urm"
       ],
-      "Description": "Lists all of the user roles assigned to you.",
+      "Description": "Lists all roles that have been assigned to you via .userroleassign.",
       "Usage": [
         ".userrolemy"
       ],
@@ -8509,7 +8597,7 @@
         ".userrolecolor",
         ".urc"
       ],
-      "Description": "Changes the color of your assigned role.",
+      "Description": "Changes the color of a role that has been assigned to you via .userroleassign.\nYou don't need any special permissions - just ownership of the role.",
       "Usage": [
         ".userrolecolor @Role #ff0000"
       ],
@@ -8523,7 +8611,7 @@
         ".userrolename",
         ".urn"
       ],
-      "Description": "Changes the name of your assigned role.",
+      "Description": "Changes the name of a role that has been assigned to you via .userroleassign.\nYou don't need any special permissions - just ownership of the role.",
       "Usage": [
         ".userrolename @Role New Role Name"
       ],
@@ -8537,7 +8625,7 @@
         ".userroleicon",
         ".uri"
       ],
-      "Description": "Changes the icon of your assigned role.",
+      "Description": "Changes the icon of a role that has been assigned to you via .userroleassign.\nYou don't need any special permissions - just ownership of the role.\nYou can provide either an image URL (png/jpeg/webp, max 256KB) or a server emoji.\nThe server must have a high enough boost level to support role icons.",
       "Usage": [
         ".userroleicon @Role :server_emoji_here:"
       ],

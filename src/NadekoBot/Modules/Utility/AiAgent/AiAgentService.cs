@@ -1,4 +1,8 @@
+using System.Collections.Immutable;
+using LinqToDB;
+using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
+using NadekoBot.Db.Models;
 using NadekoBot.Modules.Administration;
 using NadekoBot.Modules.Patronage;
 
@@ -17,16 +21,21 @@ public sealed class AiAgentService(
     DiscordSocketClient client,
     IMessageSenderService sender,
     IPatronageService patronageService,
-    PatronageConfig patronageConfig) : INService, IExecOnMessage, IExecNoCommand, IReadyExecutor
+    PatronageConfig patronageConfig,
+    DbService db) : INService, IExecOnMessage, IExecNoCommand, IReadyExecutor
 {
     private readonly ConcurrentDictionary<ulong, CancellationTokenSource> _activeSessions = new();
     private readonly ConcurrentDictionary<ulong, System.Collections.Concurrent.ConcurrentQueue<QueuedMessage>> _pendingMessages = new();
     private readonly ConcurrentDictionary<ulong, ChannelMessageBuffer> _channelBuffers = new();
     private readonly ConcurrentDictionary<ulong, (bool Allowed, DateTime ExpiresUtc)> _allowedCache = new();
+    private readonly ConcurrentDictionary<ulong, ImmutableArray<AiAgentGuildSkill>> _skillCache = new();
 
     private sealed record QueuedMessage(IGuild Guild, ITextChannel Channel, IUserMessage Message, string Text);
 
     private const int MAX_SNAPSHOT_CONTENT_LENGTH = 500;
+    public const int MAX_SKILLS_PER_GUILD = 10;
+    public const int MAX_SKILL_INSTRUCTION_LENGTH = 2000;
+    public const int MAX_SKILL_NAME_LENGTH = 50;
     private const string BOT_TOKEN = "<bot>";
     private static readonly string[] _namePrefixes = ["hey", "hi", "yo", "ok", "dear"];
 
@@ -39,10 +48,22 @@ public sealed class AiAgentService(
     /// <summary>
     /// Starts the background expiry loop for channel memory buffers and conversation windows
     /// </summary>
-    public Task OnReadyAsync()
+    public async Task OnReadyAsync()
     {
+        await LoadSkillCacheAsync();
         _ = Task.Run(RunMemoryExpiryLoopAsync);
-        return Task.CompletedTask;
+    }
+
+    private async Task LoadSkillCacheAsync()
+    {
+        var creds = credsProvider.GetCreds();
+        await using var ctx = db.GetDbContext();
+        var skills = await ctx.GetTable<AiAgentGuildSkill>()
+            .Where(x => Queries.GuildOnShard(x.GuildId, creds.TotalShards, client.ShardId))
+            .ToListAsyncLinqToDB();
+
+        foreach (var group in skills.GroupBy(x => x.GuildId))
+            _skillCache[group.Key] = group.ToImmutableArray();
     }
 
     /// <summary>
@@ -355,9 +376,10 @@ public sealed class AiAgentService(
 
             var systemPrompt = await BuildSystemPromptAsync(config, context);
             var channelHistory = BuildChannelHistoryXml(channel, message.Id);
+            var enrichedPrompt = BuildSkillPreamble(guild.Id, prompt);
 
             var result = await agentSession.RunAsync(
-                prompt,
+                enrichedPrompt,
                 context,
                 tools,
                 schemas,
@@ -581,6 +603,134 @@ public sealed class AiAgentService(
         var creds = credsProvider.GetCreds();
         return !string.IsNullOrWhiteSpace(creds.NadekoAiToken)
                || !string.IsNullOrWhiteSpace(creds.AiApiKey);
+    }
+
+    public async Task<bool> AddSkillAsync(ulong guildId, string name, string instruction)
+    {
+        name = name.ToLowerInvariant();
+
+        if (!_skillCache.TryGetValue(guildId, out var skills))
+            skills = [];
+
+        if (skills.Length >= MAX_SKILLS_PER_GUILD)
+            return false;
+
+        if (skills.Any(s => s.Name == name))
+            return false;
+
+        await using var ctx = db.GetDbContext();
+        var id = await ctx.GetTable<AiAgentGuildSkill>()
+            .InsertWithInt32IdentityAsync(() => new()
+            {
+                GuildId = guildId,
+                Name = name,
+                Instruction = instruction,
+                IsEnabled = true
+            });
+
+        var newSkill = new AiAgentGuildSkill
+        {
+            Id = id,
+            GuildId = guildId,
+            Name = name,
+            Instruction = instruction,
+            IsEnabled = true
+        };
+
+        _skillCache[guildId] = skills.Add(newSkill);
+        return true;
+    }
+
+    public async Task<bool> RemoveSkillAsync(ulong guildId, string name)
+    {
+        name = name.ToLowerInvariant();
+
+        await using var ctx = db.GetDbContext();
+        var deleted = await ctx.GetTable<AiAgentGuildSkill>()
+            .Where(x => x.GuildId == guildId && x.Name == name)
+            .DeleteAsync();
+
+        if (deleted == 0)
+            return false;
+
+        if (_skillCache.TryGetValue(guildId, out var skills))
+        {
+            var updated = skills.RemoveAll(s => s.Name == name);
+            if (updated.IsEmpty)
+                _skillCache.TryRemove(guildId, out _);
+            else
+                _skillCache[guildId] = updated;
+        }
+
+        return true;
+    }
+
+    public async Task<bool?> ToggleSkillAsync(ulong guildId, string name)
+    {
+        name = name.ToLowerInvariant();
+
+        await using var ctx = db.GetDbContext();
+        var results = await ctx.GetTable<AiAgentGuildSkill>()
+            .Where(x => x.GuildId == guildId && x.Name == name)
+            .Set(x => x.IsEnabled, x => !x.IsEnabled)
+            .UpdateWithOutputAsync((_, @new) => @new.IsEnabled);
+
+        if (results.Length == 0)
+            return null;
+
+        var newState = results[0];
+
+        if (_skillCache.TryGetValue(guildId, out var skills))
+        {
+            var builder = skills.ToBuilder();
+            for (var i = 0; i < builder.Count; i++)
+            {
+                if (builder[i].Name == name)
+                {
+                    builder[i] = new()
+                    {
+                        Id = builder[i].Id,
+                        GuildId = guildId,
+                        Name = name,
+                        Instruction = builder[i].Instruction,
+                        IsEnabled = newState
+                    };
+                    break;
+                }
+            }
+
+            _skillCache[guildId] = builder.ToImmutable();
+        }
+
+        return newState;
+    }
+
+    public IReadOnlyList<AiAgentGuildSkill> GetSkills(ulong guildId)
+    {
+        if (_skillCache.TryGetValue(guildId, out var skills))
+            return skills;
+
+        return [];
+    }
+
+    private string BuildSkillPreamble(ulong guildId, string prompt)
+    {
+        if (!_skillCache.TryGetValue(guildId, out var skills))
+            return prompt;
+
+        var enabled = skills.Where(static s => s.IsEnabled).ToList();
+        if (enabled.Count == 0)
+            return prompt;
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("[SERVER INSTRUCTIONS - You must follow these]");
+        foreach (var skill in enabled)
+            sb.AppendLine($"[{skill.Name}]: {skill.Instruction}");
+
+        sb.AppendLine();
+        sb.Append("User's message: ");
+        sb.Append(prompt);
+        return sb.ToString();
     }
 
     /// <summary>

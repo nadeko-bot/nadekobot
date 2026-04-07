@@ -12,6 +12,22 @@ namespace NadekoBot.Migrations.Sqlite
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AiAgentGuildSkill",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Instruction = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false),
+                    IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AiAgentGuildSkill", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AntiAltSetting",
                 columns: table => new
                 {
@@ -1868,6 +1884,17 @@ namespace NadekoBot.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AiAgentGuildSkill_GuildId",
+                table: "AiAgentGuildSkill",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AiAgentGuildSkill_GuildId_Name",
+                table: "AiAgentGuildSkill",
+                columns: new[] { "GuildId", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AntiAltSetting_GuildId",
                 table: "AntiAltSetting",
                 column: "GuildId",
@@ -2535,6 +2562,9 @@ namespace NadekoBot.Migrations.Sqlite
             migrationBuilder.DropForeignKey(
                 name: "FK_DiscordUser_Clubs_ClubId",
                 table: "DiscordUser");
+
+            migrationBuilder.DropTable(
+                name: "AiAgentGuildSkill");
 
             migrationBuilder.DropTable(
                 name: "AntiAltSetting");

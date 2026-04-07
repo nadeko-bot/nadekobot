@@ -5,3 +5,20 @@ agentcancel:
   - agentcancel
   - aicancel
   - aic
+agentskilladd:
+  - agentskilladd
+  - aiskilladd
+  - aisa
+agentskillremove:
+  - agentskillremove
+  - aiskillremove
+  - aisr
+agentskilltoggle:
+  - agentskilltoggle
+  - aiskilltoggle
+  - aist
+agentskilllist:
+  - agentskilllist
+  - aiskilllist
+  - aiskills
+  - aisl

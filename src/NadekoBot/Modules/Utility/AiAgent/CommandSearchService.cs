@@ -117,46 +117,54 @@ public sealed class CommandSearchService(
 
     private async Task WatchForChangesInternalAsync()
     {
+        await Task.Delay(1_000);
+        await TryReloadInternalAsync();
+
         using var timer = new PeriodicTimer(TimeSpan.FromMinutes(5));
         while (await timer.WaitForNextTickAsync())
         {
-            try
-            {
-                if (!File.Exists(COMMAND_LIST_PATH))
-                    continue;
+            await TryReloadInternalAsync();
+        }
+    }
 
-                var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
-                var cmdListHash = SHA256.HashData(cmdListBytes);
+    private async Task TryReloadInternalAsync()
+    {
+        try
+        {
+            if (!File.Exists(COMMAND_LIST_PATH))
+                return;
 
-                if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
-                    continue;
+            var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
+            var cmdListHash = SHA256.HashData(cmdListBytes);
 
-                Log.Information("CommandSearch: Detected commandlist.json change, reloading...");
+            if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
+                return;
 
-                await EnsureModelDownloadedAsync();
+            Log.Information("CommandSearch: Detected commandlist.json change, reloading...");
 
-                var result = await LoadAndEmbedInternalAsync();
-                if (result is null)
-                    continue;
+            await EnsureModelDownloadedAsync();
 
-                var (commands, embeddings, hash) = result.Value;
-                _commands = commands;
-                _embeddings = embeddings;
-                _currentHash = hash;
+            var result = await LoadAndEmbedInternalAsync();
+            if (result is null)
+                return;
 
-                if (!_headReady)
-                    LoadClassificationHead();
+            var (commands, embeddings, hash) = result.Value;
+            _commands = commands;
+            _embeddings = embeddings;
+            _currentHash = hash;
 
-                _ready = true;
+            if (!_headReady)
+                LoadClassificationHead();
 
-                Log.Information("CommandSearch: Reloaded {Count} commands", commands.Length);
+            _ready = true;
 
-                await pubSub.Pub(_reloadKey, true);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "CommandSearch: Error watching for commandlist.json changes");
-            }
+            Log.Information("CommandSearch: Reloaded {Count} commands", commands.Length);
+
+            await pubSub.Pub(_reloadKey, true);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "CommandSearch: Error watching for commandlist.json changes");
         }
     }
 

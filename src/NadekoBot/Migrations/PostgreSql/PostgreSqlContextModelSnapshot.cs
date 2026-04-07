@@ -22,6 +22,48 @@ namespace NadekoBot.Migrations.PostgreSql
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("NadekoBot.Db.Models.AiAgentGuildSkill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("GuildId")
+                        .HasColumnType("numeric(20,0)")
+                        .HasColumnName("guildid");
+
+                    b.Property<string>("Instruction")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("instruction");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean")
+                        .HasColumnName("isenabled");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_aiagentguildskill");
+
+                    b.HasIndex("GuildId")
+                        .HasDatabaseName("ix_aiagentguildskill_guildid");
+
+                    b.HasIndex("GuildId", "Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_aiagentguildskill_guildid_name");
+
+                    b.ToTable("aiagentguildskill", (string)null);
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.AntiAltSetting", b =>
                 {
                     b.Property<int>("Id")
