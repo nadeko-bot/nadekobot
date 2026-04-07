@@ -3,93 +3,253 @@ ar:
   agent_cancelled: تم إلغاء جلسة الوكيل الخاصة بك.
   agent_no_session: ليس لديك جلسة وكيل نشطة لإلغائها.
   agent_not_allowed: ليس لديك صلاحية استخدام الوكيل الذكي.
+  skill_added: 'تمت إضافة المهارة **{0}** وتفعيلها.'
+  skill_add_failed: 'فشل في إضافة المهارة **{0}**. قد تكون موجودة بالفعل أو أنك وصلت إلى الحد الأقصى وهو 10 مهارات.'
+  skill_removed: 'تمت إزالة المهارة **{0}**.'
+  skill_not_found: 'لم يتم العثور على المهارة **{0}**.'
+  skill_enabled: 'تم تفعيل المهارة **{0}**.'
+  skill_disabled: 'تم تعطيل المهارة **{0}**.'
+  skill_list_empty: لم يتم تكوين أي مهارات لهذا السيرفر.
+  skill_list_title: مهارات الوكيل
+  skill_name_too_long: يجب ألا يتجاوز اسم المهارة 50 حرفا.
+  skill_instruction_too_long: يجب ألا تتجاوز تعليمات المهارة 2000 حرف.
 
 de-DE:
   agent_no_query: Du musst einen Prompt für den KI-Agenten angeben.
   agent_cancelled: Deine Agenten-Sitzung wurde abgebrochen.
   agent_no_session: Du hast keine aktive Agenten-Sitzung zum Abbrechen.
   agent_not_allowed: Du hast keine Berechtigung, den KI-Agenten zu nutzen.
+  skill_added: 'Skill **{0}** wurde hinzugefügt und aktiviert.'
+  skill_add_failed: 'Skill **{0}** konnte nicht hinzugefügt werden. Er existiert möglicherweise bereits oder du hast das Limit von 10 Skills erreicht.'
+  skill_removed: 'Skill **{0}** wurde entfernt.'
+  skill_not_found: 'Skill **{0}** wurde nicht gefunden.'
+  skill_enabled: 'Skill **{0}** wurde aktiviert.'
+  skill_disabled: 'Skill **{0}** wurde deaktiviert.'
+  skill_list_empty: Für diesen Server wurden keine Skills konfiguriert.
+  skill_list_title: Agenten-Skills
+  skill_name_too_long: Der Skill-Name darf maximal 50 Zeichen lang sein.
+  skill_instruction_too_long: Die Skill-Anweisung darf maximal 2000 Zeichen lang sein.
 
 es-ES:
   agent_no_query: Debes proporcionar un prompt para el agente de IA.
   agent_cancelled: Tu sesión de agente ha sido cancelada.
   agent_no_session: No tienes una sesión de agente activa para cancelar.
   agent_not_allowed: No tienes permiso para usar el agente de IA.
+  skill_added: 'El skill **{0}** ha sido añadido y activado.'
+  skill_add_failed: 'No se pudo añadir el skill **{0}**. Puede que ya exista o hayas alcanzado el limite de 10 skills.'
+  skill_removed: 'El skill **{0}** ha sido eliminado.'
+  skill_not_found: 'No se encontro el skill **{0}**.'
+  skill_enabled: 'El skill **{0}** ha sido activado.'
+  skill_disabled: 'El skill **{0}** ha sido desactivado.'
+  skill_list_empty: No se han configurado skills para este servidor.
+  skill_list_title: Skills del Agente
+  skill_name_too_long: El nombre del skill debe tener 50 caracteres o menos.
+  skill_instruction_too_long: La instruccion del skill debe tener 2000 caracteres o menos.
 
 fr-FR:
   agent_no_query: Tu dois fournir une requête pour l'agent IA.
   agent_cancelled: Ta session d'agent a été annulée.
   agent_no_session: Tu n'as pas de session d'agent active à annuler.
   agent_not_allowed: Tu n'as pas la permission d'utiliser l'agent IA.
+  skill_added: 'La compétence **{0}** a été ajoutée et activée.'
+  skill_add_failed: 'Impossible d''ajouter la compétence **{0}**. Elle existe peut-être déjà ou tu as atteint la limite de 10 compétences.'
+  skill_removed: 'La compétence **{0}** a été supprimée.'
+  skill_not_found: 'La compétence **{0}** est introuvable.'
+  skill_enabled: 'La compétence **{0}** a été activée.'
+  skill_disabled: 'La compétence **{0}** a été désactivée.'
+  skill_list_empty: Aucune compétence n'a été configurée pour ce serveur.
+  skill_list_title: Compétences de l'agent
+  skill_name_too_long: Le nom de la compétence ne doit pas dépasser 50 caractères.
+  skill_instruction_too_long: L'instruction de la compétence ne doit pas dépasser 2000 caractères.
 
 id-ID:
   agent_no_query: Kamu harus memberikan prompt untuk agen AI.
   agent_cancelled: Sesi agenmu telah dibatalkan.
   agent_no_session: Kamu tidak memiliki sesi agen yang aktif untuk dibatalkan.
   agent_not_allowed: Kamu tidak memiliki izin untuk menggunakan agen AI.
+  skill_added: 'Skill **{0}** telah ditambahkan dan diaktifkan.'
+  skill_add_failed: 'Gagal menambahkan skill **{0}**. Mungkin sudah ada atau kamu sudah mencapai batas 10 skill.'
+  skill_removed: 'Skill **{0}** telah dihapus.'
+  skill_not_found: 'Skill **{0}** tidak ditemukan.'
+  skill_enabled: 'Skill **{0}** telah diaktifkan.'
+  skill_disabled: 'Skill **{0}** telah dinonaktifkan.'
+  skill_list_empty: Belum ada skill yang dikonfigurasi untuk server ini.
+  skill_list_title: Skill Agen
+  skill_name_too_long: Nama skill harus 50 karakter atau kurang.
+  skill_instruction_too_long: Instruksi skill harus 2000 karakter atau kurang.
 
 ja-JP:
   agent_no_query: AIエージェントにプロンプトを入力してください。
   agent_cancelled: エージェントセッションがキャンセルされました。
   agent_no_session: キャンセルするアクティブなエージェントセッションがありません。
   agent_not_allowed: AIエージェントを使用する権限がありません。
+  skill_added: 'スキル **{0}** が追加され、有効になりました。'
+  skill_add_failed: 'スキル **{0}** の追加に失敗しました。既に存在するか、上限の10個に達している可能性があります。'
+  skill_removed: 'スキル **{0}** が削除されました。'
+  skill_not_found: 'スキル **{0}** が見つかりませんでした。'
+  skill_enabled: 'スキル **{0}** が有効になりました。'
+  skill_disabled: 'スキル **{0}** が無効になりました。'
+  skill_list_empty: このサーバーにはスキルが設定されていません。
+  skill_list_title: エージェントスキル
+  skill_name_too_long: スキル名は50文字以下にしてください。
+  skill_instruction_too_long: スキルの指示は2000文字以下にしてください。
 
 ko-KR:
   agent_no_query: AI 에이전트에 프롬프트를 입력해야 합니다.
   agent_cancelled: 에이전트 세션이 취소되었습니다.
   agent_no_session: 취소할 활성 에이전트 세션이 없습니다.
   agent_not_allowed: AI 에이전트를 사용할 권한이 없습니다.
+  skill_added: '스킬 **{0}**이(가) 추가되고 활성화되었습니다.'
+  skill_add_failed: '스킬 **{0}** 추가에 실패했습니다. 이미 존재하거나 10개 제한에 도달했을 수 있습니다.'
+  skill_removed: '스킬 **{0}**이(가) 삭제되었습니다.'
+  skill_not_found: '스킬 **{0}**을(를) 찾을 수 없습니다.'
+  skill_enabled: '스킬 **{0}**이(가) 활성화되었습니다.'
+  skill_disabled: '스킬 **{0}**이(가) 비활성화되었습니다.'
+  skill_list_empty: 이 서버에 설정된 스킬이 없습니다.
+  skill_list_title: 에이전트 스킬
+  skill_name_too_long: 스킬 이름은 50자 이하여야 합니다.
+  skill_instruction_too_long: 스킬 지시는 2000자 이하여야 합니다.
 
 pl-PL:
   agent_no_query: Musisz podać zapytanie dla agenta AI.
   agent_cancelled: Twoja sesja agenta została anulowana.
   agent_no_session: Nie masz aktywnej sesji agenta do anulowania.
   agent_not_allowed: Nie masz uprawnień do korzystania z agenta AI.
+  skill_added: 'Umiejętność **{0}** została dodana i włączona.'
+  skill_add_failed: 'Nie udało się dodać umiejętności **{0}**. Możliwe, że już istnieje lub osiągnięto limit 10 umiejętności.'
+  skill_removed: 'Umiejętność **{0}** została usunięta.'
+  skill_not_found: 'Umiejętność **{0}** nie została znaleziona.'
+  skill_enabled: 'Umiejętność **{0}** została włączona.'
+  skill_disabled: 'Umiejętność **{0}** została wyłączona.'
+  skill_list_empty: Na tym serwerze nie skonfigurowano żadnych umiejętności.
+  skill_list_title: Umiejętności agenta
+  skill_name_too_long: Nazwa umiejętności nie może przekraczać 50 znaków.
+  skill_instruction_too_long: Instrukcja umiejętności nie może przekraczać 2000 znaków.
 
 pt-BR:
   agent_no_query: Você precisa fornecer um prompt para o agente de IA.
   agent_cancelled: Sua sessão de agente foi cancelada.
   agent_no_session: Você não tem uma sessão de agente ativa para cancelar.
   agent_not_allowed: Você não tem permissão para usar o agente de IA.
+  skill_added: 'A skill **{0}** foi adicionada e ativada.'
+  skill_add_failed: 'Falha ao adicionar a skill **{0}**. Ela pode já existir ou você atingiu o limite de 10 skills.'
+  skill_removed: 'A skill **{0}** foi removida.'
+  skill_not_found: 'A skill **{0}** não foi encontrada.'
+  skill_enabled: 'A skill **{0}** foi ativada.'
+  skill_disabled: 'A skill **{0}** foi desativada.'
+  skill_list_empty: Nenhuma skill foi configurada para este servidor.
+  skill_list_title: Skills do Agente
+  skill_name_too_long: O nome da skill deve ter no máximo 50 caracteres.
+  skill_instruction_too_long: A instrução da skill deve ter no máximo 2000 caracteres.
 
 ru-RU:
   agent_no_query: Вы должны указать запрос для ИИ-агента.
   agent_cancelled: Ваша сессия агента была отменена.
   agent_no_session: У вас нет активной сессии агента для отмены.
   agent_not_allowed: У вас нет прав на использование ИИ-агента.
+  skill_added: 'Навык **{0}** был добавлен и включен.'
+  skill_add_failed: 'Не удалось добавить навык **{0}**. Возможно, он уже существует или вы достигли лимита в 10 навыков.'
+  skill_removed: 'Навык **{0}** был удален.'
+  skill_not_found: 'Навык **{0}** не найден.'
+  skill_enabled: 'Навык **{0}** был включен.'
+  skill_disabled: 'Навык **{0}** был отключен.'
+  skill_list_empty: Для этого сервера не настроено ни одного навыка.
+  skill_list_title: Навыки агента
+  skill_name_too_long: Название навыка должно быть не длиннее 50 символов.
+  skill_instruction_too_long: Инструкция навыка должна быть не длиннее 2000 символов.
 
 sr-Cyrl-RS:
   agent_no_query: Морате да унесете упит за АИ агента.
   agent_cancelled: Ваша сесија агента је отказана.
   agent_no_session: Немате активну сесију агента за отказивање.
   agent_not_allowed: Немате дозволу да користите АИ агента.
+  skill_added: 'Вештина **{0}** је додата и омогућена.'
+  skill_add_failed: 'Није успело додавање вештине **{0}**. Можда већ постоји или сте достигли ограничење од 10 вештина.'
+  skill_removed: 'Вештина **{0}** је уклоњена.'
+  skill_not_found: 'Вештина **{0}** није пронађена.'
+  skill_enabled: 'Вештина **{0}** је омогућена.'
+  skill_disabled: 'Вештина **{0}** је онемогућена.'
+  skill_list_empty: Ниједна вештина није подешена за овај сервер.
+  skill_list_title: Вештине агента
+  skill_name_too_long: Назив вештине мора имати 50 или мање карактера.
+  skill_instruction_too_long: Упутство вештине мора имати 2000 или мање карактера.
 
 tr-TR:
   agent_no_query: Yapay zeka ajanına bir istem belirtmelisin.
   agent_cancelled: Ajan oturumun iptal edildi.
   agent_no_session: İptal edilecek aktif bir ajan oturumun yok.
   agent_not_allowed: Yapay zeka ajanını kullanma iznin yok.
+  skill_added: '**{0}** becerisi eklendi ve etkinleştirildi.'
+  skill_add_failed: '**{0}** becerisi eklenemedi. Zaten mevcut olabilir veya 10 beceri sınırına ulaşmış olabilirsin.'
+  skill_removed: '**{0}** becerisi kaldırıldı.'
+  skill_not_found: '**{0}** becerisi bulunamadı.'
+  skill_enabled: '**{0}** becerisi etkinleştirildi.'
+  skill_disabled: '**{0}** becerisi devre dışı bırakıldı.'
+  skill_list_empty: Bu sunucu için yapılandırılmış beceri yok.
+  skill_list_title: Ajan Becerileri
+  skill_name_too_long: Beceri adı 50 karakter veya daha kısa olmalı.
+  skill_instruction_too_long: Beceri talimatı 2000 karakter veya daha kısa olmalı.
 
 ts-TS:
   agent_no_query: You have to give the AI agent a prompt, you know!
   agent_cancelled: Fine, your agent session is cancelled. Hmph.
   agent_no_session: You don't even have an active agent session to cancel!
   agent_not_allowed: Hmph, you can't use the AI agent!
+  skill_added: 'Skill **{0}** has been added and enabled.'
+  skill_add_failed: 'Failed to add skill **{0}**. It might already exist or you hit the 10 skill limit. Pay attention!'
+  skill_removed: 'Skill **{0}** has been removed.'
+  skill_not_found: 'Skill **{0}** wasn''t found. Did you even type it right?'
+  skill_enabled: 'Skill **{0}** has been enabled.'
+  skill_disabled: 'Skill **{0}** has been disabled.'
+  skill_list_empty: No skills configured for this server. Nothing to show you.
+  skill_list_title: Agent Skills
+  skill_name_too_long: Skill name has to be 50 characters or less, b-baka!
+  skill_instruction_too_long: Skill instruction must be 2000 characters or less.
 
 uk-UA:
   agent_no_query: Ви повинні надати запит для ШІ-агента.
   agent_cancelled: Вашу сесію агента було скасовано.
   agent_no_session: У вас немає активної сесії агента для скасування.
   agent_not_allowed: У вас немає прав на використання ШІ-агента.
+  skill_added: 'Навичку **{0}** додано та увімкнено.'
+  skill_add_failed: 'Не вдалося додати навичку **{0}**. Можливо, вона вже існує або ви досягли ліміту в 10 навичок.'
+  skill_removed: 'Навичку **{0}** видалено.'
+  skill_not_found: 'Навичку **{0}** не знайдено.'
+  skill_enabled: 'Навичку **{0}** увімкнено.'
+  skill_disabled: 'Навичку **{0}** вимкнено.'
+  skill_list_empty: На цьому сервері не налаштовано жодної навички.
+  skill_list_title: Навички агента
+  skill_name_too_long: Назва навички повинна бути не довше 50 символів.
+  skill_instruction_too_long: Інструкція навички повинна бути не довше 2000 символів.
 
 vi-VN:
   agent_no_query: Bạn phải cung cấp một prompt cho tác nhân AI.
   agent_cancelled: Phiên làm việc với tác nhân của bạn đã bị hủy.
   agent_no_session: Bạn không có phiên tác nhân nào đang hoạt động để hủy.
   agent_not_allowed: Bạn không có quyền sử dụng tác nhân AI.
+  skill_added: 'Kỹ năng **{0}** đã được thêm và bật.'
+  skill_add_failed: 'Không thể thêm kỹ năng **{0}**. Có thể nó đã tồn tại hoặc bạn đã đạt giới hạn 10 kỹ năng.'
+  skill_removed: 'Kỹ năng **{0}** đã được xóa.'
+  skill_not_found: 'Không tìm thấy kỹ năng **{0}**.'
+  skill_enabled: 'Kỹ năng **{0}** đã được bật.'
+  skill_disabled: 'Kỹ năng **{0}** đã được tắt.'
+  skill_list_empty: Chưa có kỹ năng nào được cấu hình cho máy chủ này.
+  skill_list_title: Kỹ năng tác nhân
+  skill_name_too_long: Tên kỹ năng phải có 50 ký tự trở xuống.
+  skill_instruction_too_long: Hướng dẫn kỹ năng phải có 2000 ký tự trở xuống.
 
 zh-CN:
   agent_no_query: 你必须为 AI 代理提供一个提示。
   agent_cancelled: 你的代理会话已被取消。
   agent_no_session: 你没有可取消的活跃代理会话。
   agent_not_allowed: 你没有权限使用 AI 代理。
+  skill_added: '技能 **{0}** 已添加并启用。'
+  skill_add_failed: '添加技能 **{0}** 失败。它可能已存在，或者你已达到 10 个技能的上限。'
+  skill_removed: '技能 **{0}** 已被移除。'
+  skill_not_found: '未找到技能 **{0}**。'
+  skill_enabled: '技能 **{0}** 已启用。'
+  skill_disabled: '技能 **{0}** 已禁用。'
+  skill_list_empty: 此服务器尚未配置任何技能。
+  skill_list_title: 代理技能
+  skill_name_too_long: 技能名称不能超过 50 个字符。
+  skill_instruction_too_long: 技能指令不能超过 2000 个字符。
