@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 public sealed class AiAgentConfig
 {
     [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 4;
+    public int Version { get; set; } = 5;
 
     [Comment("Whether the AI agent feature is enabled. Default false")]
     public bool Enabled { get; set; } = false;
@@ -103,4 +103,11 @@ public sealed class AiAgentConfig
     {
         ["X-OpenRouter-Title"] = "Nadeko"
     };
+
+    [Comment("""
+             Reasoning effort level for models that support it (e.g. GPT-5.x, Claude, o-series).
+             Values: "none", "low", "medium", "high", "xhigh". Empty string to disable.
+             Lower values save output tokens on simple tool-calling tasks. Default "low"
+             """)]
+    public string ReasoningEffort { get; set; } = "low";
 }

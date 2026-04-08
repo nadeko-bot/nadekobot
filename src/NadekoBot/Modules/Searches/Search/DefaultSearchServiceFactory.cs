@@ -1,4 +1,6 @@
-﻿using NadekoBot.Modules.Searches.GoogleScrape;
+﻿using NadekoBot.Modules.Searches.Brave;
+using NadekoBot.Modules.Searches.DuckDuckGo;
+using NadekoBot.Modules.Searches.GoogleScrape;
 using NadekoBot.Modules.Searches.Youtube;
 
 namespace NadekoBot.Modules.Searches;
@@ -9,10 +11,11 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
     private readonly SearxSearchService _sss;
     private readonly YtDlpSearchService _ytdlp;
     private readonly GoogleSearchService _gss;
-
     private readonly YoutubeDataApiSearchService _ytdata;
     private readonly InvidiousYtSearchService _iYtSs;
     private readonly GoogleScrapeService _gscs;
+    private readonly BraveSearchService _brave;
+    private readonly DuckDuckGoScrapeService _ddg;
 
     public DefaultSearchServiceFactory(
         SearchesConfigService scs,
@@ -21,7 +24,9 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         SearxSearchService sss,
         YtDlpSearchService ytdlp,
         YoutubeDataApiSearchService ytdata,
-        InvidiousYtSearchService iYtSs)
+        InvidiousYtSearchService iYtSs,
+        BraveSearchService brave,
+        DuckDuckGoScrapeService ddg)
     {
         _scs = scs;
         _sss = sss;
@@ -29,8 +34,9 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         _gss = gss;
         _gscs = gscs;
         _iYtSs = iYtSs;
-
         _ytdata = ytdata;
+        _brave = brave;
+        _ddg = ddg;
     }
 
     public ISearchService GetSearchService(string? hint = null)
@@ -39,6 +45,8 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
             WebSearchEngine.Google => _gss,
             WebSearchEngine.Google_Scrape => _gscs,
             WebSearchEngine.Searx => _sss,
+            WebSearchEngine.Brave => _brave,
+            WebSearchEngine.DuckDuckGo => _ddg,
             _ => _gss
         };
 
@@ -47,6 +55,8 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         {
             ImgSearchEngine.Google => _gss,
             ImgSearchEngine.Searx => _sss,
+            ImgSearchEngine.Brave => _brave,
+            ImgSearchEngine.DuckDuckGo => _ddg,
             _ => _gss
         };
 

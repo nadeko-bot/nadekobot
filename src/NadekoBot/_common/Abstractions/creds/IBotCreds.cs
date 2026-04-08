@@ -30,6 +30,7 @@ public interface IBotCreds
     BotCacheImplemenation BotCache { get; set; }
     SeqConfig Seq { get; set; }
     string SteamApiKey { get; }
+    string BraveSearchApiKey { get; }
 }
 
 public interface IVotesSettings

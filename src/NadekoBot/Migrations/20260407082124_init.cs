@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace NadekoBot.Migrations.Sqlite
+namespace NadekoBot.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration

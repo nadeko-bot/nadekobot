@@ -164,6 +164,12 @@ public sealed class Creds : IBotCreds
     [Comment("""Official Steam api key.""")]
     public string SteamApiKey { get; set; }
 
+    [Comment("""
+             Brave Search API key. Register at https://api-dashboard.search.brave.com and create an API key.
+             Used for .search and .image commands when search engine is set to 'Brave' in searches.yml
+             """)]
+    public string BraveSearchApiKey { get; set; }
+
     public Creds()
     {
         Token = string.Empty;
@@ -191,23 +197,21 @@ public sealed class Creds : IBotCreds
 
         Seq = new();
         SteamApiKey = string.Empty;
+        BraveSearchApiKey = string.Empty;
     }
 
     public class DbOptions
         : IDbOptions
     {
         [Comment("""
-                 Database type. "sqlite", "mysql" and "postgresql" are supported.
+                 Database type. Only "sqlite" is supported.
                  Default is "sqlite"
                  """)]
         public string Type { get; set; }
 
         [Comment("""
                  Database connection string.
-                 You MUST change this if you're not using "sqlite" type.
                  Default is "Data Source=data/NadekoBot.db"
-                 Example for mysql: "Server=localhost;Port=3306;Uid=root;Pwd=my_super_secret_mysql_password;Database=nadeko"
-                 Example for postgresql: "Server=localhost;Port=5432;User Id=postgres;Password=my_super_secret_postgres_password;Database=nadeko;"
                  """)]
         public string ConnectionString { get; set; }
     }

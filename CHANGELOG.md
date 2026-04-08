@@ -2,12 +2,28 @@
 
 *a,c,f,r,o,d*
 
-## [7.1.23] - TBD
+## [7.1.24] - TBD
+
+## [7.1.23] - 10.04.2026
+
+### Changed
+
+- Local music track enqueue no longer spawns ffprobe per file; duration is resolved lazily when the track plays and cached in memory
+
+### Removed
+
+- PostgreSQL and MySQL database support. Existing PostgreSQL data is automatically migrated to SQLite on first startup after update
 
 ## [7.1.22] - 07.04.2026
 
+### Fixed
+
+- `.config` command could not get or set any camelCase properties (e.g. `webEngine`, `imgEngine`, `ytProvider`)
+
 ### Added
 
+- Brave Search provider for `.search` and `.image` commands (set `webSearchEngine: Brave` or `imgSearchEngine: Brave` in `searches.yml`, requires `braveSearchApiKey` in `creds.yml`)
+- DuckDuckGo scrape search provider for `.search` and `.image` commands (set `webSearchEngine: DuckDuckGo` or `imgSearchEngine: DuckDuckGo` in `searches.yml`, no API key needed)
 - Bunch of ai agent stuff
     - Custom HTTP headers support in AI agent config (e.g. `X-OpenRouter-Title`)
     - `models` fallback list of models - `model` takes precedence

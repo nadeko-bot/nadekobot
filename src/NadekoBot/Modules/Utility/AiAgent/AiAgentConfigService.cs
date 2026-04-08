@@ -69,6 +69,13 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             "Minutes of inactivity before channel memory expires",
             static val => val is >= 1 and <= 1440);
 
+        AddParsedProp("reasoning",
+            static c => c.ReasoningEffort,
+            static (c, v) => c.ReasoningEffort = v,
+            ConfigParsers.String,
+            ConfigPrinters.ToString,
+            "Reasoning effort level: none, low, medium, high, xhigh, or empty to disable");
+
         Migrate();
     }
 
@@ -95,6 +102,14 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             ModifyConfig(c =>
             {
                 c.Version = 4;
+            });
+        }
+
+        if (Data.Version < 5)
+        {
+            ModifyConfig(c =>
+            {
+                c.Version = 5;
             });
         }
     }

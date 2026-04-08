@@ -5,13 +5,15 @@ namespace NadekoBot.Modules.Searches;
 public sealed class SearchesConfig
 {
     [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 5;
+    public int Version { get; set; } = 6;
 
     [Comment("""
              Which engine should .search command
              'google_scrape' - default. Scrapes the webpage for results. May break. Requires no api keys.
              'google' - official google api. Requires googleApiKey and google.searchId set in creds.yml
              'searx' - requires at least one searx instance specified in the 'searxInstances' property below
+             'brave' - Brave Search API. Requires braveSearchApiKey set in creds.yml
+             'duckduckgo' - scrapes DuckDuckGo HTML results. Requires no api keys. May break.
              """)]
     public WebSearchEngine WebSearchEngine { get; set; } = WebSearchEngine.Google_Scrape;
 
@@ -19,6 +21,8 @@ public sealed class SearchesConfig
              Which engine should .image command use
              'google'- official google api. googleApiKey and google.imageSearchId set in creds.yml
              'searx' requires at least one searx instance specified in the 'searxInstances' property below
+             'brave' - Brave Search API. Requires braveSearchApiKey set in creds.yml
+             'duckduckgo' - scrapes DuckDuckGo image results. Requires no api keys. May break.
              """)]
     public ImgSearchEngine ImgSearchEngine { get; set; } = ImgSearchEngine.Google;
 

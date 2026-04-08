@@ -4,4 +4,6 @@ public enum ImgSearchEngine
 {
     Google,
     Searx,
+    Brave,
+    DuckDuckGo,
 }

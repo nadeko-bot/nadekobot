@@ -32,6 +32,7 @@ public sealed class MusicPlayer : IMusicPlayer
     private readonly IMusicQueue _queue;
     private readonly ITrackResolveProvider _trackResolveProvider;
     private readonly IYoutubeResolverFactory _ytResolverFactory;
+    private readonly ILocalTrackResolver _localTrackResolver;
     private volatile IVoiceProxy? _proxy;
     private readonly IGoogleApiService _googleApiService;
     private readonly AudioFileCacheService _audioFileCache;
@@ -46,6 +47,7 @@ public sealed class MusicPlayer : IMusicPlayer
         IMusicQueue queue,
         ITrackResolveProvider trackResolveProvider,
         IYoutubeResolverFactory ytResolverFactory,
+        ILocalTrackResolver localTrackResolver,
         IVoiceProxy? proxy,
         IGoogleApiService googleApiService,
         AudioFileCacheService audioFileCache,
@@ -55,6 +57,7 @@ public sealed class MusicPlayer : IMusicPlayer
         _queue = queue;
         _trackResolveProvider = trackResolveProvider;
         _ytResolverFactory = ytResolverFactory;
+        _localTrackResolver = localTrackResolver;
         _proxy = proxy;
         _googleApiService = googleApiService;
         _audioFileCache = audioFileCache;
@@ -237,7 +240,16 @@ public sealed class MusicPlayer : IMusicPlayer
     private async Task<string?> GetStreamSourceAsync(IQueuedTrackInfo track)
     {
         if (track.TrackInfo is SimpleTrackInfo sti)
+        {
+            if (sti.Platform == MusicPlatform.Local
+                && sti.Duration == TimeSpan.Zero
+                && sti.StreamUrl is not null)
+            {
+                sti.Duration = await _localTrackResolver.ResolveDurationAsync(sti.StreamUrl);
+            }
+
             return sti.StreamUrl;
+        }
 
         var trackId = track.TrackInfo.Id;
         var platform = track.Platform;

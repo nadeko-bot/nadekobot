@@ -62,11 +62,11 @@ public class SearchesConfigService : ConfigServiceBase<SearchesConfig>
             });
         }
 
-        if (Data.Version < 5)
+        if (Data.Version < 6)
         {
             ModifyConfig(c =>
             {
-                c.Version = 5;
+                c.Version = 6;
             });
         }
     }

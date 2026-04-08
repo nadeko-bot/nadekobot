@@ -17,7 +17,7 @@ public sealed class BotCredsProvider : IBotCredsProvider
 
 
     private readonly Creds _creds = new();
-    private readonly IConfigurationRoot _config;
+    private IConfigurationRoot _config;
 
 
     private readonly Lock _reloadLock = new();
@@ -72,6 +72,11 @@ public sealed class BotCredsProvider : IBotCredsProvider
     {
         lock (_reloadLock)
         {
+            _config = new ConfigurationBuilder()
+                .AddYamlFile(CredsPath, false, false)
+                .AddEnvironmentVariables("bot_")
+                .Build();
+
             _creds.OwnerIds.Clear();
             _config.Bind(_creds);
 

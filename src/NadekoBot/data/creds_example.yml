@@ -71,14 +71,11 @@ botCache: Memory
 redisOptions: localhost:6379,syncTimeout=30000,responseTimeout=30000,allowAdmin=true,password=
 # Database options. Don't change if you don't know what you're doing. Leave null for default values
 db:
-  # Database type. "sqlite", "mysql" and "postgresql" are supported.
+  # Database type. Only "sqlite" is supported.
   # Default is "sqlite"
   type: sqlite
   # Database connection string.
-  # You MUST change this if you're not using "sqlite" type.
   # Default is "Data Source=data/NadekoBot.db"
-  # Example for mysql: "Server=localhost;Port=3306;Uid=root;Pwd=my_super_secret_mysql_password;Database=nadeko"
-  # Example for postgresql: "Server=localhost;Port=5432;User Id=postgres;Password=my_super_secret_postgres_password;Database=nadeko;"
   connectionString: Data Source=data/NadekoBot.db
 # Address and port of the coordinator endpoint. Leave empty for default.
 # Change only if you've changed the coordinator address or port.

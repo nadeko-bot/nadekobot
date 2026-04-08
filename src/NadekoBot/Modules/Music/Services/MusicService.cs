@@ -153,6 +153,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         var mp = new MusicPlayer(queue,
             resolver,
             _ytResolver,
+            _localResolver,
             proxy,
             _googleApiService,
             _audioFileCache,

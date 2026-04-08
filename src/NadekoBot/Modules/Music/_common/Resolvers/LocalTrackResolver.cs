@@ -13,18 +13,39 @@ public sealed class LocalTrackResolver : ILocalTrackResolver
         ".ALAC", ".AIFF", ".MOV", ".FLV", ".M4V"
     }.ToFrozenSet(StringComparer.InvariantCultureIgnoreCase);
 
-    public async Task<ITrackInfo?> ResolveByQueryAsync(string query)
+    private readonly ConcurrentDictionary<string, TimeSpan> _durationCache = new(StringComparer.InvariantCultureIgnoreCase);
+
+    public Task<ITrackInfo?> ResolveByQueryAsync(string query)
     {
         if (!File.Exists(query))
-            return null;
+            return Task.FromResult<ITrackInfo?>(null);
 
-        var trackDuration = await Ffprobe.GetTrackDurationAsync(query);
-        return new SimpleTrackInfo(Path.GetFileNameWithoutExtension(query),
+        var fullPath = Path.GetFullPath(query);
+        _durationCache.TryGetValue(fullPath, out var cachedDuration);
+
+        ITrackInfo result = new SimpleTrackInfo(
+            Path.GetFileNameWithoutExtension(query),
             $"https://google.com?q={Uri.EscapeDataString(Path.GetFileNameWithoutExtension(query))}",
             "https://cdn.discordapp.com/attachments/155726317222887425/261850914783100928/1482522077_music.png",
-            trackDuration,
+            cachedDuration,
             MusicPlatform.Local,
-            $"\"{Path.GetFullPath(query)}\"");
+            $"\"{fullPath}\"");
+
+        return Task.FromResult<ITrackInfo?>(result);
+    }
+
+    public async Task<TimeSpan> ResolveDurationAsync(string path)
+    {
+        var fullPath = Path.GetFullPath(path.Replace("\"", ""));
+
+        if (_durationCache.TryGetValue(fullPath, out var cached))
+            return cached;
+
+        var duration = await Ffprobe.GetTrackDurationAsync(fullPath);
+        if (duration != TimeSpan.Zero)
+            _durationCache[fullPath] = duration;
+
+        return duration;
     }
 
     public async IAsyncEnumerable<ITrackInfo> ResolveDirectoryAsync(string dirPath)
@@ -41,7 +62,7 @@ public sealed class LocalTrackResolver : ILocalTrackResolver
         }
 
         var files = dir.EnumerateFiles("*", SearchOption.AllDirectories)
-                       .Where(x =>
+                       .Where(static x =>
                        {
                            if (!x.Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System)
                                && _musicExtensions.Contains(x.Extension))
@@ -63,7 +84,6 @@ public sealed class LocalTrackResolver : ILocalTrackResolver
         {
             var part = await chunk.Select(x => ResolveByQueryAsync(x.FullName)).WhenAll();
 
-            // nullable reference types being annoying
             foreach (var p in part)
             {
                 if (p is null)

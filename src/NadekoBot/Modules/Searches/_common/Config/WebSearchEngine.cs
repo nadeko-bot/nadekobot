@@ -6,4 +6,6 @@ public enum WebSearchEngine
     Google,
     Google_Scrape,
     Searx,
+    Brave,
+    DuckDuckGo,
 }

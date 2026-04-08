@@ -1,5 +1,5 @@
 # DO NOT CHANGE
-version: 4
+version: 5
 # Whether the AI agent feature is enabled. Default false
 enabled: true
 # Base URL for the OpenAI-compatible API.
@@ -65,3 +65,7 @@ followUpWindowSeconds: 120
 # Example: { "X-OpenRouter-Title": "Nadeko" }
 customHeaders:
   X-OpenRouter-Title: Nadeko
+# Reasoning effort level for models that support it (e.g. GPT-5.x, Claude, o-series).
+# Values: "none", "low", "medium", "high", "xhigh". Empty string to disable.
+# Lower values save output tokens on simple tool-calling tasks. Default "low"
+reasoningEffort: low

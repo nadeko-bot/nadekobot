@@ -89,9 +89,7 @@
         <PackageReference Include="linq2db.EntityFrameworkCore" Version="9.0.0" />
 
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.1" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
-
-        <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
+        <PackageReference Include="Npgsql" Version="9.0.3" />
 
         <!-- Used by stream notifications -->
         <PackageReference Include="TwitchLib.Api" Version="3.4.1" />

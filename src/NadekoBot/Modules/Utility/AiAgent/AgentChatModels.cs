@@ -32,6 +32,20 @@ public sealed class AgentChatRequest
     [JsonPropertyName("cache_control")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public JsonElement? CacheControl { get; init; }
+
+    [JsonPropertyName("reasoning")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public AgentReasoningConfig? Reasoning { get; init; }
+}
+
+public sealed class AgentReasoningConfig
+{
+    [JsonPropertyName("effort")]
+    public required string Effort { get; init; }
+
+    [JsonPropertyName("exclude")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public bool Exclude { get; init; }
 }
 
 /// <summary>

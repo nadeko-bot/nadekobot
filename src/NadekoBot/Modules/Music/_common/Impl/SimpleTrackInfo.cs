@@ -5,7 +5,7 @@ public sealed class SimpleTrackInfo : ITrackInfo
     public string Title { get; }
     public string Url { get; }
     public string Thumbnail { get; }
-    public TimeSpan Duration { get; }
+    public TimeSpan Duration { get; set; }
     public MusicPlatform Platform { get; }
     public string? StreamUrl { get; }
 
@@ -15,7 +15,7 @@ public sealed class SimpleTrackInfo : ITrackInfo
         string thumbnail,
         TimeSpan duration,
         MusicPlatform platform,
-        string streamUrl)
+        string? streamUrl = null)
     {
         Title = title;
         Url = url;

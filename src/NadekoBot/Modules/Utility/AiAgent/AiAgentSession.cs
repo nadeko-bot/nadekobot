@@ -5,10 +5,12 @@ using OneOf.Types;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-/// <summary>
-/// Executes the ReAct agent loop: prompt -> LLM -> tool calls -> results -> LLM -> repeat.
-/// Uses NadekoAiToken when available, otherwise falls back to AiApiKey with the configured ApiUrl.
-/// </summary>
+public readonly record struct AiProviderInfo(
+    string Url,
+    string AuthHeader,
+    string AuthValue,
+    bool SupportsOpenRouterExtensions);
+
 public sealed class AiAgentSession(
     IHttpClientFactory httpFactory,
     IBotCredsProvider credsProvider) : IAiAgentSession, INService
@@ -21,9 +23,6 @@ public sealed class AiAgentSession(
     private static readonly JsonElement _ephemeralCacheControl =
         JsonDocument.Parse("""{"type":"ephemeral"}""").RootElement.Clone();
 
-    /// <summary>
-    /// Run the agent loop until the LLM produces a final text response or the step limit is hit
-    /// </summary>
     public async Task<OneOf<AiAgentResult, Error<string>>> RunAsync(
         string userPrompt,
         AiToolContext context,
@@ -34,6 +33,13 @@ public sealed class AiAgentSession(
         string? channelHistory,
         CancellationToken ct = default)
     {
+        var provider = ResolveProviderInternal(config);
+
+        var reasoning = provider.SupportsOpenRouterExtensions
+                        && !string.IsNullOrWhiteSpace(config.ReasoningEffort)
+            ? new AgentReasoningConfig { Effort = config.ReasoningEffort, Exclude = true }
+            : null;
+
         var toolMap = tools.ToDictionary(t => t.Name);
         var messages = new List<AgentChatMessage>();
 
@@ -72,10 +78,11 @@ public sealed class AiAgentSession(
                 Tools = toolSchemas.Count > 0 ? toolSchemas.ToList() : null,
                 MaxTokens = config.MaxTokens,
                 Temperature = config.Temperature,
-                CacheControl = _ephemeralCacheControl
+                CacheControl = _ephemeralCacheControl,
+                Reasoning = reasoning
             };
 
-            var response = await CallLlmAsync(config, request, ct);
+            var response = await CallLlmInternalAsync(provider, config, request, ct);
             if (response is null)
                 return new Error<string>("Failed to get response from AI provider.");
 
@@ -167,25 +174,37 @@ public sealed class AiAgentSession(
         };
     }
 
-    private async Task<AgentChatResponse?> CallLlmAsync(
+    private AiProviderInfo ResolveProviderInternal(AiAgentConfig config)
+    {
+        var creds = credsProvider.GetCreds();
+
+        if (!string.IsNullOrWhiteSpace(creds.NadekoAiToken))
+        {
+            return new(
+                "https://nai.nadeko.bot/v1/chat/completions",
+                "x-auth-token",
+                creds.NadekoAiToken,
+                SupportsOpenRouterExtensions: true);
+        }
+
+        var isOpenRouter = config.ApiUrl
+            .Contains("openrouter", StringComparison.InvariantCultureIgnoreCase);
+
+        return new(
+            config.ApiUrl.TrimEnd('/') + "/v1/chat/completions",
+            "Authorization",
+            $"Bearer {creds.AiApiKey}",
+            SupportsOpenRouterExtensions: isOpenRouter);
+    }
+
+    private async Task<AgentChatResponse?> CallLlmInternalAsync(
+        AiProviderInfo provider,
         AiAgentConfig config,
         AgentChatRequest request,
         CancellationToken ct)
     {
         using var http = httpFactory.CreateClient();
-        var creds = credsProvider.GetCreds();
-
-        string url;
-        if (!string.IsNullOrWhiteSpace(creds.NadekoAiToken))
-        {
-            url = "https://nai.nadeko.bot/v1/chat/completions";
-            http.DefaultRequestHeaders.TryAddWithoutValidation("x-auth-token", creds.NadekoAiToken);
-        }
-        else
-        {
-            url = config.ApiUrl.TrimEnd('/') + "/v1/chat/completions";
-            http.DefaultRequestHeaders.Authorization = new("Bearer", creds.AiApiKey);
-        }
+        http.DefaultRequestHeaders.TryAddWithoutValidation(provider.AuthHeader, provider.AuthValue);
 
         if (config.CustomHeaders is { Count: > 0 } headers)
         {
@@ -195,7 +214,7 @@ public sealed class AiAgentSession(
 
         try
         {
-            using var response = await http.PostAsJsonAsync(url, request, ct);
+            using var response = await http.PostAsJsonAsync(provider.Url, request, ct);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<AgentChatResponse>(_jsonOpts, ct);
         }
@@ -205,7 +224,7 @@ public sealed class AiAgentSession(
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to call AI agent API at {Url}", url);
+            Log.Error(ex, "Failed to call AI agent API at {Url}", provider.Url);
             return null;
         }
     }

@@ -82,7 +82,7 @@ public partial class Utility
             }
             // if the prop is invalid -> print error and list of 
 
-            var exists = propNames.Any(x => x == prop);
+            var exists = propNames.Any(x => string.Equals(x, prop, StringComparison.InvariantCultureIgnoreCase));
 
             if (!exists)
             {
