@@ -133,12 +133,12 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     /// <summary>
     /// The current batch of users that will gain voice xp
     /// </summary>
-    private readonly HashSet<IGuildUser> _voiceXpBatch = [];
+    private HashSet<IGuildUser> _voiceXpBatch = [];
 
     private async Task UpdateVoiceXp()
     {
-        var oldBatch = _voiceXpBatch.ToHashSet();
-        _voiceXpBatch.Clear();
+        var oldBatch = _voiceXpBatch;
+        _voiceXpBatch = [];
         var validUsers = new List<XpQueueEntry>(oldBatch.Count);
 
         var guilds = _client.Guilds;

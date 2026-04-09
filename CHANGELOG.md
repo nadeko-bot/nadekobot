@@ -6,6 +6,21 @@
 
 ## [7.1.23] - 10.04.2026
 
+### Fixed
+
+- SSRF in AI agent web search tool - page fetching now validates URLs against internal/private networks
+- SSRF in club icon/banner URL - validates URLs against internal/private networks before fetching
+- SSRF in radio stream container resolution - switched to IHttpClientFactory with timeout and URL validation
+- URL injection in Osu API requests - usernames are now properly URL-encoded
+- URL injection in weather, movie search, and dictionary API queries - all user input is now URL-encoded
+- Double-encoding bug in dictionary API cache keys
+- Command injection risk in yt-dlp - additional shell-relevant characters are now sanitized from user input
+- Path traversal in local track resolver - file extension whitelist now enforced
+- Feed processing timeout - RSS feeds that take longer than 15 seconds are now skipped
+- Permission checker no longer defaults to allow when an internal error occurs
+- Server-level permission checks no longer skipped for non-SocketGuild guild types
+- TicTacToe game dictionary is now thread-safe
+
 ### Changed
 
 - Local music track enqueue no longer spawns ffprobe per file; duration is resolved lazily when the track plays and cached in memory

@@ -18,7 +18,7 @@ public class GamesService : INService
 
     //channelId, game
     public ConcurrentDictionary<ulong, AcrophobiaGame> AcrophobiaGames { get; } = new();
-    public Dictionary<ulong, TicTacToe> TicTacToeGames { get; } = new();
+    public ConcurrentDictionary<ulong, TicTacToe> TicTacToeGames { get; } = new();
     public ConcurrentDictionary<ulong, TypingGame> RunningContests { get; } = new();
     public ConcurrentDictionary<ulong, CountUpGame> Games { get; } = new();
 

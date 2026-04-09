@@ -52,19 +52,18 @@ public sealed class PermissionChecker : IPermissionChecker, INService
                 return new PermGlobalBlock();
             }
 
-            if (guild is SocketGuild sg)
+            var pc = _perms.GetCacheFor(guild.Id);
+            if (!pc.Permissions.CheckPermissions(author, channel, cmdName, module, out var index))
             {
-                var pc = _perms.GetCacheFor(sg.Id);
-                if (!pc.Permissions.CheckPermissions(author, channel, cmdName, module, out var index))
-                {
-                    return new PermDisallowed(index,
-                        pc.Permissions[index].GetCommand(_ch.GetPrefix(guild), sg),
-                        pc.Verbose);
-                }
+                return new PermDisallowed(index,
+                    pc.Permissions[index].GetCommand(_ch.GetPrefix(guild), guild as SocketGuild),
+                    pc.Verbose);
             }
         }
-        catch
+        catch (Exception ex)
         {
+            Log.Error(ex, "Permission check failed for {Module}/{Command}", module, cmdName);
+            return new PermGlobalBlock();
         }
 
         return new PermAllowed();
