@@ -381,8 +381,9 @@ public partial class Waifus
                 {
                     var name = e.Username ?? GetText(strs.waifu_unknown);
                     sb.AppendLine($"**{name}**");
+                    sb.AppendLine($"🏷\uFE0F {CurrencyHelper.N(e.Price, Culture, currSign)}");
                     sb.AppendLine($"🆔 `{e.UserId}`");
-                    sb.AppendLine($"💰 {CurrencyHelper.N(e.Price, Culture, currSign)}");
+                    sb.AppendLine($"💰 {CurrencyHelper.N(e.SnapshotTotalBacked, Culture, currSign)}");
                     sb.AppendLine();
                 }
 

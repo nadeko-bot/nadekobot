@@ -125,11 +125,15 @@ public sealed class WebSearchTool(
 
     /// <summary>
     /// Fetches a URL and extracts visible text content using AngleSharp.
+    /// Only fetches public URLs to prevent SSRF attacks against internal networks.
     /// </summary>
     private async Task<string> FetchPageContentAsync(string url)
     {
         try
         {
+            if (!UrlExtensions.IsPublicUrl(url))
+                return "(Skipped: non-public URL)";
+
             using var http = httpFactory.CreateClient();
             http.Timeout = _fetchTimeout;
             http.DefaultRequestHeaders.Clear();

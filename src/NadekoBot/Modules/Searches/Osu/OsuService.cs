@@ -20,7 +20,7 @@ public sealed class OsuService : INService
         using var http = _httpFactory.CreateClient();
 
         var modeNumber = string.IsNullOrWhiteSpace(mode) ? 0 : ResolveGameMode(mode);
-        var userReq = $"https://osu.ppy.sh/api/get_user?k={_creds.OsuApiKey}&u={username}&m={modeNumber}";
+        var userReq = $"https://osu.ppy.sh/api/get_user?k={_creds.OsuApiKey}&u={Uri.EscapeDataString(username)}&m={modeNumber}";
         var userResString = await http.GetStringAsync(userReq);
 
         if (string.IsNullOrWhiteSpace(userResString))
@@ -82,7 +82,7 @@ public sealed class OsuService : INService
         using var http = _httpFactory.CreateClient();
         var modeNumber = string.IsNullOrWhiteSpace(mode) ? 0 : ResolveGameMode(mode);
 
-        var resString = await http.GetStringAsync($"https://api.gatari.pw/user/stats?u={user}&mode={modeNumber}");
+        var resString = await http.GetStringAsync($"https://api.gatari.pw/user/stats?u={Uri.EscapeDataString(user)}&mode={modeNumber}");
 
         var statsResponse = JsonConvert.DeserializeObject<GatariUserStatsResponse>(resString);
         if (statsResponse.Code != 200 || statsResponse.Stats.Id == 0)
@@ -90,7 +90,7 @@ public sealed class OsuService : INService
             return default;
         }
 
-        var usrResString = await http.GetStringAsync($"https://api.gatari.pw/users/get?u={user}");
+        var usrResString = await http.GetStringAsync($"https://api.gatari.pw/users/get?u={Uri.EscapeDataString(user)}");
 
         var userData = JsonConvert.DeserializeObject<GatariUserResponse>(usrResString).Users[0];
         var userStats = statsResponse.Stats;

@@ -98,6 +98,9 @@ public class ClubService : INService, IClubService
     {
         if (!string.IsNullOrWhiteSpace(url))
         {
+            if (!UrlExtensions.IsPublicUrl(url))
+                return SetClubIconResult.InvalidFileType;
+
             using var http = _httpFactory.CreateClient();
             using var temp = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
 
@@ -128,6 +131,9 @@ public class ClubService : INService, IClubService
     /// <returns>Result of the operation</returns>
     public async Task<SetClubIconResult> SetClubBannerAsync(ulong ownerUserId, string? url)
     {
+        if (!string.IsNullOrWhiteSpace(url) && !UrlExtensions.IsPublicUrl(url))
+            return SetClubIconResult.InvalidFileType;
+
         await using var uow = _db.GetDbContext();
         var club = uow.Set<ClubInfo>().GetByOwner(ownerUserId);
 

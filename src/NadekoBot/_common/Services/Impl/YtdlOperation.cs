@@ -18,7 +18,7 @@ public class YtdlOperation
 
     private Process CreateProcess(string[] args)
     {
-        var newArgs = args.Map(arg => (object)arg.Replace("\"", ""));
+        var newArgs = args.Map(static arg => (object)SanitizeArgInternal(arg));
         var arguments = string.Format(_baseArgString, newArgs);
 
         if (File.Exists(COOKIES_PATH))
@@ -38,6 +38,19 @@ public class YtdlOperation
                 CreateNoWindow = true
             }
         };
+    }
+
+    private static string SanitizeArgInternal(string arg)
+    {
+        var sb = new StringBuilder(arg.Length);
+        foreach (var c in arg)
+        {
+            // strip characters that could be interpreted by shells or yt-dlp
+            if (c is not ('"' or '`' or '$' or '\\' or '\0' or '\n' or '\r'))
+                sb.Append(c);
+        }
+
+        return sb.ToString();
     }
 
     public async Task<string> GetDataAsync(params string[] args)

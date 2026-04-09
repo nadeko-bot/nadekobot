@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Music.Resolvers;
@@ -10,10 +10,15 @@ public class RadioResolver : IRadioResolver
     private readonly Regex _asxRegex = new(@"<ref href=""(?<url>.*?)""", RegexOptions.Compiled);
     private readonly Regex _xspfRegex = new(@"<location>(?<url>.*?)</location>", RegexOptions.Compiled);
 
+    private readonly IHttpClientFactory _httpFactory;
+
+    public RadioResolver(IHttpClientFactory httpFactory)
+        => _httpFactory = httpFactory;
+
     public async Task<ITrackInfo> ResolveByQueryAsync(string query)
     {
         if (IsRadioLink(query))
-            query = await HandleStreamContainers(query);
+            query = await HandleStreamContainersInternalAsync(query);
 
         return new SimpleTrackInfo(query.TrimTo(50),
             query,
@@ -28,12 +33,16 @@ public class RadioResolver : IRadioResolver
             || query.StartsWith("ww", StringComparison.InvariantCulture))
            && (query.Contains(".pls") || query.Contains(".m3u") || query.Contains(".asx") || query.Contains(".xspf"));
 
-    private async Task<string> HandleStreamContainers(string query)
+    private async Task<string> HandleStreamContainersInternalAsync(string query)
     {
+        if (!UrlExtensions.IsPublicUrl(query))
+            return query;
+
         string file = null;
         try
         {
-            using var http = new HttpClient();
+            using var http = _httpFactory.CreateClient();
+            http.Timeout = TimeSpan.FromSeconds(10);
             file = await http.GetStringAsync(query);
         }
         catch

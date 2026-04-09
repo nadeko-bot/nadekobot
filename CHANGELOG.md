@@ -4,22 +4,28 @@
 
 ## [7.1.24] - TBD
 
-## [7.1.23] - 10.04.2026
-
 ### Fixed
 
-- SSRF in AI agent web search tool - page fetching now validates URLs against internal/private networks
-- SSRF in club icon/banner URL - validates URLs against internal/private networks before fetching
-- SSRF in radio stream container resolution - switched to IHttpClientFactory with timeout and URL validation
-- URL injection in Osu API requests - usernames are now properly URL-encoded
-- URL injection in weather, movie search, and dictionary API queries - all user input is now URL-encoded
-- Double-encoding bug in dictionary API cache keys
-- Command injection risk in yt-dlp - additional shell-relevant characters are now sanitized from user input
-- Path traversal in local track resolver - file extension whitelist now enforced
-- Feed processing timeout - RSS feeds that take longer than 15 seconds are now skipped
-- Permission checker no longer defaults to allow when an internal error occurs
-- Server-level permission checks no longer skipped for non-SocketGuild guild types
-- TicTacToe game dictionary is now thread-safe
+- Web search, club icons, radio resolver protection
+- Encode user input in Osu, weather, movie, dictionary API queries
+- Sanitize shell-relevant characters in yt-dlp arguments
+- Enforce file extension whitelist in local track resolver
+- pg to sqlite migration
+- Permission checker failure
+- Guild perm checks
+- TicTacToe race condition
+
+### Changed
+
+- Add 15s timeout for RSS feed fetching
+- `.wlist` now shows buy price and total backed separately
+- Voice XP batch allocation cleanup
+
+### Dev
+
+- Use IHttpClientFactory for radio resolver
+
+## [7.1.23] - 10.04.2026
 
 ### Changed
 

@@ -188,7 +188,16 @@ public class FeedsService : INService, IReadyExecutor
                 var rssUrl = kvp.Value.First().Url;
                 try
                 {
-                    var feed = await FeedReader.ReadAsync(rssUrl, userAgent: USER_AGENT);
+                    var feedTask = FeedReader.ReadAsync(rssUrl, userAgent: USER_AGENT);
+                    var completed = await Task.WhenAny(feedTask, Task.Delay(TimeSpan.FromSeconds(15)));
+                    if (completed != feedTask)
+                    {
+                        Log.Debug("Feed {FeedUrl} timed out after 15 seconds", rssUrl);
+                        await AddError(rssUrl, kvp.Value);
+                        continue;
+                    }
+
+                    var feed = await feedTask;
 
                     var items = new List<(FeedItem Item, DateTime LastUpdate)>();
                     foreach (var item in feed.Items)

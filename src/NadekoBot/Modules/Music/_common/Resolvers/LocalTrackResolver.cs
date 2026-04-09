@@ -21,6 +21,10 @@ public sealed class LocalTrackResolver : ILocalTrackResolver
             return Task.FromResult<ITrackInfo?>(null);
 
         var fullPath = Path.GetFullPath(query);
+
+        if (!_musicExtensions.Contains(Path.GetExtension(fullPath)))
+            return Task.FromResult<ITrackInfo?>(null);
+
         _durationCache.TryGetValue(fullPath, out var cachedDuration);
 
         ITrackInfo result = new SimpleTrackInfo(

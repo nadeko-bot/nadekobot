@@ -78,7 +78,7 @@ public class SearchesService : INService
         try
         {
             var data = await http.GetStringAsync("https://api.openweathermap.org/data/2.5/weather?"
-                                                 + $"q={query}&"
+                                                 + $"q={Uri.EscapeDataString(query)}&"
                                                  + "appid=42cd627dd60debf25a5739e50a217d74&"
                                                  + "units=metric");
 
@@ -337,7 +337,7 @@ public class SearchesService : INService
     {
         using var http = _httpFactory.CreateClient();
         var res = await http.GetStringAsync("https://omdbapi.nadeko.bot/"
-                                            + $"?t={name.Trim().Replace(' ', '+')}"
+                                            + $"?t={Uri.EscapeDataString(name.Trim())}"
                                             + "&y="
                                             + "&plot=full"
                                             + "&r=json");
@@ -556,7 +556,7 @@ public class SearchesService : INService
             return ErrorType.InvalidInput;
         }
 
-        query = Uri.EscapeDataString(query);
+        var encodedQuery = Uri.EscapeDataString(query);
 
         using var http = _httpFactory.CreateClient();
         string res;
@@ -564,7 +564,7 @@ public class SearchesService : INService
         {
             res = await _c.GetOrAddAsync(GetDefineKey(query),
                 async () => await http.GetStringAsync(
-                    $"https://api.pearson.com/v2/dictionaries/entries?headword={query}"),
+                    $"https://api.pearson.com/v2/dictionaries/entries?headword={encodedQuery}"),
                 TimeSpan.FromHours(12));
 
             var responseModel = JsonConvert.DeserializeObject<DefineModel>(res);
