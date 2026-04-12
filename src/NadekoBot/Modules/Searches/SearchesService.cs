@@ -28,7 +28,6 @@ public class SearchesService : INService
 
     private readonly Lock _yomamaLock = new();
     private int yomamaJokeIndex;
-    private readonly ConcurrentDictionary<string, string> _cachedShortenedLinks = new();
 
     public SearchesService(
         IGoogleApiService google,
@@ -613,36 +612,31 @@ public class SearchesService : INService
     {
         query = query.Trim();
 
-        if (_cachedShortenedLinks.TryGetValue(query, out var shortLink))
-            return shortLink;
-
-        try
-        {
-            using var http = _httpFactory.CreateClient();
-            using var req = new HttpRequestMessage(HttpMethod.Post, "https://goolnk.com/api/v1/shorten");
-            var formData = new MultipartFormDataContent
+        return await _c.GetOrAddAsync($"shorten:{query}",
+            async () =>
             {
-                { new StringContent(query), "url" }
-            };
-            req.Content = formData;
+                try
+                {
+                    using var http = _httpFactory.CreateClient();
+                    using var req = new HttpRequestMessage(HttpMethod.Post, "https://goolnk.com/api/v1/shorten");
+                    var formData = new MultipartFormDataContent
+                    {
+                        { new StringContent(query), "url" }
+                    };
+                    req.Content = formData;
 
-            using var res = await http.SendAsync(req);
-            var content = await res.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<ShortenData>(content);
+                    using var res = await http.SendAsync(req);
+                    var content = await res.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<ShortenData>(content);
 
-            if (!string.IsNullOrWhiteSpace(data?.ResultUrl))
-                _cachedShortenedLinks.TryAdd(query, data.ResultUrl);
-            else
-                return query;
-
-            shortLink = data.ResultUrl;
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Error shortening a link: {Message}", ex.Message);
-            return null;
-        }
-
-        return shortLink;
+                    return string.IsNullOrWhiteSpace(data?.ResultUrl) ? null : data.ResultUrl;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error shortening a link: {Message}", ex.Message);
+                    return null;
+                }
+            },
+            TimeSpan.FromHours(24)) ?? query;
     }
 }

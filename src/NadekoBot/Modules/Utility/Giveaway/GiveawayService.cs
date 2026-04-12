@@ -100,7 +100,11 @@ public sealed class GiveawayService : INService, IReadyExecutor
 
         lock (_giveawayLock)
         {
-            _giveawayCache = new(gas, Comparer<GiveawayModel>.Create((x, y) => x.EndsAt.CompareTo(y.EndsAt)));
+            _giveawayCache = new(gas, Comparer<GiveawayModel>.Create((x, y) =>
+            {
+                var cmp = x.EndsAt.CompareTo(y.EndsAt);
+                return cmp != 0 ? cmp : x.Id.CompareTo(y.Id);
+            }));
         }
 
         var timer = new PeriodicTimer(TimeSpan.FromMinutes(1));
@@ -208,7 +212,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
             return giveaway.Participants[0];
         }
 
-        var winner = giveaway.Participants[_rng.Next(0, giveaway.Participants.Count - 1)];
+        var winner = giveaway.Participants[_rng.Next(0, giveaway.Participants.Count)];
 
         HandleWinnerSelection(giveaway, winner);
         return winner;

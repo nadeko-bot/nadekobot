@@ -3,14 +3,16 @@
 public class YtDlpSearchService : IYoutubeSearchService, INService
 {
     private YtdlOperation CreateYtdlOp(int count)
-        => new YtdlOperation("-4 "
-                             + "--ignore-errors --flat-playlist --skip-download --quiet "
-                             + "--geo-bypass "
-                             + "--encoding UTF8 "
-                             + "--get-id "
-                             + "--no-check-certificate "
-                             + "--default-search "
-                             + $"\"ytsearch{count}:\" -- \"{{0}}\"");
+        => new YtdlOperation(
+        [
+            "-4",
+            "--ignore-errors", "--flat-playlist", "--skip-download", "--quiet",
+            "--geo-bypass",
+            "--encoding", "UTF8",
+            "--get-id",
+            "--no-check-certificate",
+            "--default-search", $"ytsearch{count}:", "--"
+        ]);
 
     public async Task<VideoInfo[]?> SearchAsync(string query)
     {

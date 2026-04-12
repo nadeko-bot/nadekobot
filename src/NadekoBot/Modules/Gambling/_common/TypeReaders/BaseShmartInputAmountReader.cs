@@ -34,35 +34,43 @@ public class BaseShmartInputAmountReader
         try
         {
             var expr = new Expression(i, EvaluateOptions.IgnoreCase);
-            expr.EvaluateParameter += (str, ev) => EvaluateParam(str, ev, context).GetAwaiter().GetResult();
+
+            var needsCur = i.Contains("ALL", StringComparison.Ordinal)
+                           || i.Contains("HALF", StringComparison.Ordinal);
+            var needsMax = i.Contains("MAX", StringComparison.Ordinal);
+
+            if (needsCur || needsMax)
+            {
+                var cur = await Cur(context);
+                expr.Parameters["ALL"] = (double)cur;
+                expr.Parameters["ALLIN"] = (double)cur;
+                expr.Parameters["HALF"] = (double)(cur / 2);
+            }
+
+            if (needsMax)
+            {
+                var max = await Max(context);
+                expr.Parameters["MAX"] = (double)max;
+            }
+
+            expr.EvaluateParameter += static (str, ev) =>
+            {
+                switch (str.ToUpperInvariant())
+                {
+                    case "PI":
+                        ev.Result = Math.PI;
+                        break;
+                    case "E":
+                        ev.Result = Math.E;
+                        break;
+                }
+            };
+
             return (long)decimal.Parse(expr.Evaluate().ToString()!);
         }
         catch (Exception)
         {
             return new OneOf.Types.Error<string>($"Invalid input: {input}");
-        }
-    }
-
-    private async Task EvaluateParam(string name, ParameterArgs args, ICommandContext ctx)
-    {
-        switch (name.ToUpperInvariant())
-        {
-            case "PI":
-                args.Result = Math.PI;
-                break;
-            case "E":
-                args.Result = Math.E;
-                break;
-            case "ALL":
-            case "ALLIN":
-                args.Result = await Cur(ctx);
-                break;
-            case "HALF":
-                args.Result = await Cur(ctx) / 2;
-                break;
-            case "MAX":
-                args.Result = await Max(ctx);
-                break;
         }
     }
 

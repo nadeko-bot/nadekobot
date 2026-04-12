@@ -54,6 +54,7 @@ public class DangerousCommandsService : INService
     public async Task PurgeUserAsync(ulong userId)
     {
         await using var uow = _db.GetDbContext();
+        await using var tx = await uow.Database.BeginTransactionAsync();
 
         // Remove fans of this waifu
         await uow.GetTable<WaifuFan>()
@@ -88,6 +89,8 @@ public class DangerousCommandsService : INService
 
         // delete user, currency, and clubs go away with it
         await uow.GetTable<DiscordUser>().DeleteAsync(u => u.UserId == userId);
+
+        await tx.CommitAsync();
     }
 
     public class SelectResult

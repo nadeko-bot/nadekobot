@@ -50,7 +50,9 @@ public sealed class TranslateService : ITranslateService, IExecNoCommand, IReady
         }
     }
 
-    public async Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
+#nullable enable
+    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+#nullable disable
     {
         if (string.IsNullOrWhiteSpace(msg.Content))
             return;

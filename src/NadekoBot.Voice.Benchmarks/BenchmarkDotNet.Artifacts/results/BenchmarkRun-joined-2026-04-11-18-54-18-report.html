@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>BenchmarkRun-joined-2026-04-11-18-54-18</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.15.8, Linux Artix Linux
+AMD Ryzen 7 PRO 6850U with Radeon Graphics 1.93GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 9.0.312
+  [Host]   : .NET 9.0.14 (9.0.14, 9.0.1426.11910), X64 RyuJIT x86-64-v3
+  ShortRun : .NET 9.0.14 (9.0.14, 9.0.1426.11910), X64 RyuJIT x86-64-v3
+</code></pre>
+<pre><code>Job=ShortRun  IterationCount=10  LaunchCount=1  
+WarmupCount=5  
+</code></pre>
+
+<table>
+<thead><tr><th>Type                    </th><th>Method                          </th><th>InvocationCount</th><th>UnrollFactor</th><th>UserCount</th><th>Mean  </th><th>Error  </th><th>StdDev</th><th>Gen0</th><th>Gen1</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>ArraySegmentVsMemoryBenchmarks</td><td>&#39;Current: ArraySegment chunking&#39;</td><td>Default</td><td>16</td><td>?</td><td>1.480 ns</td><td>0.0567 ns</td><td>0.0338 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>CloseCodesBenchmarks</td><td>&#39;Current: ReadOnlyDictionary&#39;</td><td>Default</td><td>16</td><td>?</td><td>38.195 ns</td><td>0.9843 ns</td><td>0.5858 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>DaveAudioPayloadBenchmarks</td><td>&#39;Current: Rent+Copy+Return&#39;</td><td>Default</td><td>16</td><td>?</td><td>134.004 ns</td><td>12.3198 ns</td><td>8.1488 ns</td><td>0.1205</td><td>-</td><td>1008 B</td>
+</tr><tr><td>IpDiscoveryBenchmarks</td><td>&#39;Current: new byte[74] + BitConverter&#39;</td><td>Default</td><td>16</td><td>?</td><td>26.882 ns</td><td>3.2106 ns</td><td>2.1236 ns</td><td>0.0162</td><td>-</td><td>136 B</td>
+</tr><tr><td>QueueItemBenchmarks</td><td>&#39;Current: class QueueItem&#39;</td><td>Default</td><td>16</td><td>?</td><td>6,369.996 ns</td><td>669.6255 ns</td><td>442.9158 ns</td><td>1.9608</td><td>0.0610</td><td>16408 B</td>
+</tr><tr><td>ArraySegmentVsMemoryBenchmarks</td><td>&#39;Fixed: ReadOnlyMemory chunking&#39;</td><td>Default</td><td>16</td><td>?</td><td>1.495 ns</td><td>0.0236 ns</td><td>0.0140 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>CloseCodesBenchmarks</td><td>&#39;Fixed: FrozenDictionary&#39;</td><td>Default</td><td>16</td><td>?</td><td>14.444 ns</td><td>0.3489 ns</td><td>0.2308 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>DaveAudioPayloadBenchmarks</td><td>&#39;Fixed: Rent+Use+Return&#39;</td><td>Default</td><td>16</td><td>?</td><td>90.534 ns</td><td>1.4235 ns</td><td>0.8471 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>IpDiscoveryBenchmarks</td><td>&#39;Fixed: stackalloc + BinaryPrimitives&#39;</td><td>Default</td><td>16</td><td>?</td><td>1.254 ns</td><td>0.0410 ns</td><td>0.0244 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>QueueItemBenchmarks</td><td>&#39;Fixed: struct QueueItem&#39;</td><td>Default</td><td>16</td><td>?</td><td>5,441.117 ns</td><td>478.4857 ns</td><td>284.7392 ns</td><td>1.7929</td><td>0.0687</td><td>15008 B</td>
+</tr><tr><td>PoopyBufferReadBenchmarks</td><td>&#39;Current: Copy to output array&#39;</td><td>1</td><td>1</td><td>?</td><td>4,321.375 ns</td><td>322.7510 ns</td><td>168.8050 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>PoopyBufferReadBenchmarks</td><td>&#39;Fixed: Direct span, no copy&#39;</td><td>1</td><td>1</td><td>?</td><td>2,081.800 ns</td><td>1,011.3266 ns</td><td>668.9300 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>GetRecognizedUserIdsBenchmarks</td><td>&#39;Current: List+Add+ToArray&#39;</td><td>Default</td><td>16</td><td>5</td><td>113.693 ns</td><td>12.0813 ns</td><td>7.9910 ns</td><td>0.0324</td><td>-</td><td>272 B</td>
+</tr><tr><td>GetRecognizedUserIdsBenchmarks</td><td>&#39;Fixed: Pre-sized array&#39;</td><td>Default</td><td>16</td><td>5</td><td>39.525 ns</td><td>5.1983 ns</td><td>3.4384 ns</td><td>0.0086</td><td>-</td><td>72 B</td>
+</tr><tr><td>GetRecognizedUserIdsBenchmarks</td><td>&#39;Current: List+Add+ToArray&#39;</td><td>Default</td><td>16</td><td>20</td><td>244.769 ns</td><td>21.7416 ns</td><td>14.3807 ns</td><td>0.0899</td><td>-</td><td>752 B</td>
+</tr><tr><td>GetRecognizedUserIdsBenchmarks</td><td>&#39;Fixed: Pre-sized array&#39;</td><td>Default</td><td>16</td><td>20</td><td>92.802 ns</td><td>7.6136 ns</td><td>5.0359 ns</td><td>0.0229</td><td>-</td><td>192 B</td>
+</tr><tr><td>GetRecognizedUserIdsBenchmarks</td><td>&#39;Current: List+Add+ToArray&#39;</td><td>Default</td><td>16</td><td>50</td><td>484.641 ns</td><td>32.7018 ns</td><td>19.4603 ns</td><td>0.2041</td><td>-</td><td>1712 B</td>
+</tr><tr><td>GetRecognizedUserIdsBenchmarks</td><td>&#39;Fixed: Pre-sized array&#39;</td><td>Default</td><td>16</td><td>50</td><td>197.586 ns</td><td>6.9827 ns</td><td>4.6186 ns</td><td>0.0515</td><td>-</td><td>432 B</td>
+</tr></tbody></table>
+</body>
+</html>

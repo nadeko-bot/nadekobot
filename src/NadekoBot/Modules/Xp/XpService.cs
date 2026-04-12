@@ -487,7 +487,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     private static bool UserParticipatingInVoiceChannel(SocketGuildUser user)
         => !user.IsDeafened && !user.IsMuted && !user.IsSelfDeafened && !user.IsSelfMuted;
 
-    public Task ExecOnNoCommandAsync(IGuild guild, IUserMessage arg)
+    public Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage arg)
     {
         if (arg.Author is not SocketGuildUser user || user.IsBot)
             return Task.CompletedTask;

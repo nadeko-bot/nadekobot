@@ -235,7 +235,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         return result[_rng.Next(0, result.Count)];
     }
 
-    public async Task<bool> ExecOnMessageAsync(IGuild guild, IUserMessage msg)
+    public async Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
     {
         // maybe this message is an expression
         var expr = TryGetExpression(msg);

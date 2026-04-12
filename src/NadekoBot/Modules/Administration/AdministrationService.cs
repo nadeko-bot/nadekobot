@@ -210,6 +210,9 @@ public class AdministrationService : INService, IReadyExecutor
         if (!IsValidUri(img))
             return SetServerBannerResult.InvalidURL;
 
+        if (!UrlExtensions.IsPublicUrl(img))
+            return SetServerBannerResult.InvalidURL;
+
         var uri = new Uri(img);
 
         using var http = _httpFactory.CreateClient();
@@ -232,6 +235,9 @@ public class AdministrationService : INService, IReadyExecutor
     public async Task<SetServerIconResult> SetServerIconAsync(IGuild guild, string img)
     {
         if (!IsValidUri(img))
+            return SetServerIconResult.InvalidURL;
+
+        if (!UrlExtensions.IsPublicUrl(img))
             return SetServerIconResult.InvalidURL;
 
         var uri = new Uri(img);

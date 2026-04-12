@@ -31,7 +31,9 @@ public class PlantPickService(
     public ConcurrentDictionary<ulong, long> LastGenerations { get; } = new();
     private ConcurrentHashSet<ulong> _generationChannels = [];
 
-    public Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
+#nullable enable
+    public Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+#nullable disable
         => PotentialFlowerGeneration(msg);
 
     private string GetText(ulong gid, LocStr str)

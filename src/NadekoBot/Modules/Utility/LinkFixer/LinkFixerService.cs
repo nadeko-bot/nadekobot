@@ -28,7 +28,7 @@ public partial class LinkFixerService(DbService db) : IReadyExecutor, IExecNoCom
         }
     }
 
-    public async Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
+    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
         if (guild is null)
             return;

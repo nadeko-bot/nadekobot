@@ -16,15 +16,18 @@ public partial class Administration
         private readonly TempRoleService _tempRoleService;
         private readonly IServiceProvider _services;
         private StickyRolesService _stickyRoleSvc;
+        private readonly IHttpClientFactory _httpFactory;
 
         public RoleCommands(
             IServiceProvider services,
             StickyRolesService stickyRoleSvc,
-            TempRoleService tempRoleService)
+            TempRoleService tempRoleService,
+            IHttpClientFactory httpFactory)
         {
             _services = services;
             _stickyRoleSvc = stickyRoleSvc;
             _tempRoleService = tempRoleService;
+            _httpFactory = httpFactory;
         }
 
         [Cmd]
@@ -278,8 +281,14 @@ public partial class Administration
                 return;
             }
 
+            if (!UrlExtensions.IsPublicUrl(iconUrl))
+            {
+                await Response().Error(strs.userrole_icon_invalid).SendAsync();
+                return;
+            }
+
             // Download the image
-            using var httpClient = new HttpClient();
+            using var httpClient = _httpFactory.CreateClient();
             using var response = await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
 
             // Check if the response is successful

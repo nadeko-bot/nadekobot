@@ -120,7 +120,9 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         return words;
     }
 
-    public async Task<bool> ExecOnMessageAsync(IGuild guild, IUserMessage msg)
+#nullable enable
+    public async Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
+#nullable disable
     {
         if (msg.Author is not IGuildUser gu || gu.GuildPermissions.Administrator)
             return false;

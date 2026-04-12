@@ -994,7 +994,10 @@ public partial class Administration
 
                     //Hierachy checks only if the user is in the guild
                     if (user is IGuildUser gu && !await CheckRoleHierarchy(gu))
-                        return;
+                    {
+                        missing.Add(userStr);
+                        continue;
+                    }
 
                     punishing.Add(user);
                 }

@@ -3,6 +3,7 @@ using Discord.Models.Gateway;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using System;
+using System.Buffers.Binary;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -16,17 +17,7 @@ namespace NadekoBot.Voice
 {
     public class VoiceGateway : IDisposable
     {
-        private class QueueItem
-        {
-            public VoicePayload Payload { get; }
-            public TaskCompletionSource<bool> Result { get; }
-
-            public QueueItem(VoicePayload payload, TaskCompletionSource<bool> result)
-            {
-                Payload = payload;
-                Result = result;
-            }
-        }
+        private readonly record struct QueueItem(VoicePayload Payload, TaskCompletionSource<bool> Result);
 
         private readonly ulong _guildId;
         private readonly ulong _channelId;
@@ -49,7 +40,7 @@ namespace NadekoBot.Voice
         public uint Ssrc { get; private set; }
         public string Ip { get; private set; } = string.Empty;
         public int Port { get; private set; } = 0;
-        public byte[] SecretKey { get; private set; } = Array.Empty<byte>();
+        public byte[] SecretKey { get; private set; } = [];
         public string Mode { get; private set; } = string.Empty;
         public ushort Sequence { get; set; }
         public uint NonceSequence { get; set; }
@@ -557,15 +548,13 @@ namespace NadekoBot.Voice
 
             _udpEp = new(IPAddress.Parse(ready.Ip), ready.Port);
 
-            var ssrcBytes = BitConverter.GetBytes(Ssrc);
-            Array.Reverse(ssrcBytes);
-            var ipDiscoveryData = new byte[74];
-            Buffer.BlockCopy(ssrcBytes, 0, ipDiscoveryData, 4, ssrcBytes.Length);
+            Span<byte> ipDiscoveryData = stackalloc byte[74];
             ipDiscoveryData[0] = 0x00;
             ipDiscoveryData[1] = 0x01;
             ipDiscoveryData[2] = 0x00;
             ipDiscoveryData[3] = 0x46;
-            await _udpClient.SendAsync(ipDiscoveryData, ipDiscoveryData.Length, _udpEp);
+            BinaryPrimitives.WriteUInt32BigEndian(ipDiscoveryData.Slice(4), Ssrc);
+            _udpClient.Send(ipDiscoveryData, _udpEp);
 
             var previousTimeout = _udpClient.Client.ReceiveTimeout;
             _udpClient.Client.ReceiveTimeout = 5000;
@@ -666,7 +655,7 @@ namespace NadekoBot.Voice
                 Log.Warning("Voice gateway didn't receive HearbeatAck - closing");
                 var success = await _ws.CloseAsync();
                 if (!success)
-                    await _ws_WebsocketClosed(null);
+                    await _ws_WebsocketClosed(null!);
                 return;
             }
             await SendCommandPayloadAsync(new()

@@ -44,7 +44,7 @@ public sealed class BehaviorAdapter : ICustomBehavior
     }
 
     public async Task<string?> TransformInput(
-        IGuild guild,
+        IGuild? guild,
         IMessageChannel channel,
         IUser user,
         string input)

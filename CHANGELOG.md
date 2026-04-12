@@ -2,7 +2,28 @@
 
 *a,c,f,r,o,d*
 
-## [7.1.24] - TBD
+## [7.1.25] - 13.04.2026
+
+### Fixed
+
+- Various URL validation and input sanitization fixes
+- Animal race refund, giveaway winner selection, transaction cleanup
+- yt-dlp process handling and connection pooling
+- Command handler config now applies without restart
+- `ConsoleOutputType.None` now actually suppresses logs
+
+### Changed
+
+- Music module available to bot owners and patrons on the public bot
+
+### Dev
+
+- Lock-free copy-on-write for custom behaviors on message hot path
+- Nullable annotations on command handler and behavior interfaces
+- Use ArgumentList for yt-dlp/ffmpeg/ffprobe process calls
+
+
+## [7.1.24] - 11.04.2026
 
 ### Fixed
 

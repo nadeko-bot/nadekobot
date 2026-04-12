@@ -70,7 +70,7 @@ public class GamblingService : INService, IReadyExecutor
                 var days = TimeSpan.FromDays(lifetime);
                 await using var uow = _db.GetDbContext();
                 await uow.Set<CurrencyTransaction>()
-                    .DeleteAsync(ct => ct.DateAdded == null || now - ct.DateAdded < days);
+                    .DeleteAsync(ct => ct.DateAdded == null || now - ct.DateAdded > days);
             }
             catch (Exception ex)
             {
@@ -219,7 +219,7 @@ public class GamblingService : INService, IReadyExecutor
                 try
                 {
                     var guild = _client.GetGuild(gid) as IGuild ?? await _client.Rest.GetGuildAsync(gid, false);
-                    var user = await guild.GetUserAsync(gid) ?? await _client.Rest.GetGuildUserAsync(gid, userId);
+                    var user = await guild.GetUserAsync(userId) ?? await _client.Rest.GetGuildUserAsync(gid, userId);
                     return (guild, user);
                 }
                 catch

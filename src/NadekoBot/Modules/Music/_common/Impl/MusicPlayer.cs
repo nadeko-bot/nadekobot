@@ -150,7 +150,7 @@ public sealed class MusicPlayer : IMusicPlayer
                     {
                         _songBuffer.Reset();
 
-                        using var source = FfmpegTrackDataSource.CreateAsync(
+                        using var source = FfmpegTrackDataSource.Create(
                             _vc.BitDepth,
                             streamUrl,
                             isLocal);

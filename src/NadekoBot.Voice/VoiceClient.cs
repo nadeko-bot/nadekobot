@@ -90,33 +90,25 @@ namespace NadekoBot.Voice
 
             byte[] audioPayload;
             int audioPayloadLength;
+            byte[]? daveRentedBuffer = null;
 
             var daveManager = gw.DaveManager;
             if (daveManager != null && daveManager.HasKeyRatchet)
             {
                 daveManager.AssignSsrcToCodec(gw.Ssrc);
                 var maxEncSize = daveManager.GetMaxCiphertextSize(count);
-                var encryptedFrame = _arrayPool.Rent(maxEncSize);
-                try
+                daveRentedBuffer = _arrayPool.Rent(maxEncSize);
+                var encLen = daveManager.Encrypt(gw.Ssrc, data, count, daveRentedBuffer, maxEncSize);
+                if (encLen <= 0)
                 {
-                    var encLen = daveManager.Encrypt(gw.Ssrc, data, count, encryptedFrame, maxEncSize);
-                    if (encLen <= 0)
-                    {
-                        Log.Warning("DAVE: Encryption failed for ssrc={Ssrc}, frameLen={FrameLength}, result={Result}",
-                            gw.Ssrc, count, encLen);
-                        return (int)SendPcmError.DaveEncryptionFailed;
-                    }
-                    else
-                    {
-                        audioPayload = new byte[encLen];
-                        Buffer.BlockCopy(encryptedFrame, 0, audioPayload, 0, encLen);
-                        audioPayloadLength = encLen;
-                    }
+                    _arrayPool.Return(daveRentedBuffer);
+                    Log.Warning("DAVE: Encryption failed for ssrc={Ssrc}, frameLen={FrameLength}, result={Result}",
+                        gw.Ssrc, count, encLen);
+                    return (int)SendPcmError.DaveEncryptionFailed;
                 }
-                finally
-                {
-                    _arrayPool.Return(encryptedFrame);
-                }
+
+                audioPayload = daveRentedBuffer;
+                audioPayloadLength = encLen;
             }
             else if (daveManager != null && gw.DaveProtocolVersion > 0)
             {
@@ -130,44 +122,49 @@ namespace NadekoBot.Voice
                 audioPayloadLength = count;
             }
 
-            // Write RTP header fields into pre-allocated buffer
-            BinaryPrimitives.WriteUInt16BigEndian(_rtpHeader.AsSpan(2), gw.Sequence);
-            BinaryPrimitives.WriteUInt32BigEndian(_rtpHeader.AsSpan(4), gw.Timestamp);
-            BinaryPrimitives.WriteUInt32BigEndian(_rtpHeader.AsSpan(8), gw.Ssrc);
-
-            gw.Timestamp += (uint) FrameSizePerChannel;
-            gw.Sequence++;
-
-            // Write 4-byte counter into pre-allocated nonce (remaining bytes are already zero)
-            BinaryPrimitives.WriteUInt32BigEndian(_nonce.AsSpan(0), gw.NonceSequence);
-            gw.NonceSequence++;
-
-            // Encrypt: ciphertext = encrypted audio + 16-byte tag
-            var encryptedLength = audioPayloadLength + Sodium.TAG_SIZE;
-            var rtpDataLength = RtpHeaderLength + encryptedLength + NonceSuffixSize;
-            var rtpData = _arrayPool.Rent(rtpDataLength);
             try
             {
-                // Encrypt directly into the rtpData buffer after the header
-                Sodium.Encrypt(
-                    audioPayload, 0, audioPayloadLength,
-                    rtpData, RtpHeaderLength,
-                    _rtpHeader, RtpHeaderLength,
-                    _nonce,
-                    secretKey);
+                // Write RTP header fields into pre-allocated buffer
+                BinaryPrimitives.WriteUInt16BigEndian(_rtpHeader.AsSpan(2), gw.Sequence);
+                BinaryPrimitives.WriteUInt32BigEndian(_rtpHeader.AsSpan(4), gw.Timestamp);
+                BinaryPrimitives.WriteUInt32BigEndian(_rtpHeader.AsSpan(8), gw.Ssrc);
 
-                // Copy RTP header
-                Buffer.BlockCopy(_rtpHeader, 0, rtpData, 0, RtpHeaderLength);
-                // Copy 4-byte nonce suffix (already big-endian in _nonce)
-                Buffer.BlockCopy(_nonce, 0, rtpData, RtpHeaderLength + encryptedLength, NonceSuffixSize);
+                gw.Timestamp += (uint)FrameSizePerChannel;
+                gw.Sequence++;
 
-                gw.SendRtpData(rtpData, rtpDataLength);
+                // Write 4-byte counter into pre-allocated nonce (remaining bytes are already zero)
+                BinaryPrimitives.WriteUInt32BigEndian(_nonce.AsSpan(0), gw.NonceSequence);
+                gw.NonceSequence++;
 
-                return rtpDataLength;
+                // Encrypt: ciphertext = encrypted audio + 16-byte tag
+                var encryptedLength = audioPayloadLength + Sodium.TAG_SIZE;
+                var rtpDataLength = RtpHeaderLength + encryptedLength + NonceSuffixSize;
+                var rtpData = _arrayPool.Rent(rtpDataLength);
+                try
+                {
+                    Sodium.Encrypt(
+                        audioPayload, 0, audioPayloadLength,
+                        rtpData, RtpHeaderLength,
+                        _rtpHeader, RtpHeaderLength,
+                        _nonce,
+                        secretKey);
+
+                    Buffer.BlockCopy(_rtpHeader, 0, rtpData, 0, RtpHeaderLength);
+                    Buffer.BlockCopy(_nonce, 0, rtpData, RtpHeaderLength + encryptedLength, NonceSuffixSize);
+
+                    gw.SendRtpData(rtpData, rtpDataLength);
+
+                    return rtpDataLength;
+                }
+                finally
+                {
+                    _arrayPool.Return(rtpData);
+                }
             }
             finally
             {
-                _arrayPool.Return(rtpData);
+                if (daveRentedBuffer is not null)
+                    _arrayPool.Return(daveRentedBuffer);
             }
         }
 

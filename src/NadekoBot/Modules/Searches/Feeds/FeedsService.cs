@@ -326,8 +326,12 @@ public class FeedsService : INService, IReadyExecutor
     {
         ArgumentNullException.ThrowIfNull(rssFeed, nameof(rssFeed));
 
-        await using var uow = _db.GetDbContext();
         var feedUrl = rssFeed.Trim();
+
+        if (!UrlExtensions.IsPublicUrl(feedUrl))
+            return FeedAddResult.Invalid;
+
+        await using var uow = _db.GetDbContext();
         if (await uow.GetTable<FeedSub>().AnyAsyncLinqToDB(x => x.GuildId == guildId &&
                                                                 x.Url.ToLower() == feedUrl.ToLower()))
             return FeedAddResult.Duplicate;

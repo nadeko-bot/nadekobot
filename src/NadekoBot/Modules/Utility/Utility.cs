@@ -428,6 +428,12 @@ public partial class Utility : NadekoModule
         if (url is null)
             return;
 
+        if (!UrlExtensions.IsPublicUrl(url))
+        {
+            await Response().Error(strs.invalid_emoji_link).SendAsync();
+            return;
+        }
+
         using var http = _httpFactory.CreateClient();
         using var res = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
         if (!res.IsImage() || res.GetContentLength() > 262_144)

@@ -9,7 +9,7 @@ namespace Discord.Models.Gateway
         public VoiceOpCode OpCode { get; set; }
 
         [JsonProperty("d")]
-        public JToken Data { get; set; }
+        public JToken Data { get; set; } = null!;
     }
     
     public enum VoiceOpCode

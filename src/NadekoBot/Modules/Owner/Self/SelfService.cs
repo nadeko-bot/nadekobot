@@ -199,7 +199,9 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
         => _pubSub.Pub(_guildLeaveKey, guildStr);
 
     // forwards dms
-    public async Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
+#nullable enable
+    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+#nullable disable
     {
         var bs = _bss.Data;
         if (msg.Channel is IDMChannel && (ownerChannels.Any() || bs.ForwardToChannel is not null))

@@ -117,7 +117,7 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
         }
     }
 
-    public async Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
+    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
         if (_channels.TryGetValue(msg.Channel.Id, out var action) && msg.Author is SocketGuildUser sgu)
         {

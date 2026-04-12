@@ -1,5 +1,4 @@
-﻿#nullable disable
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NadekoBot.Common.ModuleBehaviors;
 
 namespace NadekoBot.Services;
@@ -9,13 +8,13 @@ public sealed class BehaviorHandler : IBehaviorHandler
 {
     private readonly IServiceProvider _services;
     
-    private IReadOnlyCollection<IExecNoCommand> noCommandExecs;
-    private IReadOnlyCollection<IExecPreCommand> preCommandExecs;
-    private IReadOnlyCollection<IExecOnMessage> onMessageExecs;
-    private IReadOnlyCollection<IInputTransformer> inputTransformers;
+    private IReadOnlyCollection<IExecNoCommand> noCommandExecs = [];
+    private IReadOnlyCollection<IExecPreCommand> preCommandExecs = [];
+    private IReadOnlyCollection<IExecOnMessage> onMessageExecs = [];
+    private IReadOnlyCollection<IInputTransformer> inputTransformers = [];
 
-    private readonly SemaphoreSlim _customLock = new(1, 1);
-    private readonly List<ICustomBehavior> _customExecs = new();
+    private readonly Lock _customLock = new();
+    private volatile ICustomBehavior[] _customExecs = [];
 
     public BehaviorHandler(IServiceProvider services)
     {
@@ -32,120 +31,114 @@ public sealed class BehaviorHandler : IBehaviorHandler
 
     #region Add/Remove
 
-    public async Task AddRangeAsync(IEnumerable<ICustomBehavior> execs)
+    public Task AddRangeAsync(IEnumerable<ICustomBehavior> execs)
     {
-        await _customLock.WaitAsync();
-        try
+        lock (_customLock)
         {
+            var list = new List<ICustomBehavior>(_customExecs);
             foreach (var exe in execs)
             {
-                if (_customExecs.Contains(exe))
-                    continue;
-
-                _customExecs.Add(exe);
+                if (!list.Contains(exe))
+                    list.Add(exe);
             }
-        }
-        finally
-        {
-            _customLock.Release();
-        }
-    }
-    
-    public async Task<bool> AddAsync(ICustomBehavior behavior)
-    {
-        await _customLock.WaitAsync();
-        try
-        {
-            if (_customExecs.Contains(behavior))
-                return false;
 
-            _customExecs.Add(behavior);
-            return true;
+            _customExecs = list.ToArray();
         }
-        finally
-        {
-            _customLock.Release();
-        }
+
+        return Task.CompletedTask;
     }
     
-    public async Task<bool> RemoveAsync(ICustomBehavior behavior)
+    public Task<bool> AddAsync(ICustomBehavior behavior)
     {
-        await _customLock.WaitAsync();
-        try
+        lock (_customLock)
         {
-            return _customExecs.Remove(behavior);
+            var snapshot = _customExecs;
+            if (Array.IndexOf(snapshot, behavior) >= 0)
+                return Task.FromResult(false);
+
+            var newArr = new ICustomBehavior[snapshot.Length + 1];
+            snapshot.CopyTo(newArr, 0);
+            newArr[snapshot.Length] = behavior;
+            _customExecs = newArr;
         }
-        finally
-        {
-            _customLock.Release();
-        }
+
+        return Task.FromResult(true);
     }
     
-    public async Task RemoveRangeAsync(IEnumerable<ICustomBehavior> behs)
+    public Task<bool> RemoveAsync(ICustomBehavior behavior)
     {
-        await _customLock.WaitAsync();
-        try
+        lock (_customLock)
         {
-            foreach(var beh in behs)
-                _customExecs.Remove(beh);
+            var snapshot = _customExecs;
+            var idx = Array.IndexOf(snapshot, behavior);
+            if (idx < 0)
+                return Task.FromResult(false);
+
+            var newArr = new ICustomBehavior[snapshot.Length - 1];
+            Array.Copy(snapshot, 0, newArr, 0, idx);
+            Array.Copy(snapshot, idx + 1, newArr, idx, snapshot.Length - idx - 1);
+            _customExecs = newArr;
         }
-        finally
+
+        return Task.FromResult(true);
+    }
+    
+    public Task RemoveRangeAsync(IEnumerable<ICustomBehavior> behs)
+    {
+        lock (_customLock)
         {
-            _customLock.Release();
+            var list = new List<ICustomBehavior>(_customExecs);
+            foreach (var beh in behs)
+                list.Remove(beh);
+
+            _customExecs = list.ToArray();
         }
+
+        return Task.CompletedTask;
     }
 
     #endregion
     
     #region Running
 
-    public async Task<bool> RunExecOnMessageAsync(SocketGuild guild, IUserMessage usrMsg)
+    public async Task<bool> RunExecOnMessageAsync(SocketGuild? guild, IUserMessage usrMsg)
     {
-        async Task<bool> Exec<T>(IReadOnlyCollection<T> execs)
-            where T : IExecOnMessage
+        if (await ExecOnMessageInternalAsync(onMessageExecs, guild, usrMsg))
+            return true;
+
+        var customs = _customExecs;
+        if (customs.Length > 0 && await ExecOnMessageInternalAsync(customs, guild, usrMsg))
+            return true;
+
+        return false;
+    }
+
+    private async Task<bool> ExecOnMessageInternalAsync<T>(IReadOnlyCollection<T> execs, SocketGuild? guild, IUserMessage usrMsg)
+        where T : IExecOnMessage
+    {
+        foreach (var exec in execs)
         {
-            foreach (var exec in execs)
+            try
             {
-                try
+                if (await exec.ExecOnMessageAsync(guild, usrMsg))
                 {
-                    if (await exec.ExecOnMessageAsync(guild, usrMsg))
-                    {
-                        Log.Information("{TypeName} intercepted message g:{GuildId} u:{UserId} c:{ChannelId} msg:{Message}",
-                            GetExecName(exec),
-                            guild?.Id,
-                            usrMsg.Author.Id,
-                            usrMsg.Channel.Id,
-                            usrMsg.Content?.TrimTo(10));
-                        
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex,
-                        "An error occurred in {TypeName} OnMessage handler: {ErrorMessage}",
+                    Log.Information("{TypeName} intercepted message g:{GuildId} u:{UserId} c:{ChannelId} msg:{Message}",
                         GetExecName(exec),
-                        ex.Message);
+                        guild?.Id,
+                        usrMsg.Author.Id,
+                        usrMsg.Channel.Id,
+                        usrMsg.Content?.TrimTo(10));
+                    
+                    return true;
                 }
             }
-
-            return false;
-        }
-
-        if (await Exec(onMessageExecs))
-        {
-            return true;
-        }
-
-        await _customLock.WaitAsync();
-        try
-        {
-            if (await Exec(_customExecs))
-                return true;
-        }
-        finally
-        {
-            _customLock.Release();
+            catch (Exception ex)
+            {
+                Log.Error(ex,
+                    "An error occurred in {TypeName} OnMessage handler: {ErrorMessage}",
+                    GetExecName(exec),
+                    ex.Message);
+            }
         }
 
         return false;
@@ -156,133 +149,119 @@ public sealed class BehaviorHandler : IBehaviorHandler
 
     public async Task<bool> RunPreCommandAsync(ICommandContext ctx, CommandInfo cmd)
     {
-        async Task<bool> Exec<T>(IReadOnlyCollection<T> execs) where T: IExecPreCommand
-        {
-            foreach (var exec in execs)
-            {
-                try
-                {
-                    if (await exec.ExecPreCommandAsync(ctx, cmd.Module.GetTopLevelModule().Name, cmd))
-                    {
-                        Log.Information("{TypeName} intercepted [{User}] Command: [{Command}]",
-                            GetExecName(exec),
-                            ctx.User,
-                            cmd.Aliases[0]);
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex,
-                        "An error occurred in {TypeName} PreCommand: {ErrorMessage}",
-                        GetExecName(exec),
-                        ex.Message);
-                }
-            }
-
-            return false;
-        }
-
-        if (await Exec(preCommandExecs))
+        if (await ExecPreCommandInternalAsync(preCommandExecs, ctx, cmd))
             return true;
 
-        await _customLock.WaitAsync();
-        try
+        var customs = _customExecs;
+        if (customs.Length > 0 && await ExecPreCommandInternalAsync(customs, ctx, cmd))
+            return true;
+
+        return false;
+    }
+
+    private async Task<bool> ExecPreCommandInternalAsync<T>(IReadOnlyCollection<T> execs, ICommandContext ctx, CommandInfo cmd)
+        where T : IExecPreCommand
+    {
+        foreach (var exec in execs)
         {
-            if (await Exec(_customExecs))
-                return true;
-        }
-        finally
-        {
-            _customLock.Release();
+            try
+            {
+                if (await exec.ExecPreCommandAsync(ctx, cmd.Module.GetTopLevelModule().Name, cmd))
+                {
+                    Log.Information("{TypeName} intercepted [{User}] Command: [{Command}]",
+                        GetExecName(exec),
+                        ctx.User,
+                        cmd.Aliases[0]);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex,
+                    "An error occurred in {TypeName} PreCommand: {ErrorMessage}",
+                    GetExecName(exec),
+                    ex.Message);
+            }
         }
 
         return false;
     }
 
-    public async Task RunOnNoCommandAsync(SocketGuild guild, IUserMessage usrMsg)
+    public async Task RunOnNoCommandAsync(SocketGuild? guild, IUserMessage usrMsg)
     {
-        async Task Exec<T>(IReadOnlyCollection<T> execs) where T : IExecNoCommand
-        {
-            foreach (var exec in execs)
-            {
-                try
-                {
-                    await exec.ExecOnNoCommandAsync(guild, usrMsg);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex,
-                        "An error occurred in {TypeName} OnNoCommand: {ErrorMessage}",
-                        GetExecName(exec),
-                        ex.Message);
-                }
-            }
-        }
+        await ExecNoCommandInternalAsync(noCommandExecs, guild, usrMsg);
 
-        await Exec(noCommandExecs);
-        
-        await _customLock.WaitAsync();
-        try
+        var customs = _customExecs;
+        if (customs.Length > 0)
+            await ExecNoCommandInternalAsync(customs, guild, usrMsg);
+    }
+
+    private static async Task ExecNoCommandInternalAsync<T>(IReadOnlyCollection<T> execs, SocketGuild? guild, IUserMessage usrMsg)
+        where T : IExecNoCommand
+    {
+        foreach (var exec in execs)
         {
-            await Exec(_customExecs);
-        }
-        finally
-        {
-            _customLock.Release();
+            try
+            {
+                await exec.ExecOnNoCommandAsync(guild, usrMsg);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex,
+                    "An error occurred in {TypeName} OnNoCommand: {ErrorMessage}",
+                    exec.Name,
+                    ex.Message);
+            }
         }
     }
 
-    public async Task<string> RunInputTransformersAsync(SocketGuild guild, IUserMessage usrMsg)
+    public async Task<string> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg)
     {
-        async Task<string> Exec<T>(IReadOnlyCollection<T> execs, string content)
-            where T : IInputTransformer
-        {
-            foreach (var exec in execs)
-            {
-                try
-                {
-                    var newContent = await exec.TransformInput(guild, usrMsg.Channel, usrMsg.Author, content);
-                    if (newContent is not null)
-                    {
-                        Log.Information("{ExecName} transformed content {OldContent} -> {NewContent}",
-                            GetExecName(exec),
-                            content,
-                            newContent);
-                        return newContent;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning(ex, "An error occured during InputTransform handling: {ErrorMessage}", ex.Message);
-                }
-            }
-
-            return null;
-        }
-
-        var newContent = await Exec(inputTransformers, usrMsg.Content);
+        var newContent = await ExecInputTransformInternalAsync(inputTransformers, guild, usrMsg);
         if (newContent is not null)
             return newContent;
         
-        await _customLock.WaitAsync();
-        try
+        var customs = _customExecs;
+        if (customs.Length > 0)
         {
-            newContent = await Exec(_customExecs, usrMsg.Content);
+            newContent = await ExecInputTransformInternalAsync(customs, guild, usrMsg);
             if (newContent is not null)
                 return newContent;
-        }
-        finally
-        {
-            _customLock.Release();
         }
 
         return usrMsg.Content;
     }
 
+    private async Task<string?> ExecInputTransformInternalAsync<T>(IReadOnlyCollection<T> execs, SocketGuild? guild, IUserMessage usrMsg)
+        where T : IInputTransformer
+    {
+        foreach (var exec in execs)
+        {
+            try
+            {
+                var newContent = await exec.TransformInput(guild, usrMsg.Channel, usrMsg.Author, usrMsg.Content);
+                if (newContent is not null)
+                {
+                    Log.Information("{ExecName} transformed content {OldContent} -> {NewContent}",
+                        GetExecName(exec),
+                        usrMsg.Content,
+                        newContent);
+                    return newContent;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "An error occured during InputTransform handling: {ErrorMessage}", ex.Message);
+            }
+        }
+
+        return null;
+    }
+
     public async ValueTask RunPostCommandAsync(ICommandContext ctx, string moduleName, CommandInfo cmd)
     {
-        foreach (var exec in _customExecs)
+        var customs = _customExecs;
+        foreach (var exec in customs)
         {
             try
             {

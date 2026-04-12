@@ -5,52 +5,43 @@ using System.Text;
 
 namespace NadekoBot.Services;
 
-public class YtdlOperation
+public sealed class YtdlOperation
 {
     private const string COOKIES_PATH = "data/ytcookies.txt";
 
-    private readonly string _baseArgString;
+    private readonly string[] _baseArgs;
 
-    public YtdlOperation(string baseArgString)
+    public YtdlOperation(string[] baseArgs)
     {
-        _baseArgString = baseArgString;
+        _baseArgs = baseArgs;
     }
 
-    private Process CreateProcess(string[] args)
+    private Process CreateProcess(string[] userArgs)
     {
-        var newArgs = args.Map(static arg => (object)SanitizeArgInternal(arg));
-        var arguments = string.Format(_baseArgString, newArgs);
+        var psi = new ProcessStartInfo
+        {
+            FileName = "yt-dlp",
+            UseShellExecute = false,
+            RedirectStandardError = true,
+            RedirectStandardOutput = true,
+            StandardOutputEncoding = Encoding.UTF8,
+            StandardErrorEncoding = Encoding.UTF8,
+            CreateNoWindow = true
+        };
 
         if (File.Exists(COOKIES_PATH))
-            arguments = $"--cookies \"{COOKIES_PATH}\" " + arguments;
-
-        return new()
         {
-            StartInfo = new()
-            {
-                FileName = "yt-dlp",
-                Arguments = arguments,
-                UseShellExecute = false,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                StandardOutputEncoding = Encoding.UTF8,
-                StandardErrorEncoding = Encoding.UTF8,
-                CreateNoWindow = true
-            }
-        };
-    }
-
-    private static string SanitizeArgInternal(string arg)
-    {
-        var sb = new StringBuilder(arg.Length);
-        foreach (var c in arg)
-        {
-            // strip characters that could be interpreted by shells or yt-dlp
-            if (c is not ('"' or '`' or '$' or '\\' or '\0' or '\n' or '\r'))
-                sb.Append(c);
+            psi.ArgumentList.Add("--cookies");
+            psi.ArgumentList.Add(COOKIES_PATH);
         }
 
-        return sb.ToString();
+        foreach (var a in _baseArgs)
+            psi.ArgumentList.Add(a);
+
+        foreach (var a in userArgs)
+            psi.ArgumentList.Add(a);
+
+        return new() { StartInfo = psi };
     }
 
     public async Task<string> GetDataAsync(params string[] args)
@@ -62,8 +53,11 @@ public class YtdlOperation
             Log.Debug("Executing {FileName} {Arguments}", process.StartInfo.FileName, process.StartInfo.Arguments);
             process.Start();
 
-            var str = await process.StandardOutput.ReadToEndAsync();
-            var err = await process.StandardError.ReadToEndAsync();
+            var stdoutTask = process.StandardOutput.ReadToEndAsync();
+            var stderrTask = process.StandardError.ReadToEndAsync();
+
+            var str = await stdoutTask;
+            var err = await stderrTask;
             if (!string.IsNullOrEmpty(err))
                 Log.Warning("yt-dlp warning: {YtdlWarning}", err);
 
@@ -88,8 +82,20 @@ public class YtdlOperation
         Log.Debug("Executing {FileName} {Arguments}", process.StartInfo.FileName, process.StartInfo.Arguments);
         process.Start();
 
-        string line;
-        while ((line = await process.StandardOutput.ReadLineAsync()) is not null)
-            yield return line;
+        try
+        {
+            string line;
+            while ((line = await process.StandardOutput.ReadLineAsync()) is not null)
+                yield return line;
+        }
+        finally
+        {
+            try
+            {
+                if (!process.HasExited)
+                    process.Kill();
+            }
+            catch { }
+        }
     }
 }

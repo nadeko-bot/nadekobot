@@ -1,10 +1,11 @@
 #nullable disable
 using NadekoBot.Modules.Music.Services;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Patronage;
 
 namespace NadekoBot.Modules.Music;
 
-[NoPublicBot]
+[PatronOnly(PatronTier.X)]
 public sealed partial class Music : NadekoModule<IMusicService>
 {
     public enum All

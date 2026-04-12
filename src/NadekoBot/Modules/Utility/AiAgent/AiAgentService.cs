@@ -111,7 +111,7 @@ public sealed class AiAgentService(
     /// Handles @mention trigger and passive buffer observation.
     /// Runs before command parsing so explicit @mention always takes priority.
     /// </summary>
-    public async Task<bool> ExecOnMessageAsync(IGuild guild, IUserMessage msg)
+    public async Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
     {
         if (!configService.Data.Enabled)
             return false;
@@ -169,7 +169,7 @@ public sealed class AiAgentService(
     /// Handles active conversation window, reply+intent, and name+intent triggers.
     /// Runs only when no command matched, so prefixed commands are never intercepted.
     /// </summary>
-    public async Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
+    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
         if (!configService.Data.Enabled)
             return;

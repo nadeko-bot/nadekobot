@@ -139,7 +139,9 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         return newState;
     }
 
-    public async Task<bool> ExecOnMessageAsync(IGuild guild, IUserMessage msg)
+#nullable enable
+    public async Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
+#nullable disable
     {
         if (msg.Channel is not ITextChannel tch)
             return false;

@@ -125,6 +125,9 @@ public sealed class UserRoleService : IUserRoleService, INService
         if (!Uri.TryCreate(iconUrl, UriKind.Absolute, out var uri))
             return false;
 
+        if (!UrlExtensions.IsPublicUrl(iconUrl))
+            return false;
+
         try
         {
             // Download the image

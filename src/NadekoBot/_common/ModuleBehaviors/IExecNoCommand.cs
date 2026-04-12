@@ -15,5 +15,5 @@ public interface IExecNoCommand : IBehavior
     /// <param name="guild"></param>
     /// <param name="msg"></param>
     /// <returns>A task representing completion</returns>
-    Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg);
+    Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg);
 }

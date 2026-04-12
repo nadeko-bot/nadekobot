@@ -80,7 +80,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
     public IReadOnlyCollection<string> GetHangmanTypes()
         => _source.GetCategories();
 
-    public async Task ExecOnNoCommandAsync(IGuild guild, IUserMessage msg)
+    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
         if (!_hangmanGames.ContainsKey(msg.Channel.Id))
             return;

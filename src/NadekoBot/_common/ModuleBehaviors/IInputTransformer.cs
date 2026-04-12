@@ -18,7 +18,7 @@ public interface IInputTransformer : IBehavior
     /// <param name="input">Content of the message</param>
     /// <returns>New input, if any, otherwise null</returns>
     Task<string?> TransformInput(
-        IGuild guild,
+        IGuild? guild,
         IMessageChannel channel,
         IUser user,
         string input);

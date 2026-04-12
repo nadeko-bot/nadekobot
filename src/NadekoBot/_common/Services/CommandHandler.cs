@@ -1,4 +1,3 @@
-#nullable disable
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.Configs;
 using NadekoBot.Db.Models;
@@ -7,12 +6,12 @@ using PreconditionResult = Discord.Commands.PreconditionResult;
 
 namespace NadekoBot.Services;
 
-public class CommandHandler : INService, ICommandHandler
+public sealed class CommandHandler : INService, ICommandHandler
 {
     private const float ONE_THOUSANDTH = 1.0f / 1000;
 
-    public event Func<IUserMessage, CommandInfo, Task> CommandExecuted = delegate { return Task.CompletedTask; };
-    public event Func<CommandInfo, ITextChannel, string, Task> CommandErrored = delegate { return Task.CompletedTask; };
+    public event Func<IUserMessage, CommandInfo, Task> CommandExecuted = static delegate { return Task.CompletedTask; };
+    public event Func<CommandInfo, ITextChannel?, string, Task> CommandErrored = static delegate { return Task.CompletedTask; };
 
     private readonly DiscordSocketClient _client;
     private readonly CommandService _commandService;
@@ -21,11 +20,9 @@ public class CommandHandler : INService, ICommandHandler
     private readonly IServiceProvider _services;
     private readonly ShardData _shardData;
 
-    private ConcurrentDictionary<ulong, string> _prefixes;
+    private ConcurrentDictionary<ulong, string> _prefixes = new();
 
     private readonly DbService _db;
-
-    private readonly BotConfig _bc;
 
     public CommandHandler(
         DiscordSocketClient client,
@@ -38,7 +35,6 @@ public class CommandHandler : INService, ICommandHandler
     {
         _client = client;
         _commandService = commandService;
-        _bc = bcs.Data;
         _bcs = bcs;
         _behaviorHandler = behaviorHandler;
         _db = db;
@@ -53,10 +49,10 @@ public class CommandHandler : INService, ICommandHandler
             .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .Where(x => x.Prefix != null)
             .ToListAsyncLinqToDB()
-            .Pipe(x => x.ToDictionary(x => x.GuildId, x => x.Prefix).ToConcurrent());
+            .Pipe(x => x.ToDictionary(x => x.GuildId, x => x.Prefix!).ToConcurrent());
     }
 
-    public string GetPrefix(IGuild guild)
+    public string GetPrefix(IGuild? guild)
         => GetPrefix(guild?.Id);
 
     public string GetPrefix(ulong? id = null)
@@ -122,19 +118,14 @@ public class CommandHandler : INService, ICommandHandler
     public Task StartHandling()
     {
         _client.MessageReceived += MessageReceivedHandler;
-        // _client.SlashCommandExecuted += SlashCommandExecuted;
         return Task.CompletedTask;
     }
 
-    // private async Task SlashCommandExecuted(SocketSlashCommand arg)
-    // {
-    //     var ctx = new SocketInteractionContext<SocketSlashCommand>(_client, arg);
-    //     await _interactions.ExecuteCommandAsync(ctx, _services);
-    // }
-
-    private Task LogSuccessfulExecution(IUserMessage usrMsg, ITextChannel channel, params int[] execPoints)
+    private void LogSuccessfulExecution(IUserMessage usrMsg, ITextChannel? channel, int interceptMs, int totalMs)
     {
-        if (_bcs.Data.ConsoleOutputType == ConsoleOutputType.Normal)
+        var outputType = _bcs.Data.ConsoleOutputType;
+
+        if (outputType == ConsoleOutputType.Normal)
         {
             Log.Information("""
                             Command Executed after {ExecTime}s
@@ -143,13 +134,14 @@ public class CommandHandler : INService, ICommandHandler
                             	Channel: {Channel}
                             	Message: {Message}
                             """,
-                string.Join("/", execPoints.Select(x => (x * ONE_THOUSANDTH).ToString("F3"))),
+                string.Create(null, stackalloc char[32],
+                    $"{interceptMs * ONE_THOUSANDTH:F3}/{totalMs * ONE_THOUSANDTH:F3}"),
                 usrMsg.Author + " [" + usrMsg.Author.Id + "]",
                 channel is null ? "PRIVATE" : channel.Guild.Name + " [" + channel.Guild.Id + "]",
                 channel is null ? "PRIVATE" : channel.Name + " [" + channel.Id + "]",
                 usrMsg.Content);
         }
-        else
+        else if (outputType == ConsoleOutputType.Simple)
         {
             Log.Information("Succ | g:{GuildId} | c: {ChannelId} | u: {UserId} | msg: {Message}",
                 channel?.Guild.Id.ToString() ?? "-",
@@ -157,17 +149,18 @@ public class CommandHandler : INService, ICommandHandler
                 usrMsg.Author.Id.ToString(),
                 usrMsg.Content.TrimTo(10));
         }
-
-        return Task.CompletedTask;
     }
 
     private void LogErroredExecution(
         string errorMessage,
         IUserMessage usrMsg,
-        ITextChannel channel,
-        params int[] execPoints)
+        ITextChannel? channel,
+        int interceptMs,
+        int totalMs)
     {
-        if (_bcs.Data.ConsoleOutputType == ConsoleOutputType.Normal)
+        var outputType = _bcs.Data.ConsoleOutputType;
+
+        if (outputType == ConsoleOutputType.Normal)
         {
             Log.Warning("""
                         Command Errored after {ExecTime}s
@@ -177,14 +170,15 @@ public class CommandHandler : INService, ICommandHandler
                         	Message: {Message}
                         	Error: {ErrorMessage}
                         """,
-                string.Join("/", execPoints.Select(x => (x * ONE_THOUSANDTH).ToString("F3"))),
+                string.Create(null, stackalloc char[32],
+                    $"{interceptMs * ONE_THOUSANDTH:F3}/{totalMs * ONE_THOUSANDTH:F3}"),
                 usrMsg.Author + " [" + usrMsg.Author.Id + "]",
                 channel is null ? "DM" : channel.Guild.Name + " [" + channel.Guild.Id + "]",
                 channel is null ? "DM" : channel.Name + " [" + channel.Id + "]",
                 usrMsg.Content,
                 errorMessage);
         }
-        else
+        else if (outputType == ConsoleOutputType.Simple)
         {
             Log.Warning("""
                         Err | g:{GuildId} | c: {ChannelId} | u: {UserId} | msg: {Message}
@@ -200,7 +194,7 @@ public class CommandHandler : INService, ICommandHandler
 
     private Task MessageReceivedHandler(SocketMessage msg)
     {
-        if (_bc.IgnoreOtherBots)
+        if (_bcs.Data.IgnoreOtherBots)
         {
             if (msg.Author.IsBot)
                 return Task.CompletedTask;
@@ -231,7 +225,7 @@ public class CommandHandler : INService, ICommandHandler
         return Task.CompletedTask;
     }
 
-    public async Task TryRunCommand(SocketGuild guild, ISocketMessageChannel channel, IUserMessage usrMsg)
+    public async Task TryRunCommand(SocketGuild? guild, ISocketMessageChannel channel, IUserMessage usrMsg)
     {
         var startTime = Environment.TickCount;
 
@@ -263,7 +257,7 @@ public class CommandHandler : INService, ICommandHandler
                 // if it successfully executed
                 if (success)
                 {
-                    await LogSuccessfulExecution(usrMsg, channel as ITextChannel, interceptTime, startTime);
+                    LogSuccessfulExecution(usrMsg, channel as ITextChannel, interceptTime, startTime);
                     await CommandExecuted(usrMsg, info);
                     await _behaviorHandler.RunPostCommandAsync(context, info.Module.GetTopLevelModule().Name, info);
                     return;
@@ -289,13 +283,13 @@ public class CommandHandler : INService, ICommandHandler
     private string HumanizeError(string error)
     {
         if (error.Contains("parse int", StringComparison.OrdinalIgnoreCase)
-            || error.Contains("parse float"))
+            || error.Contains("parse float", StringComparison.OrdinalIgnoreCase))
             return "Invalid number specified. Make sure you're specifying parameters in the correct order.";
 
         return error;
     }
 
-    public Task<(bool Success, string Error, CommandInfo Info)> ExecuteCommandAsync(
+    public Task<(bool Success, string? Error, CommandInfo? Info)> ExecuteCommandAsync(
         ICommandContext context,
         string input,
         int argPos,
@@ -304,7 +298,7 @@ public class CommandHandler : INService, ICommandHandler
         => ExecuteCommand(context, input[argPos..], serviceProvider, multiMatchHandling);
 
 
-    public async Task<(bool Success, string Error, CommandInfo Info)> ExecuteCommand(
+    public async Task<(bool Success, string? Error, CommandInfo? Info)> ExecuteCommand(
         ICommandContext context,
         string input,
         IServiceProvider services,

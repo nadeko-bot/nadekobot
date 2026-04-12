@@ -247,10 +247,13 @@ namespace NadekoBot.Voice
 
         private string[] GetRecognizedUserIds()
         {
-            var list = new List<string>(_recognizedUserIds);
-            if (!list.Contains(_selfUserId))
-                list.Add(_selfUserId);
-            return list.ToArray();
+            var hasSelf = _recognizedUserIds.Contains(_selfUserId);
+            var count = _recognizedUserIds.Count + (hasSelf ? 0 : 1);
+            var result = new string[count];
+            _recognizedUserIds.CopyTo(result);
+            if (!hasSelf)
+                result[count - 1] = _selfUserId;
+            return result;
         }
 
         private static void OnNativeLog(int severity, string file, int line, string message)

@@ -118,7 +118,7 @@ public sealed class AnimalRace : IDisposable
             {
                 if (user.Bet > 0)
                     await _currency.AddAsync(user.UserId,
-                        (long)(user.Bet * BASE_MULTIPLIER),
+                        user.Bet,
                         new("animalrace", "refund"));
             }
 

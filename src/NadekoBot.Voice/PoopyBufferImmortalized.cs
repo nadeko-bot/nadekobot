@@ -120,14 +120,10 @@ namespace NadekoBot.Voice
 
             if (wp > ReadPosition || ReadPosition + toRead <= _buffer.Length)
             {
-                // thsi can be achieved without copying if 
-                // writer never writes until the end,
-                // but leaves a single chunk free
-                Span<byte> toReturn = _outputArray;
-                ((Span<byte>) _buffer).Slice(ReadPosition, toRead).CopyTo(toReturn);
+                var start = ReadPosition;
                 ReadPosition += toRead;
                 length = toRead;
-                return toReturn;
+                return _buffer.AsSpan(start, toRead);
             }
             else
             {

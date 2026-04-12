@@ -31,44 +31,31 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
         _google = google;
 
 
-        _ytdlPlaylistOperation = new("-4 "
-                                     + "--geo-bypass "
-                                     + "--encoding UTF8 "
-                                     + "-f \"bestaudio[acodec=opus]/bestaudio/best\" "
-                                     + "-e "
-                                     + "--get-url "
-                                     + "--get-id "
-                                     + "--get-thumbnail "
-                                     + "--get-duration "
-                                     + "--no-check-certificate "
-                                     + "-i "
-                                     + "--yes-playlist "
-                                     + "-- \"{0}\"");
+        _ytdlPlaylistOperation = new(
+        [
+            "-4", "--geo-bypass", "--encoding", "UTF8",
+            "-f", "bestaudio[acodec=opus]/bestaudio/best",
+            "-e", "--get-url", "--get-id", "--get-thumbnail", "--get-duration",
+            "--no-check-certificate",
+            "-i", "--yes-playlist", "--"
+        ]);
 
-        _ytdlIdOperation = new("-4 "
-                               + "--geo-bypass "
-                               + "--encoding UTF8 "
-                               + "-f \"bestaudio[acodec=opus]/bestaudio/best\" "
-                               + "-e "
-                               + "--get-url "
-                               + "--get-id "
-                               + "--get-thumbnail "
-                               + "--get-duration "
-                               + "--no-check-certificate "
-                               + "-- \"{0}\"");
+        _ytdlIdOperation = new(
+        [
+            "-4", "--geo-bypass", "--encoding", "UTF8",
+            "-f", "bestaudio[acodec=opus]/bestaudio/best",
+            "-e", "--get-url", "--get-id", "--get-thumbnail", "--get-duration",
+            "--no-check-certificate", "--"
+        ]);
 
-        _ytdlSearchOperation = new("-4 "
-                                   + "--geo-bypass "
-                                   + "--encoding UTF8 "
-                                   + "-f \"bestaudio[acodec=opus]/bestaudio/best\" "
-                                   + "-e "
-                                   + "--get-url "
-                                   + "--get-id "
-                                   + "--get-thumbnail "
-                                   + "--get-duration "
-                                   + "--no-check-certificate "
-                                   + "--default-search "
-                                   + "\"ytsearch:\" -- \"{0}\"");
+        _ytdlSearchOperation = new(
+        [
+            "-4", "--geo-bypass", "--encoding", "UTF8",
+            "-f", "bestaudio[acodec=opus]/bestaudio/best",
+            "-e", "--get-url", "--get-id", "--get-thumbnail", "--get-duration",
+            "--no-check-certificate",
+            "--default-search", "ytsearch:", "--"
+        ]);
     }
 
     private YtTrackData ResolveYtdlData(string ytdlOutputString)
