@@ -107,6 +107,17 @@ removeperm:
   params:
     - index:
         desc: The position at which to start removing permissions.
+dpoglobal:
+  desc: Sets a global permission override for a command. Bot owner only.
+  ex:
+    - '"command name" bot owner only'
+    - '"command name" Administrator'
+    - '"command name"'
+  params:
+    - command:
+        desc: The command for which the override is being set.
+    - overrideStr:
+        desc: The permission override to apply (e.g., 'bot owner only' or a Discord guild permission). Leave empty to remove the override.
 resetglobalperms:
   desc: Resets global permissions set by bot owner.
   ex:

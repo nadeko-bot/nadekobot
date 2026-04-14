@@ -11,6 +11,7 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
     private readonly IMessageSenderService _sender;
     private readonly ILocalization _loc;
     private readonly IMedusaLoaderService _medusae;
+    private readonly BotConfigService _bss;
 
     public CommandsUtilityService(
         CommandHandler ch,
@@ -18,7 +19,8 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
         DiscordPermOverrideService dpos,
         IMessageSenderService sender,
         ILocalization loc,
-        IMedusaLoaderService medusae)
+        IMedusaLoaderService medusae,
+        BotConfigService bss)
     {
         _ch = ch;
         _strings = strings;
@@ -26,6 +28,7 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
         _sender = sender;
         _loc = loc;
         _medusae = medusae;
+        _bss = bss;
     }
 
     public EmbedBuilder GetCommandHelp(CommandInfo com, IGuild guild)
@@ -43,7 +46,14 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
                         .AddField(str, $"{com.RealSummary(_strings, _medusae, culture, prefix)}", true);
 
         _dpos.TryGetOverrides(guild?.Id ?? 0, com.Name, out var overrides);
-        var reqs = GetCommandRequirements(com, (GuildPermission?)overrides);
+        
+        string? globalOverride = null;
+        if (_bss.Data.CommandOverrides.TryGetValue(com.Name.ToLowerInvariant(), out var go))
+        {
+            globalOverride = go;
+        }
+        
+        var reqs = GetCommandRequirements(com, (GuildPermission?)overrides, globalOverride);
         if (reqs.Any())
             em.AddField(GetText(strs.requires, guild), string.Join("\n", reqs));
 
@@ -110,9 +120,21 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
            .Select(a => a.GenericTypeArguments[0])
            .FirstOrDefault();
 
-    public static string[] GetCommandRequirements(CommandInfo cmd, GuildPerm? overrides = null)
+    public static string[] GetCommandRequirements(CommandInfo cmd, GuildPermission? overrides = null, string? globalOverride = null)
     {
         var toReturn = new List<string>();
+
+        if (globalOverride is not null)
+        {
+            if (globalOverride.Equals("bot owner only", StringComparison.OrdinalIgnoreCase))
+            {
+                toReturn.Add("Bot Owner Only (Global)");
+            }
+            else
+            {
+                toReturn.Add($"{globalOverride} (Global)");
+            }
+        }
 
         if (cmd.Preconditions.Any(x => x is OwnerOnlyAttribute))
             toReturn.Add("Bot Owner Only");

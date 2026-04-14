@@ -10,7 +10,8 @@ namespace NadekoBot.Modules.Help;
 public sealed partial class CommandListGenerator(
     CommandService cmds,
     IMedusaLoaderService medusae,
-    IBotStrings strings
+    IBotStrings strings,
+    BotConfigService bss
 ) : INService, IReadyExecutor
 {
     public async Task OnReadyAsync()
@@ -35,6 +36,12 @@ public sealed partial class CommandListGenerator(
                         if (opt is not null)
                             optHelpStr = CommandsUtilityService.GetCommandOptionHelpList(opt);
 
+                        string globalOverride = null;
+                        if (bss.Data.CommandOverrides.TryGetValue(com.Name.ToLowerInvariant(), out var go))
+                        {
+                            globalOverride = go;
+                        }
+
                         return new CommandJsonObject
                         {
                             Aliases = com.Aliases.Select(alias => prefix + alias).ToArray(),
@@ -43,7 +50,7 @@ public sealed partial class CommandListGenerator(
                             Submodule = com.Module.Name,
                             Module = com.Module.GetTopLevelModule().Name,
                             Options = optHelpStr,
-                            Requirements = CommandsUtilityService.GetCommandRequirements(com)
+                            Requirements = CommandsUtilityService.GetCommandRequirements(com, globalOverride: globalOverride)
                         };
                     })
                     .ToList());

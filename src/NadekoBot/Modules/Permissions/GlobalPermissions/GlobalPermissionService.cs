@@ -1,5 +1,7 @@
 #nullable disable
 using NadekoBot.Common.ModuleBehaviors;
+using Discord;
+using NadekoBot.Db;
 
 namespace NadekoBot.Modules.Permissions.Services;
 
@@ -14,9 +16,13 @@ public class GlobalPermissionService : IExecPreCommand, INService
         => _bss.Data.Blocked.Modules;
 
     private readonly BotConfigService _bss;
+    private readonly IBotCredsProvider _creds;
 
-    public GlobalPermissionService(BotConfigService bss)
-        => _bss = bss;
+    public GlobalPermissionService(BotConfigService bss, IBotCredsProvider creds)
+    {
+        _bss = bss;
+        _creds = creds;
+    }
 
 
     public Task<bool> ExecPreCommandAsync(ICommandContext ctx, string moduleName, CommandInfo command)
@@ -36,9 +42,49 @@ public class GlobalPermissionService : IExecPreCommand, INService
                     || settings.DmBlocked.Modules.Contains(moduleName.ToLowerInvariant()))
                     return Task.FromResult(true);
             }
+            
+            if (settings.CommandOverrides.TryGetValue(commandName, out var overrideStr))
+            {
+                if (overrideStr.Equals("bot owner only", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!_creds.GetCreds().IsOwner(ctx.User))
+                        return Task.FromResult(true);
+                }
+                else if (Enum.TryParse<NadekoBot.Db.GuildPerm>(overrideStr, true, out var perm))
+                {
+                    if (ctx.User is not IGuildUser gu || !gu.GuildPermissions.Has((GuildPermission)perm))
+                        return Task.FromResult(true);
+                }
+            }
         }
 
         return Task.FromResult(false);
+    }
+    
+    public void SetOverride(string commandName, string overrideStr)
+    {
+        _bss.ModifyConfig(bs =>
+        {
+            bs.CommandOverrides[commandName.ToLowerInvariant()] = overrideStr;
+        });
+    }
+
+    public bool ClearOverride(string commandName)
+    {
+        var removed = false;
+        _bss.ModifyConfig(bs =>
+        {
+            removed = bs.CommandOverrides.Remove(commandName.ToLowerInvariant());
+        });
+        return removed;
+    }
+
+    public void ClearAllOverrides()
+    {
+        _bss.ModifyConfig(bs =>
+        {
+            bs.CommandOverrides.Clear();
+        });
     }
 
     /// <summary>

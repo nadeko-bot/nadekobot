@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using NadekoBot.Services;
 
 namespace Discord;
 
@@ -20,8 +21,12 @@ public class UserPermAttribute : RequireUserPermissionAttribute
         CommandInfo command,
         IServiceProvider services)
     {
+        var bss = services.GetRequiredService<BotConfigService>();
+        if (bss.Data.CommandOverrides.ContainsKey(command.Name.ToLowerInvariant()))
+            return Task.FromResult(PreconditionResult.FromSuccess());
+
         var permService = services.GetRequiredService<IDiscordPermOverrideService>();
-        if (permService.TryGetOverrides(context.Guild?.Id ?? 0, command.Name.ToUpperInvariant(), out _))
+        if (permService.TryGetOverrides(context.Guild?.Id ?? 0, command.Name, out _))
             return Task.FromResult(PreconditionResult.FromSuccess());
 
         return base.CheckPermissionsAsync(context, command, services);
