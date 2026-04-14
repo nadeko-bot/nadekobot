@@ -48,3 +48,5 @@ club_user_not_in_club: '{0} is not in a club.'
 club_user_unbanned: Unbanned user {0} in {1} club.
 level_req: ''
 rank: Rank
+notify_club_app_accepted: "Club - Application Accepted"
+club_dm_app_accepted: "Your application to **{0}** has been accepted!"

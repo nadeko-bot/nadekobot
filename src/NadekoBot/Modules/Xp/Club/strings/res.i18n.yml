@@ -45,6 +45,8 @@ ar:
   club_user_unbanned: 'تم رفع الحظر عن المستخدم {0} في نادي {1}.'
   level_req: ''
   rank: الترتيب
+  notify_club_app_accepted: النادي - تم قبول الطلب
+  club_dm_app_accepted: 'تم قبول طلبك للانضمام إلى **{0}**!'
 
 de-DE:
   club_accept_invalid_applicant: Dieser Benutzer hat sich nicht bei deinem Club beworben.
@@ -93,6 +95,8 @@ de-DE:
   club_user_unbanned: 'Nutzer {0} wurde im Club {1} entbannt.'
   level_req: ''
   rank: Rang
+  notify_club_app_accepted: Club - Bewerbung angenommen
+  club_dm_app_accepted: 'Deine Bewerbung bei **{0}** wurde angenommen!'
 
 es-ES:
   club_accept_invalid_applicant: Ese usuario no se ha postulado a tu club.
@@ -141,6 +145,8 @@ es-ES:
   club_user_unbanned: 'El usuario {0} ha sido desbloqueado en el club {1}.'
   level_req: ''
   rank: Rango
+  notify_club_app_accepted: Club - Solicitud aceptada
+  club_dm_app_accepted: 'Tu solicitud para **{0}** ha sido aceptada!'
 
 fr-FR:
   club_accept_invalid_applicant: Cet utilisateur n'a pas postulé à votre club.
@@ -189,6 +195,8 @@ fr-FR:
   club_user_unbanned: 'L''utilisateur {0} a été débanni du club {1}.'
   level_req: ''
   rank: Rang
+  notify_club_app_accepted: Club - Candidature acceptée
+  club_dm_app_accepted: 'Ta candidature pour **{0}** a ete acceptee !'
 
 id-ID:
   club_accept_invalid_applicant: Pengguna itu belum melamar ke klubmu.
@@ -237,6 +245,8 @@ id-ID:
   club_user_unbanned: 'Pengguna {0} di-unban di klub {1}.'
   level_req: ''
   rank: Peringkat
+  notify_club_app_accepted: Klub - Lamaran Diterima
+  club_dm_app_accepted: 'Lamaranmu ke **{0}** telah diterima!'
 
 ja-JP:
   club_accept_invalid_applicant: そのユーザーはクラブに応募していません。
@@ -285,6 +295,8 @@ ja-JP:
   club_user_unbanned: 'ユーザー {0} が {1} クラブでバン解除されました。'
   level_req: ''
   rank: ランク
+  notify_club_app_accepted: クラブ - 申請承認
+  club_dm_app_accepted: '**{0}** への参加申請が承認されました!'
 
 ko-KR:
   club_accept_invalid_applicant: 해당 유저는 클럽에 가입 신청하지 않았어요.
@@ -333,6 +345,8 @@ ko-KR:
   club_user_unbanned: '{0}의 {1} 클럽 차단이 해제되었어요.'
   level_req: ''
   rank: 순위
+  notify_club_app_accepted: 클럽 - 가입 승인됨
+  club_dm_app_accepted: '**{0}**에 대한 가입 신청이 수락되었습니다!'
 
 pl-PL:
   club_accept_invalid_applicant: Ten użytkownik nie aplikował do twojego klubu.
@@ -381,6 +395,8 @@ pl-PL:
   club_user_unbanned: 'Odbanowano użytkownika {0} w klubie {1}.'
   level_req: ''
   rank: Ranga
+  notify_club_app_accepted: Klub - Podanie zaakceptowane
+  club_dm_app_accepted: 'Twoje podanie do **{0}** zostalo zaakceptowane!'
 
 pt-BR:
   club_accept_invalid_applicant: Esse usuário não se candidatou ao seu clube.
@@ -429,6 +445,8 @@ pt-BR:
   club_user_unbanned: 'Desbanindo o usuário {0} no clube {1}.'
   level_req: ''
   rank: Rank
+  notify_club_app_accepted: Clube - Inscrição aceita
+  club_dm_app_accepted: 'Sua candidatura para **{0}** foi aceita!'
 
 ru-RU:
   club_accept_invalid_applicant: Этот пользователь не подавал заявку в ваш клуб.
@@ -477,6 +495,8 @@ ru-RU:
   club_user_unbanned: 'Пользователь {0} был разблокирован в клубе {1}.'
   level_req: ''
   rank: Ранг
+  notify_club_app_accepted: Клуб - Заявка принята
+  club_dm_app_accepted: 'Ваша заявка в **{0}** была принята!'
 
 sr-Cyrl-RS:
   club_accept_invalid_applicant: Тај корисник се није пријавио у твој клуб.
@@ -525,6 +545,8 @@ sr-Cyrl-RS:
   club_user_unbanned: 'Корисник {0} је одбанован у клубу {1}.'
   level_req: ''
   rank: Ранг
+  notify_club_app_accepted: Клуб - Пријава прихваћена
+  club_dm_app_accepted: 'Твоја пријава за **{0}** је прихваћена!'
 
 tr-TR:
   club_accept_invalid_applicant: Bu kullanıcı kulübüne başvurmamış.
@@ -573,6 +595,8 @@ tr-TR:
   club_user_unbanned: '{0} kullanıcısının {1} kulübündeki yasağı kaldırıldı.'
   level_req: ''
   rank: Sıralama
+  notify_club_app_accepted: Kulüp - Başvuru Kabul Edildi
+  club_dm_app_accepted: '**{0}** icin basvurun kabul edildi!'
 
 ts-TS:
   club_accept_invalid_applicant: That user hasn't applied to your club. Check properly!
@@ -621,6 +645,8 @@ ts-TS:
   club_user_unbanned: 'Unbanned user {0} in {1} club.'
   level_req: ''
   rank: Rank
+  notify_club_app_accepted: Club - Application Accepted
+  club_dm_app_accepted: 'Your application to **{0}** was accepted... not like I care or anything!'
 
 uk-UA:
   club_accept_invalid_applicant: Цей користувач не подавав заявку до твого клубу.
@@ -669,6 +695,8 @@ uk-UA:
   club_user_unbanned: 'Користувача {0} розбанено в клубі {1}.'
   level_req: ''
   rank: Ранг
+  notify_club_app_accepted: Клуб - Заявку прийнято
+  club_dm_app_accepted: 'Вашу заявку до **{0}** було прийнято!'
 
 vi-VN:
   club_accept_invalid_applicant: Người dùng đó chưa nộp đơn vào câu lạc bộ của bạn.
@@ -717,6 +745,8 @@ vi-VN:
   club_user_unbanned: 'Đã bỏ cấm người dùng {0} trong câu lạc bộ {1}.'
   level_req: ''
   rank: Hạng
+  notify_club_app_accepted: Câu lạc bộ - Đơn đăng ký được chấp nhận
+  club_dm_app_accepted: 'Don xin gia nhap **{0}** cua ban da duoc chap nhan!'
 
 zh-CN:
   club_accept_invalid_applicant: 該使用者未申請加入你的社團。
@@ -765,3 +795,5 @@ zh-CN:
   club_user_unbanned: '{1} 公會中的未禁止用戶 {0}。'
   level_req: ''
   rank: 排名
+  notify_club_app_accepted: 俱乐部 - 申请已通过
+  club_dm_app_accepted: '你加入 **{0}** 的申请已通过!'

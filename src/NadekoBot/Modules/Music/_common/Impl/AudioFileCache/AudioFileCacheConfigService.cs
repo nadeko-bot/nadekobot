@@ -20,7 +20,7 @@ public sealed class AudioFileCacheConfigService : ConfigServiceBase<AudioFileCac
             static (c, v) => c.MaxCacheSizeGb = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            "Maximum total cache size in gigabytes. Minimum 1. Default 20",
+            "Maximum total cache size in gigabytes. Minimum 1. Default 10",
             static val => val >= 1);
 
         Migrate();

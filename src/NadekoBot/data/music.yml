@@ -1,4 +1,4 @@
 ﻿# DO NOT CHANGE
 version: 1
-# Maximum total cache size in gigabytes. Minimum 1. Default 20
-maxCacheSizeGb: 20
+# Maximum total cache size in gigabytes. Minimum 1. Default 10
+maxCacheSizeGb: 10

@@ -1189,6 +1189,20 @@ namespace NadekoBot.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserNotifyBlock",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Type = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserNotifyBlock", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserQuest",
                 columns: table => new
                 {
@@ -2357,6 +2371,12 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserNotifyBlock_UserId_Type",
+                table: "UserNotifyBlock",
+                columns: new[] { "UserId", "Type" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserQuest_UserId",
                 table: "UserQuest",
                 column: "UserId");
@@ -2787,6 +2807,9 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserFishStats");
+
+            migrationBuilder.DropTable(
+                name: "UserNotifyBlock");
 
             migrationBuilder.DropTable(
                 name: "UserQuest");

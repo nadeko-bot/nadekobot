@@ -10,3 +10,5 @@ lasts_until: Lasts Until
 no_givaways: There are no active giveaways on this server.
 winner: Winner
 winners_count: Winners
+notify_giveaway_won: "Giveaway - Won"
+giveaway_dm_won: "You won a giveaway! Prize: {0}"

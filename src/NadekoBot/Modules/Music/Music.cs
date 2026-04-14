@@ -692,6 +692,38 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
     [Cmd]
     [RequireContext(ContextType.Guild)]
+    public async Task QueueFind([Leftover] string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return;
+
+        if (!_service.TryGetMusicPlayer(ctx.Guild.Id, out var mp))
+        {
+            await Response().Error(strs.no_player).SendAsync();
+            return;
+        }
+
+        var results = mp.SearchQueue(query);
+        if (results.Count == 0)
+        {
+            await Response().Error(strs.queue_find_no_results).SendAsync();
+            return;
+        }
+
+        var desc = results
+            .Select(static x => $"`{x.Index + 1}.` {x.Track.PrettyFullName()}")
+            .Join('\n');
+
+        var embed = CreateEmbed()
+            .WithOkColor()
+            .WithAuthor(GetText(strs.queue_find_results(results.Count)), MUSIC_ICON_URL)
+            .WithDescription(desc);
+
+        await Response().Embed(embed).SendAsync();
+    }
+
+    [Cmd]
+    [RequireContext(ContextType.Guild)]
     [UserPerm(GuildPerm.ManageMessages)]
     public async Task SetMusicChannel()
     {

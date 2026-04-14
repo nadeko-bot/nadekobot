@@ -1,0 +1,5 @@
+user_notify_title: "DM Notification Settings"
+user_notify_footer: "Click a button to toggle notifications on/off"
+user_notify_none: "No notification types are available."
+user_notify_enable_all: "Enable All"
+user_notify_disable_all: "Disable All"

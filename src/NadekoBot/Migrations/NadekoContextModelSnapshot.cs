@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NadekoBot.Db;
 
@@ -10,12 +9,10 @@ using NadekoBot.Db;
 
 namespace NadekoBot.Migrations
 {
-    [DbContext(typeof(SqliteContext))]
-    [Migration("20260407082124_init")]
-    partial class init
+    [DbContext(typeof(NadekoContext))]
+    partial class NadekoContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.1");
@@ -2689,6 +2686,28 @@ namespace NadekoBot.Migrations
                     b.HasIndex("When");
 
                     b.ToTable("ScheduledCommand");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Utility.UserNotifications.Db.UserNotifyBlock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Type")
+                        .IsUnique();
+
+                    b.ToTable("UserNotifyBlock");
                 });
 
             modelBuilder.Entity("NadekoBot.Modules.Utility.UserRole.UserRole", b =>

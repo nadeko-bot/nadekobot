@@ -1,0 +1,6 @@
+notify:
+  desc: "Shows your DM notification settings. Toggle individual notification types on or off using the buttons."
+  ex:
+    - ''
+  params:
+    - { }

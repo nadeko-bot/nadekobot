@@ -7,7 +7,7 @@ Write-Output "Creating new migration..."
 
 dotnet build
 
-dotnet ef migrations add $MigrationName --context SqliteContext --output-dir "Migrations" --no-build
+dotnet ef migrations add $MigrationName --output-dir "Migrations" --no-build
 
 dotnet build
 
@@ -18,9 +18,9 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Output "Generating diff SQL scripts..."
 
-$newMigrationIdSqlite = (dotnet ef migrations list --context SqliteContext --no-build --no-connect | Select-Object -Last 2 | Select-Object -First 1) -split ' ' | Select-Object -First 1
+$newMigrationId = (dotnet ef migrations list --no-build --no-connect | Select-Object -Last 2 | Select-Object -First 1) -split ' ' | Select-Object -First 1
 
-dotnet ef migrations script init $MigrationName --context SqliteContext -o "Migrations/$newMigrationIdSqlite.sql" --no-build
+dotnet ef migrations script init $MigrationName -o "Migrations/$newMigrationId.sql" --no-build
 
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error: Failed to generate SQL script"
@@ -37,4 +37,4 @@ Get-ChildItem "Migrations" -File | Where-Object { $_.Name -like '*.cs' } | ForEa
 dotnet build
 
 Write-Output "Creating new initial migration..."
-dotnet ef migrations add init --context SqliteContext --output-dir "Migrations" --no-build
+dotnet ef migrations add init --output-dir "Migrations" --no-build

@@ -243,6 +243,17 @@ queueshuffle:
     - ''
   params:
     - {}
+queuefind:
+  desc: |-
+    Searches the current music queue for tracks matching the query.
+    Shows up to 10 results with their queue position.
+    Use the position number with .play to jump to a track.
+  ex:
+    - nightcore
+    - dream
+  params:
+    - query:
+        desc: "The search text to match against track titles."
 radio:
   desc: >-
     Queues a radio stream from a link. It can be a direct mp3 radio stream,

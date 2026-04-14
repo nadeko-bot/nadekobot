@@ -1,15 +1,16 @@
-notify:
-  - notify
-  - nfy
-notifyclear:
-  - notifyclear
-  - notifyremove
-  - notifyrm
-  - notifclr
-notifylist:
-  - notifylist
-  - notifyl
-notifyphs:
-  - notifyphs
-  - notifyph
-  - notifyplaceholders
+servernotify:
+  - servernotify
+  - snotify
+  - sn
+servernotifyclear:
+  - servernotifyclear
+  - snotifyclear
+  - snotifyrm
+servernotifylist:
+  - servernotifylist
+  - snotifylist
+  - snotifyl
+servernotifyphs:
+  - servernotifyphs
+  - snotifyphs
+  - snotifyph

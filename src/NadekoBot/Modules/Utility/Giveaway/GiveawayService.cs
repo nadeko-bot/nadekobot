@@ -3,12 +3,15 @@ using LinqToDB.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Utility.UserNotifications;
 
 namespace NadekoBot.Modules.Utility;
 
 public sealed class GiveawayService : INService, IReadyExecutor
 {
     public static string GiveawayEmoji = "🎉";
+
+    private const string NOTIFY_GIVEAWAY_WON = "giveaway.won";
 
     private readonly DbService _db;
     private readonly IBotCreds _creds;
@@ -17,6 +20,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
     private readonly IBotStrings _strings;
     private readonly ILocalization _localization;
     private readonly IMemoryCache _cache;
+    private readonly UserNotifyService? _userNotify;
     private SortedSet<GiveawayModel> _giveawayCache = new SortedSet<GiveawayModel>();
     private readonly Lock _giveawayLock = new();
     private readonly NadekoRandom _rng;
@@ -28,7 +32,8 @@ public sealed class GiveawayService : INService, IReadyExecutor
         IMessageSenderService sender,
         IBotStrings strings,
         ILocalization localization,
-        IMemoryCache cache)
+        IMemoryCache cache,
+        UserNotifyService? userNotify = null)
     {
         _db = db;
         _creds = creds;
@@ -37,6 +42,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
         _strings = strings;
         _localization = localization;
         _cache = cache;
+        _userNotify = userNotify;
         _rng = new NadekoRandom();
 
 
@@ -354,6 +360,27 @@ public sealed class GiveawayService : INService, IReadyExecutor
         {
             _ = msg.DeleteAsync();
             await _sender.Response(ch).Embed(eb).SendAsync();
+        }
+
+        if (winner is not null && _userNotify is not null)
+        {
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    var msgStr = strs.giveaway_dm_won(ga.Message.TrimTo(200));
+                    var notifyEmbed = new EmbedBuilder()
+                        .WithColor(new Discord.Color(0xF1, 0xC4, 0x0F))
+                        .WithTitle("Giveaway Won!")
+                        .WithDescription(_strings.GetText(msgStr.Key, (ulong?)null, msgStr.Params));
+
+                    await _userNotify.NotifyAsync(winner.UserId, NOTIFY_GIVEAWAY_WON, notifyEmbed);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Failed to send giveaway won notification");
+                }
+            });
         }
     }
 

@@ -40,4 +40,5 @@ public interface IMusicPlayer : IDisposable
     void ShuffleQueue();
     void SetFairplay();
     Task<IQueuedTrackInfo?> RemoveLastQueuedTrack();
+    IReadOnlyList<(int Index, IQueuedTrackInfo Track)> SearchQueue(string query, int maxResults = 10);
 }

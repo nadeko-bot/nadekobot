@@ -86,6 +86,10 @@ queueshuffle:
   - qsh
   - qshuffle
   - shuffle
+queuefind:
+  - queuefind
+  - qfind
+  - qf
 radio:
   - radio
   - ra

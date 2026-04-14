@@ -37,6 +37,8 @@ playlists: '`#{0}` - **{1}** by *{2}* ({3} tracks)'
 playlists_page: Page {0} of saved playlists
 queue: Queue
 queue_cleared: Music queue cleared.
+queue_find_no_results: No tracks matching that query were found in the queue.
+queue_find_results: "Found {0} match(es)"
 queue_search_results: Type the number of the search result to queue up that track.
 queue_shuffled: Music queue has been shuffled.
 queue_stopped: Player is stopped. Use {0} command to start playing.

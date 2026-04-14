@@ -19,30 +19,6 @@ using NSubstitute;
 
 namespace NadekoBot.Tests.Waifu;
 
-/// <summary>
-/// SQLite context that uses a shared in-memory connection.
-/// </summary>
-public sealed class TestSqliteContext : NadekoContext
-{
-    private readonly SqliteConnection _connection;
-
-    protected override string CurrencyTransactionOtherIdDefaultValue => "NULL";
-
-    public TestSqliteContext(SqliteConnection connection)
-    {
-        _connection = connection;
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseSqlite(_connection);
-    }
-}
-
-/// <summary>
-/// Test DbService that creates SQLite in-memory contexts with a persistent shared connection.
-/// </summary>
 public sealed class TestDbService : DbService, IDisposable
 {
     private readonly SqliteConnection _connection;
@@ -55,19 +31,15 @@ public sealed class TestDbService : DbService, IDisposable
         _connection = new SqliteConnection("Data Source=:memory:");
         _connection.Open();
 
-        // Create schema immediately
-        using var ctx = new TestSqliteContext(_connection);
+        using var ctx = new NadekoContext(_connection);
         ctx.Database.EnsureCreated();
     }
 
     public override NadekoContext GetDbContext()
-        => new TestSqliteContext(_connection);
+        => new NadekoContext(_connection);
 
     public override Task SetupAsync()
         => Task.CompletedTask;
-
-    public override DbContext CreateRawDbContext(string dbType, string connString)
-        => new TestSqliteContext(_connection);
 
     public void Dispose()
     {

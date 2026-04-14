@@ -6,6 +6,7 @@ using NadekoBot.Db.Models;
 using NadekoBot.Modules.Waifus.Waifu.Db;
 using NadekoBot.Modules.Games.Quests;
 using NadekoBot.Modules.Patronage;
+using NadekoBot.Modules.Utility.UserNotifications;
 using OneOf;
 using OneOf.Types;
 
@@ -90,10 +91,15 @@ public sealed class WaifuService(
     DiscordSocketClient client,
     WaifuConfigService configService,
     IPatronageService ps,
+    IBotStrings bs,
     QuestService? quests = null,
+    UserNotifyService? userNotify = null,
     TimeProvider? timeProvider = null
 ) : INService, IReadyExecutor
 {
+    private const string NOTIFY_MANAGER_REPLACED = "waifu.manager_replaced";
+    private const string NOTIFY_NEW_MANAGER = "waifu.new_manager";
+
     private readonly TimeProvider _timeProvider = timeProvider ?? TimeProvider.System;
 
     private double CycleHours => configService.Data.CycleHours;
@@ -605,6 +611,9 @@ public sealed class WaifuService(
         if (waifuPayout > 0)
             await cs.AddAsync(waifuUserId, waifuPayout, new("waifu", "manager-buy-fee"));
 
+        _ = Task.Run(() => SendManagerBuyNotificationsInternalAsync(
+            buyerUserId, waifuUserId, oldManagerId, bidAmount, oldManagerRefund));
+
         return new Success<BuyManagerInfo>(new BuyManagerInfo
         {
             PricePaid = bidAmount,
@@ -613,6 +622,64 @@ public sealed class WaifuService(
             WaifuPayout = waifuPayout,
             Burned = burned
         });
+    }
+
+    private async Task SendManagerBuyNotificationsInternalAsync(
+        ulong buyerUserId,
+        ulong waifuUserId,
+        ulong? oldManagerId,
+        long bidAmount,
+        long oldManagerRefund)
+    {
+        if (userNotify is null)
+            return;
+
+        try
+        {
+            var buyerName = (await client.Rest.GetUserAsync(buyerUserId))?.ToString() ?? buyerUserId.ToString();
+            var waifuName = (await client.Rest.GetUserAsync(waifuUserId))?.ToString() ?? waifuUserId.ToString();
+
+            if (oldManagerId.HasValue)
+            {
+                var oldManagerName = (await client.Rest.GetUserAsync(oldManagerId.Value))?.ToString()
+                                     ?? oldManagerId.Value.ToString();
+
+                var replacedStr = strs.waifu_dm_manager_replaced(
+                    waifuName, buyerName, bidAmount.ToString("N0"), oldManagerRefund.ToString("N0"));
+
+                var replacedEmbed = new EmbedBuilder()
+                    .WithColor(new Discord.Color(0xE7, 0x4C, 0x3C))
+                    .WithTitle("Manager Position Lost")
+                    .WithDescription(bs.GetText(replacedStr.Key, (ulong?)null, replacedStr.Params));
+
+                await userNotify.NotifyAsync(oldManagerId.Value, NOTIFY_MANAGER_REPLACED, replacedEmbed);
+
+                var newMgrStr = strs.waifu_dm_new_manager_replaced(
+                    buyerName, oldManagerName, bidAmount.ToString("N0"));
+
+                var newManagerEmbed = new EmbedBuilder()
+                    .WithColor(new Discord.Color(0x2E, 0xCC, 0x71))
+                    .WithTitle("New Manager!")
+                    .WithDescription(bs.GetText(newMgrStr.Key, (ulong?)null, newMgrStr.Params));
+
+                await userNotify.NotifyAsync(waifuUserId, NOTIFY_NEW_MANAGER, newManagerEmbed);
+            }
+            else
+            {
+                var newMgrStr = strs.waifu_dm_new_manager(buyerName, bidAmount.ToString("N0"));
+
+                var newManagerEmbed = new EmbedBuilder()
+                    .WithColor(new Discord.Color(0x2E, 0xCC, 0x71))
+                    .WithTitle("New Manager!")
+                    .WithDescription(bs.GetText(newMgrStr.Key, (ulong?)null, newMgrStr.Params));
+
+                await userNotify.NotifyAsync(waifuUserId, NOTIFY_NEW_MANAGER, newManagerEmbed);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to send waifu manager buy notifications");
+        }
     }
 
     #endregion

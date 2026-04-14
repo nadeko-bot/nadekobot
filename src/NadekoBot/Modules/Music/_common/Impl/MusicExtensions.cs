@@ -23,7 +23,15 @@ public static class MusicExtensions
         => $"🔉 {(int)(mp.Volume * 100)}%";
 
     public static string PrettyName(this ITrackInfo trackInfo)
-        => $"**[{Format.Sanitize(trackInfo.Title.TrimTo(60)).Replace("[", "\\[").Replace("]", "\\]")}]({trackInfo.Url.TrimTo(50, true)})**";
+    {
+        var title = trackInfo.Title.TrimTo(60)
+            .Replace("[", "(")
+            .Replace("]", ")");
+
+        var url = trackInfo.Url.Replace(")", "%29");
+
+        return $"**[{title}]({url})**";
+    }
 
     public static string PrettyInfo(this IQueuedTrackInfo trackInfo)
         => $"{trackInfo.PrettyTotalTime()} | {trackInfo.Platform} | {trackInfo.Queuer}";

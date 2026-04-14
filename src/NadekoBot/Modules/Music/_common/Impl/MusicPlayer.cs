@@ -641,4 +641,7 @@ public sealed class MusicPlayer : IMusicPlayer
             ? Task.FromResult(trackInfo)
             : Task.FromResult<IQueuedTrackInfo?>(null);
     }
+
+    public IReadOnlyList<(int Index, IQueuedTrackInfo Track)> SearchQueue(string query, int maxResults = 10)
+        => _queue.Search(query, maxResults);
 }

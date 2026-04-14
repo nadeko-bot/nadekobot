@@ -11,6 +11,8 @@ ar:
   no_givaways: لا توجد هدايا نشطة في هذا السيرفر.
   winner: الفائز
   winners_count: عدد الفائزين
+  notify_giveaway_won: هدية - فوز
+  giveaway_dm_won: 'لقد فزت بهدية! الجائزة: {0}'
 
 de-DE:
   giveaway_cancelled: Verlosung abgebrochen.
@@ -25,6 +27,8 @@ de-DE:
   no_givaways: Es gibt keine aktiven Verlosungen auf diesem Server.
   winner: Gewinner
   winners_count: Gewinner
+  notify_giveaway_won: Giveaway - Gewonnen
+  giveaway_dm_won: 'Du hast ein Giveaway gewonnen! Preis: {0}'
 
 es-ES:
   giveaway_cancelled: Sorteo cancelado.
@@ -39,6 +43,8 @@ es-ES:
   no_givaways: No hay sorteos activos en este servidor.
   winner: Ganador
   winners_count: Ganadores
+  notify_giveaway_won: Sorteo - Ganado
+  giveaway_dm_won: '¡Ganaste un sorteo! Premio: {0}'
 
 fr-FR:
   giveaway_cancelled: Concours annulé.
@@ -53,6 +59,8 @@ fr-FR:
   no_givaways: Il n'y a pas de concours actifs sur ce serveur.
   winner: Gagnant
   winners_count: Gagnants
+  notify_giveaway_won: Giveaway - Gagné
+  giveaway_dm_won: 'Tu as gagné un giveaway ! Prix : {0}'
 
 id-ID:
   giveaway_cancelled: Giveaway dibatalkan.
@@ -67,6 +75,8 @@ id-ID:
   no_givaways: Tidak ada giveaway aktif di server ini.
   winner: Pemenang
   winners_count: Jumlah Pemenang
+  notify_giveaway_won: Giveaway - Menang
+  giveaway_dm_won: 'Kamu menang giveaway! Hadiah: {0}'
 
 ja-JP:
   giveaway_cancelled: プレゼント企画がキャンセルされました。
@@ -81,6 +91,8 @@ ja-JP:
   no_givaways: このサーバーにアクティブなプレゼント企画はありません。
   winner: 当選者
   winners_count: 当選者数
+  notify_giveaway_won: ギブアウェイ - 当選
+  giveaway_dm_won: 'ギブアウェイに当選しました！賞品：{0}'
 
 ko-KR:
   giveaway_cancelled: 경품 추첨이 취소되었어요.
@@ -95,6 +107,8 @@ ko-KR:
   no_givaways: 이 서버에 진행 중인 경품 추첨이 없어요.
   winner: 당첨자
   winners_count: 당첨자 수
+  notify_giveaway_won: 경품 추첨 - 당첨
+  giveaway_dm_won: '경품 추첨에 당첨됐어요! 상품: {0}'
 
 pl-PL:
   giveaway_cancelled: Giveaway anulowany.
@@ -109,6 +123,8 @@ pl-PL:
   no_givaways: Nie ma aktywnych giveawayów na tym serwerze.
   winner: Zwycięzca
   winners_count: Zwycięzcy
+  notify_giveaway_won: Giveaway - Wygrana
+  giveaway_dm_won: 'Wygrałeś giveaway! Nagroda: {0}'
 
 pt-BR:
   giveaway_cancelled: Sorteio cancelado.
@@ -123,6 +139,8 @@ pt-BR:
   no_givaways: Não há sorteios ativos neste servidor.
   winner: Vencedor
   winners_count: Vencedores
+  notify_giveaway_won: Sorteio - Ganhou
+  giveaway_dm_won: 'Você ganhou um sorteio! Prêmio: {0}'
 
 ru-RU:
   giveaway_cancelled: Розыгрыш отменён.
@@ -137,6 +155,8 @@ ru-RU:
   no_givaways: На этом сервере нет активных розыгрышей.
   winner: Победитель
   winners_count: Победители
+  notify_giveaway_won: Розыгрыш - Победа
+  giveaway_dm_won: 'Ты выиграл в розыгрыше! Приз: {0}'
 
 sr-Cyrl-RS:
   giveaway_cancelled: Гивеавеј је отказан.
@@ -151,6 +171,8 @@ sr-Cyrl-RS:
   no_givaways: Нема активних гивеавеја на овом серверу.
   winner: Победник
   winners_count: Победника
+  notify_giveaway_won: Наградна игра - Победа
+  giveaway_dm_won: 'Победили сте у наградној игри! Награда: {0}'
 
 tr-TR:
   giveaway_cancelled: Çekiliş iptal edildi.
@@ -165,6 +187,8 @@ tr-TR:
   no_givaways: Bu sunucuda aktif çekiliş yok.
   winner: Kazanan
   winners_count: Kazananlar
+  notify_giveaway_won: Çekiliş - Kazandın
+  giveaway_dm_won: 'Bir çekilişi kazandın! Ödül: {0}'
 
 ts-TS:
   giveaway_cancelled: Giveaway cancelled.
@@ -179,6 +203,8 @@ ts-TS:
   no_givaways: There are no active giveaways on this server.
   winner: Winner
   winners_count: Winners
+  notify_giveaway_won: Giveaway - Won
+  giveaway_dm_won: 'Y-you won a giveaway... Prize: {0}'
 
 uk-UA:
   giveaway_cancelled: Розіграш скасовано.
@@ -193,6 +219,8 @@ uk-UA:
   no_givaways: На цьому сервері немає активних розіграшів.
   winner: Переможець
   winners_count: Переможці
+  notify_giveaway_won: Розіграш - Перемога
+  giveaway_dm_won: 'Ти виграв у розіграші! Приз: {0}'
 
 vi-VN:
   giveaway_cancelled: Đã hủy giveaway.
@@ -207,6 +235,8 @@ vi-VN:
   no_givaways: Không có giveaway nào đang hoạt động trên máy chủ này.
   winner: Người thắng
   winners_count: Số người thắng
+  notify_giveaway_won: Giveaway - Trúng thưởng
+  giveaway_dm_won: 'Bạn đã trúng thưởng giveaway! Giải thưởng: {0}'
 
 zh-CN:
   giveaway_cancelled: 抽獎已取消。
@@ -221,3 +251,5 @@ zh-CN:
   no_givaways: 此伺服器沒有進行中的抽獎。
   winner: 獲獎者
   winners_count: 獲獎者
+  notify_giveaway_won: 抽奖 - 中奖
+  giveaway_dm_won: '你中奖了！奖品：{0}'

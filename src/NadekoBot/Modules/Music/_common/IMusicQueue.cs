@@ -21,4 +21,5 @@ public interface IMusicQueue
     bool IsLast();
     void ReorderFairly();
     int? GetLastQueuedIndex();
+    IReadOnlyList<(int Index, IQueuedTrackInfo Track)> Search(string query, int maxResults = 10);
 }

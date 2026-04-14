@@ -8,9 +8,6 @@ public sealed class NadekoDbService : DbService
 {
     private readonly IBotCredsProvider _creds;
 
-    private string DbType
-        => _creds.GetCreds().Db.Type.ToLowerInvariant().Trim();
-
     private string ConnString
         => _creds.GetCreds().Db.ConnectionString;
 
@@ -24,7 +21,7 @@ public sealed class NadekoDbService : DbService
 
     public override async Task SetupAsync()
     {
-        var dbType = DbType;
+        var dbType = _creds.GetCreds().Db.Type.ToLowerInvariant().Trim();
 
         if (dbType is "postgresql" or "postgres" or "pgsql")
         {
@@ -55,30 +52,20 @@ public sealed class NadekoDbService : DbService
                         + "You may uninstall PostgreSQL if you no longer need it");
         }
 
-        await using var context = CreateRawDbContext(DbType, ConnString);
+        await using var context = new NadekoContext(ConnString);
 
         await RunMigration(context);
 
         await context.Database.ExecuteSqlRawAsync("PRAGMA journal_mode=WAL");
     }
 
-    public override NadekoContext CreateRawDbContext(string dbType, string connString)
-    {
-        return dbType switch
-        {
-            "sqlite" => new SqliteContext(connString),
-            _ => throw new NotSupportedException(
-                $"The database type '{dbType}' is not supported. Only 'sqlite' is supported.")
-        };
-    }
-
     private NadekoContext GetDbContextInternal()
     {
-        var context = CreateRawDbContext(DbType, ConnString);
+        var context = new NadekoContext(ConnString);
         var conn = context.Database.GetDbConnection();
         conn.Open();
         using var com = conn.CreateCommand();
-        com.CommandText = "PRAGMA synchronous=OFF";
+        com.CommandText = "PRAGMA synchronous=NORMAL";
         com.ExecuteNonQuery();
 
         return context;

@@ -2,19 +2,30 @@ using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Utility.UserNotifications;
 using OneOf;
 
 namespace NadekoBot.Modules.Xp.Services;
 
 public class ClubService : INService, IClubService
 {
+    private const string NOTIFY_APP_ACCEPTED = "club.application_accepted";
+
     private readonly DbService _db;
     private readonly IHttpClientFactory _httpFactory;
+    private readonly IBotStrings _bs;
+    private readonly UserNotifyService? _userNotify;
 
-    public ClubService(DbService db, IHttpClientFactory httpFactory)
+    public ClubService(
+        DbService db,
+        IHttpClientFactory httpFactory,
+        IBotStrings bs,
+        UserNotifyService? userNotify = null)
     {
         _db = db;
         _httpFactory = httpFactory;
+        _bs = bs;
+        _userNotify = userNotify;
     }
 
     public async Task<ClubCreateResult> CreateClubAsync(IUser user, string clubName)
@@ -218,6 +229,30 @@ public class ClubService : INService, IClubService
 
         discordUser = applicant.User;
         uow.SaveChanges();
+
+        if (_userNotify is not null)
+        {
+            var userId = discordUser.UserId;
+            var clubName = club.Name;
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    var msgStr = strs.club_dm_app_accepted(clubName);
+                    var eb = new EmbedBuilder()
+                        .WithColor(new Discord.Color(0x2E, 0xCC, 0x71))
+                        .WithTitle("Club Application Accepted!")
+                        .WithDescription(_bs.GetText(msgStr.Key, (ulong?)null, msgStr.Params));
+
+                    await _userNotify.NotifyAsync(userId, NOTIFY_APP_ACCEPTED, eb);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Failed to send club accept notification");
+                }
+            });
+        }
+
         return ClubAcceptResult.Accepted;
     }
 

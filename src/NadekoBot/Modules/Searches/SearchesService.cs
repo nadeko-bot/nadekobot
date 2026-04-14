@@ -76,6 +76,7 @@ public class SearchesService : INService
         using var http = _httpFactory.CreateClient();
         try
         {
+            // free-tier key shared intentionally for all self-hosters; do not move to creds
             var data = await http.GetStringAsync("https://api.openweathermap.org/data/2.5/weather?"
                                                  + $"q={Uri.EscapeDataString(query)}&"
                                                  + "appid=42cd627dd60debf25a5739e50a217d74&"

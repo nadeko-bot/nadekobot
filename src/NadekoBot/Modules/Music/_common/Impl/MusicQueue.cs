@@ -369,4 +369,26 @@ public sealed partial class MusicQueue : IMusicQueue
     }
     
     public int? GetLastQueuedIndex() => _lastQueued;
+
+    public IReadOnlyList<(int Index, IQueuedTrackInfo Track)> Search(string query, int maxResults = 10)
+    {
+        lock (_locker)
+        {
+            var results = new List<(int, IQueuedTrackInfo)>(maxResults);
+            var i = 0;
+            foreach (var track in tracks)
+            {
+                if (track.Title.AsSpan().Contains(query, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    results.Add((i, track));
+                    if (results.Count >= maxResults)
+                        break;
+                }
+
+                i++;
+            }
+
+            return results;
+        }
+    }
 }

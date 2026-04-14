@@ -1,4 +1,5 @@
 #nullable disable
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
@@ -9,8 +10,22 @@ using NadekoBot.Modules.Waifus.Waifu.Db;
 
 namespace NadekoBot.Db;
 
-public abstract class NadekoContext : DbContext
+public sealed class NadekoContext : DbContext
 {
+    private readonly string _connectionString;
+    private readonly SqliteConnection _existingConnection;
+
+    public NadekoContext(string connectionString = "Data Source=data/NadekoBot.db", int commandTimeout = 60)
+    {
+        _connectionString = connectionString;
+        Database.SetCommandTimeout(commandTimeout);
+    }
+
+    public NadekoContext(SqliteConnection existingConnection)
+    {
+        _existingConnection = existingConnection;
+    }
+
     public DbSet<GuildConfig> GuildConfigs { get; set; }
     public DbSet<Permissionv2> Permissions { get; set; }
 
@@ -68,13 +83,6 @@ public abstract class NadekoContext : DbContext
 
 
     // public DbSet<GuildColors> GuildColors { get; set; }
-
-
-    #region Mandatory Provider-Specific Values
-
-    protected abstract string CurrencyTransactionOtherIdDefaultValue { get; }
-
-    #endregion
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -372,7 +380,7 @@ public abstract class NadekoContext : DbContext
                 .IsUnique(false);
 
             e.Property(x => x.OtherId)
-                .HasDefaultValueSql(CurrencyTransactionOtherIdDefaultValue);
+                .HasDefaultValueSql("NULL");
 
             e.Property(x => x.Type)
                 .IsRequired();
@@ -600,5 +608,16 @@ public abstract class NadekoContext : DbContext
 
         optionsBuilder.ConfigureWarnings(x => x.Log(RelationalEventId.PendingModelChangesWarning)
             .Ignore());
+
+        if (_existingConnection is not null)
+        {
+            optionsBuilder.UseSqlite(_existingConnection);
+        }
+        else
+        {
+            var builder = new SqliteConnectionStringBuilder(_connectionString);
+            builder.DataSource = Path.Combine(AppContext.BaseDirectory, builder.DataSource);
+            optionsBuilder.UseSqlite(builder.ToString());
+        }
     }
 }

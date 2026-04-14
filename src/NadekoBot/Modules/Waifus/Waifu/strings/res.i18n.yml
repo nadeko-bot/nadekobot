@@ -90,6 +90,11 @@ ar:
   waifu_buy_confirm: 'هل تريد أن تصبح مدير **{0}** مقابل **{1}**؟'
   waifu_btn_confirm: تأكيد
   waifu_no_effect: بلا تأثير!
+  waifu_dm_manager_replaced: 'تم استبدالك كمدير لـ **{0}** بواسطة **{1}**. دفعوا **{2}**. حصلت على استرداد بقيمة **{3}**.'
+  waifu_dm_new_manager: '**{0}** أصبح مديرك الآن! دفعوا **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** أصبح مديرك الآن (بدلا من **{1}**)! دفعوا **{2}**.'
+  notify_waifu_manager_replaced: وايفو - تم استبدال المدير
+  notify_waifu_new_manager: وايفو - مدير جديد
 
 de-DE:
   waifu_not_opted_in: Diese Person ist noch nicht der Waifu-Welt beigetreten.
@@ -183,6 +188,11 @@ de-DE:
   waifu_buy_confirm: 'Manager von **{0}** werden für **{1}**?'
   waifu_btn_confirm: Bestätigen
   waifu_no_effect: kein Effekt!
+  waifu_dm_manager_replaced: 'Du wurdest als Manager von **{0}** durch **{1}** ersetzt. Sie haben **{2}** bezahlt. Du hast eine Erstattung von **{3}** erhalten.'
+  waifu_dm_new_manager: '**{0}** ist jetzt dein Manager! Sie haben **{1}** bezahlt.'
+  waifu_dm_new_manager_replaced: '**{0}** ist jetzt dein Manager (hat **{1}** ersetzt)! Sie haben **{2}** bezahlt.'
+  notify_waifu_manager_replaced: Waifu - Manager ersetzt
+  notify_waifu_new_manager: Waifu - Neuer Manager
 
 es-ES:
   waifu_not_opted_in: Esa persona aún no ha entrado al mundo waifu.
@@ -276,6 +286,11 @@ es-ES:
   waifu_buy_confirm: 'Convertirte en manager de **{0}** por **{1}**?'
   waifu_btn_confirm: Confirmar
   waifu_no_effect: sin efecto!
+  waifu_dm_manager_replaced: 'Has sido reemplazado/a como manager de **{0}** por **{1}**. Pagaron **{2}**. Recibiste un reembolso de **{3}**.'
+  waifu_dm_new_manager: '**{0}** ahora es tu manager! Pagaron **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** ahora es tu manager (reemplazo a **{1}**)! Pagaron **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Manager reemplazado
+  notify_waifu_new_manager: Waifu - Nuevo manager
 
 fr-FR:
   waifu_not_opted_in: Cette personne n'a pas encore rejoint le monde waifu.
@@ -369,6 +384,11 @@ fr-FR:
   waifu_buy_confirm: 'Devenir le manager de **{0}** pour **{1}** ?'
   waifu_btn_confirm: Confirmer
   waifu_no_effect: aucun effet !
+  waifu_dm_manager_replaced: 'Tu as ete remplace(e) comme manager de **{0}** par **{1}**. Ils ont paye **{2}**. Tu as recu un remboursement de **{3}**.'
+  waifu_dm_new_manager: '**{0}** est maintenant ton manager ! Ils ont paye **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** est maintenant ton manager (a remplace **{1}**) ! Ils ont paye **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Manager remplace
+  notify_waifu_new_manager: Waifu - Nouveau manager
 
 id-ID:
   waifu_not_opted_in: Orang itu belum bergabung ke dunia waifu.
@@ -462,6 +482,11 @@ id-ID:
   waifu_buy_confirm: 'Menjadi manajer **{0}** seharga **{1}**?'
   waifu_btn_confirm: Konfirmasi
   waifu_no_effect: tidak ada efek!
+  waifu_dm_manager_replaced: 'Kamu digantikan sebagai manajer **{0}** oleh **{1}**. Mereka membayar **{2}**. Kamu menerima pengembalian sebesar **{3}**.'
+  waifu_dm_new_manager: '**{0}** sekarang manajermu! Mereka membayar **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** sekarang manajermu (menggantikan **{1}**)! Mereka membayar **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Manajer Diganti
+  notify_waifu_new_manager: Waifu - Manajer Baru
 
 ja-JP:
   waifu_not_opted_in: その人はまだワイフの世界に参加していません。
@@ -555,6 +580,11 @@ ja-JP:
   waifu_buy_confirm: '**{0}** のマネージャーになりますか？費用: **{1}**'
   waifu_btn_confirm: 確認
   waifu_no_effect: 効果なし!
+  waifu_dm_manager_replaced: '**{1}** によって **{0}** のマネージャーから交代しました。支払い額: **{2}**。返金額: **{3}**。'
+  waifu_dm_new_manager: '**{0}** があなたのマネージャーになりました! 支払い額: **{1}**。'
+  waifu_dm_new_manager_replaced: '**{0}** があなたの新しいマネージャーになりました(**{1}** と交代)! 支払い額: **{2}**。'
+  notify_waifu_manager_replaced: Waifu - マネージャー交代
+  notify_waifu_new_manager: Waifu - 新しいマネージャー
 
 ko-KR:
   waifu_not_opted_in: 그 사람은 아직 와이푸 세계에 참여하지 않았어요.
@@ -648,6 +678,11 @@ ko-KR:
   waifu_buy_confirm: '**{1}**에 **{0}**의 매니저가 되시겠습니까?'
   waifu_btn_confirm: 확인
   waifu_no_effect: 효과 없음!
+  waifu_dm_manager_replaced: '**{1}**에 의해 **{0}**의 매니저에서 교체되었습니다. 그들이 **{2}**를 지불했습니다. **{3}**의 환불을 받았습니다.'
+  waifu_dm_new_manager: '**{0}**이(가) 당신의 새 매니저입니다! **{1}**를 지불했습니다.'
+  waifu_dm_new_manager_replaced: '**{0}**이(가) 당신의 새 매니저입니다(**{1}** 교체)! **{2}**를 지불했습니다.'
+  notify_waifu_manager_replaced: Waifu - 매니저 교체
+  notify_waifu_new_manager: Waifu - 새 매니저
 
 pl-PL:
   waifu_not_opted_in: Ta osoba jeszcze nie dołączyła do świata waifu.
@@ -741,6 +776,11 @@ pl-PL:
   waifu_buy_confirm: 'Zostać menedżerem **{0}** za **{1}**?'
   waifu_btn_confirm: Potwierdź
   waifu_no_effect: brak efektu!
+  waifu_dm_manager_replaced: 'Zostales(-as) zastapiony(-a) jako menedzer **{0}** przez **{1}**. Zaplacili **{2}**. Otrzymales(-as) zwrot **{3}**.'
+  waifu_dm_new_manager: '**{0}** jest teraz twoim menedzerem! Zaplacili **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** jest teraz twoim menedzerem (zastapil(-a) **{1}**)! Zaplacili **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Menedzer zastapiony
+  notify_waifu_new_manager: Waifu - Nowy menedzer
 
 pt-BR:
   waifu_not_opted_in: Essa pessoa ainda não entrou no mundo waifu.
@@ -834,6 +874,11 @@ pt-BR:
   waifu_buy_confirm: 'Se tornar gerente de **{0}** por **{1}**?'
   waifu_btn_confirm: Confirmar
   waifu_no_effect: sem efeito!
+  waifu_dm_manager_replaced: 'Voce foi substituido(a) como gerente de **{0}** por **{1}**. Pagaram **{2}**. Voce recebeu um reembolso de **{3}**.'
+  waifu_dm_new_manager: '**{0}** agora e seu/sua gerente! Pagaram **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** agora e seu/sua gerente (substituiu **{1}**)! Pagaram **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Gerente substituido
+  notify_waifu_new_manager: Waifu - Novo gerente
 
 ru-RU:
   waifu_not_opted_in: Этот человек ещё не вступил в мир вайфу.
@@ -927,6 +972,11 @@ ru-RU:
   waifu_buy_confirm: 'Стать менеджером **{0}** за **{1}**?'
   waifu_btn_confirm: Подтвердить
   waifu_no_effect: без эффекта!
+  waifu_dm_manager_replaced: 'Вас заменили на посту менеджера **{0}** - теперь это **{1}**. Они заплатили **{2}**. Вам вернули **{3}**.'
+  waifu_dm_new_manager: '**{0}** теперь ваш менеджер! Они заплатили **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** теперь ваш менеджер (заменил **{1}**)! Они заплатили **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Менеджер заменен
+  notify_waifu_new_manager: Waifu - Новый менеджер
 
 sr-Cyrl-RS:
   waifu_not_opted_in: Та особа још није ушла у ваифу свет.
@@ -1020,6 +1070,11 @@ sr-Cyrl-RS:
   waifu_buy_confirm: 'Постати менаџер **{0}** за **{1}**?'
   waifu_btn_confirm: Потврди
   waifu_no_effect: без ефекта!
+  waifu_dm_manager_replaced: 'Замењени сте као менаџер **{0}** од стране **{1}**. Платили су **{2}**. Добили сте поврат од **{3}**.'
+  waifu_dm_new_manager: '**{0}** је сада твој менаџер! Платили су **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** је сада твој менаџер (заменио/ла **{1}**)! Платили су **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Менаџер замењен
+  notify_waifu_new_manager: Waifu - Нови менаџер
 
 tr-TR:
   waifu_not_opted_in: Bu kişi henüz waifu dünyasına katılmamış.
@@ -1113,6 +1168,11 @@ tr-TR:
   waifu_buy_confirm: '**{1}** karsiligi **{0}** adli waifunun yoneticisi olmak ister misin?'
   waifu_btn_confirm: Onayla
   waifu_no_effect: etkisi yok!
+  waifu_dm_manager_replaced: '**{1}** tarafindan **{0}** yoneticiligi degistirildin. **{2}** odediler. **{3}** iade aldin.'
+  waifu_dm_new_manager: '**{0}** artik yoneticin! **{1}** odediler.'
+  waifu_dm_new_manager_replaced: '**{0}** artik yoneticin (**{1}** yerine)! **{2}** odediler.'
+  notify_waifu_manager_replaced: Waifu - Yonetici Degistirildi
+  notify_waifu_new_manager: Waifu - Yeni Yonetici
 
 ts-TS:
   waifu_not_opted_in: That person hasn't joined the waifu world yet.
@@ -1206,6 +1266,11 @@ ts-TS:
   waifu_buy_confirm: 'B-become the manager of **{0}** for **{1}**?!'
   waifu_btn_confirm: Confirm
   waifu_no_effect: no effect!
+  waifu_dm_manager_replaced: 'You got replaced as manager of **{0}** by **{1}**. They paid **{2}**. Here''s your **{3}** refund... hmph.'
+  waifu_dm_new_manager: '**{0}** is your manager now! They paid **{1}**... n-not that you needed one!'
+  waifu_dm_new_manager_replaced: '**{0}** is your manager now (replaced **{1}**)! They paid **{2}**... whatever.'
+  notify_waifu_manager_replaced: Waifu - Manager Replaced
+  notify_waifu_new_manager: Waifu - New Manager
 
 uk-UA:
   waifu_not_opted_in: Ця людина ще не приєдналась до світу вайфу.
@@ -1299,6 +1364,11 @@ uk-UA:
   waifu_buy_confirm: 'Стати менеджером **{0}** за **{1}**?'
   waifu_btn_confirm: Підтвердити
   waifu_no_effect: без ефекту!
+  waifu_dm_manager_replaced: 'Вас замінили на посаді менеджера **{0}** на **{1}**. Вони заплатили **{2}**. Ви отримали повернення **{3}**.'
+  waifu_dm_new_manager: '**{0}** тепер ваш менеджер! Вони заплатили **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** тепер ваш менеджер (замінив **{1}**)! Вони заплатили **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Менеджера замінено
+  notify_waifu_new_manager: Waifu - Новий менеджер
 
 vi-VN:
   waifu_not_opted_in: Người đó chưa tham gia thế giới waifu.
@@ -1392,6 +1462,11 @@ vi-VN:
   waifu_buy_confirm: 'Trở thành quản lý của **{0}** với giá **{1}**?'
   waifu_btn_confirm: Xác nhận
   waifu_no_effect: không hiệu lực!
+  waifu_dm_manager_replaced: 'Ban da bi thay the lam quan ly cua **{0}** boi **{1}**. Ho da tra **{2}**. Ban nhan duoc hoan tra **{3}**.'
+  waifu_dm_new_manager: '**{0}** gio la quan ly cua ban! Ho da tra **{1}**.'
+  waifu_dm_new_manager_replaced: '**{0}** gio la quan ly cua ban (thay the **{1}**)! Ho da tra **{2}**.'
+  notify_waifu_manager_replaced: Waifu - Quan ly bi thay the
+  notify_waifu_new_manager: Waifu - Quan ly moi
 
 zh-CN:
   waifu_not_opted_in: 該使用者尚未加入老婆世界。
@@ -1485,3 +1560,8 @@ zh-CN:
   waifu_buy_confirm: '成为 **{0}** 的经理人，花费 **{1}**？'
   waifu_btn_confirm: 确认
   waifu_no_effect: 没有效果!
+  waifu_dm_manager_replaced: '你被 **{1}** 替换了 **{0}** 的管理员身份。对方支付了 **{2}**。你收到了 **{3}** 的退款。'
+  waifu_dm_new_manager: '**{0}** 现在是你的管理员了! 对方支付了 **{1}**。'
+  waifu_dm_new_manager_replaced: '**{0}** 现在是你的管理员了(替换了 **{1}**)! 对方支付了 **{2}**。'
+  notify_waifu_manager_replaced: Waifu - 管理员被替换
+  notify_waifu_new_manager: Waifu - 新管理员

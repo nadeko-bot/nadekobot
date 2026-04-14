@@ -9,7 +9,7 @@ public partial class Administration
     {
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task Notify()
+        public async Task ServerNotify()
         {
             await Response()
                 .Paginated()
@@ -44,7 +44,7 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task Notify(NotifyType nType)
+        public async Task ServerNotify(NotifyType nType)
         {
             // show msg 
             var conf = await _service.GetNotifyAsync(ctx.Guild.Id, nType);
@@ -78,12 +78,12 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task Notify(NotifyType nType, [Leftover] string message)
+        public async Task ServerNotify(NotifyType nType, [Leftover] string message)
             => await NotifyInternalAsync(nType, null, message);
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task Notify(NotifyType nType, IMessageChannel channel, [Leftover] string message)
+        public async Task ServerNotify(NotifyType nType, IMessageChannel channel, [Leftover] string message)
             => await NotifyInternalAsync(nType, channel, message);
 
         private async Task NotifyInternalAsync(NotifyType nType, IMessageChannel? channel, [Leftover] string message)
@@ -106,7 +106,7 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task NotifyPhs(NotifyType nType)
+        public async Task ServerNotifyPhs(NotifyType nType)
         {
             var data = _service.GetRegisteredModel(nType);
 
@@ -121,7 +121,7 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task NotifyList(int page = 1)
+        public async Task ServerNotifyList(int page = 1)
         {
             if (--page < 0)
                 return;
@@ -149,7 +149,7 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task NotifyClear(NotifyType nType)
+        public async Task ServerNotifyClear(NotifyType nType)
         {
             await _service.DisableAsync(ctx.Guild.Id, nType);
             await Response().Confirm(strs.notify_off(nType)).SendAsync();

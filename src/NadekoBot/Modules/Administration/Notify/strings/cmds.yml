@@ -1,7 +1,6 @@
-notify:
-  desc: >-
+servernotify:
+  desc: |-
     Sends a message to the specified channel once the specified event occurs.
-
 
     If no channel is specified, the message will be sent to the channel from
     which the event originated.
@@ -9,10 +8,9 @@ notify:
     *note: this is only possible for events that have an origin channel (for
     example `levelup`)*
 
-
     Provide no parameters to see all available events.
   ex:
-    - >-
+    - |-
       levelup Congratulations to user %user.name% for reaching level
       %event.level%
   params:
@@ -29,20 +27,20 @@ notify:
         desc: The event to notify on.
       message:
         desc: The message to send to the channel from which the event originated.
-notifyclear:
+servernotifyclear:
   desc: Removes the specified notify event.
   ex:
     - levelup
   params:
     - event:
         desc: The notify event to clear.
-notifylist:
+servernotifylist:
   desc: Lists all active notifications in this server.
   ex:
     - ''
   params:
     - {}
-notifyphs:
+servernotifyphs:
   desc: Lists the placeholders for a given notify event type
   ex:
     - levelup

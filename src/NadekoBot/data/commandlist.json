@@ -550,12 +550,13 @@
     },
     {
       "Aliases": [
-        ".notify",
-        ".nfy"
+        ".servernotify",
+        ".snotify",
+        ".sn"
       ],
-      "Description": "Sends a message to the specified channel once the specified event occurs.\n\nIf no channel is specified, the message will be sent to the channel from which the event originated.\n*note: this is only possible for events that have an origin channel (for example `levelup`)*\n\nProvide no parameters to see all available events.",
+      "Description": "Sends a message to the specified channel once the specified event occurs.\n\nIf no channel is specified, the message will be sent to the channel from\nwhich the event originated.\n\n*note: this is only possible for events that have an origin channel (for\nexample `levelup`)*\n\nProvide no parameters to see all available events.",
       "Usage": [
-        ".notify levelup Congratulations to user %user.name% for reaching level %event.level%"
+        ".servernotify levelup Congratulations to user %user.name% for reaching level\n%event.level%"
       ],
       "Submodule": "NotifyCommands",
       "Module": "Administration",
@@ -566,13 +567,13 @@
     },
     {
       "Aliases": [
-        ".notifyphs",
-        ".notifyph",
-        ".notifyplaceholders"
+        ".servernotifyphs",
+        ".snotifyphs",
+        ".snotifyph"
       ],
       "Description": "Lists the placeholders for a given notify event type",
       "Usage": [
-        ".notifyphs levelup"
+        ".servernotifyphs levelup"
       ],
       "Submodule": "NotifyCommands",
       "Module": "Administration",
@@ -583,12 +584,13 @@
     },
     {
       "Aliases": [
-        ".notifylist",
-        ".notifyl"
+        ".servernotifylist",
+        ".snotifylist",
+        ".snotifyl"
       ],
       "Description": "Lists all active notifications in this server.",
       "Usage": [
-        ".notifylist"
+        ".servernotifylist"
       ],
       "Submodule": "NotifyCommands",
       "Module": "Administration",
@@ -599,14 +601,13 @@
     },
     {
       "Aliases": [
-        ".notifyclear",
-        ".notifyremove",
-        ".notifyrm",
-        ".notifclr"
+        ".servernotifyclear",
+        ".snotifyclear",
+        ".snotifyrm"
       ],
       "Description": "Removes the specified notify event.",
       "Usage": [
-        ".notifyclear levelup"
+        ".servernotifyclear levelup"
       ],
       "Submodule": "NotifyCommands",
       "Module": "Administration",
@@ -3994,7 +3995,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4010,7 +4011,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4029,7 +4030,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4047,7 +4048,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4063,7 +4064,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4080,7 +4081,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4096,7 +4097,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4113,7 +4114,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4130,7 +4131,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4150,7 +4151,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4166,7 +4167,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4185,7 +4186,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4200,7 +4201,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4216,7 +4217,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4233,7 +4234,7 @@
       "Options": null,
       "Requirements": [
         "Bot Owner Only",
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4250,7 +4251,7 @@
       "Options": null,
       "Requirements": [
         "Bot Owner Only",
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4268,7 +4269,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4284,7 +4285,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4300,7 +4301,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4318,7 +4319,25 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
+      ]
+    },
+    {
+      "Aliases": [
+        ".queuefind",
+        ".qfind",
+        ".qf"
+      ],
+      "Description": "Searches the current music queue for tracks matching the query.\nShows up to 10 results with their queue position.\nUse the position number with .play to jump to a track.",
+      "Usage": [
+        ".queuefind nightcore",
+        ".queuefind dream"
+      ],
+      "Submodule": "Music",
+      "Module": "Music",
+      "Options": null,
+      "Requirements": [
+        "Patron Tier X+"
       ]
     },
     {
@@ -4334,7 +4353,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot",
+        "Patron Tier X+",
         "ManageMessages Server Permission"
       ]
     },
@@ -4351,7 +4370,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot",
+        "Patron Tier X+",
         "ManageMessages Server Permission"
       ]
     },
@@ -4368,7 +4387,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4386,7 +4405,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot",
+        "Patron Tier X+",
         "Administrator Server Permission"
       ]
     },
@@ -4403,7 +4422,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4418,7 +4437,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4434,7 +4453,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4449,7 +4468,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4465,7 +4484,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4483,7 +4502,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4499,7 +4518,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4516,7 +4535,7 @@
       "Module": "Music",
       "Options": null,
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4537,7 +4556,7 @@
         "`--shuffle`     "
       ],
       "Requirements": [
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     },
     {
@@ -4553,7 +4572,7 @@
       "Options": null,
       "Requirements": [
         "Bot Owner Only",
-        "No Public Bot"
+        "Patron Tier X+"
       ]
     }
   ],
@@ -8521,6 +8540,20 @@
         ".convert m km 1000"
       ],
       "Submodule": "UnitConverterCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".notify",
+        ".nfy"
+      ],
+      "Description": "Shows your DM notification settings. Toggle individual notification types on or off using the buttons.",
+      "Usage": [
+        ".notify"
+      ],
+      "Submodule": "UserNotifyCommands",
       "Module": "Utility",
       "Options": null,
       "Requirements": []

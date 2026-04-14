@@ -1,4 +1,5 @@
-﻿using System.Collections.Frozen;
+﻿using System.Buffers;
+using System.Collections.Frozen;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
@@ -7,6 +8,8 @@ namespace NadekoBot.Modules.Music.Resolvers;
 
 public sealed class LocalTrackResolver : ILocalTrackResolver
 {
+    private static readonly SearchValues<char> _urlStripChars = SearchValues.Create("()[]");
+
     private static readonly FrozenSet<string> _musicExtensions = new[]
     {
         ".MP4", ".MP3", ".FLAC", ".OGG", ".WAV", ".WMA", ".WMV", ".AAC", ".MKV", ".WEBM", ".M4A", ".AA", ".AAX",
@@ -29,7 +32,7 @@ public sealed class LocalTrackResolver : ILocalTrackResolver
 
         ITrackInfo result = new SimpleTrackInfo(
             Path.GetFileNameWithoutExtension(query),
-            $"https://google.com?q={Uri.EscapeDataString(Path.GetFileNameWithoutExtension(query))}",
+            $"https://search.brave.com/search?q={CleanQueryForUrl(Path.GetFileNameWithoutExtension(query))}",
             "https://cdn.discordapp.com/attachments/155726317222887425/261850914783100928/1482522077_music.png",
             cachedDuration,
             MusicPlatform.Local,
@@ -50,6 +53,33 @@ public sealed class LocalTrackResolver : ILocalTrackResolver
             _durationCache[fullPath] = duration;
 
         return duration;
+    }
+
+    private static string CleanQueryForUrl(string input)
+    {
+        var span = input.AsSpan();
+
+        if (!span.ContainsAny(_urlStripChars) && !span.Contains(' '))
+            return input;
+
+        var stripCount = 0;
+        foreach (var c in span)
+        {
+            if (_urlStripChars.Contains(c))
+                stripCount++;
+        }
+
+        return string.Create(input.Length - stripCount, input, static (dest, src) =>
+        {
+            var j = 0;
+            foreach (var c in src)
+            {
+                if (c == ' ')
+                    dest[j++] = '+';
+                else if (!_urlStripChars.Contains(c))
+                    dest[j++] = c;
+            }
+        });
     }
 
     public async IAsyncEnumerable<ITrackInfo> ResolveDirectoryAsync(string dirPath)

@@ -2,7 +2,22 @@
 
 *a,c,f,r,o,d*
 
+## [7.1.26] - TBD
+
+
+
 ## [7.1.25] - 13.04.2026
+
+### Added
+
+- User-level DM notification system with `.notify` command - users can toggle individual notification types on/off via interactive buttons
+- Club application accepted DM notification when your application is approved
+- `.queuefind` (`.qfind`, `.qf`) command to search the music queue by track title, shows up to 10 matches with queue positions
+
+### Changed
+
+- Server-level notify commands renamed from `.notify` to `.servernotify` (`.snotify`, `.sn`)
+- Music module available to bot owners and patrons on the public bot
 
 ### Fixed
 
@@ -11,10 +26,8 @@
 - yt-dlp process handling and connection pooling
 - Command handler config now applies without restart
 - `ConsoleOutputType.None` now actually suppresses logs
+- Music queue track links now display correctly as clickable links in `.lq`, `.np`, and other music commands
 
-### Changed
-
-- Music module available to bot owners and patrons on the public bot
 
 ### Dev
 

@@ -28,6 +28,8 @@ ar:
   playlists_page: 'الصفحة {0} من قوائم التشغيل المحفوظة'
   queue: قائمة الانتظار
   queue_cleared: تم مسح قائمة انتظار الموسيقى.
+  queue_find_no_results: لم يتم العثور على مقاطع مطابقة لهذا البحث في قائمة التشغيل.
+  queue_find_results: 'تم العثور على {0} نتيجة (نتائج)'
   queue_search_results: اكتب رقم نتيجة البحث لإضافة ذلك المقطع إلى قائمة الانتظار.
   queue_shuffled: تم خلط قائمة انتظار الموسيقى.
   queue_stopped: 'المشغّل متوقف. استخدم الأمر {0} لبدء التشغيل.'
@@ -77,6 +79,8 @@ de-DE:
   playlists_page: 'Seite {0} der gespeicherten Playlists'
   queue: Warteschlange
   queue_cleared: Musik Warteschlange wurde gelöscht.
+  queue_find_no_results: Keine passenden Titel in der Warteschlange gefunden.
+  queue_find_results: '{0} Treffer gefunden'
   queue_search_results: Gib die Nummer des Suchergebnisses ein, um diesen Track zur Warteschlange hinzuzufügen.
   queue_shuffled: Musik Warteschlange wurde gemischt
   queue_stopped: 'Player ist pausiert. Benutze den {0} Befehl um die Wiedergabe zu starten.'
@@ -126,6 +130,8 @@ es-ES:
   playlists_page: 'Página {0} de las playlist guardadas'
   queue: Cola
   queue_cleared: Cola de música limpia.
+  queue_find_no_results: No se encontraron pistas que coincidan con esa búsqueda en la cola.
+  queue_find_results: 'Se encontraron {0} resultado(s)'
   queue_search_results: Escribe el número del resultado de búsqueda para añadir esa pista a la cola.
   queue_shuffled: Cola de canciones mezclada.
   queue_stopped: 'El reproductor se detuvo. Usa el comando {0} para volver a reproducir.'
@@ -175,6 +181,8 @@ fr-FR:
   playlists_page: 'Page {0} des listes de lecture enregistrées'
   queue: File d'attente
   queue_cleared: File d'attente de musique effacée.
+  queue_find_no_results: Aucun morceau correspondant à cette recherche n'a été trouvé dans la file d'attente.
+  queue_find_results: '{0} résultat(s) trouvé(s)'
   queue_search_results: Tapez le numéro du résultat de recherche pour ajouter cette piste à la file.
   queue_shuffled: La file d'attente de musique a été mélangée.
   queue_stopped: 'La lecture est arrêtée. Utilisez la commande {0} pour commencer à jouer.'
@@ -224,6 +232,8 @@ id-ID:
   playlists_page: 'Halaman {0} dari playlist tersimpan'
   queue: Antrean
   queue_cleared: Antrean musik dikosongkan.
+  queue_find_no_results: Tidak ada trek yang cocok dengan pencarian tersebut di antrean.
+  queue_find_results: 'Ditemukan {0} hasil'
   queue_search_results: Ketik nomor hasil pencarian untuk mengantrikan lagu tersebut.
   queue_shuffled: Antrean musik sudah diacak.
   queue_stopped: 'Pemutar dihentikan. Gunakan perintah {0} untuk mulai memutar.'
@@ -273,6 +283,8 @@ ja-JP:
   playlists_page: '保存された再生リストの{0}ページ目'
   queue: キュー
   queue_cleared: キューが消去されました。
+  queue_find_no_results: キューにそのクエリに一致するトラックは見つかりませんでした。
+  queue_find_results: '{0} 件の一致が見つかりました'
   queue_search_results: 検索結果の番号を入力して、そのトラックをキューに追加してください。
   queue_shuffled: 音楽キューがシャッフルされました。
   queue_stopped: 'プレイヤーは停止しました。 {0} コマンドで再生します。'
@@ -322,6 +334,8 @@ ko-KR:
   playlists_page: '저장된 재생목록 {0} 페이지'
   queue: 대기열
   queue_cleared: 음악 대기열이 초기화되었어요.
+  queue_find_no_results: 대기열에서 해당 검색어와 일치하는 트랙을 찾을 수 없습니다.
+  queue_find_results: '{0}개의 일치 항목을 찾았습니다'
   queue_search_results: 검색 결과 번호를 입력해서 해당 트랙을 대기열에 추가하세요.
   queue_shuffled: 음악 대기열이 셔플되었어요.
   queue_stopped: '플레이어가 중지되었어요. {0} 명령어를 사용해서 재생을 시작하세요.'
@@ -371,6 +385,8 @@ pl-PL:
   playlists_page: 'Strona {0} zapisanych playlist'
   queue: Kolejka
   queue_cleared: Kolejka muzyki wyczyszczona.
+  queue_find_no_results: Nie znaleziono pasujących utworów w kolejce.
+  queue_find_results: 'Znaleziono {0} wynik(ów)'
   queue_search_results: Wpisz numer wyniku wyszukiwania, aby dodać utwór do kolejki.
   queue_shuffled: Kolejka muzyki została przetasowana.
   queue_stopped: 'Odtwarzacz jest zatrzymany. Użyj komendy {0}, aby rozpocząć odtwarzanie.'
@@ -420,6 +436,8 @@ pt-BR:
   playlists_page: 'Página {0} de playlists salvas'
   queue: Fila
   queue_cleared: Fila de músicas limpa.
+  queue_find_no_results: Nenhuma faixa correspondente a essa busca foi encontrada na fila.
+  queue_find_results: '{0} resultado(s) encontrado(s)'
   queue_search_results: Digite o número do resultado da pesquisa para adicionar essa faixa à fila.
   queue_shuffled: A fila de música está em modo aleatório.
   queue_stopped: 'Player foi pausado. Use o comando {0} para começar a tocar.'
@@ -469,6 +487,8 @@ ru-RU:
   playlists_page: 'Страница {0} сохраненных плейлистов'
   queue: Очередь
   queue_cleared: Очередь музыки очищена.
+  queue_find_no_results: В очереди не найдено треков, соответствующих этому запросу.
+  queue_find_results: 'Найдено совпадений: {0}'
   queue_search_results: Введите номер результата поиска, чтобы добавить этот трек в очередь.
   queue_shuffled: Музыкальная очередь была перемешана.
   queue_stopped: 'Плеер остановлен. Используйте команду {0}, чтобы начать играть.'
@@ -518,6 +538,8 @@ sr-Cyrl-RS:
   playlists_page: 'Страница {0} сачуваних плејлиста'
   queue: Ред
   queue_cleared: Ред музике очишћен.
+  queue_find_no_results: Нису пронађене нумере које одговарају том упиту у реду.
+  queue_find_results: 'Пронађено {0} резултат(а)'
   queue_search_results: Укуцај број резултата претраге да додаш ту нумеру у ред.
   queue_shuffled: Ред музике је измешан.
   queue_stopped: 'Плејер је заустављен. Користи команду {0} да почнеш са пуштањем.'
@@ -567,6 +589,8 @@ tr-TR:
   playlists_page: 'Kayıtlı çalma listelerinin {0}. sayfası'
   queue: Sıra
   queue_cleared: Müzik sırası temizlendi.
+  queue_find_no_results: Kuyrukta bu sorguyla eşleşen parça bulunamadı.
+  queue_find_results: '{0} eşleşme bulundu'
   queue_search_results: Sıraya eklemek istediğin parçanın numarasını yaz.
   queue_shuffled: Müzik sırası karıştırıldı.
   queue_stopped: 'Oynatıcı durduruldu. Çalmaya başlamak için {0} komutunu kullan.'
@@ -616,6 +640,8 @@ ts-TS:
   playlists_page: 'Page {0} of saved playlists'
   queue: Queue
   queue_cleared: Music queue cleared.
+  queue_find_no_results: Kuyrukta o aramayla eşleşen hiçbir parça bulunamadı... Düzgün bir şey yaz da bulayım!
+  queue_find_results: '{0} tane eşleşme buldum... Başka bir şey mi bekliyordun?!'
   queue_search_results: Type the number of the search result to queue that track.
   queue_shuffled: Music queue has been shuffled.
   queue_stopped: 'Player is stopped. Use {0} to start playing.'
@@ -665,6 +691,8 @@ uk-UA:
   playlists_page: 'Сторінка {0} збережених плейлистів'
   queue: Черга
   queue_cleared: Чергу музики очищено.
+  queue_find_no_results: У черзі не знайдено жодного треку, що відповідає цьому запиту.
+  queue_find_results: 'Знайдено {0} збіг(ів)'
   queue_search_results: Напиши номер результату пошуку, щоб додати цей трек у чергу.
   queue_shuffled: Чергу музики перемішано.
   queue_stopped: 'Плеєр зупинено. Використай команду {0}, щоб почати відтворення.'
@@ -714,6 +742,8 @@ vi-VN:
   playlists_page: 'Trang {0} các playlist đã lưu'
   queue: Hàng đợi
   queue_cleared: Đã xóa hàng đợi nhạc.
+  queue_find_no_results: Không tìm thấy bản nhạc nào phù hợp với truy vấn đó trong hàng đợi.
+  queue_find_results: 'Tìm thấy {0} kết quả phù hợp'
   queue_search_results: Gõ số thứ tự của kết quả tìm kiếm để thêm bài đó vào hàng đợi.
   queue_shuffled: Hàng đợi nhạc đã được xáo trộn.
   queue_stopped: 'Trình phát đã dừng. Dùng lệnh {0} để bắt đầu phát.'
@@ -763,6 +793,8 @@ zh-CN:
   playlists_page: '已保存播放列表的第 {0} 頁'
   queue: 列隊
   queue_cleared: 音樂列隊已清除。
+  queue_find_no_results: 队列中没有找到匹配该查询的曲目。
+  queue_find_results: '找到 {0} 个匹配结果'
   queue_search_results: 輸入搜尋結果的編號以將該曲目加入佇列。
   queue_shuffled: 音樂列隊已重置。
   queue_stopped: '播放器停止。使用 {0} 命令開始播放。'

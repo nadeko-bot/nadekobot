@@ -13,7 +13,7 @@ echo "Creating new migration..."
 
 dotnet build
 
-dotnet ef migrations add "$MIGRATION_NAME" --context SqliteContext --output-dir "Migrations" --no-build
+dotnet ef migrations add "$MIGRATION_NAME" --output-dir "Migrations" --no-build
 
 dotnet build
 
@@ -24,9 +24,9 @@ fi
 
 echo "Generating diff SQL scripts..."
 
-NEW_MIGRATION_ID_SQLITE=$(dotnet ef migrations list --context SqliteContext --no-build --no-connect | tail -n 2 | head -n 1 | awk '{print $1}')
+NEW_MIGRATION_ID=$(dotnet ef migrations list --no-build --no-connect | tail -n 2 | head -n 1 | awk '{print $1}')
 
-dotnet ef migrations script init "$MIGRATION_NAME" --context SqliteContext -o "Migrations/${NEW_MIGRATION_ID_SQLITE}.sql" --no-build
+dotnet ef migrations script init "$MIGRATION_NAME" -o "Migrations/${NEW_MIGRATION_ID}.sql" --no-build
 
 if [ $? -ne 0 ]; then
     echo "Error: Failed to generate SQL script"
@@ -41,4 +41,4 @@ dotnet build
 
 echo "Creating new initial migration..."
 
-dotnet ef migrations add init --context SqliteContext --output-dir "Migrations" --no-build
+dotnet ef migrations add init --output-dir "Migrations" --no-build

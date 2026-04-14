@@ -1,0 +1,111 @@
+ar:
+  user_notify_title: إعدادات إشعارات الرسائل الخاصة
+  user_notify_footer: اضغط على زر لتفعيل/تعطيل الإشعارات
+  user_notify_none: لا توجد أنواع إشعارات متاحة.
+  user_notify_enable_all: تفعيل الكل
+  user_notify_disable_all: تعطيل الكل
+
+de-DE:
+  user_notify_title: DM-Benachrichtigungseinstellungen
+  user_notify_footer: Klicke einen Button, um Benachrichtigungen ein-/auszuschalten
+  user_notify_none: Keine Benachrichtigungstypen verfügbar.
+  user_notify_enable_all: Alle aktivieren
+  user_notify_disable_all: Alle deaktivieren
+
+es-ES:
+  user_notify_title: Configuración de notificaciones por MD
+  user_notify_footer: Haz clic en un botón para activar/desactivar las notificaciones
+  user_notify_none: No hay tipos de notificación disponibles.
+  user_notify_enable_all: Activar todo
+  user_notify_disable_all: Desactivar todo
+
+fr-FR:
+  user_notify_title: Paramètres de notifications DM
+  user_notify_footer: Clique sur un bouton pour activer/désactiver les notifications
+  user_notify_none: Aucun type de notification disponible.
+  user_notify_enable_all: Tout activer
+  user_notify_disable_all: Tout désactiver
+
+id-ID:
+  user_notify_title: Pengaturan Notifikasi DM
+  user_notify_footer: Klik tombol untuk mengaktifkan/menonaktifkan notifikasi
+  user_notify_none: Tidak ada jenis notifikasi yang tersedia.
+  user_notify_enable_all: Aktifkan Semua
+  user_notify_disable_all: Nonaktifkan Semua
+
+ja-JP:
+  user_notify_title: DM通知設定
+  user_notify_footer: ボタンをクリックして通知のオン/オフを切り替えてください
+  user_notify_none: 利用可能な通知タイプはありません。
+  user_notify_enable_all: すべて有効
+  user_notify_disable_all: すべて無効
+
+ko-KR:
+  user_notify_title: DM 알림 설정
+  user_notify_footer: 버튼을 클릭해서 알림을 켜고/끌 수 있어요
+  user_notify_none: 사용 가능한 알림 유형이 없습니다.
+  user_notify_enable_all: 모두 켜기
+  user_notify_disable_all: 모두 끄기
+
+pl-PL:
+  user_notify_title: Ustawienia powiadomień DM
+  user_notify_footer: Kliknij przycisk, aby włączyć/wyłączyć powiadomienia
+  user_notify_none: Brak dostępnych typów powiadomień.
+  user_notify_enable_all: Włącz wszystkie
+  user_notify_disable_all: Wyłącz wszystkie
+
+pt-BR:
+  user_notify_title: Configurações de notificação por DM
+  user_notify_footer: Clique em um botão para ativar/desativar notificações
+  user_notify_none: Nenhum tipo de notificação disponível.
+  user_notify_enable_all: Ativar tudo
+  user_notify_disable_all: Desativar tudo
+
+ru-RU:
+  user_notify_title: Настройки уведомлений в ЛС
+  user_notify_footer: Нажми кнопку, чтобы включить/выключить уведомления
+  user_notify_none: Нет доступных типов уведомлений.
+  user_notify_enable_all: Включить все
+  user_notify_disable_all: Отключить все
+
+sr-Cyrl-RS:
+  user_notify_title: Подешавања обавештења у ПП
+  user_notify_footer: Кликни на дугме да укључиш/искључиш обавештења
+  user_notify_none: Нема доступних типова обавештења.
+  user_notify_enable_all: Укључи све
+  user_notify_disable_all: Искључи све
+
+tr-TR:
+  user_notify_title: DM Bildirim Ayarları
+  user_notify_footer: Bildirimleri açmak/kapatmak için bir düğmeye tıkla
+  user_notify_none: Kullanılabilir bildirim türü yok.
+  user_notify_enable_all: Hepsini Aç
+  user_notify_disable_all: Hepsini Kapat
+
+ts-TS:
+  user_notify_title: DM Notification Settings
+  user_notify_footer: Click a button to toggle notifications on/off, hmph
+  user_notify_none: No notification types are available... not that I care.
+  user_notify_enable_all: Enable All
+  user_notify_disable_all: Disable All
+
+uk-UA:
+  user_notify_title: Налаштування сповіщень у ПП
+  user_notify_footer: Натисни кнопку, щоб увімкнути/вимкнути сповіщення
+  user_notify_none: Немає доступних типів сповіщень.
+  user_notify_enable_all: Увімкнути все
+  user_notify_disable_all: Вимкнути все
+
+vi-VN:
+  user_notify_title: Cài đặt thông báo DM
+  user_notify_footer: Nhấn nút để bật/tắt thông báo
+  user_notify_none: Không có loại thông báo nào khả dụng.
+  user_notify_enable_all: Bật tất cả
+  user_notify_disable_all: Tắt tất cả
+
+zh-CN:
+  user_notify_title: 私信通知设置
+  user_notify_footer: 点击按钮来开启/关闭通知
+  user_notify_none: 没有可用的通知类型。
+  user_notify_enable_all: 全部启用
+  user_notify_disable_all: 全部禁用

@@ -1,4 +1,3 @@
-﻿#nullable disable
 using OneOf;
 using OneOf.Types;
 using System.Net.Http.Json;
@@ -6,37 +5,24 @@ using System.Text.Json;
 
 namespace NadekoBot.Modules.Patronage;
 
-public class PatreonClient : IDisposable
+public sealed class PatreonClient(
+    string clientId,
+    string clientSecret,
+    string initialRefreshToken,
+    IHttpClientFactory httpFactory)
 {
-    private readonly string _clientId;
-    private readonly string _clientSecret;
-    private string refreshToken;
-    
-    
-    private string accessToken = string.Empty;
-    private readonly HttpClient _http;
-    
-    private DateTime refreshAt = DateTime.UtcNow;
+    private volatile string _refreshToken = initialRefreshToken;
+    private volatile string _accessToken = string.Empty;
 
-    public PatreonClient(string clientId, string clientSecret, string refreshToken)
-    {
-        _clientId = clientId;
-        _clientSecret = clientSecret;
-        this.refreshToken = refreshToken;
-
-        _http = new();
-    }
-
-    public void Dispose()
-        => _http.Dispose();
+    private DateTime _refreshAt = DateTime.UtcNow;
 
     public PatreonCredentials GetCredentials()
-        => new PatreonCredentials()
+        => new()
         {
-            AccessToken = accessToken,
-            ClientId = _clientId,
-            ClientSecret = _clientSecret,
-            RefreshToken = refreshToken,
+            AccessToken = _accessToken,
+            ClientId = clientId,
+            ClientSecret = clientSecret,
+            RefreshToken = _refreshToken,
         };
 
     public async Task<OneOf<Success, Error<string>>> RefreshTokenAsync(bool force)
@@ -44,27 +30,31 @@ public class PatreonClient : IDisposable
         if (!force && IsTokenValid())
             return new Success();
 
-        var res = await _http.PostAsync("https://www.patreon.com/api/oauth2/token"
-                                        + "?grant_type=refresh_token"
-                                        + $"&refresh_token={refreshToken}"
-                                        + $"&client_id={_clientId}"
-                                        + $"&client_secret={_clientSecret}",
-            null);
+        using var http = httpFactory.CreateClient();
+        using var content = new FormUrlEncodedContent(new KeyValuePair<string, string>[]
+        {
+            new("grant_type", "refresh_token"),
+            new("refresh_token", _refreshToken),
+            new("client_id", clientId),
+            new("client_secret", clientSecret),
+        });
+
+        var res = await http.PostAsync("https://www.patreon.com/api/oauth2/token", content);
 
         if (!res.IsSuccessStatusCode)
-            return new Error<string>($"Request did not return a sucess status code. Status code: {res.StatusCode}");
+            return new Error<string>($"Request did not return a success status code. Status code: {res.StatusCode}");
 
         try
         {
             var data = await res.Content.ReadFromJsonAsync<PatreonRefreshData>();
 
             if (data is null)
-                return new Error<string>($"Invalid data retrieved from Patreon.");
+                return new Error<string>("Invalid data retrieved from Patreon.");
 
-            refreshToken = data.RefreshToken;
-            accessToken = data.AccessToken;
+            _refreshToken = data.RefreshToken;
+            _accessToken = data.AccessToken;
 
-            refreshAt = DateTime.UtcNow.AddSeconds(data.ExpiresIn - 5.Minutes().TotalSeconds);
+            _refreshAt = DateTime.UtcNow.AddSeconds(data.ExpiresIn - 5.Minutes().TotalSeconds);
             return new Success();
         }
         catch (Exception ex)
@@ -91,7 +81,7 @@ public class PatreonClient : IDisposable
     }
 
     private bool IsTokenValid()
-        => refreshAt > DateTime.UtcNow && !string.IsNullOrWhiteSpace(accessToken);
+        => _refreshAt > DateTime.UtcNow && !string.IsNullOrWhiteSpace(_accessToken);
 
     public async Task<OneOf<IAsyncEnumerable<IReadOnlyCollection<PatreonMemberData>>, Error<string>>> GetMembersAsync(string campaignId)
     {
@@ -101,25 +91,28 @@ public class PatreonClient : IDisposable
         return OneOf<IAsyncEnumerable<IReadOnlyCollection<PatreonMemberData>>, Error<string>>.FromT0(
             GetMembersInternalAsync(campaignId));
     }
-    
+
     private async IAsyncEnumerable<IReadOnlyCollection<PatreonMemberData>> GetMembersInternalAsync(string campaignId)
     {
-        _http.DefaultRequestHeaders.Clear();
-        _http.DefaultRequestHeaders.TryAddWithoutValidation("Authorization",
-            $"Bearer {accessToken}");
-
         var page =
             $"https://www.patreon.com/api/oauth2/v2/campaigns/{campaignId}/members"
-            + $"?fields%5Bmember%5D=full_name,currently_entitled_amount_cents,last_charge_date,last_charge_status"
-            + $"&fields%5Buser%5D=social_connections"
-            + $"&include=user"
-            + $"&sort=-last_charge_date";
-        PatreonMembersResponse data;
+            + "?fields%5Bmember%5D=full_name,currently_entitled_amount_cents,last_charge_date,last_charge_status"
+            + "&fields%5Buser%5D=social_connections"
+            + "&include=user"
+            + "&sort=-last_charge_date";
+        PatreonMembersResponse? data;
 
         do
         {
-            var res = await _http.GetStreamAsync(page);
-            data = await JsonSerializer.DeserializeAsync<PatreonMembersResponse>(res);
+            using var http = httpFactory.CreateClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, page);
+            request.Headers.TryAddWithoutValidation("Authorization", $"Bearer {_accessToken}");
+
+            using var response = await http.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            await using var stream = await response.Content.ReadAsStreamAsync();
+            data = await JsonSerializer.DeserializeAsync<PatreonMembersResponse>(stream);
 
             if (data is null)
                 break;
@@ -141,7 +134,7 @@ public class PatreonClient : IDisposable
                                        LastChargeStatus = m.Attributes.LastChargeStatus
                                    })
                                .ToArray();
-            
+
             yield return userData;
 
         } while (!string.IsNullOrWhiteSpace(page = data.Links?.Next));
