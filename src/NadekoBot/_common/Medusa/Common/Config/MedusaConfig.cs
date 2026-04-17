@@ -5,7 +5,7 @@ namespace NadekoBot.Medusa;
 
 public sealed class MedusaConfig
 {
-    [Comment("""DO NOT CHANGE""")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 1;
     
     [Comment("""List of medusae automatically loaded at startup""")]

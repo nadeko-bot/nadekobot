@@ -4,7 +4,7 @@ namespace NadekoBot.Modules.Searches;
 
 public sealed class SearchesConfig
 {
-    [Comment("DO NOT CHANGE")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 6;
 
     [Comment("""

@@ -4,7 +4,7 @@ namespace NadekoBot.Modules.Games;
 
 public sealed class FishConfig
 {
-    [Comment("DO NOT CHANGE")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 2;
 
     public string WeatherSeed { get; set; } = string.Empty;

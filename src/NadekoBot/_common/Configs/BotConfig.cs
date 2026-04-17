@@ -8,7 +8,7 @@ namespace NadekoBot.Common.Configs;
 
 public sealed class BotConfig
 {
-    [Comment("""DO NOT CHANGE""")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 10;
 
     [Comment("""

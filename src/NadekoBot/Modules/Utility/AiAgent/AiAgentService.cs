@@ -38,6 +38,7 @@ public sealed class AiAgentService(
     public const int MAX_SKILL_NAME_LENGTH = 50;
     private const string BOT_TOKEN = "<bot>";
     private static readonly string[] _namePrefixes = ["hey", "hi", "yo", "ok", "dear"];
+    private bool _credsWarningLogged;
 
     /// <summary>
     /// Priority higher than other handlers so agent takes precedence when enabled
@@ -117,10 +118,7 @@ public sealed class AiAgentService(
             return false;
 
         if (!HasValidAiCreds())
-        {
-            configService.ModifyConfig(c => c.Enabled = false);
             return false;
-        }
 
         if (guild is not SocketGuild)
             return false;
@@ -175,10 +173,7 @@ public sealed class AiAgentService(
             return;
 
         if (!HasValidAiCreds())
-        {
-            configService.ModifyConfig(c => c.Enabled = false);
             return;
-        }
 
         if (guild is not SocketGuild)
             return;
@@ -403,21 +398,33 @@ public sealed class AiAgentService(
                     {
                         sentMsg = await sender.Response(channel)
                             .Text(smart)
+                            .Split()
                             .SendAsync();
                     }
                     else
                     {
-                        var eb = sender.CreateEmbed(guild.Id)
-                                       .WithOkColor()
-                                       .WithDescription(success.Response.TrimTo(4096));
+                        if (config.UseEmbed)
+                        {
+                            var eb = sender.CreateEmbed(guild.Id)
+                                           .WithOkColor()
+                                           .WithDescription(success.Response);
 
-                        if (success.ToolCallCount > 0)
-                            eb.WithFooter($"Tools used: {success.ToolCallCount}" +
-                                          (success.WasCancelled ? " (cancelled)" : ""));
+                            if (success.ToolCallCount > 0)
+                                eb.WithFooter($"Tools used: {success.ToolCallCount}" +
+                                              (success.WasCancelled ? " (cancelled)" : ""));
 
-                        sentMsg = await sender.Response(channel)
-                            .Embed(eb)
-                            .SendAsync();
+                            sentMsg = await sender.Response(channel)
+                                .Embed(eb)
+                                .Split()
+                                .SendAsync();
+                        }
+                        else
+                        {
+                            sentMsg = await sender.Response(channel)
+                                .Text(new SmartPlainText(success.Response))
+                                .Split()
+                                .SendAsync();
+                        }
                     }
 
                     if (_channelBuffers.TryGetValue(channel.Id, out var buf))
@@ -601,8 +608,17 @@ public sealed class AiAgentService(
     private bool HasValidAiCreds()
     {
         var creds = credsProvider.GetCreds();
-        return !string.IsNullOrWhiteSpace(creds.NadekoAiToken)
-               || !string.IsNullOrWhiteSpace(creds.AiApiKey);
+        var ok = !string.IsNullOrWhiteSpace(creds.NadekoAiToken)
+                 || !string.IsNullOrWhiteSpace(creds.AiApiKey);
+
+        if (!ok && !_credsWarningLogged)
+        {
+            _credsWarningLogged = true;
+            Log.Warning("AI agent is enabled but NadekoAiToken and AiApiKey are both empty in creds.yml. "
+                        + "Agent will not run until credentials are set");
+        }
+
+        return ok;
     }
 
     public async Task<bool> AddSkillAsync(ulong guildId, string name, string instruction)

@@ -204,10 +204,10 @@ public class PlantPickService(
                         var prefix = cmdHandler.GetPrefix(channel.Guild.Id);
                         var toSend = dropAmount == 1
                             ? GetText(channel.GuildId, strs.curgen_sn(config.Currency.Sign))
-                              + " "
+                              + "\n> "
                               + GetText(channel.GuildId, strs.pick_sn(prefix))
                             : GetText(channel.GuildId, strs.curgen_pl(dropAmount, config.Currency.Sign))
-                              + " "
+                              + "\n> "
                               + GetText(channel.GuildId, strs.pick_pl(prefix));
 
                         var pw = config.Generation.HasPassword ? gs.GeneratePassword().ToUpperInvariant() : null;
@@ -304,9 +304,9 @@ public class PlantPickService(
             var msgToSend = GetText(gid, strs.planted(Format.Bold(user), amount + gss.Data.Currency.Sign));
 
             if (amount > 1)
-                msgToSend += " " + GetText(gid, strs.pick_pl(prefix));
+                msgToSend += "\n> " + GetText(gid, strs.pick_pl(prefix));
             else
-                msgToSend += " " + GetText(gid, strs.pick_sn(prefix));
+                msgToSend += "\n> " + GetText(gid, strs.pick_sn(prefix));
 
             //get the image
             var (stream, ext) = await GetRandomCurrencyImageAsync(pass);

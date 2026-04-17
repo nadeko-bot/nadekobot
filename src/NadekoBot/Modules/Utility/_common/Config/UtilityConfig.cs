@@ -4,7 +4,7 @@ namespace NadekoBot.Modules.Utility;
 
 public sealed class UtilityConfig
 {
-    [Comment("DO NOT CHANGE")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 1;
 
     [Comment("Maximum number of repeating messages per server. Default 5")]

@@ -4,7 +4,7 @@ namespace NadekoBot.Modules.Waifus.Waifu;
 
 public sealed class WaifuConfig
 {
-    [Comment("DO NOT CHANGE")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 8;
 
     [Comment("Minimum price a waifu can have. Default 1000")]

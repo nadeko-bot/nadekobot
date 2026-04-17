@@ -23,6 +23,7 @@ public sealed partial class ResponseBuilder
     private string? fileName;
     private EmbedColor color = EmbedColor.Ok;
     private LocStr? embedLocDesc;
+    private bool splitOnOverflow;
 
     public DiscordSocketClient Client { get; set; }
 
@@ -93,10 +94,11 @@ public sealed partial class ResponseBuilder
     public async Task<IUserMessage> SendAsync(bool ephemeral = false)
     {
         var model = await BuildAsync(ephemeral);
-        var sentMsg = await SendAsync(model);
 
+        if (splitOnOverflow)
+            return await SendSplitAsync(model);
 
-        return sentMsg;
+        return await SendAsync(model);
     }
 
     public async Task<IUserMessage> SendAsync(ResponseMessageModel model)
@@ -131,6 +133,76 @@ public sealed partial class ResponseBuilder
         }
 
         return sentMsg;
+    }
+
+    private async Task<IUserMessage> SendSplitAsync(ResponseMessageModel model)
+    {
+        if (model.Embed is { } embed && embed.Description?.Length > MessageSplitter.MAX_EMBED_DESC_LENGTH)
+        {
+            var chunks = new List<string>(2);
+            MessageSplitter.Split(embed.Description, MessageSplitter.MAX_EMBED_DESC_LENGTH, chunks);
+
+            for (var i = 0; i < chunks.Count - 1; i++)
+            {
+                var eb = new EmbedBuilder()
+                    .WithColor(embed.Color ?? Color.Default)
+                    .WithDescription(chunks[i]);
+
+                await model.TargetChannel.SendMessageAsync(
+                    embed: eb.Build(),
+                    allowedMentions: model.SanitizeMentions,
+                    messageReference: i == 0 ? model.MessageReference : null);
+
+                await Task.Delay(500);
+            }
+
+            var lastEb = embed.ToEmbedBuilder().WithDescription(chunks[^1]);
+            var components = model.InteractionGroup?.CreateComponent();
+
+            var lastMsg = await model.TargetChannel.SendMessageAsync(
+                model.Text,
+                embed: lastEb.Build(),
+                components: components,
+                allowedMentions: model.SanitizeMentions);
+
+            if (model.InteractionGroup is not null)
+                await model.InteractionGroup.RunAsync(lastMsg);
+
+            return lastMsg;
+        }
+
+        if (model.Text is { Length: > MessageSplitter.MAX_PLAIN_TEXT_LENGTH })
+        {
+            var chunks = new List<string>(2);
+            MessageSplitter.Split(model.Text, MessageSplitter.MAX_PLAIN_TEXT_LENGTH, chunks);
+
+            var firstMsg = await model.TargetChannel.SendMessageAsync(
+                chunks[0],
+                allowedMentions: model.SanitizeMentions,
+                messageReference: model.MessageReference);
+
+            IUserMessage lastMsg = firstMsg;
+            for (var i = 1; i < chunks.Count; i++)
+            {
+                await Task.Delay(500);
+
+                var components = i == chunks.Count - 1
+                    ? model.InteractionGroup?.CreateComponent()
+                    : null;
+
+                lastMsg = await model.TargetChannel.SendMessageAsync(
+                    chunks[i],
+                    components: components,
+                    allowedMentions: model.SanitizeMentions);
+            }
+
+            if (model.InteractionGroup is not null)
+                await model.InteractionGroup.RunAsync(lastMsg);
+
+            return lastMsg;
+        }
+
+        return await SendAsync(model);
     }
 
     private EmbedBuilder PaintEmbedInternal(EmbedBuilder eb)
@@ -367,6 +439,12 @@ public sealed partial class ResponseBuilder
     {
         fileStream = stream;
         fileName = name;
+        return this;
+    }
+
+    public ResponseBuilder Split(bool split = true)
+    {
+        splitOnOverflow = split;
         return this;
     }
 

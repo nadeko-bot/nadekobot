@@ -31,7 +31,7 @@ public sealed class CheckLeaderboardsQuest : IQuest
             progress |= 0b0001;
         else if (name == "xpleaderboard")
             progress |= 0b0010;
-        else if (name == "waifulb")
+        else if (name == "waifuleaderboard")
             progress |= 0b0100;
         else if (name == "fishlb")
             progress |= 0b1000;

@@ -5,7 +5,7 @@ namespace NadekoBot.Common;
 
 public sealed class Creds : IBotCreds
 {
-    [Comment("""DO NOT CHANGE""")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 21;
 
     [Comment("""Bot token. Do not share with anyone ever -> https://discordapp.com/developers/applications/""")]

@@ -6,7 +6,7 @@ namespace NadekoBot.Modules.Xp;
 
 public sealed class XpConfig
 {
-    [Comment("""DO NOT CHANGE""")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 11;
 
     [Comment("""How much XP will the users receive per message""")]

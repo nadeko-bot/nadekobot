@@ -5,7 +5,7 @@ namespace NadekoBot.Common;
 
 public sealed class ImageUrls
 {
-    [Comment("DO NOT CHANGE")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 11;
 
     public CoinData Coins { get; set; }

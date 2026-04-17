@@ -4,7 +4,7 @@ namespace NadekoBot.Modules.Games.Common;
 
 public sealed class GamesConfig
 {
-    [Comment("DO NOT CHANGE")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 6;
 
     [Comment("Hangman related settings (.hangman command)")]

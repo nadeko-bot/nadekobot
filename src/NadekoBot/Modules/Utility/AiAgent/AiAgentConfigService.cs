@@ -76,6 +76,13 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             ConfigPrinters.ToString,
             "Reasoning effort level: none, low, medium, high, xhigh, or empty to disable");
 
+        AddParsedProp("useembed",
+            static c => c.UseEmbed,
+            static (c, v) => c.UseEmbed = v,
+            bool.TryParse,
+            ConfigPrinters.ToString,
+            "Whether AI agent text responses are sent as embeds. Default true");
+
         Migrate();
     }
 
@@ -110,6 +117,14 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             ModifyConfig(c =>
             {
                 c.Version = 5;
+            });
+        }
+
+        if (Data.Version < 6)
+        {
+            ModifyConfig(c =>
+            {
+                c.Version = 6;
             });
         }
     }

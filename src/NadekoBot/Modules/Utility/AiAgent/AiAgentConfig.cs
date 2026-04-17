@@ -4,8 +4,8 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 
 public sealed class AiAgentConfig
 {
-    [Comment("DO NOT CHANGE")]
-    public int Version { get; set; } = 5;
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
+    public int Version { get; set; } = 6;
 
     [Comment("Whether the AI agent feature is enabled. Default false")]
     public bool Enabled { get; set; } = false;
@@ -110,4 +110,7 @@ public sealed class AiAgentConfig
              Lower values save output tokens on simple tool-calling tasks. Default "low"
              """)]
     public string ReasoningEffort { get; set; } = "low";
+
+    [Comment("Whether AI agent text responses are sent as embeds. If false, sent as plain text. Default true")]
+    public bool UseEmbed { get; set; } = true;
 }

@@ -7,7 +7,7 @@ namespace NadekoBot.Modules.Gambling.Common;
 
 public sealed class GamblingConfig
 {
-    [Comment("""DO NOT CHANGE""")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 13;
 
     [Comment("""Currency settings""")]

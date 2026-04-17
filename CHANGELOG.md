@@ -2,8 +2,24 @@
 
 *a,c,f,r,o,d*
 
-## [7.1.26] - TBD
+## [7.1.27] - TBD
 
+## [7.1.26] - 17.04.2026
+
+### Added
+
+- `.waifulb` alias for `.wlb` (waifu leaderboard)
+- `useembed` config option for AI agent to control whether responses are sent as embeds or plain text
+
+### Changed
+
+- AI agent messages that exceed Discord character limits are now split across multiple messages at word boundaries, instead of being truncated
+- Currency drops (plant/pick) now display the pick instructions on a new blockquoted line for better readability
+
+### Fixed
+
+- `.config aiagent enabled true` no longer reverts to `false` when AI credentials are not set; a warning is logged instead
+- "Waifu lb seen" quest objective now correctly tracks the waifu leaderboard command
 
 
 ## [7.1.25] - 13.04.2026

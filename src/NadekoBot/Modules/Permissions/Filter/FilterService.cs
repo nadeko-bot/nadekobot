@@ -80,16 +80,18 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
                 LinkFilteringServers.Add(conf.GuildId);
 
             foreach (var word in conf.FilteredWords)
-                ServerFilteredWords.GetOrAdd(conf.GuildId, new ConcurrentHashSet<string>()).Add(word.Word);
+                ServerFilteredWords.GetOrAdd(conf.GuildId,
+                    static _ => new ConcurrentHashSet<string>([], StringComparer.InvariantCultureIgnoreCase)).Add(word.Word);
         }
     }
 
     public ConcurrentHashSet<string> FilteredWordsForChannel(ulong channelId, ulong guildId)
     {
-        var words = new ConcurrentHashSet<string>();
-        if (WordFilteringChannels.Contains(channelId))
-            ServerFilteredWords.TryGetValue(guildId, out words);
-        return words;
+        if (WordFilteringChannels.Contains(channelId)
+            && ServerFilteredWords.TryGetValue(guildId, out var words))
+            return words;
+
+        return null;
     }
 
     public async Task ClearFilteredWords(ulong guildId)
@@ -114,10 +116,11 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
 
     public ConcurrentHashSet<string> FilteredWordsForServer(ulong guildId)
     {
-        var words = new ConcurrentHashSet<string>();
-        if (WordFilteringServers.Contains(guildId))
-            ServerFilteredWords.TryGetValue(guildId, out words);
-        return words;
+        if (WordFilteringServers.Contains(guildId)
+            && ServerFilteredWords.TryGetValue(guildId, out var words))
+            return words;
+
+        return null;
     }
 
 #nullable enable
@@ -127,61 +130,83 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         if (msg.Author is not IGuildUser gu || gu.GuildPermissions.Administrator)
             return false;
 
-        var results = await Task.WhenAll(FilterInvites(guild, msg), FilterWords(guild, msg), FilterLinks(guild, msg));
+        var invites = FilterInvites(guild, msg);
+        var words = FilterWords(guild, msg);
+        var links = FilterLinks(guild, msg);
 
-        return results.Any(x => x);
+        if (invites || words || links)
+        {
+            try
+            {
+                await msg.DeleteAsync();
+            }
+            catch (HttpException)
+            {
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
-    private async Task<bool> FilterWords(IGuild guild, IUserMessage usrMsg)
+    private bool FilterWords(IGuild guild, IUserMessage usrMsg)
     {
-        if (guild is null)
-            return false;
-        if (usrMsg is null)
+        if (guild is null || usrMsg is null)
             return false;
 
-        var filteredChannelWords =
-            FilteredWordsForChannel(usrMsg.Channel.Id, guild.Id) ?? new ConcurrentHashSet<string>();
-        var filteredServerWords = FilteredWordsForServer(guild.Id) ?? new ConcurrentHashSet<string>();
-        var wordsInMessage = (usrMsg.Content + " " + usrMsg.ForwardedMessages.FirstOrDefault().Message?.Content)
-            .ToLowerInvariant().Split(' ');
-        if (filteredChannelWords.Count != 0 || filteredServerWords.Count != 0)
+        var filteredChannelWords = FilteredWordsForChannel(usrMsg.Channel.Id, guild.Id);
+        var filteredServerWords = FilteredWordsForServer(guild.Id);
+
+        if ((filteredChannelWords is null || filteredChannelWords.Count == 0)
+            && (filteredServerWords is null || filteredServerWords.Count == 0))
+            return false;
+
+        if (ContainsFilteredWord(usrMsg.Content, filteredChannelWords, filteredServerWords))
+            return true;
+
+        var forwardedContent = usrMsg.ForwardedMessages.FirstOrDefault().Message?.Content;
+        if (forwardedContent is not null
+            && ContainsFilteredWord(forwardedContent, filteredChannelWords, filteredServerWords))
+            return true;
+
+        return false;
+
+        bool ContainsFilteredWord(
+            string content,
+            ConcurrentHashSet<string> channelWords,
+            ConcurrentHashSet<string> serverWords)
         {
-            foreach (var word in wordsInMessage)
+            var words = content.Split(' ');
+            for (var i = 0; i < words.Length; i++)
             {
-                if (filteredChannelWords.Contains(word) || filteredServerWords.Contains(word))
+                var word = words[i];
+                if (word.Length == 0)
+                    continue;
+
+                if ((channelWords is not null && channelWords.Contains(word))
+                    || (serverWords is not null && serverWords.Contains(word)))
                 {
                     Log.Information("User {UserName} [{UserId}] used a filtered word in {ChannelId} channel",
                         usrMsg.Author.ToString(),
                         usrMsg.Author.Id,
                         usrMsg.Channel.Id);
 
-                    try
-                    {
-                        await usrMsg.DeleteAsync();
-                    }
-                    catch (HttpException ex)
-                    {
-                        Log.Warning(ex,
-                            "I do not have permission to filter words in channel with id {Id}",
-                            usrMsg.Channel.Id);
-                    }
-
                     return true;
                 }
             }
-        }
 
-        return false;
+            return false;
+        }
     }
 
-    private async Task<bool> FilterInvites(IGuild guild, IUserMessage usrMsg)
+    private bool FilterInvites(IGuild guild, IUserMessage usrMsg)
     {
         if (guild is null)
             return false;
         if (usrMsg is null)
             return false;
 
-        // if user has manage messages perm, don't filter
         if (usrMsg.Channel is ITextChannel ch && usrMsg.Author is IGuildUser gu && gu.GetPermissions(ch).ManageMessages)
             return false;
 
@@ -194,31 +219,19 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
                 usrMsg.Author.Id,
                 usrMsg.Channel.Id);
 
-            try
-            {
-                await usrMsg.DeleteAsync();
-                return true;
-            }
-            catch (HttpException ex)
-            {
-                Log.Warning(ex,
-                    "I do not have permission to filter invites in channel with id {Id}",
-                    usrMsg.Channel.Id);
-                return true;
-            }
+            return true;
         }
 
         return false;
     }
 
-    private async Task<bool> FilterLinks(IGuild guild, IUserMessage usrMsg)
+    private bool FilterLinks(IGuild guild, IUserMessage usrMsg)
     {
         if (guild is null)
             return false;
         if (usrMsg is null)
             return false;
 
-        // if user has manage messages perm, don't filter
         if (usrMsg.Channel is ITextChannel ch && usrMsg.Author is IGuildUser gu && gu.GetPermissions(ch).ManageMessages)
             return false;
 
@@ -231,16 +244,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
                 usrMsg.Author.Id,
                 usrMsg.Channel.Id);
 
-            try
-            {
-                await usrMsg.DeleteAsync();
-                return true;
-            }
-            catch (HttpException ex)
-            {
-                Log.Warning(ex, "I do not have permission to filter links in channel with id {Id}", usrMsg.Channel.Id);
-                return true;
-            }
+            return true;
         }
 
         return false;
@@ -389,11 +393,12 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
 
     public async Task<bool> ToggleFilteredWordAsync(ulong guildId, string word)
     {
-        word = word?.Trim().ToLowerInvariant();
+        word = word?.Trim();
 
         await using var uow = _db.GetDbContext();
         var fc = uow.FilterConfigForId(guildId, set => set.Include(x => x.FilteredWords));
-        var sfw = ServerFilteredWords.GetOrAdd(guildId, []);
+        var sfw = ServerFilteredWords.GetOrAdd(guildId,
+            static _ => new ConcurrentHashSet<string>([], StringComparer.InvariantCultureIgnoreCase));
         if (sfw.Add(word))
         {
             fc.FilteredWords.Add(new FilteredWord()
@@ -406,7 +411,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         }
 
         sfw.TryRemove(word);
-        fc.FilteredWords.RemoveWhere(x => x.Word == word);
+        fc.FilteredWords.RemoveWhere(x => string.Equals(x.Word, word, StringComparison.InvariantCultureIgnoreCase));
         await uow.SaveChangesAsync();
 
         return false;

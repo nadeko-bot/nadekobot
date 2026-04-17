@@ -4,7 +4,7 @@ namespace NadekoBot.Modules.Patronage;
 
 public sealed class PatronConfigData
 {
-    [Comment("DO NOT CHANGE")]
+    [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
     public int Version { get; set; } = 3;
 
     [Comment("Whether the patronage feature is enabled")]

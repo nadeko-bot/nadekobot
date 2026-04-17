@@ -18,7 +18,7 @@ public sealed partial class SendMessageTool : IAiTool, INService
         "Send a message to a Discord channel. " +
         "You can specify the channel by ID, mention (like <#123456>), or name (like #general). " +
         "The message will appear as sent by the bot, not the user. " +
-        "Messages longer than 2000 characters will be rejected. " +
+        "Long messages will be automatically split across multiple messages on word boundaries. " +
         "Optionally include an embed for rich formatting.";
 
     public JsonElement ParameterSchema { get; } = JsonDocument.Parse("""
@@ -115,9 +115,6 @@ public sealed partial class SendMessageTool : IAiTool, INService
         if (!userPerms.SendMessages)
             return "Error: You don't have permission to send messages in that channel.";
 
-        if (text is not null && text.Length > 2000)
-            return "Error: Message exceeds Discord's 2000 character limit. Shorten the text or move content into an embed.";
-
         Embed? embed = null;
         if (hasEmbed)
         {
@@ -137,8 +134,29 @@ public sealed partial class SendMessageTool : IAiTool, INService
             embed = builtEmbed;
         }
 
-        await channel.SendMessageAsync(text ?? "", embed: embed);
+        await SendWithSplitAsync(channel, text, embed);
         return $"Message sent to #{channel.Name} successfully.";
+    }
+
+    private static async Task SendWithSplitAsync(ITextChannel channel, string? text, Embed? embed)
+    {
+        if (text is not null && text.Length > MessageSplitter.MAX_PLAIN_TEXT_LENGTH)
+        {
+            var chunks = new List<string>();
+            MessageSplitter.Split(text, MessageSplitter.MAX_PLAIN_TEXT_LENGTH, chunks);
+
+            await channel.SendMessageAsync(chunks[0], embed: embed);
+
+            for (var i = 1; i < chunks.Count; i++)
+            {
+                await Task.Delay(500);
+                await channel.SendMessageAsync(chunks[i]);
+            }
+
+            return;
+        }
+
+        await channel.SendMessageAsync(text ?? "", embed: embed);
     }
 
     /// <summary>
