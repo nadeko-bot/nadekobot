@@ -4,6 +4,18 @@
 
 ## [7.1.27] - TBD
 
+### Changed
+
+- `.wlb` leaderboard now uses embed fields with rank numbers ("#X Username")
+
+### Fixed
+
+- Bot no longer crashes when a background errors out
+
+### Dev
+
+- busy_timeout added
+
 ## [7.1.26] - 17.04.2026
 
 ### Added

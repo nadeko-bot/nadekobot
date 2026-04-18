@@ -196,6 +196,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             return;
 
         await using var ctx = _db.GetDbContext();
+        await using var tx = await ctx.Database.BeginTransactionAsync();
         await using var lctx = ctx.CreateLinqToDBConnection();
 
         var tempTableName = "xptemp_" + Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -227,6 +228,8 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                 (u, s) => u.GuildId == s.GuildId && u.UserId == s.UserId,
                 (batch, stats) => stats)
             .ToListAsyncLinqToDB();
+
+        await tx.CommitAsync();
 
         var userToXp = currentBatch.ToDictionary(x => x.User.Id, x => x);
         foreach (var u in updated)

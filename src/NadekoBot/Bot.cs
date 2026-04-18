@@ -315,8 +315,6 @@ public sealed class Bot : IBot
                     "Failed running OnReadyAsync method on {Type} type: {Message}",
                     toExec.GetType().Name,
                     ex.Message);
-
-                Environment.Exit(9);
             }
         });
 

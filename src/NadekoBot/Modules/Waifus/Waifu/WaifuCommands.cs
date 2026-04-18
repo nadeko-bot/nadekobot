@@ -376,21 +376,21 @@ public partial class Waifus
             .PageSize(9)
             .Page((items, page) =>
             {
-                var sb = new StringBuilder();
-                foreach (var e in items)
-                {
-                    var name = e.Username ?? GetText(strs.waifu_unknown);
-                    sb.AppendLine($"**{name}**");
-                    sb.AppendLine($"🏷\uFE0F {CurrencyHelper.N(e.Price, Culture, currSign)}");
-                    sb.AppendLine($"🆔 `{e.UserId}`");
-                    sb.AppendLine($"💰 {CurrencyHelper.N(e.SnapshotTotalBacked, Culture, currSign)}");
-                    sb.AppendLine();
-                }
-
                 var eb = CreateEmbed()
                     .WithOkColor()
-                    .WithTitle(title)
-                    .WithDescription(sb.ToString());
+                    .WithTitle(title);
+
+                var rank = page * 9;
+                foreach (var e in items)
+                {
+                    rank++;
+                    var name = e.Username ?? GetText(strs.waifu_unknown);
+                    var value = $"🏷\uFE0F {CurrencyHelper.N(e.Price, Culture, currSign)}\n"
+                                + $"🆔 `{e.UserId}`\n"
+                                + $"💰 {CurrencyHelper.N(e.SnapshotTotalBacked, Culture, currSign)}";
+
+                    eb.AddField($"#{rank} {name}", value);
+                }
 
                 return eb;
             })

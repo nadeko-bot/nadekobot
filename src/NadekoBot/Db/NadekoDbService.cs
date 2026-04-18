@@ -56,7 +56,7 @@ public sealed class NadekoDbService : DbService
 
         await RunMigration(context);
 
-        await context.Database.ExecuteSqlRawAsync("PRAGMA journal_mode=WAL");
+        await context.Database.ExecuteSqlRawAsync("PRAGMA journal_mode=WAL; PRAGMA busy_timeout=30000;");
     }
 
     private NadekoContext GetDbContextInternal()
@@ -65,7 +65,7 @@ public sealed class NadekoDbService : DbService
         var conn = context.Database.GetDbConnection();
         conn.Open();
         using var com = conn.CreateCommand();
-        com.CommandText = "PRAGMA synchronous=NORMAL";
+        com.CommandText = "PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=30000;";
         com.ExecuteNonQuery();
 
         return context;
