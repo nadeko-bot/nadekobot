@@ -101,28 +101,34 @@ public class CryptoService : INService
         if (string.IsNullOrWhiteSpace(name))
             return (null, null);
 
-        name = name.ToUpperInvariant();
         var cryptos = await GetCryptoDataInternal();
 
         if (cryptos is null or { Count: 0 })
             return (null, null);
 
         var crypto = cryptos.FirstOrDefault(x
-            => x.Slug.ToUpperInvariant() == name
-               || x.Name.ToUpperInvariant() == name
-               || x.Symbol.ToUpperInvariant() == name);
+            => string.Equals(x.Slug, name, StringComparison.InvariantCultureIgnoreCase)
+               || string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase)
+               || string.Equals(x.Symbol, name, StringComparison.InvariantCultureIgnoreCase));
 
         if (crypto is not null)
             return (crypto, null);
 
+        CmcResponseData? nearest = null;
+        var bestDistance = int.MaxValue;
+        foreach (var elem in cryptos)
+        {
+            var d = elem.Name.LevenshteinDistance(name, ignoreCase: true);
+            if (d < bestDistance)
+            {
+                bestDistance = d;
+                nearest = elem;
+                if (d == 0)
+                    break;
+            }
+        }
 
-        var nearest = cryptos
-                      .Select(elem => (Elem: elem,
-                          Distance: elem.Name.ToUpperInvariant().LevenshteinDistance(name)))
-                      .OrderBy(x => x.Distance)
-                      .FirstOrDefault(x => x.Distance <= 2);
-
-        return (null, nearest.Elem);
+        return (null, bestDistance <= 2 ? nearest : null);
     }
 
     public async Task<List<CmcResponseData>?> GetCryptoDataInternal()

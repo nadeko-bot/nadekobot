@@ -162,7 +162,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         if (umsg.Channel is not SocketTextChannel channel)
             return null;
 
-        var content = umsg.Content.Trim().ToLowerInvariant();
+        var content = umsg.Content.AsSpan().Trim();
 
         if (newguildExpressions.TryGetValue(channel.Guild.Id, out var expressions) && expressions.Length > 0)
         {
@@ -207,7 +207,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
                 // if CA is disabled, and expr has AllowTarget, then the
                 // content has to start with the trigger followed by a space
                 if (expr.AllowTarget
-                    && content.StartsWith(trigger, StringComparison.OrdinalIgnoreCase)
+                    && content.StartsWith(trigger, StringComparison.InvariantCultureIgnoreCase)
                     && content[trigger.Length] == ' ')
                     result.Add(expr);
             }
@@ -220,7 +220,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
             {
                 // if input length is the same as trigger length
                 // reaction can only trigger if the strings are equal
-                if (content.SequenceEqual(expr.Trigger))
+                if (content.Equals(expr.Trigger, StringComparison.InvariantCultureIgnoreCase))
                     result.Add(expr);
             }
         }

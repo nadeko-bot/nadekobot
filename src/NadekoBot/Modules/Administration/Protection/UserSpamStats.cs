@@ -15,7 +15,7 @@ public sealed class UserSpamStats
         }
     }
 
-    private string lastFingerprint;
+    private ulong _lastFingerprint;
 
     private readonly Queue<DateTime> _messageTracker;
 
@@ -25,7 +25,7 @@ public sealed class UserSpamStats
 
     public UserSpamStats(IUserMessage msg)
     {
-        lastFingerprint = GetFingerprint(msg);
+        _lastFingerprint = GetFingerprint(msg);
         _messageTracker = new();
 
         ApplyNextMessage(msg);
@@ -37,9 +37,9 @@ public sealed class UserSpamStats
 
         lock (_applyLock)
         {
-            if (fingerprint != lastFingerprint)
+            if (fingerprint != _lastFingerprint)
             {
-                lastFingerprint = fingerprint;
+                _lastFingerprint = fingerprint;
                 _messageTracker.Clear();
             }
 
@@ -47,24 +47,24 @@ public sealed class UserSpamStats
         }
     }
 
-    /// <summary>
-    /// Generates a fingerprint for a message based on its text content and attachment metadata.
-    /// </summary>
-    private static string GetFingerprint(IUserMessage message)
+    private static ulong GetFingerprint(IUserMessage message)
     {
-        var upperContent = message.Content.ToUpperInvariant();
+        var contentHash = (ulong)(uint)string.GetHashCode(
+            message.Content.AsSpan(), StringComparison.InvariantCultureIgnoreCase);
 
-        if (!message.Attachments.Any())
-            return upperContent;
+        if (message.Attachments.Count == 0)
+            return contentHash;
 
-        var attachPart = string.Join(',', message.Attachments
-            .OrderBy(a => a.Filename)
-            .Select(a => $"{a.Filename}:{a.Size}"));
+        ulong attachHash = 0;
+        foreach (var a in message.Attachments)
+        {
+            var nameHash = (uint)string.GetHashCode(
+                a.Filename.AsSpan(), StringComparison.InvariantCultureIgnoreCase);
+            var sizeBits = (uint)a.Size;
+            attachHash ^= ((ulong)nameHash << 32) | sizeBits;
+        }
 
-        if (string.IsNullOrWhiteSpace(upperContent))
-            return $"\x01ATTACH:{attachPart}";
-
-        return $"{upperContent}\x01ATTACH:{attachPart}";
+        return (contentHash << 1) ^ attachHash;
     }
 
     private void Cleanup()

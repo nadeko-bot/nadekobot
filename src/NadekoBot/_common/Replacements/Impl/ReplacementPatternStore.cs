@@ -10,11 +10,46 @@ public sealed partial class ReplacementPatternStore : IReplacementPatternStore, 
     private readonly ConcurrentDictionary<string, ReplacementInfo> _defaultReplacements = new();
     private readonly ConcurrentDictionary<string, RegexReplacementInfo> _regexReplacements = new();
 
+    private readonly ConcurrentDictionary<ContextMask, ReplacementInfo[]> _repCache = new();
+    private readonly ConcurrentDictionary<ContextMask, RegexReplacementInfo[]> _regexRepCache = new();
+
     public IReadOnlyDictionary<string, ReplacementInfo> Replacements
         => _defaultReplacements.AsReadOnly();
 
     public IReadOnlyDictionary<string, RegexReplacementInfo> RegexReplacements
         => _regexReplacements.AsReadOnly();
+
+    public ReplacementInfo[] GetReplacementsForMask(ContextMask mask)
+        => _repCache.GetOrAdd(mask, static (m, reps) =>
+        {
+            var result = new List<ReplacementInfo>();
+            foreach (var rep in reps.Values)
+            {
+                if ((rep.RequiredMask & m) == rep.RequiredMask)
+                    result.Add(rep);
+            }
+
+            return result.ToArray();
+        }, _defaultReplacements);
+
+    public RegexReplacementInfo[] GetRegexReplacementsForMask(ContextMask mask)
+        => _regexRepCache.GetOrAdd(mask, static (m, reps) =>
+        {
+            var result = new List<RegexReplacementInfo>();
+            foreach (var rep in reps.Values)
+            {
+                if ((rep.RequiredMask & m) == rep.RequiredMask)
+                    result.Add(rep);
+            }
+
+            return result.ToArray();
+        }, _regexReplacements);
+
+    private void InvalidateCache()
+    {
+        _repCache.Clear();
+        _regexRepCache.Clear();
+    }
 
     public ReplacementPatternStore()
     {
@@ -59,6 +94,7 @@ public sealed partial class ReplacementPatternStore : IReplacementPatternStore, 
 
         if (_defaultReplacements.TryAdd(token, new ReplacementInfo(token, repFactory)))
         {
+            InvalidateCache();
             var guid = Guid.NewGuid();
             _guids[guid] = token;
             return new(guid);
@@ -102,6 +138,7 @@ public sealed partial class ReplacementPatternStore : IReplacementPatternStore, 
 
         if (_regexReplacements.TryAdd(regexPattern, new RegexReplacementInfo(regex, repFactory)))
         {
+            InvalidateCache();
             var guid = Guid.NewGuid();
             _guids[guid] = regex;
             return new(guid);
@@ -120,9 +157,14 @@ public sealed partial class ReplacementPatternStore : IReplacementPatternStore, 
     {
         if (_guids.TryRemove(guid, out var pattern))
         {
-            return pattern.Match(
+            var removed = pattern.Match(
                 token => _defaultReplacements.TryRemove(token, out _),
                 regex => _regexReplacements.TryRemove(regex.ToString(), out _));
+
+            if (removed)
+                InvalidateCache();
+
+            return removed;
         }
 
         return false;

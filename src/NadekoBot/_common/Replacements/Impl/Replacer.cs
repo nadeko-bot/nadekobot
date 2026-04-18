@@ -4,18 +4,24 @@ namespace NadekoBot.Common;
 
 public sealed partial class Replacer
 {
-    private readonly IEnumerable<ReplacementInfo> _reps;
-    private readonly IEnumerable<RegexReplacementInfo> _regexReps;
-    private readonly object[] _inputData;
+    private readonly ReplacementInfo[] _baseReps;
+    private readonly RegexReplacementInfo[] _baseRegexReps;
+    private readonly IReadOnlyList<ReplacementInfo> _overrides;
+    private readonly IReadOnlyList<RegexReplacementInfo> _regexOverrides;
+    private readonly object?[] _inputData;
 
-    // [GeneratedRegex(@"\%[\p{L}\p{N}\._]*[\p{L}\p{N}]+[\p{L}\p{N}\._]*\%")]
-    // private static partial Regex TokenExtractionRegex();
-
-    public Replacer(IEnumerable<ReplacementInfo> reps, IEnumerable<RegexReplacementInfo> regexReps, object[] inputData)
+    public Replacer(
+        ReplacementInfo[] baseReps,
+        RegexReplacementInfo[] baseRegexReps,
+        IReadOnlyList<ReplacementInfo> overrides,
+        IReadOnlyList<RegexReplacementInfo> regexOverrides,
+        object?[] inputData)
     {
-        _reps = reps;
+        _baseReps = baseReps;
+        _baseRegexReps = baseRegexReps;
+        _overrides = overrides;
+        _regexOverrides = regexOverrides;
         _inputData = inputData;
-        _regexReps = regexReps;
     }
 
     public async ValueTask<string?> ReplaceAsync(string? input)
@@ -23,54 +29,117 @@ public sealed partial class Replacer
         if (string.IsNullOrWhiteSpace(input))
             return input;
 
-        // var matches = TokenExtractionRegex().IsMatch(input);
-
-        // if (matches)
-        // {
-        foreach (var rep in _reps)
+        for (var i = 0; i < _overrides.Count; i++)
         {
+            var rep = _overrides[i];
             if (input.Contains(rep.Token, StringComparison.InvariantCulture))
             {
-                var objs = GetParams(rep.InputTypes);
+                var objs = GetParams(rep);
                 input = input.Replace(rep.Token, await rep.GetValueAsync(objs), StringComparison.InvariantCulture);
             }
         }
-        // }
 
-        foreach (var rep in _regexReps)
+        for (var i = 0; i < _baseReps.Length; i++)
         {
-            var sb = new StringBuilder();
+            var rep = _baseReps[i];
+            if (IsOverridden(rep.Token))
+                continue;
 
-            var objs = GetParams(rep.InputTypes);
-            var match = rep.Regex.Match(input);
-            if (match.Success)
+            if (input.Contains(rep.Token, StringComparison.InvariantCulture))
             {
-                sb.Append(input, 0, match.Index)
-                  .Append(await rep.GetValueAsync(match, objs));
-
-                var lastIndex = match.Index + match.Length;
-                sb.Append(input, lastIndex, input.Length - lastIndex);
-                input = sb.ToString();
+                var objs = GetParams(rep);
+                input = input.Replace(rep.Token, await rep.GetValueAsync(objs), StringComparison.InvariantCulture);
             }
+        }
+
+        for (var i = 0; i < _regexOverrides.Count; i++)
+        {
+            var rep = _regexOverrides[i];
+            input = await ApplyRegexReplacementAsync(input, rep);
+        }
+
+        for (var i = 0; i < _baseRegexReps.Length; i++)
+        {
+            var rep = _baseRegexReps[i];
+            if (IsRegexOverridden(rep.Pattern))
+                continue;
+
+            input = await ApplyRegexReplacementAsync(input, rep);
         }
 
         return input;
     }
 
-    private object?[]? GetParams(IReadOnlyCollection<Type> inputTypes)
+    private async ValueTask<string> ApplyRegexReplacementAsync(string input, RegexReplacementInfo rep)
     {
-        if (inputTypes.Count == 0)
-            return null;
-
-        var objs = new List<object>();
-        foreach (var t in inputTypes)
+        var objs = GetParams(rep);
+        var match = rep.Regex.Match(input);
+        if (match.Success)
         {
-            var datum = _inputData.FirstOrDefault(x => x.GetType().IsAssignableTo(t));
-            if (datum is not null)
-                objs.Add(datum);
+            var sb = new StringBuilder();
+            sb.Append(input, 0, match.Index)
+              .Append(await rep.GetValueAsync(match, objs));
+
+            var lastIndex = match.Index + match.Length;
+            sb.Append(input, lastIndex, input.Length - lastIndex);
+            return sb.ToString();
         }
 
-        return objs.ToArray();
+        return input;
+    }
+
+    private bool IsOverridden(string token)
+    {
+        for (var i = 0; i < _overrides.Count; i++)
+        {
+            if (string.Equals(_overrides[i].Token, token, StringComparison.InvariantCulture))
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool IsRegexOverridden(string pattern)
+    {
+        for (var i = 0; i < _regexOverrides.Count; i++)
+        {
+            if (string.Equals(_regexOverrides[i].Pattern, pattern, StringComparison.InvariantCulture))
+                return true;
+        }
+
+        return false;
+    }
+
+    private object?[]? GetParams(ReplacementInfo rep)
+    {
+        var slots = rep.ParamSlotIndices;
+        if (slots.Length == 0)
+            return null;
+
+        var objs = new object?[slots.Length];
+        for (var i = 0; i < slots.Length; i++)
+        {
+            var slot = slots[i];
+            objs[i] = slot >= 0 ? _inputData[slot] : null;
+        }
+
+        return objs;
+    }
+
+    private object?[]? GetParams(RegexReplacementInfo rep)
+    {
+        var slots = rep.ParamSlotIndices;
+        if (slots.Length == 0)
+            return null;
+
+        var objs = new object?[slots.Length];
+        for (var i = 0; i < slots.Length; i++)
+        {
+            var slot = slots[i];
+            objs[i] = slot >= 0 ? _inputData[slot] : null;
+        }
+
+        return objs;
     }
 
     public async ValueTask<SmartText> ReplaceAsync(SmartText data)

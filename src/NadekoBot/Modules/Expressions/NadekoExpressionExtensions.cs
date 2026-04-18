@@ -10,7 +10,7 @@ public static class NadekoExpressionExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static WordPosition GetWordPosition(this ReadOnlySpan<char> str, in ReadOnlySpan<char> word)
     {
-        var wordIndex = str.IndexOf(word, StringComparison.OrdinalIgnoreCase);
+        var wordIndex = str.IndexOf(word, StringComparison.InvariantCultureIgnoreCase);
         if (wordIndex == -1)
             return WordPosition.None;
 

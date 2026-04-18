@@ -48,43 +48,54 @@ public static class StringExtensions
         return tokens.Join(" ").Replace(" Of ", " of ").Replace(" The ", " the ");
     }
 
-    //http://www.dotnetperls.com/levenshtein
     public static int LevenshteinDistance(this string s, string t)
+        => LevenshteinDistanceInternal(s, t, ignoreCase: false);
+
+    public static int LevenshteinDistance(this string s, string t, bool ignoreCase)
+        => LevenshteinDistanceInternal(s, t, ignoreCase);
+
+    private static int LevenshteinDistanceInternal(string s, string t, bool ignoreCase)
     {
         var n = s.Length;
         var m = t.Length;
-        var d = new int[n + 1, m + 1];
 
-        // Step 1
-        if (n == 0)
-            return m;
+        if (n == 0) return m;
+        if (m == 0) return n;
 
-        if (m == 0)
-            return n;
+        if (n < m)
+            (s, t, n, m) = (t, s, m, n);
 
-        // Step 2
-        for (var i = 0; i <= n; d[i, 0] = i++)
-        {
-        }
+        Span<int> prev = stackalloc int[m + 1];
+        Span<int> curr = stackalloc int[m + 1];
 
-        for (var j = 0; j <= m; d[0, j] = j++)
-        {
-        }
+        for (var j = 0; j <= m; j++)
+            prev[j] = j;
 
-        // Step 3
         for (var i = 1; i <= n; i++)
-            //Step 4
-        for (var j = 1; j <= m; j++)
         {
-            // Step 5
-            var cost = t[j - 1] == s[i - 1] ? 0 : 1;
+            curr[0] = i;
+            for (var j = 1; j <= m; j++)
+            {
+                var sc = s[i - 1];
+                var tc = t[j - 1];
+                if (ignoreCase)
+                {
+                    sc = char.ToUpperInvariant(sc);
+                    tc = char.ToUpperInvariant(tc);
+                }
 
-            // Step 6
-            d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
+                var cost = sc == tc ? 0 : 1;
+                curr[j] = Math.Min(
+                    Math.Min(prev[j] + 1, curr[j - 1] + 1),
+                    prev[j - 1] + cost);
+            }
+
+            var tmp = prev;
+            prev = curr;
+            curr = tmp;
         }
 
-        // Step 7
-        return d[n, m];
+        return prev[m];
     }
 
     public static async Task<Stream> ToStream(this string str)

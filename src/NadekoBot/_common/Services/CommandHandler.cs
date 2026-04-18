@@ -6,7 +6,7 @@ using PreconditionResult = Discord.Commands.PreconditionResult;
 
 namespace NadekoBot.Services;
 
-public sealed class CommandHandler : INService, ICommandHandler
+public sealed partial class CommandHandler : INService, ICommandHandler
 {
     private const float ONE_THOUSANDTH = 1.0f / 1000;
 
@@ -289,115 +289,4 @@ public sealed class CommandHandler : INService, ICommandHandler
         return error;
     }
 
-    public Task<(bool Success, string? Error, CommandInfo? Info)> ExecuteCommandAsync(
-        ICommandContext context,
-        string input,
-        int argPos,
-        IServiceProvider serviceProvider,
-        MultiMatchHandling multiMatchHandling = MultiMatchHandling.Exception)
-        => ExecuteCommand(context, input[argPos..], serviceProvider, multiMatchHandling);
-
-
-    public async Task<(bool Success, string? Error, CommandInfo? Info)> ExecuteCommand(
-        ICommandContext context,
-        string input,
-        IServiceProvider services,
-        MultiMatchHandling multiMatchHandling = MultiMatchHandling.Exception)
-    {
-        var searchResult = _commandService.Search(context, input);
-        if (!searchResult.IsSuccess)
-            return (false, null, null);
-
-        var commands = searchResult.Commands;
-        var preconditionResults = new Dictionary<CommandMatch, PreconditionResult>();
-
-        foreach (var match in commands)
-            preconditionResults[match] = await match.Command.CheckPreconditionsAsync(context, services);
-
-        var successfulPreconditions = preconditionResults.Where(x => x.Value.IsSuccess).ToArray();
-
-        if (successfulPreconditions.Length == 0)
-        {
-            //All preconditions failed, return the one from the highest priority command
-            var bestCandidate = preconditionResults.OrderByDescending(x => x.Key.Command.Priority)
-                                                   .FirstOrDefault(x => !x.Value.IsSuccess);
-            return (false, bestCandidate.Value.ErrorReason, commands[0].Command);
-        }
-
-        var parseResultsDict = new Dictionary<CommandMatch, ParseResult>();
-        foreach (var pair in successfulPreconditions)
-        {
-            var parseResult = await pair.Key.ParseAsync(context, searchResult, pair.Value, services);
-
-            if (parseResult.Error == CommandError.MultipleMatches)
-            {
-                IReadOnlyList<TypeReaderValue> argList, paramList;
-                switch (multiMatchHandling)
-                {
-                    case MultiMatchHandling.Best:
-                        argList = parseResult.ArgValues
-                                             .Map(x => x.Values.MaxBy(y => y.Score));
-                        paramList = parseResult.ParamValues
-                                               .Map(x => x.Values.MaxBy(y => y.Score));
-                        parseResult = ParseResult.FromSuccess(argList, paramList);
-                        break;
-                }
-            }
-
-            parseResultsDict[pair.Key] = parseResult;
-        }
-
-        // Calculates the 'score' of a command given a parse result
-        float CalculateScore(CommandMatch match, ParseResult parseResult)
-        {
-            float argValuesScore = 0, paramValuesScore = 0;
-
-            if (match.Command.Parameters.Count > 0)
-            {
-                var argValuesSum =
-                    parseResult.ArgValues?.Sum(x => x.Values.OrderByDescending(y => y.Score).FirstOrDefault().Score)
-                    ?? 0;
-                var paramValuesSum =
-                    parseResult.ParamValues?.Sum(x => x.Values.OrderByDescending(y => y.Score).FirstOrDefault().Score)
-                    ?? 0;
-
-                argValuesScore = argValuesSum / match.Command.Parameters.Count;
-                paramValuesScore = paramValuesSum / match.Command.Parameters.Count;
-            }
-
-            var totalArgsScore = (argValuesScore + paramValuesScore) / 2;
-            return match.Command.Priority + (totalArgsScore * 0.99f);
-        }
-
-        //Order the parse results by their score so that we choose the most likely result to execute
-        var parseResults = parseResultsDict.OrderByDescending(x => CalculateScore(x.Key, x.Value)).ToList();
-
-        var successfulParses = parseResults.Where(x => x.Value.IsSuccess).ToArray();
-
-        if (successfulParses.Length == 0)
-        {
-            //All parses failed, return the one from the highest priority command, using score as a tie breaker
-            var bestMatch = parseResults.FirstOrDefault(x => !x.Value.IsSuccess);
-            return (false, bestMatch.Value.ErrorReason, commands[0].Command);
-        }
-
-        var cmd = successfulParses[0].Key.Command;
-
-        //return SearchResult.FromError(CommandError.Exception, "You are on a global cooldown.");
-
-        var intercepted = await _behaviorHandler.RunPreCommandAsync(context, cmd);
-        if (intercepted)
-            return (false, null, cmd);
-
-        //If we get this far, at least one parse was successful. Execute the most likely overload.
-        var chosenOverload = successfulParses[0];
-        var execResult = (ExecuteResult)await chosenOverload.Key.ExecuteAsync(context, chosenOverload.Value, services);
-
-        if (execResult.Exception is not null
-            && (execResult.Exception is not HttpException he
-                || he.DiscordCode != DiscordErrorCode.InsufficientPermissions))
-            Log.Warning(execResult.Exception, "Command Error");
-
-        return (true, null, cmd);
-    }
 }
