@@ -12,7 +12,6 @@ using SixLabors.ImageSharp.Processing;
 using LinqToDB.Data;
 using LinqToDB.EntityFrameworkCore;
 using LinqToDB.Tools;
-using Microsoft.Extensions.Caching.Memory;
 using NadekoBot.Modules.Administration;
 using NadekoBot.Modules.Patronage;
 using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
@@ -38,7 +37,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     private readonly IBotCache _c;
 
     private readonly INotifySubscriber _notifySub;
-    private readonly IMemoryCache _memCache;
+    private readonly XpCooldownMap _xpCooldowns = new();
     private readonly XpTemplateService _templateService;
     private readonly XpRateService _xpRateRateService;
     private readonly XpExclusionService _xpExcl;
@@ -59,7 +58,6 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         IPubSub pubSub,
         IPatronageService ps,
         INotifySubscriber notifySub,
-        IMemoryCache memCache,
         ShardData shardData,
         XpTemplateService templateService,
         XpRateService xpRateRateService,
@@ -75,7 +73,6 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         _httpFactory = http;
         _xpConfig = xpConfig;
         _notifySub = notifySub;
-        _memCache = memCache;
         _templateService = templateService;
         _xpRateRateService = xpRateRateService;
         _xpExcl = xpExcl;
@@ -165,7 +162,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
                     if (oldBatch.Contains(u))
                     {
-                        validUsers.Add(new(u, rate.Amount, vc.Id));
+                        validUsers.Add(new(g.Id, u.Id, u.Username, u.DisplayAvatarId, rate.Amount, vc.Id));
                     }
 
                     _voiceXpBatch.Add(u);
@@ -179,6 +176,9 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     private async Task UpdateXp()
     {
         var currentBatch = Interlocked.Exchange(ref _usersBatch, new());
+
+        _xpCooldowns.Cleanup();
+
         if (currentBatch.IsEmpty)
             return;
 
@@ -199,15 +199,15 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         await using var tx = await ctx.Database.BeginTransactionAsync();
         await using var lctx = ctx.CreateLinqToDBConnection();
 
-        var tempTableName = "xptemp_" + Guid.NewGuid().ToString().Replace("-", string.Empty);
+        var tempTableName = "xptemp_" + Guid.NewGuid().ToString("N");
         await using var batchTable = await lctx.CreateTempTableAsync<UserXpBatch>(tempTableName);
 
-        await batchTable.BulkCopyAsync(currentBatch.Select(x => new UserXpBatch()
+        await batchTable.BulkCopyAsync(currentBatch.Select(static x => new UserXpBatch()
         {
-            GuildId = x.User.GuildId,
-            UserId = x.User.Id,
-            Username = x.User.Username,
-            AvatarId = x.User.DisplayAvatarId,
+            GuildId = x.GuildId,
+            UserId = x.UserId,
+            Username = x.Username,
+            AvatarId = x.AvatarId,
             XpToGain = x.Xp
         }));
 
@@ -231,7 +231,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
         await tx.CommitAsync();
 
-        var userToXp = currentBatch.ToDictionary(x => x.User.Id, x => x);
+        var userToXp = currentBatch.ToDictionary(static x => x.UserId, static x => x);
         foreach (var u in updated)
         {
             if (!userToXp.TryGetValue(u.UserId, out var data))
@@ -490,58 +490,60 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     private static bool UserParticipatingInVoiceChannel(SocketGuildUser user)
         => !user.IsDeafened && !user.IsMuted && !user.IsSelfDeafened && !user.IsSelfMuted;
 
-    public Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage arg)
+    public ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage arg)
     {
         if (arg.Author is not SocketGuildUser user || user.IsBot)
-            return Task.CompletedTask;
+            return default;
 
         if (arg.Channel is not IGuildChannel gc)
-            return Task.CompletedTask;
+            return default;
 
-        _ = Task.Run(async () =>
+        if (IsUserExcluded(guild!, user))
+            return default;
+
+        var isImage = false;
+        foreach (var a in arg.Attachments)
         {
-            if (IsUserExcluded(guild, user))
-                return;
-
-            var isImage = arg.Attachments.Any(a => a.Height >= 16 && a.Width >= 16);
-            var isText = arg.Content.Contains(' ') || arg.Content.Length >= 5;
-
-            // try to get a rate for this channel
-            // and if there is no specified rate, use thread rate
-            var (textRate, isItemRate) = _xpRateRateService.GetXpRate(XpRateType.Text, guild.Id, gc.Id);
-            if (!isItemRate && gc is SocketThreadChannel tc)
+            if (a.Height >= 16 && a.Width >= 16)
             {
-                (textRate, _) = _xpRateRateService.GetXpRate(XpRateType.Text, guild.Id, tc.ParentChannel.Id);
+                isImage = true;
+                break;
             }
+        }
 
-            XpRate rate;
-            if (isImage)
-            {
-                var (imageRate, _) = _xpRateRateService.GetXpRate(XpRateType.Image, guild.Id, gc.Id);
-                if (imageRate.IsExcluded())
-                    return;
+        var isText = arg.Content.Contains(' ') || arg.Content.Length >= 5;
 
-                rate = imageRate;
-            }
-            else if (isText)
-            {
-                if (textRate.IsExcluded())
-                    return;
+        var (textRate, isItemRate) = _xpRateRateService.GetXpRate(XpRateType.Text, guild!.Id, gc.Id);
+        if (!isItemRate && gc is SocketThreadChannel tc)
+            (textRate, _) = _xpRateRateService.GetXpRate(XpRateType.Text, guild.Id, tc.ParentChannel.Id);
 
-                rate = textRate;
-            }
-            else
-            {
-                return;
-            }
+        XpRate rate;
+        if (isImage)
+        {
+            var (imageRate, _) = _xpRateRateService.GetXpRate(XpRateType.Image, guild.Id, gc.Id);
+            if (imageRate.IsExcluded())
+                return default;
 
-            if (!await TryAddUserGainedXpAsync(user.Id, rate.Cooldown))
-                return;
+            rate = imageRate;
+        }
+        else if (isText)
+        {
+            if (textRate.IsExcluded())
+                return default;
 
-            _usersBatch[user.Id] = new(user, rate.Amount, gc.Id);
-        });
+            rate = textRate;
+        }
+        else
+        {
+            return default;
+        }
 
-        return Task.CompletedTask;
+        if (!TryAddUserGainedXp(user.Id, rate.Cooldown))
+            return default;
+
+        _usersBatch[user.Id] = new(guild.Id, user.Id, user.Username, user.DisplayAvatarId, rate.Amount, gc.Id);
+
+        return default;
     }
 
     private bool IsUserExcluded(IGuild guild, SocketGuildUser user)
@@ -560,27 +562,14 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
     public Task AddXpAsync(ulong channelId, long amount, params IGuildUser[] users)
     {
-        foreach(var user in users)
-            _usersBatch[user.Id] = new(user, amount, channelId);
-        
+        foreach (var user in users)
+            _usersBatch[user.Id] = new(user.GuildId, user.Id, user.Username, user.DisplayAvatarId, amount, channelId);
+
         return Task.CompletedTask;
     }
     
-    private Task<bool> TryAddUserGainedXpAsync(ulong userId, float cdInMinutes)
-    {
-        if (cdInMinutes <= float.Epsilon)
-            return Task.FromResult(true);
-
-        if (_memCache.TryGetValue("xp_gain:" + userId, out _))
-            return Task.FromResult(false);
-
-        using var entry = _memCache.CreateEntry("xp_gain:" + userId);
-        entry.Value = true;
-
-        entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(cdInMinutes);
-
-        return Task.FromResult(true);
-    }
+    private bool TryAddUserGainedXp(ulong userId, float cdInMinutes)
+        => _xpCooldowns.TryAddCooldown(userId, cdInMinutes);
 
     public async Task<FullUserStats> GetUserStatsAsync(IGuildUser user)
     {
@@ -1158,11 +1147,10 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     }
 }
 
-public readonly record struct XpQueueEntry(IGuildUser User, long Xp, ulong? ChannelId)
-{
-    public bool Equals(XpQueueEntry? other)
-        => other?.User == User;
-
-    public override int GetHashCode()
-        => User.GetHashCode();
-}
+public readonly record struct XpQueueEntry(
+    ulong GuildId,
+    ulong UserId,
+    string Username,
+    string AvatarId,
+    long Xp,
+    ulong? ChannelId);
