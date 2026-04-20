@@ -89,7 +89,8 @@ public class VerboseErrorsService : IReadyExecutor, INService
     {
         await using var ctx = _db.GetDbContext();
         var disabledOn = ctx.GetTable<GuildConfig>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId) && !x.VerboseErrors)
+            .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(x => !x.VerboseErrors)
             .Select(x => x.GuildId);
 
         foreach (var guildId in disabledOn)

@@ -18,6 +18,7 @@ namespace NadekoBot.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Instruction = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false),
                     IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false)
@@ -836,7 +837,7 @@ namespace NadekoBot.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     When = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
-                    ServerId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     Message = table.Column<string>(type: "TEXT", nullable: true),
                     IsPrivate = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -1903,9 +1904,9 @@ namespace NadekoBot.Migrations
                 column: "GuildId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AiAgentGuildSkill_GuildId_Name",
+                name: "IX_AiAgentGuildSkill_GuildId_ChannelId_Name",
                 table: "AiAgentGuildSkill",
-                columns: new[] { "GuildId", "Name" },
+                columns: new[] { "GuildId", "ChannelId", "Name" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NadekoBot.Modules.Xp;
 
+[ShardFiltered]
 public class ChannelXpConfig
 {
     [Key]

@@ -30,8 +30,11 @@ public partial class Help
 
         [Cmd]
         [OwnerOnly]
-        public async Task Patrons()
+        public async Task Patrons(int page = 1)
         {
+            if (--page < 0)
+                return;
+
             if (!_pConf.Data.IsEnabled)
             {
                 await Response().Error(strs.patron_not_enabled).SendAsync();
@@ -46,26 +49,87 @@ public partial class Help
                 return;
             }
 
-            var sb = new StringBuilder();
+            const int perPage = 10;
+            var pages = BuildPatronPages(grouped, perPage);
+
+            await Response()
+                .Paginated()
+                .Items(pages)
+                .PageSize(1)
+                .CurrentPage(page)
+                .Page((items, _) =>
+                {
+                    var sb = new StringBuilder();
+                    foreach (var entry in items[0])
+                    {
+                        if (entry.IsHeader)
+                        {
+                            sb.AppendLine($"**{entry.Tier.ToFullName()}**");
+                        }
+                        else
+                        {
+                            var name = entry.Username ?? entry.UserId.ToString();
+                            sb.AppendLine($"**{name}**");
+                            sb.AppendLine($"\U0001f194 `{entry.UserId}`");
+                        }
+                    }
+
+                    var eb = CreateEmbed()
+                        .WithOkColor()
+                        .WithTitle(GetText(strs.patrons_title))
+                        .WithDescription(sb.ToString());
+
+                    return Task.FromResult(eb);
+                })
+                .SendAsync();
+        }
+
+        private static List<List<PatronEntry>> BuildPatronPages(
+            IReadOnlyList<(PatronTier Tier, IReadOnlyList<(ulong UserId, string? Username)> Patrons)> grouped,
+            int perPage)
+        {
+            var pages = new List<List<PatronEntry>>();
+            var cur = new List<PatronEntry>();
+            var count = 0;
+
             foreach (var (tier, patrons) in grouped)
             {
-                sb.AppendLine($"**{tier.ToFullName()}**");
+                if (patrons.Count == 0)
+                    continue;
+
+                cur.Add(PatronEntry.Header(tier));
+
                 foreach (var (userId, username) in patrons)
                 {
-                    var name = username ?? userId.ToString();
-                    sb.AppendLine($"**{name}**");
-                    sb.AppendLine($"\U0001f194 `{userId}`");
-                }
+                    if (count == perPage)
+                    {
+                        pages.Add(cur);
+                        cur = [PatronEntry.Header(tier)];
+                        count = 0;
+                    }
 
-                sb.AppendLine();
+                    cur.Add(PatronEntry.Row(tier, userId, username));
+                    count++;
+                }
             }
 
-            var eb = CreateEmbed()
-                .WithOkColor()
-                .WithTitle(GetText(strs.patrons_title))
-                .WithDescription(sb.ToString());
+            if (cur.Count > 0)
+                pages.Add(cur);
 
-            await Response().Embed(eb).SendAsync();
+            return pages;
+        }
+
+        private readonly record struct PatronEntry(
+            PatronTier Tier,
+            bool IsHeader,
+            ulong UserId,
+            string? Username)
+        {
+            public static PatronEntry Header(PatronTier tier)
+                => new(tier, true, 0, null);
+
+            public static PatronEntry Row(PatronTier tier, ulong userId, string? username)
+                => new(tier, false, userId, username);
         }
 
         [Cmd]

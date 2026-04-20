@@ -48,7 +48,7 @@ public sealed partial class FlagTranslateService : IReadyExecutor, INService
         await using (var uow = _db.GetDbContext())
         {
             _enabledChannels = (await uow.GetTable<FlagTranslateChannel>()
-                                         .Where(x => Queries.GuildOnShard(x.GuildId,
+                                         .Where(Queries.GuildOnShard<FlagTranslateChannel>(x => x.GuildId,
                                              _creds.TotalShards,
                                              _client.ShardId))
                                          .Select(x => new

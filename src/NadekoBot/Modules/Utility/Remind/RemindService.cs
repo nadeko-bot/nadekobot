@@ -93,7 +93,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
             await using var uow = _db.GetDbContext();
             var earliest = await uow.Set<Reminder>()
                 .ToLinqToDBTable()
-                .Where(x => Queries.GuildOnShard(x.ServerId,
+                .Where(Queries.GuildOnShard<Reminder>(x => x.GuildId,
                     _creds.TotalShards,
                     _client.ShardId))
                 .OrderBy(x => x.When)
@@ -128,7 +128,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
 
             var reminders = await uow.Set<Reminder>()
                 .ToLinqToDBTable()
-                .Where(x => Queries.GuildOnShard(x.ServerId,
+                .Where(Queries.GuildOnShard<Reminder>(x => x.GuildId,
                     _creds.TotalShards,
                     _client.ShardId))
                 .Where(x => x.When <= now)
@@ -231,7 +231,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
                 ch = await user.CreateDMChannelAsync();
             }
             else
-                ch = _client.GetGuild(r.ServerId)?.GetTextChannel(r.ChannelId);
+                ch = _client.GetGuild(r.GuildId)?.GetTextChannel(r.ChannelId);
 
             if (ch is null)
                 return;
@@ -239,7 +239,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
             var st = SmartText.CreateFrom(r.Message);
 
             var res = _sender.Response(ch)
-                .UserBasedMentions(_client.GetGuild(r.ServerId)?.GetUser(r.UserId));
+                .UserBasedMentions(_client.GetGuild(r.GuildId)?.GetUser(r.UserId));
 
             if (st is SmartEmbedText set)
             {
@@ -252,7 +252,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
             else
             {
                 await res
-                    .Embed(_sender.CreateEmbed(r.ServerId)
+                    .Embed(_sender.CreateEmbed(r.GuildId)
                         .WithOkColor()
                         .WithTitle("Reminder")
                         .AddField("Created At",
@@ -291,7 +291,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
                 {
                     UserId = userId,
                     ChannelId = targetId,
-                    ServerId = guildId ?? 0,
+                    GuildId = guildId ?? 0,
                     IsPrivate = isPrivate,
                     When = time,
                     Message = message,

@@ -10,11 +10,15 @@ namespace NadekoBot.Modules.Help;
 public sealed partial class CommandListGenerator(
     CommandService cmds,
     IMedusaLoaderService medusae,
-    IBotStrings strings
+    IBotStrings strings,
+    ShardData shardData
 ) : INService, IReadyExecutor
 {
     public async Task OnReadyAsync()
     {
+        if (shardData.ShardId != 0)
+            return;
+
         await Task.Delay(5_000);
         await GenerateCommandListAsync(".", CultureInfo.InvariantCulture);
     }
@@ -52,7 +56,11 @@ public sealed partial class CommandListGenerator(
 
         // send the indented file to chat
         var rDataStream = new MemoryStream(Encoding.ASCII.GetBytes(readableData));
-        await File.WriteAllTextAsync("data/commandlist.json", readableData);
+
+        const string finalPath = "data/commandlist.json";
+        var tempPath = finalPath + ".tmp";
+        await File.WriteAllTextAsync(tempPath, readableData);
+        File.Move(tempPath, finalPath, overwrite: true);
 
         return rDataStream;
     }

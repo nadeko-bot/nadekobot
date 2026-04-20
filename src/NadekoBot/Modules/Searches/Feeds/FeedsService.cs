@@ -45,7 +45,7 @@ public class FeedsService : INService, IReadyExecutor
         {
             var subs = await uow.Set<FeedSub>()
                 .AsQueryable()
-                .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+                .Where(Queries.GuildOnShard<FeedSub>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
                 .ToListAsyncLinqToDB();
             _subs = subs
                 .GroupBy(x => x.Url.ToLower())

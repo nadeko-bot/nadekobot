@@ -7,6 +7,7 @@ namespace NadekoBot.Db.Models;
 /// <summary>
 /// Configuration for a live channel.
 /// </summary>
+[ShardFiltered]
 public class LiveChannelConfig
 {
     [Key]

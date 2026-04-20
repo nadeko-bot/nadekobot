@@ -464,7 +464,7 @@ public class MuteService : INService, IReadyExecutor
     {
         await using var uow = _db.GetDbContext();
         var configs = await uow.Set<GuildConfig>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .ToListAsyncLinqToDB();
 
         _guildMuteRoles = configs.Where(c => !string.IsNullOrWhiteSpace(c.MuteRoleName))
@@ -472,7 +472,7 @@ public class MuteService : INService, IReadyExecutor
             .ToConcurrent();
 
         _mutedUsers = await uow.GetTable<MutedUserId>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(Queries.GuildOnShard<MutedUserId>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .ToListAsyncLinqToDB()
             .Pipe(x => x.GroupBy(x => x.GuildId)
                 .ToDictionary(g => g.Key, g => new ConcurrentHashSet<ulong>(g.Select(x => x.UserId)))
@@ -481,15 +481,15 @@ public class MuteService : INService, IReadyExecutor
         var max = TimeSpan.FromDays(49);
 
         var unmuteTimers = await uow.GetTable<UnmuteTimer>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(Queries.GuildOnShard<UnmuteTimer>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .ToListAsyncLinqToDB();
 
         var unbanTimers = await uow.GetTable<UnbanTimer>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(Queries.GuildOnShard<UnbanTimer>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .ToListAsyncLinqToDB();
 
         var unroleTimers = await uow.GetTable<UnroleTimer>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(Queries.GuildOnShard<UnroleTimer>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .ToListAsyncLinqToDB();
 
         foreach (var x in unmuteTimers)

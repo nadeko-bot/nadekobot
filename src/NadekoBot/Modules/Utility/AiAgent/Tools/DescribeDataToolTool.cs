@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace NadekoBot.Modules.Utility.AiAgent.Tools;
 
-public sealed class DescribeDataToolTool(IAiToolRegistry toolRegistry) : IAiTool, INService
+public sealed class DescribeDataToolTool(Lazy<IAiToolRegistry> toolRegistry) : IAiTool, INService
 {
     public string Name => "describe_data_tool";
 
@@ -30,7 +30,7 @@ public sealed class DescribeDataToolTool(IAiToolRegistry toolRegistry) : IAiTool
             return Task.FromResult("Error: name is required.");
 
         var name = nameEl.GetString()!;
-        var tool = toolRegistry.GetTool(name);
+        var tool = toolRegistry.Value.GetTool(name);
 
         if (tool is null || !tool.IsDataTool)
             return Task.FromResult($"Error: Data tool '{name}' not found.");

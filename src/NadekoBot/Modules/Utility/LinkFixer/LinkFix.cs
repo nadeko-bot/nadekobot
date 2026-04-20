@@ -7,6 +7,7 @@ namespace NadekoBot.Db.Models;
 /// <summary>
 /// Represents a link fix configuration for a guild
 /// </summary>
+[ShardFiltered]
 public class LinkFix
 {
     [Key]

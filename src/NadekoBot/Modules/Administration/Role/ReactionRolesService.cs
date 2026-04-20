@@ -36,8 +36,7 @@ public sealed class ReactionRolesService : IReadyExecutor, INService, IReactionR
     {
         await using var uow = _db.GetDbContext();
         var reros = await uow.GetTable<ReactionRoleV2>()
-                             .Where(
-                                 x => Queries.GuildOnShard(x.GuildId, _creds.TotalShards, _client.ShardId))
+                             .Where(Queries.GuildOnShard<ReactionRoleV2>(x => x.GuildId, _creds.TotalShards, _client.ShardId))
                              .ToListAsyncLinqToDB();
 
         foreach (var group in reros.GroupBy(x => x.MessageId))

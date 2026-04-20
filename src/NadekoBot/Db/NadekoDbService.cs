@@ -21,93 +21,67 @@ public sealed class NadekoDbService : DbService
 
     public override async Task SetupAsync()
     {
-        var dbType = _creds.GetCreds().Db.Type.ToLowerInvariant().Trim();
+        if (!await TryMigrateFromPostgresAsync())
+            return;
 
-        if (dbType is "postgresql" or "postgres" or "pgsql")
+        await using var ctx = new NadekoContext(ConnString);
+        await DbMigrator.RunAsync(ctx);
+
+        var conn = ctx.Database.GetDbConnection();
+        await conn.OpenAsync();
+        try
         {
-            Log.Warning("PostgreSQL support has been removed. Migrating your data to SQLite automatically...");
-
-            try
-            {
-                await PostgresMigrator.MigrateAsync(ConnString);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "PostgreSQL to SQLite migration failed. "
-                              + "Your PostgreSQL database has NOT been modified. "
-                              + "Please report this issue");
-                Helpers.ReadErrorAndExit(110);
-                return;
-            }
-
-            _creds.ModifyCredsFile(c =>
-            {
-                c.Db.Type = "sqlite";
-                c.Db.ConnectionString = "Data Source=data/NadekoBot.db";
-            });
-            _creds.Reload();
-
-            Log.Warning("Migration complete. creds.yml has been updated to use SQLite. "
-                        + "Your data is now in data/NadekoBot.db. "
-                        + "You may uninstall PostgreSQL if you no longer need it");
+            await DbPragmas.ApplySetupAsync(conn);
+            await ShardIndexReconciler.RunAsync(ctx, _creds.GetCreds().TotalShards);
         }
-
-        await using var context = new NadekoContext(ConnString);
-
-        await RunMigration(context);
-
-        await context.Database.ExecuteSqlRawAsync("PRAGMA journal_mode=WAL; PRAGMA busy_timeout=30000;");
-    }
-
-    private NadekoContext GetDbContextInternal()
-    {
-        var context = new NadekoContext(ConnString);
-        var conn = context.Database.GetDbConnection();
-        conn.Open();
-        using var com = conn.CreateCommand();
-        com.CommandText = "PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=30000;";
-        com.ExecuteNonQuery();
-
-        return context;
+        finally
+        {
+            await conn.CloseAsync();
+        }
     }
 
     public override NadekoContext GetDbContext()
-        => GetDbContextInternal();
-
-    private static async Task RunMigration(DbContext ctx)
     {
-        if (!await ctx.Database.CanConnectAsync())
+        var ctx = new NadekoContext(ConnString);
+        var conn = ctx.Database.GetDbConnection();
+        conn.Open();
+        DbPragmas.ApplyRuntime(conn);
+        return ctx;
+    }
+
+    private async Task<bool> TryMigrateFromPostgresAsync()
+    {
+        var dbType = _creds.GetCreds().Db.Type.ToLowerInvariant().Trim();
+
+        if (dbType is not ("postgresql" or "postgres" or "pgsql"))
+            return true;
+
+        Log.Warning("PostgreSQL support has been removed. Migrating your data to SQLite automatically...");
+
+        try
         {
-            Log.Information("Database does not exist. Creating a new database...");
-            await ctx.Database.MigrateAsync();
-            return;
+            await PostgresMigrator.MigrateAsync(ConnString);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "PostgreSQL to SQLite migration failed. "
+                          + "Your PostgreSQL database has NOT been modified. "
+                          + "Please report this issue");
+            Helpers.ReadErrorAndExit(110);
+            return false;
         }
 
-        var applied = await ctx.Database.GetAppliedMigrationsAsync();
-
-        if (!applied.Any())
+        _creds.ModifyCredsFile(c =>
         {
-            Log.Information("No migrations applied. Running baseline migration...");
-            await ctx.Database.MigrateAsync();
-            return;
-        }
+            c.Db.Type = "sqlite";
+            c.Db.ConnectionString = "Data Source=data/NadekoBot.db";
+        });
+        _creds.Reload();
 
-        var available = Directory.GetFiles("Migrations", "*_*.sql")
-            .Select(Path.GetFileNameWithoutExtension)
-            .Where(static x => x.Length > 0 && char.IsAsciiDigit(x[0]))
-            .OrderBy(static x => x);
+        Log.Warning("Migration complete. creds.yml has been updated to use SQLite. "
+                    + "Your data is now in data/NadekoBot.db. "
+                    + "You may uninstall PostgreSQL if you no longer need it");
 
-        var lastApplied = applied.Last();
-
-        foreach (var runnable in available)
-        {
-            if (string.Compare(lastApplied, runnable, StringComparison.Ordinal) < 0)
-            {
-                Log.Warning("Applying migration {MigrationName}", runnable);
-
-                var query = await File.ReadAllTextAsync($"Migrations/{runnable}.sql");
-                await ctx.Database.ExecuteSqlRawAsync(query);
-            }
-        }
+        return true;
     }
 }

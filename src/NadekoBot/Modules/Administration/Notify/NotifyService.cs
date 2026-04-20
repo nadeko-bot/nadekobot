@@ -48,7 +48,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
     {
         await using var uow = _db.GetDbContext();
         _events = (await uow.GetTable<Notify>()
-                .Where(x => Queries.GuildOnShard(x.GuildId,
+                .Where(Queries.GuildOnShard<Notify>(x => x.GuildId,
                     _creds.TotalShards,
                     _client.ShardId))
                 .ToListAsyncLinqToDB())

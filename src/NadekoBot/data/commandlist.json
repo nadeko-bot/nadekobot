@@ -3947,9 +3947,10 @@
       "Aliases": [
         ".patrons"
       ],
-      "Description": "Lists all active patrons grouped by tier. Owner only.",
+      "Description": "Lists all active patrons grouped by tier, 10 patrons per page. Owner only.",
       "Usage": [
-        ".patrons"
+        ".patrons",
+        ".patrons 2"
       ],
       "Submodule": "Patronage",
       "Module": "Help",
@@ -7284,6 +7285,174 @@
     },
     {
       "Aliases": [
+        ".agentchannelskilladd",
+        ".aichskilladd",
+        ".aicsa"
+      ],
+      "Description": "Adds a named skill to the AI agent for the current channel only.\nChannel skills only apply when the agent is invoked in this channel.",
+      "Usage": [
+        ".agentchannelskilladd support Always check the FAQ before answering questions"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentchannelskillremove",
+        ".aichskillremove",
+        ".aicsr"
+      ],
+      "Description": "Removes a channel-specific skill from the AI agent.",
+      "Usage": [
+        ".agentchannelskillremove support"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentchannelskilltoggle",
+        ".aichskilltoggle",
+        ".aicst"
+      ],
+      "Description": "Toggles a channel-specific skill on or off.",
+      "Usage": [
+        ".agentchannelskilltoggle support"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentchannelskilllist",
+        ".aichskilllist",
+        ".aicsl"
+      ],
+      "Description": "Lists all channel-specific AI agent skills for the current channel.",
+      "Usage": [
+        ".agentchannelskilllist"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".aprompts",
+        ".apromptlist"
+      ],
+      "Description": "Lists all AI agent prompt files with their sizes and enabled status.",
+      "Usage": [
+        ".aprompts"
+      ],
+      "Submodule": "PromptCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".apromptshow",
+        ".aps"
+      ],
+      "Description": "Shows the contents of a prompt file. DMs the content if it's too long.",
+      "Usage": [
+        ".apromptshow SOUL",
+        ".apromptshow OPERATOR",
+        ".apromptshow my-persona"
+      ],
+      "Submodule": "PromptCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".apromptedit",
+        ".ape"
+      ],
+      "Description": "Overwrites a prompt file with the given content.\nYou can provide the content as text or attach a .md file.",
+      "Usage": [
+        ".apromptedit SOUL You are Nadeko, a cheerful and helpful Discord bot.",
+        ".apromptedit my-persona Respond with extra enthusiasm."
+      ],
+      "Submodule": "PromptCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".apromptreload",
+        ".apr"
+      ],
+      "Description": "Reloads all prompt files from disk and broadcasts to all shards.",
+      "Usage": [
+        ".apromptreload"
+      ],
+      "Submodule": "PromptCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".apromptmodule",
+        ".apm"
+      ],
+      "Description": "Toggles a prompt module on or off. When all modules are enabled (default),\ntoggling one off switches to an explicit list.",
+      "Usage": [
+        ".apromptmodule my-persona",
+        ".apromptmodule concise"
+      ],
+      "Submodule": "PromptCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".apromptpath",
+        ".app"
+      ],
+      "Description": "Shows the absolute path to the prompts directory.",
+      "Usage": [
+        ".apromptpath"
+      ],
+      "Submodule": "PromptCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
         ".aliasesclear",
         ".aliasclear"
       ],
@@ -8716,7 +8885,8 @@
     {
       "Aliases": [
         ".waifuleaderboard",
-        ".wlb"
+        ".wlb",
+        ".waifulb"
       ],
       "Description": "Shows top waifus. Default is sorted by backing; use 'price' to sort by price.",
       "Usage": [

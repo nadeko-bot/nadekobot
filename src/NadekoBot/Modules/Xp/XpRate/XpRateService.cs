@@ -19,7 +19,7 @@ public class XpRateService(DbService db, ShardData shardData, XpConfigService xc
         await using var uow = db.GetDbContext();
         _guildRates = await uow.GetTable<GuildXpConfig>()
             .AsNoTracking()
-            .Where(x => Queries.GuildOnShard(x.GuildId, shardData.TotalShards, shardData.ShardId))
+            .Where(Queries.GuildOnShard<GuildXpConfig>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
             .ToListAsyncLinqToDB()
             .Pipe(list =>
                 list
@@ -30,7 +30,7 @@ public class XpRateService(DbService db, ShardData shardData, XpConfigService xc
 
         _channelRates = await uow.GetTable<ChannelXpConfig>()
             .AsNoTracking()
-            .Where(x => Queries.GuildOnShard(x.GuildId, shardData.TotalShards, shardData.ShardId))
+            .Where(Queries.GuildOnShard<ChannelXpConfig>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
             .ToListAsyncLinqToDB()
             .Pipe(x =>
                 x.GroupBy(x => x.GuildId)

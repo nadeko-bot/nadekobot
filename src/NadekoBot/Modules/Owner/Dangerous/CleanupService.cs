@@ -170,7 +170,7 @@ public sealed class CleanupService : ICleanupService, IReadyExecutor, INService
 
         await ctx.GetTable<Reminder>()
                  .Where(x => !tempTable.Select(x => x.GuildId)
-                                       .Contains(x.ServerId))
+                                       .Contains(x.GuildId))
                  .DeleteAsync();
 
         await ctx.GetTable<ButtonRole>()

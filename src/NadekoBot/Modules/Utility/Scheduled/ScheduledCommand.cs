@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NadekoBot.Modules.Utility.Scheduled;
 
+[ShardFiltered]
 public sealed class ScheduledCommand
 {
     [Key]

@@ -25,16 +25,16 @@ public sealed class SemanticIndex<TEntry>
         _searchTextSelector = searchTextSelector;
     }
 
-    public Task BuildAsync(TEntry[] entries, byte[] contentHash)
+    public Task<BuildResult> BuildAsync(TEntry[] entries, byte[] contentHash)
     {
         if (!_embedder.IsReady)
         {
             Log.Warning("SemanticIndex: Embedding service not ready, cannot build index");
-            return Task.CompletedTask;
+            return Task.FromResult(new BuildResult(entries.Length, 0, false, Skipped: true));
         }
 
         if (_currentHash is not null && contentHash.AsSpan().SequenceEqual(_currentHash))
-            return Task.CompletedTask;
+            return Task.FromResult(new BuildResult(entries.Length, 0, false, Skipped: true));
 
         var sw = System.Diagnostics.Stopwatch.StartNew();
 
@@ -45,12 +45,9 @@ public sealed class SemanticIndex<TEntry>
             _currentHash = contentHash;
             _ready = true;
             sw.Stop();
-            Log.Information("SemanticIndex<{Type}>: Loaded {Count} cached embeddings from {Path} in {Elapsed}ms",
-                typeof(TEntry).Name, entries.Length, _cachePath, sw.ElapsedMilliseconds);
-            return Task.CompletedTask;
+            return Task.FromResult(new BuildResult(entries.Length, sw.ElapsedMilliseconds, FromCache: true, Skipped: false));
         }
 
-        Log.Information("SemanticIndex<{Type}>: Embedding {Count} entries...", typeof(TEntry).Name, entries.Length);
         sw.Restart();
 
         var embeddings = new float[entries.Length][];
@@ -65,10 +62,7 @@ public sealed class SemanticIndex<TEntry>
         _ready = true;
 
         sw.Stop();
-        Log.Information("SemanticIndex<{Type}>: Indexed {Count} entries in {Elapsed}ms",
-            typeof(TEntry).Name, entries.Length, sw.ElapsedMilliseconds);
-
-        return Task.CompletedTask;
+        return Task.FromResult(new BuildResult(entries.Length, sw.ElapsedMilliseconds, FromCache: false, Skipped: false));
     }
 
     public (TEntry Entry, float Score)[] Search(string query, int topK = 5)
@@ -149,8 +143,6 @@ public sealed class SemanticIndex<TEntry>
             for (var i = 0; i < embeddings.Length; i++)
                 for (var j = 0; j < EmbeddingService.EMBEDDING_DIM; j++)
                     writer.Write(embeddings[i][j]);
-
-            Log.Information("SemanticIndex: Saved cache ({Size}KB) to {Path}", fs.Length / 1024, _cachePath);
         }
         catch (Exception ex)
         {
@@ -166,3 +158,5 @@ public sealed class SemanticIndex<TEntry>
         return dot;
     }
 }
+
+public readonly record struct BuildResult(int Count, long ElapsedMs, bool FromCache, bool Skipped);

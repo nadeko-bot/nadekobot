@@ -1,6 +1,7 @@
 #nullable disable
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
+using NadekoBot.Db.Models;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -87,7 +88,7 @@ public class Localization : ILocalization, IReadyExecutor, INService
         await using var uow = _db.GetDbContext();
 
         var cultureInfoNames = await uow.GuildConfigs
-                                        .Where(x => Queries.GuildOnShard(x.GuildId,
+                                        .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId,
                                             _shardData.TotalShards,
                                             _shardData.ShardId))
                                         .ToListAsyncLinqToDB();

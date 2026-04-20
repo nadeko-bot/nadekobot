@@ -33,7 +33,7 @@ public class VcRoleService : INService, IReadyExecutor
         {
             vcRoles = await uow.GetTable<VcRoleInfo>()
                .AsQueryable()
-               .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+               .Where(Queries.GuildOnShard<VcRoleInfo>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
                .ToListAsync()
                .Pipe(x => x.GroupBy(x => x.GuildId));
         }

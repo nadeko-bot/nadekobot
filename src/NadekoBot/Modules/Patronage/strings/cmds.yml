@@ -9,11 +9,14 @@ patron:
     - user:
         desc: The ID or handle of the user whose patronage status is being checked.
 patrons:
-  desc: "Lists all active patrons grouped by tier. Owner only."
+  desc: "Lists all active patrons grouped by tier, 10 patrons per page. Owner only."
   ex:
     - ''
+    - '2'
   params:
     - {}
+    - page:
+        desc: "The page number to display."
 patronmessage:
   desc: |-
     Sends a message to all patrons of the specified tier and higher.

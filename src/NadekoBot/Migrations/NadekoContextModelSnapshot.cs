@@ -23,6 +23,9 @@ namespace NadekoBot.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<ulong?>("ChannelId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
 
@@ -43,7 +46,7 @@ namespace NadekoBot.Migrations
 
                     b.HasIndex("GuildId");
 
-                    b.HasIndex("GuildId", "Name")
+                    b.HasIndex("GuildId", "ChannelId", "Name")
                         .IsUnique();
 
                     b.ToTable("AiAgentGuildSkill");
@@ -1633,14 +1636,14 @@ namespace NadekoBot.Migrations
                     b.Property<DateTime?>("DateAdded")
                         .HasColumnType("TEXT");
 
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Message")
                         .HasColumnType("TEXT");
-
-                    b.Property<ulong>("ServerId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");

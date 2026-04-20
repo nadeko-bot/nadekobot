@@ -54,8 +54,6 @@ public sealed class CommandSearchService(
     {
         try
         {
-            Log.Information("CommandSearch: Waiting for commandlist.json...");
-
             for (var i = 0; i < 24; i++)
             {
                 if (File.Exists(COMMAND_LIST_PATH))
@@ -73,8 +71,6 @@ public sealed class CommandSearchService(
             await embedder.EnsureModelReadyAsync();
             await LoadAndBuildIndexInternalAsync();
             LoadClassificationHeadInternal();
-
-            Log.Information("CommandSearch: Ready, head={HeadReady}", _headReady);
         }
         catch (Exception ex)
         {
@@ -107,7 +103,6 @@ public sealed class CommandSearchService(
             if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
                 return;
 
-            Log.Information("CommandSearch: Detected commandlist.json change, reloading...");
             await embedder.EnsureModelReadyAsync();
             await LoadAndBuildIndexInternalAsync();
 
@@ -135,7 +130,6 @@ public sealed class CommandSearchService(
             if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
                 return;
 
-            Log.Information("CommandSearch: Reload notification received, reloading...");
             await embedder.EnsureModelReadyAsync();
             await LoadAndBuildIndexInternalAsync();
 
@@ -160,10 +154,16 @@ public sealed class CommandSearchService(
             return;
         }
 
-        await _index.BuildAsync(commands, cmdListHash);
+        var result = await _index.BuildAsync(commands, cmdListHash);
         _currentHash = cmdListHash;
 
-        Log.Information("CommandSearch: Indexed {Count} commands", commands.Length);
+        if (result.Skipped)
+            return;
+
+        if (result.FromCache)
+            Log.Information("CommandSearch: Loaded {Count} commands from cache in {Elapsed}ms", result.Count, result.ElapsedMs);
+        else
+            Log.Information("CommandSearch: Indexed {Count} commands in {Elapsed}ms", result.Count, result.ElapsedMs);
     }
 
     public CommandSearchResult[] Search(string query, int topK = 5)
@@ -238,7 +238,6 @@ public sealed class CommandSearchService(
             _b2 = ReadFloatsInternal(reader, NUM_CLASSES);
 
             _headReady = true;
-            Log.Information("CommandSearch: Loaded intent classification head ({Size}KB)", fs.Length / 1024);
         }
         catch (Exception ex)
         {

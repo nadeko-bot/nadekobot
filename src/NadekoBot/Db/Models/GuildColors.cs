@@ -2,6 +2,7 @@
 
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class GuildColors
 {
     [Key]

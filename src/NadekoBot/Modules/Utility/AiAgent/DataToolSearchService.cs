@@ -8,7 +8,7 @@ public sealed record DataToolEntry(string Name, string GroupName, string Descrip
 
 public sealed class DataToolSearchService(
     EmbeddingService embedder,
-    IAiToolRegistry toolRegistry) : INService, IReadyExecutor
+    Lazy<IAiToolRegistry> toolRegistry) : INService, IReadyExecutor
 {
     private const string CACHE_PATH = "data/ai/embeddings/datatools.cache";
 
@@ -31,7 +31,7 @@ public sealed class DataToolSearchService(
         {
             await embedder.EnsureModelReadyAsync();
 
-            var dataTools = toolRegistry.GetDataTools();
+            var dataTools = toolRegistry.Value.GetDataTools();
             if (dataTools.Count == 0)
             {
                 Log.Information("DataToolSearch: No data tools registered, skipping index");
@@ -56,9 +56,15 @@ public sealed class DataToolSearchService(
 
             var hash = SHA256.HashData(Encoding.UTF8.GetBytes(hashInput.ToString()));
 
-            await _index.BuildAsync(entries, hash);
+            var result = await _index.BuildAsync(entries, hash);
 
-            Log.Information("DataToolSearch: Indexed {Count} data tools", entries.Length);
+            if (result.Skipped)
+                return;
+
+            if (result.FromCache)
+                Log.Information("DataToolSearch: Loaded {Count} tools from cache in {Elapsed}ms", result.Count, result.ElapsedMs);
+            else
+                Log.Information("DataToolSearch: Indexed {Count} tools in {Elapsed}ms", result.Count, result.ElapsedMs);
         }
         catch (Exception ex)
         {

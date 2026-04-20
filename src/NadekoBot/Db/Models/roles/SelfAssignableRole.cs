@@ -14,6 +14,7 @@ public sealed class Sar
     public int LevelReq { get; set; }
 }
 
+[ShardFiltered]
 public sealed class SarAutoDelete
 {
     [Key]

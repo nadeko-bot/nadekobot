@@ -4,6 +4,7 @@ ar:
   user_notify_none: لا توجد أنواع إشعارات متاحة.
   user_notify_enable_all: تفعيل الكل
   user_notify_disable_all: تعطيل الكل
+  user_notify_hint: 'استخدم {0}notify لإيقاف ''{1}'' أو إشعارات الرسائل الخاصة الأخرى.'
 
 de-DE:
   user_notify_title: DM-Benachrichtigungseinstellungen
@@ -11,6 +12,7 @@ de-DE:
   user_notify_none: Keine Benachrichtigungstypen verfügbar.
   user_notify_enable_all: Alle aktivieren
   user_notify_disable_all: Alle deaktivieren
+  user_notify_hint: 'Nutze {0}notify, um ''{1}'' oder andere DM-Benachrichtigungen abzuschalten.'
 
 es-ES:
   user_notify_title: Configuración de notificaciones por MD
@@ -18,6 +20,7 @@ es-ES:
   user_notify_none: No hay tipos de notificación disponibles.
   user_notify_enable_all: Activar todo
   user_notify_disable_all: Desactivar todo
+  user_notify_hint: 'Usa {0}notify para desactivar ''{1}'' u otras notificaciones por MD.'
 
 fr-FR:
   user_notify_title: Paramètres de notifications DM
@@ -25,6 +28,7 @@ fr-FR:
   user_notify_none: Aucun type de notification disponible.
   user_notify_enable_all: Tout activer
   user_notify_disable_all: Tout désactiver
+  user_notify_hint: 'Utilise {0}notify pour désactiver ''{1}'' ou d''autres notifications par MP.'
 
 id-ID:
   user_notify_title: Pengaturan Notifikasi DM
@@ -32,6 +36,7 @@ id-ID:
   user_notify_none: Tidak ada jenis notifikasi yang tersedia.
   user_notify_enable_all: Aktifkan Semua
   user_notify_disable_all: Nonaktifkan Semua
+  user_notify_hint: 'Gunakan {0}notify untuk mematikan ''{1}'' atau notifikasi DM lainnya.'
 
 ja-JP:
   user_notify_title: DM通知設定
@@ -39,6 +44,7 @@ ja-JP:
   user_notify_none: 利用可能な通知タイプはありません。
   user_notify_enable_all: すべて有効
   user_notify_disable_all: すべて無効
+  user_notify_hint: '{0}notify で ''{1}'' などの DM 通知をオフにできます。'
 
 ko-KR:
   user_notify_title: DM 알림 설정
@@ -46,6 +52,7 @@ ko-KR:
   user_notify_none: 사용 가능한 알림 유형이 없습니다.
   user_notify_enable_all: 모두 켜기
   user_notify_disable_all: 모두 끄기
+  user_notify_hint: '{0}notify 명령어로 ''{1}'' 또는 다른 DM 알림을 끌 수 있어요.'
 
 pl-PL:
   user_notify_title: Ustawienia powiadomień DM
@@ -53,6 +60,7 @@ pl-PL:
   user_notify_none: Brak dostępnych typów powiadomień.
   user_notify_enable_all: Włącz wszystkie
   user_notify_disable_all: Wyłącz wszystkie
+  user_notify_hint: 'Użyj {0}notify, aby wyłączyć ''{1}'' lub inne powiadomienia w DM.'
 
 pt-BR:
   user_notify_title: Configurações de notificação por DM
@@ -60,6 +68,7 @@ pt-BR:
   user_notify_none: Nenhum tipo de notificação disponível.
   user_notify_enable_all: Ativar tudo
   user_notify_disable_all: Desativar tudo
+  user_notify_hint: 'Use {0}notify para desativar ''{1}'' ou outras notificações por DM.'
 
 ru-RU:
   user_notify_title: Настройки уведомлений в ЛС
@@ -67,6 +76,7 @@ ru-RU:
   user_notify_none: Нет доступных типов уведомлений.
   user_notify_enable_all: Включить все
   user_notify_disable_all: Отключить все
+  user_notify_hint: 'Используй {0}notify, чтобы отключить ''{1}'' или другие уведомления в ЛС.'
 
 sr-Cyrl-RS:
   user_notify_title: Подешавања обавештења у ПП
@@ -74,6 +84,7 @@ sr-Cyrl-RS:
   user_notify_none: Нема доступних типова обавештења.
   user_notify_enable_all: Укључи све
   user_notify_disable_all: Искључи све
+  user_notify_hint: 'Користи {0}notify да искључиш ''{1}'' или друга ДМ обавештења.'
 
 tr-TR:
   user_notify_title: DM Bildirim Ayarları
@@ -81,6 +92,7 @@ tr-TR:
   user_notify_none: Kullanılabilir bildirim türü yok.
   user_notify_enable_all: Hepsini Aç
   user_notify_disable_all: Hepsini Kapat
+  user_notify_hint: '''{1}'' veya diğer DM bildirimlerini kapatmak için {0}notify komutunu kullan.'
 
 ts-TS:
   user_notify_title: DM Notification Settings
@@ -88,6 +100,7 @@ ts-TS:
   user_notify_none: No notification types are available... not that I care.
   user_notify_enable_all: Enable All
   user_notify_disable_all: Disable All
+  user_notify_hint: 'Use {0}notify to turn off ''{1}'' or other DM notifications.'
 
 uk-UA:
   user_notify_title: Налаштування сповіщень у ПП
@@ -95,6 +108,7 @@ uk-UA:
   user_notify_none: Немає доступних типів сповіщень.
   user_notify_enable_all: Увімкнути все
   user_notify_disable_all: Вимкнути все
+  user_notify_hint: 'Використай {0}notify, щоб вимкнути ''{1}'' або інші сповіщення в ПП.'
 
 vi-VN:
   user_notify_title: Cài đặt thông báo DM
@@ -102,6 +116,7 @@ vi-VN:
   user_notify_none: Không có loại thông báo nào khả dụng.
   user_notify_enable_all: Bật tất cả
   user_notify_disable_all: Tắt tất cả
+  user_notify_hint: 'Dùng {0}notify để tắt ''{1}'' hoặc các thông báo DM khác.'
 
 zh-CN:
   user_notify_title: 私信通知设置
@@ -109,3 +124,4 @@ zh-CN:
   user_notify_none: 没有可用的通知类型。
   user_notify_enable_all: 全部启用
   user_notify_disable_all: 全部禁用
+  user_notify_hint: '使用 {0}notify 关闭 ''{1}'' 或其他私信通知。'

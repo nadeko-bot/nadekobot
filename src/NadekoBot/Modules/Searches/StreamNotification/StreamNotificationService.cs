@@ -103,7 +103,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
             _offlineNotificationServers.Add(guildId);
 
         var deleteOnOffline = await uow.GetTable<GuildConfig>()
-                                       .Where(gc => Queries.GuildOnShard(gc.GuildId,
+                                       .Where(Queries.GuildOnShard<GuildConfig>(gc => gc.GuildId,
                                            _shardData.TotalShards,
                                            _shardData.ShardId))
                                        .Where(gc => gc.DeleteStreamOnlineMessage)
@@ -115,7 +115,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
             _deleteOnOfflineServers.Add(guildId);
 
         var followedStreams = await uow.GetTable<FollowedStream>()
-                                       .Where(x => Queries.GuildOnShard(x.GuildId,
+                                       .Where(Queries.GuildOnShard<FollowedStream>(x => x.GuildId,
                                            _shardData.TotalShards,
                                            _shardData.ShardId))
                                        .ToListAsyncLinqToDB();

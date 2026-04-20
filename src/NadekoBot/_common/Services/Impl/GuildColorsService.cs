@@ -116,7 +116,7 @@ public sealed class GuildColorsService : IReadyExecutor, IGuildColorsService, IN
     {
         await using var ctx = _db.GetDbContext();
         var guildColors = await ctx.GetTable<GuildColors>()
-                                   .Where(x => Queries.GuildOnShard(x.GuildId,
+                                   .Where(Queries.GuildOnShard<GuildColors>(x => x.GuildId,
                                        _creds.TotalShards,
                                        _client.ShardId))
                                    .ToListAsync();

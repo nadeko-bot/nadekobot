@@ -31,7 +31,7 @@ public sealed class StickyRolesService : INService, IReadyExecutor
             _stickyRoles = new(await ctx
                                   .Set<GuildConfig>()
                                   .ToLinqToDBTable()
-                                  .Where(x => Queries.GuildOnShard(x.GuildId,
+                                  .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId,
                                       _creds.TotalShards,
                                       _client.ShardId))
                                   .Where(x => x.StickyRoles)

@@ -1,5 +1,6 @@
 ﻿namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class TempRole
 {
     public int Id { get; set; }

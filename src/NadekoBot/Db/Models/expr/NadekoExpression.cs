@@ -1,6 +1,7 @@
 #nullable disable
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class NadekoExpression : DbEntity
 {
     public ulong? GuildId { get; set; }
@@ -14,7 +15,7 @@ public class NadekoExpression : DbEntity
     public string Reactions { get; set; }
 
     public string[] GetReactions()
-        => string.IsNullOrWhiteSpace(Reactions) ? Array.Empty<string>() : Reactions.Split("@@@");
+        => string.IsNullOrWhiteSpace(Reactions) ? [] : Reactions.Split("@@@");
 
     public bool IsGlobal()
         => GuildId is null or 0;

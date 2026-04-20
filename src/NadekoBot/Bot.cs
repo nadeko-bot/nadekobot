@@ -92,22 +92,9 @@ public sealed class Bot : IBot
     public IReadOnlyList<ulong> GetCurrentGuildIds()
         => Client.Guilds.Select(x => x.Id).ToList().AsReadOnly();
 
-    private async Task AddServices()
+    private Task AddServices()
     {
-        var startingGuildIdList = GetCurrentGuildIds().ToList();
         var startTime = Stopwatch.GetTimestamp();
-        var bot = Client.CurrentUser;
-
-        await using (var uow = _db.GetDbContext())
-        {
-            uow.EnsureUserCreated(bot.Id, bot.Username, bot.AvatarId);
-        }
-
-        // var svcs = new StandardKernel(new NinjectSettings()
-        // {
-        //     // ThrowOnGetServiceNotFound = true,
-        //     ActivationCacheDisabled = true,
-        // });
 
         var svcs = new Container();
 
@@ -159,6 +146,8 @@ public sealed class Bot : IBot
 
         Log.Information("All services loaded in {ServiceLoadTime:F2}s",
             Stopwatch.GetElapsedTime(startTime).TotalSeconds);
+
+        return Task.CompletedTask;
     }
 
     private void LoadTypeReaders(Assembly assembly)
@@ -247,17 +236,32 @@ public sealed class Bot : IBot
 
         var startTime = Stopwatch.GetTimestamp();
 
-        await LoginAsync(_creds.Token);
+        var loginTask = LoginAsync(_creds.Token);
+        var servicesTask = Task.Run(async () =>
+        {
+            Log.Information("Shard {ShardId} loading services...", ShardId);
+            await AddServices();
 
-        Log.Information("Shard {ShardId} loading services...", Client.ShardId);
+            foreach (var a in _loadedAssemblies)
+            {
+                await _commandService.AddModulesAsync(a, Services);
+            }
+        });
+
         try
         {
-            await AddServices();
+            await Task.WhenAll(loginTask, servicesTask);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Error adding services");
+            Log.Error(ex, "Error during startup");
             Helpers.ReadErrorAndExit(103);
+        }
+
+        await using (var uow = _db.GetDbContext())
+        {
+            var bot = Client.CurrentUser;
+            uow.EnsureUserCreated(bot.Id, bot.Username, bot.AvatarId);
         }
 
         Log.Information("Shard {ShardId} connected in {Elapsed:F2}s",
@@ -265,12 +269,6 @@ public sealed class Bot : IBot
             Stopwatch.GetElapsedTime(startTime).TotalSeconds);
 
         var commandHandler = Services.GetRequiredService<CommandHandler>();
-
-
-        foreach (var a in _loadedAssemblies)
-        {
-            await _commandService.AddModulesAsync(a, Services);
-        }
 
         await EnsureBotOwnershipAsync();
 

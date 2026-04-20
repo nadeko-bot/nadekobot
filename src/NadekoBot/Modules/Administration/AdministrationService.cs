@@ -38,8 +38,8 @@ public class AdministrationService : INService, IReadyExecutor
     {
         await using var uow = _db.GetDbContext();
         _deleteMessagesOnCommand = new(await uow.GetTable<GuildConfig>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId) &&
-                        x.DeleteMessageOnCommand)
+            .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(x => x.DeleteMessageOnCommand)
             .Select(x => x.GuildId)
             .ToListAsyncLinqToDB());
 

@@ -21,7 +21,7 @@ public sealed class XpFormulaService(DbService db, ShardData shardData) : IReady
         await using var ctx = db.GetDbContext();
         _formulas = await ctx.GetTable<XpSettings>()
             .AsNoTracking()
-            .Where(x => Queries.GuildOnShard(x.GuildId, shardData.TotalShards, shardData.ShardId))
+            .Where(Queries.GuildOnShard<XpSettings>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
             .Where(x => x.XpFormulaA != _default.A || x.XpFormulaC != _default.C)
             .Select(x => new { x.GuildId, x.XpFormulaA, x.XpFormulaC })
             .ToListAsyncLinqToDB()

@@ -1,6 +1,7 @@
 #nullable disable
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class XpSettings : DbEntity
 {
     public ulong GuildId { get; set; }

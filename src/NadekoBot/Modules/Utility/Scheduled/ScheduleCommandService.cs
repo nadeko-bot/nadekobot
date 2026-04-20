@@ -31,7 +31,7 @@ public sealed class ScheduleCommandService(
             {
                 scheduledCommand = await ctx
                     .GetTable<ScheduledCommand>()
-                    .Where(x => Queries.GuildOnShard(x.GuildId, shardData.TotalShards, shardData.ShardId))
+                    .Where(Queries.GuildOnShard<ScheduledCommand>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
                     .OrderBy(x => x.When)
                     .FirstOrDefaultAsyncLinqToDB();
             }

@@ -2,34 +2,62 @@
 
 *a,c,f,r,o,d*
 
-## [7.1.27] - TBD
-
-### Added
-
-- AI agent system prompt is now composed from Markdown files under `data/ai/prompts/` instead of a YAML property. Edit `SOUL.md` for bot identity, `OPERATOR.md` for operator rules, and drop `.md` files into `modules/` for optional behavior modules (personas, specialities, etc.). Core tool usage guidance is built into each tool in code and updates automatically with the bot. Existing customizations are migrated automatically on upgrade
-- Per-channel AI agent skills via `.agentchannelskilladd`, `.agentchannelskillremove`, `.agentchannelskilltoggle`, `.agentchannelskilllist` - channel skills only apply when the agent runs in that specific channel
-- `.aprompts`, `.apromptshow`, `.apromptedit`, `.apromptreload`, `.apromptmodule`, `.apromptpath` owner commands for managing prompt files
-- Prompt files hot-reload via file system watcher - edit a file, changes apply automatically
-- AI agent data layer: data tools (`search_data_tools`, `describe_data_tool`, `invoke_data_tool`) provide structured read access to bot data without running commands and parsing embeds. Covers members, channels, XP, currency, waifus, warnings, reminders, music, server config, moderation, permissions, quests, and self-assignable roles
+## [Unreleased]
 
 ### Changed
 
+- DM notifications from the new user-notification system now include a hint telling the user how to turn that specific notification type off with `.notify`
+- Command and data-tool semantic index logs collapsed into a single line per index instead of four
+
+### Fixed
+
+- Startup crash introduced by shard expression index setup running against a closed SQLite connection
+- Voice service no longer crashes on startup when service construction races ahead of Discord login
+- Startup crash caused by a recursive dependency between the AI tool registry and the data-tool describe/invoke tools
+- Command semantic index no longer re-embeds on every startup under the coordinator: `commandlist.json` is now written only by shard 0 (atomically) so concurrent shards can no longer clobber it and invalidate the cache
+
+### Dev
+
+- `NadekoDbService` split into focused helpers: `DbMigrator` (EF + custom SQL migrations), `DbPragmas` (single source of truth for PRAGMA sets), `ShardIndexReconciler` (shard expression index discovery and rebuild); `SetupAsync` now manages one explicit connection lifetime for setup PRAGMAs and shard index work
+
+## [7.2.0] - 22.04.2026
+
+### Added
+
+- AI agent system prompt is now composed from Markdown files under `data/ai/prompts/` instead of a YAML property.
+    - `SOUL.md` for bot identity
+    - `OPERATOR.md` for operator rules
+    - and drop `.md` files into `modules/` for optional behavior modules (personas, specialities, etc.).
+- Per-channel AI agent skills via `.acsa`, `.acsr`, `.acst`, `.acsl` - channel skills only apply when the agent runs in that specific channel
+- `.aprompts`, `.apromptshow`, `.apromptedit`, `.apromptreload`, `.apromptmodule`, `.apromptpath` owner commands for managing prompt files
+- Prompt files hot-reload via file system watcher - edit a file, changes apply automatically
+
+- AI agent data layer: data tools (`search_data_tools`, `describe_data_tool`, `invoke_data_tool`) provide structured read access to bot data without running commands and parsing embeds.
+    - This version covers members, channels, XP, currency, waifus, warnings, reminders, music, server config, moderation, permissions, quests, and self-assignable roles
+    - more added in the future
+- Waifu and AI system guide added to the docs under Features Explained
+
+### Changed
+
+- `.patrons` is now paginated with 10 patrons per page; tier headers repeat on continuation pages
 - `.wlb` leaderboard now uses embed fields with rank numbers ("#X Username")
+- Faster startup: DI container build, module registration, and type reader loading now run in parallel with Discord login instead of sequentially after it
+- Massive startup query speedup: all per-shard DB queries now use SQLite expression indexes
 
 ### Fixed
 
 - Channel blacklist (`.blc`) now actually blocks messages from blacklisted channels
-- Bot no longer crashes when a background errors out
+- Anti-raid no longer silently degrades after its first trigger
+- Link fixer service only loads the data it needs
+- Some crash fixes
 
 ### Dev
 
-- busy_timeout added
-- DB migration: `AiAgentGuildSkill` table gains nullable `ChannelId` column with `(GuildId, ChannelId, Name)` unique index
-- AI agent data layer architecture: `[AiTool]` attribute + Roslyn source generator emits `IAiTool` implementations from adapter classes. Services stay pristine (no attributes)
-- Extracted `EmbeddingService` and `SemanticIndex<T>` from `CommandSearchService` for shared semantic search infrastructure
-- `DataToolSearchService` indexes generated data tools for semantic discovery via `search_data_tools`
-- `AiToolRegistry` now distinguishes core tools (always loaded in LLM context) from data tools (discovered on demand)
-- 12 data-tool adapters shipped: `Xp`, `Members`, `Channels`, `Currency`, `Waifu`, `Warnings`, `Reminders`, `Music`, `ServerConfig`, `Moderation`, `Permissions`, `Quests`, `SelfAssignRoles`. Legacy hand-written `GetUserInfoTool` and `ListChannelsTool` removed in favor of adapter-generated equivalents
+- `Reminder.ServerId` renamed to `GuildId` for consistency
+- DB migration: `AiAgentGuildSkill` gains nullable `ChannelId` column with `(GuildId, ChannelId, Name)` unique index
+- AI agent data layer: `[AiTool]` source generator emits `IAiTool` implementations.
+- Massive optimizations for message hot path
+- Misc service cleanup: server log, protection, filter, and replacement services moved to snapshot/frozen collections and span-based parsing
 
 ## [7.1.26] - 17.04.2026
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class FeedSub : DbEntity
 {
     public ulong GuildId { get; set; }

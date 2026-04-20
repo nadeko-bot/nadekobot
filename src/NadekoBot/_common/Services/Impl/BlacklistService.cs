@@ -103,9 +103,9 @@ public sealed class BlacklistService : IExecOnMessage, IReadyExecutor, INService
         var totalShards = _creds.TotalShards;
         await using var uow = _db.GetDbContext();
         var items = uow.GetTable<BlacklistEntry>()
+                       .ToArray()
                        .Where(x => x.Type != BlacklistType.Server
-                                   || (x.Type == BlacklistType.Server
-                                       && Queries.GuildOnShard(x.ItemId, totalShards, _client.ShardId)))
+                                   || x.ItemId / 4194304 % (ulong)totalShards == (ulong)_client.ShardId)
                        .ToArray();
 
 

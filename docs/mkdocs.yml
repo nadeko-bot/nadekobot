@@ -73,6 +73,11 @@ nav:
         - Commands List: https://nadeko.bot/commands
     - Features Explained:
         - Basic Creds: creds-guide.md
+        - Waifu System: waifu-guide.md
+        - AI Agent:
+            - Overview: ai-agent/overview.md
+            - Owner Setup: ai-agent/owner-setup.md
+            - Usage and Skills: ai-agent/usage.md
         - Medusa System:
             - medusa/getting-started.md
             - medusa/creating-a-medusa.md

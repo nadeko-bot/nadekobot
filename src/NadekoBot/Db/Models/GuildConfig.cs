@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 
 namespace NadekoBot.Db.Models;
+[ShardFiltered]
 public class GuildFilterConfig
 {
     [Key]
@@ -26,6 +27,7 @@ public sealed class GuildFilterConfigEntityConfiguration : IEntityTypeConfigurat
     }
 }
 
+[ShardFiltered]
 public class GuildConfig : DbEntity
 {
     public ulong GuildId { get; set; }

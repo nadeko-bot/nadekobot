@@ -42,7 +42,7 @@ public sealed class AutoAssignRoleService : INService, IReadyExecutor
         await using (var uow = _db.GetDbContext())
         {
             _autoAssignableRoles = await uow.GetTable<GuildConfig>()
-                                            .Where(x => Queries.GuildOnShard(x.GuildId,
+                                            .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId,
                                                 _shardData.TotalShards,
                                                 _shardData.ShardId))
                                             .Where(x => x.AutoAssignRoleIds != null)

@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20260414193232_init")]
+    [Migration("20260419232144_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -24,6 +24,9 @@ namespace NadekoBot.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong?>("ChannelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("GuildId")
@@ -46,7 +49,7 @@ namespace NadekoBot.Migrations
 
                     b.HasIndex("GuildId");
 
-                    b.HasIndex("GuildId", "Name")
+                    b.HasIndex("GuildId", "ChannelId", "Name")
                         .IsUnique();
 
                     b.ToTable("AiAgentGuildSkill");
@@ -1636,14 +1639,14 @@ namespace NadekoBot.Migrations
                     b.Property<DateTime?>("DateAdded")
                         .HasColumnType("TEXT");
 
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Message")
                         .HasColumnType("TEXT");
-
-                    b.Property<ulong>("ServerId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");

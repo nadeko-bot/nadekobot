@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class UnbanTimer : DbEntity
 {
     public ulong GuildId { get; set; }

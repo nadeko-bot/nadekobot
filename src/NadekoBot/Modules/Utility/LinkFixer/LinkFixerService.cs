@@ -10,7 +10,7 @@ namespace NadekoBot.Modules.Utility.LinkFixer;
 /// <summary>
 /// Service for managing link fixing functionality
 /// </summary>
-public partial class LinkFixerService(DbService db) : IReadyExecutor, IExecNoCommand, INService
+public partial class LinkFixerService(DbService db, ShardData shardData) : IReadyExecutor, IExecNoCommand, INService
 {
     private readonly ConcurrentDictionary<ulong, ConcurrentDictionary<string, string>> _guildLinkFixes = new();
 
@@ -18,7 +18,7 @@ public partial class LinkFixerService(DbService db) : IReadyExecutor, IExecNoCom
     {
         await using var uow = db.GetDbContext();
         var linkFixes = await uow.GetTable<LinkFix>()
-            .AsNoTracking()
+            .Where(Queries.GuildOnShard<LinkFix>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
             .ToListAsyncLinqToDB();
 
         foreach (var fix in linkFixes)

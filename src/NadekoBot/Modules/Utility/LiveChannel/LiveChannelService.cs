@@ -30,7 +30,7 @@ public class LiveChannelService(
         await using var uow = db.GetDbContext();
         var configs = await uow.GetTable<LiveChannelConfig>()
             .AsNoTracking()
-            .Where(x => Queries.GuildOnShard(x.GuildId, shardData.TotalShards, shardData.ShardId))
+            .Where(Queries.GuildOnShard<LiveChannelConfig>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
             .ToListAsyncLinqToDB();
 
         foreach (var config in configs)

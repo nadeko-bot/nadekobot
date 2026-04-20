@@ -22,12 +22,13 @@ public sealed class AyuVoiceStateService : INService
     private readonly DiscordSocketClient _client;
     private readonly MethodInfo _sendVoiceStateUpdateMethodInfo;
     private readonly object _dnetApiClient;
-    private readonly ulong _currentUserId;
+
+    private ulong CurrentUserId
+        => _client.CurrentUser.Id;
 
     public AyuVoiceStateService(DiscordSocketClient client)
     {
         _client = client;
-        _currentUserId = _client.CurrentUser.Id;
 
         var prop = _client.GetType()
                           .GetProperties(BindingFlags.NonPublic | BindingFlags.Instance)
@@ -64,7 +65,7 @@ public sealed class AyuVoiceStateService : INService
     /// </summary>
     private Task PersistentOnUserVoiceStateUpdated(SocketUser user, SocketVoiceState oldState, SocketVoiceState newState)
     {
-        if (user.Id != _currentUserId)
+        if (user.Id != CurrentUserId)
             return Task.CompletedTask;
 
         if (user is not SocketGuildUser guildUser)
@@ -119,7 +120,7 @@ public sealed class AyuVoiceStateService : INService
                 _ = proxy.StopGateway();
                 Log.Debug("Voice move: StopGateway fired at {ElapsedMs}ms", sw.ElapsedMilliseconds);
 
-                var gw = new VoiceGateway(guildId, session.ChannelId, _currentUserId,
+                var gw = new VoiceGateway(guildId, session.ChannelId, CurrentUserId,
                     session.SessionId, data.Token, data.Endpoint);
                 proxy.SetGateway(gw);
                 Log.Debug("Voice move: SetGateway completed at {ElapsedMs}ms", sw.ElapsedMilliseconds);
@@ -268,7 +269,7 @@ public sealed class AyuVoiceStateService : INService
 
             VoiceGateway CreateVoiceGatewayLocal()
             {
-                return new(guildId, channelId, _currentUserId, session, voiceServerData.Token, voiceServerData.Endpoint);
+                return new(guildId, channelId, CurrentUserId, session, voiceServerData.Token, voiceServerData.Endpoint);
             }
 
             var current = _voiceProxies.AddOrUpdate(guildId,

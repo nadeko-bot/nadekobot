@@ -12,6 +12,8 @@ public sealed class UserNotifyService(
     DiscordSocketClient client,
     IMessageSenderService mss,
     IBotCache cache,
+    IBotStrings bs,
+    BotConfigService bcs,
     IEnumerable<IUserNotifyEventRegistrar> registrars
 ) : INService, IReadyExecutor
 {
@@ -86,6 +88,8 @@ public sealed class UserNotifyService(
             if (user is null)
                 return;
 
+            AttachToggleHintInternal(msg);
+
             await mss.Response(user).Embed(msg.Embed).SendAsync();
 
             await cache.RemoveAsync(FailKey(msg.UserId));
@@ -94,6 +98,25 @@ public sealed class UserNotifyService(
         {
             await HandleDmFailureInternalAsync(msg.UserId);
         }
+    }
+
+    private void AttachToggleHintInternal(NotifyMessage msg)
+    {
+        EnsureInitialized();
+
+        if (!_events!.TryGetValue(msg.Key, out var info))
+            return;
+
+        if (msg.Embed.Footer is not null)
+            return;
+
+        var nameLoc = info.Name;
+        var name = bs.GetText(nameLoc.Key, (ulong?)null, nameLoc.Params);
+        var prefix = bcs.Data.Prefix;
+        var hintLoc = strs.user_notify_hint(prefix, name);
+        var hint = bs.GetText(hintLoc.Key, (ulong?)null, hintLoc.Params);
+
+        msg.Embed.WithFooter(hint);
     }
 
     private async Task HandleDmFailureInternalAsync(ulong userId)

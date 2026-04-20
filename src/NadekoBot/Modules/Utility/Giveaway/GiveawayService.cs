@@ -101,7 +101,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
 
         var gas = await ctx
                         .GetTable<GiveawayModel>()
-                        .Where(x => Queries.GuildOnShard(x.GuildId, _creds.TotalShards, _client.ShardId))
+                        .Where(Queries.GuildOnShard<GiveawayModel>(x => x.GuildId, _creds.TotalShards, _client.ShardId))
                         .ToArrayAsync();
 
         lock (_giveawayLock)

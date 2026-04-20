@@ -110,10 +110,10 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         await using var uow = _db.GetDbContext();
         var guildItems = await uow.GetTable<NadekoExpression>()
                                   .AsNoTracking()
-                                  .Where(x => x.GuildId != null
-                                              && Queries.GuildOnShard(x.GuildId.Value,
-                                                  _shardData.TotalShards,
-                                                  _shardData.ShardId))
+                                  .Where(x => x.GuildId != null)
+                                  .Where(Queries.GuildOnShard<NadekoExpression>(x => x.GuildId!.Value,
+                                      _shardData.TotalShards,
+                                      _shardData.ShardId))
                                   .ToListAsyncLinqToDB();
 
         newguildExpressions = guildItems.GroupBy(k => k.GuildId!.Value)

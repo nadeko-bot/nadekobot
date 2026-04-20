@@ -1,6 +1,7 @@
 ﻿namespace NadekoBot.Db.Models;
 
 #nullable disable
+[ShardFiltered]
 public sealed class GiveawayModel
 {
     public int Id { get; set; }

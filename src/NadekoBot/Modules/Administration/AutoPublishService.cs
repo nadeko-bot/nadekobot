@@ -42,7 +42,7 @@ public class AutoPublishService : IExecNoCommand, IReadyExecutor, INService
 
         await using var ctx = _db.GetDbContext();
         var items = await ctx.GetTable<AutoPublishChannel>()
-                             .Where(x => Queries.GuildOnShard(x.GuildId, creds.TotalShards, _client.ShardId))
+                             .Where(Queries.GuildOnShard<AutoPublishChannel>(x => x.GuildId, creds.TotalShards, _client.ShardId))
                              .ToListAsyncLinqToDB();
 
         _enabled = items

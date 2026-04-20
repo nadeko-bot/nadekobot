@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class MutedUserId : DbEntity
 {
     public ulong GuildId { get; set; }

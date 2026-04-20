@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class ReactionRoleV2 : DbEntity
 {
     public ulong GuildId { get; set; }
