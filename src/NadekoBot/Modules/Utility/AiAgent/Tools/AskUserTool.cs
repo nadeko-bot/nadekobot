@@ -14,6 +14,13 @@ public sealed class AskUserTool(IMessageSenderService sender) : IAiTool, INServi
         "Use this when the user's request is ambiguous and you need more information to proceed correctly. " +
         "You can optionally provide multiple-choice options.";
 
+    public string? SystemGuidance => """
+        ASKING FOR CLARIFICATION:
+        When the user's request is ambiguous, use the ask_user tool to ask a clarifying question before proceeding.
+        Limit questions to 2-3 per session unless absolutely necessary.
+        If you can make a reasonable assumption, prefer acting over asking.
+        """;
+
     public JsonElement ParameterSchema { get; } = JsonDocument.Parse("""
         {
             "type": "object",

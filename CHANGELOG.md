@@ -6,6 +6,10 @@
 
 ### Added
 
+- AI agent system prompt is now composed from Markdown files under `data/ai/prompts/` instead of a YAML property. Edit `SOUL.md` for bot identity, `OPERATOR.md` for operator rules, and drop `.md` files into `modules/` for optional behavior modules (personas, specialities, etc.). Core tool usage guidance is built into each tool in code and updates automatically with the bot. Existing customizations are migrated automatically on upgrade
+- Per-channel AI agent skills via `.agentchannelskilladd`, `.agentchannelskillremove`, `.agentchannelskilltoggle`, `.agentchannelskilllist` - channel skills only apply when the agent runs in that specific channel
+- `.aprompts`, `.apromptshow`, `.apromptedit`, `.apromptreload`, `.apromptmodule`, `.apromptpath` owner commands for managing prompt files
+- Prompt files hot-reload via file system watcher - edit a file, changes apply automatically
 - AI agent data layer: data tools (`search_data_tools`, `describe_data_tool`, `invoke_data_tool`) provide structured read access to bot data without running commands and parsing embeds. Covers members, channels, XP, currency, waifus, warnings, reminders, music, server config, moderation, permissions, quests, and self-assignable roles
 
 ### Changed
@@ -20,6 +24,7 @@
 ### Dev
 
 - busy_timeout added
+- DB migration: `AiAgentGuildSkill` table gains nullable `ChannelId` column with `(GuildId, ChannelId, Name)` unique index
 - AI agent data layer architecture: `[AiTool]` attribute + Roslyn source generator emits `IAiTool` implementations from adapter classes. Services stay pristine (no attributes)
 - Extracted `EmbeddingService` and `SemanticIndex<T>` from `CommandSearchService` for shared semantic search infrastructure
 - `DataToolSearchService` indexes generated data tools for semantic discovery via `search_data_tools`

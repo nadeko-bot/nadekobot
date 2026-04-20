@@ -11,6 +11,8 @@ public class AiAgentGuildSkill
 
     public ulong GuildId { get; set; }
 
+    public ulong? ChannelId { get; set; }
+
     [MaxLength(50)]
     public string Name { get; set; } = null!;
 
@@ -24,7 +26,7 @@ public sealed class AiAgentGuildSkillEntityConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<AiAgentGuildSkill> builder)
     {
-        builder.HasIndex(x => new { x.GuildId, x.Name }).IsUnique();
+        builder.HasIndex(x => new { x.GuildId, x.ChannelId, x.Name }).IsUnique();
         builder.HasIndex(x => x.GuildId);
     }
 }

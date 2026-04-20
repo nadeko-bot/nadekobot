@@ -127,5 +127,67 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
                 c.Version = 6;
             });
         }
+
+        if (Data.Version < 7)
+        {
+            MigrateSystemPromptToFileInternal();
+            ModifyConfig(c =>
+            {
+                c.Version = 7;
+            });
+        }
+    }
+
+    private void MigrateSystemPromptToFileInternal()
+    {
+        try
+        {
+            if (!File.Exists(FILE_PATH))
+                return;
+
+            var raw = File.ReadAllText(FILE_PATH);
+
+            // Extract SystemPrompt from the raw YAML before it's dropped by the new schema.
+            // The property was a multiline YAML string. If present, write it to SOUL.md
+            // so operator customizations are preserved.
+            const string key = "SystemPrompt:";
+            var idx = raw.IndexOf(key, StringComparison.Ordinal);
+            if (idx < 0)
+                return;
+
+            // Use YamlDotNet to properly parse the value
+            var deserializer = new YamlDotNet.Serialization.DeserializerBuilder()
+                .IgnoreUnmatchedProperties()
+                .Build();
+
+            var dict = deserializer.Deserialize<Dictionary<string, object>>(raw);
+            if (dict is null || !dict.TryGetValue("SystemPrompt", out var promptObj))
+                return;
+
+            var promptStr = promptObj?.ToString();
+            if (string.IsNullOrWhiteSpace(promptStr))
+                return;
+
+            // Only write if it differs from the old default (first line check)
+            if (promptStr.Contains("You are {botName}, a helpful Discord bot assistant", StringComparison.Ordinal)
+                && promptStr.Contains("DISCORD FORMATTING:", StringComparison.Ordinal)
+                && promptStr.Contains("COMMAND EXECUTION:", StringComparison.Ordinal))
+            {
+                // This is the stock default - no need to preserve it, the new defaults cover it
+                return;
+            }
+
+            var soulPath = Path.Combine("data", "ai", "prompts", "SOUL.md");
+            var dir = Path.GetDirectoryName(soulPath);
+            if (dir is not null)
+                Directory.CreateDirectory(dir);
+
+            File.WriteAllText(soulPath, promptStr);
+            Log.Information("Migrated custom SystemPrompt to {Path}", soulPath);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to migrate SystemPrompt to SOUL.md");
+        }
     }
 }

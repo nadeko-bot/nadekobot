@@ -22,6 +22,7 @@ public sealed class AiAgentService(
     IMessageSenderService sender,
     IPatronageService patronageService,
     PatronageConfig patronageConfig,
+    Prompts.SystemPromptBuilder systemPromptBuilder,
     DbService db) : INService, IExecOnMessage, IExecNoCommand, IReadyExecutor
 {
     private readonly ConcurrentDictionary<ulong, CancellationTokenSource> _activeSessions = new();
@@ -60,7 +61,7 @@ public sealed class AiAgentService(
         var creds = credsProvider.GetCreds();
         await using var ctx = db.GetDbContext();
         var skills = await ctx.GetTable<AiAgentGuildSkill>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, creds.TotalShards, client.ShardId))
+            .Where(Queries.GuildOnShard<AiAgentGuildSkill>(x => x.GuildId, creds.TotalShards, client.ShardId))
             .ToListAsyncLinqToDB();
 
         foreach (var group in skills.GroupBy(x => x.GuildId))
@@ -369,7 +370,7 @@ public sealed class AiAgentService(
 
             _ = channel.TriggerTypingAsync();
 
-            var systemPrompt = await BuildSystemPromptAsync(config, context);
+            var systemPrompt = await systemPromptBuilder.BuildAsync(context);
             var channelHistory = BuildChannelHistoryXml(channel, message.Id);
             var enrichedPrompt = BuildSkillPreamble(guild.Id, prompt);
 
@@ -565,45 +566,7 @@ public sealed class AiAgentService(
             triggerMessageId);
     }
 
-    /// <summary>
-    /// Builds the system prompt with sanitized guild/channel context
-    /// </summary>
-    private async Task<string> BuildSystemPromptAsync(AiAgentConfig config, AiToolContext context)
-    {
-        var botUser = await context.Guild.GetCurrentUserAsync();
-        var botName = PromptSanitizer.Sanitize(botUser.DisplayName);
 
-        var guildName = PromptSanitizer.Sanitize(context.Guild.Name);
-        var channelName = PromptSanitizer.Sanitize(context.SourceChannel.Name);
-        var channelId = context.SourceChannel.Id;
-        var userName = PromptSanitizer.Sanitize(context.User.DisplayName);
-
-        var channels = await context.Guild.GetTextChannelsAsync();
-        var visible = channels
-            .Where(c => context.User.GetPermissions(c).ViewChannel)
-            .OrderBy(c => c.Position)
-            .Take(50)
-            .Select(c => $"#{PromptSanitizer.Sanitize(c.Name)} (ID: {c.Id})")
-            .ToList();
-
-        var channelList = string.Join("\n", visible);
-
-        var systemPrompt = config.SystemPrompt.Replace("{botName}", botName);
-        var now = DateTimeOffset.UtcNow;
-
-        return $"""
-            {systemPrompt}
-
-            CONTEXT:
-            - Server: {guildName}
-            - Bot identity: {botName} (ID: {botUser.Id})
-            - Current channel: #{channelName} (ID: {channelId})
-            - User: {userName} (ID: {context.User.Id})
-            - Current time: {now.ToUnixTimeSeconds()} ({now:yyyy-MM-dd HH:mm:ss} UTC)
-            - Available channels:
-            {channelList}
-            """;
-    }
 
     private bool HasValidAiCreds()
     {
@@ -727,6 +690,112 @@ public sealed class AiAgentService(
             return skills;
 
         return [];
+    }
+
+    public IReadOnlyList<AiAgentGuildSkill> GetSkills(ulong guildId, ulong channelId)
+    {
+        if (_skillCache.TryGetValue(guildId, out var skills))
+            return skills.Where(s => s.ChannelId == channelId).ToImmutableArray();
+        return [];
+    }
+
+    public async Task<bool> AddSkillAsync(ulong guildId, string name, string instruction, ulong channelId)
+    {
+        name = name.ToLowerInvariant();
+        if (!_skillCache.TryGetValue(guildId, out var skills))
+            skills = [];
+
+        if (skills.Length >= MAX_SKILLS_PER_GUILD)
+            return false;
+
+        if (skills.Any(s => s.Name == name && s.ChannelId == channelId))
+            return false;
+
+        await using var ctx = db.GetDbContext();
+        var id = await ctx.GetTable<AiAgentGuildSkill>()
+            .InsertWithInt32IdentityAsync(() => new()
+            {
+                GuildId = guildId,
+                ChannelId = channelId,
+                Name = name,
+                Instruction = instruction,
+                IsEnabled = true
+            });
+
+        var newSkill = new AiAgentGuildSkill
+        {
+            Id = id,
+            GuildId = guildId,
+            ChannelId = channelId,
+            Name = name,
+            Instruction = instruction,
+            IsEnabled = true
+        };
+
+        _skillCache[guildId] = skills.Add(newSkill);
+        return true;
+    }
+
+    public async Task<bool> RemoveSkillAsync(ulong guildId, string name, ulong channelId)
+    {
+        name = name.ToLowerInvariant();
+        await using var ctx = db.GetDbContext();
+        var deleted = await ctx.GetTable<AiAgentGuildSkill>()
+            .Where(x => x.GuildId == guildId && x.Name == name && x.ChannelId == channelId)
+            .DeleteAsync();
+
+        if (deleted == 0)
+            return false;
+
+        if (_skillCache.TryGetValue(guildId, out var skills))
+        {
+            var updated = skills.RemoveAll(s => s.Name == name && s.ChannelId == channelId);
+            if (updated.IsEmpty)
+                _skillCache.TryRemove(guildId, out _);
+            else
+                _skillCache[guildId] = updated;
+        }
+
+        return true;
+    }
+
+    public async Task<bool?> ToggleSkillAsync(ulong guildId, string name, ulong channelId)
+    {
+        name = name.ToLowerInvariant();
+        await using var ctx = db.GetDbContext();
+        var results = await ctx.GetTable<AiAgentGuildSkill>()
+            .Where(x => x.GuildId == guildId && x.Name == name && x.ChannelId == channelId)
+            .Set(x => x.IsEnabled, x => !x.IsEnabled)
+            .UpdateWithOutputAsync((_, @new) => @new.IsEnabled);
+
+        if (results.Length == 0)
+            return null;
+
+        var newState = results[0];
+        if (_skillCache.TryGetValue(guildId, out var skills))
+        {
+            var builder = skills.ToBuilder();
+            for (var i = 0; i < builder.Count; i++)
+            {
+                if (builder[i].Name == name && builder[i].ChannelId == channelId)
+                {
+                    builder[i] = new()
+                    {
+                        Id = builder[i].Id,
+                        GuildId = guildId,
+                        ChannelId = channelId,
+                        Name = name,
+                        Instruction = builder[i].Instruction,
+                        IsEnabled = newState
+                    };
+                    break;
+                }
+            }
+
+            _skillCache[guildId] = builder.ToImmutable();
+        }
+
+        return newState;
     }
 
     private string BuildSkillPreamble(ulong guildId, string prompt)

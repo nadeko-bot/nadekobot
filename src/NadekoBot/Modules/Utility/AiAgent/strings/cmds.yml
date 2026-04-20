@@ -54,3 +54,90 @@ agentskilllist:
     - ''
   params:
     - { }
+agentchannelskilladd:
+  desc: |-
+    Adds a named skill to the AI agent for the current channel only.
+    Channel skills only apply when the agent is invoked in this channel.
+  ex:
+    - 'support Always check the FAQ before answering questions'
+  params:
+    - name:
+        desc: "Short name for the skill"
+      instruction:
+        desc: "The instruction text for the agent to follow"
+agentchannelskillremove:
+  desc: |-
+    Removes a channel-specific skill from the AI agent.
+  ex:
+    - 'support'
+  params:
+    - name:
+        desc: "Name of the skill to remove"
+agentchannelskilltoggle:
+  desc: |-
+    Toggles a channel-specific skill on or off.
+  ex:
+    - 'support'
+  params:
+    - name:
+        desc: "Name of the skill to toggle"
+agentchannelskilllist:
+  desc: |-
+    Lists all channel-specific AI agent skills for the current channel.
+  ex:
+    - ''
+  params:
+    - { }
+aprompts:
+  desc: |-
+    Lists all AI agent prompt files with their sizes and enabled status.
+  ex:
+    - ''
+  params:
+    - { }
+apromptshow:
+  desc: |-
+    Shows the contents of a prompt file. DMs the content if it's too long.
+  ex:
+    - 'SOUL'
+    - 'OPERATOR'
+    - 'my-persona'
+  params:
+    - path:
+        desc: "Prompt file name (SOUL, OPERATOR, or a module name)"
+apromptedit:
+  desc: |-
+    Overwrites a prompt file with the given content.
+    You can provide the content as text or attach a .md file.
+  ex:
+    - 'SOUL You are Nadeko, a cheerful and helpful Discord bot.'
+    - 'my-persona Respond with extra enthusiasm.'
+  params:
+    - path:
+        desc: "Prompt file name (SOUL, OPERATOR, or a module name)"
+      content:
+        desc: "New content for the file (or attach a .md file)"
+apromptreload:
+  desc: |-
+    Reloads all prompt files from disk and broadcasts to all shards.
+  ex:
+    - ''
+  params:
+    - { }
+apromptmodule:
+  desc: |-
+    Toggles a prompt module on or off. When all modules are enabled (default),
+    toggling one off switches to an explicit list.
+  ex:
+    - 'my-persona'
+    - 'concise'
+  params:
+    - name:
+        desc: "Name of the module to toggle"
+apromptpath:
+  desc: |-
+    Shows the absolute path to the prompts directory.
+  ex:
+    - ''
+  params:
+    - { }

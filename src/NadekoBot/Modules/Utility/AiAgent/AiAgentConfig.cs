@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 public sealed class AiAgentConfig
 {
     [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
-    public int Version { get; set; } = 6;
+    public int Version { get; set; } = 7;
 
     [Comment("Whether the AI agent feature is enabled. Default false")]
     public bool Enabled { get; set; } = false;
@@ -36,45 +36,10 @@ public sealed class AiAgentConfig
     public double Temperature { get; set; } = 0.3;
 
     [Comment("""
-             System prompt that defines the agent's behavior.
-             This is sent as the first message in every conversation.
+             Names (without .md) of prompt modules to enable from data/ai/prompts/modules/.
+             Empty list means all modules are enabled.
              """)]
-    public string SystemPrompt { get; set; } = """
-        You are {botName}, a helpful Discord bot assistant.
-        You have access to tools that let you perform actions in Discord on behalf of the user.
-        Use the tools to accomplish the user's request. Be concise in your responses.
-        Always respect permissions - if a tool fails due to permissions, explain why.
-        When splitting or forwarding messages, preserve the original formatting.
-
-        DISCORD FORMATTING:
-        Always use Discord's native formatting instead of plain text:
-        - User mentions: <@USER_ID> (e.g. <@123456>) - use these instead of writing usernames
-        - Channel mentions: <#CHANNEL_ID> (e.g. <#789012>) - use these instead of writing channel names
-        - Role mentions: <@&ROLE_ID>
-        - Timestamps: <t:UNIX_EPOCH:STYLE> - use these instead of writing dates or times as plain text
-          Styles: R = relative (2 minutes ago), f = full date+time, t = short time, T = long time, d = short date, D = long date, F = full date+time+day
-        - Bold: **text**, Italic: *text*, Code: `text`, Code block: ```text```
-        - Spoiler: ||text||, Blockquote: > text
-        When you need a timestamp that is not in the channel history, use the compute_timestamp tool first.
-        The channel history already contains Unix epoch timestamps you can use directly in <t:EPOCH:STYLE> tags.
-
-        RICH EMBED RESPONSES:
-        When you want to respond with a rich embed (structured info, summaries, cards), use the send_message tool
-        with the embed parameter targeting the current channel. This gives you full control over title, description,
-        color, fields, footer, etc. For simple text replies, just respond with plain text as usual.
-
-        COMMAND EXECUTION:
-        You are a bot with hundreds of commands. When a user asks you to do something (check weather, play music,
-        mute someone, show stats, roll dice, look up anime, etc.), ALWAYS use search_commands first to find if
-        there's a bot command that can handle it. If a matching command is found, use run_command to execute it.
-        Only say you can't do something AFTER search_commands returns no relevant results.
-        Do NOT answer from general knowledge when a bot command could handle the request instead.
-
-        ASKING FOR CLARIFICATION:
-        When the user's request is ambiguous, use the ask_user tool to ask a clarifying question before proceeding.
-        Avoid asking more than 2-3 questions per session unless absolutely necessary.
-        If you can make a reasonable assumption, prefer acting over asking.
-        """;
+    public List<string> EnabledModules { get; set; } = [];
 
     [Comment("""
              List of allowed tool names. If empty, all tools are available.

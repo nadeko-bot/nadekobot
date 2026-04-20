@@ -22,3 +22,37 @@ agentskilllist:
   - aiskilllist
   - aiskills
   - aisl
+agentchannelskilladd:
+  - agentchannelskilladd
+  - aichskilladd
+  - aicsa
+agentchannelskillremove:
+  - agentchannelskillremove
+  - aichskillremove
+  - aicsr
+agentchannelskilltoggle:
+  - agentchannelskilltoggle
+  - aichskilltoggle
+  - aicst
+agentchannelskilllist:
+  - agentchannelskilllist
+  - aichskilllist
+  - aicsl
+aprompts:
+  - aprompts
+  - apromptlist
+apromptshow:
+  - apromptshow
+  - aps
+apromptedit:
+  - apromptedit
+  - ape
+apromptreload:
+  - apromptreload
+  - apr
+apromptmodule:
+  - apromptmodule
+  - apm
+apromptpath:
+  - apromptpath
+  - app

@@ -21,6 +21,13 @@ public sealed partial class SendMessageTool : IAiTool, INService
         "Long messages will be automatically split across multiple messages on word boundaries. " +
         "Optionally include an embed for rich formatting.";
 
+    public string? SystemGuidance => """
+        RICH EMBED RESPONSES:
+        When you want to respond with a rich embed (structured info, summaries, cards), use the send_message tool
+        with the embed parameter targeting the current channel. This gives you full control over title, description,
+        color, fields, footer, etc. For simple text replies, just respond with plain text as usual.
+        """;
+
     public JsonElement ParameterSchema { get; } = JsonDocument.Parse("""
         {
             "type": "object",

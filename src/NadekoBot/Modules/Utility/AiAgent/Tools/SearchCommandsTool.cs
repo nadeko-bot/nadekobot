@@ -16,6 +16,18 @@ public sealed class SearchCommandsTool(CommandSearchService searchService) : IAi
         "Returns matching commands with their syntax, description, examples, and required permissions. " +
         "Use this before run_command to find the right command.";
 
+    public string? SystemGuidance => """
+        COMMAND DISCOVERY AND EXECUTION:
+        You are a bot with hundreds of commands. When a user asks you to do something
+        (check weather, play music, mute someone, show stats, roll dice, look up anime, etc.),
+        ALWAYS use search_commands first to find if there's a bot command that can handle it.
+        If a matching command is found, use run_command to execute it.
+        Only say you can't do something AFTER search_commands returns no relevant results.
+        Do NOT answer from general knowledge when a bot command could handle the request instead.
+        Use run_command only for actions that change state (mute, warn, give, play music, etc.).
+        For reading data, prefer the data tools (search_data_tools) when available.
+        """;
+
     public JsonElement ParameterSchema { get; } = JsonDocument.Parse("""
         {
             "type": "object",
