@@ -200,7 +200,7 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
 
     // forwards dms
 #nullable enable
-    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+    public async ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
 #nullable disable
     {
         var bs = _bss.Data;

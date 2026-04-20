@@ -19,7 +19,7 @@ public class GlobalPermissionService : IExecPreCommand, INService
         => _bss = bss;
 
 
-    public Task<bool> ExecPreCommandAsync(ICommandContext ctx, string moduleName, CommandInfo command)
+    public ValueTask<bool> ExecPreCommandAsync(ICommandContext ctx, string moduleName, CommandInfo command)
     {
         var settings = _bss.Data;
         var commandName = command.Name.ToLowerInvariant();
@@ -28,17 +28,17 @@ public class GlobalPermissionService : IExecPreCommand, INService
         {
             if (settings.Blocked.Commands.Contains(commandName)
                 || settings.Blocked.Modules.Contains(moduleName.ToLowerInvariant()))
-                return Task.FromResult(true);
+                return new(true);
 
             if (ctx.Guild is null)
             {
                 if (settings.DmBlocked.Commands.Contains(commandName)
                     || settings.DmBlocked.Modules.Contains(moduleName.ToLowerInvariant()))
-                    return Task.FromResult(true);
+                    return new(true);
             }
         }
 
-        return Task.FromResult(false);
+        return new(false);
     }
 
     /// <summary>

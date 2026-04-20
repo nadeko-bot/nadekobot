@@ -40,7 +40,7 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
         return deleted;
     }
 
-    public async Task<string?> TransformInput(
+    public async ValueTask<string?> TransformInput(
         IGuild? guild,
         IMessageChannel channel,
         IUser user,
@@ -103,7 +103,7 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
         await using var ctx = _db.GetDbContext();
 
         var aliases = ctx.GetTable<CommandAlias>()
-                         .Where(x => Queries.GuildOnShard(x.GuildId,
+                         .Where(Queries.GuildOnShard<CommandAlias>(x => x.GuildId,
                              _shardData.TotalShards,
                              _shardData.ShardId))
                          .ToList();

@@ -93,7 +93,7 @@ public class PermissionService : IExecPreCommand, INService
                 return old;
             });
 
-    public async Task<bool> ExecPreCommandAsync(ICommandContext ctx, string moduleName, CommandInfo command)
+    public async ValueTask<bool> ExecPreCommandAsync(ICommandContext ctx, string moduleName, CommandInfo command)
     {
         var guild = ctx.Guild;
         var msg = ctx.Message;

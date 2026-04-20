@@ -17,7 +17,7 @@ public interface IInputTransformer : IBehavior
     /// <param name="user">User who sent the message</param>
     /// <param name="input">Content of the message</param>
     /// <returns>New input, if any, otherwise null</returns>
-    Task<string?> TransformInput(
+    ValueTask<string?> TransformInput(
         IGuild? guild,
         IMessageChannel channel,
         IUser user,

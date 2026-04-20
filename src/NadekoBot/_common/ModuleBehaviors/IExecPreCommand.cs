@@ -21,5 +21,5 @@ public interface IExecPreCommand : IBehavior
     /// <param name="moduleName">Name of the module</param>
     /// <param name="command">Command info</param>
     /// <returns>Whether the command was intercepted</returns>
-    Task<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command);
+    ValueTask<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command);
 }

@@ -32,7 +32,7 @@ public class PlantPickService(
     private ConcurrentHashSet<ulong> _generationChannels = [];
 
 #nullable enable
-    public Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+    public ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
 #nullable disable
         => PotentialFlowerGeneration(msg);
 
@@ -167,16 +167,16 @@ public class PlantPickService(
         return (img.ToStream(format), format?.FileExtensions.FirstOrDefault() ?? "png");
     }
 
-    private Task PotentialFlowerGeneration(IUserMessage imsg)
+    private ValueTask PotentialFlowerGeneration(IUserMessage imsg)
     {
         if (imsg is not SocketUserMessage msg || msg.Author.IsBot)
-            return Task.CompletedTask;
+            return default;
 
         if (imsg.Channel is not ITextChannel channel)
-            return Task.CompletedTask;
+            return default;
 
         if (!_generationChannels.Contains(channel.Id))
-            return Task.CompletedTask;
+            return default;
 
         _ = Task.Run(async () =>
         {
@@ -237,7 +237,7 @@ public class PlantPickService(
             {
             }
         });
-        return Task.CompletedTask;
+        return default;
     }
 
     public async Task<long> PickAsync(

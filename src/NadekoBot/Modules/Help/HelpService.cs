@@ -15,7 +15,7 @@ public class HelpService : IExecNoCommand, INService
         _sender = sender;
     }
 
-    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+    public async ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
         var settings = _bss.Data;
         if (guild is null)

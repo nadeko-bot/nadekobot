@@ -8,10 +8,10 @@ public sealed class BehaviorHandler : IBehaviorHandler
 {
     private readonly IServiceProvider _services;
     
-    private IReadOnlyCollection<IExecNoCommand> noCommandExecs = [];
-    private IReadOnlyCollection<IExecPreCommand> preCommandExecs = [];
-    private IReadOnlyCollection<IExecOnMessage> onMessageExecs = [];
-    private IReadOnlyCollection<IInputTransformer> inputTransformers = [];
+    private IExecNoCommand[] noCommandExecs = [];
+    private IExecPreCommand[] preCommandExecs = [];
+    private IExecOnMessage[] onMessageExecs = [];
+    private IInputTransformer[] inputTransformers = [];
 
     private readonly Lock _customLock = new();
     private volatile ICustomBehavior[] _customExecs = [];
@@ -101,7 +101,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
     
     #region Running
 
-    public async Task<bool> RunExecOnMessageAsync(SocketGuild? guild, IUserMessage usrMsg)
+    public async ValueTask<bool> RunExecOnMessageAsync(SocketGuild? guild, IUserMessage usrMsg)
     {
         if (await ExecOnMessageInternalAsync(onMessageExecs, guild, usrMsg))
             return true;
@@ -113,7 +113,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
         return false;
     }
 
-    private async Task<bool> ExecOnMessageInternalAsync<T>(IReadOnlyCollection<T> execs, SocketGuild? guild, IUserMessage usrMsg)
+    private async ValueTask<bool> ExecOnMessageInternalAsync<T>(T[] execs, SocketGuild? guild, IUserMessage usrMsg)
         where T : IExecOnMessage
     {
         foreach (var exec in execs)
@@ -147,7 +147,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
     private string GetExecName(IBehavior exec)
         => exec.Name;
 
-    public async Task<bool> RunPreCommandAsync(ICommandContext ctx, CommandInfo cmd)
+    public async ValueTask<bool> RunPreCommandAsync(ICommandContext ctx, CommandInfo cmd)
     {
         if (await ExecPreCommandInternalAsync(preCommandExecs, ctx, cmd))
             return true;
@@ -159,7 +159,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
         return false;
     }
 
-    private async Task<bool> ExecPreCommandInternalAsync<T>(IReadOnlyCollection<T> execs, ICommandContext ctx, CommandInfo cmd)
+    private async ValueTask<bool> ExecPreCommandInternalAsync<T>(T[] execs, ICommandContext ctx, CommandInfo cmd)
         where T : IExecPreCommand
     {
         foreach (var exec in execs)
@@ -187,7 +187,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
         return false;
     }
 
-    public async Task RunOnNoCommandAsync(SocketGuild? guild, IUserMessage usrMsg)
+    public async ValueTask RunOnNoCommandAsync(SocketGuild? guild, IUserMessage usrMsg)
     {
         await ExecNoCommandInternalAsync(noCommandExecs, guild, usrMsg);
 
@@ -196,7 +196,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
             await ExecNoCommandInternalAsync(customs, guild, usrMsg);
     }
 
-    private static async Task ExecNoCommandInternalAsync<T>(IReadOnlyCollection<T> execs, SocketGuild? guild, IUserMessage usrMsg)
+    private static async ValueTask ExecNoCommandInternalAsync<T>(T[] execs, SocketGuild? guild, IUserMessage usrMsg)
         where T : IExecNoCommand
     {
         foreach (var exec in execs)
@@ -215,7 +215,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
         }
     }
 
-    public async Task<string> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg)
+    public async ValueTask<string> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg)
     {
         var newContent = await ExecInputTransformInternalAsync(inputTransformers, guild, usrMsg);
         if (newContent is not null)
@@ -232,7 +232,7 @@ public sealed class BehaviorHandler : IBehaviorHandler
         return usrMsg.Content;
     }
 
-    private async Task<string?> ExecInputTransformInternalAsync<T>(IReadOnlyCollection<T> execs, SocketGuild? guild, IUserMessage usrMsg)
+    private async ValueTask<string?> ExecInputTransformInternalAsync<T>(T[] execs, SocketGuild? guild, IUserMessage usrMsg)
         where T : IInputTransformer
     {
         foreach (var exec in execs)

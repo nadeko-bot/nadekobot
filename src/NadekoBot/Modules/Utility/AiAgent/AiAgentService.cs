@@ -167,7 +167,7 @@ public sealed class AiAgentService(
     /// Handles active conversation window, reply+intent, and name+intent triggers.
     /// Runs only when no command matched, so prefixed commands are never intercepted.
     /// </summary>
-    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+    public async ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
         if (!configService.Data.Enabled)
             return;

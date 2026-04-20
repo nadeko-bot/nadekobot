@@ -119,7 +119,7 @@ public class DiscordPermOverrideService : INService, IExecPreCommand, IDiscordPe
             .ToListAsync();
     }
 
-    public async Task<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
+    public async ValueTask<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
     {
         if (TryGetOverrides(context.Guild?.Id ?? 0, command.Name, out var perm) && perm is not null)
         {

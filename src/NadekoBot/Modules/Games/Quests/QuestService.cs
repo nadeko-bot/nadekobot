@@ -175,7 +175,7 @@ public sealed class QuestService(
     public int Priority
         => int.MinValue;
 
-    public async Task<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
+    public async ValueTask<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
     {
         var cmdName = command.Name.ToLowerInvariant();
 

@@ -7,10 +7,10 @@ public interface IBehaviorHandler
     Task<bool> RemoveAsync(ICustomBehavior behavior);
     Task RemoveRangeAsync(IEnumerable<ICustomBehavior> behs);
     
-    Task<bool> RunExecOnMessageAsync(SocketGuild? guild, IUserMessage usrMsg);
-    Task<string> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg);
-    Task<bool> RunPreCommandAsync(ICommandContext context, CommandInfo cmd);
+    ValueTask<bool> RunExecOnMessageAsync(SocketGuild? guild, IUserMessage usrMsg);
+    ValueTask<string> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg);
+    ValueTask<bool> RunPreCommandAsync(ICommandContext context, CommandInfo cmd);
     ValueTask RunPostCommandAsync(ICommandContext ctx, string moduleName, CommandInfo cmd);
-    Task RunOnNoCommandAsync(SocketGuild? guild, IUserMessage usrMsg);
+    ValueTask RunOnNoCommandAsync(SocketGuild? guild, IUserMessage usrMsg);
     void Initialize();
 }

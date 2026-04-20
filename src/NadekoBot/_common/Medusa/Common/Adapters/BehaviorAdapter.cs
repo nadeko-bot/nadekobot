@@ -25,42 +25,42 @@ public sealed class BehaviorAdapter : ICustomBehavior
             : "unknown";
     }
 
-    public async Task<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
+    public ValueTask<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
     {
         if (!_snekWr.TryGetTarget(out var snek))
-            return false;
+            return new(false);
 
-        return await snek.ExecPreCommandAsync(ContextAdapterFactory.CreateNew(context, _strings, _services),
+        return snek.ExecPreCommandAsync(ContextAdapterFactory.CreateNew(context, _strings, _services),
             moduleName,
             command.Name);
     }
 
-    public async Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
+    public ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
     {
         if (!_snekWr.TryGetTarget(out var snek))
-            return false;
+            return new(false);
 
-        return await snek.ExecOnMessageAsync(guild, msg);
+        return snek.ExecOnMessageAsync(guild, msg);
     }
 
-    public async Task<string?> TransformInput(
+    public ValueTask<string?> TransformInput(
         IGuild? guild,
         IMessageChannel channel,
         IUser user,
         string input)
     {
         if (!_snekWr.TryGetTarget(out var snek))
-            return null;
+            return new((string?)null);
 
-        return await snek.ExecInputTransformAsync(guild, channel, user, input);
+        return snek.ExecInputTransformAsync(guild, channel, user, input);
     }
 
-    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+    public ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
         if (!_snekWr.TryGetTarget(out var snek))
-            return;
+            return default;
 
-        await snek.ExecOnNoCommandAsync(guild, msg);
+        return snek.ExecOnNoCommandAsync(guild, msg);
     }
 
     public async ValueTask ExecPostCommandAsync(ICommandContext context, string moduleName, string commandName)

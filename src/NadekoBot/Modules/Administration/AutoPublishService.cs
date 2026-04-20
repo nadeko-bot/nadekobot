@@ -19,7 +19,7 @@ public class AutoPublishService : IExecNoCommand, IReadyExecutor, INService
         _creds = creds;
     }
 
-    public async Task ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
+    public async ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
         if (guild is null)
             return;

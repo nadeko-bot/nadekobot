@@ -24,19 +24,19 @@ public sealed class CmdCdService : IExecPreCommand, IReadyExecutor, INService
         _shardData = shardData;
     }
 
-    public Task<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
+    public ValueTask<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
         => TryBlock(context.Guild, context.User, command.Name.ToLowerInvariant());
 
-    public Task<bool> TryBlock(IGuild? guild, IUser user, string commandName)
+    public ValueTask<bool> TryBlock(IGuild? guild, IUser user, string commandName)
     {
         if (guild is null)
-            return Task.FromResult(false);
+            return new(false);
 
         if (!_settings.TryGetValue(guild.Id, out var cooldownSettings))
-            return Task.FromResult(false);
+            return new(false);
 
         if (!cooldownSettings.TryGetValue(commandName, out var cdSeconds))
-            return Task.FromResult(false);
+            return new(false);
 
         var cooldowns = _activeCooldowns.GetOrAdd(
             (guild.Id, commandName),
@@ -45,7 +45,7 @@ public sealed class CmdCdService : IExecPreCommand, IReadyExecutor, INService
         // if user is not already on cooldown, add 
         if (cooldowns.TryAdd(user.Id, DateTime.UtcNow))
         {
-            return Task.FromResult(false);
+            return new(false);
         }
 
         // if there is an entry, maybe it expired. Try to check if it expired and don't fail if it did
@@ -56,11 +56,11 @@ public sealed class CmdCdService : IExecPreCommand, IReadyExecutor, INService
             if (diff.TotalSeconds > cdSeconds)
             {
                 if (cooldowns.TryUpdate(user.Id, DateTime.UtcNow, oldValue))
-                    return Task.FromResult(false);
+                    return new(false);
             }
         }
 
-        return Task.FromResult(true);
+        return new(true);
     }
 
     public async Task OnReadyAsync()
@@ -69,7 +69,7 @@ public sealed class CmdCdService : IExecPreCommand, IReadyExecutor, INService
         {
             _settings = await uow.GetTable<CommandCooldown>()
                                  .Where(
-                                     x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+                                     Queries.GuildOnShard<CommandCooldown>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
                                  .ToListAsyncLinqToDB()
                                  .Pipe(cmdcds => cmdcds
                                                      .GroupBy(x => x.GuildId)
