@@ -1,4 +1,5 @@
 #nullable disable
+using System.Collections.Frozen;
 using NadekoBot.Db.Models;
 
 namespace NadekoBot.Modules.Administration;
@@ -22,12 +23,16 @@ public class AntiRaidStats
 
     public int DecrementUsers()
         => Interlocked.Decrement(ref _usersCount);
+
+    public void ResetUsers()
+        => Interlocked.Exchange(ref _usersCount, 0);
 }
 
 public class AntiSpamStats
 {
     public AntiSpamSetting AntiSpamSettings { get; set; }
     public ConcurrentDictionary<ulong, UserSpamStats> UserStats { get; set; } = new();
+    public FrozenSet<ulong> IgnoredChannelIds { get; set; } = FrozenSet<ulong>.Empty;
 }
 
 public class AntiAltStats

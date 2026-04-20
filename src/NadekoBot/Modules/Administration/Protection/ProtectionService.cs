@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using System.Collections.Frozen;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -138,24 +139,30 @@ public class ProtectionService : IReadyExecutor, INService
                     return;
 
                 var count = stats.IncrementUsers();
+                var didPunish = false;
 
                 if (count >= stats.AntiRaidSettings.UserThreshold)
                 {
                     var users = stats.RaidUsers.ToArray();
                     foreach (var u in users)
                         stats.RaidUsers.TryRemove(u);
+                    stats.ResetUsers();
                     var settings = stats.AntiRaidSettings;
 
                     await PunishUsers(settings.Action, ProtectionType.Raiding, settings.PunishDuration, null, users);
                     await _notifySub.NotifyAsync(
                         new ProtectionNotifyModel(user.Guild.Id, ProtectionType.Raiding, users[0].Id)
                     );
+                    didPunish = true;
                 }
 
                 await Task.Delay(1000 * stats.AntiRaidSettings.Seconds);
 
-                stats.RaidUsers.TryRemove(user);
-                stats.DecrementUsers();
+                if (!didPunish)
+                {
+                    stats.RaidUsers.TryRemove(user);
+                    stats.DecrementUsers();
+                }
             }
             catch
             {
@@ -173,14 +180,16 @@ public class ProtectionService : IReadyExecutor, INService
         if (msg.Channel is not ITextChannel channel)
             return Task.CompletedTask;
 
+        if (!_antiSpamGuilds.TryGetValue(channel.Guild.Id, out var spamSettings))
+            return Task.CompletedTask;
+
+        if (spamSettings.IgnoredChannelIds.Contains(channel.Id))
+            return Task.CompletedTask;
+
         _ = Task.Run(async () =>
         {
             try
             {
-                if (!_antiSpamGuilds.TryGetValue(channel.Guild.Id, out var spamSettings)
-                    || spamSettings.AntiSpamSettings.IgnoredChannels.Any(x => x.ChannelId == channel.Id))
-                    return;
-
                 var stats = spamSettings.UserStats.AddOrUpdate(msg.Author.Id,
                     _ => new(msg),
                     (_, old) =>
@@ -214,12 +223,28 @@ public class ProtectionService : IReadyExecutor, INService
         return Task.CompletedTask;
     }
 
-    private async Task PunishUsers(
+    private Task PunishUsers(
         PunishmentAction action,
         ProtectionType pt,
         int muteTime,
         ulong? roleId,
-        params IGuildUser[] gus)
+        IGuildUser gu)
+        => PunishUsersInternalAsync(action, pt, muteTime, roleId, [gu]);
+
+    private Task PunishUsers(
+        PunishmentAction action,
+        ProtectionType pt,
+        int muteTime,
+        ulong? roleId,
+        IGuildUser[] gus)
+        => PunishUsersInternalAsync(action, pt, muteTime, roleId, gus);
+
+    private async Task PunishUsersInternalAsync(
+        PunishmentAction action,
+        ProtectionType pt,
+        int muteTime,
+        ulong? roleId,
+        IGuildUser[] gus)
     {
         Log.Information("[{PunishType}] - Punishing [{Count}] users with [{PunishAction}] in {GuildName} guild",
             pt,
@@ -359,6 +384,7 @@ public class ProtectionService : IReadyExecutor, INService
             (_, old) =>
             {
                 stats.AntiSpamSettings.IgnoredChannels = old.AntiSpamSettings.IgnoredChannels;
+                stats.IgnoredChannelIds = old.IgnoredChannelIds;
                 return stats;
             });
 
@@ -408,7 +434,10 @@ public class ProtectionService : IReadyExecutor, INService
         if (spam.IgnoredChannels.All(x => x.ChannelId != channelId))
         {
             if (_antiSpamGuilds.TryGetValue(guildId, out var temp))
+            {
                 temp.AntiSpamSettings.IgnoredChannels.Add(obj);
+                temp.IgnoredChannelIds = BuildIgnoredChannelIds(temp.AntiSpamSettings.IgnoredChannels);
+            }
 
             spam.IgnoredChannels.Add(obj);
             added = true;
@@ -420,7 +449,10 @@ public class ProtectionService : IReadyExecutor, INService
             uow.Set<AntiSpamIgnore>().Remove(toRemove);
 
             if (_antiSpamGuilds.TryGetValue(guildId, out var temp))
+            {
                 temp.AntiSpamSettings.IgnoredChannels.RemoveAll(x => x.ChannelId == channelId);
+                temp.IgnoredChannelIds = BuildIgnoredChannelIds(temp.AntiSpamSettings.IgnoredChannels);
+            }
 
             added = false;
         }
@@ -519,7 +551,7 @@ public class ProtectionService : IReadyExecutor, INService
             _antiAltGuilds[config.GuildId] = new(config);
 
         var raidConfigs = await uow.GetTable<AntiRaidSetting>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(Queries.GuildOnShard<AntiRaidSetting>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .ToListAsyncLinqToDB();
 
         foreach (var config in raidConfigs)
@@ -541,10 +573,16 @@ public class ProtectionService : IReadyExecutor, INService
             _antiSpamGuilds[config.GuildId] = new()
             {
                 AntiSpamSettings = config,
-                UserStats = new()
+                UserStats = new(),
+                IgnoredChannelIds = BuildIgnoredChannelIds(config.IgnoredChannels)
             };
         }
 
         await RunQueue();
     }
+
+    private static FrozenSet<ulong> BuildIgnoredChannelIds(List<AntiSpamIgnore> list)
+        => list.Count == 0
+            ? FrozenSet<ulong>.Empty
+            : list.Select(static x => x.ChannelId).ToFrozenSet();
 }
