@@ -1,71 +1,48 @@
 using System.Security.Cryptography;
 using System.Text.Json;
-using Microsoft.ML.OnnxRuntime;
-using Microsoft.ML.OnnxRuntime.Tensors;
-using Microsoft.ML.Tokenizers;
 using NadekoBot.Common.ModuleBehaviors;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-/// <summary>
-/// Provides semantic search over bot commands using an ONNX embedding model (all-MiniLM-L6-v2),
-/// and intent classification using a trained classification head (196KB binary weights).
-/// Downloads the embedding model on first use and builds an in-memory vector index.
-/// </summary>
 public sealed class CommandSearchService(
-    IHttpClientFactory httpFactory,
+    EmbeddingService embedder,
     ShardData shardData,
     IPubSub pubSub) : INService, IReadyExecutor
 {
-    private const string MODEL_DIR = "data/ai/models/all-MiniLM-L6-v2";
-    private const string MODEL_FILE = "model.onnx";
-    private const string VOCAB_FILE = "vocab.txt";
     private const string COMMAND_LIST_PATH = "data/commandlist.json";
     private const string INTENT_HEAD_PATH = "data/ai/intent-head.bin";
-    private const string EMBEDDINGS_CACHE_PATH = "data/ai/command-embeddings.cache";
-    private const int EMBEDDING_DIM = 384;
+    private const string EMBEDDINGS_CACHE_PATH = "data/ai/embeddings/commands.cache";
+    private const string LEGACY_CACHE_PATH = "data/ai/command-embeddings.cache";
+    private const int EMBEDDING_DIM = EmbeddingService.EMBEDDING_DIM;
     private const int HIDDEN_DIM = 128;
     private const int NUM_CLASSES = 2;
-    private const int MAX_SEQ_LEN = 128;
     private const float BN_EPS = 1e-5f;
-
-    private static readonly string[] _modelUrls =
-    [
-        "https://huggingface.co/Xenova/all-MiniLM-L6-v2/resolve/main/onnx/model_quantized.onnx",
-    ];
-
-    private static readonly string _vocabUrl =
-        "https://huggingface.co/Xenova/all-MiniLM-L6-v2/resolve/main/vocab.txt";
 
     private static readonly TypedKey<bool> _reloadKey = new("cmdsearch.reload");
 
-    private float[][]? _embeddings;
-    private CommandEntry[]? _commands;
-    private InferenceSession? _session;
-    private BertTokenizer? _tokenizer;
-    private volatile bool _ready;
+    private readonly SemanticIndex<CommandEntry> _index = new(
+        embedder,
+        EMBEDDINGS_CACHE_PATH,
+        static e => e.SearchText);
+
+    // Classification head weights
+    private float[]? _w1;
+    private float[]? _b1;
+    private float[]? _bnGamma;
+    private float[]? _bnBeta;
+    private float[]? _bnMean;
+    private float[]? _bnVar;
+    private float[]? _w2;
+    private float[]? _b2;
+    private bool _headReady;
     private byte[]? _currentHash;
 
-    // Classification head weights (loaded from intent-head.bin)
-    private float[]? _w1;       // [HIDDEN_DIM * EMBEDDING_DIM] row-major
-    private float[]? _b1;       // [HIDDEN_DIM]
-    private float[]? _bnGamma;  // [HIDDEN_DIM]
-    private float[]? _bnBeta;   // [HIDDEN_DIM]
-    private float[]? _bnMean;   // [HIDDEN_DIM]
-    private float[]? _bnVar;    // [HIDDEN_DIM]
-    private float[]? _w2;       // [NUM_CLASSES * HIDDEN_DIM] row-major
-    private float[]? _b2;       // [NUM_CLASSES]
-    private bool _headReady;
-
-    /// <summary>
-    /// Whether the search index and intent classifier are ready for queries
-    /// </summary>
-    public bool IsReady => _ready;
+    public bool IsReady => _index.IsReady;
 
     public Task OnReadyAsync()
     {
-        _ = pubSub.Sub(_reloadKey, OnReloadRequestedAsync);
-        _ = Task.Run(InitializeAsync);
+        _ = pubSub.Sub(_reloadKey, OnReloadRequestedInternalAsync);
+        _ = Task.Run(InitializeInternalAsync);
 
         if (shardData.ShardId == 0)
             _ = Task.Run(WatchForChangesInternalAsync);
@@ -73,7 +50,7 @@ public sealed class CommandSearchService(
         return Task.CompletedTask;
     }
 
-    private async Task InitializeAsync()
+    private async Task InitializeInternalAsync()
     {
         try
         {
@@ -88,24 +65,14 @@ public sealed class CommandSearchService(
 
             if (!File.Exists(COMMAND_LIST_PATH))
             {
-                Log.Warning("CommandSearch: Command list not found at {Path}, waiting for watcher to pick it up", COMMAND_LIST_PATH);
+                Log.Warning("CommandSearch: Command list not found at {Path}", COMMAND_LIST_PATH);
                 return;
             }
 
-            await EnsureModelDownloadedAsync();
-
-            var result = await LoadAndEmbedInternalAsync();
-            if (result is null)
-                return;
-
-            var (commands, embeddings, hash) = result.Value;
-            _commands = commands;
-            _embeddings = embeddings;
-            _currentHash = hash;
-
-            LoadClassificationHead();
-
-            _ready = true;
+            MigrateLegacyCacheInternal();
+            await embedder.EnsureModelReadyAsync();
+            await LoadAndBuildIndexInternalAsync();
+            LoadClassificationHeadInternal();
 
             Log.Information("CommandSearch: Ready, head={HeadReady}", _headReady);
         }
@@ -141,24 +108,11 @@ public sealed class CommandSearchService(
                 return;
 
             Log.Information("CommandSearch: Detected commandlist.json change, reloading...");
-
-            await EnsureModelDownloadedAsync();
-
-            var result = await LoadAndEmbedInternalAsync();
-            if (result is null)
-                return;
-
-            var (commands, embeddings, hash) = result.Value;
-            _commands = commands;
-            _embeddings = embeddings;
-            _currentHash = hash;
+            await embedder.EnsureModelReadyAsync();
+            await LoadAndBuildIndexInternalAsync();
 
             if (!_headReady)
-                LoadClassificationHead();
-
-            _ready = true;
-
-            Log.Information("CommandSearch: Reloaded {Count} commands", commands.Length);
+                LoadClassificationHeadInternal();
 
             await pubSub.Pub(_reloadKey, true);
         }
@@ -168,7 +122,7 @@ public sealed class CommandSearchService(
         }
     }
 
-    private async ValueTask OnReloadRequestedAsync(bool _)
+    private async ValueTask OnReloadRequestedInternalAsync(bool _)
     {
         try
         {
@@ -182,24 +136,11 @@ public sealed class CommandSearchService(
                 return;
 
             Log.Information("CommandSearch: Reload notification received, reloading...");
-
-            await EnsureModelDownloadedAsync();
-
-            var result = await LoadAndEmbedInternalAsync();
-            if (result is null)
-                return;
-
-            var (commands, embeddings, hash) = result.Value;
-            _commands = commands;
-            _embeddings = embeddings;
-            _currentHash = hash;
+            await embedder.EnsureModelReadyAsync();
+            await LoadAndBuildIndexInternalAsync();
 
             if (!_headReady)
-                LoadClassificationHead();
-
-            _ready = true;
-
-            Log.Information("CommandSearch: Reloaded {Count} commands via notification", commands.Length);
+                LoadClassificationHeadInternal();
         }
         catch (Exception ex)
         {
@@ -207,183 +148,44 @@ public sealed class CommandSearchService(
         }
     }
 
-    private async Task<(CommandEntry[] Commands, float[][] Embeddings, byte[] Hash)?> LoadAndEmbedInternalAsync()
+    private async Task LoadAndBuildIndexInternalAsync()
     {
         var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
         var cmdListHash = SHA256.HashData(cmdListBytes);
 
-        var commands = LoadCommandList(cmdListBytes);
+        var commands = LoadCommandListInternal(cmdListBytes);
         if (commands.Length == 0)
         {
             Log.Warning("CommandSearch: No commands found in commandlist.json");
-            return null;
-        }
-
-        var modelPath = Path.Combine(MODEL_DIR, MODEL_FILE);
-        var vocabPath = Path.Combine(MODEL_DIR, VOCAB_FILE);
-
-        if (!File.Exists(modelPath) || !File.Exists(vocabPath))
-        {
-            Log.Warning("CommandSearch: Model files missing, semantic search disabled");
-            return null;
-        }
-
-        EnsureOnnxLoaded(modelPath, vocabPath);
-
-        var sw = System.Diagnostics.Stopwatch.StartNew();
-
-        if (TryLoadCachedEmbeddings(cmdListHash, commands.Length, out var cachedEmbeddings))
-        {
-            sw.Stop();
-            Log.Information("CommandSearch: Loaded {Count} cached embeddings in {Elapsed}ms",
-                commands.Length, sw.ElapsedMilliseconds);
-
-            return (commands, cachedEmbeddings, cmdListHash);
-        }
-
-        Log.Information("CommandSearch: Embedding {Count} commands...", commands.Length);
-        sw.Restart();
-        var embeddings = new float[commands.Length][];
-        for (var i = 0; i < commands.Length; i++)
-            embeddings[i] = Embed(commands[i].SearchText);
-
-        sw.Stop();
-
-        SaveCachedEmbeddings(cmdListHash, embeddings);
-
-        Log.Information("CommandSearch: Index ready - {Count} commands embedded in {Elapsed}ms",
-            commands.Length, sw.ElapsedMilliseconds);
-
-        return (commands, embeddings, cmdListHash);
-    }
-
-    private void EnsureOnnxLoaded(string modelPath, string vocabPath)
-    {
-        if (_session is not null)
-            return;
-
-        var sessionOptions = new SessionOptions();
-        sessionOptions.InterOpNumThreads = 1;
-        sessionOptions.IntraOpNumThreads = Math.Max(1, Environment.ProcessorCount / 2);
-        _session = new InferenceSession(modelPath, sessionOptions);
-        _tokenizer = BertTokenizer.Create(vocabPath);
-    }
-
-    private static bool TryLoadCachedEmbeddings(byte[] expectedHash, int commandCount, out float[][] embeddings)
-    {
-        embeddings = [];
-
-        if (!File.Exists(EMBEDDINGS_CACHE_PATH))
-            return false;
-
-        try
-        {
-            using var fs = File.OpenRead(EMBEDDINGS_CACHE_PATH);
-            using var reader = new BinaryReader(fs);
-
-            var storedHash = reader.ReadBytes(32);
-            if (!storedHash.AsSpan().SequenceEqual(expectedHash))
-                return false;
-
-            var count = reader.ReadInt32();
-            if (count != commandCount)
-                return false;
-
-            var result = new float[count][];
-            for (var i = 0; i < count; i++)
-            {
-                var vec = new float[EMBEDDING_DIM];
-                for (var j = 0; j < EMBEDDING_DIM; j++)
-                    vec[j] = reader.ReadSingle();
-                result[i] = vec;
-            }
-
-            embeddings = result;
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "CommandSearch: Failed to load embedding cache, will re-embed");
-            return false;
-        }
-    }
-
-    private static void SaveCachedEmbeddings(byte[] hash, float[][] embeddings)
-    {
-        try
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(EMBEDDINGS_CACHE_PATH)!);
-
-            using var fs = File.Create(EMBEDDINGS_CACHE_PATH);
-            using var writer = new BinaryWriter(fs);
-
-            writer.Write(hash);
-            writer.Write(embeddings.Length);
-
-            for (var i = 0; i < embeddings.Length; i++)
-                for (var j = 0; j < EMBEDDING_DIM; j++)
-                    writer.Write(embeddings[i][j]);
-
-            Log.Information("CommandSearch: Saved embedding cache ({Size}KB)", fs.Length / 1024);
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "CommandSearch: Failed to save embedding cache");
-        }
-    }
-
-    /// <summary>
-    /// Loads the trained classification head weights from a binary file.
-    /// Format: W1[128*384] b1[128] bnGamma[128] bnBeta[128] bnMean[128] bnVar[128] W2[2*128] b2[2]
-    /// </summary>
-    private void LoadClassificationHead()
-    {
-        if (!File.Exists(INTENT_HEAD_PATH))
-        {
-            Log.Warning("CommandSearch: Intent head not found at {Path}, intent classification disabled", INTENT_HEAD_PATH);
             return;
         }
 
-        try
-        {
-            using var fs = File.OpenRead(INTENT_HEAD_PATH);
-            using var reader = new BinaryReader(fs);
+        await _index.BuildAsync(commands, cmdListHash);
+        _currentHash = cmdListHash;
 
-            _w1 = ReadFloats(reader, HIDDEN_DIM * EMBEDDING_DIM);
-            _b1 = ReadFloats(reader, HIDDEN_DIM);
-            _bnGamma = ReadFloats(reader, HIDDEN_DIM);
-            _bnBeta = ReadFloats(reader, HIDDEN_DIM);
-            _bnMean = ReadFloats(reader, HIDDEN_DIM);
-            _bnVar = ReadFloats(reader, HIDDEN_DIM);
-            _w2 = ReadFloats(reader, NUM_CLASSES * HIDDEN_DIM);
-            _b2 = ReadFloats(reader, NUM_CLASSES);
-
-            _headReady = true;
-            var sizeKb = fs.Length / 1024;
-            Log.Information("CommandSearch: Loaded intent classification head ({Size}KB)", sizeKb);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "CommandSearch: Failed to load intent classification head");
-        }
+        Log.Information("CommandSearch: Indexed {Count} commands", commands.Length);
     }
 
-    private static float[] ReadFloats(BinaryReader reader, int count)
+    public CommandSearchResult[] Search(string query, int topK = 5)
     {
-        var arr = new float[count];
-        for (var i = 0; i < count; i++)
-            arr[i] = reader.ReadSingle();
-        return arr;
+        var results = _index.Search(query, topK);
+        var output = new CommandSearchResult[results.Length];
+        for (var i = 0; i < results.Length; i++)
+            output[i] = new(results[i].Entry, results[i].Score);
+        return output;
     }
 
-    /// <summary>
-    /// Runs the classification head forward pass on an embedding vector.
-    /// Architecture: Linear(384,128) -> BatchNorm -> ReLU -> Linear(128,2)
-    /// Returns true if the input is classified as a command/trigger (class 1).
-    /// </summary>
-    private bool ClassifyIntent(float[] embedding)
+    public bool IsCommandIntent(string normalizedText)
     {
-        // Layer 1: Linear(384, 128)
+        if (!_index.IsReady || !_headReady)
+            return false;
+
+        var emb = embedder.Embed(normalizedText);
+        return ClassifyIntentInternal(emb);
+    }
+
+    private bool ClassifyIntentInternal(float[] embedding)
+    {
         var hidden = new float[HIDDEN_DIM];
         for (var j = 0; j < HIDDEN_DIM; j++)
         {
@@ -394,15 +196,12 @@ public sealed class CommandSearchService(
             hidden[j] = sum;
         }
 
-        // BatchNorm: (x - mean) / sqrt(var + eps) * gamma + beta
         for (var j = 0; j < HIDDEN_DIM; j++)
             hidden[j] = (hidden[j] - _bnMean![j]) / MathF.Sqrt(_bnVar![j] + BN_EPS) * _bnGamma![j] + _bnBeta![j];
 
-        // ReLU
         for (var j = 0; j < HIDDEN_DIM; j++)
             hidden[j] = MathF.Max(0, hidden[j]);
 
-        // Layer 2: Linear(128, 2)
         var output = new float[NUM_CLASSES];
         for (var j = 0; j < NUM_CLASSES; j++)
         {
@@ -413,137 +212,66 @@ public sealed class CommandSearchService(
             output[j] = sum;
         }
 
-        // Class 1 = command/trigger, Class 0 = not
         return output[1] > output[0];
     }
 
-    /// <summary>
-    /// Search commands by semantic similarity to the query
-    /// </summary>
-    public CommandSearchResult[] Search(string query, int topK = 5)
+    private void LoadClassificationHeadInternal()
     {
-        if (!_ready || _embeddings is null || _commands is null)
-            return [];
-
-        var queryEmb = Embed(query);
-        var scores = new (float Score, int Index)[_commands.Length];
-
-        for (var i = 0; i < _commands.Length; i++)
-            scores[i] = (CosineSimilarity(queryEmb, _embeddings[i]), i);
-
-        Array.Sort(scores, (a, b) => b.Score.CompareTo(a.Score));
-
-        var results = new CommandSearchResult[Math.Min(topK, scores.Length)];
-        for (var i = 0; i < results.Length; i++)
+        if (!File.Exists(INTENT_HEAD_PATH))
         {
-            var (score, idx) = scores[i];
-            var cmd = _commands[idx];
-            results[i] = new(cmd, score);
+            Log.Warning("CommandSearch: Intent head not found at {Path}", INTENT_HEAD_PATH);
+            return;
         }
 
-        return results;
+        try
+        {
+            using var fs = File.OpenRead(INTENT_HEAD_PATH);
+            using var reader = new BinaryReader(fs);
+
+            _w1 = ReadFloatsInternal(reader, HIDDEN_DIM * EMBEDDING_DIM);
+            _b1 = ReadFloatsInternal(reader, HIDDEN_DIM);
+            _bnGamma = ReadFloatsInternal(reader, HIDDEN_DIM);
+            _bnBeta = ReadFloatsInternal(reader, HIDDEN_DIM);
+            _bnMean = ReadFloatsInternal(reader, HIDDEN_DIM);
+            _bnVar = ReadFloatsInternal(reader, HIDDEN_DIM);
+            _w2 = ReadFloatsInternal(reader, NUM_CLASSES * HIDDEN_DIM);
+            _b2 = ReadFloatsInternal(reader, NUM_CLASSES);
+
+            _headReady = true;
+            Log.Information("CommandSearch: Loaded intent classification head ({Size}KB)", fs.Length / 1024);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "CommandSearch: Failed to load intent classification head");
+        }
     }
 
-    /// <summary>
-    /// Classify whether a message containing the bot's name is a command (addressing the bot)
-    /// or casual (talking about the bot). Returns true if it's likely a command.
-    /// </summary>
-    public bool IsCommandIntent(string normalizedText)
+    private static float[] ReadFloatsInternal(BinaryReader reader, int count)
     {
-        if (!_ready || !_headReady)
-            return false;
-
-        var emb = Embed(normalizedText);
-        var result = ClassifyIntent(emb);
-
-        return result;
+        var arr = new float[count];
+        for (var i = 0; i < count; i++)
+            arr[i] = reader.ReadSingle();
+        return arr;
     }
 
-    /// <summary>
-    /// Embed a text string into a 384-dim float vector using mean pooling
-    /// </summary>
-    internal float[] Embed(string text)
+    private static void MigrateLegacyCacheInternal()
     {
-        var ids = _tokenizer!.EncodeToIds(text, MAX_SEQ_LEN, out _, out _);
-        var inputIds = new int[ids.Count];
-        var attentionMask = new int[ids.Count];
-        var tokenTypeIds = new int[ids.Count];
-
-        for (var i = 0; i < ids.Count; i++)
+        if (File.Exists(LEGACY_CACHE_PATH) && !File.Exists(EMBEDDINGS_CACHE_PATH))
         {
-            inputIds[i] = ids[i];
-            attentionMask[i] = 1;
-            tokenTypeIds[i] = 0;
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(EMBEDDINGS_CACHE_PATH)!);
+                File.Move(LEGACY_CACHE_PATH, EMBEDDINGS_CACHE_PATH);
+                Log.Information("CommandSearch: Migrated cache from {Old} to {New}", LEGACY_CACHE_PATH, EMBEDDINGS_CACHE_PATH);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "CommandSearch: Failed to migrate legacy cache");
+            }
         }
-
-        var shape = new[] { 1, ids.Count };
-
-        var longInputIds = new long[ids.Count];
-        var longAttentionMask = new long[ids.Count];
-        var longTokenTypeIds = new long[ids.Count];
-
-        for (var i = 0; i < ids.Count; i++)
-        {
-            longInputIds[i] = inputIds[i];
-            longAttentionMask[i] = attentionMask[i];
-            longTokenTypeIds[i] = tokenTypeIds[i];
-        }
-
-        var inputs = new List<NamedOnnxValue>
-        {
-            NamedOnnxValue.CreateFromTensor("input_ids",
-                new DenseTensor<long>(longInputIds, shape)),
-            NamedOnnxValue.CreateFromTensor("attention_mask",
-                new DenseTensor<long>(longAttentionMask, shape)),
-            NamedOnnxValue.CreateFromTensor("token_type_ids",
-                new DenseTensor<long>(longTokenTypeIds, shape)),
-        };
-
-        using var results = _session!.Run(inputs);
-        var output = results.First().AsTensor<float>();
-
-        var embedding = new float[EMBEDDING_DIM];
-        var tokenCount = 0;
-        for (var i = 0; i < ids.Count; i++)
-        {
-            if (attentionMask[i] == 0)
-                continue;
-
-            for (var j = 0; j < EMBEDDING_DIM; j++)
-                embedding[j] += output[0, i, j];
-            tokenCount++;
-        }
-
-        if (tokenCount > 0)
-        {
-            for (var j = 0; j < EMBEDDING_DIM; j++)
-                embedding[j] /= tokenCount;
-        }
-
-        // L2 normalize
-        var norm = 0f;
-        for (var j = 0; j < EMBEDDING_DIM; j++)
-            norm += embedding[j] * embedding[j];
-        norm = MathF.Sqrt(norm);
-
-        if (norm > 0)
-        {
-            for (var j = 0; j < EMBEDDING_DIM; j++)
-                embedding[j] /= norm;
-        }
-
-        return embedding;
     }
 
-    private static float CosineSimilarity(float[] a, float[] b)
-    {
-        var dot = 0f;
-        for (var i = 0; i < a.Length; i++)
-            dot += a[i] * b[i];
-        return dot;
-    }
-
-    private static CommandEntry[] LoadCommandList(byte[] jsonBytes)
+    private static CommandEntry[] LoadCommandListInternal(byte[] jsonBytes)
     {
         using var doc = JsonDocument.Parse(jsonBytes);
 
@@ -553,7 +281,7 @@ public sealed class CommandSearchService(
             foreach (var cmd in module.Value.EnumerateArray())
             {
                 var aliases = cmd.TryGetProperty("Aliases", out var aliasEl)
-                    ? aliasEl.EnumerateArray().Select(a => a.GetString() ?? "").ToArray()
+                    ? aliasEl.EnumerateArray().Select(static a => a.GetString() ?? "").ToArray()
                     : [];
 
                 var desc = cmd.TryGetProperty("Description", out var descEl)
@@ -561,7 +289,7 @@ public sealed class CommandSearchService(
                     : "";
 
                 var usage = cmd.TryGetProperty("Usage", out var usageEl)
-                    ? usageEl.EnumerateArray().Select(u => u.GetString() ?? "").ToArray()
+                    ? usageEl.EnumerateArray().Select(static u => u.GetString() ?? "").ToArray()
                     : [];
 
                 var submodule = cmd.TryGetProperty("Submodule", out var subEl)
@@ -571,7 +299,7 @@ public sealed class CommandSearchService(
                 var moduleName = module.Name;
 
                 var requirements = cmd.TryGetProperty("Requirements", out var reqEl)
-                    ? reqEl.EnumerateArray().Select(r => r.GetString() ?? "").ToArray()
+                    ? reqEl.EnumerateArray().Select(static r => r.GetString() ?? "").ToArray()
                     : [];
 
                 if (aliases.Length == 0)
@@ -592,39 +320,8 @@ public sealed class CommandSearchService(
 
         return entries.ToArray();
     }
-
-    private async Task EnsureModelDownloadedAsync()
-    {
-        Directory.CreateDirectory(MODEL_DIR);
-
-        var modelPath = Path.Combine(MODEL_DIR, MODEL_FILE);
-        var vocabPath = Path.Combine(MODEL_DIR, VOCAB_FILE);
-
-        using var http = httpFactory.CreateClient();
-        http.Timeout = TimeSpan.FromMinutes(5);
-
-        if (!File.Exists(modelPath))
-        {
-            var url = _modelUrls[0];
-            Log.Information("Downloading embedding model from {Url}...", url);
-            var bytes = await http.GetByteArrayAsync(url);
-            await File.WriteAllBytesAsync(modelPath, bytes);
-            Log.Information("Embedding model downloaded ({Size}MB)", bytes.Length / 1024 / 1024);
-        }
-
-        if (!File.Exists(vocabPath))
-        {
-            Log.Information("Downloading vocab file...");
-            var bytes = await http.GetByteArrayAsync(_vocabUrl);
-            await File.WriteAllBytesAsync(vocabPath, bytes);
-            Log.Information("Vocab file downloaded");
-        }
-    }
 }
 
-/// <summary>
-/// A command entry in the search index
-/// </summary>
 public sealed record CommandEntry(
     string[] Aliases,
     string Description,
@@ -634,7 +331,4 @@ public sealed record CommandEntry(
     string[] Requirements,
     string SearchText);
 
-/// <summary>
-/// A search result with similarity score
-/// </summary>
 public sealed record CommandSearchResult(CommandEntry Command, float Score);

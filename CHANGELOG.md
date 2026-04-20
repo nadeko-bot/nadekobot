@@ -4,6 +4,10 @@
 
 ## [7.1.27] - TBD
 
+### Added
+
+- AI agent data layer: data tools (`search_data_tools`, `describe_data_tool`, `invoke_data_tool`) provide structured read access to bot data without running commands and parsing embeds. Covers members, channels, XP, currency, waifus, warnings, reminders, music, server config, moderation, permissions, quests, and self-assignable roles
+
 ### Changed
 
 - `.wlb` leaderboard now uses embed fields with rank numbers ("#X Username")
@@ -16,6 +20,11 @@
 ### Dev
 
 - busy_timeout added
+- AI agent data layer architecture: `[AiTool]` attribute + Roslyn source generator emits `IAiTool` implementations from adapter classes. Services stay pristine (no attributes)
+- Extracted `EmbeddingService` and `SemanticIndex<T>` from `CommandSearchService` for shared semantic search infrastructure
+- `DataToolSearchService` indexes generated data tools for semantic discovery via `search_data_tools`
+- `AiToolRegistry` now distinguishes core tools (always loaded in LLM context) from data tools (discovered on demand)
+- 12 data-tool adapters shipped: `Xp`, `Members`, `Channels`, `Currency`, `Waifu`, `Warnings`, `Reminders`, `Music`, `ServerConfig`, `Moderation`, `Permissions`, `Quests`, `SelfAssignRoles`. Legacy hand-written `GetUserInfoTool` and `ListChannelsTool` removed in favor of adapter-generated equivalents
 
 ## [7.1.26] - 17.04.2026
 

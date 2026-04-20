@@ -24,6 +24,18 @@ public interface IAiTool
     JsonElement ParameterSchema { get; }
 
     /// <summary>
+    /// Whether this is a data tool discovered via search_data_tools (true) or a core tool always loaded (false)
+    /// </summary>
+    bool IsDataTool => false;
+
+    /// <summary>
+    /// Optional system prompt guidance for the LLM on when and how to use this tool.
+    /// Collected by SystemPromptBuilder and emitted in the TOOL USAGE slot.
+    /// Tool guidance lives with the tool so it can never drift from the tool's actual behavior.
+    /// </summary>
+    string? SystemGuidance => null;
+
+    /// <summary>
     /// Execute the tool and return a result string that will be fed back to the LLM
     /// </summary>
     Task<string> ExecuteAsync(AiToolContext context, JsonElement arguments);

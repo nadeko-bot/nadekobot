@@ -1,0 +1,71 @@
+using System.Security.Cryptography;
+using System.Text;
+using NadekoBot.Common.ModuleBehaviors;
+
+namespace NadekoBot.Modules.Utility.AiAgent;
+
+public sealed record DataToolEntry(string Name, string GroupName, string Description, string SearchText);
+
+public sealed class DataToolSearchService(
+    EmbeddingService embedder,
+    IAiToolRegistry toolRegistry) : INService, IReadyExecutor
+{
+    private const string CACHE_PATH = "data/ai/embeddings/datatools.cache";
+
+    private readonly SemanticIndex<DataToolEntry> _index = new(
+        embedder,
+        CACHE_PATH,
+        static e => e.SearchText);
+
+    public bool IsReady => _index.IsReady;
+
+    public Task OnReadyAsync()
+    {
+        _ = Task.Run(BuildIndexInternalAsync);
+        return Task.CompletedTask;
+    }
+
+    private async Task BuildIndexInternalAsync()
+    {
+        try
+        {
+            await embedder.EnsureModelReadyAsync();
+
+            var dataTools = toolRegistry.GetDataTools();
+            if (dataTools.Count == 0)
+            {
+                Log.Information("DataToolSearch: No data tools registered, skipping index");
+                return;
+            }
+
+            var entries = new DataToolEntry[dataTools.Count];
+            var i = 0;
+            foreach (var (name, tool) in dataTools)
+            {
+                var groupName = "";
+                entries[i++] = new DataToolEntry(
+                    name,
+                    groupName,
+                    tool.Description,
+                    $"{name} | {tool.Description}");
+            }
+
+            var hashInput = new StringBuilder();
+            foreach (var entry in entries.OrderBy(static e => e.Name, StringComparer.Ordinal))
+                hashInput.Append(entry.Name).Append('|').Append(entry.Description).Append('\n');
+
+            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(hashInput.ToString()));
+
+            await _index.BuildAsync(entries, hash);
+
+            Log.Information("DataToolSearch: Indexed {Count} data tools", entries.Length);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "DataToolSearch: Failed to build index");
+        }
+    }
+
+    public (DataToolEntry Entry, float Score)[] Search(string query, int topK = 5)
+        => _index.Search(query, topK);
+}
