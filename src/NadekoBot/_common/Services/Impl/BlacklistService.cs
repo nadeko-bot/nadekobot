@@ -59,14 +59,14 @@ public sealed class BlacklistService : IExecOnMessage, IReadyExecutor, INService
         return default;
     }
 
-    public Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage usrMsg)
+    public ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage usrMsg)
     {
         if (guild is not null && blacklistedGuilds.Contains(guild.Id))
         {
             Log.Information("Blocked input from blacklisted guild: {GuildName} [{GuildId}]",
                 guild.Name,
                 guild.Id.ToString());
-            return Task.FromResult(true);
+            return new(true);
         }
 
         if (blacklistedChannels.Contains(usrMsg.Channel.Id))
@@ -74,18 +74,18 @@ public sealed class BlacklistService : IExecOnMessage, IReadyExecutor, INService
             Log.Information("Blocked input from blacklisted channel: {ChannelName} [{ChannelId}]",
                 usrMsg.Channel.Name,
                 usrMsg.Channel.Id.ToString());
+            return new(true);
         }
-
 
         if (blacklistedUsers.Contains(usrMsg.Author.Id))
         {
             Log.Information("Blocked input from blacklisted user: {UserName} [{UserId}]",
                 usrMsg.Author.ToString(),
                 usrMsg.Author.Id.ToString());
-            return Task.FromResult(true);
+            return new(true);
         }
 
-        return Task.FromResult(false);
+        return new(false);
     }
 
     public async Task<IReadOnlyList<BlacklistEntry>> GetBlacklist(BlacklistType type)

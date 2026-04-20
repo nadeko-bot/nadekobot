@@ -10,6 +10,7 @@
 
 ### Fixed
 
+- Channel blacklist (`.blc`) now actually blocks messages from blacklisted channels
 - Bot no longer crashes when a background errors out
 
 ### Dev
