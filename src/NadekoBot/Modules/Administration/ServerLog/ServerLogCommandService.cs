@@ -14,7 +14,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 #endif
 {
     private ConcurrentDictionary<ulong, FrozenDictionary<LogType, ulong>> _logChannels = new();
-    private ConcurrentDictionary<ulong, IReadOnlyList<LogIgnore>> _logIgnores = new();
+    private ConcurrentDictionary<ulong, GuildIgnores> _logIgnores = new();
 
     private ConcurrentDictionary<ITextChannel, System.Collections.Concurrent.ConcurrentQueue<string>> PresenceUpdates { get; } = new();
     private readonly DiscordSocketClient _client;
@@ -26,6 +26,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     private readonly GuildTimezoneService _tz;
     private readonly IMemoryCache _memoryCache;
 
+    private readonly ConcurrentDictionary<(ulong GuildId, LogType Type), byte> _unsetInFlight = new();
     private readonly ConcurrentHashSet<ulong> _ignoreMessageIds = [];
     private readonly ConcurrentHashSet<(ulong GuildId, ulong UserId)> _ignoreBanIds = [];
     private readonly ConcurrentHashSet<(ulong GuildId, ulong UserId)> _ignoreUnbanIds = [];
@@ -76,7 +77,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 .GroupBy(x => x.GuildId)
                 .ToDictionary(
                     g => g.Key,
-                    g => (IReadOnlyList<LogIgnore>)g.ToList())
+                    g => new GuildIgnores(g.ToList()))
                 .ToConcurrent();
         }
 
@@ -112,34 +113,17 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     }
 
     private bool IsUserIgnored(ulong guildId, ulong userId)
-    {
-        if (!_logIgnores.TryGetValue(guildId, out var ignores))
-            return false;
-
-        for (var i = 0; i < ignores.Count; i++)
-        {
-            if (ignores[i].LogItemId == userId && ignores[i].ItemType == IgnoredItemType.User)
-                return true;
-        }
-
-        return false;
-    }
+        => _logIgnores.TryGetValue(guildId, out var g) && g.Users.Contains(userId);
 
     private bool IsChannelIgnored(ulong guildId, ulong channelId, ulong? categoryId)
     {
-        if (!_logIgnores.TryGetValue(guildId, out var ignores))
+        if (!_logIgnores.TryGetValue(guildId, out var g))
             return false;
 
-        for (var i = 0; i < ignores.Count; i++)
-        {
-            var ilc = ignores[i];
-            if (ilc.LogItemId == channelId && ilc.ItemType == IgnoredItemType.Channel)
-                return true;
-            if (categoryId is not null && ilc.LogItemId == categoryId.Value && ilc.ItemType == IgnoredItemType.Category)
-                return true;
-        }
+        if (g.Channels.Contains(channelId))
+            return true;
 
-        return false;
+        return categoryId is { } cat && g.Categories.Contains(cat);
     }
 
     private async Task<ITextChannel?> TryGetLogChannel(IGuild guild, LogType logType)
@@ -151,7 +135,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
         if (channel is null)
         {
-            await UnsetLogChannelInternalAsync(guild.Id, logType);
+            if (_unsetInFlight.TryAdd((guild.Id, logType), 0))
+            {
+                try { await UnsetLogChannelInternalAsync(guild.Id, logType); }
+                finally { _unsetInFlight.TryRemove((guild.Id, logType), out _); }
+            }
+
             return null;
         }
 
@@ -189,7 +178,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         if (ignores.Count == 0)
             _logIgnores.TryRemove(guildId, out _);
         else
-            _logIgnores[guildId] = ignores;
+            _logIgnores[guildId] = new GuildIgnores(ignores);
     }
 
     #endregion
@@ -264,6 +253,11 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         if (IsUserIgnored(after.Guild.Id, after.Id))
             return Task.CompletedTask;
 
+        var wantNick = TryGetLogChannelId(after.Guild.Id, LogType.NicknameUpdated, out _);
+        var wantRoles = TryGetLogChannelId(after.Guild.Id, LogType.RolesUpdated, out _);
+        if (!wantNick && !wantRoles)
+            return Task.CompletedTask;
+
         _ = OnGuildUserUpdatedAsync(optBefore, after);
         return Task.CompletedTask;
     }
@@ -307,6 +301,18 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     private Task HandleUserVoiceStateUpdated(SocketUser iusr, SocketVoiceState before, SocketVoiceState after)
     {
         if (iusr is not IGuildUser usr || usr.IsBot)
+            return Task.CompletedTask;
+
+        var serverStateChanged = before.IsMuted != after.IsMuted || before.IsDeafened != after.IsDeafened;
+        var channelChanged = before.VoiceChannel != after.VoiceChannel;
+
+        if (!serverStateChanged && !channelChanged)
+            return Task.CompletedTask;
+
+        var wantMuted = serverStateChanged && TryGetLogChannelId(usr.Guild.Id, LogType.UserMuted, out _);
+        var wantVoice = channelChanged && TryGetLogChannelId(usr.Guild.Id, LogType.VoicePresence, out _);
+
+        if (!wantMuted && !wantVoice)
             return Task.CompletedTask;
 
         _ = OnUserVoiceStateUpdatedAsync(usr, iusr, before, after);
@@ -1247,10 +1253,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     #region Public API
 
     public IReadOnlyList<LogIgnore> GetLogIgnores(ulong guildId)
-    {
-        _logIgnores.TryGetValue(guildId, out var ignores);
-        return ignores ?? [];
-    }
+        => _logIgnores.TryGetValue(guildId, out var g) ? g.All : [];
 
     public ulong? GetLogChannelId(ulong guildId, LogType logType)
         => TryGetLogChannelId(guildId, logType, out var id) ? id : null;
