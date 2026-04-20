@@ -13,7 +13,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
     public ConcurrentHashSet<ulong> InviteFilteringServers { get; } = [];
 
     //serverid, filteredwords
-    public ConcurrentDictionary<ulong, ConcurrentHashSet<string>> ServerFilteredWords { get; } = new();
+    private readonly ConcurrentDictionary<ulong, FilteredWordSet> _serverFilteredWords = new();
 
     public ConcurrentHashSet<ulong> WordFilteringChannels { get; } = [];
     public ConcurrentHashSet<ulong> WordFilteringServers { get; } = [];
@@ -34,14 +34,14 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
 
         client.MessageUpdated += (oldData, newMsg, channel) =>
         {
-            _ = Task.Run(() =>
+            _ = Task.Run(async () =>
             {
                 var guild = (channel as ITextChannel)?.Guild;
 
                 if (guild is null || newMsg is not IUserMessage usrMsg)
-                    return Task.CompletedTask;
+                    return;
 
-                return ExecOnMessageAsync(guild, usrMsg);
+                await ExecOnMessageAsync(guild, usrMsg);
             });
             return Task.CompletedTask;
         };
@@ -52,7 +52,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         await using var uow = _db.GetDbContext();
 
         var confs = await uow.GetTable<GuildFilterConfig>()
-            .Where(x => Queries.GuildOnShard(x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Where(Queries.GuildOnShard<GuildFilterConfig>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
             .LoadWith(x => x.FilterInvitesChannelIds)
             .LoadWith(x => x.FilterWordsChannelIds)
             .LoadWith(x => x.FilterLinksChannelIds)
@@ -79,17 +79,19 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             if (conf.FilterLinks)
                 LinkFilteringServers.Add(conf.GuildId);
 
-            foreach (var word in conf.FilteredWords)
-                ServerFilteredWords.GetOrAdd(conf.GuildId,
-                    static _ => new ConcurrentHashSet<string>([], StringComparer.InvariantCultureIgnoreCase)).Add(word.Word);
+            if (conf.FilteredWords.Count > 0)
+            {
+                var fws = _serverFilteredWords.GetOrAdd(conf.GuildId, static _ => new());
+                fws.Bulk(conf.FilteredWords.Select(static x => x.Word));
+            }
         }
     }
 
-    public ConcurrentHashSet<string> FilteredWordsForChannel(ulong channelId, ulong guildId)
+    public HashSet<string> FilteredWordsForChannel(ulong channelId, ulong guildId)
     {
         if (WordFilteringChannels.Contains(channelId)
-            && ServerFilteredWords.TryGetValue(guildId, out var words))
-            return words;
+            && _serverFilteredWords.TryGetValue(guildId, out var fws))
+            return fws.Snapshot;
 
         return null;
     }
@@ -102,7 +104,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
                 .Include(x => x.FilterWordsChannelIds));
 
         WordFilteringServers.TryRemove(guildId);
-        ServerFilteredWords.TryRemove(guildId, out _);
+        _serverFilteredWords.TryRemove(guildId, out _);
 
         foreach (var c in fc.FilterWordsChannelIds)
             WordFilteringChannels.TryRemove(c.ChannelId);
@@ -114,17 +116,17 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         await uow.SaveChangesAsync();
     }
 
-    public ConcurrentHashSet<string> FilteredWordsForServer(ulong guildId)
+    public HashSet<string> FilteredWordsForServer(ulong guildId)
     {
         if (WordFilteringServers.Contains(guildId)
-            && ServerFilteredWords.TryGetValue(guildId, out var words))
-            return words;
+            && _serverFilteredWords.TryGetValue(guildId, out var fws))
+            return fws.Snapshot;
 
         return null;
     }
 
 #nullable enable
-    public async Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
+    public async ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
 #nullable disable
     {
         if (msg.Author is not IGuildUser gu || gu.GuildPermissions.Administrator)
@@ -174,18 +176,19 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
 
         bool ContainsFilteredWord(
             string content,
-            ConcurrentHashSet<string> channelWords,
-            ConcurrentHashSet<string> serverWords)
+            HashSet<string> channelWords,
+            HashSet<string> serverWords)
         {
-            var words = content.Split(' ');
-            for (var i = 0; i < words.Length; i++)
+            var span = content.AsSpan();
+            foreach (var range in span.Split(' '))
             {
-                var word = words[i];
-                if (word.Length == 0)
+                var word = span[range];
+                if (word.IsEmpty)
                     continue;
 
-                if ((channelWords is not null && channelWords.Contains(word))
-                    || (serverWords is not null && serverWords.Contains(word)))
+                var wordStr = content[range];
+                if ((channelWords is not null && channelWords.Contains(wordStr))
+                    || (serverWords is not null && serverWords.Contains(wordStr)))
                 {
                     Log.Information("User {UserName} [{UserId}] used a filtered word in {ChannelId} channel",
                         usrMsg.Author.ToString(),
@@ -211,8 +214,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             return false;
 
         if ((InviteFilteringChannels.Contains(usrMsg.Channel.Id) || InviteFilteringServers.Contains(guild.Id))
-            && (usrMsg.Content.IsDiscordInvite() ||
-                usrMsg.ForwardedMessages.Any(x => x.Message?.Content.IsDiscordInvite() ?? false)))
+            && (usrMsg.Content.IsDiscordInvite() || ForwardedHasInvite(usrMsg.ForwardedMessages)))
         {
             Log.Information("User {UserName} [{UserId}] sent a filtered invite to {ChannelId} channel",
                 usrMsg.Author.ToString(),
@@ -236,8 +238,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             return false;
 
         if ((LinkFilteringChannels.Contains(usrMsg.Channel.Id) || LinkFilteringServers.Contains(guild.Id))
-            && (usrMsg.Content.TryGetUrlPath(out _) ||
-                usrMsg.ForwardedMessages.Any(x => x.Message?.Content.TryGetUrlPath(out _) ?? false)))
+            && (usrMsg.Content.TryGetUrlPath(out _) || ForwardedHasLink(usrMsg.ForwardedMessages)))
         {
             Log.Information("User {UserName} [{UserId}] sent a filtered link to {ChannelId} channel",
                 usrMsg.Author.ToString(),
@@ -247,6 +248,22 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             return true;
         }
 
+        return false;
+    }
+
+    private static bool ForwardedHasInvite(IReadOnlyCollection<MessageSnapshot> forwards)
+    {
+        foreach (var f in forwards)
+            if (f.Message?.Content.IsDiscordInvite() == true)
+                return true;
+        return false;
+    }
+
+    private static bool ForwardedHasLink(IReadOnlyCollection<MessageSnapshot> forwards)
+    {
+        foreach (var f in forwards)
+            if (f.Message?.Content.TryGetUrlPath(out _) == true)
+                return true;
         return false;
     }
 
@@ -397,8 +414,7 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
 
         await using var uow = _db.GetDbContext();
         var fc = uow.FilterConfigForId(guildId, set => set.Include(x => x.FilteredWords));
-        var sfw = ServerFilteredWords.GetOrAdd(guildId,
-            static _ => new ConcurrentHashSet<string>([], StringComparer.InvariantCultureIgnoreCase));
+        var sfw = _serverFilteredWords.GetOrAdd(guildId, static _ => new());
         if (sfw.Add(word))
         {
             fc.FilteredWords.Add(new FilteredWord()
@@ -410,10 +426,57 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             return true;
         }
 
-        sfw.TryRemove(word);
+        sfw.Remove(word);
         fc.FilteredWords.RemoveWhere(x => string.Equals(x.Word, word, StringComparison.InvariantCultureIgnoreCase));
         await uow.SaveChangesAsync();
 
         return false;
+    }
+
+    private sealed class FilteredWordSet
+    {
+        private readonly Lock _lock = new();
+        private HashSet<string> _writeSet = new(StringComparer.InvariantCultureIgnoreCase);
+        private volatile HashSet<string> _readSnapshot = new(StringComparer.InvariantCultureIgnoreCase);
+
+        public HashSet<string> Snapshot => _readSnapshot;
+
+        public bool Add(string word)
+        {
+            lock (_lock)
+            {
+                if (!_writeSet.Add(word)) return false;
+                _readSnapshot = new HashSet<string>(_writeSet, StringComparer.InvariantCultureIgnoreCase);
+                return true;
+            }
+        }
+
+        public bool Remove(string word)
+        {
+            lock (_lock)
+            {
+                if (!_writeSet.Remove(word)) return false;
+                _readSnapshot = new HashSet<string>(_writeSet, StringComparer.InvariantCultureIgnoreCase);
+                return true;
+            }
+        }
+
+        public void Clear()
+        {
+            lock (_lock)
+            {
+                _writeSet = new(StringComparer.InvariantCultureIgnoreCase);
+                _readSnapshot = new(StringComparer.InvariantCultureIgnoreCase);
+            }
+        }
+
+        public void Bulk(IEnumerable<string> words)
+        {
+            lock (_lock)
+            {
+                foreach (var w in words) _writeSet.Add(w);
+                _readSnapshot = new HashSet<string>(_writeSet, StringComparer.InvariantCultureIgnoreCase);
+            }
+        }
     }
 }
