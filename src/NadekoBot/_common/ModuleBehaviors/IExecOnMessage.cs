@@ -17,5 +17,5 @@ public interface IExecOnMessage : IBehavior
     /// <param name="guild">Guild where the message was sent</param>
     /// <param name="msg">The message that was received</param>
     /// <returns>Whether the message was intercepted</returns>
-    Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg);
+    ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg);
 }

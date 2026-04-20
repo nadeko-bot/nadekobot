@@ -112,7 +112,7 @@ public sealed class AiAgentService(
     /// Handles @mention trigger and passive buffer observation.
     /// Runs before command parsing so explicit @mention always takes priority.
     /// </summary>
-    public async Task<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
+    public async ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
     {
         if (!configService.Data.Enabled)
             return false;
