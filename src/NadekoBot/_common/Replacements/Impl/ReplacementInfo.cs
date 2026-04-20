@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace NadekoBot.Common;
@@ -41,18 +42,15 @@ public static class ContextSlot
 
 public sealed class ReplacementInfo
 {
-    private readonly Delegate _del;
+    private readonly Func<object?[], ValueTask<string?>> _typedInvoker;
     public IReadOnlyCollection<Type> InputTypes { get; }
     public string Token { get; }
     public ContextMask RequiredMask { get; }
     public int[] ParamSlotIndices { get; }
 
-    private static readonly Func<ValueTask<string?>> _falllbackFunc = static () => default;
-
     public ReplacementInfo(string token, Delegate del)
     {
-        _del = del;
-        var paramTypes = del.GetMethodInfo().GetParameters().Select(x => x.ParameterType).ToArray();
+        var paramTypes = del.GetMethodInfo().GetParameters().Select(static x => x.ParameterType).ToArray();
         InputTypes = paramTypes.AsReadOnly();
         Token = token;
 
@@ -68,10 +66,117 @@ public sealed class ReplacementInfo
 
         RequiredMask = mask;
         ParamSlotIndices = slots;
+        _typedInvoker = BuildTypedInvoker(del, paramTypes, slots);
     }
 
-    public async Task<string?> GetValueAsync(params object?[]? objs)
-        => await (ValueTask<string?>)(_del.DynamicInvoke(objs) ?? _falllbackFunc);
+    private static Func<object?[], ValueTask<string?>> BuildTypedInvoker(
+        Delegate del,
+        Type[] paramTypes,
+        int[] slots)
+        => paramTypes.Length switch
+        {
+            0 => BuildZeroArgInvoker(del),
+            1 => BuildOneArgInvoker(del, paramTypes[0], slots[0]),
+            _ => BuildFallbackInvoker(del, slots)
+        };
+
+    private static Func<object?[], ValueTask<string?>> BuildZeroArgInvoker(Delegate del)
+    {
+        var typed = (Func<ValueTask<string>>)del;
+        return _ =>
+        {
+            var result = typed();
+            return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref result);
+        };
+    }
+
+    private static Func<object?[], ValueTask<string?>> BuildOneArgInvoker(
+        Delegate del,
+        Type paramType,
+        int slot)
+    {
+        if (typeof(IDiscordClient).IsAssignableFrom(paramType))
+        {
+            var typed = (Func<DiscordSocketClient, ValueTask<string>>)del;
+            return inputData =>
+            {
+                var result = typed((DiscordSocketClient)inputData[slot]!);
+                return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref result);
+            };
+        }
+
+        if (typeof(IGuild).IsAssignableFrom(paramType))
+        {
+            var typed = (Func<IGuild, ValueTask<string>>)del;
+            return inputData =>
+            {
+                var result = typed((IGuild)inputData[slot]!);
+                return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref result);
+            };
+        }
+
+        if (typeof(IMessageChannel).IsAssignableFrom(paramType))
+        {
+            var typed = (Func<IMessageChannel, ValueTask<string>>)del;
+            return inputData =>
+            {
+                var result = typed((IMessageChannel)inputData[slot]!);
+                return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref result);
+            };
+        }
+
+        if (paramType.IsArray && typeof(IUser).IsAssignableFrom(paramType.GetElementType()!))
+        {
+            var typed = (Func<IUser[], ValueTask<string>>)del;
+            return inputData =>
+            {
+                var result = typed((IUser[])inputData[slot]!);
+                return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref result);
+            };
+        }
+
+        // IGuildUser before IUser — Func<IGuildUser,R> is not castable to Func<IUser,R>
+        if (typeof(IGuildUser).IsAssignableFrom(paramType))
+        {
+            var typed = (Func<IGuildUser, ValueTask<string>>)del;
+            return inputData =>
+            {
+                var result = typed((IGuildUser)inputData[slot]!);
+                return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref result);
+            };
+        }
+
+        if (typeof(IUser).IsAssignableFrom(paramType))
+        {
+            var typed = (Func<IUser, ValueTask<string>>)del;
+            return inputData =>
+            {
+                var result = typed((IUser)inputData[slot]!);
+                return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref result);
+            };
+        }
+
+        return BuildFallbackInvoker(del, new[] { slot });
+    }
+
+    private static Func<object?[], ValueTask<string?>> BuildFallbackInvoker(Delegate del, int[] slots)
+    {
+        return inputData =>
+        {
+            var objs = new object?[slots.Length];
+            for (var i = 0; i < slots.Length; i++)
+                objs[i] = slots[i] >= 0 ? inputData[slots[i]] : null;
+
+            var result = del.DynamicInvoke(objs);
+            if (result is ValueTask<string> vt)
+                return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref vt);
+            return default;
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ValueTask<string?> GetValueAsync(object?[] inputData)
+        => _typedInvoker(inputData);
 
     public override int GetHashCode()
         => Token.GetHashCode();
@@ -82,7 +187,7 @@ public sealed class ReplacementInfo
 
 public sealed class RegexReplacementInfo
 {
-    private readonly Delegate _del;
+    private readonly Func<object?[], Match, ValueTask<string?>> _typedInvoker;
     public IReadOnlyCollection<Type> InputTypes { get; }
     public ContextMask RequiredMask { get; }
     public int[] ParamSlotIndices { get; }
@@ -90,12 +195,11 @@ public sealed class RegexReplacementInfo
     public Regex Regex { get; }
     public string Pattern { get; }
 
-    private static readonly Func<Match, ValueTask<string?>> _falllbackFunc = static _ => default;
+    private static readonly Func<Match, ValueTask<string?>> _fallbackFunc = static _ => default;
 
     public RegexReplacementInfo(Regex regex, Delegate del)
     {
-        _del = del;
-        var paramTypes = del.GetMethodInfo().GetParameters().Select(x => x.ParameterType).ToArray();
+        var paramTypes = del.GetMethodInfo().GetParameters().Select(static x => x.ParameterType).ToArray();
         InputTypes = paramTypes.AsReadOnly();
         Regex = regex;
         Pattern = Regex.ToString();
@@ -112,10 +216,39 @@ public sealed class RegexReplacementInfo
 
         RequiredMask = mask;
         ParamSlotIndices = slots;
+        _typedInvoker = BuildTypedInvoker(del, paramTypes, slots);
     }
 
-    public async Task<string?> GetValueAsync(Match m, params object?[]? objs)
-        => await ((Func<Match, ValueTask<string?>>)(_del.DynamicInvoke(objs) ?? _falllbackFunc))(m);
+    private static Func<object?[], Match, ValueTask<string?>> BuildTypedInvoker(
+        Delegate del,
+        Type[] paramTypes,
+        int[] slots)
+    {
+        if (paramTypes.Length == 0)
+        {
+            var typed = (Func<Func<Match, ValueTask<string>>>)del;
+            return (_, m) =>
+            {
+                var inner = typed();
+                var result = inner(m);
+                return Unsafe.As<ValueTask<string>, ValueTask<string?>>(ref result);
+            };
+        }
+
+        return (inputData, m) =>
+        {
+            var objs = new object?[slots.Length];
+            for (var i = 0; i < slots.Length; i++)
+                objs[i] = slots[i] >= 0 ? inputData[slots[i]] : null;
+
+            var inner = del.DynamicInvoke(objs) as Func<Match, ValueTask<string?>> ?? _fallbackFunc;
+            return inner(m);
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ValueTask<string?> GetValueAsync(Match m, object?[] inputData)
+        => _typedInvoker(inputData, m);
 
     public override int GetHashCode()
         => Regex.GetHashCode();

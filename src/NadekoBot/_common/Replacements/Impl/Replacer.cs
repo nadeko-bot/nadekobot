@@ -29,34 +29,12 @@ public sealed partial class Replacer
         if (string.IsNullOrWhiteSpace(input))
             return input;
 
-        for (var i = 0; i < _overrides.Count; i++)
-        {
-            var rep = _overrides[i];
-            if (input.Contains(rep.Token, StringComparison.InvariantCulture))
-            {
-                var objs = GetParams(rep);
-                input = input.Replace(rep.Token, await rep.GetValueAsync(objs), StringComparison.InvariantCulture);
-            }
-        }
-
-        for (var i = 0; i < _baseReps.Length; i++)
-        {
-            var rep = _baseReps[i];
-            if (IsOverridden(rep.Token))
-                continue;
-
-            if (input.Contains(rep.Token, StringComparison.InvariantCulture))
-            {
-                var objs = GetParams(rep);
-                input = input.Replace(rep.Token, await rep.GetValueAsync(objs), StringComparison.InvariantCulture);
-            }
-        }
+        var firstPct = input.IndexOf('%');
+        if (firstPct >= 0)
+            input = await ApplyTokenReplacementsInternalAsync(input, firstPct);
 
         for (var i = 0; i < _regexOverrides.Count; i++)
-        {
-            var rep = _regexOverrides[i];
-            input = await ApplyRegexReplacementAsync(input, rep);
-        }
+            input = await ApplyRegexReplacementInternalAsync(input, _regexOverrides[i]);
 
         for (var i = 0; i < _baseRegexReps.Length; i++)
         {
@@ -64,21 +42,86 @@ public sealed partial class Replacer
             if (IsRegexOverridden(rep.Pattern))
                 continue;
 
-            input = await ApplyRegexReplacementAsync(input, rep);
+            input = await ApplyRegexReplacementInternalAsync(input, rep);
         }
 
         return input;
     }
 
-    private async ValueTask<string> ApplyRegexReplacementAsync(string input, RegexReplacementInfo rep)
+    private async ValueTask<string> ApplyTokenReplacementsInternalAsync(string input, int firstPct)
     {
-        var objs = GetParams(rep);
+        var map = BuildTokenMap();
+
+        var sb = new StringBuilder(input.Length);
+        sb.Append(input, 0, firstPct);
+
+        var i = firstPct;
+        while (i < input.Length)
+        {
+            // Bulk-copy everything up to the next '%'
+            var nextPct = input.IndexOf('%', i);
+            if (nextPct < 0)
+            {
+                sb.Append(input, i, input.Length - i);
+                break;
+            }
+
+            if (nextPct > i)
+            {
+                sb.Append(input, i, nextPct - i);
+                i = nextPct;
+            }
+
+            // Find the closing '%'
+            var end = input.IndexOf('%', i + 1);
+            if (end < 0)
+            {
+                sb.Append(input, i, input.Length - i);
+                break;
+            }
+
+            var token = input.Substring(i, end - i + 1);
+
+            if (map.TryGetValue(token, out var rep))
+            {
+                var value = await rep.GetValueAsync(_inputData);
+                if (value is not null)
+                    sb.Append(value);
+                i = end + 1;
+            }
+            else
+            {
+                sb.Append('%');
+                i++;
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    private Dictionary<string, ReplacementInfo> BuildTokenMap()
+    {
+        var map = new Dictionary<string, ReplacementInfo>(
+            _baseReps.Length + _overrides.Count,
+            StringComparer.InvariantCulture);
+
+        for (var i = 0; i < _baseReps.Length; i++)
+            map[_baseReps[i].Token] = _baseReps[i];
+
+        for (var i = 0; i < _overrides.Count; i++)
+            map[_overrides[i].Token] = _overrides[i];
+
+        return map;
+    }
+
+    private async ValueTask<string> ApplyRegexReplacementInternalAsync(string input, RegexReplacementInfo rep)
+    {
         var match = rep.Regex.Match(input);
         if (match.Success)
         {
             var sb = new StringBuilder();
             sb.Append(input, 0, match.Index)
-              .Append(await rep.GetValueAsync(match, objs));
+              .Append(await rep.GetValueAsync(match, _inputData));
 
             var lastIndex = match.Index + match.Length;
             sb.Append(input, lastIndex, input.Length - lastIndex);
@@ -86,17 +129,6 @@ public sealed partial class Replacer
         }
 
         return input;
-    }
-
-    private bool IsOverridden(string token)
-    {
-        for (var i = 0; i < _overrides.Count; i++)
-        {
-            if (string.Equals(_overrides[i].Token, token, StringComparison.InvariantCulture))
-                return true;
-        }
-
-        return false;
     }
 
     private bool IsRegexOverridden(string pattern)
@@ -108,38 +140,6 @@ public sealed partial class Replacer
         }
 
         return false;
-    }
-
-    private object?[]? GetParams(ReplacementInfo rep)
-    {
-        var slots = rep.ParamSlotIndices;
-        if (slots.Length == 0)
-            return null;
-
-        var objs = new object?[slots.Length];
-        for (var i = 0; i < slots.Length; i++)
-        {
-            var slot = slots[i];
-            objs[i] = slot >= 0 ? _inputData[slot] : null;
-        }
-
-        return objs;
-    }
-
-    private object?[]? GetParams(RegexReplacementInfo rep)
-    {
-        var slots = rep.ParamSlotIndices;
-        if (slots.Length == 0)
-            return null;
-
-        var objs = new object?[slots.Length];
-        for (var i = 0; i < slots.Length; i++)
-        {
-            var slot = slots[i];
-            objs[i] = slot >= 0 ? _inputData[slot] : null;
-        }
-
-        return objs;
     }
 
     public async ValueTask<SmartText> ReplaceAsync(SmartText data)

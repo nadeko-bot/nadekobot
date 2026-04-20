@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using NadekoBot.Common;
 using NSubstitute;
 using NUnit.Framework;
@@ -138,5 +139,112 @@ public class ReplacementServiceTests
         var ctx = new ReplacementContext();
         var result = await _svc.ReplaceAsync("say %test.echo-hello%", ctx);
         Assert.That(result, Is.EqualTo("say hello"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_IDiscordClientParam_Works()
+    {
+        var store = new ReplacementPatternStore();
+        var svc = new ReplacementService(store);
+        await store.Register<DiscordSocketClient>("%test.client%", static c => c.ShardId.ToString());
+
+        var client = Substitute.For<DiscordSocketClient>();
+        var ctx = new ReplacementContext(client: client);
+        var result = await svc.ReplaceAsync("shard %test.client%", ctx);
+        Assert.That(result, Is.EqualTo("shard 0"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_IGuildParam_Works()
+    {
+        await _store.Register<IGuild>("%test.guild%", static g => g.Name);
+
+        var guild = Substitute.For<IGuild>();
+        guild.Name.Returns("TestGuild");
+
+        var ctx = new ReplacementContext(guild: guild);
+        var result = await _svc.ReplaceAsync("in %test.guild%", ctx);
+        Assert.That(result, Is.EqualTo("in TestGuild"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_IMessageChannelParam_Works()
+    {
+        await _store.Register<IMessageChannel>("%test.ch%", static ch => ch.Name);
+
+        var ch = Substitute.For<IMessageChannel>();
+        ch.Name.Returns("general");
+
+        var ctx = new ReplacementContext(channel: ch);
+        var result = await _svc.ReplaceAsync("in %test.ch%", ctx);
+        Assert.That(result, Is.EqualTo("in general"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_IGuildUserParam_DoesNotHitIUserBranch()
+    {
+        await _store.Register<IGuildUser>("%test.gu%", static gu => gu.DisplayName);
+
+        var gu = Substitute.For<IGuildUser>();
+        gu.DisplayName.Returns("Nick");
+
+        var ctx = new ReplacementContext(user: gu);
+        var result = await _svc.ReplaceAsync("hi %test.gu%", ctx);
+        Assert.That(result, Is.EqualTo("hi Nick"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_TwoArgReplacement_FallbackInvokerWorks()
+    {
+        await _store.Register<IGuild, IUser>("%test.both%", static (g, u) => $"{g.Name}:{u.Username}");
+
+        var guild = Substitute.For<IGuild>();
+        guild.Name.Returns("G");
+        var user = Substitute.For<IUser>();
+        user.Username.Returns("U");
+
+        var ctx = new ReplacementContext(guild: guild, user: user);
+        var result = await _svc.ReplaceAsync("x %test.both% y", ctx);
+        Assert.That(result, Is.EqualTo("x G:U y"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_MultipleTokensInOneString()
+    {
+        await _store.Register("%test.a%", static () => "x");
+        await _store.Register("%test.b%", static () => "y");
+
+        var ctx = new ReplacementContext();
+        var result = await _svc.ReplaceAsync("%test.a% and %test.b%", ctx);
+        Assert.That(result, Is.EqualTo("x and y"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_TextBetweenAndAroundTokensPreserved()
+    {
+        await _store.Register("%test.a%", static () => "x");
+        await _store.Register("%test.b%", static () => "y");
+
+        var ctx = new ReplacementContext();
+        var result = await _svc.ReplaceAsync("prefix %test.a% middle %test.b% suffix", ctx);
+        Assert.That(result, Is.EqualTo("prefix x middle y suffix"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_TrailingLonePercent_Preserved()
+    {
+        var ctx = new ReplacementContext();
+        var result = await _svc.ReplaceAsync("hi %foo", ctx);
+        Assert.That(result, Is.EqualTo("hi %foo"));
+    }
+
+    [Test]
+    public async Task ReplaceAsync_ConsecutivePercents_HandledCorrectly()
+    {
+        await _store.Register("%test.k%", static () => "V");
+
+        var ctx = new ReplacementContext();
+        var result = await _svc.ReplaceAsync("%%%test.k%", ctx);
+        Assert.That(result, Is.EqualTo("%%V"));
     }
 }
