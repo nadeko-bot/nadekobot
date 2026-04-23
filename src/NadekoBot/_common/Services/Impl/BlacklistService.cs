@@ -100,14 +100,13 @@ public sealed class BlacklistService : IExecOnMessage, IReadyExecutor, INService
 
     public async Task Reload(bool publish = true)
     {
-        var totalShards = _creds.TotalShards;
+        var totalShards = (ulong)_creds.TotalShards;
+        var shardId = (ulong)_client.ShardId;
         await using var uow = _db.GetDbContext();
-        var items = uow.GetTable<BlacklistEntry>()
-                       .ToArray()
-                       .Where(x => x.Type != BlacklistType.Server
-                                   || x.ItemId / 4194304 % (ulong)totalShards == (ulong)_client.ShardId)
-                       .ToArray();
-
+        var items = await uow.GetTable<BlacklistEntry>()
+                             .Where(x => x.Type != BlacklistType.Server
+                                         || x.ItemId / 4194304 % totalShards == shardId)
+                             .ToArrayAsyncLinqToDB();
 
         if (publish)
         {

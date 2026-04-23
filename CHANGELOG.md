@@ -2,23 +2,9 @@
 
 *a,c,f,r,o,d*
 
-## [Unreleased]
+## [7.2.1] - TBD
 
-### Changed
 
-- DM notifications from the new user-notification system now include a hint telling the user how to turn that specific notification type off with `.notify`
-- Command and data-tool semantic index logs collapsed into a single line per index instead of four
-
-### Fixed
-
-- Startup crash introduced by shard expression index setup running against a closed SQLite connection
-- Voice service no longer crashes on startup when service construction races ahead of Discord login
-- Startup crash caused by a recursive dependency between the AI tool registry and the data-tool describe/invoke tools
-- Command semantic index no longer re-embeds on every startup under the coordinator: `commandlist.json` is now written only by shard 0 (atomically) so concurrent shards can no longer clobber it and invalidate the cache
-
-### Dev
-
-- `NadekoDbService` split into focused helpers: `DbMigrator` (EF + custom SQL migrations), `DbPragmas` (single source of truth for PRAGMA sets), `ShardIndexReconciler` (shard expression index discovery and rebuild); `SetupAsync` now manages one explicit connection lifetime for setup PRAGMAs and shard index work
 
 ## [7.2.0] - 22.04.2026
 
@@ -43,6 +29,7 @@
 - `.wlb` leaderboard now uses embed fields with rank numbers ("#X Username")
 - Faster startup: DI container build, module registration, and type reader loading now run in parallel with Discord login instead of sequentially after it
 - Massive startup query speedup: all per-shard DB queries now use SQLite expression indexes
+- DM notifications from the new `.notify` system have a disable hint
 
 ### Fixed
 

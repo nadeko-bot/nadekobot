@@ -1,6 +1,7 @@
 #nullable disable
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class Repeater
 {
     public int Id { get; set; }

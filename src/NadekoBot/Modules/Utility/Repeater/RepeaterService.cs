@@ -39,10 +39,11 @@ public sealed class RepeaterService : IReadyExecutor, INService
         _ucs = ucs;
 
         using var uow = _db.GetDbContext();
-        var shardRepeaters = uow.Set<Repeater>()
-                                .Where(x => (int)(x.GuildId / Math.Pow(2, 22)) % _creds.TotalShards
-                                            == _client.ShardId)
-                                .AsNoTracking()
+        var shardRepeaters = uow.GetTable<Repeater>()
+                                .Where(Queries.GuildOnShard<Repeater>(
+                                    x => x.GuildId,
+                                    _creds.TotalShards,
+                                    _client.ShardId))
                                 .ToList();
 
         _noRedundant = new(shardRepeaters.Where(x => x.NoRedundant).Select(x => x.Id));
