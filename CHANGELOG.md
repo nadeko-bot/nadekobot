@@ -8,28 +8,6 @@
 
 - `.patronadd` (`.pa`) owner command: manually grant a user 30 days of patron benefits with the specified cent amount
 - `.aiprompt` owner only command to manage SOUL.md and OPERATOR.md files
-
-### Changed
-
-- Simplified AI agent prompt management to a single `.aiprompt` command. Run with no arguments to get a SOUL/OPERATOR button picker; pass `soul` or `operator` to view the file inline and edit it through a Discord modal. Removed the prompt module concept entirely.
-
-### Removed
-
-- Prompt modules (`data/ai/prompts/modules/`) and example personas (`data/ai/prompts/examples/`). Only `SOUL.md` and `OPERATOR.md` remain.
-
-### Fixed
-
-- AI agent no longer duplicates command output. After running a command, the agent stays silent by default since the command already posts its own answer to the channel. It only adds a follow-up reply when the command's output doesn't directly answer the request (e.g. comparing several outputs, or explaining an unclear error). Action requests no longer get a redundant "Done." acknowledgement either.
-- AI agent now sees its own command output and the rest of the channel between tool calls, so it can verify what happened before deciding whether to speak.
-- AI agent channel history now decodes the full embed (author, link URL, image and thumbnail URLs, timestamp), attachments (filename, type, size, URL), stickers, and reply-to context for every message it remembers. Per-message truncation removed -- the buffer holds the message verbatim. Deletes pop the entry from history.
-
-### Dev
-
-- AI agent's per-channel buffer is now fed directly from MessageReceived, so it captures the bot's own messages
-- AI Cold-start backfill capped at MIN(100, ChannelMessageMemory)
-
-### Added
-
 - AI agent system prompt is now composed from Markdown files under `data/ai/prompts/` instead of a YAML property.
     - `SOUL.md` for bot identity
     - `OPERATOR.md` for operator rules
@@ -56,6 +34,10 @@
 - Anti-raid no longer silently degrades after its first trigger
 - Link fixer service only loads the data it needs
 - Some crash fixes
+
+### Removed
+
+- Prompt modules (`data/ai/prompts/modules/`) and example personas (`data/ai/prompts/examples/`). Only `SOUL.md` and `OPERATOR.md` remain.
 
 ### Dev
 
