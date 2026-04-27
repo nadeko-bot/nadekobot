@@ -33,7 +33,6 @@ public sealed class AiAgentService(
 
     private sealed record QueuedMessage(IGuild Guild, ITextChannel Channel, IUserMessage Message, string Text);
 
-    private const int MAX_SNAPSHOT_CONTENT_LENGTH = 500;
     public const int MAX_SKILLS_PER_GUILD = 10;
     public const int MAX_SKILL_INSTRUCTION_LENGTH = 2000;
     public const int MAX_SKILL_NAME_LENGTH = 50;
@@ -48,12 +47,49 @@ public sealed class AiAgentService(
         => 3;
 
     /// <summary>
-    /// Starts the background expiry loop for channel memory buffers and conversation windows
+    /// Starts the background expiry loop for channel memory buffers and conversation windows.
+    /// Also subscribes to MessageReceived so every channel message (including the bot's own
+    /// command output and replies) feeds the per-channel buffer once a session has opened it.
     /// </summary>
     public async Task OnReadyAsync()
     {
         await LoadSkillCacheAsync();
+        client.MessageReceived += OnMessageReceivedFeederAsync;
+        client.MessageDeleted += OnMessageDeletedFeederAsync;
         _ = Task.Run(RunMemoryExpiryLoopAsync);
+    }
+
+    /// <summary>
+    /// Single canonical feeder for every channel buffer. Runs for every Discord message
+    /// regardless of author so the agent sees its own command output between turns.
+    /// No-ops when no buffer exists for the channel (no active session in that channel).
+    /// </summary>
+    private Task OnMessageReceivedFeederAsync(SocketMessage msg)
+    {
+        if (msg is not SocketUserMessage userMsg)
+            return Task.CompletedTask;
+
+        if (msg.Channel is not SocketTextChannel)
+            return Task.CompletedTask;
+
+        if (!_channelBuffers.TryGetValue(msg.Channel.Id, out var buffer))
+            return Task.CompletedTask;
+
+        buffer.Push(CreateSnapshot(userMsg));
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Pops a deleted message from the channel buffer so channel_history reflects what
+    /// is actually still in the channel. No-op when no buffer or no match.
+    /// </summary>
+    private Task OnMessageDeletedFeederAsync(
+        Cacheable<IMessage, ulong> cachedMsg,
+        Cacheable<IMessageChannel, ulong> cachedChannel)
+    {
+        if (_channelBuffers.TryGetValue(cachedChannel.Id, out var buffer))
+            buffer.TryRemove(cachedMsg.Id);
+        return Task.CompletedTask;
     }
 
     private async Task LoadSkillCacheAsync()
@@ -110,8 +146,9 @@ public sealed class AiAgentService(
     }
 
     /// <summary>
-    /// Handles @mention trigger and passive buffer observation.
+    /// Handles @mention trigger detection.
     /// Runs before command parsing so explicit @mention always takes priority.
+    /// Buffer ingestion is handled by <see cref="OnMessageReceivedFeederAsync"/>.
     /// </summary>
     public async ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
     {
@@ -127,9 +164,6 @@ public sealed class AiAgentService(
         var channel = msg.Channel as ITextChannel;
         if (channel is null)
             return false;
-
-        if (_channelBuffers.TryGetValue(channel.Id, out var buffer))
-            buffer.Push(CreateSnapshot(msg));
 
         if (msg is DoAsUserMessage || msg.Author.IsBot)
             return false;
@@ -371,8 +405,8 @@ public sealed class AiAgentService(
             _ = channel.TriggerTypingAsync();
 
             var systemPrompt = await systemPromptBuilder.BuildAsync(context);
-            var channelHistory = BuildChannelHistoryXml(channel, message.Id);
             var enrichedPrompt = BuildSkillPreamble(guild.Id, prompt);
+            var triggerMessageId = message.Id;
 
             var result = await agentSession.RunAsync(
                 enrichedPrompt,
@@ -381,7 +415,7 @@ public sealed class AiAgentService(
                 schemas,
                 config,
                 systemPrompt,
-                channelHistory,
+                () => BuildChannelHistoryXml(channel, triggerMessageId),
                 cts.Token);
 
             if (result.TryPickT0(out var success, out var error))
@@ -392,51 +426,36 @@ public sealed class AiAgentService(
                 }
                 else
                 {
-                    IUserMessage sentMsg;
                     var smart = SmartText.CreateFrom(success.Response);
 
                     if (smart is SmartEmbedText or SmartEmbedTextArray)
                     {
-                        sentMsg = await sender.Response(channel)
+                        await sender.Response(channel)
                             .Text(smart)
+                            .Split()
+                            .SendAsync();
+                    }
+                    else if (config.UseEmbed)
+                    {
+                        var eb = sender.CreateEmbed(guild.Id)
+                                       .WithOkColor()
+                                       .WithDescription(success.Response);
+
+                        if (success.ToolCallCount > 0)
+                            eb.WithFooter($"Tools used: {success.ToolCallCount}" +
+                                          (success.WasCancelled ? " (cancelled)" : ""));
+
+                        await sender.Response(channel)
+                            .Embed(eb)
                             .Split()
                             .SendAsync();
                     }
                     else
                     {
-                        if (config.UseEmbed)
-                        {
-                            var eb = sender.CreateEmbed(guild.Id)
-                                           .WithOkColor()
-                                           .WithDescription(success.Response);
-
-                            if (success.ToolCallCount > 0)
-                                eb.WithFooter($"Tools used: {success.ToolCallCount}" +
-                                              (success.WasCancelled ? " (cancelled)" : ""));
-
-                            sentMsg = await sender.Response(channel)
-                                .Embed(eb)
-                                .Split()
-                                .SendAsync();
-                        }
-                        else
-                        {
-                            sentMsg = await sender.Response(channel)
-                                .Text(new SmartPlainText(success.Response))
-                                .Split()
-                                .SendAsync();
-                        }
-                    }
-
-                    if (_channelBuffers.TryGetValue(channel.Id, out var buf))
-                    {
-                        var botUser = await guild.GetCurrentUserAsync();
-                        buf.Push(new MessageSnapshot(
-                            sentMsg.Id,
-                            botUser.Id,
-                            PromptSanitizer.Sanitize(botUser.DisplayName),
-                            success.Response.TrimTo(MAX_SNAPSHOT_CONTENT_LENGTH) ?? "",
-                            DateTimeOffset.UtcNow));
+                        await sender.Response(channel)
+                            .Text(new SmartPlainText(success.Response))
+                            .Split()
+                            .SendAsync();
                     }
 
                     if (!context.SessionClosed)
@@ -495,8 +514,13 @@ public sealed class AiAgentService(
         return true;
     }
 
+    private const int CHANNEL_BACKFILL_MAX = 100;
+
     /// <summary>
-    /// Lazily creates a channel buffer on first agent invocation, backfilling from Discord API
+    /// Lazily creates a channel buffer on first agent invocation, backfilling from Discord API.
+    /// Backfill is capped at <see cref="CHANNEL_BACKFILL_MAX"/> (Discord's per-call limit) even
+    /// if <see cref="AiAgentConfig.ChannelMessageMemory"/> is larger; the buffer fills the rest
+    /// from live MessageReceived events.
     /// </summary>
     private async Task EnsureChannelBufferAsync(ITextChannel channel, AiAgentConfig config)
     {
@@ -507,9 +531,10 @@ public sealed class AiAgentService(
             return;
 
         var buffer = new ChannelMessageBuffer(config.ChannelMessageMemory);
+        var backfillCount = Math.Min(CHANNEL_BACKFILL_MAX, config.ChannelMessageMemory);
 
         var messages = await channel
-            .GetMessagesAsync(limit: config.ChannelMessageMemory)
+            .GetMessagesAsync(limit: backfillCount)
             .FlattenAsync();
 
         var snapshots = messages
@@ -531,28 +556,81 @@ public sealed class AiAgentService(
             msg.Id,
             msg.Author.Id,
             PromptSanitizer.Sanitize(msg.Author.Username),
-            PromptSanitizer.Sanitize(GetMessageText(msg)).TrimTo(MAX_SNAPSHOT_CONTENT_LENGTH) ?? "",
+            PromptSanitizer.Sanitize(GetMessageText(msg)),
             msg.Timestamp);
 
+    /// <summary>
+    /// Renders a Discord message into a labeled-section text representation that the LLM
+    /// can read alongside other channel history entries. Captures content, all embed
+    /// fields, attachments, stickers, and reply context.
+    /// </summary>
     private static string GetMessageText(IMessage msg)
     {
         var sb = new System.Text.StringBuilder();
-        if (!string.IsNullOrWhiteSpace(msg.Content))
-            sb.Append(msg.Content);
 
-        foreach (var embed in msg.Embeds)
+        if (msg is IUserMessage userMsg && userMsg.ReferencedMessage is { } reply)
         {
-            if (!string.IsNullOrWhiteSpace(embed.Title))
-                sb.Append($"\n[{embed.Title}]");
-            if (!string.IsNullOrWhiteSpace(embed.Description))
-                sb.Append($"\n{embed.Description}");
-            foreach (var field in embed.Fields)
-                sb.Append($"\n{field.Name}: {field.Value}");
-            if (embed.Footer.HasValue && !string.IsNullOrWhiteSpace(embed.Footer.Value.Text))
-                sb.Append($"\n{embed.Footer.Value.Text}");
+            var replyAuthor = reply.Author?.Username ?? "?";
+            var replyExcerpt = reply.Content;
+            if (!string.IsNullOrEmpty(replyExcerpt))
+                sb.Append($"reply_to: {replyAuthor}: {replyExcerpt}\n");
+            else
+                sb.Append($"reply_to: {replyAuthor}\n");
         }
 
+        if (!string.IsNullOrWhiteSpace(msg.Content))
+            sb.Append("text: ").Append(msg.Content).Append('\n');
+
+        foreach (var embed in msg.Embeds)
+            AppendEmbedInternal(sb, embed);
+
+        foreach (var att in msg.Attachments)
+        {
+            sb.Append("attachment: ").Append(att.Filename);
+            if (!string.IsNullOrWhiteSpace(att.ContentType))
+                sb.Append(" (").Append(att.ContentType).Append(')');
+            if (att.Size > 0)
+                sb.Append(' ').Append(att.Size).Append('B');
+            if (!string.IsNullOrWhiteSpace(att.Url))
+                sb.Append(' ').Append(att.Url);
+            sb.Append('\n');
+        }
+
+        foreach (var sticker in msg.Stickers)
+            sb.Append("sticker: ").Append(sticker.Name).Append('\n');
+
+        if (sb.Length > 0 && sb[^1] == '\n')
+            sb.Length--;
+
         return sb.ToString();
+    }
+
+    private static void AppendEmbedInternal(System.Text.StringBuilder sb, IEmbed embed)
+    {
+        sb.Append("embed:\n");
+
+        if (embed.Author is { Name: { } authorName } && !string.IsNullOrWhiteSpace(authorName))
+            sb.Append("  author: ").Append(authorName).Append('\n');
+        if (!string.IsNullOrWhiteSpace(embed.Title))
+            sb.Append("  title: ").Append(embed.Title).Append('\n');
+        if (!string.IsNullOrWhiteSpace(embed.Url))
+            sb.Append("  link: ").Append(embed.Url).Append('\n');
+        if (!string.IsNullOrWhiteSpace(embed.Description))
+            sb.Append("  description: ").Append(embed.Description).Append('\n');
+
+        foreach (var field in embed.Fields)
+            sb.Append("  field: ").Append(field.Name).Append(" = ").Append(field.Value).Append('\n');
+
+        if (embed.Image is { Url: { } imageUrl } && !string.IsNullOrWhiteSpace(imageUrl))
+            sb.Append("  image: ").Append(imageUrl).Append('\n');
+        if (embed.Thumbnail is { Url: { } thumbUrl } && !string.IsNullOrWhiteSpace(thumbUrl))
+            sb.Append("  thumbnail: ").Append(thumbUrl).Append('\n');
+
+        if (embed.Footer is { Text: { } footerText } && !string.IsNullOrWhiteSpace(footerText))
+            sb.Append("  footer: ").Append(footerText).Append('\n');
+
+        if (embed.Timestamp is { } embedTs)
+            sb.Append("  timestamp: ").Append(embedTs.ToUnixTimeSeconds()).Append('\n');
     }
 
     private string? BuildChannelHistoryXml(ITextChannel channel, ulong triggerMessageId)
@@ -571,13 +649,12 @@ public sealed class AiAgentService(
     private bool HasValidAiCreds()
     {
         var creds = credsProvider.GetCreds();
-        var ok = !string.IsNullOrWhiteSpace(creds.NadekoAiToken)
-                 || !string.IsNullOrWhiteSpace(creds.AiApiKey);
+        var ok = !string.IsNullOrWhiteSpace(creds.AiApiKey);
 
         if (!ok && !_credsWarningLogged)
         {
             _credsWarningLogged = true;
-            Log.Warning("AI agent is enabled but NadekoAiToken and AiApiKey are both empty in creds.yml. "
+            Log.Warning("AI agent is enabled but AiApiKey is empty in creds.yml. "
                         + "Agent will not run until credentials are set");
         }
 

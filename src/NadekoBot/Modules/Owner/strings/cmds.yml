@@ -14,3 +14,13 @@ votefeed:
     - ''
   params:
     - {}
+patronadd:
+  desc: |-
+    Manually grants a user 30 days of patron benefits at the specified pledge in cents, without going through Patreon. Extends an existing manual grant by another month.
+  ex:
+    - '500 123123123123123123'
+  params:
+    - cents:
+        desc: "The pledge amount in cents (e.g. 500 = $5.00)."
+      userId:
+        desc: "The Discord user ID to grant patron benefits to."

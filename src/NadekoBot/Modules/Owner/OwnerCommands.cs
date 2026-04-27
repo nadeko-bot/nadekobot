@@ -1,15 +1,50 @@
 ﻿using NadekoBot.Modules.Gambling.Services;
+using NadekoBot.Modules.Patronage;
 
 namespace NadekoBot.Modules.Owner;
 
 [OwnerOnly]
-public partial class Owner(VoteRewardService vrs) : NadekoModule
+public partial class Owner(VoteRewardService vrs, IPatronageService ps) : NadekoModule
 {
     [Cmd]
     public async Task VoteFeed()
     {
         vrs.SetVoiceChannel(ctx.Channel);
         await ctx.OkAsync();
+    }
+
+    [Cmd]
+    public async Task PatronAdd(long cents, ulong userId)
+    {
+        if (!ps.GetConfig().IsEnabled)
+        {
+            await Response().Error(strs.patron_not_enabled).SendAsync();
+            return;
+        }
+
+        if (cents <= 0)
+        {
+            await Response().Error(strs.patron_add_invalid_amount).SendAsync();
+            return;
+        }
+
+        var maybePatron = await ps.AddManualPatronAsync(userId, cents);
+        if (maybePatron is not { } patron)
+        {
+            await Response().Error(strs.patron_add_failed).SendAsync();
+            return;
+        }
+
+        var eb = CreateEmbed()
+            .WithOkColor()
+            .WithTitle(GetText(strs.patron_added))
+            .AddField(GetText(strs.tier), Format.Bold(patron.Tier.ToFullName()), true)
+            .AddField(GetText(strs.pledge), $"**{patron.Amount / 100.0f:N1}$**", true)
+            .AddField(GetText(strs.expires),
+                patron.ValidThru.AddDays(1).ToShortAndRelativeTimestampTag(),
+                true);
+
+        await Response().Embed(eb).SendAsync();
     }
 
     private static CancellationTokenSource? _cts = null;

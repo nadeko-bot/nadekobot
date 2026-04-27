@@ -30,7 +30,7 @@ Core tools are always in the LLM context. Data tools are discovered on demand vi
 
 | Layer | Who edits | Scope |
 |---|---|---|
-| `SOUL.md`, `OPERATOR.md`, `modules/*.md` | Bot owner | Whole bot process |
+| `SOUL.md`, `OPERATOR.md` | Bot owner | Whole bot process |
 | Skills (`AiAgentGuildSkill`) | Server admins | One guild, or one channel in that guild |
 | The agent's replies | No one directly | Constrained by the two above + user permissions |
 
@@ -40,7 +40,6 @@ The agent runs as the invoking user. It can't do anything that user can't do thr
 
 - **SOUL** -- the bot's identity. One markdown file, owner-edited.
 - **OPERATOR** -- rules from the owner to the agent (tone, red lines, etc.).
-- **Module** -- an optional `.md` file under `modules/`. Toggle on or off globally.
 - **Skill** -- guild-level instruction stored in the DB.
 - **Channel skill** -- same but scoped to one channel.
 - **Data tool** -- a read-only function the agent calls to fetch JSON. Adapters live next to the feature code.

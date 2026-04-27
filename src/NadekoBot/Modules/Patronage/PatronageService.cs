@@ -236,6 +236,49 @@ public sealed class PatronageService
         return PatronUserToPatron(max);
     }
 
+    public async Task<Patron?> AddManualPatronAsync(ulong userId, long cents)
+    {
+        if (userId == 0 || cents <= 0 || cents > int.MaxValue)
+            return null;
+
+        var lastChargeUtc = DateTime.UtcNow;
+        var todayDate = lastChargeUtc.Date;
+        var dateInOneMonth = todayDate.AddMonths(1);
+        var platformId = $"manual:{userId}";
+        var amountCents = (int)cents;
+
+        await using var ctx = _db.GetDbContext();
+
+        await ctx.GetTable<PatronUser>()
+            .InsertOrUpdateAsync(
+                () => new()
+                {
+                    UniquePlatformUserId = platformId,
+                    UserId = userId,
+                    AmountCents = amountCents,
+                    LastCharge = lastChargeUtc,
+                    ValidThru = dateInOneMonth,
+                },
+                old => new()
+                {
+                    UserId = userId,
+                    AmountCents = amountCents,
+                    LastCharge = lastChargeUtc,
+                    ValidThru = old.ValidThru >= todayDate
+                        ? old.ValidThru.AddMonths(1)
+                        : dateInOneMonth,
+                },
+                () => new()
+                {
+                    UniquePlatformUserId = platformId,
+                });
+
+        var dbPatron = await ctx.GetTable<PatronUser>()
+            .FirstAsync(x => x.UniquePlatformUserId == platformId);
+
+        return PatronUserToPatron(dbPatron);
+    }
+
     public async Task<IReadOnlyList<(PatronTier Tier, IReadOnlyList<(ulong UserId, string? Username)> Patrons)>> GetActivePatronsByTierAsync()
     {
         await using var ctx = _db.GetDbContext();

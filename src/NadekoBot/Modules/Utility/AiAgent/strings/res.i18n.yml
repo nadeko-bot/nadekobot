@@ -13,21 +13,11 @@ ar:
   skill_list_title: مهارات الوكيل
   skill_name_too_long: يجب ألا يتجاوز اسم المهارة 50 حرفا.
   skill_instruction_too_long: يجب ألا تتجاوز تعليمات المهارة 2000 حرف.
-  aprompts_title: موجهات وكيل الذكاء الاصطناعي
-  aprompt_no_path: 'يجب تحديد مسار ملف الموجه (مثال: SOUL، OPERATOR، أو اسم وحدة).'
-  aprompt_not_found: 'ملف الموجه **{0}** غير موجود.'
-  aprompt_empty: 'ملف الموجه **{0}** فارغ.'
-  aprompt_sent_dm: تم إرسال محتوى الموجه إلى رسائلك الخاصة.
-  aprompt_dm_failed: فشل إرسال الرسالة الخاصة. تأكد من أن رسائلك الخاصة مفتوحة.
-  aprompt_no_content: يجب تقديم المحتوى كنص أو إرفاق ملف .md.
-  aprompt_updated: 'تم تحديث ملف الموجه **{0}**.'
-  aprompt_write_failed: 'فشل كتابة الموجه: {0}'
-  aprompt_reloaded: تم إعادة تحميل ملفات الموجهات وبثها إلى جميع الأجزاء.
-  aprompt_no_module: يجب تحديد اسم الوحدة.
-  aprompt_module_not_found: 'الوحدة **{0}** غير موجودة في مجلد الموجهات.'
-  aprompt_module_enabled: 'تم تفعيل الوحدة **{0}**.'
-  aprompt_module_disabled: 'تم تعطيل الوحدة **{0}**.'
-  aprompt_path: 'ملفات الموجهات موجودة في: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 de-DE:
   agent_no_query: Du musst einen Prompt für den KI-Agenten angeben.
@@ -44,21 +34,11 @@ de-DE:
   skill_list_title: Agenten-Skills
   skill_name_too_long: Der Skill-Name darf maximal 50 Zeichen lang sein.
   skill_instruction_too_long: Die Skill-Anweisung darf maximal 2000 Zeichen lang sein.
-  aprompts_title: KI-Agent-Prompts
-  aprompt_no_path: Du musst einen Prompt-Dateipfad angeben (z.B. SOUL, OPERATOR oder ein Modulname).
-  aprompt_not_found: 'Prompt-Datei **{0}** nicht gefunden.'
-  aprompt_empty: 'Prompt-Datei **{0}** ist leer.'
-  aprompt_sent_dm: Prompt-Inhalt wurde dir per DM gesendet.
-  aprompt_dm_failed: DM konnte nicht gesendet werden. Stelle sicher, dass deine DMs geoeffnet sind.
-  aprompt_no_content: Du musst Inhalt als Text angeben oder eine .md-Datei anhaengen.
-  aprompt_updated: 'Prompt-Datei **{0}** wurde aktualisiert.'
-  aprompt_write_failed: 'Schreiben des Prompts fehlgeschlagen: {0}'
-  aprompt_reloaded: Prompt-Dateien neu geladen und an alle Shards gesendet.
-  aprompt_no_module: Du musst einen Modulnamen angeben.
-  aprompt_module_not_found: 'Modul **{0}** existiert nicht im Prompt-Verzeichnis.'
-  aprompt_module_enabled: 'Modul **{0}** wurde aktiviert.'
-  aprompt_module_disabled: 'Modul **{0}** wurde deaktiviert.'
-  aprompt_path: 'Prompt-Dateien befinden sich unter: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 es-ES:
   agent_no_query: Debes proporcionar un prompt para el agente de IA.
@@ -75,21 +55,11 @@ es-ES:
   skill_list_title: Skills del Agente
   skill_name_too_long: El nombre del skill debe tener 50 caracteres o menos.
   skill_instruction_too_long: La instruccion del skill debe tener 2000 caracteres o menos.
-  aprompts_title: Prompts del agente IA
-  aprompt_no_path: 'Debes especificar una ruta de archivo (ej: SOUL, OPERATOR o nombre de modulo).'
-  aprompt_not_found: 'Archivo de prompt **{0}** no encontrado.'
-  aprompt_empty: 'El archivo de prompt **{0}** esta vacio.'
-  aprompt_sent_dm: Contenido del prompt enviado a tus mensajes directos.
-  aprompt_dm_failed: No se pudo enviar el mensaje directo. Asegurate de que tus DMs esten abiertos.
-  aprompt_no_content: Debes proporcionar contenido como texto o adjuntar un archivo .md.
-  aprompt_updated: 'Archivo de prompt **{0}** actualizado.'
-  aprompt_write_failed: 'Error al escribir el prompt: {0}'
-  aprompt_reloaded: Archivos de prompt recargados y transmitidos a todos los shards.
-  aprompt_no_module: Debes especificar un nombre de modulo.
-  aprompt_module_not_found: 'El modulo **{0}** no existe en el directorio de prompts.'
-  aprompt_module_enabled: 'Modulo **{0}** activado.'
-  aprompt_module_disabled: 'Modulo **{0}** desactivado.'
-  aprompt_path: 'Los archivos de prompt se encuentran en: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 fr-FR:
   agent_no_query: Tu dois fournir une requête pour l'agent IA.
@@ -106,21 +76,11 @@ fr-FR:
   skill_list_title: Compétences de l'agent
   skill_name_too_long: Le nom de la compétence ne doit pas dépasser 50 caractères.
   skill_instruction_too_long: L'instruction de la compétence ne doit pas dépasser 2000 caractères.
-  aprompts_title: Prompts de l'agent IA
-  aprompt_no_path: 'Vous devez specifier un chemin de fichier (ex: SOUL, OPERATOR, ou un nom de module).'
-  aprompt_not_found: 'Le fichier prompt **{0}** n''a pas ete trouve.'
-  aprompt_empty: 'Le fichier prompt **{0}** est vide.'
-  aprompt_sent_dm: Le contenu du prompt a ete envoye dans vos messages prives.
-  aprompt_dm_failed: Impossible d'envoyer le message prive. Verifiez que vos MP sont ouverts.
-  aprompt_no_content: Vous devez fournir du contenu en texte ou joindre un fichier .md.
-  aprompt_updated: 'Le fichier prompt **{0}** a ete mis a jour.'
-  aprompt_write_failed: 'Echec de l''ecriture du prompt : {0}'
-  aprompt_reloaded: Fichiers de prompts recharges et diffuses sur tous les shards.
-  aprompt_no_module: Vous devez specifier un nom de module.
-  aprompt_module_not_found: 'Le module **{0}** n''existe pas dans le repertoire de prompts.'
-  aprompt_module_enabled: 'Le module **{0}** a ete active.'
-  aprompt_module_disabled: 'Le module **{0}** a ete desactive.'
-  aprompt_path: 'Les fichiers de prompts sont situes dans : `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 id-ID:
   agent_no_query: Kamu harus memberikan prompt untuk agen AI.
@@ -137,21 +97,11 @@ id-ID:
   skill_list_title: Skill Agen
   skill_name_too_long: Nama skill harus 50 karakter atau kurang.
   skill_instruction_too_long: Instruksi skill harus 2000 karakter atau kurang.
-  aprompts_title: Prompt Agen AI
-  aprompt_no_path: 'Anda harus menentukan jalur file prompt (contoh: SOUL, OPERATOR, atau nama modul).'
-  aprompt_not_found: 'File prompt **{0}** tidak ditemukan.'
-  aprompt_empty: 'File prompt **{0}** kosong.'
-  aprompt_sent_dm: Konten prompt telah dikirim ke DM Anda.
-  aprompt_dm_failed: Gagal mengirim DM. Pastikan DM Anda terbuka.
-  aprompt_no_content: Anda harus memberikan konten sebagai teks atau melampirkan file .md.
-  aprompt_updated: 'File prompt **{0}** telah diperbarui.'
-  aprompt_write_failed: 'Gagal menulis prompt: {0}'
-  aprompt_reloaded: File prompt dimuat ulang dan disiarkan ke semua shard.
-  aprompt_no_module: Anda harus menentukan nama modul.
-  aprompt_module_not_found: 'Modul **{0}** tidak ada di direktori prompt.'
-  aprompt_module_enabled: 'Modul **{0}** telah diaktifkan.'
-  aprompt_module_disabled: 'Modul **{0}** telah dinonaktifkan.'
-  aprompt_path: 'File prompt terletak di: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 ja-JP:
   agent_no_query: AIエージェントにプロンプトを入力してください。
@@ -168,21 +118,11 @@ ja-JP:
   skill_list_title: エージェントスキル
   skill_name_too_long: スキル名は50文字以下にしてください。
   skill_instruction_too_long: スキルの指示は2000文字以下にしてください。
-  aprompts_title: AIエージェントプロンプト
-  aprompt_no_path: 'プロンプトファイルのパスを指定してください(例: SOUL、OPERATOR、またはモジュール名)。'
-  aprompt_not_found: 'プロンプトファイル **{0}** が見つかりません。'
-  aprompt_empty: 'プロンプトファイル **{0}** は空です。'
-  aprompt_sent_dm: プロンプトの内容をDMに送信しました。
-  aprompt_dm_failed: DMの送信に失敗しました。DMが開いていることを確認してください。
-  aprompt_no_content: テキストとして内容を入力するか、.mdファイルを添付してください。
-  aprompt_updated: 'プロンプトファイル **{0}** を更新しました。'
-  aprompt_write_failed: 'プロンプトの書き込みに失敗: {0}'
-  aprompt_reloaded: プロンプトファイルを再読み込みし、全シャードにブロードキャストしました。
-  aprompt_no_module: モジュール名を指定してください。
-  aprompt_module_not_found: 'モジュール **{0}** はプロンプトディレクトリに存在しません。'
-  aprompt_module_enabled: 'モジュール **{0}** を有効にしました。'
-  aprompt_module_disabled: 'モジュール **{0}** を無効にしました。'
-  aprompt_path: 'プロンプトファイルの場所: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 ko-KR:
   agent_no_query: AI 에이전트에 프롬프트를 입력해야 합니다.
@@ -199,21 +139,11 @@ ko-KR:
   skill_list_title: 에이전트 스킬
   skill_name_too_long: 스킬 이름은 50자 이하여야 합니다.
   skill_instruction_too_long: 스킬 지시는 2000자 이하여야 합니다.
-  aprompts_title: AI 에이전트 프롬프트
-  aprompt_no_path: '프롬프트 파일 경로를 지정해야 합니다 (예: SOUL, OPERATOR 또는 모듈 이름).'
-  aprompt_not_found: '프롬프트 파일 **{0}**을(를) 찾을 수 없습니다.'
-  aprompt_empty: '프롬프트 파일 **{0}**이(가) 비어 있습니다.'
-  aprompt_sent_dm: 프롬프트 내용을 DM으로 보냈습니다.
-  aprompt_dm_failed: DM 전송에 실패했습니다. DM이 열려 있는지 확인하세요.
-  aprompt_no_content: 텍스트로 내용을 입력하거나 .md 파일을 첨부해야 합니다.
-  aprompt_updated: '프롬프트 파일 **{0}**이(가) 업데이트되었습니다.'
-  aprompt_write_failed: '프롬프트 쓰기 실패: {0}'
-  aprompt_reloaded: 프롬프트 파일을 다시 로드하고 모든 샤드에 전파했습니다.
-  aprompt_no_module: 모듈 이름을 지정해야 합니다.
-  aprompt_module_not_found: '모듈 **{0}**이(가) 프롬프트 디렉터리에 없습니다.'
-  aprompt_module_enabled: '모듈 **{0}**이(가) 활성화되었습니다.'
-  aprompt_module_disabled: '모듈 **{0}**이(가) 비활성화되었습니다.'
-  aprompt_path: '프롬프트 파일 위치: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 pl-PL:
   agent_no_query: Musisz podać zapytanie dla agenta AI.
@@ -230,21 +160,11 @@ pl-PL:
   skill_list_title: Umiejętności agenta
   skill_name_too_long: Nazwa umiejętności nie może przekraczać 50 znaków.
   skill_instruction_too_long: Instrukcja umiejętności nie może przekraczać 2000 znaków.
-  aprompts_title: Prompty agenta AI
-  aprompt_no_path: Musisz podac sciezke pliku promptu (np. SOUL, OPERATOR lub nazwe modulu).
-  aprompt_not_found: 'Plik promptu **{0}** nie zostal znaleziony.'
-  aprompt_empty: 'Plik promptu **{0}** jest pusty.'
-  aprompt_sent_dm: Zawartosc promptu wyslana na prywatna wiadomosc.
-  aprompt_dm_failed: Nie udalo sie wyslac wiadomosci prywatnej. Upewnij sie, ze masz otwarte DM.
-  aprompt_no_content: Musisz podac zawartosc jako tekst lub zalaczyc plik .md.
-  aprompt_updated: 'Plik promptu **{0}** zostal zaktualizowany.'
-  aprompt_write_failed: 'Nie udalo sie zapisac promptu: {0}'
-  aprompt_reloaded: Pliki promptow przeladowane i rozeslane do wszystkich shardow.
-  aprompt_no_module: Musisz podac nazwe modulu.
-  aprompt_module_not_found: 'Modul **{0}** nie istnieje w katalogu promptow.'
-  aprompt_module_enabled: 'Modul **{0}** zostal wlaczony.'
-  aprompt_module_disabled: 'Modul **{0}** zostal wylaczony.'
-  aprompt_path: 'Pliki promptow znajduja sie w: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 pt-BR:
   agent_no_query: Você precisa fornecer um prompt para o agente de IA.
@@ -261,21 +181,11 @@ pt-BR:
   skill_list_title: Skills do Agente
   skill_name_too_long: O nome da skill deve ter no máximo 50 caracteres.
   skill_instruction_too_long: A instrução da skill deve ter no máximo 2000 caracteres.
-  aprompts_title: Prompts do Agente IA
-  aprompt_no_path: 'Voce deve especificar um caminho de arquivo (ex: SOUL, OPERATOR ou um nome de modulo).'
-  aprompt_not_found: 'Arquivo de prompt **{0}** nao encontrado.'
-  aprompt_empty: 'Arquivo de prompt **{0}** esta vazio.'
-  aprompt_sent_dm: Conteudo do prompt enviado por mensagem direta.
-  aprompt_dm_failed: Falha ao enviar mensagem direta. Verifique se suas DMs estao abertas.
-  aprompt_no_content: Voce deve fornecer o conteudo como texto ou anexar um arquivo .md.
-  aprompt_updated: 'Arquivo de prompt **{0}** atualizado.'
-  aprompt_write_failed: 'Falha ao gravar prompt: {0}'
-  aprompt_reloaded: Arquivos de prompt recarregados e transmitidos para todos os shards.
-  aprompt_no_module: Voce deve especificar um nome de modulo.
-  aprompt_module_not_found: 'Modulo **{0}** nao existe no diretorio de prompts.'
-  aprompt_module_enabled: 'Modulo **{0}** ativado.'
-  aprompt_module_disabled: 'Modulo **{0}** desativado.'
-  aprompt_path: 'Arquivos de prompt estao localizados em: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 ru-RU:
   agent_no_query: Вы должны указать запрос для ИИ-агента.
@@ -292,21 +202,11 @@ ru-RU:
   skill_list_title: Навыки агента
   skill_name_too_long: Название навыка должно быть не длиннее 50 символов.
   skill_instruction_too_long: Инструкция навыка должна быть не длиннее 2000 символов.
-  aprompts_title: Промпты ИИ-агента
-  aprompt_no_path: 'Укажите путь к файлу промпта (например: SOUL, OPERATOR или имя модуля).'
-  aprompt_not_found: 'Файл промпта **{0}** не найден.'
-  aprompt_empty: 'Файл промпта **{0}** пуст.'
-  aprompt_sent_dm: Содержимое промпта отправлено в личные сообщения.
-  aprompt_dm_failed: Не удалось отправить личное сообщение. Убедитесь, что ЛС открыты.
-  aprompt_no_content: Укажите содержимое как текст или прикрепите файл .md.
-  aprompt_updated: 'Файл промпта **{0}** обновлен.'
-  aprompt_write_failed: 'Не удалось записать промпт: {0}'
-  aprompt_reloaded: Файлы промптов перезагружены и отправлены на все шарды.
-  aprompt_no_module: Укажите имя модуля.
-  aprompt_module_not_found: 'Модуль **{0}** не существует в каталоге промптов.'
-  aprompt_module_enabled: 'Модуль **{0}** включен.'
-  aprompt_module_disabled: 'Модуль **{0}** отключен.'
-  aprompt_path: 'Файлы промптов расположены по адресу: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 sr-Cyrl-RS:
   agent_no_query: Морате да унесете упит за АИ агента.
@@ -323,21 +223,11 @@ sr-Cyrl-RS:
   skill_list_title: Вештине агента
   skill_name_too_long: Назив вештине мора имати 50 или мање карактера.
   skill_instruction_too_long: Упутство вештине мора имати 2000 или мање карактера.
-  aprompts_title: Промптови АИ агента
-  aprompt_no_path: Морате навести путању до фајла промпта (нпр. SOUL, OPERATOR или име модула).
-  aprompt_not_found: 'Фајл промпта **{0}** није пронађен.'
-  aprompt_empty: 'Фајл промпта **{0}** је празан.'
-  aprompt_sent_dm: Садржај промпта послат у приватне поруке.
-  aprompt_dm_failed: Слање приватне поруке није успело. Проверите да ли су вам приватне поруке отворене.
-  aprompt_no_content: Морате навести садржај као текст или приложити .md фајл.
-  aprompt_updated: 'Фајл промпта **{0}** је ажуриран.'
-  aprompt_write_failed: 'Писање промпта није успело: {0}'
-  aprompt_reloaded: Фајлови промптова поново учитани и послати на све шардове.
-  aprompt_no_module: Морате навести име модула.
-  aprompt_module_not_found: 'Модул **{0}** не постоји у директоријуму промптова.'
-  aprompt_module_enabled: 'Модул **{0}** је укључен.'
-  aprompt_module_disabled: 'Модул **{0}** је искључен.'
-  aprompt_path: 'Фајлови промптова се налазе на: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 tr-TR:
   agent_no_query: Yapay zeka ajanına bir istem belirtmelisin.
@@ -354,21 +244,11 @@ tr-TR:
   skill_list_title: Ajan Becerileri
   skill_name_too_long: Beceri adı 50 karakter veya daha kısa olmalı.
   skill_instruction_too_long: Beceri talimatı 2000 karakter veya daha kısa olmalı.
-  aprompts_title: Yapay Zeka Ajanı Komutları
-  aprompt_no_path: 'Bir prompt dosya yolu belirtmelisiniz (ornek: SOUL, OPERATOR veya modul adi).'
-  aprompt_not_found: 'Prompt dosyasi **{0}** bulunamadi.'
-  aprompt_empty: 'Prompt dosyasi **{0}** bos.'
-  aprompt_sent_dm: Prompt icerigi DM olarak gonderildi.
-  aprompt_dm_failed: DM gonderilemedi. DM'lerinizin acik oldugundan emin olun.
-  aprompt_no_content: Metin olarak icerik saglamali veya bir .md dosyasi eklemelisiniz.
-  aprompt_updated: 'Prompt dosyasi **{0}** guncellendi.'
-  aprompt_write_failed: 'Prompt yazma basarisiz: {0}'
-  aprompt_reloaded: Prompt dosyalari yeniden yuklendi ve tum shard'lara yayinlandi.
-  aprompt_no_module: Bir modul adi belirtmelisiniz.
-  aprompt_module_not_found: '**{0}** modulu prompt dizininde bulunmuyor.'
-  aprompt_module_enabled: '**{0}** modulu etkinlestirildi.'
-  aprompt_module_disabled: '**{0}** modulu devre disi birakildi.'
-  aprompt_path: 'Prompt dosyalari su konumda: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 ts-TS:
   agent_no_query: You have to give the AI agent a prompt, you know!
@@ -385,21 +265,11 @@ ts-TS:
   skill_list_title: Agent Skills
   skill_name_too_long: Skill name has to be 50 characters or less, b-baka!
   skill_instruction_too_long: Skill instruction must be 2000 characters or less.
-  aprompts_title: AI Agent Prompts
-  aprompt_no_path: You must specify a prompt file path (e.g. SOUL, OPERATOR, or a module name).
-  aprompt_not_found: 'Prompt file **{0}** was not found.'
-  aprompt_empty: 'Prompt file **{0}** is empty.'
-  aprompt_sent_dm: Prompt content sent to your DMs.
-  aprompt_dm_failed: Failed to send DM. Make sure your DMs are open.
-  aprompt_no_content: You must provide content as text or attach a .md file.
-  aprompt_updated: 'Prompt file **{0}** has been updated.'
-  aprompt_write_failed: 'Failed to write prompt: {0}'
-  aprompt_reloaded: Prompt files reloaded and broadcast to all shards.
-  aprompt_no_module: You must specify a module name.
-  aprompt_module_not_found: 'Module **{0}** does not exist in the prompts directory.'
-  aprompt_module_enabled: 'Module **{0}** has been enabled.'
-  aprompt_module_disabled: 'Module **{0}** has been disabled.'
-  aprompt_path: 'Prompt files are located at: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 uk-UA:
   agent_no_query: Ви повинні надати запит для ШІ-агента.
@@ -416,21 +286,11 @@ uk-UA:
   skill_list_title: Навички агента
   skill_name_too_long: Назва навички повинна бути не довше 50 символів.
   skill_instruction_too_long: Інструкція навички повинна бути не довше 2000 символів.
-  aprompts_title: Промпти AI-агента
-  aprompt_no_path: 'Вкажiть шлях до файлу промпту (наприклад: SOUL, OPERATOR або назву модуля).'
-  aprompt_not_found: 'Файл промпту **{0}** не знайдено.'
-  aprompt_empty: 'Файл промпту **{0}** порожнiй.'
-  aprompt_sent_dm: Вмiст промпту надiслано в особистi повiдомлення.
-  aprompt_dm_failed: Не вдалося надiслати особисте повiдомлення. Переконайтеся, що ваші ОП вiдкритi.
-  aprompt_no_content: Надайте вмiст як текст або прикрiпiть файл .md.
-  aprompt_updated: 'Файл промпту **{0}** оновлено.'
-  aprompt_write_failed: 'Не вдалося записати промпт: {0}'
-  aprompt_reloaded: Файли промптiв перезавантажено та вiдправлено на всi шарди.
-  aprompt_no_module: Вкажiть назву модуля.
-  aprompt_module_not_found: 'Модуль **{0}** не iснує в каталозi промптiв.'
-  aprompt_module_enabled: 'Модуль **{0}** увiмкнено.'
-  aprompt_module_disabled: 'Модуль **{0}** вимкнено.'
-  aprompt_path: 'Файли промптiв розташованi за адресою: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 vi-VN:
   agent_no_query: Bạn phải cung cấp một prompt cho tác nhân AI.
@@ -447,21 +307,11 @@ vi-VN:
   skill_list_title: Kỹ năng tác nhân
   skill_name_too_long: Tên kỹ năng phải có 50 ký tự trở xuống.
   skill_instruction_too_long: Hướng dẫn kỹ năng phải có 2000 ký tự trở xuống.
-  aprompts_title: Prompt Agent AI
-  aprompt_no_path: 'Ban phai chi dinh duong dan tap tin prompt (vd: SOUL, OPERATOR hoac ten module).'
-  aprompt_not_found: 'Khong tim thay tap tin prompt **{0}**.'
-  aprompt_empty: 'Tap tin prompt **{0}** trong.'
-  aprompt_sent_dm: Noi dung prompt da gui den tin nhan rieng cua ban.
-  aprompt_dm_failed: Khong gui duoc tin nhan rieng. Hay dam bao tin nhan rieng cua ban dang mo.
-  aprompt_no_content: Ban phai cung cap noi dung dang van ban hoac dinh kem tap tin .md.
-  aprompt_updated: 'Tap tin prompt **{0}** da duoc cap nhat.'
-  aprompt_write_failed: 'Ghi prompt that bai: {0}'
-  aprompt_reloaded: Tap tin prompt da tai lai va phat den tat ca shard.
-  aprompt_no_module: Ban phai chi dinh ten module.
-  aprompt_module_not_found: 'Module **{0}** khong ton tai trong thu muc prompt.'
-  aprompt_module_enabled: 'Module **{0}** da duoc bat.'
-  aprompt_module_disabled: 'Module **{0}** da duoc tat.'
-  aprompt_path: 'Tap tin prompt nam tai: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""
 
 zh-CN:
   agent_no_query: 你必须为 AI 代理提供一个提示。
@@ -478,18 +328,8 @@ zh-CN:
   skill_list_title: 代理技能
   skill_name_too_long: 技能名称不能超过 50 个字符。
   skill_instruction_too_long: 技能指令不能超过 2000 个字符。
-  aprompts_title: AI 代理提示
-  aprompt_no_path: 你必须指定提示文件路径(例如 SOUL、OPERATOR 或模块名称)。
-  aprompt_not_found: '提示文件 **{0}** 未找到。'
-  aprompt_empty: '提示文件 **{0}** 为空。'
-  aprompt_sent_dm: 提示内容已发送到你的私信。
-  aprompt_dm_failed: 发送私信失败。请确保你的私信已开启。
-  aprompt_no_content: 你必须以文字形式提供内容或附加 .md 文件。
-  aprompt_updated: '提示文件 **{0}** 已更新。'
-  aprompt_write_failed: '写入提示失败: {0}'
-  aprompt_reloaded: 提示文件已重新加载并广播到所有分片。
-  aprompt_no_module: 你必须指定模块名称。
-  aprompt_module_not_found: '模块 **{0}** 在提示目录中不存在。'
-  aprompt_module_enabled: '模块 **{0}** 已启用。'
-  aprompt_module_disabled: '模块 **{0}** 已禁用。'
-  aprompt_path: '提示文件位于: `{0}`'
+  aiprompt_title: ""
+  aiprompt_desc: ""
+  aiprompt_empty: ""
+  aiprompt_updated: ""
+  aiprompt_write_failed: ""

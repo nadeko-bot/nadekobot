@@ -20,6 +20,6 @@ public interface IAiAgentSession
         IReadOnlyList<JsonElement> toolSchemas,
         AiAgentConfig config,
         string systemPrompt,
-        string? channelHistory,
+        Func<string?>? channelHistoryProvider,
         CancellationToken ct = default);
 }

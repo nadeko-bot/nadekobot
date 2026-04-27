@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using NadekoBot.Modules.Utility.AiAgent;
-using NadekoBot.Modules.Utility.AiAgent.Tools;
+using NadekoBot.Modules.Utility.AiAgent.Adapters;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -34,13 +34,23 @@ public class AiAgentToolTests
 
     #region AiToolRegistry
 
+    private sealed class StubTool(string name) : IAiTool
+    {
+        public string Name => name;
+        public string Description => $"Stub for {name}.";
+        public JsonElement ParameterSchema { get; } =
+            JsonDocument.Parse("""{"type":"object","properties":{}}""").RootElement.Clone();
+        public Task<string> ExecuteAsync(AiToolContext context, JsonElement arguments)
+            => Task.FromResult("ok");
+    }
+
     [Test]
     public void Registry_RegistersAllTools()
     {
         var tools = new IAiTool[]
         {
-            new SendMessageTool(),
-            new GetMessageTool(),
+            new StubTool("send_message"),
+            new StubTool("get_message"),
         };
 
         var registry = new AiToolRegistry(tools);
@@ -51,7 +61,7 @@ public class AiAgentToolTests
     [Test]
     public void Registry_GetToolByName()
     {
-        var tools = new IAiTool[] { new GetMessageTool() };
+        var tools = new IAiTool[] { new StubTool("get_message") };
         var registry = new AiToolRegistry(tools);
 
         var found = registry.GetTool("get_message");
@@ -65,7 +75,7 @@ public class AiAgentToolTests
     [Test]
     public void Registry_GetToolSchemas_ReturnsValidJson()
     {
-        var tools = new IAiTool[] { new GetMessageTool() };
+        var tools = new IAiTool[] { new StubTool("get_message") };
         var registry = new AiToolRegistry(tools);
 
         var schemas = registry.GetToolSchemas();
@@ -81,8 +91,8 @@ public class AiAgentToolTests
     {
         var tools = new IAiTool[]
         {
-            new SendMessageTool(),
-            new GetMessageTool(),
+            new StubTool("send_message"),
+            new StubTool("get_message"),
         };
 
         var registry = new AiToolRegistry(tools);
@@ -140,15 +150,16 @@ public class AiAgentToolTests
 
     #endregion
 
-    #region ComputeTimestampTool
+    #region ComputeTimestamp (via TimeAiAdapter generated tool)
+
+    private static IAiTool BuildTimestampTool()
+        => new TimeAiAdapter_ComputeTimestamp_AiTool(new TimeAiAdapter());
 
     [Test]
     public async Task Timestamp_OffsetHours_ReturnsCorrectEpoch()
     {
-        var tool = new ComputeTimestampTool();
-        var args = JsonDocument.Parse("""{"offset_hours": 3}""").RootElement;
-
-        var result = await tool.ExecuteAsync(_ctx, args);
+        var args = JsonDocument.Parse("""{"offsetHours": 3}""").RootElement;
+        var result = await BuildTimestampTool().ExecuteAsync(_ctx, args);
 
         Assert.That(result, Does.StartWith("epoch:"));
         Assert.That(result, Does.Contain("utc:"));
@@ -162,10 +173,8 @@ public class AiAgentToolTests
     [Test]
     public async Task Timestamp_NegativeOffset_ReturnsPastEpoch()
     {
-        var tool = new ComputeTimestampTool();
-        var args = JsonDocument.Parse("""{"offset_minutes": -30}""").RootElement;
-
-        var result = await tool.ExecuteAsync(_ctx, args);
+        var args = JsonDocument.Parse("""{"offsetMinutes": -30}""").RootElement;
+        var result = await BuildTimestampTool().ExecuteAsync(_ctx, args);
 
         var epoch = long.Parse(result.Split('\n')[0].Split(':')[1].Trim());
         var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -176,10 +185,8 @@ public class AiAgentToolTests
     [Test]
     public async Task Timestamp_AbsoluteDateTime_ReturnsCorrectEpoch()
     {
-        var tool = new ComputeTimestampTool();
         var args = JsonDocument.Parse("""{"date": "2026-06-15", "time": "14:30"}""").RootElement;
-
-        var result = await tool.ExecuteAsync(_ctx, args);
+        var result = await BuildTimestampTool().ExecuteAsync(_ctx, args);
 
         var epoch = long.Parse(result.Split('\n')[0].Split(':')[1].Trim());
         var expected = new DateTimeOffset(2026, 6, 15, 14, 30, 0, TimeSpan.Zero).ToUnixTimeSeconds();
@@ -189,10 +196,8 @@ public class AiAgentToolTests
     [Test]
     public async Task Timestamp_CombinedOffsets_Accumulate()
     {
-        var tool = new ComputeTimestampTool();
-        var args = JsonDocument.Parse("""{"offset_hours": 1, "offset_minutes": 30, "offset_seconds": 45}""").RootElement;
-
-        var result = await tool.ExecuteAsync(_ctx, args);
+        var args = JsonDocument.Parse("""{"offsetHours": 1, "offsetMinutes": 30, "offsetSeconds": 45}""").RootElement;
+        var result = await BuildTimestampTool().ExecuteAsync(_ctx, args);
 
         var epoch = long.Parse(result.Split('\n')[0].Split(':')[1].Trim());
         var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -201,22 +206,21 @@ public class AiAgentToolTests
     }
 
     [Test]
-    public async Task Timestamp_InvalidDate_ReturnsError()
+    public async Task Timestamp_InvalidDate_ReturnsStructuredError()
     {
-        var tool = new ComputeTimestampTool();
         var args = JsonDocument.Parse("""{"date": "not-a-date"}""").RootElement;
+        var result = await BuildTimestampTool().ExecuteAsync(_ctx, args);
 
-        var result = await tool.ExecuteAsync(_ctx, args);
-        Assert.That(result, Does.StartWith("Error:"));
+        // Structured ToolException output: {"error":"invalid_argument","message":"..."}
+        var doc = JsonDocument.Parse(result);
+        Assert.That(doc.RootElement.GetProperty("error").GetString(), Is.EqualTo("invalid_argument"));
     }
 
     [Test]
     public async Task Timestamp_NoParams_ReturnsCurrentTime()
     {
-        var tool = new ComputeTimestampTool();
         var args = JsonDocument.Parse("""{}""").RootElement;
-
-        var result = await tool.ExecuteAsync(_ctx, args);
+        var result = await BuildTimestampTool().ExecuteAsync(_ctx, args);
 
         var epoch = long.Parse(result.Split('\n')[0].Split(':')[1].Trim());
         var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -286,6 +290,18 @@ public class AiAgentToolTests
     }
 
     [Test]
+    public void Buffer_Push_TouchesLastAccessed()
+    {
+        var buffer = new ChannelMessageBuffer(5);
+        var before = buffer.LastAccessedUtc;
+
+        Thread.Sleep(10);
+        buffer.Push(new(1, 100, "A", "x", DateTimeOffset.UtcNow));
+
+        Assert.That(buffer.LastAccessedUtc, Is.GreaterThan(before));
+    }
+
+    [Test]
     public void Buffer_Count_ReflectsActualEntries()
     {
         var buffer = new ChannelMessageBuffer(3);
@@ -302,6 +318,76 @@ public class AiAgentToolTests
 
         buffer.Push(new(4, 400, "D", "w", now));
         Assert.That(buffer.Count, Is.EqualTo(3));
+    }
+
+    [Test]
+    public void Buffer_TryRemove_RemovesByMessageIdAndPreservesOrder()
+    {
+        var buffer = new ChannelMessageBuffer(5);
+        var now = DateTimeOffset.UtcNow;
+
+        buffer.Push(new(1, 100, "A", "first", now));
+        buffer.Push(new(2, 200, "B", "second", now.AddSeconds(1)));
+        buffer.Push(new(3, 300, "C", "third", now.AddSeconds(2)));
+        buffer.Push(new(4, 400, "D", "fourth", now.AddSeconds(3)));
+
+        var removed = buffer.TryRemove(2);
+        Assert.That(removed, Is.True);
+
+        var messages = buffer.GetMessages();
+        Assert.That(messages, Has.Length.EqualTo(3));
+        Assert.That(messages[0].Content, Is.EqualTo("first"));
+        Assert.That(messages[1].Content, Is.EqualTo("third"));
+        Assert.That(messages[2].Content, Is.EqualTo("fourth"));
+    }
+
+    [Test]
+    public void Buffer_TryRemove_ReturnsFalseWhenMissing()
+    {
+        var buffer = new ChannelMessageBuffer(3);
+        var now = DateTimeOffset.UtcNow;
+
+        buffer.Push(new(1, 100, "A", "x", now));
+
+        Assert.That(buffer.TryRemove(99), Is.False);
+        Assert.That(buffer.Count, Is.EqualTo(1));
+    }
+
+    [Test]
+    public void Buffer_TryRemove_HandlesWrappedRing()
+    {
+        var buffer = new ChannelMessageBuffer(3);
+        var now = DateTimeOffset.UtcNow;
+
+        // Push 5 into capacity-3 ring: oldest two evicted, ring is wrapped.
+        // Final state in chronological order: 3, 4, 5.
+        buffer.Push(new(1, 100, "A", "m1", now));
+        buffer.Push(new(2, 100, "A", "m2", now));
+        buffer.Push(new(3, 100, "A", "m3", now));
+        buffer.Push(new(4, 100, "A", "m4", now));
+        buffer.Push(new(5, 100, "A", "m5", now));
+
+        Assert.That(buffer.TryRemove(4), Is.True);
+
+        var messages = buffer.GetMessages();
+        Assert.That(messages, Has.Length.EqualTo(2));
+        Assert.That(messages[0].Content, Is.EqualTo("m3"));
+        Assert.That(messages[1].Content, Is.EqualTo("m5"));
+
+        // After removal, pushing a new entry should append at the end (chronological)
+        buffer.Push(new(6, 100, "A", "m6", now));
+        messages = buffer.GetMessages();
+        Assert.That(messages, Has.Length.EqualTo(3));
+        Assert.That(messages[0].Content, Is.EqualTo("m3"));
+        Assert.That(messages[1].Content, Is.EqualTo("m5"));
+        Assert.That(messages[2].Content, Is.EqualTo("m6"));
+    }
+
+    [Test]
+    public void Buffer_TryRemove_OnEmpty_ReturnsFalse()
+    {
+        var buffer = new ChannelMessageBuffer(3);
+        Assert.That(buffer.TryRemove(1), Is.False);
     }
 
     #endregion

@@ -88,56 +88,16 @@ agentchannelskilllist:
     - ''
   params:
     - { }
-aprompts:
+aiprompt:
   desc: |-
-    Lists all AI agent prompt files with their sizes and enabled status.
+    Manage the AI agent system prompts (SOUL and OPERATOR).
+    Run with no arguments to pick interactively, or pass `soul` / `operator` directly.
+    Editing opens a modal with the current content prefilled.
   ex:
     - ''
+    - 'soul'
+    - 'operator'
   params:
     - { }
-apromptshow:
-  desc: |-
-    Shows the contents of a prompt file. DMs the content if it's too long.
-  ex:
-    - 'SOUL'
-    - 'OPERATOR'
-    - 'my-persona'
-  params:
-    - path:
-        desc: "Prompt file name (SOUL, OPERATOR, or a module name)"
-apromptedit:
-  desc: |-
-    Overwrites a prompt file with the given content.
-    You can provide the content as text or attach a .md file.
-  ex:
-    - 'SOUL You are Nadeko, a cheerful and helpful Discord bot.'
-    - 'my-persona Respond with extra enthusiasm.'
-  params:
-    - path:
-        desc: "Prompt file name (SOUL, OPERATOR, or a module name)"
-      content:
-        desc: "New content for the file (or attach a .md file)"
-apromptreload:
-  desc: |-
-    Reloads all prompt files from disk and broadcasts to all shards.
-  ex:
-    - ''
-  params:
-    - { }
-apromptmodule:
-  desc: |-
-    Toggles a prompt module on or off. When all modules are enabled (default),
-    toggling one off switches to an explicit list.
-  ex:
-    - 'my-persona'
-    - 'concise'
-  params:
-    - name:
-        desc: "Name of the module to toggle"
-apromptpath:
-  desc: |-
-    Shows the absolute path to the prompts directory.
-  ex:
-    - ''
-  params:
-    - { }
+    - kind:
+        desc: "Which prompt to view and edit (soul or operator)."

@@ -30,15 +30,6 @@ public sealed class Creds : IBotCreds
              """)]
     public int TotalShards { get; set; }
 
-    [Comment("""
-             Pledge 5$ or more on https://patreon.com/nadekobot and connect your discord account to Patreon.
-             Go to https://dashy.nadeko.bot/me and login with your discord account
-             Go to the Keys page and click "Generate New Key" and copy it here
-             You and anyone else with the permission to run `.prompt` command will be able to use natural language to run bot's commands.
-             For example '@Bot how's the weather in Paris' will return the current weather in Paris as if you were to run `.weather Paris` command.
-             """)]
-    public string NadekoAiToken { get; set; }
-
     [Comment(
         """
         Login to https://console.cloud.google.com, create a new project, go to APIs & Services -> Library -> YouTube Data API and enable it.

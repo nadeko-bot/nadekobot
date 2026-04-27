@@ -1,4 +1,7 @@
 expires: Expires
+patron_added: Patron Added
+patron_add_failed: Failed to add patron.
+patron_add_invalid_amount: Amount must be greater than 0 cents.
 patron_info: Patron Info
 patron_msg_sent: >-
   Done sending messages to patrons at and above tier {1}. {1} successfully sent

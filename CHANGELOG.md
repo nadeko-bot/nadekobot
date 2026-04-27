@@ -2,11 +2,30 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.1] - TBD
+## [7.2.1] - 27.01.2026
 
+### Added
 
+- `.patronadd` (`.pa`) owner command: manually grant a user 30 days of patron benefits with the specified cent amount
+- `.aiprompt` owner only command to manage SOUL.md and OPERATOR.md files
 
-## [7.2.0] - 22.04.2026
+### Changed
+
+- Simplified AI agent prompt management to a single `.aiprompt` command. Run with no arguments to get a SOUL/OPERATOR button picker; pass `soul` or `operator` to view the file inline and edit it through a Discord modal. Removed the prompt module concept entirely.
+
+### Removed
+
+- Prompt modules (`data/ai/prompts/modules/`) and example personas (`data/ai/prompts/examples/`). Only `SOUL.md` and `OPERATOR.md` remain.
+
+### Fixed
+
+- AI agent now sees its own command output and the rest of the channel between tool calls. Asking "what's the weather in Oslo" no longer ends with the bot replying "Done." after running the weather command -- it reads the embed it just posted and answers the question. Action requests still get a short acknowledgement instead of restating the confirmation.
+- AI agent channel history now decodes the full embed (author, link URL, image and thumbnail URLs, timestamp), attachments (filename, type, size, URL), stickers, and reply-to context for every message it remembers. Per-message truncation removed -- the buffer holds the message verbatim. Deletes pop the entry from history.
+
+### Dev
+
+- AI agent's per-channel buffer is now fed directly from MessageReceived, so it captures the bot's own messages
+- AI Cold-start backfill capped at MIN(100, ChannelMessageMemory)
 
 ### Added
 
@@ -26,9 +45,8 @@
 ### Changed
 
 - `.patrons` is now paginated with 10 patrons per page; tier headers repeat on continuation pages
-- `.wlb` leaderboard now uses embed fields with rank numbers ("#X Username")
+- `.wlb` leaderboard should look better
 - Faster startup: DI container build, module registration, and type reader loading now run in parallel with Discord login instead of sequentially after it
-- Massive startup query speedup: all per-shard DB queries now use SQLite expression indexes
 - DM notifications from the new `.notify` system have a disable hint
 
 ### Fixed
@@ -40,11 +58,10 @@
 
 ### Dev
 
-- `Reminder.ServerId` renamed to `GuildId` for consistency
-- DB migration: `AiAgentGuildSkill` gains nullable `ChannelId` column with `(GuildId, ChannelId, Name)` unique index
-- AI agent data layer: `[AiTool]` source generator emits `IAiTool` implementations.
-- Massive optimizations for message hot path
-- Misc service cleanup: server log, protection, filter, and replacement services moved to snapshot/frozen collections and span-based parsing
+- AiAgent reworked
+- Database cleanup/migrations
+- Massive optimizations for message hot path, bot startup, and queries
+- Misc service cleanup
 
 ## [7.1.26] - 17.04.2026
 

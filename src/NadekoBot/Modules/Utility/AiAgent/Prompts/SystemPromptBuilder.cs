@@ -4,12 +4,10 @@ namespace NadekoBot.Modules.Utility.AiAgent.Prompts;
 
 public sealed class SystemPromptBuilder(
     PromptLibrary promptLibrary,
-    AiAgentConfigService configService,
     IAiToolRegistry toolRegistry) : INService
 {
     public async Task<string> BuildAsync(AiToolContext context)
     {
-        var config = configService.Data;
         var botUser = await context.Guild.GetCurrentUserAsync();
         var botName = PromptSanitizer.Sanitize(botUser.DisplayName);
         var botId = botUser.Id;
@@ -19,13 +17,8 @@ public sealed class SystemPromptBuilder(
         var userName = PromptSanitizer.Sanitize(context.User.DisplayName);
         var userId = context.User.Id;
 
-        var enabledModules = config.EnabledModules is { Count: > 0 }
-            ? (IReadOnlyCollection<string>)config.EnabledModules.ToHashSet(StringComparer.OrdinalIgnoreCase)
-            : null;
-
         var soul = ReplaceTokens(promptLibrary.GetSoul(), botName, botId, guildName, channelName, userName);
         var operatorDoc = ReplaceTokens(promptLibrary.GetOperatorDoc(), botName, botId, guildName, channelName, userName);
-        var modules = promptLibrary.GetModules(enabledModules);
 
         var channels = await context.Guild.GetTextChannelsAsync();
         var visible = channels
@@ -56,17 +49,7 @@ public sealed class SystemPromptBuilder(
         // Slot 4: Tool usage guidance (code, from IAiTool.SystemGuidance, deduplicated)
         AppendToolGuidance(sb);
 
-        // Slot 5: User modules (disk, operator-authored)
-        for (var i = 0; i < modules.Count; i++)
-        {
-            if (string.IsNullOrWhiteSpace(modules[i].Content))
-                continue;
-
-            sb.AppendLine();
-            sb.AppendLine(modules[i].Content);
-        }
-
-        // Slot 6: Dynamic context
+        // Slot 5: Dynamic context
         sb.AppendLine();
         sb.AppendLine("CONTEXT:");
         sb.Append("- Server: ").AppendLine(guildName);

@@ -136,6 +136,15 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
                 c.Version = 7;
             });
         }
+
+        if (Data.Version < 8)
+        {
+            // EnabledModules property was removed; old YAML keys are silently ignored by the deserializer.
+            ModifyConfig(c =>
+            {
+                c.Version = 8;
+            });
+        }
     }
 
     private void MigrateSystemPromptToFileInternal()

@@ -34,7 +34,17 @@ public interface IPatronageService
     Task<int> GetUserLimit(string name, ulong userId, int def );
     
     Task<IReadOnlyList<(PatronTier Tier, IReadOnlyList<(ulong UserId, string? Username)> Patrons)>> GetActivePatronsByTierAsync();
-    
+
+    /// <summary>
+    /// Manually grants a user one month of patron benefits at the specified pledge amount,
+    /// without going through Patreon. If the user already has an active manual grant, the
+    /// grant is extended by one month.
+    /// </summary>
+    /// <param name="userId">Discord user id of the patron.</param>
+    /// <param name="cents">Pledge amount in cents.</param>
+    /// <returns>The resulting <see cref="Patron"/> snapshot, or null if input is invalid.</returns>
+    Task<Patron?> AddManualPatronAsync(ulong userId, long cents);
+
     PatronConfigData GetConfig();
     int PercentBonus(Patron? user);
     int PercentBonus(long amount);

@@ -4593,6 +4593,20 @@
     },
     {
       "Aliases": [
+        ".patronadd",
+        ".pa"
+      ],
+      "Description": "Manually grants a user 30 days of patron benefits at the specified pledge in cents, without going through Patreon. Extends an existing manual grant by another month.",
+      "Usage": [
+        ".patronadd 500 123123123123123123"
+      ],
+      "Submodule": "Owner",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
         ".massping"
       ],
       "Description": "Mass pings all users in the server.\nRun again to cancel.",
@@ -7353,96 +7367,15 @@
     },
     {
       "Aliases": [
-        ".aprompts",
-        ".apromptlist"
-      ],
-      "Description": "Lists all AI agent prompt files with their sizes and enabled status.",
-      "Usage": [
-        ".aprompts"
-      ],
-      "Submodule": "PromptCommands",
-      "Module": "Utility",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".apromptshow",
-        ".aps"
-      ],
-      "Description": "Shows the contents of a prompt file. DMs the content if it's too long.",
-      "Usage": [
-        ".apromptshow SOUL",
-        ".apromptshow OPERATOR",
-        ".apromptshow my-persona"
-      ],
-      "Submodule": "PromptCommands",
-      "Module": "Utility",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".apromptedit",
-        ".ape"
-      ],
-      "Description": "Overwrites a prompt file with the given content.\nYou can provide the content as text or attach a .md file.",
-      "Usage": [
-        ".apromptedit SOUL You are Nadeko, a cheerful and helpful Discord bot.",
-        ".apromptedit my-persona Respond with extra enthusiasm."
-      ],
-      "Submodule": "PromptCommands",
-      "Module": "Utility",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".apromptreload",
+        ".aiprompt",
+        ".aprompt",
         ".apr"
       ],
-      "Description": "Reloads all prompt files from disk and broadcasts to all shards.",
+      "Description": "Manage the AI agent system prompts (SOUL and OPERATOR).\nRun with no arguments to pick interactively, or pass `soul` / `operator` directly.\nEditing opens a modal with the current content prefilled.",
       "Usage": [
-        ".apromptreload"
-      ],
-      "Submodule": "PromptCommands",
-      "Module": "Utility",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".apromptmodule",
-        ".apm"
-      ],
-      "Description": "Toggles a prompt module on or off. When all modules are enabled (default),\ntoggling one off switches to an explicit list.",
-      "Usage": [
-        ".apromptmodule my-persona",
-        ".apromptmodule concise"
-      ],
-      "Submodule": "PromptCommands",
-      "Module": "Utility",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".apromptpath",
-        ".app"
-      ],
-      "Description": "Shows the absolute path to the prompts directory.",
-      "Usage": [
-        ".apromptpath"
+        ".aiprompt",
+        ".aiprompt soul",
+        ".aiprompt operator"
       ],
       "Submodule": "PromptCommands",
       "Module": "Utility",

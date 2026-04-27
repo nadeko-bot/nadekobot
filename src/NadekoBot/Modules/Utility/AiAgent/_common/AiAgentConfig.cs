@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 public sealed class AiAgentConfig
 {
     [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
-    public int Version { get; set; } = 7;
+    public int Version { get; set; } = 8;
 
     [Comment("Whether the AI agent feature is enabled. Default false")]
     public bool Enabled { get; set; } = false;
@@ -34,12 +34,6 @@ public sealed class AiAgentConfig
 
     [Comment("Temperature for LLM responses. Lower = more deterministic. Default 0.3")]
     public double Temperature { get; set; } = 0.3;
-
-    [Comment("""
-             Names (without .md) of prompt modules to enable from data/ai/prompts/modules/.
-             Empty list means all modules are enabled.
-             """)]
-    public List<string> EnabledModules { get; set; } = [];
 
     [Comment("""
              List of allowed tool names. If empty, all tools are available.

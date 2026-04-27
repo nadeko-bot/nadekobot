@@ -38,21 +38,7 @@ agentchannelskilllist:
   - agentchannelskilllist
   - aichskilllist
   - aicsl
-aprompts:
-  - aprompts
-  - apromptlist
-apromptshow:
-  - apromptshow
-  - aps
-apromptedit:
-  - apromptedit
-  - ape
-apromptreload:
-  - apromptreload
+aiprompt:
+  - aiprompt
+  - aprompt
   - apr
-apromptmodule:
-  - apromptmodule
-  - apm
-apromptpath:
-  - apromptpath
-  - app

@@ -47,6 +47,7 @@ public sealed class ChannelMessageBuffer
             _writeIndex = (_writeIndex + 1) % _capacity;
             if (_count < _capacity)
                 _count++;
+            LastAccessedUtc = DateTime.UtcNow;
         }
     }
 
@@ -86,6 +87,56 @@ public sealed class ChannelMessageBuffer
     public int Count
     {
         get { lock (_lock) return _count; }
+    }
+
+    /// <summary>
+    /// Removes the snapshot with the given Discord message id, preserving the chronological
+    /// order of the remaining entries. Returns true if a matching entry was removed.
+    /// Re-normalizes the ring so the oldest entry sits at index 0; cheap on small buffers.
+    /// </summary>
+    public bool TryRemove(ulong messageId)
+    {
+        lock (_lock)
+        {
+            if (_count == 0)
+                return false;
+
+            var oldestIndex = _count < _capacity ? 0 : _writeIndex;
+            var foundAt = -1;
+
+            for (var i = 0; i < _count; i++)
+            {
+                var idx = (oldestIndex + i) % _capacity;
+                if (_buffer[idx].MessageId == messageId)
+                {
+                    foundAt = i;
+                    break;
+                }
+            }
+
+            if (foundAt < 0)
+                return false;
+
+            // Reconstruct the ring so [0..count-1] holds the remaining entries in
+            // chronological order. Cheaper than juggling write indices for a wrapped
+            // ring after an arbitrary removal.
+            var remaining = _count - 1;
+            var rebuilt = new MessageSnapshot[_capacity];
+            var dst = 0;
+            for (var i = 0; i < _count; i++)
+            {
+                if (i == foundAt)
+                    continue;
+                var src = (oldestIndex + i) % _capacity;
+                rebuilt[dst++] = _buffer[src];
+            }
+
+            Array.Copy(rebuilt, _buffer, _capacity);
+            _count = remaining;
+            _writeIndex = remaining % _capacity;
+            LastAccessedUtc = DateTime.UtcNow;
+            return true;
+        }
     }
 
     /// <summary>

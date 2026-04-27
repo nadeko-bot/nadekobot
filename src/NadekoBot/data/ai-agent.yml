@@ -1,12 +1,12 @@
 # DO NOT CHANGE THE VERSION MANUALLY
-version: 7
+version: 8
 # Whether the AI agent feature is enabled. Default false
 enabled: true
 # Base URL for the OpenAI-compatible API.
 # DO NOT add /v1/chat/completions suffix.
 apiUrl: https://openrouter.ai/api
 # Which model to use for the agent. Must support tool/function calling.
-modelName: openai/gpt-5.4
+modelName: inception/mercury-2
 # Optional list of model IDs for providers that support fallback routing (e.g. OpenRouter).
 # If set, this is sent as "models" instead of "model" in the request body.
 # Example: ["openai/gpt-5.4", "anthropic/claude-opus-4", "google/gemini-3.1-pro"]
@@ -17,9 +17,6 @@ maxToolCalls: 10
 maxTokens: 2048
 # Temperature for LLM responses. Lower = more deterministic. Default 0.3
 temperature: 0.3
-# Names (without .md) of prompt modules to enable from data/ai/prompts/modules/.
-# Empty list means all modules are enabled.
-enabledModules: []
 # List of allowed tool names. If empty, all tools are available.
 # Example: ["send_message", "get_message"]
 allowedTools: []

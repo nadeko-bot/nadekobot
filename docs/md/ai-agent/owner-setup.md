@@ -26,12 +26,9 @@ BaseUrl: https://openrouter.ai/api/v1
 ApiKey: sk-or-v1-...
 ReasoningEffort: medium       # for models that support it
 UseEmbed: true                # false = plain-text replies
-EnabledModules:               # which modules/*.md to include in the system prompt
-  - data-tools
-  - concise
 ```
 
-Restart the bot after editing creds or `BaseUrl`. `ModelName`, `Models`, `ReasoningEffort`, `UseEmbed`, and `EnabledModules` can also be changed at runtime via the config commands (see `.h .config aiagent`).
+Restart the bot after editing creds or `BaseUrl`. `ModelName`, `Models`, `ReasoningEffort`, and `UseEmbed` can also be changed at runtime via the config commands (see `.h .config aiagent`).
 
 ## 3. Understand the prompt files
 
@@ -40,39 +37,22 @@ Path: `data/ai/prompts/`. Layout:
 ```
 data/ai/prompts/
 ├── SOUL.md              owner-edited, bot identity
-├── OPERATOR.md          owner-edited, rules for the agent
-├── modules/             owner-edited, optional behavior modules
-│   ├── concise.md
-│   └── no-profanity.md
-└── examples/            read-only reference personas
-    ├── SOUL-catgirl.md
-    ├── SOUL-concise.md
-    └── SOUL-helpful.md
+└── OPERATOR.md          owner-edited, rules for the agent
 ```
 
-- `SOUL.md` and `OPERATOR.md` are seeded automatically on first run. Pick one of `examples/SOUL-*.md` as a starting point if you want.
-- Files in `modules/` are discovered by filename. Empty files show up in `.apromptmodule` so you can toggle them without touching disk.
+- `SOUL.md` and `OPERATOR.md` are seeded automatically on first run.
 - Placeholders: `{botName}`, `{botId}`, `{guildName}`, `{channelName}`, `{userName}` are replaced at turn time.
-- Size limits: 20 KB for `SOUL.md` / `OPERATOR.md`, 8 KB per module.
+- Size limit: 20 KB per file.
 - A filesystem watcher picks up edits with a 1 second debounce. No restart needed.
 
 !!! note "Scope"
-    These files are process-global. Every guild your bot serves sees the same SOUL and the same enabled modules. Per-guild behavior belongs in skills, not modules.
+    These files are process-global. Every guild your bot serves sees the same SOUL and OPERATOR. Per-guild behavior belongs in skills.
 
 ## 4. Owner commands
 
-All of these are bot-owner-only.
+`.aiprompt` is owner-only. Run it with no arguments to get a panel with two buttons (SOUL and OPERATOR). Clicking either is the same as running `.aiprompt soul` or `.aiprompt operator` directly: the bot shows the current contents and offers an Edit button that opens a Discord modal with Save / Cancel built in.
 
-| Command | What it does |
-|---|---|
-| `.aprompts` | List SOUL, OPERATOR, and every module with its size and enabled state. |
-| `.apromptshow <path>` | Print the contents of a prompt file. |
-| `.apromptedit <path> <content>` | Write a prompt file. Respects size limits. Path is relative to the prompts dir. |
-| `.apromptmodule <name>` | Toggle a module on or off. No file changes; stored in config. |
-| `.apromptreload` | Force a rebuild of the in-memory snapshot across every shard. |
-| `.apromptpath` | Print the absolute path of the prompts directory. |
-
-`.apromptedit` writes through a `.tmp` file and atomic rename, so an interrupted edit won't leave a half-written prompt on disk.
+Saves go through a `.tmp` file and atomic rename, so an interrupted edit won't leave a half-written prompt on disk.
 
 ## 5. Access control
 
@@ -87,6 +67,6 @@ Cache: allow/deny is cached per user for 1 minute to avoid a DB hit on every mes
 ## 6. Troubleshooting
 
 - **Agent doesn't respond.** Check logs for auth errors on the provider, confirm the user is an owner or active patron, and confirm the model supports tool calling. A 400 "unknown parameter: tools" is the fingerprint of a model without tool-call support.
-- **Edits to `SOUL.md` don't show up.** Look for `PromptLibrary: loaded SOUL ...` in the logs after your save. If you don't see it, the watcher didn't fire -- try `.apromptreload`. Some editors write via replace-rename; the watcher handles both.
-- **Agent says it can't find a tool.** Data tools are discovered on demand via `search_data_tools`. The agent is supposed to call that first when looking for reads. If it's refusing to search, your prompt may be steering it away -- check `SOUL.md` and enabled modules.
-- **Prompt is too large.** Check `.aprompts`. If SOUL + OPERATOR + modules + command list exceed the model's context budget, disable a module or trim SOUL.
+- **Edits to `SOUL.md` don't show up.** Look for `PromptLibrary: loaded SOUL ...` in the logs after your save. If you don't see it, the watcher didn't fire -- save again or restart the bot. Some editors write via replace-rename; the watcher handles both.
+- **Agent says it can't find a tool.** Data tools are discovered on demand via `search_data_tools`. The agent is supposed to call that first when looking for reads. If it's refusing to search, your prompt may be steering it away -- check `SOUL.md` and `OPERATOR.md`.
+- **Prompt is too large.** If SOUL + OPERATOR + command list exceed the model's context budget, trim them.

@@ -1,18 +1,24 @@
 using System.Text;
-using System.Text.Json;
+using System.Text.RegularExpressions;
 using AngleSharp.Html.Parser;
+using NadekoBot.AiAgent;
 using NadekoBot.Modules.Searches;
 
-namespace NadekoBot.Modules.Utility.AiAgent.Tools;
+namespace NadekoBot.Modules.Utility.AiAgent.Adapters;
 
-/// <summary>
-/// Searches the web using the bot's configured search engine and optionally
-/// fetches full page content from the top results.
-/// </summary>
-public sealed class WebSearchTool(
+public sealed partial class WebAiAdapter(
     ISearchServiceFactory searchFactory,
-    IHttpClientFactory httpFactory) : IAiTool, INService
+    IHttpClientFactory httpFactory) : IAiCoreToolGroup, INService
 {
+    [GeneratedRegex(@"[ \t]+")]
+    private static partial Regex SpacesOrTabsRegex();
+
+    [GeneratedRegex(@"\n{3,}")]
+    private static partial Regex MultipleNewlinesRegex();
+
+    public string GroupName => "web";
+    public string GroupDescription => "Web search with optional page-text fetching for top results.";
+
     private const int DEFAULT_COUNT = 5;
     private const int MAX_COUNT = 10;
     private const int MAX_READ_PAGES = 3;
@@ -35,49 +41,25 @@ public sealed class WebSearchTool(
         "[role='banner']", "[role='contentinfo']"
     ];
 
-    public string Name => "web_search";
-
-    public string Description =>
-        "Search the web for information. Returns titles, URLs, and snippets. " +
-        "Optionally fetch full page text from the top results by setting read_pages (max 3). " +
-        "Use this when you need current information, facts, documentation, or anything not in your training data.";
-
-    public JsonElement ParameterSchema { get; } = JsonDocument.Parse($$"""
-        {
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "The search query"
-                },
-                "count": {
-                    "type": "integer",
-                    "description": "Number of results to return (default {{DEFAULT_COUNT}}, max {{MAX_COUNT}})"
-                },
-                "read_pages": {
-                    "type": "integer",
-                    "description": "Number of top result pages to fetch full text content from (default 0, max {{MAX_READ_PAGES}}). Pages are fetched in parallel."
-                }
-            },
-            "required": ["query"]
-        }
-        """).RootElement.Clone();
-
-    public async Task<string> ExecuteAsync(AiToolContext context, JsonElement arguments)
+    [AiTool(
+        "web_search",
+        "Search the web for information. Returns titles, URLs, and snippets. "
+        + "Optionally fetch full page text from the top results by setting read_pages (max 3). "
+        + "Use this when you need current information, facts, documentation, or anything not in your training data.")]
+    public async Task<string> WebSearch(
+        [AiParam("The search query")]
+        string query,
+        [AiParam("Number of results to return (default 5, max 10)")]
+        int count = DEFAULT_COUNT,
+        [AiParam("Number of top result pages to fetch full text content from (default 0, max 3). Pages are fetched in parallel.")]
+        int readPages = 0)
     {
-        if (!arguments.TryGetProperty("query", out var queryEl)
-            || string.IsNullOrWhiteSpace(queryEl.GetString()))
-            return "Error: query is required.";
+        if (string.IsNullOrWhiteSpace(query))
+            throw ToolException.InvalidArgument("query is required.");
 
-        var query = queryEl.GetString()!.Trim();
-
-        var count = DEFAULT_COUNT;
-        if (arguments.TryGetProperty("count", out var countEl) && countEl.TryGetInt32(out var c))
-            count = Math.Clamp(c, 1, MAX_COUNT);
-
-        var readPages = 0;
-        if (arguments.TryGetProperty("read_pages", out var rpEl) && rpEl.TryGetInt32(out var rp))
-            readPages = Math.Clamp(rp, 0, MAX_READ_PAGES);
+        query = query.Trim();
+        count = Math.Clamp(count, 1, MAX_COUNT);
+        readPages = Math.Clamp(readPages, 0, MAX_READ_PAGES);
 
         var searchService = searchFactory.GetSearchService();
         var data = await searchService.SearchAsync(query);
@@ -87,12 +69,11 @@ public sealed class WebSearchTool(
 
         var entries = data.Entries.Take(count).ToList();
 
-        // Fetch page content in parallel if requested
         var pageContents = new Dictionary<string, string>();
         if (readPages > 0)
         {
             var toFetch = entries.Take(readPages).ToList();
-            var fetchTasks = toFetch.Select(e => FetchPageContentAsync(e.Url)).ToArray();
+            var fetchTasks = toFetch.Select(e => FetchPageContentInternalAsync(e.Url)).ToArray();
             var results = await Task.WhenAll(fetchTasks);
 
             for (var i = 0; i < toFetch.Count; i++)
@@ -123,11 +104,7 @@ public sealed class WebSearchTool(
         return sb.ToString();
     }
 
-    /// <summary>
-    /// Fetches a URL and extracts visible text content using AngleSharp.
-    /// Only fetches public URLs to prevent SSRF attacks against internal networks.
-    /// </summary>
-    private async Task<string> FetchPageContentAsync(string url)
+    private async Task<string> FetchPageContentInternalAsync(string url)
     {
         try
         {
@@ -146,7 +123,7 @@ public sealed class WebSearchTool(
                 return $"(Failed to fetch: HTTP {(int)response.StatusCode})";
 
             var contentType = response.Content.Headers.ContentType?.MediaType;
-            if (contentType is not null && !contentType.Contains("html", StringComparison.OrdinalIgnoreCase))
+            if (contentType is not null && !contentType.Contains("html", StringComparison.InvariantCultureIgnoreCase))
                 return $"(Non-HTML content: {contentType})";
 
             await using var stream = await response.Content.ReadAsStreamAsync();
@@ -163,10 +140,8 @@ public sealed class WebSearchTool(
                 return "(No page content found)";
 
             var text = body.TextContent;
-
-            // Collapse whitespace
-            text = System.Text.RegularExpressions.Regex.Replace(text, @"[ \t]+", " ");
-            text = System.Text.RegularExpressions.Regex.Replace(text, @"\n{3,}", "\n\n");
+            text = SpacesOrTabsRegex().Replace(text, " ");
+            text = MultipleNewlinesRegex().Replace(text, "\n\n");
             text = text.Trim();
 
             if (string.IsNullOrWhiteSpace(text))

@@ -5,11 +5,7 @@ using OneOf.Types;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-public readonly record struct AiProviderInfo(
-    string Url,
-    string AuthHeader,
-    string AuthValue,
-    bool SupportsOpenRouterExtensions);
+public readonly record struct AiProviderInfo(string Url, string AuthValue);
 
 public sealed class AiAgentSession(
     IHttpClientFactory httpFactory,
@@ -30,13 +26,12 @@ public sealed class AiAgentSession(
         IReadOnlyList<JsonElement> toolSchemas,
         AiAgentConfig config,
         string systemPrompt,
-        string? channelHistory,
+        Func<string?>? channelHistoryProvider,
         CancellationToken ct = default)
     {
         var provider = ResolveProviderInternal(config);
 
-        var reasoning = provider.SupportsOpenRouterExtensions
-                        && !string.IsNullOrWhiteSpace(config.ReasoningEffort)
+        var reasoning = !string.IsNullOrWhiteSpace(config.ReasoningEffort)
             ? new AgentReasoningConfig { Effort = config.ReasoningEffort, Exclude = true }
             : null;
 
@@ -49,13 +44,19 @@ public sealed class AiAgentSession(
             Content = systemPrompt
         });
 
-        if (channelHistory is not null)
+        var historyIndex = -1;
+        if (channelHistoryProvider is not null)
         {
-            messages.Add(new()
+            var initialHistory = channelHistoryProvider();
+            if (initialHistory is not null)
             {
-                Role = "user",
-                Content = channelHistory
-            });
+                historyIndex = messages.Count;
+                messages.Add(new()
+                {
+                    Role = "user",
+                    Content = initialHistory
+                });
+            }
         }
 
         messages.Add(new()
@@ -69,6 +70,22 @@ public sealed class AiAgentSession(
         for (var step = 0; step < config.MaxToolCalls; step++)
         {
             ct.ThrowIfCancellationRequested();
+
+            // Refresh channel history slot before every request after the first so the
+            // model sees output the bot just posted (e.g. a command's embed) on its way
+            // back into the loop.
+            if (step > 0 && historyIndex >= 0 && channelHistoryProvider is not null)
+            {
+                var refreshed = channelHistoryProvider();
+                if (refreshed is not null)
+                {
+                    messages[historyIndex] = new()
+                    {
+                        Role = "user",
+                        Content = refreshed
+                    };
+                }
+            }
 
             var request = new AgentChatRequest
             {
@@ -177,24 +194,9 @@ public sealed class AiAgentSession(
     private AiProviderInfo ResolveProviderInternal(AiAgentConfig config)
     {
         var creds = credsProvider.GetCreds();
-
-        if (!string.IsNullOrWhiteSpace(creds.NadekoAiToken))
-        {
-            return new(
-                "https://nai.nadeko.bot/v1/chat/completions",
-                "x-auth-token",
-                creds.NadekoAiToken,
-                SupportsOpenRouterExtensions: true);
-        }
-
-        var isOpenRouter = config.ApiUrl
-            .Contains("openrouter", StringComparison.InvariantCultureIgnoreCase);
-
         return new(
             config.ApiUrl.TrimEnd('/') + "/v1/chat/completions",
-            "Authorization",
-            $"Bearer {creds.AiApiKey}",
-            SupportsOpenRouterExtensions: isOpenRouter);
+            $"Bearer {creds.AiApiKey}");
     }
 
     private async Task<AgentChatResponse?> CallLlmInternalAsync(
@@ -204,7 +206,7 @@ public sealed class AiAgentSession(
         CancellationToken ct)
     {
         using var http = httpFactory.CreateClient();
-        http.DefaultRequestHeaders.TryAddWithoutValidation(provider.AuthHeader, provider.AuthValue);
+        http.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", provider.AuthValue);
 
         if (config.CustomHeaders is { Count: > 0 } headers)
         {
@@ -215,7 +217,17 @@ public sealed class AiAgentSession(
         try
         {
             using var response = await http.PostAsJsonAsync(provider.Url, request, ct);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var body = await response.Content.ReadAsStringAsync(ct);
+                Log.Error(
+                    "AI agent API {Url} returned {Status}: {Body}",
+                    provider.Url,
+                    (int)response.StatusCode,
+                    body);
+                return null;
+            }
+
             return await response.Content.ReadFromJsonAsync<AgentChatResponse>(_jsonOpts, ct);
         }
         catch (OperationCanceledException)
