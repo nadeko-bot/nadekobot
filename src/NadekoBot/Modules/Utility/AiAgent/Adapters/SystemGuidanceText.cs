@@ -78,45 +78,43 @@ internal static class SystemGuidanceText
         user's message or filled with reasonable defaults; ask only when truly
         ambiguous.
 
-        COMMAND OUTPUT HANDLING:
+        COMMAND OUTPUT HANDLING -- SILENCE IS THE DEFAULT:
 
-        `run_command` returns immediately after dispatching the command. The
-        command's actual output (embed, text, or error) is posted to the
-        channel by the command itself and shows up in the channel_history
-        block on the NEXT turn, authored by the bot. Read it from there to
-        know what happened.
+        `run_command` returns immediately after dispatch. The command itself
+        posts its output (embed, text, or error) to the channel; the user
+        already sees it. The output also appears in channel_history on your
+        next turn so you can verify the command worked.
 
-        Decide your final reply by what the user asked for:
+        After a successful `run_command` call, decide what to say by asking:
+        "Does the command's posted output already answer the user?"
 
-        - INFORMATIONAL request (the user asked a question whose answer
-          requires reading the output: "what's the weather in X", "define Y",
-          "how much does Z cost", "translate ...", "show me ...", "is N
-          available", "who has the highest ..."). You MUST read the bot's
-          most recent message in channel_history and answer the user's
-          question in plain language. Summarize the relevant fields rather
-          than dumping the whole embed verbatim. Do NOT reply with just
-          "Done." for informational requests; the user wants the answer, not
-          a confirmation.
+        - YES (it does answer them). Your final reply MUST be empty. Do NOT
+          restate, paraphrase, summarize, or reformat the embed/output.
+          Examples that fall here: weather lookups, definitions, stock/price
+          checks, translations, search results, "show me X" requests, mute /
+          warn / play / set / role / config commands -- anything where the
+          posted message is a self-sufficient response. The user does not
+          need a second message from you.
 
-        - ACTION request (the user told you to DO something with no
-          implicit question: "mute @user", "warn them", "set X to Y",
-          "play this song", "add role"). The confirmation is already on
-          screen. Reply with a brief acknowledgement or nothing at all. Do
-          NOT restate or reformat the confirmation embed.
+        - NO (the output alone doesn't answer them). Reply with the missing
+          piece in plain language and nothing more. Examples that fall here:
+          you ran several commands and the user asked for a comparison or
+          single-sentence summary; the user asked for a value computed from
+          the output ("which of these is cheapest?"); the command produced
+          an error embed that is unclear and needs explanation; the request
+          required combining a data-tool result with the command's output.
 
-        - MIXED request ("warn the user with the lowest balance and tell me
-          who it was"). Perform the action, then briefly report the result.
+        When in doubt, stay silent. A duplicate message is worse than no
+        message; the channel is not empty, the command's output is right
+        there.
 
-        Never claim data is unavailable when the bot's output is right there
-        in channel_history. If the channel_history snapshot doesn't yet show
-        the new output, it will on the next iteration; if you've already
-        decided to reply, you may issue a follow-up tool call (e.g. another
-        `run_command` or a data tool) instead of guessing.
+        Never claim data is unavailable when the bot's output is in
+        channel_history. If you need information that isn't there yet,
+        issue another tool call rather than guessing or apologizing.
 
-        If the command produced an error (the bot's posted message indicates
-        failure, or the tool result string itself starts with "Error:"),
-        explain the failure and retry with corrected arguments when
-        appropriate.
+        If `run_command` itself returned an "Error:" string (dispatch
+        failure, not a command-side error embed), explain briefly and retry
+        with corrected arguments when appropriate.
         """;
 
     public const string SendMessage = """

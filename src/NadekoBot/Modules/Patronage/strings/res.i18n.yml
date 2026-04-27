@@ -1,5 +1,8 @@
 ar:
   expires: ينتهي
+  patron_added: تمت إضافة الراعي
+  patron_add_failed: فشل في إضافة الراعي.
+  patron_add_invalid_amount: يجب أن يكون المبلغ أكبر من 0 سنت.
   patron_info: معلومات الداعم
   patron_msg_sent: 'تم إرسال الرسائل إلى الداعمين من الفئة {1} وما فوقها. تم إرسال {1} بنجاح وفشل {2}.'
   patron_not_enabled: نظام الدعم معطّل.
@@ -10,6 +13,9 @@ ar:
 
 de-DE:
   expires: Läuft ab
+  patron_added: Patron hinzugefügt
+  patron_add_failed: Patron konnte nicht hinzugefügt werden.
+  patron_add_invalid_amount: Betrag muss größer als 0 Cent sein.
   patron_info: Patron-Info
   patron_msg_sent: 'Nachrichten an Patrons ab Stufe {1} gesendet. {1} erfolgreich gesendet und {2} fehlgeschlagen.'
   patron_not_enabled: Das Patron-System ist deaktiviert.
@@ -20,6 +26,9 @@ de-DE:
 
 es-ES:
   expires: Expira
+  patron_added: Patrón añadido
+  patron_add_failed: No se pudo añadir al patrón.
+  patron_add_invalid_amount: La cantidad debe ser mayor que 0 céntimos.
   patron_info: Info de patron
   patron_msg_sent: 'Mensajes enviados a patrones del nivel {1} y superiores. {1} enviados correctamente y {2} fallidos.'
   patron_not_enabled: El sistema de patrones esta desactivado.
@@ -30,6 +39,9 @@ es-ES:
 
 fr-FR:
   expires: Expire
+  patron_added: Patron ajouté
+  patron_add_failed: Échec de l'ajout du patron.
+  patron_add_invalid_amount: Le montant doit être supérieur à 0 centimes.
   patron_info: Info de la·e contributeur·rice
   patron_msg_sent: 'L''envoi de messages aux contributeur·rice·s de niveau {1} et au-delà a été effectué. {1} ont été envoyés avec succès et {2} ont échoué.'
   patron_not_enabled: Le système de contribution est désactivé.
@@ -40,6 +52,9 @@ fr-FR:
 
 id-ID:
   expires: Kedaluwarsa
+  patron_added: Patron Ditambahkan
+  patron_add_failed: Gagal menambahkan patron.
+  patron_add_invalid_amount: Jumlah harus lebih besar dari 0 sen.
   patron_info: Info Patron
   patron_msg_sent: 'Selesai mengirim pesan ke patron di tier {1} ke atas. {1} berhasil dikirim dan {2} gagal.'
   patron_not_enabled: Sistem patron dinonaktifkan.
@@ -50,6 +65,9 @@ id-ID:
 
 ja-JP:
   expires: 有効期限
+  patron_added: 支援者を追加しました
+  patron_add_failed: 支援者の追加に失敗しました。
+  patron_add_invalid_amount: 金額は0セントより大きくしてください。
   patron_info: パトロン情報
   patron_msg_sent: 'ティア{1}以上のパトロンにメッセージを送信しました。{1}件成功、{2}件失敗。'
   patron_not_enabled: パトロンシステムは無効です。
@@ -60,6 +78,9 @@ ja-JP:
 
 ko-KR:
   expires: 만료일
+  patron_added: 후원자 추가됨
+  patron_add_failed: 후원자 추가에 실패했습니다.
+  patron_add_invalid_amount: 금액은 0센트보다 커야 합니다.
   patron_info: 후원자 정보
   patron_msg_sent: '티어 {1} 이상의 후원자에게 메시지 전송 완료. {1}건 성공, {2}건 실패.'
   patron_not_enabled: 후원자 시스템이 비활성화되어 있어요.
@@ -70,6 +91,9 @@ ko-KR:
 
 pl-PL:
   expires: Wygasa
+  patron_added: Patron dodany
+  patron_add_failed: Nie udało się dodać patrona.
+  patron_add_invalid_amount: Kwota musi być większa niż 0 centów.
   patron_info: Informacje o patronie
   patron_msg_sent: 'Wysłano wiadomości do patronów na poziomie {1} i wyższym. {1} wysłano pomyślnie, {2} nie udało się.'
   patron_not_enabled: System patronatu jest wyłączony.
@@ -80,6 +104,9 @@ pl-PL:
 
 pt-BR:
   expires: Expira
+  patron_added: Apoiador Adicionado
+  patron_add_failed: Falha ao adicionar apoiador.
+  patron_add_invalid_amount: O valor deve ser maior que 0 centavos.
   patron_info: Info do Patrono
   patron_msg_sent: 'Mensagens enviadas para patronos no nivel {1} ou acima. {1} enviadas com sucesso e {2} falharam.'
   patron_not_enabled: O sistema de patronos esta desativado.
@@ -90,6 +117,9 @@ pt-BR:
 
 ru-RU:
   expires: Истекает
+  patron_added: Патрон добавлен
+  patron_add_failed: Не удалось добавить патрона.
+  patron_add_invalid_amount: Сумма должна быть больше 0 центов.
   patron_info: Информация о подписчике
   patron_msg_sent: 'Отправка сообщений подписчикам уровня {1} и выше завершена. Успешно отправлено: {1}, с ошибкой: {2}.'
   patron_not_enabled: Система подписок отключена.
@@ -100,6 +130,9 @@ ru-RU:
 
 sr-Cyrl-RS:
   expires: Истиче
+  patron_added: Патрон додат
+  patron_add_failed: Неуспешно додавање патрона.
+  patron_add_invalid_amount: Износ мора бити већи од 0 центи.
   patron_info: Инфо о патрону
   patron_msg_sent: 'Завршено слање порука патронима на и изнад нивоа {1}. {1} успешно послато и {2} неуспешно.'
   patron_not_enabled: Патрон систем је искључен.
@@ -110,6 +143,9 @@ sr-Cyrl-RS:
 
 tr-TR:
   expires: Sona Eriyor
+  patron_added: Patron Eklendi
+  patron_add_failed: Patron eklenemedi.
+  patron_add_invalid_amount: Miktar 0 sentten büyük olmalı.
   patron_info: Patron Bilgisi
   patron_msg_sent: 'Tier {1} ve üzeri patronlara mesaj gönderme tamamlandı. {1} başarıyla gönderildi, {2} başarısız oldu.'
   patron_not_enabled: Patron sistemi devre dışı.
@@ -120,6 +156,9 @@ tr-TR:
 
 ts-TS:
   expires: Expires
+  patron_added: Patron Added
+  patron_add_failed: Couldn't add the patron. Try again.
+  patron_add_invalid_amount: B-baka, the amount has to be greater than 0 cents!
   patron_info: Patron Info
   patron_msg_sent: 'Done sending messages to patrons at and above tier {1}. {1} sent successfully and {2} failed.'
   patron_not_enabled: The patron system is disabled.
@@ -130,6 +169,9 @@ ts-TS:
 
 uk-UA:
   expires: Закінчується
+  patron_added: Патрона додано
+  patron_add_failed: Не вдалося додати патрона.
+  patron_add_invalid_amount: Сума має бути більшою за 0 центів.
   patron_info: Інфо про патрона
   patron_msg_sent: 'Повідомлення надіслано патронам рівня {1} і вище. {1} успішно надіслано, {2} не вдалося.'
   patron_not_enabled: Систему патронів вимкнено.
@@ -140,6 +182,9 @@ uk-UA:
 
 vi-VN:
   expires: Hết hạn
+  patron_added: Đã thêm Patron
+  patron_add_failed: Không thể thêm patron.
+  patron_add_invalid_amount: Số tiền phải lớn hơn 0 cent.
   patron_info: Thông Tin Patron
   patron_msg_sent: 'Đã gửi xong tin nhắn đến các patron ở hạng {1} trở lên. {1} gửi thành công và {2} thất bại.'
   patron_not_enabled: Hệ thống patron đang bị tắt.
@@ -150,6 +195,9 @@ vi-VN:
 
 zh-CN:
   expires: 到期时间
+  patron_added: 已添加赞助者
+  patron_add_failed: 添加赞助者失败。
+  patron_add_invalid_amount: 金额必须大于 0 美分。
   patron_info: 赞助者信息
   patron_msg_sent: '已完成向 {1} 级及以上赞助者发送消息。{1} 条发送成功,{2} 条发送失败。'
   patron_not_enabled: 赞助者系统已禁用。

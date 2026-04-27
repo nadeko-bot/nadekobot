@@ -2,7 +2,7 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.1] - 27.01.2026
+## [7.2.2] - 27.04.2026
 
 ### Added
 
@@ -19,7 +19,8 @@
 
 ### Fixed
 
-- AI agent now sees its own command output and the rest of the channel between tool calls. Asking "what's the weather in Oslo" no longer ends with the bot replying "Done." after running the weather command -- it reads the embed it just posted and answers the question. Action requests still get a short acknowledgement instead of restating the confirmation.
+- AI agent no longer duplicates command output. After running a command, the agent stays silent by default since the command already posts its own answer to the channel. It only adds a follow-up reply when the command's output doesn't directly answer the request (e.g. comparing several outputs, or explaining an unclear error). Action requests no longer get a redundant "Done." acknowledgement either.
+- AI agent now sees its own command output and the rest of the channel between tool calls, so it can verify what happened before deciding whether to speak.
 - AI agent channel history now decodes the full embed (author, link URL, image and thumbnail URLs, timestamp), attachments (filename, type, size, URL), stickers, and reply-to context for every message it remembers. Per-message truncation removed -- the buffer holds the message verbatim. Deletes pop the entry from history.
 
 ### Dev

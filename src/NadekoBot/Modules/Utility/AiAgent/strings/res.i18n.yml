@@ -13,11 +13,13 @@ ar:
   skill_list_title: مهارات الوكيل
   skill_name_too_long: يجب ألا يتجاوز اسم المهارة 50 حرفا.
   skill_instruction_too_long: يجب ألا تتجاوز تعليمات المهارة 2000 حرف.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: مطالبات وكيل الذكاء الاصطناعي
+  aiprompt_desc: |-
+    **SOUL.md** - {0} حرفًا
+    **OPERATOR.md** - {1} حرفًا
+  aiprompt_empty: هذه المطالبة فارغة حاليًا.
+  aiprompt_updated: 'تم تحديث المطالبة **{0}**.'
+  aiprompt_write_failed: 'فشل في كتابة المطالبة: {0}'
 
 de-DE:
   agent_no_query: Du musst einen Prompt für den KI-Agenten angeben.
@@ -34,11 +36,13 @@ de-DE:
   skill_list_title: Agenten-Skills
   skill_name_too_long: Der Skill-Name darf maximal 50 Zeichen lang sein.
   skill_instruction_too_long: Die Skill-Anweisung darf maximal 2000 Zeichen lang sein.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: KI-Agent-Prompts
+  aiprompt_desc: |-
+    **SOUL.md** - {0} Zeichen
+    **OPERATOR.md** - {1} Zeichen
+  aiprompt_empty: Dieser Prompt ist derzeit leer.
+  aiprompt_updated: 'Prompt **{0}** wurde aktualisiert.'
+  aiprompt_write_failed: 'Prompt konnte nicht geschrieben werden: {0}'
 
 es-ES:
   agent_no_query: Debes proporcionar un prompt para el agente de IA.
@@ -55,11 +59,13 @@ es-ES:
   skill_list_title: Skills del Agente
   skill_name_too_long: El nombre del skill debe tener 50 caracteres o menos.
   skill_instruction_too_long: La instruccion del skill debe tener 2000 caracteres o menos.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Prompts del agente de IA
+  aiprompt_desc: |-
+    **SOUL.md** - {0} caracteres
+    **OPERATOR.md** - {1} caracteres
+  aiprompt_empty: Este prompt está vacío ahora mismo.
+  aiprompt_updated: 'El prompt **{0}** se ha actualizado.'
+  aiprompt_write_failed: 'No se pudo escribir el prompt: {0}'
 
 fr-FR:
   agent_no_query: Tu dois fournir une requête pour l'agent IA.
@@ -76,11 +82,13 @@ fr-FR:
   skill_list_title: Compétences de l'agent
   skill_name_too_long: Le nom de la compétence ne doit pas dépasser 50 caractères.
   skill_instruction_too_long: L'instruction de la compétence ne doit pas dépasser 2000 caractères.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Prompts de l'agent IA
+  aiprompt_desc: |-
+    **SOUL.md** - {0} caractères
+    **OPERATOR.md** - {1} caractères
+  aiprompt_empty: Ce prompt est actuellement vide.
+  aiprompt_updated: 'Le prompt **{0}** a été mis à jour.'
+  aiprompt_write_failed: 'Échec de l''écriture du prompt : {0}'
 
 id-ID:
   agent_no_query: Kamu harus memberikan prompt untuk agen AI.
@@ -97,11 +105,13 @@ id-ID:
   skill_list_title: Skill Agen
   skill_name_too_long: Nama skill harus 50 karakter atau kurang.
   skill_instruction_too_long: Instruksi skill harus 2000 karakter atau kurang.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Prompt AI Agent
+  aiprompt_desc: |-
+    **SOUL.md** - {0} karakter
+    **OPERATOR.md** - {1} karakter
+  aiprompt_empty: Prompt ini saat ini kosong.
+  aiprompt_updated: 'Prompt **{0}** sudah diperbarui.'
+  aiprompt_write_failed: 'Gagal menulis prompt: {0}'
 
 ja-JP:
   agent_no_query: AIエージェントにプロンプトを入力してください。
@@ -118,11 +128,13 @@ ja-JP:
   skill_list_title: エージェントスキル
   skill_name_too_long: スキル名は50文字以下にしてください。
   skill_instruction_too_long: スキルの指示は2000文字以下にしてください。
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: AIエージェントのプロンプト
+  aiprompt_desc: |-
+    **SOUL.md** - {0}文字
+    **OPERATOR.md** - {1}文字
+  aiprompt_empty: このプロンプトは現在空です。
+  aiprompt_updated: 'プロンプト **{0}** を更新しました。'
+  aiprompt_write_failed: 'プロンプトの書き込みに失敗しました: {0}'
 
 ko-KR:
   agent_no_query: AI 에이전트에 프롬프트를 입력해야 합니다.
@@ -139,11 +151,13 @@ ko-KR:
   skill_list_title: 에이전트 스킬
   skill_name_too_long: 스킬 이름은 50자 이하여야 합니다.
   skill_instruction_too_long: 스킬 지시는 2000자 이하여야 합니다.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: AI 에이전트 프롬프트
+  aiprompt_desc: |-
+    **SOUL.md** - {0}자
+    **OPERATOR.md** - {1}자
+  aiprompt_empty: 이 프롬프트는 현재 비어 있습니다.
+  aiprompt_updated: '프롬프트 **{0}**이(가) 업데이트되었습니다.'
+  aiprompt_write_failed: '프롬프트 쓰기에 실패했습니다: {0}'
 
 pl-PL:
   agent_no_query: Musisz podać zapytanie dla agenta AI.
@@ -160,11 +174,13 @@ pl-PL:
   skill_list_title: Umiejętności agenta
   skill_name_too_long: Nazwa umiejętności nie może przekraczać 50 znaków.
   skill_instruction_too_long: Instrukcja umiejętności nie może przekraczać 2000 znaków.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Prompty agenta AI
+  aiprompt_desc: |-
+    **SOUL.md** - {0} znaków
+    **OPERATOR.md** - {1} znaków
+  aiprompt_empty: Ten prompt jest obecnie pusty.
+  aiprompt_updated: 'Prompt **{0}** został zaktualizowany.'
+  aiprompt_write_failed: 'Nie udało się zapisać promptu: {0}'
 
 pt-BR:
   agent_no_query: Você precisa fornecer um prompt para o agente de IA.
@@ -181,11 +197,13 @@ pt-BR:
   skill_list_title: Skills do Agente
   skill_name_too_long: O nome da skill deve ter no máximo 50 caracteres.
   skill_instruction_too_long: A instrução da skill deve ter no máximo 2000 caracteres.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Prompts do Agente de IA
+  aiprompt_desc: |-
+    **SOUL.md** - {0} caracteres
+    **OPERATOR.md** - {1} caracteres
+  aiprompt_empty: Este prompt está vazio no momento.
+  aiprompt_updated: 'O prompt **{0}** foi atualizado.'
+  aiprompt_write_failed: 'Falha ao gravar o prompt: {0}'
 
 ru-RU:
   agent_no_query: Вы должны указать запрос для ИИ-агента.
@@ -202,11 +220,13 @@ ru-RU:
   skill_list_title: Навыки агента
   skill_name_too_long: Название навыка должно быть не длиннее 50 символов.
   skill_instruction_too_long: Инструкция навыка должна быть не длиннее 2000 символов.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Промпты ИИ-агента
+  aiprompt_desc: |-
+    **SOUL.md** - {0} симв.
+    **OPERATOR.md** - {1} симв.
+  aiprompt_empty: Этот промпт сейчас пустой.
+  aiprompt_updated: 'Промпт **{0}** обновлён.'
+  aiprompt_write_failed: 'Не удалось записать промпт: {0}'
 
 sr-Cyrl-RS:
   agent_no_query: Морате да унесете упит за АИ агента.
@@ -223,11 +243,13 @@ sr-Cyrl-RS:
   skill_list_title: Вештине агента
   skill_name_too_long: Назив вештине мора имати 50 или мање карактера.
   skill_instruction_too_long: Упутство вештине мора имати 2000 или мање карактера.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Промптови AI агента
+  aiprompt_desc: |-
+    **SOUL.md** - {0} карактера
+    **OPERATOR.md** - {1} карактера
+  aiprompt_empty: Овај промпт је тренутно празан.
+  aiprompt_updated: 'Промпт **{0}** је ажуриран.'
+  aiprompt_write_failed: 'Неуспешно уписивање промпта: {0}'
 
 tr-TR:
   agent_no_query: Yapay zeka ajanına bir istem belirtmelisin.
@@ -244,11 +266,13 @@ tr-TR:
   skill_list_title: Ajan Becerileri
   skill_name_too_long: Beceri adı 50 karakter veya daha kısa olmalı.
   skill_instruction_too_long: Beceri talimatı 2000 karakter veya daha kısa olmalı.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: AI Ajan Promptları
+  aiprompt_desc: |-
+    **SOUL.md** - {0} karakter
+    **OPERATOR.md** - {1} karakter
+  aiprompt_empty: Bu prompt şu an boş.
+  aiprompt_updated: '**{0}** promptu güncellendi.'
+  aiprompt_write_failed: 'Prompt yazılamadı: {0}'
 
 ts-TS:
   agent_no_query: You have to give the AI agent a prompt, you know!
@@ -265,11 +289,13 @@ ts-TS:
   skill_list_title: Agent Skills
   skill_name_too_long: Skill name has to be 50 characters or less, b-baka!
   skill_instruction_too_long: Skill instruction must be 2000 characters or less.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: AI Agent Prompts
+  aiprompt_desc: |-
+    **SOUL.md** - {0} chars
+    **OPERATOR.md** - {1} chars
+  aiprompt_empty: Hmph, this prompt is empty. Not like I care.
+  aiprompt_updated: 'Prompt **{0}** updated. There, happy now?'
+  aiprompt_write_failed: 'Failed to write prompt: {0}'
 
 uk-UA:
   agent_no_query: Ви повинні надати запит для ШІ-агента.
@@ -286,11 +312,13 @@ uk-UA:
   skill_list_title: Навички агента
   skill_name_too_long: Назва навички повинна бути не довше 50 символів.
   skill_instruction_too_long: Інструкція навички повинна бути не довше 2000 символів.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Підказки AI-агента
+  aiprompt_desc: |-
+    **SOUL.md** - {0} символів
+    **OPERATOR.md** - {1} символів
+  aiprompt_empty: Ця підказка зараз порожня.
+  aiprompt_updated: 'Підказку **{0}** оновлено.'
+  aiprompt_write_failed: 'Не вдалося записати підказку: {0}'
 
 vi-VN:
   agent_no_query: Bạn phải cung cấp một prompt cho tác nhân AI.
@@ -307,11 +335,13 @@ vi-VN:
   skill_list_title: Kỹ năng tác nhân
   skill_name_too_long: Tên kỹ năng phải có 50 ký tự trở xuống.
   skill_instruction_too_long: Hướng dẫn kỹ năng phải có 2000 ký tự trở xuống.
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: Prompt AI Agent
+  aiprompt_desc: |-
+    **SOUL.md** - {0} ký tự
+    **OPERATOR.md** - {1} ký tự
+  aiprompt_empty: Prompt này hiện đang trống.
+  aiprompt_updated: 'Prompt **{0}** đã được cập nhật.'
+  aiprompt_write_failed: 'Không thể ghi prompt: {0}'
 
 zh-CN:
   agent_no_query: 你必须为 AI 代理提供一个提示。
@@ -328,8 +358,10 @@ zh-CN:
   skill_list_title: 代理技能
   skill_name_too_long: 技能名称不能超过 50 个字符。
   skill_instruction_too_long: 技能指令不能超过 2000 个字符。
-  aiprompt_title: ""
-  aiprompt_desc: ""
-  aiprompt_empty: ""
-  aiprompt_updated: ""
-  aiprompt_write_failed: ""
+  aiprompt_title: AI 代理提示词
+  aiprompt_desc: |-
+    **SOUL.md** - {0} 字符
+    **OPERATOR.md** - {1} 字符
+  aiprompt_empty: 此提示词目前为空。
+  aiprompt_updated: '提示词 **{0}** 已更新。'
+  aiprompt_write_failed: '写入提示词失败：{0}'

@@ -22,9 +22,10 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
         + "The command string must include the prefix (e.g. '.mute @user 10m'). "
         + "All permission checks apply - the command will fail if the user lacks permission. "
         + "Use search_commands first to find the right command and its syntax. "
-        + "The tool returns immediately after dispatch; the command's actual output (embed/text) "
-        + "appears in channel_history on the next turn, authored by the bot. "
-        + "Read it there if the user asked an informational question.")]
+        + "Returns immediately after dispatch; the command's output (embed/text) appears in "
+        + "channel_history on the next turn, authored by the bot. The user already sees it. "
+        + "Use it to verify the command worked or to compose a follow-up tool call; "
+        + "do NOT restate it in your final reply.")]
     [AiSystemGuidance(SystemGuidanceText.RunCommand)]
     public async Task<string> RunCommand(
         AiToolContext ctx,
@@ -64,8 +65,8 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
         + "Each command goes through the full permission pipeline. "
         + "If a command fails, the chain continues with the remaining commands. "
         + "Use search_commands first to find the right commands and their syntax. "
-        + "The actual outputs of each command appear in channel_history on subsequent turns, "
-        + "authored by the bot.")]
+        + "Each command's output appears in channel_history on subsequent turns, authored "
+        + "by the bot. The user already sees them; do NOT restate them in your final reply.")]
     public async Task<string> RunCommandChain(
         AiToolContext ctx,
         [AiParam("List of command strings including prefix, e.g. ['.mute @user 10m', '.warn @user reason']. Max 5.")]
