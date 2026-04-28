@@ -220,7 +220,7 @@ public partial class Utility
 
         private string GetRepeaterInfoString(RunningRepeater runner)
         {
-            var intervalString = Format.Bold(runner.Repeater.Interval.ToPrettyStringHm());
+            var intervalString = Format.Bold(runner.Repeater.RealInterval.ToPrettyStringHm());
             var executesIn = runner.NextTime < DateTime.UtcNow ? TimeSpan.Zero : runner.NextTime - DateTime.UtcNow;
             var executesInString = Format.Bold(executesIn.ToPrettyStringHm());
             var message = Format.Sanitize(runner.Repeater.Message.TrimTo(50));

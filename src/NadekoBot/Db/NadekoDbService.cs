@@ -16,6 +16,11 @@ public sealed class NadekoDbService : DbService
         LinqToDBForEFTools.Initialize();
         Configuration.Linq.DisableQueryCache = true;
 
+        // var schema = MappingSchema.Default; 
+        // schema.SetConverter<string, TimeSpan>(str => TimeSpan.Parse(str));
+        // schema.SetConverter<TimeSpan, string>(ts => ts.ToString());
+        // MappingSchema.Default = schema;
+
         _creds = creds;
     }
 

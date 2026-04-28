@@ -17,7 +17,7 @@ public sealed class RunningRepeater
     }
 
     public void UpdateNextTime()
-        => NextTime = DateTime.UtcNow + Repeater.Interval;
+        => NextTime = DateTime.UtcNow + Repeater.RealInterval;
 
     private DateTime CalculateInitialExecution()
     {
@@ -49,7 +49,7 @@ public sealed class RunningRepeater
         }
 
         // if repeater is not running daily, its initial time is the time it was Added at, plus the interval
-        return CalculateInitialInterval(Repeater.DateAdded + Repeater.Interval);
+        return CalculateInitialInterval(Repeater.DateAdded + Repeater.RealInterval);
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ public sealed class RunningRepeater
         var diff = DateTime.UtcNow - initialDateTime;
 
         // see how many times the repeater theoretically ran already
-        var triggerCount = diff / Repeater.Interval;
+        var triggerCount = diff / Repeater.RealInterval;
 
         // ok lets say repeater was scheduled to run 10h ago.
         // we have an interval of 2.4h
@@ -81,7 +81,7 @@ public sealed class RunningRepeater
         // interval (2.4h) * 0.834 is 2.0016 and that is the initial interval
 
         var initialIntervalMultiplier = 1 - (triggerCount - Math.Truncate(triggerCount));
-        return DateTime.UtcNow + (Repeater.Interval * initialIntervalMultiplier);
+        return DateTime.UtcNow + (Repeater.RealInterval * initialIntervalMultiplier);
     }
 
     public override bool Equals(object obj)

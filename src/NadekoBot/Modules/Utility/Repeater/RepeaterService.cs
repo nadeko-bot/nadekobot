@@ -342,7 +342,7 @@ public sealed class RepeaterService : IReadyExecutor, INService
         {
             ChannelId = channelId,
             GuildId = guildId,
-            Interval = interval,
+            Interval = interval.ToString(),
             Message = message,
             NoRedundant = isNoRedundant,
             LastMessageId = null,
