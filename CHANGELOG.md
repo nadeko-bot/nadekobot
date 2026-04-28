@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [7.2.3] - 27.04.2026
+
+### Fixed
+
+- Fixed `.repeat` if interval is greater than 24h
+
 ## [7.2.2] - 27.04.2026
 
 ### Added
