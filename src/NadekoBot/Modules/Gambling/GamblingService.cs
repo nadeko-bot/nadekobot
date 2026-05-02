@@ -57,7 +57,7 @@ public class GamblingService : INService, IReadyExecutor
         if (_client.ShardId != 0)
             return;
 
-        using var timer = new PeriodicTimer(TimeSpan.FromHours(1));
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
         while (await timer.WaitForNextTickAsync())
         {
             try
@@ -70,7 +70,7 @@ public class GamblingService : INService, IReadyExecutor
                 var days = TimeSpan.FromDays(lifetime);
                 await using var uow = _db.GetDbContext();
                 await uow.Set<CurrencyTransaction>()
-                    .DeleteAsync(ct => ct.DateAdded == null || now - ct.DateAdded > days);
+                    .DeleteAsync(ct => ct.DateAdded == null || (now - ct.DateAdded) > days);
             }
             catch (Exception ex)
             {

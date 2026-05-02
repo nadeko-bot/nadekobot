@@ -1,23 +1,19 @@
 fish:
-  desc: >-
+  desc: |-
     Attempt to catch a fish.
-
-    Different fish live in different places, at different times of day and in
-    different weather.
+    Different fish live in different places, at different times of day and in different weather.
   ex:
     - ''
   params:
     - {}
 fishbuy:
-  desc: >-
+  desc: |-
     Purchase a fishing item with the specified id.
-
-    After purchase the item will appear in your inventory where you can
-    use/equip it.
+    After purchase the item will appear in your inventory where you can use/equip it.
   ex:
     - '1'
   params:
-    - id:
+    - itemId:
         desc: The ID of the item to buy.
 fishinv:
   desc: |-
@@ -35,13 +31,10 @@ fishlb:
     - page:
         desc: The optional page to display.
 fishlist:
-  desc: >-
+  desc: |-
     Look at your fish catalogue.
-
     Shows how many of each fish you caught and what was the highest quality.
-
-    For each caught fish, it also shows its required spot, time of day and
-    weather.
+    For each caught fish, it also shows its required spot, time of day and weather.
   ex:
     - ''
   params:

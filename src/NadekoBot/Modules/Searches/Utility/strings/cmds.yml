@@ -1,7 +1,6 @@
 color:
-  desc: >-
-    Shows you pictures of colors which correspond to the inputted hex values.
-    Max 10.
+  desc: |-
+    Shows you pictures of colors which correspond to the inputted hex values. Max 10.
   ex:
     - 00ff00
     - f00 0f0 00f
@@ -21,6 +20,5 @@ shorten:
     - https://google.com
   params:
     - query:
-        desc: >-
-          The search term or identifier used to retrieve a shortened version of
-          the URL from a database or service.
+        desc: |-
+          The search term or identifier used to retrieve a shortened version of the URL from a database or service.

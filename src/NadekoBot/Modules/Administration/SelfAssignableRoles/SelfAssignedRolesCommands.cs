@@ -295,9 +295,9 @@ public partial class Administration
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
         [BotPerm(GuildPerm.ManageRoles)]
-        public async Task SarExclusive(int groupNumber)
+        public async Task SarExclusive(int group)
         {
-            var areExclusive = await _service.SetGroupExclusivityAsync(ctx.Guild.Id, groupNumber);
+            var areExclusive = await _service.SetGroupExclusivityAsync(ctx.Guild.Id, group);
 
             if (areExclusive is null)
             {
@@ -342,9 +342,9 @@ public partial class Administration
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
         [BotPerm(GuildPerm.ManageRoles)]
-        public async Task SarGroupRoleReq(int groupNumber, [Leftover] IRole role)
+        public async Task SarGroupRoleReq(int group, [Leftover] IRole role)
         {
-            var succ = await _service.SetGroupRoleReq(ctx.Guild.Id, groupNumber, role.Id);
+            var succ = await _service.SetGroupRoleReq(ctx.Guild.Id, group, role.Id);
 
             if (!succ)
             {
@@ -354,7 +354,7 @@ public partial class Administration
 
             await Response()
                   .Confirm(strs.self_assign_group_role_req(
-                      Format.Bold(groupNumber.ToString()),
+                      Format.Bold(group.ToString()),
                       Format.Bold(role.Name)))
                   .SendAsync();
         }
@@ -362,11 +362,11 @@ public partial class Administration
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
-        public async Task SarGroupDelete(int groupNumber)
+        public async Task SarGroupDelete(int group)
         {
-            var succ = await _service.DeleteRoleGroup(ctx.Guild.Id, groupNumber);
+            var succ = await _service.DeleteRoleGroup(ctx.Guild.Id, group);
             if (succ)
-                await Response().Confirm(strs.sar_group_deleted(Format.Bold(groupNumber.ToString()))).SendAsync();
+                await Response().Confirm(strs.sar_group_deleted(Format.Bold(group.ToString()))).SendAsync();
             else
                 await Response().Error(strs.sar_group_not_found).SendAsync();
         }

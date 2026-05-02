@@ -1,23 +1,18 @@
 btnroleadd:
-  desc: >-
+  desc: |-
     Adds a button role to the specified message (link or id).
-
     Specify a message followed by an emote, followed by a role.
-
-    If the role already exists on that message, the button will be updated
-    instead.
-
+    If the role already exists on that message, the button will be updated instead.
     Users clicking on the button will receive the role.
   ex:
     - '<msglink> :thumbsup: Good Guy'
   params:
     - message:
-        desc: >-
-          A message link or id of the message (if id is specified, it has to be
-          a message in this channel)
-    - emote:
+        desc: |-
+          A message link or id of the message (if id is specified, it has to be a message in this channel)
+      emote:
         desc: An emoji, custom or unicode
-    - role:
+      role:
         desc: The role to add once a user clicks the button
 btnroleexclusive:
   desc: |-
@@ -28,10 +23,14 @@ btnroleexclusive:
     - 123123123 enable
     - 123123123 disable
   params:
-    - enable:
-        desc: Whether to enable or disable exclusive button roles
-      message:
+    - message:
         desc: A message link or id of the message
+      enable:
+        desc: Whether to enable or disable exclusive button roles
+    - message:
+        desc: A message link or id of the message
+      enable:
+        desc: Whether to enable or disable exclusive button roles
 btnrolelist:
   desc: |-
     Lists all button roles on this server.
@@ -49,7 +48,7 @@ btnroleremove:
   params:
     - message:
         desc: A message link or id of the message
-    - role:
+      role:
         desc: A role to remove
 btnroleremoveall:
   desc: Removes all button roles from the message specified by link or id.
@@ -74,38 +73,34 @@ deleterole:
     - role:
         desc: The role being deleted, as identified by its id.
 removeallroles:
-  desc: >-
-    Removes all roles which are lower than your highest role in the role
-    hierarchy from the user you specify.
+  desc: |-
+    Removes all roles which are lower than your highest role in the role hierarchy from the user you specify.
   ex:
     - '@User'
   params:
     - user:
-        desc: >-
-          The user whose roles will be updated to reflect the new role
-          hierarchy.
+        desc: |-
+          The user whose roles will be updated to reflect the new role hierarchy.
 removerole:
-  desc: >-
-    Removes a role from a user. The role you specify has to be lower in the role
-    hierarchy than your highest role.
+  desc: |-
+    Removes a role from a user. The role you specify has to be lower in the role hierarchy than your highest role.
   ex:
     - '@User Admin'
   params:
-    - roleToRemove:
-        desc: The role being removed from the user's set of assigned roles.
-      targetUser:
+    - targetUser:
         desc: The user account being modified or checked for role eligibility.
+      roleToRemove:
+        desc: The role being removed from the user's set of assigned roles.
 renamerole:
-  desc: >-
-    Renames a role. The role you specify has to be lower in the role hierarchy
-    than your highest role.
+  desc: |-
+    Renames a role. The role you specify has to be lower in the role hierarchy than your highest role.
   ex:
     - '"First role" SecondRole'
   params:
-    - newname:
-        desc: The name for the new role.
-      roleToEdit:
+    - roleToEdit:
         desc: The role being edited or updated.
+      newname:
+        desc: The name for the new role.
 reroadd:
   desc: |-
     Specify a message id, emote and a role name to have the bot assign the
@@ -153,7 +148,7 @@ rerodeleteall:
   params:
     - {}
 rerolist:
-  desc: >-
+  desc: |-
     Lists all ReactionRole messages on this server with their message ids.
     Clicking/Tapping message ids will send you to that message.
   ex:
@@ -198,26 +193,20 @@ reroemote:
       role:
         desc: The role whose emote you want to change.
 rerotransfer:
-  desc: >-
-    Transfers reaction roles from one message to another by specifying their
-    ids. If the target message has reaction roles specified already, the
-    reaction roles will be MERGED, not overwritten.
+  desc: |-
+    Transfers reaction roles from one message to another by specifying their ids. If the target message has reaction roles specified already, the reaction roles will be MERGED, not overwritten.
   ex:
     - 971276352684691466 971427748448964628
   params:
     - fromMessageId:
-        desc: >-
-          The ID of the original message containing the reaction roles to be
-          transferred.
+        desc: |-
+          The ID of the original message containing the reaction roles to be transferred.
       toMessageId:
-        desc: >-
-          The ID of the target message where the reaction roles should be
-          transferred.
+        desc: |-
+          The ID of the target message where the reaction roles should be transferred.
 rolecolor:
-  desc: >-
-    Set a role's color using its hex value. Provide no color in order to see the
-    hex value of the color of the specified role. The role you specify has to be
-    lower in the role hierarchy than your highest role.
+  desc: |-
+    Set a role's color using its hex value. Provide no color in order to see the hex value of the color of the specified role. The role you specify has to be lower in the role hierarchy than your highest role.
   ex:
     - Admin
     - ffba55 Admin
@@ -229,9 +218,8 @@ rolecolor:
       role:
         desc: The role that will have its color set or retrieved.
 rolehoist:
-  desc: >-
-    Toggles whether this role is displayed in the sidebar or not. The role you
-    specify has to be lower in the role hierarchy than your highest role.
+  desc: |-
+    Toggles whether this role is displayed in the sidebar or not. The role you specify has to be lower in the role hierarchy than your highest role.
   ex:
     - Guests
     - Space Wizards
@@ -242,51 +230,46 @@ roleicon:
   desc: Changes the icon of a role.
   ex:
     - '@Role :server_emoji_here:'
+    - '@Role https://example.com/icon.png'
   params:
-    - imageUrl:
-        desc: The image url to be used as a new icon for the role.
-      role:
-        desc: The role to change the icon of.
     - role:
         desc: The role to change the icon of.
-      serverEmoji:
+      emote:
         desc: The server emoji to be used as a new icon for the role.
+    - role:
+        desc: The role to change the icon of.
+      imageUrl:
+        desc: The image url to be used as a new icon for the role.
 setrole:
-  desc: >-
-    Gives a role to a user. The role you specify has to be lower in the role
-    hierarchy than your highest role.
+  desc: |-
+    Gives a role to a user. The role you specify has to be lower in the role hierarchy than your highest role.
   ex:
     - '@User Guest'
   params:
-    - roleToAdd:
-        desc: >-
-          The role that is being added grants specific permissions and access
-          rights to the user.
-      targetUser:
-        desc: >-
-          The user being given the new role, which must have a lower rank than
-          the assistant's highest role.
+    - targetUser:
+        desc: |-
+          The user being given the new role, which must have a lower rank than the assistant's highest role.
+      roleToAdd:
+        desc: |-
+          The role that is being added grants specific permissions and access rights to the user.
 stickyroles:
-  desc: >-
-    Toggles whether the bot will save the leaving users' roles, and reapply them
-    once they re-join. The roles will be stored for up to 30 days.
+  desc: |-
+    Toggles whether the bot will save the leaving users' roles, and reapply them once they re-join. The roles will be stored for up to 30 days.
   ex:
     - ''
   params:
     - {}
 temprole:
-  desc: >-
-    Grants a user a temporary role for the specified number of time.
-
-    The role must exist and be lower in the role hierarchy than your highest
-    role.
+  desc: |-
+    Grants a user a temporary role for the specified amount of time.
+    The role must exist and be lower in the role hierarchy than your highest role.
   ex:
     - 15m @User Jail
     - 7d @Newbie Trial Member
   params:
-    - role:
-        desc: The role to give to the user.
-      time:
+    - timespan:
         desc: The time after which the role is automatically removed.
       user:
         desc: The user to give the role to.
+      role:
+        desc: The role to give to the user.

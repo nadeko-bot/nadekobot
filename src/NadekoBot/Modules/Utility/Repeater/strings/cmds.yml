@@ -1,28 +1,17 @@
 repeat:
-  desc: >-
-    Repeat a message once per specified time increment in the current channel. 
-
+  desc: |-
+    Repeat a message once per specified time increment in the current channel.
     You can specify a different channel as the first argument instead.
-
-    You can also specify time of day for the message to be repeated daily (make
-    sure you've set your server's `{0}timezone`). 
-
-    If you specify time of day, you can still override the default daily
-    interval with your own interval. 
-
-    You can have up to 5 repeating messages on one server in total (configurable
-    via `.config utility maxRepeaters`).
+    You can also specify time of day for the message to be repeated daily (make sure you've set your server's `{0}timezone`).
+    If you specify time of day, you can still override the default daily interval with your own interval.
+    You can have up to 5 repeating messages on one server in total (configurable via `.config utility maxRepeaters`).
   ex:
     - Hello there
     - '#other-channel hello there'
     - 1h5m Hello @erryone
     - 10:00 Daily have a nice day! This will execute once every 24h.
-    - >-
-      #other-channel 10:00 Daily have a nice day! This will execute once every
-      24h.
-    - >-
-      21:00 30m Starting at 21 and every 30 minutes after that i will send this
-      message!
+    - '#other-channel 10:00 Daily have a nice day! This will execute once every 24h.'
+    - '21:00 30m Starting at 21 and every 30 minutes after that i will send this message!'
   params:
     - message:
         desc: The text to be repeated.
@@ -40,34 +29,33 @@ repeat:
         desc: The amount of time between each repetition.
       message:
         desc: The text to be repeated.
-    - message:
-        desc: The text to be repeated.
-      timeOfDay:
+    - timeOfDay:
         desc: The time at which the message should begin being repeated.
-    - channel:
-        desc: The channel where the message will be repeated.
       message:
         desc: The text to be repeated.
-      timeOfDay:
-        desc: The time at which the message should begin being repeated.
-    - interval:
-        desc: The amount of time between each repetition.
-      message:
-        desc: The text to be repeated.
-      timeOfDay:
-        desc: The time at which the message should begin being repeated.
     - channel:
         desc: The channel where the message will be repeated.
+      timeOfDay:
+        desc: The time at which the message should begin being repeated.
+      message:
+        desc: The text to be repeated.
+    - timeOfDay:
+        desc: The time at which the message should begin being repeated.
       interval:
         desc: The amount of time between each repetition.
       message:
         desc: The text to be repeated.
+    - channel:
+        desc: The channel where the message will be repeated.
       timeOfDay:
         desc: The time at which the message should begin being repeated.
+      interval:
+        desc: The amount of time between each repetition.
+      message:
+        desc: The text to be repeated.
 repeatinvoke:
-  desc: >-
-    Immediately post the repeat message on a certain index and restarts its
-    timer.
+  desc: |-
+    Immediately post the repeat message on a certain index and restarts its timer.
   ex:
     - 1
   params:
@@ -80,14 +68,9 @@ repeatlist:
   params:
     - {}
 repeatredundant:
-  desc: >-
-    Specify repeater's index (Use `{0}replst` to see indexes) to toggle whether
-    the message should be reposted if the last message in the channel is the
-    same repeater's message.
-
-    This is useful if you want to remind everyone to be nice every so often, but
-    don't want to have the bot spam the channel. This is NOT useful if you want
-    to periodically ping someone.
+  desc: |-
+    Specify repeater's index (Use `{0}replst` to see indexes) to toggle whether the message should be reposted if the last message in the channel is the same repeater's message.
+    This is useful if you want to remind everyone to be nice every so often, but don't want to have the bot spam the channel. This is NOT useful if you want to periodically ping someone.
   ex:
     - 1
   params:
@@ -101,12 +84,9 @@ repeatremove:
     - index:
         desc: The index of the repeating message to be removed.
 repeatskip:
-  desc: >-
-    Specify a repeater's ID to toggle whether the next trigger of the repeater
-    will be skipped.
-
-    This setting is not stored in the database and will get reset if the bot is
-    restarted.
+  desc: |-
+    Specify a repeater's ID to toggle whether the next trigger of the repeater will be skipped.
+    This setting is not stored in the database and will get reset if the bot is restarted.
   ex:
     - 3
   params:

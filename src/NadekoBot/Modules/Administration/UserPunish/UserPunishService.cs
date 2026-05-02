@@ -611,7 +611,7 @@ public class UserPunishService : INService, IReadyExecutor
             return default;
         // if template is an embed, send that embed with replacements
         // otherwise, treat template as a regular string with replacements
-        else if (SmartText.CreateFrom(template) is not ({ IsEmbed: true } or { IsEmbedArray: true }))
+        else if (SmartText.CreateFrom(template) is not { IsEmbedArray: true })
         {
             template = JsonConvert.SerializeObject(new
             {
@@ -799,7 +799,7 @@ public class UserPunishService : INService, IReadyExecutor
         }
         else if (template == "-")
             return default;
-        else if (SmartText.CreateFrom(template) is not ({ IsEmbed: true } or { IsEmbedArray: true }))
+        else if (SmartText.CreateFrom(template) is not { IsEmbedArray: true })
         {
             template = JsonConvert.SerializeObject(new
             {

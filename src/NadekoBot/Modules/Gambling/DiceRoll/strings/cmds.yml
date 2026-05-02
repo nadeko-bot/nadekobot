@@ -1,20 +1,16 @@
 nroll:
-  desc: >-
-    Rolls in a given range. If you specify just one number instead of the range,
-    it will roll from 0 to that number.
+  desc: |-
+    Rolls in a given range. If you specify just one number instead of the range, it will roll from 0 to that number.
   ex:
     - 5
     - 5-15
   params:
     - range:
-        desc: >-
-          The minimum and maximum values for the random number generation
-          process.
+        desc: |-
+          The minimum and maximum values for the random number generation process.
 roll:
-  desc: >-
-    Rolls 1-100. If you supply a number `X` it rolls up to 30 normal dice. If
-    you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to
-    `y`. `Y` can be a letter 'F' if you want to roll fate dice instead of dnd.
+  desc: |-
+    Rolls 1-100. If you supply a number `X` it rolls up to 30 normal dice. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`. `Y` can be a letter 'F' if you want to roll fate dice instead of dnd.
   ex:
     - ''
     - 7
@@ -25,13 +21,11 @@ roll:
     - num:
         desc: The number of sides on the dice being rolled.
     - arg:
-        desc: >-
-          The input string specifies the type of dice roll or the number of dice
-          to roll, allowing users to customize their random outcome.
+        desc: |-
+          The input string specifies the type of dice roll or the number of dice to roll, allowing users to customize their random outcome.
 rolluo:
-  desc: >-
-    Rolls `X` normal dice (up to 30) unordered. If you split 2 numbers with
-    letter `d` (`xdy`) it will roll `X` dice from 1 to `y`.
+  desc: |-
+    Rolls `X` normal dice (up to 30) unordered. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`.
   ex:
     - ''
     - 7

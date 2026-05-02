@@ -4,9 +4,8 @@ allchnlmdls:
     - 'enable #SomeChannel'
   params:
     - action:
-        desc: >-
-          The type of permission action to apply to the module, such as granting
-          or revoking access.
+        desc: |-
+          The type of permission action to apply to the module, such as granting or revoking access.
       chnl:
         desc: The channel where the operation is being performed on the modules.
 allrolemdls:
@@ -15,9 +14,8 @@ allrolemdls:
     - '[enable/disable] MyRole'
   params:
     - action:
-        desc: >-
-          The type of permission action to perform, such as granting or revoking
-          access.
+        desc: |-
+          The type of permission action to perform, such as granting or revoking access.
       role:
         desc: The role that the operation is being performed on.
 allsrvrmdls:
@@ -26,18 +24,16 @@ allsrvrmdls:
     - '[enable/disable]'
   params:
     - action:
-        desc: >-
-          The type of action to take on the enabled/disabled modules, such as
-          enable or disable.
+        desc: |-
+          The type of action to take on the enabled/disabled modules, such as enable or disable.
 allusrmdls:
   desc: Enable or disable all modules for a specific user.
   ex:
     - enable @Someone
   params:
     - action:
-        desc: >-
-          The type of permission action to take, such as granting or revoking
-          access.
+        desc: |-
+          The type of permission action to take, such as granting or revoking access.
       user:
         desc: The user account that the operation is being performed on.
 chnlcmd:
@@ -45,37 +41,34 @@ chnlcmd:
   ex:
     - '"command name" enable SomeChannel'
   params:
-    - action:
+    - command:
+        desc: |-
+          The type of command or expression being set for the channel's permissions.
+      action:
         desc: The type of permission action to take on the channel.
       chnl:
         desc: The channel where the command's permission is being set.
-      command:
-        desc: >-
-          The type of command or expression being set for the channel's
-          permissions.
 chnlmdl:
   desc: Sets a module's permission at the channel level.
   ex:
     - ModuleName enable SomeChannel
   params:
-    - action:
+    - module:
+        desc: The type of entity being set as a permission for the channel.
+      action:
         desc: The type of permission action to take on the channel.
       chnl:
         desc: The channel where the permission is being set for the module.
-      module:
-        desc: The type of entity being set as a permission for the channel.
 listperms:
-  desc: >-
-    Lists whole permission chain with their indexes. You can specify an optional
-    page number if there are a lot of permissions.
+  desc: |-
+    Lists whole permission chain with their indexes. You can specify an optional page number if there are a lot of permissions.
   ex:
     - ''
     - 3
   params:
     - page:
-        desc: >-
-          The page number for pagination, allowing the retrieval of large
-          permission chains in manageable chunks.
+        desc: |-
+          The page number for pagination, allowing the retrieval of large permission chains in manageable chunks.
 moveperm:
   desc: Moves permission from one position to another in the Permissions list.
   ex:
@@ -86,12 +79,8 @@ moveperm:
       to:
         desc: The index at which to insert or remove the permission.
 permrole:
-  desc: >-
-    Sets a role which can change permissions. Supply no parameters to see the
-    current one. Type 'reset' instead of the role name to reset the currently
-    set permission role. Users with the Administrator server permissions can use
-    permission commands regardless of whether they have the specified role.
-    There is no default permission role.
+  desc: |-
+    Sets a role which can change permissions. Supply no parameters to see the current one. Type 'reset' instead of the role name to reset the currently set permission role. Users with the Administrator server permissions can use permission commands regardless of whether they have the specified role. There is no default permission role.
   ex:
     - Some Role
     - reset
@@ -124,14 +113,12 @@ rolecmd:
   ex:
     - '"command name" disable MyRole'
   params:
-    - action:
-        desc: >-
-          The type of action to take on the permission, such as granting or
-          denying access.
-      command:
-        desc: >-
-          The command or expression that is being set as a permission for a
-          specific role.
+    - command:
+        desc: |-
+          The command or expression that is being set as a permission for a specific role.
+      action:
+        desc: |-
+          The type of action to take on the permission, such as granting or denying access.
       role:
         desc: The role that determines who can use this command.
 rolemdl:
@@ -139,10 +126,10 @@ rolemdl:
   ex:
     - ModuleName enable MyRole
   params:
-    - action:
-        desc: The type of action that can be performed by users with this role.
-      module:
+    - module:
         desc: The type of content or resource being managed by the module.
+      action:
+        desc: The type of action that can be performed by users with this role.
       role:
         desc: The role that determines the permissions for the module.
 srvrcmd:
@@ -150,59 +137,50 @@ srvrcmd:
   ex:
     - '"command name" disable'
   params:
-    - action:
-        desc: >-
-          The type of action to take on the permission, such as granting or
-          revoking access.
-      command:
-        desc: >-
-          The type of command or expression being set, such as a specific SQL
-          query or system function.
+    - command:
+        desc: |-
+          The command or expression being set for the server's permissions.
+      action:
+        desc: |-
+          The type of action to take on the permission, such as granting or revoking access.
 srvrmdl:
   desc: Sets a module's permission at the server level.
   ex:
     - ModuleName enable
   params:
-    - action:
-        desc: >-
-          The type of permission action to perform, such as granting or revoking
-          access.
-      module:
-        desc: >-
-          The type of module or content repository information being set for
-          server-level permissions.
+    - module:
+        desc: |-
+          The module being set for server-level permissions.
+      action:
+        desc: |-
+          The type of permission action to perform, such as granting or revoking access.
 usrcmd:
   desc: Sets a command's permission at the user level.
   ex:
     - '"command name" enable SomeUsername'
   params:
-    - action:
-        desc: >-
-          The type of action to take on the permission, such as granting or
-          revoking access.
-      command:
+    - command:
         desc: The type of command or expression being set for the specified user.
+      action:
+        desc: |-
+          The type of action to take on the permission, such as granting or revoking access.
       user:
-        desc: >-
-          The user who owns the guild or has the specified role can execute the
-          command.
+        desc: |-
+          The user who owns the guild or has the specified role can execute the command.
 usrmdl:
   desc: Sets a module's permission at the user level.
   ex:
     - ModuleName enable SomeUsername
   params:
-    - action:
-        desc: >-
-          The type of permission action to take on the module, such as granting
-          or revoking access.
-      module:
-        desc: >-
-          The type of module or content reference information being set for the
-          user's permissions.
+    - module:
+        desc: |-
+          The module being set for the user's permissions.
+      action:
+        desc: |-
+          The type of permission action to take on the module, such as granting or revoking access.
       user:
-        desc: >-
-          The user who owns the guild and is being granted or denied access to
-          the module's features.
+        desc: |-
+          The user being granted or denied access to the module's features.
 verbose:
   desc: Toggles or sets whether to show when a command/module is blocked.
   ex:

@@ -241,11 +241,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
             var res = _sender.Response(ch)
                 .UserBasedMentions(_client.GetGuild(r.GuildId)?.GetUser(r.UserId));
 
-            if (st is SmartEmbedText set)
-            {
-                await res.Embed(set.GetEmbed()).SendAsync();
-            }
-            else if (st is SmartEmbedTextArray seta)
+            if (st is SmartEmbedTextArray seta)
             {
                 await res.Embeds(seta.GetEmbedBuilders()).SendAsync();
             }

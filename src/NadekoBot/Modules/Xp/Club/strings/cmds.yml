@@ -8,36 +8,32 @@ clubaccept:
     - userName:
         desc: The username of the person being accepted into the club.
 clubadmin:
-  desc: >-
-    Assigns (or unassigns) staff role to the member of the club. Admins can ban,
-    kick and accept applications.
+  desc: |-
+    Assigns (or unassigns) staff role to the member of the club. Admins can ban, kick and accept applications.
   ex:
     - '@Someone'
   params:
     - toAdmin:
         desc: The user who is being assigned or unassigned as an admin.
 clubapply:
-  desc: >-
-    Apply to join a club. You must meet that club's minimum level requirement,
-    and not be on its ban list.
+  desc: |-
+    Apply to join a club. You must meet that club's minimum level requirement, and not be on its ban list.
   ex:
     - My Brand New Club#23
   params:
     - clubName:
         desc: The name of the club you are trying to join.
 clubapps:
-  desc: >-
-    Shows the list of users who have applied to your club. Paginated. You must
-    be club owner or admin to use this command.
+  desc: |-
+    Shows the list of users who have applied to your club. Paginated. You must be club owner or admin to use this command.
   ex:
     - 2
   params:
     - page:
         desc: The page number to display.
 clubban:
-  desc: >-
-    Bans the user from the club. You must be the club owner or admin. They will
-    not be able to apply again.
+  desc: |-
+    Bans the user from the club. You must be the club owner or admin. They will not be able to apply again.
   ex:
     - user#1337
   params:
@@ -57,9 +53,8 @@ clubbanner:
     - url:
         desc: URL to the image to set as a club banner.
 clubbans:
-  desc: >-
-    Shows the list of users who have been banned from your club. Paginated. You
-    must be club owner or admin to use this command.
+  desc: |-
+    Shows the list of users who have been banned from your club. Paginated. You must be club owner or admin to use this command.
   ex:
     - 2
   params:
@@ -104,9 +99,8 @@ clubinformation:
     - clubName:
         desc: The name of a specific club being queried for information.
 clubkick:
-  desc: >-
-    Kicks the user from the club. You must be the club owner or admin. They will
-    be able to apply again.
+  desc: |-
+    Kicks the user from the club. You must be the club owner or admin. They will be able to apply again.
   ex:
     - user#1337
   params:
@@ -120,9 +114,8 @@ clubleaderboard:
     - 2
   params:
     - page:
-        desc: >-
-          The page number to display, allowing users to navigate through
-          multiple pages of club rankings.
+        desc: |-
+          The page number to display, allowing users to navigate through multiple pages of club rankings.
 clubleave:
   desc: Leaves the club you're currently in.
   ex:
@@ -153,15 +146,13 @@ clubtransfer:
     - newOwner:
         desc: The user who will take over the management of the club.
 clubunban:
-  desc: >-
-    Unbans the previously banned user from the club. You must be the club owner
-    or admin.
+  desc: |-
+    Unbans the previously banned user from the club. You must be the club owner or admin.
   ex:
     - user#1337
   params:
     - user:
-        desc: >-
-          The user who was previously banned is being restored to membership in
-          the club.
+        desc: |-
+          The user who was previously banned and is being restored to membership in the club.
     - userName:
         desc: The username of the user being unbanned from the club.

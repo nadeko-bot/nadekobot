@@ -1,7 +1,6 @@
 hangman:
-  desc: >-
-    Starts a game of hangman in the channel. You can optionally select a
-    category `{0}hangmanlist` to see a list of available categories.
+  desc: |-
+    Starts a game of hangman in the channel. You can optionally select a category `{0}hangmanlist` to see a list of available categories.
   ex:
     - ''
     - movies

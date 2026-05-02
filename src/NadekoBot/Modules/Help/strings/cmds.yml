@@ -1,10 +1,7 @@
 commands:
-  desc: >-
+  desc: |-
     List all of the bot's commands in the specified module.
-
-    You can either specify the full name or only the first few letters of the
-    module name.
-
+    You can either specify the full name or only the first few letters of the module name.
     Specifying no module will show the list of modules instead.
   ex:
     - Admin
@@ -13,7 +10,7 @@ commands:
   params:
     - module:
         desc: The name of the module to retrieve commands from.
-      params:
+      args:
         desc: How to display the list of commands.
 donate:
   desc: Provides instructions for helping the project financially.
@@ -34,12 +31,9 @@ guide:
   params:
     - {}
 h:
-  desc: >-
+  desc: |-
     Shows help for a single command.
-
-    Command help contains instructions on how to use the command with examples
-    and a list of parameters.
-
+    Command help contains instructions on how to use the command with examples and a list of parameters.
     DMs you helpful links if no parameters are specified.
   ex:
     - '{0}cmds'

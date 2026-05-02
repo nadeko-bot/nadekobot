@@ -17,9 +17,8 @@ experiencetext:
     - user:
         desc: Optional name, mention or ID of the user
 xpadd:
-  desc: >-
-    Adds server XP to a single user or all users with a role on this server.
-    This does not affect their global ranking. You can use negative values.
+  desc: |-
+    Adds server XP to a single user or all users with a role on this server. This does not affect their global ranking. You can use negative values.
   ex:
     - 100 @Someone
     - 500 SomeRoleName
@@ -33,9 +32,8 @@ xpadd:
       user:
         desc: The user whose XP is being modified.
 xpcurrencyreward:
-  desc: >-
-    Sets a currency reward on a specified level. Provide no amount in order to
-    remove the reward.
+  desc: |-
+    Sets a currency reward on a specified level. Provide no amount in order to remove the reward.
   ex:
     - 3 50
   params:
@@ -48,13 +46,13 @@ xpleaderboard:
   ex:
     - ''
   params:
-    - params:
-        desc: >-
+    - args:
+        desc: |-
           Optional flags such as --clean to remove users who left the server.
     - page:
         desc: The page number to display.
-      params:
-        desc: >-
+      args:
+        desc: |-
           Optional flags such as --clean to remove users who left the server.
 xplevelset:
   desc: Sets the level of the user you specify.
@@ -73,9 +71,8 @@ xpleveluprewards:
     - page:
         desc: The page number for which the level up rewards are being displayed.
 xpreset:
-  desc: >-
-    Resets specified user's XP, or the XP of all users in the server. You can't
-    reverse this action.
+  desc: |-
+    Resets specified user's XP, or the XP of all users in the server. You can't reverse this action.
   ex:
     - '@Someone'
     - ''
@@ -103,53 +100,49 @@ xprolereward:
   params:
     - level:
         desc: The level at which the user should be rewarded with the role.
-    - action:
-        desc: >-
-          The type of operation to perform on the user's roles, either adding or
-          removing one.
-      level:
+    - level:
         desc: The level at which the user should be rewarded with the role.
+      action:
+        desc: |-
+          The type of operation to perform on the user's roles, either adding or removing one.
       role:
         desc: The type of authority or privilege being granted or revoked.
 xpshop:
-  desc: >-
-    Access the xp shop (if enabled). You can purchase either xp card frames or
-    backgrounds. You can optionally provide a page number
+  desc: |-
+    Access the xp shop (if enabled). You can purchase either xp card frames or backgrounds. You can optionally provide a page number.
   ex:
     - bgs
     - frames
     - bgs 3
   params:
     - {}
-    - page:
+    - type:
+        desc: |-
+          The type of item to be purchased, such as an XP card frame or background.
+      page:
         desc: The page number to display in the XP shop.
-      type:
-        desc: >-
-          The type of item to be purchased, such as an XP card frame or
-          background.
 xpshopbuy:
   desc: Buy an item from the xp shop by specifying the type and the key of the item.
   ex:
     - bg open_sea
     - fr gold
   params:
-    - key:
-        desc: The id of the item being purchased.
-      type:
+    - type:
         desc: The type of item to purchase, such as a skill or a cosmetic.
+      key:
+        desc: The id of the item being purchased.
 xpshopuse:
-  desc: >-
-    Use a previously purchased item from the xp shop by specifying the type and
-    the key of the item.
+  desc: |-
+    Use a previously purchased item from the xp shop by specifying the type and the key of the item.
   ex:
     - bg synth
     - fr default
   params:
-    - key:
-        desc: The id of the item in the XP shop that you want to use.
-      type:
-        desc: >-
+    - type:
+        desc: |-
           The type of item to use: backgrounds (bg) or frames (fr).
+      key:
+        desc: The id of the item in the XP shop that you want to use.
 xpowned:
   desc: Shows all xp shop items you currently own.
   ex:
@@ -157,9 +150,8 @@ xpowned:
   params:
     - {}
 xptemplatereload:
-  desc: >-
-    Reloads the xp template file. Xp template file allows you to customize the
-    position and color of elements on the `{0}xp` card.
+  desc: |-
+    Reloads the xp template file. Xp template file allows you to customize the position and color of elements on the `{0}xp` card.
   ex:
     - ''
   params:

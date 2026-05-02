@@ -8,10 +8,10 @@ xpexclude:
     - role 123123123
     - user 123123123
   params:
-    - itemId:
-        desc: ID or mention of the item to exclude.
-      type:
+    - type:
         desc: 'Type of the item to exclude: role or user'
+      itemId:
+        desc: ID or mention of the item to exclude.
 xpexclusion:
   desc: Shows a list of all XP exclusions in the server.
   ex:

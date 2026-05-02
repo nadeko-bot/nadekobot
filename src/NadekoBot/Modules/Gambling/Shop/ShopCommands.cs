@@ -286,10 +286,10 @@ public partial class Gambling
                     {
                         var pendingMsg = await msgTask;
                         await pendingMsg.EditAsync(
-                            SmartEmbedText.FromEmbed(eb
-                                                     .WithOkColor()
-                                                     .WithTitle("Shop command executed")
-                                                     .Build()));
+                            SmartEmbedTextArray.FromEmbed(eb
+                                                          .WithOkColor()
+                                                          .WithTitle("Shop command executed")
+                                                          .Build()));
                     }
                     catch
                     {

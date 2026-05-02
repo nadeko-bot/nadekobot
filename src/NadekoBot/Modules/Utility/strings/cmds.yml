@@ -7,7 +7,7 @@ afk:
   ex:
     - ''
   params:
-    - msg:
+    - text:
         desc: The message to send when someone pings you.
 channelid:
   desc: Shows current channel ID.
@@ -31,19 +31,12 @@ checkperms:
     - who:
         desc: The identity of the entity whose permissions are being checked.
 config:
-  desc: >-
+  desc: |-
     Gets or sets configuration values.
-
     Provide no arguments to see the list of configs you can edit/view.
-
-    Provide config name to see all properties in that configuration and their
-    values.
-
-    Provide config name and property name to see that property's description and
-    value.
-
-    Provide config name, property name and value to set that property to the new
-    value.
+    Provide config name to see all properties in that configuration and their values.
+    Provide config name and property name to see that property's description and value.
+    Provide config name, property name and value to set that property to the new value.
   ex:
     - ''
     - bot
@@ -51,13 +44,11 @@ config:
     - bot color.ok ff0000
   params:
     - name:
-        desc: >-
-          The name of a specific configuration section or category. It is used
-          as an identifier to access its properties and values.
+        desc: |-
+          The name of a specific configuration section or category. It is used as an identifier to access its properties and values.
       prop:
-        desc: >-
-          The name of a specific configuration property or section. It is used
-          to retrieve or modify its settings.
+        desc: |-
+          The name of a specific configuration property or section. It is used to retrieve or modify its settings.
       value:
         desc: The new value for a specific configuration property.
 configreload:
@@ -69,16 +60,11 @@ configreload:
     - name:
         desc: The path or identifier of the configuration file or section to reload.
 emojiadd:
-  desc: >-
+  desc: |-
     Adds the specified emoji to this server.
-
     You can specify a name before the emoji to add it under a different name.
-
-    You can specify a name followed by an image link to add a new emoji from an
-    image.
-
-    You can omit imageUrl and instead upload the image as an attachment. 
-
+    You can specify a name followed by an image link to add a new emoji from an image.
+    You can omit imageUrl and instead upload the image as an attachment.
     Image size has to be below 256KB.
   ex:
     - ':someonesCustomEmoji:'
@@ -86,15 +72,15 @@ emojiadd:
     - owoNice https://cdn.discordapp.com/emojis/587930873811173386.png?size=128
   params:
     - emote:
-        desc: The type of emoji being added, such as a smiley face or a thumbs up.
-      name:
-        desc: The name of the emoji or the file to be uploaded.
-    - emote:
-        desc: The type of emoji being added, such as a smiley face or a thumbs up.
+        desc: The custom emoji to add to the server.
     - name:
-        desc: The name of the emoji or the file to be uploaded.
+        desc: The name to give the new emoji on this server.
+      emote:
+        desc: The custom emoji to add to the server.
+    - name:
+        desc: The name to give the new emoji on this server.
       url:
-        desc: The URL of an image file to use as the emoji's representation.
+        desc: The URL of an image file to use as the emoji's image.
 emojiremove:
   desc: Removes the specified emoji or emojis from this server.
   ex:
@@ -103,22 +89,14 @@ emojiremove:
     - emotes:
         desc: The list of emojis to be removed from the server.
 eval:
-  desc: >-
-    Execute arbitrary C# code and (optionally) return a result. Several
-    namespaces are included by default.
-
-    Special variables available: 
-
+  desc: |-
+    Execute arbitrary C# code and (optionally) return a result. Several namespaces are included by default.
+    Special variables available:
     `self` - Instance of the command group executing the command (this)
-
     `guild` - Server in which the command is executed
-
     `channel` - Channel in which the command is executed
-
     `user` - User executing the command
-
     `ctx` - Discord.Net command context
-
     `services` - Nadeko's IServiceProvider
   ex:
     - 123 / 4.5f
@@ -164,17 +142,16 @@ roleid:
     - role:
         desc: The role that is being referenced.
 roles:
-  desc: >-
-    List roles on this server or roles of a user if specified. Paginated, 20
-    roles per page.
+  desc: |-
+    List roles on this server or roles of a user if specified. Paginated, 20 roles per page.
   ex:
     - 2
     - '@Someone'
   params:
-    - page:
-        desc: The page number for the list of roles to be displayed.
-      target:
+    - target:
         desc: The user whose roles to list. If omitted, lists all server roles.
+      page:
+        desc: The page number for the list of roles to be displayed.
     - page:
         desc: The page number for the list of roles to be displayed.
 savechat:
@@ -187,15 +164,10 @@ savechat:
     - cnt:
         desc: The number of messages to be saved.
 say:
-  desc: >-
-    Make the bot say something, or in other words, make the bot send the
-    message.
-
+  desc: |-
+    Make the bot say something, or in other words, make the bot send the message.
     You can optionally specify the channel where the bot will send the message.
-
-    If you omit the channel name, it will send the message in the current
-    channel.
-
+    If you omit the channel name, it will send the message in the current channel.
     Supports [embeds](https://eb.nadeko.bot/)
   ex:
     - hi
@@ -204,13 +176,11 @@ say:
     - channel:
         desc: The destination where the bot will send the message.
       message:
-        desc: >-
-          The message to be sent by the bot. It can contain rich text
-          formatting.
+        desc: |-
+          The message to be sent by the bot. It can contain rich text formatting.
     - message:
-        desc: >-
-          The message to be sent by the bot. It can contain rich text
-          formatting.
+        desc: |-
+          The message to be sent by the bot. It can contain rich text formatting.
 servercolorerror:
   desc: Sets the Error color for this server.
   ex:
@@ -260,9 +230,8 @@ showembed:
     - messageId:
         desc: The ID of a message that contains an embed to be displayed as JSON.
     - ch:
-        desc: >-
-          The channel where the message is located that will be used for the
-          embed to be printed as JSON.
+        desc: |-
+          The channel where the message is located that will be used for the embed to be printed as JSON.
       messageId:
         desc: The ID of a message that contains an embed to be displayed as JSON.
 showemojis:
@@ -273,12 +242,9 @@ showemojis:
     - _:
         desc: The text containing the emojis to be processed.
 snipe:
-  desc: >-
+  desc: |-
     Snipe the message you replied to with this command.
-
-    Otherwise, if you don't reply to a message, it will snipe the last message
-    sent in the channel (out of the last few messages) which has text or an
-    image.
+    Otherwise, if you don't reply to a message, it will snipe the last message sent in the channel (out of the last few messages) which has text or an image.
   ex:
     - ''
   params:
@@ -290,23 +256,19 @@ stats:
   params:
     - {}
 stickeradd:
-  desc: >-
+  desc: |-
     Adds the sticker from your message to this server.
-
     Send the sticker along with this command (in the same message).
-
-    Alternatively you can upload an image along with this command but you have
-    to specify the name.
-
+    Alternatively you can upload an image along with this command but you have to specify the name.
     The image must be 300x300 in .png or .apng format and up to 512KB in size.
   ex:
     - ''
     - name "description" tag1 tag2 tagN
   params:
-    - description:
-        desc: The text that describes the sticker being added.
-      name:
+    - name:
         desc: The identifier for the sticker to be added.
+      description:
+        desc: The text that describes the sticker being added.
       tags:
         desc: The list of tags associated with the sticker being added.
 userid:
@@ -318,17 +280,15 @@ userid:
     - target:
         desc: The user whose ID to show. Defaults to yourself.
 verboseerror:
-  desc: >-
-    Toggles or sets whether the bot should print command errors when a command
-    is incorrectly used.
+  desc: |-
+    Toggles or sets whether the bot should print command errors when a command is incorrectly used.
   ex:
     - ''
     - false
   params:
     - newstate:
-        desc: >-
-          The state that determines whether error messages are displayed to the
-          user.
+        desc: |-
+          The state that determines whether error messages are displayed to the user.
 whosplaying:
   desc: Shows a list of users who are playing the specified game.
   ex:

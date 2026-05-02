@@ -8,18 +8,16 @@ quoteadd:
       text:
         desc: The message of the quote.
 quotedelete:
-  desc: >-
-    Deletes a quote with the specified ID. You have to either have the Manage
-    Messages permission or be the creator of the quote to delete it.
+  desc: |-
+    Deletes a quote with the specified ID. You have to either have the Manage Messages permission or be the creator of the quote to delete it.
   ex:
     - 123456
   params:
     - quoteId:
         desc: The id of the quote being deleted.
 quotedeleteauthor:
-  desc: >-
-    Deletes all quotes by the specified author. If the author is not you, then
-    ManageMessage server permission is required.
+  desc: |-
+    Deletes all quotes by the specified author. If the author is not you, then ManageMessage server permission is required.
   ex:
     - '@QuoteSpammer'
   params:
@@ -50,17 +48,13 @@ quotelist:
     - 3 id
   params:
     - order:
-        desc: >-
-          The order parameter determines how the quotes are sorted and
-          displayed, allowing users to choose between alphabetical or ID-based
-          ordering.
+        desc: |-
+          The order parameter determines how the quotes are sorted and displayed, allowing users to choose between alphabetical or ID-based ordering.
     - page:
         desc: The current page number for pagination.
       order:
-        desc: >-
-          The order parameter determines how the quotes are sorted and
-          displayed, allowing users to choose between alphabetical or ID-based
-          ordering.
+        desc: |-
+          The order parameter determines how the quotes are sorted and displayed, allowing users to choose between alphabetical or ID-based ordering.
 quoteprint:
   desc: Prints a random quote with a specified name.
   ex:
@@ -99,9 +93,8 @@ quoteshow:
     - quoteId:
         desc: The id of the quote being queried.
 quotesimport:
-  desc: >-
-    Upload the file or send the raw .yml data with this command to import all
-    quotes from the specified string or file into the current server.
+  desc: |-
+    Upload the file or send the raw .yml data with this command to import all quotes from the specified string or file into the current server.
   ex:
     - <upload .yml file>
   params:

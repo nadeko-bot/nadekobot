@@ -25,7 +25,7 @@ typestart:
   ex:
     - ''
   params:
-    - params:
+    - args:
         desc: Optional game settings.
 typestop:
   desc: Stops a typing contest on the current channel.

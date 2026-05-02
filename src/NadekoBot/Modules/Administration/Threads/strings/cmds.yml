@@ -1,20 +1,17 @@
 threadcreate:
-  desc: >-
-    Create a public thread with the specified title. You may optionally reply to
-    a message to have it as a starting point.
+  desc: |-
+    Create a public thread with the specified title. You may optionally reply to a message to have it as a starting point.
   ex:
     - Q&A
   params:
     - name:
-        desc: >-
-          The title of the new thread, which will be displayed in the forum's
-          list of threads.
+        desc: |-
+          The title of the new thread, which will be displayed in the forum's list of threads.
 threaddelete:
   desc: Delete a thread with the specified name in this channel. Case insensitive.
   ex:
     - Q&A
   params:
     - name:
-        desc: >-
-          The name of the thread to delete, allowing users to specify which
-          specific conversation they want to remove from the channel.
+        desc: |-
+          The name of the thread to delete.

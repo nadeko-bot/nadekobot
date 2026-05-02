@@ -1,12 +1,8 @@
 countup:
-  desc: >-
+  desc: |-
     Creates or joins an existing CountUp game.
-
     Bot will show a number - count up from it.
-
-    Whoever writes a duplicate number, or is the last person without a number
-    loses, and a new round starts!
-
+    Whoever writes a duplicate number, or is the last person without a number loses, and a new round starts!
     Minimum 3 users required.
   ex:
     - ''

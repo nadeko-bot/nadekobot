@@ -32,8 +32,10 @@ ncpixel:
   params:
     - position:
         desc: The position of the pixel to retrieve in alphanumeric format.
-    - position:
-        desc: The position of the pixel to retrieve in pixel x and y format.
+    - x:
+        desc: The x coordinate of the pixel.
+      y:
+        desc: The y coordinate of the pixel.
 ncreset:
   desc: |-
     Clears the nCanvas.
@@ -44,50 +46,41 @@ ncreset:
   params:
     - {}
 ncsetimg:
-  desc: >-
-    Attach the image to the message sending the command to overwrite the nCanvas
-    with it.
-
+  desc: |-
+    Attach the image to the message sending the command to overwrite the nCanvas with it.
     All prices and colors will be reset.
-
     The image must be equal to the size of the nCanvas (default is 500x350)
-
     This command is dangerous and irreversible.
   ex:
     - ''
   params:
     - {}
 ncsetpixel:
-  desc: >-
+  desc: |-
     Sets a pixel's color and text on the nCanvas.
-
     You must specify the position of the pixel to set in alphanumeric format.
-
-    You can obtain alphanumeric position of the pixel by using `nczoom` or `ncp
-    <x> <y>`
+    You can obtain alphanumeric position of the pixel by using `nczoom` or `ncp <x> <y>`
   ex:
     - 'sgu #ff0000 Some text'
   params:
     - position:
         desc: The position of the pixel to set in alphanumeric format.
-    - color:
+      color:
         desc: The color of the pixel to set in HEX.
-    - text:
+      text:
         desc: The optional text to set on the pixel.
 nczoom:
-  desc: >-
+  desc: |-
     Zooms in on the nCanvas.
-
-    Bot will show a 5x5 grid with the position of each cell for use with
-    `ncset`.
-
-    You can either use alphanumeric position (ex. s4u) or pixel x and y (ex. 123
-    123)
+    Bot will show a 5x5 grid with the position of each cell for use with `ncset`.
+    You can either use alphanumeric position (ex. s4u) or pixel x and y (ex. 123 123)
   ex:
     - sgu
     - 123 123
   params:
     - position:
-        desc: The position of the pixel to set in alphanumeric format.
-    - position:
-        desc: The position of the pixel to set in pixel x and y format.
+        desc: The position of the pixel in alphanumeric format.
+    - row:
+        desc: The row coordinate.
+      col:
+        desc: The column coordinate.

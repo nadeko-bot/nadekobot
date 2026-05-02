@@ -24,7 +24,7 @@ public static class HttpClientExtensions
     public static bool IsImage(this HttpResponseMessage msg, out string? mimeType)
     {
         mimeType = msg.Content.Headers.ContentType?.MediaType;
-        if (mimeType is "image/png" or "image/jpeg" or "image/gif")
+        if (mimeType is "image/png" or "image/jpeg" or "image/gif" or "image/webp")
             return true;
 
         return false;

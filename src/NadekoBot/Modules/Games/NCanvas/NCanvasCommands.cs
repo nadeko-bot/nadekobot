@@ -33,8 +33,8 @@ public partial class Games
         }
 
         [Cmd]
-        public async Task NCanvas(kwum x)
-            => await NcPixel(x);
+        public async Task NCanvas(kwum position)
+            => await NcPixel(position);
 
         [Cmd]
         public async Task NCanvas()

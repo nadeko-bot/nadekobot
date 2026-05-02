@@ -1,13 +1,10 @@
 tictactoe:
-  desc: >-
+  desc: |-
     Starts a game of tic tac toe.
-
-    Another user must run the command in the same channel in order to accept the
-    challenge.
-
+    Another user must run the command in the same channel in order to accept the challenge.
     Use numbers 1-9 to play.
   ex:
     - ''
   params:
-    - params:
+    - args:
         desc: Optional game settings.

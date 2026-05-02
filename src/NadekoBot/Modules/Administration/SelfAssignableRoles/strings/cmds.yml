@@ -1,26 +1,22 @@
 iam:
-  desc: >-
-    Adds a role to you that you choose. Role must be on the list of
-    self-assignable roles.
+  desc: |-
+    Adds a role to you that you choose. Role must be on the list of self-assignable roles.
   ex:
     - Gamer
   params:
     - role:
         desc: The role to assign.
 iamnot:
-  desc: >-
-    Removes a specified role from you. Role must be on the list of
-    self-assignable roles.
+  desc: |-
+    Removes a specified role from you. Role must be on the list of self-assignable roles.
   ex:
     - Gamer
   params:
     - role:
         desc: The role to remove.
 saradd:
-  desc: >-
-    Adds a role to the list of self-assignable roles. You can also specify a
-    group. If 'Exclusive self-assignable roles' feature is enabled (`{0}tesar`),
-    users will be able to pick one role per group.
+  desc: |-
+    Adds a role to the list of self-assignable roles. You can also specify a group. If 'Exclusive self-assignable roles' feature is enabled (`{0}tesar`), users will be able to pick one role per group.
   ex:
     - Gamer
     - 1 Alliance
@@ -33,9 +29,8 @@ saradd:
       role:
         desc: The role that can be assigned by the user.
 sarautodelete:
-  desc: >-
-    Toggles the automatic deletion of the user's message and Nadeko's
-    confirmations for `{0}iam` and `{0}iamn` commands.
+  desc: |-
+    Toggles the automatic deletion of the user's message and Nadeko's confirmations for `{0}iam` and `{0}iamn` commands.
   ex:
     - ''
   params:
@@ -67,9 +62,8 @@ sargroupname:
       name:
         desc: The optional name to assign, clears the name if no name is provided.
 sargrouprolereq:
-  desc: >-
-    Set a role that users have to have in order to assign a self-assignable role
-    from the specified group.
+  desc: |-
+    Set a role that users have to have in order to assign a self-assignable role from the specified group.
   ex:
     - 1 SomeRole
   params:

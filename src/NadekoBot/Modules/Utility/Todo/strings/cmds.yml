@@ -17,12 +17,11 @@ todoarchivedelete:
   ex:
     - 99
   params:
-    - todoId:
+    - id:
         desc: The identifier for the archived todo item to be deleted.
 todoarchivedone:
-  desc: >-
-    Creates a new archive with the specified name using only completed current
-    todos.
+  desc: |-
+    Creates a new archive with the specified name using only completed current todos.
   ex:
     - Success!
   params:
@@ -34,18 +33,16 @@ todoarchivelist:
     - ''
   params:
     - page:
-        desc: >-
-          The number of the page to retrieve from the list of archived todo
-          lists.
+        desc: |-
+          The number of the page to retrieve from the list of archived todo lists.
 todoarchiveshow:
   desc: Shows the archived todo list with the specified ID.
   ex:
     - 3c
   params:
-    - todoId:
-        desc: >-
-          The identifier for a specific task or project that has been archived
-          and is being retrieved.
+    - id:
+        desc: |-
+          The identifier for a specific task or project that has been archived and is being retrieved.
 todoclear:
   desc: Deletes all unarchived todos.
   ex:
@@ -71,10 +68,10 @@ todoedit:
   ex:
     - abc This is an updated entry
   params:
-    - newMessage:
-        desc: The text of a new task description or update to an existing one.
-      todoId:
+    - todoId:
         desc: The id of the todo item being edited.
+      newMessage:
+        desc: The text of a new task description or update to an existing one.
 todolist:
   desc: Lists all todos.
   ex:

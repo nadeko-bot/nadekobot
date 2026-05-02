@@ -1,23 +1,21 @@
 autocommandadd:
-  desc: >-
-    Adds a command to the list of commands which will be executed automatically
-    every X seconds.
+  desc: |-
+    Adds a command to the list of commands which will be executed automatically every X seconds.
   ex:
     - 60 {0}prune 1000
   params:
-    - cmdText:
-        desc: The text of the command to be executed when triggered.
-      interval:
+    - interval:
         desc: The time period between consecutive executions of the added command.
+      cmdText:
+        desc: The text of the command to be executed when triggered.
 autocommandremove:
   desc: Removes an auto command on the specified index.
   ex:
     - 3
   params:
     - index:
-        desc: >-
-          The index at which the auto command is located in the list of
-          commands.
+        desc: |-
+          The index at which the auto command is located in the list of commands.
 autocommandslist:
   desc: Lists all auto commands and the intervals in which they execute.
   ex:
@@ -58,22 +56,19 @@ die:
     - ''
   params:
     - graceful:
-        desc: >-
-          The option to perform a controlled shutdown, allowing for any
-          necessary cleanup or notifications before termination.
+        desc: |-
+          The option to perform a controlled shutdown, allowing for any necessary cleanup or notifications before termination.
 doas:
-  desc: >-
-    Execute the command as if you were the target user. Requires bot ownership
-    and server administrator permission.
+  desc: |-
+    Execute the command as if you were the target user. Requires bot ownership and server administrator permission.
   ex:
     - '@Thief .give all @Admin'
   params:
-    - message:
+    - user:
+        desc: |-
+          The user whose identity is being impersonated for the command execution.
+      message:
         desc: The command or script to execute as the target user.
-      user:
-        desc: >-
-          The user whose identity is being impersonated for the command
-          execution.
 forwardmessages:
   desc: |-
     Toggles whether you will receive DMs forwarded from bot users. All owners receive them by default. Use this to opt out or back in.
@@ -82,9 +77,8 @@ forwardmessages:
   params:
     - {}
 forwardtochannel:
-  desc: >-
-    Toggles forwarding of non-command messages sent to bot's DM to the current
-    channel
+  desc: |-
+    Toggles forwarding of non-command messages sent to bot's DM to the current channel
   ex:
     - ''
   params:
@@ -103,45 +97,35 @@ restart:
   params:
     - {}
 restartshard:
-  desc: >-
-    Try (re)connecting a shard with a certain shardid when it dies. No one knows
-    will it work. Keep an eye on the console for errors.
+  desc: |-
+    Try (re)connecting a shard with a certain shardid when it dies. No one knows will it work. Keep an eye on the console for errors.
   ex:
     - 2
   params:
     - shardId:
         desc: The ID of the shard to be restarted or reconnected.
 send:
-  desc: >-
+  desc: |-
     Sends a message to a channel or user.
-
-    You can write "channel" (literally word 'channel') first followed by the
-    channel id or channel mention, or
-
-    You can write "user" (literally word 'user') first followed by the user id
-    or user mention.
-
+    You can write "channel" (literally word 'channel') first followed by the channel id or channel mention, or
+    You can write "user" (literally word 'user') first followed by the user id or user mention.
     After either one of those, specify the message to be sent.
-
     This command can only be used by the Bot Owner.
   ex:
     - channel 123123123132312 Stop spamming commands plz
     - user 1231231232132 I can see in the console what you're doing.
   params:
-    - id:
+    - to:
+        desc: |-
+          The destination where the message will be sent, such as a specific channel or individual user.
+      id:
         desc: The identifier of the recipient, either a channel or a user.
       text:
-        desc: >-
-          The recipient's preferred format for the message, such as plain text
-          or formatted text with images and links.
-      to:
-        desc: >-
-          The destination where the message will be sent, such as a specific
-          channel or individual user.
+        desc: |-
+          The recipient's preferred format for the message, such as plain text or formatted text with images and links.
 setactivity:
-  desc: >-
-    Sets the bot's activity status. Optionally specify a type (Playing,
-    Listening, Watching, Competing). Defaults to Custom status if no type given.
+  desc: |-
+    Sets the bot's activity status. Optionally specify a type (Playing, Listening, Watching, Competing). Defaults to Custom status if no type given.
   ex:
     - Just chilling
     - Playing with snakes
@@ -149,24 +133,22 @@ setactivity:
   params:
     - game:
         desc: The status text to display.
-    - game:
-        desc: The status text to display.
-      type:
-        desc: >-
+    - type:
+        desc: |-
           The activity type: Playing, Listening, Watching, or Competing.
+      game:
+        desc: The status text to display.
 setavatar:
-  desc: >-
-    Sets a new avatar image for the NadekoBot. Parameter is a direct link to an
-    image.
+  desc: |-
+    Sets a new avatar image for the NadekoBot. Parameter is a direct link to an image.
   ex:
     - https://i.imgur.com/xTG3a1I.jpg
   params:
     - img:
         desc: The URL of the image file to be displayed as the bot's avatar.
 setbanner:
-  desc: >-
-    Sets a new banner image for the NadekoBot. Parameter is a direct link to an
-    image. Supports gifs.
+  desc: |-
+    Sets a new banner image for the NadekoBot. Parameter is a direct link to an image. Supports gifs.
   ex:
     - https://i.imgur.com/xTG3a1I.jpg
   params:
@@ -187,16 +169,15 @@ setstatus:
     - status:
         desc: The current state or mode of the bot's presence in a chat.
 setstream:
-  desc: >-
-    Sets the bots stream. First parameter is the twitch link, second parameter
-    is stream name.
+  desc: |-
+    Sets the bots stream. First parameter is the twitch link, second parameter is stream name.
   ex:
     - TWITCHLINK Hello
   params:
-    - name:
-        desc: The name of the stream being set.
-      url:
+    - url:
         desc: The URL of the Twitch channel's live stream page.
+      name:
+        desc: The name of the stream being set.
 shardstats:
   desc: |-
     Stats for shards. Paginated with 25 shards per page.
@@ -208,17 +189,14 @@ shardstats:
     - page:
         desc: The page number to display.
 startupcommandadd:
-  desc: >-
-    Adds a command to the list of commands which will be executed automatically
-    in the current channel, in the order they were added in, by the bot when it
-    starts up.
+  desc: |-
+    Adds a command to the list of commands which will be executed automatically in the current channel, in the order they were added in, by the bot when it starts up.
   ex:
     - '{0}stats'
   params:
     - cmdText:
-        desc: >-
-          The text of the command that should be recognized and executed when a
-          user types it.
+        desc: |-
+          The text of the command that should be recognized and executed when a user types it.
 startupcommandremove:
   desc: Removes a startup command on the specified index.
   ex:
@@ -246,9 +224,8 @@ stringsreload:
   params:
     - {}
 wait:
-  desc: >-
-    Used only as a startup command. Waits a certain number of milliseconds
-    before continuing the execution of the following startup commands.
+  desc: |-
+    Used only as a startup command. Waits a certain number of milliseconds before continuing the execution of the following startup commands.
   ex:
     - 3000
   params:

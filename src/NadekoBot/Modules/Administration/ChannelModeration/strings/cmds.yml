@@ -5,11 +5,9 @@ agerestricttoggle:
   params:
     - {}
 imageonlychannel:
-  desc: >-
+  desc: |-
     Toggles whether the channel only allows images.
-
-    Users who send more than a few non-image messages will be banned from using
-    the channel. 
+    Users who send more than a few non-image messages will be banned from using the channel.
   ex:
     - ''
   params:
@@ -17,40 +15,30 @@ imageonlychannel:
 linkonlychannel:
   desc: |-
     Toggles whether the channel only allows links.
-
-    Users who send more than a few non-link messages will be banned from using
-    the channel. 
+    Users who send more than a few non-link messages will be banned from using the channel.
   ex:
     - ''
   params:
     - {}
 slowmode:
-  desc: >-
-    Toggles slowmode on the current channel with the specified amount of time.
-    Maximum is 6 hours. Provide no parameters to disable.
+  desc: |-
+    Toggles slowmode on the current channel with the specified amount of time. Maximum is 6 hours. Provide no parameters to disable.
   ex:
     - ''
     - 27s
     - 3h15m5s
   params:
-    - time:
+    - timespan:
         desc: The duration for which the slowmode should be enabled.
 delmsgoncmd:
-  desc: >-
-    Toggles the automatic deletion of the user's successful command message to
-    prevent chat flood. You can use it either as a server toggle, channel
-    whitelist, or channel blacklist, as channel option has 3 settings: Enable
-    (always do it on this channel), Disable (never do it on this channel), and
-    Inherit (respect server setting). Use `list` parameter to see the current
-    states.
+  desc: |-
+    Toggles the automatic deletion of the user's successful command message to prevent chat flood. You can use it either as a server toggle, channel whitelist, or channel blacklist, as channel option has 3 settings: Enable (always do it on this channel), Disable (never do it on this channel), and Inherit (respect server setting). Use `list` parameter to see the current states.
   ex:
     - ''
     - channel enable
     - ch inherit
     - list
   params:
-    - _:
-        desc: The word 'list'
     - _:
         desc: The word 'server'
     - _:
@@ -65,3 +53,5 @@ delmsgoncmd:
         desc: The state to set. One of 'enable', 'disable', or 'inherit'.
       chId:
         desc: Optional channel id. If omitted, defaults to the current channel.
+    - _:
+        desc: The word 'list'

@@ -21,12 +21,8 @@ delvoichanl:
     - voiceChannel:
         desc: The voice channel being deleted.
 gamevoicechannel:
-  desc: >-
-    Toggles game voice channel feature in the voice channel you're currently in.
-    Users who join the game voice channel will get automatically redirected to
-    the voice channel with the name of their current game, if it exists. Can't
-    move users to channels that the bot has no connect permission for. One per
-    server.
+  desc: |-
+    Toggles game voice channel feature in the voice channel you're currently in. Users who join the game voice channel will get automatically redirected to the voice channel with the name of their current game, if it exists. Can't move users to channels that the bot has no connect permission for. One per server.
   ex:
     - ''
   params:
@@ -40,10 +36,8 @@ undeafen:
     - users:
         desc: The list of users to undeafen.
 vcrole:
-  desc: >-
-    Sets or resets a role which will be given to users who join the voice
-    channel you're in when you run this command. Provide no role name to
-    disable. You must be in a voice channel to run this command.
+  desc: |-
+    Sets or resets a role which will be given to users who join the voice channel you're in when you run this command. Provide no role name to disable. You must be in a voice channel to run this command.
   ex:
     - SomeRole
     - ''
@@ -57,9 +51,8 @@ vcrolelist:
   params:
     - {}
 vcrolerm:
-  desc: >-
-    Removes any `{0}vcrole` associated with the specified channel ID. This is
-    useful if your vcrole has been enabled on a VC which has been deleted.
+  desc: |-
+    Removes any `{0}vcrole` associated with the specified channel ID. This is useful if your vcrole has been enabled on a VC which has been deleted.
   ex:
     - 123123123123123
   params:

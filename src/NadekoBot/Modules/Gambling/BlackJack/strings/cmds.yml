@@ -11,9 +11,8 @@ blackjack:
     - amount:
         desc: The amount you want to bet in the blackjack game.
 double:
-  desc: >-
-    In the blackjack game, double your bet in order to receive exactly one more
-    card, and your turn ends.
+  desc: |-
+    In the blackjack game, double your bet in order to receive exactly one more card, and your turn ends.
   ex:
     - ''
   params:

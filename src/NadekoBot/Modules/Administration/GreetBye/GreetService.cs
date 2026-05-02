@@ -282,17 +282,16 @@ public class GreetService : INService, IReadyExecutor
 
             if (smartText is SmartPlainText pt)
             {
-                smartText = new SmartEmbedText()
+                smartText = new SmartEmbedTextArray
                 {
-                    Description = pt.Text
-                };
-            }
-
-            if (smartText is SmartEmbedText set)
-            {
-                smartText = set with
-                {
-                    Footer = CreateFooterSource(user)
+                    Embeds =
+                    [
+                        new SmartEmbedArrayElementText
+                        {
+                            Description = pt.Text,
+                            Footer = CreateFooterSource(user),
+                        },
+                    ],
                 };
             }
             else if (smartText is SmartEmbedTextArray seta)

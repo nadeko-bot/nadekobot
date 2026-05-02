@@ -1,16 +1,10 @@
 betdraw:
-  desc: >-
-    Bet on the card value and/or color. Specify the amount followed by your
-    guess. 
-
+  desc: |-
+    Bet on the card value and/or color. Specify the amount followed by your guess.
     You can specify `r` or `b` for red or black, and `h` or `l` for high or low.
-
     You can specify only h/l or only r/b or both.
-
     Returns are high but **7 always loses**.
-
-    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part
-    of your current balance.
+    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.
   ex:
     - 50 r
     - 200 b l
@@ -36,9 +30,8 @@ deckshuffle:
   params:
     - {}
 draw:
-  desc: >-
-    Draws a card from this server's deck. You can draw up to 10 cards by
-    supplying a number of cards to draw.
+  desc: |-
+    Draws a card from this server's deck. You can draw up to 10 cards by supplying a number of cards to draw.
   ex:
     - ''
     - 5
@@ -46,9 +39,8 @@ draw:
     - num:
         desc: The number of cards to be drawn from the deck.
 drawnew:
-  desc: >-
-    Draws a card from the NEW deck of cards. You can draw up to 10 cards by
-    supplying a number of cards to draw.
+  desc: |-
+    Draws a card from the NEW deck of cards. You can draw up to 10 cards by supplying a number of cards to draw.
   ex:
     - ''
     - 5

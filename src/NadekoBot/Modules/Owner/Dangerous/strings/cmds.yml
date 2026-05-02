@@ -13,9 +13,8 @@ deletecurrency:
   params:
     - {}
 deletewaifu:
-  desc: >-
-    Deletes waifu data for the specified user, including waifu info, fans, and
-    cycles. Also frees the user's waifus.
+  desc: |-
+    Deletes waifu data for the specified user, including waifu info, fans, and cycles. Also frees the user's waifus.
   ex:
     - '@Someone'
     - 123456789012345678
@@ -37,9 +36,8 @@ deletexp:
   params:
     - {}
 purgeuser:
-  desc: >-
-    Purge user from the database completely. This includes currency, xp, clubs
-    that user owns, waifu info
+  desc: |-
+    Purge user from the database completely. This includes currency, xp, clubs that user owns, waifu info.
   ex:
     - '@Oblivion'
   params:
@@ -48,16 +46,14 @@ purgeuser:
     - user:
         desc: The user account being purged.
 sqlexec:
-  desc: >-
-    Executes provided sql command and returns the number of affected rows.
-    Dangerous.
+  desc: |-
+    Executes provided sql command and returns the number of affected rows. Dangerous.
   ex:
     - UPDATE DiscordUser SET CurrencyAmount=CurrencyAmount+1234
   params:
     - sql:
-        desc: >-
-          The SQL query string to execute, which should be carefully crafted to
-          avoid any potential security risks.
+        desc: |-
+          The SQL query string to execute.
 sqlselect:
   desc: Executes provided sql query and returns the results. Dangerous.
   ex:
@@ -66,13 +62,11 @@ sqlselect:
     - sql:
         desc: The SQL query string that is executed by the function.
 sqlselectcsv:
-  desc: >-
-    Executes provided sql query and returns the results in a csv file.
-    Dangerous.
+  desc: |-
+    Executes provided sql query and returns the results in a csv file. Dangerous.
   ex:
     - SELECT * FROM DiscordUser LIMIT 5
   params:
     - sql:
-        desc: >-
-          The SQL query string that specifies the data to be retrieved and
-          formatted into a CSV file.
+        desc: |-
+          The SQL query string that specifies the data to be retrieved and formatted into a CSV file.

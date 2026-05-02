@@ -2,7 +2,27 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.3] - 27.04.2026
+## [7.2.4] - TBD
+
+### Added
+
+- AI agent can now send fully formatted embeds (author, thumbnail, image, footer icon, url, timestamp) via `send_message`
+
+### Changed
+
+- `.wlb` should now show 3x3 embed with inline fields
+- `.servernotify` help now documents that standard `%user.*%` and `%server.*%` placeholders work in any notify message.
+- Password-protected plant prompts now tell users to type `.pick <password>`
+
+### Fixed
+
+- `.ea` (emojiadd) now has correct parameters in help
+- Image upload commands (`.emojiadd`, avatar, banner, server icon, server banner, club icon) now accept WebP images
+
+### Dev
+- Embed JSON Simplification internally
+
+## [7.2.3] - 28.04.2026
 
 ### Fixed
 
@@ -21,10 +41,9 @@
 - Per-channel AI agent skills via `.acsa`, `.acsr`, `.acst`, `.acsl` - channel skills only apply when the agent runs in that specific channel
 - `.aprompts`, `.apromptshow`, `.apromptedit`, `.apromptreload`, `.apromptmodule`, `.apromptpath` owner commands for managing prompt files
 - Prompt files hot-reload via file system watcher - edit a file, changes apply automatically
-
-- AI agent data layer: data tools (`search_data_tools`, `describe_data_tool`, `invoke_data_tool`) provide structured read access to bot data without running commands and parsing embeds.
+- AI agent data layer
     - This version covers members, channels, XP, currency, waifus, warnings, reminders, music, server config, moderation, permissions, quests, and self-assignable roles
-    - more added in the future
+    - more will be added in the future
 - Waifu and AI system guide added to the docs under Features Explained
 
 ### Changed

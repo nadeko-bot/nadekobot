@@ -1,9 +1,7 @@
 slot:
-  desc: >-
+  desc: |-
     Play Nadeko slots by placing your bet.
-
-    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part
-    of your current balance.
+    You can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.
   ex:
     - 5
     - all

@@ -254,11 +254,6 @@ public sealed partial class ResponseBuilder
     {
         if (text is SmartPlainText spt)
             plainText = spt.Text;
-        else if (text is SmartEmbedText set)
-        {
-            plainText = set.PlainText ?? plainText;
-            embedBuilder = set.GetEmbed();
-        }
         else if (text is SmartEmbedTextArray ser)
         {
             plainText = ser.Content ?? plainText;

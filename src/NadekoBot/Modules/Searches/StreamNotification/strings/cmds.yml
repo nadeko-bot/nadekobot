@@ -1,8 +1,6 @@
 streamadd:
-  desc: >-
-    Notifies this channel when the stream on the specified URL goes online or
-    offline. Offline notifications will only show if you enable `{0}streamoff`.
-    Maximum 10 per server.
+  desc: |-
+    Notifies this channel when the stream on the specified URL goes online or offline. Offline notifications will only show if you enable `{0}streamoff`. Maximum 10 per server.
   ex:
     - twitch.tv/someguy
   params:
@@ -16,18 +14,16 @@ streamcheck:
     - url:
         desc: The URL of the stream being checked.
 streamlist:
-  desc: >-
-    Lists all streams you are following on this server and their respective
-    indexes.
+  desc: |-
+    Lists all streams you are following on this server and their respective indexes.
   ex:
     - ''
   params:
     - page:
         desc: The number of the page to retrieve from the list of followed streams.
 streammessage:
-  desc: >-
-    Sets the message which will show when the stream on the specified index
-    comes online. You can use %user% and %platform% placeholders.
+  desc: |-
+    Sets the message which will show when the stream on the specified index comes online. You can use %user% and %platform% placeholders.
   ex:
     - 1 Hey @erryone %user% is back online on %platform%!1!!
   params:
@@ -36,10 +32,8 @@ streammessage:
       message:
         desc: The text to be displayed in the stream's online status message.
 streammessageall:
-  desc: >-
-    Sets the message which will show when any of the currently followed streams
-    comes online. This does not apply to the streams which get added afterwards.
-    You can use %user% and %platform% placeholders.
+  desc: |-
+    Sets the message which will show when any of the currently followed streams comes online. This does not apply to the streams which get added afterwards. You can use %user% and %platform% placeholders.
   ex:
     - Hey @erryone %user% is back online!1!!
   params:
@@ -52,17 +46,15 @@ streamoffline:
   params:
     - {}
 streamonlinedelete:
-  desc: >-
-    Toggles whether the bot will delete stream online message when the stream
-    goes offline.
+  desc: |-
+    Toggles whether the bot will delete stream online message when the stream goes offline.
   ex:
     - ''
   params:
     - {}
 streamremove:
-  desc: >-
-    Stops following the stream on the specified index. (use `{0}stl` to see
-    indexes)
+  desc: |-
+    Stops following the stream on the specified index. (use `{0}stl` to see indexes)
   ex:
     - 2
   params:

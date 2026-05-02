@@ -389,7 +389,7 @@ public partial class Waifus
                                 + $"🆔 `{e.UserId}`\n"
                                 + $"💰 {CurrencyHelper.N(e.SnapshotTotalBacked, Culture, currSign)}";
 
-                    eb.AddField($"#{rank} {name}", value);
+                    eb.AddField($"#{rank} {name}", value, true);
                 }
 
                 return eb;
@@ -679,22 +679,22 @@ public partial class Waifus
 
     [Cmd]
     [Priority(0)]
-    public Task Hug([Leftover] string _)
+    public Task Hug([Leftover] string input)
         => ActionGifOnlyAsync(WaifuAction.Hug);
 
     [Cmd]
     [Priority(0)]
-    public Task Kiss([Leftover] string _)
+    public Task Kiss([Leftover] string input)
         => ActionGifOnlyAsync(WaifuAction.Kiss);
 
     [Cmd]
     [Priority(0)]
-    public Task Pat([Leftover] string _)
+    public Task Pat([Leftover] string input)
         => ActionGifOnlyAsync(WaifuAction.Pat);
 
     [Cmd]
     [Priority(0)]
-    public Task Nom([Leftover] string _)
+    public Task Nom([Leftover] string input)
         => ActionGifOnlyAsync(WaifuAction.Nom);
 
     [Cmd]
@@ -722,12 +722,12 @@ public partial class Waifus
     }
 
     [Cmd]
-    public async Task WaifuGift(string itemInput, [Leftover] IUser user)
+    public async Task WaifuGift(string item, [Leftover] IUser user)
     {
         var count = 1;
-        var itemName = itemInput;
+        var itemName = item;
 
-        var match = System.Text.RegularExpressions.Regex.Match(itemInput, @"^(\d+)[x*](.+)$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        var match = System.Text.RegularExpressions.Regex.Match(item, @"^(\d+)[x*](.+)$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         if (match.Success)
         {
             count = int.Parse(match.Groups[1].Value);

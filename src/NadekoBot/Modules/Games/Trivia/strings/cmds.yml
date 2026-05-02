@@ -19,7 +19,6 @@ trivia:
     - ''
     - '--timeout 5 -p -w 3 -q 10'
   params:
-    - params:
-        desc: >-
-          Options. --timeout <number>, --pokemon, --win <number>, --question
-          <number>, --nohint
+    - args:
+        desc: |-
+          Options. --timeout <number>, --pokemon, --win <number>, --question <number>, --nohint

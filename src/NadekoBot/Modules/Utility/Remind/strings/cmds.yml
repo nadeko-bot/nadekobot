@@ -1,40 +1,28 @@
 remind:
-  desc: >-
-    Sets a reminder which will be sent to you or to the targeted channel after
-    certain amount of time (max 1 year).
-
+  desc: |-
+    Sets a reminder which will be sent to you or to the targeted channel after certain amount of time (max 1 year).
     First parameter is `me` / `here` / 'channelname'
-
-    Second parameter is time in a descending order (mo>w>d>h>m) example:
-    1w5d3h10m.
-
+    Second parameter is time in a descending order (mo>w>d>h>m) example: 1w5d3h10m.
     Third parameter is a (multiword) message.
-
-    Requires ManageMessages server permission if you're targeting a different
-    channel.
+    Requires ManageMessages server permission if you're targeting a different channel.
   ex:
     - me 1d5h Do something
     - '#general 1m Start now!'
   params:
     - meorhere:
-        desc: >-
-          The enum value of 'me' if the user wants to be reminded, or 'here' if
-          the user wants to be reminded in the current channel.
+        desc: |-
+          The enum value of 'me' if the user wants to be reminded, or 'here' if the user wants to be reminded in the current channel.
       remindString:
-        desc: >-
-          The reminder duration and message to be sent. The message must start
-          with a short time string in the form of 5d1h30m for example.
+        desc: |-
+          The reminder duration and message to be sent. The message must start with a short time string in the form of 5d1h30m for example.
     - channel:
-        desc: >-
-          The name of the channel to send the reminder to, or 'here' for the
-          current channel.
+        desc: |-
+          The name of the channel to send the reminder to, or 'here' for the current channel.
       remindString:
         desc: The reminder message to be sent.
 reminddelete:
-  desc: >-
-    Deletes a reminder on the specified index. You can specify 'server' option
-    if you're an Administrator, and you want to delete a reminder on this server
-    created by someone else. 
+  desc: |-
+    Deletes a reminder on the specified index. You can specify 'server' option if you're an Administrator, and you want to delete a reminder on this server created by someone else.
   ex:
     - 3
     - server 2
@@ -46,9 +34,8 @@ reminddelete:
     - index:
         desc: The index of the reminder to be deleted.
 remindlist:
-  desc: >-
-    Lists all reminders you created. You can specify 'server' option if you're
-    an Administrator to list all reminders created on this server. Paginated.
+  desc: |-
+    Lists all reminders you created. You can specify 'server' option if you're an Administrator to list all reminders created on this server. Paginated.
   ex:
     - 1
     - server 2

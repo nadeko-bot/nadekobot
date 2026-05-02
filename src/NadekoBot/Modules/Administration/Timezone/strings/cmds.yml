@@ -1,7 +1,6 @@
 timezone:
-  desc: >-
-    Sets this guilds timezone. This affects bot's time output in this server
-    (logs, etc..) **Setting timezone requires Administrator server permission.**
+  desc: |-
+    Sets this guild's timezone. This affects bot's time output in this server (logs, etc.). **Setting timezone requires Administrator server permission.**
   ex:
     - ''
     - GMT Standard Time

@@ -1,12 +1,6 @@
 prune:
-  desc: >-
-    `{0}prune` removes all Nadeko's messages in the last 100 messages. `{0}prune
-    X` removes last `X` number of messages from the channel (up to 1000).
-    `{0}prune @Someone` removes all Someone's messages in the last 100 messages.
-    `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the
-    channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or
-    `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID
-    to only prune messages after that message.
+  desc: |-
+    `{0}prune` removes all Nadeko's messages in the last 100 messages. `{0}prune X` removes last `X` number of messages from the channel (up to 1000). `{0}prune @Someone` removes all Someone's messages in the last 100 messages. `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID to only prune messages after that message.
   ex:
     - ''
     - '-s'
@@ -17,36 +11,28 @@ prune:
     - '@Someone X'
     - '@Someone X -s'
   params:
-    - params:
-        desc: >-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` /
-          `-a` followed by a message ID to only prune messages after that
-          message.
+    - args:
+        desc: |-
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
     - count:
         desc: The number of messages to remove (up to 1000).
-      params:
-        desc: >-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` /
-          `-a` followed by a message ID to only prune messages after that
-          message.
-    - count:
-        desc: The number of messages to remove (up to 1000).
-      params:
-        desc: >-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` /
-          `-a` followed by a message ID to only prune messages after that
-          message.
-      user:
+      args:
+        desc: |-
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
+    - user:
         desc: The user whose messages are to be removed from the channel.
-    - count:
+      count:
         desc: The number of messages to remove (up to 1000).
-      params:
-        desc: >-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` /
-          `-a` followed by a message ID to only prune messages after that
-          message.
-      userId:
+      args:
+        desc: |-
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
+    - userId:
         desc: The ID of a user to filter messages by.
+      count:
+        desc: The number of messages to remove (up to 1000).
+      args:
+        desc: |-
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
 prunecancel:
   desc: Cancels an active prune if there is any.
   ex:

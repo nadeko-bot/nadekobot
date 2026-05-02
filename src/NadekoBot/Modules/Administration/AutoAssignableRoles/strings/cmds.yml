@@ -1,19 +1,14 @@
 autoassignrole:
-  desc: >-
+  desc: |-
     Toggles the role which will be assigned to every user who joins the server.
-
     You can run this command multiple times to add multiple roles (up to 3).
-
-    Specifying the role that is already added will remove that role from the
-    list.
-
+    Specifying the role that is already added will remove that role from the list.
     Provide no parameters to list current roles.
   ex:
     - ''
     - RoleName
   params:
-    - role:
-        desc: >-
-          The role assigned to new users, determining their permissions and
-          access rights within the server.
     - {}
+    - role:
+        desc: |-
+          The role assigned to new users, determining their permissions and access rights within the server.

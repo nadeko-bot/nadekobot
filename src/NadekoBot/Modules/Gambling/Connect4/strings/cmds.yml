@@ -1,14 +1,9 @@
 connect4:
-  desc: >-
-    Creates or joins an existing connect4 game. 2 players are required for the
-    game. Objective of the game is to get 4 of your pieces next to each other in
-    a vertical, horizontal or diagonal line. You can specify a bet when you
-    create a game and only users who bet the same amount will be able to join
-    your game.
+  desc: |-
+    Creates or joins an existing connect4 game. 2 players are required for the game. Objective of the game is to get 4 of your pieces next to each other in a vertical, horizontal or diagonal line. You can specify a bet when you create a game and only users who bet the same amount will be able to join your game.
   ex:
     - ''
   params:
-    - params:
-        desc: >-
-          The list of command-line arguments passed by the user to customize the
-          game setup or behavior.
+    - args:
+        desc: |-
+          The list of command-line arguments passed by the user to customize the game setup or behavior.

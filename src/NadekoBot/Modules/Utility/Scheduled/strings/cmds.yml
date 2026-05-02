@@ -7,9 +7,8 @@ scheduleadd:
     - 3h .br all
   params:
     - time:
-        desc: >-
-          How long it takes for the command to execute. Example: 1h30m = 1 hour
-          and 30 minutes
+        desc: |-
+          How long it takes for the command to execute. Example: 1h30m = 1 hour and 30 minutes
     - command:
         desc: Command that will be executed after the specified time has elapsed
 scheduledelete:

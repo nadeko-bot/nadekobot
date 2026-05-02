@@ -1,9 +1,6 @@
 languageset:
-  desc: >-
-    Sets this server's response language. If bot's response strings have been
-    translated to that language, bot will use that language in this server.
-    Reset by using `default` as the locale name. Provide no parameters to see
-    currently set language.
+  desc: |-
+    Sets this server's response language. If bot's response strings have been translated to that language, bot will use that language in this server. Reset by using `default` as the locale name. Provide no parameters to see currently set language.
   ex:
     - 'de-DE '
     - default
@@ -12,10 +9,8 @@ languageset:
     - name:
         desc: The locale name for which the response language should be set.
 languagesetdefault:
-  desc: >-
-    Sets the bot's default response language. All servers which use a default
-    locale will use this one. Setting to `default` will use the host's current
-    culture. Provide no parameters to see currently set language.
+  desc: |-
+    Sets the bot's default response language. All servers which use a default locale will use this one. Setting to `default` will use the host's current culture. Provide no parameters to see currently set language.
   ex:
     - en-US
     - default

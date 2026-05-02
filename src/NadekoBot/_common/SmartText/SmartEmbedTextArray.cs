@@ -15,7 +15,7 @@ public sealed record SmartEmbedTextArray : SmartText
     public EmbedBuilder[] GetEmbedBuilders()
     {
         if (Embeds is null)
-            return Array.Empty<EmbedBuilder>();
+            return [];
 
         return Embeds
             .Where(x => x.IsValid)
@@ -27,8 +27,15 @@ public sealed record SmartEmbedTextArray : SmartText
     {
         if (Embeds is null)
             return;
-        
-        foreach(var eb in Embeds)
+
+        foreach (var eb in Embeds)
             eb.NormalizeFields();
     }
+
+    public static SmartEmbedTextArray FromEmbed(IEmbed eb, string content = null)
+        => new()
+        {
+            Content = content,
+            Embeds = [new SmartEmbedArrayElementText(eb)],
+        };
 }

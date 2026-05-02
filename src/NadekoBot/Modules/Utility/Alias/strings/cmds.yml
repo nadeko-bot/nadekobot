@@ -1,7 +1,6 @@
 alias:
-  desc: >-
-    Create a custom alias for a certain Nadeko command. Provide no alias to
-    remove the existing one.
+  desc: |-
+    Create a custom alias for a certain Nadeko command. Provide no alias to remove the existing one.
   ex:
     - allin {0}bf all h
   params:

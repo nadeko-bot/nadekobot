@@ -7,10 +7,6 @@ namespace NadekoBot;
 public abstract record SmartText
 {
     [JsonIgnore]
-    public bool IsEmbed
-        => this is SmartEmbedText;
-
-    [JsonIgnore]
     public bool IsPlainText
         => this is SmartPlainText;
 
@@ -20,14 +16,10 @@ public abstract record SmartText
 
     public static implicit operator SmartText(string input)
         => new SmartPlainText(input);
-    
+
     public static SmartText operator +(SmartText text, string input)
         => text switch
         {
-            SmartEmbedText set => set with
-            {
-                PlainText = set.PlainText + input
-            },
             SmartPlainText spt => new SmartPlainText(spt.Text + input),
             SmartEmbedTextArray arr => arr with
             {
@@ -39,10 +31,6 @@ public abstract record SmartText
     public static SmartText operator +(string input, SmartText text)
         => text switch
         {
-            SmartEmbedText set => set with
-            {
-                PlainText = input + set.PlainText
-            },
             SmartPlainText spt => new SmartPlainText(input + spt.Text),
             SmartEmbedTextArray arr => arr with
             {
@@ -59,30 +47,27 @@ public abstract record SmartText
         try
         {
             var doc = JObject.Parse(input);
-            var root = doc.Root;
-            if (root.Type == JTokenType.Object)
+
+            // New canonical shape -- array of embeds with optional content.
+            if (doc.TryGetValue("embeds", out _))
             {
-                if (((JObject)root).TryGetValue("embeds", out _))
-                {
-                    var arr = root.ToObject<SmartEmbedTextArray>();
-
-                    if (arr is null)
-                        return new SmartPlainText(input);
-
-                    arr!.NormalizeFields();
-                    return arr;
-                }
-
-                var obj = root.ToObject<SmartEmbedText>();
-
-                if (obj is null || !(obj.IsValid || !string.IsNullOrWhiteSpace(obj.PlainText)))
+                var arr = doc.ToObject<SmartEmbedTextArray>();
+                if (arr is null || !arr.IsValid)
                     return new SmartPlainText(input);
 
-                obj.NormalizeFields();
-                return obj;
+                arr.NormalizeFields();
+                return arr;
             }
-            
-            return new SmartPlainText(input);
+
+            // Legacy single-embed shape -- normalize to the array form so the
+            // rest of the codebase only ever sees SmartEmbedTextArray.
+            var legacy = doc.ToObject<LegacySmartEmbedText>();
+            if (legacy is null || !(legacy.IsValid || !string.IsNullOrWhiteSpace(legacy.PlainText)))
+                return new SmartPlainText(input);
+
+            var converted = legacy.ToArray();
+            converted.NormalizeFields();
+            return converted;
         }
         catch
         {

@@ -1,7 +1,6 @@
 buy:
-  desc: >-
-    Buys an item from the shop on a given index. If buying items, make sure that
-    the bot can DM you.
+  desc: |-
+    Buys an item from the shop on a given index. If buying items, make sure that the bot can DM you.
   ex:
     - 2
   params:
@@ -14,73 +13,57 @@ shop:
     - 2
   params:
     - page:
-        desc: >-
-          The number of the page to retrieve from the list of administrators'
-          shops.
+        desc: |-
+          The number of the page to retrieve from the list of administrators' shops.
 shopadd:
-  desc: >-
+  desc: |-
     Adds an item to the shop.
-
     First you begin by specifying the type of the item you wish to add.
-
     Available types are role, list and command.
-
     If the item is a role, specify a role id or a role name.
-
-    In case you're selling a command, and you need user's name, id etc, you can
-    use the following placeholders:
-
+    In case you're selling a command, and you need user's name, id etc, you can use the following placeholders:
     -     `%you%` - Buyer mention
-
     -     `%you.username%` - Buyer's username
-
     -     `%you.name%` - Buyer's global name
-
     -     `%you.nick%` - Buyer's display name
-
-    90% of currency from each purchase will be received by the user who added
-    the item to the shop. This is configurable by the bot owner
+    90% of currency from each purchase will be received by the user who added the item to the shop. This is configurable by the bot owner
   ex:
     - role 1000 Rich
     - cmd 1000 .setrole %you% Rich
   params:
     - _:
         desc: This value has to be 'cmd'
-      command:
-        desc: >-
-          The full command, replacing the buyer info (if required) with some of
-          the special %you% placeholders.
       price:
         desc: The cost at which the command is available for purchase.
+      command:
+        desc: |-
+          The full command, replacing the buyer info (if required) with some of the special %you% placeholders.
     - _:
         desc: This value has to be 'list'
-      name:
-        desc: The name of the list item being sold.
       price:
         desc: The cost at which the item is available for purchase.
+      name:
+        desc: The name of the list item being sold.
     - _:
         desc: This value has to be 'role'
-      name:
-        desc: The name of the role, command, or list being added to the shop.
       price:
         desc: The cost at which the role is available for purchase.
+      name:
+        desc: The name of the role, command, or list being added to the shop.
 shopchangename:
-  desc: >-
-    Change the name of a shop entry at the specified index. Only works for
-    non-role items
+  desc: |-
+    Change the name of a shop entry at the specified index. Only works for non-role items
   ex:
     - 3 Cool stuff
   params:
     - index:
         desc: The index of the shop entry to modify.
       newName:
-        desc: >-
-          The new name given to the shop item, which will replace its original
-          name.
+        desc: |-
+          The new name given to the shop item, which will replace its original name.
 shopchangeprice:
-  desc: >-
-    Change the price of a shop entry at the specified index. Specify the index
-    of the entry, followed by the price
+  desc: |-
+    Change the price of a shop entry at the specified index. Specify the index of the entry, followed by the price
   ex:
     - 1 500
   params:
@@ -89,17 +72,14 @@ shopchangeprice:
       price:
         desc: The new price for the item being updated.
 shoplistadd:
-  desc: >-
-    Adds an item to the list of items for sale in the shop entry given the
-    index. You usually want to run this command in the secret channel, so that
-    the unique items are not leaked.
+  desc: |-
+    Adds an item to the list of items for sale in the shop entry given the index. You usually want to run this command in the secret channel, so that the unique items are not leaked.
   ex:
     - 1 Uni-que-Steam-Key
   params:
     - index:
-        desc: >-
-          The position at which to insert the new item in the list of items for
-          sale.
+        desc: |-
+          The position at which to insert the new item in the list of items for sale.
       itemText:
         desc: The description or name of the item being added to the list.
 shopmove:
@@ -119,21 +99,18 @@ shopremove:
     - index:
         desc: The position in the list of items to remove.
 shopreq:
-  desc: >-
-    Sets a role which will be required to buy the item on the specified index.
-    Specify only index to remove the requirement.
+  desc: |-
+    Sets a role which will be required to buy the item on the specified index. Specify only index to remove the requirement.
   ex:
     - 2 Gamers
     - 2
   params:
     - itemIndex:
-        desc: >-
-          The index of an item in the inventory that must be purchased before
-          this one can be bought.
+        desc: |-
+          The index of an item in the inventory that must be purchased before this one can be bought.
       role:
-        desc: >-
-          The role that must be assigned to the player in order to purchase the
-          item.
+        desc: |-
+          The role that must be assigned to the player in order to purchase the item.
 shopswap:
   desc: Swap the index of two shop entries
   ex:

@@ -1,7 +1,6 @@
 patron:
-  desc: >-
-    Check your patronage status and command usage quota. Bot owners can check
-    targeted user's patronage status.
+  desc: |-
+    Check your patronage status and command usage quota. Bot owners can check targeted user's patronage status.
   ex:
     - ''
   params:
@@ -25,8 +24,7 @@ patronmessage:
     - x hello
   params:
     - tierAndHigher:
-        desc: >-
-          The tier or level of membership that determines which patrons receive
-          the message.
+        desc: |-
+          The tier or level of membership that determines which patrons receive the message.
       message:
         desc: The text content of the message being sent to patrons.

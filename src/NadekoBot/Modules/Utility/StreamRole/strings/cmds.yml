@@ -1,9 +1,6 @@
 streamrole:
-  desc: >-
-    Sets a role which is monitored for streamers (FromRole), and a role to add
-    if a user from 'FromRole' is streaming (AddRole). When a user from
-    'FromRole' starts streaming, they will receive an 'AddRole'. You can only
-    have 1 Stream Role per server. Provide no parameters to disable
+  desc: |-
+    Sets a role which is monitored for streamers (FromRole), and a role to add if a user from 'FromRole' is streaming (AddRole). When a user from 'FromRole' starts streaming, they will receive an 'AddRole'. You can only have 1 Stream Role per server. Provide no parameters to disable.
   ex:
     - '"Eligible Streamers" "Featured Streams"'
   params:
@@ -13,45 +10,37 @@ streamrole:
         desc: The role to be added to users when they start streaming.
     - {}
 streamroleblacklist:
-  desc: >-
-    Adds or removes a blacklisted user. Blacklisted users will never receive the
-    stream role.
+  desc: |-
+    Adds or removes a blacklisted user. Blacklisted users will never receive the stream role.
   ex:
     - add @Someone#1234
     - rem @Someone#1234
   params:
     - action:
-        desc: >-
-          The type of operation to perform on the blacklisted user, either
-          adding them to the list or removing them from it.
+        desc: |-
+          The type of operation to perform on the blacklisted user, either adding them to the list or removing them from it.
       user:
         desc: The ID of the user who is being added or removed from the blacklist.
 streamrolekeyword:
-  desc: >-
-    Sets keyword which is required in the stream's title in order for the
-    streamrole to apply. Provide no keyword in order to reset.
+  desc: |-
+    Sets keyword which is required in the stream's title in order for the streamrole to apply. Provide no keyword in order to reset.
   ex:
     - ''
     - PUBG
   params:
     - keyword:
-        desc: >-
-          The keyword that must be present in a stream's title for the
-          associated role to take effect.
+        desc: |-
+          The keyword that must be present in a stream's title for the associated role to take effect.
 streamrolewhitelist:
-  desc: >-
-    Adds or removes a whitelisted user. Whitelisted users will receive the
-    stream role even if they don't have the specified keyword in their stream
-    title.
+  desc: |-
+    Adds or removes a whitelisted user. Whitelisted users will receive the stream role even if they don't have the specified keyword in their stream title.
   ex:
     - add @Someone#1234
     - rem @Someone#1234
   params:
     - action:
-        desc: >-
-          The type of operation to perform on the whitelist, either adding or
-          removing a user.
+        desc: |-
+          The type of operation to perform on the whitelist, either adding or removing a user.
       user:
-        desc: >-
-          The user to be added or removed from the whitelist for receiving the
-          stream role.
+        desc: |-
+          The user to be added or removed from the whitelist for receiving the stream role.

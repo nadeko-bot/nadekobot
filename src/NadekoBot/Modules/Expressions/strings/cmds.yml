@@ -14,20 +14,20 @@ expradd:
   ex:
     - '"hello" Hi there %user.mention%'
   params:
-    - response:
-        desc: "The text of the message that shows up when a user types the trigger word or phrase."
-      trigger:
+    - trigger:
         desc: The trigger word or phrase (phrase must be in quotes).
+      response:
+        desc: "The text of the message that shows up when a user types the trigger word or phrase."
 expraddserver:
   desc: |-
     Add an expression with a trigger and a response in this server. Bot will post a response whenever someone types the trigger word. This command is useful if you want to lower the permission requirement for managing expressions by using `{0}dpo`.
   ex:
     - '"hello" Hi there %user.mention%'
   params:
-    - response:
-        desc: "The text of the message that shows up when a user types the trigger word or phrase."
-      trigger:
+    - trigger:
         desc: The trigger word or phrase (phrase must be in quotes).
+      response:
+        desc: "The text of the message that shows up when a user types the trigger word or phrase."
 exprat:
   desc: "Toggles whether the expression will allow extra input after the trigger. For example, with this feature enabled, expression with trigger 'hi' will also be invoked when a user types 'hi there'. This feature is automatically enabled on expressions which have '%target%' in their response."
   ex:
@@ -122,10 +122,10 @@ exprreact:
     - 59 <a:nFlower:408963839191941120>
     - 59
   params:
-    - emojiStrs:
-        desc: The set of emojis that can be used to react to the expression.
-      id:
+    - id:
         desc: The ID of the expression.
+      emojiStrs:
+        desc: The set of emojis that can be used to react to the expression.
 exprsearch:
   desc: "Searches expressions by trigger or response text. Lists all matching expressions with their IDs and settings."
   ex:

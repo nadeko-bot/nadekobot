@@ -1,54 +1,46 @@
 ban:
-  desc: >-
-    Bans a user by ID or name with an optional message. You can specify a time
-    string before the user name to ban the user temporarily.
+  desc: |-
+    Bans a user by ID or name with an optional message. You can specify a time string before the user name to ban the user temporarily.
   ex:
     - '@Someone Get out!'
     - '"Some Guy#1234" Your behaviour is toxic.'
     - 1d12h @Someone Come back when u chill
   params:
-    - msg:
-        desc: The reason for the ban is provided in this message.
-      time:
+    - timespan:
         desc: The duration of the temporary ban.
       user:
-        desc: >-
-          The user being banned, either by ID or name, and potentially
-          temporarily.
-    - msg:
+        desc: |-
+          The user being banned, either by ID or name, and potentially temporarily.
+      msg:
         desc: The reason for the ban is provided in this message.
-      time:
+    - timespan:
         desc: The duration of the temporary ban.
       userId:
         desc: The id of the user being banned.
-    - msg:
+      msg:
         desc: The reason for the ban is provided in this message.
-      userId:
+    - userId:
         desc: The id of the user being banned.
-    - msg:
+      msg:
         desc: The reason for the ban is provided in this message.
-      user:
-        desc: >-
-          The user being banned, either by ID or name, and potentially
-          temporarily.
+    - user:
+        desc: |-
+          The user being banned, either by ID or name, and potentially temporarily.
+      msg:
+        desc: The reason for the ban is provided in this message.
 banmessage:
-  desc: >-
-    Sets a ban message template which will be used when a user is banned from
-    this server. You can use embed strings and ban-specific placeholders:
-    %ban.mod%, %ban.user%, %ban.duration% and %ban.reason%. You can disable ban
-    message with `{0}banmsg -`
+  desc: |-
+    Sets a ban message template which will be used when a user is banned from this server. You can use embed strings and ban-specific placeholders: %ban.mod%, %ban.user%, %ban.duration% and %ban.reason%. You can disable ban message with `{0}banmsg -`
   ex:
     - '%ban.user%, you''ve been banned from %server.name%. Reason: %ban.reason%'
-    - >-
-      {{ "description": "%ban.user% you have been banned from %server.name% by
-      %ban.mod%" }}
+    - |-
+      {{ "description": "%ban.user% you have been banned from %server.name% by %ban.mod%" }}
   params:
     - message:
         desc: The custom message to be displayed when a user is banned.
 banmessagetest:
-  desc: >-
-    If ban message is not disabled, bot will send you the message as if you were
-    banned by yourself. Used for testing the ban message.
+  desc: |-
+    If ban message is not disabled, bot will send you the message as if you were banned by yourself. Used for testing the ban message.
   ex:
     - No reason
     - 1h Test 1 hour ban message
@@ -60,9 +52,8 @@ banmessagetest:
       reason:
         desc: The reason why a user was banned.
 banmsgreset:
-  desc: >-
-    Resets ban message to default. If you want to completely disable ban
-    messages, use `{0}banmsg -`
+  desc: |-
+    Resets ban message to default. If you want to completely disable ban messages, use `{0}banmsg -`
   ex:
     - ''
   params:
@@ -76,79 +67,71 @@ banprune:
     - 3
   params:
     - days:
-        desc: >-
-          The number of days to retain messages for a banned user before they
-          are automatically deleted.
+        desc: |-
+          The number of days to retain messages for a banned user before they are automatically deleted.
 kick:
   desc: Kicks a mentioned user.
   ex:
     - '@Someone Get out!'
     - '"Some Guy#1234" Your behaviour is toxic.'
   params:
-    - msg:
-        desc: The message to display when kicking the user.
-      user:
+    - user:
         desc: The user being kicked from the guild.
-    - msg:
+      msg:
         desc: The message to display when kicking the user.
-      userId:
+    - userId:
         desc: The ID of the user being kicked from the chat.
+      msg:
+        desc: The message to display when kicking the user.
 massban:
-  desc: >-
-    Bans multiple users at once. Specify a space separated list of IDs of users
-    who you wish to ban.
+  desc: |-
+    Bans multiple users at once. Specify a space separated list of IDs of users who you wish to ban.
   ex:
     - 123123123 3333333333 444444444
   params:
     - users:
         desc: The list of user IDs to ban. Whitespace-separated string.
 masskick:
-  desc: >-
-    Kicks multiple users at once. Specify a space separated list of IDs of users
-    who you wish to kick.
+  desc: |-
+    Kicks multiple users at once. Specify a space separated list of IDs of users who you wish to kick.
   ex:
     - 123123123 3333333333 444444444
   params:
     - users:
         desc: The list of user IDs to kick. Whitespace-separated string.
 masskill:
-  desc: >-
-    Specify a new-line separated list of `userid reason`. You can use
-    Username#discrim instead of UserId. Specified users will be banned from the
-    current server, blacklisted from the bot, and have all of their currency
-    taken away.
+  desc: |-
+    Specify a new-line separated list of `userid reason`. You can use Username#discrim instead of UserId. Specified users will be banned from the current server, blacklisted from the bot, and have all of their currency taken away.
   ex:
     - BadPerson#1234 Toxic person
   params:
     - people:
-        desc: >-
-          The list of user IDs or usernames to ban from the server and blacklist
-          from the bot.
+        desc: |-
+          The list of user IDs or usernames to ban from the server and blacklist from the bot.
 softban:
   desc: Bans and then unbans a user by ID or name with an optional message.
   ex:
     - '@Someone Get out!'
     - '"Some Guy#1234" Your behaviour is toxic.'
   params:
-    - msg:
-        desc: The reason for the ban is described in this string.
-      user:
+    - user:
         desc: The user being banned and then unbanned.
-    - msg:
+      msg:
         desc: The reason for the ban is described in this string.
-      userId:
+    - userId:
         desc: The id of the user being banned and then unbanned.
+      msg:
+        desc: The reason for the ban is described in this string.
 timeout:
-  desc: >-
-    Times the user out for the specified amount of time. You may optionally
-    specify a reason, which will be sent to the user.
+  desc: |-
+    Times the user out for the specified amount of time. You may optionally specify a reason, which will be sent to the user.
   ex:
     - '@Someone 3h Shut up!'
     - '@Someone 1h30m'
   params:
     - globalUser:
         desc: The user's account or identity that is being timed out.
-      time:
+      timespan:
         desc: The duration of the timeout period.
       msg:
         desc: The brief message explaining why the user was timed out.
@@ -163,25 +146,23 @@ unban:
     - userId:
         desc: The ID of the user to be unbanned.
 warn:
-  desc: >-
+  desc: |-
     Warns a user with an optional reason.
-
-    You can specify a warning weight integer before the user. For example, 3
-    would mean that this warning counts as 3 warnings.
+    You can specify a warning weight integer before the user. For example, 3 would mean that this warning counts as 3 warnings.
   ex:
     - '@Someone Very rude person'
     - 3 @Someone Very rude person
   params:
-    - reason:
-        desc: The reason for the warning.
-      user:
+    - user:
         desc: The user to be warned about the issue or situation.
-    - reason:
+      reason:
         desc: The reason for the warning.
-      user:
-        desc: The user to be warned about the issue or situation.
-      weight:
+    - weight:
         desc: The level of severity for the warning.
+      user:
+        desc: The user to be warned about the issue or situation.
+      reason:
+        desc: The reason for the warning.
 warnmessage:
   desc: |-
     Sets a warn message template which will be used when a user is warned on
@@ -190,9 +171,8 @@ warnmessage:
     You can disable warn DMs with `{0}warnmsg -`
   ex:
     - '%warn.user%, you have been warned in %server.name%. Reason: %warn.reason%'
-    - >-
-      {{ "description": "%warn.user% you have been warned in %server.name% by
-      %warn.mod%. Total warnings: %warn.count%" }}
+    - |-
+      {{ "description": "%warn.user% you have been warned in %server.name% by %warn.mod%. Total warnings: %warn.count%" }}
   params:
     - message:
         desc: The custom message to be displayed when a user is warned.
@@ -214,40 +194,36 @@ warnmsgreset:
   params:
     - {}
 warnclear:
-  desc: >-
-    Clears all warnings from a certain user. You can specify a number to clear a
-    specific one.
+  desc: |-
+    Clears all warnings from a certain user. You can specify a number to clear a specific one.
   ex:
     - '@PoorDude 3'
     - '@PoorDude'
   params:
-    - index:
-        desc: The index of the warning to be cleared, or 0 to clear all warnings.
-      user:
+    - user:
         desc: The user whose warnings are being cleared.
-    - index:
+      index:
         desc: The index of the warning to be cleared, or 0 to clear all warnings.
-      userId:
+    - userId:
         desc: The ID of the user whose warnings are being cleared.
+      index:
+        desc: The index of the warning to be cleared, or 0 to clear all warnings.
 warndelete:
   desc: Deletes a warning from a user by its index.
   ex:
     - '@Someone 3'
   params:
-    - index:
-        desc: The index of the warning to be deleted.
-      user:
+    - user:
         desc: The user whose warning is being deleted.
-    - index:
+      index:
         desc: The index of the warning to be deleted.
-      userId:
+    - userId:
         desc: The ID of the user whose warning is being deleted.
+      index:
+        desc: The index of the warning to be deleted.
 warnexpire:
-  desc: >-
-    Gets or sets the number of days after which the warnings will be cleared
-    automatically. This setting works retroactively. If you want to delete the
-    warnings instead of clearing them, you can set the `--delete` optional
-    parameter. Provide no parameter to see currently set expiry
+  desc: |-
+    Gets or sets the number of days after which the warnings will be cleared automatically. This setting works retroactively. If you want to delete the warnings instead of clearing them, you can set the `--delete` optional parameter. Provide no parameter to see currently set expiry.
   ex:
     - ''
     - 3
@@ -255,13 +231,11 @@ warnexpire:
   params:
     - {}
     - days:
-        desc: >-
-          The number of days after which expired warnings will be automatically
-          cleared from the system.
-      params:
-        desc: >-
-          The list of command-line options or flags that can be passed to
-          customize the behavior of the function.
+        desc: |-
+          The number of days after which expired warnings will be automatically cleared from the system.
+      args:
+        desc: |-
+          The list of command-line options or flags that can be passed to customize the behavior of the function.
 warnlog:
   desc: See a list of warnings of a certain user.
   ex:
@@ -288,32 +262,28 @@ warnlogall:
     - page:
         desc: The current page number for displaying the warning log.
 warnpunish:
-  desc: >-
-    Sets a punishment for a certain number of warnings. You can specify a time
-    string after 'Ban' or *'Mute' punishments to make it a temporary mute/ban.
-    Provide no punishment to remove. Available punishments: Ban, Kick, Softban,
-    Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut
+  desc: |-
+    Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or 'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut
   ex:
     - 3
     - 5 Ban
     - 5 Mute 2d12h
     - 4 AddRole toxic 1h
   params:
-    - _:
-        desc: The role that will be added to the user's roles.
-      number:
+    - number:
         desc: The number of warnings that will trigger the specified punishment.
+      _:
+        desc: The role that will be added to the user's roles.
       role:
         desc: The role that will be affected by the punishment.
-      time:
+      timespan:
         desc: The duration of the temporary punishment.
     - number:
         desc: The number of warnings that will trigger the specified punishment.
       punish:
-        desc: >-
-          The type of action to take when the specified number of warnings is
-          reached.
-      time:
+        desc: |-
+          The type of action to take when the specified number of warnings is reached.
+      timespan:
         desc: The duration of the temporary punishment.
     - number:
         desc: The number of warnings that will trigger the specified punishment.

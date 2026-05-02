@@ -4,7 +4,6 @@ acrophobia:
     - ''
     - '-s 30'
   params:
-    - params:
-        desc: >-
-          Options: -s/--submission-time <seconds> (15-300, default 60),
-          -v/--vote-time <seconds> (15-120, default 30).
+    - args:
+        desc: |-
+          Options: -s/--submission-time <seconds> (15-300, default 60), -v/--vote-time <seconds> (15-120, default 30).

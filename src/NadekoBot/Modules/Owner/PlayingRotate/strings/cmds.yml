@@ -1,5 +1,5 @@
 addplaying:
-  desc: >-
+  desc: |-
     Adds a specified string to the list of playing strings to rotate.
     Optionally pick a type: `Playing`, `Watching`, `Listening`, or `Competing`.
     Defaults to Custom status if no type is given.
@@ -10,12 +10,11 @@ addplaying:
   params:
     - status:
         desc: The status text.
-    - status:
+    - statusType:
+        desc: |-
+          The type of status: `Playing`, `Watching`, `Listening`, or `Competing`.
+      status:
         desc: The status text.
-      statusType:
-        desc: >-
-          The type of status: `Playing`, `Watching`, `Listening`, or
-          `Competing`.
 listplaying:
   desc: Lists all playing statuses and their indexes.
   ex:
@@ -30,9 +29,8 @@ removeplaying:
     - index:
         desc: The index of the playing string to be removed.
 rotateplaying:
-  desc: >-
-    Toggles rotation of playing status of the dynamic strings you previously
-    specified.
+  desc: |-
+    Toggles rotation of playing status of the dynamic strings you previously specified.
   ex:
     - ''
   params:

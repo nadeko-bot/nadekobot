@@ -6,16 +6,11 @@ bible:
     - book:
         desc: The name of the biblical book being referenced.
       chapterAndVerse:
-        desc: >-
-          The reference to a specific passage in the Bible, such as 'Genesis
-          3:15'
+        desc: "The reference to a specific passage in the Bible, such as 'Genesis 3:15'"
 quran:
-  desc: >-
-    Shows the text of an ayah of the Quran, as well as the recitation by
-    Alafasy.
-
-    Supply surah:ayah, or ayah number. For instance, 262 or 2:255 will both get
-    you Ayat Al Kursi
+  desc: |-
+    Shows the text of an ayah of the Quran, as well as the recitation by Alafasy.
+    Supply surah:ayah, or ayah number. For instance, 262 or 2:255 will both get you Ayat Al Kursi
   ex:
     - '2:255'
     - 262

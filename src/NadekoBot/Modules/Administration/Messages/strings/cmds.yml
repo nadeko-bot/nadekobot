@@ -1,21 +1,15 @@
 autopublish:
-  desc: >-
-    Toggles whether the bot automatically publishes all messages posted in the
-    news channel this command was executed in.
+  desc: |-
+    Toggles whether the bot automatically publishes all messages posted in the news channel this command was executed in.
   ex:
     - ''
   params:
     - {}
 delete:
-  desc: >-
-    Deletes a single message given the channel and message ID, or a message
-    link.
-
+  desc: |-
+    Deletes a single message given the channel and message ID, or a message link.
     If channel is omitted, message will be searched for in the current channel.
-
-    You can also specify time parameter after which the message will be deleted
-    (up to 7 days).
-
+    You can also specify time parameter after which the message will be deleted (up to 7 days).
     This timer won't persist through bot restarts.
   ex:
     - '#chat 771562360594628608'
@@ -23,28 +17,24 @@ delete:
     - 771562360594628608 5m
   params:
     - messageId:
-        desc: >-
-          The id of a specific message within a channel, used to target the
-          deletion operation.
-      time:
+        desc: |-
+          The id of a specific message within a channel, used to target the deletion operation.
+      timespan:
         desc: The duration after which the message should be automatically deleted.
     - messageLink:
         desc: The link of the message to delete. It must be on the same server.
-      time:
+      timespan:
         desc: The duration after which the message should be automatically deleted.
     - channel:
         desc: The channel where the message is located or should be searched for.
       messageId:
-        desc: >-
-          The id of a specific message within a channel, used to target the
-          deletion operation.
-      time:
+        desc: |-
+          The id of a specific message within a channel, used to target the deletion operation.
+      timespan:
         desc: The duration after which the message should be automatically deleted.
 edit:
-  desc: >-
-    Edits bot's message, you have to specify message ID and new text. You can
-    optionally specify target channel.
-
+  desc: |-
+    Edits bot's message, you have to specify message ID and new text. You can optionally specify target channel.
     Supports [embeds](https://eb.nadeko.bot/)
   ex:
     - 7479498384 Hi :^)
@@ -56,9 +46,8 @@ edit:
       text:
         desc: The new text content of the edited message.
     - channel:
-        desc: >-
-          The target channel where the edited message will be sent or updated
-          in.
+        desc: |-
+          The target channel where the edited message will be sent or updated in.
       messageId:
         desc: The id of the message being edited.
       text:

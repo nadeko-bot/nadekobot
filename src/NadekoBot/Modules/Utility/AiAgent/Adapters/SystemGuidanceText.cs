@@ -118,9 +118,41 @@ internal static class SystemGuidanceText
         """;
 
     public const string SendMessage = """
-        RICH EMBED RESPONSES:
-        When you want to respond with a rich embed (structured info, summaries, cards), use the send_message tool
-        with the embed parameter targeting the current channel. This gives you full control over title, description,
-        color, fields, footer, etc. For simple text replies, just respond with plain text as usual.
+        SEND_MESSAGE PAYLOAD:
+
+        The `message` parameter is a single string. By default it is treated as
+        plain text. To send rich embeds, pass JSON of the shape below (this is
+        the same format the bot's .showembed command emits, so it round-trips):
+
+        {
+          "content": "optional plain text shown above the embed(s)",
+          "embeds": [
+            {
+              "title": "max 256 chars",
+              "description": "max 4096 chars, markdown allowed",
+              "url": "https://... (makes the title clickable)",
+              "color": "#5865F2",
+              "author":    { "name": "max 256", "url": "https://...", "icon_url": "https://..." },
+              "thumbnail": "https://... (small image, top-right)",
+              "image":     "https://... (large image, below description)",
+              "fields":    [ { "name": "max 256", "value": "max 1024", "inline": false } ],
+              "footer":    { "text": "max 2048", "icon_url": "https://..." },
+              "timestamp": "2024-01-31T15:04:05Z"
+            }
+          ]
+        }
+
+        Up to 10 embeds per message. All embed fields are optional -- supply
+        only what's needed. For a plain reply, just send a normal string.
+
+        Rendering caveats:
+        - Mentions (<@id>, <#id>, <@&id>) and custom emoji DO NOT render in
+          title, author.name, field.name, or footer.text. Put them in
+          description or field.value instead.
+        - Image URLs must be public http(s) links. The bot does not upload
+          files.
+        - Total embed text across all fields must stay under 6000 characters.
+
+        Prefer one well-structured embed over multiple plain messages.
         """;
 }

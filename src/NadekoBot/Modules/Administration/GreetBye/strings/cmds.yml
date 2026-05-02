@@ -5,9 +5,8 @@ boost:
   params:
     - {}
 boostdel:
-  desc: >-
-    Sets the time it takes (in seconds) for boost messages to be auto-deleted.
-    Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
+  desc: |-
+    Sets the time it takes (in seconds) for boost messages to be auto-deleted. Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
   ex:
     - 0
     - 30
@@ -15,35 +14,25 @@ boostdel:
     - timer:
         desc: The amount of seconds before boost messages are automatically deleted.
 boostmsg:
-  desc: >-
-    Sets a new boost announcement message which will be shown in the current
-    channel. 
-
-    Using this command with no message will show the current boost message. 
-
-    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and
-    [embeds](https://docs.nadeko.bot/en/latest/embeds/)
+  desc: |-
+    Sets a new boost announcement message which will be shown in the current channel.
+    Using this command with no message will show the current boost message.
+    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://docs.nadeko.bot/en/latest/embeds/)
   ex:
     - '%user.mention% has boosted the server!!!'
   params:
     - text:
-        desc: >-
-          The new announcement message to be displayed when a user boosts the
-          server.
+        desc: The new announcement message to be displayed when a user boosts the server.
 boosttest:
-  desc: >-
-    Sends the boost message in the current channel as if you just boosted the
-    server.
-
+  desc: |-
+    Sends the boost message in the current channel as if you just boosted the server.
     You can optionally specify a different user.
   ex:
     - ''
     - '@SomeoneElse'
   params:
     - user:
-        desc: >-
-          The user to impersonate when sending the boost message, defaulting to
-          yourself if not specified.
+        desc: The user to impersonate when sending the boost message, defaulting to yourself if not specified.
 bye:
   desc: Toggles announcements on the current channel when someone leaves the server.
   ex:
@@ -51,45 +40,33 @@ bye:
   params:
     - {}
 byedel:
-  desc: >-
-    Sets the time it takes (in seconds) for bye messages to be auto-deleted. Set
-    it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
+  desc: |-
+    Sets the time it takes (in seconds) for bye messages to be auto-deleted. Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
   ex:
     - 0
     - 30
   params:
     - timer:
-        desc: >-
-          The amount of seconds before goodbye messages are automatically
-          deleted.
+        desc: The amount of seconds before goodbye messages are automatically deleted.
 byemsg:
-  desc: >-
-    Sets a new leave announcement message which will be shown in the current
-    channel. 
-
-    Using this command with no message will show the current bye message. 
-
-    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and
-    [embeds](https://eb.nadeko.bot/)
+  desc: |-
+    Sets a new leave announcement message which will be shown in the current channel.
+    Using this command with no message will show the current bye message.
+    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://eb.nadeko.bot/)
   ex:
     - '%user.name% has left.'
   params:
     - text:
-        desc: >-
-          The new announcement message to be displayed when a user leaves the
-          server.
+        desc: The new announcement message to be displayed when a user leaves the server.
 byetest:
-  desc: >-
-    Sends the bye message in the current channel as if you just left the server.
-    You can optionally specify a different user.
+  desc: |-
+    Sends the bye message in the current channel as if you just left the server. You can optionally specify a different user.
   ex:
     - ''
     - '@SomeoneElse'
   params:
     - user:
-        desc: >-
-          The user to impersonate when sending the farewell, defaulting to
-          yourself if not specified.
+        desc: The user to impersonate when sending the farewell, defaulting to yourself if not specified.
 greet:
   desc: Toggles announcements on the current channel when someone joins the server.
   ex:
@@ -97,76 +74,54 @@ greet:
   params:
     - {}
 greetdel:
-  desc: >-
-    Sets the time it takes (in seconds) for greet messages to be auto-deleted.
-    Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
+  desc: |-
+    Sets the time it takes (in seconds) for greet messages to be auto-deleted. Set it to `0` to disable automatic deletion. Max 600 seconds. Default is 30.
   ex:
     - 0
     - 30
   params:
     - timer:
-        desc: >-
-          The amount of seconds before greeting messages are automatically
-          deleted.
+        desc: The amount of seconds before greeting messages are automatically deleted.
 greetdm:
-  desc: >-
-    Toggles whether greet messages will be sent in a DM (This is separate from
-    `{0}greet` - you can have both, one or neither enabled).
+  desc: |-
+    Toggles whether greet messages will be sent in a DM (This is separate from `{0}greet` - you can have both, one or neither enabled).
   ex:
     - ''
   params:
     - {}
 greetdmmsg:
-  desc: >-
-    Sets a new join announcement message which will be sent to the user who
-    joined. Type `%user.mention%` if you want to mention the new member. Using
-    it with no message will show the current DM greet message. You can use embed
-    json from <https://eb.nadeko.bot> instead of a regular text, if you want the
-    message to be embedded.
+  desc: |-
+    Sets a new join announcement message which will be sent to the user who joined. Type `%user.mention%` if you want to mention the new member. Using it with no message will show the current DM greet message. You can use embed json from <https://eb.nadeko.bot> instead of a regular text, if you want the message to be embedded.
   ex:
     - Welcome to the server, %user.mention%
   params:
     - text:
-        desc: >-
-          The new join announcement message that will be sent to the user who
-          joined.
+        desc: The new join announcement message that will be sent to the user who joined.
 greetdmtest:
-  desc: >-
-    Sends the greet direct message to you as if you just joined the server. You
-    can optionally specify a different user.
+  desc: |-
+    Sends the greet direct message to you as if you just joined the server. You can optionally specify a different user.
   ex:
     - ''
     - '@SomeoneElse'
   params:
     - user:
-        desc: >-
-          The recipient of the greeting, defaulting to yourself if not
-          specified.
+        desc: The recipient of the greeting, defaulting to yourself if not specified.
 greetmsg:
-  desc: >-
-    Sets a new join announcement message which will be shown in the current
-    channel.
-
-    Using this command with no message will show the current greet message.  
-
-    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and
-    [embeds](https://eb.nadeko.bot/)
+  desc: |-
+    Sets a new join announcement message which will be shown in the current channel.
+    Using this command with no message will show the current greet message.
+    Supports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://eb.nadeko.bot/)
   ex:
     - Welcome, %user.mention%.
   params:
     - text:
-        desc: >-
-          The new announcement message to be displayed when a user joins the
-          server.
+        desc: The new announcement message to be displayed when a user joins the server.
 greettest:
-  desc: >-
-    Sends the greet message in the current channel as if you just joined the
-    server. You can optionally specify a different user.
+  desc: |-
+    Sends the greet message in the current channel as if you just joined the server. You can optionally specify a different user.
   ex:
     - ''
     - '@SomeoneElse'
   params:
     - user:
-        desc: >-
-          The user to impersonate when sending the greeting, defaulting to
-          yourself if not specified.
+        desc: The user to impersonate when sending the greeting, defaulting to yourself if not specified.

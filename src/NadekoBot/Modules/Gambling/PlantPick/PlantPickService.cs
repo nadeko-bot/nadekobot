@@ -202,15 +202,20 @@ public class PlantPickService(
                     if (dropAmount > 0)
                     {
                         var prefix = cmdHandler.GetPrefix(channel.Guild.Id);
+                        var pw = config.Generation.HasPassword ? gs.GeneratePassword().ToUpperInvariant() : null;
+                        var hasPw = !string.IsNullOrWhiteSpace(pw);
+
+                        var pickLine = dropAmount == 1
+                            ? hasPw ? strs.pick_sn_pw(prefix) : strs.pick_sn(prefix)
+                            : hasPw ? strs.pick_pl_pw(prefix) : strs.pick_pl(prefix);
+
                         var toSend = dropAmount == 1
                             ? GetText(channel.GuildId, strs.curgen_sn(config.Currency.Sign))
                               + "\n> "
-                              + GetText(channel.GuildId, strs.pick_sn(prefix))
+                              + GetText(channel.GuildId, pickLine)
                             : GetText(channel.GuildId, strs.curgen_pl(dropAmount, config.Currency.Sign))
                               + "\n> "
-                              + GetText(channel.GuildId, strs.pick_pl(prefix));
-
-                        var pw = config.Generation.HasPassword ? gs.GeneratePassword().ToUpperInvariant() : null;
+                              + GetText(channel.GuildId, pickLine);
 
                         IUserMessage sent;
                         var (stream, ext) = await GetRandomCurrencyImageAsync(pw);
@@ -303,10 +308,11 @@ public class PlantPickService(
             var prefix = cmdHandler.GetPrefix(gid);
             var msgToSend = GetText(gid, strs.planted(Format.Bold(user), amount + gss.Data.Currency.Sign));
 
+            var hasPw = !string.IsNullOrWhiteSpace(pass);
             if (amount > 1)
-                msgToSend += "\n> " + GetText(gid, strs.pick_pl(prefix));
+                msgToSend += "\n> " + GetText(gid, hasPw ? strs.pick_pl_pw(prefix) : strs.pick_pl(prefix));
             else
-                msgToSend += "\n> " + GetText(gid, strs.pick_sn(prefix));
+                msgToSend += "\n> " + GetText(gid, hasPw ? strs.pick_sn_pw(prefix) : strs.pick_sn(prefix));
 
             //get the image
             var (stream, ext) = await GetRandomCurrencyImageAsync(pass);

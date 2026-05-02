@@ -1,7 +1,6 @@
 hands:
-  desc: >-
-    Shows currently raised hands in chronological order from your current voice
-    channel.
+  desc: |-
+    Shows currently raised hands in chronological order from your current voice channel.
   ex:
     - ''
     - 2

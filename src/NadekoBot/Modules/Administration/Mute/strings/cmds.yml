@@ -1,8 +1,6 @@
 chatmute:
-  desc: >-
-    Prevents a mentioned user from chatting in text channels. You can also
-    specify time string for how long the user should be muted (min 1 minute, max
-    49 days). You can optionally specify a reason.
+  desc: |-
+    Prevents a mentioned user from chatting in text channels. You can also specify time string for how long the user should be muted (min 1 minute, max 49 days). You can optionally specify a reason.
   ex:
     - '@Someone'
     - '@Someone stop writing'
@@ -10,57 +8,50 @@ chatmute:
     - 1h30m @Someone
     - 1h @Someone chill
   params:
-    - reason:
-        desc: >-
-          The optional reason provided is used to explain why the user was
-          muted.
-      user:
+    - user:
         desc: The user to mute, as specified by their ID or mention.
-    - reason:
-        desc: >-
-          The optional reason provided is used to explain why the user was
-          muted.
-      time:
+      reason:
+        desc: |-
+          The optional reason provided is used to explain why the user was muted.
+    - timespan:
         desc: The duration of the mute period.
       user:
         desc: The user to mute, as specified by their ID or mention.
+      reason:
+        desc: |-
+          The optional reason provided is used to explain why the user was muted.
 chatunmute:
-  desc: >-
-    Removes a mute role previously set on a mentioned user with `{0}chatmute`
-    which prevented him from chatting in text channels.
+  desc: |-
+    Removes a mute role previously set on a mentioned user with `{0}chatmute` which prevented him from chatting in text channels.
   ex:
     - '@Someone'
   params:
-    - reason:
-        desc: The reason for the mute being lifted.
-      user:
+    - user:
         desc: The user who was previously muted and is now being unmuted.
+      reason:
+        desc: The reason for the mute being lifted.
 mute:
-  desc: >-
-    Mutes a mentioned user both from speaking and chatting. You can also specify
-    time string for how long the user should be muted (min 1 minute, max 49
-    days). You can optionally specify a reason.
+  desc: |-
+    Mutes a mentioned user both from speaking and chatting. You can also specify time string for how long the user should be muted (min 1 minute, max 49 days). You can optionally specify a reason.
   ex:
     - '@Someone'
     - '@Someone too noisy'
     - 1h30m @Someone
     - 1h30m @Someone too noisy
   params:
-    - reason:
-        desc: The optional reason provided helps to explain why the user was muted.
-      target:
+    - target:
         desc: The user to whom the mute action is being applied.
-    - reason:
+      reason:
         desc: The optional reason provided helps to explain why the user was muted.
-      time:
+    - timespan:
         desc: The duration of the mute period.
       user:
         desc: The user to whom the mute action is being applied.
+      reason:
+        desc: The optional reason provided helps to explain why the user was muted.
 muterole:
-  desc: >-
-    Sets a name of the role which will be assigned to people who should be
-    muted. Provide no arguments to see currently set mute role. Default is
-    nadeko-mute.
+  desc: |-
+    Sets a name of the role which will be assigned to people who should be muted. Provide no arguments to see currently set mute role. Default is nadeko-mute.
   ex:
     - ''
     - Silenced
@@ -72,16 +63,13 @@ unmute:
   ex:
     - '@Someone'
   params:
-    - reason:
-        desc: The reason for the mute being lifted.
-      user:
+    - user:
         desc: The user who was previously muted and is now being un-muted.
+      reason:
+        desc: The reason for the mute being lifted.
 voicemute:
-  desc: >-
-    Prevents a mentioned user from speaking in voice channels. User has to be in
-    a voice channel in order for the command to have an effect. You can also
-    specify time string for how long the user should be muted (min 1 minute, max
-    49 days). You can optionally specify a reason.
+  desc: |-
+    Prevents a mentioned user from speaking in voice channels. User has to be in a voice channel in order for the command to have an effect. You can also specify time string for how long the user should be muted (min 1 minute, max 49 days). You can optionally specify a reason.
   ex:
     - '@Someone'
     - '@Someone stop talking'
@@ -89,32 +77,27 @@ voicemute:
     - 1h30m @Someone
     - 1h @Someone silence
   params:
-    - reason:
-        desc: >-
-          The optional reason provided is used to explain why the user was
-          muted.
-      user:
-        desc: >-
-          The user being targeted by this function, whose voice capabilities are
-          intended to be restricted.
-    - reason:
-        desc: >-
-          The optional reason provided is used to explain why the user was
-          muted.
-      time:
+    - user:
+        desc: |-
+          The user being targeted by this command, whose voice capabilities are intended to be restricted.
+      reason:
+        desc: |-
+          The optional reason provided is used to explain why the user was muted.
+    - timespan:
         desc: The duration of the silence imposed on the mentioned user.
       user:
-        desc: >-
-          The user being targeted by this function, whose voice capabilities are
-          intended to be restricted.
+        desc: |-
+          The user being targeted by this command, whose voice capabilities are intended to be restricted.
+      reason:
+        desc: |-
+          The optional reason provided is used to explain why the user was muted.
 voiceunmute:
   desc: Gives a previously voice-muted user a permission to speak.
   ex:
     - '@Someguy'
   params:
-    - reason:
+    - user:
+        desc: |-
+          The user who was previously muted is now able to participate in the conversation again.
+      reason:
         desc: The reason for the user's previous mute.
-      user:
-        desc: >-
-          The user who was previously muted is now able to participate in the
-          conversation again.

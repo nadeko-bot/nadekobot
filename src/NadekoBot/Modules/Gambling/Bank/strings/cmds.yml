@@ -8,14 +8,10 @@ bankaward:
       user:
         desc: The user who is receiving the award.
 bankbalance:
-  desc: >-
+  desc: |-
     Shows how much currency is in your bank account.
-
-    This differs from your cash amount, as the cash amount is publicly
-    available, but only you have access to your bank balance.
-
+    This differs from your cash amount, as the cash amount is publicly available, but only you have access to your bank balance.
     However, you have to withdraw it first in order to use it.
-
     Bot Owner can also check another user's bank balance.
   ex:
     - ''

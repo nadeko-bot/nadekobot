@@ -29,11 +29,6 @@ public static class Extensions
     public static Task EditAsync(this IUserMessage msg, SmartText text)
         => text switch
         {
-            SmartEmbedText set => msg.ModifyAsync(x =>
-            {
-                x.Embed = set.IsValid ? set.GetEmbed().Build() : null;
-                x.Content = set.PlainText?.SanitizeMentions() ?? "";
-            }),
             SmartEmbedTextArray set => msg.ModifyAsync(x =>
             {
                 x.Embeds = set.GetEmbedBuilders().Map(eb => eb.Build());

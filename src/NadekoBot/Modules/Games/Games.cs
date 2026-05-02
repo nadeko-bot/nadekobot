@@ -50,24 +50,24 @@ public partial class Games : NadekoModule<GamesService>
     private readonly string[] _numberEmojis = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
     [Cmd]
-    public async Task Minesweeper(int numberOfMines = 12)
+    public async Task Minesweeper(int mines = 12)
     {
         var boardSizeX = 9;
         var boardSizeY = 10;
 
-        if (numberOfMines < 1)
+        if (mines < 1)
         {
-            numberOfMines = 1;
+            mines = 1;
         }
-        else if (numberOfMines > boardSizeX * boardSizeY / 2)
+        else if (mines > boardSizeX * boardSizeY / 2)
         {
-            numberOfMines = boardSizeX * boardSizeY / 2;
+            mines = boardSizeX * boardSizeY / 2;
         }
 
         var mineIndicies = Enumerable.Range(0, boardSizeX * boardSizeY)
                                      .ToArray()
                                      .Shuffle()
-                                     .Take(numberOfMines)
+                                     .Take(mines)
                                      .ToHashSet();
 
         string GetNumberOnCell(int x, int y)
@@ -92,7 +92,7 @@ public partial class Games : NadekoModule<GamesService>
         }
 
         var sb = new StringBuilder();
-        sb.AppendLine($"### Minesweeper [{numberOfMines}\\💣]");
+        sb.AppendLine($"### Minesweeper [{mines}\\💣]");
         for (var i = 0; i < boardSizeY; i++)
         {
             for (var j = 0; j < boardSizeX; j++)

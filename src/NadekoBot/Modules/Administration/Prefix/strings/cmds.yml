@@ -1,18 +1,14 @@
 defprefix:
-  desc: >-
-    Sets bot's default prefix for all bot commands. Provide no parameters to see
-    the current default prefix. This will not change this server's current
-    prefix.
+  desc: |-
+    Sets bot's default prefix for all bot commands. Provide no parameters to see the current default prefix. This will not change this server's current prefix.
   ex:
     - +
   params:
     - toSet:
         desc: The new prefix to set as the default for all bot commands.
 prefix:
-  desc: >-
-    Sets this server's prefix for all bot commands. Provide no parameters to see
-    the current server prefix. **Setting prefix requires Administrator server
-    permission.**
+  desc: |-
+    Sets this server's prefix for all bot commands. Provide no parameters to see the current server prefix. **Setting prefix requires Administrator server permission.**
   ex:
     - +
   params:
@@ -20,10 +16,8 @@ prefix:
     - _:
         desc: The default text that is prepended to all bot command names.
       newPrefix:
-        desc: >-
-          The new prefix for all bot commands, allowing users to interact with
-          the bot using a custom keyword.
+        desc: |-
+          The new prefix for all bot commands, allowing users to interact with the bot using a custom keyword.
     - toSet:
-        desc: >-
-          The new prefix for all bot commands, allowing users to interact with
-          the bot using a custom keyword.
+        desc: |-
+          The new prefix for all bot commands, allowing users to interact with the bot using a custom keyword.

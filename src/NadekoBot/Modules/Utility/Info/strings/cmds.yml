@@ -1,7 +1,6 @@
 channelinfo:
-  desc: >-
-    Shows info about the channel. If no channel is supplied, it defaults to
-    current one.
+  desc: |-
+    Shows info about the channel. If no channel is supplied, it defaults to current one.
   ex:
     - '#some-channel'
   params:
@@ -12,14 +11,12 @@ invitecreate:
   ex:
     - ''
   params:
-    - params:
-        desc: >-
-          Optional flags: --expire (hours), --maxuses (number), --temporary,
-          --unique.
+    - args:
+        desc: |-
+          Optional flags: --expire (hours), --maxuses (number), --temporary, --unique.
 invitedelete:
-  desc: >-
-    Deletes an invite on the specified index. Use `{0}invitelist` to see the
-    list of invites.
+  desc: |-
+    Deletes an invite on the specified index. Use `{0}invitelist` to see the list of invites.
   ex:
     - 2
   params:
@@ -43,9 +40,8 @@ roleinfo:
     - role:
         desc: The role to show information about.
 serverinfo:
-  desc: >-
-    Shows info about the server with the specified ID. The bot has to be on that
-    server. If no server is supplied, it defaults to current one.
+  desc: |-
+    Shows info about the server with the specified ID. The bot has to be on that server. If no server is supplied, it defaults to current one.
   ex:
     - 123123132233
   params:
@@ -53,9 +49,8 @@ serverinfo:
         desc: The ID of a server for which to retrieve information.
     - {}
 userinfo:
-  desc: >-
-    Shows info about the user. If no user is supplied, it defaults a user
-    running the command.
+  desc: |-
+    Shows info about the user. If no user is supplied, it defaults to the user running the command.
   ex:
     - '@SomeUser'
   params:

@@ -1,10 +1,7 @@
 linkfix:
-  desc: >-
+  desc: |-
     Configures automatic link fixing from one site to another.
-
-    When a user posts a link containing the old domain, the bot will
-    automatically fix it to use the new domain.
-
+    When a user posts a link containing the old domain, the bot will automatically fix it to use the new domain.
     Provide no second domain to disable link fixing.
   ex:
     - twitter.com vxtwitter.com

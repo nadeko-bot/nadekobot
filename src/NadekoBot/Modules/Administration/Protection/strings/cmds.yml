@@ -1,42 +1,31 @@
 antialt:
-  desc: >-
-    Applies a punishment action to any user whose account is younger than the
-    specified threshold. 
-
-    Available Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute,
-    RemoveRoles, AddRole, Warn, TimeOut
-
-    You can specify an additional time argument to do a timed punishment for
-    actions which support it (Ban, Mute, etc) up to 24h.
-
+  desc: |-
+    Applies a punishment action to any user whose account is younger than the specified threshold.
+    Available Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut
+    You can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.
     Provide no parameters to disable.
   ex:
     - 1h Ban
     - 3d Mute 1h
   params:
     - {}
-    - action:
-        desc: >-
-          The type of punishment to be applied to users with accounts younger
-          than the specified threshold.
-      minAge:
-        desc: >-
-          The minimum age of an account for which the punishment should be
-          applied.
-      punishTime:
+    - minAge:
+        desc: |-
+          The minimum age of an account for which the punishment should be applied.
+      action:
+        desc: |-
+          The type of punishment to be applied to users with accounts younger than the specified threshold.
+      punishTimespan:
         desc: The amount of time for which the punishment should be applied.
-    - action:
-        desc: >-
-          The type of punishment to be applied to users with accounts younger
-          than the specified threshold.
-      minAge:
-        desc: >-
-          The minimum age of an account for which the punishment should be
-          applied.
+    - minAge:
+        desc: |-
+          The minimum age of an account for which the punishment should be applied.
+      action:
+        desc: |-
+          The type of punishment to be applied to users with accounts younger than the specified threshold.
       role:
-        desc: >-
-          The role of the user being punished, used to determine the severity of
-          the punishment.
+        desc: |-
+          The role of the user being punished, used to determine the severity of the punishment.
 antilist:
   desc: Shows currently enabled protection features.
   ex:
@@ -44,28 +33,14 @@ antilist:
   params:
     - {}
 antiraid:
-  desc: >-
+  desc: |-
     Sets an anti-raid protection on the server.
-
-
     First parameter is number of people which will trigger the protection.
-
-
-    Second parameter is a time interval in which that number of people needs to
-    join in order to trigger the protection.
-
-
+    Second parameter is a time interval in which that number of people needs to join in order to trigger the protection.
     Third parameter is punishment for those people.
-
-    Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute,
-    RemoveRoles, Warn, TimeOut
-
+    Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, Warn, TimeOut
     User threshold must be between 2-30, and seconds between 2-300.
-
-    You can specify an additional time argument to do a timed punishment for
-    actions which support it (Ban, Mute, etc) up to 24h.
-
-
+    You can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.
     Provide no parameters to disable.
   ex:
     - 5 20 Kick
@@ -74,44 +49,32 @@ antiraid:
     - ''
   params:
     - {}
-    - action:
-        desc: >-
-          The punishment action specifies the consequence for users who trigger
-          the anti-raid protection.
-      punishTime:
+    - userThreshold:
+        desc: |-
+          The number of users that must join the server within a specified time interval to trigger the anti-raid protection.
+      seconds:
+        desc: |-
+          The time interval in which the specified number of people needs to join before triggering the protection.
+      action:
+        desc: |-
+          The punishment action specifies the consequence for users who trigger the anti-raid protection.
+      punishTimespan:
         desc: The time duration for which the punishment will be applied.
+    - userThreshold:
+        desc: |-
+          The number of users that must join the server within a specified time interval to trigger the anti-raid protection.
       seconds:
-        desc: >-
-          The time interval in which the specified number of people needs to
-          join before triggering the protection.
-      userThreshold:
-        desc: >-
-          The number of users that must join the server within a specified time
-          interval to trigger the anti-raid protection.
-    - action:
-        desc: >-
-          The punishment action specifies the consequence for users who trigger
-          the anti-raid protection.
-      seconds:
-        desc: >-
-          The time interval in which the specified number of people needs to
-          join before triggering the protection.
-      userThreshold:
-        desc: >-
-          The number of users that must join the server within a specified time
-          interval to trigger the anti-raid protection.
+        desc: |-
+          The time interval in which the specified number of people needs to join before triggering the protection.
+      action:
+        desc: |-
+          The punishment action specifies the consequence for users who trigger the anti-raid protection.
 antispam:
-  desc: >-
+  desc: |-
     Applies a Punishment to people who repeat the same message X times in a row.
-
-    Available Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute,
-    RemoveRoles, AddRole, Warn, TimeOut
-
-    You can specify an additional time argument to do a timed punishment for
-    actions which support it (Ban, Mute, etc) up to 24h.
-
-    Max message count is 10. 
-
+    Available Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut
+    You can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.
+    Max message count is 10.
     Provide no parameters to disable.
   ex:
     - 3 Mute
@@ -119,29 +82,24 @@ antispam:
     - 5 Ban 3h30m
     - ''
   params:
-    - {}
-    - action:
+    - messageCount:
+        desc: |-
+          The maximum number of times a user can send the same message before being punished.
+      action:
         desc: The type of punishment to be applied to the offender.
-      messageCount:
-        desc: >-
-          The maximum number of times a user can send the same message before
-          being punished.
-      role:
-        desc: The role to apply the punishment to.
-    - action:
+    - messageCount:
+        desc: |-
+          The maximum number of times a user can send the same message before being punished.
+      action:
         desc: The type of punishment to be applied to the offender.
-      messageCount:
-        desc: >-
-          The maximum number of times a user can send the same message before
-          being punished.
-      punishTime:
+    - messageCount:
+        desc: |-
+          The maximum number of times a user can send the same message before being punished.
+      action:
+        desc: The type of punishment to be applied to the offender.
+      punishTimespan:
         desc: The time period for which the punishment should be enforced.
-    - action:
-        desc: The type of punishment to be applied to the offender.
-      messageCount:
-        desc: >-
-          The maximum number of times a user can send the same message before
-          being punished.
+    - {}
 antispamignore:
   desc: Toggles whether antispam ignores current channel. Antispam must be enabled.
   ex:

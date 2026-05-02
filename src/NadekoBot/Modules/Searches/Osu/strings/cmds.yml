@@ -4,32 +4,27 @@ gatari:
     - Name
     - Name ctb
   params:
-    - mode:
-        desc: >-
-          The type of game mode to display statistics for, such as 'osu' or
-          'taiko'.
-      user:
+    - user:
         desc: The username of the player whose osu!gatari stats are being retrieved.
+      mode:
+        desc: "The type of game mode to display statistics for, such as 'osu' or 'taiko'."
 osu:
   desc: Shows osu! stats for a player.
   ex:
     - Name
     - Name taiko
   params:
-    - mode:
-        desc: >-
-          The type of game mode to display statistics for, such as 'osu' or
-          'taiko'.
-      user:
+    - user:
         desc: The username of the player whose osu! stats are being retrieved.
+      mode:
+        desc: "The type of game mode to display statistics for, such as 'osu' or 'taiko'."
 osu5:
   desc: Displays a user's top 5 plays.
   ex:
     - Name
   params:
-    - mode:
-        desc: >-
-          The type of game mode to display the top 5 plays for, such as "osu",
-          "taiko", or "ctb".
-      user:
+    - user:
         desc: The username of the player whose top 5 plays are being displayed.
+      mode:
+        desc: |-
+          The type of game mode to display the top 5 plays for, such as "osu", "taiko", or "ctb".

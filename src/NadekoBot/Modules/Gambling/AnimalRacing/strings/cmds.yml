@@ -1,7 +1,6 @@
 joinrace:
-  desc: >-
-    Joins a new race. You can specify an amount of currency for betting
-    (optional). You will get YourBet*(participants-1) back if you win.
+  desc: |-
+    Joins a new race. You can specify an amount of currency for betting (optional). You will get YourBet*(participants-1) back if you win.
   ex:
     - ''
     - 5
@@ -13,7 +12,6 @@ race:
   ex:
     - ''
   params:
-    - params:
-        desc: >-
-          Optional flags for the race. Use -s to set the starting countdown
-          time in seconds.
+    - args:
+        desc: |-
+          Optional flags for the race. Use -s to set the starting countdown time in seconds.

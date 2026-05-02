@@ -220,9 +220,9 @@ public partial class Utility
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [BotPerm(GuildPerm.ManageRoles)]
-        public async Task UserRoleIcon(IRole role, [Leftover] string icon)
+        public async Task UserRoleIcon(IRole role, [Leftover] string imageUrl)
         {
-            if (string.IsNullOrWhiteSpace(icon))
+            if (string.IsNullOrWhiteSpace(imageUrl))
             {
                 await Response().Error(strs.userrole_icon_invalid).SendAsync();
                 return;
@@ -238,7 +238,7 @@ public partial class Utility
                 ctx.Guild.Id,
                 ctx.User.Id,
                 role.Id,
-                icon
+                imageUrl
             );
 
             if (success)

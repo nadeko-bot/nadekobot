@@ -165,16 +165,16 @@ public partial class Administration
         [RequireContext(ContextType.Guild)]
         [BotPerm(GuildPerm.ManageRoles)]
         [RequireUserPermission(GuildPerm.ManageRoles)]
-        public Task BtnRoleRemoveAll(MessageLink link)
-            => BtnRoleRemoveAll(link.Message.Id);
+        public Task BtnRoleRemoveAll(MessageLink message)
+            => BtnRoleRemoveAll(message.Message.Id);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [BotPerm(GuildPerm.ManageRoles)]
         [RequireUserPermission(GuildPerm.ManageRoles)]
-        public async Task BtnRoleRemoveAll(ulong messageId)
+        public async Task BtnRoleRemoveAll(ulong message)
         {
-            var succ = await _service.RemoveButtonRoles(ctx.Guild.Id, messageId);
+            var succ = await _service.RemoveButtonRoles(ctx.Guild.Id, message);
 
             if (succ.Count == 0)
             {
@@ -271,16 +271,16 @@ public partial class Administration
         [RequireContext(ContextType.Guild)]
         [BotPerm(GuildPerm.ManageRoles)]
         [RequireUserPermission(GuildPerm.ManageRoles)]
-        public Task BtnRoleExclusive(MessageLink link, PermissionAction exclusive)
-            => BtnRoleExclusive(link.Message.Id, exclusive);
+        public Task BtnRoleExclusive(MessageLink message, PermissionAction enable)
+            => BtnRoleExclusive(message.Message.Id, enable);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [BotPerm(GuildPerm.ManageRoles)]
         [RequireUserPermission(GuildPerm.ManageRoles)]
-        public async Task BtnRoleExclusive(ulong messageId, PermissionAction exclusive)
+        public async Task BtnRoleExclusive(ulong message, PermissionAction enable)
         {
-            var res = await _service.SetExclusiveButtonRoles(ctx.Guild.Id, messageId, exclusive.Value);
+            var res = await _service.SetExclusiveButtonRoles(ctx.Guild.Id, message, enable.Value);
 
             if (!res)
             {
@@ -288,7 +288,7 @@ public partial class Administration
                 return;
             }
 
-            if (exclusive.Value)
+            if (enable.Value)
             {
                 await Response().Confirm(strs.btnrole_exclusive).SendAsync();
             }

@@ -145,11 +145,6 @@ public sealed partial class Replacer
     public async ValueTask<SmartText> ReplaceAsync(SmartText data)
         => data switch
         {
-            SmartEmbedText embedData => await ReplaceAsync(embedData) with
-            {
-                PlainText = await ReplaceAsync(embedData.PlainText),
-                Color = embedData.Color
-            },
             SmartPlainText plain => await ReplaceAsync(plain),
             SmartEmbedTextArray arr => await ReplaceAsync(arr),
             _ => throw new ArgumentOutOfRangeException(nameof(data), "Unsupported argument type")
@@ -179,11 +174,13 @@ public sealed partial class Replacer
             Thumbnail = await ReplaceAsync(embedData.Thumbnail),
             Image = await ReplaceAsync(embedData.Image),
             Url = await ReplaceAsync(embedData.Url),
+            Timestamp = embedData.Timestamp,
             Author = embedData.Author is null
                 ? null
                 : new()
                 {
                     Name = await ReplaceAsync(embedData.Author.Name),
+                    Url = await ReplaceAsync(embedData.Author.Url),
                     IconUrl = await ReplaceAsync(embedData.Author.IconUrl)
                 },
             Fields = await Task.WhenAll(embedData

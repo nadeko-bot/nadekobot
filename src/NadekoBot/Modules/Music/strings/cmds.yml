@@ -1,7 +1,6 @@
 autodisconnect:
-  desc: >-
-    Toggles whether the bot should disconnect from the voice channel once it's
-    done playing all of the songs and queue repeat option is set to `none`.
+  desc: |-
+    Toggles whether the bot should disconnect from the voice channel once it's done playing all of the songs and queue repeat option is set to `none`.
   ex:
     - ''
   params:
@@ -13,9 +12,8 @@ deleteplaylists:
   params:
     - {}
 destroy:
-  desc: >-
-    Completely stops the music and unbinds the bot from the channel. (may cause
-    weird behaviour)
+  desc: |-
+    Completely stops the music and unbinds the bot from the channel. (may cause weird behaviour)
   ex:
     - ''
   params:
@@ -64,10 +62,8 @@ lyrics:
     - name:
         desc: The song to look up lyrics for.
 musicquality:
-  desc: >-
-    Gets or sets the default music player quality. Available settings: Highest,
-    High, Medium, Low. Default is **Highest**. Provide no argument to see
-    current setting.
+  desc: |-
+    Gets or sets the default music player quality. Available settings: Highest, High, Medium, Low. Default is **Highest**. Provide no argument to see current setting.
   ex:
     - ''
     - High
@@ -75,13 +71,11 @@ musicquality:
   params:
     - {}
     - preset:
-        desc: >-
-          The selected preset determines the level of audio compression and
-          processing applied to the music playback.
+        desc: |-
+          The selected preset determines the level of audio compression and processing applied to the music playback.
 next:
-  desc: >-
-    Goes to the next song in the queue. You have to be in the same voice channel
-    as the bot
+  desc: |-
+    Goes to the next song in the queue. You have to be in the same voice channel as the bot.
   ex:
     - ''
   params:
@@ -99,16 +93,11 @@ pause:
   params:
     - {}
 play:
-  desc: >-
-    Queues up and plays a song or video based on a search query, song name,
-    artist name or youtube link.
-
+  desc: |-
+    Queues up and plays a song or video based on a search query, song name, artist name or youtube link.
     If no parameters are specified, it will skip the current song.
-
     If you specify a song number, it will jump to that song.
-
     If you specify a search query, acts as a `{0}q` command
-
     **You must be in a voice channel**.
   ex:
     - ''
@@ -119,32 +108,27 @@ play:
     - index:
         desc: The index of the desired song or search result to navigate to.
     - query:
-        desc: >-
-          The search query is used to find and play songs matching the specified
-          criteria.
+        desc: |-
+          The search query is used to find and play songs matching the specified criteria.
 playlist:
-  desc: >-
-    Queues up to 500 songs from a youtube playlist specified by a link, or
-    keywords.
+  desc: |-
+    Queues up to 500 songs from a youtube playlist specified by a link, or keywords.
   ex:
     - <youtube_playlist_link>
   params:
     - playlistQuery:
         desc: The search query used to find the YouTube playlist.
 playlistdelete:
-  desc: >-
-    Deletes a saved playlist using its ID. Works only on playlists saved by you
-    or if you are the bot owner.
+  desc: |-
+    Deletes a saved playlist using its ID. Works only on playlists saved by you or if you are the bot owner.
   ex:
     - 5
   params:
     - id:
         desc: The identifier for the playlist to be deleted.
 playlistload:
-  desc: >-
-    Loads a saved playlist using its ID. Use `{0}pls` to list all saved
-    playlists and `{0}save` to save new ones. Use `--shuffle` to load in random
-    order.
+  desc: |-
+    Loads a saved playlist using its ID. Use `{0}pls` to list all saved playlists and `{0}save` to save new ones. Use `--shuffle` to load in random order.
   ex:
     - 5
     - 5 --shuffle
@@ -159,9 +143,8 @@ playlists:
     - page:
         desc: The page number to display.
 playlistsave:
-  desc: >-
-    Saves a playlist under a certain name. Playlist name must be no longer than
-    20 characters.
+  desc: |-
+    Saves a playlist under a certain name. Playlist name must be no longer than 20 characters.
   ex:
     - classical1
   params:
@@ -177,12 +160,9 @@ playlistshow:
       page:
         desc: The current page number for the pagination.
 queue:
-  desc: >-
-    Queues up and plays a song or video based on a search query, song name,
-    artist name, search query or youtube link.
-
-    Bot will join your voice channel. 
-
+  desc: |-
+    Queues up and plays a song or video based on a search query, song name, artist name, search query or youtube link.
+    Bot will join your voice channel.
     **You must be in a voice channel**.
   ex:
     - Dream Of Venice
@@ -190,25 +170,22 @@ queue:
     - query:
         desc: The search term used to identify the song to be queued.
 queueautoplay:
-  desc: >-
-    Toggles autoplay - When the song is finished, automatically queue a related
-    Youtube song. (Works only for Youtube songs)
+  desc: |-
+    Toggles autoplay - When the song is finished, automatically queue a related Youtube song. (Works only for Youtube songs)
   ex:
     - ''
   params:
     - {}
 queuefairplay:
-  desc: >-
-    Triggers fairplay. The song queue will be re-ordered in a fair manner. No
-    effect on newly added songs.
+  desc: |-
+    Triggers fairplay. The song queue will be re-ordered in a fair manner. No effect on newly added songs.
   ex:
     - ''
   params:
     - {}
 queuenext:
-  desc: >-
-    Works the same as `{0}queue` command, except it enqueues the new song after
-    the current one. **You must be in a voice channel**.
+  desc: |-
+    Works the same as `{0}queue` command, except it enqueues the new song after the current one. **You must be in a voice channel**.
   ex:
     - Dream Of Venice
   params:
@@ -228,10 +205,8 @@ queuerepeat:
     - type:
         desc: The type of repeat strategy to be set.
 queuesearch:
-  desc: >-
-    Search for top 5 youtube song result using keywords, and type the index of
-    the song to play that song. Bot will join your voice channel. **You must be
-    in a voice channel**.
+  desc: |-
+    Search for top 5 youtube song results using keywords, and type the index of the song to play that song. Bot will join your voice channel. **You must be in a voice channel**.
   ex:
     - Dream Of Venice
   params:
@@ -255,20 +230,16 @@ queuefind:
     - query:
         desc: "The search text to match against track titles."
 radio:
-  desc: >-
-    Queues a radio stream from a link. It can be a direct mp3 radio stream,
-    .m3u, .pls .asx or .xspf (Usage Video: <https://streamable.com/al54>)
+  desc: |-
+    Queues a radio stream from a link. It can be a direct mp3 radio stream, .m3u, .pls .asx or .xspf (Usage Video: <https://streamable.com/al54>)
   ex:
     - radio link here
   params:
     - radioLink:
         desc: The URL of the radio station to be played.
 setmusicchannel:
-  desc: >-
-    Sets the current channel as the default music output channel. This will
-    output playing, finished, paused and removed songs to that channel instead
-    of the channel where the first song was queued in. Persistent server
-    setting.
+  desc: |-
+    Sets the current channel as the default music output channel. This will output playing, finished, paused and removed songs to that channel instead of the channel where the first song was queued in. Persistent server setting.
   ex:
     - ''
   params:
@@ -289,9 +260,8 @@ trackmove:
       to:
         desc: The destination index in the playlist where the song should be moved.
 trackremove:
-  desc: >-
-    Remove a song by its # in the queue, or 'all' (or provide no parameter) to
-    remove all songs from the queue.
+  desc: |-
+    Remove a song by its # in the queue, or 'all' (or provide no parameter) to remove all songs from the queue.
   ex:
     - 5
     - all
@@ -302,17 +272,15 @@ trackremove:
     - _:
         desc: Use 'all' to remove all songs from the queue.
 unsetmusicchannel:
-  desc: >-
-    Bot will output playing, finished, paused and removed songs to the channel
-    where the first song was queued in. Persistent server setting.
+  desc: |-
+    Bot will output playing, finished, paused and removed songs to the channel where the first song was queued in. Persistent server setting.
   ex:
     - ''
   params:
     - {}
 volume:
-  desc: >-
-    Sets the music playback volume (0-100%). Persistent server setting. Default
-    100
+  desc: |-
+    Sets the music playback volume (0-100%). Persistent server setting. Default 100.
   ex:
     - 50
   params:

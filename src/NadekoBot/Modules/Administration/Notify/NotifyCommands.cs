@@ -44,10 +44,10 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task ServerNotify(NotifyType nType)
+        public async Task ServerNotify(NotifyType @event)
         {
             // show msg 
-            var conf = await _service.GetNotifyAsync(ctx.Guild.Id, nType);
+            var conf = await _service.GetNotifyAsync(ctx.Guild.Id, @event);
             if (conf is null)
             {
                 await Response().Confirm(strs.notify_msg_not_set).SendAsync();
@@ -78,17 +78,17 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task ServerNotify(NotifyType nType, [Leftover] string message)
-            => await NotifyInternalAsync(nType, null, message);
+        public async Task ServerNotify(NotifyType @event, [Leftover] string message)
+            => await NotifyInternalAsync(@event, null, message);
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task ServerNotify(NotifyType nType, IMessageChannel channel, [Leftover] string message)
-            => await NotifyInternalAsync(nType, channel, message);
+        public async Task ServerNotify(NotifyType @event, IMessageChannel channel, [Leftover] string message)
+            => await NotifyInternalAsync(@event, channel, message);
 
-        private async Task NotifyInternalAsync(NotifyType nType, IMessageChannel? channel, [Leftover] string message)
+        private async Task NotifyInternalAsync(NotifyType @event, IMessageChannel? channel, [Leftover] string message)
         {
-            var result = await _service.EnableAsync(ctx.Guild.Id, channel?.Id, nType, message);
+            var result = await _service.EnableAsync(ctx.Guild.Id, channel?.Id, @event, message);
 
             if(!result)
             {
@@ -100,19 +100,19 @@ public partial class Administration
             }
             var outChannel = channel is null ? "origin" : $"<#{channel.Id}>";
             await Response()
-                .Confirm(strs.notify_on(outChannel, Format.Bold(nType.ToString())))
+                .Confirm(strs.notify_on(outChannel, Format.Bold(@event.ToString())))
                 .SendAsync();
         }
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task ServerNotifyPhs(NotifyType nType)
+        public async Task ServerNotifyPhs(NotifyType @event)
         {
-            var data = _service.GetRegisteredModel(nType);
+            var data = _service.GetRegisteredModel(@event);
 
             var eb = CreateEmbed()
                 .WithOkColor()
-                .WithTitle(GetText(strs.notify_placeholders(nType.ToString().ToLower())));
+                .WithTitle(GetText(strs.notify_placeholders(@event.ToString().ToLower())));
 
             eb.WithDescription(data.Replacements.Join("\n---\n", x => $"`%event.{x}%`"));
 
@@ -149,10 +149,10 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task ServerNotifyClear(NotifyType nType)
+        public async Task ServerNotifyClear(NotifyType @event)
         {
-            await _service.DisableAsync(ctx.Guild.Id, nType);
-            await Response().Confirm(strs.notify_off(nType)).SendAsync();
+            await _service.DisableAsync(ctx.Guild.Id, @event);
+            await Response().Confirm(strs.notify_off(@event)).SendAsync();
         }
     }
 }

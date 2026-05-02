@@ -1,8 +1,6 @@
 log:
-  desc: >-
-    Toggles logging event. Disables it if it is active anywhere on the server.
-    Enables if it isn't active. Use `{0}logevents` to see a list of all events
-    you can subscribe to.
+  desc: |-
+    Toggles logging event. Disables it if it is active anywhere on the server. Enables if it isn't active. Use `{0}logevents` to see a list of all events you can subscribe to.
   ex:
     - userpresence
     - userbanned
@@ -38,9 +36,8 @@ logignore:
     - target:
         desc: "The user to ignore."
 logserver:
-  desc: >-
-    Enables or Disables ALL log events. If enabled, all log events will log to
-    this channel.
+  desc: |-
+    Enables or Disables ALL log events. If enabled, all log events will log to this channel.
   ex:
     - enable
     - disable

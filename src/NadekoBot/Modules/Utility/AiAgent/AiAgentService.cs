@@ -428,7 +428,7 @@ public sealed class AiAgentService(
                 {
                     var smart = SmartText.CreateFrom(success.Response);
 
-                    if (smart is SmartEmbedText or SmartEmbedTextArray)
+                    if (smart is SmartEmbedTextArray)
                     {
                         await sender.Response(channel)
                             .Text(smart)

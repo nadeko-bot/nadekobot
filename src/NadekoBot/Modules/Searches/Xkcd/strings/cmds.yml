@@ -1,16 +1,13 @@
 xkcd:
-  desc: >-
-    Shows a XKCD comic. Specify no parameters to retrieve a random one. Number
-    parameter will retrieve a specific comic, and "latest" will get the latest
-    one.
+  desc: |-
+    Shows a XKCD comic. Specify no parameters to retrieve a random one. Number parameter will retrieve a specific comic, and "latest" will get the latest one.
   ex:
     - ''
     - 1400
     - latest
   params:
     - arg:
-        desc: >-
-          Specify "latest" to retrieve the most recent comic, or leave empty
-          for a random one.
+        desc: |-
+          Specify "latest" to retrieve the most recent comic, or leave empty for a random one.
     - num:
         desc: The number of the comic to be retrieved.

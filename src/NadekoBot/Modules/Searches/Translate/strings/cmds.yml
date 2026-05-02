@@ -1,7 +1,6 @@
 autotranslang:
-  desc: >-
-    Sets your source and target language to be used with `{0}at`. Specify no
-    parameters to remove previously set value.
+  desc: |-
+    Sets your source and target language to be used with `{0}at`. Specify no parameters to remove previously set value.
   ex:
     - en fr
   params:
@@ -9,14 +8,11 @@ autotranslang:
     - fromLang:
         desc: The source language code, such as "en" for English.
       toLang:
-        desc: >-
-          The destination language code, such as "en" for English or "fr" for
-          French.
+        desc: |-
+          The destination language code, such as "en" for English or "fr" for French.
 autotranslate:
-  desc: >-
-    Toggles automatic translation of all messages by users who set their
-    `{0}atl` in this channel. You can set "del" parameter to automatically
-    delete all translated user messages.
+  desc: |-
+    Toggles automatic translation of all messages by users who set their `{0}atl` in this channel. You can set "del" parameter to automatically delete all translated user messages.
   ex:
     - ''
     - del
@@ -36,16 +32,14 @@ translate:
   params:
     - fromLang:
         desc: The source language as 'english'
-      text:
-        desc: The source text to be translated.
       toLang:
         desc: The target language such as 'english' or 'french'
+      text:
+        desc: The source text to be translated.
 translateflags:
-  desc: >-
+  desc: |-
     Toggles translate flags on the current channel.
-
-    Reacting with a country flag will translate the message to that country's
-    language.
+    Reacting with a country flag will translate the message to that country's language.
   ex:
     - ''
   params:

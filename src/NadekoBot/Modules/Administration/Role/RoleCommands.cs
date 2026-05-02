@@ -260,7 +260,7 @@ public partial class Administration
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
         [BotPerm(GuildPerm.ManageRoles)]
-        public async Task RoleIcon(IRole role, [Leftover] string iconUrl)
+        public async Task RoleIcon(IRole role, [Leftover] string imageUrl)
         {
             if (!await CheckRoleHierarchy(role))
                 return;
@@ -268,20 +268,20 @@ public partial class Administration
             if (!ctx.Guild.Features.HasRoleIcons)
                 await Response().Error(strs.userrole_icon_missing_permissions).SendAsync();
 
-            if (string.IsNullOrWhiteSpace(iconUrl))
+            if (string.IsNullOrWhiteSpace(imageUrl))
             {
                 await Response().Error(strs.userrole_icon_invalid).SendAsync();
                 return;
             }
 
             // Validate the URL format
-            if (!Uri.TryCreate(iconUrl, UriKind.Absolute, out var uri))
+            if (!Uri.TryCreate(imageUrl, UriKind.Absolute, out var uri))
             {
                 await Response().Error(strs.userrole_icon_invalid).SendAsync();
                 return;
             }
 
-            if (!UrlExtensions.IsPublicUrl(iconUrl))
+            if (!UrlExtensions.IsPublicUrl(imageUrl))
             {
                 await Response().Error(strs.userrole_icon_invalid).SendAsync();
                 return;

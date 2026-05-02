@@ -8,6 +8,10 @@ servernotify:
     *note: this is only possible for events that have an origin channel (for
     example `levelup`)*
 
+    Standard placeholders like `%user.name%`, `%user.mention%`, `%user.avatar%`
+    and `%server.name%` work in any notify message in addition to the
+    event-specific `%event.*%` placeholders shown by `.servernotifyphs`.
+
     Provide no parameters to see all available events.
   ex:
     - |-

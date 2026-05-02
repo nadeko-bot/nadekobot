@@ -1,5 +1,3 @@
-using System.Collections.Frozen;
-using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Discord;
@@ -10,7 +8,7 @@ namespace NadekoBot.Modules.Utility.AiAgent.Adapters;
 /// <summary>
 /// Send / edit / read / delete / search Discord messages.
 /// </summary>
-public sealed partial class MessagingAiAdapter : IAiCoreToolGroup, INService
+public sealed partial class MessagingAiAdapter(IMessageSenderService sender) : IAiCoreToolGroup, INService
 {
     public string GroupName => "messaging";
     public string GroupDescription => "Send, edit, read, delete, and search Discord messages.";
@@ -18,20 +16,6 @@ public sealed partial class MessagingAiAdapter : IAiCoreToolGroup, INService
     private const int SEARCH_DEFAULT_COUNT = 20;
     private const int SEARCH_MAX_COUNT = 50;
     private const int SEARCH_MAX_CONTENT_LENGTH = 300;
-
-    private static readonly FrozenDictionary<string, Color> _namedColors =
-        new Dictionary<string, Color>(StringComparer.InvariantCultureIgnoreCase)
-        {
-            ["red"] = Color.Red,
-            ["green"] = Color.Green,
-            ["blue"] = Color.Blue,
-            ["yellow"] = new(255, 255, 0),
-            ["orange"] = Color.Orange,
-            ["purple"] = Color.Purple,
-            ["teal"] = Color.Teal,
-            ["gold"] = Color.Gold,
-            ["magenta"] = Color.Magenta,
-        }.ToFrozenDictionary(StringComparer.InvariantCultureIgnoreCase);
 
     [GeneratedRegex(@"<#(\d+)>")]
     private static partial Regex ChannelMentionRegex();
@@ -41,20 +25,18 @@ public sealed partial class MessagingAiAdapter : IAiCoreToolGroup, INService
         "Send a message to a Discord channel. "
         + "You can specify the channel by ID, mention (like <#123456>), or name (like #general). "
         + "The message will appear as sent by the bot, not the user. "
-        + "Long messages will be automatically split across multiple messages on word boundaries. "
-        + "Optionally include an embed for rich formatting.")]
+        + "The `message` parameter is plain text by default, but can also be a JSON document describing one or more "
+        + "rich embeds (see system guidance for the schema). Long messages split automatically on word boundaries.")]
     [AiSystemGuidance(SystemGuidanceText.SendMessage)]
     public async Task<string> SendMessage(
         AiToolContext ctx,
         [AiParam("The target channel - can be an ID, a mention like <#123456>, or a name like #general")]
         string channel,
-        [AiParam("The text content to send (can be empty if embed is provided)")]
-        string? text = null,
-        [AiParam("Optional rich embed to attach to the message")]
-        EmbedDto? embed = null)
+        [AiParam("Plain text, OR a JSON object with `content` and `embeds[]` (see system guidance).")]
+        string message)
     {
-        if (string.IsNullOrWhiteSpace(text) && embed is null)
-            throw ToolException.InvalidArgument("Either text or embed (or both) must be provided.");
+        if (string.IsNullOrWhiteSpace(message))
+            throw ToolException.InvalidArgument("`message` must not be empty.");
 
         var ch = await ResolveChannelInternalAsync(ctx, channel)
                  ?? throw ToolException.NotFound("Channel not found. Make sure the channel exists and is a text channel.");
@@ -63,16 +45,11 @@ public sealed partial class MessagingAiAdapter : IAiCoreToolGroup, INService
         if (!perms.SendMessages)
             throw ToolException.MissingPermission("SendMessages");
 
-        Embed? builtEmbed = null;
-        if (embed is not null)
-        {
-            if (!perms.EmbedLinks)
-                throw ToolException.MissingPermission("EmbedLinks");
+        var smart = SmartText.CreateFrom(message);
+        if (smart is SmartEmbedTextArray && !perms.EmbedLinks)
+            throw ToolException.MissingPermission("EmbedLinks");
 
-            builtEmbed = BuildEmbedInternal(embed);
-        }
-
-        await SendWithSplitInternalAsync(ch, text, builtEmbed);
+        await sender.Response(ch).Text(smart).Split().SendAsync();
         return $"Message sent to #{ch.Name} successfully.";
     }
 
@@ -248,88 +225,6 @@ public sealed partial class MessagingAiAdapter : IAiCoreToolGroup, INService
         return sb.ToString();
     }
 
-    private static async Task SendWithSplitInternalAsync(ITextChannel channel, string? text, Embed? embed)
-    {
-        if (text is not null && text.Length > MessageSplitter.MAX_PLAIN_TEXT_LENGTH)
-        {
-            var chunks = new List<string>();
-            MessageSplitter.Split(text, MessageSplitter.MAX_PLAIN_TEXT_LENGTH, chunks);
-
-            await channel.SendMessageAsync(chunks[0], embed: embed);
-
-            for (var i = 1; i < chunks.Count; i++)
-            {
-                await Task.Delay(500);
-                await channel.SendMessageAsync(chunks[i]);
-            }
-
-            return;
-        }
-
-        await channel.SendMessageAsync(text ?? "", embed: embed);
-    }
-
-    private static Embed BuildEmbedInternal(EmbedDto e)
-    {
-        var eb = new EmbedBuilder();
-
-        if (!string.IsNullOrEmpty(e.Title))
-        {
-            if (e.Title.Length > 256)
-                throw ToolException.InvalidArgument("Embed title must be 256 characters or less.");
-            eb.WithTitle(e.Title);
-        }
-
-        if (!string.IsNullOrEmpty(e.Description))
-        {
-            if (e.Description.Length > 4096)
-                throw ToolException.InvalidArgument("Embed description must be 4096 characters or less.");
-            eb.WithDescription(e.Description);
-        }
-
-        if (!string.IsNullOrEmpty(e.Color))
-        {
-            if (_namedColors.TryGetValue(e.Color, out var named))
-                eb.WithColor(named);
-            else if (e.Color.StartsWith('#')
-                     && uint.TryParse(e.Color.AsSpan(1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var hex))
-                eb.WithColor(new Color(hex));
-        }
-
-        if (e.Fields is { Count: > 0 } fields)
-        {
-            if (fields.Count > 25)
-                throw ToolException.InvalidArgument("Embeds can have at most 25 fields.");
-
-            foreach (var f in fields)
-            {
-                if (string.IsNullOrWhiteSpace(f.Name) || string.IsNullOrWhiteSpace(f.Value))
-                    continue;
-                if (f.Name.Length > 256)
-                    throw ToolException.InvalidArgument("Embed field name must be 256 characters or less.");
-                if (f.Value.Length > 1024)
-                    throw ToolException.InvalidArgument("Embed field value must be 1024 characters or less.");
-
-                eb.AddField(f.Name, f.Value, f.Inline);
-            }
-        }
-
-        if (!string.IsNullOrEmpty(e.Footer))
-        {
-            if (e.Footer.Length > 2048)
-                throw ToolException.InvalidArgument("Embed footer must be 2048 characters or less.");
-            eb.WithFooter(e.Footer);
-        }
-
-        var built = eb.Build();
-        if (string.IsNullOrWhiteSpace(built.Description)
-            && string.IsNullOrWhiteSpace(built.Title)
-            && built.Fields.Length == 0)
-            throw ToolException.InvalidArgument("Embed must have at least a title, description, or fields.");
-
-        return built;
-    }
-
     private static async Task<ITextChannel?> ResolveChannelInternalAsync(AiToolContext ctx, string input)
     {
         input = input.Trim();
@@ -351,20 +246,3 @@ public sealed partial class MessagingAiAdapter : IAiCoreToolGroup, INService
         return null;
     }
 }
-
-public sealed record EmbedDto(
-    [property: AiParam("Embed title (max 256 chars). Note: mentions and custom emoji don't render in titles.")]
-    string? Title,
-    [property: AiParam("Embed description/body text (max 4096 chars). Supports mentions, emoji, and markdown.")]
-    string? Description,
-    [property: AiParam("Hex color code like #FF0000 (red), #00FF00 (green), #0000FF (blue), or a name (red, green, blue, yellow, orange, purple, teal, gold, magenta)")]
-    string? Color,
-    [property: AiParam("List of embed fields (max 25)")]
-    List<EmbedFieldDto>? Fields,
-    [property: AiParam("Footer text (max 2048 chars). Note: mentions and custom emoji don't render in footers.")]
-    string? Footer);
-
-public readonly record struct EmbedFieldDto(
-    [property: AiParam("Field name (max 256 chars)")] string Name,
-    [property: AiParam("Field value (max 1024 chars)")] string Value,
-    [property: AiParam("Show field inline (default false)")] bool Inline);

@@ -1,7 +1,6 @@
 convert:
-  desc: >-
-    Convert quantities. Use `{0}convertlist` to see supported dimensions and
-    currencies.
+  desc: |-
+    Convert quantities. Use `{0}convertlist` to see supported dimensions and currencies.
   ex:
     - m km 1000
   params:

@@ -1,7 +1,6 @@
 gencurlist:
-  desc: >-
-    Shows the list of server and channel ids where gc is enabled. Paginated with
-    9 per page.
+  desc: |-
+    Shows the list of server and channel ids where gc is enabled. Paginated with 9 per page.
   ex:
     - ''
   params:
@@ -14,17 +13,18 @@ gencurrency:
   params:
     - { }
 pick:
-  desc: >-
-    Picks the currency planted in this channel. If the plant has a password, you
-    need to specify it.
+  desc: |-
+    Picks the currency planted in this channel. If the plant has a password,
+    type the password after the command (`.pick <password>`). The password is
+    in the top-left of the plant image.
   ex:
     - ''
     - passwd
   params:
     - pass:
-        desc: The password required for accessing the plant's contents.
+        desc: The password shown in the top-left of the plant image. Required only for plants protected by a password.
 plant:
-  desc: >-
+  desc: |-
     Spend an amount of currency to plant it in this channel. Default is 1. You
     can specify the password after the amount. Password has to be alphanumeric
     and it will be trimmed down to 10 characters if it's longer.

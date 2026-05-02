@@ -3,6 +3,10 @@ curgen_enabled: Currency generation has been enabled on this channel.
 curgen_pl: '{0} random {1} appeared!'
 curgen_sn: A random {0} appeared!
 pick_pl: Pick them up by typing `{0}pick`
+pick_pl_pw: |-
+  Pick them up by typing `{0}pick <password>`. The password is in the top-left of the image.
 pick_sn: Pick it up by typing `{0}pick`
+pick_sn_pw: |-
+  Pick it up by typing `{0}pick <password>`. The password is in the top-left of the image.
 picked: '{1} picked {0}'
 planted: '{0} planted {1}'

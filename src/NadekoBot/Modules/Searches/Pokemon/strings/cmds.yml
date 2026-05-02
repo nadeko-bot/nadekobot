@@ -11,6 +11,4 @@ pokemonability:
     - overgrow
   params:
     - ability:
-        desc: >-
-          The type of the Pokémon's special power or trait that can be used in
-          battle.
+        desc: "The type of the Pokemon's special power or trait that can be used in battle."

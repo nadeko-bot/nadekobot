@@ -1,9 +1,7 @@
 medusainfo:
-  desc: >-
-    Shows information about the specified medusa such as the author, name,
-    description, list of sneks, number of commands etc.
-
-    Provide no name to see the basic information about all loaded medusae. 
+  desc: |-
+    Shows information about the specified medusa such as the author, name, description, list of sneks, number of commands etc.
+    Provide no name to see the basic information about all loaded medusae.
   ex:
     - mycoolmedusa
     - ''

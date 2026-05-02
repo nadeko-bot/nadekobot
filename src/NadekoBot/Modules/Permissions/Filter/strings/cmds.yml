@@ -1,26 +1,20 @@
 chnlfilterinv:
-  desc: >-
-    Toggles automatic deletion of invites posted in the channel. Does not negate
-    the `{0}srvrfilterinv` enabled setting. Does not affect users with the
-    Administrator permission.
+  desc: |-
+    Toggles automatic deletion of invites posted in the channel. Does not negate the `{0}srvrfilterinv` enabled setting. Does not affect users with the Administrator permission.
   ex:
     - ''
   params:
     - {}
 chnlfilterlin:
-  desc: >-
-    Toggles automatic deletion of links posted in the channel. Does not negate
-    the `{0}srvrfilterlin` enabled setting. Does not affect users with the
-    Administrator permission.
+  desc: |-
+    Toggles automatic deletion of links posted in the channel. Does not negate the `{0}srvrfilterlin` enabled setting. Does not affect users with the Administrator permission.
   ex:
     - ''
   params:
     - {}
 chnlfilterwords:
-  desc: >-
-    Toggles automatic deletion of messages containing filtered words on the
-    channel. Does not negate the `{0}srvrfilterwords` enabled setting. Does not
-    affect users with the Administrator permission.
+  desc: |-
+    Toggles automatic deletion of messages containing filtered words on the channel. Does not negate the `{0}srvrfilterwords` enabled setting. Does not affect users with the Administrator permission.
   ex:
     - ''
   params:
@@ -32,9 +26,8 @@ filterlist:
   params:
     - {}
 filterword:
-  desc: >-
-    Adds or removes (if it exists) a word from the list of filtered words.
-    Use`{0}sfw` or `{0}cfw` to toggle filtering.
+  desc: |-
+    Adds or removes (if it exists) a word from the list of filtered words. Use `{0}sfw` or `{0}cfw` to toggle filtering.
   ex:
     - poop
   params:
@@ -54,25 +47,22 @@ lstfilterwords:
     - page:
         desc: The current page number in the list of filtered words.
 srvrfilterinv:
-  desc: >-
-    Toggles automatic deletion of invites posted in the server. Does not affect
-    users with the Administrator permission.
+  desc: |-
+    Toggles automatic deletion of invites posted in the server. Does not affect users with the Administrator permission.
   ex:
     - ''
   params:
     - {}
 srvrfilterlin:
-  desc: >-
-    Toggles automatic deletion of links posted in the server. Does not affect
-    users with the Administrator permission.
+  desc: |-
+    Toggles automatic deletion of links posted in the server. Does not affect users with the Administrator permission.
   ex:
     - ''
   params:
     - {}
 srvrfilterwords:
-  desc: >-
-    Toggles automatic deletion of messages containing filtered words on the
-    server. Does not affect users with the Administrator permission.
+  desc: |-
+    Toggles automatic deletion of messages containing filtered words on the server. Does not affect users with the Administrator permission.
   ex:
     - ''
   params:

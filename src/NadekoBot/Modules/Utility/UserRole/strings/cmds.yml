@@ -16,10 +16,10 @@ userrolecolor:
   ex:
     - '@Role #ff0000'
   params:
-    - color:
-        desc: The new color for the role in hex format.
-      role:
+    - role:
         desc: The assigned role to change the color of.
+      color:
+        desc: The new color for the role in hex format.
 userroleicon:
   desc: |-
     Changes the icon of a role that has been assigned to you via {0}userroleassign.
@@ -28,15 +28,16 @@ userroleicon:
     The server must have a high enough boost level to support role icons.
   ex:
     - '@Role :server_emoji_here:'
+    - '@Role https://example.com/icon.png'
   params:
-    - imageUrl:
-        desc: The image url to be used as a new icon for the role.
-      role:
-        desc: The assigned role to change the icon of.
     - role:
         desc: The assigned role to change the icon of.
-      serverEmoji:
+      emote:
         desc: The server emoji to be used as a new icon for the role.
+    - role:
+        desc: The assigned role to change the icon of.
+      imageUrl:
+        desc: The image url to be used as a new icon for the role.
 userrolelist:
   desc: |-
     Lists all userrole assignments in the server.
@@ -61,10 +62,10 @@ userrolename:
   ex:
     - '@Role New Role Name'
   params:
-    - name:
-        desc: The new name for the role.
-      role:
+    - role:
         desc: The assigned role to rename.
+      name:
+        desc: The new name for the role.
 userroleremove:
   desc: |-
     Removes ownership of a previously assigned role from a user.
@@ -73,11 +74,11 @@ userroleremove:
     - '@User @Role'
     - '@User 123456789012345678'
   params:
-    - role:
+    - user:
+        desc: The user to remove the role from.
+      role:
         desc: The role to remove.
-      user:
+    - user:
         desc: The user to remove the role from.
-    - roleId:
+      roleId:
         desc: The ID of the role to remove. Useful if the role has been deleted.
-      user:
-        desc: The user to remove the role from.
