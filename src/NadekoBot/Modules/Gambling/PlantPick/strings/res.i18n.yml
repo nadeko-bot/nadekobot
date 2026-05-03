@@ -4,7 +4,9 @@ ar:
   curgen_pl: 'ظهرت {0} {1} عشوائية!'
   curgen_sn: 'ظهرت {0} عشوائية!'
   pick_pl: 'التقطها بكتابة `{0}pick`'
+  pick_pl_pw: 'التقطها بكتابة `{0}pick <password>`. كلمة المرور في أعلى يسار الصورة.'
   pick_sn: 'التقطها بكتابة `{0}pick`'
+  pick_sn_pw: 'التقطها بكتابة `{0}pick <password>`. كلمة المرور في أعلى يسار الصورة.'
   picked: '{1} التقط {0}'
   planted: '{0} زرع {1}'
 
@@ -14,7 +16,9 @@ de-DE:
   curgen_pl: '{0} zufälliges {1} ist aufgetaucht!'
   curgen_sn: 'Ein zufälliges {0} ist aufgetaucht!'
   pick_pl: 'Schreibe {0} um sie aufzunehmen'
+  pick_pl_pw: 'Heb sie auf, indem du `{0}pick <password>` eingibst. Das Passwort steht oben links im Bild.'
   pick_sn: 'Schreibe {0} up es aufzuheben'
+  pick_sn_pw: 'Heb es auf, indem du `{0}pick <password>` eingibst. Das Passwort steht oben links im Bild.'
   picked: '{1} hat {0} aufgehoben'
   planted: '{0} hat {1} gepflanzt'
 
@@ -24,7 +28,9 @@ es-ES:
   curgen_pl: '¡{0} {1} ha aparecido!'
   curgen_sn: '¡Ha aparecido {0}!'
   pick_pl: 'Tómalos escribiendo `{0}pick`'
+  pick_pl_pw: 'Tómalos escribiendo `{0}pick <password>`. La contraseña está en la esquina superior izquierda de la imagen.'
   pick_sn: 'Tómalo escribiendo `{0}pick`'
+  pick_sn_pw: 'Tómalo escribiendo `{0}pick <password>`. La contraseña está en la esquina superior izquierda de la imagen.'
   picked: '{1} recogió {0}'
   planted: '{0} plantó {1}.'
 
@@ -34,7 +40,9 @@ fr-FR:
   curgen_pl: '{0} {1} aléatoires sont apparues!'
   curgen_sn: 'Une {0} aléatoire est apparue!'
   pick_pl: 'Récupérez les en tapant `{0}pick`'
+  pick_pl_pw: 'Récupérez-les en tapant `{0}pick <password>`. Le mot de passe se trouve en haut à gauche de l''image.'
   pick_sn: 'Récupérez la en tapant `{0}pick`'
+  pick_sn_pw: 'Récupérez-la en tapant `{0}pick <password>`. Le mot de passe se trouve en haut à gauche de l''image.'
   picked: '{1} a ramassé {0}'
   planted: '{0} a planté {1}'
 
@@ -44,7 +52,9 @@ id-ID:
   curgen_pl: '{0} {1} acak muncul!'
   curgen_sn: 'Sebuah {0} acak muncul!'
   pick_pl: 'Ambil mereka dengan mengetik `{0}pick`'
+  pick_pl_pw: 'Ambil mereka dengan mengetik `{0}pick <password>`. Password-nya ada di kiri atas gambar.'
   pick_sn: 'Ambil dengan mengetik `{0}pick`'
+  pick_sn_pw: 'Ambil dengan mengetik `{0}pick <password>`. Password-nya ada di kiri atas gambar.'
   picked: '{1} mengambil {0}'
   planted: '{0} menanam {1}'
 
@@ -54,7 +64,9 @@ ja-JP:
   curgen_pl: '{0}個のランダム{1}が登場しました！'
   curgen_sn: 'ランダム{0}が出現！'
   pick_pl: '拾うには、`{0}pick`と入力してください。'
+  pick_pl_pw: '拾うには、`{0}pick <password>` と入力してください。パスワードは画像の左上にあります。'
   pick_sn: '拾うには、`{0}pick`と入力してください。'
+  pick_sn_pw: '拾うには、`{0}pick <password>` と入力してください。パスワードは画像の左上にあります。'
   picked: '{1}は{0}を拾いました。'
   planted: '{0}個植えました{1}'
 
@@ -64,7 +76,9 @@ ko-KR:
   curgen_pl: '랜덤 {1} {0}개가 나타났어요!'
   curgen_sn: '랜덤 {0}이(가) 나타났어요!'
   pick_pl: '`{0}pick`을 입력해서 주워 가세요'
+  pick_pl_pw: '`{0}pick <password>`을 입력해서 주워 가세요. 비밀번호는 이미지 왼쪽 상단에 있어요.'
   pick_sn: '`{0}pick`을 입력해서 주워 가세요'
+  pick_sn_pw: '`{0}pick <password>`을 입력해서 주워 가세요. 비밀번호는 이미지 왼쪽 상단에 있어요.'
   picked: '{1}님이 {0}을(를) 주웠어요'
   planted: '{0}님이 {1}을(를) 심었어요'
 
@@ -74,7 +88,9 @@ pl-PL:
   curgen_pl: 'Pojawiło się {0} losowych {1}!'
   curgen_sn: 'Pojawił/a się losowy/a {0}!'
   pick_pl: 'Podnieś je wpisując `{0}pick`'
+  pick_pl_pw: 'Podnieś je wpisując `{0}pick <password>`. Hasło znajduje się w lewym górnym rogu obrazka.'
   pick_sn: 'Podnieś to wpisując `{0}pick`'
+  pick_sn_pw: 'Podnieś to wpisując `{0}pick <password>`. Hasło znajduje się w lewym górnym rogu obrazka.'
   picked: '{1} podniósł/podniosła {0}'
   planted: '{0} posadził/a {1}'
 
@@ -84,7 +100,9 @@ pt-BR:
   curgen_pl: '{0} {1} brotaram aleatoriamente!'
   curgen_sn: 'Uma {0} brotou aleatoriamente!'
   pick_pl: 'Pegue o item digitando `{0}pick`'
+  pick_pl_pw: 'Pegue digitando `{0}pick <password>`. A senha está no canto superior esquerdo da imagem.'
   pick_sn: 'Pegue digitando `{0}pick`'
+  pick_sn_pw: 'Pegue digitando `{0}pick <password>`. A senha está no canto superior esquerdo da imagem.'
   picked: '{1} coletou {0}'
   planted: '{0} plantou {1}'
 
@@ -94,7 +112,9 @@ ru-RU:
   curgen_pl: '{0} случайных {1} появились!'
   curgen_sn: 'Случайный {0} появился!'
   pick_pl: 'Для того, что бы собрать их, напишите {0}'
+  pick_pl_pw: 'Подберите их, написав `{0}pick <password>`. Пароль находится в левом верхнем углу изображения.'
   pick_sn: 'Для того, что бы собрать это, напишите {0}'
+  pick_sn_pw: 'Подберите это, написав `{0}pick <password>`. Пароль находится в левом верхнем углу изображения.'
   picked: '{1} поднял {0}'
   planted: '{0} посадил {1}'
 
@@ -104,7 +124,9 @@ sr-Cyrl-RS:
   curgen_pl: '{0} насумичних {1} се појавило!'
   curgen_sn: 'Насумично {0} се појавило!'
   pick_pl: 'Покупи их тако што ћеш откуцати `{0}pick`'
+  pick_pl_pw: 'Покупи их тако што ћеш откуцати `{0}pick <password>`. Лозинка је у горњем левом углу слике.'
   pick_sn: 'Покупи га тако што ћеш откуцати `{0}pick`'
+  pick_sn_pw: 'Покупи га тако што ћеш откуцати `{0}pick <password>`. Лозинка је у горњем левом углу слике.'
   picked: '{1} је покупио/ла {0}'
   planted: '{0} је посадио/ла {1}'
 
@@ -114,7 +136,9 @@ tr-TR:
   curgen_pl: '{0} rastgele {1} belirdi!'
   curgen_sn: 'Rastgele bir {0} belirdi!'
   pick_pl: '`{0}pick` yazarak topla'
+  pick_pl_pw: '`{0}pick <password>` yazarak topla. Parola resmin sol üst köşesinde.'
   pick_sn: '`{0}pick` yazarak topla'
+  pick_sn_pw: '`{0}pick <password>` yazarak topla. Parola resmin sol üst köşesinde.'
   picked: '{1}, {0} topladı'
   planted: '{0}, {1} ekti'
 
@@ -124,7 +148,9 @@ ts-TS:
   curgen_pl: '{0} random {1} appeared!'
   curgen_sn: 'A random {0} appeared!'
   pick_pl: 'Pick them up by typing `{0}pick`'
+  pick_pl_pw: 'Pick them up by typing `{0}pick <password>`. The password is in the top-left of the image.'
   pick_sn: 'Pick it up by typing `{0}pick`'
+  pick_sn_pw: 'Pick it up by typing `{0}pick <password>`. The password is in the top-left of the image.'
   picked: '{1} picked {0}'
   planted: '{0} planted {1}'
 
@@ -134,7 +160,9 @@ uk-UA:
   curgen_pl: 'З''явилося {0} випадкових {1}!'
   curgen_sn: 'З''явився випадковий {0}!'
   pick_pl: 'Підбери їх, написавши `{0}pick`'
+  pick_pl_pw: 'Підбери їх, написавши `{0}pick <password>`. Пароль знаходиться у верхньому лівому куті зображення.'
   pick_sn: 'Підбери, написавши `{0}pick`'
+  pick_sn_pw: 'Підбери, написавши `{0}pick <password>`. Пароль знаходиться у верхньому лівому куті зображення.'
   picked: '{1} підібрав {0}'
   planted: '{0} посадив {1}'
 
@@ -144,7 +172,9 @@ vi-VN:
   curgen_pl: '{0} {1} ngẫu nhiên đã xuất hiện!'
   curgen_sn: 'Một {0} ngẫu nhiên đã xuất hiện!'
   pick_pl: 'Nhặt chúng bằng cách gõ `{0}pick`'
+  pick_pl_pw: 'Nhặt chúng bằng cách gõ `{0}pick <password>`. Mật khẩu nằm ở góc trên bên trái của hình ảnh.'
   pick_sn: 'Nhặt nó bằng cách gõ `{0}pick`'
+  pick_sn_pw: 'Nhặt nó bằng cách gõ `{0}pick <password>`. Mật khẩu nằm ở góc trên bên trái của hình ảnh.'
   picked: '{1} đã nhặt {0}'
   planted: '{0} đã trồng {1}'
 
@@ -154,6 +184,8 @@ zh-CN:
   curgen_pl: '{0}個隨機的{1}出現了!'
   curgen_sn: '一個隨機的{0}出現了!'
   pick_pl: '通過輸入"{0}pick"來選擇它們'
+  pick_pl_pw: '输入 `{0}pick <password>` 来捡起它们。密码在图片的左上角。'
   pick_sn: '通過輸入"{0}pick"來選擇它'
+  pick_sn_pw: '输入 `{0}pick <password>` 来捡起它。密码在图片的左上角。'
   picked: '{1} 捡起了 {0}'
   planted: '{0}種下了{1}'

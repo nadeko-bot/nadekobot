@@ -354,13 +354,7 @@ public partial class Waifus
         var firstPage = await svc.GetLeaderboardAsync(order, 0, 9);
         if (firstPage.Count == 0)
         {
-            var helpEmbed = CreateEmbed()
-                .WithOkColor()
-                .WithTitle(GetText(strs.waifu_not_participating_title))
-                .WithDescription(GetText(strs.waifu_not_participating(prefix)))
-                .WithFooter(GetText(strs.waifu_help_footer(prefix)));
-
-            await Response().Embed(helpEmbed).SendAsync();
+            await Response().Error(strs.waifu_lb_empty).SendAsync();
             return;
         }
 

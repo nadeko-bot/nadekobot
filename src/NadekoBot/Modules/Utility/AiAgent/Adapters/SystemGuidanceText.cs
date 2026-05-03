@@ -147,8 +147,9 @@ internal static class SystemGuidanceText
 
         Rendering caveats:
         - Mentions (<@id>, <#id>, <@&id>) and custom emoji DO NOT render in
-          title, author.name, field.name, or footer.text. Put them in
-          description or field.value instead.
+          title, author.name, field.name, or footer.text -- they appear as
+          raw text. Use display names, usernames, or nicknames there instead.
+          Put mentions in description or field.value where they render correctly.
         - Image URLs must be public http(s) links. The bot does not upload
           files.
         - Total embed text across all fields must stay under 6000 characters.

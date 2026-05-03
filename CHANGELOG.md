@@ -2,11 +2,11 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.4] - TBD
+## [7.2.4] - 03.05.2026
 
 ### Added
 
-- AI agent can now send fully formatted embeds (author, thumbnail, image, footer icon, url, timestamp) via `send_message`
+- AI agent can now send fully formatted embeds via `send_message`
 
 ### Changed
 
@@ -16,6 +16,7 @@
 
 ### Fixed
 
+- `.wlb` no longer shows the opt-in guide when the leaderboard is empty
 - `.ea` (emojiadd) now has correct parameters in help
 - Image upload commands (`.emojiadd`, avatar, banner, server icon, server banner, club icon) now accept WebP images
 

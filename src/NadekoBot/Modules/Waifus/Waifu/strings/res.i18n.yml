@@ -24,6 +24,7 @@ ar:
   waifu_fans_title: 'معجبو {0}'
   waifu_lb_title: 🏆 لوحة متصدري الوايفو (حسب السعر)
   waifu_lb_title_backed: 🏆 لوحة متصدري الوايفو (حسب الدعم)
+  waifu_lb_empty: لوحة متصدري الوايفو فارغة.
   waifu_gift_shop_title: 🎁 متجر الهدايا اليوم
   waifu_shop_refreshes: 'يتجدد خلال {0}'
   waifu_item_not_found: 'هذا العنصر غير متوفر اليوم. استخدم `{0}wgiftshop` لرؤية ما هو متاح.'
@@ -122,6 +123,7 @@ de-DE:
   waifu_fans_title: 'Fans von {0}'
   waifu_lb_title: 🏆 Waifu-Rangliste (nach Preis)
   waifu_lb_title_backed: 🏆 Waifu-Rangliste (nach Unterstützung)
+  waifu_lb_empty: Die Waifu-Rangliste ist leer.
   waifu_gift_shop_title: 🎁 Heutiger Geschenkeladen
   waifu_shop_refreshes: 'Aktualisiert in {0}'
   waifu_item_not_found: 'Dieser Artikel ist heute nicht verfügbar. Benutze `{0}wgiftshop`, um das Angebot zu sehen.'
@@ -220,6 +222,7 @@ es-ES:
   waifu_fans_title: 'Fans de {0}'
   waifu_lb_title: 🏆 Ranking de Waifus (por precio)
   waifu_lb_title_backed: 🏆 Ranking de Waifus (por apoyo)
+  waifu_lb_empty: El ranking de waifus esta vacio.
   waifu_gift_shop_title: 🎁 Tienda de Regalos de Hoy
   waifu_shop_refreshes: 'Se actualiza en {0}'
   waifu_item_not_found: 'Ese artículo no está disponible hoy. Usa `{0}wgiftshop` para ver qué hay en stock.'
@@ -318,6 +321,7 @@ fr-FR:
   waifu_fans_title: 'Fans de {0}'
   waifu_lb_title: 🏆 Classement des Waifus (par prix)
   waifu_lb_title_backed: 🏆 Classement des Waifus (par soutien)
+  waifu_lb_empty: Le classement des waifus est vide.
   waifu_gift_shop_title: 🎁 Boutique de Cadeaux du Jour
   waifu_shop_refreshes: 'Se rafraîchit dans {0}'
   waifu_item_not_found: 'Cet article n''est pas disponible aujourd''hui. Utilisez `{0}wgiftshop` pour voir ce qui est en stock.'
@@ -416,6 +420,7 @@ id-ID:
   waifu_fans_title: 'Fans dari {0}'
   waifu_lb_title: 🏆 Papan Peringkat Waifu (berdasarkan harga)
   waifu_lb_title_backed: 🏆 Papan Peringkat Waifu (berdasarkan dukungan)
+  waifu_lb_empty: Papan peringkat waifu masih kosong.
   waifu_gift_shop_title: 🎁 Toko Hadiah Hari Ini
   waifu_shop_refreshes: 'Diperbarui dalam {0}'
   waifu_item_not_found: 'Item itu nggak tersedia hari ini. Pakai `{0}wgiftshop` untuk lihat yang ada.'
@@ -514,6 +519,7 @@ ja-JP:
   waifu_fans_title: '{0}のファン'
   waifu_lb_title: 🏆 ワイフランキング（価格順）
   waifu_lb_title_backed: 🏆 ワイフランキング（応援順）
+  waifu_lb_empty: ワイフランキングはまだ空です。
   waifu_gift_shop_title: 🎁 今日のギフトショップ
   waifu_shop_refreshes: '{0}後に更新'
   waifu_item_not_found: 'そのアイテムは今日は利用できません。`{0}wgiftshop`で在庫を確認してください。'
@@ -612,6 +618,7 @@ ko-KR:
   waifu_fans_title: '{0}의 팬'
   waifu_lb_title: 🏆 와이푸 리더보드 (가격순)
   waifu_lb_title_backed: 🏆 와이푸 리더보드 (후원 기준)
+  waifu_lb_empty: 와이푸 리더보드가 비어 있습니다.
   waifu_gift_shop_title: 🎁 오늘의 선물 가게
   waifu_shop_refreshes: '{0} 후 갱신'
   waifu_item_not_found: '오늘은 해당 아이템이 없어요. `{0}wgiftshop`으로 현재 판매 중인 아이템을 확인하세요.'
@@ -710,6 +717,7 @@ pl-PL:
   waifu_fans_title: 'Fani {0}'
   waifu_lb_title: 🏆 Ranking Waifu (wg ceny)
   waifu_lb_title_backed: 🏆 Ranking Waifu (wg wsparcia)
+  waifu_lb_empty: Ranking waifu jest pusty.
   waifu_gift_shop_title: 🎁 Dzisiejszy Sklep z Prezentami
   waifu_shop_refreshes: 'Odświeża się za {0}'
   waifu_item_not_found: 'Ten przedmiot nie jest dziś dostępny. Użyj `{0}wgiftshop`, żeby zobaczyć co jest w ofercie.'
@@ -808,6 +816,7 @@ pt-BR:
   waifu_fans_title: 'Fãs de {0}'
   waifu_lb_title: 🏆 Ranking de Waifus (por preço)
   waifu_lb_title_backed: 🏆 Ranking de Waifus (por apoio)
+  waifu_lb_empty: O ranking de waifus esta vazio.
   waifu_gift_shop_title: 🎁 Loja de Presentes de Hoje
   waifu_shop_refreshes: 'Atualiza em {0}'
   waifu_item_not_found: 'Esse item não está disponível hoje. Use `{0}wgiftshop` para ver o que está em estoque.'
@@ -906,6 +915,7 @@ ru-RU:
   waifu_fans_title: 'Фанаты {0}'
   waifu_lb_title: 🏆 Рейтинг Вайфу (по цене)
   waifu_lb_title_backed: 🏆 Рейтинг Вайфу (по поддержке)
+  waifu_lb_empty: Рейтинг вайфу пуст.
   waifu_gift_shop_title: 🎁 Магазин Подарков Сегодня
   waifu_shop_refreshes: 'Обновляется через {0}'
   waifu_item_not_found: 'Этот предмет сегодня недоступен. Используйте `{0}wgiftshop`, чтобы увидеть ассортимент.'
@@ -1004,6 +1014,7 @@ sr-Cyrl-RS:
   waifu_fans_title: 'Фанови корисника {0}'
   waifu_lb_title: 🏆 Ваифу ранг листа (по цени)
   waifu_lb_title_backed: 🏆 Ранг-листа вајфу (по подршци)
+  waifu_lb_empty: Ранг-листа вајфу је празна.
   waifu_gift_shop_title: 🎁 Данашња продавница поклона
   waifu_shop_refreshes: 'Освежава се за {0}'
   waifu_item_not_found: 'Тај предмет није доступан данас. Користи `{0}wgiftshop` да видиш шта има на стању.'
@@ -1102,6 +1113,7 @@ tr-TR:
   waifu_fans_title: '{0} Fanları'
   waifu_lb_title: 🏆 Waifu Sıralaması (fiyata göre)
   waifu_lb_title_backed: 🏆 Waifu Sıralaması (desteklemeye göre)
+  waifu_lb_empty: Waifu siralaması bos.
   waifu_gift_shop_title: 🎁 Bugünün Hediye Dükkanı
   waifu_shop_refreshes: '{0} sonra yenilenir'
   waifu_item_not_found: 'Bu ürün bugün mevcut değil. Stokta ne olduğunu görmek için `{0}wgiftshop` kullan.'
@@ -1200,6 +1212,7 @@ ts-TS:
   waifu_fans_title: 'Fans of {0}'
   waifu_lb_title: 🏆 Waifu Leaderboard (by price)
   waifu_lb_title_backed: 🏆 Waifu Leaderboard (by backing)
+  waifu_lb_empty: The waifu leaderboard is empty... not that I care or anything.
   waifu_gift_shop_title: 🎁 Today's Gift Shop
   waifu_shop_refreshes: 'Refreshes in {0}'
   waifu_item_not_found: 'That item isn''t available today. Use `{0}wgiftshop` to see what''s in stock.'
@@ -1298,6 +1311,7 @@ uk-UA:
   waifu_fans_title: 'Фанати {0}'
   waifu_lb_title: 🏆 Рейтинг вайфу (за ціною)
   waifu_lb_title_backed: 🏆 Рейтинг вайфу (за підтримкою)
+  waifu_lb_empty: Рейтинг вайфу порожній.
   waifu_gift_shop_title: 🎁 Сьогоднішній магазин подарунків
   waifu_shop_refreshes: 'Оновиться через {0}'
   waifu_item_not_found: 'Цей предмет сьогодні недоступний. Використай `{0}wgiftshop`, щоб подивитися, що є в наявності.'
@@ -1396,6 +1410,7 @@ vi-VN:
   waifu_fans_title: 'Fan của {0}'
   waifu_lb_title: 🏆 Bảng xếp hạng Waifu (theo giá)
   waifu_lb_title_backed: 🏆 Bảng xếp hạng Waifu (theo ủng hộ)
+  waifu_lb_empty: Bảng xếp hạng waifu đang trống.
   waifu_gift_shop_title: 🎁 Cửa hàng quà tặng hôm nay
   waifu_shop_refreshes: 'Làm mới sau {0}'
   waifu_item_not_found: 'Món đồ đó hôm nay không có. Dùng `{0}wgiftshop` để xem có gì trong cửa hàng.'
@@ -1494,6 +1509,7 @@ zh-CN:
   waifu_fans_title: '{0} 的粉絲'
   waifu_lb_title: 🏆 老婆排行榜（依價格）
   waifu_lb_title_backed: 🏆 老婆排行榜（依支持）
+  waifu_lb_empty: 老婆排行榜是空的。
   waifu_gift_shop_title: 🎁 今日禮物商店
   waifu_shop_refreshes: '{0} 後刷新'
   waifu_item_not_found: '該物品今天不可用。使用 `{0}wgiftshop` 查看庫存。'

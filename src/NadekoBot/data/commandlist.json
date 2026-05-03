@@ -23,7 +23,7 @@
         ".imageonly",
         ".imagesonly"
       ],
-      "Description": "Toggles whether the channel only allows images.\nUsers who send more than a few non-image messages will be banned from using the channel. ",
+      "Description": "Toggles whether the channel only allows images.\nUsers who send more than a few non-image messages will be banned from using the channel.",
       "Usage": [
         ".imageonlychannel"
       ],
@@ -40,7 +40,7 @@
         ".linkonly",
         ".linkssonly"
       ],
-      "Description": "Toggles whether the channel only allows links.\n\nUsers who send more than a few non-link messages will be banned from using\nthe channel. ",
+      "Description": "Toggles whether the channel only allows links.\nUsers who send more than a few non-link messages will be banned from using the channel.",
       "Usage": [
         ".linkonlychannel"
       ],
@@ -138,7 +138,7 @@
       "Aliases": [
         ".boostmsg"
       ],
-      "Description": "Sets a new boost announcement message which will be shown in the current channel. \nUsing this command with no message will show the current boost message. \nSupports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://docs.nadeko.bot/en/latest/embeds/)",
+      "Description": "Sets a new boost announcement message which will be shown in the current channel.\nUsing this command with no message will show the current boost message.\nSupports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://docs.nadeko.bot/en/latest/embeds/)",
       "Usage": [
         ".boostmsg %user.mention% has boosted the server!!!"
       ],
@@ -185,7 +185,7 @@
       "Aliases": [
         ".greetmsg"
       ],
-      "Description": "Sets a new join announcement message which will be shown in the current channel.\nUsing this command with no message will show the current greet message.  \nSupports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://eb.nadeko.bot/)",
+      "Description": "Sets a new join announcement message which will be shown in the current channel.\nUsing this command with no message will show the current greet message.\nSupports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://eb.nadeko.bot/)",
       "Usage": [
         ".greetmsg Welcome, %user.mention%."
       ],
@@ -261,7 +261,7 @@
       "Aliases": [
         ".byemsg"
       ],
-      "Description": "Sets a new leave announcement message which will be shown in the current channel. \nUsing this command with no message will show the current bye message. \nSupports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://eb.nadeko.bot/)",
+      "Description": "Sets a new leave announcement message which will be shown in the current channel.\nUsing this command with no message will show the current bye message.\nSupports [placeholders](https://docs.nadeko.bot/en/latest/placeholders/) and [embeds](https://eb.nadeko.bot/)",
       "Usage": [
         ".byemsg %user.name% has left."
       ],
@@ -554,7 +554,7 @@
         ".snotify",
         ".sn"
       ],
-      "Description": "Sends a message to the specified channel once the specified event occurs.\n\nIf no channel is specified, the message will be sent to the channel from\nwhich the event originated.\n\n*note: this is only possible for events that have an origin channel (for\nexample `levelup`)*\n\nProvide no parameters to see all available events.",
+      "Description": "Sends a message to the specified channel once the specified event occurs.\n\nIf no channel is specified, the message will be sent to the channel from\nwhich the event originated.\n\n*note: this is only possible for events that have an origin channel (for\nexample `levelup`)*\n\nStandard placeholders like `%user.name%`, `%user.mention%`, `%user.avatar%`\nand `%server.name%` work in any notify message in addition to the\nevent-specific `%event.*%` placeholders shown by `.servernotifyphs`.\n\nProvide no parameters to see all available events.",
       "Usage": [
         ".servernotify levelup Congratulations to user %user.name% for reaching level\n%event.level%"
       ],
@@ -695,7 +695,7 @@
       "Aliases": [
         ".antialt"
       ],
-      "Description": "Applies a punishment action to any user whose account is younger than the specified threshold. \nAvailable Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\nProvide no parameters to disable.",
+      "Description": "Applies a punishment action to any user whose account is younger than the specified threshold.\nAvailable Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\nProvide no parameters to disable.",
       "Usage": [
         ".antialt 1h Ban",
         ".antialt 3d Mute 1h"
@@ -711,7 +711,7 @@
       "Aliases": [
         ".antiraid"
       ],
-      "Description": "Sets an anti-raid protection on the server.\n\nFirst parameter is number of people which will trigger the protection.\n\nSecond parameter is a time interval in which that number of people needs to join in order to trigger the protection.\n\nThird parameter is punishment for those people.\nAvailable punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, Warn, TimeOut\nUser threshold must be between 2-30, and seconds between 2-300.\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\n\nProvide no parameters to disable.",
+      "Description": "Sets an anti-raid protection on the server.\nFirst parameter is number of people which will trigger the protection.\nSecond parameter is a time interval in which that number of people needs to join in order to trigger the protection.\nThird parameter is punishment for those people.\nAvailable punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, Warn, TimeOut\nUser threshold must be between 2-30, and seconds between 2-300.\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\nProvide no parameters to disable.",
       "Usage": [
         ".antiraid 5 20 Kick",
         ".antiraid 7 9 Ban",
@@ -729,7 +729,7 @@
       "Aliases": [
         ".antispam"
       ],
-      "Description": "Applies a Punishment to people who repeat the same message X times in a row.\nAvailable Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\nMax message count is 10. \nProvide no parameters to disable.",
+      "Description": "Applies a Punishment to people who repeat the same message X times in a row.\nAvailable Punishments are: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, RemoveRoles, AddRole, Warn, TimeOut\nYou can specify an additional time argument to do a timed punishment for actions which support it (Ban, Mute, etc) up to 24h.\nMax message count is 10.\nProvide no parameters to disable.",
       "Usage": [
         ".antispam 3 Mute",
         ".antispam 5 Ban",
@@ -924,7 +924,7 @@
         ".rerolist",
         ".reroli"
       ],
-      "Description": "Lists all ReactionRole messages on this server with their message ids. Clicking/Tapping message ids will send you to that message.",
+      "Description": "Lists all ReactionRole messages on this server with their message ids.\nClicking/Tapping message ids will send you to that message.",
       "Usage": [
         ".rerolist"
       ],
@@ -1148,7 +1148,7 @@
       "Aliases": [
         ".temprole"
       ],
-      "Description": "Grants a user a temporary role for the specified number of time.\nThe role must exist and be lower in the role hierarchy than your highest role.",
+      "Description": "Grants a user a temporary role for the specified amount of time.\nThe role must exist and be lower in the role hierarchy than your highest role.",
       "Usage": [
         ".temprole 15m @User Jail",
         ".temprole 7d @Newbie Trial Member"
@@ -1166,7 +1166,8 @@
       ],
       "Description": "Changes the icon of a role.",
       "Usage": [
-        ".roleicon @Role :server_emoji_here:"
+        ".roleicon @Role :server_emoji_here:",
+        ".roleicon @Role https://example.com/icon.png"
       ],
       "Submodule": "RoleCommands",
       "Module": "Administration",
@@ -1582,7 +1583,7 @@
       "Aliases": [
         ".timezone"
       ],
-      "Description": "Sets this guilds timezone. This affects bot's time output in this server (logs, etc..) **Setting timezone requires Administrator server permission.**",
+      "Description": "Sets this guild's timezone. This affects bot's time output in this server (logs, etc.). **Setting timezone requires Administrator server permission.**",
       "Usage": [
         ".timezone",
         ".timezone GMT Standard Time"
@@ -1613,7 +1614,7 @@
         ".warnexpire",
         ".warne"
       ],
-      "Description": "Gets or sets the number of days after which the warnings will be cleared automatically. This setting works retroactively. If you want to delete the warnings instead of clearing them, you can set the `--delete` optional parameter. Provide no parameter to see currently set expiry",
+      "Description": "Gets or sets the number of days after which the warnings will be cleared automatically. This setting works retroactively. If you want to delete the warnings instead of clearing them, you can set the `--delete` optional parameter. Provide no parameter to see currently set expiry.",
       "Usage": [
         ".warnexpire",
         ".warnexpire 3",
@@ -1698,7 +1699,7 @@
         ".warnpunish",
         ".warnp"
       ],
-      "Description": "Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or *'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut",
+      "Description": "Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or 'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut",
       "Usage": [
         ".warnpunish 3",
         ".warnpunish 5 Ban",
@@ -3014,7 +3015,7 @@
         ".betdraw",
         ".bd"
       ],
-      "Description": "Bet on the card value and/or color. Specify the amount followed by your guess. \nYou can specify `r` or `b` for red or black, and `h` or `l` for high or low.\nYou can specify only h/l or only r/b or both.\nReturns are high but **7 always loses**.\nYou can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.",
+      "Description": "Bet on the card value and/or color. Specify the amount followed by your guess.\nYou can specify `r` or `b` for red or black, and `h` or `l` for high or low.\nYou can specify only h/l or only r/b or both.\nReturns are high but **7 always loses**.\nYou can specify 'all', 'half' or 'X%' instead of the amount to bet that part of your current balance.",
       "Usage": [
         ".betdraw 50 r",
         ".betdraw 200 b l",
@@ -3079,7 +3080,7 @@
       "Aliases": [
         ".pick"
       ],
-      "Description": "Picks the currency planted in this channel. If the plant has a password, you need to specify it.",
+      "Description": "Picks the currency planted in this channel. If the plant has a password,\ntype the password after the command (`.pick <password>`). The password is\nin the top-left of the plant image.",
       "Usage": [
         ".pick",
         ".pick passwd"
@@ -3093,7 +3094,7 @@
       "Aliases": [
         ".plant"
       ],
-      "Description": "Spend an amount of currency to plant it in this channel. Default is 1. You can specify the password after the amount. Password has to be alphanumeric and it will be trimmed down to 10 characters if it's longer.",
+      "Description": "Spend an amount of currency to plant it in this channel. Default is 1. You\ncan specify the password after the amount. Password has to be alphanumeric\nand it will be trimmed down to 10 characters if it's longer.",
       "Usage": [
         ".plant 5",
         ".plant 10 meow"
@@ -4041,7 +4042,7 @@
         ".yq",
         ".enqueue"
       ],
-      "Description": "Queues up and plays a song or video based on a search query, song name, artist name, search query or youtube link.\nBot will join your voice channel. \n**You must be in a voice channel**.",
+      "Description": "Queues up and plays a song or video based on a search query, song name, artist name, search query or youtube link.\nBot will join your voice channel.\n**You must be in a voice channel**.",
       "Usage": [
         ".queue Dream Of Venice"
       ],
@@ -4074,7 +4075,7 @@
         ".vol",
         ".defvol"
       ],
-      "Description": "Sets the music playback volume (0-100%). Persistent server setting. Default 100",
+      "Description": "Sets the music playback volume (0-100%). Persistent server setting. Default 100.",
       "Usage": [
         ".volume 50"
       ],
@@ -4090,7 +4091,7 @@
         ".next",
         ".n"
       ],
-      "Description": "Goes to the next song in the queue. You have to be in the same voice channel as the bot",
+      "Description": "Goes to the next song in the queue. You have to be in the same voice channel as the bot.",
       "Usage": [
         ".next"
       ],
@@ -4124,7 +4125,7 @@
         ".qs",
         ".yqs"
       ],
-      "Description": "Search for top 5 youtube song result using keywords, and type the index of the song to play that song. Bot will join your voice channel. **You must be in a voice channel**.",
+      "Description": "Search for top 5 youtube song results using keywords, and type the index of the song to play that song. Bot will join your voice channel. **You must be in a voice channel**.",
       "Usage": [
         ".queuesearch Dream Of Venice"
       ],
@@ -4676,7 +4677,7 @@
         ".medusainfo",
         ".meinfo"
       ],
-      "Description": "Shows information about the specified medusa such as the author, name, description, list of sneks, number of commands etc.\nProvide no name to see the basic information about all loaded medusae. ",
+      "Description": "Shows information about the specified medusa such as the author, name, description, list of sneks, number of commands etc.\nProvide no name to see the basic information about all loaded medusae.",
       "Usage": [
         ".medusainfo mycoolmedusa",
         ".medusainfo"
@@ -4774,7 +4775,7 @@
       "Aliases": [
         ".purgeuser"
       ],
-      "Description": "Purge user from the database completely. This includes currency, xp, clubs that user owns, waifu info",
+      "Description": "Purge user from the database completely. This includes currency, xp, clubs that user owns, waifu info.",
       "Usage": [
         ".purgeuser @Oblivion"
       ],
@@ -4872,7 +4873,7 @@
         ".addplaying",
         ".adpl"
       ],
-      "Description": "Adds a specified string to the list of playing strings to rotate. Optionally pick a type: `Playing`, `Watching`, `Listening`, or `Competing`. Defaults to Custom status if no type is given.",
+      "Description": "Adds a specified string to the list of playing strings to rotate.\nOptionally pick a type: `Playing`, `Watching`, `Listening`, or `Competing`.\nDefaults to Custom status if no type is given.",
       "Usage": [
         ".addplaying Just vibing",
         ".addplaying Playing with you",
@@ -5668,7 +5669,7 @@
         ".cmdcooldown",
         ".cmdcd"
       ],
-      "Description": "Sets a cooldown, in seconds (max 3600), for a command or an expression which will be applied per user. Set it to 0 to remove the cooldown. Supports a special command `cleverbot:response` which can be used to limit how often users can talk to cleverbot",
+      "Description": "Sets a cooldown, in seconds (max 3600), for a command or an expression which will be applied per user. Set it to 0 to remove the cooldown. Supports a special command `cleverbot:response` which can be used to limit how often users can talk to cleverbot.",
       "Usage": [
         ".cmdcooldown .h 5",
         ".cmdcooldown .pat 30"
@@ -5810,7 +5811,7 @@
         ".filterword",
         ".fw"
       ],
-      "Description": "Adds or removes (if it exists) a word from the list of filtered words. Use`.sfw` or `.cfw` to toggle filtering.",
+      "Description": "Adds or removes (if it exists) a word from the list of filtered words. Use `.sfw` or `.cfw` to toggle filtering.",
       "Usage": [
         ".filterword poop"
       ],
@@ -6029,7 +6030,7 @@
         ".coins",
         ".cryptos"
       ],
-      "Description": "Shows a list of 10 crypto currencies ordered by market cap.\nShows their price, change in the last24h, market cap and circulating and total supply.\nPaginated with 10 per page.",
+      "Description": "Shows a list of 10 crypto currencies ordered by market cap.\nShows their price, change in the last 24h, market cap and circulating and total supply.\nPaginated with 10 per page.",
       "Usage": [
         ".coins",
         ".coins 2"
@@ -7013,7 +7014,7 @@
         ".emojiadd",
         ".ea"
       ],
-      "Description": "Adds the specified emoji to this server.\nYou can specify a name before the emoji to add it under a different name.\nYou can specify a name followed by an image link to add a new emoji from an image.\nYou can omit imageUrl and instead upload the image as an attachment. \nImage size has to be below 256KB.",
+      "Description": "Adds the specified emoji to this server.\nYou can specify a name before the emoji to add it under a different name.\nYou can specify a name followed by an image link to add a new emoji from an image.\nYou can omit imageUrl and instead upload the image as an attachment.\nImage size has to be below 256KB.",
       "Usage": [
         ".emojiadd :someonesCustomEmoji:",
         ".emojiadd MyEmojiName :someonesCustomEmoji:",
@@ -7154,7 +7155,7 @@
       "Aliases": [
         ".eval"
       ],
-      "Description": "Execute arbitrary C# code and (optionally) return a result. Several namespaces are included by default.\nSpecial variables available: \n`self` - Instance of the command group executing the command (this)\n`guild` - Server in which the command is executed\n`channel` - Channel in which the command is executed\n`user` - User executing the command\n`ctx` - Discord.Net command context\n`services` - Nadeko's IServiceProvider",
+      "Description": "Execute arbitrary C# code and (optionally) return a result. Several namespaces are included by default.\nSpecial variables available:\n`self` - Instance of the command group executing the command (this)\n`guild` - Server in which the command is executed\n`channel` - Channel in which the command is executed\n`user` - User executing the command\n`ctx` - Discord.Net command context\n`services` - Nadeko's IServiceProvider",
       "Usage": [
         ".eval 123 / 4.5f",
         ".eval await ctx.OkAsync();",
@@ -7691,7 +7692,7 @@
         ".userinfo",
         ".uinfo"
       ],
-      "Description": "Shows info about the user. If no user is supplied, it defaults a user running the command.",
+      "Description": "Shows info about the user. If no user is supplied, it defaults to the user running the command.",
       "Usage": [
         ".userinfo @SomeUser"
       ],
@@ -8202,7 +8203,7 @@
         ".remindrm",
         ".reminddel"
       ],
-      "Description": "Deletes a reminder on the specified index. You can specify 'server' option if you're an Administrator, and you want to delete a reminder on this server created by someone else. ",
+      "Description": "Deletes a reminder on the specified index. You can specify 'server' option if you're an Administrator, and you want to delete a reminder on this server created by someone else.",
       "Usage": [
         ".reminddelete 3",
         ".reminddelete server 2"
@@ -8282,7 +8283,7 @@
       "Aliases": [
         ".repeat"
       ],
-      "Description": "Repeat a message once per specified time increment in the current channel. \nYou can specify a different channel as the first argument instead.\nYou can also specify time of day for the message to be repeated daily (make sure you've set your server's `.timezone`). \nIf you specify time of day, you can still override the default daily interval with your own interval. \nYou can have up to 5 repeating messages on one server in total (configurable via `.config utility maxRepeaters`).",
+      "Description": "Repeat a message once per specified time increment in the current channel.\nYou can specify a different channel as the first argument instead.\nYou can also specify time of day for the message to be repeated daily (make sure you've set your server's `.timezone`).\nIf you specify time of day, you can still override the default daily interval with your own interval.\nYou can have up to 5 repeating messages on one server in total (configurable via `.config utility maxRepeaters`).",
       "Usage": [
         ".repeat Hello there",
         ".repeat #other-channel hello there",
@@ -8366,7 +8367,7 @@
       "Aliases": [
         ".streamrole"
       ],
-      "Description": "Sets a role which is monitored for streamers (FromRole), and a role to add if a user from 'FromRole' is streaming (AddRole). When a user from 'FromRole' starts streaming, they will receive an 'AddRole'. You can only have 1 Stream Role per server. Provide no parameters to disable",
+      "Description": "Sets a role which is monitored for streamers (FromRole), and a role to add if a user from 'FromRole' is streaming (AddRole). When a user from 'FromRole' starts streaming, they will receive an 'AddRole'. You can only have 1 Stream Role per server. Provide no parameters to disable.",
       "Usage": [
         ".streamrole \"Eligible Streamers\" \"Featured Streams\""
       ],
@@ -8762,7 +8763,8 @@
       ],
       "Description": "Changes the icon of a role that has been assigned to you via .userroleassign.\nYou don't need any special permissions - just ownership of the role.\nYou can provide either an image URL (png/jpeg/webp, max 256KB) or a server emoji.\nThe server must have a high enough boost level to support role icons.",
       "Usage": [
-        ".userroleicon @Role :server_emoji_here:"
+        ".userroleicon @Role :server_emoji_here:",
+        ".userroleicon @Role https://example.com/icon.png"
       ],
       "Submodule": "UserRoleCommands",
       "Module": "Utility",
@@ -9162,7 +9164,7 @@
       "Aliases": [
         ".xpshop"
       ],
-      "Description": "Access the xp shop (if enabled). You can purchase either xp card frames or backgrounds. You can optionally provide a page number",
+      "Description": "Access the xp shop (if enabled). You can purchase either xp card frames or backgrounds. You can optionally provide a page number.",
       "Usage": [
         ".xpshop bgs",
         ".xpshop frames",

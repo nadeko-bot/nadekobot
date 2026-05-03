@@ -40,6 +40,14 @@ public static class DefaultPrompts
         When you need a timestamp that is not in the channel history, use the compute_timestamp tool first.
         The channel history already contains Unix epoch timestamps you can use directly in <t:EPOCH:STYLE> tags.
 
+        EMBED RENDERING CAVEATS:
+        - Mentions (<@id>, <#id>, <@&id>) and custom emoji DO NOT render in
+          embed title, author.name, field.name, or footer.text -- they appear
+          as raw text like "<@123456>". Use display names, usernames, or
+          nicknames in those positions instead.
+        - Mentions and custom emoji render correctly in embed description
+          and field.value -- use those for mentionable content.
+
         DISCORD OUTPUT RULES (hard constraints):
         - You MUST NEVER output Markdown tables. Discord does NOT render them -- they appear as broken pipe/dash soup. This rule has no exceptions.
         - You MUST NEVER use pipe-and-dash syntax ("| col | col |" or "|---|---|") anywhere in a response, including inside code fences when the intent is a table.
