@@ -479,7 +479,7 @@ public sealed class SourcedPaginatedResponseBuilder<T> : PaginatedResponseBuilde
         return Task.FromResult<IReadOnlyCollection<T>>(ReadOnlyCollection<T>.Empty);
     };
 
-    public Func<int, Task<NadekoInteractionBase>>? InteractionFunc { get; private set; }
+    public Func<int, Task<NadekoInteractionBase?>>? InteractionFunc { get; private set; }
 
     public int? Elems { get; private set; } = 1;
     public int ItemsPerPage { get; private set; } = 9;
@@ -562,7 +562,7 @@ public sealed class SourcedPaginatedResponseBuilder<T> : PaginatedResponseBuilde
         return paginationSender.SendAsync(IsEphemeral);
     }
 
-    public SourcedPaginatedResponseBuilder<T> Interaction(Func<int, Task<NadekoInteractionBase>> func)
+    public SourcedPaginatedResponseBuilder<T> Interaction(Func<int, Task<NadekoInteractionBase?>> func)
     {
         InteractionFunc = func; //async (i) => await func(i);
         return this;
@@ -570,7 +570,7 @@ public sealed class SourcedPaginatedResponseBuilder<T> : PaginatedResponseBuilde
 
     public SourcedPaginatedResponseBuilder<T> Interaction(NadekoInteractionBase inter)
     {
-        InteractionFunc = _ => Task.FromResult(inter);
+        InteractionFunc = _ => Task.FromResult<NadekoInteractionBase?>(inter);
         return this;
     }
 }

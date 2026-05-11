@@ -170,7 +170,7 @@ public partial class Administration
                   {
                       var entry = items.Skip(currentPage).FirstOrDefault();
                       if (entry is null)
-                          return Task.FromResult<NadekoInteractionBase>(null);
+                          return Task.FromResult<NadekoInteractionBase?>(null);
 
                       var inter = _inter.Create(ctx.User.Id,
                           new ButtonBuilder()
@@ -208,7 +208,7 @@ public partial class Administration
                           },
                           clearAfter: false);
 
-                      return Task.FromResult(inter);
+                      return Task.FromResult<NadekoInteractionBase?>(inter);
                   })
                   .SendAsync();
         }
@@ -331,7 +331,7 @@ public partial class Administration
                   {
                       var entry = items.Skip(currentPage).FirstOrDefault();
                       if (entry is null)
-                          return Task.FromResult<NadekoInteractionBase>(null);
+                          return Task.FromResult<NadekoInteractionBase?>(null);
 
                       var inter = _inter.Create(ctx.User.Id,
                           new ButtonBuilder()
@@ -370,7 +370,7 @@ public partial class Administration
                           },
                           clearAfter: false);
 
-                      return Task.FromResult(inter);
+                      return Task.FromResult<NadekoInteractionBase?>(inter);
                   })
                   .SendAsync();
         }

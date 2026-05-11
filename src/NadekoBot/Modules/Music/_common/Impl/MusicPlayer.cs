@@ -148,6 +148,13 @@ public sealed class MusicPlayer : IMusicPlayer
 
                     if (!songFinished)
                     {
+                        if (streamUrl is null)
+                        {
+                            IsStopped = true;
+                            Log.Warning("Stream URL was null for track {Track}", track.Title);
+                            continue;
+                        }
+
                         _songBuffer.Reset();
 
                         using var source = FfmpegTrackDataSource.Create(

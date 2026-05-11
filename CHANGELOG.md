@@ -2,6 +2,20 @@
 
 *a,c,f,r,o,d*
 
+## [7.2.5]
+
+### Fixed
+
+- `.feed` and `.ytuploadnotif` messages now actually trigger `@everyone`, `@here`, and role pings when the user who set up the feed has the required permissions
+
+### Removed
+
+- Removed cache_control ai header
+
+### Dev
+
+- Some compilation warnings fixed
+
 ## [7.2.4] - 03.05.2026
 
 ### Added
