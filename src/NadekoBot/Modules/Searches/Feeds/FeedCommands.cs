@@ -78,9 +78,6 @@ public partial class Searches
                 return;
             }
 
-            if (ctx.User is not IGuildUser gu || !gu.GuildPermissions.Administrator)
-                message = message?.SanitizeMentions(true);
-
             var result = await _service.AddFeedAsync(ctx.Guild.Id, channel.Id, url, message);
             if (result == FeedAddResult.Success)
             {

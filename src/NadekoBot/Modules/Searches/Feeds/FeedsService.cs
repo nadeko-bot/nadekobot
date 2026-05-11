@@ -256,6 +256,7 @@ public class FeedsService : INService, IReadyExecutor
                                     .Text(string.IsNullOrWhiteSpace(val.Message)
                                         ? string.Empty
                                         : val.Message)
+                                    .Sanitize(false)
                                     .SendAsync();
                                 tasks.Add(sendTask);
                             }
