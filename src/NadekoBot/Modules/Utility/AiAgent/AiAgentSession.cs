@@ -16,9 +16,6 @@ public sealed class AiAgentSession(
         PropertyNameCaseInsensitive = true
     };
 
-    private static readonly JsonElement _ephemeralCacheControl =
-        JsonDocument.Parse("""{"type":"ephemeral"}""").RootElement.Clone();
-
     public async Task<OneOf<AiAgentResult, Error<string>>> RunAsync(
         string userPrompt,
         AiToolContext context,
@@ -95,7 +92,6 @@ public sealed class AiAgentSession(
                 Tools = toolSchemas.Count > 0 ? toolSchemas.ToList() : null,
                 MaxTokens = config.MaxTokens,
                 Temperature = config.Temperature,
-                CacheControl = _ephemeralCacheControl,
                 Reasoning = reasoning
             };
 
