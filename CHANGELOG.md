@@ -2,10 +2,20 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.5]
+
+## [7.2.6] - 23.05.2026
 
 ### Fixed
 
+- `.random*` commands now use the proper cdn url
+- avatar url fixed in searches commands too
+- small docs fix
+
+## [7.2.5] - 14.05.2026
+
+### Fixed
+
+- The Linux CLI guide's systemd setup snippet now works in non-bash shells (fish, nushell)
 - `.feed` and `.ytuploadnotif` messages now actually trigger `@everyone`, `@here`, and role pings when the user who set up the feed has the required permissions
 
 ### Removed

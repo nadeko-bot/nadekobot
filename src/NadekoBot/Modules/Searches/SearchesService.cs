@@ -179,7 +179,7 @@ public class SearchesService : INService
         };
 
 
-        return $"https://nadeko-pictures.nyc3.digitaloceanspaces.com/{subpath}/"
+        return $"https://cdn.nadeko.bot/{subpath}/"
                + _rng.Next(1, max).ToString("000")
                + ".png";
     }

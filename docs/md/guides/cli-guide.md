@@ -153,31 +153,30 @@ This method is a bit more complex and involved, but comes with the added benefit
     WantedBy=multi-user.target" | sudo tee /etc/systemd/system/nadeko.service
     ```
 3. Make the new service available: `sudo systemctl daemon-reload`
-4. Use the following command to create a script that will be used to start Nadeko:
+4. Create `NadekoRun.bash` in the current directory (for example `nano NadekoRun.bash`), paste the following, then save:
     ```bash
-    cat <<EOF > NadekoRun.bash
     #!/bin/bash
 
     export PATH="$HOME/.local/bin:$PATH"
 
-    is_python3_installed=\$(command -v python3 &>/dev/null && echo true || echo false)
-    is_yt_dlp_installed=\$(command -v yt-dlp &>/dev/null && echo true || echo false)
+    is_python3_installed=$(command -v python3 &>/dev/null && echo true || echo false)
+    is_yt_dlp_installed=$(command -v yt-dlp &>/dev/null && echo true || echo false)
 
-    [[ \$is_python3_installed == true ]] \\
-        && echo "[INFO] python3 path: \$(which python3)" \\
-        && echo "[INFO] python3 version: \$(python3 --version)"
-    [[ \$is_yt_dlp_installed == true ]] \\
-        && echo "[INFO] yt-dlp path: \$(which yt-dlp)"
+    [[ $is_python3_installed == true ]] \
+        && echo "[INFO] python3 path: $(which python3)" \
+        && echo "[INFO] python3 version: $(python3 --version)"
+    [[ $is_yt_dlp_installed == true ]] \
+        && echo "[INFO] yt-dlp path: $(which yt-dlp)"
 
     echo "[INFO] Running NadekoBot in the background with auto restart"
-    if [[ \$is_yt_dlp_installed == true ]]; then
+    if [[ $is_yt_dlp_installed == true ]]; then
         yt-dlp -U || echo "[ERROR] Failed to update 'yt-dlp'" >&2
     fi
 
     echo "[INFO] Starting NadekoBot..."
 
     while true; do
-        if [[ -d $PWD/nadeko ]]; then
+        if [[ -d "$PWD/nadeko" ]]; then
             cd "$PWD/nadeko" || {
                 echo "[ERROR] Failed to change working directory to '$PWD/nadeko'" >&2
                 echo "[INFO] Exiting..."
@@ -197,14 +196,13 @@ This method is a bit more complex and involved, but comes with the added benefit
 
         echo "[INFO] Waiting 5 seconds..."
         sleep 5
-        if [[ \$is_yt_dlp_installed == true ]]; then
+        if [[ $is_yt_dlp_installed == true ]]; then
             yt-dlp -U || echo "[ERROR] Failed to update 'yt-dlp'" >&2
         fi
         echo "[INFO] Restarting NadekoBot..."
     done
 
     echo "[INFO] Stopping NadekoBot..."
-    EOF
     ```
 
 With everything set up, you can run NadekoBot in one of three modes:
