@@ -15,6 +15,7 @@ public sealed class AiAgentService(
     IAiAgentSession agentSession,
     IAiToolRegistry toolRegistry,
     AiAgentConfigService configService,
+    EmbeddingService embedder,
     CommandSearchService searchService,
     ConversationWindowTracker conversationTracker,
     IBotCredsProvider credsProvider,
@@ -45,6 +46,10 @@ public sealed class AiAgentService(
     /// </summary>
     public int Priority
         => 3;
+
+    // off if config disables it, or if the embedding runtime failed to load this session
+    private bool IsAiEnabled
+        => configService.Data.Enabled && !embedder.IsUnavailable;
 
     /// <summary>
     /// Starts the background expiry loop for channel memory buffers and conversation windows.
@@ -152,7 +157,7 @@ public sealed class AiAgentService(
     /// </summary>
     public async ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
     {
-        if (!configService.Data.Enabled)
+        if (!IsAiEnabled)
             return false;
 
         if (!HasValidAiCreds())
@@ -204,7 +209,7 @@ public sealed class AiAgentService(
     /// </summary>
     public async ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
-        if (!configService.Data.Enabled)
+        if (!IsAiEnabled)
             return;
 
         if (!HasValidAiCreds())
@@ -352,10 +357,10 @@ public sealed class AiAgentService(
         IUserMessage message,
         string prompt)
     {
-        var config = configService.Data;
-
-        if (!config.Enabled)
+        if (!IsAiEnabled)
             return false;
+
+        var config = configService.Data;
 
         var guildUser = await guild.GetUserAsync(message.Author.Id);
         if (guildUser is null)

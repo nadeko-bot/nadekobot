@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [7.2.7]
+
+### Fixed
+
+- If something goes wrong during AI agent startup, it will get disabled instead of crashing the process
+
 
 ## [7.2.6] - 23.05.2026
 

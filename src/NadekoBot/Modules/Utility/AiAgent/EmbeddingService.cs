@@ -23,12 +23,14 @@ public sealed class EmbeddingService(IHttpClientFactory httpFactory) : INService
     private InferenceSession? _session;
     private BertTokenizer? _tokenizer;
     private volatile bool _ready;
+    private volatile bool _unavailable;
 
     public bool IsReady => _ready;
+    public bool IsUnavailable => _unavailable;
 
     public async Task EnsureModelReadyAsync()
     {
-        if (_ready)
+        if (_ready || _unavailable)
             return;
 
         await EnsureModelDownloadedInternalAsync();
@@ -42,7 +44,21 @@ public sealed class EmbeddingService(IHttpClientFactory httpFactory) : INService
             return;
         }
 
-        EnsureOnnxLoadedInternal(modelPath, vocabPath);
+        try
+        {
+            EnsureOnnxLoadedInternal(modelPath, vocabPath);
+        }
+        catch (Exception ex) when (ex is DllNotFoundException
+            || ex is TypeInitializationException { InnerException: DllNotFoundException })
+        {
+            _unavailable = true;
+            Log.Warning(ex,
+                "AI embedding runtime (ONNX) failed to load. AI agent and command search "
+                + "are disabled for this session. On Windows, install the Visual C++ "
+                + "Redistributable (x64). The bot will continue running normally");
+            return;
+        }
+
         _ready = true;
     }
 
