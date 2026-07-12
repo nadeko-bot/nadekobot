@@ -1,6 +1,5 @@
 ﻿using CodeHollow.FeedReader;
 using NadekoBot.Modules.Searches.Services;
-using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Searches;
 
@@ -9,9 +8,6 @@ public partial class Searches
     [Group]
     public partial class FeedCommands : NadekoModule<FeedsService>
     {
-        private static readonly Regex _ytChannelRegex =
-            MyRegex();
-
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
@@ -23,20 +19,21 @@ public partial class Searches
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(2)]
-        public Task YtUploadNotif(string url, ITextChannel? channel = null, [Leftover] string? message = null)
+        public async Task YtUploadNotif(string url, ITextChannel? channel = null, [Leftover] string? message = null)
         {
-            var m = _ytChannelRegex.Match(url);
-            if (!m.Success)
-                return Response().Error(strs.invalid_input).SendAsync();
+            var channelId = await _service.ResolveYtChannelIdAsync(url);
+            if (channelId is null)
+            {
+                await Response().Error(strs.invalid_input).SendAsync();
+                return;
+            }
 
             channel ??= ctx.Channel as ITextChannel;
 
             if (!((IGuildUser)ctx.User).GetPermissions(channel).MentionEveryone)
                 message = message?.SanitizeAllMentions();
 
-            var channelId = m.Groups["channelid"].Value;
-
-            return Feed($"https://www.youtube.com/feeds/videos.xml?channel_id={channelId}", channel, message);
+            await Feed($"https://www.youtube.com/feeds/videos.xml?channel_id={channelId}", channel, message);
         }
 
         [Cmd]
@@ -143,8 +140,5 @@ public partial class Searches
                 })
                 .SendAsync();
         }
-
-        [GeneratedRegex(@"youtube\.com\/(?:c\/|channel\/|user\/)?(?<channelid>[a-zA-Z0-9\-_]{1,})")]
-        private static partial Regex MyRegex();
     }
 }

@@ -105,6 +105,12 @@ public static class ServiceCollectionExtensions
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+        proxySvcs.AddHttpClient("brave")
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
         var prov = proxySvcs.BuildServiceProvider();
 
         svcs.RegisterDelegate<IHttpClientFactory>(_ => prov.GetRequiredService<IHttpClientFactory>());

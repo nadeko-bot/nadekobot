@@ -30,14 +30,13 @@ public sealed class BraveSearchService : SearchServiceBase, INService
         var apiKey = GetApiKey();
         var startTime = Stopwatch.GetTimestamp();
 
-        using var http = _http.CreateClient();
+        using var http = _http.CreateClient("brave");
         using var msg = new HttpRequestMessage(HttpMethod.Get,
             $"https://api.search.brave.com/res/v1/web/search"
             + $"?q={Uri.EscapeDataString(query)}"
             + $"&safesearch=strict");
 
         msg.Headers.Add("Accept", "application/json");
-        msg.Headers.Add("Accept-Encoding", "gzip");
         msg.Headers.Add("X-Subscription-Token", apiKey);
 
         using var response = await http.SendAsync(msg);
@@ -70,14 +69,13 @@ public sealed class BraveSearchService : SearchServiceBase, INService
         var apiKey = GetApiKey();
         var startTime = Stopwatch.GetTimestamp();
 
-        using var http = _http.CreateClient();
+        using var http = _http.CreateClient("brave");
         using var msg = new HttpRequestMessage(HttpMethod.Get,
             $"https://api.search.brave.com/res/v1/images/search"
             + $"?q={Uri.EscapeDataString(query)}"
             + $"&safesearch=strict");
 
         msg.Headers.Add("Accept", "application/json");
-        msg.Headers.Add("Accept-Encoding", "gzip");
         msg.Headers.Add("X-Subscription-Token", apiKey);
 
         using var response = await http.SendAsync(msg);

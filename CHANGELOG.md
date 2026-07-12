@@ -2,11 +2,13 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.7]
+## [7.2.7] - 12.07.2026
 
 ### Fixed
 
+- `.yun` now accepts modern YouTube channel URL formats (`@handle`, `/c/`, `/user/`)
 - If something goes wrong during AI agent startup, it will get disabled instead of crashing the process
+- Brave-backed search commands no longer crash with a JSON deserialization error
 
 
 ## [7.2.6] - 23.05.2026

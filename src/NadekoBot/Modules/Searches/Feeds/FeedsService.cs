@@ -5,10 +5,12 @@ using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
+using System.Buffers;
+using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Searches.Services;
 
-public class FeedsService : INService, IReadyExecutor
+public sealed partial class FeedsService : INService, IReadyExecutor
 {
     public const string USER_AGENT =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 OPR/123.0.0.0 (Edition beta)";
@@ -21,6 +23,7 @@ public class FeedsService : INService, IReadyExecutor
     private readonly IMessageSenderService _sender;
     private readonly ShardData _shardData;
     private readonly SearchesConfigService _scs;
+    private readonly IHttpClientFactory _httpFactory;
 
     private readonly NonBlocking.ConcurrentDictionary<string, DateTime> _lastPosts = new();
     private readonly Dictionary<string, uint> _errorCounters = new();
@@ -30,13 +33,15 @@ public class FeedsService : INService, IReadyExecutor
         DiscordSocketClient client,
         IMessageSenderService sender,
         ShardData shardData,
-        SearchesConfigService scs)
+        SearchesConfigService scs,
+        IHttpClientFactory httpFactory)
     {
         _db = db;
         _client = client;
         _sender = sender;
         _shardData = shardData;
         _scs = scs;
+        _httpFactory = httpFactory;
     }
 
     public async Task OnReadyAsync()
@@ -379,6 +384,183 @@ public class FeedsService : INService, IReadyExecutor
         uow.SaveChanges();
 
         return true;
+    }
+
+    private const int YT_RESOLVE_TIMEOUT_SECONDS = 10;
+
+    [GeneratedRegex(@"youtube\.com/channel/(?<id>UC[\w-]+)")]
+    private static partial Regex YtChannelUrlRegex();
+
+    [GeneratedRegex(@"youtube\.com/@(?<handle>[^/?#\s]+)")]
+    private static partial Regex YtHandleUrlRegex();
+
+    [GeneratedRegex(@"youtube\.com/c/(?<name>[^/?#\s]+)")]
+    private static partial Regex YtCustomUrlRegex();
+
+    [GeneratedRegex(@"youtube\.com/user/(?<name>[^/?#\s]+)")]
+    private static partial Regex YtUserUrlRegex();
+
+    [GeneratedRegex(@"^@?[A-Za-z0-9._-]{3,30}$")]
+    private static partial Regex YtBareHandleRegex();
+
+    public async Task<string?> ResolveYtChannelIdAsync(string input)
+    {
+        var direct = YtChannelUrlRegex().Match(input);
+        if (direct.Success)
+            return direct.Groups["id"].Value;
+
+        var pageUrl = BuildYtPageUrl(input);
+        if (pageUrl is null)
+            return null;
+
+        try
+        {
+            using var http = _httpFactory.CreateClient();
+            http.Timeout = TimeSpan.FromSeconds(YT_RESOLVE_TIMEOUT_SECONDS);
+            http.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", USER_AGENT);
+
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(YT_RESOLVE_TIMEOUT_SECONDS));
+            using var response = await http.GetAsync(
+                pageUrl,
+                HttpCompletionOption.ResponseHeadersRead,
+                cts.Token);
+            response.EnsureSuccessStatusCode();
+
+            await using var stream = await response.Content.ReadAsStreamAsync(cts.Token);
+            return await ScanForChannelIdAsync(stream, cts.Token);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to resolve youtube channel id from {Input}", input);
+            return null;
+        }
+    }
+
+    private static ReadOnlySpan<byte> CanonicalAnchor
+        => "<link rel=\"canonical\" href=\"https://www.youtube.com/channel/"u8;
+
+    private static ReadOnlySpan<byte> ExternalIdAnchor
+        => "\"externalId\":\""u8;
+
+    public static async Task<string?> ScanForChannelIdAsync(Stream stream, CancellationToken ct)
+    {
+        const int chunk = 64 * 1024;
+        const int carry = 256;
+        const long maxBytes = 4 * 1024 * 1024;
+
+        var buffer = ArrayPool<byte>.Shared.Rent(chunk + carry);
+        try
+        {
+            var kept = 0;
+            long total = 0;
+            while (total < maxBytes)
+            {
+                var read = await stream.ReadAsync(buffer.AsMemory(kept, chunk), ct);
+                if (read == 0)
+                    break;
+
+                total += read;
+                var span = buffer.AsSpan(0, kept + read);
+
+                if (TryFindChannelId(span, out var id))
+                    return id;
+
+                kept = Math.Min(carry, span.Length);
+                span[^kept..].CopyTo(buffer);
+            }
+
+            return null;
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
+        }
+    }
+
+    private static bool TryFindChannelId(ReadOnlySpan<byte> span, out string? id)
+    {
+        if (TryExtractAfter(span, CanonicalAnchor, out id))
+            return true;
+
+        return TryExtractAfter(span, ExternalIdAnchor, out id);
+    }
+
+    private static bool TryExtractAfter(ReadOnlySpan<byte> span, ReadOnlySpan<byte> anchor, out string? id)
+    {
+        id = null;
+        var searchStart = 0;
+
+        while (true)
+        {
+            var rel = span[searchStart..].IndexOf(anchor);
+            if (rel < 0)
+                return false;
+
+            var valueStart = searchStart + rel + anchor.Length;
+            var rest = span[valueStart..];
+
+            if (rest.Length < 2 || rest[0] != (byte)'U' || rest[1] != (byte)'C')
+            {
+                searchStart = valueStart;
+                continue;
+            }
+
+            var end = rest.IndexOf((byte)'"');
+            if (end < 0)
+                return false;
+
+            var value = rest[..end];
+            if (IsValidChannelId(value))
+            {
+                id = System.Text.Encoding.ASCII.GetString(value);
+                return true;
+            }
+
+            searchStart = valueStart;
+        }
+    }
+
+    private static bool IsValidChannelId(ReadOnlySpan<byte> value)
+    {
+        if (value.Length is < 3 or > 64)
+            return false;
+
+        foreach (var b in value)
+        {
+            var ok = b is >= (byte)'A' and <= (byte)'Z'
+                     or >= (byte)'a' and <= (byte)'z'
+                     or >= (byte)'0' and <= (byte)'9'
+                     or (byte)'_'
+                     or (byte)'-';
+            if (!ok)
+                return false;
+        }
+
+        return true;
+    }
+
+    private static string? BuildYtPageUrl(string input)
+    {
+        var handleMatch = YtHandleUrlRegex().Match(input);
+        if (handleMatch.Success)
+            return $"https://www.youtube.com/@{Uri.EscapeDataString(handleMatch.Groups["handle"].Value)}";
+
+        var customMatch = YtCustomUrlRegex().Match(input);
+        if (customMatch.Success)
+            return $"https://www.youtube.com/c/{Uri.EscapeDataString(customMatch.Groups["name"].Value)}";
+
+        var userMatch = YtUserUrlRegex().Match(input);
+        if (userMatch.Success)
+            return $"https://www.youtube.com/user/{Uri.EscapeDataString(userMatch.Groups["name"].Value)}";
+
+        var trimmed = input.Trim();
+        if (YtBareHandleRegex().IsMatch(trimmed))
+        {
+            var handle = trimmed[0] == '@' ? trimmed[1..] : trimmed;
+            return $"https://www.youtube.com/@{Uri.EscapeDataString(handle)}";
+        }
+
+        return null;
     }
 }
 
