@@ -26,22 +26,12 @@ public sealed class AgentChatRequest
     [JsonPropertyName("temperature")]
     public double Temperature { get; init; } = 0.3;
 
-    [JsonPropertyName("max_tokens")]
-    public int MaxTokens { get; init; } = 2048;
+    [JsonPropertyName("max_completion_tokens")]
+    public int MaxCompletionTokens { get; init; } = 16384;
 
-    [JsonPropertyName("reasoning")]
+    [JsonPropertyName("reasoning_effort")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public AgentReasoningConfig? Reasoning { get; init; }
-}
-
-public sealed class AgentReasoningConfig
-{
-    [JsonPropertyName("effort")]
-    public required string Effort { get; init; }
-
-    [JsonPropertyName("exclude")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public bool Exclude { get; init; }
+    public string? ReasoningEffort { get; init; }
 }
 
 /// <summary>

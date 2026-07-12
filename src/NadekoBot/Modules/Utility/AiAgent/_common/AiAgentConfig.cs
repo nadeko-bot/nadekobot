@@ -29,8 +29,12 @@ public sealed class AiAgentConfig
     [Comment("Maximum number of tool calls the agent can make per invocation. Default 10")]
     public int MaxToolCalls { get; set; } = 10;
 
-    [Comment("Maximum tokens for LLM responses. Default 2048")]
-    public int MaxTokens { get; set; } = 2048;
+    [Comment("""
+             Max tokens per response. For reasoning models this budget is shared by
+             reasoning tokens AND the visible reply, so keep it generous or replies
+             may be truncated. Default 16384
+             """)]
+    public int MaxTokens { get; set; } = 16384;
 
     [Comment("Temperature for LLM responses. Lower = more deterministic. Default 0.3")]
     public double Temperature { get; set; } = 0.3;
@@ -65,7 +69,7 @@ public sealed class AiAgentConfig
 
     [Comment("""
              Reasoning effort level for models that support it (e.g. GPT-5.x, Claude, o-series).
-             Values: "none", "low", "medium", "high", "xhigh". Empty string to disable.
+             Values: "none", "minimal", "low", "medium", "high", "xhigh", "max". Empty string to disable.
              Lower values save output tokens on simple tool-calling tasks. Default "low"
              """)]
     public string ReasoningEffort { get; set; } = "low";

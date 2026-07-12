@@ -28,8 +28,8 @@ public sealed class AiAgentSession(
     {
         var provider = ResolveProviderInternal(config);
 
-        var reasoning = !string.IsNullOrWhiteSpace(config.ReasoningEffort)
-            ? new AgentReasoningConfig { Effort = config.ReasoningEffort, Exclude = true }
+        var reasoningEffort = !string.IsNullOrWhiteSpace(config.ReasoningEffort)
+            ? config.ReasoningEffort
             : null;
 
         var toolMap = tools.ToDictionary(t => t.Name);
@@ -90,9 +90,9 @@ public sealed class AiAgentSession(
                 Models = config.Models is { Count: > 0 } ? config.Models : null,
                 Messages = messages,
                 Tools = toolSchemas.Count > 0 ? toolSchemas.ToList() : null,
-                MaxTokens = config.MaxTokens,
+                MaxCompletionTokens = config.MaxTokens,
                 Temperature = config.Temperature,
-                Reasoning = reasoning
+                ReasoningEffort = reasoningEffort
             };
 
             var response = await CallLlmInternalAsync(provider, config, request, ct);
@@ -108,6 +108,14 @@ public sealed class AiAgentSession(
 
             if (assistantMsg.ToolCalls is not { Count: > 0 })
             {
+                if (string.Equals(choice.FinishReason, "length", StringComparison.Ordinal)
+                    && string.IsNullOrWhiteSpace(assistantMsg.Content))
+                {
+                    return new Error<string>(
+                        "The AI ran out of its token budget before replying (reasoning likely "
+                        + "consumed it). Increase the `maxtokens` setting and try again.");
+                }
+
                 return new AiAgentResult
                 {
                     Response = assistantMsg.Content ?? "Done.",

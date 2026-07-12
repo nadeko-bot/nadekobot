@@ -2,6 +2,13 @@
 
 *a,c,f,r,o,d*
 
+## [7.2.10]
+
+### Fixed
+
+- AI agent now sends `max_completion_tokens` and `reasoning_effort` to match the latest OpenAI API spec
+- AI agent default response token budget raised 
+
 ## [7.2.9] - 12.07.2026
 
 ### Fixed

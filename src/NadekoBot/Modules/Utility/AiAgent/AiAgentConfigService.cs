@@ -42,8 +42,8 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             static (c, v) => c.MaxTokens = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            "Maximum tokens for LLM responses",
-            static val => val is > 100 and <= 16384);
+            "Max tokens per response (shared by reasoning + visible output on reasoning models)",
+            static val => val is > 100 and <= 128000);
 
         AddParsedProp("temperature",
             static c => c.Temperature,
