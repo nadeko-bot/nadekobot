@@ -441,8 +441,7 @@ public class SearchesService : INService
             var result = await _c.GetOrAddAsync($"wikipedia_{query}",
                                      async () =>
                                      {
-                                         using var http = _httpFactory.CreateClient();
-                                         http.DefaultRequestHeaders.Clear();
+                                         using var http = _httpFactory.CreateClient().AddFakeHeaders();
 
                                          return await http.GetStringAsync(
                                              "https://en.wikipedia.org/w/api.php?action=query"
@@ -513,8 +512,7 @@ public class SearchesService : INService
             return ErrorType.InvalidInput;
         }
 
-        using var http = _httpFactory.CreateClient();
-        http.DefaultRequestHeaders.Clear();
+        using var http = _httpFactory.CreateClient().AddFakeHeaders();
         try
         {
             var res = await http.GetStringAsync($"https://{Uri.EscapeDataString(target)}.fandom.com/api.php"
