@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text.Json;
 using NadekoBot.Common.ModuleBehaviors;
+using NadekoBot.Modules.Help;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
@@ -19,6 +20,11 @@ public sealed class CommandSearchService(
     private const float BN_EPS = 1e-5f;
 
     private static readonly TypedKey<bool> _reloadKey = new("cmdsearch.reload");
+
+    // Bump when the parsed representation changes without the on-disk file changing,
+    // so the embeddings cache (keyed by this hash) is invalidated once. "v2" = prefix
+    // stripped from aliases/usage at parse time.
+    private static readonly byte[] _indexSchemaSalt = "v2-prefixless"u8.ToArray();
 
     private readonly SemanticIndex<CommandEntry> _index = new(
         embedder,
@@ -98,7 +104,7 @@ public sealed class CommandSearchService(
                 return;
 
             var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
-            var cmdListHash = SHA256.HashData(cmdListBytes);
+            var cmdListHash = ComputeListHashInternal(cmdListBytes);
 
             if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
                 return;
@@ -125,7 +131,7 @@ public sealed class CommandSearchService(
                 return;
 
             var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
-            var cmdListHash = SHA256.HashData(cmdListBytes);
+            var cmdListHash = ComputeListHashInternal(cmdListBytes);
 
             if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
                 return;
@@ -145,7 +151,7 @@ public sealed class CommandSearchService(
     private async Task LoadAndBuildIndexInternalAsync()
     {
         var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
-        var cmdListHash = SHA256.HashData(cmdListBytes);
+        var cmdListHash = ComputeListHashInternal(cmdListBytes);
 
         var commands = LoadCommandListInternal(cmdListBytes);
         if (commands.Length == 0)
@@ -270,6 +276,25 @@ public sealed class CommandSearchService(
         }
     }
 
+    // Hash of the file bytes plus a schema salt, so a change in how we parse the file
+    // (without the file itself changing) invalidates the embeddings cache once.
+    private static byte[] ComputeListHashInternal(byte[] cmdListBytes)
+    {
+        using var hasher = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        hasher.AppendData(cmdListBytes);
+        hasher.AppendData(_indexSchemaSalt);
+        return hasher.GetHashAndReset();
+    }
+
+    // The persisted commandlist.json bakes in CommandListGenerator.DefaultPrefix so it
+    // stays a stable prefixed source for external consumers. The agent works with raw
+    // commands (run_command re-applies the guild's prefix), so strip the single leading
+    // prefix here. Interior prefixes (e.g. ".doas @x .give") are arguments and preserved.
+    private static string StripLeadingPrefixInternal(string s)
+        => s.StartsWith(CommandListGenerator.DefaultPrefix, StringComparison.Ordinal)
+            ? s[CommandListGenerator.DefaultPrefix.Length..]
+            : s;
+
     private static CommandEntry[] LoadCommandListInternal(byte[] jsonBytes)
     {
         using var doc = JsonDocument.Parse(jsonBytes);
@@ -280,7 +305,7 @@ public sealed class CommandSearchService(
             foreach (var cmd in module.Value.EnumerateArray())
             {
                 var aliases = cmd.TryGetProperty("Aliases", out var aliasEl)
-                    ? aliasEl.EnumerateArray().Select(static a => a.GetString() ?? "").ToArray()
+                    ? aliasEl.EnumerateArray().Select(static a => StripLeadingPrefixInternal(a.GetString() ?? "")).ToArray()
                     : [];
 
                 var desc = cmd.TryGetProperty("Description", out var descEl)
@@ -288,7 +313,7 @@ public sealed class CommandSearchService(
                     : "";
 
                 var usage = cmd.TryGetProperty("Usage", out var usageEl)
-                    ? usageEl.EnumerateArray().Select(static u => u.GetString() ?? "").ToArray()
+                    ? usageEl.EnumerateArray().Select(static u => StripLeadingPrefixInternal(u.GetString() ?? "")).ToArray()
                     : [];
 
                 var submodule = cmd.TryGetProperty("Submodule", out var subEl)

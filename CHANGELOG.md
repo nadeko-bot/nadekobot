@@ -2,12 +2,20 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.10]
+## [7.2.10] - 14.07.2026
+
+### Changed
+
+- Antispam now ignores users who have the Manage Messages permission in the channel, so moderators are no longer punished for spam
+- AI agent default response token budget raised 
 
 ### Fixed
 
+- Timed muting an already-muted user now extends the mute instead of erroring
+- Fixed a bug with timed `.chatmute` and `.voicemute` lifting all mute types on that user when the timer expired, instead of only the expired type (say the user is muted for 12h in voice and 1h in chat, when chat mute expired it would've clear all mutes. This is now fixed)
+- `.mute` with a duration outside the allowed range now shows an error instead of silently doing nothing
 - AI agent now sends `max_completion_tokens` and `reasoning_effort` to match the latest OpenAI API spec
-- AI agent default response token budget raised 
+- AI agent now runs bot commands using the server's configured prefix instead of always assuming `.`, so agent-issued commands work in servers with a custom prefix
 
 ## [7.2.9] - 12.07.2026
 

@@ -20,10 +20,30 @@ public sealed partial class CommandListGenerator(
             return;
 
         await Task.Delay(5_000);
-        await GenerateCommandListAsync(".", CultureInfo.InvariantCulture);
+        await RefreshCommandListFileAsync();
     }
 
-    public async Task<Stream> GenerateCommandListAsync(string prefix, CultureInfo culture)
+    // The prefix baked into the persisted list. The AI agent's command loader strips
+    // this leading prefix and run_command re-applies the guild's actual prefix, so the
+    // on-disk file stays a stable prefixed source for external consumers (docs/website).
+    public const string DefaultPrefix = ".";
+
+    // Persisted list consumed by the AI agent's command search (and external docs).
+    public async Task RefreshCommandListFileAsync()
+    {
+        var readableData = BuildCommandListJsonInternal(DefaultPrefix, CultureInfo.InvariantCulture);
+
+        const string finalPath = "data/commandlist.json";
+        var tempPath = finalPath + ".tmp";
+        await File.WriteAllTextAsync(tempPath, readableData);
+        File.Move(tempPath, finalPath, overwrite: true);
+    }
+
+    // Human-readable downloadable list for .commandlist. Includes the prefix; not persisted.
+    public Stream GenerateCommandListStream(string prefix, CultureInfo culture)
+        => new MemoryStream(Encoding.ASCII.GetBytes(BuildCommandListJsonInternal(prefix, culture)));
+
+    private string BuildCommandListJsonInternal(string prefix, CultureInfo culture)
     {
         // order commands by top level module name
         // and make a dictionary of <ModuleName, Array<JsonCommandData>>
@@ -52,16 +72,6 @@ public sealed partial class CommandListGenerator(
                     })
                     .ToList());
 
-        var readableData = JsonConvert.SerializeObject(cmdData, Formatting.Indented);
-
-        // send the indented file to chat
-        var rDataStream = new MemoryStream(Encoding.ASCII.GetBytes(readableData));
-
-        const string finalPath = "data/commandlist.json";
-        var tempPath = finalPath + ".tmp";
-        await File.WriteAllTextAsync(tempPath, readableData);
-        File.Move(tempPath, finalPath, overwrite: true);
-
-        return rDataStream;
+        return JsonConvert.SerializeObject(cmdData, Formatting.Indented);
     }
 }

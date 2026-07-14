@@ -19,7 +19,8 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
     [AiTool(
         "run_command",
         "Execute a Nadeko bot command as the user who invoked the agent. "
-        + "The command string must include the prefix (e.g. '.mute @user 10m'). "
+        + "Provide the command WITHOUT a prefix (e.g. 'mute @user 10m'); the bot adds the "
+        + "server's configured prefix automatically. "
         + "All permission checks apply - the command will fail if the user lacks permission. "
         + "Use search_commands first to find the right command and its syntax. "
         + "Returns immediately after dispatch; the command's output (embed/text) appears in "
@@ -29,7 +30,7 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
     [AiSystemGuidance(SystemGuidanceText.RunCommand)]
     public async Task<string> RunCommand(
         AiToolContext ctx,
-        [AiParam("The full command string including prefix, e.g. '.mute @user 10m reason'")]
+        [AiParam("The command string WITHOUT a prefix, e.g. 'mute @user 10m reason'")]
         string command)
     {
         if (string.IsNullOrWhiteSpace(command))
@@ -41,6 +42,8 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
             throw ToolException.Forbidden("Commands can only be executed in a server.");
         if (ctx.SourceChannel is not ISocketMessageChannel ch)
             throw ToolException.Forbidden("Invalid channel context.");
+
+        command = EnsurePrefixInternal(command, sg);
 
         var fakeMessage = new DoAsUserMessage(ctx.TriggerMessage, ctx.User, command);
 
@@ -62,6 +65,7 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
         "run_command_chain",
         "Execute a sequence of Nadeko bot commands in order, with a delay between each. "
         + "Maximum 5 commands per chain. Delay is 2000-10000ms (default 2000ms). "
+        + "Provide each command WITHOUT a prefix; the bot adds the server's prefix automatically. "
         + "Each command goes through the full permission pipeline. "
         + "If a command fails, the chain continues with the remaining commands. "
         + "Use search_commands first to find the right commands and their syntax. "
@@ -69,7 +73,7 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
         + "by the bot. The user already sees them; do NOT restate them in your final reply.")]
     public async Task<string> RunCommandChain(
         AiToolContext ctx,
-        [AiParam("List of command strings including prefix, e.g. ['.mute @user 10m', '.warn @user reason']. Max 5.")]
+        [AiParam("List of command strings WITHOUT a prefix, e.g. ['mute @user 10m', 'warn @user reason']. Max 5.")]
         List<string> commands,
         [AiParam("Delay in milliseconds between each command (default 2000, min 2000, max 10000)")]
         int delayMs = CHAIN_DEFAULT_DELAY_MS)
@@ -110,6 +114,7 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
 
             try
             {
+                cmd = EnsurePrefixInternal(cmd, sg);
                 var fakeMessage = new DoAsUserMessage(ctx.TriggerMessage, ctx.User, cmd);
                 var task = cmdHandler.TryRunCommand(sg, ch, fakeMessage);
                 var completed = await Task.WhenAny(task, Task.Delay(COMMAND_TIMEOUT_MS, ct));
@@ -125,5 +130,13 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
         }
 
         return sb.ToString();
+    }
+
+    private string EnsurePrefixInternal(string command, SocketGuild guild)
+    {
+        var prefix = cmdHandler.GetPrefix(guild);
+        return command.StartsWith(prefix, StringComparison.InvariantCulture)
+            ? command
+            : prefix + command;
     }
 }

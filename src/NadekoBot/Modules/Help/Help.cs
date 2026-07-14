@@ -525,7 +525,7 @@ public sealed partial class Help : NadekoModule<HelpService>
     {
         _ = ctx.Channel.TriggerTypingAsync();
 
-        await using var rDataStream = await _cmdListGen.GenerateCommandListAsync(prefix, Culture);
+        await using var rDataStream = _cmdListGen.GenerateCommandListStream(prefix, Culture);
         await ctx.Channel.SendFileAsync(rDataStream, "cmds.json", GetText(strs.commandlist_regen));
     }
 

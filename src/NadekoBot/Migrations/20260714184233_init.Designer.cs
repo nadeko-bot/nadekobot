@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20260419232144_init")]
+    [Migration("20260714184233_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -1679,7 +1679,7 @@ namespace NadekoBot.Migrations
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<TimeSpan>("Interval")
+                    b.Property<string>("Interval")
                         .HasColumnType("TEXT");
 
                     b.Property<ulong?>("LastMessageId")
@@ -2174,6 +2174,11 @@ namespace NadekoBot.Migrations
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Type")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(2);
+
                     b.Property<DateTime>("UnmuteAt")
                         .HasColumnType("TEXT");
 
@@ -2182,39 +2187,10 @@ namespace NadekoBot.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GuildId", "UserId")
+                    b.HasIndex("GuildId", "UserId", "Type")
                         .IsUnique();
 
                     b.ToTable("UnmuteTimer");
-                });
-
-            modelBuilder.Entity("NadekoBot.Db.Models.UnroleTimer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("DateAdded")
-                        .HasColumnType("TEXT");
-
-                    b.Property<ulong>("GuildId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong>("RoleId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("UnbanAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<ulong>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuildId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("UnroleTimer");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.UserQuest", b =>

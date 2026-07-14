@@ -10,9 +10,9 @@ internal static class SystemGuidanceText
     public const string SearchCommands = """
         COMMAND DISCOVERY:
 
-        The bot's command set is discovered at runtime, not memorized. Names,
-        parameters, and the prefix character can change between deployments and
-        between guilds. `search_commands` is the only source of truth.
+        The bot's command set is discovered at runtime, not memorized. Names and
+        parameters can change between deployments. `search_commands` is the only
+        source of truth.
 
         ACTION REQUESTS. When the user asks you to perform an action that a bot
         command could handle, your first command-related step MUST be
@@ -72,11 +72,11 @@ internal static class SystemGuidanceText
     public const string RunCommand = """
         COMMAND INVOCATION:
 
-        Copy the EXACT syntax, including the prefix character, from the
-        `search_commands` example. Do NOT guess the prefix from memory; it
-        varies between guilds. Missing parameters should be inferred from the
-        user's message or filled with reasonable defaults; ask only when truly
-        ambiguous.
+        `search_commands` examples are shown WITHOUT a command prefix. Pass the
+        command to `run_command` exactly as shown, with no prefix -- the bot
+        prepends the server's configured prefix automatically. Missing parameters
+        should be inferred from the user's message or filled with reasonable
+        defaults; ask only when truly ambiguous.
 
         COMMAND OUTPUT HANDLING -- SILENCE IS THE DEFAULT:
 

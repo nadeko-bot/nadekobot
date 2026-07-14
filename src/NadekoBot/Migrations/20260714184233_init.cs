@@ -859,7 +859,7 @@ namespace NadekoBot.Migrations
                     ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     LastMessageId = table.Column<ulong>(type: "INTEGER", nullable: true),
                     Message = table.Column<string>(type: "TEXT", nullable: true),
-                    Interval = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                    Interval = table.Column<string>(type: "TEXT", nullable: true),
                     StartTimeOfDay = table.Column<TimeSpan>(type: "TEXT", nullable: true),
                     NoRedundant = table.Column<bool>(type: "INTEGER", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -1113,28 +1113,12 @@ namespace NadekoBot.Migrations
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     UnmuteAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 2),
                     DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UnmuteTimer", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UnroleTimer",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
-                    RoleId = table.Column<ulong>(type: "INTEGER", nullable: false),
-                    UnbanAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UnroleTimer", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -2338,15 +2322,9 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UnmuteTimer_GuildId_UserId",
+                name: "IX_UnmuteTimer_GuildId_UserId_Type",
                 table: "UnmuteTimer",
-                columns: new[] { "GuildId", "UserId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UnroleTimer_GuildId_UserId",
-                table: "UnroleTimer",
-                columns: new[] { "GuildId", "UserId" },
+                columns: new[] { "GuildId", "UserId", "Type" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -2796,9 +2774,6 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "UnmuteTimer");
-
-            migrationBuilder.DropTable(
-                name: "UnroleTimer");
 
             migrationBuilder.DropTable(
                 name: "UserBetStats");

@@ -1,20 +1,22 @@
 # DO NOT CHANGE THE VERSION MANUALLY
 version: 8
 # Whether the AI agent feature is enabled. Default false
-enabled: true
+enabled: false
 # Base URL for the OpenAI-compatible API.
 # DO NOT add /v1/chat/completions suffix.
-apiUrl: https://openrouter.ai/api
+apiUrl: https://api.openai.com
 # Which model to use for the agent. Must support tool/function calling.
-modelName: inception/mercury-2
+modelName: gpt-5.4
 # Optional list of model IDs for providers that support fallback routing (e.g. OpenRouter).
 # If set, this is sent as "models" instead of "model" in the request body.
 # Example: ["openai/gpt-5.4", "anthropic/claude-opus-4", "google/gemini-3.1-pro"]
 models: []
 # Maximum number of tool calls the agent can make per invocation. Default 10
 maxToolCalls: 10
-# Maximum tokens for LLM responses. Default 2048
-maxTokens: 2048
+# Max tokens per response. For reasoning models this budget is shared by
+# reasoning tokens AND the visible reply, so keep it generous or replies
+# may be truncated. Default 16384
+maxTokens: 16384
 # Temperature for LLM responses. Lower = more deterministic. Default 0.3
 temperature: 0.3
 # List of allowed tool names. If empty, all tools are available.
@@ -34,7 +36,7 @@ followUpWindowSeconds: 120
 customHeaders:
   X-OpenRouter-Title: Nadeko
 # Reasoning effort level for models that support it (e.g. GPT-5.x, Claude, o-series).
-# Values: "none", "low", "medium", "high", "xhigh". Empty string to disable.
+# Values: "none", "minimal", "low", "medium", "high", "xhigh", "max". Empty string to disable.
 # Lower values save output tokens on simple tool-calling tasks. Default "low"
 reasoningEffort: low
 # Whether AI agent text responses are sent as embeds. If false, sent as plain text. Default true

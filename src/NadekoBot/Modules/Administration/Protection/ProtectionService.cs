@@ -186,6 +186,9 @@ public class ProtectionService : IReadyExecutor, INService
         if (spamSettings.IgnoredChannelIds.Contains(channel.Id))
             return Task.CompletedTask;
 
+        if (msg.Author is IGuildUser gu && gu.GetPermissions(channel).ManageMessages)
+            return Task.CompletedTask;
+
         _ = Task.Run(async () =>
         {
             try

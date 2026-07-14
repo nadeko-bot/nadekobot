@@ -9,18 +9,78 @@ public partial class Administration
     [Group]
     public partial class MuteCommands : NadekoModule<MuteService>
     {
+        private static readonly TimeSpan _minMuteTime = TimeSpan.FromMinutes(1);
+        private static readonly TimeSpan _maxMuteTime = TimeSpan.FromDays(49);
+
         private async Task<bool> VerifyMutePermissions(IGuildUser runnerUser, IGuildUser targetUser)
         {
-            var runnerUserRoles = runnerUser.GetRoles();
-            var targetUserRoles = targetUser.GetRoles();
-            if (runnerUser.Id != ctx.Guild.OwnerId
-                && runnerUserRoles.Max(x => x.Position) <= targetUserRoles.Max(x => x.Position))
+            var runnerMaxRole = runnerUser.GetRoles().Max(x => x.Position);
+            var targetMaxRole = targetUser.GetRoles().Max(x => x.Position);
+            if (runnerUser.Id != ctx.Guild.OwnerId && runnerMaxRole <= targetMaxRole)
             {
                 await Response().Error(strs.mute_perms).SendAsync();
                 return false;
             }
 
             return true;
+        }
+
+        private async Task MuteInternalAsync(IGuildUser target, MuteType type, string reason, LocStr success)
+        {
+            try
+            {
+                if (!await VerifyMutePermissions((IGuildUser)ctx.User, target))
+                    return;
+
+                await _service.MuteUser(target, ctx.User, type, reason);
+                await Response().Confirm(success).SendAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Error in mute command");
+                await Response().Error(strs.mute_error).SendAsync();
+            }
+        }
+
+        private async Task TimedMuteInternalAsync(
+            ParsedTimespan timespan,
+            IGuildUser target,
+            MuteType type,
+            string reason,
+            Func<int, LocStr> success)
+        {
+            if (timespan.Time < _minMuteTime || timespan.Time > _maxMuteTime)
+            {
+                await Response().Error(strs.mute_time_range).SendAsync();
+                return;
+            }
+
+            try
+            {
+                if (!await VerifyMutePermissions((IGuildUser)ctx.User, target))
+                    return;
+
+                await _service.TimedMute(target, ctx.User, timespan.Time, type, reason);
+                await Response().Confirm(success((int)timespan.Time.TotalMinutes)).SendAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Error in timed mute command");
+                await Response().Error(strs.mute_error).SendAsync();
+            }
+        }
+
+        private async Task UnmuteInternalAsync(IGuildUser user, MuteType type, string reason, LocStr success)
+        {
+            try
+            {
+                await _service.UnmuteUser(user.GuildId, user.Id, ctx.User, type, reason);
+                await Response().Confirm(success).SendAsync();
+            }
+            catch
+            {
+                await Response().Error(strs.mute_error).SendAsync();
+            }
         }
 
         [Cmd]
@@ -31,6 +91,12 @@ public partial class Administration
             if (role is null)
             {
                 var muteRole = await _service.GetMuteRole(ctx.Guild);
+                if (muteRole is null)
+                {
+                    await Response().Error(strs.mute_error).SendAsync();
+                    return;
+                }
+
                 await Response().Confirm(strs.mute_role(Format.Code(muteRole.Name))).SendAsync();
                 return;
             }
@@ -43,7 +109,6 @@ public partial class Administration
             }
 
             await _service.SetMuteRoleAsync(ctx.Guild.Id, role.Name);
-
             await Response().Confirm(strs.mute_role_set).SendAsync();
         }
 
@@ -51,181 +116,90 @@ public partial class Administration
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles | GuildPerm.MuteMembers)]
         [Priority(0)]
-        public async Task Mute(IGuildUser target, [Leftover] string reason = "")
-        {
-            try
-            {
-                if (!await VerifyMutePermissions((IGuildUser)ctx.User, target))
-                    return;
-
-                await _service.MuteUser(target, ctx.User, reason: reason);
-                await Response().Confirm(strs.user_muted(Format.Bold(target.ToString()))).SendAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Warning(ex, "Exception in the mute command");
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task Mute(IGuildUser target, [Leftover] string reason = "")
+            => MuteInternalAsync(target,
+                MuteType.All,
+                reason,
+                strs.user_muted(Format.Bold(target.ToString())));
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles | GuildPerm.MuteMembers)]
         [Priority(1)]
-        public async Task Mute(ParsedTimespan timespan, IGuildUser user, [Leftover] string reason = "")
-        {
-            if (timespan.Time < TimeSpan.FromMinutes(1) || timespan.Time > TimeSpan.FromDays(49))
-                return;
-            try
-            {
-                if (!await VerifyMutePermissions((IGuildUser)ctx.User, user))
-                    return;
-
-                await _service.TimedMute(user, ctx.User, timespan.Time, reason: reason);
-                await Response().Confirm(strs.user_muted_time(Format.Bold(user.ToString()),
-                    (int)timespan.Time.TotalMinutes)).SendAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Warning(ex, "Error in mute command");
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task Mute(ParsedTimespan timespan, IGuildUser user, [Leftover] string reason = "")
+            => TimedMuteInternalAsync(timespan,
+                user,
+                MuteType.All,
+                reason,
+                minutes => strs.user_muted_time(Format.Bold(user.ToString()), minutes));
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles | GuildPerm.MuteMembers)]
-        public async Task Unmute(IGuildUser user, [Leftover] string reason = "")
-        {
-            try
-            {
-                await _service.UnmuteUser(user.GuildId, user.Id, ctx.User, reason: reason);
-                await Response().Confirm(strs.user_unmuted(Format.Bold(user.ToString()))).SendAsync();
-            }
-            catch
-            {
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task Unmute(IGuildUser user, [Leftover] string reason = "")
+            => UnmuteInternalAsync(user,
+                MuteType.All,
+                reason,
+                strs.user_unmuted(Format.Bold(user.ToString())));
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
         [Priority(0)]
-        public async Task ChatMute(IGuildUser user, [Leftover] string reason = "")
-        {
-            try
-            {
-                if (!await VerifyMutePermissions((IGuildUser)ctx.User, user))
-                    return;
-
-                await _service.MuteUser(user, ctx.User, MuteType.Chat, reason);
-                await Response().Confirm(strs.user_chat_mute(Format.Bold(user.ToString()))).SendAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Warning(ex, "Exception in the chatmute command");
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task ChatMute(IGuildUser user, [Leftover] string reason = "")
+            => MuteInternalAsync(user,
+                MuteType.Chat,
+                reason,
+                strs.user_chat_mute(Format.Bold(user.ToString())));
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
         [Priority(1)]
-        public async Task ChatMute(ParsedTimespan timespan, IGuildUser user, [Leftover] string reason = "")
-        {
-            if (timespan.Time < TimeSpan.FromMinutes(1) || timespan.Time > TimeSpan.FromDays(49))
-                return;
-            try
-            {
-                if (!await VerifyMutePermissions((IGuildUser)ctx.User, user))
-                    return;
-
-                await _service.TimedMute(user, ctx.User, timespan.Time, MuteType.Chat, reason);
-                await Response().Confirm(strs.user_chat_mute_time(Format.Bold(user.ToString()),
-                    (int)timespan.Time.TotalMinutes)).SendAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Warning(ex, "Error in chatmute command");
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task ChatMute(ParsedTimespan timespan, IGuildUser user, [Leftover] string reason = "")
+            => TimedMuteInternalAsync(timespan,
+                user,
+                MuteType.Chat,
+                reason,
+                minutes => strs.user_chat_mute_time(Format.Bold(user.ToString()), minutes));
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
-        public async Task ChatUnmute(IGuildUser user, [Leftover] string reason = "")
-        {
-            try
-            {
-                await _service.UnmuteUser(user.Guild.Id, user.Id, ctx.User, MuteType.Chat, reason);
-                await Response().Confirm(strs.user_chat_unmute(Format.Bold(user.ToString()))).SendAsync();
-            }
-            catch
-            {
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task ChatUnmute(IGuildUser user, [Leftover] string reason = "")
+            => UnmuteInternalAsync(user,
+                MuteType.Chat,
+                reason,
+                strs.user_chat_unmute(Format.Bold(user.ToString())));
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.MuteMembers)]
         [Priority(0)]
-        public async Task VoiceMute(IGuildUser user, [Leftover] string reason = "")
-        {
-            try
-            {
-                if (!await VerifyMutePermissions((IGuildUser)ctx.User, user))
-                    return;
-
-                await _service.MuteUser(user, ctx.User, MuteType.Voice, reason);
-                await Response().Confirm(strs.user_voice_mute(Format.Bold(user.ToString()))).SendAsync();
-            }
-            catch
-            {
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task VoiceMute(IGuildUser user, [Leftover] string reason = "")
+            => MuteInternalAsync(user,
+                MuteType.Voice,
+                reason,
+                strs.user_voice_mute(Format.Bold(user.ToString())));
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.MuteMembers)]
         [Priority(1)]
-        public async Task VoiceMute(ParsedTimespan timespan, IGuildUser user, [Leftover] string reason = "")
-        {
-            if (timespan.Time < TimeSpan.FromMinutes(1) || timespan.Time > TimeSpan.FromDays(49))
-                return;
-            try
-            {
-                if (!await VerifyMutePermissions((IGuildUser)ctx.User, user))
-                    return;
-
-                await _service.TimedMute(user, ctx.User, timespan.Time, MuteType.Voice, reason);
-                await Response().Confirm(strs.user_voice_mute_time(Format.Bold(user.ToString()),
-                    (int)timespan.Time.TotalMinutes)).SendAsync();
-            }
-            catch
-            {
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task VoiceMute(ParsedTimespan timespan, IGuildUser user, [Leftover] string reason = "")
+            => TimedMuteInternalAsync(timespan,
+                user,
+                MuteType.Voice,
+                reason,
+                minutes => strs.user_voice_mute_time(Format.Bold(user.ToString()), minutes));
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.MuteMembers)]
-        public async Task VoiceUnmute(IGuildUser user, [Leftover] string reason = "")
-        {
-            try
-            {
-                await _service.UnmuteUser(user.GuildId, user.Id, ctx.User, MuteType.Voice, reason);
-                await Response().Confirm(strs.user_voice_unmute(Format.Bold(user.ToString()))).SendAsync();
-            }
-            catch
-            {
-                await Response().Error(strs.mute_error).SendAsync();
-            }
-        }
+        public Task VoiceUnmute(IGuildUser user, [Leftover] string reason = "")
+            => UnmuteInternalAsync(user,
+                MuteType.Voice,
+                reason,
+                strs.user_voice_unmute(Format.Bold(user.ToString())));
     }
 }

@@ -1,7 +1,7 @@
 mute_error: I don't have the permission necessary for that most likely.
-mute_perms: >-
-  You can't mute a user who has a role higher than your highest role in the role
-  hierarchy unless you're the owner of the server.
+mute_perms: |-
+  You can't mute a user who has a role higher than your highest role in the role hierarchy unless you're the owner of the server.
+mute_time_range: Mute duration must be between 1 minute and 49 days.
 mute_role: Current mute role is {0}
 mute_role_set: New mute role set.
 user_chat_mute: '{0} has been **muted** from chatting.'
