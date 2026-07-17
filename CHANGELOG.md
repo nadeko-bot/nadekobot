@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [7.2.11] - 17.07.2026
+
+### Fixed
+
+- Server log settings are now loaded correctly after a restart
+
 ## [7.2.10] - 14.07.2026
 
 ### Changed

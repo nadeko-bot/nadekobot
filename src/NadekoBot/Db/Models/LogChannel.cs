@@ -5,6 +5,7 @@ using NadekoBot.Common;
 
 namespace NadekoBot.Db.Models;
 
+[ShardFiltered]
 public class LogChannel
 {
     [Key]

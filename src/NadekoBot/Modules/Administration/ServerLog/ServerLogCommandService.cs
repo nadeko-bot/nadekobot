@@ -32,6 +32,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     private readonly ConcurrentHashSet<(ulong GuildId, ulong UserId)> _ignoreUnbanIds = [];
     private readonly UserPunishService _punishService;
     private readonly IMessageSenderService _sender;
+    private readonly ShardData _shardData;
 
     public LogCommandService(
         DiscordSocketClient client,
@@ -42,7 +43,8 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         GuildTimezoneService tz,
         IMemoryCache memoryCache,
         UserPunishService punishService,
-        IMessageSenderService sender)
+        IMessageSenderService sender,
+        ShardData shardData)
     {
         _client = client;
         _memoryCache = memoryCache;
@@ -53,33 +55,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         _prot = prot;
         _tz = tz;
         _punishService = punishService;
-
-        using (var uow = db.GetDbContext())
-        {
-            var guildIds = client.Guilds.Select(x => x.Id).ToList();
-
-            var channels = uow.GetTable<LogChannel>()
-                .Where(x => guildIds.Contains(x.GuildId))
-                .ToList();
-
-            _logChannels = channels
-                .GroupBy(x => x.GuildId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.ToFrozenDictionary(x => x.LogType, x => x.ChannelId))
-                .ToConcurrent();
-
-            var ignores = uow.GetTable<LogIgnore>()
-                .Where(x => guildIds.Contains(x.GuildId))
-                .ToList();
-
-            _logIgnores = ignores
-                .GroupBy(x => x.GuildId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => new GuildIgnores(g.ToList()))
-                .ToConcurrent();
-        }
+        _shardData = shardData;
 
         _client.MessageUpdated += HandleMessageUpdated;
         _client.MessageDeleted += HandleMessageDeleted;
@@ -1208,7 +1184,34 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     #region Background tasks
 
     public async Task OnReadyAsync()
-        => await Task.WhenAll(PresenceUpdateTask(), IgnoreMessageIdsClearTask());
+    {
+        await using (var uow = _db.GetDbContext())
+        {
+            var channels = await uow.GetTable<LogChannel>()
+                .Where(Queries.GuildOnShard<LogChannel>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+                .ToListAsyncLinqToDB();
+
+            _logChannels = channels
+                .GroupBy(x => x.GuildId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.ToFrozenDictionary(x => x.LogType, x => x.ChannelId))
+                .ToConcurrent();
+
+            var ignores = await uow.GetTable<LogIgnore>()
+                .Where(Queries.GuildOnShard<LogIgnore>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+                .ToListAsyncLinqToDB();
+
+            _logIgnores = ignores
+                .GroupBy(x => x.GuildId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => new GuildIgnores(g.ToList()))
+                .ToConcurrent();
+        }
+
+        await Task.WhenAll(PresenceUpdateTask(), IgnoreMessageIdsClearTask());
+    }
 
     private async Task IgnoreMessageIdsClearTask()
     {
