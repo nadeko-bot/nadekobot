@@ -13,7 +13,7 @@ public sealed class XpFormulaService(DbService db, ShardData shardData) : IReady
     public const int MIN_C = 0;
     public const int MAX_C = 500;
 
-    private static readonly XpFormula _default = new(9, 27);
+    private static readonly XpFormula _default = new(XpSettings.DEFAULT_FORMULA_A, XpSettings.DEFAULT_FORMULA_C);
     private ConcurrentDictionary<ulong, XpFormula> _formulas = new();
 
     public async Task OnReadyAsync()

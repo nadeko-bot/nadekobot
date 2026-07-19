@@ -100,6 +100,8 @@ public static class GuildConfigExtensions
             .InsertWithOutputAsync(() => new()
             {
                 GuildId = guildId,
+                XpFormulaA = XpSettings.DEFAULT_FORMULA_A,
+                XpFormulaC = XpSettings.DEFAULT_FORMULA_C,
             });
 
         return srs;

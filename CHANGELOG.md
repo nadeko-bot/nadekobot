@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [7.2.12]
+
+### Fixed
+
+- Xp settings are no longer failing to be created on fresh databases, which previously broke xp level rewards
+
 ## [7.2.11] - 17.07.2026
 
 ### Fixed
