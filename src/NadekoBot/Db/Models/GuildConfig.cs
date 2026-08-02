@@ -41,6 +41,7 @@ public class GuildConfig : DbEntity
 
     //filtering
     public string? MuteRoleName { get; set; } = null;
+    public ulong? MuteRoleId { get; set; } = null;
 
     // chatterbot
     public bool CleverbotEnabled { get; set; } = false;

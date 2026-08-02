@@ -16,6 +16,7 @@ using NadekoBot.Common.TypeReaders;
 using NadekoBot.Modules.Games;
 using NadekoBot.Modules.Games.Quests;
 using NadekoBot.Modules.Patronage;
+using NadekoBot.Modules.Waifus.Waifu;
 
 namespace NadekoBot.Modules.Gambling;
 
@@ -38,6 +39,7 @@ public partial class Gambling : GamblingModule<GamblingService>
     private readonly CaptchaService _captchaService;
     private readonly VoteRewardService _vrs;
     private readonly QuestService _quests;
+    private readonly WaifuService _waifus;
 
     public Gambling(
         IGamblingService gs,
@@ -55,7 +57,8 @@ public partial class Gambling : GamblingModule<GamblingService>
         IBotCache cache,
         CaptchaService captchaService,
         VoteRewardService vrs,
-        QuestService quests)
+        QuestService quests,
+        WaifuService waifus)
         : base(configService)
     {
         _gs = gs;
@@ -72,6 +75,7 @@ public partial class Gambling : GamblingModule<GamblingService>
         _rng = new NadekoRandom();
         _vrs = vrs;
         _quests = quests;
+        _waifus = waifus;
 
         _enUsCulture = new CultureInfo("en-US", false).NumberFormat;
         _enUsCulture.NumberDecimalDigits = 0;
@@ -532,13 +536,6 @@ public partial class Gambling : GamblingModule<GamblingService>
             .Pipe(text => smc.RespondConfirmAsync(_sender, text, ephemeral: true));
     }
 
-    private NadekoInteractionBase CreateCashInteraction()
-        => _inter.Create(ctx.User.Id,
-            new ButtonBuilder(
-                customId: "cash:bank_show_balance",
-                emote: new Emoji("🏦")),
-            BankAction);
-
     [Cmd]
     [Priority(1)]
     public async Task Cash([Leftover] IUser user = null)
@@ -546,18 +543,132 @@ public partial class Gambling : GamblingModule<GamblingService>
         user ??= ctx.User;
         var cur = await GetBalanceStringAsync(user.Id);
 
-        var inter = user == ctx.User
-            ? CreateCashInteraction()
-            : null;
+        var text = user.ToString()
+            .Pipe(Format.Bold)
+            .With(cur)
+            .Pipe(strs.has);
 
-        await Response()
-            .Confirm(
-                user.ToString()
-                    .Pipe(Format.Bold)
-                    .With(cur)
-                    .Pipe(strs.has))
-            .Interaction(inter)
-            .SendAsync();
+        if (user.Id != ctx.User.Id)
+        {
+            await Response().Confirm(text).SendAsync();
+            return;
+        }
+
+        var resp = Response()
+            .Confirm(text)
+            .Interaction(_inter.Create(ctx.User.Id,
+                new ButtonBuilder(
+                    customId: "cash:bank_show_balance",
+                    emote: new Emoji("🏦")),
+                BankAction,
+                singleUse: false));
+
+        if (await _waifus.GetPendingPayoutAsync(ctx.User.Id) >= 1)
+        {
+            resp = resp.Interaction(_inter.Create(ctx.User.Id,
+                new ButtonBuilder(
+                    customId: "cash:waifu_payout",
+                    emote: new Emoji("💝")),
+                CashWaifuPayoutAction,
+                singleUse: false,
+                clearAfter: false));
+        }
+
+        if (await _rb.GetRakebackAsync(ctx.User.Id) >= 1)
+        {
+            resp = resp.Interaction(_inter.Create(ctx.User.Id,
+                new ButtonBuilder(
+                    customId: "cash:rakeback",
+                    emote: new Emoji("🎰")),
+                CashRakebackAction,
+                singleUse: false,
+                clearAfter: false));
+        }
+
+        await resp.SendAsync();
+    }
+
+    private async Task CashWaifuPayoutAction(SocketMessageComponent smc)
+    {
+        var pending = await _waifus.GetPendingPayoutAsync(ctx.User.Id);
+
+        if (pending < 1)
+        {
+            await smc.RespondAsync(_sender, GetText(strs.waifu_no_pending_payout), MsgType.Error, ephemeral: true);
+            return;
+        }
+
+        await ShowClaimPromptInternalAsync(smc,
+            GetText(strs.waifu_pending_payout(N(pending))),
+            new ButtonBuilder(
+                label: GetText(strs.waifu_btn_collect),
+                customId: "cash:waifu_payout_confirm",
+                emote: new Emoji("💰"),
+                style: ButtonStyle.Success),
+            async () =>
+            {
+                var result = await _waifus.ClaimPayoutAsync(ctx.User.Id);
+                return result.Match(
+                    _ => (false, GetText(strs.waifu_no_pending_payout)),
+                    claimed => (true, GetText(strs.waifu_payout_claimed(N(claimed.Value)))));
+            });
+    }
+
+    private async Task CashRakebackAction(SocketMessageComponent smc)
+    {
+        var rb = await _rb.GetRakebackAsync(ctx.User.Id);
+
+        if (rb < 1)
+        {
+            await smc.RespondAsync(_sender, GetText(strs.rakeback_none), MsgType.Error, ephemeral: true);
+            return;
+        }
+
+        await ShowClaimPromptInternalAsync(smc,
+            GetText(strs.rakeback_available(N(rb))),
+            new ButtonBuilder(
+                customId: "cash:rakeback_confirm",
+                emote: new Emoji("💸"),
+                style: ButtonStyle.Success),
+            async () =>
+            {
+                var claimed = await _rb.ClaimRakebackAsync(ctx.User.Id);
+                return claimed == 0
+                    ? (false, GetText(strs.rakeback_none))
+                    : (true, GetText(strs.rakeback_claimed(N(claimed))));
+            });
+    }
+
+    private async Task ShowClaimPromptInternalAsync(
+        SocketMessageComponent smc,
+        string statusText,
+        ButtonBuilder claimBtn,
+        Func<Task<(bool Success, string Text)>> claimAsync)
+    {
+        var handler = _inter.Create(ctx.User.Id,
+            claimBtn,
+            async claimSmc =>
+            {
+                var (success, resultText) = await claimAsync();
+
+                var eb = CreateEmbed().WithDescription(resultText);
+                eb = success ? eb.WithOkColor() : eb.WithErrorColor();
+
+                await claimSmc.UpdateAsync(m =>
+                {
+                    m.Embed = eb.Build();
+                    m.Components = new ComponentBuilder().Build();
+                });
+            },
+            clearAfter: false);
+
+        await smc.RespondAsync(_sender,
+            statusText,
+            MsgType.Pending,
+            ephemeral: true,
+            components: handler.CreateComponent());
+
+        await handler.RunAsync(await smc.GetOriginalResponseAsync());
     }
 
     [Cmd]

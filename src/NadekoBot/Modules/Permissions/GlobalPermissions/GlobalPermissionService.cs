@@ -22,7 +22,7 @@ public class GlobalPermissionService : IExecPreCommand, INService
     public ValueTask<bool> ExecPreCommandAsync(ICommandContext ctx, string moduleName, CommandInfo command)
     {
         var settings = _bss.Data;
-        var commandName = command.Name.ToLowerInvariant();
+        var commandName = command.PermKey();
 
         if (commandName != "resetglobalperms")
         {

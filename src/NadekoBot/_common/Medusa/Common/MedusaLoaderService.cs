@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Nadeko.Common.Medusa;
 using Nadeko.Medusa.Adapters;
 using NadekoBot.Common.ModuleBehaviors;
+using NadekoBot.Common.TypeReaders;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -403,6 +404,8 @@ public sealed class MedusaLoaderService : IMedusaLoaderService, IReadyExecutor, 
         var module = await _cmdService.CreateModuleAsync(snekInfo.Instance.Prefix,
             CreateModuleFactory(medusaName, snekInfo, strings, services));
 
+        CommandTypeReader.Invalidate();
+
         return module;
     }
 
@@ -604,6 +607,8 @@ public sealed class MedusaLoaderService : IMedusaLoaderService, IReadyExecutor, 
             {
                 await _cmdService.RemoveModuleAsync(mi);
             }
+
+            CommandTypeReader.Invalidate();
 
             await _behHandler.RemoveRangeAsync(lsi.Execs);
 

@@ -2,7 +2,37 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.12]
+## [7.2.15] - WIP
+
+## [7.2.14] - 02.08.2026
+
+### Changed
+
+- `.cash` claim buttons now ask for confirmation before they collect anything.
+- Renamed aliases that two commands shared: `.snipe` to `.sni`, `.queueshuffle` to `.qush`, `.forwardmessages` to `.fwm`.
+
+### Fixed
+
+- Permission overrides, blocks and cooldowns on a subcommand no longer affect unrelated subcommands with the same name.
+- Permission settings saved under a bare subcommand name are removed. Set them again using the full command name.
+- `.dpo` now correctly bypasses a command's built-in permission requirement.
+- The bot now stores the mute role by id. Renaming the role no longer breaks muting.
+- `.muterole` now rejects roles that the bot cannot assign.
+- Sticky roles no longer fail completely when one saved role is invalid.
+- Mute commands now use the same hierarchy checks as other punishments.
+
+### Dev
+
+- Tests for mute role lookup and sticky role filtering.
+- Regenerated the initial migration baseline.
+
+## [7.2.13] - 30.07.2026
+
+### Added
+
+- `.cash` now shows waifu payout and rakeback claim buttons when you have something to claim, so you can collect them without running separate commands. Claiming removes only that button.
+
+## [7.2.12] - 29.07.2026
 
 ### Fixed
 

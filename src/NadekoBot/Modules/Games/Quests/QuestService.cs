@@ -177,7 +177,7 @@ public sealed class QuestService(
 
     public async ValueTask<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
     {
-        var cmdName = command.Name.ToLowerInvariant();
+        var cmdName = command.PermKey();
 
         await ReportActionAsync(
             context.User.Id,

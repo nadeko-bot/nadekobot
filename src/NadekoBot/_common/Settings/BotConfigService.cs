@@ -124,5 +124,16 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
             {
                 c.Version = 9;
             });
+
+        if (Data.Version < 11)
+            ModifyConfig(c =>
+            {
+                c.Version = 11;
+                RemoveBareCommandKeys(c.Blocked);
+                RemoveBareCommandKeys(c.DmBlocked);
+            });
     }
+
+    private static void RemoveBareCommandKeys(BlockedConfig blocked)
+        => blocked.Commands.RemoveWhere(static x => CommandKeyMigration.BareSubcommandKeys.Contains(x));
 }

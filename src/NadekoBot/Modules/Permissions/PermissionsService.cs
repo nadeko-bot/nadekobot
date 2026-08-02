@@ -99,7 +99,7 @@ public class PermissionService : IExecPreCommand, INService
         var msg = ctx.Message;
         var user = ctx.User;
         var channel = ctx.Channel;
-        var commandName = command.Name.ToLowerInvariant();
+        var commandName = command.PermKey();
 
         if (guild is null)
             return false;

@@ -499,6 +499,7 @@ namespace NadekoBot.Migrations
                     VerbosePermissions = table.Column<bool>(type: "INTEGER", nullable: false),
                     PermissionRole = table.Column<string>(type: "TEXT", nullable: true),
                     MuteRoleName = table.Column<string>(type: "TEXT", nullable: true),
+                    MuteRoleId = table.Column<ulong>(type: "INTEGER", nullable: true),
                     CleverbotEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                     WarningsInitialized = table.Column<bool>(type: "INTEGER", nullable: false),
                     GameVoiceChannel = table.Column<ulong>(type: "INTEGER", nullable: true),

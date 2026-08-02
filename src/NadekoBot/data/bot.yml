@@ -1,5 +1,5 @@
-# DO NOT CHANGE
-version: 10
+# DO NOT CHANGE THE VERSION MANUALLY
+version: 11
 # Most commands, when executed, have a small colored line
 # next to the response. The color depends whether the command
 # is completed, errored or in progress (pending)

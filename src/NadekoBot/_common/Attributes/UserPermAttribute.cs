@@ -21,7 +21,7 @@ public class UserPermAttribute : RequireUserPermissionAttribute
         IServiceProvider services)
     {
         var permService = services.GetRequiredService<IDiscordPermOverrideService>();
-        if (permService.TryGetOverrides(context.Guild?.Id ?? 0, command.Name.ToUpperInvariant(), out _))
+        if (permService.TryGetOverrides(context.Guild?.Id ?? 0, command.PermKey(), out _))
             return Task.FromResult(PreconditionResult.FromSuccess());
 
         return base.CheckPermissionsAsync(context, command, services);

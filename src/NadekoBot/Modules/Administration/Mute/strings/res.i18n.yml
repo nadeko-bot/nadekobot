@@ -1,9 +1,9 @@
 ar:
   mute_error: على الأرجح لا أملك الصلاحيات اللازمة لذلك.
-  mute_perms: لا يمكنك كتم مستخدم يملك دورًا أعلى من أعلى دور لديك في تسلسل الأدوار إلا إذا كنت مالك الخادم.
   mute_time_range: يجب أن تكون مدة الكتم بين دقيقة واحدة و49 يومًا.
   mute_role: 'دور الكتم الحالي هو {0}'
   mute_role_set: تم تعيين دور كتم جديد.
+  mute_role_invalid: لا يمكن استخدام هذا الدور كدور كتم.
   user_chat_mute: 'تم **كتم** {0} من الدردشة.'
   user_chat_mute_time: 'تم **كتم دردشة** {0} لمدة {1} دقيقة.'
   user_chat_unmute: 'تم **إلغاء كتم** {0} من الدردشة.'
@@ -16,10 +16,10 @@ ar:
 
 de-DE:
   mute_error: Ich habe dafür wahrscheinlich nicht genügend Rechte.
-  mute_perms: Du kannst einen Nutzer mit einer höheren Rolle als deiner höchsten Rolle in der Rollen Hierarchie nicht Stummschalten.
   mute_time_range: Die Stummschaltungsdauer muss zwischen 1 Minute und 49 Tagen liegen.
   mute_role: 'Aktuelle Stummschaltungsrolle ist {0}'
   mute_role_set: Neue Stumm Role gesetzt
+  mute_role_invalid: Diese Rolle kann nicht als Stummschaltungsrolle verwendet werden.
   user_chat_mute: '{0} wurde für das Schreiben stummgeschaltet.'
   user_chat_mute_time: '{0} wurde **text gestummt** für {1} Minuten.'
   user_chat_unmute: 'Die Stummschaltung für {0} wurde für das Schreiben aufgehoben.'
@@ -32,10 +32,10 @@ de-DE:
 
 es-ES:
   mute_error: Es probable que no tengas los permisos necesarios.
-  mute_perms: No puedes silenciar a un usuario con un rol más alto que el tuyo en la jerarquía excepto si eres el propietario del servidor.
   mute_time_range: La duración del silencio debe estar entre 1 minuto y 49 días.
   mute_role: 'El actual rol de silenciado es {0}'
   mute_role_set: Nuevo rol de silencio configurado.
+  mute_role_invalid: Ese rol no se puede usar como rol de silenciado.
   user_chat_mute: '{0} ha sido **silenciado** del chat.'
   user_chat_mute_time: '{0} ha sido **silenciado** por {1} minutos.'
   user_chat_unmute: '{0} ha sido **desilenciado** del chat.'
@@ -48,10 +48,10 @@ es-ES:
 
 fr-FR:
   mute_error: Je n'ai certainement pas les permissions nécessaires pour cela.
-  mute_perms: Vous ne pouvez pas rendre muet un utilisateur dont le rôle est au-dessus du vôtre, sauf si vous êtes le propriétaire du serveur.
   mute_time_range: La durée du mute doit être comprise entre 1 minute et 49 jours.
   mute_role: 'Le rôle muet actuel est {0}'
   mute_role_set: Nouveau rôle muet défini.
+  mute_role_invalid: Ce rôle ne peut pas être utilisé comme rôle muet.
   user_chat_mute: '{0} a été **rendu muet** dans les salons textuels.'
   user_chat_mute_time: '{0} a été **rendu muet à l''écrit** pendant {1} minutes.'
   user_chat_unmute: '{0} n''est **plus muet** dans les salons textuels.'
@@ -64,10 +64,10 @@ fr-FR:
 
 id-ID:
   mute_error: Kemungkinan besar saya tidak punya izin yang diperlukan untuk itu.
-  mute_perms: Kamu tidak bisa mute user yang punya role lebih tinggi dari role tertinggimu di hierarki role, kecuali kamu adalah pemilik server.
   mute_time_range: Durasi mute harus antara 1 menit dan 49 hari.
   mute_role: 'Role mute saat ini adalah {0}'
   mute_role_set: Role mute baru telah diatur.
+  mute_role_invalid: Role itu tidak bisa dipakai sebagai role mute.
   user_chat_mute: '{0} telah **dimute** dari chat.'
   user_chat_mute_time: '{0} telah **dimute dari chat** selama {1} menit.'
   user_chat_unmute: '{0} telah **diunmute** dari chat.'
@@ -80,10 +80,10 @@ id-ID:
 
 ja-JP:
   mute_error: 必要な権限がおそらくBotにありません。
-  mute_perms: サーバーの所有者でない限り、ロール階層であなたの最高ロールより上のロールを持つユーザーをミュートすることはできません。
   mute_time_range: ミュート時間は1分から49日の間で指定してください。
   mute_role: '現在のミュートロールは{0}です'
   mute_role_set: 新しいミュート用役割が設定されました。
+  mute_role_invalid: そのロールはミュートロールとして使えません。
   user_chat_mute: '{0}はチャット上で**ミュートにされました**。'
   user_chat_mute_time: '{0}が{1}分間**チャットミュート**されました。'
   user_chat_unmute: '{0}はチャット上の**ミュートが解除されました**。'
@@ -96,10 +96,10 @@ ja-JP:
 
 ko-KR:
   mute_error: 해당 작업에 필요한 권한이 없는 것 같습니다.
-  mute_perms: 서버 소유자가 아닌 한, 역할 계층에서 자신보다 높은 역할을 가진 유저를 뮤트할 수 없습니다.
   mute_time_range: 뮤트 기간은 1분에서 49일 사이여야 합니다.
   mute_role: '현재 뮤트 역할은 {0}입니다'
   mute_role_set: 새 뮤트 역할이 설정되었습니다.
+  mute_role_invalid: 그 역할은 뮤트 역할로 사용할 수 없습니다.
   user_chat_mute: '{0}님이 채팅에서 **뮤트**되었습니다.'
   user_chat_mute_time: '{0}님이 {1}분 동안 **채팅 뮤트**되었습니다.'
   user_chat_unmute: '{0}님의 채팅 **뮤트가 해제**되었습니다.'
@@ -112,10 +112,10 @@ ko-KR:
 
 pl-PL:
   mute_error: Najprawdopodobniej nie mam wystarczających uprawnień.
-  mute_perms: Nie możesz wyciszyć użytkownika, który ma rolę wyższą niż twoja najwyższa rola w hierarchii, chyba że jesteś właścicielem serwera.
   mute_time_range: Czas wyciszenia musi wynosić od 1 minuty do 49 dni.
   mute_role: 'Aktualna rola wyciszenia to {0}'
   mute_role_set: Ustawiono nową rolę wyciszenia.
+  mute_role_invalid: Ta rola nie może zostać użyta jako rola wyciszenia.
   user_chat_mute: '{0} został(a) **wyciszony(a)** na czacie.'
   user_chat_mute_time: '{0} został(a) **wyciszony(a)** na czacie na {1} minut.'
   user_chat_unmute: '{0} został(a) **odciszony(a)** na czacie.'
@@ -128,10 +128,10 @@ pl-PL:
 
 pt-BR:
   mute_error: Não tenho a permissão necessária para isso.
-  mute_perms: Você não pode silenciar um usuário que tem cargo maior na hierarquia que o seu ao não ser que você seja dono do servidor.
   mute_time_range: A duração do mute deve ser entre 1 minuto e 49 dias.
   mute_role: 'Cargo de mudo atual é {0}'
   mute_role_set: Novo cargo mudo definido.
+  mute_role_invalid: Esse cargo não pode ser usado como cargo de mudo.
   user_chat_mute: '{0} foi ** mutado** nos chats de voz e texto.'
   user_chat_mute_time: '{0} foi **silenciado nos canais de texto** por {1} minutos.'
   user_chat_unmute: '{0} foi **desmutado** nos chats de texto'
@@ -144,10 +144,10 @@ pt-BR:
 
 ru-RU:
   mute_error: У меня, скорее всего, нет прав на это.
-  mute_perms: Вы не можете отключить звук для пользователя, чья роль выше вашей наивысшей роли в иерархии ролей, если только вы не являетесь владельцем сервера.
   mute_time_range: Длительность мьюта должна быть от 1 минуты до 49 дней.
   mute_role: 'Текущая роль с отключеным звуком {0}'
   mute_role_set: Новая роль мута создана.
+  mute_role_invalid: Эту роль нельзя использовать как роль мута.
   user_chat_mute: '{0} теперь **запрещено** писать в чате.'
   user_chat_mute_time: '{0} ** отключен чат ** в течение {1} минут.'
   user_chat_unmute: '{0} теперь **разрешено** писать в чате.'
@@ -160,10 +160,10 @@ ru-RU:
 
 sr-Cyrl-RS:
   mute_error: Највероватније немам потребну дозволу за то.
-  mute_perms: Не можете мутирати корисника који има вишу улогу од ваше највише улоге у хијерархији, осим ако нисте власник сервера.
   mute_time_range: Трајање мута мора бити између 1 минута и 49 дана.
   mute_role: 'Тренутна улога за мутирање је {0}'
   mute_role_set: Нова улога за мутирање је постављена.
+  mute_role_invalid: Та улога не може да се користи као улога за мутирање.
   user_chat_mute: '{0} је **мутиран/а** у чету.'
   user_chat_mute_time: '{0} је **мутиран/а** у чету на {1} минута.'
   user_chat_unmute: '{0} је **одмутиран/а** у чету.'
@@ -176,10 +176,10 @@ sr-Cyrl-RS:
 
 tr-TR:
   mute_error: Büyük ihtimalle bunun için gerekli iznim yok.
-  mute_perms: Sunucu sahibi olmadığın sürece, rol hiyerarşisinde senden yüksek bir role sahip kullanıcıyı susturamazsın.
   mute_time_range: Susturma süresi 1 dakika ile 49 gün arasında olmalıdır.
   mute_role: 'Mevcut susturma rolü: {0}'
   mute_role_set: Yeni susturma rolü ayarlandı.
+  mute_role_invalid: Bu rol susturma rolü olarak kullanılamaz.
   user_chat_mute: '{0} **yazışmadan susturuldu**.'
   user_chat_mute_time: '{0}, {1} dakikalığına **yazışmadan susturuldu**.'
   user_chat_unmute: '{0} kullanıcısının **yazışma susturması kaldırıldı**.'
@@ -192,10 +192,10 @@ tr-TR:
 
 ts-TS:
   mute_error: I don't have the right permissions for that, most likely.
-  mute_perms: You can't mute someone with a higher role than yours unless you're the server owner. I-I'm just stating facts.
   mute_time_range: Th-The mute has to last between 1 minute and 49 days. Not that I care how long you're quiet.
   mute_role: 'Current mute role is {0}'
   mute_role_set: New mute role set.
+  mute_role_invalid: That role won't work as a mute role. Pick another one.
   user_chat_mute: '{0} has been **muted** from chatting.'
   user_chat_mute_time: '{0} has been **chat muted** for {1} minutes.'
   user_chat_unmute: '{0} has been **unmuted** from chatting.'
@@ -208,10 +208,10 @@ ts-TS:
 
 uk-UA:
   mute_error: Скоріш за все, у мене немає необхідних дозволів для цього.
-  mute_perms: Ви не можете замутити користувача, який має роль вище за вашу найвищу роль в ієрархії, якщо ви не власник сервера.
   mute_time_range: Тривалість мьюту має бути від 1 хвилини до 49 днів.
   mute_role: 'Поточна роль мʼюту: {0}'
   mute_role_set: Нову роль мʼюту встановлено.
+  mute_role_invalid: Цю роль не можна використати як роль мʼюту.
   user_chat_mute: '{0} був **замучений** у чаті.'
   user_chat_mute_time: '{0} був **замучений** у чаті на {1} хвилин.'
   user_chat_unmute: '{0} був **розмучений** у чаті.'
@@ -224,10 +224,10 @@ uk-UA:
 
 vi-VN:
   mute_error: Mình có thể không có đủ quyền để làm điều đó.
-  mute_perms: Bạn không thể mute người dùng có role cao hơn role cao nhất của bạn trong hệ thống phân cấp role, trừ khi bạn là chủ server.
   mute_time_range: Thời gian mute phải từ 1 phút đến 49 ngày.
   mute_role: 'Role mute hiện tại là {0}'
   mute_role_set: Đã đặt role mute mới.
+  mute_role_invalid: Role đó không thể dùng làm role mute.
   user_chat_mute: '{0} đã bị **mute** khỏi chat.'
   user_chat_mute_time: '{0} đã bị **mute chat** trong {1} phút.'
   user_chat_unmute: '{0} đã được **bỏ mute** khỏi chat.'
@@ -240,10 +240,10 @@ vi-VN:
 
 zh-CN:
   mute_error: 機器人很可能沒有權限進行這個操作
-  mute_perms: 除非您是伺服器的所有者，否則您不能將身分組高於您在身分組層次結構中的最高身分組的用戶靜音。
   mute_time_range: 静音时长必须在 1 分钟到 49 天之间。
   mute_role: '當前靜音角色是 {0}'
   mute_role_set: 已設置新的禁言身分組。
+  mute_role_invalid: 该身份组不能用作禁言身份组。
   user_chat_mute: '{0} 的聊天功能已被**禁止**。'
   user_chat_mute_time: '{0} 已被禁言 {1} 分鐘'
   user_chat_unmute: '{0} 的聊天功能已被**解禁**。'

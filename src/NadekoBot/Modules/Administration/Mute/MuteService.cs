@@ -2,6 +2,7 @@
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
+using System.Runtime.ExceptionServices;
 
 namespace NadekoBot.Modules.Administration.Services;
 
@@ -28,7 +29,8 @@ public sealed class MuteService : INService, IReadyExecutor
     public event Action<IGuildUser, IUser, MuteType, string> UserMuted = delegate { };
     public event Action<IGuildUser, IUser, MuteType, string> UserUnmuted = delegate { };
 
-    private ConcurrentDictionary<ulong, string> _guildMuteRoles = new();
+    private ConcurrentDictionary<ulong, ulong> _guildMuteRoles = new();
+    private ConcurrentDictionary<ulong, string> _legacyMuteRoleNames = new();
     private ConcurrentDictionary<ulong, ConcurrentHashSet<ulong>> _mutedUsers = new();
 
     private TaskCompletionSource<bool> _unmuteWake = new();
@@ -86,36 +88,56 @@ public sealed class MuteService : INService, IReadyExecutor
         return Task.CompletedTask;
     }
 
-    public async Task SetMuteRoleAsync(ulong guildId, string name)
+    public async Task SetMuteRoleAsync(ulong guildId, ulong roleId)
     {
         await using var uow = _db.GetDbContext();
         await uow.GetTable<GuildConfig>()
             .InsertOrUpdateAsync(() => new()
                 {
                     GuildId = guildId,
-                    MuteRoleName = name
+                    MuteRoleId = roleId,
+                    MuteRoleName = null
                 },
                 _ => new()
                 {
-                    MuteRoleName = name
+                    MuteRoleId = roleId,
+                    MuteRoleName = null
                 },
                 () => new()
                 {
                     GuildId = guildId
                 });
 
-        _guildMuteRoles[guildId] = name;
+        _guildMuteRoles[guildId] = roleId;
+        _legacyMuteRoleNames.TryRemove(guildId, out _);
     }
 
     public async Task MuteUser(IGuildUser usr, IUser mod, MuteType type = MuteType.All, string reason = "")
     {
         await ClearUnmuteTimerAsync(usr.GuildId, usr.Id, type);
 
+        // a failure on one surface must not skip the other, or the mute is left half applied
+        ExceptionDispatchInfo? chatError = null;
+        var anySucceeded = false;
+
         if (type is MuteType.Chat or MuteType.All)
-            await MuteChatInternalAsync(usr);
+        {
+            try
+            {
+                await MuteChatInternalAsync(usr);
+                anySucceeded = true;
+            }
+            catch (Exception ex)
+            {
+                chatError = ExceptionDispatchInfo.Capture(ex);
+            }
+        }
 
         if (type is MuteType.Voice or MuteType.All)
-            await MuteVoiceInternalAsync(usr);
+            anySucceeded |= await MuteVoiceInternalAsync(usr);
+
+        if (!anySucceeded && chatError is not null)
+            chatError.Throw();
 
         UserMuted(usr, mod, type, reason);
     }
@@ -129,15 +151,36 @@ public sealed class MuteService : INService, IReadyExecutor
     {
         await ClearUnmuteTimerAsync(guildId, usrId, type);
 
+        ExceptionDispatchInfo? chatError = null;
+        var anySucceeded = false;
+
         if (type is MuteType.Chat or MuteType.All)
-            await UnmuteChatInternalAsync(guildId, usrId);
+        {
+            try
+            {
+                await UnmuteChatInternalAsync(guildId, usrId);
+                anySucceeded = true;
+            }
+            catch (Exception ex)
+            {
+                chatError = ExceptionDispatchInfo.Capture(ex);
+            }
+        }
 
         var usr = _client.GetGuild(guildId)?.GetUser(usrId);
         if (usr is null)
+        {
+            if (!anySucceeded && chatError is not null)
+                chatError.Throw();
+
             return;
+        }
 
         if (type is MuteType.Voice or MuteType.All)
-            await UnmuteVoiceInternalAsync(usr);
+            anySucceeded |= await UnmuteVoiceInternalAsync(usr);
+
+        if (!anySucceeded && chatError is not null)
+            chatError.Throw();
 
         UserUnmuted(usr, mod, type, reason);
     }
@@ -170,15 +213,17 @@ public sealed class MuteService : INService, IReadyExecutor
         _mutedUsers.GetOrAdd(usr.GuildId, static _ => new()).Add(usr.Id);
     }
 
-    private async Task MuteVoiceInternalAsync(IGuildUser usr)
+    private async Task<bool> MuteVoiceInternalAsync(IGuildUser usr)
     {
         try
         {
             await usr.ModifyAsync(x => x.Mute = true);
+            return true;
         }
         catch
         {
             // user might not be in a voice channel
+            return false;
         }
     }
 
@@ -210,15 +255,17 @@ public sealed class MuteService : INService, IReadyExecutor
         }
     }
 
-    private async Task UnmuteVoiceInternalAsync(IGuildUser usr)
+    private async Task<bool> UnmuteVoiceInternalAsync(IGuildUser usr)
     {
         try
         {
             await usr.ModifyAsync(x => x.Mute = false);
+            return true;
         }
         catch
         {
             // user might not be in a voice channel
+            return false;
         }
     }
 
@@ -297,21 +344,9 @@ public sealed class MuteService : INService, IReadyExecutor
     {
         ArgumentNullException.ThrowIfNull(guild);
 
-        var muteRoleName = _guildMuteRoles.GetOrAdd(guild.Id, DEFAULT_MUTE_ROLE_NAME);
-
-        var muteRole = guild.Roles.FirstOrDefault(r => r.Name == muteRoleName);
+        var muteRole = await ResolveMuteRoleInternalAsync(guild);
         if (muteRole is null)
-        {
-            try
-            {
-                muteRole = await guild.CreateRoleAsync(muteRoleName, isMentionable: false);
-            }
-            catch (Exception ex)
-            {
-                Log.Warning(ex, "Unable to create mute role for guild {GuildId}", guild.Id);
-                return null;
-            }
-        }
+            return null;
 
         foreach (var channel in await guild.GetTextChannelsAsync())
         {
@@ -337,6 +372,52 @@ public sealed class MuteService : INService, IReadyExecutor
         return muteRole;
     }
 
+    private async Task<IRole?> ResolveMuteRoleInternalAsync(IGuild guild)
+    {
+        if (_guildMuteRoles.TryGetValue(guild.Id, out var roleId))
+        {
+            var byId = guild.GetRole(roleId);
+            if (byId is not null)
+                return byId;
+        }
+
+        var hasLegacyName = _legacyMuteRoleNames.TryGetValue(guild.Id, out var legacyName);
+        if (hasLegacyName && FindRoleByName(guild, legacyName!) is { } byName)
+        {
+            await SetMuteRoleAsync(guild.Id, byName.Id);
+            return byName;
+        }
+
+        try
+        {
+            var created = await guild.CreateRoleAsync(hasLegacyName ? legacyName! : DEFAULT_MUTE_ROLE_NAME,
+                isMentionable: false);
+            await SetMuteRoleAsync(guild.Id, created.Id);
+            return created;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to create mute role for guild {GuildId}", guild.Id);
+            return null;
+        }
+    }
+
+    // Role names aren't unique, so prefer the lowest one to keep a squatted higher role from winning.
+    public static IRole? FindRoleByName(IGuild guild, string name)
+    {
+        IRole? found = null;
+        foreach (var role in guild.Roles)
+        {
+            if (!string.Equals(role.Name, name, StringComparison.InvariantCultureIgnoreCase))
+                continue;
+
+            if (found is null || role.Position < found.Position)
+                found = role;
+        }
+
+        return found;
+    }
+
     private async Task ClearUnmuteTimerAsync(ulong guildId, ulong userId, MuteType type)
     {
         await using var uow = _db.GetDbContext();
@@ -353,11 +434,24 @@ public sealed class MuteService : INService, IReadyExecutor
     {
         await using (var uow = _db.GetDbContext())
         {
-            _guildMuteRoles = await uow.GetTable<GuildConfig>()
+            var configs = await uow.GetTable<GuildConfig>()
                 .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                .Where(x => x.MuteRoleName != null)
-                .ToListAsyncLinqToDB()
-                .Pipe(x => x.ToDictionary(c => c.GuildId, c => c.MuteRoleName!).ToConcurrent());
+                .Where(x => x.MuteRoleId != null || x.MuteRoleName != null)
+                .Select(x => new
+                {
+                    x.GuildId,
+                    x.MuteRoleId,
+                    x.MuteRoleName
+                })
+                .ToListAsyncLinqToDB();
+
+            _guildMuteRoles = configs.Where(x => x.MuteRoleId is not null)
+                .ToDictionary(x => x.GuildId, x => x.MuteRoleId!.Value)
+                .ToConcurrent();
+
+            _legacyMuteRoleNames = configs.Where(x => x.MuteRoleId is null && x.MuteRoleName is not null)
+                .ToDictionary(x => x.GuildId, x => x.MuteRoleName!)
+                .ToConcurrent();
 
             _mutedUsers = await uow.GetTable<MutedUserId>()
                 .Where(Queries.GuildOnShard<MutedUserId>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
@@ -369,8 +463,31 @@ public sealed class MuteService : INService, IReadyExecutor
 
         _client.UserJoined += Client_UserJoined;
 
+        _ = Task.Run(BackfillMuteRoleIdsInternalAsync);
         _ = Task.Run(UnmuteLoopInternalAsync);
         _ = Task.Run(UnbanLoopInternalAsync);
+    }
+
+    private async Task BackfillMuteRoleIdsInternalAsync()
+    {
+        foreach (var (guildId, name) in _legacyMuteRoleNames)
+        {
+            try
+            {
+                var guild = _client.GetGuild(guildId);
+                if (guild is null)
+                    continue;
+
+                if (FindRoleByName(guild, name) is not { } role)
+                    continue;
+
+                await SetMuteRoleAsync(guildId, role.Id);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Unable to backfill mute role id for guild {GuildId}", guildId);
+            }
+        }
     }
 
     private async Task UnmuteLoopInternalAsync()

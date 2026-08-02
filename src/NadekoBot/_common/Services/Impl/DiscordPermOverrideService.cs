@@ -13,21 +13,33 @@ public class DiscordPermOverrideService : INService, IExecPreCommand, IDiscordPe
 
     private readonly ConcurrentDictionary<(ulong, string), DiscordPermOverride> _overrides;
 
+    private sealed class OverrideKeyComparer : IEqualityComparer<(ulong, string)>
+    {
+        public static readonly OverrideKeyComparer Instance = new();
+
+        public bool Equals((ulong, string) x, (ulong, string) y)
+            => x.Item1 == y.Item1
+               && string.Equals(x.Item2, y.Item2, StringComparison.InvariantCultureIgnoreCase);
+
+        public int GetHashCode((ulong, string) obj)
+            => HashCode.Combine(obj.Item1,
+                StringComparer.InvariantCultureIgnoreCase.GetHashCode(obj.Item2));
+    }
+
     public DiscordPermOverrideService(DbService db, IServiceProvider services)
     {
         _db = db;
         _services = services;
         using var uow = _db.GetDbContext();
-        _overrides = uow.Set<DiscordPermOverride>()
-            .AsNoTracking()
-            .AsEnumerable()
-            .ToDictionary(o => (o.GuildId ?? 0, o.Command), o => o)
-            .ToConcurrent();
+        _overrides = new(uow.Set<DiscordPermOverride>()
+                .AsNoTracking()
+                .AsEnumerable()
+                .ToDictionary(o => (o.GuildId ?? 0, o.Command), o => o),
+            OverrideKeyComparer.Instance);
     }
 
     public bool TryGetOverrides(ulong guildId, string commandName, out NadekoBot.Db.GuildPerm? perm)
     {
-        commandName = commandName.ToLowerInvariant();
         if (_overrides.TryGetValue((guildId, commandName), out var dpo))
         {
             perm = dpo.Perm;
@@ -121,7 +133,7 @@ public class DiscordPermOverrideService : INService, IExecPreCommand, IDiscordPe
 
     public async ValueTask<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
     {
-        if (TryGetOverrides(context.Guild?.Id ?? 0, command.Name, out var perm) && perm is not null)
+        if (TryGetOverrides(context.Guild?.Id ?? 0, command.PermKey(), out var perm) && perm is not null)
         {
             var result =
                 await new RequireUserPermissionAttribute((GuildPermission)perm).CheckPermissionsAsync(context,

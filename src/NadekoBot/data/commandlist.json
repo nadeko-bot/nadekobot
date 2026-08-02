@@ -4309,7 +4309,7 @@
     {
       "Aliases": [
         ".queueshuffle",
-        ".qsh",
+        ".qush",
         ".qshuffle",
         ".shuffle"
       ],
@@ -5086,7 +5086,7 @@
     {
       "Aliases": [
         ".forwardmessages",
-        ".fw",
+        ".fwm",
         ".fwmsgs"
       ],
       "Description": "Toggles whether you will receive DMs forwarded from bot users. All owners receive them by default. Use this to opt out or back in.",
@@ -7172,7 +7172,7 @@
     {
       "Aliases": [
         ".snipe",
-        ".sn"
+        ".sni"
       ],
       "Description": "Snipe the message you replied to with this command.\nOtherwise, if you don't reply to a message, it will snipe the last message sent in the channel (out of the last few messages) which has text or an image.",
       "Usage": [

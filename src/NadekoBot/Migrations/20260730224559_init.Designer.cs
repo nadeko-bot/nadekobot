@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20260714184233_init")]
+    [Migration("20260730224559_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -1017,6 +1017,9 @@ namespace NadekoBot.Migrations
 
                     b.Property<string>("Locale")
                         .HasColumnType("TEXT");
+
+                    b.Property<ulong?>("MuteRoleId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MuteRoleName")
                         .HasColumnType("TEXT");

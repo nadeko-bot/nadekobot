@@ -24,10 +24,12 @@ public sealed class CommandOrExprTypeReader : NadekoTypeReader<CommandOrExprInfo
         var cmd = await new CommandTypeReader(_commandHandler, _cmds).ReadAsync(ctx, input);
         if (cmd.IsSuccess)
         {
-            return TypeReaderResult.FromSuccess(new CommandOrExprInfo(((CommandInfo)cmd.Values.First().Value).Name,
-                CommandOrExprInfo.Type.Normal));
+            return TypeReaderResult.FromSuccess(
+                new CommandOrExprInfo(((CommandInfo)cmd.Values.First().Value).PermKey(),
+                    CommandOrExprInfo.Type.Normal));
         }
 
-        return TypeReaderResult.FromError<CommandOrExprInfo>(CommandError.ParseFailed, "No such command or expression found.");
+        return TypeReaderResult.FromError<CommandOrExprInfo>(CommandError.ParseFailed,
+            "No such command or expression found.");
     }
 }

@@ -83,7 +83,7 @@ queuesearch:
   - yqs
 queueshuffle:
   - queueshuffle
-  - qsh
+  - qush
   - qshuffle
   - shuffle
 queuefind:

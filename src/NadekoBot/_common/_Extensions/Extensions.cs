@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Nadeko.Common.Medusa;
@@ -103,6 +104,11 @@ public static class Extensions
 
     public static bool IsAuthor(this IMessage msg, IDiscordClient client)
         => msg.Author?.Id == client.CurrentUser.Id;
+
+    // Aliases[0] is group-qualified ("sar add"); CommandInfo.Name is just the bare method name.
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string PermKey(this CommandInfo cmd)
+        => cmd.Aliases[0];
 
     public static string RealSummary(
         this CommandInfo cmd,

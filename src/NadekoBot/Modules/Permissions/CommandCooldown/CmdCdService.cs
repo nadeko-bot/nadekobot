@@ -25,7 +25,7 @@ public sealed class CmdCdService : IExecPreCommand, IReadyExecutor, INService
     }
 
     public ValueTask<bool> ExecPreCommandAsync(ICommandContext context, string moduleName, CommandInfo command)
-        => TryBlock(context.Guild, context.User, command.Name.ToLowerInvariant());
+        => TryBlock(context.Guild, context.User, command.PermKey());
 
     public ValueTask<bool> TryBlock(IGuild? guild, IUser user, string commandName)
     {

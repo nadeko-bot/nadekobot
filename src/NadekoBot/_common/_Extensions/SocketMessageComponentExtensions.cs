@@ -7,7 +7,8 @@ public static class SocketMessageComponentExtensions
         IMessageSenderService sender,
         string text,
         MsgType type,
-        bool ephemeral = false)
+        bool ephemeral = false,
+        MessageComponent? components = null)
     {
         var embed = sender.CreateEmbed(ch.GuildId).WithDescription(text);
 
@@ -19,7 +20,7 @@ public static class SocketMessageComponentExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         });
 
-        await ch.RespondAsync(embeds: [embed.Build()], ephemeral: ephemeral);
+        await ch.RespondAsync(embeds: [embed.Build()], ephemeral: ephemeral, components: components);
     }
 
     // embed title and optional footer overloads

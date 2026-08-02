@@ -9,7 +9,7 @@ namespace NadekoBot.Common.Configs;
 public sealed class BotConfig
 {
     [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
-    public int Version { get; set; } = 10;
+    public int Version { get; set; } = 11;
 
     [Comment("""
         Most commands, when executed, have a small colored line
