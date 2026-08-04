@@ -25,41 +25,22 @@ public class MuteRoleLookupTests
     }
 
     [Test]
-    public void FindRoleByName_ReturnsMatchingRole()
+    public void FindsRoleIgnoringCase()
     {
-        var guild = GuildWith(Role(1, "member", 5), Role(2, "nadeko-mute", 3));
+        var guild = GuildWith(Role(1, "member", 5), Role(2, "Nadeko-Mute", 3));
 
-        var found = MuteService.FindRoleByName(guild, "nadeko-mute");
-
-        Assert.That(found?.Id, Is.EqualTo(2));
+        Assert.That(MuteService.FindRoleByName(guild, "nadeko-mute")?.Id, Is.EqualTo(2));
+        Assert.That(MuteService.FindRoleByName(guild, "missing"), Is.Null);
     }
 
     [Test]
-    public void FindRoleByName_ReturnsNull_WhenNoRoleMatches()
-    {
-        var guild = GuildWith(Role(1, "member", 5));
-
-        Assert.That(MuteService.FindRoleByName(guild, "nadeko-mute"), Is.Null);
-    }
-
-    [Test]
-    public void FindRoleByName_PrefersLowestPosition_WhenNamesCollide()
+    public void PrefersLowestPosition_WhenNamesCollide()
     {
         var guild = GuildWith(
             Role(1, "nadeko-mute", 20),
             Role(2, "nadeko-mute", 2),
             Role(3, "nadeko-mute", 11));
 
-        var found = MuteService.FindRoleByName(guild, "nadeko-mute");
-
-        Assert.That(found?.Id, Is.EqualTo(2));
-    }
-
-    [Test]
-    public void FindRoleByName_IsCaseInsensitive()
-    {
-        var guild = GuildWith(Role(1, "Nadeko-Mute", 3));
-
-        Assert.That(MuteService.FindRoleByName(guild, "nadeko-mute")?.Id, Is.EqualTo(1));
+        Assert.That(MuteService.FindRoleByName(guild, "nadeko-mute")?.Id, Is.EqualTo(2));
     }
 }

@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20260730224559_init")]
+    [Migration("20260804031325_init")]
     partial class init
     {
         /// <inheritdoc />

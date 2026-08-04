@@ -36,43 +36,20 @@ public class StickyRolesFilterTests
     }
 
     [Test]
-    public void KeepsAssignableRoles()
+    public void KeepsOnlyAssignableRoles()
     {
-        var guild = GuildWith(Role(100, 3), Role(200, 5));
+        var guild = GuildWith(
+            Role(100, 3),
+            Role(200, 5),
+            Role(300, 4, managed: true),
+            Role(400, BOT_HIERARCHY));
 
-        var result = StickyRolesService.GetAssignableRoles([100, 200], guild, BOT_HIERARCHY);
+        // 999 is a deleted role
+        var result = StickyRolesService.GetAssignableRoles([100, 200, 300, 400, 999, EVERYONE_ID],
+            guild,
+            BOT_HIERARCHY);
 
         Assert.That(result.Select(x => x.Id), Is.EquivalentTo(new ulong[] { 100, 200 }));
-    }
-
-    [Test]
-    public void SkipsDeletedRole_ButKeepsTheRest()
-    {
-        var guild = GuildWith(Role(100, 3));
-
-        var result = StickyRolesService.GetAssignableRoles([100, 999], guild, BOT_HIERARCHY);
-
-        Assert.That(result.Select(x => x.Id), Is.EquivalentTo(new ulong[] { 100 }));
-    }
-
-    [Test]
-    public void SkipsRoleAtOrAboveBotHierarchy()
-    {
-        var guild = GuildWith(Role(100, 3), Role(200, BOT_HIERARCHY), Role(300, BOT_HIERARCHY + 1));
-
-        var result = StickyRolesService.GetAssignableRoles([100, 200, 300], guild, BOT_HIERARCHY);
-
-        Assert.That(result.Select(x => x.Id), Is.EquivalentTo(new ulong[] { 100 }));
-    }
-
-    [Test]
-    public void SkipsManagedAndEveryoneRoles()
-    {
-        var guild = GuildWith(Role(100, 3), Role(200, 4, managed: true));
-
-        var result = StickyRolesService.GetAssignableRoles([100, 200, EVERYONE_ID], guild, BOT_HIERARCHY);
-
-        Assert.That(result.Select(x => x.Id), Is.EquivalentTo(new ulong[] { 100 }));
     }
 
     [Test]
@@ -80,8 +57,6 @@ public class StickyRolesFilterTests
     {
         var guild = GuildWith(Role(100, BOT_HIERARCHY + 2));
 
-        var result = StickyRolesService.GetAssignableRoles([100, 999], guild, BOT_HIERARCHY);
-
-        Assert.That(result, Is.Empty);
+        Assert.That(StickyRolesService.GetAssignableRoles([100, 999], guild, BOT_HIERARCHY), Is.Empty);
     }
 }
