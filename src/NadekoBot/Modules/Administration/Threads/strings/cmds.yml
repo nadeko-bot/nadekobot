@@ -15,3 +15,28 @@ threaddelete:
     - name:
         desc: |-
           The name of the thread to delete.
+autothread:
+  desc: |-
+    Makes the bot create a thread for each new message in this channel.
+    Use the command without parameters to turn the feature on or off with the default settings.
+    Available modes: `all` and `media`. Default: `all`.
+    In `all` mode, the bot creates a thread for each message.
+    In `media` mode, the bot creates a thread only for messages with an attachment or a link.
+    Available archive durations: `1h`, `24h`, `3d`, `7d`. Default: `24h`.
+    The bot uses the first line of the message as the thread name, up to 40 characters.
+    If the message has no text, the bot uses the author's name.
+  ex:
+    - ''
+    - '-m media'
+    - '--mode all --archive 3d'
+  params:
+    - args:
+        desc: |-
+          Options. `-m`, `--mode` sets the messages that start a thread. Available values: `all`, `media`.
+          `-a`, `--archive` sets the time after which the bot archives an inactive thread. Available values: `1h`, `24h`, `3d`, `7d`.
+autothreadlist:
+  desc: Shows the channels in which the bot creates threads automatically.
+  ex:
+    - ''
+  params:
+    - { }

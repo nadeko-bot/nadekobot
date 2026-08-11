@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20260804031325_init")]
+    [Migration("20260811020614_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -246,6 +246,34 @@ namespace NadekoBot.Migrations
                         .IsUnique();
 
                     b.ToTable("AutoPublishChannel");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.AutoThreadChannel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ArchiveDurationMinutes")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Mode")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId");
+
+                    b.ToTable("AutoThreadChannel");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.AutoTranslateChannel", b =>

@@ -5,3 +5,9 @@ threaddelete:
   - threaddelete
   - thdel
   - thrm
+autothread:
+  - autothread
+  - ath
+autothreadlist:
+  - autothreadlist
+  - athl

@@ -4,6 +4,13 @@
 
 ## [7.2.15] - WIP
 
+### Added
+
+- `.autothread` / `.ath` makes the bot create a thread on each new message in a channel.
+    - `--mode` / `-m` starts threads for all messages, or only for messages with an attachment or a link.
+    - `--archive` / `-a` sets the archive duration to `1h`, `24h`, `3d` or `7d`.
+- `.autothreadlist` / `.athl` shows the channels which create threads automatically.
+
 ## [7.2.14] - 02.08.2026
 
 ### Changed

@@ -1,1 +1,7 @@
-{}
+autothread_enabled: "Threads will be created automatically in this channel. Mode: {0}, archive after: {1}"
+autothread_disabled: Threads will no longer be created automatically in this channel.
+autothread_invalid_duration: Invalid archive duration. Use `1h`, `24h`, `3d` or `7d`.
+autothread_invalid_mode: Invalid mode. Use `all` or `media`.
+autothread_wrong_channel: This command can only be used in a normal text channel.
+autothread_list: Auto-thread channels
+autothread_list_none: There are no auto-thread channels on this server.

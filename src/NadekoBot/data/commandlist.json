@@ -1568,6 +1568,40 @@
     },
     {
       "Aliases": [
+        ".autothread",
+        ".ath"
+      ],
+      "Description": "Creates a thread on every new message in the current channel. Run it without parameters to toggle it on or off with the default settings.\nSet the mode to `all` to make a thread for every message, or `media` to only make one for messages with an attachment or a link.\nThe thread name is the first line of the message, up to 40 characters, or the author's name if the message has no text.",
+      "Usage": [
+        ".autothread",
+        ".autothread media",
+        ".autothread all 3d"
+      ],
+      "Submodule": "ThreadCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageThreads Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".autothreadlist",
+        ".athl"
+      ],
+      "Description": "Lists all channels on this server which create threads automatically.",
+      "Usage": [
+        ".autothreadlist"
+      ],
+      "Submodule": "ThreadCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageThreads Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".timezones"
       ],
       "Description": "Lists all timezones available on the system to be used with `.timezone`.",

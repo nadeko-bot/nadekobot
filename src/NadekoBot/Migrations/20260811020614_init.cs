@@ -118,6 +118,22 @@ namespace NadekoBot.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AutoThreadChannel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Mode = table.Column<int>(type: "INTEGER", nullable: false),
+                    ArchiveDurationMinutes = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AutoThreadChannel", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AutoTranslateChannels",
                 columns: table => new
                 {
@@ -1924,6 +1940,17 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_AutoThreadChannel_ChannelId",
+                table: "AutoThreadChannel",
+                column: "ChannelId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AutoThreadChannel_GuildId",
+                table: "AutoThreadChannel",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AutoTranslateChannels_ChannelId",
                 table: "AutoTranslateChannels",
                 column: "ChannelId",
@@ -2580,6 +2607,9 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "AutoPublishChannel");
+
+            migrationBuilder.DropTable(
+                name: "AutoThreadChannel");
 
             migrationBuilder.DropTable(
                 name: "AutoTranslateUsers");

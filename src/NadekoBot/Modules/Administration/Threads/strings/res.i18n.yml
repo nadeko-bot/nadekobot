@@ -1,0 +1,143 @@
+ar:
+  autothread_enabled: 'سيتم إنشاء المواضيع تلقائيًا في هذه القناة. الوضع: {0}، الأرشفة بعد: {1}'
+  autothread_disabled: لن يتم إنشاء المواضيع تلقائيًا في هذه القناة بعد الآن.
+  autothread_invalid_duration: مدة الأرشفة غير صالحة. استخدم `1h` أو `24h` أو `3d` أو `7d`.
+  autothread_invalid_mode: الوضع غير صالح. استخدم `all` أو `media`.
+  autothread_wrong_channel: يمكن استخدام هذا الأمر في قناة نصية عادية فقط.
+  autothread_list: قنوات المواضيع التلقائية
+  autothread_list_none: لا توجد قنوات مواضيع تلقائية في هذا السيرفر.
+
+de-DE:
+  autothread_enabled: 'Threads werden in diesem Kanal automatisch erstellt. Modus: {0}, Archivierung nach: {1}'
+  autothread_disabled: Threads werden in diesem Kanal nicht mehr automatisch erstellt.
+  autothread_invalid_duration: Ungültige Archivierungsdauer. Nutze `1h`, `24h`, `3d` oder `7d`.
+  autothread_invalid_mode: Ungültiger Modus. Nutze `all` oder `media`.
+  autothread_wrong_channel: Dieser Befehl kann nur in einem normalen Textkanal genutzt werden.
+  autothread_list: Kanäle mit automatischen Threads
+  autothread_list_none: Auf diesem Server gibt es keine Kanäle mit automatischen Threads.
+
+es-ES:
+  autothread_enabled: 'Los hilos se crearán automáticamente en este canal. Modo: {0}, archivar tras: {1}'
+  autothread_disabled: Los hilos ya no se crearán automáticamente en este canal.
+  autothread_invalid_duration: Duración de archivado no válida. Usa `1h`, `24h`, `3d` o `7d`.
+  autothread_invalid_mode: Modo no válido. Usa `all` o `media`.
+  autothread_wrong_channel: Este comando solo se puede usar en un canal de texto normal.
+  autothread_list: Canales con hilo automático
+  autothread_list_none: No hay canales con hilo automático en este servidor.
+
+fr-FR:
+  autothread_enabled: 'Les fils seront créés automatiquement dans ce salon. Mode : {0}, archivage après : {1}'
+  autothread_disabled: Les fils ne seront plus créés automatiquement dans ce salon.
+  autothread_invalid_duration: Durée d'archivage invalide. Utilise `1h`, `24h`, `3d` ou `7d`.
+  autothread_invalid_mode: Mode invalide. Utilise `all` ou `media`.
+  autothread_wrong_channel: Cette commande ne peut être utilisée que dans un salon textuel normal.
+  autothread_list: Salons avec fils automatiques
+  autothread_list_none: Il n'y a aucun salon avec fils automatiques sur ce serveur.
+
+id-ID:
+  autothread_enabled: 'Thread akan dibuat otomatis di channel ini. Mode: {0}, arsip setelah: {1}'
+  autothread_disabled: Thread tidak akan dibuat otomatis lagi di channel ini.
+  autothread_invalid_duration: Durasi arsip tidak valid. Gunakan `1h`, `24h`, `3d`, atau `7d`.
+  autothread_invalid_mode: Mode tidak valid. Gunakan `all` atau `media`.
+  autothread_wrong_channel: Perintah ini hanya bisa dipakai di channel teks biasa.
+  autothread_list: Channel dengan thread otomatis
+  autothread_list_none: Tidak ada channel dengan thread otomatis di server ini.
+
+ja-JP:
+  autothread_enabled: 'このチャンネルではスレッドが自動的に作成されます。モード: {0}、アーカイブまで: {1}'
+  autothread_disabled: このチャンネルでスレッドが自動的に作成されなくなりました。
+  autothread_invalid_duration: アーカイブ時間が無効です。`1h`、`24h`、`3d`、`7d` のいずれかを使ってください。
+  autothread_invalid_mode: モードが無効です。`all` または `media` を使ってください。
+  autothread_wrong_channel: このコマンドは通常のテキストチャンネルでのみ使えます。
+  autothread_list: 自動スレッド作成チャンネル
+  autothread_list_none: このサーバーには自動スレッド作成チャンネルがありません。
+
+ko-KR:
+  autothread_enabled: '이 채널에서 스레드가 자동으로 만들어집니다. 모드: {0}, 보관까지: {1}'
+  autothread_disabled: 이제 이 채널에서 스레드가 자동으로 만들어지지 않습니다.
+  autothread_invalid_duration: 보관 시간이 올바르지 않습니다. `1h`, `24h`, `3d`, `7d` 중 하나를 사용하세요.
+  autothread_invalid_mode: 모드가 올바르지 않습니다. `all` 또는 `media`를 사용하세요.
+  autothread_wrong_channel: 이 명령어는 일반 텍스트 채널에서만 사용할 수 있습니다.
+  autothread_list: 자동 스레드 채널
+  autothread_list_none: 이 서버에는 자동 스레드 채널이 없습니다.
+
+pl-PL:
+  autothread_enabled: 'Wątki będą tworzone automatycznie na tym kanale. Tryb: {0}, archiwizacja po: {1}'
+  autothread_disabled: Wątki nie będą już tworzone automatycznie na tym kanale.
+  autothread_invalid_duration: Nieprawidłowy czas archiwizacji. Użyj `1h`, `24h`, `3d` lub `7d`.
+  autothread_invalid_mode: Nieprawidłowy tryb. Użyj `all` lub `media`.
+  autothread_wrong_channel: Tej komendy można użyć tylko na zwykłym kanale tekstowym.
+  autothread_list: Kanały z automatycznymi wątkami
+  autothread_list_none: Na tym serwerze nie ma kanałów z automatycznymi wątkami.
+
+pt-BR:
+  autothread_enabled: 'As threads serão criadas automaticamente neste canal. Modo: {0}, arquivar após: {1}'
+  autothread_disabled: As threads não serão mais criadas automaticamente neste canal.
+  autothread_invalid_duration: Duração de arquivamento inválida. Use `1h`, `24h`, `3d` ou `7d`.
+  autothread_invalid_mode: Modo inválido. Use `all` ou `media`.
+  autothread_wrong_channel: Este comando só pode ser usado em um canal de texto normal.
+  autothread_list: Canais com thread automática
+  autothread_list_none: Não há canais com thread automática neste servidor.
+
+ru-RU:
+  autothread_enabled: 'В этом канале ветки будут создаваться автоматически. Режим: {0}, архивировать через: {1}'
+  autothread_disabled: Ветки в этом канале больше не создаются автоматически.
+  autothread_invalid_duration: Неверное время архивации. Используй `1h`, `24h`, `3d` или `7d`.
+  autothread_invalid_mode: Неверный режим. Используй `all` или `media`.
+  autothread_wrong_channel: Эту команду можно использовать только в обычном текстовом канале.
+  autothread_list: Каналы с автоветками
+  autothread_list_none: На этом сервере нет каналов с автоветками.
+
+sr-Cyrl-RS:
+  autothread_enabled: 'Теме ће се аутоматски правити у овом каналу. Режим: {0}, архивирај после: {1}'
+  autothread_disabled: Теме се више неће аутоматски правити у овом каналу.
+  autothread_invalid_duration: Неисправно време архивирања. Користи `1h`, `24h`, `3d` или `7d`.
+  autothread_invalid_mode: Неисправан режим. Користи `all` или `media`.
+  autothread_wrong_channel: Ова команда може да се користи само у обичном текстуалном каналу.
+  autothread_list: Канали са аутоматским темама
+  autothread_list_none: На овом серверу нема канала са аутоматским темама.
+
+tr-TR:
+  autothread_enabled: 'Bu kanalda başlıklar otomatik olarak oluşturulacak. Mod: {0}, arşivleme süresi: {1}'
+  autothread_disabled: Bu kanalda başlıklar artık otomatik olarak oluşturulmayacak.
+  autothread_invalid_duration: Geçersiz arşivleme süresi. `1h`, `24h`, `3d` veya `7d` kullan.
+  autothread_invalid_mode: Geçersiz mod. `all` veya `media` kullan.
+  autothread_wrong_channel: Bu komut sadece normal bir metin kanalında kullanılabilir.
+  autothread_list: Otomatik başlık kanalları
+  autothread_list_none: Bu sunucuda otomatik başlık kanalı yok.
+
+ts-TS:
+  autothread_enabled: 'F-fine, I''ll make a thread for every message here. Mode: {0}, archive after: {1}'
+  autothread_disabled: Threads won't be created automatically here anymore. Hmph.
+  autothread_invalid_duration: That archive duration is invalid. Use `1h`, `24h`, `3d` or `7d`.
+  autothread_invalid_mode: That mode is invalid. Use `all` or `media`.
+  autothread_wrong_channel: This only works in a normal text channel. You should've known that, baka.
+  autothread_list: Auto-thread channels
+  autothread_list_none: There are no auto-thread channels on this server.
+
+uk-UA:
+  autothread_enabled: 'У цьому каналі гілки створюватимуться автоматично. Режим: {0}, архівувати через: {1}'
+  autothread_disabled: Гілки в цьому каналі більше не створюються автоматично.
+  autothread_invalid_duration: Некоректний час архівування. Використовуй `1h`, `24h`, `3d` або `7d`.
+  autothread_invalid_mode: Некоректний режим. Використовуй `all` або `media`.
+  autothread_wrong_channel: Цю команду можна використовувати лише у звичайному текстовому каналі.
+  autothread_list: Канали з автогілками
+  autothread_list_none: На цьому сервері немає каналів з автогілками.
+
+vi-VN:
+  autothread_enabled: 'Các luồng sẽ được tạo tự động trong kênh này. Chế độ: {0}, lưu trữ sau: {1}'
+  autothread_disabled: Các luồng sẽ không còn được tạo tự động trong kênh này.
+  autothread_invalid_duration: Thời gian lưu trữ không hợp lệ. Dùng `1h`, `24h`, `3d` hoặc `7d`.
+  autothread_invalid_mode: Chế độ không hợp lệ. Dùng `all` hoặc `media`.
+  autothread_wrong_channel: Lệnh này chỉ có thể dùng trong kênh văn bản thường.
+  autothread_list: Kênh tạo luồng tự động
+  autothread_list_none: Máy chủ này không có kênh tạo luồng tự động nào.
+
+zh-CN:
+  autothread_enabled: '此频道将自动创建子区。模式：{0}，存档时间：{1}'
+  autothread_disabled: 此频道将不再自动创建子区。
+  autothread_invalid_duration: 存档时长无效。请使用 `1h`、`24h`、`3d` 或 `7d`。
+  autothread_invalid_mode: 模式无效。请使用 `all` 或 `media`。
+  autothread_wrong_channel: 此命令只能在普通文字频道中使用。
+  autothread_list: 自动子区频道
+  autothread_list_none: 本服务器没有自动子区频道。
