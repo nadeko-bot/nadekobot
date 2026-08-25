@@ -5,9 +5,6 @@ using NadekoBot.AiAgent;
 
 namespace NadekoBot.Modules.Utility.AiAgent.Adapters;
 
-/// <summary>
-/// Send / edit / read / delete / search Discord messages.
-/// </summary>
 public sealed partial class MessagingAiAdapter(IMessageSenderService sender) : IAiCoreToolGroup, INService
 {
     public string GroupName => "messaging";

@@ -3,10 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-/// <summary>
-/// Strips potentially dangerous content from user-controlled strings before injecting them into LLM prompts.
-/// Preserves legitimate Discord mention formats.
-/// </summary>
+// Cleans user controlled strings before they go into a prompt, but keeps Discord mentions.
 public static partial class PromptSanitizer
 {
     private static readonly SearchValues<char> _xmlSpecialChars = SearchValues.Create("&<>\"'");
@@ -17,11 +14,7 @@ public static partial class PromptSanitizer
     [GeneratedRegex(@"[\x00-\x08\x0B\x0C\x0E-\x1F]")]
     private static partial Regex ControlCharRegex();
 
-    /// <summary>
-    /// Remove XML/HTML-like tags from input while preserving Discord mentions
-    /// (user mentions, channel mentions, role mentions, custom emojis).
-    /// Also strips control characters.
-    /// </summary>
+    // Removes tags and control characters, but keeps mentions and custom emojis.
     public static string Sanitize(string? input)
     {
         if (string.IsNullOrEmpty(input))
@@ -32,10 +25,7 @@ public static partial class PromptSanitizer
         return result.Trim();
     }
 
-    /// <summary>
-    /// Escapes the 5 XML special characters so the string can be safely embedded
-    /// inside XML elements or attributes. Single-pass, one allocation via string.Create.
-    /// </summary>
+    // One allocation, through string.Create.
     public static string XmlEscape(string? input)
     {
         if (string.IsNullOrEmpty(input))

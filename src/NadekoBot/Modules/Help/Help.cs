@@ -10,6 +10,9 @@ public sealed partial class Help : NadekoModule<HelpService>
     public const string PATREON_URL = "https://patreon.com/nadekobot";
     public const string PAYPAL_URL = "https://paypal.me/Kwoth";
 
+    // Discord allows at most 25 options per select menu and 25 fields per embed.
+    private const int SELECT_MENU_PAGE_SIZE = 15;
+
     private readonly ICommandsUtilityService _cus;
     private readonly CommandService _cmds;
     private readonly BotConfigService _bss;
@@ -340,56 +343,74 @@ public sealed partial class Help : NadekoModule<HelpService>
             }
         }
 
+        var groups = cmdsWithGroup.ToArray();
+
+        await Response()
+            .Paginated()
+            .Items(groups)
+            .PageSize(SELECT_MENU_PAGE_SIZE)
+            .AddFooter(false)
+            .Interaction(page => Task.FromResult(
+                CreateGroupSelect(groups.Skip(page * SELECT_MENU_PAGE_SIZE).Take(SELECT_MENU_PAGE_SIZE))))
+            .Page((items, _) =>
+            {
+                var embed = CreateEmbed().WithOkColor();
+
+                foreach (var g in items)
+                {
+                    var transformed = g
+                        .Select(x =>
+                        {
+                            var prepend = string.Empty;
+
+                            var isOwnerOnly = x.Preconditions.Any(x => x is OwnerOnlyAttribute);
+                            if (isOwnerOnly)
+                                prepend = " \\👑";
+
+                            var isPatronOnly = x.Preconditions.Any(static p => p is PatronOnlyAttribute)
+                                || x.Module.Preconditions.Any(static p => p is PatronOnlyAttribute)
+                                || x.Module.GetTopLevelModule()
+                                    .Preconditions.Any(static p => p is PatronOnlyAttribute);
+                            if (isPatronOnly)
+                                prepend += " \\❤️";
+
+                            //if cross is specified, and the command doesn't satisfy the requirements, cross it out
+                            if (opts.View == CommandsOptions.ViewType.Cross)
+                            {
+                                var outp = $"{(succ.Contains(x) ? "✅" : "❌")} {prefix + x.Aliases[0]}";
+
+                                return prepend + outp;
+                            }
+
+                            var output = prefix + x.Aliases[0];
+
+                            if (x.Aliases.Count > 1)
+                                output += " | " + prefix + x.Aliases[1];
+
+                            if (opts.View == CommandsOptions.ViewType.All)
+                                return prepend + output;
+
+                            return output;
+                        });
+
+                    embed.AddField(g.Key, "" + string.Join("\n", transformed) + "", true);
+                }
+
+                return embed.WithFooter(GetText(strs.commands_instr(prefix)));
+            })
+            .SendAsync();
+    }
+
+    private NadekoInteractionBase CreateGroupSelect(IEnumerable<IGrouping<string, CommandInfo>> groups)
+    {
         var sb = new SelectMenuBuilder()
             .WithCustomId("cmds:submodule_select")
             .WithPlaceholder("Select a submodule to see detailed commands");
 
-        var groups = cmdsWithGroup.ToArray();
-        var embed = CreateEmbed().WithOkColor();
         foreach (var g in groups)
-        {
             sb.AddOption(g.Key, g.Key);
-            var transformed = g
-                .Select(x =>
-                {
-                    var prepend = string.Empty;
 
-                    var isOwnerOnly = x.Preconditions.Any(x => x is OwnerOnlyAttribute);
-                    if (isOwnerOnly)
-                        prepend = " \\👑";
-
-                    var isPatronOnly = x.Preconditions.Any(static p => p is PatronOnlyAttribute)
-                        || x.Module.Preconditions.Any(static p => p is PatronOnlyAttribute)
-                        || x.Module.GetTopLevelModule().Preconditions.Any(static p => p is PatronOnlyAttribute);
-                    if (isPatronOnly)
-                        prepend += " \\❤️";
-
-                    //if cross is specified, and the command doesn't satisfy the requirements, cross it out
-                    if (opts.View == CommandsOptions.ViewType.Cross)
-                    {
-                        var outp = $"{(succ.Contains(x) ? "✅" : "❌")} {prefix + x.Aliases[0]}";
-
-                        return prepend + outp;
-                    }
-
-                    var output = prefix + x.Aliases[0];
-
-                    if (x.Aliases.Count > 1)
-                        output += " | " + prefix + x.Aliases[1];
-
-                    if (opts.View == CommandsOptions.ViewType.All)
-                        return prepend + output;
-
-                    return output;
-                });
-
-            embed.AddField(g.Key, "" + string.Join("\n", transformed) + "", true);
-        }
-
-        embed.WithFooter(GetText(strs.commands_instr(prefix)));
-
-
-        var inter = _inter.Create(ctx.User.Id,
+        return _inter.Create(ctx.User.Id,
             sb,
             async (smc) =>
             {
@@ -402,35 +423,18 @@ public sealed partial class Help : NadekoModule<HelpService>
                 await Group(mdl);
             }
         );
-
-        await Response().Embed(embed).Interaction(inter).SendAsync();
     }
 
     private async Task Group(ModuleInfo group)
     {
-        var menu = new SelectMenuBuilder()
-            .WithCustomId("cmds:group_select")
-            .WithPlaceholder("Select a command to see its details");
-
-        foreach (var cmd in group.Commands.DistinctBy(x => x.Aliases[0]))
-        {
-            menu.AddOption(prefix + cmd.Aliases[0], cmd.Aliases[0]);
-        }
-
-        var inter = _inter.Create(ctx.User.Id,
-            menu,
-            async (smc) =>
-            {
-                await smc.DeferAsync();
-
-                await H(smc.Data.Values.FirstOrDefault());
-            });
+        var cmds = group.Commands.DistinctBy(x => x.Aliases[0]).ToArray();
 
         await Response()
             .Paginated()
-            .Items(group.Commands.DistinctBy(x => x.Aliases[0]).ToArray())
-            .PageSize(25)
-            .Interaction(inter)
+            .Items(cmds)
+            .PageSize(SELECT_MENU_PAGE_SIZE)
+            .Interaction(page => Task.FromResult(
+                CreateCommandSelect(cmds.Skip(page * SELECT_MENU_PAGE_SIZE).Take(SELECT_MENU_PAGE_SIZE))))
             .Page((items, _) =>
             {
                 var eb = CreateEmbed()
@@ -451,6 +455,25 @@ public sealed partial class Help : NadekoModule<HelpService>
                 return eb;
             })
             .SendAsync();
+    }
+
+    private NadekoInteractionBase CreateCommandSelect(IEnumerable<CommandInfo> cmds)
+    {
+        var menu = new SelectMenuBuilder()
+            .WithCustomId("cmds:group_select")
+            .WithPlaceholder("Select a command to see its details");
+
+        foreach (var cmd in cmds)
+            menu.AddOption(prefix + cmd.Aliases[0], cmd.Aliases[0]);
+
+        return _inter.Create(ctx.User.Id,
+            menu,
+            async (smc) =>
+            {
+                await smc.DeferAsync();
+
+                await H(smc.Data.Values.FirstOrDefault());
+            });
     }
 
     [Cmd]

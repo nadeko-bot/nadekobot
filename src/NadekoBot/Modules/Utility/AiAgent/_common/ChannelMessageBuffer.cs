@@ -1,8 +1,5 @@
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-/// <summary>
-/// Lightweight snapshot of a Discord message for the agent's channel memory
-/// </summary>
 public readonly record struct MessageSnapshot(
     ulong MessageId,
     ulong AuthorId,
@@ -10,10 +7,7 @@ public readonly record struct MessageSnapshot(
     string Content,
     DateTimeOffset Timestamp);
 
-/// <summary>
-/// Fixed-size ring buffer that stores recent message snapshots for a single channel.
-/// Thread-safe via lock. Tracks last-accessed time for idle expiry.
-/// </summary>
+// Fixed-size ring buffer of the recent messages of one channel.
 public sealed class ChannelMessageBuffer
 {
     private readonly MessageSnapshot[] _buffer;
@@ -22,9 +16,7 @@ public sealed class ChannelMessageBuffer
     private int _writeIndex;
     private readonly Lock _lock = new();
 
-    /// <summary>
-    /// When the buffer was last accessed by an agent invocation (for idle expiry)
-    /// </summary>
+    // Drives the idle expiry of the buffer.
     public DateTime LastAccessedUtc { get; private set; }
 
     public ChannelMessageBuffer(int capacity)
@@ -36,9 +28,7 @@ public sealed class ChannelMessageBuffer
         LastAccessedUtc = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Append a message to the buffer. If full, overwrites the oldest entry.
-    /// </summary>
+    // A full buffer overwrites the oldest entry.
     public void Push(MessageSnapshot snapshot)
     {
         lock (_lock)
@@ -51,9 +41,7 @@ public sealed class ChannelMessageBuffer
         }
     }
 
-    /// <summary>
-    /// Returns all buffered messages in chronological order and touches the last-accessed timestamp.
-    /// </summary>
+    // Returns the messages in chronological order.
     public MessageSnapshot[] GetMessages()
     {
         lock (_lock)
@@ -81,19 +69,11 @@ public sealed class ChannelMessageBuffer
         }
     }
 
-    /// <summary>
-    /// Number of messages currently in the buffer
-    /// </summary>
     public int Count
     {
         get { lock (_lock) return _count; }
     }
 
-    /// <summary>
-    /// Removes the snapshot with the given Discord message id, preserving the chronological
-    /// order of the remaining entries. Returns true if a matching entry was removed.
-    /// Re-normalizes the ring so the oldest entry sits at index 0; cheap on small buffers.
-    /// </summary>
     public bool TryRemove(ulong messageId)
     {
         lock (_lock)
@@ -117,9 +97,7 @@ public sealed class ChannelMessageBuffer
             if (foundAt < 0)
                 return false;
 
-            // Reconstruct the ring so [0..count-1] holds the remaining entries in
-            // chronological order. Cheaper than juggling write indices for a wrapped
-            // ring after an arbitrary removal.
+            // Rebuilt, because juggling the write index of a wrapped ring after a removal is worse.
             var remaining = _count - 1;
             var rebuilt = new MessageSnapshot[_capacity];
             var dst = 0;
@@ -139,10 +117,7 @@ public sealed class ChannelMessageBuffer
         }
     }
 
-    /// <summary>
-    /// Builds XML-formatted channel history, excluding the specified message.
-    /// All user content is XML-escaped to prevent Discord markup from breaking the structure.
-    /// </summary>
+    // Every value is escaped, so Discord markup cannot break the structure.
     public string? BuildHistoryXml(ulong channelId, string channelName, ulong excludeMessageId)
     {
         var snapshots = GetMessages();

@@ -52,6 +52,26 @@ namespace NadekoBot.Migrations
                     b.ToTable("AiAgentGuildSkill");
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.AiAgentWhitelistEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Type", "ItemId")
+                        .IsUnique();
+
+                    b.ToTable("AiAgentWhitelistEntry");
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.AntiAltSetting", b =>
                 {
                     b.Property<int>("Id")
@@ -2696,6 +2716,132 @@ namespace NadekoBot.Migrations
                     b.HasIndex("When");
 
                     b.ToTable("ScheduledCommand");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Utility.Starboard.Db.StarboardConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("AllowBots")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("AllowSelfStar")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Emote")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("⭐");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsEnabled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("Limit")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(100);
+
+                    b.Property<int>("Threshold")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(3);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId")
+                        .IsUnique();
+
+                    b.ToTable("StarboardConfig");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Utility.Starboard.Db.StarboardEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("MessageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StarCount")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "MessageId")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId", "Position");
+
+                    b.ToTable("StarboardEntry");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Utility.Starboard.Db.StarboardIgnoredChannel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "ChannelId")
+                        .IsUnique();
+
+                    b.ToTable("StarboardIgnoredChannel");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Utility.Starboard.Db.StarboardMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("MessageId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "Index")
+                        .IsUnique();
+
+                    b.ToTable("StarboardMessage");
                 });
 
             modelBuilder.Entity("NadekoBot.Modules.Utility.UserNotifications.Db.UserNotifyBlock", b =>

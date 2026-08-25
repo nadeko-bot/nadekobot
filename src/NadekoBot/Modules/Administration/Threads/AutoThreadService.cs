@@ -12,6 +12,11 @@ public sealed class AutoThreadService(
     ShardData shardData) : IExecNoCommand, IReadyExecutor, INService
 {
     public const int MAX_THREAD_NAME_LENGTH = 40;
+    public const int MAX_BACKFILL = 10;
+
+    private const int BACKFILL_DELAY_MS = 3000;
+    private const int BACKFILL_FETCH_MULTIPLIER = 10;
+    private const int MAX_BACKFILL_FETCH = 100;
 
     private ConcurrentDictionary<ulong, AutoThreadSetting> _channels = new();
 
@@ -97,6 +102,78 @@ public sealed class AutoThreadService(
         {
             Log.Warning(ex, "Failed to create an automatic thread in channel {ChannelId}", tch.Id);
         }
+    }
+
+    public async Task<int> BackfillAsync(
+        ITextChannel channel,
+        AutoThreadMode mode,
+        int count,
+        ulong beforeMessageId)
+    {
+        var fetchLimit = Math.Min(count * BACKFILL_FETCH_MULTIPLIER, MAX_BACKFILL_FETCH);
+        var messages = await channel.GetMessagesAsync(beforeMessageId, Direction.Before, fetchLimit)
+                                    .FlattenAsync();
+        var targets = SelectBackfillTargets(messages, mode, count);
+
+        var created = 0;
+        for (var i = 0; i < targets.Count; i++)
+        {
+            if (i > 0)
+                await Task.Delay(BACKFILL_DELAY_MS);
+
+            try
+            {
+                await channel.CreateThreadAsync(GetThreadName(targets[i]),
+                    message: targets[i],
+                    options: new()
+                    {
+                        RetryMode = RetryMode.AlwaysFail
+                    });
+
+                created++;
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex,
+                    "Failed to create a backfill thread for message {MessageId} in channel {ChannelId}",
+                    targets[i].Id,
+                    channel.Id);
+            }
+        }
+
+        return created;
+    }
+
+    public static List<IUserMessage> SelectBackfillTargets(
+        IEnumerable<IMessage> messages,
+        AutoThreadMode mode,
+        int count)
+    {
+        var targets = new List<IUserMessage>();
+
+        foreach (var msg in messages)
+        {
+            if (msg is not IUserMessage userMsg)
+                continue;
+
+            if (msg.Author.IsBot || msg.Author.IsWebhook)
+                continue;
+
+            if (msg.Flags.GetValueOrDefault().HasFlag(MessageFlags.HasThread))
+                continue;
+
+            if (mode == AutoThreadMode.Media && !HasMedia(userMsg))
+                continue;
+
+            targets.Add(userMsg);
+
+            if (targets.Count == count)
+                break;
+        }
+
+        targets.Sort(static (a, b) => a.Id.CompareTo(b.Id));
+
+        return targets;
     }
 
     public static bool HasMedia(IUserMessage msg)

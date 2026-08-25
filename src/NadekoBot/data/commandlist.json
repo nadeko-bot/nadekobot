@@ -792,7 +792,7 @@
         ".prune",
         ".clear"
       ],
-      "Description": "`.prune` removes all Nadeko's messages in the last 100 messages. `.prune X` removes last `X` number of messages from the channel (up to 1000). `.prune @Someone` removes all Someone's messages in the last 100 messages. `.prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID to only prune messages after that message.",
+      "Description": "`.prune` removes all Nadeko's messages in the last 100 messages. `.prune X` removes last `X` number of messages from the channel (up to 1000). `.prune @Someone` removes all Someone's messages in the last 100 messages. `.prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID to only prune messages after that message. The progress message has a Cancel button which stops the prune.",
       "Usage": [
         ".prune",
         ".prune -s",
@@ -805,10 +805,7 @@
       ],
       "Submodule": "PruneCommands",
       "Module": "Administration",
-      "Options": [
-        "`--safe` (`-s`)   Whether pinned messages should be deleted.  ",
-        "`--after` (`-a`)   Prune only messages after the specified message ID.  "
-      ],
+      "Options": null,
       "Requirements": []
     },
     {
@@ -1571,15 +1568,20 @@
         ".autothread",
         ".ath"
       ],
-      "Description": "Creates a thread on every new message in the current channel. Run it without parameters to toggle it on or off with the default settings.\nSet the mode to `all` to make a thread for every message, or `media` to only make one for messages with an attachment or a link.\nThe thread name is the first line of the message, up to 40 characters, or the author's name if the message has no text.",
+      "Description": "Makes the bot create a thread for each new message in this channel.\nUse the command without options to turn the feature on or off.\nModes:\n- `all` (default) creates a thread for any message\n- `media` creates a thread only for messages with an attachment or a link\nArchive durations: `1h`, `24h` (default), `3d`, `7d`. `3d` and `7d` need a boosted server.\nUse `--backfill` to also create threads for recent messages.",
       "Usage": [
         ".autothread",
-        ".autothread media",
-        ".autothread all 3d"
+        ".autothread -m media",
+        ".autothread --mode all --archive 3d",
+        ".autothread -m media -b 5"
       ],
       "Submodule": "ThreadCommands",
       "Module": "Administration",
-      "Options": null,
+      "Options": [
+        "`--mode` (`-m`)   Which messages start a thread. all or media. Default all.  ",
+        "`--archive` (`-a`)   Inactive time after which the bot archives the thread. 1h, 24h, 3d or 7d. Default 24h.  ",
+        "`--backfill` (`-b`)   Also create threads for this many recent messages. 1 to 10.  "
+      ],
       "Requirements": [
         "ManageThreads Server Permission"
       ]
@@ -1589,7 +1591,7 @@
         ".autothreadlist",
         ".athl"
       ],
-      "Description": "Lists all channels on this server which create threads automatically.",
+      "Description": "Shows the channels in which the bot creates threads automatically.",
       "Usage": [
         ".autothreadlist"
       ],
@@ -8393,6 +8395,36 @@
         ".scheduleadd 3h .br all"
       ],
       "Submodule": "ScheduledCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".starboard",
+        ".sboard"
+      ],
+      "Description": "Makes the current channel the starboard and opens the setup panel.\nThe bot copies messages which get enough star reactions to the starboard.",
+      "Usage": [
+        ".starboard"
+      ],
+      "Submodule": "StarboardCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "ManageServer Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".starrandom",
+        ".srandom"
+      ],
+      "Description": "Shows a random message from the starboard.",
+      "Usage": [
+        ".starrandom"
+      ],
+      "Submodule": "StarboardCommands",
       "Module": "Utility",
       "Options": null,
       "Requirements": []

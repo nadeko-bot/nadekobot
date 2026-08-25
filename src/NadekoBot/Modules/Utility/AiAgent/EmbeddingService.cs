@@ -65,53 +65,39 @@ public sealed class EmbeddingService(IHttpClientFactory httpFactory) : INService
     public float[] Embed(string text)
     {
         var ids = _tokenizer!.EncodeToIds(text, MAX_SEQ_LEN, out _, out _);
-        var inputIds = new int[ids.Count];
-        var attentionMask = new int[ids.Count];
-        var tokenTypeIds = new int[ids.Count];
+        var tokenCount = ids.Count;
 
-        for (var i = 0; i < ids.Count; i++)
+        // Every token is real and the input is a single sequence, so the mask is all ones.
+        var inputIds = new long[tokenCount];
+        var attentionMask = new long[tokenCount];
+        var tokenTypeIds = new long[tokenCount];
+
+        for (var i = 0; i < tokenCount; i++)
         {
             inputIds[i] = ids[i];
             attentionMask[i] = 1;
-            tokenTypeIds[i] = 0;
         }
 
-        var shape = new[] { 1, ids.Count };
-
-        var longInputIds = new long[ids.Count];
-        var longAttentionMask = new long[ids.Count];
-        var longTokenTypeIds = new long[ids.Count];
-
-        for (var i = 0; i < ids.Count; i++)
-        {
-            longInputIds[i] = inputIds[i];
-            longAttentionMask[i] = attentionMask[i];
-            longTokenTypeIds[i] = tokenTypeIds[i];
-        }
+        var shape = new[] { 1, tokenCount };
 
         var inputs = new List<NamedOnnxValue>
         {
             NamedOnnxValue.CreateFromTensor("input_ids",
-                new DenseTensor<long>(longInputIds, shape)),
+                new DenseTensor<long>(inputIds, shape)),
             NamedOnnxValue.CreateFromTensor("attention_mask",
-                new DenseTensor<long>(longAttentionMask, shape)),
+                new DenseTensor<long>(attentionMask, shape)),
             NamedOnnxValue.CreateFromTensor("token_type_ids",
-                new DenseTensor<long>(longTokenTypeIds, shape)),
+                new DenseTensor<long>(tokenTypeIds, shape)),
         };
 
         using var results = _session!.Run(inputs);
         var output = results.First().AsTensor<float>();
 
         var embedding = new float[EMBEDDING_DIM];
-        var tokenCount = 0;
-        for (var i = 0; i < ids.Count; i++)
+        for (var i = 0; i < tokenCount; i++)
         {
-            if (attentionMask[i] == 0)
-                continue;
-
             for (var j = 0; j < EMBEDDING_DIM; j++)
                 embedding[j] += output[0, i, j];
-            tokenCount++;
         }
 
         if (tokenCount > 0)

@@ -1,7 +1,5 @@
 prune_already_running: A prune is already running on this server.
+prune_btn_cancel: Cancel
 prune_cancelled: Pruning was cancelled.
 prune_not_found: No active prune was found on this server.
-prune_patron: >-
-  Deleting messages 2 weeks old or older requires [Patron Tier
-  X](https://patreon.com/join/nadekobot) or higher.
 prune_progress: Pruning... {0}/{1} messages deleted.

@@ -4,7 +4,7 @@ using NadekoBot.Common.ModuleBehaviors;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-public sealed record DataToolEntry(string Name, string GroupName, string Description, string SearchText);
+public sealed record DataToolEntry(string Name, string Description, string SearchText);
 
 public sealed class DataToolSearchService(
     EmbeddingService embedder,
@@ -42,10 +42,8 @@ public sealed class DataToolSearchService(
             var i = 0;
             foreach (var (name, tool) in dataTools)
             {
-                var groupName = "";
                 entries[i++] = new DataToolEntry(
                     name,
-                    groupName,
                     tool.Description,
                     $"{name} | {tool.Description}");
             }

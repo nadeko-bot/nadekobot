@@ -58,7 +58,7 @@ waifu_not_participating: |-
   👥 **Fan** - backs a waifu with bank balance, earns from the fan pool
 
   **Cycle**
-  Every 3.5 days, returns are generated from backed funds and split between the waifu, manager, and fans. Keep your waifu's mood 😊 and food 🍔 high for better payouts!
+  Every day, the bot generates returns from backed funds and splits them between the waifu, manager, and fans. Keep your waifu's mood 😊 and food 🍔 high for better payouts!
 waifu_fan_not_waifu: "You're not a waifu -- you're a fan of **{0}**."
 waifu_gifts_received: "Gifts Received"
 waifu_resigned_manager: "You've resigned as manager of {0}."

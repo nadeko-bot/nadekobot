@@ -1,6 +1,6 @@
 prune:
   desc: |-
-    `{0}prune` removes all Nadeko's messages in the last 100 messages. `{0}prune X` removes last `X` number of messages from the channel (up to 1000). `{0}prune @Someone` removes all Someone's messages in the last 100 messages. `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID to only prune messages after that message.
+    `{0}prune` removes all Nadeko's messages in the last 100 messages. `{0}prune X` removes last `X` number of messages from the channel (up to 1000). `{0}prune @Someone` removes all Someone's messages in the last 100 messages. `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID to only prune messages after that message. The progress message has a Cancel button which stops the prune.
   ex:
     - ''
     - '-s'

@@ -1,111 +1,111 @@
 ar:
   prune_already_running: عملية حذف جارية بالفعل في هذا السيرفر.
+  prune_btn_cancel: إلغاء
   prune_cancelled: تم إلغاء عملية الحذف.
   prune_not_found: لم يتم العثور على عملية حذف نشطة في هذا السيرفر.
-  prune_patron: 'حذف الرسائل التي مضى عليها أسبوعان أو أكثر يتطلب [Patron Tier X](https://patreon.com/join/nadekobot) أو أعلى.'
   prune_progress: 'جارٍ الحذف... تم حذف {0}/{1} رسالة.'
 
 de-DE:
   prune_already_running: Eine Bereinigung läuft bereits auf diesem Server.
+  prune_btn_cancel: Abbrechen
   prune_cancelled: Die Bereinigung wurde abgebrochen.
   prune_not_found: Keine aktive Bereinigung auf diesem Server gefunden.
-  prune_patron: 'Das Löschen von Nachrichten, die 2 Wochen oder älter sind, erfordert [Patron Tier X](https://patreon.com/join/nadekobot) oder höher.'
   prune_progress: 'Bereinigung... {0}/{1} Nachrichten gelöscht.'
 
 es-ES:
   prune_already_running: Ya hay una limpieza en progreso en este servidor.
+  prune_btn_cancel: Cancelar
   prune_cancelled: La limpieza fue cancelada.
   prune_not_found: No se encontró ninguna limpieza activa en este servidor.
-  prune_patron: 'Eliminar mensajes de 2 semanas o más requiere [Patron Tier X](https://patreon.com/join/nadekobot) o superior.'
   prune_progress: 'Limpiando... {0}/{1} mensajes eliminados.'
 
 fr-FR:
   prune_already_running: Un nettoyage est déjà en cours sur ce serveur.
+  prune_btn_cancel: Annuler
   prune_cancelled: Le nettoyage a été annulé.
   prune_not_found: Aucun nettoyage actif trouvé sur ce serveur.
-  prune_patron: 'Supprimer des messages de 2 semaines ou plus nécessite [Patron Tier X](https://patreon.com/join/nadekobot) ou supérieur.'
   prune_progress: 'Nettoyage... {0}/{1} messages supprimés.'
 
 id-ID:
   prune_already_running: Prune sudah sedang berjalan di server ini.
+  prune_btn_cancel: Batal
   prune_cancelled: Prune dibatalkan.
   prune_not_found: Tidak ditemukan prune aktif di server ini.
-  prune_patron: 'Menghapus pesan yang berumur 2 minggu atau lebih membutuhkan [Patron Tier X](https://patreon.com/join/nadekobot) atau lebih tinggi.'
   prune_progress: 'Sedang pruning... {0}/{1} pesan dihapus.'
 
 ja-JP:
   prune_already_running: このサーバーでは既にプルーンが実行中です。
+  prune_btn_cancel: キャンセル
   prune_cancelled: プルーンがキャンセルされました。
   prune_not_found: このサーバーでアクティブなプルーンは見つかりませんでした。
-  prune_patron: '2週間以上前のメッセージの削除には[Patron Tier X](https://patreon.com/join/nadekobot)以上が必要です。'
   prune_progress: 'プルーン中... {0}/{1}メッセージ削除済み。'
 
 ko-KR:
   prune_already_running: 이 서버에서 이미 정리가 진행 중이에요.
+  prune_btn_cancel: 취소
   prune_cancelled: 정리가 취소되었어요.
   prune_not_found: 이 서버에서 진행 중인 정리를 찾을 수 없어요.
-  prune_patron: '2주 이상 된 메시지 삭제는 [Patron Tier X](https://patreon.com/join/nadekobot) 이상이 필요해요.'
   prune_progress: '정리 중... {0}/{1}개 메시지 삭제됨.'
 
 pl-PL:
   prune_already_running: Na tym serwerze już trwa czyszczenie.
+  prune_btn_cancel: Anuluj
   prune_cancelled: Czyszczenie zostało anulowane.
   prune_not_found: Nie znaleziono aktywnego czyszczenia na tym serwerze.
-  prune_patron: 'Usuwanie wiadomości starszych niż 2 tygodnie wymaga [Patrona Tier X](https://patreon.com/join/nadekobot) lub wyższego.'
   prune_progress: 'Czyszczenie... {0}/{1} wiadomości usunięto.'
 
 pt-BR:
   prune_already_running: Uma limpeza já está em andamento neste servidor.
+  prune_btn_cancel: Cancelar
   prune_cancelled: A limpeza foi cancelada.
   prune_not_found: Nenhuma limpeza ativa foi encontrada neste servidor.
-  prune_patron: 'Excluir mensagens com 2 semanas ou mais requer [Patron Tier X](https://patreon.com/join/nadekobot) ou superior.'
   prune_progress: 'Limpando... {0}/{1} mensagens excluídas.'
 
 ru-RU:
   prune_already_running: Очистка уже выполняется на этом сервере.
+  prune_btn_cancel: Отмена
   prune_cancelled: Очистка была отменена.
   prune_not_found: Активная очистка не найдена на этом сервере.
-  prune_patron: 'Удаление сообщений старше 2 недель требует [Patron Tier X](https://patreon.com/join/nadekobot) или выше.'
   prune_progress: 'Очистка... {0}/{1} сообщений удалено.'
 
 sr-Cyrl-RS:
   prune_already_running: Чишћење је већ у току на овом серверу.
+  prune_btn_cancel: Откажи
   prune_cancelled: Чишћење је отказано.
   prune_not_found: Није пронађено активно чишћење на овом серверу.
-  prune_patron: 'Брисање порука старијих од 2 недеље захтева [Patron Tier X](https://patreon.com/join/nadekobot) или више.'
   prune_progress: 'Чишћење... {0}/{1} порука обрисано.'
 
 tr-TR:
   prune_already_running: Bu sunucuda zaten bir temizleme çalışıyor.
+  prune_btn_cancel: İptal
   prune_cancelled: Temizleme iptal edildi.
   prune_not_found: Bu sunucuda aktif bir temizleme bulunamadı.
-  prune_patron: '2 hafta veya daha eski mesajları silmek için [Patron Seviye X](https://patreon.com/join/nadekobot) veya üstü gereklidir.'
   prune_progress: 'Temizleniyor... {0}/{1} mesaj silindi.'
 
 ts-TS:
   prune_already_running: A prune is already running on this server. Be patient.
+  prune_btn_cancel: Dur
   prune_cancelled: Pruning was cancelled. I-it's not like I wanted to do it anyway.
   prune_not_found: No active prune was found on this server.
-  prune_patron: 'Deleting messages 2 weeks old or older requires [Patron Tier X](https://patreon.com/join/nadekobot) or higher.'
   prune_progress: 'Pruning... {0}/{1} messages deleted. I-I''m working on it, okay?!'
 
 uk-UA:
   prune_already_running: На цьому сервері вже виконується очищення.
+  prune_btn_cancel: Скасувати
   prune_cancelled: Очищення скасовано.
   prune_not_found: На цьому сервері не знайдено активного очищення.
-  prune_patron: 'Видалення повідомлень старших за 2 тижні потребує [Patron Tier X](https://patreon.com/join/nadekobot) або вище.'
   prune_progress: 'Очищення... {0}/{1} повідомлень видалено.'
 
 vi-VN:
   prune_already_running: Đang có một lệnh dọn tin nhắn chạy trên máy chủ này rồi.
+  prune_btn_cancel: Hủy
   prune_cancelled: Đã hủy việc dọn tin nhắn.
   prune_not_found: Không tìm thấy lệnh dọn tin nhắn nào đang chạy trên máy chủ này.
-  prune_patron: 'Xóa tin nhắn cũ 2 tuần trở lên yêu cầu [Patron Tier X](https://patreon.com/join/nadekobot) hoặc cao hơn.'
   prune_progress: 'Đang dọn... đã xóa {0}/{1} tin nhắn.'
 
 zh-CN:
   prune_already_running: 此伺服器已有清理正在進行中。
+  prune_btn_cancel: 取消
   prune_cancelled: 清理已取消。
   prune_not_found: 在此伺服器上未找到進行中的清理。
-  prune_patron: '刪除 2 週或更久的訊息需要 [Patron Tier X](https://patreon.com/join/nadekobot) 或更高等級。'
   prune_progress: '清理中... 已刪除 {0}/{1} 則訊息。'

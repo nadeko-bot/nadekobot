@@ -1,15 +1,7 @@
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-/// <summary>
-/// Thrown by adapter methods to signal a structured tool error to the LLM.
-/// The generator-emitted ExecuteAsync wraps this and serialises a stable
-/// JSON shape: <c>{"error":"&lt;code&gt;","message":"&lt;message&gt;"}</c>.
-///
-/// Use a short snake_case <see cref="Code"/> -- LLMs key off it more reliably
-/// than free-form prose. Reserved codes used across the codebase:
-/// <c>missing_permission</c>, <c>not_found</c>, <c>invalid_argument</c>,
-/// <c>forbidden</c>.
-/// </summary>
+// The generated ExecuteAsync serializes this as {"error":"<code>","message":"<message>"}.
+// The code stays short and snake_case, because an LLM keys off it better than off prose.
 public sealed class ToolException : Exception
 {
     public string Code { get; }
@@ -31,10 +23,7 @@ public sealed class ToolException : Exception
     public static ToolException Forbidden(string message)
         => new("forbidden", message);
 
-    /// <summary>
-    /// Catch-all for unexpected adapter failures bubbled up to the LLM.
-    /// Prefer the specific factories above whenever the failure shape is known.
-    /// </summary>
+    // Prefer a specific factory above when the shape of the failure is known.
     public static ToolException Internal(string message)
         => new("internal_error", message);
 }

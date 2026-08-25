@@ -1,0 +1,12 @@
+starboard:
+  desc: |-
+    Makes the current channel the starboard and opens the setup panel.
+    The bot copies messages which get enough star reactions to the starboard.
+    The most starred message stays at the top of the channel.
+    A message stays on the starboard even if the original message is deleted.
+    The star reaction can be a custom emote.
+    The panel sets how many messages the starboard shows, from 10 to 100.
+  ex:
+    - ''
+  params:
+    - { }

@@ -2,14 +2,42 @@
 
 *a,c,f,r,o,d*
 
-## [7.2.15] - WIP
+## [7.3.0] - 23.08.2026
 
 ### Added
 
-- `.autothread` / `.ath` makes the bot create a thread on each new message in a channel.
-    - `--mode` / `-m` starts threads for all messages, or only for messages with an attachment or a link.
+- `.autothread` / `.ath` makes the bot create a thread on each new message in a channel
+    - `--mode` / `-m` starts threads for all messages (-m all), or only for messages with an attachment or a link (-m media)
     - `--archive` / `-a` sets the archive duration to `1h`, `24h`, `3d` or `7d`.
-- `.autothreadlist` / `.athl` shows the channels which create threads automatically.
+    - `--backfill` / `-b` followed by a number 1-10 creates threads for up to 10 recent messages retroactively
+- `.autothreadlist` / `.athl` shows the channels which have this feature enabled
+- The `.prune` progress message now has a Cancel button which stops the prune.
+- `.starboard` / `.sboard` makes the current channel the starboard and opens the setup panel
+    - the bot copies messages which get enough star reactions
+    - the most starred message stays at the top of the channel
+    - the panel sets the emote, the reaction count, how many messages the board shows, and ignored channels
+- `.agentwhitelist` / `.aiwl` lets a user use the AI agent without patronage
+    - `.agentwhitelistrole` / `.aiwlr` and `.agentwhitelistserver` / `.aiwls` allow a whole role or server
+    - `.agentwhitelistlist` / `.aiwll` shows who can use the agent
+
+### Fixed
+
+- Waifu help texts now describe the current manager rules and the daily cycle.
+- `.cmds` no longer fails on modules which have many submodules or commands.
+- AI agent channel skills now apply only in their own channel.
+- `.aiskillremove` / `.aiskilltoggle` no longer change a channel skill with the same name.
+- `.cmds` now pages the submodule list and the command list.
+- `.prune` rewritten from scratch
+    - `.prune @user` and `.prune <userid>` no longer stop randomly
+    - `.prunecancel` / `.prunec` now stops the prune immediately
+    - now shows correct progress
+    - better error handling
+
+### Dev
+
+- Rewrote the prune loop and removed the unused patron prune result.
+- The prune progress message updates once every few seconds instead of once per batch
+- The ai agent allocates less on each message, and its comments are shorter.
 
 ## [7.2.14] - 02.08.2026
 

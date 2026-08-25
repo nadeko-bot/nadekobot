@@ -77,13 +77,45 @@ public partial class Administration
                 return;
             }
 
+            if (!HasArchiveFeature(minutes))
+            {
+                await Response()
+                    .Error(strs.autothread_boost_required(AutoThreadArchive.Pretty(minutes)))
+                    .SendAsync();
+                return;
+            }
+
+            if (opts.Backfill is < 0 or > AutoThreadService.MAX_BACKFILL)
+            {
+                await Response()
+                    .Error(strs.autothread_backfill_invalid(AutoThreadService.MAX_BACKFILL))
+                    .SendAsync();
+                return;
+            }
+
             await ats.EnableAsync(ctx.Guild.Id, stc.Id, mode, minutes);
 
             await Response()
                 .Confirm(strs.autothread_enabled(Format.Bold(mode.ToString()),
                     Format.Bold(AutoThreadArchive.Pretty(minutes))))
                 .SendAsync();
+
+            if (opts.Backfill == 0)
+                return;
+
+            var created = await ats.BackfillAsync(stc, mode, opts.Backfill, ctx.Message.Id);
+            await Response().Confirm(strs.autothread_backfill_done(created)).SendAsync();
         }
+
+        private bool HasArchiveFeature(int minutes)
+            => minutes switch
+            {
+                AutoThreadArchive.THREE_DAYS
+                    => ctx.Guild.Features.HasFeature(GuildFeature.ThreeDayThreadArchive),
+                AutoThreadArchive.ONE_WEEK
+                    => ctx.Guild.Features.HasFeature(GuildFeature.SevenDayThreadArchive),
+                _ => true
+            };
 
         [Cmd]
         [RequireContext(ContextType.Guild)]

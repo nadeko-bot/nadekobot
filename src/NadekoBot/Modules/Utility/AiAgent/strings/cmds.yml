@@ -20,7 +20,7 @@ agentskilladd:
   desc: |-
     Adds a named skill to the AI agent for this server.
     Skills are custom instructions that get included in every agent interaction.
-    Maximum 10 skills per server, 1000 characters per instruction.
+    Maximum 10 skills per server, 2000 characters per instruction.
   ex:
     - 'moderator Always enforce the server rules strictly and warn users before taking action'
     - 'greeter Welcome new users warmly and point them to the #rules channel'
@@ -84,6 +84,47 @@ agentchannelskilltoggle:
 agentchannelskilllist:
   desc: |-
     Lists all channel-specific AI agent skills for the current channel.
+  ex:
+    - ''
+  params:
+    - { }
+agentwhitelist:
+  desc: |-
+    Lets a user use the AI agent, or takes the permission away again.
+    The bot owner can always use the agent.
+    Run the command again on the same user to remove the permission.
+  ex:
+    - '@Someone'
+    - '123123123123'
+  params:
+    - user:
+        desc: "The user to add to or remove from the whitelist."
+    - userId:
+        desc: "The id of the user to add to or remove from the whitelist."
+agentwhitelistrole:
+  desc: |-
+    Lets every member of a role use the AI agent, or takes the permission away again.
+    Run the command again on the same role to remove the permission.
+  ex:
+    - 'Moderators'
+  params:
+    - role:
+        desc: "The role to add to or remove from the whitelist."
+agentwhitelistserver:
+  desc: |-
+    Lets every member of a server use the AI agent, or takes the permission away again.
+    Run the command without an id to use the current server.
+    Run the command again on the same server to remove the permission.
+  ex:
+    - ''
+    - '123123123123'
+  params:
+    - { }
+    - guildId:
+        desc: "The id of the server to add to or remove from the whitelist."
+agentwhitelistlist:
+  desc: |-
+    Shows the users, roles and servers which can use the AI agent.
   ex:
     - ''
   params:

@@ -4,6 +4,9 @@ ar:
   autothread_invalid_duration: مدة الأرشفة غير صالحة. استخدم `1h` أو `24h` أو `3d` أو `7d`.
   autothread_invalid_mode: الوضع غير صالح. استخدم `all` أو `media`.
   autothread_wrong_channel: يمكن استخدام هذا الأمر في قناة نصية عادية فقط.
+  autothread_boost_required: 'يحتاج هذا السيرفر إلى مستوى تعزيز أعلى لمدة الأرشفة `{0}`.'
+  autothread_backfill_invalid: 'عدد الرسائل السابقة غير صالح. استخدم رقمًا من 1 إلى {0}.'
+  autothread_backfill_done: 'تم إنشاء {0} موضوع للرسائل الأخيرة.'
   autothread_list: قنوات المواضيع التلقائية
   autothread_list_none: لا توجد قنوات مواضيع تلقائية في هذا السيرفر.
 
@@ -13,6 +16,9 @@ de-DE:
   autothread_invalid_duration: Ungültige Archivierungsdauer. Nutze `1h`, `24h`, `3d` oder `7d`.
   autothread_invalid_mode: Ungültiger Modus. Nutze `all` oder `media`.
   autothread_wrong_channel: Dieser Befehl kann nur in einem normalen Textkanal genutzt werden.
+  autothread_boost_required: 'Dieser Server braucht ein höheres Boost-Level für die Archivierungsdauer `{0}`.'
+  autothread_backfill_invalid: 'Ungültige Anzahl für ältere Nachrichten. Nutze eine Zahl von 1 bis {0}.'
+  autothread_backfill_done: '{0} Threads für die letzten Nachrichten erstellt.'
   autothread_list: Kanäle mit automatischen Threads
   autothread_list_none: Auf diesem Server gibt es keine Kanäle mit automatischen Threads.
 
@@ -22,6 +28,9 @@ es-ES:
   autothread_invalid_duration: Duración de archivado no válida. Usa `1h`, `24h`, `3d` o `7d`.
   autothread_invalid_mode: Modo no válido. Usa `all` o `media`.
   autothread_wrong_channel: Este comando solo se puede usar en un canal de texto normal.
+  autothread_boost_required: 'Este servidor necesita un nivel de mejora más alto para la duración de archivado `{0}`.'
+  autothread_backfill_invalid: 'Cantidad de mensajes anteriores no válida. Usa un número del 1 al {0}.'
+  autothread_backfill_done: 'Se han creado {0} hilos para los mensajes recientes.'
   autothread_list: Canales con hilo automático
   autothread_list_none: No hay canales con hilo automático en este servidor.
 
@@ -31,6 +40,9 @@ fr-FR:
   autothread_invalid_duration: Durée d'archivage invalide. Utilise `1h`, `24h`, `3d` ou `7d`.
   autothread_invalid_mode: Mode invalide. Utilise `all` ou `media`.
   autothread_wrong_channel: Cette commande ne peut être utilisée que dans un salon textuel normal.
+  autothread_boost_required: 'Ce serveur a besoin d''un niveau de boost plus élevé pour la durée d''archivage `{0}`.'
+  autothread_backfill_invalid: 'Nombre de messages à rattraper invalide. Utilise un nombre de 1 à {0}.'
+  autothread_backfill_done: '{0} fils créés pour les messages récents.'
   autothread_list: Salons avec fils automatiques
   autothread_list_none: Il n'y a aucun salon avec fils automatiques sur ce serveur.
 
@@ -40,6 +52,9 @@ id-ID:
   autothread_invalid_duration: Durasi arsip tidak valid. Gunakan `1h`, `24h`, `3d`, atau `7d`.
   autothread_invalid_mode: Mode tidak valid. Gunakan `all` atau `media`.
   autothread_wrong_channel: Perintah ini hanya bisa dipakai di channel teks biasa.
+  autothread_boost_required: 'Server ini butuh level boost lebih tinggi untuk durasi arsip `{0}`.'
+  autothread_backfill_invalid: 'Jumlah pesan lama tidak valid. Gunakan angka dari 1 sampai {0}.'
+  autothread_backfill_done: '{0} thread dibuat untuk pesan terbaru.'
   autothread_list: Channel dengan thread otomatis
   autothread_list_none: Tidak ada channel dengan thread otomatis di server ini.
 
@@ -49,6 +64,9 @@ ja-JP:
   autothread_invalid_duration: アーカイブ時間が無効です。`1h`、`24h`、`3d`、`7d` のいずれかを使ってください。
   autothread_invalid_mode: モードが無効です。`all` または `media` を使ってください。
   autothread_wrong_channel: このコマンドは通常のテキストチャンネルでのみ使えます。
+  autothread_boost_required: '`{0}` のアーカイブ時間を使うには、このサーバーにもっと高いブーストレベルが必要です。'
+  autothread_backfill_invalid: '過去メッセージの件数が無効です。1 から {0} までの数字を使ってください。'
+  autothread_backfill_done: '最近のメッセージに {0} 件のスレッドを作成しました。'
   autothread_list: 自動スレッド作成チャンネル
   autothread_list_none: このサーバーには自動スレッド作成チャンネルがありません。
 
@@ -58,6 +76,9 @@ ko-KR:
   autothread_invalid_duration: 보관 시간이 올바르지 않습니다. `1h`, `24h`, `3d`, `7d` 중 하나를 사용하세요.
   autothread_invalid_mode: 모드가 올바르지 않습니다. `all` 또는 `media`를 사용하세요.
   autothread_wrong_channel: 이 명령어는 일반 텍스트 채널에서만 사용할 수 있습니다.
+  autothread_boost_required: '`{0}` 보관 시간을 사용하려면 이 서버의 부스트 레벨이 더 높아야 합니다.'
+  autothread_backfill_invalid: '이전 메시지 개수가 올바르지 않습니다. 1부터 {0}까지의 숫자를 사용하세요.'
+  autothread_backfill_done: '최근 메시지에 스레드 {0}개를 만들었습니다.'
   autothread_list: 자동 스레드 채널
   autothread_list_none: 이 서버에는 자동 스레드 채널이 없습니다.
 
@@ -67,6 +88,9 @@ pl-PL:
   autothread_invalid_duration: Nieprawidłowy czas archiwizacji. Użyj `1h`, `24h`, `3d` lub `7d`.
   autothread_invalid_mode: Nieprawidłowy tryb. Użyj `all` lub `media`.
   autothread_wrong_channel: Tej komendy można użyć tylko na zwykłym kanale tekstowym.
+  autothread_boost_required: 'Ten serwer potrzebuje wyższego poziomu boostów dla czasu archiwizacji `{0}`.'
+  autothread_backfill_invalid: 'Nieprawidłowa liczba starszych wiadomości. Użyj liczby od 1 do {0}.'
+  autothread_backfill_done: 'Utworzono {0} wątków dla ostatnich wiadomości.'
   autothread_list: Kanały z automatycznymi wątkami
   autothread_list_none: Na tym serwerze nie ma kanałów z automatycznymi wątkami.
 
@@ -76,6 +100,9 @@ pt-BR:
   autothread_invalid_duration: Duração de arquivamento inválida. Use `1h`, `24h`, `3d` ou `7d`.
   autothread_invalid_mode: Modo inválido. Use `all` ou `media`.
   autothread_wrong_channel: Este comando só pode ser usado em um canal de texto normal.
+  autothread_boost_required: 'Este servidor precisa de um nível de impulso maior para a duração de arquivamento `{0}`.'
+  autothread_backfill_invalid: 'Quantidade de mensagens antigas inválida. Use um número de 1 a {0}.'
+  autothread_backfill_done: '{0} threads criadas para as mensagens recentes.'
   autothread_list: Canais com thread automática
   autothread_list_none: Não há canais com thread automática neste servidor.
 
@@ -85,6 +112,9 @@ ru-RU:
   autothread_invalid_duration: Неверное время архивации. Используй `1h`, `24h`, `3d` или `7d`.
   autothread_invalid_mode: Неверный режим. Используй `all` или `media`.
   autothread_wrong_channel: Эту команду можно использовать только в обычном текстовом канале.
+  autothread_boost_required: 'Этому серверу нужен более высокий уровень бустов для времени архивации `{0}`.'
+  autothread_backfill_invalid: 'Неверное количество прошлых сообщений. Используй число от 1 до {0}.'
+  autothread_backfill_done: 'Создано {0} веток для последних сообщений.'
   autothread_list: Каналы с автоветками
   autothread_list_none: На этом сервере нет каналов с автоветками.
 
@@ -94,6 +124,9 @@ sr-Cyrl-RS:
   autothread_invalid_duration: Неисправно време архивирања. Користи `1h`, `24h`, `3d` или `7d`.
   autothread_invalid_mode: Неисправан режим. Користи `all` или `media`.
   autothread_wrong_channel: Ова команда може да се користи само у обичном текстуалном каналу.
+  autothread_boost_required: 'Овом серверу је потребан виши ниво буста за време архивирања `{0}`.'
+  autothread_backfill_invalid: 'Неисправан број претходних порука. Користи број од 1 до {0}.'
+  autothread_backfill_done: 'Направљено је {0} тема за недавне поруке.'
   autothread_list: Канали са аутоматским темама
   autothread_list_none: На овом серверу нема канала са аутоматским темама.
 
@@ -103,6 +136,9 @@ tr-TR:
   autothread_invalid_duration: Geçersiz arşivleme süresi. `1h`, `24h`, `3d` veya `7d` kullan.
   autothread_invalid_mode: Geçersiz mod. `all` veya `media` kullan.
   autothread_wrong_channel: Bu komut sadece normal bir metin kanalında kullanılabilir.
+  autothread_boost_required: 'Bu sunucunun `{0}` arşivleme süresi için daha yüksek bir takviye seviyesine ihtiyacı var.'
+  autothread_backfill_invalid: 'Geçersiz eski mesaj sayısı. 1 ile {0} arasında bir sayı kullan.'
+  autothread_backfill_done: 'Son mesajlar için {0} başlık oluşturuldu.'
   autothread_list: Otomatik başlık kanalları
   autothread_list_none: Bu sunucuda otomatik başlık kanalı yok.
 
@@ -112,6 +148,9 @@ ts-TS:
   autothread_invalid_duration: That archive duration is invalid. Use `1h`, `24h`, `3d` or `7d`.
   autothread_invalid_mode: That mode is invalid. Use `all` or `media`.
   autothread_wrong_channel: This only works in a normal text channel. You should've known that, baka.
+  autothread_boost_required: 'This server needs a higher boost level for the `{0}` archive duration.'
+  autothread_backfill_invalid: 'That backfill count is invalid. Use a number from 1 to {0}.'
+  autothread_backfill_done: 'Fine, I made {0} threads for the recent messages.'
   autothread_list: Auto-thread channels
   autothread_list_none: There are no auto-thread channels on this server.
 
@@ -121,6 +160,9 @@ uk-UA:
   autothread_invalid_duration: Некоректний час архівування. Використовуй `1h`, `24h`, `3d` або `7d`.
   autothread_invalid_mode: Некоректний режим. Використовуй `all` або `media`.
   autothread_wrong_channel: Цю команду можна використовувати лише у звичайному текстовому каналі.
+  autothread_boost_required: 'Цьому серверу потрібен вищий рівень бустів для часу архівування `{0}`.'
+  autothread_backfill_invalid: 'Некоректна кількість попередніх повідомлень. Використовуй число від 1 до {0}.'
+  autothread_backfill_done: 'Створено {0} гілок для останніх повідомлень.'
   autothread_list: Канали з автогілками
   autothread_list_none: На цьому сервері немає каналів з автогілками.
 
@@ -130,6 +172,9 @@ vi-VN:
   autothread_invalid_duration: Thời gian lưu trữ không hợp lệ. Dùng `1h`, `24h`, `3d` hoặc `7d`.
   autothread_invalid_mode: Chế độ không hợp lệ. Dùng `all` hoặc `media`.
   autothread_wrong_channel: Lệnh này chỉ có thể dùng trong kênh văn bản thường.
+  autothread_boost_required: 'Máy chủ này cần cấp boost cao hơn để dùng thời gian lưu trữ `{0}`.'
+  autothread_backfill_invalid: 'Số tin nhắn cũ không hợp lệ. Dùng số từ 1 đến {0}.'
+  autothread_backfill_done: 'Đã tạo {0} luồng cho các tin nhắn gần đây.'
   autothread_list: Kênh tạo luồng tự động
   autothread_list_none: Máy chủ này không có kênh tạo luồng tự động nào.
 
@@ -139,5 +184,8 @@ zh-CN:
   autothread_invalid_duration: 存档时长无效。请使用 `1h`、`24h`、`3d` 或 `7d`。
   autothread_invalid_mode: 模式无效。请使用 `all` 或 `media`。
   autothread_wrong_channel: 此命令只能在普通文字频道中使用。
+  autothread_boost_required: '本服务器需要更高的加成等级才能使用 `{0}` 存档时长。'
+  autothread_backfill_invalid: '补建数量无效。请使用 1 到 {0} 之间的数字。'
+  autothread_backfill_done: '已为最近的消息创建了 {0} 个子区。'
   autothread_list: 自动子区频道
   autothread_list_none: 本服务器没有自动子区频道。

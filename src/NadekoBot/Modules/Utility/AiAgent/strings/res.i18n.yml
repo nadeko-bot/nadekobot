@@ -11,6 +11,15 @@ ar:
   skill_disabled: 'تم تعطيل المهارة **{0}**.'
   skill_list_empty: لم يتم تكوين أي مهارات لهذا السيرفر.
   skill_list_title: مهارات الوكيل
+  skill_list_title_channel: مهارات الوكيل (هذه القناة)
+  skill_list_footer: التغييرات تسري في جلسة الوكيل التالية.
+  agent_whitelist_added: '{0} `{1}` يمكنه الآن استخدام وكيل الذكاء الاصطناعي.'
+  agent_whitelist_removed: '{0} `{1}` لم يعد بإمكانه استخدام وكيل الذكاء الاصطناعي.'
+  agent_whitelist_empty: قائمة السماح لوكيل الذكاء الاصطناعي فارغة.
+  agent_whitelist_title: قائمة السماح لوكيل الذكاء الاصطناعي
+  agent_whitelist_users: المستخدمون
+  agent_whitelist_roles: الرتب
+  agent_whitelist_servers: السيرفرات
   skill_name_too_long: يجب ألا يتجاوز اسم المهارة 50 حرفا.
   skill_instruction_too_long: يجب ألا تتجاوز تعليمات المهارة 2000 حرف.
   aiprompt_title: مطالبات وكيل الذكاء الاصطناعي
@@ -34,6 +43,15 @@ de-DE:
   skill_disabled: 'Skill **{0}** wurde deaktiviert.'
   skill_list_empty: Für diesen Server wurden keine Skills konfiguriert.
   skill_list_title: Agenten-Skills
+  skill_list_title_channel: Agent-Skills (dieser Kanal)
+  skill_list_footer: Änderungen gelten ab der nächsten Agent-Sitzung.
+  agent_whitelist_added: '{0} `{1}` kann den KI-Agenten jetzt benutzen.'
+  agent_whitelist_removed: '{0} `{1}` kann den KI-Agenten nicht mehr benutzen.'
+  agent_whitelist_empty: Die Whitelist des KI-Agenten ist leer.
+  agent_whitelist_title: KI-Agent Whitelist
+  agent_whitelist_users: Benutzer
+  agent_whitelist_roles: Rollen
+  agent_whitelist_servers: Server
   skill_name_too_long: Der Skill-Name darf maximal 50 Zeichen lang sein.
   skill_instruction_too_long: Die Skill-Anweisung darf maximal 2000 Zeichen lang sein.
   aiprompt_title: KI-Agent-Prompts
@@ -57,6 +75,15 @@ es-ES:
   skill_disabled: 'El skill **{0}** ha sido desactivado.'
   skill_list_empty: No se han configurado skills para este servidor.
   skill_list_title: Skills del Agente
+  skill_list_title_channel: Habilidades del agente (este canal)
+  skill_list_footer: Los cambios se aplican en la siguiente sesión del agente.
+  agent_whitelist_added: '{0} `{1}` ya puede usar el agente de IA.'
+  agent_whitelist_removed: '{0} `{1}` ya no puede usar el agente de IA.'
+  agent_whitelist_empty: La lista blanca del agente de IA está vacía.
+  agent_whitelist_title: Lista blanca del agente de IA
+  agent_whitelist_users: Usuarios
+  agent_whitelist_roles: Roles
+  agent_whitelist_servers: Servidores
   skill_name_too_long: El nombre del skill debe tener 50 caracteres o menos.
   skill_instruction_too_long: La instruccion del skill debe tener 2000 caracteres o menos.
   aiprompt_title: Prompts del agente de IA
@@ -80,6 +107,15 @@ fr-FR:
   skill_disabled: 'La compétence **{0}** a été désactivée.'
   skill_list_empty: Aucune compétence n'a été configurée pour ce serveur.
   skill_list_title: Compétences de l'agent
+  skill_list_title_channel: Compétences de l'agent (ce salon)
+  skill_list_footer: Les changements s'appliquent à la prochaine session de l'agent.
+  agent_whitelist_added: '{0} `{1}` peut maintenant utiliser l''agent IA.'
+  agent_whitelist_removed: '{0} `{1}` ne peut plus utiliser l''agent IA.'
+  agent_whitelist_empty: La liste blanche de l'agent IA est vide.
+  agent_whitelist_title: Liste blanche de l'agent IA
+  agent_whitelist_users: Utilisateurs
+  agent_whitelist_roles: Rôles
+  agent_whitelist_servers: Serveurs
   skill_name_too_long: Le nom de la compétence ne doit pas dépasser 50 caractères.
   skill_instruction_too_long: L'instruction de la compétence ne doit pas dépasser 2000 caractères.
   aiprompt_title: Prompts de l'agent IA
@@ -103,6 +139,15 @@ id-ID:
   skill_disabled: 'Skill **{0}** telah dinonaktifkan.'
   skill_list_empty: Belum ada skill yang dikonfigurasi untuk server ini.
   skill_list_title: Skill Agen
+  skill_list_title_channel: Skill Agen (channel ini)
+  skill_list_footer: Perubahan berlaku pada sesi agen berikutnya.
+  agent_whitelist_added: '{0} `{1}` sekarang bisa pakai agen AI.'
+  agent_whitelist_removed: '{0} `{1}` sudah tidak bisa pakai agen AI.'
+  agent_whitelist_empty: Whitelist agen AI masih kosong.
+  agent_whitelist_title: Whitelist Agen AI
+  agent_whitelist_users: Pengguna
+  agent_whitelist_roles: Role
+  agent_whitelist_servers: Server
   skill_name_too_long: Nama skill harus 50 karakter atau kurang.
   skill_instruction_too_long: Instruksi skill harus 2000 karakter atau kurang.
   aiprompt_title: Prompt AI Agent
@@ -126,6 +171,15 @@ ja-JP:
   skill_disabled: 'スキル **{0}** が無効になりました。'
   skill_list_empty: このサーバーにはスキルが設定されていません。
   skill_list_title: エージェントスキル
+  skill_list_title_channel: エージェントスキル (このチャンネル)
+  skill_list_footer: 変更は次のエージェントセッションから適用されます。
+  agent_whitelist_added: '{0} `{1}` はAIエージェントを使えるようになりました。'
+  agent_whitelist_removed: '{0} `{1}` はAIエージェントを使えなくなりました。'
+  agent_whitelist_empty: AIエージェントのホワイトリストは空です。
+  agent_whitelist_title: AIエージェントのホワイトリスト
+  agent_whitelist_users: ユーザー
+  agent_whitelist_roles: ロール
+  agent_whitelist_servers: サーバー
   skill_name_too_long: スキル名は50文字以下にしてください。
   skill_instruction_too_long: スキルの指示は2000文字以下にしてください。
   aiprompt_title: AIエージェントのプロンプト
@@ -149,6 +203,15 @@ ko-KR:
   skill_disabled: '스킬 **{0}**이(가) 비활성화되었습니다.'
   skill_list_empty: 이 서버에 설정된 스킬이 없습니다.
   skill_list_title: 에이전트 스킬
+  skill_list_title_channel: 에이전트 스킬 (이 채널)
+  skill_list_footer: 변경 사항은 다음 에이전트 세션부터 적용돼요.
+  agent_whitelist_added: '{0} `{1}` 님이 이제 AI 에이전트를 사용할 수 있어요.'
+  agent_whitelist_removed: '{0} `{1}` 님은 이제 AI 에이전트를 사용할 수 없어요.'
+  agent_whitelist_empty: AI 에이전트 화이트리스트가 비어 있어요.
+  agent_whitelist_title: AI 에이전트 화이트리스트
+  agent_whitelist_users: 유저
+  agent_whitelist_roles: 역할
+  agent_whitelist_servers: 서버
   skill_name_too_long: 스킬 이름은 50자 이하여야 합니다.
   skill_instruction_too_long: 스킬 지시는 2000자 이하여야 합니다.
   aiprompt_title: AI 에이전트 프롬프트
@@ -172,6 +235,15 @@ pl-PL:
   skill_disabled: 'Umiejętność **{0}** została wyłączona.'
   skill_list_empty: Na tym serwerze nie skonfigurowano żadnych umiejętności.
   skill_list_title: Umiejętności agenta
+  skill_list_title_channel: Umiejętności agenta (ten kanał)
+  skill_list_footer: Zmiany zadziałają przy następnej sesji agenta.
+  agent_whitelist_added: '{0} `{1}` może teraz używać agenta AI.'
+  agent_whitelist_removed: '{0} `{1}` nie może już używać agenta AI.'
+  agent_whitelist_empty: Biała lista agenta AI jest pusta.
+  agent_whitelist_title: Biała lista agenta AI
+  agent_whitelist_users: Użytkownicy
+  agent_whitelist_roles: Role
+  agent_whitelist_servers: Serwery
   skill_name_too_long: Nazwa umiejętności nie może przekraczać 50 znaków.
   skill_instruction_too_long: Instrukcja umiejętności nie może przekraczać 2000 znaków.
   aiprompt_title: Prompty agenta AI
@@ -195,6 +267,15 @@ pt-BR:
   skill_disabled: 'A skill **{0}** foi desativada.'
   skill_list_empty: Nenhuma skill foi configurada para este servidor.
   skill_list_title: Skills do Agente
+  skill_list_title_channel: Habilidades do agente (este canal)
+  skill_list_footer: As mudanças valem a partir da próxima sessão do agente.
+  agent_whitelist_added: '{0} `{1}` agora pode usar o agente de IA.'
+  agent_whitelist_removed: '{0} `{1}` não pode mais usar o agente de IA.'
+  agent_whitelist_empty: A whitelist do agente de IA está vazia.
+  agent_whitelist_title: Whitelist do agente de IA
+  agent_whitelist_users: Usuários
+  agent_whitelist_roles: Cargos
+  agent_whitelist_servers: Servidores
   skill_name_too_long: O nome da skill deve ter no máximo 50 caracteres.
   skill_instruction_too_long: A instrução da skill deve ter no máximo 2000 caracteres.
   aiprompt_title: Prompts do Agente de IA
@@ -218,6 +299,15 @@ ru-RU:
   skill_disabled: 'Навык **{0}** был отключен.'
   skill_list_empty: Для этого сервера не настроено ни одного навыка.
   skill_list_title: Навыки агента
+  skill_list_title_channel: Навыки агента (этот канал)
+  skill_list_footer: Изменения вступят в силу со следующей сессии агента.
+  agent_whitelist_added: '{0} `{1}` теперь может пользоваться ИИ-агентом.'
+  agent_whitelist_removed: '{0} `{1}` больше не может пользоваться ИИ-агентом.'
+  agent_whitelist_empty: Белый список ИИ-агента пуст.
+  agent_whitelist_title: Белый список ИИ-агента
+  agent_whitelist_users: Пользователи
+  agent_whitelist_roles: Роли
+  agent_whitelist_servers: Серверы
   skill_name_too_long: Название навыка должно быть не длиннее 50 символов.
   skill_instruction_too_long: Инструкция навыка должна быть не длиннее 2000 символов.
   aiprompt_title: Промпты ИИ-агента
@@ -241,6 +331,15 @@ sr-Cyrl-RS:
   skill_disabled: 'Вештина **{0}** је онемогућена.'
   skill_list_empty: Ниједна вештина није подешена за овај сервер.
   skill_list_title: Вештине агента
+  skill_list_title_channel: Вештине агента (овај канал)
+  skill_list_footer: Измене важе од следеће сесије агента.
+  agent_whitelist_added: '{0} `{1}` сада може да користи АИ агента.'
+  agent_whitelist_removed: '{0} `{1}` више не може да користи АИ агента.'
+  agent_whitelist_empty: Бела листа АИ агента је празна.
+  agent_whitelist_title: Бела листа АИ агента
+  agent_whitelist_users: Корисници
+  agent_whitelist_roles: Улоге
+  agent_whitelist_servers: Сервери
   skill_name_too_long: Назив вештине мора имати 50 или мање карактера.
   skill_instruction_too_long: Упутство вештине мора имати 2000 или мање карактера.
   aiprompt_title: Промптови AI агента
@@ -264,6 +363,15 @@ tr-TR:
   skill_disabled: '**{0}** becerisi devre dışı bırakıldı.'
   skill_list_empty: Bu sunucu için yapılandırılmış beceri yok.
   skill_list_title: Ajan Becerileri
+  skill_list_title_channel: Ajan Yetenekleri (bu kanal)
+  skill_list_footer: Değişiklikler bir sonraki ajan oturumunda geçerli olur.
+  agent_whitelist_added: '{0} `{1}` artık AI ajanını kullanabilir.'
+  agent_whitelist_removed: '{0} `{1}` artık AI ajanını kullanamaz.'
+  agent_whitelist_empty: AI ajanı beyaz listesi boş.
+  agent_whitelist_title: AI Ajanı Beyaz Listesi
+  agent_whitelist_users: Kullanıcılar
+  agent_whitelist_roles: Roller
+  agent_whitelist_servers: Sunucular
   skill_name_too_long: Beceri adı 50 karakter veya daha kısa olmalı.
   skill_instruction_too_long: Beceri talimatı 2000 karakter veya daha kısa olmalı.
   aiprompt_title: AI Ajan Promptları
@@ -287,6 +395,15 @@ ts-TS:
   skill_disabled: 'Skill **{0}** has been disabled.'
   skill_list_empty: No skills configured for this server. Nothing to show you.
   skill_list_title: Agent Skills
+  skill_list_title_channel: Agent Skills (this channel)
+  skill_list_footer: Changes apply on the next agent session. Don't ask me again.
+  agent_whitelist_added: 'Fine, {0} `{1}` can use the AI agent now.'
+  agent_whitelist_removed: '{0} `{1}` can no longer use the AI agent.'
+  agent_whitelist_empty: The AI agent whitelist is empty.
+  agent_whitelist_title: AI Agent Whitelist
+  agent_whitelist_users: Users
+  agent_whitelist_roles: Roles
+  agent_whitelist_servers: Servers
   skill_name_too_long: Skill name has to be 50 characters or less, b-baka!
   skill_instruction_too_long: Skill instruction must be 2000 characters or less.
   aiprompt_title: AI Agent Prompts
@@ -310,6 +427,15 @@ uk-UA:
   skill_disabled: 'Навичку **{0}** вимкнено.'
   skill_list_empty: На цьому сервері не налаштовано жодної навички.
   skill_list_title: Навички агента
+  skill_list_title_channel: Навички агента (цей канал)
+  skill_list_footer: Зміни застосуються в наступній сесії агента.
+  agent_whitelist_added: '{0} `{1}` тепер може користуватися AI агентом.'
+  agent_whitelist_removed: '{0} `{1}` більше не може користуватися AI агентом.'
+  agent_whitelist_empty: Білий список AI агента порожній.
+  agent_whitelist_title: Білий список AI агента
+  agent_whitelist_users: Користувачі
+  agent_whitelist_roles: Ролі
+  agent_whitelist_servers: Сервери
   skill_name_too_long: Назва навички повинна бути не довше 50 символів.
   skill_instruction_too_long: Інструкція навички повинна бути не довше 2000 символів.
   aiprompt_title: Підказки AI-агента
@@ -333,6 +459,15 @@ vi-VN:
   skill_disabled: 'Kỹ năng **{0}** đã được tắt.'
   skill_list_empty: Chưa có kỹ năng nào được cấu hình cho máy chủ này.
   skill_list_title: Kỹ năng tác nhân
+  skill_list_title_channel: Kỹ năng agent (kênh này)
+  skill_list_footer: Thay đổi sẽ có hiệu lực trong phiên agent tiếp theo.
+  agent_whitelist_added: '{0} `{1}` giờ có thể dùng AI agent.'
+  agent_whitelist_removed: '{0} `{1}` không còn dùng được AI agent nữa.'
+  agent_whitelist_empty: Danh sách trắng của AI agent đang trống.
+  agent_whitelist_title: Danh sách trắng AI Agent
+  agent_whitelist_users: Người dùng
+  agent_whitelist_roles: Vai trò
+  agent_whitelist_servers: Máy chủ
   skill_name_too_long: Tên kỹ năng phải có 50 ký tự trở xuống.
   skill_instruction_too_long: Hướng dẫn kỹ năng phải có 2000 ký tự trở xuống.
   aiprompt_title: Prompt AI Agent
@@ -356,6 +491,15 @@ zh-CN:
   skill_disabled: '技能 **{0}** 已禁用。'
   skill_list_empty: 此服务器尚未配置任何技能。
   skill_list_title: 代理技能
+  skill_list_title_channel: 智能体技能（当前频道）
+  skill_list_footer: 更改将在下一次智能体会话中生效。
+  agent_whitelist_added: '{0} `{1}` 现在可以使用 AI 智能体了。'
+  agent_whitelist_removed: '{0} `{1}` 不能再使用 AI 智能体了。'
+  agent_whitelist_empty: AI 智能体白名单是空的。
+  agent_whitelist_title: AI 智能体白名单
+  agent_whitelist_users: 用户
+  agent_whitelist_roles: 身份组
+  agent_whitelist_servers: 服务器
   skill_name_too_long: 技能名称不能超过 50 个字符。
   skill_instruction_too_long: 技能指令不能超过 2000 个字符。
   aiprompt_title: AI 代理提示词

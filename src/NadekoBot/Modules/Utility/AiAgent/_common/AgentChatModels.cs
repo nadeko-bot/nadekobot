@@ -3,9 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-/// <summary>
-/// OpenAI chat completion request with tool support
-/// </summary>
 public sealed class AgentChatRequest
 {
     [JsonPropertyName("model")]
@@ -34,9 +31,6 @@ public sealed class AgentChatRequest
     public string? ReasoningEffort { get; init; }
 }
 
-/// <summary>
-/// A message in the agent conversation (supports system, user, assistant, and tool roles)
-/// </summary>
 public sealed class AgentChatMessage
 {
     [JsonPropertyName("role")]
@@ -59,9 +53,6 @@ public sealed class AgentChatMessage
     public string? ToolCallId { get; init; }
 }
 
-/// <summary>
-/// A tool call requested by the LLM
-/// </summary>
 public sealed class AgentToolCall
 {
     [JsonPropertyName("id")]
@@ -74,9 +65,6 @@ public sealed class AgentToolCall
     public required AgentFunctionCall Function { get; init; }
 }
 
-/// <summary>
-/// The function name and arguments from a tool call
-/// </summary>
 public sealed class AgentFunctionCall
 {
     [JsonPropertyName("name")]
@@ -86,21 +74,12 @@ public sealed class AgentFunctionCall
     public required string Arguments { get; init; }
 }
 
-/// <summary>
-/// OpenAI chat completion response
-/// </summary>
 public sealed class AgentChatResponse
 {
     [JsonPropertyName("choices")]
     public List<AgentChatChoice>? Choices { get; init; }
-
-    [JsonPropertyName("usage")]
-    public AgentUsage? Usage { get; init; }
 }
 
-/// <summary>
-/// A single choice in the response
-/// </summary>
 public sealed class AgentChatChoice
 {
     [JsonPropertyName("message")]
@@ -108,19 +87,4 @@ public sealed class AgentChatChoice
 
     [JsonPropertyName("finish_reason")]
     public string? FinishReason { get; init; }
-}
-
-/// <summary>
-/// Token usage info
-/// </summary>
-public sealed class AgentUsage
-{
-    [JsonPropertyName("prompt_tokens")]
-    public int PromptTokens { get; init; }
-
-    [JsonPropertyName("completion_tokens")]
-    public int CompletionTokens { get; init; }
-
-    [JsonPropertyName("total_tokens")]
-    public int TotalTokens { get; init; }
 }

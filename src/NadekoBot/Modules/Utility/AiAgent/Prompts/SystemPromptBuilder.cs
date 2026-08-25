@@ -81,10 +81,7 @@ public sealed class SystemPromptBuilder(
         }
     }
 
-    /// <summary>
-    /// Collects SystemGuidance strings from tools, filtering null/whitespace, deduplicating
-    /// (ordinal), and sorting alphabetically for deterministic prompt output.
-    /// </summary>
+    // Deduplicated and sorted, so the prompt is deterministic.
     public static List<string> CollectToolGuidance(IReadOnlyList<IAiTool> tools)
     {
         var seen = new HashSet<string>(StringComparer.Ordinal);

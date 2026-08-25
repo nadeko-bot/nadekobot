@@ -3,5 +3,8 @@ autothread_disabled: Threads will no longer be created automatically in this cha
 autothread_invalid_duration: Invalid archive duration. Use `1h`, `24h`, `3d` or `7d`.
 autothread_invalid_mode: Invalid mode. Use `all` or `media`.
 autothread_wrong_channel: This command can only be used in a normal text channel.
+autothread_boost_required: This server needs a higher boost level for the `{0}` archive duration.
+autothread_backfill_invalid: "Invalid backfill count. Use a number from 1 to {0}."
+autothread_backfill_done: Created {0} threads for recent messages.
 autothread_list: Auto-thread channels
 autothread_list_none: There are no auto-thread channels on this server.

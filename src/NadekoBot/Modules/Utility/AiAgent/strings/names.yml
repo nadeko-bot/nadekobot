@@ -38,6 +38,22 @@ agentchannelskilllist:
   - agentchannelskilllist
   - aichskilllist
   - aicsl
+agentwhitelist:
+  - agentwhitelist
+  - aiwhitelist
+  - aiwl
+agentwhitelistrole:
+  - agentwhitelistrole
+  - aiwhitelistrole
+  - aiwlr
+agentwhitelistserver:
+  - agentwhitelistserver
+  - aiwhitelistserver
+  - aiwls
+agentwhitelistlist:
+  - agentwhitelistlist
+  - aiwhitelistlist
+  - aiwll
 aiprompt:
   - aiprompt
   - aprompt

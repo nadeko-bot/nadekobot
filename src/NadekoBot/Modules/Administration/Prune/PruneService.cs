@@ -1,100 +1,253 @@
-﻿#nullable disable
+﻿using System.Net;
+
 namespace NadekoBot.Modules.Administration.Services;
 
-public class PruneService(ILogCommandService logService) : INService
+public sealed class PruneService(ILogCommandService logService) : INService
 {
-    private readonly ConcurrentDictionary<ulong, CancellationTokenSource> _pruningGuilds = new();
-    private readonly TimeSpan _twoWeeks = TimeSpan.FromDays(14);
+    private const int MAX_EXTRA_SCAN = 1000;
+
+    // messages older than 14 days can't be bulk deleted, the margin prevents a message
+    // from crossing that line in the middle of a long running prune
+    private static readonly TimeSpan _bulkDeleteMaxAge = TimeSpan.FromDays(14) - TimeSpan.FromHours(1);
+    private static readonly TimeSpan _batchDelay = TimeSpan.FromSeconds(1);
+
+    private readonly ConcurrentDictionary<ulong, PruneSession> _activePrunes = new();
+
+    public static ulong GetPruneKey(IMessageChannel channel)
+        => (channel as ITextChannel)?.GuildId ?? channel.Id;
+
+    /// <summary>
+    /// Reserves the prune slot for the specified channel's guild.
+    /// The returned session must be disposed to release the slot.
+    /// </summary>
+    /// <returns>The session, or null if a prune is already running.</returns>
+    public PruneSession? TryStart(IMessageChannel channel)
+    {
+        var key = GetPruneKey(channel);
+        var session = new PruneSession(key, _activePrunes);
+
+        if (_activePrunes.TryAdd(key, session))
+            return session;
+
+        session.Dispose();
+        return null;
+    }
+
+    public bool Cancel(ulong key)
+        => _activePrunes.TryGetValue(key, out var session) && session.Cancel();
 
     public async Task<PruneResult> PruneWhere(
-        ulong runnerUserId,
+        PruneSession session,
         IMessageChannel channel,
         int amount,
         Func<IMessage, bool> predicate,
         IProgress<(int deleted, int total)> progress,
-        ulong? after = null
-    )
+        ulong? after = null,
+        DateTimeOffset? notOlderThan = null)
     {
-        ArgumentNullException.ThrowIfNull(channel, nameof(channel));
+        ArgumentNullException.ThrowIfNull(session);
+        ArgumentNullException.ThrowIfNull(channel);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
-
-        var originalAmount = amount;
-
-        var gid = (channel as ITextChannel)?.GuildId ?? channel.Id;
-        using var cancelSource = new CancellationTokenSource();
-        if (!_pruningGuilds.TryAdd(gid, cancelSource))
-            return PruneResult.AlreadyRunning;
 
         try
         {
-            var now = DateTime.UtcNow;
-            IMessage[] msgs;
-            IMessage lastMessage = null;
+            await PruneInternalAsync(channel,
+                amount,
+                predicate,
+                progress,
+                after,
+                notOlderThan,
+                session.Token);
 
-            while (amount > 0 && !cancelSource.IsCancellationRequested)
-            {
-                var dled = lastMessage is null
-                    ? await channel.GetMessagesAsync(50).FlattenAsync()
-                    : await channel.GetMessagesAsync(lastMessage, Direction.Before, 50).FlattenAsync();
-
-                msgs = dled
-                       .Where(predicate)
-                       .Where(x => after is not ulong a || x.Id > a)
-                       .Take(amount)
-                       .ToArray();
-
-                if (!msgs.Any())
-                    return PruneResult.Success;
-
-                lastMessage = msgs[^1];
-
-                var bulkDeletable = new List<IMessage>();
-                var singleDeletable = new List<IMessage>();
-                foreach (var x in msgs)
-                {
-                    logService.AddDeleteIgnore(x.Id);
-
-                    if (now - x.CreatedAt < _twoWeeks)
-                        bulkDeletable.Add(x);
-                    else
-                        singleDeletable.Add(x);
-                }
-
-                if (channel is ITextChannel tc2 && bulkDeletable.Count > 0)
-                {
-                    await tc2.DeleteMessagesAsync(bulkDeletable);
-                    amount -= msgs.Length;
-                    progress.Report((originalAmount - amount, originalAmount));
-                    await Task.Delay(2000, cancelSource.Token);
-                }
-
-                foreach (var group in singleDeletable.Chunk(5))
-                {
-                    await group.Select(x => x.DeleteAsync()).WhenAll();
-                    amount -= 5;
-                    progress.Report((originalAmount - amount, originalAmount));
-                    await Task.Delay(5000, cancelSource.Token);
-                }
-            }
+            return PruneResult.Success;
         }
-        catch
+        catch (OperationCanceledException)
         {
-            //ignore
+            return PruneResult.Cancelled;
         }
-        finally
+        catch (HttpException ex)
         {
-            _pruningGuilds.TryRemove(gid, out _);
+            Log.Warning(ex, "Prune failed in channel {ChannelId}: {ErrorMessage}", channel.Id, ex.Message);
+            return PruneResult.Error;
         }
-
-        return PruneResult.Success;
     }
 
-    public async Task<bool> CancelAsync(ulong guildId)
+    private async Task PruneInternalAsync(
+        IMessageChannel channel,
+        int amount,
+        Func<IMessage, bool> predicate,
+        IProgress<(int deleted, int total)> progress,
+        ulong? after,
+        DateTimeOffset? notOlderThan,
+        CancellationToken token)
     {
-        if (!_pruningGuilds.TryRemove(guildId, out var source))
-            return false;
+        var opts = new RequestOptions
+        {
+            CancelToken = token
+        };
 
-        await source.CancelAsync();
-        return true;
+        var bulkChannel = channel as ITextChannel;
+        var bulkFloor = DateTimeOffset.UtcNow - _bulkDeleteMaxAge;
+        var scanLimit = amount + MAX_EXTRA_SCAN;
+
+        var bulkDeletable = new List<IMessage>();
+        var singleDeletable = new List<IMessage>();
+
+        var deleted = 0;
+        var scanned = 0;
+        ulong? cursor = null;
+
+        while (deleted < amount && scanned < scanLimit)
+        {
+            var batchSize = Math.Min(DiscordConfig.MaxMessagesPerBatch, scanLimit - scanned);
+
+            var page = cursor is ulong c
+                ? await channel.GetMessagesAsync(c, Direction.Before, batchSize, options: opts).FlattenAsync()
+                : await channel.GetMessagesAsync(batchSize, options: opts).FlattenAsync();
+
+            bulkDeletable.Clear();
+            singleDeletable.Clear();
+
+            var remaining = amount - deleted;
+            var oldestId = ulong.MaxValue;
+            var pageCount = 0;
+            var reachedFloor = false;
+
+            foreach (var msg in page)
+            {
+                pageCount++;
+
+                if (msg.Id < oldestId)
+                    oldestId = msg.Id;
+
+                if (notOlderThan is DateTimeOffset floor && msg.CreatedAt < floor)
+                {
+                    reachedFloor = true;
+                    continue;
+                }
+
+                if (after is ulong afterId && msg.Id <= afterId)
+                    continue;
+
+                if (bulkDeletable.Count + singleDeletable.Count >= remaining)
+                    continue;
+
+                if (!predicate(msg))
+                    continue;
+
+                logService.AddDeleteIgnore(msg.Id);
+
+                if (bulkChannel is not null && msg.CreatedAt > bulkFloor)
+                    bulkDeletable.Add(msg);
+                else
+                    singleDeletable.Add(msg);
+            }
+
+            if (bulkDeletable.Count > 0)
+            {
+                deleted += await DeleteBatchInternalAsync(bulkChannel!, bulkDeletable, opts);
+                progress.Report((deleted, amount));
+            }
+
+            foreach (var msg in singleDeletable)
+            {
+                token.ThrowIfCancellationRequested();
+
+                if (await DeleteOneInternalAsync(msg, opts))
+                    deleted++;
+
+                progress.Report((deleted, amount));
+            }
+
+            scanned += pageCount;
+
+            if (pageCount < batchSize || reachedFloor)
+                return;
+
+            if (after is ulong lastWanted && oldestId <= lastWanted)
+                return;
+
+            cursor = oldestId;
+
+            if (deleted < amount && scanned < scanLimit)
+                await Task.Delay(_batchDelay, token);
+        }
+    }
+
+    private static async Task<int> DeleteBatchInternalAsync(
+        ITextChannel channel,
+        List<IMessage> msgs,
+        RequestOptions opts)
+    {
+        if (msgs.Count == 1)
+            return await DeleteOneInternalAsync(msgs[0], opts) ? 1 : 0;
+
+        try
+        {
+            await channel.DeleteMessagesAsync(msgs, opts);
+            return msgs.Count;
+        }
+        catch (HttpException ex) when (ex.HttpCode is HttpStatusCode.BadRequest or HttpStatusCode.NotFound)
+        {
+            // a message in the batch is gone or too old to bulk delete
+            Log.Warning("Bulk delete failed in channel {ChannelId}, deleting messages one by one", channel.Id);
+        }
+
+        var deleted = 0;
+        foreach (var msg in msgs)
+        {
+            if (await DeleteOneInternalAsync(msg, opts))
+                deleted++;
+        }
+
+        return deleted;
+    }
+
+    private static async Task<bool> DeleteOneInternalAsync(IMessage msg, RequestOptions opts)
+    {
+        try
+        {
+            await msg.DeleteAsync(opts);
+            return true;
+        }
+        catch (HttpException ex) when (ex.HttpCode is HttpStatusCode.NotFound)
+        {
+            return false;
+        }
+    }
+}
+
+public sealed class PruneSession : IDisposable
+{
+    private readonly ulong _key;
+    private readonly ConcurrentDictionary<ulong, PruneSession> _owner;
+    private readonly CancellationTokenSource _cancelSource = new();
+
+    public PruneSession(ulong key, ConcurrentDictionary<ulong, PruneSession> owner)
+    {
+        _key = key;
+        _owner = owner;
+    }
+
+    public CancellationToken Token
+        => _cancelSource.Token;
+
+    public bool Cancel()
+    {
+        try
+        {
+            _cancelSource.Cancel();
+            return true;
+        }
+        catch (ObjectDisposedException)
+        {
+            return false;
+        }
+    }
+
+    public void Dispose()
+    {
+        _owner.TryRemove(_key, out _);
+        _cancelSource.Dispose();
     }
 }

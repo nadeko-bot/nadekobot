@@ -2,9 +2,6 @@ using NadekoBot.Common.Configs;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-/// <summary>
-/// Config service for the AI agent feature
-/// </summary>
 public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
 {
     private const string FILE_PATH = "data/ai-agent.yml";
@@ -88,58 +85,12 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
 
     private void Migrate()
     {
-        if (Data.Version < 2)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 2;
-            });
-        }
-
-        if (Data.Version < 3)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 3;
-            });
-        }
-
-        if (Data.Version < 4)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 4;
-            });
-        }
-
-        if (Data.Version < 5)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 5;
-            });
-        }
-
-        if (Data.Version < 6)
-        {
-            ModifyConfig(c =>
-            {
-                c.Version = 6;
-            });
-        }
-
         if (Data.Version < 7)
-        {
             MigrateSystemPromptToFileInternal();
-            ModifyConfig(c =>
-            {
-                c.Version = 7;
-            });
-        }
 
+        // Versions 2-6 and 8 only removed properties, which the deserializer ignores.
         if (Data.Version < 8)
         {
-            // EnabledModules property was removed; old YAML keys are silently ignored by the deserializer.
             ModifyConfig(c =>
             {
                 c.Version = 8;
@@ -156,9 +107,7 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
 
             var raw = File.ReadAllText(FILE_PATH);
 
-            // Extract SystemPrompt from the raw YAML before it's dropped by the new schema.
-            // The property was a multiline YAML string. If present, write it to SOUL.md
-            // so operator customizations are preserved.
+            // Read before the new schema drops it, so the changes of the operator move to SOUL.md.
             const string key = "SystemPrompt:";
             var idx = raw.IndexOf(key, StringComparison.Ordinal);
             if (idx < 0)

@@ -1,0 +1,431 @@
+ar:
+  starboard_source: المصدر
+  starboard_title: لوحة النجوم
+  starboard_not_set_up: شغّل الأمر في القناة التي تريد استخدامها كلوحة النجوم.
+  starboard_channel: القناة
+  starboard_emote: الإيموجي
+  starboard_threshold: الحد الأدنى
+  starboard_limit: الرسائل المعروضة
+  starboard_self_star: التفاعل الذاتي
+  starboard_bots: رسائل البوتات
+  starboard_ignored: القنوات المتجاهلة
+  starboard_status: الحالة
+  starboard_select_ignored: اختر القنوات المتجاهلة
+  starboard_btn_threshold: الحد الأدنى
+  starboard_btn_emote: الإيموجي
+  starboard_btn_self_star: التفاعل الذاتي
+  starboard_btn_bots: البوتات
+  starboard_btn_status: مُفعّل
+  starboard_btn_reset: إعادة تعيين
+  starboard_btn_limit: المعروضة
+  starboard_btn_cancel: إلغاء
+  starboard_prompt_threshold: أرسل عدد التفاعلات التي تحتاجها الرسالة (3-100).
+  starboard_prompt_limit: أرسل عدد الرسائل التي تعرضها لوحة النجوم (10-100).
+  starboard_prompt_emote: أرسل الإيموجي الذي تريد استخدامه. يمكنك استخدام إيموجي مخصص.
+  starboard_replying_to: 'رد على {0}'
+  starboard_attachments: المرفقات
+
+de-DE:
+  starboard_source: Quelle
+  starboard_title: Starboard
+  starboard_not_set_up: Führe den Befehl in dem Kanal aus, den du als Starboard nutzen willst.
+  starboard_channel: Kanal
+  starboard_emote: Emote
+  starboard_threshold: Schwelle
+  starboard_limit: Gezeigte Nachrichten
+  starboard_self_star: Selbst-Stern
+  starboard_bots: Bot-Nachrichten
+  starboard_ignored: Ignorierte Kanäle
+  starboard_status: Status
+  starboard_select_ignored: Wähle die Kanäle zum Ignorieren
+  starboard_btn_threshold: Schwelle
+  starboard_btn_emote: Emote
+  starboard_btn_self_star: Selbst-Stern
+  starboard_btn_bots: Bots
+  starboard_btn_status: Aktiviert
+  starboard_btn_reset: Zurücksetzen
+  starboard_btn_limit: Anzahl
+  starboard_btn_cancel: Abbrechen
+  starboard_prompt_threshold: Sende die Anzahl der Reaktionen, die eine Nachricht braucht (3-100).
+  starboard_prompt_limit: Sende die Anzahl der Nachrichten, die das Starboard zeigt (10-100).
+  starboard_prompt_emote: Sende das Emote, das benutzt werden soll. Ein eigenes Emote ist erlaubt.
+  starboard_replying_to: 'Antwort an {0}'
+  starboard_attachments: Anhänge
+
+es-ES:
+  starboard_source: Origen
+  starboard_title: Starboard
+  starboard_not_set_up: Ejecuta el comando en el canal que quieras usar como starboard.
+  starboard_channel: Canal
+  starboard_emote: Emoji
+  starboard_threshold: Umbral
+  starboard_limit: Mensajes mostrados
+  starboard_self_star: Autoestrella
+  starboard_bots: Mensajes de bots
+  starboard_ignored: Canales ignorados
+  starboard_status: Estado
+  starboard_select_ignored: Elige los canales a ignorar
+  starboard_btn_threshold: Umbral
+  starboard_btn_emote: Emoji
+  starboard_btn_self_star: Autoestrella
+  starboard_btn_bots: Bots
+  starboard_btn_status: Activado
+  starboard_btn_reset: Restablecer
+  starboard_btn_limit: Mostrados
+  starboard_btn_cancel: Cancelar
+  starboard_prompt_threshold: Envía el número de reacciones que necesita un mensaje (3-100).
+  starboard_prompt_limit: Envía el número de mensajes que muestra el starboard (10-100).
+  starboard_prompt_emote: Envía el emoji que quieres usar. También vale un emoji personalizado.
+  starboard_replying_to: 'Respondiendo a {0}'
+  starboard_attachments: Adjuntos
+
+fr-FR:
+  starboard_source: Source
+  starboard_title: Starboard
+  starboard_not_set_up: Lance la commande dans le salon que tu veux utiliser comme starboard.
+  starboard_channel: Salon
+  starboard_emote: Émoji
+  starboard_threshold: Seuil
+  starboard_limit: Messages affichés
+  starboard_self_star: Auto-étoile
+  starboard_bots: Messages des bots
+  starboard_ignored: Salons ignorés
+  starboard_status: Statut
+  starboard_select_ignored: Choisis les salons à ignorer
+  starboard_btn_threshold: Seuil
+  starboard_btn_emote: Émoji
+  starboard_btn_self_star: Auto-étoile
+  starboard_btn_bots: Bots
+  starboard_btn_status: Activé
+  starboard_btn_reset: Réinitialiser
+  starboard_btn_limit: Affichés
+  starboard_btn_cancel: Annuler
+  starboard_prompt_threshold: Envoie le nombre de réactions dont un message a besoin (3-100).
+  starboard_prompt_limit: Envoie le nombre de messages que le starboard affiche (10-100).
+  starboard_prompt_emote: Envoie l'émoji à utiliser. Un émoji personnalisé est accepté.
+  starboard_replying_to: 'En réponse à {0}'
+  starboard_attachments: Pièces jointes
+
+id-ID:
+  starboard_source: Sumber
+  starboard_title: Starboard
+  starboard_not_set_up: Jalankan perintahnya di kanal yang mau kamu pakai sebagai starboard.
+  starboard_channel: Kanal
+  starboard_emote: Emote
+  starboard_threshold: Ambang
+  starboard_limit: Pesan ditampilkan
+  starboard_self_star: Bintang sendiri
+  starboard_bots: Pesan bot
+  starboard_ignored: Kanal yang diabaikan
+  starboard_status: Status
+  starboard_select_ignored: Pilih kanal yang mau diabaikan
+  starboard_btn_threshold: Ambang
+  starboard_btn_emote: Emote
+  starboard_btn_self_star: Bintang sendiri
+  starboard_btn_bots: Bot
+  starboard_btn_status: Aktif
+  starboard_btn_reset: Atur ulang
+  starboard_btn_limit: Jumlah
+  starboard_btn_cancel: Batal
+  starboard_prompt_threshold: Kirim jumlah reaksi yang dibutuhkan sebuah pesan (3-100).
+  starboard_prompt_limit: Kirim jumlah pesan yang ditampilkan starboard (10-100).
+  starboard_prompt_emote: Kirim emote yang mau dipakai. Emote kustom juga boleh.
+  starboard_replying_to: 'Membalas {0}'
+  starboard_attachments: Lampiran
+
+ja-JP:
+  starboard_source: 元メッセージ
+  starboard_title: スターボード
+  starboard_not_set_up: スターボードにしたいチャンネルでコマンドを実行してください。
+  starboard_channel: チャンネル
+  starboard_emote: 絵文字
+  starboard_threshold: しきい値
+  starboard_limit: 表示件数
+  starboard_self_star: セルフスター
+  starboard_bots: ボットのメッセージ
+  starboard_ignored: 除外チャンネル
+  starboard_status: 状態
+  starboard_select_ignored: 除外するチャンネルを選択
+  starboard_btn_threshold: しきい値
+  starboard_btn_emote: 絵文字
+  starboard_btn_self_star: セルフスター
+  starboard_btn_bots: ボット
+  starboard_btn_status: 有効
+  starboard_btn_reset: リセット
+  starboard_btn_limit: 表示件数
+  starboard_btn_cancel: キャンセル
+  starboard_prompt_threshold: メッセージに必要なリアクション数を送信してください (3-100)。
+  starboard_prompt_limit: スターボードに表示するメッセージ数を送信してください (10-100)。
+  starboard_prompt_emote: 使用する絵文字を送信してください。カスタム絵文字も使えます。
+  starboard_replying_to: '{0} への返信'
+  starboard_attachments: 添付ファイル
+
+ko-KR:
+  starboard_source: 원본
+  starboard_title: 스타보드
+  starboard_not_set_up: 스타보드로 쓸 채널에서 명령어를 실행하세요.
+  starboard_channel: 채널
+  starboard_emote: 이모지
+  starboard_threshold: 기준 개수
+  starboard_limit: 표시 개수
+  starboard_self_star: 셀프 별
+  starboard_bots: 봇 메시지
+  starboard_ignored: 제외 채널
+  starboard_status: 상태
+  starboard_select_ignored: 제외할 채널을 선택하세요
+  starboard_btn_threshold: 기준 개수
+  starboard_btn_emote: 이모지
+  starboard_btn_self_star: 셀프 별
+  starboard_btn_bots: 봇
+  starboard_btn_status: 활성화
+  starboard_btn_reset: 초기화
+  starboard_btn_limit: 표시 개수
+  starboard_btn_cancel: 취소
+  starboard_prompt_threshold: 메시지에 필요한 반응 개수를 보내세요 (3-100).
+  starboard_prompt_limit: 스타보드에 표시할 메시지 개수를 보내세요 (10-100).
+  starboard_prompt_emote: 사용할 이모지를 보내세요. 커스텀 이모지도 가능해요.
+  starboard_replying_to: '{0}님에게 답장'
+  starboard_attachments: 첨부 파일
+
+pl-PL:
+  starboard_source: Źródło
+  starboard_title: Starboard
+  starboard_not_set_up: Użyj komendy na kanale, którego chcesz użyć jako starboard.
+  starboard_channel: Kanał
+  starboard_emote: Emotka
+  starboard_threshold: Próg
+  starboard_limit: Pokazywane wiadomości
+  starboard_self_star: Własna gwiazdka
+  starboard_bots: Wiadomości botów
+  starboard_ignored: Ignorowane kanały
+  starboard_status: Status
+  starboard_select_ignored: Wybierz kanały do zignorowania
+  starboard_btn_threshold: Próg
+  starboard_btn_emote: Emotka
+  starboard_btn_self_star: Własna gwiazdka
+  starboard_btn_bots: Boty
+  starboard_btn_status: Włączony
+  starboard_btn_reset: Resetuj
+  starboard_btn_limit: Liczba
+  starboard_btn_cancel: Anuluj
+  starboard_prompt_threshold: Wyślij liczbę reakcji, których potrzebuje wiadomość (3-100).
+  starboard_prompt_limit: Wyślij liczbę wiadomości, które pokazuje starboard (10-100).
+  starboard_prompt_emote: Wyślij emotkę, której chcesz użyć. Własna emotka też może być.
+  starboard_replying_to: 'W odpowiedzi na {0}'
+  starboard_attachments: Załączniki
+
+pt-BR:
+  starboard_source: Origem
+  starboard_title: Starboard
+  starboard_not_set_up: Use o comando no canal que você quer usar como starboard.
+  starboard_channel: Canal
+  starboard_emote: Emote
+  starboard_threshold: Limite
+  starboard_limit: Mensagens exibidas
+  starboard_self_star: Autoestrela
+  starboard_bots: Mensagens de bots
+  starboard_ignored: Canais ignorados
+  starboard_status: Status
+  starboard_select_ignored: Escolha os canais para ignorar
+  starboard_btn_threshold: Limite
+  starboard_btn_emote: Emote
+  starboard_btn_self_star: Autoestrela
+  starboard_btn_bots: Bots
+  starboard_btn_status: Ativado
+  starboard_btn_reset: Redefinir
+  starboard_btn_limit: Exibidas
+  starboard_btn_cancel: Cancelar
+  starboard_prompt_threshold: Envie o número de reações que uma mensagem precisa (3-100).
+  starboard_prompt_limit: Envie o número de mensagens que o starboard exibe (10-100).
+  starboard_prompt_emote: Envie o emote que quer usar. Um emote personalizado também vale.
+  starboard_replying_to: 'Respondendo a {0}'
+  starboard_attachments: Anexos
+
+ru-RU:
+  starboard_source: Источник
+  starboard_title: Старборд
+  starboard_not_set_up: Запусти команду в канале, который хочешь использовать как старборд.
+  starboard_channel: Канал
+  starboard_emote: Эмодзи
+  starboard_threshold: Порог
+  starboard_limit: Показано сообщений
+  starboard_self_star: Своя звезда
+  starboard_bots: Сообщения ботов
+  starboard_ignored: Игнорируемые каналы
+  starboard_status: Статус
+  starboard_select_ignored: Выбери каналы для игнора
+  starboard_btn_threshold: Порог
+  starboard_btn_emote: Эмодзи
+  starboard_btn_self_star: Своя звезда
+  starboard_btn_bots: Боты
+  starboard_btn_status: Включено
+  starboard_btn_reset: Сброс
+  starboard_btn_limit: Показано
+  starboard_btn_cancel: Отмена
+  starboard_prompt_threshold: Отправь количество реакций, которое нужно сообщению (3-100).
+  starboard_prompt_limit: Отправь количество сообщений, которые показывает старборд (10-100).
+  starboard_prompt_emote: Отправь эмодзи, который будет использоваться. Кастомный эмодзи тоже подойдёт.
+  starboard_replying_to: 'Ответ на {0}'
+  starboard_attachments: Вложения
+
+sr-Cyrl-RS:
+  starboard_source: Извор
+  starboard_title: Старборд
+  starboard_not_set_up: Покрени команду у каналу који желиш да користиш као старборд.
+  starboard_channel: Канал
+  starboard_emote: Емоџи
+  starboard_threshold: Праг
+  starboard_limit: Приказане поруке
+  starboard_self_star: Своја звезда
+  starboard_bots: Поруке ботова
+  starboard_ignored: Игнорисани канали
+  starboard_status: Статус
+  starboard_select_ignored: Изабери канале за игнорисање
+  starboard_btn_threshold: Праг
+  starboard_btn_emote: Емоџи
+  starboard_btn_self_star: Своја звезда
+  starboard_btn_bots: Ботови
+  starboard_btn_status: Укључено
+  starboard_btn_reset: Ресетуј
+  starboard_btn_limit: Приказано
+  starboard_btn_cancel: Откажи
+  starboard_prompt_threshold: Пошаљи број реакција који порука треба да има (3-100).
+  starboard_prompt_limit: Пошаљи број порука које старборд приказује (10-100).
+  starboard_prompt_emote: Пошаљи емоџи који ће се користити. Може и прилагођени емоџи.
+  starboard_replying_to: 'Одговор на {0}'
+  starboard_attachments: Прилози
+
+tr-TR:
+  starboard_source: Kaynak
+  starboard_title: Starboard
+  starboard_not_set_up: Komutu, starboard olarak kullanmak istediğin kanalda çalıştır.
+  starboard_channel: Kanal
+  starboard_emote: Emoji
+  starboard_threshold: Eşik
+  starboard_limit: Gösterilen mesajlar
+  starboard_self_star: Kendine yıldız
+  starboard_bots: Bot mesajları
+  starboard_ignored: Yok sayılan kanallar
+  starboard_status: Durum
+  starboard_select_ignored: Yok sayılacak kanalları seç
+  starboard_btn_threshold: Eşik
+  starboard_btn_emote: Emoji
+  starboard_btn_self_star: Kendine yıldız
+  starboard_btn_bots: Botlar
+  starboard_btn_status: Etkin
+  starboard_btn_reset: Sıfırla
+  starboard_btn_limit: Gösterilen
+  starboard_btn_cancel: İptal
+  starboard_prompt_threshold: Bir mesajın ihtiyaç duyduğu tepki sayısını gönder (3-100).
+  starboard_prompt_limit: Starboard'un gösterdiği mesaj sayısını gönder (10-100).
+  starboard_prompt_emote: Kullanılacak emojiyi gönder. Özel emoji de olur.
+  starboard_replying_to: '{0} kullanıcısına yanıt'
+  starboard_attachments: Ekler
+
+ts-TS:
+  starboard_source: Source
+  starboard_title: Starboard
+  starboard_not_set_up: Run the command in the channel which you want to use as the starboard.
+  starboard_channel: Channel
+  starboard_emote: Emote
+  starboard_threshold: Threshold
+  starboard_limit: Shown messages
+  starboard_self_star: Self-star
+  starboard_bots: Bot messages
+  starboard_ignored: Ignored channels
+  starboard_status: Status
+  starboard_select_ignored: Select the channels to ignore
+  starboard_btn_threshold: Threshold
+  starboard_btn_emote: Emote
+  starboard_btn_self_star: Self-star
+  starboard_btn_bots: Bots
+  starboard_btn_status: Enabled
+  starboard_btn_reset: Reset
+  starboard_btn_limit: Shown
+  starboard_btn_cancel: Cancel
+  starboard_prompt_threshold: Send the number of reactions which a message needs (3-100).
+  starboard_prompt_limit: Send how many messages the starboard shows (10-100).
+  starboard_prompt_emote: Send the emote to use. A custom emote is allowed.
+  starboard_replying_to: 'Replying to {0}'
+  starboard_attachments: Attachments
+
+uk-UA:
+  starboard_source: Джерело
+  starboard_title: Старборд
+  starboard_not_set_up: Запусти команду в каналі, який хочеш використати як старборд.
+  starboard_channel: Канал
+  starboard_emote: Емодзі
+  starboard_threshold: Поріг
+  starboard_limit: Показано повідомлень
+  starboard_self_star: Своя зірка
+  starboard_bots: Повідомлення ботів
+  starboard_ignored: Ігноровані канали
+  starboard_status: Статус
+  starboard_select_ignored: Обери канали, які треба ігнорувати
+  starboard_btn_threshold: Поріг
+  starboard_btn_emote: Емодзі
+  starboard_btn_self_star: Своя зірка
+  starboard_btn_bots: Боти
+  starboard_btn_status: Увімкнено
+  starboard_btn_reset: Скинути
+  starboard_btn_limit: Показано
+  starboard_btn_cancel: Скасувати
+  starboard_prompt_threshold: Надішли кількість реакцій, яка потрібна повідомленню (3-100).
+  starboard_prompt_limit: Надішли кількість повідомлень, які показує старборд (10-100).
+  starboard_prompt_emote: Надішли емодзі, який буде використано. Кастомний емодзі теж підійде.
+  starboard_replying_to: 'Відповідь на {0}'
+  starboard_attachments: Вкладення
+
+vi-VN:
+  starboard_source: Nguồn
+  starboard_title: Starboard
+  starboard_not_set_up: Chạy lệnh trong kênh mà bạn muốn dùng làm starboard.
+  starboard_channel: Kênh
+  starboard_emote: Emote
+  starboard_threshold: Ngưỡng
+  starboard_limit: Tin nhắn hiển thị
+  starboard_self_star: Tự gắn sao
+  starboard_bots: Tin nhắn của bot
+  starboard_ignored: Kênh bị bỏ qua
+  starboard_status: Trạng thái
+  starboard_select_ignored: Chọn các kênh cần bỏ qua
+  starboard_btn_threshold: Ngưỡng
+  starboard_btn_emote: Emote
+  starboard_btn_self_star: Tự gắn sao
+  starboard_btn_bots: Bot
+  starboard_btn_status: Bật
+  starboard_btn_reset: Đặt lại
+  starboard_btn_limit: Hiển thị
+  starboard_btn_cancel: Hủy
+  starboard_prompt_threshold: Gửi số lượng reaction mà một tin nhắn cần (3-100).
+  starboard_prompt_limit: Gửi số tin nhắn mà starboard hiển thị (10-100).
+  starboard_prompt_emote: Gửi emote muốn dùng. Emote tùy chỉnh cũng được.
+  starboard_replying_to: 'Trả lời {0}'
+  starboard_attachments: Tệp đính kèm
+
+zh-CN:
+  starboard_source: 原消息
+  starboard_title: 星标板
+  starboard_not_set_up: 在你想用作星标板的频道里运行该命令。
+  starboard_channel: 频道
+  starboard_emote: 表情
+  starboard_threshold: 阈值
+  starboard_limit: 显示数量
+  starboard_self_star: 自己加星
+  starboard_bots: 机器人消息
+  starboard_ignored: 忽略的频道
+  starboard_status: 状态
+  starboard_select_ignored: 选择要忽略的频道
+  starboard_btn_threshold: 阈值
+  starboard_btn_emote: 表情
+  starboard_btn_self_star: 自己加星
+  starboard_btn_bots: 机器人
+  starboard_btn_status: 已启用
+  starboard_btn_reset: 重置
+  starboard_btn_limit: 显示数量
+  starboard_btn_cancel: 取消
+  starboard_prompt_threshold: 发送一条消息需要的反应数量 (3-100)。
+  starboard_prompt_limit: 发送星标板显示的消息数量 (10-100)。
+  starboard_prompt_emote: 发送要使用的表情。可以用自定义表情。
+  starboard_replying_to: '回复 {0}'
+  starboard_attachments: 附件
