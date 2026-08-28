@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [7.3.1] - WIP
+
+### Fixed
+
+- `.curtrs` now shows your transactions. The bot deleted them too early.
+
 ## [7.3.0] - 23.08.2026
 
 ### Added
