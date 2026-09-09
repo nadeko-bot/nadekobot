@@ -524,7 +524,7 @@ namespace NadekoBot.Migrations
                     b.Property<int?>("OwnerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Xp")
+                    b.Property<long>("Xp")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -534,6 +534,8 @@ namespace NadekoBot.Migrations
 
                     b.HasIndex("OwnerId")
                         .IsUnique();
+
+                    b.HasIndex("Xp");
 
                     b.ToTable("Clubs");
                 });

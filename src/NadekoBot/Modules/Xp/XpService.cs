@@ -162,7 +162,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
                     if (oldBatch.Contains(u))
                     {
-                        validUsers.Add(new(g.Id, u.Id, u.Username, u.DisplayAvatarId, rate.Amount, vc.Id));
+                        validUsers.Add(new(g.Id, u.Id, rate.Amount, vc.Id));
                     }
 
                     _voiceXpBatch.Add(u);
@@ -206,8 +206,6 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         {
             GuildId = x.GuildId,
             UserId = x.UserId,
-            Username = x.Username,
-            AvatarId = x.AvatarId,
             XpToGain = x.Xp
         }));
 
@@ -222,6 +220,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                  Xp = UserXpStats.Xp + EXCLUDED.Xp;
              """);
 
+        await AddClubXpAsync(lctx, tempTableName);
 
         var updated = await batchTable
             .InnerJoin(lctx.GetTable<UserXpStats>(),
@@ -251,6 +250,20 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             }
         }
     }
+
+    // must run in the same transaction as the UserXpStats upsert, otherwise a crash mid-flush desyncs club xp
+    public static Task<int> AddClubXpAsync(DataConnection lctx, string tempTableName)
+        => lctx.ExecuteAsync(
+            $"""
+             UPDATE Clubs
+             SET Xp = Xp + agg.Gain
+             FROM (SELECT du.ClubId AS ClubId, SUM(t.XpToGain) AS Gain
+                   FROM "{tempTableName}" t
+                   INNER JOIN DiscordUser du ON du.UserId = t.UserId
+                   WHERE du.ClubId IS NOT NULL
+                   GROUP BY du.ClubId) AS agg
+             WHERE Clubs.Id = agg.ClubId;
+             """);
 
     private Func<Task> NotifyUser(
         ulong guildId,
@@ -541,7 +554,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         if (!TryAddUserGainedXp(user.Id, rate.Cooldown))
             return default;
 
-        _usersBatch[user.Id] = new(guild.Id, user.Id, user.Username, user.DisplayAvatarId, rate.Amount, gc.Id);
+        _usersBatch[user.Id] = new(guild.Id, user.Id, rate.Amount, gc.Id);
 
         return default;
     }
@@ -563,7 +576,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     public Task AddXpAsync(ulong channelId, long amount, params IGuildUser[] users)
     {
         foreach (var user in users)
-            _usersBatch[user.Id] = new(user.GuildId, user.Id, user.Username, user.DisplayAvatarId, amount, channelId);
+            _usersBatch[user.Id] = new(user.GuildId, user.Id, amount, channelId);
 
         return Task.CompletedTask;
     }
@@ -1150,7 +1163,5 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 public readonly record struct XpQueueEntry(
     ulong GuildId,
     ulong UserId,
-    string Username,
-    string AvatarId,
     long Xp,
     ulong? ChannelId);

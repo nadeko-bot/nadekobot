@@ -138,16 +138,16 @@ public partial class Xp
             var lvl = new LevelStats(club.Xp);
             var allUsers = club.Members.OrderByDescending(x =>
                 {
-                    var l = new LevelStats(x.TotalXp).Level;
                     if (club.OwnerId == x.Id)
-                        return int.MaxValue;
+                        return 2;
                     if (x.IsClubAdmin)
-                        return (int.MaxValue / 2) + l;
-                    return l;
+                        return 1;
+                    return 0;
                 })
+                .ThenBy(x => x.Username)
                 .ToList();
 
-            var rank = await _service.GetClubRankAsync(club.Id);
+            var rank = await _service.GetClubRankAsync(club.Xp);
 
             await Response()
                 .Paginated()
@@ -158,7 +158,7 @@ public partial class Xp
                     var embed = CreateEmbed()
                         .WithOkColor()
                         .WithTitle($"{club}")
-                        .WithDescription(GetText(strs.level_x(lvl.Level + $" ({club.Xp} xp)")))
+                        .WithDescription(GetText(strs.level_x(lvl.Level + $" ({club.Xp:N0} xp)")))
                         .AddField(GetText(strs.desc),
                             string.IsNullOrWhiteSpace(club.Description) ? "-" : club.Description)
                         .AddField(GetText(strs.rank), $"#{rank}", true)
@@ -169,13 +169,11 @@ public partial class Xp
                                 users
                                     .Select(x =>
                                     {
-                                        var l = new LevelStats(x.TotalXp);
-                                        var lvlStr = Format.Bold($" ⟪{l.Level}⟫");
                                         if (club.OwnerId == x.Id)
-                                            return x + "🌟" + lvlStr;
+                                            return x + "🌟";
                                         if (x.IsClubAdmin)
-                                            return x + "⭐" + lvlStr;
-                                        return x + lvlStr;
+                                            return x + "⭐";
+                                        return x.ToString();
                                     })));
 
                     if (Uri.IsWellFormedUriString(club.ImageUrl, UriKind.Absolute))
@@ -478,7 +476,7 @@ public partial class Xp
 
             var i = page * 9;
             foreach (var club in clubs)
-                embed.AddField($"#{++i} " + club, club.Xp + " xp");
+                embed.AddField($"#{++i} " + club, $"{club.Xp:N0} xp");
 
             return Response().Embed(embed).SendAsync();
         }

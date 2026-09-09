@@ -4,9 +4,19 @@
 
 ## [7.3.1] - WIP
 
+### Changed
+
+- `.clubinfo` no longer shows a level next to each member.
+
 ### Fixed
 
 - `.curtrs` now shows your transactions. The bot deleted them too early.
+- Clubs now gain xp when their members gain xp.
+- `.clublb` / `.clubinfo` now show the real club xp, level and rank.
+
+### Dev
+
+- The xp batch no longer copies the unused username and avatar of each user.
 
 ## [7.3.0] - 23.08.2026
 

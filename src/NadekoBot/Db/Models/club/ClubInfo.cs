@@ -11,7 +11,7 @@ public class ClubInfo : DbEntity
     public string ImageUrl { get; set; } = string.Empty;
     public string BannerUrl { get; set; } = string.Empty;
     
-    public int Xp { get; set; } = 0;
+    public long Xp { get; set; } = 0;
     public int? OwnerId { get; set; }
     public DiscordUser Owner { get; set; }
 

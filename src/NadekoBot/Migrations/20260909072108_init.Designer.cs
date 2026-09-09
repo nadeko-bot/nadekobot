@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20260814173858_init")]
+    [Migration("20260909072108_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -527,7 +527,7 @@ namespace NadekoBot.Migrations
                     b.Property<int?>("OwnerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Xp")
+                    b.Property<long>("Xp")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -537,6 +537,8 @@ namespace NadekoBot.Migrations
 
                     b.HasIndex("OwnerId")
                         .IsUnique();
+
+                    b.HasIndex("Xp");
 
                     b.ToTable("Clubs");
                 });

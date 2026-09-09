@@ -1944,7 +1944,7 @@ namespace NadekoBot.Migrations
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
                     BannerUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    Xp = table.Column<int>(type: "INTEGER", nullable: false),
+                    Xp = table.Column<long>(type: "INTEGER", nullable: false),
                     OwnerId = table.Column<int>(type: "INTEGER", nullable: true),
                     DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -2085,6 +2085,11 @@ namespace NadekoBot.Migrations
                 table: "Clubs",
                 column: "OwnerId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clubs_Xp",
+                table: "Clubs",
+                column: "Xp");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommandAlias_GuildId",

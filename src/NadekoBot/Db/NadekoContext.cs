@@ -336,6 +336,8 @@ public sealed class NadekoContext : DbContext
             })
             .IsUnique();
 
+        ci.HasIndex(x => x.Xp);
+
         #endregion
 
         #region ClubManytoMany
