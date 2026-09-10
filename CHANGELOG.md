@@ -11,7 +11,9 @@
 ### Fixed
 
 - `.curtrs` now shows your transactions. The bot deleted them too early.
-- Clubs now gain xp when their members gain xp.
+- Clubs now gain xp when their members talk or stay in voice.
+    - each member tick gives the club a fixed 3 xp
+    - server xp rates and `.xpadd` do not change club xp
 - `.clublb` / `.clubinfo` now show the real club xp, level and rank.
 
 ### Dev

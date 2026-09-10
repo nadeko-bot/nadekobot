@@ -13,6 +13,8 @@ namespace NadekoBot.Tests.Xp;
 
 public class ClubXpAccumulationTests
 {
+    private const long XP_PER_TICK = 3;
+
     private TestDbService _db = null!;
 
     [SetUp]
@@ -24,7 +26,7 @@ public class ClubXpAccumulationTests
         => _db.Dispose();
 
     [Test]
-    public async Task ClubXp_OnlyCountsItsOwnMembers()
+    public async Task ClubXp_IsAFixedRatePerTick_NoMatterHowMuchXpTheMemberGained()
     {
         var alpha = await SeedClubAsync("alpha");
         var beta = await SeedClubAsync("beta");
@@ -34,13 +36,30 @@ public class ClubXpAccumulationTests
         await SeedUserAsync(3, beta);
         await SeedUserAsync(4, null);
 
-        // user 5 has no DiscordUser row at all, which is the normal state for most xp gainers
-        await ApplyBatchAsync((1, 10), (2, 5), (3, 7), (4, 100), (5, 1000));
+        // user 5 has no DiscordUser row, which is the normal state for most xp gainers
+        await ApplyBatchAsync((1, 3, true), (2, 1000, true), (3, 500, true), (4, 100, true), (5, 1000, true));
 
         var xps = await GetClubXpAsync();
 
-        Assert.That(xps[alpha], Is.EqualTo(15));
-        Assert.That(xps[beta], Is.EqualTo(7));
+        // a guild that sets .xprate to 1000 must not outweigh a guild on the default rate
+        Assert.That(xps[alpha], Is.EqualTo(2 * XP_PER_TICK));
+        Assert.That(xps[beta], Is.EqualTo(XP_PER_TICK));
+    }
+
+    [Test]
+    public async Task ClubXp_IgnoresManualGrants()
+    {
+        var club = await SeedClubAsync("club", 100);
+        await SeedUserAsync(1, club);
+        await SeedUserAsync(2, club);
+        await SeedUserAsync(3, club);
+
+        // .xpadd takes any amount, including negative ones
+        await ApplyBatchAsync((1, 500_000, false), (2, -500_000, false), (3, 3, true));
+
+        var xps = await GetClubXpAsync();
+
+        Assert.That(xps[club], Is.EqualTo(100 + XP_PER_TICK));
     }
 
     [Test]
@@ -52,16 +71,16 @@ public class ClubXpAccumulationTests
         await SeedUserAsync(1, active);
         await SeedUserAsync(2, idle);
 
-        await ApplyBatchAsync((1, 30));
-        await ApplyBatchAsync((1, 12));
+        await ApplyBatchAsync((1, 3, true));
+        await ApplyBatchAsync((1, 3, true));
 
         var xps = await GetClubXpAsync();
 
-        Assert.That(xps[active], Is.EqualTo(1042));
+        Assert.That(xps[active], Is.EqualTo(1000 + (2 * XP_PER_TICK)));
         Assert.That(xps[idle], Is.EqualTo(250));
     }
 
-    private async Task ApplyBatchAsync(params (ulong UserId, long Xp)[] gains)
+    private async Task ApplyBatchAsync(params (ulong UserId, long Xp, bool CountsForClub)[] gains)
     {
         await using var ctx = _db.GetDbContext();
         await using var lctx = ctx.CreateLinqToDBConnection();
@@ -73,7 +92,8 @@ public class ClubXpAccumulationTests
         {
             GuildId = 1,
             UserId = x.UserId,
-            XpToGain = x.Xp
+            XpToGain = x.Xp,
+            CountsForClub = x.CountsForClub
         }));
 
         await XpService.AddClubXpAsync(lctx, TEMP_TABLE_NAME);

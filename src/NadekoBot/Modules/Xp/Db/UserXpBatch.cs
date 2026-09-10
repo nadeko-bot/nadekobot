@@ -10,4 +10,5 @@ public sealed class UserXpBatch
 
     public ulong GuildId { get; set; }
     public long XpToGain { get; set; } = 0;
+    public bool CountsForClub { get; set; }
 }

@@ -18,7 +18,7 @@ experiencetext:
         desc: Optional name, mention or ID of the user
 xpadd:
   desc: |-
-    Adds server XP to a single user or all users with a role on this server. This does not affect their global ranking. You can use negative values.
+    Adds server XP to a single user or all users with a role on this server. You can use negative values. The bot does not count this XP for clubs.
   ex:
     - 100 @Someone
     - 500 SomeRoleName
