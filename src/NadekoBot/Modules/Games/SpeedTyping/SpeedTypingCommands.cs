@@ -32,7 +32,10 @@ public partial class Games
             if (game.IsActive)
                 await Response().Error($"Contest already running in {game.Channel.Mention} channel.").SendAsync();
             else
+            {
                 await game.Start();
+                _service.RunningContests.TryRemove(new KeyValuePair<ulong, TypingGame>(ctx.Guild.Id, game));
+            }
         }
 
         [Cmd]

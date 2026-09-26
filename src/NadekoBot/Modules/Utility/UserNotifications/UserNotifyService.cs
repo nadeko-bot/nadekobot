@@ -143,15 +143,17 @@ public sealed class UserNotifyService(
     {
         EnsureInitialized();
 
+        var rows = new UserNotifyBlock[_allEvents!.Length];
+        for (var i = 0; i < rows.Length; i++)
+            rows[i] = new() { UserId = userId, Type = _allEvents[i].Key };
+
         await using var ctx = db.GetDbContext();
-        foreach (var evt in _allEvents!)
-        {
-            await ctx.GetTable<UserNotifyBlock>()
-                .InsertOrUpdateAsync(
-                    () => new() { UserId = userId, Type = evt.Key },
-                    _ => new() { },
-                    () => new() { UserId = userId, Type = evt.Key });
-        }
+        await using var tran = await ctx.Database.BeginTransactionAsync();
+        await ctx.GetTable<UserNotifyBlock>()
+            .Where(x => x.UserId == userId)
+            .DeleteAsync();
+        await ctx.BulkCopyAsync(rows);
+        await tran.CommitAsync();
     }
 
     public Task DisableAllAsync(ulong userId)
@@ -197,11 +199,10 @@ public sealed class UserNotifyService(
             return true;
 
         await ctx.GetTable<UserNotifyBlock>()
-            .InsertAsync(() => new()
-            {
-                UserId = userId,
-                Type = key
-            });
+            .InsertOrUpdateAsync(
+                () => new() { UserId = userId, Type = key },
+                null,
+                () => new() { UserId = userId, Type = key });
 
         return false;
     }

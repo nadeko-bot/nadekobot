@@ -22,7 +22,7 @@ public class TicTacToe
     ];
 
     private IUserMessage previousMessage;
-    private Timer timeoutTimer;
+    private CancellationTokenSource turnCts;
     private readonly IBotStrings _strings;
     private readonly DiscordSocketClient _client;
     private readonly Options _options;
@@ -129,44 +129,62 @@ public class TicTacToe
 
         phase = Phase.Started;
 
-        timeoutTimer = new(async _ =>
-            {
-                await _moveLock.WaitAsync();
-                try
-                {
-                    if (phase == Phase.Ended)
-                        return;
-
-                    phase = Phase.Ended;
-                    if (_users[1] is not null)
-                    {
-                        winner = _users[curUserIndex ^= 1];
-                        var del = previousMessage?.DeleteAsync();
-                        try
-                        {
-                            await _sender.Response(_channel).Embed(GetEmbed(GetText(strs.ttt_time_expired))).SendAsync();
-                            if (del is not null)
-                                await del;
-                        }
-                        catch { }
-                    }
-
-                    OnEnded?.Invoke(this);
-                }
-                catch { }
-                finally
-                {
-                    _moveLock.Release();
-                }
-            },
-            null,
-            _options.TurnTimer * 1000,
-            Timeout.Infinite);
-
         _client.MessageReceived += Client_MessageReceived;
+        RestartTurnTimer();
 
 
         previousMessage = await _sender.Response(_channel).Embed(GetEmbed(GetText(strs.game_started))).SendAsync();
+    }
+
+    private void RestartTurnTimer()
+    {
+        var cts = new CancellationTokenSource();
+        var old = Interlocked.Exchange(ref turnCts, cts);
+        old?.Cancel();
+        old?.Dispose();
+        _ = TurnTimeoutInternalAsync(cts.Token);
+    }
+
+    private async Task TurnTimeoutInternalAsync(CancellationToken token)
+    {
+        try
+        {
+            await Task.Delay(_options.TurnTimer * 1000, token);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+
+        await _moveLock.WaitAsync();
+        try
+        {
+            if (phase == Phase.Ended || token.IsCancellationRequested)
+                return;
+
+            winner = _users[curUserIndex ^= 1];
+            EndInternal();
+
+            var del = previousMessage?.DeleteAsync();
+            await _sender.Response(_channel).Embed(GetEmbed(GetText(strs.ttt_time_expired))).SendAsync();
+            if (del is not null)
+                await del;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Error ending a tic-tac-toe game after a turn timeout");
+        }
+        finally
+        {
+            _moveLock.Release();
+        }
+    }
+
+    private void EndInternal()
+    {
+        phase = Phase.Ended;
+        _client.MessageReceived -= Client_MessageReceived;
+        OnEnded?.Invoke(this);
     }
 
     private bool IsDraw()
@@ -183,6 +201,9 @@ public class TicTacToe
 
     private Task Client_MessageReceived(SocketMessage msg)
     {
+        if (msg.Channel.Id != _channel.Id)
+            return Task.CompletedTask;
+
         _ = Task.Run(async () =>
         {
             await _moveLock.WaitAsync();
@@ -194,7 +215,7 @@ public class TicTacToe
 
                 if (int.TryParse(msg.Content, out var index)
                     && --index >= 0
-                    && index <= 9
+                    && index < 9
                     && _state[index / 3, index % 3] is null)
                 {
                     _state[index / 3, index % 3] = curUserIndex;
@@ -244,15 +265,12 @@ public class TicTacToe
                     {
                         reason = GetText(strs.ttt_matched_three);
                         winner = _users[curUserIndex];
-                        _client.MessageReceived -= Client_MessageReceived;
-                        OnEnded?.Invoke(this);
+                        EndInternal();
                     }
                     else if (IsDraw())
                     {
                         reason = GetText(strs.ttt_a_draw);
-                        phase = Phase.Ended;
-                        _client.MessageReceived -= Client_MessageReceived;
-                        OnEnded?.Invoke(this);
+                        EndInternal();
                     }
 
                     _ = Task.Run(async () =>
@@ -274,7 +292,10 @@ public class TicTacToe
                     });
                     curUserIndex ^= 1;
 
-                    timeoutTimer.Change(_options.TurnTimer * 1000, Timeout.Infinite);
+                    if (phase == Phase.Ended)
+                        turnCts?.Cancel();
+                    else
+                        RestartTurnTimer();
                 }
             }
             finally

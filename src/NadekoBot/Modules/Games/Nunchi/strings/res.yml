@@ -5,8 +5,6 @@ countup_failed_to_start: CountUp failed to start because there were not enough p
 countup_joined: Joined CountUp game. {0} users joined so far.
 countup_next_number: Number registered. Last number was {0}.
 countup_round_ended: CountUp round ended. {0} is out of the game.
-countup_round_ended_boot: >-
-  CountUp round ended due to timeout of some users. These users are still in the
-  game: {0}
+countup_round_ended_boot: 'CountUp round ended due to timeout of some users. These users are still in the game: {0}'
 countup_round_started: CountUp round started with {0} users. Start counting from the number {1}.
 countup_started: CountUp game started with {0} participants.

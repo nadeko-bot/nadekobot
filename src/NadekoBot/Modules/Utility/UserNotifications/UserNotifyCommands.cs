@@ -22,6 +22,7 @@ public partial class Utility
             var userId = ctx.User.Id;
             var totalPages = (allEvents.Count + PAGE_SIZE - 1) / PAGE_SIZE;
             var currentPage = 0;
+            var generation = 0;
             var handlers = new List<NadekoButtonInteractionHandler>();
 
             (EmbedBuilder Embed, ComponentBuilder Components) BuildPanel(
@@ -151,6 +152,7 @@ public partial class Utility
 
             async Task RefreshPanelInternalAsync(SocketMessageComponent smc)
             {
+                Interlocked.Increment(ref generation);
                 foreach (var h in handlers)
                     h.SetCompleted();
 
@@ -163,11 +165,20 @@ public partial class Utility
                     m.Components = newComponents.Build();
                 });
 
-                var msg = smc.Message;
+                await RunHandlersInternalAsync(smc.Message);
+            }
+
+            async Task RunHandlersInternalAsync(IUserMessage panel)
+            {
+                var gen = Volatile.Read(ref generation);
                 var runTasks = new Task[handlers.Count];
                 for (var j = 0; j < handlers.Count; j++)
-                    runTasks[j] = handlers[j].RunAsync(msg);
+                    runTasks[j] = handlers[j].RunAsync(panel);
                 await Task.WhenAll(runTasks);
+
+                // a click replaces the handlers with a new set; only the last set clears the buttons
+                if (gen == Volatile.Read(ref generation))
+                    await panel.ModifyAsync(m => m.Components = new ComponentBuilder().Build());
             }
 
             var (embed, components) = BuildPanel(blocked, currentPage);
@@ -176,12 +187,7 @@ public partial class Utility
                 embed: embed.Build(),
                 components: components.Build());
 
-            var tasks = new Task[handlers.Count];
-            for (var i = 0; i < handlers.Count; i++)
-                tasks[i] = handlers[i].RunAsync(msg);
-
-            await Task.WhenAll(tasks);
-            await msg.ModifyAsync(m => m.Components = new ComponentBuilder().Build());
+            await RunHandlersInternalAsync(msg);
         }
     }
 }

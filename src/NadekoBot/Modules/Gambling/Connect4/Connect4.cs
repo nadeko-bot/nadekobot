@@ -57,7 +57,7 @@ public sealed class Connect4Game : IDisposable
     private readonly Options _options;
     private readonly NadekoRandom _rng;
 
-    private Timer playerTimeoutTimer;
+    private CancellationTokenSource _turnCts;
 
     /* [ ][ ][ ][ ][ ][ ]
      * [ ][ ][ ][ ][ ][ ]
@@ -123,18 +123,7 @@ public sealed class Connect4Game : IDisposable
                 _players[1] = (userId, userName);
 
             CurrentPhase = Phase.P1Move; //start the game
-            playerTimeoutTimer = new(async _ =>
-                {
-                    await _locker.WaitAsync();
-                    try
-                    {
-                        EndGame(Result.OtherPlayerWon, OtherPlayer.UserId);
-                    }
-                    finally { _locker.Release(); }
-                },
-                null,
-                TimeSpan.FromSeconds(_options.TurnTimer),
-                TimeSpan.FromSeconds(_options.TurnTimer));
+            ResetTimer();
             _ = OnGameStateUpdated?.Invoke(this);
 
             return true;
@@ -155,7 +144,7 @@ public sealed class Connect4Game : IDisposable
                   || (_players[1].Value.UserId == userId && CurrentPhase == Phase.P2Move)))
                 return false;
 
-            if (inputCol is < 0 or > NUMBER_OF_COLUMNS) //invalid input
+            if (inputCol is < 0 or >= NUMBER_OF_COLUMNS) //invalid input
                 return false;
 
             if (IsColumnFull(inputCol)) //can't play there event?
@@ -330,13 +319,53 @@ public sealed class Connect4Game : IDisposable
     }
 
     private void ResetTimer()
-        => playerTimeoutTimer.Change(TimeSpan.FromSeconds(_options.TurnTimer),
-            TimeSpan.FromSeconds(_options.TurnTimer));
+    {
+        var cts = new CancellationTokenSource();
+        CancelTimer(Interlocked.Exchange(ref _turnCts, cts));
+        _ = Task.Run(() => TurnTimeoutInternalAsync(cts.Token));
+    }
+
+    private static void CancelTimer(CancellationTokenSource cts)
+    {
+        if (cts is null)
+            return;
+
+        cts.Cancel();
+        cts.Dispose();
+    }
+
+    private async Task TurnTimeoutInternalAsync(CancellationToken token)
+    {
+        try
+        {
+            await Task.Delay(TimeSpan.FromSeconds(_options.TurnTimer), token);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+
+        await _locker.WaitAsync();
+        try
+        {
+            if (!token.IsCancellationRequested)
+                EndGame(Result.OtherPlayerWon, OtherPlayer.UserId);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Error ending a timed out connect4 game");
+        }
+        finally
+        {
+            _locker.Release();
+        }
+    }
 
     private void EndGame(Result result, ulong? winId)
     {
         if (CurrentPhase == Phase.Ended)
             return;
+        CancelTimer(Interlocked.Exchange(ref _turnCts, null));
         _ = OnGameEnded?.Invoke(this, result);
         CurrentPhase = Phase.Ended;
 
@@ -367,7 +396,7 @@ public sealed class Connect4Game : IDisposable
         OnGameFailedToStart = null;
         OnGameStateUpdated = null;
         OnGameEnded = null;
-        playerTimeoutTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        CancelTimer(Interlocked.Exchange(ref _turnCts, null));
     }
 
 

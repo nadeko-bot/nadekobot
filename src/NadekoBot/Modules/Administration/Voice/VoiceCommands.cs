@@ -99,12 +99,6 @@ public partial class Administration
 
             var vc = user.VoiceChannel;
 
-            if (!await CheckRoleHierarchy(role))
-            {
-                await Response().Error(strs.hierarchy).SendAsync();
-                return;
-            }
-            
             if (vc is null || vc.GuildId != user.GuildId)
             {
                 await Response().Error(strs.must_be_in_voice).SendAsync();
@@ -115,12 +109,17 @@ public partial class Administration
             {
                 if (vcRoleService.RemoveVcRole(ctx.Guild.Id, vc.Id))
                     await Response().Confirm(strs.vcrole_removed(Format.Bold(vc.Name))).SendAsync();
+                else
+                    await Response().Error(strs.vcrole_not_found).SendAsync();
+
+                return;
             }
-            else
-            {
-                vcRoleService.AddVcRole(ctx.Guild.Id, role, vc.Id);
-                await Response().Confirm(strs.vcrole_added(Format.Bold(vc.Name), Format.Bold(role.Name))).SendAsync();
-            }
+
+            if (!await CheckRoleHierarchy(role))
+                return;
+
+            vcRoleService.AddVcRole(ctx.Guild.Id, role, vc.Id);
+            await Response().Confirm(strs.vcrole_added(Format.Bold(vc.Name), Format.Bold(role.Name))).SendAsync();
         }
 
         [Cmd]

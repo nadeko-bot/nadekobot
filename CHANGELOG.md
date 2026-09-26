@@ -22,10 +22,19 @@
     - the AFK message is plain text of up to 200 characters and never pings
     - the bot replies once per channel every 5 minutes
     - `.afk` no longer clears itself right after you set it
+- `.connect4` / `.con4` turn timeouts no longer crash the bot.
+- `.gamevoicechannel` / `.gvc` now moves users to the voice channel of their game.
+- `.vcrole` without a role now removes the voice channel role.
+- `.typestart` now starts a new contest in the current channel.
+    - the countdown before the contest now shows
+    - each player now gets a correct and unique place
+- `.tictactoe` / `.ttt` accepts moves only in the channel of the game.
+- `.notify` / `.nfy` and `.agentskilllist` / `.aisl` buttons now work after the first click.
 
 ### Dev
 
 - The xp batch no longer copies the unused username and avatar of each user.
+- `.countup` and `.tictactoe` games now release their message handler when they end.
 
 ## [7.3.0] - 23.08.2026
 

@@ -12,7 +12,8 @@ public class TypingGame
     public string CurrentSentence { get; private set; }
     public bool IsActive { get; private set; }
     private readonly Stopwatch _sw;
-    private readonly List<ulong> _finishedUserIds;
+    private readonly ConcurrentHashSet<ulong> _finishedUserIds;
+    private int _finishedCount;
     private readonly DiscordSocketClient _client;
     private readonly GamesService _games;
     private readonly string _prefix;
@@ -36,7 +37,7 @@ public class TypingGame
         Channel = channel;
         IsActive = false;
         _sw = new();
-        _finishedUserIds = new();
+        _finishedUserIds = [];
     }
 
     public async Task<bool> Stop()
@@ -45,6 +46,7 @@ public class TypingGame
             return false;
         _client.MessageReceived -= AnswerReceived;
         _finishedUserIds.Clear();
+        Interlocked.Exchange(ref _finishedCount, 0);
         IsActive = false;
         _sw.Stop();
         _sw.Reset();
@@ -84,14 +86,20 @@ public class TypingGame
             {
                 await Task.Delay(2000);
                 time -= 2;
-                try { await msg.ModifyAsync(m => m.Content = $"Starting new typing contest in **{time}**.."); }
+                var countdown = _sender.CreateEmbed()
+                                       .WithOkColor()
+                                       .WithDescription($"Starting new typing contest in **{time}**..")
+                                       .Build();
+                try { await msg.ModifyAsync(m => m.Embed = countdown); }
                 catch { }
             } while (time > 2);
 
-            await msg.ModifyAsync(m =>
-            {
-                m.Content = CurrentSentence.Replace(" ", " \x200B", StringComparison.InvariantCulture);
-            });
+            var sentence = _sender.CreateEmbed()
+                                  .WithOkColor()
+                                  .WithDescription(
+                                      $"**{Format.Sanitize(CurrentSentence.Replace(" ", " \x200B", StringComparison.InvariantCulture))}**")
+                                  .Build();
+            await msg.ModifyAsync(m => m.Embed = sentence);
             _sw.Start();
             HandleAnswers();
 
@@ -138,16 +146,16 @@ public class TypingGame
 
                 var distance = CurrentSentence.LevenshteinDistance(guess);
                 var decision = Judge(distance, guess.Length);
-                if (decision && !_finishedUserIds.Contains(msg.Author.Id))
+                if (decision && _finishedUserIds.Add(msg.Author.Id))
                 {
                     var elapsed = _sw.Elapsed;
                     var wpm = CurrentSentence.Length / WORD_VALUE / elapsed.TotalSeconds * 60;
-                    _finishedUserIds.Add(msg.Author.Id);
+                    var place = Interlocked.Increment(ref _finishedCount);
 
                     var embed = _sender.CreateEmbed()
                                 .WithOkColor()
                                 .WithTitle($"{msg.Author} finished the race!")
-                                .AddField("Place", $"#{_finishedUserIds.Count}", true)
+                                .AddField("Place", $"#{place}", true)
                                 .AddField("WPM", $"{wpm:F1} *[{elapsed.TotalSeconds:F2}sec]*", true)
                                 .AddField("Errors", distance.ToString(), true);
                     
@@ -155,7 +163,7 @@ public class TypingGame
                                  .Embed(embed)
                                  .SendAsync();
 
-                    if (_finishedUserIds.Count % 4 == 0)
+                    if (place % 4 == 0)
                     {
                         await _sender.Response(Channel)
                                      .Confirm(

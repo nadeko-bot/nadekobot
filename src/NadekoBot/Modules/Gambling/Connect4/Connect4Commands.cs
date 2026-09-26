@@ -132,11 +132,15 @@ public partial class Gambling
                 else
                     title = GetText(strs.connect4_draw);
 
-                return msg.ModifyAsync(x => x.Embed = CreateEmbed()
-                                                             .WithTitle(title)
-                                                             .WithDescription(GetGameStateText(game))
-                                                             .WithOkColor()
-                                                             .Build());
+                var endEmbed = CreateEmbed()
+                               .WithTitle(title)
+                               .WithDescription(GetGameStateText(game))
+                               .WithOkColor();
+
+                if (msg is null)
+                    return Response().Embed(endEmbed).SendAsync();
+
+                return msg.ModifyAsync(x => x.Embed = endEmbed.Build());
             }
         }
 

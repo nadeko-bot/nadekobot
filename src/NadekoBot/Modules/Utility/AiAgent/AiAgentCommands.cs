@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Text;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Utility.AiAgent;
@@ -151,6 +152,7 @@ public partial class Utility
             var guildId = ctx.Guild.Id;
             var userId = ctx.User.Id;
             var handlers = new List<NadekoButtonInteractionHandler>();
+            var generation = new StrongBox<int>();
 
             (EmbedBuilder Embed, ComponentBuilder Components) BuildPanel(
                 IReadOnlyList<AiAgentGuildSkill> currentSkills)
@@ -194,6 +196,7 @@ public partial class Utility
                             await smc.DeferAsync();
                             await _service.ToggleSkillAsync(guildId, skill.Name, channelId);
 
+                            Interlocked.Increment(ref generation.Value);
                             foreach (var h in handlers)
                                 h.SetCompleted();
 
@@ -205,7 +208,7 @@ public partial class Utility
                                 m.Components = newComponents.Build();
                             });
 
-                            await RunHandlersInternalAsync(handlers, smc.Message);
+                            await RunHandlersInternalAsync(handlers, smc.Message, generation);
                         },
                         onlyAuthor: true,
                         singleUse: false,
@@ -224,19 +227,23 @@ public partial class Utility
                 embed: embed.Build(),
                 components: components.Build());
 
-            await RunHandlersInternalAsync(handlers, msg);
-            await msg.ModifyAsync(m => m.Components = new ComponentBuilder().Build());
+            await RunHandlersInternalAsync(handlers, msg, generation);
         }
 
-        private static Task RunHandlersInternalAsync(
+        private static async Task RunHandlersInternalAsync(
             List<NadekoButtonInteractionHandler> handlers,
-            IUserMessage msg)
+            IUserMessage msg,
+            StrongBox<int> generation)
         {
+            var gen = Volatile.Read(ref generation.Value);
             var tasks = new Task[handlers.Count];
             for (var i = 0; i < handlers.Count; i++)
                 tasks[i] = handlers[i].RunAsync(msg);
 
-            return Task.WhenAll(tasks);
+            await Task.WhenAll(tasks);
+
+            if (gen == Volatile.Read(ref generation.Value))
+                await msg.ModifyAsync(m => m.Components = new ComponentBuilder().Build());
         }
 
         [Cmd]

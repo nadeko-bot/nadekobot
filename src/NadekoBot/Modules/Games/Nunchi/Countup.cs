@@ -177,6 +177,7 @@ public sealed class CountUpGame : IDisposable
 
     public void Dispose()
     {
+        killTimer?.Dispose();
         OnGameEnded = null;
         OnGameStarted = null;
         OnRoundEnded = null;

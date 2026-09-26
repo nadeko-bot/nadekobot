@@ -45,6 +45,7 @@ public partial class Games
             var success = await countUp.Initialize();
             if (!success)
             {
+                _client.MessageReceived -= ClientMessageReceived;
                 if (_service.Games.TryRemove(ctx.Guild.Id, out var game))
                     game.Dispose();
                 await Response().Confirm(strs.countup_failed_to_start).SendAsync();
@@ -52,13 +53,11 @@ public partial class Games
 
             Task ClientMessageReceived(SocketMessage arg)
             {
+                if (arg.Channel.Id != ctx.Channel.Id || !int.TryParse(arg.Content, out var number))
+                    return Task.CompletedTask;
+
                 _ = Task.Run(async () =>
                 {
-                    if (arg.Channel.Id != ctx.Channel.Id)
-                        return;
-
-                    if (!int.TryParse(arg.Content, out var number))
-                        return;
                     try
                     {
                         await countUp.Input(arg.Author.Id, arg.Author.ToString(), number);
