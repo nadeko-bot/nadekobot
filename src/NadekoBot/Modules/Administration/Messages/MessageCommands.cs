@@ -60,13 +60,12 @@ public partial class Administration
         [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task Delete(ITextChannel channel, ulong messageId, ParsedTimespan timespan = null)
-            => await InternalMessageAction(channel, messageId, timespan, msg => msg.DeleteAsync());
+            => await InternalMessageAction(channel, messageId, timespan);
 
         private async Task InternalMessageAction(
             ITextChannel channel,
             ulong messageId,
-            ParsedTimespan timespan,
-            Func<IMessage, Task> func)
+            ParsedTimespan timespan)
         {
             var userPerms = ((SocketGuildUser)ctx.User).GetPermissions(channel);
             var botPerms = ((SocketGuild)ctx.Guild).CurrentUser.GetPermissions(channel);
@@ -97,7 +96,14 @@ public partial class Administration
                 _ = Task.Run(async () =>
                 {
                     await Task.Delay(timespan.Time);
-                    await msg.DeleteAsync();
+                    try
+                    {
+                        await msg.DeleteAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "Unable to delete message {MessageId} after a delay", msg.Id);
+                    }
                 });
             }
             else

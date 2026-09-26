@@ -1,14 +1,13 @@
 afk:
   desc: |-
-    Toggles AFK status for yourself with the specified message. 
-    If you don't provide a message it default to a generic one.
-    Anyone @ mentioning you in any server will receive the afk message.
-    This will only work if the other user's message starts with the mention.
+    Sets your AFK status with an optional message of up to 200 characters.
+    When a message starts with a mention of you, or replies to you, the bot shows your AFK message.
+    The bot clears your AFK status when you send a message, or after 8 hours.
   ex:
-    - ''
+    - 'Eating dinner'
   params:
     - text:
-        desc: The message to send when someone pings you.
+        desc: "The message to show when someone pings you."
 channelid:
   desc: Shows current channel ID.
   ex:

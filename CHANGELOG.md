@@ -10,11 +10,18 @@
 
 ### Fixed
 
+- `.ga reroll` now works only on giveaways of the current server.
 - `.curtrs` now shows your transactions. The bot deleted them too early.
 - Clubs now gain xp when their members talk or stay in voice.
     - each member tick gives the club a fixed 3 xp
     - server xp rates and `.xpadd` do not change club xp
 - `.clublb` / `.clubinfo` now show the real club xp, level and rank.
+- Message links in commands now work only for channels of the current server.
+- `.dpo` now shows an error for an expression. Overrides apply only to commands.
+- `.afk` now shows the AFK message safely and less often.
+    - the AFK message is plain text of up to 200 characters and never pings
+    - the bot replies once per channel every 5 minutes
+    - `.afk` no longer clears itself right after you set it
 
 ### Dev
 

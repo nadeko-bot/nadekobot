@@ -788,9 +788,16 @@ public partial class Utility : NadekoModule
     }
 
     [Cmd]
-    public async Task Afk([Leftover] string text = "No reason specified.")
+    public async Task Afk([Leftover] string? text = null)
     {
-        var succ = await _afkService.SetAfkAsync(ctx.User.Id, text);
+        text = string.IsNullOrWhiteSpace(text) ? null : text.Trim();
+        if (text?.Length > AfkService.MAX_TEXT_LENGTH)
+        {
+            await Response().Error(strs.afk_too_long(AfkService.MAX_TEXT_LENGTH)).SendAsync();
+            return;
+        }
+
+        var succ = await _afkService.SetAfkAsync(ctx.User.Id, ctx.Message.CreatedAt, text);
 
         if (succ)
         {

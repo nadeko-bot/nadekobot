@@ -2,20 +2,18 @@
 
 namespace NadekoBot.Modules.Utility;
 
-public sealed class AfkService : INService, IReadyExecutor
+public sealed class AfkService(
+    IBotCache cache,
+    DiscordSocketClient client,
+    MessageSenderService mss,
+    IBotStrings bs)
+    : INService, IReadyExecutor
 {
-    private readonly IBotCache _cache;
-    private readonly DiscordSocketClient _client;
-    private readonly MessageSenderService _mss;
+    public const int MAX_TEXT_LENGTH = 200;
+    private const int MAX_MENTIONS = 3;
 
     private static readonly TimeSpan _maxAfkDuration = 8.Hours();
-
-    public AfkService(IBotCache cache, DiscordSocketClient client, MessageSenderService mss)
-    {
-        _cache = cache;
-        _client = client;
-        _mss = mss;
-    }
+    private static readonly TimeSpan _replyCooldown = TimeSpan.FromMinutes(5);
 
     private static TypedKey<string> GetKey(ulong userId)
         => new($"afk:msg:{userId}");
@@ -23,12 +21,26 @@ public sealed class AfkService : INService, IReadyExecutor
     private static TypedKey<bool> GetRecentlySentKey(ulong userId, ulong channelId)
         => new($"afk:recent:{userId}:{channelId}");
 
-    public async Task<bool> SetAfkAsync(ulong userId, string text)
-        => await _cache.AddAsync(GetKey(userId), text, _maxAfkDuration, overwrite: true);
+    // the set time is stored with the text, so the message which ran .afk can't clear it again
+    public static string Encode(DateTimeOffset setAt, string? text)
+        => $"{setAt.ToUnixTimeMilliseconds()}|{text}";
+
+    public static (DateTimeOffset SetAt, string? Text) Decode(string value)
+    {
+        var sep = value.IndexOf('|');
+        if (sep < 0 || !long.TryParse(value.AsSpan(0, sep), out var ms))
+            return (DateTimeOffset.MinValue, value);
+
+        var text = value[(sep + 1)..];
+        return (DateTimeOffset.FromUnixTimeMilliseconds(ms), text.Length == 0 ? null : text);
+    }
+
+    public async Task<bool> SetAfkAsync(ulong userId, DateTimeOffset setAt, string? text)
+        => await cache.AddAsync(GetKey(userId), Encode(setAt, text), _maxAfkDuration, overwrite: true);
 
     public Task OnReadyAsync()
     {
-        _client.MessageReceived += OnMessageReceivedAsync;
+        client.MessageReceived += OnMessageReceivedAsync;
         return Task.CompletedTask;
     }
 
@@ -42,26 +54,32 @@ public sealed class AfkService : INService, IReadyExecutor
 
         _ = Task.Run(async () =>
         {
-            await TryClearSelfAfkInternalAsync(sm.Author.Id, tc);
-            await TryReplyAfkOnMentionInternalAsync(sm, uMsg, tc);
+            await TryClearSelfAfkInternalAsync(uMsg, tc);
+            await TryReplyAfkOnMentionInternalAsync(uMsg, tc);
         });
 
         return Task.CompletedTask;
     }
 
-    private async Task TryClearSelfAfkInternalAsync(ulong userId, ITextChannel tc)
+    private async Task TryClearSelfAfkInternalAsync(IUserMessage msg, ITextChannel tc)
     {
         try
         {
-            var key = GetKey(userId);
-            var result = await _cache.GetAsync(key);
-            if (!result.TryPickT0(out _, out _))
+            var key = GetKey(msg.Author.Id);
+            var result = await cache.GetAsync(key);
+            if (!result.TryPickT0(out var value, out _))
                 return;
 
-            await _cache.RemoveAsync(key);
+            if (msg.CreatedAt <= Decode(value).SetAt)
+                return;
 
-            var msg = await _mss.Response(tc).Confirm("AFK message cleared!").SendAsync();
-            msg.DeleteAfter(5);
+            await cache.RemoveAsync(key);
+
+            if (!CanSend(tc))
+                return;
+
+            var reply = await mss.Response(tc).Confirm(strs.afk_cleared).SendAsync();
+            reply.DeleteAfter(5);
         }
         catch (Exception ex)
         {
@@ -69,76 +87,84 @@ public sealed class AfkService : INService, IReadyExecutor
         }
     }
 
-    private async Task TryReplyAfkOnMentionInternalAsync(SocketMessage sm, IUserMessage uMsg, ITextChannel tc)
+    private async Task TryReplyAfkOnMentionInternalAsync(IUserMessage msg, ITextChannel tc)
     {
-        if ((sm.MentionedUsers.Count is 0 or > 3) && uMsg.ReferencedMessage is null)
-            return;
-
-        ulong mentionedUserId = 0;
-
-        if (sm.MentionedUsers.Count <= 3)
-        {
-            foreach (var uid in uMsg.MentionedUserIds)
-            {
-                if (uid == sm.Author.Id)
-                    continue;
-
-                if (sm.Content.StartsWith($"<@{uid}>") || sm.Content.StartsWith($"<@!{uid}>"))
-                {
-                    mentionedUserId = uid;
-                    break;
-                }
-            }
-        }
-
+        var mentionedUserId = GetMentionedUserId(msg);
         if (mentionedUserId == 0)
-        {
-            if (uMsg.ReferencedMessage?.Author?.Id is not ulong repliedUserId)
-                return;
-
-            mentionedUserId = repliedUserId;
-        }
+            return;
 
         try
         {
-            var result = await _cache.GetAsync(GetKey(mentionedUserId));
-            if (result.TryPickT0(out var afkMsg, out _))
+            var result = await cache.GetAsync(GetKey(mentionedUserId));
+            if (!result.TryPickT0(out var value, out _))
+                return;
+
+            if (!CanSend(tc))
+                return;
+
+            // one reply per afk user per channel, so pinging someone repeatedly doesn't make the bot spam
+            var recentKey = GetRecentlySentKey(mentionedUserId, tc.Id);
+            if (!await cache.AddAsync(recentKey, true, _replyCooldown, overwrite: false))
+                return;
+
+            var (_, text) = Decode(value);
+
+            if (text is null)
             {
-                var st = SmartText.CreateFrom(afkMsg);
-
-                st = $"The user you've pinged (<#{mentionedUserId}>) is AFK: " + st;
-
-                var toDelete = await _mss.Response(sm.Channel)
-                                         .User(sm.Author)
-                                         .Message(uMsg)
-                                         .Text(st)
-                                         .SendAsync();
-
-                toDelete.DeleteAfter(30);
-
-                var botUser = await tc.Guild.GetCurrentUserAsync();
-                var perms = botUser.GetPermissions(tc);
-                if (!perms.SendMessages)
-                    return;
-
-                var key = GetRecentlySentKey(mentionedUserId, sm.Channel.Id);
-                var recent = await _cache.GetAsync(key);
-
-                if (!recent.TryPickT0(out _, out _))
-                {
-                    var chMsg = await _mss.Response(sm.Channel)
-                                          .Message(uMsg)
-                                          .Pending(strs.user_afk($"<@{mentionedUserId}>"))
-                                          .SendAsync();
-
-                    chMsg.DeleteAfter(5);
-                    await _cache.AddAsync(key, true, expiry: TimeSpan.FromMinutes(5));
-                }
+                var noReason = strs.afk_no_reason;
+                text = bs.GetText(noReason.Key, tc.GuildId, noReason.Params);
             }
+
+            // an embed, because mentions in embeds never ping
+            var reply = await mss.Response(tc)
+                .Message(msg)
+                .Pending(strs.afk_reply($"<@{mentionedUserId}>", text))
+                .SendAsync();
+
+            reply.DeleteAfter(30);
         }
         catch (HttpException ex)
         {
             Log.Warning("Error in afk service: {Message}", ex.Message);
         }
     }
+
+    private static ulong GetMentionedUserId(IUserMessage msg)
+    {
+        var mentions = msg.MentionedUserIds;
+        if (mentions.Count is > 0 and <= MAX_MENTIONS)
+        {
+            var content = msg.Content.AsSpan();
+            foreach (var uid in mentions)
+            {
+                if (uid == msg.Author.Id)
+                    continue;
+
+                if (StartsWithMention(content, uid))
+                    return uid;
+            }
+        }
+
+        if (msg.ReferencedMessage?.Author?.Id is ulong repliedUserId && repliedUserId != msg.Author.Id)
+            return repliedUserId;
+
+        return 0;
+    }
+
+    private static bool StartsWithMention(ReadOnlySpan<char> content, ulong userId)
+    {
+        if (!content.StartsWith("<@"))
+            return false;
+
+        content = content[2..];
+        if (content.StartsWith("!"))
+            content = content[1..];
+
+        var end = content.IndexOf('>');
+        return end > 0 && ulong.TryParse(content[..end], out var id) && id == userId;
+    }
+
+    private static bool CanSend(ITextChannel tc)
+        => tc is SocketGuildChannel sgc
+           && sgc.Guild.CurrentUser.GetPermissions(sgc) is { ViewChannel: true, SendMessages: true, EmbedLinks: true };
 }

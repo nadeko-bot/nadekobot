@@ -26,7 +26,13 @@ public sealed partial class MessageLinkTypeReader : NadekoTypeReader<MessageLink
         var channelId = ulong.Parse(match.Groups["cid"].ToString());
         var messageId = ulong.Parse(match.Groups["mid"].ToString());
 
-        var channel = await ctx.Client.GetChannelAsync(channelId) as IMessageChannel;
+        // the client also fetches uncached channels (archived threads), so the owner must be checked
+        var channel = await ctx.Client.GetChannelAsync(channelId) switch
+        {
+            IGuildChannel gc when ctx.Guild is not null && gc.GuildId == ctx.Guild.Id => gc as IMessageChannel,
+            IMessageChannel dm when ctx.Guild is null && dm.Id == ctx.Channel.Id => dm,
+            _ => null
+        };
 
         if (channel is null)
             return TypeReaderResult.FromError<MessageLink>(CommandError.ParseFailed, "Channel not found");

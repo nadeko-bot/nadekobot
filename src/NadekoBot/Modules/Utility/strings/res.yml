@@ -46,8 +46,11 @@ sticker_error: >-
   You must either send a sticker along with this command, or upload a 300x300
   .png or .apng image. Up to 512KB in size.
 uptime: Uptime
-user_afk: User {0} is AFK.
 userid: '{0} of the user {1} is {2}'
 verbose_errors_disabled: Incorrectly used commands will no longer show errors.
 verbose_errors_enabled: Incorrectly used commands will now show errors.
 whos_playing_game: '{0} users are playing {1}'
+afk_cleared: 'Your AFK status is cleared.'
+afk_reply: '{0} is AFK: {1}'
+afk_no_reason: 'No reason specified.'
+afk_too_long: 'The AFK message can have a maximum of {0} characters.'

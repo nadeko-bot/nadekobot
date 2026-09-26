@@ -1,13 +1,17 @@
 discordpermoverride:
   desc: |-
-    Overrides required user permissions that the command has with the specified ones. You can only use server-level permissions. This action will make the bot ignore user permission requirements which command has by default. Provide no permissions to reset to default.
+    Replaces the user permissions that a command requires with the specified permissions.
+    You can use only server-level permissions.
+    The bot then ignores the default user permission requirements of the command.
+    Overrides work only for commands, not for expressions.
+    Provide no permissions to reset the command to its default requirements.
   ex:
     - '{0}prune ManageMessages BanMembers'
     - '{0}prune'
   params:
     - cmd:
         desc: |-
-          The command or expression that this override applies to, allowing you to customize permissions for specific commands or actions within your Discord server.
+          The command, with its prefix, that the override applies to.
       perms:
         desc: |-
           The set of permissions that should be used instead of the command's default permissions.

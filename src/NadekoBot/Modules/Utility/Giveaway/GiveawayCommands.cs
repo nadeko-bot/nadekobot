@@ -86,7 +86,7 @@ public partial class Utility
 
             if (!success)
             {
-                await Response().Confirm(strs.giveaway_not_found).SendAsync();
+                await Response().Error(strs.giveaway_not_found).SendAsync();
                 return;
             }
 

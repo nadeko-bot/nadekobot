@@ -22,6 +22,12 @@ public partial class Administration
                 return;
             }
 
+            if (cmd.IsCustom)
+            {
+                await Response().Error(strs.perm_override_expr).SendAsync();
+                return;
+            }
+
             var aggregatePerms = perms.Aggregate((acc, seed) => seed | acc);
             await _service.AddOverride(ctx.Guild.Id, cmd.Name, aggregatePerms);
 

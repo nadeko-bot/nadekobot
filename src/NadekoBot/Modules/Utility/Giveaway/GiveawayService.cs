@@ -21,7 +21,13 @@ public sealed class GiveawayService : INService, IReadyExecutor
     private readonly ILocalization _localization;
     private readonly IMemoryCache _cache;
     private readonly UserNotifyService? _userNotify;
-    private SortedSet<GiveawayModel> _giveawayCache = new SortedSet<GiveawayModel>();
+    private static readonly Comparer<GiveawayModel> _endsAtComparer = Comparer<GiveawayModel>.Create(static (x, y) =>
+    {
+        var cmp = x.EndsAt.CompareTo(y.EndsAt);
+        return cmp != 0 ? cmp : x.Id.CompareTo(y.Id);
+    });
+
+    private SortedSet<GiveawayModel> _giveawayCache = new(_endsAtComparer);
     private readonly Lock _giveawayLock = new();
     private readonly NadekoRandom _rng;
 
@@ -106,11 +112,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
 
         lock (_giveawayLock)
         {
-            _giveawayCache = new(gas, Comparer<GiveawayModel>.Create((x, y) =>
-            {
-                var cmp = x.EndsAt.CompareTo(y.EndsAt);
-                return cmp != 0 ? cmp : x.Id.CompareTo(y.Id);
-            }));
+            _giveawayCache = new(gas, _endsAtComparer);
         }
 
         var timer = new PeriodicTimer(TimeSpan.FromMinutes(1));
@@ -228,7 +230,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
     {
         var rerollModel = _cache.Get<GiveawayRerollData>("reroll:" + giveawayId);
 
-        if (rerollModel is null)
+        if (rerollModel is null || rerollModel.Giveaway.GuildId != guildId)
             return false;
 
         var winner = PickWinner(rerollModel.Giveaway);
