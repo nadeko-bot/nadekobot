@@ -50,6 +50,55 @@ public sealed class MuteService : INService, IReadyExecutor
 
         UserMuted += OnUserMuted;
         UserUnmuted += OnUserUnmuted;
+        _client.UserUnbanned += OnUserUnbanned;
+    }
+
+    private Task OnUserUnbanned(SocketUser user, SocketGuild guild)
+    {
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                var guildId = guild.Id;
+                var userId = user.Id;
+                await using (var uow = _db.GetDbContext())
+                {
+                    var hasTimer = await uow.GetTable<UnbanTimer>()
+                                            .AnyAsyncLinqToDB(x => x.GuildId == guildId && x.UserId == userId);
+                    if (!hasTimer)
+                        return;
+                }
+
+                // the event can arrive after a new timed ban of the same user, which must keep its timer
+                if (await guild.GetBanAsync(userId) is not null)
+                    return;
+
+                await ClearUnbanTimersAsync(guildId, [userId]);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Unable to clear the unban timer of user {UserId}", user.Id);
+            }
+        });
+
+        return Task.CompletedTask;
+    }
+
+    public async Task BanAsync(IGuild guild, ulong userId, int pruneDays, string? reason)
+    {
+        await guild.AddBanAsync(userId, pruneDays, reason);
+        await ClearUnbanTimersAsync(guild.Id, [userId]);
+    }
+
+    public async Task ClearUnbanTimersAsync(ulong guildId, IReadOnlyCollection<ulong> userIds)
+    {
+        if (userIds.Count == 0)
+            return;
+
+        await using var uow = _db.GetDbContext();
+        await uow.GetTable<UnbanTimer>()
+                 .Where(x => x.GuildId == guildId && userIds.Contains(x.UserId))
+                 .DeleteAsync();
     }
 
     private void OnUserMuted(IGuildUser user, IUser mod, MuteType type, string reason)

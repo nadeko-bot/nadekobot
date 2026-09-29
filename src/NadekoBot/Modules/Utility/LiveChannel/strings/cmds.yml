@@ -2,13 +2,13 @@ livechadd:
   desc: |-
     Adds a channel as a live channel with the specified template.
     You can see a full list of placeholders with `{0}phs` command.
+    The channel name from the template must have 1 to 100 characters.
   ex:
-    - '#general Time: %server.time%'
     - '#general -- %server.members% --'
   params:
     - channel:
         desc: The channel to configure as a live channel.
-    - template:
+      template:
         desc: The text template to use as a name for the live channel.
 livechlist:
   desc: Lists all live channels in the server.

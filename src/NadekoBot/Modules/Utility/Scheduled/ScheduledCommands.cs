@@ -67,7 +67,10 @@ public partial class Utility
         public async Task ScheduleAdd(ParsedTimespan timeString, [Leftover] string commandText)
         {
             if (timeString.Time < TimeSpan.FromMinutes(1))
+            {
+                await Response().Error(strs.schedule_add_too_soon).SendAsync();
                 return;
+            }
 
             var success = await scs.AddScheduledCommandAsync(
                 ctx.Guild.Id,

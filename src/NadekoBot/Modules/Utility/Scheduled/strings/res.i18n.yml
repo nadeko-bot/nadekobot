@@ -1,5 +1,6 @@
 ar:
   schedule_add_error: 'لديك بالفعل {0} أوامر مجدولة. يُرجى حذف بعضها قبل إضافة المزيد.'
+  schedule_add_too_soon: يجب أن تكون المدة دقيقة واحدة على الأقل.
   schedule_add_success: تمت إضافة الأمر المجدول بنجاح.
   schedule_command: الأمر
   schedule_delete_error: خطأ في حذف الأمر المجدول.
@@ -11,6 +12,7 @@ ar:
 
 de-DE:
   schedule_add_error: 'Du hast bereits {0} geplante Befehle. Bitte lösche einige, bevor du weitere hinzufügst.'
+  schedule_add_too_soon: Die Zeit muss mindestens 1 Minute betragen.
   schedule_add_success: Geplanter Befehl erfolgreich hinzugefügt.
   schedule_command: Befehl
   schedule_delete_error: Fehler beim Löschen des geplanten Befehls.
@@ -22,6 +24,7 @@ de-DE:
 
 es-ES:
   schedule_add_error: 'Ya tienes {0} comandos programados. Por favor, elimina algunos antes de añadir más.'
+  schedule_add_too_soon: El tiempo debe ser de al menos 1 minuto.
   schedule_add_success: Comando programado añadido con éxito.
   schedule_command: Comando
   schedule_delete_error: Error al eliminar comando programado.
@@ -33,6 +36,7 @@ es-ES:
 
 fr-FR:
   schedule_add_error: 'Vous avez déjà {0} commandes programmées. Veuillez en supprimer avant d''en ajouter d''autres.'
+  schedule_add_too_soon: La durée doit être d'au moins 1 minute.
   schedule_add_success: Commande programmée ajoutée avec succès.
   schedule_command: Commande
   schedule_delete_error: Erreur lors de la suppression de la commande programmée.
@@ -44,6 +48,7 @@ fr-FR:
 
 id-ID:
   schedule_add_error: 'Kamu sudah punya {0} perintah terjadwal. Hapus beberapa sebelum menambahkan yang baru.'
+  schedule_add_too_soon: Waktunya minimal 1 menit.
   schedule_add_success: Perintah terjadwal berhasil ditambahkan.
   schedule_command: Perintah
   schedule_delete_error: Gagal menghapus perintah terjadwal.
@@ -55,6 +60,7 @@ id-ID:
 
 ja-JP:
   schedule_add_error: '既に{0}つのスケジュールコマンドがあります。追加する前にいくつか削除してください。'
+  schedule_add_too_soon: 時間は最低 1 分である必要があります。
   schedule_add_success: スケジュールコマンドが正常に追加されました。
   schedule_command: コマンド
   schedule_delete_error: スケジュールコマンドの削除中にエラーが発生しました。
@@ -66,6 +72,7 @@ ja-JP:
 
 ko-KR:
   schedule_add_error: '이미 {0}개의 예약 명령어가 있어요. 더 추가하려면 기존 항목을 삭제해 주세요.'
+  schedule_add_too_soon: 시간은 최소 1분이어야 합니다.
   schedule_add_success: 예약 명령어가 추가되었어요.
   schedule_command: 명령어
   schedule_delete_error: 예약 명령어를 삭제하는 중 오류가 발생했어요.
@@ -77,6 +84,7 @@ ko-KR:
 
 pl-PL:
   schedule_add_error: 'Masz już {0} zaplanowanych komend. Usuń jakieś, zanim dodasz nowe.'
+  schedule_add_too_soon: Czas musi wynosić co najmniej 1 minutę.
   schedule_add_success: Zaplanowana komenda została pomyślnie dodana.
   schedule_command: Komenda
   schedule_delete_error: Błąd podczas usuwania zaplanowanej komendy.
@@ -88,6 +96,7 @@ pl-PL:
 
 pt-BR:
   schedule_add_error: 'Você já tem {0} comandos agendados. Por favor, exclua alguns antes de adicionar mais.'
+  schedule_add_too_soon: O tempo precisa ser de pelo menos 1 minuto.
   schedule_add_success: Comando agendado adicionado com sucesso.
   schedule_command: Comando
   schedule_delete_error: Erro ao excluir comando agendado.
@@ -99,6 +108,7 @@ pt-BR:
 
 ru-RU:
   schedule_add_error: 'У вас уже {0} запланированных команд. Пожалуйста, удалите некоторые перед добавлением новых.'
+  schedule_add_too_soon: Время должно быть не менее 1 минуты.
   schedule_add_success: Запланированная команда успешно добавлена.
   schedule_command: Команда
   schedule_delete_error: Ошибка при удалении запланированной команды.
@@ -110,6 +120,7 @@ ru-RU:
 
 sr-Cyrl-RS:
   schedule_add_error: 'Већ имате {0} заказаних команди. Обришите неке пре додавања нових.'
+  schedule_add_too_soon: Време мора бити најмање 1 минут.
   schedule_add_success: Заказана команда успешно додата.
   schedule_command: Команда
   schedule_delete_error: Грешка при брисању заказане команде.
@@ -121,6 +132,7 @@ sr-Cyrl-RS:
 
 tr-TR:
   schedule_add_error: 'Zaten {0} zamanlanmış komutun var. Daha fazla eklemek için lütfen bazılarını sil.'
+  schedule_add_too_soon: Süre en az 1 dakika olmalı.
   schedule_add_success: Zamanlanmış komut başarıyla eklendi.
   schedule_command: Komut
   schedule_delete_error: Zamanlanmış komut silinirken hata oluştu.
@@ -132,6 +144,7 @@ tr-TR:
 
 ts-TS:
   schedule_add_error: 'You already have {0} scheduled commands. Delete some first.'
+  schedule_add_too_soon: Hmph. It has to be at least 1 minute.
   schedule_add_success: Scheduled command added.
   schedule_command: Command
   schedule_delete_error: Error deleting that scheduled command. Hmph.
@@ -143,6 +156,7 @@ ts-TS:
 
 uk-UA:
   schedule_add_error: 'У тебе вже є {0} запланованих команд. Видали деякі перед додаванням нових.'
+  schedule_add_too_soon: Час має бути щонайменше 1 хвилину.
   schedule_add_success: Заплановану команду успішно додано.
   schedule_command: Команда
   schedule_delete_error: Помилка видалення запланованої команди.
@@ -154,6 +168,7 @@ uk-UA:
 
 vi-VN:
   schedule_add_error: 'Bạn đã có {0} lệnh hẹn giờ. Vui lòng xóa bớt trước khi thêm mới.'
+  schedule_add_too_soon: Thời gian phải ít nhất là 1 phút.
   schedule_add_success: Đã thêm lệnh hẹn giờ thành công.
   schedule_command: Lệnh
   schedule_delete_error: Lỗi khi xóa lệnh hẹn giờ.
@@ -165,6 +180,7 @@ vi-VN:
 
 zh-CN:
   schedule_add_error: '你已有 {0} 個排程指令。請先刪除一些再新增。'
+  schedule_add_too_soon: 时间至少要有 1 分钟。
   schedule_add_success: 排程指令已成功新增。
   schedule_command: 指令
   schedule_delete_error: 刪除排程指令時發生錯誤。

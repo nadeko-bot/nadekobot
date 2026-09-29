@@ -522,7 +522,7 @@ public partial class Administration
             if (user is null)
             {
                 var banPrune = await _service.GetBanPruneAsync(ctx.Guild.Id) ?? 7;
-                await ctx.Guild.AddBanAsync(userId, banPrune, (ctx.User + " | " + msg).TrimTo(512));
+                await _mute.BanAsync(ctx.Guild, userId, banPrune, (ctx.User + " | " + msg).TrimTo(512));
 
                 await Response()
                     .Embed(CreateEmbed()
@@ -560,7 +560,7 @@ public partial class Administration
             }
 
             var banPrune = await _service.GetBanPruneAsync(ctx.Guild.Id) ?? 7;
-            await ctx.Guild.AddBanAsync(user, banPrune, (ctx.User + " | " + msg).TrimTo(512));
+            await _mute.BanAsync(ctx.Guild, user.Id, banPrune, (ctx.User + " | " + msg).TrimTo(512));
 
             var toSend = CreateEmbed()
                 .WithOkColor()
@@ -1016,6 +1016,7 @@ public partial class Administration
 
             var banningMessage = await Response().Embed(toSend).SendAsync();
             var banPrune = await _service.GetBanPruneAsync(ctx.Guild.Id) ?? 7;
+            var banned = new List<ulong>(punishing.Count);
 
             foreach (var toPunish in punishing)
             {
@@ -1036,6 +1037,7 @@ public partial class Administration
                     try
                     {
                         await ctx.Guild.AddBanAsync(toPunish.Id, banPrune, $"{ctx.User} | Massban");
+                        banned.Add(toPunish.Id);
                     }
                     catch (Exception ex)
                     {
@@ -1043,6 +1045,8 @@ public partial class Administration
                     }
                 }
             }
+
+            await _mute.ClearUnbanTimersAsync(ctx.Guild.Id, banned);
 
             await banningMessage.ModifyAsync(x => x.Embed = CreateEmbed()
                 .WithDescription(
@@ -1089,6 +1093,9 @@ public partial class Administration
                     {
                         RetryMode = RetryMode.AlwaysRetry
                     })));
+
+            await _mute.ClearUnbanTimersAsync(ctx.Guild.Id,
+                bans.Where(x => x.Id.HasValue).Select(x => x.Id.Value).ToList());
 
             //wait for the message and edit it
             var banningMessage = await banningMessageTask;

@@ -165,7 +165,7 @@ public class UserPunishService : INService, IReadyExecutor
             case PunishmentAction.Ban:
                 banPrune = await GetBanPruneAsync(user.GuildId) ?? 7;
                 if (minutes == 0)
-                    await guild.AddBanAsync(user, reason: reason, pruneDays: banPrune);
+                    await _mute.BanAsync(guild, user.Id, banPrune, reason);
                 else
                     await _mute.TimedBan(user.Guild, user.Id, TimeSpan.FromMinutes(minutes), reason, banPrune);
                 break;

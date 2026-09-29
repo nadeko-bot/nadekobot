@@ -9,6 +9,19 @@
 - AI agent requests now reuse the prompt cache of the model provider.
 - `{botName}` in `SOUL.md` / `OPERATOR.md` is now the global name of the bot.
 
+### Fixed
+
+- `.remind` no longer loses reminders.
+    - DM reminders, timely reminders and `.remind here` in DMs work
+    - adding many reminders at once no longer shows an error
+- The bot no longer deletes repeaters after a temporary Discord or network error.
+- The bot no longer deletes live channels while it reconnects to Discord.
+    - `.livechadd` / `.lcha` refuses a channel name that is empty or longer than 100 characters
+- Scheduled commands no longer disappear or stop running.
+    - `.scheduleadd` / `.scha` keeps schedules longer than 49 days and warns when the time is under 1 minute
+- An old timed ban no longer unbans a user who was banned again permanently.
+- `.remindlist` / `.remindl`, `.schedulelist` / `.schl` and patron end dates now show the correct time on hosts outside UTC.
+
 ### Dev
 
 - The AI agent logs prompt and cached token counts for each session at debug level.

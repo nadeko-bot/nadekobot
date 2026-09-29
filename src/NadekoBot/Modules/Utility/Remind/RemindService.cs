@@ -225,9 +225,13 @@ public class RemindService : INService, IReadyExecutor, IRemindService
             IMessageChannel ch;
             if (r.IsPrivate)
             {
-                var user = _client.GetUser(r.ChannelId);
+                var user = (IUser)_client.GetUser(r.ChannelId)
+                           ?? await _client.Rest.GetUserAsync(r.ChannelId);
                 if (user is null)
+                {
+                    Log.Warning("Reminder {ReminderId} dropped because user {UserId} was not found", r.Id, r.ChannelId);
                     return;
+                }
                 ch = await user.CreateDMChannelAsync();
             }
             else
@@ -297,7 +301,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
             await ctx.SaveChangesAsync();
         }
 
-        _tcs.SetResult(true);
+        _tcs?.TrySetResult(true);
     }
 
     public async Task<List<Reminder>> GetServerReminders(int page, ulong guildId)

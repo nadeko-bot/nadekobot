@@ -19,7 +19,12 @@ public class LiveChannelService(
     ShardData shardData,
     UtilityConfigService ucs) : IReadyExecutor, INService
 {
+    public const int MAX_NAME_LENGTH = 100;
+
     private readonly ConcurrentDictionary<ulong, ConcurrentDictionary<ulong, LiveChannelConfig>> _liveChannels = new();
+
+    public static bool IsValidName(string? name)
+        => !string.IsNullOrWhiteSpace(name) && name.Length <= MAX_NAME_LENGTH;
 
     /// <summary>
     /// Initializes data when bot is ready
@@ -45,6 +50,10 @@ public class LiveChannelService(
         using var timer = new PeriodicTimer(TimeSpan.FromMinutes(10));
         while (await timer.WaitForNextTickAsync())
         {
+            // guild and channel caches are incomplete until the shard is connected again
+            if (client.ConnectionState != ConnectionState.Connected)
+                continue;
+
             try
             {
                 // get all live channels from cache
@@ -61,8 +70,10 @@ public class LiveChannelService(
                 foreach (var config in channels)
                 {
                     var guild = client.GetGuild(config.GuildId);
-                    var channel = guild?.GetChannel(config.ChannelId);
+                    if (guild is null || !guild.IsConnected)
+                        continue;
 
+                    var channel = guild.GetChannel(config.ChannelId);
                     if (channel is null)
                     {
                         await RemoveLiveChannelAsync(config.GuildId, config.ChannelId);
@@ -77,7 +88,9 @@ public class LiveChannelService(
 
                     try
                     {
-                        var text = await repSvc.ReplaceAsync(config.Template, repCtx);
+                        var text = (await repSvc.ReplaceAsync(config.Template, repCtx)).TrimTo(MAX_NAME_LENGTH);
+                        if (string.IsNullOrWhiteSpace(text))
+                            continue;
 
                         // only update if needed
                         if (channel.Name != text)

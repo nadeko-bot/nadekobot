@@ -13,6 +13,20 @@ public partial class Utility
         [BotPerm(GuildPerm.ManageChannels)]
         public async Task LiveChAdd(IChannel channel, [Leftover] string template)
         {
+            var preview = await repSvc.ReplaceAsync(template,
+                new(
+                    client: ctx.Client as DiscordSocketClient,
+                    guild: ctx.Guild
+                ));
+
+            if (!LiveChannelService.IsValidName(preview))
+            {
+                await Response()
+                    .Error(strs.livechannel_template_invalid(LiveChannelService.MAX_NAME_LENGTH))
+                    .SendAsync();
+                return;
+            }
+
             if (!await svc.AddLiveChannelAsync(ctx.Guild.Id, channel.Id, ctx.Guild.OwnerId, template))
             {
                 await Response()
@@ -25,13 +39,7 @@ public partial class Utility
                 .WithOkColor()
                 .WithDescription(GetText(strs.livechannel_added(channel.Name)))
                 .AddField(GetText(strs.template), template, true)
-                .AddField(GetText(strs.preview),
-                    await repSvc.ReplaceAsync(template,
-                        new(
-                            client: ctx.Client as DiscordSocketClient,
-                            guild: ctx.Guild
-                        )),
-                    true)
+                .AddField(GetText(strs.preview), preview, true)
                 .WithFooter(GetText(strs.livechannel_please_wait));
 
             await Response()

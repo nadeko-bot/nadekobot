@@ -1,6 +1,5 @@
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Modules.Administration;
 
@@ -13,77 +12,109 @@ public sealed class ScheduleCommandService(
     ShardData shardData,
     UtilityConfigService ucs) : INService, IReadyExecutor
 {
-    private TaskCompletionSource _tcs = new();
+    // Task.Delay throws for waits over ~49.7 days, and a long wait also keeps a stale plan
+    private static readonly TimeSpan _maxWait = TimeSpan.FromDays(1);
+    private static readonly TimeSpan _errorBackoff = TimeSpan.FromSeconds(10);
+
+    private volatile TaskCompletionSource _tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     public int MaxScheduledPerUser
         => ucs.Data.MaxScheduledPerUser;
 
-    public async Task OnReadyAsync()
+    public Task OnReadyAsync()
+    {
+        _ = Task.Run(RunLoopInternalAsync);
+        return Task.CompletedTask;
+    }
+
+    private async Task RunLoopInternalAsync()
     {
         while (true)
         {
-            _tcs = new();
-
-            // get the next scheduled command
-            ScheduledCommand? scheduledCommand;
-
-            await using (var ctx = db.GetDbContext())
+            // a due command whose guild is not cached yet would be deleted without running
+            if (client.ConnectionState != ConnectionState.Connected)
             {
-                scheduledCommand = await ctx
-                    .GetTable<ScheduledCommand>()
-                    .Where(Queries.GuildOnShard<ScheduledCommand>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
-                    .OrderBy(x => x.When)
-                    .FirstOrDefaultAsyncLinqToDB();
-            }
-
-            if (scheduledCommand is null)
-            {
-                await _tcs.Task;
+                await Task.Delay(_errorBackoff);
                 continue;
             }
 
-            var now = DateTime.UtcNow;
-            if (scheduledCommand.When > now)
+            try
             {
-                try
-                {
-                    var diff = scheduledCommand.When - now;
-                    await Task.WhenAny(Task.Delay(diff), _tcs.Task);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Error in ScheduleCommandService");
-                    await using var ctx = db.GetDbContext();
-                    await ctx.GetTable<ScheduledCommand>()
-                        .Where(x => x.Id == scheduledCommand.Id)
-                        .DeleteAsync();
-                }
-
-                continue;
+                await ProcessNextAsync();
             }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in ScheduleCommandService");
+                await Task.Delay(_errorBackoff);
+            }
+        }
+    }
 
-            await db.GetDbContext()
+    // runs the next due command, or waits until the next one is due or the list changes
+    public async Task ProcessNextAsync()
+    {
+        _tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        ScheduledCommand? scheduledCommand;
+        await using (var ctx = db.GetDbContext())
+        {
+            scheduledCommand = await ctx
                 .GetTable<ScheduledCommand>()
+                .Where(Queries.GuildOnShard<ScheduledCommand>(x => x.GuildId,
+                    shardData.TotalShards,
+                    shardData.ShardId))
+                .OrderBy(x => x.When)
+                .FirstOrDefaultAsyncLinqToDB();
+        }
+
+        if (scheduledCommand is null)
+        {
+            await _tcs.Task;
+            return;
+        }
+
+        var diff = scheduledCommand.When - DateTime.UtcNow;
+        if (diff > TimeSpan.Zero)
+        {
+            await Task.WhenAny(Task.Delay(diff < _maxWait ? diff : _maxWait), _tcs.Task);
+            return;
+        }
+
+        int deleted;
+        await using (var ctx = db.GetDbContext())
+        {
+            deleted = await ctx.GetTable<ScheduledCommand>()
                 .Where(x => x.Id == scheduledCommand.Id)
                 .DeleteAsync();
-
-            var guild = client.GetGuild(scheduledCommand.GuildId);
-            var channel = guild?.GetChannel(scheduledCommand.ChannelId) as ISocketMessageChannel;
-
-            if (guild is null || channel is null)
-                continue;
-
-            var message = await channel.GetMessageAsync(scheduledCommand.MessageId) as IUserMessage;
-            var user = await (guild as IGuild).GetUserAsync(scheduledCommand.UserId);
-
-            if (message is null || user is null)
-                continue;
-
-            _ = Task.Run(async ()
-                => await cmdHandler.TryRunCommand(guild,
-                    channel,
-                    new DoAsUserMessage(message, user, scheduledCommand.Text)));
         }
+
+        // the owner may have deleted it in the meantime
+        if (deleted == 0)
+            return;
+
+        var guild = client.GetGuild(scheduledCommand.GuildId);
+        if (guild?.GetChannel(scheduledCommand.ChannelId) is not ISocketMessageChannel channel)
+            return;
+
+        var message = await channel.GetMessageAsync(scheduledCommand.MessageId) as IUserMessage;
+        var user = await (guild as IGuild).GetUserAsync(scheduledCommand.UserId);
+
+        if (message is null || user is null)
+            return;
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await cmdHandler.TryRunCommand(guild,
+                    channel,
+                    new DoAsUserMessage(message, user, scheduledCommand.Text));
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Error running scheduled command {Id}", scheduledCommand.Id);
+            }
+        });
     }
 
     /// <summary>
@@ -144,7 +175,6 @@ public sealed class ScheduleCommandService(
         return await uow.GetTable<ScheduledCommand>()
             .Where(x => x.GuildId == guildId && x.UserId == userId)
             .OrderBy(x => x.When)
-            .AsNoTracking()
             .ToListAsyncLinqToDB();
     }
 
