@@ -118,24 +118,59 @@ public sealed class ChannelMessageBuffer
     }
 
     // Every value is escaped, so Discord markup cannot break the structure.
-    public string? BuildHistoryXml(ulong channelId, string channelName, ulong excludeMessageId)
+    // lastMessageId is the highest id in the buffer, so a later update can start after it.
+    public string? BuildHistoryXml(ulong channelId, string channelName, ulong excludeMessageId, out ulong lastMessageId)
     {
         var snapshots = GetMessages();
+        lastMessageId = MaxMessageId(snapshots);
         if (snapshots.Length == 0)
             return null;
 
         var sb = new System.Text.StringBuilder();
         sb.AppendLine($"<channel_history channel_id=\"{channelId}\" channel_name=\"{PromptSanitizer.XmlEscape(channelName)}\">");
 
-        foreach (var s in snapshots)
+        foreach (ref readonly var s in snapshots.AsSpan())
         {
-            if (s.MessageId == excludeMessageId)
-                continue;
-
-            sb.AppendLine($"<msg id=\"{s.MessageId}\" author=\"{PromptSanitizer.XmlEscape(s.AuthorName)}\" author_id=\"{s.AuthorId}\" time=\"{s.Timestamp.ToUnixTimeSeconds()}\">{PromptSanitizer.XmlEscape(s.Content)}</msg>");
+            if (s.MessageId != excludeMessageId)
+                AppendMessageXml(sb, in s);
         }
 
         sb.Append("</channel_history>");
         return sb.ToString();
     }
+
+    // Discord ids grow with time, so the messages after afterMessageId are the ones posted since then.
+    public string? BuildUpdateXml(ulong channelId, ulong afterMessageId, ulong excludeMessageId, out ulong lastMessageId)
+    {
+        var snapshots = GetMessages();
+        lastMessageId = Math.Max(afterMessageId, MaxMessageId(snapshots));
+
+        System.Text.StringBuilder? sb = null;
+        foreach (ref readonly var s in snapshots.AsSpan())
+        {
+            if (s.MessageId <= afterMessageId || s.MessageId == excludeMessageId)
+                continue;
+
+            sb ??= new System.Text.StringBuilder()
+                .AppendLine($"<channel_update channel_id=\"{channelId}\" note=\"messages posted in the channel since your previous step\">");
+            AppendMessageXml(sb, in s);
+        }
+
+        return sb?.Append("</channel_update>").ToString();
+    }
+
+    private static ulong MaxMessageId(ReadOnlySpan<MessageSnapshot> snapshots)
+    {
+        var max = 0UL;
+        foreach (ref readonly var s in snapshots)
+        {
+            if (s.MessageId > max)
+                max = s.MessageId;
+        }
+
+        return max;
+    }
+
+    private static void AppendMessageXml(System.Text.StringBuilder sb, in MessageSnapshot s)
+        => sb.AppendLine($"<msg id=\"{s.MessageId}\" author=\"{PromptSanitizer.XmlEscape(s.AuthorName)}\" author_id=\"{s.AuthorId}\" time=\"{s.Timestamp.ToUnixTimeSeconds()}\">{PromptSanitizer.XmlEscape(s.Content)}</msg>");
 }

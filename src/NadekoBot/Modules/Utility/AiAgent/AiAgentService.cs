@@ -378,18 +378,21 @@ public sealed class AiAgentService(
 
             _ = channel.TriggerTypingAsync();
 
-            var systemPrompt = await systemPromptBuilder.BuildAsync(context);
-            var enrichedPrompt = BuildSkillPreamble(guild.Id, channel.Id, prompt);
-            var triggerMessageId = message.Id;
+            var agentPrompt = new AiAgentPrompt(
+                systemPromptBuilder.GetSystemPrompt(context),
+                await systemPromptBuilder.BuildContextAsync(context),
+                CreateHistoryFeed(channel, message.Id),
+                Prompts.SystemPromptBuilder.BuildTurn(
+                    context,
+                    DateTimeOffset.UtcNow,
+                    BuildSkillPreamble(guild.Id, channel.Id, prompt)));
 
             var result = await agentSession.RunAsync(
-                enrichedPrompt,
+                agentPrompt,
                 context,
                 tools,
                 schemas,
                 config,
-                systemPrompt,
-                () => BuildChannelHistoryXml(channel, triggerMessageId),
                 cts.Token);
 
             if (result.TryPickT0(out var success, out var error))
@@ -595,18 +598,13 @@ public sealed class AiAgentService(
             sb.Append("  timestamp: ").Append(embedTs.ToUnixTimeSeconds()).Append('\n');
     }
 
-    private string? BuildChannelHistoryXml(ITextChannel channel, ulong triggerMessageId)
+    private ChannelHistoryFeed? CreateHistoryFeed(ITextChannel channel, ulong triggerMessageId)
     {
         if (!_channelBuffers.TryGetValue(channel.Id, out var buffer))
             return null;
 
-        return buffer.BuildHistoryXml(
-            channel.Id,
-            PromptSanitizer.Sanitize(channel.Name),
-            triggerMessageId);
+        return new(buffer, channel.Id, PromptSanitizer.Sanitize(channel.Name), triggerMessageId);
     }
-
-
 
     private bool HasValidAiCreds()
     {

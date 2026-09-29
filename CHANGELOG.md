@@ -2,6 +2,17 @@
 
 *a,c,f,r,o,d*
 
+## [7.4.1] - TBD
+
+### Changed
+
+- AI agent requests now reuse the prompt cache of the model provider.
+- `{botName}` in `SOUL.md` / `OPERATOR.md` is now the global name of the bot.
+
+### Dev
+
+- The AI agent logs prompt and cached token counts for each session at debug level.
+
 ## [7.4.0] - 29.09.2026
 
 ### Changed

@@ -22,6 +22,37 @@ public class SystemPromptBuilderTests
     }
 
     [Test]
+    public void Compose_DefaultPrompts_HaveNoPerTurnData()
+    {
+        var snapshot = new PromptSnapshot(DefaultPrompts.Soul, DefaultPrompts.Operator);
+
+        Assert.That(SystemPromptBuilder.HasTurnTokens(snapshot), Is.False);
+
+        var prompt = SystemPromptBuilder.Compose(snapshot, "Nadeko", 42, ["guide"], null);
+
+        Assert.That(prompt, Does.StartWith("You are Nadeko,"));
+        Assert.That(prompt, Does.Contain("guide"));
+        Assert.That(prompt, Does.Not.Contain("Current time").And.Not.Contain("CONTEXT:").And.Not.Contain("{"));
+    }
+
+    [Test]
+    public void Compose_PerTurnTokens_AreStillReplaced()
+    {
+        var snapshot = new PromptSnapshot("Hi {userName} in #{channelName} on {guildName}, I am {botName}", "");
+
+        Assert.That(SystemPromptBuilder.HasTurnTokens(snapshot), Is.True);
+
+        var prompt = SystemPromptBuilder.Compose(
+            snapshot,
+            "Nadeko",
+            42,
+            [],
+            new TurnTokens("Guild", "general", "Bob"));
+
+        Assert.That(prompt, Does.StartWith("Hi Bob in #general on Guild, I am Nadeko"));
+    }
+
+    [Test]
     public void CollectToolGuidance_NoTools_ReturnsEmpty()
     {
         var result = SystemPromptBuilder.CollectToolGuidance(new List<IAiTool>());

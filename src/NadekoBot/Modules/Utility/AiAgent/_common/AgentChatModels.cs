@@ -78,6 +78,24 @@ public sealed class AgentChatResponse
 {
     [JsonPropertyName("choices")]
     public List<AgentChatChoice>? Choices { get; init; }
+
+    [JsonPropertyName("usage")]
+    public AgentChatUsage? Usage { get; init; }
+}
+
+public sealed class AgentChatUsage
+{
+    [JsonPropertyName("prompt_tokens")]
+    public long PromptTokens { get; init; }
+
+    [JsonPropertyName("prompt_tokens_details")]
+    public AgentPromptTokensDetails? PromptTokensDetails { get; init; }
+}
+
+public sealed class AgentPromptTokensDetails
+{
+    [JsonPropertyName("cached_tokens")]
+    public long CachedTokens { get; init; }
 }
 
 public sealed class AgentChatChoice

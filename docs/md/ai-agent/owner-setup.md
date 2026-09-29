@@ -41,7 +41,8 @@ data/ai/prompts/
 ```
 
 - `SOUL.md` and `OPERATOR.md` are seeded automatically on first run.
-- Placeholders: `{botName}`, `{botId}`, `{guildName}`, `{channelName}`, `{userName}` are replaced at turn time.
+- Placeholders: `{botName}` (the global name of the bot) and `{botId}` are the same on every server.
+- `{guildName}`, `{channelName}` and `{userName}` also work, but they make the prompt different for each server, channel or user. Then the model provider can't reuse its prompt cache, and each request costs more. The agent already gets the server, channel, user, the bot's server nickname and the current time in a separate context message.
 - Size limit: 20 KB per file.
 - A filesystem watcher picks up edits with a 1 second debounce. No restart needed.
 

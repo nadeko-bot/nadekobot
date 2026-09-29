@@ -16,15 +16,45 @@ public sealed class AiAgentSession(
         PropertyNameCaseInsensitive = true
     };
 
+    // A request never changes a message which an earlier request sent, so the provider can reuse its prompt cache.
     public async Task<OneOf<AiAgentResult, Error<string>>> RunAsync(
-        string userPrompt,
+        AiAgentPrompt prompt,
         AiToolContext context,
         IReadOnlyList<IAiTool> tools,
         IReadOnlyList<JsonElement> toolSchemas,
         AiAgentConfig config,
-        string systemPrompt,
-        Func<string?>? channelHistoryProvider,
         CancellationToken ct = default)
+    {
+        var usage = new SessionUsage();
+        try
+        {
+            return await RunLoopInternalAsync(prompt, context, tools, toolSchemas, config, usage, ct);
+        }
+        finally
+        {
+            Log.Debug(
+                "AI agent session: {Steps} requests, {PromptTokens} prompt tokens, {CachedTokens} cached",
+                usage.Requests,
+                usage.PromptTokens,
+                usage.CachedTokens);
+        }
+    }
+
+    private sealed class SessionUsage
+    {
+        public int Requests;
+        public long PromptTokens;
+        public long CachedTokens;
+    }
+
+    private async Task<OneOf<AiAgentResult, Error<string>>> RunLoopInternalAsync(
+        AiAgentPrompt prompt,
+        AiToolContext context,
+        IReadOnlyList<IAiTool> tools,
+        IReadOnlyList<JsonElement> toolSchemas,
+        AiAgentConfig config,
+        SessionUsage usage,
+        CancellationToken ct)
     {
         var provider = ResolveProviderInternal(config);
 
@@ -38,28 +68,20 @@ public sealed class AiAgentSession(
         messages.Add(new()
         {
             Role = "system",
-            Content = systemPrompt
+            Content = prompt.System
         });
 
-        var historyIndex = -1;
-        if (channelHistoryProvider is not null)
+        var history = prompt.History?.GetSnapshot();
+        messages.Add(new()
         {
-            var initialHistory = channelHistoryProvider();
-            if (initialHistory is not null)
-            {
-                historyIndex = messages.Count;
-                messages.Add(new()
-                {
-                    Role = "user",
-                    Content = initialHistory
-                });
-            }
-        }
+            Role = "user",
+            Content = history is null ? prompt.Context : prompt.Context + "\n" + history
+        });
 
         messages.Add(new()
         {
             Role = "user",
-            Content = userPrompt
+            Content = prompt.Turn
         });
 
         var totalToolCalls = 0;
@@ -72,20 +94,6 @@ public sealed class AiAgentSession(
         for (var step = 0; step < config.MaxToolCalls; step++)
         {
             ct.ThrowIfCancellationRequested();
-
-            // Refreshed every step after the first, so the model sees what the bot just posted.
-            if (step > 0 && historyIndex >= 0 && channelHistoryProvider is not null)
-            {
-                var refreshed = channelHistoryProvider();
-                if (refreshed is not null)
-                {
-                    messages[historyIndex] = new()
-                    {
-                        Role = "user",
-                        Content = refreshed
-                    };
-                }
-            }
 
             var request = new AgentChatRequest
             {
@@ -101,6 +109,13 @@ public sealed class AiAgentSession(
             var response = await CallLlmInternalAsync(provider, config, request, ct);
             if (response is null)
                 return new Error<string>("Failed to get response from AI provider.");
+
+            usage.Requests++;
+            if (response.Usage is { } u)
+            {
+                usage.PromptTokens += u.PromptTokens;
+                usage.CachedTokens += u.PromptTokensDetails?.CachedTokens ?? 0;
+            }
 
             var choice = response.Choices?.FirstOrDefault();
             if (choice?.Message is null)
@@ -186,6 +201,18 @@ public sealed class AiAgentSession(
                     ToolCallCount = totalToolCalls,
                     WasCancelled = false,
                     AskPending = true
+                };
+            }
+
+            // Goes into the last tool result, because some OpenAI-compatible APIs reject a user message after tool messages.
+            if (step + 1 < config.MaxToolCalls && prompt.History?.GetUpdate() is { } update)
+            {
+                var last = messages[^1];
+                messages[^1] = new()
+                {
+                    Role = last.Role,
+                    ToolCallId = last.ToolCallId,
+                    Content = last.Content + "\n\n" + update
                 };
             }
         }
