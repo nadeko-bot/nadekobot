@@ -2,3 +2,8 @@ hangman_game_started: Hangman game started
 hangman_running: Hangman game already running on this channel.
 hangman_stopped: Hangman game stopped.
 hangman_types: 'List of "{0}hangman" term types:'
+hangman_guessed: "{0} guessed the letter {1}!"
+hangman_letter_missing: "{0} Letter {1} doesn't exist!"
+hangman_letter_missing_lost: "{0} Letter {1} doesn't exist! Game over!"
+hangman_letter_used: "{0} Letter {1} has already been used."
+hangman_won: "{0} won!"

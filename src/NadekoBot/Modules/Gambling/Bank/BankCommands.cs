@@ -57,7 +57,7 @@ public partial class Gambling
         [Cmd]
         public async Task BankBalance()
         {
-            var bal = await _bank.GetBalanceAsync(ctx.User.Id);
+            var bal = await _bank.CheckBalanceAsync(ctx.User.Id);
 
             var eb = CreateEmbed()
                         .WithOkColor()
@@ -97,6 +97,9 @@ public partial class Gambling
 
         private async Task BankTakeInternalAsync(long amount, ulong userId)
         {
+            if (amount <= 0)
+                return;
+
             if (await _bank.TakeAsync(userId, amount))
             {
                 await ctx.OkAsync();
@@ -111,12 +114,11 @@ public partial class Gambling
         
         private async Task BankAwardInternalAsync(long amount, ulong userId)
         {
-            if (await _bank.AwardAsync(userId, amount))
-            {
-                await ctx.OkAsync();
+            if (amount <= 0)
                 return;
-            }
 
+            await _bank.AwardAsync(userId, amount);
+            await ctx.OkAsync();
         }
 
         [Cmd]

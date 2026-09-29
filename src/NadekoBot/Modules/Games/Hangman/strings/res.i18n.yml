@@ -3,93 +3,173 @@ ar:
   hangman_running: لعبة الرجل المشنوق قيد التشغيل بالفعل في هذه القناة.
   hangman_stopped: تم إيقاف لعبة الرجل المشنوق.
   hangman_types: 'قائمة أنواع مصطلحات "{0}hangman":'
+  hangman_guessed: '{0} خمّن الحرف {1}!'
+  hangman_letter_missing: '{0} الحرف {1} غير موجود!'
+  hangman_letter_missing_lost: '{0} الحرف {1} غير موجود! انتهت اللعبة!'
+  hangman_letter_used: '{0} الحرف {1} مُستخدَم بالفعل.'
+  hangman_won: '{0} فاز!'
 
 de-DE:
   hangman_game_started: Hängemännchen gestartet
   hangman_running: Hängemännchen läuft bereits in diesem Raum.
   hangman_stopped: Galgenmännchen Spiel gestoppt
   hangman_types: 'Liste an "{0}Galgenmännchen" Wort Typen:'
+  hangman_guessed: '{0} hat den Buchstaben {1} erraten!'
+  hangman_letter_missing: '{0} Buchstabe {1} existiert nicht!'
+  hangman_letter_missing_lost: '{0} Buchstabe {1} existiert nicht! Spiel vorbei!'
+  hangman_letter_used: '{0} Buchstabe {1} wurde bereits verwendet.'
+  hangman_won: '{0} hat gewonnen!'
 
 es-ES:
   hangman_game_started: Juego del ahorcado iniciado
   hangman_running: El juego del ahorcado ya se está ejecutando en este canal.
   hangman_stopped: Juego del ahorcado detenido.
   hangman_types: 'Lista de términos de `{0}hangman`:'
+  hangman_guessed: '¡{0} adivinó la letra {1}!'
+  hangman_letter_missing: '{0} ¡La letra {1} no existe!'
+  hangman_letter_missing_lost: '{0} ¡La letra {1} no existe! ¡Fin del juego!'
+  hangman_letter_used: '{0} La letra {1} ya se ha usado.'
+  hangman_won: '¡{0} ganó!'
 
 fr-FR:
   hangman_game_started: La partie de pendu a commencée
   hangman_running: Une partie de pendu est déjà en cours dans ce salon.
   hangman_stopped: Jeu du pendu arrêté.
   hangman_types: 'Liste des types de termes "{0}hangman":'
+  hangman_guessed: '{0} a deviné la lettre {1} !'
+  hangman_letter_missing: '{0} La lettre {1} n''existe pas !'
+  hangman_letter_missing_lost: '{0} La lettre {1} n''existe pas ! Partie terminée !'
+  hangman_letter_used: '{0} La lettre {1} a déjà été utilisée.'
+  hangman_won: '{0} a gagné !'
 
 id-ID:
   hangman_game_started: Permainan Hangman dimulai
   hangman_running: Permainan Hangman sudah berjalan di channel ini.
   hangman_stopped: Permainan Hangman dihentikan.
   hangman_types: 'Daftar tipe kata "{0}hangman":'
+  hangman_guessed: '{0} menebak huruf {1}!'
+  hangman_letter_missing: '{0} Huruf {1} tidak ada!'
+  hangman_letter_missing_lost: '{0} Huruf {1} tidak ada! Permainan selesai!'
+  hangman_letter_used: '{0} Huruf {1} sudah dipakai.'
+  hangman_won: '{0} menang!'
 
 ja-JP:
   hangman_game_started: ハングマンゲームが始まりました。
   hangman_running: ハングマンゲームはすでにこのチャンネルで開始されています。
   hangman_stopped: ハングマンゲームは停止しました。
   hangman_types: '「{0}hangman」の出題分野一覧:'
+  hangman_guessed: '{0} が文字 {1} を当てました！'
+  hangman_letter_missing: '{0} 文字 {1} はありません！'
+  hangman_letter_missing_lost: '{0} 文字 {1} はありません！ ゲームオーバー！'
+  hangman_letter_used: '{0} 文字 {1} はすでに使われています。'
+  hangman_won: '{0} の勝ちです！'
 
 ko-KR:
   hangman_game_started: 행맨 게임이 시작되었어요
   hangman_running: 이 채널에서 이미 행맨 게임이 진행 중이에요.
   hangman_stopped: 행맨 게임이 중지되었어요.
   hangman_types: '"{0}hangman" 단어 유형 목록:'
+  hangman_guessed: '{0}님이 {1} 글자를 맞혔어요!'
+  hangman_letter_missing: '{0} {1} 글자는 없어요!'
+  hangman_letter_missing_lost: '{0} {1} 글자는 없어요! 게임 끝!'
+  hangman_letter_used: '{0} {1} 글자는 이미 사용했어요.'
+  hangman_won: '{0}님이 이겼어요!'
 
 pl-PL:
   hangman_game_started: Gra w wisielca rozpoczęta
   hangman_running: Gra w wisielca już trwa na tym kanale.
   hangman_stopped: Gra w wisielca zatrzymana.
   hangman_types: 'Lista typów haseł "{0}hangman":'
+  hangman_guessed: '{0} odgadł literę {1}!'
+  hangman_letter_missing: '{0} Litera {1} nie występuje!'
+  hangman_letter_missing_lost: '{0} Litera {1} nie występuje! Koniec gry!'
+  hangman_letter_used: '{0} Litera {1} została już użyta.'
+  hangman_won: '{0} wygrał!'
 
 pt-BR:
   hangman_game_started: Jogo da forca iniciado
   hangman_running: Já existe um jogo da forca em andamento nesse canal.
   hangman_stopped: O jogo da forca foi encerrado.
   hangman_types: 'Lista dos temas disponíveis no "{0}hangman":'
+  hangman_guessed: '{0} acertou a letra {1}!'
+  hangman_letter_missing: '{0} A letra {1} não existe!'
+  hangman_letter_missing_lost: '{0} A letra {1} não existe! Fim de jogo!'
+  hangman_letter_used: '{0} A letra {1} já foi usada.'
+  hangman_won: '{0} venceu!'
 
 ru-RU:
   hangman_game_started: Игра в Виселицу начата!
   hangman_running: Игра в Виселицу уже происходит в этом канале.
   hangman_stopped: Игра в Виселицу была остановлена.
   hangman_types: 'Список типов терминов "{0}hangman":'
+  hangman_guessed: '{0} угадал(а) букву {1}!'
+  hangman_letter_missing: '{0} Буквы {1} нет!'
+  hangman_letter_missing_lost: '{0} Буквы {1} нет! Игра окончена!'
+  hangman_letter_used: '{0} Буква {1} уже была использована.'
+  hangman_won: '{0} победил(а)!'
 
 sr-Cyrl-RS:
   hangman_game_started: Игра вешала је почела
   hangman_running: Игра вешала већ траје на овом каналу.
   hangman_stopped: Игра вешала заустављена.
   hangman_types: 'Листа типова појмова за "{0}hangman":'
+  hangman_guessed: '{0} је погодио слово {1}!'
+  hangman_letter_missing: '{0} Слово {1} не постоји!'
+  hangman_letter_missing_lost: '{0} Слово {1} не постоји! Игра је завршена!'
+  hangman_letter_used: '{0} Слово {1} је већ искоришћено.'
+  hangman_won: '{0} је победио!'
 
 tr-TR:
   hangman_game_started: Adam asmaca oyunu başladı
   hangman_running: Bu kanalda zaten bir adam asmaca oyunu çalışıyor.
   hangman_stopped: Adam asmaca oyunu durduruldu.
   hangman_types: '"{0}hangman" kelime türleri listesi:'
+  hangman_guessed: '{0} {1} harfini bildi!'
+  hangman_letter_missing: '{0} {1} harfi yok!'
+  hangman_letter_missing_lost: '{0} {1} harfi yok! Oyun bitti!'
+  hangman_letter_used: '{0} {1} harfi zaten kullanıldı.'
+  hangman_won: '{0} kazandı!'
 
 ts-TS:
   hangman_game_started: Hangman game started.
   hangman_running: Hangman game already running on this channel.
   hangman_stopped: Hangman game stopped.
   hangman_types: 'List of "{0}hangman" term types:'
+  hangman_guessed: '{0} guessed the letter {1}!'
+  hangman_letter_missing: '{0} Letter {1} isn''t in the word.'
+  hangman_letter_missing_lost: '{0} Letter {1} isn''t in the word. Game over.'
+  hangman_letter_used: '{0} Letter {1} was already guessed. Pay attention.'
+  hangman_won: '{0} won! I-it''s not like I was rooting for you or anything.'
 
 uk-UA:
   hangman_game_started: Гру у шибеницю розпочато
   hangman_running: Гра у шибеницю вже йде в цьому каналі.
   hangman_stopped: Гру у шибеницю зупинено.
   hangman_types: 'Список типів слів для "{0}hangman":'
+  hangman_guessed: '{0} відгадав літеру {1}!'
+  hangman_letter_missing: '{0} Літери {1} немає!'
+  hangman_letter_missing_lost: '{0} Літери {1} немає! Гра закінчена!'
+  hangman_letter_used: '{0} Літеру {1} вже використано.'
+  hangman_won: '{0} переміг!'
 
 vi-VN:
   hangman_game_started: Trò đoán chữ đã bắt đầu
   hangman_running: Trò đoán chữ đang chạy trên kênh này rồi.
   hangman_stopped: Trò đoán chữ đã dừng.
   hangman_types: 'Danh sách loại từ của "{0}hangman":'
+  hangman_guessed: '{0} đã đoán đúng chữ {1}!'
+  hangman_letter_missing: '{0} Chữ {1} không tồn tại!'
+  hangman_letter_missing_lost: '{0} Chữ {1} không tồn tại! Trò chơi kết thúc!'
+  hangman_letter_used: '{0} Chữ {1} đã được dùng rồi.'
+  hangman_won: '{0} đã thắng!'
 
 zh-CN:
   hangman_game_started: 吊死鬼遊戲開始
   hangman_running: 吊死鬼遊戲正在此頻道上進行
   hangman_stopped: 猜單詞小遊戲停止了。
   hangman_types: '"{0}hangman"的單字類別列表 :'
+  hangman_guessed: '{0} 猜中了字母 {1}！'
+  hangman_letter_missing: '{0} 字母 {1} 不存在！'
+  hangman_letter_missing_lost: '{0} 字母 {1} 不存在！游戏结束！'
+  hangman_letter_used: '{0} 字母 {1} 已经用过了。'
+  hangman_won: '{0} 获胜了！'

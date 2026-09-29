@@ -88,11 +88,11 @@ public sealed class AnimalRace : IDisposable
             if (CurrentPhase != Phase.WaitingForPlayers)
                 throw new AlreadyStartedException();
 
-            if (!await _currency.RemoveAsync(userId, bet, new("animalrace", "bet")))
-                throw new NotEnoughFundsException();
-
             if (_users.Contains(user))
                 throw new AlreadyJoinedException();
+
+            if (!await _currency.RemoveAsync(userId, bet, new("animalrace", "bet")))
+                throw new NotEnoughFundsException();
 
             var animal = _animalsQueue.Dequeue();
             user.Animal = animal;

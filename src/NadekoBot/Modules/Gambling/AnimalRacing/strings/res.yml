@@ -1,5 +1,6 @@
 animal_race: Animal race
 animal_race_already_started: Animal Race is already running.
+animal_race_already_joined: You already joined this race.
 animal_race_failed: Failed to start since there was not enough participants.
 animal_race_full: Race is full! Starting immediately.
 animal_race_join: '{0} joined as a {1}'

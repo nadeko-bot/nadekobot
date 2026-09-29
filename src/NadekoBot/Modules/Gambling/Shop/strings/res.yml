@@ -7,16 +7,12 @@ shop_command_invalid_context: Unable to retrieve user, channel or server in orde
 shop_item_add: Shop item added
 shop_item_not_found: No item on that index found.
 shop_item_purchase: Item purchase successful.
-shop_item_req_role_not_found: >-
-  The required role for this item doesn't exist anymore. Please contact server
-  administrator.
+shop_item_req_role_not_found: "The required role for this item doesn't exist anymore. Please contact server administrator."
 shop_item_req_role_unfulfilled: You don't have the required role '{0}' in order to buy this shop item.
 shop_item_requires_role: Requires {0} role to purchase
 shop_item_rm: Shop item removed
 shop_item_role_no_req: 'Shop item #{0} will no longer require a role.'
-shop_item_role_req: >-
-  Shop item #{0} will now require users to have a {1} role in order to purchase
-  it.
+shop_item_role_req: 'Shop item #{0} will now require users to have a {1} role in order to purchase it.'
 shop_item_wrong_type: That shop entry does not support item adding.
 shop_list_item_added: Item successfully added.
 shop_list_item_not_unique: That item is already added.

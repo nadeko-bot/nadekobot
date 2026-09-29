@@ -7,6 +7,10 @@
 ### Changed
 
 - `.clubinfo` no longer shows a level next to each member.
+- `.plant` now shows a random password when currency drops use passwords.
+    - you can no longer choose the password
+    - the amount now shows with separators
+- A new currency drop with a password now takes all earlier drops in the channel.
 
 ### Fixed
 
@@ -30,6 +34,16 @@
     - each player now gets a correct and unique place
 - `.tictactoe` / `.ttt` accepts moves only in the channel of the game.
 - `.notify` / `.nfy` and `.agentskilllist` / `.aisl` buttons now work after the first click.
+- `.hangman` gives the reward only to the winner.
+    - guess messages now show in the server language
+- `.joinrace` / `.jr` no longer takes the bet again from a player who already joined.
+    - the bot now tells you when you already joined or the race already started
+- `.bank deposit` / `.bank withdraw` no longer lose currency on a database error.
+    - the Banker quest counts only your own balance checks
+- Server shop commands now use the item numbers which `.shop` shows.
+    - `.shopbuy` / `.buy` buys the item at that number
+    - `.shopadd cmd`, `.shopswap` and `.shopmove` work again
+    - two users can not buy the same list item
 
 ### Dev
 

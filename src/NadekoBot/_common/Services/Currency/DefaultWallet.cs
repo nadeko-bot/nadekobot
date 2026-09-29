@@ -32,8 +32,21 @@ public class DefaultWallet : IWallet
             throw new ArgumentOutOfRangeException(nameof(amount), "Amount to take must be non negative.");
 
         await using var ctx = _db.GetDbContext();
+        return await TakeAsync(ctx, UserId, amount, txData);
+    }
 
-        var userId = UserId;
+    public async Task Add(long amount, TxData? txData)
+    {
+        if (amount <= 0)
+            throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be greater than 0.");
+
+        await using var ctx = _db.GetDbContext();
+        await AddAsync(ctx, UserId, amount, txData);
+    }
+
+    // callers which must change the wallet inside their own db transaction use these directly
+    public static async Task<bool> TakeAsync(NadekoContext ctx, ulong userId, long amount, TxData? txData)
+    {
         var changed = await ctx
                             .GetTable<DiscordUser>()
                             .Where(x => x.UserId == userId && x.CurrencyAmount >= amount)
@@ -46,33 +59,13 @@ public class DefaultWallet : IWallet
             return false;
 
         if (txData is not null)
-        {
-            await ctx
-                  .GetTable<CurrencyTransaction>()
-                  .InsertAsync(() => new()
-                  {
-                      Amount = -amount,
-                      Note = txData.Note,
-                      UserId = userId,
-                      Type = txData.Type,
-                      Extra = txData.Extra,
-                      OtherId = txData.OtherId,
-                      DateAdded = DateTime.UtcNow
-                  });
-        }
+            await InsertTransactionAsync(ctx, userId, -amount, txData);
 
         return true;
     }
 
-    public async Task Add(long amount, TxData? txData)
+    public static async Task AddAsync(NadekoContext ctx, ulong userId, long amount, TxData? txData)
     {
-        if (amount <= 0)
-            throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be greater than 0.");
-
-        await using var ctx = _db.GetDbContext();
-        var userId = UserId;
-
-
         await ctx.GetTable<DiscordUser>()
                  .InsertOrUpdateAsync(() => new()
                      {
@@ -90,18 +83,19 @@ public class DefaultWallet : IWallet
                      });
 
         if (txData is not null)
-        {
-            await ctx.GetTable<CurrencyTransaction>()
-                     .InsertAsync(() => new()
-                     {
-                         Amount = amount,
-                         UserId = userId,
-                         Note = txData.Note,
-                         Type = txData.Type,
-                         Extra = txData.Extra,
-                         OtherId = txData.OtherId,
-                         DateAdded = DateTime.UtcNow
-                     });
-        }
+            await InsertTransactionAsync(ctx, userId, amount, txData);
     }
+
+    private static Task<int> InsertTransactionAsync(NadekoContext ctx, ulong userId, long amount, TxData txData)
+        => ctx.GetTable<CurrencyTransaction>()
+              .InsertAsync(() => new()
+              {
+                  Amount = amount,
+                  UserId = userId,
+                  Note = txData.Note,
+                  Type = txData.Type,
+                  Extra = txData.Extra,
+                  OtherId = txData.OtherId,
+                  DateAdded = DateTime.UtcNow
+              });
 }

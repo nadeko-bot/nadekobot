@@ -105,7 +105,7 @@ public partial class Waifus
 
     private async Task BankAction(SocketMessageComponent smc)
     {
-        var balance = await bank.GetBalanceAsync(ctx.User.Id);
+        var balance = await bank.CheckBalanceAsync(ctx.User.Id);
         var currSign = cp.GetCurrencySign();
         await smc.RespondConfirmAsync(_sender,
             GetText(strs.waifu_bank_balance(CurrencyHelper.N(balance, Culture, currSign))),

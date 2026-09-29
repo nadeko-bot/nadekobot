@@ -1,6 +1,7 @@
 ar:
   animal_race: سباق الحيوانات
   animal_race_already_started: سباق الحيوانات قيد التشغيل بالفعل.
+  animal_race_already_joined: لقد انضممت إلى هذا السباق بالفعل.
   animal_race_failed: فشل البدء لعدم وجود مشاركين كافيين.
   animal_race_full: السباق ممتلئ! سيبدأ فوراً.
   animal_race_join: '{0} انضم كـ {1}'
@@ -15,6 +16,7 @@ ar:
 de-DE:
   animal_race: Tierrennen
   animal_race_already_started: Tier Rennen ist bereits am laufen.
+  animal_race_already_joined: Du bist diesem Rennen bereits beigetreten.
   animal_race_failed: Rennen konnte aufgrund fehlender Teilnehmer nicht gestartet werden.
   animal_race_full: Rennen ist voll! Startet sofort.
   animal_race_join: '{0} tritt als {1} bei'
@@ -29,6 +31,7 @@ de-DE:
 es-ES:
   animal_race: Carrera animal
   animal_race_already_started: Una carrera de animales ya ha sido iniciada.
+  animal_race_already_joined: Ya te uniste a esta carrera.
   animal_race_failed: No se ha podido iniciar la carrera porque no había suficientes participantes.
   animal_race_full: ¡La carrera está llena! Empezando inmediatamente.
   animal_race_join: '{0} ha entrado como un {1}.'
@@ -43,6 +46,7 @@ es-ES:
 fr-FR:
   animal_race: Course d'animaux
   animal_race_already_started: Course d'animaux toujours en cours.
+  animal_race_already_joined: Tu as déjà rejoint cette course.
   animal_race_failed: Échec du lancement car il n'y avait pas assez de participants.
   animal_race_full: La course est pleine! Départ imminent.
   animal_race_join: '{0} a rejoint en tant que {1}'
@@ -57,6 +61,7 @@ fr-FR:
 id-ID:
   animal_race: Balapan Hewan
   animal_race_already_started: Balapan Hewan sudah berjalan.
+  animal_race_already_joined: Kamu sudah ikut balapan ini.
   animal_race_failed: Gagal dimulai karena peserta tidak cukup.
   animal_race_full: Balapan penuh! Langsung dimulai.
   animal_race_join: '{0} bergabung sebagai {1}'
@@ -71,6 +76,7 @@ id-ID:
 ja-JP:
   animal_race: アニマルレース
   animal_race_already_started: アニマルレースは既に始まっています。
+  animal_race_already_joined: あなたはすでにこのレースに参加しています。
   animal_race_failed: 参加者不足のため発走できませんでした。
   animal_race_full: 参加者が揃いました！ まもなく発走します。
   animal_race_join: '{0}は{1}として参加しました。'
@@ -85,6 +91,7 @@ ja-JP:
 ko-KR:
   animal_race: 동물 레이스
   animal_race_already_started: 동물 레이스가 이미 진행 중이에요.
+  animal_race_already_joined: 이미 이 레이스에 참가했어요.
   animal_race_failed: 참가자가 부족하여 시작하지 못했어요.
   animal_race_full: 레이스가 꽉 찼어요! 바로 시작할게요.
   animal_race_join: '{0}님이 {1}(으)로 참가했어요'
@@ -99,6 +106,7 @@ ko-KR:
 pl-PL:
   animal_race: Wyścig zwierząt
   animal_race_already_started: Wyścig zwierząt już trwa.
+  animal_race_already_joined: Dołączyłeś już do tego wyścigu.
   animal_race_failed: Nie udało się rozpocząć, ponieważ było za mało uczestników.
   animal_race_full: Wyścig pełny! Rozpoczynam natychmiast.
   animal_race_join: '{0} dołączył/a jako {1}'
@@ -113,6 +121,7 @@ pl-PL:
 pt-BR:
   animal_race: Corrida de animais
   animal_race_already_started: Já há uma Corrida de Animais em andamento.
+  animal_race_already_joined: Você já entrou nessa corrida.
   animal_race_failed: Não foi possível iniciar a corrida por não haver participantes suficientes.
   animal_race_full: A corrida está cheia! Começando imediatamente.
   animal_race_join: '{0} entrou como {1}'
@@ -127,6 +136,7 @@ pt-BR:
 ru-RU:
   animal_race: Гонка животных
   animal_race_already_started: Animal Race уже запущен.
+  animal_race_already_joined: Ты уже участвуешь в этой гонке.
   animal_race_failed: Не удалось начать гонку, из-за недостатка участников.
   animal_race_full: Гонка заполнена! Начинаю немедленно.
   animal_race_join: '{0} присоединился к гонке в роли {1}'
@@ -141,6 +151,7 @@ ru-RU:
 sr-Cyrl-RS:
   animal_race: Трка животиња
   animal_race_already_started: Трка животиња је већ у току.
+  animal_race_already_joined: Већ си се придружио овој трци.
   animal_race_failed: Покретање није успело јер није било довољно учесника.
   animal_race_full: Трка је пуна! Почиње одмах.
   animal_race_join: '{0} се придружио/ла као {1}'
@@ -155,6 +166,7 @@ sr-Cyrl-RS:
 tr-TR:
   animal_race: Hayvan yarışı
   animal_race_already_started: Hayvan Yarışı zaten devam ediyor.
+  animal_race_already_joined: Bu yarışa zaten katıldın.
   animal_race_failed: Yeterli katılımcı olmadığı için başlatılamadı.
   animal_race_full: Yarış dolu! Hemen başlıyor.
   animal_race_join: '{0} bir {1} olarak katıldı'
@@ -169,6 +181,7 @@ tr-TR:
 ts-TS:
   animal_race: Animal race
   animal_race_already_started: An Animal Race is already running. Be patient.
+  animal_race_already_joined: You already joined this race. I know, I wrote it down.
   animal_race_failed: Failed to start since there weren't enough participants.
   animal_race_full: Race is full! Starting immediately.
   animal_race_join: '{0} joined as a {1}'
@@ -183,6 +196,7 @@ ts-TS:
 uk-UA:
   animal_race: Перегони тварин
   animal_race_already_started: Перегони тварин вже запущені.
+  animal_race_already_joined: Ти вже приєднався до цієї гонки.
   animal_race_failed: Не вдалося почати, бо було недостатньо учасників.
   animal_race_full: Перегони заповнені! Починаємо негайно.
   animal_race_join: '{0} приєднався як {1}'
@@ -197,6 +211,7 @@ uk-UA:
 vi-VN:
   animal_race: Cuộc đua động vật
   animal_race_already_started: Cuộc đua động vật đang diễn ra rồi.
+  animal_race_already_joined: Bạn đã tham gia cuộc đua này rồi.
   animal_race_failed: Không thể bắt đầu vì không đủ người tham gia.
   animal_race_full: Cuộc đua đã đầy! Bắt đầu ngay lập tức.
   animal_race_join: '{0} đã tham gia với vai trò {1}'
@@ -211,6 +226,7 @@ vi-VN:
 zh-CN:
   animal_race: 動物賽跑
   animal_race_already_started: 動物競賽已經開始了。
+  animal_race_already_joined: 你已经加入了这场比赛。
   animal_race_failed: 由於參賽者不足，比賽無法開始。
   animal_race_full: 比賽已滿！馬上開始。
   animal_race_join: '{0} 以 {1} 加入了'

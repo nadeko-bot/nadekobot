@@ -18,6 +18,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
     private readonly ICurrencyService _cs;
     private readonly IMemoryCache _cdCache;
     private readonly QuestService _quests;
+    private readonly IBotStrings _strings;
     private readonly Lock _locker = new();
 
     public HangmanService(
@@ -26,7 +27,8 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         GamesConfigService gcs,
         ICurrencyService cs,
         IMemoryCache cdCache,
-        QuestService quests)
+        QuestService quests,
+        IBotStrings strings)
     {
         _source = source;
         _sender = sender;
@@ -34,6 +36,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         _cs = cs;
         _cdCache = cdCache;
         _quests = quests;
+        _strings = strings;
     }
 
     public bool StartHangman(ulong channelId, string? category, [NotNullWhen(true)] out HangmanGame.State? state)
@@ -138,10 +141,11 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
                     });
             }
 
-            if (state.Phase == HangmanGame.Phase.Ended)
+            if (state.Phase == HangmanGame.Phase.Ended
+                && _hangmanGames.TryRemove(msg.Channel.Id, out _)
+                && state.GuessResult == HangmanGame.GuessResult.Win)
             {
-                if (_hangmanGames.TryRemove(msg.Channel.Id, out _))
-                    rew = _gcs.Data.Hangman.CurrencyReward;
+                rew = _gcs.Data.Hangman.CurrencyReward;
             }
         }
 
@@ -163,7 +167,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         string content,
         HangmanGame.State state)
     {
-        var embed = BuildEmbed(user, content, state);
+        var embed = BuildEmbed(channel.GuildId, user, content, state);
 
         if (_messageStates.TryGetValue(channel.Id, out var msgState))
         {
@@ -192,20 +196,21 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
             msgState.SetMessage(sent);
     }
 
-    private EmbedBuilder BuildEmbed(IUser user, string content, HangmanGame.State state)
+    private EmbedBuilder BuildEmbed(ulong guildId, IUser user, string content, HangmanGame.State state)
     {
         var embed = Games.HangmanCommands.GetEmbed(_sender, state);
+        var name = user.ToString();
 
         if (state.GuessResult == HangmanGame.GuessResult.Guess)
-            embed.WithDescription($"{user} guessed the letter {content}!").WithOkColor();
+            embed.WithDescription(_strings.GetText(strs.hangman_guessed(name, content), guildId)).WithOkColor();
         else if (state.GuessResult == HangmanGame.GuessResult.Incorrect && state.Failed)
-            embed.WithDescription($"{user} Letter {content} doesn't exist! Game over!").WithErrorColor();
+            embed.WithDescription(_strings.GetText(strs.hangman_letter_missing_lost(name, content), guildId)).WithErrorColor();
         else if (state.GuessResult == HangmanGame.GuessResult.Incorrect)
-            embed.WithDescription($"{user} Letter {content} doesn't exist!").WithErrorColor();
+            embed.WithDescription(_strings.GetText(strs.hangman_letter_missing(name, content), guildId)).WithErrorColor();
         else if (state.GuessResult == HangmanGame.GuessResult.AlreadyTried)
-            embed.WithDescription($"{user} Letter {content} has already been used.").WithPendingColor();
+            embed.WithDescription(_strings.GetText(strs.hangman_letter_used(name, content), guildId)).WithPendingColor();
         else if (state.GuessResult == HangmanGame.GuessResult.Win)
-            embed.WithDescription($"{user} won!").WithOkColor();
+            embed.WithDescription(_strings.GetText(strs.hangman_won(name), guildId)).WithOkColor();
 
         if (!string.IsNullOrWhiteSpace(state.ImageUrl) && Uri.IsWellFormedUriString(state.ImageUrl, UriKind.Absolute))
             embed.WithImageUrl(state.ImageUrl);
@@ -214,10 +219,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
     }
 }
 
-/// <summary>
-/// Tracks the bot's last hangman message and the count of messages since it was posted.
-/// </summary>
-internal sealed class HangmanMessageState
+public sealed class HangmanMessageState
 {
     private IUserMessage? _lastMessage;
     private int _counter;

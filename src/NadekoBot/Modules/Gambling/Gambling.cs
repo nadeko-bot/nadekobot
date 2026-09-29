@@ -528,7 +528,7 @@ public partial class Gambling : GamblingModule<GamblingService>
 
     private async Task BankAction(SocketMessageComponent smc)
     {
-        var balance = await _bank.GetBalanceAsync(ctx.User.Id);
+        var balance = await _bank.CheckBalanceAsync(ctx.User.Id);
 
         await N(balance)
             .Pipe(strs.bank_balance)

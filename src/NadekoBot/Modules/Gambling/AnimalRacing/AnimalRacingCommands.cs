@@ -77,7 +77,9 @@ public partial class Gambling
                 _client.MessageReceived -= ClientMessageReceived;
                 _service.AnimalRaces.TryRemove(ctx.Guild.Id, out _);
                 var winner = race.FinishedUsers[0];
-                if (race.FinishedUsers[0].Bet > 0)
+                var multi = race.Multi;
+                ar.Dispose();
+                if (winner.Bet > 0)
                 {
                     return Response()
                         .Embed(CreateEmbed()
@@ -86,12 +88,11 @@ public partial class Gambling
                             .WithDescription(GetText(strs.animal_race_won_money(
                                 Format.Bold(winner.Username),
                                 winner.Animal.Icon,
-                                N(race.FinishedUsers[0].Bet * race.Multi))))
-                            .WithFooter($"x{race.Multi:F2}"))
+                                N(winner.Bet * multi))))
+                            .WithFooter($"x{multi:F2}"))
                         .SendAsync();
                 }
 
-                ar.Dispose();
                 return Response()
                     .Confirm(GetText(strs.animal_race),
                         GetText(strs.animal_race_won(Format.Bold(winner.Username), winner.Animal.Icon)))
@@ -174,7 +175,7 @@ public partial class Gambling
                     await Response()
                         .Confirm(GetText(strs.animal_race_join_bet(ctx.User.Mention,
                             user.Animal.Icon,
-                            amount + CurrencySign)))
+                            N(amount))))
                         .SendAsync();
                 }
                 else
@@ -188,11 +189,11 @@ public partial class Gambling
             }
             catch (AlreadyJoinedException)
             {
-                // just ignore this
+                await Response().Error(strs.animal_race_already_joined).SendAsync();
             }
             catch (AlreadyStartedException)
             {
-                //ignore
+                await Response().Error(strs.animal_race_already_started).SendAsync();
             }
             catch (AnimalRaceFullException)
             {

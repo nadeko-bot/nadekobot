@@ -25,14 +25,11 @@ pick:
         desc: The password shown in the top-left of the plant image. Required only for plants protected by a password.
 plant:
   desc: |-
-    Spend an amount of currency to plant it in this channel. Default is 1. You
-    can specify the password after the amount. Password has to be alphanumeric
-    and it will be trimmed down to 10 characters if it's longer.
+    Spends an amount of currency to plant it in this channel. Default is 1.
+    When currency drops use passwords, the bot shows a random password on the image.
+    The new plant takes all earlier drops in this channel.
   ex:
     - 5
-    - 10 meow
   params:
     - amount:
-        desc: The number of units or quantity of something being planted.
-      pass:
-        desc: The password for secure planting of the item in this channel.
+        desc: The amount of currency to plant.

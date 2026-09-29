@@ -43,4 +43,7 @@ public interface IShopService
 
     Task<bool> SetItemRoleRequirementAsync(ulong guildId, int index, ulong? roleId);
     Task<ShopEntry> AddShopCommandAsync(ulong guildId, ulong userId, int price, string command);
+    Task<ShopEntry> AddShopRoleAsync(ulong guildId, ulong userId, int price, ulong roleId, string roleName);
+    Task<ShopEntry> AddShopListAsync(ulong guildId, ulong userId, int price, string name);
+    Task<ShopEntry> RemoveEntryAsync(ulong guildId, int index);
 }

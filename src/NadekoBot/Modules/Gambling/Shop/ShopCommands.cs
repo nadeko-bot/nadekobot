@@ -4,6 +4,7 @@ using NadekoBot.Modules.Gambling.Common;
 using NadekoBot.Modules.Gambling.Services;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Administration;
+using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 
 namespace NadekoBot.Modules.Gambling;
@@ -47,14 +48,13 @@ public partial class Gambling
                 throw new ArgumentOutOfRangeException(nameof(page));
 
             await using var uow = _db.GetDbContext();
-            var entries = await uow.Set<ShopEntry>()
-                .Where(x => x.GuildId == ctx.Guild.Id)
+            var entries = await ShopService.Ordered(uow.Set<ShopEntry>(), ctx.Guild.Id)
                 .Include(x => x.Items)
                 .ToListAsyncEF();
 
             await Response()
                    .Paginated()
-                   .Items(entries.ToList())
+                   .Items(entries)
                    .PageSize(9)
                    .CurrentPage(page)
                    .Page((items, curPage) =>
@@ -96,12 +96,10 @@ public partial class Gambling
             ShopEntry entry;
             await using (var uow = _db.GetDbContext())
             {
-                entry = await uow.Set<ShopEntry>()
-                    .Where(x => x.GuildId == ctx.Guild.Id)
+                entry = await ShopService.Ordered(uow.Set<ShopEntry>(), ctx.Guild.Id)
                     .Include(x => x.Items)
-                    .OrderBy(x => x.Id)
                     .Skip(index)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsyncEF();
             }
 
 
@@ -184,10 +182,21 @@ public partial class Gambling
 
                 if (await _cs.RemoveAsync(ctx.User.Id, entry.Price, new("shop", "buy", entry.Type.ToString())))
                 {
+                    int deleted;
                     await using (var uow = _db.GetDbContext())
                     {
-                        uow.Set<ShopEntryItem>().Remove(item);
-                        await uow.SaveChangesAsync();
+                        var itemId = item.Id;
+                        deleted = await uow.GetTable<ShopEntryItem>()
+                                           .Where(x => x.Id == itemId)
+                                           .DeleteAsync();
+                    }
+
+                    // another buyer took this item first
+                    if (deleted == 0)
+                    {
+                        await _cs.AddAsync(ctx.User.Id, entry.Price, new("shop", "error-refund", entry.Name));
+                        await Response().Error(strs.out_of_stock).SendAsync();
+                        return;
                     }
 
                     try
@@ -211,16 +220,13 @@ public partial class Gambling
                         await _cs.AddAsync(ctx.User.Id, entry.Price, new("shop", "error-refund", entry.Name));
                         await using (var uow = _db.GetDbContext())
                         {
-                            var entries = new IndexedCollection<ShopEntry>(await uow.Set<ShopEntry>()
-                                                                                  .Where(x => x.GuildId == ctx.Guild.Id)
-                                                                                  .Include(x => x.Items)
-                                                                                  .ToListAsyncEF());
-                            entry = entries.ElementAtOrDefault(index);
-                            if (entry is not null)
-                            {
-                                if (entry.Items.Add(item))
-                                    await uow.SaveChangesAsync();
-                            }
+                            var entryId = entry.Id;
+                            entry = await uow.Set<ShopEntry>()
+                                             .Include(x => x.Items)
+                                             .FirstOrDefaultAsyncEF(x => x.Id == entryId);
+
+                            if (entry is not null && entry.Items.Add(new() { Text = item.Text }))
+                                await uow.SaveChangesAsync();
                         }
 
                         await Response().Error(strs.shop_buy_error).SendAsync();
@@ -324,27 +330,7 @@ public partial class Gambling
             if (price < 1)
                 return;
 
-            var entry = new ShopEntry
-            {
-                Name = "-",
-                Price = price,
-                Type = ShopEntryType.Role,
-                AuthorId = ctx.User.Id,
-                RoleId = role.Id,
-                RoleName = role.Name,
-                GuildId = ctx.Guild.Id,
-            };
-            await using (var uow = _db.GetDbContext())
-            {
-                var entries = new IndexedCollection<ShopEntry>(await uow.Set<ShopEntry>()
-                    .Where(x => x.GuildId == ctx.Guild.Id)
-                    .Include(x => x.Items)
-                    .ToListAsyncEF());
-
-                entries.Add(entry);
-                uow.Add(entry);
-                await uow.SaveChangesAsync();
-            }
+            var entry = await _service.AddShopRoleAsync(ctx.Guild.Id, ctx.User.Id, price, role.Id, role.Name);
 
             await Response().Embed(EntryToEmbed(entry).WithTitle(GetText(strs.shop_item_add))).SendAsync();
         }
@@ -357,28 +343,7 @@ public partial class Gambling
             if (price < 1)
                 return;
 
-            var entry = new ShopEntry
-            {
-                Name = name.TrimTo(100),
-                Price = price,
-                Type = ShopEntryType.List,
-                AuthorId = ctx.User.Id,
-                Items = new(),
-                GuildId = ctx.Guild.Id
-            };
-            await using (var uow = _db.GetDbContext())
-            {
-                var entries = await uow.Set<ShopEntry>()
-                    .Where(x => x.GuildId == ctx.Guild.Id)
-                    .ToListAsyncEF();
-
-                var indexed = new IndexedCollection<ShopEntry>(entries);
-                indexed.Add(entry);
-
-                uow.Add(entry);
-                await uow.SaveChangesAsync();
-
-            }
+            var entry = await _service.AddShopListAsync(ctx.Guild.Id, ctx.User.Id, price, name);
 
             await Response().Embed(EntryToEmbed(entry).WithTitle(GetText(strs.shop_item_add))).SendAsync();
         }
@@ -400,19 +365,17 @@ public partial class Gambling
             var added = false;
             await using (var uow = _db.GetDbContext())
             {
-                var entries = await uow.Set<ShopEntry>()
-                    .Where(x => x.GuildId == ctx.Guild.Id)
+                entry = await ShopService.Ordered(uow.Set<ShopEntry>(), ctx.Guild.Id)
                     .Include(x => x.Items)
-                    .ToListAsyncEF();
+                    .Skip(index)
+                    .FirstOrDefaultAsyncEF();
 
-                var indexed = new IndexedCollection<ShopEntry>(entries);
-                entry = indexed.ElementAtOrDefault(index);
                 if (entry is not null && (rightType = entry.Type == ShopEntryType.List))
                 {
                     if (entry.Items.Add(item))
                     {
                         added = true;
-                        uow.SaveChanges();
+                        await uow.SaveChangesAsync();
                     }
                 }
             }
@@ -435,23 +398,7 @@ public partial class Gambling
             index -= 1;
             if (index < 0)
                 return;
-            ShopEntry removed;
-            await using (var uow = _db.GetDbContext())
-            {
-                var items = await uow.Set<ShopEntry>()
-                    .Where(x => x.GuildId == ctx.Guild.Id)
-                    .Include(x => x.Items)
-                    .ToListAsyncEF();
-
-                var entries = new IndexedCollection<ShopEntry>(items);
-                removed = entries.ElementAtOrDefault(index);
-                if (removed is not null)
-                {
-                    uow.RemoveRange(removed.Items);
-                    uow.Remove(removed);
-                    uow.SaveChanges();
-                }
-            }
+            var removed = await _service.RemoveEntryAsync(ctx.Guild.Id, index);
 
             if (removed is null)
                 await Response().Error(strs.shop_item_not_found).SendAsync();
@@ -547,7 +494,7 @@ public partial class Gambling
             }
 
             if (role is null)
-                await Response().Confirm(strs.shop_item_role_no_req(itemIndex)).SendAsync();
+                await Response().Confirm(strs.shop_item_role_no_req(itemIndex + 1)).SendAsync();
             else
                 await Response().Confirm(strs.shop_item_role_req(itemIndex + 1, role)).SendAsync();
         }

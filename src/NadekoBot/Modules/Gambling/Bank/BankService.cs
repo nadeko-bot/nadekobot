@@ -1,34 +1,26 @@
-﻿using LinqToDB;
+﻿﻿using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Games.Quests;
+using NadekoBot.Services.Currency;
 
 namespace NadekoBot.Modules.Gambling.Bank;
 
 public sealed class BankService(
-    ICurrencyService _cur,
     DbService _db,
+    ITxTracker _txTracker,
     QuestService quests) : IBankService, INService
 {
+    private const string TX_TYPE = "bank";
+    private const string TX_DEPOSIT = "deposit";
+    private const string TX_WITHDRAW = "withdraw";
+
     public async Task<bool> AwardAsync(ulong userId, long amount)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
 
         await using var ctx = _db.GetDbContext();
-        await ctx.GetTable<BankUser>()
-            .InsertOrUpdateAsync(() => new()
-                {
-                    UserId = userId,
-                    Balance = amount
-                },
-                (old) => new()
-                {
-                    Balance = old.Balance + amount
-                },
-                () => new()
-                {
-                    UserId = userId
-                });
+        await AddToBankInternalAsync(ctx, userId, amount);
 
         return true;
     }
@@ -38,48 +30,30 @@ public sealed class BankService(
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
 
         await using var ctx = _db.GetDbContext();
-        var rows = await ctx.Set<BankUser>()
-            .ToLinqToDBTable()
-            .Where(x => x.UserId == userId && x.Balance >= amount)
-            .UpdateAsync((old) => new()
-            {
-                Balance = old.Balance - amount
-            });
-
-        return rows > 0;
+        return await TakeFromBankInternalAsync(ctx, userId, amount);
     }
 
     public async Task<bool> DepositAsync(ulong userId, long amount)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
 
-        if (!await _cur.RemoveAsync(userId, amount, new("bank", "deposit")))
-            return false;
+        var txData = new TxData(TX_TYPE, TX_DEPOSIT);
 
-        await using var ctx = _db.GetDbContext();
-        await ctx.Set<BankUser>()
-            .ToLinqToDBTable()
-            .InsertOrUpdateAsync(() => new()
-                {
-                    UserId = userId,
-                    Balance = amount
-                },
-                (old) => new()
-                {
-                    Balance = old.Balance + amount
-                },
-                () => new()
-                {
-                    UserId = userId
-                });
+        // wallet and bank change in one transaction, a failure between the two steps must not destroy currency
+        await using (var ctx = _db.GetDbContext())
+        {
+            await using var tx = await ctx.Database.BeginTransactionAsync();
 
-        await quests.ReportActionAsync(userId,
-            QuestEventType.BankAction,
-            new()
-            {
-                { "type", "deposit" },
-                { "amount", amount.ToString() }
-            });
+            if (!await DefaultWallet.TakeAsync(ctx, userId, amount, txData))
+                return false;
+
+            await AddToBankInternalAsync(ctx, userId, amount);
+
+            await tx.CommitAsync();
+        }
+
+        await _txTracker.TrackRemove(userId, amount, txData);
+        await ReportBankActionInternalAsync(userId, TX_DEPOSIT, amount);
 
         return true;
     }
@@ -88,39 +62,38 @@ public sealed class BankService(
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
 
-        await using var ctx = _db.GetDbContext();
-        var rows = await ctx.Set<BankUser>()
-            .ToLinqToDBTable()
-            .Where(x => x.UserId == userId && x.Balance >= amount)
-            .UpdateAsync((old) => new()
-            {
-                Balance = old.Balance - amount
-            });
+        var txData = new TxData(TX_TYPE, TX_WITHDRAW);
 
-        if (rows > 0)
+        await using (var ctx = _db.GetDbContext())
         {
-            await _cur.AddAsync(userId, amount, new("bank", "withdraw"));
-            await quests.ReportActionAsync(userId,
-                QuestEventType.BankAction,
-                new()
-                {
-                    { "type", "withdraw" },
-                    { "amount", amount.ToString() }
-                });
-            return true;
+            await using var tx = await ctx.Database.BeginTransactionAsync();
+
+            if (!await TakeFromBankInternalAsync(ctx, userId, amount))
+                return false;
+
+            await DefaultWallet.AddAsync(ctx, userId, amount, txData);
+
+            await tx.CommitAsync();
         }
 
-        return false;
+        await _txTracker.TrackAdd(userId, amount, txData);
+        await ReportBankActionInternalAsync(userId, TX_WITHDRAW, amount);
+
+        return true;
     }
 
     public async Task<long> GetBalanceAsync(ulong userId)
     {
         await using var ctx = _db.GetDbContext();
-        var res = (await ctx.Set<BankUser>()
-                      .ToLinqToDBTable()
-                      .FirstOrDefaultAsync(x => x.UserId == userId))
-                  ?.Balance
-                  ?? 0;
+        return await ctx.GetTable<BankUser>()
+            .Where(x => x.UserId == userId)
+            .Select(x => x.Balance)
+            .FirstOrDefaultAsyncLinqToDB();
+    }
+
+    public async Task<long> CheckBalanceAsync(ulong userId)
+    {
+        var balance = await GetBalanceAsync(userId);
 
         await quests.ReportActionAsync(userId,
             QuestEventType.BankAction,
@@ -128,6 +101,40 @@ public sealed class BankService(
             {
                 { "type", "balance" },
             });
-        return res;
+
+        return balance;
     }
+
+    private Task ReportBankActionInternalAsync(ulong userId, string type, long amount)
+        => quests.ReportActionAsync(userId,
+            QuestEventType.BankAction,
+            new()
+            {
+                { "type", type },
+                { "amount", amount.ToString() }
+            });
+
+    private static Task<int> AddToBankInternalAsync(NadekoContext ctx, ulong userId, long amount)
+        => ctx.GetTable<BankUser>()
+            .InsertOrUpdateAsync(() => new()
+                {
+                    UserId = userId,
+                    Balance = amount
+                },
+                old => new()
+                {
+                    Balance = old.Balance + amount
+                },
+                () => new()
+                {
+                    UserId = userId
+                });
+
+    private static async Task<bool> TakeFromBankInternalAsync(NadekoContext ctx, ulong userId, long amount)
+        => await ctx.GetTable<BankUser>()
+            .Where(x => x.UserId == userId && x.Balance >= amount)
+            .UpdateAsync(old => new()
+            {
+                Balance = old.Balance - amount
+            }) > 0;
 }
