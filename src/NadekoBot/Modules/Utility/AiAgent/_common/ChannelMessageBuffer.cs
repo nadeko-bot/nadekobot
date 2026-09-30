@@ -118,11 +118,10 @@ public sealed class ChannelMessageBuffer
     }
 
     // Every value is escaped, so Discord markup cannot break the structure.
-    // lastMessageId is the highest id in the buffer, so a later update can start after it.
-    public string? BuildHistoryXml(ulong channelId, string channelName, ulong excludeMessageId, out ulong lastMessageId)
+    // Skips the ids in sentIds and adds the ids it writes.
+    public string? BuildHistoryXml(ulong channelId, string channelName, HashSet<ulong> sentIds)
     {
         var snapshots = GetMessages();
-        lastMessageId = MaxMessageId(snapshots);
         if (snapshots.Length == 0)
             return null;
 
@@ -131,7 +130,7 @@ public sealed class ChannelMessageBuffer
 
         foreach (ref readonly var s in snapshots.AsSpan())
         {
-            if (s.MessageId != excludeMessageId)
+            if (sentIds.Add(s.MessageId))
                 AppendMessageXml(sb, in s);
         }
 
@@ -139,16 +138,15 @@ public sealed class ChannelMessageBuffer
         return sb.ToString();
     }
 
-    // Discord ids grow with time, so the messages after afterMessageId are the ones posted since then.
-    public string? BuildUpdateXml(ulong channelId, ulong afterMessageId, ulong excludeMessageId, out ulong lastMessageId)
+    // Uses the set of sent ids and not the highest id, because the gateway can deliver an older message late.
+    public string? BuildUpdateXml(ulong channelId, HashSet<ulong> sentIds)
     {
         var snapshots = GetMessages();
-        lastMessageId = Math.Max(afterMessageId, MaxMessageId(snapshots));
 
         System.Text.StringBuilder? sb = null;
         foreach (ref readonly var s in snapshots.AsSpan())
         {
-            if (s.MessageId <= afterMessageId || s.MessageId == excludeMessageId)
+            if (!sentIds.Add(s.MessageId))
                 continue;
 
             sb ??= new System.Text.StringBuilder()
@@ -157,18 +155,6 @@ public sealed class ChannelMessageBuffer
         }
 
         return sb?.Append("</channel_update>").ToString();
-    }
-
-    private static ulong MaxMessageId(ReadOnlySpan<MessageSnapshot> snapshots)
-    {
-        var max = 0UL;
-        foreach (ref readonly var s in snapshots)
-        {
-            if (s.MessageId > max)
-                max = s.MessageId;
-        }
-
-        return max;
     }
 
     private static void AppendMessageXml(System.Text.StringBuilder sb, in MessageSnapshot s)

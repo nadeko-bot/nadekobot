@@ -21,4 +21,5 @@ public sealed record AiAgentPrompt(
     string System,
     string Context,
     ChannelHistoryFeed? History,
-    string Turn);
+    string Turn,
+    string Request);

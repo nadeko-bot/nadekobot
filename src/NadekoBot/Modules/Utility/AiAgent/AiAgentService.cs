@@ -382,10 +382,8 @@ public sealed class AiAgentService(
                 systemPromptBuilder.GetSystemPrompt(context),
                 await systemPromptBuilder.BuildContextAsync(context),
                 CreateHistoryFeed(channel, message.Id),
-                Prompts.SystemPromptBuilder.BuildTurn(
-                    context,
-                    DateTimeOffset.UtcNow,
-                    BuildSkillPreamble(guild.Id, channel.Id, prompt)));
+                Prompts.SystemPromptBuilder.BuildTurn(context, DateTimeOffset.UtcNow),
+                BuildSkillPreamble(guild.Id, channel.Id, prompt));
 
             var result = await agentSession.RunAsync(
                 agentPrompt,

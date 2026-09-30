@@ -84,6 +84,12 @@ public sealed class AiAgentSession(
             Content = prompt.Turn
         });
 
+        messages.Add(new()
+        {
+            Role = "user",
+            Content = prompt.Request
+        });
+
         var totalToolCalls = 0;
 
         var useModelList = config.Models is { Count: > 0 };
@@ -113,7 +119,7 @@ public sealed class AiAgentSession(
             usage.Requests++;
             if (response.Usage is { } u)
             {
-                usage.PromptTokens += u.PromptTokens;
+                usage.PromptTokens += u.PromptTokens ?? 0;
                 usage.CachedTokens += u.PromptTokensDetails?.CachedTokens ?? 0;
             }
 

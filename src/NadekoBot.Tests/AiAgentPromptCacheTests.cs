@@ -43,6 +43,14 @@ public class AiAgentPromptCacheTests
         Assert.That(update, Does.Contain("new-a").And.Contain("new-b"));
         Assert.That(update, Does.Not.Contain("old-a").And.Not.Contain("trigger"));
         Assert.That(feed.GetUpdate(), Is.Null);
+
+        // An older message which the gateway delivers after a newer one still shows up, once.
+        buffer.Push(Msg(16, "newest"));
+        buffer.Push(Msg(15, "late"));
+
+        var lateUpdate = feed.GetUpdate();
+        Assert.That(lateUpdate, Does.Contain("newest").And.Contain("late").And.Not.Contain("new-a"));
+        Assert.That(feed.GetUpdate(), Is.Null);
     }
 
     [Test]
@@ -73,14 +81,15 @@ public class AiAgentPromptCacheTests
 
         var handler = new ScriptedHandler(
             """{"choices":[{"message":{"role":"assistant","tool_calls":[{"id":"c1","type":"function","function":{"name":"post","arguments":"{}"}}]},"finish_reason":"tool_calls"}]}""",
-            """{"choices":[{"message":{"role":"assistant","content":"done"},"finish_reason":"stop"}]}""");
+            """{"choices":[{"message":{"role":"assistant","content":"done"},"finish_reason":"stop"}],"usage":{"prompt_tokens":null,"prompt_tokens_details":{"cached_tokens":null}}}""");
 
         var session = CreateSession(handler);
         var prompt = new AiAgentPrompt(
             "SYSTEM",
             "CONTEXT",
             new ChannelHistoryFeed(buffer, CHANNEL_ID, "general", TRIGGER_ID),
-            "TURN");
+            "TURN",
+            "REQUEST");
 
         var result = await session.RunAsync(
             prompt,
@@ -98,7 +107,8 @@ public class AiAgentPromptCacheTests
 
         Assert.That(first[0], Does.Contain("SYSTEM"));
         Assert.That(first[1], Does.Contain("CONTEXT").And.Contain("old-a"));
-        Assert.That(first[2], Does.Contain("TURN"));
+        Assert.That(first[2], Does.Contain("TURN").And.Not.Contain("REQUEST"));
+        Assert.That(first[3], Does.Contain("REQUEST"));
 
         Assert.That(second.Take(first.Count), Is.EqualTo(first));
         Assert.That(second[^1], Does.Contain("\"tool\"").And.Contain("bot-posted"));

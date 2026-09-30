@@ -86,19 +86,17 @@ public sealed class SystemPromptBuilder(
         return sb.ToString();
     }
 
-    // Changes on every turn, so it goes into the last message of the request.
-    public static string BuildTurn(AiToolContext context, DateTimeOffset now, string prompt)
+    // Changes on every turn, so it goes after the history. It is a separate message from the text of the user.
+    public static string BuildTurn(AiToolContext context, DateTimeOffset now)
     {
-        var sb = new StringBuilder(256 + prompt.Length);
+        var sb = new StringBuilder(256);
         sb.AppendLine("CURRENT TURN:");
         sb.Append("- Current channel: #").Append(PromptSanitizer.Sanitize(context.SourceChannel.Name))
           .Append(" (ID: ").Append(context.SourceChannel.Id).AppendLine(")");
         sb.Append("- User: ").Append(PromptSanitizer.Sanitize(context.User.DisplayName))
           .Append(" (ID: ").Append(context.User.Id).AppendLine(")");
         sb.Append("- Current time: ").Append(now.ToUnixTimeSeconds())
-          .Append(" (").Append(now.ToString("yyyy-MM-dd HH:mm:ss")).AppendLine(" UTC)");
-        sb.AppendLine();
-        sb.Append(prompt);
+          .Append(" (").Append(now.ToString("yyyy-MM-dd HH:mm:ss")).Append(" UTC)");
         return sb.ToString();
     }
 
