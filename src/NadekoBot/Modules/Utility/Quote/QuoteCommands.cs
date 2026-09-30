@@ -174,9 +174,9 @@ public partial class Utility
             if (string.IsNullOrWhiteSpace(query))
                 return;
 
-            var quotes = await _qs.SearchQuotesAsync(ctx.Guild.Id, query);
+            var count = await _qs.CountSearchQuotesAsync(ctx.Guild.Id, query);
 
-            if (quotes.Count == 0)
+            if (count == 0)
             {
                 await Response()
                     .Error(strs.quotes_page_none)
@@ -184,9 +184,11 @@ public partial class Utility
                 return;
             }
 
+            var guildId = ctx.Guild.Id;
             await Response()
                   .Paginated()
-                  .Items(quotes)
+                  .PageItems(page => _qs.SearchQuotesAsync(guildId, query, page, 1))
+                  .TotalElements(count)
                   .PageSize(1)
                   .Page((pageQuotes, _) =>
                   {
@@ -320,7 +322,12 @@ public partial class Utility
             if (string.IsNullOrWhiteSpace(keyword))
                 return;
 
-            await _qs.RemoveAllByKeyword(ctx.Guild.Id, keyword.ToUpperInvariant());
+            var deleted = await _qs.RemoveAllByKeyword(ctx.Guild.Id, keyword);
+            if (deleted == 0)
+            {
+                await Response().Error(strs.quotes_remove_none).SendAsync();
+                return;
+            }
 
             await Response().Confirm(strs.quotes_deleted(Format.Bold(keyword))).SendAsync();
         }

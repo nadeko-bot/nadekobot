@@ -9,3 +9,4 @@ trivia_quit: You can stop trivia by typing {0}
 trivia_stopping: Stopping after this question.
 trivia_times_up: Time's up! The correct answer was {0}
 trivia_win: '{0} guessed it and WON the game! The answer was: {1}'
+trivia_win_req_too_low: 'The win requirement must be at least {0}. Use 0 for a game without a winner.'

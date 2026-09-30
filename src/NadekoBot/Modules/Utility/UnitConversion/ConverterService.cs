@@ -1,99 +1,212 @@
-﻿#nullable disable
-using NadekoBot.Common.ModuleBehaviors;
+﻿using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Modules.Utility.Common;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace NadekoBot.Modules.Utility.Services;
 
-public class ConverterService : INService, IReadyExecutor
+public enum ConvertStatus
 {
-    private static readonly TypedKey<List<ConvertUnit>> _convertKey =
-        new("convert:units");
+    Ok,
+    NotFound,
+    TypeMismatch,
+    Overflow
+}
 
-    private readonly TimeSpan _updateInterval = new(12, 0, 0);
-    private readonly DiscordSocketClient _client;
-    private readonly IBotCache _cache;
-    private readonly IHttpClientFactory _httpFactory;
+public readonly record struct ConvertResult(
+    ConvertStatus Status,
+    ConvertUnit? From = null,
+    ConvertUnit? To = null,
+    decimal Value = 0);
 
-    public ConverterService(
-        DiscordSocketClient client,
-        IBotCache cache,
-        IHttpClientFactory factory)
-    {
-        _client = client;
-        _cache = cache;
-        _httpFactory = factory;
-    }
+public sealed class ConverterService(
+    DiscordSocketClient client,
+    IBotCache cache,
+    IHttpClientFactory httpFactory) : INService, IReadyExecutor
+{
+    public const string UNITS_PATH = "data/units.json";
+    private const string CURRENCY_TYPE = "currency";
+    private const string TEMPERATURE_TYPE = "temperature";
+    private const int RESULT_DECIMALS = 4;
+
+    private static readonly TypedKey<List<ConvertUnit>> _currencyKey = new("convert:currency");
+
+    private static readonly TimeSpan _updateInterval = TimeSpan.FromHours(12);
+    private static readonly TimeSpan _retryInterval = TimeSpan.FromMinutes(5);
+
+    // loaded on every shard, so the fixed units never depend on the currency rate service
+    private volatile ConvertUnit[] _staticUnits = [];
 
     public async Task OnReadyAsync()
     {
-        if (_client.ShardId != 0)
-            return;
+        await LoadStaticUnitsAsync();
 
-        using var timer = new PeriodicTimer(_updateInterval);
-        do
+        if (client.ShardId == 0)
+            _ = Task.Run(UpdateLoopInternalAsync);
+    }
+
+    public async Task LoadStaticUnitsAsync()
+    {
+        try
         {
+            await using var stream = File.OpenRead(UNITS_PATH);
+            _staticUnits = await JsonSerializer.DeserializeAsync<ConvertUnit[]>(stream) ?? [];
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Unable to load {UnitsPath}", UNITS_PATH);
+        }
+    }
+
+    private async Task UpdateLoopInternalAsync()
+    {
+        while (true)
+        {
+            var delay = _updateInterval;
             try
             {
-                await UpdateCurrency();
+                await UpdateCurrencyInternalAsync();
             }
-            catch
+            catch (Exception ex)
             {
-                // ignored
+                Log.Warning(ex, "Unable to update currency rates for .convert");
+                delay = _retryInterval;
             }
-        } while (await timer.WaitForNextTickAsync());
+
+            await Task.Delay(delay);
+        }
     }
 
-    private async Task<Rates> GetCurrencyRates()
+    private async Task UpdateCurrencyInternalAsync()
     {
-        using var http = _httpFactory.CreateClient();
+        using var http = httpFactory.CreateClient();
         var res = await http.GetStringAsync("https://convertapi.nadeko.bot/latest");
-        return JsonSerializer.Deserialize<Rates>(res);
-    }
+        var rates = JsonSerializer.Deserialize<Rates>(res);
+        if (rates?.Base is null || rates.ConversionRates is null)
+            return;
 
-    private async Task UpdateCurrency()
-    {
-        var unitTypeString = "currency";
-        var currencyRates = await GetCurrencyRates();
-        var baseType = new ConvertUnit
+        var units = new List<ConvertUnit>(rates.ConversionRates.Count + 1)
         {
-            Triggers = [currencyRates.Base],
-            Modifier = decimal.One,
-            UnitType = unitTypeString
+            new()
+            {
+                Triggers = [rates.Base],
+                Modifier = decimal.One,
+                UnitType = CURRENCY_TYPE
+            }
         };
-        var units = currencyRates.ConversionRates.Select(u => new ConvertUnit
-                                 {
-                                     Triggers = [u.Key],
-                                     Modifier = u.Value,
-                                     UnitType = unitTypeString
-                                 })
-                                 .ToList();
 
-        var stream =  File.OpenRead("data/units.json");
-        var defaultUnits = await JsonSerializer.DeserializeAsync<ConvertUnit[]>(stream);
-        if(defaultUnits is not null)
-            units.AddRange(defaultUnits);
-        
-        units.Add(baseType);
-        
-        await _cache.AddAsync(_convertKey, units);
+        foreach (var (code, rate) in rates.ConversionRates)
+        {
+            if (rate <= 0 || string.Equals(code, rates.Base, StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            units.Add(new()
+            {
+                Triggers = [code],
+                Modifier = rate,
+                UnitType = CURRENCY_TYPE
+            });
+        }
+
+        await cache.AddAsync(_currencyKey, units);
     }
+
+    private async Task<IReadOnlyList<ConvertUnit>> GetCurrencyUnitsAsync()
+        => (await cache.GetAsync(_currencyKey)).TryGetValue(out var list)
+            ? list
+            : [];
 
     public async Task<IReadOnlyList<ConvertUnit>> GetUnitsAsync()
-        => (await _cache.GetAsync(_convertKey)).TryGetValue(out var list)
-            ? list
-            : Array.Empty<ConvertUnit>();
+    {
+        var currency = await GetCurrencyUnitsAsync();
+        var staticUnits = _staticUnits;
+        var all = new List<ConvertUnit>(staticUnits.Length + currency.Count);
+        all.AddRange(staticUnits);
+        all.AddRange(currency);
+        return all;
+    }
+
+    private static ConvertUnit? Find(IReadOnlyList<ConvertUnit> units, string trigger)
+    {
+        foreach (var unit in units)
+        {
+            foreach (var t in unit.Triggers)
+            {
+                if (string.Equals(t, trigger, StringComparison.InvariantCultureIgnoreCase))
+                    return unit;
+            }
+        }
+
+        return null;
+    }
+
+    public async Task<ConvertResult> ConvertAsync(string origin, string target, decimal value)
+    {
+        var staticUnits = _staticUnits;
+        var from = Find(staticUnits, origin);
+        var to = Find(staticUnits, target);
+
+        if (from is null || to is null)
+        {
+            var currency = await GetCurrencyUnitsAsync();
+            from ??= Find(currency, origin);
+            to ??= Find(currency, target);
+        }
+
+        if (from is null || to is null)
+            return new(ConvertStatus.NotFound);
+
+        if (!string.Equals(from.UnitType, to.UnitType, StringComparison.Ordinal))
+            return new(ConvertStatus.TypeMismatch, from, to);
+
+        try
+        {
+            var res = Math.Round(Compute(from, to, value), RESULT_DECIMALS);
+            return new(ConvertStatus.Ok, from, to, res);
+        }
+        catch (OverflowException)
+        {
+            return new(ConvertStatus.Overflow, from, to);
+        }
+    }
+
+    private static decimal Compute(ConvertUnit from, ConvertUnit to, decimal value)
+    {
+        if (ReferenceEquals(from, to))
+            return value;
+
+        if (from.UnitType == TEMPERATURE_TYPE)
+        {
+            // convert to kelvin first, then to the target
+            var kelvin = from.Triggers[0] switch
+            {
+                "C" => value + 273.15m,
+                "F" => (value + 459.67m) * (5m / 9m),
+                _ => value
+            };
+
+            return to.Triggers[0] switch
+            {
+                "C" => kelvin - 273.15m,
+                "F" => kelvin * (9m / 5m) - 459.67m,
+                _ => kelvin
+            };
+        }
+
+        return from.UnitType == CURRENCY_TYPE
+            ? value * to.Modifier / from.Modifier
+            : value * from.Modifier / to.Modifier;
+    }
 }
 
 public class Rates
 {
     [JsonPropertyName("base")]
-    public string Base { get; set; }
-    
+    public string? Base { get; set; }
+
     [JsonPropertyName("date")]
     public DateTime Date { get; set; }
 
     [JsonPropertyName("rates")]
-    public Dictionary<string, decimal> ConversionRates { get; set; }
+    public Dictionary<string, decimal>? ConversionRates { get; set; }
 }

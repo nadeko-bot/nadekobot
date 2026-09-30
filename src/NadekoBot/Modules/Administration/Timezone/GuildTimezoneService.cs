@@ -1,4 +1,5 @@
 #nullable disable
+using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Db.Models;
 using NadekoBot.Common.ModuleBehaviors;
@@ -7,7 +8,7 @@ namespace NadekoBot.Modules.Administration.Services;
 
 public sealed class GuildTimezoneService : ITimezoneService, IReadyExecutor, INService
 {
-    private ConcurrentDictionary<ulong, TimeZoneInfo> _timezones = new();
+    private readonly ConcurrentDictionary<ulong, TimeZoneInfo> _timezones = new();
     private readonly DbService _db;
     private readonly IReplacementPatternStore _repStore;
     private readonly ShardData _shardData;
@@ -25,19 +26,57 @@ public sealed class GuildTimezoneService : ITimezoneService, IReadyExecutor, INS
         _client = client;
     }
 
-    private static (ulong GuildId, TimeZoneInfo Timezone) GetTimezoneTuple(GuildConfig x)
+    private static TimeZoneInfo TryGetById(string id)
     {
-        TimeZoneInfo tz;
         try
         {
-            tz = x.TimeZoneId is null ? null : TimeZoneInfo.FindSystemTimeZoneById(x.TimeZoneId);
+            return TimeZoneInfo.FindSystemTimeZoneById(id);
         }
         catch
         {
-            tz = null;
+            return null;
+        }
+    }
+
+    // zone ids are file names on linux, so the exact lookup is case sensitive
+    public static TimeZoneInfo TryFindTimeZone(string input)
+    {
+        var query = input.AsSpan().Trim();
+        if (query.IsEmpty)
+            return null;
+
+        if (TryGetById(query.ToString()) is { } exact)
+            return exact;
+
+        TimeZoneInfo cityMatch = null;
+        var cityMatches = 0;
+        foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
+        {
+            var id = tz.Id.AsSpan();
+            if (id.Equals(query, StringComparison.InvariantCultureIgnoreCase))
+                return tz;
+
+            var city = id[(id.LastIndexOf('/') + 1)..];
+            if (city.Length == query.Length && CityEquals(city, query))
+            {
+                cityMatch = tz;
+                cityMatches++;
+            }
         }
 
-        return (x.GuildId, Timezone: tz);
+        return cityMatches == 1 ? cityMatch : null;
+    }
+
+    private static bool CityEquals(ReadOnlySpan<char> city, ReadOnlySpan<char> query)
+    {
+        for (var i = 0; i < city.Length; i++)
+        {
+            var q = query[i] == ' ' ? '_' : query[i];
+            if (char.ToUpperInvariant(city[i]) != char.ToUpperInvariant(q))
+                return false;
+        }
+
+        return true;
     }
 
     public TimeZoneInfo GetTimeZoneOrDefault(ulong? guildId)
@@ -48,18 +87,22 @@ public sealed class GuildTimezoneService : ITimezoneService, IReadyExecutor, INS
         return null;
     }
 
-    public void SetTimeZone(ulong guildId, TimeZoneInfo tz)
+    public async Task SetTimeZoneAsync(ulong guildId, TimeZoneInfo tz)
     {
-        using var uow = _db.GetDbContext();
-        var gc = uow.GuildConfigsForId(guildId, set => set);
-
-        gc.TimeZoneId = tz?.Id;
-        uow.SaveChanges();
+        var tzId = tz?.Id;
+        await using (var uow = _db.GetDbContext())
+        {
+            await uow.EnsureGuildConfigAsync(guildId);
+            await uow.GetTable<GuildConfig>()
+                .Where(x => x.GuildId == guildId)
+                .Set(x => x.TimeZoneId, tzId)
+                .UpdateAsync();
+        }
 
         if (tz is null)
-            _timezones.TryRemove(guildId, out tz);
+            _timezones.TryRemove(guildId, out _);
         else
-            _timezones.AddOrUpdate(guildId, tz, (_, _) => tz);
+            _timezones[guildId] = tz;
     }
 
     public TimeZoneInfo GetTimeZoneOrUtc(ulong? guildId)
@@ -67,14 +110,20 @@ public sealed class GuildTimezoneService : ITimezoneService, IReadyExecutor, INS
 
     public async Task OnReadyAsync()
     {
-        await using var uow = _db.GetDbContext();
-        _timezones = await uow.GetTable<GuildConfig>()
-                              .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
-                              .ToListAsyncLinqToDB()
-                              .Pipe(x => x
-                                         .Select(GetTimezoneTuple)
-                                         .ToDictionary(x => x.GuildId, x => x.Timezone)
-                                         .ToConcurrent()) ?? new();
+        await using (var uow = _db.GetDbContext())
+        {
+            var rows = await uow.GetTable<GuildConfig>()
+                .Where(Queries.GuildOnShard<GuildConfig>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+                .Where(x => x.TimeZoneId != null)
+                .Select(x => new { x.GuildId, x.TimeZoneId })
+                .ToListAsyncLinqToDB();
+
+            foreach (var row in rows)
+            {
+                if (TryGetById(row.TimeZoneId) is { } tz)
+                    _timezones[row.GuildId] = tz;
+            }
+        }
 
         await _repStore.Register("%server.time%",
             (IGuild g) =>

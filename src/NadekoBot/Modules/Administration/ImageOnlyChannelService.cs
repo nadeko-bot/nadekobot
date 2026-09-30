@@ -1,5 +1,6 @@
 #nullable disable
 using LinqToDB;
+using LinqToDB.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using NadekoBot.Common.ModuleBehaviors;
 using System.Net;
@@ -57,8 +58,8 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         if (ch is not IGuildChannel gch)
             return;
 
-        if (_imageOnly.TryGetValue(gch.GuildId, out var channels) && channels.TryRemove(ch.Id))
-            await ToggleImageOnlyChannelAsync(gch.GuildId, ch.Id, true);
+        if (GetMode(gch.GuildId, ch.Id) is not null)
+            await DisableAsync(gch.GuildId, ch.Id);
     }
 
     private async Task DeleteQueueRunner()
@@ -74,69 +75,78 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
             catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
             {
                 // disable if bot can't delete messages in the channel
-                await ToggleImageOnlyChannelAsync(((ITextChannel)toDelete.Channel).GuildId, toDelete.Channel.Id, true);
+                await DisableAsync(((ITextChannel)toDelete.Channel).GuildId, toDelete.Channel.Id);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Error deleting a message in an image-only or link-only channel");
             }
         }
     }
 
-    public async Task<bool> ToggleImageOnlyChannelAsync(ulong guildId, ulong channelId, bool forceDisable = false)
+    private ConcurrentDictionary<ulong, ConcurrentHashSet<ulong>> GetSet(OnlyChannelType type)
+        => type == OnlyChannelType.Image ? _imageOnly : _linkOnly;
+
+    public OnlyChannelType? GetMode(ulong guildId, ulong channelId)
     {
-        var newState = false;
-        await using var uow = _db.GetDbContext();
-        if (forceDisable || (_imageOnly.TryGetValue(guildId, out var channels) && channels.TryRemove(channelId)))
-        {
-            await uow.Set<ImageOnlyChannel>().DeleteAsync(x => x.ChannelId == channelId && x.Type == OnlyChannelType.Image);
-        }
-        else
-        {
-            await uow.Set<ImageOnlyChannel>().DeleteAsync(x => x.ChannelId == channelId);
-            uow.Set<ImageOnlyChannel>().Add(new()
-            {
-                GuildId = guildId,
-                ChannelId = channelId,
-                Type = OnlyChannelType.Image
-            });
+        if (_imageOnly.TryGetValue(guildId, out var chs) && chs.Contains(channelId))
+            return OnlyChannelType.Image;
 
-            if (_linkOnly.TryGetValue(guildId, out var chs))
-                chs.TryRemove(channelId);
-            
-            channels = _imageOnly.GetOrAdd(guildId, new ConcurrentHashSet<ulong>());
-            channels.Add(channelId);
-            newState = true;
-        }
+        if (_linkOnly.TryGetValue(guildId, out chs) && chs.Contains(channelId))
+            return OnlyChannelType.Link;
 
-        await uow.SaveChangesAsync();
-        return newState;
+        return null;
     }
-    
-    public async Task<bool> ToggleLinkOnlyChannelAsync(ulong guildId, ulong channelId, bool forceDisable = false)
+
+    // returns true when the channel now has the specified type
+    public async Task<bool> ToggleAsync(ulong guildId, ulong channelId, OnlyChannelType type)
     {
-        var newState = false;
+        if (GetMode(guildId, channelId) == type)
+        {
+            await DisableAsync(guildId, channelId);
+            return false;
+        }
+
+        await using (var uow = _db.GetDbContext())
+        {
+            await using var tx = await uow.Database.BeginTransactionAsync();
+
+            await uow.GetTable<ImageOnlyChannel>()
+                .Where(x => x.ChannelId == channelId)
+                .DeleteAsync();
+
+            await uow.GetTable<ImageOnlyChannel>()
+                .InsertAsync(() => new()
+                {
+                    GuildId = guildId,
+                    ChannelId = channelId,
+                    Type = type,
+                    DateAdded = DateTime.UtcNow
+                });
+
+            await tx.CommitAsync();
+        }
+
+        var other = type == OnlyChannelType.Image ? OnlyChannelType.Link : OnlyChannelType.Image;
+        if (GetSet(other).TryGetValue(guildId, out var otherChannels))
+            otherChannels.TryRemove(channelId);
+
+        GetSet(type).GetOrAdd(guildId, static _ => new()).Add(channelId);
+        return true;
+    }
+
+    public async Task DisableAsync(ulong guildId, ulong channelId)
+    {
+        if (_imageOnly.TryGetValue(guildId, out var chs))
+            chs.TryRemove(channelId);
+
+        if (_linkOnly.TryGetValue(guildId, out chs))
+            chs.TryRemove(channelId);
+
         await using var uow = _db.GetDbContext();
-        if (forceDisable || (_linkOnly.TryGetValue(guildId, out var channels) && channels.TryRemove(channelId)))
-        {
-            await uow.Set<ImageOnlyChannel>().DeleteAsync(x => x.ChannelId == channelId && x.Type == OnlyChannelType.Link);
-        }
-        else
-        {
-            await uow.Set<ImageOnlyChannel>().DeleteAsync(x => x.ChannelId == channelId);
-            uow.Set<ImageOnlyChannel>().Add(new()
-            {
-                GuildId = guildId,
-                ChannelId = channelId,
-                Type = OnlyChannelType.Link
-            });
-
-            if (_imageOnly.TryGetValue(guildId, out var chs))
-                chs.TryRemove(channelId);
-            
-            channels = _linkOnly.GetOrAdd(guildId, new ConcurrentHashSet<ulong>());
-            channels.Add(channelId);
-            newState = true;
-        }
-
-        await uow.SaveChangesAsync();
-        return newState;
+        await uow.GetTable<ImageOnlyChannel>()
+            .Where(x => x.ChannelId == channelId)
+            .DeleteAsync();
     }
 
 #nullable enable
@@ -186,20 +196,27 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         if (user.GetRoles().Max(x => x.Position) >= botUser.GetRoles().Max(x => x.Position))
             return false;
 
-        if (!botUser.GetPermissions(tch).ManageChannel)
+        // manage roles is the channel's Manage Permissions, needed for the overwrite which stops the user
+        var botPerms = botUser.GetPermissions(tch);
+        if (!botPerms.ManageChannel || !botPerms.ManageRoles)
         {
-            if(type == OnlyChannelType.Image)
-                await ToggleImageOnlyChannelAsync(tch.GuildId, tch.Id, true);
-            else
-                await ToggleImageOnlyChannelAsync(tch.GuildId, tch.Id, true);
-            
+            await DisableAsync(tch.GuildId, tch.Id);
             return false;
         }
 
         var shouldLock = AddUserTicket(tch.GuildId, msg.Author.Id);
         if (shouldLock)
         {
-            await tch.AddPermissionOverwriteAsync(msg.Author, new(sendMessages: PermValue.Deny));
+            try
+            {
+                await tch.AddPermissionOverwriteAsync(msg.Author, new(sendMessages: PermValue.Deny));
+            }
+            catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
+            {
+                await DisableAsync(tch.GuildId, tch.Id);
+                return false;
+            }
+
             Log.Warning("{Type}-Only Channel: User {User} [{UserId}] has been banned from typing in the channel [{ChannelId}]",
                 type,
                 msg.Author,

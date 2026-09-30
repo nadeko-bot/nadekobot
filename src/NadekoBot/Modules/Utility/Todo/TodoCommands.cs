@@ -11,6 +11,9 @@ public partial class Utility
         [Cmd]
         public async Task TodoAdd([Leftover] string todo)
         {
+            if (!await ValidateTodoInternalAsync(todo))
+                return;
+
             var result = await _service.AddAsync(ctx.User.Id, todo);
             if (result == TodoAddResult.MaxLimitReached)
             {
@@ -24,6 +27,9 @@ public partial class Utility
         [Cmd]
         public async Task TodoEdit(kwum todoId, [Leftover] string newMessage)
         {
+            if (!await ValidateTodoInternalAsync(newMessage))
+                return;
+
             if (!await _service.EditAsync(ctx.User.Id, todoId, newMessage))
             {
                 await Response().Error(strs.todo_not_found).SendAsync();
@@ -128,6 +134,15 @@ public partial class Utility
         }
 
 
+        private async Task<bool> ValidateTodoInternalAsync(string todo)
+        {
+            if (todo.Length <= TodoService.MAX_TODO_LENGTH)
+                return true;
+
+            await Response().Error(strs.todo_too_long(TodoService.MAX_TODO_LENGTH)).SendAsync();
+            return false;
+        }
+
         private static void ShowTodoItem(IReadOnlyCollection<TodoModel> todos, EmbedBuilder eb)
         {
             var sb = new StringBuilder();
@@ -142,7 +157,7 @@ public partial class Utility
         }
 
         private static string InternalItemShow(TodoModel todo)
-            => $"{(todo.IsDone ? "✔" : "□")} {Format.Code(new kwum(todo.Id).ToString())} {todo.Todo}";
+            => $"{(todo.IsDone ? "✔" : "□")} {Format.Code(new kwum(todo.Id).ToString())} {todo.Todo.TrimTo(TodoService.MAX_TODO_LENGTH)}";
 
         [Group("archive")]
         public partial class ArchiveCommands : NadekoModule<TodoService>
@@ -150,6 +165,9 @@ public partial class Utility
             [Cmd]
             public async Task TodoArchiveAdd([Leftover] string name)
             {
+                if (!await ValidateArchiveNameInternalAsync(name))
+                    return;
+
                 var result = await _service.ArchiveTodosAsync(ctx.User.Id, name, false);
                 if (result == ArchiveTodoResult.NoTodos)
                 {
@@ -169,6 +187,9 @@ public partial class Utility
             [Cmd]
             public async Task TodoArchiveDone([Leftover] string name)
             {
+                if (!await ValidateArchiveNameInternalAsync(name))
+                    return;
+
                 var result = await _service.ArchiveTodosAsync(ctx.User.Id, name, true);
                 if (result == ArchiveTodoResult.NoTodos)
                 {
@@ -183,6 +204,17 @@ public partial class Utility
                 }
 
                 await ctx.OkAsync();
+            }
+
+            private async Task<bool> ValidateArchiveNameInternalAsync(string name)
+            {
+                if (name.Length <= TodoService.MAX_ARCHIVE_NAME_LENGTH)
+                    return true;
+
+                await Response()
+                      .Error(strs.todo_archive_name_too_long(TodoService.MAX_ARCHIVE_NAME_LENGTH))
+                      .SendAsync();
+                return false;
             }
 
             [Cmd]
@@ -212,7 +244,7 @@ public partial class Utility
 
                           foreach (var archivedList in items)
                           {
-                              eb.AddField($"id: {new kwum(archivedList.Id)}", archivedList.Name, true);
+                              eb.AddField($"id: {new kwum(archivedList.Id)}", archivedList.Name.TrimTo(TodoService.MAX_ARCHIVE_NAME_LENGTH), true);
                           }
 
                           return eb;

@@ -1,5 +1,6 @@
 #nullable disable
 using NadekoBot.Common.TypeReaders.Models;
+using NadekoBot.Db.Models;
 using NadekoBot.Modules.Administration.Services;
 
 namespace NadekoBot.Modules.Administration;
@@ -40,10 +41,12 @@ public partial class Administration
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.Administrator)]
-        [BotPerm(GuildPerm.ManageGuild)]
-        public async Task ImageOnlyChannel(ParsedTimespan timespan = null)
+        [BotPerm(ChannelPerm.ManageChannels)]
+        [BotPerm(ChannelPerm.ManageMessages)]
+        [BotPerm(ChannelPerm.ManageRoles)]
+        public async Task ImageOnlyChannel()
         {
-            var newValue = await somethingOnly.ToggleImageOnlyChannelAsync(ctx.Guild.Id, ctx.Channel.Id);
+            var newValue = await somethingOnly.ToggleAsync(ctx.Guild.Id, ctx.Channel.Id, OnlyChannelType.Image);
             if (newValue)
                 await Response().Confirm(strs.imageonly_enable).SendAsync();
             else
@@ -53,10 +56,12 @@ public partial class Administration
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.Administrator)]
-        [BotPerm(GuildPerm.ManageGuild)]
-        public async Task LinkOnlyChannel(ParsedTimespan timespan = null)
+        [BotPerm(ChannelPerm.ManageChannels)]
+        [BotPerm(ChannelPerm.ManageMessages)]
+        [BotPerm(ChannelPerm.ManageRoles)]
+        public async Task LinkOnlyChannel()
         {
-            var newValue = await somethingOnly.ToggleLinkOnlyChannelAsync(ctx.Guild.Id, ctx.Channel.Id);
+            var newValue = await somethingOnly.ToggleAsync(ctx.Guild.Id, ctx.Channel.Id, OnlyChannelType.Link);
             if (newValue)
                 await Response().Confirm(strs.linkonly_enable).SendAsync();
             else

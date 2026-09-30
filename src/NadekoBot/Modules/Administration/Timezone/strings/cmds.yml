@@ -1,6 +1,7 @@
 timezone:
   desc: |-
     Sets this guild's timezone. This affects bot's time output in this server (logs, etc.). **Setting timezone requires Administrator server permission.**
+    You can use a timezone id, such as `Europe/Berlin`, or a city, such as `Berlin`. Letter case does not matter.
   ex:
     - ''
     - GMT Standard Time

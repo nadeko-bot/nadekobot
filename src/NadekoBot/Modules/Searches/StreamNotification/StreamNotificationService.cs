@@ -550,24 +550,12 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
     public async Task<bool> ToggleStreamOffline(ulong guildId)
     {
         await using var uow = _db.GetDbContext();
-        await uow.GetTable<GuildConfig>()
-                 .InsertOrUpdateAsync(() => new()
-                     {
-                         GuildId = guildId,
-                     },
-                     (old) => new()
-                     {
-                         NotifyStreamOffline = !old.NotifyStreamOffline
-                     },
-                     () => new()
-                     {
-                         GuildId = guildId
-                     });
-
-        var newValue = await uow.GetTable<GuildConfig>()
-                                .Where(x => x.GuildId == guildId)
-                                .Select(x => x.NotifyStreamOffline)
-                                .FirstOrDefaultAsyncLinqToDB();
+        await uow.EnsureGuildConfigAsync(guildId);
+        var newValue = (await uow.GetTable<GuildConfig>()
+                                 .Where(x => x.GuildId == guildId)
+                                 .Set(x => x.NotifyStreamOffline, x => !x.NotifyStreamOffline)
+                                 .UpdateWithOutputAsync((_, inserted) => inserted.NotifyStreamOffline))
+                       .FirstOrDefault();
 
         if (newValue)
             _offlineNotificationServers.Add(guildId);
@@ -580,24 +568,12 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
     public async Task<bool> ToggleStreamOnlineDelete(ulong guildId)
     {
         await using var uow = _db.GetDbContext();
-        await uow.GetTable<GuildConfig>()
-                 .InsertOrUpdateAsync(() => new()
-                     {
-                         GuildId = guildId,
-                     },
-                     (old) => new()
-                     {
-                         DeleteStreamOnlineMessage = !old.DeleteStreamOnlineMessage
-                     },
-                     () => new()
-                     {
-                         GuildId = guildId
-                     });
-
-        var newValue = await uow.GetTable<GuildConfig>()
-                                .Where(x => x.GuildId == guildId)
-                                .Select(x => x.DeleteStreamOnlineMessage)
-                                .FirstOrDefaultAsyncLinqToDB();
+        await uow.EnsureGuildConfigAsync(guildId);
+        var newValue = (await uow.GetTable<GuildConfig>()
+                                 .Where(x => x.GuildId == guildId)
+                                 .Set(x => x.DeleteStreamOnlineMessage, x => !x.DeleteStreamOnlineMessage)
+                                 .UpdateWithOutputAsync((_, inserted) => inserted.DeleteStreamOnlineMessage))
+                       .FirstOrDefault();
 
         if (newValue)
             _deleteOnOfflineServers.Add(guildId);

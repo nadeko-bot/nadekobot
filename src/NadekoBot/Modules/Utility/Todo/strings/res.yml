@@ -1,4 +1,4 @@
-todo_add_max_limit: You'reached the maximum amount of todos you can have.
+todo_add_max_limit: You've reached the maximum amount of todos you can have.
 todo_archive_empty: You have no archived todos.
 todo_archive_list: Archived Todo Lists
 todo_archive_max_limit: You've reached the maximum amount of archived todos you can have.
@@ -10,3 +10,5 @@ todo_list_empty: Your todo list is empty.
 todo_no_todos: There are no todos in your todo list.
 todo_not_found: Todo not found.
 todo_stats: '{0} items | {1} completed | {2} remaining'
+todo_too_long: "The todo is too long. Use at most {0} characters."
+todo_archive_name_too_long: "The archive name is too long. Use at most {0} characters."

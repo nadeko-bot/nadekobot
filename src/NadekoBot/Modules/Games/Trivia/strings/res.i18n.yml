@@ -10,6 +10,7 @@ ar:
   trivia_stopping: سيتم الإيقاف بعد هذا السؤال.
   trivia_times_up: 'انتهى الوقت! الإجابة الصحيحة كانت {0}'
   trivia_win: '{0} خمّن الإجابة وفاز باللعبة! الإجابة كانت: {1}'
+  trivia_win_req_too_low: 'يجب أن يكون شرط الفوز {0} على الأقل. استخدم 0 للعبة بدون فائز.'
 
 de-DE:
   category: Kategorie
@@ -23,6 +24,7 @@ de-DE:
   trivia_stopping: Quiz wird nach dieser Frage vorrüber sein.
   trivia_times_up: 'Zeit abgelaufen! Die richtige Antwort war {0}'
   trivia_win: '{0} hat richtig geraten und hat das Spiel GEWONNEN! Die Antwort lautete: {1}'
+  trivia_win_req_too_low: 'Die Siegbedingung muss mindestens {0} betragen. Verwende 0 für ein Spiel ohne Gewinner.'
 
 es-ES:
   category: Categoría
@@ -36,6 +38,7 @@ es-ES:
   trivia_stopping: La trivia se detendrá luego de esta pregunta.
   trivia_times_up: '¡Tiempo! La respuesta correcta era {0}.'
   trivia_win: '¡{0} adivinó y ganó el juego! La respuesta era: {1}'
+  trivia_win_req_too_low: 'El requisito para ganar debe ser al menos {0}. Usa 0 para un juego sin ganador.'
 
 fr-FR:
   category: Catégorie
@@ -49,6 +52,7 @@ fr-FR:
   trivia_stopping: La partie prendra fin après cette question.
   trivia_times_up: 'Fin du temps imparti ! La bonne réponse était {0}'
   trivia_win: '{0} a deviné et GAGNE le jeu ! La réponse était : {1}'
+  trivia_win_req_too_low: 'L''objectif de victoire doit être d''au moins {0}. Utilise 0 pour une partie sans gagnant.'
 
 id-ID:
   category: Kategori
@@ -62,6 +66,7 @@ id-ID:
   trivia_stopping: Berhenti setelah pertanyaan ini.
   trivia_times_up: 'Waktu habis! Jawaban yang benar adalah {0}'
   trivia_win: '{0} berhasil menebak dan MENANG! Jawabannya adalah: {1}'
+  trivia_win_req_too_low: 'Syarat menang minimal {0}. Pakai 0 untuk permainan tanpa pemenang.'
 
 ja-JP:
   category: カテゴリー
@@ -75,6 +80,7 @@ ja-JP:
   trivia_stopping: この質問のあと終了します。
   trivia_times_up: '時間切れです。正解は {0} でした。'
   trivia_win: '{0}のお答えのとおり！ そしてあなたの勝ちです！！  正解は {1} でした。'
+  trivia_win_req_too_low: '勝利条件は{0}以上にする必要があります。勝者なしのゲームにする場合は0を使用してください。'
 
 ko-KR:
   category: 카테고리
@@ -88,6 +94,7 @@ ko-KR:
   trivia_stopping: 이 문제가 끝나면 중지돼요.
   trivia_times_up: '시간 초과! 정답은 {0}이었어요'
   trivia_win: '{0}님이 맞히고 게임에서 우승했어요! 정답은: {1}'
+  trivia_win_req_too_low: '우승 조건은 최소 {0} 이상이어야 해요. 우승자가 없는 게임을 하려면 0을 사용하세요.'
 
 pl-PL:
   category: Kategoria
@@ -101,6 +108,7 @@ pl-PL:
   trivia_stopping: Zatrzymanie po tym pytaniu.
   trivia_times_up: 'Czas minął! Poprawna odpowiedź to {0}'
   trivia_win: '{0} odgadł/a i WYGRAŁ/A grę! Odpowiedź brzmiała: {1}'
+  trivia_win_req_too_low: 'Wymóg wygranej musi wynosić co najmniej {0}. Użyj 0, aby gra przebiegła bez zwycięzcy.'
 
 pt-BR:
   category: Categoria
@@ -114,6 +122,7 @@ pt-BR:
   trivia_stopping: Encerrando após essa pergunta.
   trivia_times_up: 'Tempo esgotado! A resposta era {0}'
   trivia_win: '{0} acertou e ganhou o jogo! A resposta era: {1}'
+  trivia_win_req_too_low: 'A exigência de vitória deve ser pelo menos {0}. Use 0 para um jogo sem vencedor.'
 
 ru-RU:
   category: Категория
@@ -127,6 +136,7 @@ ru-RU:
   trivia_stopping: Викторина закончится после этого вопроса.
   trivia_times_up: 'Время вышло! Правильный ответ был {0}'
   trivia_win: '{0} угадали и ВЫИГРАЛИ в игре! Ответ был: {1}'
+  trivia_win_req_too_low: 'Порог победы должен быть не меньше {0}. Укажи 0 для игры без победителя.'
 
 sr-Cyrl-RS:
   category: Категорија
@@ -140,6 +150,7 @@ sr-Cyrl-RS:
   trivia_stopping: Заустављам после овог питања.
   trivia_times_up: 'Време је истекло! Тачан одговор је био {0}'
   trivia_win: '{0} је погодио/ла и ПОБЕДИО/ЛА у игри! Одговор је био: {1}'
+  trivia_win_req_too_low: 'Потребан број поена за победу мора бити најмање {0}. Користи 0 за игру без победника.'
 
 tr-TR:
   category: Kategori
@@ -153,6 +164,7 @@ tr-TR:
   trivia_stopping: Bu sorudan sonra durduruluyor.
   trivia_times_up: 'Süre doldu! Doğru cevap {0} idi'
   trivia_win: '{0} bildi ve OYUNU KAZANDI! Cevap: {1}'
+  trivia_win_req_too_low: 'Kazanma şartı en az {0} olmalı. Kazananı olmayan bir oyun için 0 kullan.'
 
 ts-TS:
   category: Category
@@ -166,6 +178,7 @@ ts-TS:
   trivia_stopping: Stopping after this question.
   trivia_times_up: 'Time''s up! The answer was {0}. I knew it the whole time, obviously.'
   trivia_win: '{0} guessed it and WON the game! The answer was: {1}'
+  trivia_win_req_too_low: 'The win requirement has to be at least {0}. Use 0 if you don''t want a winner.'
 
 uk-UA:
   category: Категорія
@@ -179,6 +192,7 @@ uk-UA:
   trivia_stopping: Зупиниться після цього питання.
   trivia_times_up: 'Час вийшов! Правильна відповідь була {0}'
   trivia_win: '{0} вгадав і ВИГРАВ гру! Відповідь була: {1}'
+  trivia_win_req_too_low: 'Вимога для перемоги має бути щонайменше {0}. Використай 0 для гри без переможця.'
 
 vi-VN:
   category: Thể loại
@@ -192,6 +206,7 @@ vi-VN:
   trivia_stopping: Sẽ dừng sau câu hỏi này.
   trivia_times_up: 'Hết thời gian! Đáp án đúng là {0}'
   trivia_win: '{0} đã đoán đúng và THẮNG trò chơi! Đáp án là: {1}'
+  trivia_win_req_too_low: 'Điểm thắng tối thiểu phải ít nhất là {0}. Dùng 0 cho trò chơi không có người thắng cuộc.'
 
 zh-CN:
   category: 分類
@@ -205,3 +220,4 @@ zh-CN:
   trivia_stopping: 於此問題後遊戲結束
   trivia_times_up: '時間到!正確答案為 {0}'
   trivia_win: '{0} 猜對了並贏得了比賽！答案是：{1}'
+  trivia_win_req_too_low: '获胜所需分数至少为 {0}。若不想设置赢家，请填 0。'

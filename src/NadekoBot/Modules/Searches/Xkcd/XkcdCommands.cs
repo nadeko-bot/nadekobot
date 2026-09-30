@@ -1,97 +1,68 @@
-﻿#nullable disable
-using Newtonsoft.Json;
-
-namespace NadekoBot.Modules.Searches;
+﻿namespace NadekoBot.Modules.Searches;
 
 public partial class Searches
 {
     [Group]
-    public partial class XkcdCommands : NadekoModule
+    public partial class XkcdCommands(XkcdService svc) : NadekoModule
     {
-        private const string XKCD_URL = "https://xkcd.com";
-        private readonly IHttpClientFactory _httpFactory;
-
-        public XkcdCommands(IHttpClientFactory factory)
-            => _httpFactory = factory;
+        private static readonly TimeSpan _altDelay = TimeSpan.FromSeconds(10);
 
         [Cmd]
         [Priority(0)]
-        public async Task Xkcd(string arg = null)
+        public async Task Xkcd(string? arg = null)
         {
-            if (arg?.ToLowerInvariant().Trim() == "latest")
+            if (arg is null)
             {
-                try
-                {
-                    using var http = _httpFactory.CreateClient();
-                    var res = await http.GetStringAsync($"{XKCD_URL}/info.0.json");
-                    var comic = JsonConvert.DeserializeObject<XkcdComic>(res);
-                    var embed = CreateEmbed()
-                                   .WithOkColor()
-                                   .WithImageUrl(comic.ImageLink)
-                                   .WithAuthor(comic.Title, "https://xkcd.com/s/919f27.ico", $"{XKCD_URL}/{comic.Num}")
-                                   .AddField(GetText(strs.comic_number), comic.Num.ToString(), true)
-                                   .AddField(GetText(strs.date), $"{comic.Month}/{comic.Year}", true);
-                    var sent = await Response().Embed(embed).SendAsync();
-
-                    await Task.Delay(10000);
-
-                    await sent.ModifyAsync(m => m.Embed = embed.AddField("Alt", comic.Alt).Build());
-                }
-                catch (HttpRequestException)
-                {
-                    await Response().Error(strs.comic_not_found).SendAsync();
-                }
-
+                await SendComicAsync(await svc.GetRandomAsync());
                 return;
             }
 
-            await Xkcd(new NadekoRandom().Next(1, 1750));
+            if (!arg.AsSpan().Trim().Equals("latest", StringComparison.InvariantCultureIgnoreCase))
+            {
+                await Response().Error(strs.comic_not_found).SendAsync();
+                return;
+            }
+
+            await SendComicAsync(await svc.GetLatestAsync());
         }
 
         [Cmd]
         [Priority(1)]
         public async Task Xkcd(int num)
+            => await SendComicAsync(await svc.GetComicAsync(num));
+
+        private async Task SendComicAsync(XkcdComic? comic)
         {
-            if (num < 1)
-                return;
-            try
-            {
-                using var http = _httpFactory.CreateClient();
-                var res = await http.GetStringAsync($"{XKCD_URL}/{num}/info.0.json");
-
-                var comic = JsonConvert.DeserializeObject<XkcdComic>(res);
-                var embed = CreateEmbed()
-                               .WithOkColor()
-                               .WithImageUrl(comic.ImageLink)
-                               .WithAuthor(comic.Title, "https://xkcd.com/s/919f27.ico", $"{XKCD_URL}/{num}")
-                               .AddField(GetText(strs.comic_number), comic.Num.ToString(), true)
-                               .AddField(GetText(strs.date), $"{comic.Month}/{comic.Year}", true);
-
-                var sent = await Response().Embed(embed).SendAsync();
-
-                await Task.Delay(10000);
-
-                await sent.ModifyAsync(m => m.Embed = embed.AddField("Alt", comic.Alt).Build());
-            }
-            catch (HttpRequestException)
+            if (comic is null)
             {
                 await Response().Error(strs.comic_not_found).SendAsync();
+                return;
+            }
+
+            var embed = CreateEmbed()
+                .WithOkColor()
+                .WithImageUrl(comic.ImageLink)
+                .WithAuthor(comic.Title, "https://xkcd.com/s/919f27.ico", $"{XkcdService.XKCD_URL}/{comic.Num}")
+                .AddField(GetText(strs.comic_number), comic.Num.ToString(), true)
+                .AddField(GetText(strs.date),
+                    $"{comic.Year}-{comic.Month.PadLeft(2, '0')}-{comic.Day.PadLeft(2, '0')}",
+                    true);
+
+            var sent = await Response().Embed(embed).SendAsync();
+
+            if (string.IsNullOrWhiteSpace(comic.Alt))
+                return;
+
+            await Task.Delay(_altDelay);
+
+            try
+            {
+                await sent.ModifyAsync(m => m.Embed = embed.AddField("Alt", comic.Alt.TrimTo(EmbedFieldBuilder.MaxFieldValueLength)).Build());
+            }
+            catch (HttpException)
+            {
+                // the message was deleted or the bot lost access
             }
         }
-    }
-
-    public class XkcdComic
-    {
-        public int Num { get; set; }
-        public string Month { get; set; }
-        public string Year { get; set; }
-
-        [JsonProperty("safe_title")]
-        public string Title { get; set; }
-
-        [JsonProperty("img")]
-        public string ImageLink { get; set; }
-
-        public string Alt { get; set; }
     }
 }

@@ -72,19 +72,28 @@ public sealed class QuoteService : IQuoteService, INService
         return quotes.RandomOrDefault();
     }
 
-    public async Task<IReadOnlyCollection<Quote>> SearchQuotesAsync(ulong guildId, string query)
+    private static IQueryable<Quote> SearchQuery(NadekoContext uow, ulong guildId, string query)
+        => uow.GetTable<Quote>()
+              .Where(q => q.GuildId == guildId)
+              .Where(q => q.Keyword.Contains(query)
+                          || q.Text.Contains(query)
+                          || q.AuthorName.Contains(query));
+
+    public async Task<int> CountSearchQuotesAsync(ulong guildId, string query)
+    {
+        await using var uow = _db.GetDbContext();
+        return await SearchQuery(uow, guildId, query).CountAsyncLinqToDB();
+    }
+
+    public async Task<IReadOnlyCollection<Quote>> SearchQuotesAsync(ulong guildId, string query, int skip, int take)
     {
         await using var uow = _db.GetDbContext();
 
-        var quotes = await uow.GetTable<Quote>()
-                              .Where(q => q.GuildId == guildId)
-                              .Where(q => q.Keyword.Contains(query)
-                                          || q.Text.Contains(query)
-                                          || q.AuthorName.Contains(query))
-                              .OrderBy(q => q.Id)
-                              .ToListAsyncLinqToDB();
-
-        return quotes;
+        return await SearchQuery(uow, guildId, query)
+                     .OrderBy(q => q.Id)
+                     .Skip(skip)
+                     .Take(take)
+                     .ToListAsyncLinqToDB();
     }
 
     public async Task<IReadOnlyCollection<Quote>> GetGuildQuotesAsync(ulong guildId)
@@ -96,17 +105,15 @@ public sealed class QuoteService : IQuoteService, INService
         return quotes;
     }
 
-    public Task<int> RemoveAllByKeyword(ulong guildId, string keyword)
+    public async Task<int> RemoveAllByKeyword(ulong guildId, string keyword)
     {
         keyword = keyword.ToUpperInvariant();
 
-        using var uow = _db.GetDbContext();
+        await using var uow = _db.GetDbContext();
 
-        var count = uow.GetTable<Quote>()
-                       .Where(x => x.GuildId == guildId && x.Keyword == keyword)
-                       .DeleteAsync();
-
-        return count;
+        return await uow.GetTable<Quote>()
+                        .Where(x => x.GuildId == guildId && x.Keyword == keyword)
+                        .DeleteAsync();
     }
 
     public async Task<Quote?> GetQuoteByIdAsync(ulong guildId, int quoteId)
@@ -181,9 +188,6 @@ public sealed class QuoteService : IQuoteService, INService
         int quoteId)
     {
         await using var uow = _db.GetDbContext();
-        var q = uow.Set<Quote>().GetById(quoteId);
-
-
         var count = await uow.GetTable<Quote>()
                              .Where(x => x.GuildId == guildId && x.Id == quoteId)
                              .Where(x => isQuoteManager || (x.AuthorId == authorId))
@@ -195,10 +199,10 @@ public sealed class QuoteService : IQuoteService, INService
 
     public async Task<bool> ImportQuotesAsync(ulong guildId, string input)
     {
-        Dictionary<string?, List<ExportedQuote?>> data;
+        Dictionary<string?, List<ExportedQuote?>?>? data;
         try
         {
-            data = Yaml.Deserializer.Deserialize<Dictionary<string?, List<ExportedQuote?>>>(input);
+            data = Yaml.Deserializer.Deserialize<Dictionary<string?, List<ExportedQuote?>?>?>(input);
         }
         catch (Exception ex)
         {
@@ -206,8 +210,12 @@ public sealed class QuoteService : IQuoteService, INService
             return false;
         }
 
+        if (data is null)
+            return false;
 
-        var toImport = data.SelectMany(x => x.Value.Select(v => (Key: x.Key, Value: v)))
+        // a hand-edited keyword with no entries deserializes to a null list
+        var toImport = data.Where(x => x.Value is not null)
+                           .SelectMany(x => x.Value!.Select(v => (Key: x.Key, Value: v)))
                            .Where(x => !string.IsNullOrWhiteSpace(x.Key) && !string.IsNullOrWhiteSpace(x.Value?.Txt));
 
         await using var uow = _db.GetDbContext();
@@ -216,10 +224,10 @@ public sealed class QuoteService : IQuoteService, INService
                      .Select(q => new Quote
                      {
                          GuildId = guildId,
-                         Keyword = q.Key,
+                         Keyword = q.Key.ToUpperInvariant(),
                          Text = q.Value.Txt,
                          AuthorId = q.Value.Aid,
-                         AuthorName = q.Value.An
+                         AuthorName = q.Value.An ?? string.Empty
                      }));
 
         return true;

@@ -39,9 +39,12 @@ public partial class Games
             if (opts.WinRequirement != 0
                 && config.Trivia.MinimumWinReq > 0
                 && config.Trivia.MinimumWinReq > opts.WinRequirement)
+            {
+                await Response().Error(strs.trivia_win_req_too_low(config.Trivia.MinimumWinReq)).SendAsync();
                 return;
+            }
 
-            var trivia = new TriviaGame(opts, _cache);
+            var trivia = new TriviaGame(opts, _cache, ctx.Channel.Id);
             if (_service.RunningTrivias.TryAdd(ctx.Guild.Id, trivia))
             {
                 RegisterEvents(trivia);

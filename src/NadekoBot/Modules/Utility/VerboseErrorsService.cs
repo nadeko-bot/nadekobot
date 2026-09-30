@@ -60,18 +60,13 @@ public class VerboseErrorsService : IReadyExecutor, INService
     public async Task<bool> ToggleVerboseErrors(ulong guildId, bool? maybeEnabled = null)
     {
         await using var ctx = _db.GetDbContext();
-        
-        var current = await ctx.GetTable<GuildConfig>()
-            .Where(x => x.GuildId == guildId)
-            .Select(x => x.VerboseErrors)
-            .FirstOrDefaultAsync();
-            
-        var newState = maybeEnabled ?? !current;
-        
-        await ctx.GetTable<GuildConfig>()
-            .Where(x => x.GuildId == guildId)
-            .Set(x => x.VerboseErrors, newState)
-            .UpdateAsync();
+        await ctx.EnsureGuildConfigAsync(guildId);
+
+        var newState = (await ctx.GetTable<GuildConfig>()
+                .Where(x => x.GuildId == guildId)
+                .Set(x => x.VerboseErrors, x => maybeEnabled ?? !x.VerboseErrors)
+                .UpdateWithOutputAsync((_, inserted) => inserted.VerboseErrors))
+            .FirstOrDefault();
             
         if (newState)
         {

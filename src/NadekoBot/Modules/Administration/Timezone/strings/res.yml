@@ -1,5 +1,3 @@
 timezone_guild: Timezone for this guild is `{0}`
-timezone_not_found: >-
-  Timezone not found. Use "timezones" command to see the list of available
-  timezones.
+timezone_not_found: Timezone not found. Use "timezones" command to see the list of available timezones.
 timezones_available: Available Timezones

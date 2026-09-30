@@ -7,6 +7,8 @@ acro_started_footer: You have {0} seconds to make a submission.
 acro_vote: Vote by typing a number of the submission
 acro_vote_cast: '{0} cast their vote!'
 acro_winner: Winner is {0} with {1} points.
+acro_winners: Winners
+acro_winners_tie: It's a tie. Each winner has {0} points.
 acro_winner_only: '{0} is the winner for being the only user who made a submission!'
 acrophobia: Acrophobia
 submissions_closed: Submissions closed

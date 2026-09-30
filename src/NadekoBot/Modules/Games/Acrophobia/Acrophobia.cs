@@ -39,6 +39,7 @@ public sealed class AcrophobiaGame : IDisposable
     public Options Opts { get; }
 
     private readonly Dictionary<AcrophobiaUser, int> _submissions = new();
+    private readonly List<AcrophobiaUser> _order = [];
     private readonly SemaphoreSlim _locker = new(1, 1);
     private readonly NadekoRandom _rng;
 
@@ -68,13 +69,13 @@ public sealed class AcrophobiaGame : IDisposable
             if (_submissions.Count == 1)
             {
                 CurrentPhase = Phase.Ended;
-                await OnVotingStarted(this, _submissions.ToArray().ToImmutableArray());
+                await OnVotingStarted(this, SnapshotInternal());
                 return;
             }
 
             CurrentPhase = Phase.Voting;
 
-            await OnVotingStarted(this, _submissions.ToArray().ToImmutableArray());
+            await OnVotingStarted(this, SnapshotInternal());
         }
         finally { _locker.Release(); }
 
@@ -83,9 +84,41 @@ public sealed class AcrophobiaGame : IDisposable
         try
         {
             CurrentPhase = Phase.Ended;
-            await OnEnded(this, _submissions.ToArray().ToImmutableArray());
+            await OnEnded(this, SnapshotInternal());
         }
         finally { _locker.Release(); }
+    }
+
+    private ImmutableArray<KeyValuePair<AcrophobiaUser, int>> SnapshotInternal()
+    {
+        var builder = ImmutableArray.CreateBuilder<KeyValuePair<AcrophobiaUser, int>>(_order.Count);
+        foreach (var user in _order)
+            builder.Add(new(user, _submissions[user]));
+
+        return builder.MoveToImmutable();
+    }
+
+    public static ImmutableArray<KeyValuePair<AcrophobiaUser, int>> GetWinners(
+        ImmutableArray<KeyValuePair<AcrophobiaUser, int>> votes)
+    {
+        var max = 0;
+        foreach (var vote in votes)
+        {
+            if (vote.Value > max)
+                max = vote.Value;
+        }
+
+        if (max == 0)
+            return [];
+
+        var builder = ImmutableArray.CreateBuilder<KeyValuePair<AcrophobiaUser, int>>();
+        foreach (var vote in votes)
+        {
+            if (vote.Value == max)
+                builder.Add(vote);
+        }
+
+        return builder.ToImmutable();
     }
 
     private void InitializeStartingLetters()
@@ -117,13 +150,14 @@ public sealed class AcrophobiaGame : IDisposable
                         break;
 
                     _submissions.Add(user, 0);
+                    _order.Add(user);
                     return true;
                 case Phase.Voting:
                     AcrophobiaUser toVoteFor;
                     if (!int.TryParse(input, out var index)
                         || --index < 0
-                        || index >= _submissions.Count
-                        || (toVoteFor = _submissions.ToArray()[index].Key).UserId == user.UserId
+                        || index >= _order.Count
+                        || (toVoteFor = _order[index]).UserId == user.UserId
                         || !_usersWhoVoted.Add(userId))
                         break;
                     ++_submissions[toVoteFor];
@@ -170,6 +204,7 @@ public sealed class AcrophobiaGame : IDisposable
         OnVotingStarted = null;
         _usersWhoVoted.Clear();
         _submissions.Clear();
+        _order.Clear();
         _locker.Dispose();
     }
 
@@ -185,7 +220,7 @@ public sealed class AcrophobiaGame : IDisposable
         [Option('v',
             "vote-time",
             Required = false,
-            Default = 60,
+            Default = 30,
             HelpText = "Time after which the voting is closed and the winner is declared.")]
         public int VoteTime { get; set; } = 30;
 

@@ -1,4 +1,5 @@
 convert: '{0} {1} is equal to {2} {3}'
 convert_not_found: 'Cannot convert {0} to {1}: units not found'
+convert_overflow: The number is too large to convert.
 convert_type_error: 'Cannot convert {0} to {1}: types of unit are not equal'
 convertlist: Units which can be used by the converter

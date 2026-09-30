@@ -11,6 +11,8 @@ ar:
   todo_no_todos: لا توجد مهام في قائمتك.
   todo_not_found: المهمة غير موجودة.
   todo_stats: '{0} عنصر | {1} مكتمل | {2} متبقٍ'
+  todo_too_long: 'المهمة طويلة جدا. استخدم {0} حرفا كحد أقصى.'
+  todo_archive_name_too_long: 'اسم الأرشيف طويل جدا. استخدم {0} حرفا كحد أقصى.'
 
 de-DE:
   todo_add_max_limit: Du hast die maximale Anzahl an Aufgaben erreicht.
@@ -25,6 +27,8 @@ de-DE:
   todo_no_todos: Es gibt keine Aufgaben in deiner Liste.
   todo_not_found: Aufgabe nicht gefunden.
   todo_stats: '{0} Einträge | {1} erledigt | {2} übrig'
+  todo_too_long: 'Die Aufgabe ist zu lang. Verwende höchstens {0} Zeichen.'
+  todo_archive_name_too_long: 'Der Archivname ist zu lang. Verwende höchstens {0} Zeichen.'
 
 es-ES:
   todo_add_max_limit: Has alcanzado la cantidad máxima de tareas que puedes tener.
@@ -39,6 +43,8 @@ es-ES:
   todo_no_todos: No hay tareas en tu lista.
   todo_not_found: Tarea no encontrada.
   todo_stats: '{0} elementos | {1} completados | {2} restantes'
+  todo_too_long: 'La tarea es demasiado larga. Usa como máximo {0} caracteres.'
+  todo_archive_name_too_long: 'El nombre de la lista archivada es demasiado largo. Usa como máximo {0} caracteres.'
 
 fr-FR:
   todo_add_max_limit: Vous avez atteint le nombre maximum de tâches que vous pouvez avoir.
@@ -53,6 +59,8 @@ fr-FR:
   todo_no_todos: Il n'y a pas de tâches dans votre liste.
   todo_not_found: Tâche non trouvée.
   todo_stats: '{0} éléments | {1} complétés | {2} restants'
+  todo_too_long: 'La tâche est trop longue. Utilisez au maximum {0} caractères.'
+  todo_archive_name_too_long: 'Le nom de l''archive est trop long. Utilisez au maximum {0} caractères.'
 
 id-ID:
   todo_add_max_limit: Kamu sudah mencapai batas maksimal jumlah todo yang bisa dimiliki.
@@ -67,6 +75,8 @@ id-ID:
   todo_no_todos: Tidak ada todo di daftar todo kamu.
   todo_not_found: Todo tidak ditemukan.
   todo_stats: '{0} item | {1} selesai | {2} tersisa'
+  todo_too_long: 'Todo terlalu panjang. Gunakan paling banyak {0} karakter.'
+  todo_archive_name_too_long: 'Nama arsip terlalu panjang. Gunakan paling banyak {0} karakter.'
 
 ja-JP:
   todo_add_max_limit: タスクの最大数に達しました。
@@ -81,6 +91,8 @@ ja-JP:
   todo_no_todos: タスクリストにタスクはありません。
   todo_not_found: タスクが見つかりません。
   todo_stats: '{0}件 | {1}完了 | {2}残り'
+  todo_too_long: 'タスクが長すぎます。{0} 文字以内にしてください。'
+  todo_archive_name_too_long: 'アーカイブ名が長すぎます。{0} 文字以内にしてください。'
 
 ko-KR:
   todo_add_max_limit: 추가할 수 있는 할 일의 최대 개수에 도달했어요.
@@ -95,6 +107,8 @@ ko-KR:
   todo_no_todos: 할 일 목록에 항목이 없어요.
   todo_not_found: 할 일을 찾을 수 없어요.
   todo_stats: '{0}개 항목 | {1}개 완료 | {2}개 남음'
+  todo_too_long: '할 일이 너무 길어요. 최대 {0}자까지 쓸 수 있어요.'
+  todo_archive_name_too_long: '보관 이름이 너무 길어요. 최대 {0}자까지 쓸 수 있어요.'
 
 pl-PL:
   todo_add_max_limit: Osiągnąłeś maksymalną liczbę zadań.
@@ -109,6 +123,8 @@ pl-PL:
   todo_no_todos: Nie masz żadnych zadań na liście.
   todo_not_found: Nie znaleziono zadania.
   todo_stats: '{0} elementów | {1} ukończonych | {2} pozostałych'
+  todo_too_long: 'Zadanie jest zbyt długie. Użyj maksymalnie {0} znaków.'
+  todo_archive_name_too_long: 'Nazwa archiwum jest zbyt długa. Użyj maksymalnie {0} znaków.'
 
 pt-BR:
   todo_add_max_limit: Você atingiu o número máximo de tarefas que pode ter.
@@ -123,6 +139,8 @@ pt-BR:
   todo_no_todos: Não há tarefas na sua lista.
   todo_not_found: Tarefa não encontrada.
   todo_stats: '{0} itens | {1} concluídos | {2} restantes'
+  todo_too_long: 'A tarefa é muito longa. Use no máximo {0} caracteres.'
+  todo_archive_name_too_long: 'O nome da lista arquivada é muito longo. Use no máximo {0} caracteres.'
 
 ru-RU:
   todo_add_max_limit: Вы достигли максимального количества задач.
@@ -137,6 +155,8 @@ ru-RU:
   todo_no_todos: В вашем списке нет задач.
   todo_not_found: Задача не найдена.
   todo_stats: '{0} элементов | {1} выполнено | {2} осталось'
+  todo_too_long: 'Задача слишком длинная. Используй не больше {0} символов.'
+  todo_archive_name_too_long: 'Название архива слишком длинное. Используй не больше {0} символов.'
 
 sr-Cyrl-RS:
   todo_add_max_limit: Достигли сте максималан број задатака које можете имати.
@@ -151,6 +171,8 @@ sr-Cyrl-RS:
   todo_no_todos: Нема задатака на вашој листи.
   todo_not_found: Задатак није пронађен.
   todo_stats: '{0} ставки | {1} завршено | {2} преостало'
+  todo_too_long: 'Задатак је предугачак. Користи највише {0} знакова.'
+  todo_archive_name_too_long: 'Назив архиве је предугачак. Користи највише {0} знакова.'
 
 tr-TR:
   todo_add_max_limit: Sahip olabileceğin maksimum yapılacaklar sayısına ulaştın.
@@ -165,6 +187,8 @@ tr-TR:
   todo_no_todos: Yapılacaklar listende hiç madde yok.
   todo_not_found: Yapılacak bulunamadı.
   todo_stats: '{0} madde | {1} tamamlandı | {2} kalan'
+  todo_too_long: 'Yapılacak iş çok uzun. En fazla {0} karakter kullan.'
+  todo_archive_name_too_long: 'Arşiv adı çok uzun. En fazla {0} karakter kullan.'
 
 ts-TS:
   todo_add_max_limit: You've reached the maximum number of todos. Hmph.
@@ -179,6 +203,8 @@ ts-TS:
   todo_no_todos: There's nothing in your todo list, b-baka!
   todo_not_found: Todo not found.
   todo_stats: '{0} items | {1} completed | {2} remaining'
+  todo_too_long: 'That''s too long for a todo. Use {0} characters or fewer.'
+  todo_archive_name_too_long: 'Hmph. That archive name is too long. {0} characters is the limit.'
 
 uk-UA:
   todo_add_max_limit: Ти досяг(-ла) максимальної кількості завдань.
@@ -193,6 +219,8 @@ uk-UA:
   todo_no_todos: У твоєму списку завдань нічого немає.
   todo_not_found: Завдання не знайдено.
   todo_stats: '{0} елементів | {1} виконано | {2} залишилось'
+  todo_too_long: 'Завдання задовге. Використай щонайбільше {0} символів.'
+  todo_archive_name_too_long: 'Назва архіву задовга. Використай щонайбільше {0} символів.'
 
 vi-VN:
   todo_add_max_limit: Bạn đã đạt số lượng tối đa các mục todo có thể có.
@@ -207,6 +235,8 @@ vi-VN:
   todo_no_todos: Không có mục todo nào trong danh sách của bạn.
   todo_not_found: Không tìm thấy todo.
   todo_stats: '{0} mục | {1} hoàn thành | {2} còn lại'
+  todo_too_long: 'Việc cần làm quá dài. Chỉ dùng tối đa {0} ký tự.'
+  todo_archive_name_too_long: 'Tên lưu trữ quá dài. Chỉ dùng tối đa {0} ký tự.'
 
 zh-CN:
   todo_add_max_limit: 你已達到可擁有的最大待辦事項數量。
@@ -221,3 +251,5 @@ zh-CN:
   todo_no_todos: 你的待辦事項列表中沒有任何事項。
   todo_not_found: 找不到待辦事項。
   todo_stats: '{0} 項 | {1} 已完成 | {2} 剩餘'
+  todo_too_long: '待办事项太长了。最多使用 {0} 个字符。'
+  todo_archive_name_too_long: '封存名称太长了。最多使用 {0} 个字符。'

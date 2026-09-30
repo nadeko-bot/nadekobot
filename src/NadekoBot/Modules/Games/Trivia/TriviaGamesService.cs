@@ -31,7 +31,7 @@ public sealed class TriviaGamesService : IReadyExecutor, INService
         if (umsg?.Channel is not IGuildChannel gc)
             return;
 
-        if (RunningTrivias.TryGetValue(gc.GuildId, out var tg))
+        if (RunningTrivias.TryGetValue(gc.GuildId, out var tg) && tg.ChannelId == gc.Id)
             await tg.InputAsync(new(umsg.Author.Mention, umsg.Author.Id), umsg.Content);
     }
 }

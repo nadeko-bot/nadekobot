@@ -2,6 +2,7 @@
 using NadekoBot.Modules.Games.Common.Acrophobia;
 using NadekoBot.Modules.Games.Services;
 using System.Collections.Immutable;
+using System.Text;
 
 namespace NadekoBot.Modules.Games;
 
@@ -17,6 +18,7 @@ public partial class Games
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
+        [BotPerm(ChannelPerm.ManageMessages)]
         [NadekoOptions<AcrophobiaGame.Options>]
         public async Task Acrophobia(params string[] args)
         {
@@ -47,7 +49,7 @@ public partial class Games
 
             Task ClientMessageReceived(SocketMessage msg)
             {
-                if (msg.Channel.Id != ctx.Channel.Id)
+                if (msg.Author.IsBot || msg.Channel.Id != ctx.Channel.Id)
                     return Task.CompletedTask;
 
                 _ = Task.Run(async () =>
@@ -119,14 +121,30 @@ public partial class Games
 
         private async Task Game_OnEnded(AcrophobiaGame game, ImmutableArray<KeyValuePair<AcrophobiaUser, int>> votes)
         {
-            if (!votes.Any() || votes.All(x => x.Value == 0))
+            var winners = AcrophobiaGame.GetWinners(votes);
+            if (winners.Length == 0)
             {
                 await Response().Error(GetText(strs.acrophobia), GetText(strs.acro_no_votes_cast)).SendAsync();
                 return;
             }
 
-            var table = votes.OrderByDescending(v => v.Value);
-            var winner = table.First();
+            if (winners.Length > 1)
+            {
+                var sb = new StringBuilder();
+                foreach (var w in winners)
+                    sb.Append("**").Append(w.Key.UserName).Append("**: ").Append(w.Key.Input).Append('\n');
+
+                await Response()
+                      .Embed(CreateEmbed()
+                             .WithOkColor()
+                             .WithTitle(GetText(strs.acrophobia))
+                             .WithDescription(GetText(strs.acro_winners_tie(Format.Bold(winners[0].Value.ToString()))))
+                             .AddField(GetText(strs.acro_winners), sb.ToString().TrimTo(EmbedFieldBuilder.MaxFieldValueLength)))
+                      .SendAsync();
+                return;
+            }
+
+            var winner = winners[0];
             var embed = CreateEmbed()
                            .WithOkColor()
                            .WithTitle(GetText(strs.acrophobia))

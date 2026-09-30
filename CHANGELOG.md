@@ -2,6 +2,41 @@
 
 *a,c,f,r,o,d*
 
+## [7.4.2] - TBD
+
+### Changed
+
+- `.alias` / `.cmdmap` allows up to 50 aliases per server.
+
+### Fixed
+
+- Quote commands work more reliably.
+    - `.quotesdeleteall` / `.qdall` always deletes and shows an error when no quote matches
+    - `.quotesimport` / `.qim` accepts lowercase keywords, quotes without an author name and empty keywords
+- `.todo list` / `.todo ls` and `.todo archive list` / `.todo archive ls` now show lists with long entries.
+    - `.todo add` / `.todo a` and `.todo edit` / `.todo change` accept up to 400 characters
+    - archive names accept up to 100 characters
+    - todos show in the order you added them
+- `.trivia` / `.t` now takes answers only from the channel of the game.
+    - `.tl` shows the players sorted by points
+    - shows an error when the win requirement is below the minimum
+- `.alias` / `.cmdmap` now picks the longest matching trigger when triggers overlap.
+    - new aliases match in any letter case
+- `.acrophobia` / `.acro` now names every winner when votes are tied.
+    - bots can no longer submit or vote
+    - voting lasts 30 seconds by default, as documented
+- `.convert` now converts length, weight, temperature and other fixed units when currency rates are not available.
+    - shows an error when the number is too large
+- `.timezone` accepts a timezone id in any letter case or a city name.
+- `.timezones` shows every page of the list.
+- `.linkonlychannel` / `.linkonly` and `.imageonlychannel` / `.imageonly` turn off when the bot can not delete messages or stop users.
+    - the bot no longer stops deleting messages after one delete error
+    - the commands check for Manage Channels, Manage Messages and Manage Permissions
+- `.xkcd` now picks a random comic from all comics.
+    - shows an error for text other than `latest`
+    - shows the full date of the comic
+- `.muterole` / `.setmuterole`, `.streamoffline` / `.sto`, `.streamonlinedelete` / `.stondel` and `.verboseerror` / `.ve` now save on new servers.
+
 ## [7.4.1] - 30.09.2026
 
 ### Changed

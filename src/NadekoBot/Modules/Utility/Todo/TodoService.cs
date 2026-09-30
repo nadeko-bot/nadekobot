@@ -9,6 +9,10 @@ public sealed class TodoService : INService
     private const int ARCHIVE_MAX_COUNT = 18;
     private const int TODO_MAX_COUNT = 36;
 
+    // a list page holds 9 todos in one embed description, which Discord caps at 4096 characters
+    public const int MAX_TODO_LENGTH = 400;
+    public const int MAX_ARCHIVE_NAME_LENGTH = 100;
+
     private readonly DbService _db;
 
     public TodoService(DbService db)
@@ -60,6 +64,7 @@ public sealed class TodoService : INService
         return await ctx
                      .GetTable<TodoModel>()
                      .Where(x => x.UserId == userId && x.ArchiveId == null)
+                     .OrderBy(x => x.Id)
                      .ToArrayAsyncLinqToDB();
     }
 
@@ -169,6 +174,7 @@ public sealed class TodoService : INService
         return await ctx
                      .GetTable<ArchivedTodoListModel>()
                      .Where(x => x.UserId == userId)
+                     .OrderBy(x => x.Id)
                      .ToArrayAsyncLinqToDB();
     }
 
@@ -179,7 +185,7 @@ public sealed class TodoService : INService
         return await ctx
                      .GetTable<ArchivedTodoListModel>()
                      .Where(x => x.UserId == userId && x.Id == archiveId)
-                     .LoadWith(x => x.Items)
+                     .LoadWith(x => x.Items, static items => items.OrderBy(i => i.Id))
                      .FirstOrDefaultAsyncLinqToDB();
     }
 

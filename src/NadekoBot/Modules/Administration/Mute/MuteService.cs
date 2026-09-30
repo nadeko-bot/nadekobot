@@ -140,22 +140,12 @@ public sealed class MuteService : INService, IReadyExecutor
     public async Task SetMuteRoleAsync(ulong guildId, ulong roleId)
     {
         await using var uow = _db.GetDbContext();
+        await uow.EnsureGuildConfigAsync(guildId);
         await uow.GetTable<GuildConfig>()
-            .InsertOrUpdateAsync(() => new()
-                {
-                    GuildId = guildId,
-                    MuteRoleId = roleId,
-                    MuteRoleName = null
-                },
-                _ => new()
-                {
-                    MuteRoleId = roleId,
-                    MuteRoleName = null
-                },
-                () => new()
-                {
-                    GuildId = guildId
-                });
+            .Where(x => x.GuildId == guildId)
+            .Set(x => x.MuteRoleId, roleId)
+            .Set(x => x.MuteRoleName, (string?)null)
+            .UpdateAsync();
 
         _guildMuteRoles[guildId] = roleId;
         _legacyMuteRoleNames.TryRemove(guildId, out _);

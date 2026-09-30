@@ -8,6 +8,8 @@ ar:
   acro_vote: صوّت بكتابة رقم المشاركة
   acro_vote_cast: '{0} أدلى بصوته!'
   acro_winner: 'الفائز هو {0} بـ {1} نقطة.'
+  acro_winners: الفائزون
+  acro_winners_tie: 'تعادل. كل فائز لديه {0} نقطة.'
   acro_winner_only: '{0} هو الفائز لكونه المشارك الوحيد!'
   acrophobia: Acrophobia
   submissions_closed: تم إغلاق المشاركات
@@ -22,6 +24,8 @@ de-DE:
   acro_vote: Stimme durchs Schreiben einer Nummer der Vorlage ab
   acro_vote_cast: '{0} hat seine Stimme abgegeben!'
   acro_winner: '{0} ist Gewinner mit {1} Punkten.'
+  acro_winners: Gewinner
+  acro_winners_tie: 'Unentschieden. Jeder Gewinner hat {0} Punkte.'
   acro_winner_only: '{0} ist Gewinner, da nur eine Einreichung abgegeben wurde!'
   acrophobia: Akrophobie
   submissions_closed: Einreichungen geschlossen
@@ -36,6 +40,8 @@ es-ES:
   acro_vote: Vota escribiendo el número de la entrega.
   acro_vote_cast: '¡{0} ha enviado su voto!'
   acro_winner: 'El ganador es {0} con {1} puntos.'
+  acro_winners: Ganadores
+  acro_winners_tie: 'Es un empate. Cada ganador tiene {0} puntos.'
   acro_winner_only: '¡{0} es el ganador por ser el único usuario que envió una oración!'
   acrophobia: Acrofobia
   submissions_closed: Entregas cerradas
@@ -50,6 +56,8 @@ fr-FR:
   acro_vote: Votez en tapant le numéro de la soumission
   acro_vote_cast: '{0} a voté!'
   acro_winner: 'Le gagnant est {0} avec {1} points.'
+  acro_winners: Gagnants
+  acro_winners_tie: 'Égalité. Chaque gagnant a {0} points.'
   acro_winner_only: '{0} est le gagnant car il est le seul à avoir participé!'
   acrophobia: Acrophobie
   submissions_closed: Soumissions fermées
@@ -64,6 +72,8 @@ id-ID:
   acro_vote: Voting dengan mengetik nomor kiriman
   acro_vote_cast: '{0} sudah memberikan suaranya!'
   acro_winner: 'Pemenangnya adalah {0} dengan {1} poin.'
+  acro_winners: Pemenang
+  acro_winners_tie: 'Seri. Setiap pemenang mendapat {0} poin.'
   acro_winner_only: '{0} adalah pemenang karena satu-satunya yang mengirim jawaban!'
   acrophobia: Acrophobia
   submissions_closed: Pengiriman jawaban ditutup
@@ -78,6 +88,8 @@ ja-JP:
   acro_vote: 回答の番号を入力して投票してください
   acro_vote_cast: '{0}が投票をしました！'
   acro_winner: '勝者は{1}点の{0}です。'
+  acro_winners: 勝者
+  acro_winners_tie: '同点です。それぞれの勝者は{0}点です。'
   acro_winner_only: '{0}しか回答を提出しなかったので勝者は{0}です！'
   acrophobia: あいうえお作文ゲーム
   submissions_closed: 回答の受付が終了しました
@@ -92,6 +104,8 @@ ko-KR:
   acro_vote: 제출물 번호를 입력해서 투표하세요
   acro_vote_cast: '{0}이(가) 투표했어요!'
   acro_winner: '{0}이(가) {1}점으로 우승했어요.'
+  acro_winners: 우승자
+  acro_winners_tie: '동점이에요. 우승자 모두 {0}점이에요.'
   acro_winner_only: '{0}이(가) 유일한 참가자로 우승했어요!'
   acrophobia: 아크로포비아
   submissions_closed: 제출이 마감되었어요
@@ -106,6 +120,8 @@ pl-PL:
   acro_vote: Głosuj wpisując numer zgłoszenia
   acro_vote_cast: '{0} oddał głos!'
   acro_winner: 'Zwycięzcą jest {0} z {1} punktami.'
+  acro_winners: Zwycięzcy
+  acro_winners_tie: 'Remis. Każdy zwycięzca ma {0} punktów.'
   acro_winner_only: '{0} jest zwycięzcą, bo był jedyną osobą, która coś zgłosiła!'
   acrophobia: Akrofobia
   submissions_closed: Zgłoszenia zamknięte
@@ -120,6 +136,8 @@ pt-BR:
   acro_vote: Vote digitando o número correspondente à submissão
   acro_vote_cast: '{0} votou!'
   acro_winner: 'O vencedor é {0} com {1} pontos.'
+  acro_winners: Vencedores
+  acro_winners_tie: 'É um empate. Cada vencedor tem {0} pontos.'
   acro_winner_only: '{0} venceu por ser o único a fazer uma submissão!'
   acrophobia: Acrophobia
   submissions_closed: Submissões encerradas
@@ -134,6 +152,8 @@ ru-RU:
   acro_vote: Проголосовать можно просто написав номер ответа в чат
   acro_vote_cast: '{0} отдал свой голос!'
   acro_winner: 'Победитель {0} с {1} баллами.'
+  acro_winners: Победители
+  acro_winners_tie: 'Ничья. У каждого победителя по {0} баллов.'
   acro_winner_only: 'Победителем стал {0} - он всего один, кто дал ответ.'
   acrophobia: Акрофобия
   submissions_closed: Приём ответов был окончен.
@@ -148,6 +168,8 @@ sr-Cyrl-RS:
   acro_vote: Гласај уписивањем броја поднеска
   acro_vote_cast: '{0} је гласао/ла!'
   acro_winner: 'Победник је {0} са {1} поена.'
+  acro_winners: Победници
+  acro_winners_tie: 'Нерешено је. Сваки победник има {0} поена.'
   acro_winner_only: '{0} је победник јер је једини корисник који је послао одговор!'
   acrophobia: Акрофобија
   submissions_closed: Поднесци затворени
@@ -162,6 +184,8 @@ tr-TR:
   acro_vote: Gönderimin numarasını yazarak oy ver
   acro_vote_cast: '{0} oyunu kullandı!'
   acro_winner: 'Kazanan {1} puanla {0}!'
+  acro_winners: Kazananlar
+  acro_winners_tie: 'Berabere! Her kazananın {0} puanı var.'
   acro_winner_only: '{0} tek gönderim yapan kişi olduğu için kazanan!'
   acrophobia: Acrophobia
   submissions_closed: Gönderimler kapandı
@@ -176,6 +200,8 @@ ts-TS:
   acro_vote: Vote by typing the number of the submission.
   acro_vote_cast: '{0} cast their vote!'
   acro_winner: 'Winner is {0} with {1} points.'
+  acro_winners: Winners
+  acro_winners_tie: 'A tie? Hmph. Each winner has {0} points.'
   acro_winner_only: '{0} wins for being the only one who submitted!'
   acrophobia: Acrophobia
   submissions_closed: Submissions closed.
@@ -190,6 +216,8 @@ uk-UA:
   acro_vote: Голосуй, набравши номер відповіді
   acro_vote_cast: '{0} проголосував!'
   acro_winner: 'Переможець - {0} з {1} очками.'
+  acro_winners: Переможці
+  acro_winners_tie: 'Нічия. Кожен переможець має {0} очок.'
   acro_winner_only: '{0} переміг як єдиний, хто дав відповідь!'
   acrophobia: Акрофобія
   submissions_closed: Приймання відповідей закрито
@@ -204,6 +232,8 @@ vi-VN:
   acro_vote: Bình chọn bằng cách nhập số thứ tự của bài dự thi
   acro_vote_cast: '{0} đã bình chọn!'
   acro_winner: 'Người thắng là {0} với {1} điểm.'
+  acro_winners: Những người thắng
+  acro_winners_tie: 'Hòa nhau. Mỗi người thắng được {0} điểm.'
   acro_winner_only: '{0} là người thắng vì là người duy nhất gửi bài!'
   acrophobia: Acrophobia
   submissions_closed: Đã đóng gửi bài
@@ -218,6 +248,8 @@ zh-CN:
   acro_vote: 在此頻道傳送投稿編號以投票
   acro_vote_cast: '{0} 已投票'
   acro_winner: '{0}以{1}分勝出'
+  acro_winners: 获胜者
+  acro_winners_tie: '平局。每位获胜者都获得{0}分。'
   acro_winner_only: '{0}因為沒有對手而勝利'
   acrophobia: 懼高症遊戲
   submissions_closed: 投稿截止

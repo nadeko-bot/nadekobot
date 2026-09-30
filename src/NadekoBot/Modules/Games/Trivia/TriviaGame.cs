@@ -41,9 +41,12 @@ public sealed class TriviaGame
             SingleWriter = false,
         });
 
-    public TriviaGame(TriviaOptions options, ILocalDataCache cache)
+    public ulong ChannelId { get; }
+
+    public TriviaGame(TriviaOptions options, ILocalDataCache cache, ulong channelId)
     {
         _opts = options;
+        ChannelId = channelId;
 
         _questionPool = _opts.IsPokemon
             ? new PokemonQuestionPool(cache)
@@ -203,7 +206,11 @@ public sealed class TriviaGame
     }
 
     public IReadOnlyList<(ulong User, int points)> GetLeaderboard()
-        => _users.Select(x => (x.Key, x.Value)).ToArray();
+    {
+        var entries = _users.Select(x => (x.Key, x.Value)).ToArray();
+        Array.Sort(entries, static (a, b) => b.Value.CompareTo(a.Value));
+        return entries;
+    }
 
     public ValueTask InputAsync(TriviaUser user, string input)
         => _inputs.Writer.WriteAsync((user, input));
