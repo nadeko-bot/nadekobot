@@ -21,6 +21,8 @@
     - `.scheduleadd` / `.scha` keeps schedules longer than 49 days and warns when the time is under 1 minute
 - An old timed ban no longer unbans a user who was banned again permanently.
 - `.remindlist` / `.remindl`, `.schedulelist` / `.schl` and patron end dates now show the correct time on hosts outside UTC.
+- `.autoassignrole` / `.aar` now gives roles to new members when many members join at once.
+    - shows an error when the server already has 3 roles
 
 ### Dev
 

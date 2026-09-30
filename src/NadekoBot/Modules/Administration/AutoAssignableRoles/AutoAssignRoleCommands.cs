@@ -32,13 +32,22 @@ public partial class Administration
                 return;
             }
 
-            var roles = await _service.ToggleAarAsync(ctx.Guild.Id, role.Id);
-            if (roles.Count == 0)
-                await Response().Confirm(strs.aar_disabled).SendAsync();
-            else if (roles.Contains(role.Id))
-                await AutoAssignRole();
-            else
-                await Response().Confirm(strs.aar_role_removed(Format.Bold(role.ToString()))).SendAsync();
+            var (result, _) = await _service.ToggleAarAsync(ctx.Guild.Id, role.Id);
+            switch (result)
+            {
+                case AarToggleResult.Disabled:
+                    await Response().Confirm(strs.aar_disabled).SendAsync();
+                    break;
+                case AarToggleResult.Added:
+                    await AutoAssignRole();
+                    break;
+                case AarToggleResult.LimitReached:
+                    await Response().Error(strs.aar_limit(AutoAssignRoleService.MAX_ROLES)).SendAsync();
+                    break;
+                default:
+                    await Response().Confirm(strs.aar_role_removed(Format.Bold(role.ToString()))).SendAsync();
+                    break;
+            }
         }
 
         [Cmd]
@@ -56,7 +65,7 @@ public partial class Administration
             var existing = roles.Select(rid => ctx.Guild.GetRole(rid)).Where(r => r is not null).ToList();
 
             if (existing.Count != roles.Count)
-                await _service.SetAarRolesAsync(ctx.Guild.Id, existing.Select(x => x.Id));
+                await _service.SetAarRolesAsync(ctx.Guild.Id, existing.Select(x => x.Id).ToList());
 
             await Response()
                   .Confirm(strs.aar_roles(
