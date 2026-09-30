@@ -28,6 +28,9 @@
 - `.streamrolewhitelist` / `.srwl` and `.streamroleblacklist` / `.srbl` now work.
 - `.lineupnext` / `.lnext` no longer calls the same member twice.
 - `.lineup` / `.ljoin` shows "already in the lineup" instead of an error when used twice at once.
+- `.invitedelete` / `.invrm` now deletes the invite with the number which `.invitelist` / `.invlist` shows.
+    - accepts a channel and shows an error for a wrong number
+- `.invitelist` / `.invlist` now opens the requested page.
 
 ### Dev
 

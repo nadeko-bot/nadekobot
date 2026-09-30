@@ -7,21 +7,24 @@ channelinfo:
     - channel:
         desc: The channel to retrieve information about.
 invitecreate:
-  desc: Creates a new invite which has infinite max uses and never expires.
+  desc: |-
+    Creates an invite to this channel. By default the invite has no use limit and never expires.
   ex:
     - ''
   params:
     - args:
         desc: |-
-          Optional flags: --expire (hours), --maxuses (number), --temporary, --unique.
+          Optional flags: --expire (seconds), --max-uses (number), --temporary, --unique.
 invitedelete:
   desc: |-
-    Deletes an invite on the specified index. Use `{0}invitelist` to see the list of invites.
+    Deletes the invite with the specified number. Use `{0}invitelist` to see the numbers.
   ex:
-    - 2
+    - '2'
   params:
     - index:
-        desc: The index at which the invite is located in the invite list.
+        desc: The number of the invite in the invite list.
+      ch:
+        desc: The channel of the invite. The default is the current channel.
 invitelist:
   desc: Lists all invites for this channel. Paginated with 9 per page.
   ex:

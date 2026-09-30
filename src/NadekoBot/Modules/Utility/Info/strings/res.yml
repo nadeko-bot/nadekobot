@@ -6,6 +6,7 @@ hoisted: Hoisted
 inv_expire: 'Expires in:'
 inv_uses: 'Uses:'
 invite_deleted: Invite {0} has been deleted.
+invite_not_found: "There is no invite with that number. Use `{0}invitelist` to see the numbers."
 mentionable: Mentionable
 nickname: Nickname
 no_invites: No invites on this page.

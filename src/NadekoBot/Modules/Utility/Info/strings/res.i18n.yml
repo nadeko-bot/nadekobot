@@ -7,6 +7,7 @@ ar:
   inv_expire: 'تنتهي خلال:'
   inv_uses: 'الاستخدامات:'
   invite_deleted: 'تم حذف الدعوة {0}.'
+  invite_not_found: 'لا يوجد دعوة بهذا الرقم. استخدم `{0}invitelist` لعرض الأرقام.'
   mentionable: قابل للإشارة
   nickname: اللقب
   no_invites: لا توجد دعوات في هذه الصفحة.
@@ -24,6 +25,7 @@ de-DE:
   inv_expire: 'Läuft ab in:'
   inv_uses: 'Nutzt:'
   invite_deleted: 'Einladung {0} wurde gelöscht.'
+  invite_not_found: 'Es gibt keine Einladung mit dieser Nummer. Nutze `{0}invitelist`, um die Nummern zu sehen.'
   mentionable: Erwähnbar
   nickname: Spitzname
   no_invites: Keine Einladungen auf dieser Seite.
@@ -41,6 +43,7 @@ es-ES:
   inv_expire: 'Expira en:'
   inv_uses: 'Usos:'
   invite_deleted: 'La invitación {0} ha sido eliminada.'
+  invite_not_found: 'No hay ninguna invitación con ese número. Usa `{0}invitelist` para ver los números.'
   mentionable: Mencionable
   nickname: Apodo
   no_invites: No hay invitaciones en esta página.
@@ -58,6 +61,7 @@ fr-FR:
   inv_expire: 'Expire dans:'
   inv_uses: 'Utilisations :'
   invite_deleted: 'L''invitation {0} a été supprimée.'
+  invite_not_found: 'Il n''y a pas d''invitation avec ce numéro. Utilise `{0}invitelist` pour voir les numéros.'
   mentionable: Mentionnable
   nickname: Surnom
   no_invites: Aucune invitation sur cette page.
@@ -75,6 +79,7 @@ id-ID:
   inv_expire: 'Kedaluwarsa dalam:'
   inv_uses: 'Penggunaan:'
   invite_deleted: 'Undangan {0} telah dihapus.'
+  invite_not_found: 'Tidak ada undangan dengan nomor itu. Pakai `{0}invitelist` untuk melihat nomornya.'
   mentionable: Bisa Dimention
   nickname: Nama Panggilan
   no_invites: Tidak ada undangan di halaman ini.
@@ -92,6 +97,7 @@ ja-JP:
   inv_expire: '有効期限:'
   inv_uses: '使用回数:'
   invite_deleted: '招待{0}が削除されました。'
+  invite_not_found: 'その番号の招待はありません。`{0}invitelist` で番号を確認してね。'
   mentionable: メンション可能
   nickname: ニックネーム
   no_invites: このページに招待はありません。
@@ -109,6 +115,7 @@ ko-KR:
   inv_expire: '만료까지:'
   inv_uses: '사용 횟수:'
   invite_deleted: '초대 {0}이(가) 삭제되었어요.'
+  invite_not_found: '그 번호의 초대가 없어요. `{0}invitelist`로 번호를 확인해 보세요.'
   mentionable: 멘션 가능
   nickname: 닉네임
   no_invites: 이 페이지에 초대가 없어요.
@@ -126,6 +133,7 @@ pl-PL:
   inv_expire: 'Wygasa za:'
   inv_uses: 'Użycia:'
   invite_deleted: 'Zaproszenie {0} zostało usunięte.'
+  invite_not_found: 'Nie ma zaproszenia o tym numerze. Użyj `{0}invitelist`, żeby zobaczyć numery.'
   mentionable: Wzmiankowana
   nickname: Pseudonim
   no_invites: Brak zaproszeń na tej stronie.
@@ -143,6 +151,7 @@ pt-BR:
   inv_expire: 'Expira em:'
   inv_uses: 'Usos:'
   invite_deleted: 'O convite {0} foi excluído.'
+  invite_not_found: 'Não existe convite com esse número. Use `{0}invitelist` para ver os números.'
   mentionable: Mencionável
   nickname: Apelido
   no_invites: Não há convites nessa página.
@@ -160,6 +169,7 @@ ru-RU:
   inv_expire: 'Истекает:'
   inv_uses: 'Использует:'
   invite_deleted: 'Приглашение {0} было удалено.'
+  invite_not_found: 'Нет приглашения с таким номером. Используй `{0}invitelist`, чтобы увидеть номера.'
   mentionable: Упоминаемая
   nickname: Псевдоним
   no_invites: Нет приглашений на этой странице.
@@ -177,6 +187,7 @@ sr-Cyrl-RS:
   inv_expire: 'Истиче за:'
   inv_uses: 'Коришћења:'
   invite_deleted: 'Позивница {0} је обрисана.'
+  invite_not_found: 'Нема позивнице са тим бројем. Користи `{0}invitelist` да видиш бројеве.'
   mentionable: Може се тагнути
   nickname: Надимак
   no_invites: Нема позивница на овој страни.
@@ -194,6 +205,7 @@ tr-TR:
   inv_expire: 'Süresi doluyor:'
   inv_uses: 'Kullanım:'
   invite_deleted: '{0} daveti silindi.'
+  invite_not_found: 'O numarada bir davet yok. Numaraları görmek için `{0}invitelist` kullan.'
   mentionable: Bahsedilebilir
   nickname: Takma Ad
   no_invites: Bu sayfada davet yok.
@@ -211,6 +223,7 @@ ts-TS:
   inv_expire: 'Expires in:'
   inv_uses: 'Uses:'
   invite_deleted: 'Deleted invite {0}.'
+  invite_not_found: 'Hmph. There''s no invite with that number. Use `{0}invitelist` to see the numbers.'
   mentionable: Mentionable
   nickname: Nickname
   no_invites: No invites on this page. Hmph.
@@ -228,6 +241,7 @@ uk-UA:
   inv_expire: 'Закінчується через:'
   inv_uses: 'Використань:'
   invite_deleted: 'Запрошення {0} було видалено.'
+  invite_not_found: 'Немає запрошення з таким номером. Використай `{0}invitelist`, щоб побачити номери.'
   mentionable: Згадуваний
   nickname: Нікнейм
   no_invites: Немає запрошень на цій сторінці.
@@ -245,6 +259,7 @@ vi-VN:
   inv_expire: 'Hết hạn sau:'
   inv_uses: 'Lượt dùng:'
   invite_deleted: 'Lời mời {0} đã bị xóa.'
+  invite_not_found: 'Không có lời mời nào với số đó. Dùng `{0}invitelist` để xem các số.'
   mentionable: Có thể nhắc đến
   nickname: Biệt danh
   no_invites: Không có lời mời nào trên trang này.
@@ -262,6 +277,7 @@ zh-CN:
   inv_expire: 剩餘有效時間：
   inv_uses: 使用次數：
   invite_deleted: '邀請 {0} 已被刪除。'
+  invite_not_found: '没有这个编号的邀请。用 `{0}invitelist` 看看编号吧。'
   mentionable: 可提及
   nickname: 暱稱
   no_invites: 此頁面上沒有邀請。
