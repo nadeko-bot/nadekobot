@@ -10,6 +10,8 @@ public partial class Utility
     public partial class LineUpCommands(GuildTimezoneService timezones)
         : NadekoModule<LineUpService>
     {
+        private const int LIST_PAGE_SIZE = 10;
+
         [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task LineUp([Leftover] string? reason = null)
@@ -45,9 +47,9 @@ public partial class Utility
         [RequireContext(ContextType.Guild)]
         public async Task LineUpList()
         {
-            var lineup = await _service.GetLineupAsync(ctx.Guild.Id, ctx.Channel.Id);
+            var count = await _service.GetLineupCountAsync(ctx.Guild.Id, ctx.Channel.Id);
 
-            if (lineup.Count == 0)
+            if (count == 0)
             {
                 await Response().Confirm(strs.lineup_empty).SendAsync();
                 return;
@@ -57,8 +59,9 @@ public partial class Utility
 
             await Response()
                 .Paginated()
-                .Items(lineup)
-                .PageSize(10)
+                .PageItems(page => _service.GetLineupPageAsync(ctx.Guild.Id, ctx.Channel.Id, page, LIST_PAGE_SIZE))
+                .TotalElements(count)
+                .PageSize(LIST_PAGE_SIZE)
                 .Page((pageItems, pageIndex) =>
                 {
                     var embed = CreateEmbed()
@@ -72,7 +75,7 @@ public partial class Utility
                         var addedTime = TimeZoneInfo.ConvertTime(user.DateAdded, tz);
                         var userName = (ctx.Guild as SocketGuild)?.GetUser(user.UserId)?.ToString() ?? user.UserId.ToString();
                         sb.AppendLine(
-                            $"`{pageIndex * 10 + i + 1}.` {Format.Bold(userName)} ({GetText(strs.lineup_added_at(addedTime))}){(string.IsNullOrWhiteSpace(user.Reason) ? string.Empty : $" - {user.Reason}")}");
+                            $"`{pageIndex * LIST_PAGE_SIZE + i + 1}.` {Format.Bold(userName)} ({GetText(strs.lineup_added_at(addedTime))}){(string.IsNullOrWhiteSpace(user.Reason) ? string.Empty : $" - {user.Reason}")}");
                     }
 
                     embed.WithDescription(sb.ToString());
@@ -104,8 +107,7 @@ public partial class Utility
         [UserPerm(GuildPerm.ManageMessages)]
         public async Task LineUpCreate()
         {
-            var lineup = await _service.GetLineupAsync(ctx.Guild.Id, ctx.Channel.Id);
-            if (lineup.Count > 0)
+            if (await _service.GetLineupCountAsync(ctx.Guild.Id, ctx.Channel.Id) > 0)
             {
                 await Response().Confirm(strs.lineup_already_active).SendAsync();
                 return;

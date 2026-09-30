@@ -20,12 +20,14 @@
 - Scheduled commands no longer disappear or stop running.
     - `.scheduleadd` / `.scha` keeps schedules longer than 49 days and warns when the time is under 1 minute
 - An old timed ban no longer unbans a user who was banned again permanently.
-- `.remindlist` / `.remindl`, `.schedulelist` / `.schl` and patron end dates now show the correct time on hosts outside UTC.
+- `.remindlist` / `.remindl`, `.schedulelist` / `.schl`, `.lineuplist` / `.llist` and patron end dates now show the correct time on hosts outside UTC.
 - `.autoassignrole` / `.aar` now gives roles to new members when many members join at once.
     - shows an error when the server already has 3 roles
 - `.streamrole` now gives and removes the role when a stream replaces a game.
     - removes the role from all members when you disable it
 - `.streamrolewhitelist` / `.srwl` and `.streamroleblacklist` / `.srbl` now work.
+- `.lineupnext` / `.lnext` no longer calls the same member twice.
+- `.lineup` / `.ljoin` shows "already in the lineup" instead of an error when used twice at once.
 
 ### Dev
 
