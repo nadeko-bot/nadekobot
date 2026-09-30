@@ -3,6 +3,7 @@ streamrole:
     Sets a role which is monitored for streamers (FromRole), and a role to add if a user from 'FromRole' is streaming (AddRole). When a user from 'FromRole' starts streaming, they will receive an 'AddRole'. You can only have 1 Stream Role per server. Provide no parameters to disable.
   ex:
     - '"Eligible Streamers" "Featured Streams"'
+    - ''
   params:
     - fromRole:
         desc: The role of users being monitored for streamer status.

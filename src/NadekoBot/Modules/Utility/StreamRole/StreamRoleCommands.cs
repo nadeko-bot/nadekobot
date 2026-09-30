@@ -32,7 +32,7 @@ public partial class Utility
         [RequireContext(ContextType.Guild)]
         public async Task StreamRole()
         {
-            await _service.StopStreamRole(ctx.Guild);
+            await _service.StopStreamRole(ctx.Guild, cleanup: true);
             await Response().Confirm(strs.stream_role_disabled).SendAsync();
         }
 

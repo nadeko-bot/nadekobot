@@ -23,6 +23,9 @@
 - `.remindlist` / `.remindl`, `.schedulelist` / `.schl` and patron end dates now show the correct time on hosts outside UTC.
 - `.autoassignrole` / `.aar` now gives roles to new members when many members join at once.
     - shows an error when the server already has 3 roles
+- `.streamrole` now gives and removes the role when a stream replaces a game.
+    - removes the role from all members when you disable it
+- `.streamrolewhitelist` / `.srwl` and `.streamroleblacklist` / `.srbl` now work.
 
 ### Dev
 

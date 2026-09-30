@@ -6,9 +6,7 @@ stream_role_disabled: Stream role feature has been disabled.
 stream_role_enabled: When a user from {0} role starts streaming, I will give them {1} role.
 stream_role_kw_reset: Stream role keyword reset.
 stream_role_kw_set: Streamers now require {0} keyword in order to receive the role.
-stream_role_wl_add: >-
-  User {0} will receive the stream role even if they don't have the keyword in
-  the stream title.
+stream_role_wl_add: User {0} will receive the stream role even if they don't have the keyword in the stream title.
 stream_role_wl_add_fail: User {0} is already whitelisted.
 stream_role_wl_rem: User {0} is no longer whitelisted.
 stream_role_wl_rem_fail: User {0} is not whitelisted.

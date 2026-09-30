@@ -3,6 +3,7 @@ using NadekoBot.Modules.Utility.Common;
 using NadekoBot.Modules.Utility.Common.Exceptions;
 using NadekoBot.Db.Models;
 using System.Net;
+using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 
 namespace NadekoBot.Modules.Utility.Services;
@@ -23,40 +24,71 @@ public class StreamRoleService : IReadyExecutor, INService
 
     private Task OnPresenceUpdate(SocketUser user, SocketPresence? oldPresence, SocketPresence? newPresence)
     {
+        if (_guildSettings.IsEmpty
+            || user.IsBot
+            || !StreamChanged(oldPresence?.Activities, newPresence?.Activities))
+            return Task.CompletedTask;
 
         _ = Task.Run(async () =>
         {
-            if (oldPresence?.Activities?.Count != newPresence?.Activities?.Count)
+            foreach (var (guildId, setting) in _guildSettings)
             {
-                var guildUsers = _client.Guilds
-                                        .Select(x => x.GetUser(user.Id))
-                                        .Where(x => x is not null);
-
-                foreach (var guildUser in guildUsers)
-                {
-                    if (_guildSettings.TryGetValue(guildUser.Guild.Id, out var s))
-                        await RescanUser(guildUser, s);
-                }
+                if (_client.GetGuild(guildId)?.GetUser(user.Id) is { } guildUser)
+                    await RescanUser(guildUser, setting);
             }
         });
 
         return Task.CompletedTask;
     }
 
+    public static StreamingGame? GetStream(IReadOnlyCollection<IActivity>? activities)
+    {
+        if (activities is null)
+            return null;
+
+        foreach (var activity in activities)
+        {
+            if (activity is StreamingGame sg)
+                return sg;
+        }
+
+        return null;
+    }
+
+    // the number of activities often stays the same when a stream replaces a game, so compare the streams
+    public static bool StreamChanged(IReadOnlyCollection<IActivity>? before, IReadOnlyCollection<IActivity>? after)
+    {
+        var oldStream = GetStream(before);
+        var newStream = GetStream(after);
+
+        if (oldStream is null || newStream is null)
+            return oldStream != newStream;
+
+        return !string.Equals(oldStream.Name, newStream.Name, StringComparison.Ordinal)
+               || !string.Equals(oldStream.Url, newStream.Url, StringComparison.Ordinal);
+    }
+
     public async Task OnReadyAsync()
     {
-        await using var uow = _db.GetDbContext();
-
-        _guildSettings = await uow.GetTable<StreamRoleSettings>()
-                                 .Where(x => x.Enabled)
-                                 .ToDictionaryAsyncLinqToDB(x => x.GuildId, x => x)
-                                 .Pipe(x => x.ToConcurrent());
+        await using (var uow = _db.GetDbContext())
+        {
+            _guildSettings = await uow.GetTable<StreamRoleSettings>()
+                .Where(x => x.Enabled)
+                .LoadWith(x => x.Whitelist)
+                .LoadWith(x => x.Blacklist)
+                .ToDictionaryAsyncLinqToDB(x => x.GuildId, x => x)
+                .Pipe(x => x.ToConcurrent());
+        }
 
         _client.PresenceUpdated += OnPresenceUpdate;
 
+        _ = Task.Run(() => _queueRunner.RunAsync());
 
-
-        await Task.WhenAll(_client.Guilds.Select(RescanUsers).WhenAll(), _queueRunner.RunAsync());
+        foreach (var (guildId, _) in _guildSettings)
+        {
+            if (_client.GetGuild(guildId) is { } guild)
+                await RescanUsers(guild);
+        }
     }
 
     /// <summary>
@@ -80,48 +112,36 @@ public class StreamRoleService : IReadyExecutor, INService
         var success = false;
         await using (var uow = _db.GetDbContext())
         {
+            // deleted before loading, so every duplicate row goes and the loaded lists are already correct
+            if (action == AddRemove.Rem)
+            {
+                var guildId = guild.Id;
+                var deleted = listType == StreamRoleListType.Whitelist
+                    ? await uow.GetTable<StreamRoleWhitelistedUser>()
+                        .Where(x => x.UserId == userId && x.StreamRoleSettings.GuildId == guildId)
+                        .DeleteAsync()
+                    : await uow.GetTable<StreamRoleBlacklistedUser>()
+                        .Where(x => x.UserId == userId && x.StreamRoleSettings.GuildId == guildId)
+                        .DeleteAsync();
+
+                success = deleted > 0;
+            }
+
             var streamRoleSettings = await uow.GetOrCreateStreamRoleSettings(guild.Id);
 
-            if (listType == StreamRoleListType.Whitelist)
+            if (action == AddRemove.Add)
             {
-                var userObj = new StreamRoleWhitelistedUser
-                {
-                    UserId = userId,
-                    Username = userName
-                };
-
-                if (action == AddRemove.Rem)
-                {
-                    var toDelete = streamRoleSettings.Whitelist.FirstOrDefault(x => x.Equals(userObj));
-                    if (toDelete is not null)
+                success = listType == StreamRoleListType.Whitelist
+                    ? streamRoleSettings.Whitelist.Add(new()
                     {
-                        uow.Remove(toDelete);
-                        success = true;
-                    }
-                }
-                else
-                {
-                    success = streamRoleSettings.Whitelist.Add(userObj);
-                }
-            }
-            else
-            {
-                var userObj = new StreamRoleBlacklistedUser
-                {
-                    UserId = userId,
-                    Username = userName
-                };
-
-                if (action == AddRemove.Rem)
-                {
-                    var toRemove = streamRoleSettings.Blacklist.FirstOrDefault(x => x.Equals(userObj));
-                    if (toRemove is not null)
-                        success = streamRoleSettings.Blacklist.Remove(toRemove);
-                }
-                else
-                {
-                    success = streamRoleSettings.Blacklist.Add(userObj);
-                }
+                        UserId = userId,
+                        Username = userName
+                    })
+                    : streamRoleSettings.Blacklist.Add(new()
+                    {
+                        UserId = userId,
+                        Username = userName
+                    });
             }
 
             await uow.SaveChangesAsync();
@@ -225,8 +245,30 @@ public class StreamRoleService : IReadyExecutor, INService
             await uow.SaveChangesAsync();
         }
 
-        if (_guildSettings.TryRemove(guild.Id, out _) && cleanup)
-            await RescanUsers(guild);
+        if (!_guildSettings.TryRemove(guild.Id, out var setting) || !cleanup)
+            return;
+
+        if (guild.GetRole(setting.AddRoleId) is not { } addRole)
+            return;
+
+        var users = await guild.GetUsersAsync(CacheMode.CacheOnly);
+        foreach (var user in users)
+        {
+            if (!user.RoleIds.Contains(addRole.Id))
+                continue;
+
+            await _queueRunner.EnqueueAsync(async () =>
+            {
+                try
+                {
+                    await user.RemoveRoleAsync(addRole);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Failed removing the stream role after the feature was disabled");
+                }
+            });
+        }
     }
 
     private async ValueTask RescanUser(IGuildUser user, StreamRoleSettings setting, IRole? addRole = null)
@@ -240,7 +282,7 @@ public class StreamRoleService : IReadyExecutor, INService
         var g = (StreamingGame?)user.Activities.FirstOrDefault(a
             => a is StreamingGame
                && (string.IsNullOrWhiteSpace(setting.Keyword)
-                   || a.Name.ToUpperInvariant().Contains(setting.Keyword.ToUpperInvariant())
+                   || a.Name.Contains(setting.Keyword, StringComparison.InvariantCultureIgnoreCase)
                    || setting.Whitelist.Any(x => x.UserId == user.Id)));
 
         if (g is not null
