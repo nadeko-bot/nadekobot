@@ -404,9 +404,9 @@
       ],
       "Description": "Deletes a single message given the channel and message ID, or a message link.\nIf channel is omitted, message will be searched for in the current channel.\nYou can also specify time parameter after which the message will be deleted (up to 7 days).\nThis timer won't persist through bot restarts.",
       "Usage": [
-        ".delete #chat 771562360594628608",
-        ".delete 771562360594628600",
-        ".delete 771562360594628608 5m"
+        ".delete 771562360594628608 5m",
+        ".delete https://discord.com/channels/117523346618318850/771562360594628608/1035925837390803004",
+        ".delete #chat 771562360594628608"
       ],
       "Submodule": "MessageCommands",
       "Module": "Administration",
@@ -620,7 +620,7 @@
       "Aliases": [
         ".dpo"
       ],
-      "Description": "Overrides required user permissions that the command has with the specified ones. You can only use server-level permissions. This action will make the bot ignore user permission requirements which command has by default. Provide no permissions to reset to default.",
+      "Description": "Replaces the user permissions that a command requires with the specified permissions.\nYou can use only server-level permissions.\nThe bot then ignores the default user permission requirements of the command.\nOverrides work only for commands, not for expressions.\nProvide no permissions to reset the command to its default requirements.",
       "Usage": [
         ".dpo .prune ManageMessages BanMembers",
         ".dpo .prune"
@@ -3130,10 +3130,9 @@
       "Aliases": [
         ".plant"
       ],
-      "Description": "Spend an amount of currency to plant it in this channel. Default is 1. You\ncan specify the password after the amount. Password has to be alphanumeric\nand it will be trimmed down to 10 characters if it's longer.",
+      "Description": "Spends an amount of currency to plant it in this channel. Default is 1.\nWhen currency drops use passwords, the bot shows a random password on the image.\nThe new plant takes all earlier drops in this channel.",
       "Usage": [
-        ".plant 5",
-        ".plant 10 meow"
+        ".plant 5"
       ],
       "Submodule": "PlantPickCommands",
       "Module": "Gambling",
@@ -7178,9 +7177,9 @@
       "Aliases": [
         ".afk"
       ],
-      "Description": "Toggles AFK status for yourself with the specified message. \nIf you don't provide a message it default to a generic one.\nAnyone @ mentioning you in any server will receive the afk message.\nThis will only work if the other user's message starts with the mention.",
+      "Description": "Sets your AFK status with an optional message of up to 200 characters.\nWhen a message starts with a mention of you, or replies to you, the bot shows your AFK message.\nThe bot clears your AFK status when you send a message, or after 8 hours.",
       "Usage": [
-        ".afk"
+        ".afk Eating dinner"
       ],
       "Submodule": "Utility",
       "Module": "Utility",
@@ -7270,7 +7269,7 @@
         ".aiskilladd",
         ".aisa"
       ],
-      "Description": "Adds a named skill to the AI agent for this server.\nSkills are custom instructions that get included in every agent interaction.\nMaximum 10 skills per server, 1000 characters per instruction.",
+      "Description": "Adds a named skill to the AI agent for this server.\nSkills are custom instructions that get included in every agent interaction.\nMaximum 10 skills per server, 2000 characters per instruction.",
       "Usage": [
         ".agentskilladd moderator Always enforce the server rules strictly and warn users before taking action",
         ".agentskilladd greeter Welcome new users warmly and point them to the #rules channel"
@@ -7400,6 +7399,76 @@
       "Options": null,
       "Requirements": [
         "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentwhitelist",
+        ".aiwhitelist",
+        ".aiwl"
+      ],
+      "Description": "Lets a user use the AI agent, or takes the permission away again.\nThe bot owner can always use the agent.\nRun the command again on the same user to remove the permission.",
+      "Usage": [
+        ".agentwhitelist @Someone",
+        ".agentwhitelist 123123123123"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentwhitelistrole",
+        ".aiwhitelistrole",
+        ".aiwlr"
+      ],
+      "Description": "Lets every member of a role use the AI agent, or takes the permission away again.\nRun the command again on the same role to remove the permission.",
+      "Usage": [
+        ".agentwhitelistrole Moderators"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentwhitelistserver",
+        ".aiwhitelistserver",
+        ".aiwls"
+      ],
+      "Description": "Lets every member of a server use the AI agent, or takes the permission away again.\nRun the command without an id to use the current server.\nRun the command again on the same server to remove the permission.",
+      "Usage": [
+        ".agentwhitelistserver",
+        ".agentwhitelistserver 123123123123"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".agentwhitelistlist",
+        ".aiwhitelistlist",
+        ".aiwll"
+      ],
+      "Description": "Shows the users, roles and servers which can use the AI agent.",
+      "Usage": [
+        ".agentwhitelistlist"
+      ],
+      "Submodule": "AiAgentCommands",
+      "Module": "Utility",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
       ]
     },
     {
@@ -7945,9 +8014,8 @@
         ".lcha",
         ".lchadd"
       ],
-      "Description": "Adds a channel as a live channel with the specified template.\nYou can see a full list of placeholders with `.phs` command.",
+      "Description": "Adds a channel as a live channel with the specified template.\nYou can see a full list of placeholders with `.phs` command.\nThe channel name from the template must have 1 to 100 characters.",
       "Usage": [
-        ".livechadd #general Time: %server.time%",
         ".livechadd #general -- %server.members% --"
       ],
       "Submodule": "LiveChannelCommands",
@@ -8404,7 +8472,7 @@
         ".starboard",
         ".sboard"
       ],
-      "Description": "Makes the current channel the starboard and opens the setup panel.\nThe bot copies messages which get enough star reactions to the starboard.",
+      "Description": "Makes the current channel the starboard and opens the setup panel.\nThe bot copies messages which get enough star reactions to the starboard.\nThe most starred message stays at the top of the channel.\nA message stays on the starboard even if the original message is deleted.\nThe star reaction can be a custom emote.\nThe panel sets how many messages the starboard shows, from 10 to 100.",
       "Usage": [
         ".starboard"
       ],
@@ -8417,25 +8485,12 @@
     },
     {
       "Aliases": [
-        ".starrandom",
-        ".srandom"
-      ],
-      "Description": "Shows a random message from the starboard.",
-      "Usage": [
-        ".starrandom"
-      ],
-      "Submodule": "StarboardCommands",
-      "Module": "Utility",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
         ".streamrole"
       ],
       "Description": "Sets a role which is monitored for streamers (FromRole), and a role to add if a user from 'FromRole' is streaming (AddRole). When a user from 'FromRole' starts streaming, they will receive an 'AddRole'. You can only have 1 Stream Role per server. Provide no parameters to disable.",
       "Usage": [
-        ".streamrole \"Eligible Streamers\" \"Featured Streams\""
+        ".streamrole \"Eligible Streamers\" \"Featured Streams\"",
+        ".streamrole"
       ],
       "Submodule": "StreamRoleCommands",
       "Module": "Utility",
@@ -8951,7 +9006,7 @@
         ".wclaim",
         ".wc"
       ],
-      "Description": "Buys the manager position for a waifu.\nYou must bid at least 115% of the current price. Only available in the first 18h of a cycle.\n90% goes to old manager (or waifu if first), 5% to waifu, 5% burned.",
+      "Description": "Buys the manager position for a waifu. Your bid becomes the waifu's new price.\nA waifu earns returns only while a manager holds the position. Each cycle, the manager receives a cut of the waifu's fee.\nYour bid must be at least 115% of the current price.\nBid split:\n- the previous manager gets back up to the old price\n- the waifu gets half of the rest\n- the other half is burned",
       "Usage": [
         ".waifubuy 1150 @user",
         ".waifubuy 5000 @user",
@@ -8967,7 +9022,7 @@
         ".waifufee",
         ".wfee"
       ],
-      "Description": "Sets your waifu fee (1-5%). You must be opted in as a waifu.",
+      "Description": "Sets your waifu fee (1-5%). The fee is your share of each cycle's returns. Your manager takes a cut of the fee.\nYou must be opted in as a waifu.",
       "Usage": [
         ".waifufee 3"
       ],
@@ -9073,7 +9128,7 @@
         ".wresign",
         ".wdivorce"
       ],
-      "Description": "Resign from managing a specific waifu. The waifu's price drops to the minimum.\nNo refund is given.",
+      "Description": "Resign from managing a specific waifu. The waifu's price drops to the minimum and it stops earning returns until someone buys the manager position.\nNo refund is given.",
       "Usage": [
         ".waifuresign @user",
         ".waifuresign 123456789012345678"
@@ -9182,7 +9237,7 @@
       "Aliases": [
         ".xpadd"
       ],
-      "Description": "Adds server XP to a single user or all users with a role on this server. This does not affect their global ranking. You can use negative values.",
+      "Description": "Adds server XP to a single user or all users with a role on this server. You can use negative values. The bot does not count this XP for clubs.",
       "Usage": [
         ".xpadd 100 @Someone",
         ".xpadd 500 SomeRoleName"

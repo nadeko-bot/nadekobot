@@ -2,7 +2,7 @@
 
 *a,c,f,r,o,d*
 
-## [7.4.1] - TBD
+## [7.4.1] - 30.09.2026
 
 ### Changed
 
@@ -23,6 +23,7 @@
 - `.remindlist` / `.remindl`, `.schedulelist` / `.schl`, `.lineuplist` / `.llist` and patron end dates now show the correct time on hosts outside UTC.
 - `.autoassignrole` / `.aar` now gives roles to new members when many members join at once.
     - shows an error when the server already has 3 roles
+    - ignores deleted roles when it counts the roles
 - `.streamrole` now gives and removes the role when a stream replaces a game.
     - removes the role from all members when you disable it
 - `.streamrolewhitelist` / `.srwl` and `.streamroleblacklist` / `.srbl` now work.
@@ -31,6 +32,7 @@
 - `.invitedelete` / `.invrm` now deletes the invite with the number which `.invitelist` / `.invlist` shows.
     - accepts a channel and shows an error for a wrong number
 - `.invitelist` / `.invlist` now opens the requested page.
+- The AI agent now sees every new message in the channel.
 
 ### Dev
 

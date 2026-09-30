@@ -13,7 +13,7 @@ delete:
     This timer won't persist through bot restarts.
   ex:
     - '771562360594628608 5m'
-    - 'https://discord.com/channels/117523346618318850/771562360594628608/1035925837390803004'
+    - '<message link>'
     - '#chat 771562360594628608'
   params:
     - messageId:
