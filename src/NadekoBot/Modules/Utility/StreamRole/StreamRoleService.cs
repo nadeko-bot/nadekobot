@@ -33,6 +33,10 @@ public class StreamRoleService : IReadyExecutor, INService
         {
             foreach (var (guildId, setting) in _guildSettings)
             {
+                // keyword and list commands also cache the settings of servers where the feature is off
+                if (!setting.Enabled)
+                    continue;
+
                 if (_client.GetGuild(guildId)?.GetUser(user.Id) is { } guildUser)
                     await RescanUser(guildUser, setting);
             }

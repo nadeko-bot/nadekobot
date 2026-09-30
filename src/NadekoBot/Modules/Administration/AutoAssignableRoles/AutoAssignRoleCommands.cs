@@ -32,6 +32,9 @@ public partial class Administration
                 return;
             }
 
+            // roles deleted while the bot was offline would otherwise count toward the limit
+            await GetExistingRolesAsync();
+
             var (result, _) = await _service.ToggleAarAsync(ctx.Guild.Id, role.Id);
             switch (result)
             {
@@ -56,21 +59,35 @@ public partial class Administration
         [BotPerm(GuildPerm.ManageRoles)]
         public async Task AutoAssignRole()
         {
-            if (!_service.TryGetRoles(ctx.Guild.Id, out var roles))
+            var existing = await GetExistingRolesAsync();
+            if (existing.Count == 0)
             {
                 await Response().Confirm(strs.aar_none).SendAsync();
                 return;
             }
 
-            var existing = roles.Select(rid => ctx.Guild.GetRole(rid)).Where(r => r is not null).ToList();
-
-            if (existing.Count != roles.Count)
-                await _service.SetAarRolesAsync(ctx.Guild.Id, existing.Select(x => x.Id).ToList());
-
             await Response()
                   .Confirm(strs.aar_roles(
                       '\n' + existing.Select(x => Format.Bold(x.ToString())).Join(",\n")))
                   .SendAsync();
+        }
+
+        private async Task<List<IRole>> GetExistingRolesAsync()
+        {
+            if (!_service.TryGetRoles(ctx.Guild.Id, out var roles))
+                return [];
+
+            var existing = new List<IRole>(roles.Count);
+            foreach (var roleId in roles)
+            {
+                if (ctx.Guild.GetRole(roleId) is { } role)
+                    existing.Add(role);
+            }
+
+            if (existing.Count != roles.Count)
+                await _service.SetAarRolesAsync(ctx.Guild.Id, existing.Select(x => x.Id).ToList());
+
+            return existing;
         }
     }
 }

@@ -24,7 +24,7 @@ public sealed class AutoAssignRoleService(
     public const int MAX_ROLES = 3;
 
     // joins are queued for the whole shard, so a burst in one big server must not push out other servers' members
-    private const int QUEUE_CAPACITY = 10_000;
+    private const int QUEUE_CAPACITY = 1_000;
     private static readonly TimeSpan _assignDelay = TimeSpan.FromMilliseconds(250);
     private static readonly TimeSpan _reconnectWait = TimeSpan.FromSeconds(1);
 
