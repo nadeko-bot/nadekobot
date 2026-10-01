@@ -405,7 +405,7 @@
       "Description": "Deletes a single message given the channel and message ID, or a message link.\nIf channel is omitted, message will be searched for in the current channel.\nYou can also specify time parameter after which the message will be deleted (up to 7 days).\nThis timer won't persist through bot restarts.",
       "Usage": [
         ".delete 771562360594628608 5m",
-        ".delete https://discord.com/channels/117523346618318850/771562360594628608/1035925837390803004",
+        ".delete <message link>",
         ".delete #chat 771562360594628608"
       ],
       "Submodule": "MessageCommands",
@@ -1619,7 +1619,7 @@
       "Aliases": [
         ".timezone"
       ],
-      "Description": "Sets this guild's timezone. This affects bot's time output in this server (logs, etc.). **Setting timezone requires Administrator server permission.**",
+      "Description": "Sets this guild's timezone. This affects bot's time output in this server (logs, etc.). **Setting timezone requires Administrator server permission.**\nYou can use a timezone id, such as `Europe/Berlin`, or a city, such as `Berlin`. Letter case does not matter.",
       "Usage": [
         ".timezone",
         ".timezone GMT Standard Time"
@@ -7811,7 +7811,7 @@
         ".invitecreate",
         ".invcr"
       ],
-      "Description": "Creates a new invite which has infinite max uses and never expires.",
+      "Description": "Creates an invite to this channel. By default the invite has no use limit and never expires.",
       "Usage": [
         ".invitecreate"
       ],
@@ -7851,7 +7851,7 @@
         ".invrm",
         ".invdel"
       ],
-      "Description": "Deletes an invite on the specified index. Use `.invitelist` to see the list of invites.",
+      "Description": "Deletes the invite with the specified number. Use `.invitelist` to see the numbers.",
       "Usage": [
         ".invitedelete 2"
       ],
