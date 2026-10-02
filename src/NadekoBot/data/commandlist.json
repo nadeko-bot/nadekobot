@@ -1468,6 +1468,39 @@
     },
     {
       "Aliases": [
+        ".tempvoice",
+        ".tvc"
+      ],
+      "Description": "Sets a voice channel as a temporary voice hub, or removes the hub.\nWhen a member joins the hub, the bot creates a voice channel for that member and moves the member into it.\nThe member can rename, limit and manage the new channel. The bot deletes the channel 15 seconds after it becomes empty.\nWithout a channel, the command uses your current voice channel.\nA server can have up to 5 hubs.\nA server can have up to 25 temporary voice channels at the same time.",
+      "Usage": [
+        ".tempvoice",
+        ".tempvoice Create a room"
+      ],
+      "Submodule": "TempVoiceCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageChannels Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".tempvoicelist",
+        ".tvcl"
+      ],
+      "Description": "Shows the temporary voice hubs on this server.",
+      "Usage": [
+        ".tempvoicelist"
+      ],
+      "Submodule": "TempVoiceCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageChannels Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".deltxtchanl",
         ".dtch"
       ],

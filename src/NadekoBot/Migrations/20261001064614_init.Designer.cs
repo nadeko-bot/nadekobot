@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20260909072108_init")]
+    [Migration("20261001064614_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -2157,6 +2157,53 @@ namespace NadekoBot.Migrations
                     b.HasIndex("ExpiresAt");
 
                     b.ToTable("TempRole");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.TempVoiceChannel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("OwnerId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId", "OwnerId");
+
+                    b.ToTable("TempVoiceChannel");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.TempVoiceHub", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId");
+
+                    b.ToTable("TempVoiceHub");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.TodoModel", b =>

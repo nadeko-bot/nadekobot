@@ -1172,6 +1172,35 @@ namespace NadekoBot.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TempVoiceChannel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    OwnerId = table.Column<ulong>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TempVoiceChannel", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TempVoiceHub",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TempVoiceHub", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TodosArchive",
                 columns: table => new
                 {
@@ -2454,6 +2483,28 @@ namespace NadekoBot.Migrations
                 column: "ExpiresAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TempVoiceChannel_ChannelId",
+                table: "TempVoiceChannel",
+                column: "ChannelId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TempVoiceChannel_GuildId_OwnerId",
+                table: "TempVoiceChannel",
+                columns: new[] { "GuildId", "OwnerId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TempVoiceHub_ChannelId",
+                table: "TempVoiceHub",
+                column: "ChannelId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TempVoiceHub_GuildId",
+                table: "TempVoiceHub",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Todos_ArchiveId",
                 table: "Todos",
                 column: "ArchiveId");
@@ -2931,6 +2982,12 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "TempRole");
+
+            migrationBuilder.DropTable(
+                name: "TempVoiceChannel");
+
+            migrationBuilder.DropTable(
+                name: "TempVoiceHub");
 
             migrationBuilder.DropTable(
                 name: "Todos");

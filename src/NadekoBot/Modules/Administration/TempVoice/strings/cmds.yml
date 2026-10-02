@@ -1,0 +1,20 @@
+tempvoice:
+  desc: |-
+    Sets a voice channel as a temporary voice hub, or removes the hub.
+    When a member joins the hub, the bot creates a voice channel for that member and moves the member into it.
+    The member can rename, limit and manage the new channel. The bot deletes the channel 15 seconds after it becomes empty.
+    Without a channel, the command uses your current voice channel.
+    A server can have up to 5 hubs.
+    A server can have up to 25 temporary voice channels at the same time.
+  ex:
+    - ''
+    - 'Create a room'
+  params:
+    - channel:
+        desc: "The voice channel to use as a hub."
+tempvoicelist:
+  desc: Shows the temporary voice hubs on this server.
+  ex:
+    - ''
+  params:
+    - { }

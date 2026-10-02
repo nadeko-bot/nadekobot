@@ -200,34 +200,38 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         await using var lctx = ctx.CreateLinqToDBConnection();
 
         var tempTableName = "xptemp_" + Guid.NewGuid().ToString("N");
-        await using var batchTable = await lctx.CreateTempTableAsync<UserXpBatch>(tempTableName);
+        List<UserXpStats> updated;
 
-        await batchTable.BulkCopyAsync(currentBatch.Select(static x => new UserXpBatch()
+        // the temp table must be dropped before the commit; after it the drop fails silently and the table leaks on the pooled connection
+        await using (var batchTable = await lctx.CreateTempTableAsync<UserXpBatch>(tempTableName))
         {
-            GuildId = x.GuildId,
-            UserId = x.UserId,
-            XpToGain = x.Xp,
-            CountsForClub = x.CountsForClub
-        }));
+            await batchTable.BulkCopyAsync(currentBatch.Select(static x => new UserXpBatch()
+            {
+                GuildId = x.GuildId,
+                UserId = x.UserId,
+                XpToGain = x.Xp,
+                CountsForClub = x.CountsForClub
+            }));
 
-        await lctx.ExecuteAsync(
-            $"""
-             INSERT INTO UserXpStats (GuildId, UserId, Xp)
-             SELECT "{tempTableName}"."GuildId", "{tempTableName}"."UserId", "XpToGain"
-             FROM {tempTableName}
-             WHERE TRUE
-             ON CONFLICT (GuildId, UserId) DO UPDATE 
-             SET 
-                 Xp = UserXpStats.Xp + EXCLUDED.Xp;
-             """);
+            await lctx.ExecuteAsync(
+                $"""
+                 INSERT INTO UserXpStats (GuildId, UserId, Xp)
+                 SELECT "{tempTableName}"."GuildId", "{tempTableName}"."UserId", "XpToGain"
+                 FROM {tempTableName}
+                 WHERE TRUE
+                 ON CONFLICT (GuildId, UserId) DO UPDATE 
+                 SET 
+                     Xp = UserXpStats.Xp + EXCLUDED.Xp;
+                 """);
 
-        await AddClubXpAsync(lctx, tempTableName);
+            await AddClubXpAsync(lctx, tempTableName);
 
-        var updated = await batchTable
-            .InnerJoin(lctx.GetTable<UserXpStats>(),
-                (u, s) => u.GuildId == s.GuildId && u.UserId == s.UserId,
-                (batch, stats) => stats)
-            .ToListAsyncLinqToDB();
+            updated = await batchTable
+                .InnerJoin(lctx.GetTable<UserXpStats>(),
+                    (u, s) => u.GuildId == s.GuildId && u.UserId == s.UserId,
+                    (batch, stats) => stats)
+                .ToListAsyncLinqToDB();
+        }
 
         await tx.CommitAsync();
 

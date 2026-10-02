@@ -2156,6 +2156,53 @@ namespace NadekoBot.Migrations
                     b.ToTable("TempRole");
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.TempVoiceChannel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("OwnerId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId", "OwnerId");
+
+                    b.ToTable("TempVoiceChannel");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.TempVoiceHub", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId");
+
+                    b.ToTable("TempVoiceHub");
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.TodoModel", b =>
                 {
                     b.Property<int>("Id")

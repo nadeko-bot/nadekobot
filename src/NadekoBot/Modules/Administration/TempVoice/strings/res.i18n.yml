@@ -1,0 +1,159 @@
+ar:
+  tempvoice_added: 'الأعضاء الذين ينضمون إلى {0} يحصلون الآن على قناة صوتية مؤقتة خاصة بهم.'
+  tempvoice_removed: '{0} لم يعد مركزًا صوتيًا مؤقتًا.'
+  tempvoice_no_channel: حدد قناة صوتية، أو انضم إلى إحداها ثم استخدم الأمر مرة أخرى.
+  tempvoice_is_temp: لا يمكن أن تكون قناة صوتية مؤقتة مركزًا.
+  tempvoice_limit: 'هذا السيرفر لديه بالفعل {0} مراكز صوتية مؤقتة. أزل واحدًا أولًا.'
+  tempvoice_list: المراكز الصوتية المؤقتة
+  tempvoice_list_none: لا توجد مراكز صوتية مؤقتة في هذا السيرفر.
+  tempvoice_channel_name: 'قناة {0}'
+
+de-DE:
+  tempvoice_added: 'Mitglieder, die {0} betreten, bekommen jetzt ihren eigenen temporären Sprachkanal.'
+  tempvoice_removed: '{0} ist kein temporärer Sprach-Hub mehr.'
+  tempvoice_no_channel: Gib einen Sprachkanal an, oder betritt einen und nutze den Befehl erneut.
+  tempvoice_is_temp: Ein temporärer Sprachkanal kann kein Hub sein.
+  tempvoice_limit: 'Dieser Server hat schon {0} temporäre Sprach-Hubs. Entferne zuerst einen.'
+  tempvoice_list: Temporäre Sprach-Hubs
+  tempvoice_list_none: Dieser Server hat keine temporären Sprach-Hubs.
+  tempvoice_channel_name: 'Kanal von {0}'
+
+es-ES:
+  tempvoice_added: 'Los miembros que entren en {0} ahora reciben su propio canal de voz temporal.'
+  tempvoice_removed: '{0} ya no es un hub de voz temporal.'
+  tempvoice_no_channel: Indica un canal de voz, o entra en uno y vuelve a usar el comando.
+  tempvoice_is_temp: Un canal de voz temporal no puede ser un hub.
+  tempvoice_limit: 'Este servidor ya tiene {0} hubs de voz temporales. Quita uno primero.'
+  tempvoice_list: Hubs de voz temporales
+  tempvoice_list_none: Este servidor no tiene hubs de voz temporales.
+  tempvoice_channel_name: 'Canal de {0}'
+
+fr-FR:
+  tempvoice_added: 'Les membres qui rejoignent {0} obtiennent maintenant leur propre salon vocal temporaire.'
+  tempvoice_removed: '{0} n''est plus un hub vocal temporaire.'
+  tempvoice_no_channel: Indique un salon vocal, ou rejoins-en un et relance la commande.
+  tempvoice_is_temp: Un salon vocal temporaire ne peut pas être un hub.
+  tempvoice_limit: 'Ce serveur a déjà {0} hubs vocaux temporaires. Retires-en un d''abord.'
+  tempvoice_list: Hubs vocaux temporaires
+  tempvoice_list_none: Ce serveur n'a aucun hub vocal temporaire.
+  tempvoice_channel_name: 'Salon de {0}'
+
+id-ID:
+  tempvoice_added: 'Anggota yang bergabung ke {0} sekarang mendapat saluran suara sementara sendiri.'
+  tempvoice_removed: '{0} bukan lagi hub suara sementara.'
+  tempvoice_no_channel: Tentukan saluran suara, atau masuk ke salah satunya lalu jalankan perintah lagi.
+  tempvoice_is_temp: Saluran suara sementara tidak bisa menjadi hub.
+  tempvoice_limit: 'Server ini sudah punya {0} hub suara sementara. Hapus salah satunya dulu.'
+  tempvoice_list: Hub suara sementara
+  tempvoice_list_none: Server ini tidak punya hub suara sementara.
+  tempvoice_channel_name: 'Saluran {0}'
+
+ja-JP:
+  tempvoice_added: '{0} に参加したメンバーは、自分の一時ボイスチャンネルが作成されるようになりました。'
+  tempvoice_removed: '{0} は一時ボイスハブではなくなりました。'
+  tempvoice_no_channel: ボイスチャンネルを指定するか、ボイスチャンネルに参加してからもう一度コマンドを使ってください。
+  tempvoice_is_temp: 一時ボイスチャンネルをハブにはできません。
+  tempvoice_limit: 'このサーバーにはすでに {0} 個の一時ボイスハブがあります。先に一つ削除してください。'
+  tempvoice_list: 一時ボイスハブ
+  tempvoice_list_none: このサーバーには一時ボイスハブがありません。
+  tempvoice_channel_name: '{0} のチャンネル'
+
+ko-KR:
+  tempvoice_added: '{0}에 참여한 멤버는 이제 자신만의 임시 음성 채널을 받습니다.'
+  tempvoice_removed: '{0}은(는) 더 이상 임시 음성 허브가 아닙니다.'
+  tempvoice_no_channel: 음성 채널을 지정하거나, 음성 채널에 참여한 뒤 명령어를 다시 사용하세요.
+  tempvoice_is_temp: 임시 음성 채널은 허브가 될 수 없습니다.
+  tempvoice_limit: '이 서버에는 이미 임시 음성 허브가 {0}개 있습니다. 먼저 하나를 제거하세요.'
+  tempvoice_list: 임시 음성 허브
+  tempvoice_list_none: 이 서버에는 임시 음성 허브가 없습니다.
+  tempvoice_channel_name: '{0}의 채널'
+
+pl-PL:
+  tempvoice_added: 'Osoby, które dołączą do {0}, dostają teraz własny tymczasowy kanał głosowy.'
+  tempvoice_removed: '{0} nie jest już tymczasowym hubem głosowym.'
+  tempvoice_no_channel: Podaj kanał głosowy albo dołącz do niego i użyj komendy ponownie.
+  tempvoice_is_temp: Tymczasowy kanał głosowy nie może być hubem.
+  tempvoice_limit: 'Ten serwer ma już {0} tymczasowe huby głosowe. Najpierw usuń jeden.'
+  tempvoice_list: Tymczasowe huby głosowe
+  tempvoice_list_none: Ten serwer nie ma tymczasowych hubów głosowych.
+  tempvoice_channel_name: 'Kanał {0}'
+
+pt-BR:
+  tempvoice_added: 'Quem entrar em {0} agora recebe um canal de voz temporário próprio.'
+  tempvoice_removed: '{0} não é mais um hub de voz temporário.'
+  tempvoice_no_channel: Informe um canal de voz, ou entre em um e use o comando de novo.
+  tempvoice_is_temp: Um canal de voz temporário não pode ser um hub.
+  tempvoice_limit: 'Este servidor já tem {0} hubs de voz temporários. Remova um primeiro.'
+  tempvoice_list: Hubs de voz temporários
+  tempvoice_list_none: Este servidor não tem hubs de voz temporários.
+  tempvoice_channel_name: 'Canal de {0}'
+
+ru-RU:
+  tempvoice_added: 'Участники, которые заходят в {0}, теперь получают собственный временный голосовой канал.'
+  tempvoice_removed: '{0} больше не временный голосовой хаб.'
+  tempvoice_no_channel: Укажи голосовой канал или зайди в него и снова используй команду.
+  tempvoice_is_temp: Временный голосовой канал не может быть хабом.
+  tempvoice_limit: 'На этом сервере уже {0} временных голосовых хабов. Сначала удали один.'
+  tempvoice_list: Временные голосовые хабы
+  tempvoice_list_none: На этом сервере нет временных голосовых хабов.
+  tempvoice_channel_name: 'Канал {0}'
+
+sr-Cyrl-RS:
+  tempvoice_added: 'Чланови који уђу у {0} сада добијају сопствени привремени гласовни канал.'
+  tempvoice_removed: '{0} више није привремени гласовни хаб.'
+  tempvoice_no_channel: Наведи гласовни канал, или уђи у неки па поново користи команду.
+  tempvoice_is_temp: Привремени гласовни канал не може бити хаб.
+  tempvoice_limit: 'Овај сервер већ има {0} привремених гласовних хабова. Прво уклони један.'
+  tempvoice_list: Привремени гласовни хабови
+  tempvoice_list_none: Овај сервер нема привремених гласовних хабова.
+  tempvoice_channel_name: 'Канал {0}'
+
+tr-TR:
+  tempvoice_added: '{0} kanalına katılan üyeler artık kendi geçici ses kanalına sahip oluyor.'
+  tempvoice_removed: '{0} artık bir geçici ses merkezi değil.'
+  tempvoice_no_channel: Bir ses kanalı belirt ya da bir ses kanalına katılıp komutu tekrar kullan.
+  tempvoice_is_temp: Geçici bir ses kanalı merkez olamaz.
+  tempvoice_limit: 'Bu sunucuda zaten {0} geçici ses merkezi var. Önce birini kaldır.'
+  tempvoice_list: Geçici ses merkezleri
+  tempvoice_list_none: Bu sunucuda geçici ses merkezi yok.
+  tempvoice_channel_name: '{0} kanalı'
+
+ts-TS:
+  tempvoice_added: 'Members who join {0} now get their own temporary voice channel.'
+  tempvoice_removed: 'Hmph. {0} isn''t a temporary voice hub anymore.'
+  tempvoice_no_channel: Give me a voice channel, or join one and use the command again.
+  tempvoice_is_temp: A temporary voice channel can't be a hub. Obviously.
+  tempvoice_limit: 'This server already has {0} temporary voice hubs. Remove one first.'
+  tempvoice_list: Temporary voice hubs
+  tempvoice_list_none: There are no temporary voice hubs on this server.
+  tempvoice_channel_name: '{0}''s channel'
+
+uk-UA:
+  tempvoice_added: 'Учасники, які заходять у {0}, тепер отримують власний тимчасовий голосовий канал.'
+  tempvoice_removed: '{0} більше не тимчасовий голосовий хаб.'
+  tempvoice_no_channel: Вкажи голосовий канал або зайди до нього й знову використай команду.
+  tempvoice_is_temp: Тимчасовий голосовий канал не може бути хабом.
+  tempvoice_limit: 'На цьому сервері вже є {0} тимчасових голосових хабів. Спершу видали один.'
+  tempvoice_list: Тимчасові голосові хаби
+  tempvoice_list_none: На цьому сервері немає тимчасових голосових хабів.
+  tempvoice_channel_name: 'Канал {0}'
+
+vi-VN:
+  tempvoice_added: 'Thành viên vào {0} giờ sẽ có kênh thoại tạm thời riêng.'
+  tempvoice_removed: '{0} không còn là hub thoại tạm thời nữa.'
+  tempvoice_no_channel: Hãy chỉ định một kênh thoại, hoặc vào một kênh rồi dùng lại lệnh.
+  tempvoice_is_temp: Kênh thoại tạm thời không thể làm hub.
+  tempvoice_limit: 'Máy chủ này đã có {0} hub thoại tạm thời. Hãy xóa một cái trước.'
+  tempvoice_list: Hub thoại tạm thời
+  tempvoice_list_none: Máy chủ này không có hub thoại tạm thời nào.
+  tempvoice_channel_name: 'Kênh của {0}'
+
+zh-CN:
+  tempvoice_added: '加入 {0} 的成员现在会获得自己的临时语音频道。'
+  tempvoice_removed: '{0} 不再是临时语音中心。'
+  tempvoice_no_channel: 请指定一个语音频道，或者先加入一个语音频道再重新使用该命令。
+  tempvoice_is_temp: 临时语音频道不能作为中心。
+  tempvoice_limit: '本服务器已经有 {0} 个临时语音中心。请先移除一个。'
+  tempvoice_list: 临时语音中心
+  tempvoice_list_none: 本服务器没有临时语音中心。
+  tempvoice_channel_name: '{0} 的频道'

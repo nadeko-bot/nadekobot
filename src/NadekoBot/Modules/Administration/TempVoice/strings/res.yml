@@ -1,0 +1,8 @@
+tempvoice_added: "Members who join {0} now get their own temporary voice channel."
+tempvoice_removed: "{0} is no longer a temporary voice hub."
+tempvoice_no_channel: Specify a voice channel, or join one and use the command again.
+tempvoice_is_temp: A temporary voice channel can not be a hub.
+tempvoice_limit: "This server already has {0} temporary voice hubs. Remove one first."
+tempvoice_list: Temporary voice hubs
+tempvoice_list_none: This server has no temporary voice hubs.
+tempvoice_channel_name: "{0}'s channel"

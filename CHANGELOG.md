@@ -7,6 +7,10 @@
 ### Added
 
 - The AI agent can convert units and currencies.
+- Added `.tempvoice` / `.tvc` to set temporary voice hubs
+    - a member who joins a hub gets a new voice channel
+    - the bot deletes the channel 15 seconds after it becomes empty
+    - `.tempvoicelist` / `.tvcl` shows the hubs
 
 ### Changed
 
