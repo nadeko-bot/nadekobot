@@ -1,5 +1,11 @@
-convert: '{0} {1} is equal to {2} {3}'
-convert_not_found: 'Cannot convert {0} to {1}: units not found'
+convert_result: '{0} = {1}'
+convert_invalid_input: 'Cannot read the input. Example: {0}'
+convert_unknown_unit: 'Unknown unit: {0}'
+convert_unknown_unit_suggest: 'Unknown unit: {0}. Did you mean {1}?'
+convert_invalid_unit: 'Cannot read the unit {0}.'
+convert_no_targets: 'The bot knows no common units for {0}. Add a target unit.'
+convert_rates_unavailable: Currency rates are not available yet. Try again later.
 convert_overflow: The number is too large to convert.
-convert_type_error: 'Cannot convert {0} to {1}: types of unit are not equal'
-convertlist: Units which can be used by the converter
+convert_type_error: 'Cannot convert {0} to {1}: the units measure different quantities.'
+convertlist_title: 'Units: {0}'
+convertlist_prefixes: '`*` The unit accepts SI prefixes, for example `k`, `M`, `m` and `µ`. You can combine units, for example `m2`, `km/h` or `kWh`.'

@@ -1,111 +1,207 @@
 ar:
-  convert: '{0} {1} يساوي {2} {3}'
-  convert_not_found: 'تعذّر تحويل {0} إلى {1}: الوحدات غير موجودة'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'لا يمكن قراءة المدخل. مثال: {0}'
+  convert_unknown_unit: 'وحدة غير معروفة: {0}'
+  convert_unknown_unit_suggest: 'وحدة غير معروفة: {0}. هل تقصد {1}؟'
+  convert_invalid_unit: 'لا يمكن قراءة الوحدة {0}.'
+  convert_no_targets: 'لا يعرف البوت أي وحدات شائعة لـ {0}. أضف وحدة هدف.'
+  convert_rates_unavailable: أسعار العملات غير متاحة بعد. حاول مرة أخرى لاحقًا.
   convert_overflow: الرقم كبير جداً بحيث يتعذّر تحويله.
-  convert_type_error: 'تعذّر تحويل {0} إلى {1}: نوعا الوحدة غير متطابقين'
-  convertlist: الوحدات التي يمكن استخدامها مع المحوّل
+  convert_type_error: 'لا يمكن تحويل {0} إلى {1}: الوحدات تقيس كميات مختلفة.'
+  convertlist_title: 'الوحدات: {0}'
+  convertlist_prefixes: '`*` تقبل الوحدة بادئات SI، مثل `k` و `M` و `m` و `µ`. يمكنك دمج الوحدات، مثل `m2` أو `km/h` أو `kWh`.'
 
 de-DE:
-  convert: '{0} {1} ist gleich {2} {3}'
-  convert_not_found: 'Kann {0} nicht in {1} konvertieren: Einheiten nicht gefunden'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Die Eingabe kann nicht gelesen werden. Beispiel: {0}'
+  convert_unknown_unit: 'Unbekannte Einheit: {0}'
+  convert_unknown_unit_suggest: 'Unbekannte Einheit: {0}. Meintest du {1}?'
+  convert_invalid_unit: 'Die Einheit {0} kann nicht gelesen werden.'
+  convert_no_targets: 'Der Bot kennt keine gängigen Einheiten für {0}. Füge eine Zieleinheit hinzu.'
+  convert_rates_unavailable: Wechselkurse sind noch nicht verfügbar. Versuche es später erneut.
   convert_overflow: Die Zahl ist zu groß zum Umrechnen.
-  convert_type_error: 'Kann {0} nicht in {1} konvertieren: Art der Einheiten nicht gleich'
-  convertlist: Einheiten die konvertiert werden können
+  convert_type_error: '{0} kann nicht in {1} umgerechnet werden: Die Einheiten messen verschiedene Größen.'
+  convertlist_title: 'Einheiten: {0}'
+  convertlist_prefixes: '`*` Die Einheit akzeptiert SI-Präfixe, zum Beispiel `k`, `M`, `m` und `µ`. Du kannst Einheiten kombinieren, zum Beispiel `m2`, `km/h` oder `kWh`.'
 
 es-ES:
-  convert: '{0} {1} es igual a {2} {3}'
-  convert_not_found: 'No pude convertir {0} a {1}: Unidades no encontradas'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'No puedo leer la entrada. Ejemplo: {0}'
+  convert_unknown_unit: 'Unidad desconocida: {0}'
+  convert_unknown_unit_suggest: 'Unidad desconocida: {0}. ¿Querías decir {1}?'
+  convert_invalid_unit: 'No puedo leer la unidad {0}.'
+  convert_no_targets: 'El bot no conoce unidades comunes para {0}. Añade una unidad de destino.'
+  convert_rates_unavailable: Los tipos de cambio aún no están disponibles. Inténtalo más tarde.
   convert_overflow: El número es demasiado grande para convertirlo.
-  convert_type_error: 'No pude convertir {0} a  {1}: el tipo de unidad no es igual.'
-  convertlist: Unidades que pueden ser usadas por el conversor
+  convert_type_error: 'No puedo convertir {0} a {1}: las unidades miden magnitudes diferentes.'
+  convertlist_title: 'Unidades: {0}'
+  convertlist_prefixes: '`*` La unidad acepta prefijos SI, por ejemplo `k`, `M`, `m` y `µ`. Puedes combinar unidades, por ejemplo `m2`, `km/h` o `kWh`.'
 
 fr-FR:
-  convert: '{0} {1} est égal à {2} {3}'
-  convert_not_found: 'Impossible de convertir {0} vers {1}: unités introuvables'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Impossible de lire l''entrée. Exemple : {0}'
+  convert_unknown_unit: 'Unité inconnue : {0}'
+  convert_unknown_unit_suggest: 'Unité inconnue : {0}. Voulais-tu dire {1} ?'
+  convert_invalid_unit: 'Impossible de lire l''unité {0}.'
+  convert_no_targets: 'Le bot ne connaît aucune unité courante pour {0}. Ajoute une unité cible.'
+  convert_rates_unavailable: Les taux de change ne sont pas encore disponibles. Réessaie plus tard.
   convert_overflow: Le nombre est trop grand pour être converti.
-  convert_type_error: 'Impossible de convertir {0} vers {1}: le type d''unité n''est pas égal'
-  convertlist: Unités qui peuvent être converties par le convertisseur
+  convert_type_error: 'Impossible de convertir {0} en {1} : les unités mesurent des quantités différentes.'
+  convertlist_title: 'Unités : {0}'
+  convertlist_prefixes: '`*` L''unité accepte les préfixes SI, par exemple `k`, `M`, `m` et `µ`. Tu peux combiner des unités, par exemple `m2`, `km/h` ou `kWh`.'
 
 id-ID:
-  convert: '{0} {1} sama dengan {2} {3}'
-  convert_not_found: 'Tidak bisa mengonversi {0} ke {1}: satuan tidak ditemukan'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Gak bisa baca inputnya. Contoh: {0}'
+  convert_unknown_unit: 'Satuan gak dikenal: {0}'
+  convert_unknown_unit_suggest: 'Satuan gak dikenal: {0}. Maksudnya {1}?'
+  convert_invalid_unit: 'Gak bisa baca satuan {0}.'
+  convert_no_targets: 'Bot gak tahu satuan umum untuk {0}. Tambahin satuan tujuan.'
+  convert_rates_unavailable: Kurs mata uang belum tersedia. Coba lagi nanti.
   convert_overflow: Angkanya terlalu besar untuk dikonversi.
-  convert_type_error: 'Tidak bisa mengonversi {0} ke {1}: tipe satuan tidak sama'
-  convertlist: Satuan yang bisa digunakan oleh konverter
+  convert_type_error: 'Gak bisa konversi {0} ke {1}: satuannya ngukur besaran yang beda.'
+  convertlist_title: 'Satuan: {0}'
+  convertlist_prefixes: '`*` Satuan ini menerima awalan SI, contohnya `k`, `M`, `m` dan `µ`. Kamu bisa gabungin satuan, contohnya `m2`, `km/h` atau `kWh`.'
 
 ja-JP:
-  convert: '{0} {1} は {2} {3}'
-  convert_not_found: '{0}から{1}に変換できません: 単位がみつかりません'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: '入力が読み取れないよ。例: {0}'
+  convert_unknown_unit: '不明な単位: {0}'
+  convert_unknown_unit_suggest: '不明な単位: {0}。もしかして {1}?'
+  convert_invalid_unit: '単位 {0} が読み取れないよ。'
+  convert_no_targets: '{0} の一般的な単位はボットにはわからないよ。変換先の単位を追加してね。'
+  convert_rates_unavailable: 為替レートはまだ利用できないよ。後でもう一度試してね。
   convert_overflow: 数値が大きすぎて変換できません。
-  convert_type_error: '{0}から{1}に変換できません: 単位の種類が同じではありません'
-  convertlist: コンバータで使用できる単位
+  convert_type_error: '{0} を {1} に変換できないよ: 単位が測る量が違うんだ。'
+  convertlist_title: '単位: {0}'
+  convertlist_prefixes: '`*` この単位は SI 接頭辞に対応してるよ。例えば `k`、`M`、`m`、`µ` など。単位は組み合わせられるよ。例えば `m2`、`km/h`、`kWh` など。'
 
 ko-KR:
-  convert: '{0} {1}은(는) {2} {3}과(와) 같아요'
-  convert_not_found: '{0}을(를) {1}(으)로 변환할 수 없어요: 단위를 찾을 수 없어요'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: '입력을 읽을 수 없어. 예: {0}'
+  convert_unknown_unit: '알 수 없는 단위: {0}'
+  convert_unknown_unit_suggest: '알 수 없는 단위: {0}. 혹시 {1}?'
+  convert_invalid_unit: '단위 {0}을(를) 읽을 수 없어.'
+  convert_no_targets: '{0}의 일반적인 단위를 봇이 몰라. 변환할 단위를 추가해 줘.'
+  convert_rates_unavailable: 환율은 아직 사용할 수 없어. 나중에 다시 시도해 줘.
   convert_overflow: 숫자가 너무 커서 변환할 수 없어요.
-  convert_type_error: '{0}을(를) {1}(으)로 변환할 수 없어요: 단위 유형이 같지 않아요'
-  convertlist: 변환기에서 사용할 수 있는 단위 목록
+  convert_type_error: '{0}을(를) {1}(으)로 변환할 수 없어: 단위가 재는 양이 달라.'
+  convertlist_title: '단위: {0}'
+  convertlist_prefixes: '`*` 이 단위는 SI 접두사를 지원해. 예를 들어 `k`, `M`, `m`, `µ` 같은 것들이야. 단위를 조합할 수도 있어. 예를 들어 `m2`, `km/h`, `kWh`처럼.'
 
 pl-PL:
-  convert: '{0} {1} to {2} {3}'
-  convert_not_found: 'Nie można przekonwertować {0} na {1}: nie znaleziono jednostek'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Nie mogę odczytać danych wejściowych. Przykład: {0}'
+  convert_unknown_unit: 'Nieznana jednostka: {0}'
+  convert_unknown_unit_suggest: 'Nieznana jednostka: {0}. Miałeś na myśli {1}?'
+  convert_invalid_unit: 'Nie mogę odczytać jednostki {0}.'
+  convert_no_targets: 'Bot nie zna typowych jednostek dla {0}. Dodaj jednostkę docelową.'
+  convert_rates_unavailable: Kursy walut nie są jeszcze dostępne. Spróbuj ponownie później.
   convert_overflow: Ta liczba jest za duża, aby ją przekonwertować.
-  convert_type_error: 'Nie można przekonwertować {0} na {1}: typy jednostek nie są takie same'
-  convertlist: Jednostki dostępne do konwersji
+  convert_type_error: 'Nie mogę zamienić {0} na {1}: te jednostki mierzą różne wielkości.'
+  convertlist_title: 'Jednostki: {0}'
+  convertlist_prefixes: '`*` Ta jednostka obsługuje przedrostki SI, na przykład `k`, `M`, `m` i `µ`. Możesz łączyć jednostki, na przykład `m2`, `km/h` lub `kWh`.'
 
 pt-BR:
-  convert: '{0} {1} equivale a {2} {3}'
-  convert_not_found: 'Não foi possível converter {0} para {1}: unidades não encontradas'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Não consigo ler a entrada. Exemplo: {0}'
+  convert_unknown_unit: 'Unidade desconhecida: {0}'
+  convert_unknown_unit_suggest: 'Unidade desconhecida: {0}. Você quis dizer {1}?'
+  convert_invalid_unit: 'Não consigo ler a unidade {0}.'
+  convert_no_targets: 'O bot não conhece unidades comuns para {0}. Adicione uma unidade de destino.'
+  convert_rates_unavailable: As taxas de câmbio ainda não estão disponíveis. Tente de novo mais tarde.
   convert_overflow: O número é grande demais para converter.
-  convert_type_error: 'Não foi possível converter {0} para {1}: os tipos de unidade não são comparáveis'
-  convertlist: Unidades com as quais o conversor trabalha
+  convert_type_error: 'Não consigo converter {0} para {1}: as unidades medem grandezas diferentes.'
+  convertlist_title: 'Unidades: {0}'
+  convertlist_prefixes: '`*` A unidade aceita prefixos SI, por exemplo `k`, `M`, `m` e `µ`. Você pode combinar unidades, por exemplo `m2`, `km/h` ou `kWh`.'
 
 ru-RU:
-  convert: '{0} {1} равно {2} {3}'
-  convert_not_found: 'Невозможно преобразовать {0} в {1}: единиц измерения не найдено'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Не могу прочитать ввод. Пример: {0}'
+  convert_unknown_unit: 'Неизвестная единица: {0}'
+  convert_unknown_unit_suggest: 'Неизвестная единица: {0}. Может, ты имел в виду {1}?'
+  convert_invalid_unit: 'Не могу прочитать единицу {0}.'
+  convert_no_targets: 'Бот не знает обычных единиц для {0}. Добавь целевую единицу.'
+  convert_rates_unavailable: Курсы валют пока недоступны. Попробуй позже.
   convert_overflow: Число слишком большое для преобразования.
-  convert_type_error: 'Невозможно преобразовать {0} в {1}: типы единиц измерения не равны'
-  convertlist: Единицы, которые можно использовать при конвертировании
+  convert_type_error: 'Не могу перевести {0} в {1}: единицы измеряют разные величины.'
+  convertlist_title: 'Единицы: {0}'
+  convertlist_prefixes: '`*` Единица принимает приставки СИ, например `k`, `M`, `m` и `µ`. Можно комбинировать единицы, например `m2`, `km/h` или `kWh`.'
 
 sr-Cyrl-RS:
-  convert: '{0} {1} је једнако {2} {3}'
-  convert_not_found: 'Не могу конвертовати {0} у {1}: јединице нису пронађене'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Не могу да прочитам унос. Пример: {0}'
+  convert_unknown_unit: 'Непозната јединица: {0}'
+  convert_unknown_unit_suggest: 'Непозната јединица: {0}. Да ли си мислио {1}?'
+  convert_invalid_unit: 'Не могу да прочитам јединицу {0}.'
+  convert_no_targets: 'Бот не зна уобичајене јединице за {0}. Додај циљну јединицу.'
+  convert_rates_unavailable: Курсеви валута још нису доступни. Покушај поново касније.
   convert_overflow: Број је превелик да би се конвертовао.
-  convert_type_error: 'Не могу конвертовати {0} у {1}: типови јединица нису исти'
-  convertlist: Јединице које конвертер може да користи
+  convert_type_error: 'Не могу да претворим {0} у {1}: јединице мере различите величине.'
+  convertlist_title: 'Јединице: {0}'
+  convertlist_prefixes: '`*` Јединица прихвата SI префиксе, на пример `k`, `M`, `m` и `µ`. Можеш да комбинујеш јединице, на пример `m2`, `km/h` или `kWh`.'
 
 tr-TR:
-  convert: '{0} {1}, {2} {3} değerindedir'
-  convert_not_found: '{0} biriminden {1} birimine dönüştürülemiyor: birimler bulunamadı'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Girdiyi okuyamıyorum. Örnek: {0}'
+  convert_unknown_unit: 'Bilinmeyen birim: {0}'
+  convert_unknown_unit_suggest: 'Bilinmeyen birim: {0}. {1} mi demek istedin?'
+  convert_invalid_unit: '{0} birimini okuyamıyorum.'
+  convert_no_targets: 'Bot {0} için ortak birim bilmiyor. Bir hedef birim ekle.'
+  convert_rates_unavailable: Döviz kurları henüz mevcut değil. Sonra tekrar dene.
   convert_overflow: Sayı dönüştürülemeyecek kadar büyük.
-  convert_type_error: '{0} biriminden {1} birimine dönüştürülemiyor: birim türleri eşleşmiyor'
-  convertlist: Dönüştürücü tarafından kullanılabilecek birimler
+  convert_type_error: '{0} birimini {1} birimine çeviremiyorum: birimler farklı büyüklükleri ölçüyor.'
+  convertlist_title: 'Birimler: {0}'
+  convertlist_prefixes: '`*` Bu birim SI öneklerini kabul eder, örneğin `k`, `M`, `m` ve `µ`. Birimleri birleştirebilirsin, örneğin `m2`, `km/h` veya `kWh`.'
 
 ts-TS:
-  convert: '{0} {1} equals {2} {3}.'
-  convert_not_found: 'Can''t convert {0} to {1} - units not found.'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'I can''t read that input. Try something like {0}.'
+  convert_unknown_unit: 'Never heard of that unit: {0}.'
+  convert_unknown_unit_suggest: 'Hmph, that''s not a unit I know: {0}. Did you mean {1}?'
+  convert_invalid_unit: 'I can''t read the unit {0}.'
+  convert_no_targets: 'I know no common units for {0}. Add a target unit.'
+  convert_rates_unavailable: Currency rates aren't ready yet. Try again later, okay?
   convert_overflow: Hmph. That number is way too big to convert.
-  convert_type_error: 'Can''t convert {0} to {1} - they''re different unit types, b-baka!'
-  convertlist: Units available for the converter.
+  convert_type_error: 'Don''t be ridiculous, you can''t convert {0} to {1}. Those measure different things.'
+  convertlist_title: 'Units: {0}'
+  convertlist_prefixes: '`*` This unit accepts SI prefixes, for example `k`, `M`, `m` and `µ`. Combine units like `m2`, `km/h` or `kWh`.'
 
 uk-UA:
-  convert: '{0} {1} дорівнює {2} {3}'
-  convert_not_found: 'Не вдалося конвертувати {0} в {1}: одиниці не знайдено'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Не можу прочитати введення. Наприклад: {0}'
+  convert_unknown_unit: 'Невідома одиниця: {0}'
+  convert_unknown_unit_suggest: 'Невідома одиниця: {0}. Можливо, ти мав на увазі {1}?'
+  convert_invalid_unit: 'Не можу прочитати одиницю {0}.'
+  convert_no_targets: 'Бот не знає спільних одиниць для {0}. Додай цільову одиницю.'
+  convert_rates_unavailable: Курси валют ще недоступні. Спробуй пізніше.
   convert_overflow: Число занадто велике для конвертації.
-  convert_type_error: 'Не вдалося конвертувати {0} в {1}: типи одиниць не збігаються'
-  convertlist: Одиниці, які можна використовувати для конвертації
+  convert_type_error: 'Не можу перевести {0} у {1}: ці одиниці вимірюють різні величини.'
+  convertlist_title: 'Одиниці: {0}'
+  convertlist_prefixes: '`*` Ця одиниця приймає префікси SI, наприклад `k`, `M`, `m` та `µ`. Можна поєднувати одиниці, наприклад `m2`, `km/h` або `kWh`.'
 
 vi-VN:
-  convert: '{0} {1} bằng {2} {3}'
-  convert_not_found: 'Không thể chuyển đổi {0} sang {1}: không tìm thấy đơn vị'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: 'Không đọc được nội dung nhập. Ví dụ: {0}'
+  convert_unknown_unit: 'Đơn vị không xác định: {0}'
+  convert_unknown_unit_suggest: 'Đơn vị không xác định: {0}. Có phải bạn muốn nói {1}?'
+  convert_invalid_unit: 'Không đọc được đơn vị {0}.'
+  convert_no_targets: 'Bot không biết đơn vị phổ biến nào cho {0}. Hãy thêm đơn vị đích.'
+  convert_rates_unavailable: Tỷ giá tiền tệ chưa có sẵn. Hãy thử lại sau.
   convert_overflow: Số quá lớn để chuyển đổi.
-  convert_type_error: 'Không thể chuyển đổi {0} sang {1}: loại đơn vị không giống nhau'
-  convertlist: Các đơn vị có thể dùng cho bộ chuyển đổi
+  convert_type_error: 'Không thể đổi {0} sang {1}: các đơn vị đo những đại lượng khác nhau.'
+  convertlist_title: 'Đơn vị: {0}'
+  convertlist_prefixes: '`*` Đơn vị này chấp nhận tiền tố SI, ví dụ `k`, `M`, `m` và `µ`. Bạn có thể kết hợp các đơn vị, ví dụ `m2`, `km/h` hoặc `kWh`.'
 
 zh-CN:
-  convert: '{0} {1} 等於 {2} {3}'
-  convert_not_found: '無法把 {0} 轉換為 {1}：未知的單位'
+  convert_result: '{0} = {1}'
+  convert_invalid_input: '无法读取输入。示例：{0}'
+  convert_unknown_unit: '未知单位：{0}'
+  convert_unknown_unit_suggest: '未知单位：{0}。你是指 {1} 吗？'
+  convert_invalid_unit: '无法读取单位 {0}。'
+  convert_no_targets: '机器人不知道 {0} 的常用单位。请添加一个目标单位。'
+  convert_rates_unavailable: 货币汇率尚不可用。请稍后再试。
   convert_overflow: 数字太大，无法转换。
-  convert_type_error: '無法把 {0} 轉換為 {1}：單位種類不同'
-  convertlist: 轉換器可用的單位
+  convert_type_error: '无法将 {0} 转换为 {1}：这些单位测量的是不同的量。'
+  convertlist_title: '单位：{0}'
+  convertlist_prefixes: '`*` 该单位接受 SI 前缀，例如 `k`、`M`、`m` 和 `µ`。你可以组合单位，例如 `m2`、`km/h` 或 `kWh`。'

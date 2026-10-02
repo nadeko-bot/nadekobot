@@ -2,6 +2,33 @@
 
 *a,c,f,r,o,d*
 
+## [7.4.3] - TBD
+
+### Added
+
+- The AI agent can convert units and currencies.
+
+### Changed
+
+- `.convert` accepts more units and input forms.
+    - accepts `5 km mi`, `5km to mi` and the old `km mi 5` order
+    - accepts SI prefixes and combined units like `km/h`, `kWh` and `USD/gal`
+    - shows common units when you give no target unit
+- `.convertlist` shows one unit category per page.
+- `.convert` supports about 160 currencies and gold, silver, platinum and palladium.
+
+### Fixed
+
+- `.convert` gives more exact results and suggests a unit when it does not know one.
+
+### Removed
+
+- `.convert` no longer accepts the regional area units aankadam, chatak, kottah, guntha, ground, marla, kanal, bigha and biswa.
+
+### Dev
+
+- The bot defines units in code. The bot no longer reads `data/units.json`.
+
 ## [7.4.2] - 01.10.2026
 
 ### Changed

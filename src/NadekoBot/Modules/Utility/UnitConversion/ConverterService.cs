@@ -1,71 +1,111 @@
-﻿using NadekoBot.Common.ModuleBehaviors;
-using NadekoBot.Modules.Utility.Common;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using NadekoBot.Common.ModuleBehaviors;
+using NadekoBot.Modules.Utility.UnitConversion;
 
 namespace NadekoBot.Modules.Utility.Services;
 
 public enum ConvertStatus
 {
     Ok,
-    NotFound,
-    TypeMismatch,
-    Overflow
+    UnknownUnit,
+    InvalidExpression,
+    DimensionMismatch,
+    RatesUnavailable,
+    NotFinite,
+    NoCommonTargets
 }
 
-public readonly record struct ConvertResult(
-    ConvertStatus Status,
-    ConvertUnit? From = null,
-    ConvertUnit? To = null,
-    decimal Value = 0);
+public readonly struct ConvertResult
+{
+    public ConvertStatus Status { get; init; }
+    public ResolvedUnit From { get; init; }
+    public ResolvedUnit To { get; init; }
+    public double Value { get; init; }
+    public string? FailedToken { get; init; }
+    public string? Suggestion { get; init; }
+}
+
+public readonly record struct CommonConversion(ResolvedUnit Unit, string Symbol, double Value);
+
+public readonly struct CommonConvertResult
+{
+    public ConvertStatus Status { get; init; }
+    public ResolvedUnit From { get; init; }
+    public CommonConversion[] Targets { get; init; }
+    public string? FailedToken { get; init; }
+    public string? Suggestion { get; init; }
+}
 
 public sealed class ConverterService(
-    DiscordSocketClient client,
+    IPubSub pubSub,
     IBotCache cache,
-    IHttpClientFactory httpFactory) : INService, IReadyExecutor
+    IHttpClientFactory httpFactory,
+    ShardData shardData) : INService, IReadyExecutor
 {
-    public const string UNITS_PATH = "data/units.json";
-    private const string CURRENCY_TYPE = "currency";
-    private const string TEMPERATURE_TYPE = "temperature";
-    private const int RESULT_DECIMALS = 4;
-
-    private static readonly TypedKey<List<ConvertUnit>> _currencyKey = new("convert:currency");
-
+    private static readonly TypedKey<CurrencyRatesDto> _ratesKey = new("convert:rates:v2");
+    private static readonly Dimension _fuelDim = new(length: -2);
+    private static readonly Dimension _fuelInverseDim = _fuelDim.Inverse();
     private static readonly TimeSpan _updateInterval = TimeSpan.FromHours(12);
     private static readonly TimeSpan _retryInterval = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan _requestTimeout = TimeSpan.FromSeconds(30);
 
-    // loaded on every shard, so the fixed units never depend on the currency rate service
-    private volatile ConvertUnit[] _staticUnits = [];
+    private CurrencyRates _rates = CurrencyRates.Empty;
+
+    public CurrencyRates Rates
+        => Volatile.Read(ref _rates);
 
     public async Task OnReadyAsync()
     {
-        await LoadStaticUnitsAsync();
+        await pubSub.Sub(_ratesKey, OnRatesPublishedAsync);
 
-        if (client.ShardId == 0)
+        if ((await cache.GetAsync(_ratesKey)).TryGetValue(out var cached))
+            ApplyRates(cached);
+
+        if (shardData.ShardId == 0)
             _ = Task.Run(UpdateLoopInternalAsync);
     }
 
-    public async Task LoadStaticUnitsAsync()
+    private ValueTask OnRatesPublishedAsync(CurrencyRatesDto dto)
     {
-        try
+        ApplyRates(dto);
+        return ValueTask.CompletedTask;
+    }
+
+    // Cache reads and pub/sub messages can arrive in any order, so only a newer snapshot replaces the current one.
+    public void ApplyRates(CurrencyRatesDto dto)
+    {
+        var next = CurrencyRates.FromDto(dto);
+        if (next.IsEmpty)
+            return;
+
+        while (true)
         {
-            await using var stream = File.OpenRead(UNITS_PATH);
-            _staticUnits = await JsonSerializer.DeserializeAsync<ConvertUnit[]>(stream) ?? [];
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Unable to load {UnitsPath}", UNITS_PATH);
+            var cur = Volatile.Read(ref _rates);
+            if (!cur.IsEmpty && cur.FetchedAt >= next.FetchedAt)
+                return;
+
+            if (ReferenceEquals(Interlocked.CompareExchange(ref _rates, next, cur), cur))
+                return;
         }
     }
 
     private async Task UpdateLoopInternalAsync()
     {
+        var current = Rates;
+        var age = DateTime.UtcNow - current.FetchedAt;
+        if (!current.IsEmpty && age < _updateInterval)
+            await Task.Delay(_updateInterval - age);
+
         while (true)
         {
             var delay = _updateInterval;
             try
             {
-                await UpdateCurrencyInternalAsync();
+                if (!await RefreshRatesAsync())
+                {
+                    Log.Warning("No currency rate source returned valid rates for .convert");
+                    delay = _retryInterval;
+                }
             }
             catch (Exception ex)
             {
@@ -77,136 +117,187 @@ public sealed class ConverterService(
         }
     }
 
-    private async Task UpdateCurrencyInternalAsync()
+    // Keeps the current snapshot when every source fails.
+    public async Task<bool> RefreshRatesAsync()
     {
         using var http = httpFactory.CreateClient();
-        var res = await http.GetStringAsync("https://convertapi.nadeko.bot/latest");
-        var rates = JsonSerializer.Deserialize<Rates>(res);
-        if (rates?.Base is null || rates.ConversionRates is null)
-            return;
+        http.Timeout = _requestTimeout;
 
-        var units = new List<ConvertUnit>(rates.ConversionRates.Count + 1)
-        {
-            new()
-            {
-                Triggers = [rates.Base],
-                Modifier = decimal.One,
-                UnitType = CURRENCY_TYPE
-            }
-        };
+        // The ECB snapshot is fetched at most once per refresh, as a check for other sources or as the last resort.
+        (CurrencyRatesDto? Dto, CurrencyRates? Rates)? reference = null;
 
-        foreach (var (code, rate) in rates.ConversionRates)
+        foreach (var source in RatesSources.All)
         {
-            if (rate <= 0 || string.Equals(code, rates.Base, StringComparison.OrdinalIgnoreCase))
+            var (dto, parsed) = source.IsReference
+                ? reference ??= await TryFetchInternalAsync(http, source)
+                : await TryFetchInternalAsync(http, source);
+
+            if (dto is null || parsed is null)
                 continue;
 
-            units.Add(new()
+            if (!source.IsReference)
             {
-                Triggers = [code],
-                Modifier = rate,
-                UnitType = CURRENCY_TYPE
-            });
-        }
-
-        await cache.AddAsync(_currencyKey, units);
-    }
-
-    private async Task<IReadOnlyList<ConvertUnit>> GetCurrencyUnitsAsync()
-        => (await cache.GetAsync(_currencyKey)).TryGetValue(out var list)
-            ? list
-            : [];
-
-    public async Task<IReadOnlyList<ConvertUnit>> GetUnitsAsync()
-    {
-        var currency = await GetCurrencyUnitsAsync();
-        var staticUnits = _staticUnits;
-        var all = new List<ConvertUnit>(staticUnits.Length + currency.Count);
-        all.AddRange(staticUnits);
-        all.AddRange(currency);
-        return all;
-    }
-
-    private static ConvertUnit? Find(IReadOnlyList<ConvertUnit> units, string trigger)
-    {
-        foreach (var unit in units)
-        {
-            foreach (var t in unit.Triggers)
-            {
-                if (string.Equals(t, trigger, StringComparison.InvariantCultureIgnoreCase))
-                    return unit;
+                reference ??= await TryFetchInternalAsync(http, RatesSources.Reference);
+                if (reference.Value.Rates is { } refRates
+                    && !RatesSources.MatchesReference(parsed, refRates, out var code, out var deviation))
+                {
+                    Log.Warning("Rates from {Source} differ from ECB rates by {Deviation:P1} for {Code}",
+                        source.Name, deviation, code);
+                    continue;
+                }
             }
+
+            dto.FetchedAt = DateTime.UtcNow;
+            ApplyRates(dto);
+            await cache.AddAsync(_ratesKey, dto);
+            await pubSub.Pub(_ratesKey, dto);
+            return true;
         }
 
-        return null;
+        return false;
     }
 
-    public async Task<ConvertResult> ConvertAsync(string origin, string target, decimal value)
+    private static async Task<(CurrencyRatesDto?, CurrencyRates?)> TryFetchInternalAsync(
+        HttpClient http,
+        RatesSource source)
     {
-        var staticUnits = _staticUnits;
-        var from = Find(staticUnits, origin);
-        var to = Find(staticUnits, target);
-
-        if (from is null || to is null)
-        {
-            var currency = await GetCurrencyUnitsAsync();
-            from ??= Find(currency, origin);
-            to ??= Find(currency, target);
-        }
-
-        if (from is null || to is null)
-            return new(ConvertStatus.NotFound);
-
-        if (!string.Equals(from.UnitType, to.UnitType, StringComparison.Ordinal))
-            return new(ConvertStatus.TypeMismatch, from, to);
-
         try
         {
-            var res = Math.Round(Compute(from, to, value), RESULT_DECIMALS);
-            return new(ConvertStatus.Ok, from, to, res);
+            await using var stream = await http.GetStreamAsync(source.Url);
+            using var doc = await JsonDocument.ParseAsync(stream);
+            var dto = source.Parse(doc.RootElement);
+            if (dto is null)
+            {
+                Log.Warning("Currency rate source {Source} returned an unknown format", source.Name);
+                return default;
+            }
+
+            var rates = CurrencyRates.FromDto(dto);
+            if (!RatesSources.HasCoreCodes(rates))
+            {
+                Log.Warning("Currency rate source {Source} is missing major currencies", source.Name);
+                return default;
+            }
+
+            return (dto, rates);
         }
-        catch (OverflowException)
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException)
         {
-            return new(ConvertStatus.Overflow, from, to);
+            Log.Warning("Currency rate source {Source} failed: {Message}", source.Name, ex.Message);
+            return default;
         }
     }
 
-    private static decimal Compute(ConvertUnit from, ConvertUnit to, decimal value)
+    public ConvertResult Convert(ReadOnlySpan<char> from, ReadOnlySpan<char> to, double value)
     {
-        if (ReferenceEquals(from, to))
-            return value;
+        var rates = Rates;
+        if (!TryResolve(from, rates, out var fromUnit, out var fail)
+            || !TryResolve(to, rates, out var toUnit, out fail))
+            return fail;
 
-        if (from.UnitType == TEMPERATURE_TYPE)
+        var status = Compute(fromUnit, toUnit, value, out var result);
+        return new()
         {
-            // convert to kelvin first, then to the target
-            var kelvin = from.Triggers[0] switch
-            {
-                "C" => value + 273.15m,
-                "F" => (value + 459.67m) * (5m / 9m),
-                _ => value
-            };
+            Status = status,
+            From = fromUnit,
+            To = toUnit,
+            Value = result
+        };
+    }
 
-            return to.Triggers[0] switch
+    public CommonConvertResult ConvertToCommon(ReadOnlySpan<char> from, double value)
+    {
+        var rates = Rates;
+        if (!TryResolve(from, rates, out var fromUnit, out var fail))
+        {
+            return new()
             {
-                "C" => kelvin - 273.15m,
-                "F" => kelvin * (9m / 5m) - 459.67m,
-                _ => kelvin
+                Status = fail.Status,
+                Targets = [],
+                FailedToken = fail.FailedToken,
+                Suggestion = fail.Suggestion
             };
         }
 
-        return from.UnitType == CURRENCY_TYPE
-            ? value * to.Modifier / from.Modifier
-            : value * from.Modifier / to.Modifier;
+        var category = fromUnit.Kind == UnitKind.Unit
+            ? UnitCatalog.Units[fromUnit.UnitIndex].Category
+            : UnitCatalog.TryGetCategory(fromUnit.Dim, out var c)
+                ? c
+                : (UnitCategory?)null;
+
+        if (category is not { } cat || !UnitCatalog.CommonTargets.TryGetValue(cat, out var targetSymbols))
+            return new() { Status = ConvertStatus.NoCommonTargets, From = fromUnit, Targets = [] };
+
+        var buffer = new CommonConversion[targetSymbols.Length];
+        var count = 0;
+        foreach (var symbol in targetSymbols)
+        {
+            if (UnitExpressionParser.Parse(symbol, rates, out var target, out _) != ResolveStatus.Ok
+                || target.SameAs(fromUnit)
+                || Compute(fromUnit, target, value, out var converted) != ConvertStatus.Ok)
+                continue;
+
+            buffer[count++] = new(target, symbol, converted);
+        }
+
+        return new()
+        {
+            Status = count == 0 ? ConvertStatus.NoCommonTargets : ConvertStatus.Ok,
+            From = fromUnit,
+            Targets = count == buffer.Length ? buffer : buffer[..count]
+        };
     }
-}
 
-public class Rates
-{
-    [JsonPropertyName("base")]
-    public string? Base { get; set; }
+    private static bool TryResolve(
+        ReadOnlySpan<char> expr,
+        CurrencyRates rates,
+        out ResolvedUnit unit,
+        out ConvertResult fail)
+    {
+        expr = expr.Trim();
+        var status = UnitExpressionParser.Parse(expr, rates, out unit, out var failedRange);
+        if (status == ResolveStatus.Ok)
+        {
+            fail = default;
+            return true;
+        }
 
-    [JsonPropertyName("date")]
-    public DateTime Date { get; set; }
+        var failed = expr[failedRange];
+        fail = status switch
+        {
+            ResolveStatus.Unknown => new()
+            {
+                Status = ConvertStatus.UnknownUnit,
+                FailedToken = failed.ToString(),
+                Suggestion = UnitCatalog.Suggest(failed, rates)
+            },
+            ResolveStatus.RatesUnavailable => new() { Status = ConvertStatus.RatesUnavailable },
+            _ => new() { Status = ConvertStatus.InvalidExpression, FailedToken = expr.ToString() }
+        };
+        return false;
+    }
 
-    [JsonPropertyName("rates")]
-    public Dictionary<string, decimal>? ConversionRates { get; set; }
+    public static ConvertStatus Compute(in ResolvedUnit from, in ResolvedUnit to, double value, out double result)
+    {
+        if (from.Dim == to.Dim)
+            result = (value * from.Factor + from.Offset - to.Offset) / to.Factor;
+        else if (IsFuelEconomyPair(from, to) || IsFuelEconomyPair(to, from))
+            result = 1 / (value * from.Factor) / to.Factor;
+        else
+        {
+            result = 0;
+            return ConvertStatus.DimensionMismatch;
+        }
+
+        return double.IsFinite(result) ? ConvertStatus.Ok : ConvertStatus.NotFinite;
+    }
+
+    // Distance per volume and volume per distance convert through the reciprocal. Other inverse pairs,
+    // like seconds and hertz, stay a mismatch.
+    private static bool IsFuelEconomyPair(in ResolvedUnit distancePerVolume, in ResolvedUnit volumePerDistance)
+        => distancePerVolume.Dim == _fuelDim
+           && volumePerDistance.Dim == _fuelInverseDim
+           && (volumePerDistance.IsRatio
+               || (volumePerDistance.Kind == UnitKind.Unit
+                   && UnitCatalog.Units[volumePerDistance.UnitIndex].Category == UnitCategory.FuelEconomy));
 }

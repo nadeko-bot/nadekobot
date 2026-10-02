@@ -1,18 +1,19 @@
 convert:
   desc: |-
-    Convert quantities. Use `{0}convertlist` to see supported dimensions and currencies.
+    Converts a value from one unit or currency to another.
+    Give the value, the unit and the target unit. You can write `to` between the units.
+    If you give no target unit, the bot shows the value in common units.
+    The bot accepts SI prefixes (`km`, `MB`, `µs`) and combined units (`km/h`, `m2`, `USD/gal`).
+    Use `{0}convertlist` to see all units and currencies.
   ex:
-    - m km 1000
+    - 5 km to mi
   params:
-    - origin:
-        desc: The source unit to convert from.
-      target:
-        desc: The target unit or currency for the conversion.
-      value:
-        desc: The value to be converted.
+    - input:
+        desc: "The value, the unit and the target unit. For example `5 km mi`, `100km/h mph` or `20 C`."
 convertlist:
-  desc: List of the convertible dimensions and currencies.
+  desc: Shows all units and currencies which the converter accepts.
   ex:
     - ''
   params:
-    - {}
+    - page:
+        desc: "The page number to show. The default is 1."
