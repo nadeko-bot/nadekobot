@@ -57,7 +57,8 @@ public partial class Gambling
                 i.Dispose();
 
             var eb = CreateEmbed()
-                .WithOkColor();
+                .WithOkColor()
+                .AddField(GetText(strs.cards), string.Join(", ", cardObjects));
 
             var toSend = string.Empty;
             if (cardObjects.Count == 5)
@@ -69,9 +70,6 @@ public partial class Gambling
             eb.WithDescription(toSend)
               .WithAuthor(ctx.User)
               .WithImageUrl($"attachment://{imgName}");
-
-            if (count > 1)
-                eb.AddField(GetText(strs.cards), count.ToString(), true);
 
             await using var imageStream = await img.ToStreamAsync();
             await ctx.Channel.SendFileAsync(imageStream,

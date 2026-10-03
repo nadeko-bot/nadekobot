@@ -20,6 +20,7 @@
     - shows common units when you give no target unit
 - `.convertlist` shows one unit category per page.
 - `.convert` supports about 160 currencies and gold, silver, platinum and palladium.
+- `.draw` / `.drawnew` now show the names of the drawn cards as text.
 - `.stats` shows the current avatar of the bot.
 
 ### Fixed
