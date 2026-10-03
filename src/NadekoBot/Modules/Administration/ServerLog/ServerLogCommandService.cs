@@ -557,7 +557,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
             var embed = _sender.CreateEmbed()
                 .WithTitle("👥" + GetText(g, strs.avatar_changed))
-                .WithDescription($"{before.Username}#{before.Discriminator} | {before.Id}")
+                .WithDescription($"{before} | {before.Id}")
                 .WithFooter(CurrentTime(g))
                 .WithOkColor();
 
@@ -595,12 +595,12 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 var embed = _sender.CreateEmbed()
                     .WithOkColor()
                     .WithFooter(CurrentTime(before.Guild))
-                    .WithTitle($"{before.Username}#{before.Discriminator} | {before.Id}")
+                    .WithTitle($"{before} | {before.Id}")
                     .WithAuthor("👥 " + GetText(logChannel.Guild, strs.nick_change))
                     .AddField(GetText(logChannel.Guild, strs.old_nick),
-                        $"{before.Nickname}#{before.Discriminator}")
+                        before.DisplayName)
                     .AddField(GetText(logChannel.Guild, strs.new_nick),
-                        $"{after.Nickname}#{after.Discriminator}");
+                        after.DisplayName);
 
                 await _sender.Response(logChannel).Embed(embed).SendAsync();
             }
@@ -614,7 +614,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 var embed = _sender.CreateEmbed()
                     .WithOkColor()
                     .WithFooter(CurrentTime(before.Guild))
-                    .WithTitle($"{before.Username}#{before.Discriminator} | {before.Id}");
+                    .WithTitle($"{before} | {before.Id}");
 
                 if (before.Roles.Count < after.Roles.Count)
                 {
@@ -1081,7 +1081,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
             var embed = _sender.CreateEmbed()
                 .WithAuthor(mutes)
-                .WithTitle($"{usr.Username}#{usr.Discriminator} | {usr.Id}")
+                .WithTitle($"{usr} | {usr.Id}")
                 .WithFooter(CurrentTime(usr.Guild))
                 .WithOkColor();
 
@@ -1121,7 +1121,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
             var embed = _sender.CreateEmbed()
                 .WithAuthor(mutes)
-                .WithTitle($"{usr.Username}#{usr.Discriminator} | {usr.Id}")
+                .WithTitle($"{usr} | {usr.Id}")
                 .WithFooter(CurrentTime(usr.Guild))
                 .WithOkColor();
 

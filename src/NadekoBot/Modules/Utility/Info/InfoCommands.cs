@@ -149,7 +149,7 @@ public partial class Utility
                 return;
 
             var embed = CreateEmbed()
-                .AddField(GetText(strs.name), $"**{user.Username}**#{user.Discriminator}", true);
+                .AddField(GetText(strs.name), Format.Bold(user.ToString()), true);
             if (!string.IsNullOrWhiteSpace(user.Nickname))
                 embed.AddField(GetText(strs.nickname), user.Nickname, true);
 

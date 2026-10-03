@@ -24,6 +24,7 @@
 ### Fixed
 
 - `.convert` gives more exact results and suggests a unit when it does not know one.
+- `.userinfo` / `.uinfo` and server log messages no longer show `#0000` after usernames.
 
 ### Removed
 
