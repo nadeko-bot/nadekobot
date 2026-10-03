@@ -358,7 +358,7 @@ public partial class Utility : NadekoModule
         var eb = CreateEmbed()
             .WithOkColor()
             .WithAuthor($"NadekoBot v{StatsService.BotVersion}",
-                "https://cdn.nadeko.bot/other/avatar.png",
+                _client.CurrentUser.GetDisplayAvatarUrl(),
                 "https://nadeko.bot")
             .AddField(GetText(strs.author), _stats.Author, true)
             .AddField(GetText(strs.botid), _client.CurrentUser.Id.ToString(), true)
