@@ -8779,7 +8779,7 @@
       "Aliases": [
         ".convertlist"
       ],
-      "Description": "List of the convertible dimensions and currencies.",
+      "Description": "Shows all units and currencies which the converter accepts.",
       "Usage": [
         ".convertlist"
       ],
@@ -8792,9 +8792,9 @@
       "Aliases": [
         ".convert"
       ],
-      "Description": "Convert quantities. Use `.convertlist` to see supported dimensions and currencies.",
+      "Description": "Converts a value from one unit or currency to another.\nGive the value, the unit and the target unit. You can write `to` between the units.\nIf you give no target unit, the bot shows the value in common units.\nThe bot accepts SI prefixes (`km`, `MB`, `µs`) and combined units (`km/h`, `m2`, `USD/gal`).\nUse `.convertlist` to see all units and currencies.",
       "Usage": [
-        ".convert m km 1000"
+        ".convert 5 km to mi"
       ],
       "Submodule": "UnitConverterCommands",
       "Module": "Utility",
