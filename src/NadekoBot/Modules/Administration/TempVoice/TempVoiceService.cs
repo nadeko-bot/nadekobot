@@ -36,6 +36,12 @@ public sealed class TempVoiceService(
     private const int DELETE_EVERY_TICKS = 5;
     private const int PRUNE_EVERY_TICKS = 300;
 
+    // A temp channel copies the hub overwrites, so these hub perms are also the bot's perms on the temp channel.
+    public const ChannelPermission REQUIRED_HUB_PERMS = ChannelPermission.ViewChannel
+                                                        | ChannelPermission.Connect
+                                                        | ChannelPermission.MoveMembers
+                                                        | ChannelPermission.ManageChannels;
+
     private static readonly OverwritePermissions _ownerPerms = new(
         connect: PermValue.Allow,
         manageChannel: PermValue.Allow,
@@ -242,6 +248,12 @@ public sealed class TempVoiceService(
         return elapsed >= ActionGap ? TimeSpan.Zero : ActionGap - elapsed;
     }
 
+    public static ChannelPermission MissingHubPerms(ChannelPermissions perms)
+        => (ChannelPermission)((ulong)REQUIRED_HUB_PERMS & ~perms.RawValue);
+
+    public bool IsHub(ulong channelId)
+        => _hubs.ContainsKey(channelId);
+
     public bool TryReserveSlot(ulong guildId)
     {
         if (_guildTempCount.AddOrUpdate(guildId, 1, static (_, c) => c + 1) <= MAX_TEMP_CHANNELS_PER_GUILD)
@@ -259,12 +271,15 @@ public sealed class TempVoiceService(
         var now = _time.GetTimestamp();
         foreach (var (channelId, since) in _emptySince)
         {
-            if (!_temps.TryGetValue(channelId, out var info)
-                || client.GetGuild(info.GuildId)?.GetVoiceChannel(channelId) is not { } ch)
+            if (!_temps.TryGetValue(channelId, out var info))
             {
                 _emptySince.TryRemove(channelId, out _);
                 continue;
             }
+
+            // a just created channel can be missing from the cache until its create event arrives
+            if (client.GetGuild(info.GuildId)?.GetVoiceChannel(channelId) is not { } ch)
+                continue;
 
             if (ch.ConnectedUsers.Count > 0)
             {
@@ -278,17 +293,7 @@ public sealed class TempVoiceService(
             if (!_emptySince.TryRemove(new KeyValuePair<ulong, long>(channelId, since)))
                 continue;
 
-            if (!await ForgetTempInternalAsync(channelId))
-                continue;
-
-            try
-            {
-                await ch.DeleteAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Warning(ex, "Failed to delete empty temp voice channel {ChannelId}", channelId);
-            }
+            await DeleteTempInternalAsync(ch);
         }
     }
 
@@ -354,12 +359,28 @@ public sealed class TempVoiceService(
 
     private async Task HandleHubJoinInternalAsync(SocketGuildUser user, SocketVoiceChannel hub)
     {
+        var missing = MissingHubPerms(user.Guild.CurrentUser.GetPermissions(hub));
+        if (missing != 0)
+        {
+            Log.Warning("Removing temp voice hub {ChannelId} in guild {GuildId}: missing permissions {Perms}",
+                hub.Id,
+                user.Guild.Id,
+                missing);
+            await RemoveHubInternalAsync(hub.Id);
+            return;
+        }
+
         if (_owned.TryGetValue((user.Guild.Id, user.Id), out var ownedId)
             && user.Guild.GetVoiceChannel(ownedId) is { } owned)
         {
-            await user.ModifyAsync(x => x.Channel = owned);
-            _emptySince.TryRemove(ownedId, out _);
-            return;
+            if (await TryMoveToOwnedInternalAsync(user, owned))
+            {
+                _emptySince.TryRemove(ownedId, out _);
+                return;
+            }
+
+            if (_temps.ContainsKey(ownedId))
+                return;
         }
 
         if (!TryReserveSlot(user.Guild.Id))
@@ -403,6 +424,9 @@ public sealed class TempVoiceService(
 
         TrackTemp(ch.Id, new(user.Guild.Id, user.Id));
 
+        // the member may never arrive, and then no leave event starts the delete delay
+        _emptySince[ch.Id] = _time.GetTimestamp();
+
         await using (var uow = db.GetDbContext())
         {
             await uow.GetTable<TempVoiceChannel>()
@@ -420,11 +444,73 @@ public sealed class TempVoiceService(
         }
         catch (Exception ex)
         {
-            // The member left the hub before the move, so nobody will ever leave the new channel.
             Log.Warning(ex, "Failed to move user {UserId} into temp voice channel {ChannelId}", user.Id, ch.Id);
-            if (await ForgetTempInternalAsync(ch.Id))
-                await ch.DeleteAsync();
+
+            // without this the member, still in the hub, is queued again and gets a new channel every cooldown
+            if (ex is HttpException { HttpCode: HttpStatusCode.Forbidden })
+                await RemoveHubInternalAsync(hub.Id);
+
+            _emptySince.TryRemove(ch.Id, out _);
+            await DeleteTempInternalAsync(ch);
         }
+    }
+
+    // When the bot can not use the owned channel any more, it forgets the channel, so the member gets a new one.
+    private async Task<bool> TryMoveToOwnedInternalAsync(SocketGuildUser user, SocketVoiceChannel owned)
+    {
+        var missing = MissingHubPerms(user.Guild.CurrentUser.GetPermissions(owned));
+        if (missing == 0)
+        {
+            try
+            {
+                await user.ModifyAsync(x => x.Channel = owned);
+                return true;
+            }
+            catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
+            {
+                missing = REQUIRED_HUB_PERMS;
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Failed to move user {UserId} into temp voice channel {ChannelId}", user.Id, owned.Id);
+                return false;
+            }
+        }
+
+        // the channel can still hold other members, so the bot stops tracking it instead of deleting it
+        Log.Warning("Forgetting temp voice channel {ChannelId} in guild {GuildId}: missing permissions {Perms}",
+            owned.Id,
+            user.Guild.Id,
+            missing);
+        await ForgetTempInternalAsync(owned.Id);
+        return false;
+    }
+
+    private async Task DeleteTempInternalAsync(IVoiceChannel ch)
+    {
+        try
+        {
+            await ch.DeleteAsync();
+        }
+        catch (HttpException ex) when (ex.DiscordCode == DiscordErrorCode.UnknownChannel)
+        {
+        }
+        catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
+        {
+            // a retry would only add invalid requests
+            Log.Warning(ex,
+                "No permission to delete temp voice channel {ChannelId} in guild {GuildId}. Delete it by hand",
+                ch.Id,
+                ch.GuildId);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to delete temp voice channel {ChannelId}, the bot tries again later", ch.Id);
+            _emptySince[ch.Id] = _time.GetTimestamp();
+            return;
+        }
+
+        await ForgetTempInternalAsync(ch.Id);
     }
 
     public static string TrimName(string name)

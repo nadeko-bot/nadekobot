@@ -21,6 +21,19 @@ public partial class Administration
                 return;
             }
 
+            if (!tvs.IsHub(channel.Id))
+            {
+                var botUser = await ctx.Guild.GetCurrentUserAsync();
+                var missing = TempVoiceService.MissingHubPerms(botUser.GetPermissions(channel));
+                if (missing != 0)
+                {
+                    await Response()
+                          .Error(strs.tempvoice_missing_perms(Format.Bold(channel.Name), Format.Code(missing.ToString())))
+                          .SendAsync();
+                    return;
+                }
+            }
+
             var result = await tvs.ToggleHubAsync(ctx.Guild.Id, channel.Id);
 
             switch (result)

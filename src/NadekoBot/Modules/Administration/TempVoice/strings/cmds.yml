@@ -6,6 +6,7 @@ tempvoice:
     Without a channel, the command uses your current voice channel.
     A server can have up to 5 hubs.
     A server can have up to 25 temporary voice channels at the same time.
+    The bot needs the View Channel, Connect, Move Members and Manage Channels permissions in the hub.
   ex:
     - ''
     - 'Create a room'

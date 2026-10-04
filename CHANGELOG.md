@@ -7,6 +7,10 @@
 ### Fixed
 
 - The AI agent now finds new commands on all shards after an update.
+- `.tempvoice` fixes
+    - refuses a hub where the bot lacks permissions
+    - removes the hub when the bot loses permissions
+    - deletes a new channel the member does not join
 
 ## [7.5.0] - 03.10.2026
 

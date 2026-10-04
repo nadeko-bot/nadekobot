@@ -144,4 +144,21 @@ public class TempVoiceTests
         Assert.That(trimmed, Is.EqualTo(new string('a', TempVoiceService.MAX_CHANNEL_NAME_LENGTH - 1)));
         Assert.That(TempVoiceService.TrimName("short"), Is.EqualTo("short"));
     }
+
+    [Test]
+    public void MissingHubPerms_ListsOnlyTheMissingRequiredPerms()
+    {
+        var all = new ChannelPermissions(viewChannel: true,
+            connect: true,
+            moveMembers: true,
+            manageChannel: true,
+            speak: true);
+        var noConnectNoView = new ChannelPermissions(moveMembers: true, manageChannel: true, speak: true);
+
+        Assert.That(TempVoiceService.MissingHubPerms(all), Is.EqualTo((ChannelPermission)0));
+        Assert.That(TempVoiceService.MissingHubPerms(noConnectNoView),
+            Is.EqualTo(ChannelPermission.ViewChannel | ChannelPermission.Connect));
+        Assert.That(TempVoiceService.MissingHubPerms(ChannelPermissions.None),
+            Is.EqualTo(TempVoiceService.REQUIRED_HUB_PERMS));
+    }
 }
