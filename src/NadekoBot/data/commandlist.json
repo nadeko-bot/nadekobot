@@ -1471,7 +1471,7 @@
         ".tempvoice",
         ".tvc"
       ],
-      "Description": "Sets a voice channel as a temporary voice hub, or removes the hub.\nWhen a member joins the hub, the bot creates a voice channel for that member and moves the member into it.\nThe member can rename, limit and manage the new channel. The bot deletes the channel 15 seconds after it becomes empty.\nWithout a channel, the command uses your current voice channel.\nA server can have up to 5 hubs.\nA server can have up to 25 temporary voice channels at the same time.",
+      "Description": "Sets a voice channel as a temporary voice hub, or removes the hub.\nWhen a member joins the hub, the bot creates a voice channel for that member and moves the member into it.\nThe member can rename, limit and manage the new channel. The bot deletes the channel 15 seconds after it becomes empty.\nWithout a channel, the command uses your current voice channel.\nA server can have up to 5 hubs.\nA server can have up to 25 temporary voice channels at the same time.\nThe bot needs the View Channel, Connect, Move Members and Manage Channels permissions in the hub.",
       "Usage": [
         ".tempvoice",
         ".tempvoice Create a room"
