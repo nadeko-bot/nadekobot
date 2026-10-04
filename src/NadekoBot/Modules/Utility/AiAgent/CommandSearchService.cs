@@ -19,7 +19,7 @@ public sealed class CommandSearchService(
     private const int NUM_CLASSES = 2;
     private const float BN_EPS = 1e-5f;
 
-    private static readonly TypedKey<bool> _reloadKey = new("cmdsearch.reload");
+    public static readonly TypedKey<bool> ReloadKey = new("cmdsearch.reload");
 
     // Bumped when the parsing changes but the file does not, to invalidate the cache once.
     private static readonly byte[] _indexSchemaSalt = "v2-prefixless"u8.ToArray();
@@ -45,7 +45,7 @@ public sealed class CommandSearchService(
 
     public Task OnReadyAsync()
     {
-        _ = pubSub.Sub(_reloadKey, OnReloadRequestedInternalAsync);
+        _ = pubSub.Sub(ReloadKey, OnReloadRequestedInternalAsync);
         _ = Task.Run(InitializeInternalAsync);
 
         if (shardData.ShardId == 0)
@@ -113,7 +113,7 @@ public sealed class CommandSearchService(
             if (!_headReady)
                 LoadClassificationHeadInternal();
 
-            await pubSub.Pub(_reloadKey, true);
+            await pubSub.Pub(ReloadKey, true);
         }
         catch (Exception ex)
         {
@@ -155,6 +155,13 @@ public sealed class CommandSearchService(
         if (commands.Length == 0)
         {
             Log.Warning("CommandSearch: No commands found in commandlist.json");
+            return;
+        }
+
+        // Remembering the hash of a list which was never indexed would make every later reload skip it.
+        if (!embedder.IsReady)
+        {
+            Log.Warning("CommandSearch: Embedding model is not ready, the command list will be indexed on the next reload");
             return;
         }
 
@@ -223,7 +230,10 @@ public sealed class CommandSearchService(
     {
         if (!File.Exists(INTENT_HEAD_PATH))
         {
-            Log.Warning("CommandSearch: Intent head not found at {Path}", INTENT_HEAD_PATH);
+            Log.Warning(
+                "CommandSearch: Intent head not found at {Path}. The AI agent will not start from replies or the bot name. "
+                + "Copy data/ai/intent-head.bin from the release into the data/ai folder and restart the bot",
+                INTENT_HEAD_PATH);
             return;
         }
 

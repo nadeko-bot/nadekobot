@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Text;
 using Nadeko.Common.Medusa;
 using NadekoBot.Common.ModuleBehaviors;
+using NadekoBot.Modules.Utility.AiAgent;
 using Newtonsoft.Json;
 
 namespace NadekoBot.Modules.Help;
@@ -11,7 +12,8 @@ public sealed partial class CommandListGenerator(
     CommandService cmds,
     IMedusaLoaderService medusae,
     IBotStrings strings,
-    ShardData shardData
+    ShardData shardData,
+    IPubSub pubSub
 ) : INService, IReadyExecutor
 {
     public async Task OnReadyAsync()
@@ -37,6 +39,9 @@ public sealed partial class CommandListGenerator(
         var tempPath = finalPath + ".tmp";
         await File.WriteAllTextAsync(tempPath, readableData);
         File.Move(tempPath, finalPath, overwrite: true);
+
+        // Shards which became ready before this write indexed the previous list.
+        await pubSub.Pub(CommandSearchService.ReloadKey, true);
     }
 
     // Human-readable downloadable list for .commandlist. Includes the prefix; not persisted.

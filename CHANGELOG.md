@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [7.5.1] - TBD
+
+### Fixed
+
+- The AI agent now finds new commands on all shards after an update.
+
 ## [7.5.0] - 03.10.2026
 
 ### Added
