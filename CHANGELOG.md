@@ -2,7 +2,7 @@
 
 *a,c,f,r,o,d*
 
-## [7.6.1] - TBD
+## [7.6.1] - 12.10.2026
 
 ### Added
 
@@ -28,7 +28,7 @@
 - On start, the bot resets config file values which break the bot to the default.
 - The bot sets a music cache size below 1 GB to 1 GB.
 - A music queue holds at most 500 tracks. The owner can change the limit.
-- `.remind` allows 25 active reminders per member, and 500 per server outside DMs.
+- `.remind` allows 10 active reminders per member, and 50 per server outside DMs.
 - `.quoteadd` / `.qa` / `.qadd` limits
     - keywords have at most 64 characters, quote text at most 4000
     - a server has at most 10000 quotes

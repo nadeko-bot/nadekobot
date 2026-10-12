@@ -10,8 +10,8 @@ namespace NadekoBot.Modules.Utility.Services;
 
 public class RemindService : INService, IReadyExecutor, IRemindService
 {
-    public const int MAX_REMINDERS_PER_USER = 25;
-    public const int MAX_REMINDERS_PER_SERVER = 500;
+    public const int MAX_REMINDERS_PER_USER = 10;
+    public const int MAX_REMINDERS_PER_SERVER = 50;
 
     private readonly Regex _regex =
         new(

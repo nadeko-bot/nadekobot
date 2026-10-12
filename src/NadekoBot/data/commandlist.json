@@ -3237,7 +3237,7 @@
       "Aliases": [
         ".shopadd"
       ],
-      "Description": "Adds an item to the shop.\nFirst you begin by specifying the type of the item you wish to add.\nAvailable types are role, list and command.\nIf the item is a role, specify a role id or a role name.\nIn case you're selling a command, and you need user's name, id etc, you can use the following placeholders:\n-     `%you%` - Buyer mention\n-     `%you.username%` - Buyer's username\n-     `%you.name%` - Buyer's global name\n-     `%you.nick%` - Buyer's display name\n90% of currency from each purchase will be received by the user who added the item to the shop. This is configurable by the bot owner",
+      "Description": "Adds an item to the shop.\nFirst you begin by specifying the type of the item you wish to add.\nAvailable types are role, list and command.\nIf the item is a role, specify a role id or a role name.\nIn case you're selling a command, and you need user's name, id etc, you can use the following placeholders:\n-     `%you%` - Buyer mention\n-     `%you.id%` - Buyer's id\nThe command cannot use the buyer's name, because the buyer chooses it. Owner-only commands do not run from the shop.\n90% of currency from each purchase will be received by the user who added the item to the shop. This is configurable by the bot owner",
       "Usage": [
         ".shopadd role 1000 Rich",
         ".shopadd cmd 1000 .setrole %you% Rich"
@@ -7221,24 +7221,6 @@
     },
     {
       "Aliases": [
-        ".eval"
-      ],
-      "Description": "Execute arbitrary C# code and (optionally) return a result. Several namespaces are included by default.\nSpecial variables available:\n`self` - Instance of the command group executing the command (this)\n`guild` - Server in which the command is executed\n`channel` - Channel in which the command is executed\n`user` - User executing the command\n`ctx` - Discord.Net command context\n`services` - Nadeko's IServiceProvider",
-      "Usage": [
-        ".eval 123 / 4.5f",
-        ".eval await ctx.OkAsync();",
-        ".eval await ctx.Response().Confirm(\"uwu\").SendAsync();"
-      ],
-      "Submodule": "Utility",
-      "Module": "Utility",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
         ".snipe",
         ".sni"
       ],
@@ -7544,9 +7526,9 @@
         ".alias",
         ".cmdmap"
       ],
-      "Description": "Create a custom alias for a certain Nadeko command. Provide no alias to remove the existing one.",
+      "Description": "Creates a custom alias for a command. Give no mapping to remove the alias.\nAn alias cannot give arguments to a command which spends currency. The member gives them.",
       "Usage": [
-        ".alias allin .bf all h"
+        ".alias bf .betflip"
       ],
       "Submodule": "CommandMapCommands",
       "Module": "Utility",
@@ -8210,7 +8192,7 @@
         ".que",
         ".qedit"
       ],
-      "Description": "Edits a quote with the specified ID.",
+      "Description": "Edits the text of a quote with the specified ID.\nYou can edit your own quotes.\nUsers with the Manage Messages permission can edit any quote on the server.",
       "Usage": [
         ".quoteedit 55 This is the new response."
       ],
@@ -8777,11 +8759,11 @@
     },
     {
       "Aliases": [
-        ".convertlist"
+        ".convert"
       ],
-      "Description": "Shows all units and currencies which the converter accepts.",
+      "Description": "Converts a value from one unit or currency to another.\nGive the value, the unit and the target unit. You can write `to` between the units.\nIf you give no target unit, the bot shows the value in common units.\nThe bot accepts SI prefixes (`km`, `MB`, `µs`) and combined units (`km/h`, `m2`, `USD/gal`).\nUse `.convertlist` to see all units and currencies.",
       "Usage": [
-        ".convertlist"
+        ".convert 5 km to mi"
       ],
       "Submodule": "UnitConverterCommands",
       "Module": "Utility",
@@ -8790,11 +8772,11 @@
     },
     {
       "Aliases": [
-        ".convert"
+        ".convertlist"
       ],
-      "Description": "Converts a value from one unit or currency to another.\nGive the value, the unit and the target unit. You can write `to` between the units.\nIf you give no target unit, the bot shows the value in common units.\nThe bot accepts SI prefixes (`km`, `MB`, `µs`) and combined units (`km/h`, `m2`, `USD/gal`).\nUse `.convertlist` to see all units and currencies.",
+      "Description": "Shows all units and currencies which the converter accepts.",
       "Usage": [
-        ".convert 5 km to mi"
+        ".convertlist"
       ],
       "Submodule": "UnitConverterCommands",
       "Module": "Utility",
