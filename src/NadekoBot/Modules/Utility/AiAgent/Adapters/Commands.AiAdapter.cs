@@ -45,7 +45,7 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
 
         command = EnsurePrefixInternal(command, sg);
 
-        var fakeMessage = new DoAsUserMessage(ctx.TriggerMessage, ctx.User, command);
+        var fakeMessage = new DoAsUserMessage(ctx.TriggerMessage, ctx.User, command) { BlocksOwnerCommands = true };
 
         try
         {
@@ -115,7 +115,7 @@ public sealed class CommandsAiAdapter(ICommandHandler cmdHandler) : IAiCoreToolG
             try
             {
                 cmd = EnsurePrefixInternal(cmd, sg);
-                var fakeMessage = new DoAsUserMessage(ctx.TriggerMessage, ctx.User, cmd);
+                var fakeMessage = new DoAsUserMessage(ctx.TriggerMessage, ctx.User, cmd) { BlocksOwnerCommands = true };
                 var task = cmdHandler.TryRunCommand(sg, ch, fakeMessage);
                 var completed = await Task.WhenAny(task, Task.Delay(COMMAND_TIMEOUT_MS, ct));
                 if (completed == task && task.IsFaulted)

@@ -9,7 +9,7 @@ on:
     branches: [ v6 ]
 
 env:
-  DOTNET_VERSION: '8.0.x'
+  DOTNET_VERSION: '9.0.x'
   REGISTRY: ghcr.io
 
 jobs:
@@ -63,10 +63,39 @@ jobs:
         name: nadeko-${{ matrix.runtime }}
         path: nadeko-${{ matrix.runtime }}
 
+  build-hosted:
+    name: Build Hosted Package
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Publish
+      run: |
+        dotnet publish -c Release -r linux-x64 \
+          --self-contained \
+          -p:Version=${{ github.ref_name }} \
+          -o nadeko-hosted-linux-x64 src/NadekoBot.Hosted/NadekoBot.Hosted.csproj
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: nadeko-hosted-linux-x64
+        path: nadeko-hosted-linux-x64
+
   create-release:
     name: Create Release
     needs:
       - build
+      - build-hosted
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -84,7 +113,9 @@ jobs:
             if [[ "$runtime" == *"win"* ]]; then
               zip -r "$runtime.zip" "$runtime"
             else
-              chmod +x "$runtime/NadekoBot"
+              for exe in "$runtime/NadekoBot" "$runtime/NadekoBot.Hosted"; do
+                if [[ -f "$exe" ]]; then chmod +x "$exe"; fi
+              done
               tar -czf "$runtime.tar.gz" "$runtime"
             fi
           done
@@ -156,7 +187,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Set version
       run: |

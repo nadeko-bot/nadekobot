@@ -16,14 +16,16 @@ public sealed class CheckForUpdatesService(
     IBotCredsProvider bcp,
     IHttpClientFactory httpFactory,
     DiscordSocketClient client,
-    IMessageSenderService sender)
+    IMessageSenderService sender,
+    BotPolicy policy)
     : INService, IReadyExecutor
 {
     private const string RELEASES_URL = "https://api.github.com/repos/nadeko-bot/nadekobot/releases";
 
     public async Task OnReadyAsync()
     {
-        if (client.ShardId != 0)
+        // The host of a managed bot installs releases itself.
+        if (client.ShardId != 0 || policy.Managed)
             return;
 
         using var timer = new PeriodicTimer(TimeSpan.FromHours(1));

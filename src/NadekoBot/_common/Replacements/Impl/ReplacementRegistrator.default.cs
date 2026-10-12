@@ -65,9 +65,11 @@ public sealed partial class ReplacementPatternStore
     {
         Register("%user%", static (IUser user) => user.Mention);
         Register("%user.mention%", static (IUser user) => user.Mention);
-        Register("%user.fullname%", static (IUser user) => user.ToString()!);
-        Register("%user.name%", static (IUser user) => user.Username);
-        Register("%user.displayname%", static (IUser user) => user is IGuildUser gu ? gu.DisplayName : user.Username);
+        // A member chooses their own name, and a greet message can be sent with all mentions allowed.
+        Register("%user.fullname%", static (IUser user) => user.ToString()!.SanitizeAllMentions());
+        Register("%user.name%", static (IUser user) => user.Username.SanitizeAllMentions());
+        Register("%user.displayname%",
+            static (IUser user) => (user is IGuildUser gu ? gu.DisplayName : user.Username).SanitizeAllMentions());
         Register("%user.discrim%", static (IUser user) => user.Discriminator);
         Register("%user.avatar%", static (IUser user) => user.RealAvatarUrl().ToString());
         Register("%user.id%", static (IUser user) => user.Id.ToString());
@@ -82,9 +84,9 @@ public sealed partial class ReplacementPatternStore
         Register("%user.mention%",
             static (IUser[] users) => string.Join(" ", users.Select(user => user.Mention)));
         Register("%user.fullname%",
-            static (IUser[] users) => string.Join(" ", users.Select(user => user.ToString())));
+            static (IUser[] users) => string.Join(" ", users.Select(user => user.ToString())).SanitizeAllMentions());
         Register("%user.name%",
-            static (IUser[] users) => string.Join(" ", users.Select(user => user.Username)));
+            static (IUser[] users) => string.Join(" ", users.Select(user => user.Username)).SanitizeAllMentions());
         Register("%user.discrim%",
             static (IUser[] users) => string.Join(" ", users.Select(user => user.Discriminator)));
         Register("%user.avatar%",

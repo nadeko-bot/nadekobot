@@ -34,7 +34,7 @@ public sealed class SearxSearchService : SearchServiceBase, INService
         Log.Information("Using {Instance} instance for web search...", instanceUrl);
         var startTime = Stopwatch.GetTimestamp();
         
-        using var http = _http.CreateClient();
+        using var http = _http.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
         await using var res = await http.GetStreamAsync($"{instanceUrl}"
                                                         + $"?q={Uri.EscapeDataString(query)}"
                                                         + $"&format=json"
@@ -58,7 +58,7 @@ public sealed class SearxSearchService : SearchServiceBase, INService
         
         Log.Information("Using {Instance} instance for img search...", instanceUrl);
         var startTime = Stopwatch.GetTimestamp();
-        using var http = _http.CreateClient();
+        using var http = _http.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
         await using var res = await http.GetStreamAsync($"{instanceUrl}"
                                                         + $"?q={Uri.EscapeDataString(query)}"
                                                         + $"&format=json"

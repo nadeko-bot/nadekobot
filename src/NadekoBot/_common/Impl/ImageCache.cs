@@ -5,13 +5,19 @@ public sealed class ImageCache : IImageCache, INService
     private readonly IBotCache _cache;
     private readonly ImagesConfig _ic;
     private readonly NadekoRandom _rng;
+    private const int MAX_IMAGE_BYTES = 16 * 1024 * 1024;
+    public const long MAX_IMAGE_PIXELS = 4096 * 4096;
+
     private readonly IHttpClientFactory _httpFactory;
+    private readonly BotPolicy _policy;
 
     public ImageCache(
         IBotCache cache,
         ImagesConfig ic,
-        IHttpClientFactory httpFactory)
+        IHttpClientFactory httpFactory,
+        BotPolicy policy)
     {
+        _policy = policy;
         _cache = cache;
         _ic = ic;
         _httpFactory = httpFactory;
@@ -22,20 +28,51 @@ public sealed class ImageCache : IImageCache, INService
         => new($"image:{url}");
 
     public async Task<byte[]?> GetImageDataAsync(Uri url)
-        => await _cache.GetOrAddAsync(
+    {
+        var data = await _cache.GetOrAddAsync(
             GetImageKey(url),
             async () =>
             {
+                byte[]? bytes;
                 if (url.IsFile)
                 {
-                    return await File.ReadAllBytesAsync(url.LocalPath);
+                    bytes = _policy.Managed ? null : await File.ReadAllBytesAsync(url.LocalPath);
+                }
+                else
+                {
+                    using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
+                    bytes = await http.GetBytesLimitedAsync(url.ToString(), MAX_IMAGE_BYTES);
                 }
 
-                using var http = _httpFactory.CreateClient();
-                var bytes = await http.GetByteArrayAsync(url);
-                return bytes;
+                if (bytes is null)
+                    return null;
+
+                if (IsWithinPixelLimit(bytes))
+                    return bytes;
+
+                // An empty array marks a rejected image, so the bot does not download it again.
+                Log.Warning("Image {Url} is too large to decode", url);
+                return [];
             },
             expiry: TimeSpan.FromHours(48));
+
+        return data is { Length: > 0 } ? data : null;
+    }
+
+    // A small file can declare a huge canvas or many frames, and the decoder allocates for all of them.
+    public static bool IsWithinPixelLimit(ReadOnlySpan<byte> bytes)
+    {
+        try
+        {
+            var info = SixLabors.ImageSharp.Image.Identify(bytes);
+            var frames = Math.Max(1, info.FrameMetadataCollection.Count);
+            return (long)info.Width * info.Height * frames <= MAX_IMAGE_PIXELS;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 
     private async Task<byte[]?> GetRandomImageDataAsync(Uri[] urls)
     {

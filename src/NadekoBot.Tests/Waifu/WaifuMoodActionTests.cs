@@ -40,7 +40,7 @@ public class WaifuMoodActionTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task ImproveMood_AllActions_CorrectMoodIncrease()
+    public async Task ImproveMood_IncreasesByActionAndCapsAt1000()
     {
         // Hug=50, Kiss=75, Pat=37
         await using (var ctx = _db.GetDbContext())
@@ -48,94 +48,61 @@ public class WaifuMoodActionTests
             await WaifuTestHelper.CreateWaifu(ctx, 1001, mood: 0);
             await WaifuTestHelper.CreateWaifu(ctx, 1002, mood: 0);
             await WaifuTestHelper.CreateWaifu(ctx, 1003, mood: 0);
+            await WaifuTestHelper.CreateWaifu(ctx, 1004, mood: 980);
         }
 
         await _svc.ImproveMoodAsync(2001, 1001, WaifuAction.Hug);
         await _svc.ImproveMoodAsync(2002, 1002, WaifuAction.Kiss);
         await _svc.ImproveMoodAsync(2003, 1003, WaifuAction.Pat);
+        await _svc.ImproveMoodAsync(2004, 1004, WaifuAction.Hug);
 
         await using (var ctx = _db.GetDbContext())
         {
             Assert.That((await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001)).Mood, Is.EqualTo(50));
             Assert.That((await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1002)).Mood, Is.EqualTo(75));
             Assert.That((await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1003)).Mood, Is.EqualTo(37));
+            Assert.That((await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1004)).Mood, Is.EqualTo(1000));
         }
     }
 
     [Test]
-    public async Task ImproveMood_CappedAt1000()
+    public async Task ImproveMood_NonWaifuOrNoActionsLeft_Fails()
     {
-        await using (var ctx = _db.GetDbContext())
-            await WaifuTestHelper.CreateWaifu(ctx, 1001, mood: 980);
+        var nonWaifu = await _svc.ImproveMoodAsync(2001, 1009, WaifuAction.Hug);
+        Assert.That(nonWaifu.IsT3, Is.True, "Expected NoEffect");
 
-        await _svc.ImproveMoodAsync(2001, 1001, WaifuAction.Hug);
-
-        await using (var ctx = _db.GetDbContext())
-        {
-            var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
-            Assert.That(wi.Mood, Is.EqualTo(1000));
-        }
-    }
-
-    [Test]
-    public async Task ImproveMood_NonWaifu_ReturnsNoEffect()
-    {
-        _cache.GetAsync(Arg.Any<TypedKey<int>>())
-            .Returns(new System.Threading.Tasks.ValueTask<OneOf.OneOf<int, None>>(new None()));
-
-        var result = await _svc.ImproveMoodAsync(2001, 1001, WaifuAction.Hug);
-        Assert.That(result.IsT3, Is.True, "Expected NoEffect");
-    }
-
-    [Test]
-    public async Task ImproveMood_NoActionsLeft_ReturnsError()
-    {
         _cache.GetAsync(Arg.Any<TypedKey<int>>())
             .Returns(new System.Threading.Tasks.ValueTask<OneOf.OneOf<int, None>>((OneOf.OneOf<int, None>)2));
 
         await using (var ctx = _db.GetDbContext())
             await WaifuTestHelper.CreateWaifu(ctx, 1001, mood: 500);
 
-        var result = await _svc.ImproveMoodAsync(2001, 1001, WaifuAction.Hug);
-        Assert.That(result.IsT1, Is.True, "Expected ErrNoActionsLeft");
+        var noActions = await _svc.ImproveMoodAsync(2001, 1001, WaifuAction.Hug);
+        Assert.That(noActions.IsT1, Is.True, "Expected ErrNoActionsLeft");
     }
 
     [Test]
-    public async Task ImproveFood_Success_IncreasesFood()
+    public async Task ImproveFood_IncreasesFoodCapsAt1000AndRejectsSelf()
     {
         await using (var ctx = _db.GetDbContext())
+        {
             await WaifuTestHelper.CreateWaifu(ctx, 1001, food: 0);
+            await WaifuTestHelper.CreateWaifu(ctx, 1002, food: 980);
+        }
 
         var result = await _svc.ImproveFoodAsync(2001, 1001);
         Assert.That(result.IsT4, Is.True, "Expected Success");
         Assert.That(result.AsT4.Value, Is.EqualTo(50));
 
-        await using (var ctx = _db.GetDbContext())
-        {
-            var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
-            Assert.That(wi.Food, Is.EqualTo(50));
-        }
-    }
+        await _svc.ImproveFoodAsync(2002, 1002);
 
-    [Test]
-    public async Task ImproveFood_CappedAt1000()
-    {
-        await using (var ctx = _db.GetDbContext())
-            await WaifuTestHelper.CreateWaifu(ctx, 1001, food: 980);
-
-        await _svc.ImproveFoodAsync(2001, 1001);
+        var self = await _svc.ImproveFoodAsync(1009, 1009);
+        Assert.That(self.IsT0, Is.True, "Expected ErrSelfNotAllowed");
 
         await using (var ctx = _db.GetDbContext())
         {
-            var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
-            Assert.That(wi.Food, Is.EqualTo(1000));
+            Assert.That((await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001)).Food, Is.EqualTo(50));
+            Assert.That((await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1002)).Food, Is.EqualTo(1000));
         }
-    }
-
-    [Test]
-    public async Task ImproveFood_Self_ReturnsError()
-    {
-        var result = await _svc.ImproveFoodAsync(1001, 1001);
-        Assert.That(result.IsT0, Is.True, "Expected ErrSelfNotAllowed");
     }
 }

@@ -285,12 +285,12 @@ public sealed class RepeaterService : IReadyExecutor, INService
 
         try
         {
-            var text = SmartText.CreateFrom(repeater.Message);
-            text = await _repSvc.ReplaceAsync(text, repCtx);
+            var template = SmartText.CreateFrom(repeater.Message);
+            var text = await _repSvc.ReplaceAsync(template, repCtx);
 
             var newMsg = await _sender.Response(channel)
                                       .Text(text)
-                                      .Sanitize(false)
+                                      .Mentions(TemplateMentions.FromTemplate(template))
                                       .SendAsync();
             
             _ = newMsg.AddReactionAsync(new Emoji("🔄"));
@@ -391,7 +391,8 @@ public sealed class RepeaterService : IReadyExecutor, INService
 
     public async Task<RunningRepeater?> RemoveByIndexAsync(ulong guildId, int index)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, _ucs.Data.MaxRepeaters * 2);
+        if (index < 0)
+            return null;
 
         await using var uow = _db.GetDbContext();
         var toRemove = await uow.Set<Repeater>()

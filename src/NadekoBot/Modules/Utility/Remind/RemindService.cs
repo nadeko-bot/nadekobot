@@ -10,6 +10,9 @@ namespace NadekoBot.Modules.Utility.Services;
 
 public class RemindService : INService, IReadyExecutor, IRemindService
 {
+    public const int MAX_REMINDERS_PER_USER = 25;
+    public const int MAX_REMINDERS_PER_SERVER = 500;
+
     private readonly Regex _regex =
         new(
             @"^(?:(?:at|on(?:\sthe)?)?\s*(?<date>(?:\d{2}:\d{2}\s)?\d{1,2}\.\d{1,2}(?:\.\d{2,4})?)|(?:in\s?)?\s*(?:(?<mo>\d+)(?:\s?(?:months?|mos?),?))?(?:(?:\sand\s|\s*)?(?<w>\d+)(?:\s?(?:weeks?|w),?))?(?:(?:\sand\s|\s*)?(?<d>\d+)(?:\s?(?:days?|d),?))?(?:(?:\sand\s|\s*)?(?<h>\d+)(?:\s?(?:hours?|h),?))?(?:(?:\sand\s|\s*)?(?<m>\d+)(?:\s?(?:minutes?|mins?|m),?))?)\s+(?:to:?\s+)?(?<what>(?:\r\n|[\r\n]|.)+)",
@@ -275,7 +278,7 @@ public class RemindService : INService, IReadyExecutor, IRemindService
         public TimeSpan Time { get; set; }
     }
 
-    public async Task AddReminderAsync(
+    public async Task<bool> AddReminderAsync(
         ulong userId,
         ulong targetId,
         ulong? guildId,
@@ -284,24 +287,58 @@ public class RemindService : INService, IReadyExecutor, IRemindService
         string message,
         ReminderType reminderType)
     {
+        var gid = guildId ?? 0;
+        var now = DateTime.UtcNow;
+        int inserted;
         await using (var ctx = _db.GetDbContext())
         {
-            await ctx.GetTable<Reminder>()
-                .InsertAsync(() => new Reminder
-                {
-                    UserId = userId,
-                    ChannelId = targetId,
-                    GuildId = guildId ?? 0,
-                    IsPrivate = isPrivate,
-                    When = time,
-                    Message = message,
-                    Type = reminderType,
-                    DateAdded = DateTime.UtcNow
-                });
-            await ctx.SaveChangesAsync();
+            if (reminderType != ReminderType.User)
+            {
+                inserted = await ctx.GetTable<Reminder>()
+                    .InsertAsync(() => new Reminder
+                    {
+                        UserId = userId,
+                        ChannelId = targetId,
+                        GuildId = gid,
+                        IsPrivate = isPrivate,
+                        When = time,
+                        Message = message,
+                        Type = reminderType,
+                        DateAdded = now
+                    });
+            }
+            else
+            {
+                // The count and the insert are one statement, so parallel commands cannot pass the caps.
+                // DM reminders all have server id 0, so the server cap does not apply to them.
+                await using var lctx = ctx.CreateLinqToDBContext();
+                var reminders = lctx.GetTable<Reminder>();
+                inserted = await lctx.SelectQuery(() => 1)
+                    .Where(_ => reminders.Count(r => r.UserId == userId && r.Type == ReminderType.User)
+                                < MAX_REMINDERS_PER_USER
+                                && (gid == 0
+                                    || reminders.Count(r => r.GuildId == gid && r.Type == ReminderType.User)
+                                    < MAX_REMINDERS_PER_SERVER))
+                    .InsertAsync(reminders,
+                        _ => new Reminder
+                        {
+                            UserId = userId,
+                            ChannelId = targetId,
+                            GuildId = gid,
+                            IsPrivate = isPrivate,
+                            When = time,
+                            Message = message,
+                            Type = ReminderType.User,
+                            DateAdded = now
+                        });
+            }
         }
 
+        if (inserted == 0)
+            return false;
+
         _tcs?.TrySetResult(true);
+        return true;
     }
 
     public async Task<List<Reminder>> GetServerReminders(int page, ulong guildId)

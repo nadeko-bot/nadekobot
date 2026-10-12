@@ -12,8 +12,8 @@ public sealed class MedusaConfigService : ConfigServiceBase<MedusaConfig>, IMedu
 
     public MedusaConfigService(
         IConfigSeria serializer,
-        IPubSub pubSub)
-        : base(FILE_PATH, serializer, pubSub, _changeKey)
+        IPubSub pubSub, BotPolicy policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
     {   
     }
 

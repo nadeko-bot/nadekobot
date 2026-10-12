@@ -13,6 +13,8 @@ namespace NadekoBot.Modules.NadekoExpressions;
 
 public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, INService
 {
+    public const int MAX_IMPORT_CHARS = 1024 * 1024;
+    private const int MAX_IMPORT_EXPRESSIONS = 1000;
     private const string MENTION_PH = "%bot.mention%";
 
     private const string PREPEND_EXPORT =
@@ -382,10 +384,13 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
                     ? ctx.Content[substringIndex..].Trim()
                     : ctx.Content[substringIndex..].Trim().SanitizeMentions(true));
 
-        var text = SmartText.CreateFrom(cr.Response);
-        text = await _repSvc.ReplaceAsync(text, repCtx);
+        var template = SmartText.CreateFrom(cr.Response);
+        var text = await _repSvc.ReplaceAsync(template, repCtx);
 
-        return await _sender.Response(channel).Text(text).Sanitize(false).SendAsync();
+        return await _sender.Response(channel)
+                            .Text(text)
+                            .Mentions(canMentionEveryone ? AllowedMentions.All : TemplateMentions.FromTemplate(template))
+                            .SendAsync();
     }
 
     public async Task ResetExprReactions(ulong? maybeGuildId, int id)
@@ -610,8 +615,15 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         Dictionary<string, List<ExportedExpr>> data;
         try
         {
+            if (input.Length > MAX_IMPORT_CHARS || YamlHelper.ContainsAliases(input))
+                return false;
+
             data = Yaml.Deserializer.Deserialize<Dictionary<string, List<ExportedExpr>>>(input);
-            if (data.Sum(x => x.Value.Count) == 0)
+            var count = 0;
+            foreach (var entry in data)
+                count += entry.Value?.Count ?? 0;
+
+            if (count is 0 or > MAX_IMPORT_EXPRESSIONS)
                 return false;
         }
         catch
@@ -622,6 +634,9 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         await using var uow = _db.GetDbContext();
         foreach (var entry in data)
         {
+            if (entry.Value is null)
+                continue;
+
             var trigger = entry.Key;
             await uow.Set<NadekoExpression>()
                      .AddRangeAsync(entry.Value

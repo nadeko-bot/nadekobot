@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>true</ImplicitUsings>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <OutputType>exe</OutputType>
+        <RunWorkingDirectory>$(MSBuildProjectDirectory)/../NadekoBot</RunWorkingDirectory>
+        <NoWarn>CS1066;CS8981</NoWarn>
+        <TieredPGO>true</TieredPGO>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\NadekoBot\NadekoBot.csproj" />
+        <ProjectReference Include="..\NadekoBot.StringsMerger\NadekoBot.StringsMerger.csproj" GlobalPropertiesToRemove="OutputPath" />
+    </ItemGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'GlobalNadeko' ">
+        <Optimize>true</Optimize>
+        <DebugType>portable</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+
+    <UsingTask TaskName="MergeStringsTask" AssemblyFile="$(MSBuildThisFileDirectory)../NadekoBot.StringsMerger/bin/$(Configuration)/netstandard2.0/NadekoBot.StringsMerger.dll" />
+
+    <ItemGroup>
+        <ResToMerge Include="../NadekoBot/Modules/**/strings/*.yml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
+    </ItemGroup>
+
+    <Target Name="MergeStringsTask" BeforeTargets="AfterBuild">
+        <MergeStringsTask InputYmls="@(ResToMerge)" OutputDir="$(TargetDir)strings" />
+    </Target>
+
+    <Target Name="MergeStringsTaskPublish" AfterTargets="Publish">
+        <MergeStringsTask InputYmls="@(ResToMerge)" OutputDir="$(PublishDir)strings" />
+    </Target>
+
+    <!-- the referenced bot is copied with its own launcher, which would start it without the API -->
+    <Target Name="RemoveBotLauncher" AfterTargets="Publish">
+        <Delete Files="$(PublishDir)NadekoBot;$(PublishDir)NadekoBot.exe;$(PublishDir)NadekoBot.runtimeconfig.json" />
+    </Target>
+</Project>

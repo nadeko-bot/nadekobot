@@ -5,7 +5,8 @@ public interface IMusicQueue
     int Index { get; }
     int Count { get; }
     IQueuedTrackInfo Enqueue(ITrackInfo trackInfo, string queuer, out int index);
-    IQueuedTrackInfo EnqueueNext(ITrackInfo song, string queuer, out int index);
+    IQueuedTrackInfo Enqueue(ITrackInfo trackInfo, string queuer, bool allowLocalNetwork, out int index);
+    IQueuedTrackInfo EnqueueNext(ITrackInfo song, string queuer, bool allowLocalNetwork, out int index);
 
     void EnqueueMany(IEnumerable<ITrackInfo> tracks, string queuer);
 

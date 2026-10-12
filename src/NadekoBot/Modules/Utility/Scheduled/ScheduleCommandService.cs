@@ -108,7 +108,7 @@ public sealed class ScheduleCommandService(
             {
                 await cmdHandler.TryRunCommand(guild,
                     channel,
-                    new DoAsUserMessage(message, user, scheduledCommand.Text));
+                    new DoAsUserMessage(message, user, scheduledCommand.Text) { BlocksOwnerCommands = true });
             }
             catch (Exception ex)
             {

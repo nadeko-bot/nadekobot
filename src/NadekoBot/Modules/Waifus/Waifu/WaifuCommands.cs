@@ -392,6 +392,7 @@ public partial class Waifus
     }
 
     [Cmd]
+    [SpendsCurrency]
     public async Task WaifuOptIn()
     {
         var res = await svc.OptInAsync(ctx.User.Id);
@@ -476,12 +477,14 @@ public partial class Waifus
     }
 
     [Cmd]
+    [SpendsCurrency]
     public Task WaifuBuy(
         [OverrideTypeReader(typeof(BalanceTypeReader))] long amount,
         [Leftover] IUser user)
         => WaifuBuyInternalAsync(amount, user.Id, user.ToString() ?? user.Id.ToString());
 
     [Cmd]
+    [SpendsCurrency]
     public Task WaifuBuy(
         [OverrideTypeReader(typeof(BalanceTypeReader))] long amount,
         ulong userId)
@@ -716,6 +719,7 @@ public partial class Waifus
     }
 
     [Cmd]
+    [SpendsCurrency]
     public async Task WaifuGift(string item, [Leftover] IUser user)
     {
         var count = 1;

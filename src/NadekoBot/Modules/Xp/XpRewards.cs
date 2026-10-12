@@ -114,7 +114,12 @@ public partial class Xp
             if (level < 1)
                 return;
 
-            await _service.SetRoleRewardAsync(ctx.Guild.Id, level, role.Id, action == AddRemove.Remove);
+            if (!await _service.SetRoleRewardAsync(ctx.Guild.Id, level, role.Id, action == AddRemove.Remove))
+            {
+                await Response().Error(strs.xp_role_reward_limit(XpService.MAX_ROLE_REWARDS)).SendAsync();
+                return;
+            }
+
             if (action == AddRemove.Add)
             {
                 await Response().Confirm(strs.xp_role_reward_add_role(level, Format.Bold(role.ToString()))).SendAsync();

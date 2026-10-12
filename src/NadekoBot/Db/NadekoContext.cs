@@ -402,6 +402,8 @@ public sealed class NadekoContext : DbContext
         #region Reminders
 
         modelBuilder.Entity<Reminder>().HasIndex(x => x.When);
+        modelBuilder.Entity<Reminder>().HasIndex(x => x.UserId);
+        modelBuilder.Entity<Reminder>().HasIndex(x => x.GuildId);
 
         #endregion
 

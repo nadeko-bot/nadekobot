@@ -1,10 +1,14 @@
 ﻿using NadekoBot.Modules.Searches.Youtube;
-using System.Net.Http.Json;
+using System.Buffers;
+using System.Text.Json;
 
 namespace NadekoBot.Modules.Searches;
 
 public sealed class InvidiousYtSearchService : IYoutubeSearchService, INService
 {
+    private const int MAX_RESPONSE_BYTES = 1024 * 1024;
+    private const int MAX_RESULTS = 5;
+
     private readonly IHttpClientFactory _http;
     private readonly SearchesConfigService _scs;
     private readonly NadekoRandom _rng;
@@ -33,16 +37,34 @@ public sealed class InvidiousYtSearchService : IYoutubeSearchService, INService
         var instance = instances[_rng.Next(0, instances.Count)];
 
         var url = $"{instance}/api/v1/search"
-                  + $"?q={query}"
+                  + $"?q={Uri.EscapeDataString(query)}"
                   + $"&type=video";
         
-        using var http = _http.CreateClient();
-        var res = await http.GetFromJsonAsync<List<InvidiousSearchResponse>>(
-            url);
+        using var http = _http.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
+        using var response = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        if (!response.IsSuccessStatusCode
+            || await ExternalHttp.ReadLimitedAsync(response.Content, MAX_RESPONSE_BYTES) is not { } body)
+            return null;
+
+        List<InvidiousSearchResponse>? res;
+        try
+        {
+            res = JsonSerializer.Deserialize<List<InvidiousSearchResponse>>(body.Buffer.AsSpan(0, body.Length),
+                JsonSerializerOptions.Web);
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(body.Buffer);
+        }
 
         if (res is null or { Count: 0 })
             return null;
 
-        return res.Map(r => new VideoInfo(r.VideoId));
+        var count = Math.Min(res.Count, MAX_RESULTS);
+        var videos = new VideoInfo[count];
+        for (var i = 0; i < count; i++)
+            videos[i] = new VideoInfo(res[i].VideoId);
+
+        return videos;
     }
 }

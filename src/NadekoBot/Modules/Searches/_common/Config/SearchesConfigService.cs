@@ -10,8 +10,10 @@ public class SearchesConfigService : ConfigServiceBase<SearchesConfig>
     public override string Name
         => "searches";
 
-    public SearchesConfigService(IConfigSeria serializer, IPubSub pubSub)
-        : base(FILE_PATH, serializer, pubSub, _changeKey)
+    public const int MAX_PER_SERVER = 1000;
+
+    public SearchesConfigService(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
     {
         AddParsedProp("webEngine",
             static sc => sc.WebSearchEngine,
@@ -34,19 +36,23 @@ public class SearchesConfigService : ConfigServiceBase<SearchesConfig>
             ConfigPrinters.ToString,
             "Which search provider will be used for the .youtube and .q commands");
 
-        AddParsedProp("followedStreams.maxCount",
+        AddNumberProp("followedStreams.maxCount",
             static sc => sc.FollowedStreams.MaxCount,
             static (sc, v) => sc.FollowedStreams.MaxCount = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            "Maximum number of streams that each server can follow. -1 for infinite");
+            "Maximum number of streams that each server can follow. -1 for infinite",
+            min: -1,
+            max: MAX_PER_SERVER);
 
-        AddParsedProp("feeds.maxCount",
+        AddNumberProp("feeds.maxCount",
             static sc => sc.MaxFeeds,
             static (sc, v) => sc.MaxFeeds = v,
             int.TryParse,
             ConfigPrinters.ToString,
-            "Maximum number of feeds per server");
+            "Maximum number of feeds per server",
+            min: 0,
+            max: MAX_PER_SERVER);
 
         Migrate();
     }

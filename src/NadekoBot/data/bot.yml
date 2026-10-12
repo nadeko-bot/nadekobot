@@ -1,5 +1,5 @@
 # DO NOT CHANGE THE VERSION MANUALLY
-version: 11
+version: 12
 # Most commands, when executed, have a small colored line
 # next to the response. The color depends whether the command
 # is completed, errored or in progress (pending)
@@ -15,6 +15,9 @@ color:
   pending: faa61a
 # Default bot language. It has to be in the list of supported languages (.langli)
 defaultLocale: en-US
+# Default time zone for servers that have not set their own with .timezone
+# IANA id, for example Europe/Berlin. Leave empty for UTC.
+defaultTimezone: 
 # Style in which executed commands will show up in the logs.
 # Allowed values: Simple, Normal, None
 consoleOutputType: Normal

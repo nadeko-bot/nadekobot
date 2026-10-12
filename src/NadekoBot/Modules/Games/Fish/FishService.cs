@@ -73,8 +73,9 @@ public sealed class FishService(
 
         if (typeRoll < nothingChance + currencyChance)
         {
-            var min = conf.CurrencyMin;
-            var max = conf.CurrencyMax;
+            // Min and max are set one at a time, so for a moment min can be above max.
+            var min = Math.Min(conf.CurrencyMin, conf.CurrencyMax);
+            var max = Math.Max(conf.CurrencyMin, conf.CurrencyMax);
             var amount = min == max ? min : _rng.NextLong(min, max + 1);
             await cs.AddAsync(userId, amount, new("fish", "currency"));
             var formatted = CurrencyHelper.N(amount, CultureInfo.InvariantCulture, cp.GetCurrencySign());

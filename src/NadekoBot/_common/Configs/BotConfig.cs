@@ -9,7 +9,7 @@ namespace NadekoBot.Common.Configs;
 public sealed class BotConfig
 {
     [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
-    public int Version { get; set; } = 11;
+    public int Version { get; set; } = 12;
 
     [Comment("""
         Most commands, when executed, have a small colored line
@@ -23,6 +23,12 @@ public sealed class BotConfig
 
     [Comment("Default bot language. It has to be in the list of supported languages (.langli)")]
     public CultureInfo DefaultLocale { get; set; }
+
+    [Comment("""
+        Default time zone for servers that have not set their own with .timezone
+        IANA id, for example Europe/Berlin. Leave empty for UTC.
+        """)]
+    public string? DefaultTimezone { get; set; }
 
     [Comment("""
         Style in which executed commands will show up in the logs.

@@ -188,6 +188,7 @@ public partial class Games
         }
 
         [Cmd]
+        [SpendsCurrency]
         public async Task NcSetPixel(kwum position, Rgba32 color, [Leftover] string text = "")
         {
             if (position < 0 || position >= _service.GetWidth() * _service.GetHeight())

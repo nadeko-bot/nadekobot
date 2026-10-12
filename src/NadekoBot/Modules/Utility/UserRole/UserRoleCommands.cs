@@ -8,11 +8,29 @@ public partial class Utility
     [Group]
     public class UserRoleCommands : NadekoModule
     {
-        private readonly IUserRoleService _urs;
+        // Each change is a role PATCH on the shared bot token.
+        private static readonly TimeSpan _memberCooldown = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan _serverCooldown = TimeSpan.FromSeconds(2);
 
-        public UserRoleCommands(IUserRoleService userRoleService)
+        private readonly IUserRoleService _urs;
+        private readonly IBotCache _cache;
+
+        public UserRoleCommands(IUserRoleService userRoleService, IBotCache cache)
         {
             _urs = userRoleService;
+            _cache = cache;
+        }
+
+        private async Task<bool> CheckChangeCooldownInternalAsync()
+        {
+            var rem = await _cache.GetRatelimitAsync(new($"userrole:{ctx.Guild.Id}:{ctx.User.Id}"), _memberCooldown)
+                      ?? await _cache.GetRatelimitAsync(new($"userrole:{ctx.Guild.Id}"), _serverCooldown);
+
+            if (rem is not { } r)
+                return true;
+
+            await Response().Error(strs.userrole_cooldown(Math.Ceiling(r.TotalSeconds))).SendAsync();
+            return false;
         }
 
         [Cmd]
@@ -160,6 +178,9 @@ public partial class Utility
                 return;
             }
 
+            if (!await CheckChangeCooldownInternalAsync())
+                return;
+
             var success = await _urs.SetRoleColorAsync(
                 ctx.Guild.Id,
                 ctx.User.Id,
@@ -193,6 +214,9 @@ public partial class Utility
                 await Response().Error(strs.userrole_no_permission).SendAsync();
                 return;
             }
+
+            if (!await CheckChangeCooldownInternalAsync())
+                return;
 
             var success = await _urs.SetRoleNameAsync(
                 ctx.Guild.Id,
@@ -233,6 +257,9 @@ public partial class Utility
                 await Response().Error(strs.userrole_no_permission).SendAsync();
                 return;
             }
+
+            if (!await CheckChangeCooldownInternalAsync())
+                return;
 
             var success = await _urs.SetRoleIconAsync(
                 ctx.Guild.Id,

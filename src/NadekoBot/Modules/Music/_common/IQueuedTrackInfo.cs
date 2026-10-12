@@ -6,4 +6,6 @@ public interface IQueuedTrackInfo : ITrackInfo
     public ITrackInfo TrackInfo { get; }
 
     public string Queuer { get; }
+
+    public bool AllowLocalNetwork { get; }
 }

@@ -11,6 +11,7 @@ ar:
   reminders_none: لا توجد تذكيرات في هذه الصفحة.
   when: متى
   who_where: مَن / أين
+  reminder_limit: 'يمكنك امتلاك {0} تذكيرًا نشطًا كحد أقصى، والسيرفر {1}. احذف تذكيرًا أولًا.'
 
 de-DE:
   cant_read_or_send: Du kannst keine Nachrichten i
@@ -25,6 +26,7 @@ de-DE:
   reminders_none: Keine Erinnerung auf dieser Seite.
   when: Wann
   who_where: Wer / Wo
+  reminder_limit: 'Du kannst höchstens {0} aktive Erinnerungen haben, ein Server höchstens {1}. Lösche zuerst eine Erinnerung.'
 
 es-ES:
   cant_read_or_send: No puedes leer ni enviar mensajes a ese canal.
@@ -39,6 +41,7 @@ es-ES:
   reminders_none: No hay recordatorios en esta página.
   when: Cuándo
   who_where: Quién / Dónde
+  reminder_limit: 'Puedes tener como máximo {0} recordatorios activos, y un servidor como máximo {1}. Borra un recordatorio primero.'
 
 fr-FR:
   cant_read_or_send: Vous ne pouvez pas lire ou envoyer des messages sur ce salon.
@@ -53,6 +56,7 @@ fr-FR:
   reminders_none: Aucun rappel sur cette page.
   when: Quand
   who_where: Qui / Où
+  reminder_limit: 'Tu peux avoir au plus {0} rappels actifs, et un serveur au plus {1}. Supprime d''abord un rappel.'
 
 id-ID:
   cant_read_or_send: Kamu tidak bisa membaca atau mengirim pesan ke channel itu.
@@ -67,6 +71,7 @@ id-ID:
   reminders_none: Tidak ada pengingat di halaman ini.
   when: Kapan
   who_where: Siapa / Di mana
+  reminder_limit: 'Kamu bisa punya maksimal {0} pengingat aktif, dan satu server maksimal {1}. Hapus satu pengingat dulu.'
 
 ja-JP:
   cant_read_or_send: そのチャンネルへのメッセージの読み込みや送信はできません。
@@ -81,6 +86,7 @@ ja-JP:
   reminders_none: このページにリマインダーはありません。
   when: いつ
   who_where: 誰 / どこ
+  reminder_limit: '有効なリマインダーは1人最大 {0} 件、サーバー全体で最大 {1} 件です。先にリマインダーを削除してください。'
 
 ko-KR:
   cant_read_or_send: 해당 채널에서 메시지를 읽거나 보낼 수 없어요.
@@ -95,6 +101,7 @@ ko-KR:
   reminders_none: 이 페이지에 리마인더가 없어요.
   when: 시간
   who_where: 대상 / 위치
+  reminder_limit: '활성 알림은 개인당 최대 {0}개, 서버당 최대 {1}개까지 가능합니다. 먼저 알림을 삭제하세요.'
 
 pl-PL:
   cant_read_or_send: Nie możesz czytać ani wysyłać wiadomości na tym kanale.
@@ -109,6 +116,7 @@ pl-PL:
   reminders_none: Brak przypomnień na tej stronie.
   when: Kiedy
   who_where: Kto / Gdzie
+  reminder_limit: 'Możesz mieć najwyżej {0} aktywnych przypomnień, a serwer najwyżej {1}. Najpierw usuń przypomnienie.'
 
 pt-BR:
   cant_read_or_send: Você não pode ler ou enviar mensagens nesse canal.
@@ -123,6 +131,7 @@ pt-BR:
   reminders_none: Não há lembretes nessa página.
   when: Quando
   who_where: Quem / Onde
+  reminder_limit: 'Você pode ter no máximo {0} lembretes ativos, e um servidor no máximo {1}. Apague um lembrete primeiro.'
 
 ru-RU:
   cant_read_or_send: Вы не можете читать сообщения или отправлять сообщения в этом канале.
@@ -137,6 +146,7 @@ ru-RU:
   reminders_none: Нет напоминаний на этой странице.
   when: Когда
   who_where: Кто / Где
+  reminder_limit: 'У вас может быть не более {0} активных напоминаний, а у сервера не более {1}. Сначала удалите напоминание.'
 
 sr-Cyrl-RS:
   cant_read_or_send: Не можете читати или слати поруке у том каналу.
@@ -151,6 +161,7 @@ sr-Cyrl-RS:
   reminders_none: Нема подсетника на овој страни.
   when: Када
   who_where: Ко / Где
+  reminder_limit: 'Можеш имати највише {0} активних подсетника, а сервер највише {1}. Прво обриши један подсетник.'
 
 tr-TR:
   cant_read_or_send: O kanala mesaj okuyamaz veya gönderemezsin.
@@ -165,6 +176,7 @@ tr-TR:
   reminders_none: Bu sayfada hatırlatma yok.
   when: Ne Zaman
   who_where: Kim / Nerede
+  reminder_limit: 'En fazla {0} aktif hatırlatıcın olabilir, bir sunucunun ise en fazla {1}. Önce bir hatırlatıcı sil.'
 
 ts-TS:
   cant_read_or_send: You can't read from or send messages to that channel.
@@ -179,6 +191,7 @@ ts-TS:
   reminders_none: No reminders on this page.
   when: When
   who_where: Who / Where
+  reminder_limit: 'You can have at most {0} active reminders, and a server at most {1}. Delete one first. I''m not your secretary.'
 
 uk-UA:
   cant_read_or_send: Ти не можеш читати або надсилати повідомлення в цей канал.
@@ -193,6 +206,7 @@ uk-UA:
   reminders_none: Немає нагадувань на цій сторінці.
   when: Коли
   who_where: Хто / Де
+  reminder_limit: 'У вас може бути щонайбільше {0} активних нагадувань, а в сервера щонайбільше {1}. Спочатку видаліть нагадування.'
 
 vi-VN:
   cant_read_or_send: Bạn không thể đọc hoặc gửi tin nhắn đến kênh đó.
@@ -207,6 +221,7 @@ vi-VN:
   reminders_none: Không có nhắc nhở nào trên trang này.
   when: Khi nào
   who_where: Ai / Ở đâu
+  reminder_limit: 'Bạn có tối đa {0} lời nhắc đang hoạt động, và một máy chủ tối đa {1}. Hãy xóa một lời nhắc trước.'
 
 zh-CN:
   cant_read_or_send: 您無法從該頻道閱讀或向該頻道發送消息。
@@ -221,3 +236,4 @@ zh-CN:
   reminders_none: 此頁面上沒有提醒。
   when: 何時
   who_where: 誰 / 何處
+  reminder_limit: '你最多可以有 {0} 个有效提醒，一个服务器最多 {1} 个。请先删除一个提醒。'

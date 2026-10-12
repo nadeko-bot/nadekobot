@@ -35,7 +35,7 @@ public partial class Help
             if (--page < 0)
                 return;
 
-            if (!_pConf.Data.IsEnabled)
+            if (!_pConf.IsEnabled)
             {
                 await Response().Error(strs.patron_not_enabled).SendAsync();
                 return;
@@ -170,7 +170,7 @@ public partial class Help
 
         private async Task InternalPatron(IUser user)
         {
-            if (!_pConf.Data.IsEnabled)
+            if (!_pConf.IsEnabled)
             {
                 await Response().Error(strs.patron_not_enabled).SendAsync();
                 return;

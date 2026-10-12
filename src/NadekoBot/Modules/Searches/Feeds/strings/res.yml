@@ -7,3 +7,4 @@ feed_no_feed: You haven't subscribed to any feeds on this server.
 feed_out_of_range: Index out of range.
 feed_removed: Feed removed.
 feed_auto_removed: "Feed `{0}` was automatically removed after repeated failures to fetch it."
+feed_bot_missing_perms: 'The bot needs the View Channel, Send Messages and Embed Links permissions in {0}.'

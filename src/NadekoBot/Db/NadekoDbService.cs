@@ -11,6 +11,9 @@ public sealed class NadekoDbService : DbService
     private string ConnString
         => _creds.GetCreds().Db.ConnectionString;
 
+    public override string ConnectionString
+        => ConnString;
+
     public NadekoDbService(IBotCredsProvider creds)
     {
         LinqToDBForEFTools.Initialize();

@@ -14,14 +14,11 @@ public sealed class PatronOnlyAttribute(PatronTier minTier = PatronTier.None) : 
         IServiceProvider services)
     {
         var patronService = services.GetRequiredService<IPatronageService>();
-        var config = patronService.GetConfig();
-
-        if (!config.IsEnabled)
+        if (!patronService.IsEnabled)
             return PreconditionResult.FromSuccess();
 
         var creds = services.GetRequiredService<IBotCredsProvider>().GetCreds();
-
-        if (creds.IsOwner(context.User))
+        if (BotPolicy.IsRealOwner(creds, context.Message))
             return PreconditionResult.FromSuccess();
 
         var patron = await patronService.GetPatronAsync(context.User.Id);

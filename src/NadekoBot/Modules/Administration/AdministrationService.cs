@@ -8,6 +8,8 @@ namespace NadekoBot.Modules.Administration;
 
 public class AdministrationService : INService, IReadyExecutor
 {
+    private const int MAX_SERVER_IMAGE_BYTES = 8 * 1024 * 1024;
+
     private ConcurrentHashSet<ulong> _deleteMessagesOnCommand;
     private ConcurrentDictionary<ulong, bool> _delMsgOnCmdChannels;
 
@@ -215,18 +217,20 @@ public class AdministrationService : INService, IReadyExecutor
 
         var uri = new Uri(img);
 
-        using var http = _httpFactory.CreateClient();
+        using var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
         using var sr = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
 
         if (!sr.IsImage())
             return SetServerBannerResult.InvalidFileType;
 
-        if (sr.GetContentLength() > 8.Megabytes())
+        if (sr.GetContentLength() > MAX_SERVER_IMAGE_BYTES)
         {
             return SetServerBannerResult.Toolarge;
         }
 
-        await using var imageStream = await sr.Content.ReadAsStreamAsync();
+        await using var imageStream = await ExternalHttp.ReadLimitedStreamAsync(sr.Content, MAX_SERVER_IMAGE_BYTES);
+        if (imageStream is null)
+            return SetServerBannerResult.Toolarge;
 
         await guild.ModifyAsync(x => x.Banner = new Image(imageStream));
         return SetServerBannerResult.Success;
@@ -242,13 +246,15 @@ public class AdministrationService : INService, IReadyExecutor
 
         var uri = new Uri(img);
 
-        using var http = _httpFactory.CreateClient();
+        using var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
         using var sr = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
 
         if (!sr.IsImage())
             return SetServerIconResult.InvalidFileType;
 
-        await using var imageStream = await sr.Content.ReadAsStreamAsync();
+        await using var imageStream = await ExternalHttp.ReadLimitedStreamAsync(sr.Content, MAX_SERVER_IMAGE_BYTES);
+        if (imageStream is null)
+            return SetServerIconResult.InvalidFileType;
 
         await guild.ModifyAsync(x => x.Icon = new Image(imageStream));
         return SetServerIconResult.Success;

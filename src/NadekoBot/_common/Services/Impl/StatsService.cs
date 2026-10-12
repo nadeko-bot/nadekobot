@@ -41,7 +41,7 @@ public sealed class StatsService : IStatsService, IReadyExecutor, INService
 
     public StatsService(
         DiscordSocketClient client,
-        CommandHandler cmdHandler,
+        ICommandHandler cmdHandler,
         IBotCreds creds,
         IHttpClientFactory factory)
     {

@@ -22,7 +22,7 @@ public interface IMusicService
     bool TryGetMusicPlayer(ulong guildId, [MaybeNullWhen(false)] out IMusicPlayer musicPlayer);
     void AttachProxy(ulong guildId);
     Task<int> EnqueueYoutubePlaylistAsync(IMusicPlayer mp, string playlistId, string queuer);
-    Task EnqueueDirectoryAsync(IMusicPlayer mp, string dirPath, string queuer);
+    Task EnqueueDirectoryAsync(IMusicPlayer mp, string dirPath, string queuer, bool allowLocalNetwork);
     Task<IUserMessage?> SendToOutputAsync(ulong guildId, EmbedBuilder embed);
     Task<bool> PlayAsync(ulong guildId, ulong voiceChannelId);
     Task<IList<(string Title, string Url, string Thumbnail)>> SearchVideosAsync(string query);

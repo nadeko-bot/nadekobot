@@ -43,6 +43,7 @@ public partial class Gambling
         }
 
         [Cmd]
+        [SpendsCurrency]
         [RequireContext(ContextType.Guild)]
         public async Task Plant([OverrideTypeReader(typeof(BalanceTypeReader))] long amount = 1)
         {

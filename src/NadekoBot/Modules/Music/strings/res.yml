@@ -61,3 +61,4 @@ unset_music_channel: >-
 volume_input_invalid: Volume must be between 0 and 100
 volume_set: Volume set to {0}%
 wrongsong_success: 'Oops! Wrong song removed: {0}'
+queue_full: 'The queue is full. It can hold {0} tracks.'

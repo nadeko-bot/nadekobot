@@ -299,7 +299,7 @@ VI. Gigue 15:19</media:description>
     }
 
     [Test]
-    public void YouTubeAtomFeed_ParsesCorrectly()
+    public void YouTubeAtomFeed_ParsesAndBuildsEmbedsWithThumbnails()
     {
         Assert.That(_feed.Title, Is.EqualTo("The Classical Music Channel"));
         Assert.That(_feed.Items, Has.Count.EqualTo(9));
@@ -308,70 +308,47 @@ VI. Gigue 15:19</media:description>
         Assert.That(first.Title, Is.EqualTo("Johannes Brahms - Cello Sonata No. 1 in E Minor, Op. 38"));
         Assert.That(first.SpecificItem, Is.InstanceOf<AtomFeedItem>());
         Assert.That(first.PublishingDate, Is.Not.Null);
-    }
 
-    [Test]
-    public void BuildFeedEmbed_YouTubeAtomFeed_ExtractsAllFields()
-    {
-        var first = _feed.Items.First();
         var embed = FeedsService.BuildFeedEmbed(new EmbedBuilder(), first, RSS_URL);
 
         Assert.That(embed.Title, Is.EqualTo("Johannes Brahms - Cello Sonata No. 1 in E Minor, Op. 38"));
         Assert.That(embed.Url, Is.EqualTo("https://www.youtube.com/watch?v=-gmGalwAe5A"));
         Assert.That(embed.ImageUrl, Is.EqualTo("https://i2.ytimg.com/vi/-gmGalwAe5A/hqdefault.jpg"));
         Assert.That(embed.Footer?.Text, Is.EqualTo(RSS_URL));
-    }
 
-    [Test]
-    public void BuildFeedEmbed_AllEntries_HaveThumbnails()
-    {
         foreach (var item in _feed.Items)
         {
-            var embed = FeedsService.BuildFeedEmbed(new EmbedBuilder(), item, RSS_URL);
-            Assert.That(embed.ImageUrl, Is.Not.Null.And.Not.Empty,
+            var itemEmbed = FeedsService.BuildFeedEmbed(new EmbedBuilder(), item, RSS_URL);
+            Assert.That(itemEmbed.ImageUrl, Is.Not.Null.And.Not.Empty,
                 $"Missing thumbnail for: {item.Title}");
         }
     }
 
     [Test]
-    public async Task ScanForChannelId_CanonicalLinkAnchor_ReturnsId()
-    {
-        const string html =
-            "<html><head><link rel=\"canonical\" "
-            + "href=\"https://www.youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA\"></head></html>";
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(html));
-
-        var id = await FeedsService.ScanForChannelIdAsync(stream, CancellationToken.None);
-
-        Assert.That(id, Is.EqualTo("UCX6OQ3DkcsbYNE6H8uQQuVA"));
-    }
-
-    [Test]
-    public async Task ScanForChannelId_ExternalIdAnchorOnly_ReturnsId()
-    {
-        const string html = "<html><body>{\"externalId\":\"UCXuqSBlHAE6Xw-yeJA0Tunw\"}</body></html>";
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(html));
-
-        var id = await FeedsService.ScanForChannelIdAsync(stream, CancellationToken.None);
-
-        Assert.That(id, Is.EqualTo("UCXuqSBlHAE6Xw-yeJA0Tunw"));
-    }
-
-    [Test]
-    public async Task ScanForChannelId_AnchorStraddlesChunkBoundary_ReturnsId()
+    public async Task ScanForChannelId_FindsCanonicalOrExternalId_AcrossChunkBoundary()
     {
         const string anchor =
             "<link rel=\"canonical\" href=\"https://www.youtube.com/channel/UC-lHJZR3Gqxm24_Vd_AJ5Yw\">";
         // Place the anchor so it starts a few bytes before the 64KB chunk boundary,
         // forcing the scanner to complete the match across two reads via the carry.
-        var padLength = (64 * 1024) - 10;
-        var sb = new StringBuilder(padLength + anchor.Length);
-        sb.Append(' ', padLength);
-        sb.Append(anchor);
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString()));
+        var straddling = new string(' ', (64 * 1024) - 10) + anchor;
 
-        var id = await FeedsService.ScanForChannelIdAsync(stream, CancellationToken.None);
+        (string Html, string Expected)[] cases =
+        [
+            ("<html><head><link rel=\"canonical\" "
+             + "href=\"https://www.youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA\"></head></html>",
+                "UCX6OQ3DkcsbYNE6H8uQQuVA"),
+            ("<html><body>{\"externalId\":\"UCXuqSBlHAE6Xw-yeJA0Tunw\"}</body></html>", "UCXuqSBlHAE6Xw-yeJA0Tunw"),
+            (straddling, "UC-lHJZR3Gqxm24_Vd_AJ5Yw")
+        ];
 
-        Assert.That(id, Is.EqualTo("UC-lHJZR3Gqxm24_Vd_AJ5Yw"));
+        foreach (var (html, expected) in cases)
+        {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(html));
+
+            var id = await FeedsService.ScanForChannelIdAsync(stream, CancellationToken.None);
+
+            Assert.That(id, Is.EqualTo(expected), expected);
+        }
     }
 }

@@ -123,7 +123,7 @@ public sealed partial class CommandHandler : INService, ICommandHandler
 
     private void LogSuccessfulExecution(IUserMessage usrMsg, ITextChannel? channel, int interceptMs, int totalMs)
     {
-        var outputType = _bcs.Data.ConsoleOutputType;
+        var outputType = _bcs.ConsoleOutputType;
 
         if (outputType == ConsoleOutputType.Normal)
         {
@@ -158,7 +158,7 @@ public sealed partial class CommandHandler : INService, ICommandHandler
         int interceptMs,
         int totalMs)
     {
-        var outputType = _bcs.Data.ConsoleOutputType;
+        var outputType = _bcs.ConsoleOutputType;
 
         if (outputType == ConsoleOutputType.Normal)
         {
@@ -235,14 +235,15 @@ public sealed partial class CommandHandler : INService, ICommandHandler
 
         var interceptTime = Environment.TickCount - startTime;
 
-        var messageContent = await _behaviorHandler.RunInputTransformersAsync(guild, usrMsg);
+        var cmdMsg = await _behaviorHandler.RunInputTransformersAsync(guild, usrMsg);
+        var messageContent = cmdMsg.Content;
 
         var prefix = GetPrefix(guild?.Id);
         var isPrefixCommand = messageContent.StartsWith(".prefix", StringComparison.InvariantCultureIgnoreCase);
         // execute the command and measure the time it took
         if (isPrefixCommand || messageContent.StartsWith(prefix, StringComparison.InvariantCulture))
         {
-            var context = new CommandContext(_client, usrMsg);
+            var context = new CommandContext(_client, cmdMsg);
             var (success, error, info) = await ExecuteCommandAsync(context,
                 messageContent,
                 isPrefixCommand ? 1 : prefix.Length,

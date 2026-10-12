@@ -672,6 +672,7 @@ public partial class Gambling : GamblingModule<GamblingService>
     }
 
     [Cmd]
+    [SpendsCurrency]
     [RequireContext(ContextType.Guild)]
     [Priority(0)]
     public async Task Give(
@@ -695,6 +696,7 @@ public partial class Gambling : GamblingModule<GamblingService>
     }
 
     [Cmd]
+    [SpendsCurrency]
     [RequireContext(ContextType.Guild)]
     [Priority(1)]
     public Task Give([OverrideTypeReader(typeof(BalanceTypeReader))] long amount, [Leftover] IGuildUser receiver)
@@ -823,6 +825,7 @@ public partial class Gambling : GamblingModule<GamblingService>
     }
 
     [Cmd]
+    [SpendsCurrency]
     public async Task BetRoll([OverrideTypeReader(typeof(BalanceTypeReader))] long amount)
     {
         if (!await CheckBetMandatory(amount))
@@ -955,6 +958,7 @@ public partial class Gambling : GamblingModule<GamblingService>
     }
 
     [Cmd]
+    [SpendsCurrency]
     public async Task Rps(InputRpsPick pick, [OverrideTypeReader(typeof(BalanceTypeReader))] long amount = default)
     {
         static string GetRpsPick(InputRpsPick p)
@@ -1022,6 +1026,7 @@ public partial class Gambling : GamblingModule<GamblingService>
 
 
     [Cmd]
+    [SpendsCurrency]
     public async Task LuckyLadder([OverrideTypeReader(typeof(BalanceTypeReader))] long amount)
     {
         if (!await CheckBetMandatory(amount))

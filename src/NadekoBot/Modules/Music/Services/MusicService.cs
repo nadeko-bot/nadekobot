@@ -15,8 +15,10 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     private readonly IBotStrings _strings;
     private readonly IGoogleApiService _googleApiService;
     private readonly AudioFileCacheService _audioFileCache;
+    private readonly AudioFileCacheConfigService _musicConfig;
     private readonly YtLoader _ytLoader;
     private readonly IMessageSenderService _sender;
+    private readonly PublicOnlyProxy _publicProxy;
 
     private readonly ConcurrentDictionary<ulong, IMusicPlayer> _players;
     private readonly ConcurrentDictionary<ulong, (ITextChannel Default, ITextChannel? Override)> _outputChannels;
@@ -32,9 +34,12 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         IBotStrings strings,
         IGoogleApiService googleApiService,
         AudioFileCacheService audioFileCache,
+        AudioFileCacheConfigService musicConfig,
         YtLoader ytLoader,
-        IMessageSenderService sender)
+        IMessageSenderService sender,
+        PublicOnlyProxy publicProxy)
     {
+        _publicProxy = publicProxy;
         _voiceStateService = voiceStateService;
         _trackResolveProvider = trackResolveProvider;
         _db = db;
@@ -44,6 +49,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         _strings = strings;
         _googleApiService = googleApiService;
         _audioFileCache = audioFileCache;
+        _musicConfig = musicConfig;
         _ytLoader = ytLoader;
         _sender = sender;
 
@@ -109,7 +115,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         var count = 0;
         await foreach (var track in _ytResolver.GetYoutubeResolver().ResolveTracksFromPlaylistAsync(query))
         {
-            if (mp.IsKilled)
+            if (mp.IsKilled || mp.IsQueueFull)
                 break;
 
             mp.EnqueueTrack(track, queuer);
@@ -119,14 +125,14 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         return count;
     }
 
-    public async Task EnqueueDirectoryAsync(IMusicPlayer mp, string dirPath, string queuer)
+    public async Task EnqueueDirectoryAsync(IMusicPlayer mp, string dirPath, string queuer, bool allowLocalNetwork)
     {
         await foreach (var track in _localResolver.ResolveDirectoryAsync(dirPath))
         {
-            if (mp.IsKilled)
+            if (mp.IsKilled || mp.IsQueueFull)
                 break;
 
-            mp.EnqueueTrack(track, queuer);
+            mp.EnqueueTrack(track, queuer, allowLocalNetwork);
         }
     }
 
@@ -157,6 +163,8 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
             proxy,
             _googleApiService,
             _audioFileCache,
+            _musicConfig,
+            _publicProxy,
             settings.QualityPreset,
             settings.AutoPlay);
 

@@ -7,33 +7,20 @@ namespace NadekoBot.Tests;
 public class MessageSplitterTests
 {
     [Test]
-    public void ShortText_ReturnsSingleChunk()
-    {
-        var results = new List<string>();
-        MessageSplitter.Split("hello world", 2000, results);
-
-        Assert.That(results, Has.Count.EqualTo(1));
-        Assert.That(results[0], Is.EqualTo("hello world"));
-    }
-
-    [Test]
-    public void EmptyText_ReturnsEmpty()
+    public void TextUnderLimit_ReturnsSingleChunkOrNone()
     {
         var results = new List<string>();
         MessageSplitter.Split("", 2000, results);
-
         Assert.That(results, Is.Empty);
-    }
 
-    [Test]
-    public void UnderBufferedLimit_ReturnsSingleChunk()
-    {
-        var text = new string('a', 1900);
-        var results = new List<string>();
-        MessageSplitter.Split(text, 2000, results);
+        foreach (var text in new[] { "hello world", new string('a', 1900) })
+        {
+            results.Clear();
+            MessageSplitter.Split(text, 2000, results);
 
-        Assert.That(results, Has.Count.EqualTo(1));
-        Assert.That(results[0], Is.EqualTo(text));
+            Assert.That(results, Has.Count.EqualTo(1), text);
+            Assert.That(results[0], Is.EqualTo(text));
+        }
     }
 
     [Test]
@@ -64,21 +51,6 @@ public class MessageSplitterTests
     }
 
     [Test]
-    public void MultipleSplits_PreservesAllContent()
-    {
-        var words = new List<string>();
-        for (var i = 0; i < 100; i++)
-            words.Add($"word{i:D3}");
-
-        var text = string.Join(" ", words);
-        var results = new List<string>();
-        MessageSplitter.Split(text, 200, results);
-
-        var reconstructed = string.Join(" ", results);
-        Assert.That(reconstructed, Is.EqualTo(text));
-    }
-
-    [Test]
     public void SplitsAtNewline()
     {
         var first = new string('a', 90);
@@ -92,17 +64,20 @@ public class MessageSplitterTests
     }
 
     [Test]
-    public void AllChunksUnderMaxLength()
+    public void MultipleSplits_PreservesAllContentUnderMaxLength()
     {
         var words = new List<string>();
-        for (var i = 0; i < 200; i++)
-            words.Add($"longword{i:D4}");
+        for (var i = 0; i < 100; i++)
+            words.Add($"word{i:D3}");
 
         var text = string.Join(" ", words);
         var results = new List<string>();
-        MessageSplitter.Split(text, 2000, results);
+        MessageSplitter.Split(text, 200, results);
 
+        Assert.That(results, Has.Count.GreaterThan(1));
         foreach (var chunk in results)
-            Assert.That(chunk.Length, Is.LessThanOrEqualTo(2000));
+            Assert.That(chunk.Length, Is.LessThanOrEqualTo(200));
+
+        Assert.That(string.Join(" ", results), Is.EqualTo(text));
     }
 }

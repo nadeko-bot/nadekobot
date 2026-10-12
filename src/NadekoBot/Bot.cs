@@ -15,7 +15,7 @@ public sealed class Bot : IBot
 {
     public DiscordSocketClient Client { get; }
 
-    private IContainer Services { get; set; }
+    public IContainer Services { get; private set; }
 
     public int ShardId { get; }
 
@@ -26,10 +26,12 @@ public sealed class Bot : IBot
     private readonly IBotCredsProvider _credsProvider;
 
     private readonly Assembly[] _loadedAssemblies;
+    private readonly Action<IContainer> _configureServices;
     // private readonly InteractionService _interactionService;
 
-    public Bot(int shardId, int? totalShards)
+    public Bot(int shardId, int? totalShards, Action<IContainer> configureServices = null)
     {
+        _configureServices = configureServices;
         ArgumentOutOfRangeException.ThrowIfLessThan(shardId, 0);
 
         LogSetup.SetupLogger(shardId, null);
@@ -105,6 +107,7 @@ public sealed class Bot : IBot
         svcs.AddSingleton<CommandService>(_commandService);
         svcs.AddSingleton<Bot>(this);
         svcs.AddSingleton<IBot>(this);
+        svcs.AddSingleton(new BotPolicy(false));
 
         svcs.AddSingleton<ISeria, JsonSeria>();
         svcs.AddSingleton<IConfigSeria, YamlSeria>();
@@ -132,6 +135,8 @@ public sealed class Bot : IBot
             svcs.AddSingleton<ICoordinator>(_ => svcs.GetRequiredService<RemoteGrpcCoordinator>());
             svcs.AddSingleton<IReadyExecutor>(_ => svcs.GetRequiredService<RemoteGrpcCoordinator>());
         }
+
+        _configureServices?.Invoke(svcs);
 
         svcs.AddSingleton<IServiceProvider>(svcs);
 

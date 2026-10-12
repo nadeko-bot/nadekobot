@@ -35,7 +35,7 @@ public class ScheduleCommandServiceTests
             Substitute.For<ICommandHandler>(),
             client,
             new ShardData(client, creds),
-            new UtilityConfigService(new YamlSeria(), Substitute.For<IPubSub>()));
+            new UtilityConfigService(new YamlSeria(), Substitute.For<IPubSub>(), new BotPolicy(false)));
     }
 
     [TearDown]

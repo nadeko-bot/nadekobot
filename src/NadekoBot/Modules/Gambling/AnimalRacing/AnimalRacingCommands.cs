@@ -155,6 +155,7 @@ public partial class Gambling
         }
 
         [Cmd]
+        [SpendsCurrency]
         [RequireContext(ContextType.Guild)]
         public async Task JoinRace([OverrideTypeReader(typeof(BalanceTypeReader))] long amount = default)
         {

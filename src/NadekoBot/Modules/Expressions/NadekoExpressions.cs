@@ -1,5 +1,6 @@
 #nullable disable
 
+using System.Text;
 using NadekoBot.Db.Models;
 
 namespace NadekoBot.Modules.NadekoExpressions;
@@ -9,7 +10,7 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
     : NadekoModule<NadekoExpressionsService>
 {
     private bool AdminInGuildOrOwnerInDm()
-        => (ctx.Guild is null && creds.IsOwner(ctx.User))
+        => (ctx.Guild is null && BotPolicy.IsRealOwner(creds, ctx.Message))
            || (ctx.Guild is not null && ((IGuildUser)ctx.User).GuildPermissions.Administrator);
 
     private async Task ExprAddInternalAsync(string key, string message)
@@ -209,7 +210,7 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
 
     private bool IsValidExprEditor()
         => (ctx.Guild is not null && ((IGuildUser)ctx.User).GuildPermissions.Administrator)
-           || (ctx.Guild is null && creds.IsOwner(ctx.User));
+           || (ctx.Guild is null && BotPolicy.IsRealOwner(creds, ctx.Message));
 
     [Cmd]
     [Priority(1)]
@@ -636,8 +637,15 @@ public sealed class NadekoExpressions(IBotCreds creds, IHttpClientFactory client
                 return;
             }
 
+            if (attachment.Size > NadekoExpressionsService.MAX_IMPORT_CHARS)
+            {
+                await Response().Error(strs.expr_import_invalid_data).SendAsync();
+                return;
+            }
+
             using var client = clientFactory.CreateClient();
-            input = await client.GetStringAsync(attachment.Url);
+            var bytes = await client.GetBytesLimitedAsync(attachment.Url, NadekoExpressionsService.MAX_IMPORT_CHARS);
+            input = bytes is null ? null : Encoding.UTF8.GetString(bytes);
 
             if (string.IsNullOrWhiteSpace(input))
             {

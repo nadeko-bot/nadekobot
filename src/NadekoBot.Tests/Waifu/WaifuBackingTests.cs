@@ -38,45 +38,7 @@ public class WaifuBackingTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task BecomeFan_Success_CreatesActiveFanRecord()
-    {
-        await using (var ctx = _db.GetDbContext())
-            await WaifuTestHelper.CreateWaifu(ctx, 1001);
-
-        var result = await _svc.BecomeFanAsync(2001, 1001);
-        Assert.That(result.IsT3, Is.True, "Expected Success");
-
-        await using (var ctx = _db.GetDbContext())
-        {
-            var fan = await ctx.GetTable<WaifuFan>().FirstOrDefaultAsyncLinqToDB(x => x.UserId == 2001);
-            Assert.That(fan, Is.Not.Null);
-            Assert.That(fan!.WaifuUserId, Is.EqualTo(1001));
-        }
-    }
-
-    [Test]
-    public async Task BecomeFan_SwitchWaifu_DeletesOldCreatesNew()
-    {
-        await using (var ctx = _db.GetDbContext())
-        {
-            await WaifuTestHelper.CreateWaifu(ctx, 1001);
-            await WaifuTestHelper.CreateWaifu(ctx, 1002);
-            await WaifuTestHelper.CreateFan(ctx, 2001, 1001);
-        }
-
-        var result = await _svc.BecomeFanAsync(2001, 1002);
-        Assert.That(result.IsT3, Is.True, "Expected Success");
-
-        await using (var ctx = _db.GetDbContext())
-        {
-            var allFans = await ctx.GetTable<WaifuFan>().Where(x => x.UserId == 2001).ToListAsyncLinqToDB();
-            Assert.That(allFans.Count, Is.EqualTo(1));
-            Assert.That(allFans[0].WaifuUserId, Is.EqualTo(1002));
-        }
-    }
-
-    [Test]
-    public async Task BecomeFan_ManagerCanSwitch_Success()
+    public async Task BecomeFan_CreatesOrMovesSingleFanRecord_ManagerKeepsOldWaifu()
     {
         await using (var ctx = _db.GetDbContext())
         {
@@ -85,15 +47,21 @@ public class WaifuBackingTests
             await WaifuTestHelper.CreateFan(ctx, 2001, 1001);
         }
 
+        var newFan = await _svc.BecomeFanAsync(3001, 1001);
+        Assert.That(newFan.IsT3, Is.True, "Expected Success");
+
         var result = await _svc.BecomeFanAsync(2001, 1002);
         Assert.That(result.IsT3, Is.True, "Expected Success");
 
         await using (var ctx = _db.GetDbContext())
         {
-            var fan = await ctx.GetTable<WaifuFan>()
-                .FirstOrDefaultAsyncLinqToDB(x => x.UserId == 2001);
+            var fan = await ctx.GetTable<WaifuFan>().FirstOrDefaultAsyncLinqToDB(x => x.UserId == 3001);
             Assert.That(fan, Is.Not.Null);
-            Assert.That(fan!.WaifuUserId, Is.EqualTo(1002));
+            Assert.That(fan!.WaifuUserId, Is.EqualTo(1001));
+
+            var switched = await ctx.GetTable<WaifuFan>().Where(x => x.UserId == 2001).ToListAsyncLinqToDB();
+            Assert.That(switched.Count, Is.EqualTo(1));
+            Assert.That(switched[0].WaifuUserId, Is.EqualTo(1002));
 
             // Manager status should remain on the old waifu
             var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
@@ -102,13 +70,16 @@ public class WaifuBackingTests
     }
 
     [Test]
-    public async Task StopBeingFan_Success_DeletesRow()
+    public async Task StopBeingFan_DeletesRowOrReturnsNotBacking()
     {
         await using (var ctx = _db.GetDbContext())
         {
             await WaifuTestHelper.CreateWaifu(ctx, 1001);
             await WaifuTestHelper.CreateFan(ctx, 2001, 1001);
         }
+
+        var notBacking = await _svc.StopBeingFanAsync(9999);
+        Assert.That(notBacking.IsT0, Is.True, "Expected ErrNotBacking");
 
         var result = await _svc.StopBeingFanAsync(2001);
         Assert.That(result.IsT1, Is.True, "Expected Success");
@@ -118,12 +89,5 @@ public class WaifuBackingTests
             var fan = await ctx.GetTable<WaifuFan>().FirstOrDefaultAsyncLinqToDB(x => x.UserId == 2001);
             Assert.That(fan, Is.Null);
         }
-    }
-
-    [Test]
-    public async Task StopBeingFan_NotBacking_ReturnsError()
-    {
-        var result = await _svc.StopBeingFanAsync(9999);
-        Assert.That(result.IsT0, Is.True, "Expected ErrNotBacking");
     }
 }

@@ -9,6 +9,12 @@ namespace NadekoBot.Modules.Utility;
 
 public sealed class QuoteService : IQuoteService, INService
 {
+    public const int MAX_IMPORT_CHARS = 1024 * 1024;
+    private const int MAX_IMPORT_QUOTES = 1000;
+    public const int MAX_KEYWORD_LENGTH = 64;
+    public const int MAX_TEXT_LENGTH = 4000;
+    public const int MAX_QUOTES_PER_SERVER = 10_000;
+
     private readonly DbService _db;
 
     public QuoteService(DbService db)
@@ -127,7 +133,8 @@ public sealed class QuoteService : IQuoteService, INService
         return quote;
     }
 
-    public async Task<Quote> AddQuoteAsync(
+    // Returns null when the server has the maximum number of quotes.
+    public async Task<Quote?> AddQuoteAsync(
         ulong guildId,
         ulong authorId,
         string authorName,
@@ -136,32 +143,40 @@ public sealed class QuoteService : IQuoteService, INService
     {
         keyword = keyword.ToUpperInvariant();
 
-        Quote q;
+        // The count and the insert are one statement, so parallel commands cannot pass the cap.
         await using var uow = _db.GetDbContext();
-        uow.Set<Quote>()
-           .Add(q = new()
-           {
-               AuthorId = authorId,
-               AuthorName = authorName,
-               GuildId = guildId,
-               Keyword = keyword,
-               Text = text
-           });
-        await uow.SaveChangesAsync();
+        await using var lctx = uow.CreateLinqToDBContext();
+        var quotes = lctx.GetTable<Quote>();
+        var inserted = await lctx.SelectQuery(() => 1)
+                                 .Where(_ => quotes.Count(x => x.GuildId == guildId) < MAX_QUOTES_PER_SERVER)
+                                 .InsertWithOutputAsync(quotes,
+                                     _ => new Quote
+                                     {
+                                         AuthorId = authorId,
+                                         AuthorName = authorName,
+                                         GuildId = guildId,
+                                         Keyword = keyword,
+                                         Text = text
+                                     });
 
-        return q;
+        return inserted.Length == 0 ? null : inserted[0];
     }
 
-    public async Task<Quote?> EditQuoteAsync(ulong authorId, int quoteId, string text)
+    public async Task<Quote?> EditQuoteAsync(
+        ulong guildId,
+        ulong userId,
+        bool isQuoteManager,
+        int quoteId,
+        string text)
     {
         await using var uow = _db.GetDbContext();
         var result = await uow.GetTable<Quote>()
-                              .Where(x => x.Id == quoteId && x.AuthorId == authorId)
+                              .Where(x => x.GuildId == guildId && x.Id == quoteId)
+                              .Where(x => isQuoteManager || x.AuthorId == userId)
                               .Set(x => x.Text, text)
-                              .UpdateWithOutputAsync((del, ins) => ins);
+                              .UpdateWithOutputAsync((_, n) => n);
 
-        var q = result.FirstOrDefault();
-        return q;
+        return result.Length == 0 ? null : result[0];
     }
 
     public async Task<Quote?> EditQuoteAsync(
@@ -199,6 +214,10 @@ public sealed class QuoteService : IQuoteService, INService
 
     public async Task<bool> ImportQuotesAsync(ulong guildId, string input)
     {
+        // An alias repeats one list under many keywords, so a small file could add millions of rows.
+        if (input.Length > MAX_IMPORT_CHARS || YamlHelper.ContainsAliases(input))
+            return false;
+
         Dictionary<string?, List<ExportedQuote?>?>? data;
         try
         {
@@ -216,9 +235,17 @@ public sealed class QuoteService : IQuoteService, INService
         // a hand-edited keyword with no entries deserializes to a null list
         var toImport = data.Where(x => x.Value is not null)
                            .SelectMany(x => x.Value!.Select(v => (Key: x.Key, Value: v)))
-                           .Where(x => !string.IsNullOrWhiteSpace(x.Key) && !string.IsNullOrWhiteSpace(x.Value?.Txt));
+                           .Where(x => !string.IsNullOrWhiteSpace(x.Key) && !string.IsNullOrWhiteSpace(x.Value?.Txt))
+                           .ToList();
+
+        if (toImport.Count is 0 or > MAX_IMPORT_QUOTES)
+            return false;
 
         await using var uow = _db.GetDbContext();
+        var existing = await uow.GetTable<Quote>().CountAsyncLinqToDB(x => x.GuildId == guildId);
+        if (existing + toImport.Count > MAX_QUOTES_PER_SERVER)
+            return false;
+
         await uow.GetTable<Quote>()
                  .BulkCopyAsync(toImport
                      .Select(q => new Quote

@@ -2367,6 +2367,16 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reminders_GuildId",
+                table: "Reminders",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reminders_UserId",
+                table: "Reminders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reminders_When",
                 table: "Reminders",
                 column: "When");

@@ -5,7 +5,10 @@ quote_edited: Quote Edited
 quote_id: Quote {0}
 quotes_deleted: Deleted all quotes with {0} keyword.
 quotes_deleted_count: Deleted {0} quotes.
+quotes_edit_none: No quotes found which you can edit.
 quotes_notfound: No quotes found matching the quote ID specified.
 quotes_page: Page {0} of quotes
 quotes_page_none: No quotes found on that page.
 quotes_remove_none: No quotes found which you can remove.
+quote_too_long: 'A keyword can have at most {0} characters, and a quote text at most {1}.'
+quote_limit_reached: 'This server has the maximum number of quotes ({0}). Delete a quote first.'

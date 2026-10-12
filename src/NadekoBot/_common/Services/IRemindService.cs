@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Utility.Services;
 
 public interface IRemindService
 {
-    Task AddReminderAsync(ulong userId,
+    Task<bool> AddReminderAsync(ulong userId,
         ulong targetId,
         ulong? guildId,
         bool isPrivate,

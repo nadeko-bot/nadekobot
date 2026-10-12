@@ -13,3 +13,4 @@ userrole_none: No user roles have been assigned in this server.
 userrole_none_user: '{0} has no assigned user roles.'
 userrole_not_found: Role not found or not assigned to you.
 userrole_removed: '{0} has been removed from the role {1}.'
+userrole_cooldown: 'You can change a user role again in {0} seconds.'

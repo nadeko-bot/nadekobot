@@ -12,6 +12,7 @@ public sealed partial class ResponseBuilder
     private string? plainText;
     private IReadOnlyCollection<EmbedBuilder>? embeds;
     private bool sanitizeMentions = true;
+    private AllowedMentions? allowedMentions;
     private LocStr? locTxt;
     private object[] locParams = [];
     private bool shouldReply = true;
@@ -81,7 +82,8 @@ public sealed partial class ResponseBuilder
             User = user ?? ctx?.User,
             Embed = finalEmbed,
             Embeds = embeds?.Map(x => x.Build()),
-            SanitizeMentions = sanitizeMentions ? new(AllowedMentionTypes.Users) : AllowedMentions.All,
+            SanitizeMentions = allowedMentions
+                               ?? (sanitizeMentions ? new(AllowedMentionTypes.Users) : AllowedMentions.All),
             Ephemeral = ephemeral,
             InteractionGroup = inters is { Count: > 0 }
                 ? new NadekoInteractionGroup(inters.ToArray())
@@ -383,6 +385,13 @@ public sealed partial class ResponseBuilder
     public ResponseBuilder Sanitize(bool shouldSantize = true)
     {
         sanitizeMentions = shouldSantize;
+        allowedMentions = null;
+        return this;
+    }
+
+    public ResponseBuilder Mentions(AllowedMentions mentions)
+    {
+        allowedMentions = mentions;
         return this;
     }
 

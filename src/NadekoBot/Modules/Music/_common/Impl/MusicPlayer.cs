@@ -36,7 +36,9 @@ public sealed class MusicPlayer : IMusicPlayer
     private volatile IVoiceProxy? _proxy;
     private readonly IGoogleApiService _googleApiService;
     private readonly AudioFileCacheService _audioFileCache;
+    private readonly AudioFileCacheConfigService _musicConfig;
     private readonly ISongBuffer _songBuffer;
+    private readonly PublicOnlyProxy _publicProxy;
 
     private volatile bool skipped;
     private int? forceIndex;
@@ -51,9 +53,13 @@ public sealed class MusicPlayer : IMusicPlayer
         IVoiceProxy? proxy,
         IGoogleApiService googleApiService,
         AudioFileCacheService audioFileCache,
+        AudioFileCacheConfigService musicConfig,
+        PublicOnlyProxy publicProxy,
         QualityPreset qualityPreset,
         bool autoPlay)
     {
+        _publicProxy = publicProxy;
+        _musicConfig = musicConfig;
         _queue = queue;
         _trackResolveProvider = trackResolveProvider;
         _ytResolverFactory = ytResolverFactory;
@@ -124,7 +130,12 @@ public sealed class MusicPlayer : IMusicPlayer
 
                     _ = OnStarted?.Invoke(this, track, index);
 
-                    var streamUrl = await GetStreamSourceAsync(track);
+                    var (streamUrl, refused) = await GetStreamSourceAsync(track);
+                    if (refused)
+                    {
+                        Log.Warning("Skipped {Track}: its stream is not on a public address", track.Title);
+                        continue;
+                    }
 
                     var isLocal = track.Platform == MusicPlatform.Local
                                   || (streamUrl is not null
@@ -155,12 +166,20 @@ public sealed class MusicPlayer : IMusicPlayer
                             continue;
                         }
 
+                        string? httpProxy = null;
+                        if (!isLocal && !track.AllowLocalNetwork && !_publicProxy.TryGetUrl(out httpProxy))
+                        {
+                            Log.Warning("Skipped {Track}: the public-only proxy is not available", track.Title);
+                            continue;
+                        }
+
                         _songBuffer.Reset();
 
                         using var source = FfmpegTrackDataSource.Create(
                             _vc.BitDepth,
                             streamUrl,
-                            isLocal);
+                            isLocal,
+                            httpProxy);
 
                         if (source is null)
                         {
@@ -199,7 +218,7 @@ public sealed class MusicPlayer : IMusicPlayer
                             if (related is not null)
                             {
                                 var relatedTrack =
-                                    await _trackResolveProvider.QuerySongAsync(related, MusicPlatform.Youtube);
+                                    await _trackResolveProvider.QuerySongAsync(related, MusicPlatform.Youtube, false);
                                 if (relatedTrack is not null)
                                     EnqueueTrack(relatedTrack, "Autoplay");
                             }
@@ -244,7 +263,20 @@ public sealed class MusicPlayer : IMusicPlayer
         return false;
     }
 
-    private async Task<string?> GetStreamSourceAsync(IQueuedTrackInfo track)
+    // yt-dlp and Invidious can return any URL, and ffmpeg reads a value without "http" as a local file.
+    public static bool IsAllowedStreamUrl(MusicPlatform platform, bool allowLocalNetwork, string url)
+    {
+        if (platform == MusicPlatform.Local)
+            return allowLocalNetwork;
+
+        if (!allowLocalNetwork)
+            return UrlExtensions.IsPublicUrl(url);
+
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+               && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+    }
+
+    private async Task<(string? Url, bool Refused)> GetStreamSourceAsync(IQueuedTrackInfo track)
     {
         if (track.TrackInfo is SimpleTrackInfo sti)
         {
@@ -255,7 +287,11 @@ public sealed class MusicPlayer : IMusicPlayer
                 sti.Duration = await _localTrackResolver.ResolveDurationAsync(sti.StreamUrl);
             }
 
-            return sti.StreamUrl;
+            if (sti.StreamUrl is not null
+                && !IsAllowedStreamUrl(sti.Platform, track.AllowLocalNetwork, sti.StreamUrl))
+                return (null, true);
+
+            return (sti.StreamUrl, false);
         }
 
         var trackId = track.TrackInfo.Id;
@@ -263,11 +299,20 @@ public sealed class MusicPlayer : IMusicPlayer
 
         var cachedPath = _audioFileCache.GetCachedPath(trackId, platform);
         if (cachedPath is not null)
-            return cachedPath;
+            return (cachedPath, false);
 
         var url = await _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId);
-        _audioFileCache.GetOrStartDownload(trackId, platform, () => Task.FromResult(url));
-        return url;
+        if (url is null)
+            return (null, false);
+
+        if (!IsAllowedStreamUrl(platform, track.AllowLocalNetwork, url))
+            return (null, true);
+
+        // Only public streams go to the cache, so a member cannot replay a local stream which the owner queued.
+        if (!track.AllowLocalNetwork || UrlExtensions.IsPublicUrl(url))
+            _audioFileCache.GetOrStartDownload(trackId, platform, () => Task.FromResult<string?>(url));
+
+        return (url, false);
     }
 
     private bool? TryReadAndSendPcm(IVoiceProxy proxy)
@@ -494,25 +539,32 @@ public sealed class MusicPlayer : IMusicPlayer
         string query,
         string queuer,
         bool asNext,
+        bool allowLocalNetwork,
         MusicPlatform? forcePlatform = null)
     {
-        var song = await _trackResolveProvider.QuerySongAsync(query, forcePlatform);
-        if (song is null)
+        if (IsQueueFull)
+            return default;
+
+        var song = await _trackResolveProvider.QuerySongAsync(query, forcePlatform, allowLocalNetwork);
+        if (song is null || IsQueueFull)
             return default;
 
         int index;
         if (asNext)
-            return (_queue.EnqueueNext(song, queuer, out index), index);
+            return (_queue.EnqueueNext(song, queuer, allowLocalNetwork, out index), index);
 
-        return (_queue.Enqueue(song, queuer, out index), index);
+        return (_queue.Enqueue(song, queuer, allowLocalNetwork, out index), index);
     }
 
-    public async Task EnqueueManyAsync(IEnumerable<(string Query, MusicPlatform Platform)> queries, string queuer)
+    public async Task EnqueueManyAsync(
+        IEnumerable<(string Query, MusicPlatform Platform)> queries,
+        string queuer,
+        bool allowLocalNetwork)
     {
         var errorCount = 0;
         foreach (var chunk in queries.Chunk(5))
         {
-            if (IsKilled)
+            if (IsKilled || IsQueueFull)
                 break;
 
             await chunk.Select(async data =>
@@ -520,7 +572,7 @@ public sealed class MusicPlayer : IMusicPlayer
                            var (query, platform) = data;
                            try
                            {
-                               await TryEnqueueTrackAsync(query, queuer, false, platform);
+                               await TryEnqueueTrackAsync(query, queuer, false, allowLocalNetwork, platform);
                                errorCount = 0;
                            }
                            catch (Exception ex)
@@ -538,8 +590,17 @@ public sealed class MusicPlayer : IMusicPlayer
         }
     }
 
+    public int MaxQueueSize
+        => _musicConfig.Data.MaxQueueSize;
+
+    public bool IsQueueFull
+        => _queue.Count >= MaxQueueSize;
+
     public void EnqueueTrack(ITrackInfo track, string queuer)
         => _queue.Enqueue(track, queuer, out _);
+
+    public void EnqueueTrack(ITrackInfo track, string queuer, bool allowLocalNetwork)
+        => _queue.Enqueue(track, queuer, allowLocalNetwork, out _);
 
     public void EnqueueTracks(IEnumerable<ITrackInfo> tracks, string queuer)
         => _queue.EnqueueMany(tracks, queuer);

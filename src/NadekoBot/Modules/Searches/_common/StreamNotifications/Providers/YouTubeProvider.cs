@@ -81,7 +81,7 @@ public sealed partial class YouTubeProvider : Provider
 
             var invInstance = instances[_rng.Next(0, _scs.Data.InvidiousInstances.Count)];
 
-            using var client = _httpFactory.CreateClient();
+            using var client = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
             client.BaseAddress = new Uri(invInstance);
 
             using var response = await client.GetAsync($"/@{handle}");
@@ -116,7 +116,7 @@ public sealed partial class YouTubeProvider : Provider
                 return null;
 
             var invInstance = instances[_rng.Next(0, instances.Count)];
-            var client = _httpFactory.CreateClient();
+            using var client = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
             client.BaseAddress = new Uri(invInstance);
 
             var channel = await client.GetFromJsonAsync<InvidiousChannelResponse>($"/api/v1/channels/{channelId}");

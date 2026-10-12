@@ -14,3 +14,4 @@ notify_off: Notification message will no longer be sent when {0} event triggers.
 notify_on: Notification message will be sent in {0} channel when {1} event triggers.
 notify_placeholders: Placeholders for '{0}' notify event
 notify_type: Type
+notify_mentions_removed: 'You do not have the Mention Everyone permission. The bot removed @everyone, @here and role mentions from the message, then saved it.'

@@ -3,6 +3,22 @@ namespace NadekoBot.Common.Yml;
 
 public static class YamlHelper
 {
+    // An alias makes the deserializer reuse a node, so a small document can expand into a very large object graph.
+    public static bool ContainsAliases(string yaml)
+        => ContainsAliases(new StringReader(yaml));
+
+    public static bool ContainsAliases(TextReader yaml)
+    {
+        var parser = new YamlDotNet.Core.Parser(yaml);
+        while (parser.MoveNext())
+        {
+            if (parser.Current is YamlDotNet.Core.Events.AnchorAlias)
+                return true;
+        }
+
+        return false;
+    }
+
     // https://github.com/aaubry/YamlDotNet/blob/0f4cc205e8b2dd8ef6589d96de32bf608a687c6f/YamlDotNet/Core/Scanner.cs#L1687
     /// <summary>
     ///     This is modified code from yamldotnet's repo which handles parsing unicode code points

@@ -57,7 +57,7 @@ public class TempVoiceTests
     }
 
     [Test]
-    public void BuildOverwrites_KeepsHubPermsAndGivesOwnerControl()
+    public void HubPerms_OverwritesGiveOwnerControl_AndMissingPermsAreListed()
     {
         const ulong ownerId = 5;
         const ulong roleId = 7;
@@ -78,10 +78,23 @@ public class TempVoiceTests
         Assert.That(owner.Connect, Is.EqualTo(PermValue.Allow));
         Assert.That(owner.ManageChannel, Is.EqualTo(PermValue.Allow));
         Assert.That(owner.MoveMembers, Is.EqualTo(PermValue.Allow));
+
+        var all = new ChannelPermissions(viewChannel: true,
+            connect: true,
+            moveMembers: true,
+            manageChannel: true,
+            speak: true);
+        var noConnectNoView = new ChannelPermissions(moveMembers: true, manageChannel: true, speak: true);
+
+        Assert.That(TempVoiceService.MissingHubPerms(all), Is.EqualTo((ChannelPermission)0));
+        Assert.That(TempVoiceService.MissingHubPerms(noConnectNoView),
+            Is.EqualTo(ChannelPermission.ViewChannel | ChannelPermission.Connect));
+        Assert.That(TempVoiceService.MissingHubPerms(ChannelPermissions.None),
+            Is.EqualTo(TempVoiceService.REQUIRED_HUB_PERMS));
     }
 
     [Test]
-    public void Cooldown_BlocksNewChannelPerMemberFor30Seconds()
+    public void Delays_CooldownPerMember_DeleteAfterDelay_AndActionGap()
     {
         Assert.That(_svc.TryStartCooldown(1), Is.True);
         Assert.That(_svc.TryStartCooldown(1), Is.False);
@@ -92,11 +105,7 @@ public class TempVoiceTests
 
         _time.Advance(TimeSpan.FromSeconds(1));
         Assert.That(_svc.TryStartCooldown(1), Is.True);
-    }
 
-    [Test]
-    public void EmptyChannel_IsDeletedOnlyAfterDelay()
-    {
         var emptySince = _time.GetTimestamp();
 
         _time.Advance(TempVoiceService.DeleteDelay - TimeSpan.FromSeconds(1));
@@ -104,11 +113,7 @@ public class TempVoiceTests
 
         _time.Advance(TimeSpan.FromSeconds(1));
         Assert.That(TempVoiceService.IsDueForDelete(emptySince, _time.GetTimestamp(), _time), Is.True);
-    }
 
-    [Test]
-    public void ActionGap_DelaysRepeatedHubClicksFor3Seconds()
-    {
         var last = _time.GetTimestamp();
 
         _time.Advance(TempVoiceService.ActionGap - TimeSpan.FromSeconds(1));
@@ -143,22 +148,5 @@ public class TempVoiceTests
 
         Assert.That(trimmed, Is.EqualTo(new string('a', TempVoiceService.MAX_CHANNEL_NAME_LENGTH - 1)));
         Assert.That(TempVoiceService.TrimName("short"), Is.EqualTo("short"));
-    }
-
-    [Test]
-    public void MissingHubPerms_ListsOnlyTheMissingRequiredPerms()
-    {
-        var all = new ChannelPermissions(viewChannel: true,
-            connect: true,
-            moveMembers: true,
-            manageChannel: true,
-            speak: true);
-        var noConnectNoView = new ChannelPermissions(moveMembers: true, manageChannel: true, speak: true);
-
-        Assert.That(TempVoiceService.MissingHubPerms(all), Is.EqualTo((ChannelPermission)0));
-        Assert.That(TempVoiceService.MissingHubPerms(noConnectNoView),
-            Is.EqualTo(ChannelPermission.ViewChannel | ChannelPermission.Connect));
-        Assert.That(TempVoiceService.MissingHubPerms(ChannelPermissions.None),
-            Is.EqualTo(TempVoiceService.REQUIRED_HUB_PERMS));
     }
 }

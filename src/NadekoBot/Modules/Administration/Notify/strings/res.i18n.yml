@@ -15,6 +15,7 @@ ar:
   notify_on: 'سيتم إرسال رسالة الإشعار في قناة {0} عند تفعيل حدث {1}.'
   notify_placeholders: 'العناصر النائبة لحدث الإشعار ''{0}'''
   notify_type: النوع
+  notify_mentions_removed: ليس لديك صلاحية Mention Everyone. أزال البوت @everyone و@here ومنشن الرتب من الرسالة، ثم حفظها.
 
 de-DE:
   notify_available: Liste der verfügbaren Benachrichtigungsereignisse
@@ -33,6 +34,7 @@ de-DE:
   notify_on: 'Die Benachrichtigungsnachricht wird im Kanal {0} gesendet, wenn das Ereignis {1} ausgelöst wird.'
   notify_placeholders: 'Platzhalter für das Ereignis ''{0}'''
   notify_type: Typ
+  notify_mentions_removed: Du hast die Berechtigung Mention Everyone nicht. Der Bot hat @everyone, @here und Rollen-Erwähnungen aus der Nachricht entfernt und sie dann gespeichert.
 
 es-ES:
   notify_available: Lista de eventos de notificación disponibles
@@ -51,6 +53,7 @@ es-ES:
   notify_on: 'El mensaje de notificación se enviará en el canal {0} cuando se active el evento {1}.'
   notify_placeholders: 'Placeholders para el evento ''{0}'''
   notify_type: Tipo
+  notify_mentions_removed: No tienes el permiso Mention Everyone. El bot quitó @everyone, @here y las menciones de rol del mensaje, y luego lo guardó.
 
 fr-FR:
   notify_available: Liste des événements de notification disponibles
@@ -69,6 +72,7 @@ fr-FR:
   notify_on: 'Le message de notification sera envoyé dans le salon {0} quand l''événement {1} se déclenche.'
   notify_placeholders: 'Placeholders pour l''événement ''{0}'''
   notify_type: Type
+  notify_mentions_removed: Tu n'as pas la permission Mention Everyone. Le bot a retiré @everyone, @here et les mentions de rôle du message, puis l'a enregistré.
 
 id-ID:
   notify_available: Daftar event notifikasi yang tersedia
@@ -87,6 +91,7 @@ id-ID:
   notify_on: 'Pesan notifikasi akan dikirim di channel {0} saat event {1} terpicu.'
   notify_placeholders: 'Placeholder untuk event notifikasi ''{0}'''
   notify_type: Tipe
+  notify_mentions_removed: Kamu tidak punya izin Mention Everyone. Bot menghapus @everyone, @here, dan mention role dari pesan, lalu menyimpannya.
 
 ja-JP:
   notify_available: 利用可能な通知イベントの一覧
@@ -105,6 +110,7 @@ ja-JP:
   notify_on: 'イベント{1}がトリガーされると、チャンネル{0}に通知メッセージが送信されます。'
   notify_placeholders: '通知イベント''{0}''のプレースホルダー'
   notify_type: タイプ
+  notify_mentions_removed: Mention Everyone 権限がありません。ボットはメッセージから @everyone、@here、ロールメンションを削除してから保存しました。
 
 ko-KR:
   notify_available: 사용 가능한 알림 이벤트 목록
@@ -123,6 +129,7 @@ ko-KR:
   notify_on: '{1} 이벤트 발동 시 {0} 채널에 알림 메시지가 전송됩니다.'
   notify_placeholders: '''{0}'' 알림 이벤트의 플레이스홀더'
   notify_type: 유형
+  notify_mentions_removed: Mention Everyone 권한이 없습니다. 봇이 메시지에서 @everyone, @here, 역할 멘션을 제거한 뒤 저장했습니다.
 
 pl-PL:
   notify_available: Lista dostępnych zdarzeń powiadomień
@@ -141,6 +148,7 @@ pl-PL:
   notify_on: 'Wiadomość powiadomienia będzie wysyłana na kanale {0}, gdy zdarzenie {1} zostanie wyzwolone.'
   notify_placeholders: 'Placeholdery dla zdarzenia powiadomienia ''{0}'''
   notify_type: Typ
+  notify_mentions_removed: Nie masz uprawnienia Mention Everyone. Bot usunął z wiadomości @everyone, @here i wzmianki ról, a potem ją zapisał.
 
 pt-BR:
   notify_available: Lista de eventos de notificação disponíveis
@@ -159,6 +167,7 @@ pt-BR:
   notify_on: 'A mensagem de notificação será enviada no canal {0} quando o evento {1} for acionado.'
   notify_placeholders: 'Placeholders para o evento ''{0}'''
   notify_type: Tipo
+  notify_mentions_removed: Você não tem a permissão Mention Everyone. O bot removeu @everyone, @here e menções de cargo da mensagem e depois a salvou.
 
 ru-RU:
   notify_available: Список доступных событий уведомлений
@@ -177,6 +186,7 @@ ru-RU:
   notify_on: 'Сообщение уведомления будет отправлено в канал {0} при срабатывании события {1}.'
   notify_placeholders: 'Плейсхолдеры для события ''{0}'''
   notify_type: Тип
+  notify_mentions_removed: У тебя нет права Mention Everyone. Бот убрал из сообщения @everyone, @here и упоминания ролей, а затем сохранил его.
 
 sr-Cyrl-RS:
   notify_available: Листа доступних обавештајних догађаја
@@ -195,6 +205,7 @@ sr-Cyrl-RS:
   notify_on: 'Порука обавештења ће бити послата у канал {0} када се покрене {1} догађај.'
   notify_placeholders: 'Плејсхолдери за ''{0}'' обавештајни догађај'
   notify_type: Тип
+  notify_mentions_removed: Немаш дозволу Mention Everyone. Бот је уклонио @everyone, @here и помињања улога из поруке, па је сачувао.
 
 tr-TR:
   notify_available: Kullanılabilir bildirim olaylarının listesi
@@ -213,6 +224,7 @@ tr-TR:
   notify_on: '{1} olayı tetiklendiğinde {0} kanalına bildirim mesajı gönderilecek.'
   notify_placeholders: '''{0}'' bildirim olayı için yer tutucular'
   notify_type: Tür
+  notify_mentions_removed: Mention Everyone iznin yok. Bot mesajdan @everyone, @here ve rol etiketlerini kaldırdı, sonra mesajı kaydetti.
 
 ts-TS:
   notify_available: List of available notify events
@@ -231,6 +243,7 @@ ts-TS:
   notify_on: 'Notification message will be sent in {0} channel when {1} event triggers. I set it up properly, obviously.'
   notify_placeholders: 'Placeholders for ''{0}'' notify event'
   notify_type: Type
+  notify_mentions_removed: Hmph, no Mention Everyone permission? I stripped @everyone, @here and role mentions out of it and saved the rest.
 
 uk-UA:
   notify_available: Список доступних подій сповіщень
@@ -249,6 +262,7 @@ uk-UA:
   notify_on: 'Повідомлення буде надіслано в канал {0}, коли спрацює подія {1}.'
   notify_placeholders: 'Заповнювачі для події сповіщення ''{0}'''
   notify_type: Тип
+  notify_mentions_removed: У тебе немає дозволу Mention Everyone. Бот прибрав із повідомлення @everyone, @here та згадки ролей, а потім зберіг його.
 
 vi-VN:
   notify_available: Danh sách các sự kiện thông báo có sẵn
@@ -267,6 +281,7 @@ vi-VN:
   notify_on: 'Tin nhắn thông báo sẽ được gửi trong kênh {0} khi sự kiện {1} kích hoạt.'
   notify_placeholders: 'Các placeholder cho sự kiện thông báo ''{0}'''
   notify_type: Loại
+  notify_mentions_removed: Bạn không có quyền Mention Everyone. Bot đã xóa @everyone, @here và các lượt nhắc vai trò khỏi tin nhắn, rồi lưu lại.
 
 zh-CN:
   notify_available: 可用的通知事件列表
@@ -285,3 +300,4 @@ zh-CN:
   notify_on: '當事件 {1} 觸發時，通知訊息將發送到頻道 {0}。'
   notify_placeholders: '通知事件 ''{0}'' 的佔位符'
   notify_type: 類型
+  notify_mentions_removed: 你没有 Mention Everyone 权限。机器人已从消息中移除 @everyone、@here 和身份组提及，然后保存了消息。

@@ -43,49 +43,28 @@ public class WaifuQueryTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task GetWaifuInfo_OptedIn_ReturnsFullDto()
-    {
-        await using (var ctx = _db.GetDbContext())
-            await WaifuTestHelper.CreateWaifu(ctx, 1001, mood: 800, food: 600, fee: 3, price: 5000,
-                managerId: 2001, returnsCap: 500_000, isHubby: true);
-
-        var result = await _svc.GetWaifuInfoAsync(1001);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result!.Mood, Is.EqualTo(800));
-        Assert.That(result.Food, Is.EqualTo(600));
-        Assert.That(result.WaifuFeePercent, Is.EqualTo(3));
-        Assert.That(result.Price, Is.EqualTo(5000));
-        Assert.That(result.ManagerId, Is.EqualTo(2001));
-        Assert.That(result.IsHubby, Is.True);
-    }
-
-    [Test]
-    public async Task GetWaifuInfo_NonExistent_ReturnsNull()
-    {
-        Assert.That(await _svc.GetWaifuInfoAsync(9999), Is.Null);
-    }
-
-    [Test]
-    public async Task GetBacking_ActiveFan_ReturnsWaifuId()
+    public async Task WaifuQueries_ReturnStoredWaifuFanAndManagerData()
     {
         await using (var ctx = _db.GetDbContext())
         {
-            await WaifuTestHelper.CreateWaifu(ctx, 1001);
+            await WaifuTestHelper.CreateWaifu(ctx, 1001, mood: 800, food: 600, fee: 3, price: 5000,
+                managerId: 5001, returnsCap: 500_000, isHubby: true);
             await WaifuTestHelper.CreateFan(ctx, 2001, 1001);
+            await WaifuTestHelper.CreateFan(ctx, 3001, 1001);
         }
+
+        var info = await _svc.GetWaifuInfoAsync(1001);
+        Assert.That(info, Is.Not.Null);
+        Assert.That(info!.Mood, Is.EqualTo(800));
+        Assert.That(info.Food, Is.EqualTo(600));
+        Assert.That(info.WaifuFeePercent, Is.EqualTo(3));
+        Assert.That(info.Price, Is.EqualTo(5000));
+        Assert.That(info.ManagerId, Is.EqualTo(5001));
+        Assert.That(info.IsHubby, Is.True);
+        Assert.That(await _svc.GetWaifuInfoAsync(9999), Is.Null);
 
         Assert.That(await _svc.GetBackingAsync(2001), Is.EqualTo(1001));
         Assert.That(await _svc.GetBackingAsync(9999), Is.Null);
-    }
-
-    [Test]
-    public async Task IsWaifu_IsFan_IsManager_ReturnCorrectBooleans()
-    {
-        await using (var ctx = _db.GetDbContext())
-        {
-            await WaifuTestHelper.CreateWaifu(ctx, 1001, managerId: 5001);
-            await WaifuTestHelper.CreateFan(ctx, 2001, 1001);
-        }
 
         Assert.That(await _svc.IsWaifuAsync(1001), Is.True);
         Assert.That(await _svc.IsWaifuAsync(9999), Is.False);
@@ -93,21 +72,10 @@ public class WaifuQueryTests
         Assert.That(await _svc.IsFanAsync(9999), Is.False);
         Assert.That(await _svc.IsManagerAsync(5001), Is.True);
         Assert.That(await _svc.IsManagerAsync(9999), Is.False);
-    }
 
-    [Test]
-    public async Task GetFans_ReturnsFanList()
-    {
-        await using (var ctx = _db.GetDbContext())
-        {
-            await WaifuTestHelper.CreateWaifu(ctx, 1001, managerId: 5001);
-            await WaifuTestHelper.CreateFan(ctx, 2001, 1001);
-            await WaifuTestHelper.CreateFan(ctx, 3001, 1001);
-        }
-
-        var result = await _svc.GetFansAsync(1001, 0, 10);
-        Assert.That(result, Has.Count.EqualTo(2));
-        Assert.That(result.Select(x => x.UserId), Is.EquivalentTo(new ulong[] { 2001, 3001 }));
+        var fans = await _svc.GetFansAsync(1001, 0, 10);
+        Assert.That(fans, Has.Count.EqualTo(2));
+        Assert.That(fans.Select(x => x.UserId), Is.EquivalentTo(new ulong[] { 2001, 3001 }));
     }
 
     [Test]

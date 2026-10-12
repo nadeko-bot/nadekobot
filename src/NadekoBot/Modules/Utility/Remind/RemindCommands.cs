@@ -191,16 +191,23 @@ public partial class Utility
             {
                 var perms = ((IGuildUser)ctx.User).GetPermissions((IGuildChannel)ctx.Channel);
                 if (!perms.MentionEveryone)
-                    message = message.SanitizeAllMentions();
+                    message = message.SanitizeTemplateMentions();
             }
 
-            await _service.AddReminderAsync(ctx.User.Id,
-                targetId,
-                ctx.Guild?.Id,
-                isPrivate,
-                time,
-                message,
-                ReminderType.User);
+            if (!await _service.AddReminderAsync(ctx.User.Id,
+                    targetId,
+                    ctx.Guild?.Id,
+                    isPrivate,
+                    time,
+                    message,
+                    ReminderType.User))
+            {
+                await Response()
+                    .Error(strs.reminder_limit(RemindService.MAX_REMINDERS_PER_USER,
+                        RemindService.MAX_REMINDERS_PER_SERVER))
+                    .SendAsync();
+                return true;
+            }
 
             var eb = CreateEmbed()
                 .WithOkColor()

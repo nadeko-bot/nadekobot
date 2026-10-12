@@ -184,6 +184,14 @@ public partial class Administration
                 return;
             }
 
+            var mentionsRemoved = false;
+            if (type != GreetType.GreetDm && !((IGuildUser)ctx.User).GuildPermissions.MentionEveryone)
+            {
+                var clean = text.SanitizeTemplateMentions();
+                mentionsRemoved = !string.Equals(clean, text, StringComparison.Ordinal);
+                text = clean;
+            }
+
             var isEnabled = await _service.SetMessage(ctx.Guild.Id, type, text);
 
             await Response()
@@ -197,6 +205,8 @@ public partial class Administration
                   })
                   .SendAsync();
 
+            if (mentionsRemoved)
+                await Response().Pending(strs.greet_mentions_removed).SendAsync();
 
             if (!isEnabled)
             {

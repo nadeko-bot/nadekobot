@@ -93,6 +93,27 @@ public static class ServiceCollectionExtensions
     {
         IServiceCollection proxySvcs = new ServiceCollection();
         proxySvcs.AddHttpClient();
+        proxySvcs.AddHttpClient(ExternalHttp.CLIENT_NAME, ExternalHttp.Configure)
+            .ConfigurePrimaryHttpMessageHandler(ExternalHttp.CreateHandler);
+
+        proxySvcs.AddHttpClient(ExternalHttp.OWNER_CLIENT_NAME)
+            .ConfigurePrimaryHttpMessageHandler(() => svcs.Resolve<BotPolicy>().Managed
+                ? ExternalHttp.CreateHandler()
+                : new HttpClientHandler());
+
+        // A self-hosted bot keeps the system proxy, which some owners use for YouTube, behind the address check.
+        proxySvcs.AddHttpClient(AudioFileCacheService.HTTP_CLIENT_NAME)
+            .ConfigurePrimaryHttpMessageHandler(() => svcs.Resolve<BotPolicy>().Managed
+                ? ExternalHttp.CreateHandler()
+                : new SocketsHttpHandler
+                {
+                    Proxy = svcs.Resolve<PublicOnlyProxy>(),
+                    UseProxy = true,
+                    AllowAutoRedirect = true,
+                    MaxAutomaticRedirections = ExternalHttp.MAX_REDIRECTS,
+                    ConnectTimeout = TimeSpan.FromSeconds(10)
+                });
+
         proxySvcs.AddHttpClient("memelist")
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {

@@ -16,6 +16,7 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
     private readonly GoogleScrapeService _gscs;
     private readonly BraveSearchService _brave;
     private readonly DuckDuckGoScrapeService _ddg;
+    private readonly BotPolicy _policy;
 
     public DefaultSearchServiceFactory(
         SearchesConfigService scs,
@@ -26,7 +27,8 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         YoutubeDataApiSearchService ytdata,
         InvidiousYtSearchService iYtSs,
         BraveSearchService brave,
-        DuckDuckGoScrapeService ddg)
+        DuckDuckGoScrapeService ddg,
+        BotPolicy policy)
     {
         _scs = scs;
         _sss = sss;
@@ -37,10 +39,11 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         _ytdata = ytdata;
         _brave = brave;
         _ddg = ddg;
+        _policy = policy;
     }
 
     public ISearchService GetSearchService(string? hint = null)
-        => _scs.Data.WebSearchEngine switch
+        => SearchEngineChoice.Web(_scs.Data, _policy) switch
         {
             WebSearchEngine.Google => _gss,
             WebSearchEngine.Google_Scrape => _gscs,
@@ -51,7 +54,7 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         };
 
     public ISearchService GetImageSearchService(string? hint = null)
-        => _scs.Data.ImgSearchEngine switch
+        => SearchEngineChoice.Img(_scs.Data, _policy) switch
         {
             ImgSearchEngine.Google => _gss,
             ImgSearchEngine.Searx => _sss,
@@ -61,7 +64,7 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         };
 
     public IYoutubeSearchService GetYoutubeSearchService(string? hint = null)
-        => _scs.Data.YtProvider switch
+        => SearchEngineChoice.Yt(_scs.Data, _policy) switch
         {
             YoutubeSearcher.YtDataApiv3 => _ytdata,
             YoutubeSearcher.Invidious => _iYtSs,

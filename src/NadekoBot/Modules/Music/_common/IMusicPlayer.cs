@@ -29,12 +29,19 @@ public interface IMusicPlayer : IDisposable
         string query,
         string queuer,
         bool asNext,
+        bool allowLocalNetwork,
         MusicPlatform? forcePlatform = null);
 
-    Task EnqueueManyAsync(IEnumerable<(string Query, MusicPlatform Platform)> queries, string queuer);
+    Task EnqueueManyAsync(
+        IEnumerable<(string Query, MusicPlatform Platform)> queries,
+        string queuer,
+        bool allowLocalNetwork);
     bool TogglePause();
     IQueuedTrackInfo? MoveTrack(int from, int to);
+    bool IsQueueFull { get; }
+    int MaxQueueSize { get; }
     void EnqueueTrack(ITrackInfo track, string queuer);
+    void EnqueueTrack(ITrackInfo track, string queuer, bool allowLocalNetwork);
     void EnqueueTracks(IEnumerable<ITrackInfo> tracks, string queuer);
     void SetRepeat(PlayerRepeatType type);
     void ShuffleQueue();

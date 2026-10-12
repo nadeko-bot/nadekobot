@@ -16,7 +16,7 @@ public partial class Owner(VoteRewardService vrs, IPatronageService ps) : Nadeko
     [Cmd]
     public async Task PatronAdd(long cents, ulong userId)
     {
-        if (!ps.GetConfig().IsEnabled)
+        if (!ps.IsEnabled)
         {
             await Response().Error(strs.patron_not_enabled).SendAsync();
             return;

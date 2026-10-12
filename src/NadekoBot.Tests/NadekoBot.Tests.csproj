@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\NadekoBot\NadekoBot.csproj"/>
+        <ProjectReference Include="..\NadekoBot.Hosted\NadekoBot.Hosted.csproj"/>
         <ProjectReference Include="..\NadekoBot.StringsMerger\NadekoBot.StringsMerger.csproj" GlobalPropertiesToRemove="OutputPath"/>
     </ItemGroup>
 

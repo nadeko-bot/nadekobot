@@ -24,3 +24,4 @@ greetdmmsg_new: New DM greet message set.
 greetmsg_cur: 'Current greet message: {0}'
 greetmsg_enable: Enable greet messages by typing {0}
 greetmsg_new: New greet message set.
+greet_mentions_removed: 'You do not have the Mention Everyone permission. The bot removed @everyone, @here and role mentions from the message, then saved it.'

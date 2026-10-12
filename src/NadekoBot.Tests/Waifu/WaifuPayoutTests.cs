@@ -41,47 +41,11 @@ public class WaifuPayoutTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task GetPendingPayout_NoPendingRow_ReturnsZero()
+    public async Task ClaimPayout_NothingOrLessThanOnePending_ReturnsError()
     {
-        var pending = await _svc.GetPendingPayoutAsync(9999);
-        Assert.That(pending, Is.EqualTo(0));
-    }
+        Assert.That(await _svc.GetPendingPayoutAsync(9999), Is.EqualTo(0));
+        Assert.That((await _svc.ClaimPayoutAsync(9999)).IsT0, Is.True);
 
-    [Test]
-    public async Task ClaimPayout_NoPending_ReturnsError()
-    {
-        var result = await _svc.ClaimPayoutAsync(9999);
-        Assert.That(result.IsT0, Is.True);
-    }
-
-    [Test]
-    public async Task ClaimPayout_FloorsAndDeletesRow()
-    {
-        await using (var ctx = _db.GetDbContext())
-        {
-            await ctx.GetTable<WaifuPendingPayout>()
-                .InsertAsync(() => new WaifuPendingPayout
-                {
-                    UserId = 1001,
-                    Amount = 50.3m
-                });
-        }
-
-        var result = await _svc.ClaimPayoutAsync(1001);
-        Assert.That(result.AsT1.Value, Is.EqualTo(50));
-        await _cs.Received(1).AddAsync(1001, 50, Arg.Any<TxData?>());
-
-        await using (var ctx = _db.GetDbContext())
-        {
-            var row = await ctx.GetTable<WaifuPendingPayout>()
-                .FirstOrDefaultAsyncLinqToDB(x => x.UserId == 1001);
-            Assert.That(row, Is.Null);
-        }
-    }
-
-    [Test]
-    public async Task ClaimPayout_LessThanOne_ReturnsError()
-    {
         await using (var ctx = _db.GetDbContext())
         {
             await ctx.GetTable<WaifuPendingPayout>()
@@ -98,7 +62,7 @@ public class WaifuPayoutTests
     }
 
     [Test]
-    public async Task AddPendingPayout_AccumulatesFractionalDecimals()
+    public async Task PendingPayout_AccumulatesFractions_ClaimFloorsAndDeletesRow()
     {
         await using (var ctx = _db.GetDbContext())
         {
@@ -114,8 +78,18 @@ public class WaifuPayoutTests
             Assert.That(row.Amount, Is.EqualTo(175.85m));
         }
 
-        var pending = await _svc.GetPendingPayoutAsync(1001);
-        Assert.That(pending, Is.EqualTo(175));
+        Assert.That(await _svc.GetPendingPayoutAsync(1001), Is.EqualTo(175));
+
+        var result = await _svc.ClaimPayoutAsync(1001);
+        Assert.That(result.AsT1.Value, Is.EqualTo(175));
+        await _cs.Received(1).AddAsync(1001, 175, Arg.Any<TxData?>());
+
+        await using (var ctx = _db.GetDbContext())
+        {
+            var row = await ctx.GetTable<WaifuPendingPayout>()
+                .FirstOrDefaultAsyncLinqToDB(x => x.UserId == 1001);
+            Assert.That(row, Is.Null);
+        }
     }
 
     [Test]

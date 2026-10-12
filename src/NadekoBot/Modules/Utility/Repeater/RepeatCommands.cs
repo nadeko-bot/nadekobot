@@ -171,7 +171,7 @@ public partial class Utility
 
             message = ((IGuildUser)ctx.User).GuildPermissions.MentionEveryone
                 ? message
-                : message.SanitizeMentions(true);
+                : message.SanitizeTemplateMentions();
 
             var runner = await _service.AddRepeaterAsync(channel.Id,
                 ctx.Guild.Id,

@@ -53,11 +53,13 @@ public partial class Owner
 
         [Cmd]
         [OwnerOnly]
-        public Task SqlSelect([Leftover] string sql)
+        public async Task SqlSelect([Leftover] string sql)
         {
             var result = _ds.SelectSql(sql);
+            if (result.Truncated)
+                await Response().Pending(strs.sql_select_truncated(DangerousCommandsService.MAX_SELECT_ROWS)).SendAsync();
 
-            return Response()
+            await Response()
                    .Paginated()
                    .Items(result.Results)
                    .PageSize(20)
@@ -112,7 +114,9 @@ public partial class Owner
             ms.Position = 0;
 
             // send the file
-            await ctx.Channel.SendFileAsync(ms, $"query_result_{DateTime.UtcNow.Ticks}.csv");
+            await ctx.Channel.SendFileAsync(ms,
+                $"query_result_{DateTime.UtcNow.Ticks}.csv",
+                result.Truncated ? GetText(strs.sql_select_truncated(DangerousCommandsService.MAX_SELECT_ROWS)) : null);
         }
 
         [Cmd]

@@ -1,5 +1,4 @@
-﻿using CodeHollow.FeedReader;
-using NadekoBot.Modules.Searches.Services;
+﻿using NadekoBot.Modules.Searches.Services;
 
 namespace NadekoBot.Modules.Searches;
 
@@ -31,7 +30,7 @@ public partial class Searches
             channel ??= ctx.Channel as ITextChannel;
 
             if (!((IGuildUser)ctx.User).GetPermissions(channel).MentionEveryone)
-                message = message?.SanitizeAllMentions();
+                message = message?.SanitizeTemplateMentions();
 
             await Feed($"https://www.youtube.com/feeds/videos.xml?channel_id={channelId}", channel, message);
         }
@@ -61,16 +60,17 @@ public partial class Searches
 
             channel ??= (ITextChannel)ctx.Channel;
 
-            if (!((IGuildUser)ctx.User).GetPermissions(channel).MentionEveryone)
-                message = message?.SanitizeAllMentions();
-
-            try
+            if (!FeedsService.CanPostIn(await ctx.Guild.GetCurrentUserAsync(), channel))
             {
-                await FeedReader.ReadAsync(url, userAgent: FeedsService.USER_AGENT);
+                await Response().Error(strs.feed_bot_missing_perms(channel.Mention)).SendAsync();
+                return;
             }
-            catch (Exception ex)
+
+            if (!((IGuildUser)ctx.User).GetPermissions(channel).MentionEveryone)
+                message = message?.SanitizeTemplateMentions();
+
+            if (await _service.FetchFeedAsync(url) is null)
             {
-                Log.Information(ex, "Unable to get feeds from that url");
                 await Response().Error(strs.feed_cant_parse).SendAsync();
                 return;
             }

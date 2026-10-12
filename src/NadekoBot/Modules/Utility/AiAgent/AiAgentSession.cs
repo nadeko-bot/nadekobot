@@ -1,4 +1,6 @@
+using System.Buffers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using OneOf;
 using OneOf.Types;
@@ -9,8 +11,12 @@ public readonly record struct AiProviderInfo(string Url, string AuthValue);
 
 public sealed class AiAgentSession(
     IHttpClientFactory httpFactory,
-    IBotCredsProvider credsProvider) : IAiAgentSession, INService
+    IBotCredsProvider credsProvider,
+    BotPolicy policy) : IAiAgentSession, INService
 {
+    private const int MAX_REPLY_BYTES = 4 * 1024 * 1024;
+    private const int MAX_ERROR_LOG_BYTES = 2 * 1024;
+
     private static readonly JsonSerializerOptions _jsonOpts = new()
     {
         PropertyNameCaseInsensitive = true
@@ -40,6 +46,13 @@ public sealed class AiAgentSession(
         }
     }
 
+    // On a managed bot these could reroute the request or impersonate a different client of the provider.
+    private static bool IsReservedHeader(string name)
+        => name.Equals("Authorization", StringComparison.OrdinalIgnoreCase)
+           || name.Equals("Host", StringComparison.OrdinalIgnoreCase)
+           || name.Equals("Cookie", StringComparison.OrdinalIgnoreCase)
+           || name.StartsWith("Proxy-", StringComparison.OrdinalIgnoreCase);
+
     private sealed class SessionUsage
     {
         public int Requests;
@@ -58,9 +71,7 @@ public sealed class AiAgentSession(
     {
         var provider = ResolveProviderInternal(config);
 
-        var reasoningEffort = !string.IsNullOrWhiteSpace(config.ReasoningEffort)
-            ? config.ReasoningEffort
-            : null;
+        var reasoningEffort = AiAgentConfigService.GetReasoningEffort(config.ReasoningEffort);
 
         var toolMap = tools.ToDictionary(t => t.Name);
         var messages = new List<AgentChatMessage>();
@@ -191,11 +202,12 @@ public sealed class AiAgentSession(
                     }
                 }
 
+                // A tool result can hold text from members or web pages, which must not pose as a <channel_update>.
                 messages.Add(new()
                 {
                     Role = "tool",
                     ToolCallId = toolCall.Id,
-                    Content = result
+                    Content = PromptSanitizer.Sanitize(result)
                 });
             }
 
@@ -245,30 +257,52 @@ public sealed class AiAgentSession(
         AgentChatRequest request,
         CancellationToken ct)
     {
-        using var http = httpFactory.CreateClient();
+        using var http = httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
         http.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", provider.AuthValue);
 
         if (config.CustomHeaders is { Count: > 0 } headers)
         {
             foreach (var (key, value) in headers)
+            {
+                if (policy.Managed && IsReservedHeader(key))
+                    continue;
+
                 http.DefaultRequestHeaders.TryAddWithoutValidation(key, value);
+            }
         }
 
         try
         {
-            using var response = await http.PostAsJsonAsync(provider.Url, request, ct);
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, provider.Url);
+            httpRequest.Content = JsonContent.Create(request);
+            using var response = await http.SendAsync(httpRequest, HttpCompletionOption.ResponseHeadersRead, ct);
             if (!response.IsSuccessStatusCode)
             {
-                var body = await response.Content.ReadAsStringAsync(ct);
+                var error = await ExternalHttp.ReadLimitedAsync(response.Content, MAX_ERROR_LOG_BYTES, ct);
                 Log.Error(
                     "AI agent API {Url} returned {Status}: {Body}",
                     provider.Url,
                     (int)response.StatusCode,
-                    body);
+                    error is { } e ? Encoding.UTF8.GetString(e.Buffer, 0, e.Length) : "<too long>");
+                if (error is { } toReturn)
+                    ArrayPool<byte>.Shared.Return(toReturn.Buffer);
                 return null;
             }
 
-            return await response.Content.ReadFromJsonAsync<AgentChatResponse>(_jsonOpts, ct);
+            if (await ExternalHttp.ReadLimitedAsync(response.Content, MAX_REPLY_BYTES, ct) is not { } body)
+            {
+                Log.Error("AI agent API {Url} sent a reply larger than {Max} bytes", provider.Url, MAX_REPLY_BYTES);
+                return null;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<AgentChatResponse>(body.Buffer.AsSpan(0, body.Length), _jsonOpts);
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(body.Buffer);
+            }
         }
         catch (OperationCanceledException)
         {

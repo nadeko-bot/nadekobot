@@ -21,6 +21,7 @@ xp_lose_role: Lose {0} role.
 xp_receive_role: Receive {0} role.
 xp_role_reward_add_role: Users who reach level {0} will receive {1} role.
 xp_role_reward_cleared: Reaching level {0} will no longer reward a role.
+xp_role_reward_limit: This server already has role rewards on {0} levels. Remove one before you add another.
 xp_role_reward_remove_role: Users who reach level {0} will lose {1} role.
 xp_shop_disabled: Xp shop is disabled by the owner, or there are no items for sale.
 xp_shop_item_cant_use: You can't use this item as it doesn't exist or you don't own it.

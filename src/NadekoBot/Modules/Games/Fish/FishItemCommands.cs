@@ -155,6 +155,7 @@ public partial class Games
         }
 
         [Cmd]
+        [SpendsCurrency]
         [RequireContext(ContextType.Guild)]
         public async Task FishBuy(int itemId)
         {

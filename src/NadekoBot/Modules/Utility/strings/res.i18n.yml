@@ -7,6 +7,7 @@ ar:
   commands_ran: الأوامر المنفّذة
   config_edit_fail: 'فشل تعيين {0} إلى القيمة {1}'
   config_list: قائمة الإعدادات
+  config_locked: 'مضيف هذا البوت يتحكم في الإعداد {0} ضمن إعدادات {1}. لا يمكنك تغييره.'
   config_not_found: 'الإعداد {0} غير موجود'
   config_prop_not_found: 'الخاصية {0} غير موجودة في إعداد {1}'
   emoji_add_error: خطأ في إضافة الإيموجي. إما نفدت خانات الإيموجي أو حجم الصورة غير مناسب.
@@ -61,6 +62,7 @@ de-DE:
   commands_ran: Commands ausgeführt
   config_edit_fail: 'Einstellen von {0} zu der Menge {1} gescheitert.'
   config_list: Konfigurationsliste
+  config_locked: 'Der Host dieses Bots steuert die Einstellung {0} der Konfiguration {1}. Du kannst sie nicht ändern.'
   config_not_found: 'Konfiguration {0} nicht gefunden'
   config_prop_not_found: 'Eigentum {0} nicht gefunden mit {1} Konfiguration'
   emoji_add_error: Fehler beim hinzufügen des Emoji. Es sind keine Emoji slots mehr vorhanden, oder die Bildgröße ist unangemessen.
@@ -115,6 +117,7 @@ es-ES:
   commands_ran: Comandos ejecutados
   config_edit_fail: 'No se ha podido configurar {0} al valor {1}'
   config_list: Lista de configuraciones
+  config_locked: 'El host de este bot controla el ajuste {0} de la configuración {1}. No puedes cambiarlo.'
   config_not_found: 'Configuración {0} no encontrada'
   config_prop_not_found: 'La propiedad {0} no se encuentra en la configuración {1}'
   emoji_add_error: Error al agregar emoji. Ya no hay espacio para más, o el tamaño de la imagen no es adecuado.
@@ -169,6 +172,7 @@ fr-FR:
   commands_ran: Commandes exécutées
   config_edit_fail: 'Échec de la définition de {0} sur la valeur {1}'
   config_list: Liste de configuration
+  config_locked: 'L''hébergeur de ce bot contrôle le paramètre {0} de la configuration {1}. Tu ne peux pas le modifier.'
   config_not_found: 'Configuration {0} introuvable'
   config_prop_not_found: 'Propriété {0} introuvable dans la configuration {1}'
   emoji_add_error: Erreur lors de l'ajout d'emoji. Soit vous n'avez plus d'emplacements pour emoji, soit la taille de l'image est inadéquate.
@@ -223,6 +227,7 @@ id-ID:
   commands_ran: Perintah dijalankan
   config_edit_fail: 'Gagal mengatur {0} ke nilai {1}'
   config_list: Daftar konfigurasi
+  config_locked: 'Host bot ini mengatur pengaturan {0} di konfigurasi {1}. Kamu tidak bisa mengubahnya.'
   config_not_found: 'Konfigurasi {0} tidak ditemukan'
   config_prop_not_found: 'Properti {0} tidak ditemukan di konfigurasi {1}'
   emoji_add_error: Gagal menambahkan emoji. Slot emoji habis, atau ukuran gambar tidak sesuai.
@@ -277,6 +282,7 @@ ja-JP:
   commands_ran: 実行されたコマンド数
   config_edit_fail: '{0}の値を{1}に設定できませんでした'
   config_list: 設定一覧
+  config_locked: '{1} 設定の {0} はこのボットのホストが管理しています。変更できません。'
   config_not_found: '設定{0}が見つかりません'
   config_prop_not_found: '{1}設定にプロパティ{0}が見つかりません'
   emoji_add_error: 絵文字の追加中にエラーが発生しました。絵文字スロットが不足しているか、画像サイズが不適切です。
@@ -331,6 +337,7 @@ ko-KR:
   commands_ran: 실행된 명령어 수
   config_edit_fail: '{0}을(를) {1} 값으로 설정하는 데 실패했어요'
   config_list: 설정 목록
+  config_locked: '{1} 설정의 {0} 항목은 이 봇의 호스트가 관리해요. 변경할 수 없어요.'
   config_not_found: '{0} 설정을 찾을 수 없어요'
   config_prop_not_found: '{1} 설정에서 {0} 속성을 찾을 수 없어요'
   emoji_add_error: 이모지 추가 중 오류가 발생했어요. 이모지 슬롯이 부족하거나 이미지 크기가 적절하지 않아요.
@@ -385,6 +392,7 @@ pl-PL:
   commands_ran: Wykonane komendy
   config_edit_fail: 'Nie udało się ustawić {0} na wartość {1}'
   config_list: Lista konfiguracji
+  config_locked: 'Ustawieniem {0} w konfiguracji {1} zarządza host tego bota. Nie możesz go zmienić.'
   config_not_found: 'Nie znaleziono konfiguracji {0}'
   config_prop_not_found: 'Właściwość {0} nie została znaleziona w konfiguracji {1}'
   emoji_add_error: Błąd podczas dodawania emoji. Albo skończyły się sloty na emoji, albo rozmiar obrazu jest nieodpowiedni.
@@ -439,6 +447,7 @@ pt-BR:
   commands_ran: Comandos executados
   config_edit_fail: 'Falha em configurar {0} para o valor {1}'
   config_list: Config Lista
+  config_locked: 'O host deste bot controla a configuração {0} de {1}. Você não pode alterá-la.'
   config_not_found: 'Configuração {0} não encontrada'
   config_prop_not_found: 'Propriedade {0} não encontrada na configuração {1}'
   emoji_add_error: Erro ao adicionar emoji. O servidor não possui mais slots de emoji disponíveis ou o tamanho da imagem é incompatível.
@@ -493,6 +502,7 @@ ru-RU:
   commands_ran: Команд запущено
   config_edit_fail: 'Не удалось установить {0} значение {1}'
   config_list: Список свойств
+  config_locked: 'Настройкой {0} в конфигурации {1} управляет хостинг этого бота. Ты не можешь её изменить.'
   config_not_found: 'Конфигурация {0} не найдена'
   config_prop_not_found: 'Свойство {0} не найдено в конфигурации {1}'
   emoji_add_error: Ошибка добавления эмодзи. Либо у вас закончились слоты для смайликов, либо размер изображения не отвечающий требованиям.
@@ -547,6 +557,7 @@ sr-Cyrl-RS:
   commands_ran: Извршене команде
   config_edit_fail: 'Неуспешно постављање {0} на вредност {1}'
   config_list: Листа конфигурација
+  config_locked: 'Подешавањем {0} у конфигурацији {1} управља хост овог бота. Не можеш да га промениш.'
   config_not_found: 'Конфигурација {0} није пронађена'
   config_prop_not_found: 'Својство {0} није пронађено у конфигурацији {1}'
   emoji_add_error: Грешка при додавању емоџија. Или су вам слотови за емоџије пуни, или величина слике није одговарајућа.
@@ -601,6 +612,7 @@ tr-TR:
   commands_ran: Çalıştırılan komutlar
   config_edit_fail: '{0} değeri {1} olarak ayarlanamadı'
   config_list: Yapılandırma listesi
+  config_locked: '{1} yapılandırmasındaki {0} ayarını bu botun sunucusu yönetiyor. Bunu değiştiremezsin.'
   config_not_found: '{0} yapılandırması bulunamadı'
   config_prop_not_found: '{1} yapılandırmasında {0} özelliği bulunamadı'
   emoji_add_error: Emoji eklenirken hata oluştu. Ya emoji slotların doldu ya da resim boyutu uygun değil.
@@ -655,6 +667,7 @@ ts-TS:
   commands_ran: Commands ran
   config_edit_fail: 'Failed setting {0} to {1}. The value is probably wrong, b-baka.'
   config_list: Config list
+  config_locked: 'The host controls the {0} setting of {1}, not you. Hmph, you can''t change it.'
   config_not_found: 'Configuration {0} not found. D-did you even spell it right?'
   config_prop_not_found: 'Property {0} doesn''t exist on {1} configuration.'
   emoji_add_error: Couldn't add that emoji. You're probably out of slots or the image is wrong.
@@ -709,6 +722,7 @@ uk-UA:
   commands_ran: Виконано команд
   config_edit_fail: 'Не вдалося встановити {0} у значення {1}'
   config_list: Список конфігурацій
+  config_locked: 'Налаштуванням {0} у конфігурації {1} керує хостинг цього бота. Ти не можеш його змінити.'
   config_not_found: 'Конфігурацію {0} не знайдено'
   config_prop_not_found: 'Властивість {0} не знайдено в конфігурації {1}'
   emoji_add_error: Помилка додавання емодзі. Або закінчились слоти для емодзі, або розмір зображення не підходить.
@@ -763,6 +777,7 @@ vi-VN:
   commands_ran: Lệnh đã chạy
   config_edit_fail: 'Không thể đặt {0} thành giá trị {1}'
   config_list: Danh sách cấu hình
+  config_locked: 'Máy chủ của bot này quản lý cài đặt {0} trong cấu hình {1}. Bạn không thể thay đổi nó.'
   config_not_found: 'Không tìm thấy cấu hình {0}'
   config_prop_not_found: 'Không tìm thấy thuộc tính {0} trong cấu hình {1}'
   emoji_add_error: Lỗi khi thêm emoji. Bạn có thể đã hết chỗ emoji, hoặc kích thước ảnh không phù hợp.
@@ -817,6 +832,7 @@ zh-CN:
   commands_ran: 已執行指令
   config_edit_fail: '無法將 {0} 的值設定為 {1}'
   config_list: 設定列表
+  config_locked: '此机器人的托管方控制 {1} 配置中的 {0} 设置。你无法更改它。'
   config_not_found: '找不到設定 {0}'
   config_prop_not_found: '設定 {1} 中找不到屬性 {0}'
   emoji_add_error: 添加表情符號時出錯。您可能已經用完了表情符號空間，或是圖像太小了。

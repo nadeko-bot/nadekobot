@@ -48,6 +48,12 @@ public partial class Utility
                 return;
             }
 
+            if (_service.GivesArgsToSpendingCommand(ctx.Guild, mapping))
+            {
+                await Response().Error(strs.alias_spends_currency).SendAsync();
+                return;
+            }
+
             if (await _service.AddAliasAsync(ctx.Guild.Id, trigger, mapping) == AliasAddResult.LimitReached)
             {
                 await Response().Error(strs.alias_limit_reached(AliasService.MAX_ALIASES)).SendAsync();

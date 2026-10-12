@@ -53,66 +53,31 @@ public class SystemPromptBuilderTests
     }
 
     [Test]
-    public void CollectToolGuidance_NoTools_ReturnsEmpty()
+    public void CollectToolGuidance_SkipsMissingGuidance()
     {
-        var result = SystemPromptBuilder.CollectToolGuidance(new List<IAiTool>());
+        Assert.That(SystemPromptBuilder.CollectToolGuidance(new List<IAiTool>()), Is.Empty);
 
-        Assert.That(result, Is.Empty);
-    }
-
-    [Test]
-    public void CollectToolGuidance_NullGuidance_Skipped()
-    {
         var tools = new List<IAiTool>
         {
             new FakeTool("a", null),
-            new FakeTool("b", "use tool b wisely")
+            new FakeTool("b", "   \n\t  "),
+            new FakeTool("c", "real guidance")
         };
 
         var result = SystemPromptBuilder.CollectToolGuidance(tools);
 
-        Assert.That(result, Has.Count.EqualTo(1));
-        Assert.That(result[0], Is.EqualTo("use tool b wisely"));
+        Assert.That(result, Is.EqualTo(new[] { "real guidance" }));
     }
 
     [Test]
-    public void CollectToolGuidance_WhitespaceGuidance_Skipped()
-    {
-        var tools = new List<IAiTool>
-        {
-            new FakeTool("a", "   \n\t  "),
-            new FakeTool("b", "real guidance")
-        };
-
-        var result = SystemPromptBuilder.CollectToolGuidance(tools);
-
-        Assert.That(result, Has.Count.EqualTo(1));
-        Assert.That(result[0], Is.EqualTo("real guidance"));
-    }
-
-    [Test]
-    public void CollectToolGuidance_DuplicateGuidance_Deduplicated()
-    {
-        var tools = new List<IAiTool>
-        {
-            new FakeTool("a", "same guidance"),
-            new FakeTool("b", "same guidance"),
-            new FakeTool("c", "different guidance")
-        };
-
-        var result = SystemPromptBuilder.CollectToolGuidance(tools);
-
-        Assert.That(result, Has.Count.EqualTo(2));
-    }
-
-    [Test]
-    public void CollectToolGuidance_SortedAlphabetically()
+    public void CollectToolGuidance_DeduplicatesAndSortsAlphabetically()
     {
         var tools = new List<IAiTool>
         {
             new FakeTool("z-tool", "zzzz guidance"),
             new FakeTool("a-tool", "aaaa guidance"),
-            new FakeTool("m-tool", "mmmm guidance")
+            new FakeTool("m-tool", "mmmm guidance"),
+            new FakeTool("m2-tool", "mmmm guidance")
         };
 
         var result = SystemPromptBuilder.CollectToolGuidance(tools);

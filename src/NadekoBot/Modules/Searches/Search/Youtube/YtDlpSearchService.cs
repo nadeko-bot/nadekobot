@@ -1,6 +1,6 @@
 ﻿namespace NadekoBot.Modules.Searches.Youtube;
 
-public class YtDlpSearchService : IYoutubeSearchService, INService
+public class YtDlpSearchService(BotPolicy policy, PublicOnlyProxy proxy) : IYoutubeSearchService, INService
 {
     private YtdlOperation CreateYtdlOp(int count)
         => new YtdlOperation(
@@ -12,7 +12,7 @@ public class YtDlpSearchService : IYoutubeSearchService, INService
             "--get-id",
             "--no-check-certificate",
             "--default-search", $"ytsearch{count}:", "--"
-        ]);
+        ], policy, proxy);
 
     public async Task<VideoInfo[]?> SearchAsync(string query)
     {

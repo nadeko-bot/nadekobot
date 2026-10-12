@@ -2,12 +2,17 @@ namespace NadekoBot.Modules.Utility;
 
 public partial class Utility
 {
-    public partial class ConfigCommands : NadekoModule
+    public partial class ConfigCommands(IEnumerable<IConfigService> settingServices, BotPolicy policy) : NadekoModule
     {
-        private readonly IEnumerable<IConfigService> _settingServices;
+        private readonly IConfigService[] _settingServices = settingServices
+                                                             .Where(x => x.Name != "medusa" && !IsFullyLocked(x, policy))
+                                                             .ToArray();
 
-        public ConfigCommands(IEnumerable<IConfigService> settingServices)
-            => _settingServices = settingServices.Where(x => x.Name != "medusa");
+        private static bool IsFullyLocked(IConfigService config, BotPolicy policy)
+        {
+            var props = config.GetSettableProps();
+            return props.Count > 0 && props.All(p => policy.IsLocked(config.Name, p));
+        }
 
         [Cmd]
         [OwnerOnly]
@@ -70,7 +75,7 @@ public partial class Utility
 
             // if prop is not sent, then print the list of all props and values in that config
             prop = prop?.ToLowerInvariant();
-            var propNames = setting.GetSettableProps();
+            var propNames = setting.GetSettableProps().Where(p => !policy.IsLocked(setting.Name, p)).ToList();
             if (string.IsNullOrWhiteSpace(prop))
             {
                 var propStrings = GetPropsAndValuesString(setting, propNames);
@@ -80,6 +85,13 @@ public partial class Utility
                 await Response().Embed(embed).SendAsync();
                 return;
             }
+
+            if (policy.IsLocked(setting.Name, prop))
+            {
+                await Response().Error(strs.config_locked(Format.Code(prop), Format.Code(name))).SendAsync();
+                return;
+            }
+
             // if the prop is invalid -> print error and list of 
 
             var exists = propNames.Any(x => string.Equals(x, prop, StringComparison.InvariantCultureIgnoreCase));

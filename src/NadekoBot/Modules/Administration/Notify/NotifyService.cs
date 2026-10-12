@@ -170,7 +170,8 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
 
         var rctx = new ReplacementContext(guild: guild, channel: channel, user: user);
 
-        var st = SmartText.CreateFrom(conf.Message);
+        var template = SmartText.CreateFrom(conf.Message);
+        var st = template;
         foreach (var modelRep in T.GetReplacements())
         {
             rctx.WithOverride(GetPhToken(modelRep.Name), () => modelRep.Func(model, guild));
@@ -187,7 +188,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
 
         await _mss.Response(channel)
             .Text(st)
-            .Sanitize(false)
+            .Mentions(TemplateMentions.FromTemplate(template))
             .SendAsync();
     }
 

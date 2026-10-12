@@ -256,7 +256,7 @@ public class GamblingService : INService, IReadyExecutor
                 msg += $"❌ *+0 bonus for boosting {userInfo.guild}*\n";
         }
 
-        if (_ps.GetConfig().IsEnabled)
+        if (_ps.IsEnabled)
         {
             if (percentBonus > float.Epsilon)
                 msg +=

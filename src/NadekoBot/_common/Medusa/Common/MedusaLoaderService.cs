@@ -21,6 +21,7 @@ public sealed class MedusaLoaderService : IMedusaLoaderService, IReadyExecutor, 
     private readonly IPubSub _pubSub;
     private readonly IMedusaConfigService _medusaConfig;
     private readonly IContainer _cont;
+    private readonly BotPolicy _policy;
 
     private readonly ConcurrentDictionary<string, ResolvedMedusa> _resolved = new();
     private readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
@@ -37,8 +38,10 @@ public sealed class MedusaLoaderService : IMedusaLoaderService, IReadyExecutor, 
         IContainer cont,
         IBehaviorHandler behHandler,
         IPubSub pubSub,
-        IMedusaConfigService medusaConfig)
+        IMedusaConfigService medusaConfig,
+        BotPolicy policy)
     {
+        _policy = policy;
         _cmdService = cmdService;
         _behHandler = behHandler;
         _pubSub = pubSub;
@@ -90,6 +93,13 @@ public sealed class MedusaLoaderService : IMedusaLoaderService, IReadyExecutor, 
 
     public async Task OnReadyAsync()
     {
+        if (_policy.Managed)
+        {
+            if (_medusaConfig.GetLoadedMedusae().Count > 0)
+                Log.Warning("Medusae are disabled on a managed bot and will not load");
+            return;
+        }
+
         foreach (var name in _medusaConfig.GetLoadedMedusae())
         {
             var result = await InternalLoadAsync(name);
@@ -188,6 +198,9 @@ public sealed class MedusaLoaderService : IMedusaLoaderService, IReadyExecutor, 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private async ValueTask<MedusaLoadResult> InternalLoadAsync(string name)
     {
+        if (_policy.Managed)
+            return MedusaLoadResult.NotFound;
+
         if (_resolved.ContainsKey(name))
             return MedusaLoadResult.AlreadyLoaded;
 

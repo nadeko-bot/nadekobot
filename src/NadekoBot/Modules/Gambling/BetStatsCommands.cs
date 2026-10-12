@@ -27,6 +27,7 @@ public partial class Gambling
         }
 
         [Cmd]
+        [SpendsCurrency]
         public async Task BetStatsReset(GamblingGame? game = null)
         {
             var price = await _service.GetResetStatsPriceAsync(ctx.User.Id, game);

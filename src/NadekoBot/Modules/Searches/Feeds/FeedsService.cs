@@ -6,6 +6,7 @@ using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using System.Buffers;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Searches.Services;
@@ -16,6 +17,8 @@ public sealed partial class FeedsService : INService, IReadyExecutor
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 OPR/123.0.0.0 (Edition beta)";
 
     private const int MAX_FEED_ERRORS = 500;
+    private const int MAX_FEED_BYTES = 4 * 1024 * 1024;
+    private const int FEED_TIMEOUT_SECONDS = 15;
 
     private readonly DbService _db;
     private NonBlocking.ConcurrentDictionary<string, List<FeedSub>> _subs;
@@ -193,16 +196,13 @@ public sealed partial class FeedsService : INService, IReadyExecutor
                 var rssUrl = kvp.Value.First().Url;
                 try
                 {
-                    var feedTask = FeedReader.ReadAsync(rssUrl, userAgent: USER_AGENT);
-                    var completed = await Task.WhenAny(feedTask, Task.Delay(TimeSpan.FromSeconds(15)));
-                    if (completed != feedTask)
+                    var feed = await FetchFeedAsync(rssUrl);
+                    if (feed is null)
                     {
-                        Log.Debug("Feed {FeedUrl} timed out after 15 seconds", rssUrl);
+                        Log.Debug("Feed {FeedUrl} could not be read", rssUrl);
                         await AddError(rssUrl, kvp.Value);
                         continue;
                     }
-
-                    var feed = await feedTask;
 
                     var items = new List<(FeedItem Item, DateTime LastUpdate)>();
                     foreach (var item in feed.Items)
@@ -253,17 +253,10 @@ public sealed partial class FeedsService : INService, IReadyExecutor
                                 }
 
                                 var ch = guild.GetTextChannel(val.ChannelId);
-                                if (ch is null)
+                                if (ch is null || !CanPostIn(guild.CurrentUser, ch))
                                     continue;
 
-                                var sendTask = _sender.Response(ch)
-                                    .Embed(embed)
-                                    .Text(string.IsNullOrWhiteSpace(val.Message)
-                                        ? string.Empty
-                                        : val.Message)
-                                    .Sanitize(false)
-                                    .SendAsync();
-                                tasks.Add(sendTask);
+                                tasks.Add(SendFeedItemInternalAsync(ch, val, embed));
                             }
                             catch (Exception ex)
                             {
@@ -322,6 +315,26 @@ public sealed partial class FeedsService : INService, IReadyExecutor
             .Where(x => x.GuildId == guildId)
             .OrderBy(x => x.Id)
             .ToList();
+    }
+
+    public async Task<Feed?> FetchFeedAsync(string url)
+    {
+        if (!UrlExtensions.IsPublicUrl(url))
+            return null;
+
+        using var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
+        http.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", USER_AGENT);
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(FEED_TIMEOUT_SECONDS));
+        try
+        {
+            var data = await http.GetBytesLimitedAsync(url, MAX_FEED_BYTES, cts.Token);
+            return data is null ? null : FeedReader.ReadFromByteArray(data);
+        }
+        catch (Exception ex)
+        {
+            Log.Debug(ex, "Unable to read feed {FeedUrl}", url);
+            return null;
+        }
     }
 
     public async Task<FeedAddResult> AddFeedAsync(
@@ -384,6 +397,38 @@ public sealed partial class FeedsService : INService, IReadyExecutor
         uow.SaveChanges();
 
         return true;
+    }
+
+    public static bool CanPostIn(IGuildUser bot, IGuildChannel channel)
+    {
+        var perms = bot.GetPermissions(channel);
+        return perms.ViewChannel && perms.SendMessages && perms.EmbedLinks;
+    }
+
+    private async Task SendFeedItemInternalAsync(ITextChannel ch, FeedSub sub, EmbedBuilder embed)
+    {
+        try
+        {
+            await _sender.Response(ch)
+                .Embed(embed)
+                .Text(string.IsNullOrWhiteSpace(sub.Message) ? string.Empty : sub.Message)
+                .Mentions(TemplateMentions.FromTemplate(sub.Message))
+                .SendAsync();
+        }
+        catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
+        {
+            // Each 403 counts toward Discord's invalid request limit, which all shards share.
+            Log.Warning("Removing feed {FeedUrl} from {GuildId}/{ChannelId}: the bot cannot post there",
+                sub.Url,
+                sub.GuildId,
+                sub.ChannelId);
+
+            await using var ctx = _db.GetDbContext();
+            await ctx.GetTable<FeedSub>().DeleteAsync(x => x.Id == sub.Id);
+            _subs.AddOrUpdate(sub.Url.ToLower(),
+                [],
+                (_, old) => old.Where(x => x.Id != sub.Id).ToList());
+        }
     }
 
     private const int YT_RESOLVE_TIMEOUT_SECONDS = 10;

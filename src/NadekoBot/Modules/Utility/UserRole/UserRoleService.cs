@@ -131,7 +131,7 @@ public sealed class UserRoleService : IUserRoleService, INService
         try
         {
             // Download the image
-            using var httpClient = _httpClientFactory.CreateClient();
+            using var httpClient = _httpClientFactory.CreateClient(ExternalHttp.CLIENT_NAME);
             using var response = await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
 
             // Check if the response is successful
@@ -151,10 +151,9 @@ public sealed class UserRoleService : IUserRoleService, INService
                 return false;
 
             // Save the image to a memory stream
-            await using var stream = await response.Content.ReadAsStreamAsync();
-            await using var memoryStream = new MemoryStream();
-            await stream.CopyToAsync(memoryStream);
-            memoryStream.Position = 0;
+            await using var memoryStream = await ExternalHttp.ReadLimitedStreamAsync(response.Content, 256 * 1024);
+            if (memoryStream is null)
+                return false;
 
             // Create Discord image from stream
             using var discordImage = new Image(memoryStream);

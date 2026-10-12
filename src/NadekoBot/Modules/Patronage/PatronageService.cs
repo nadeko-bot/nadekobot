@@ -61,7 +61,7 @@ public sealed class PatronageService
         {
             try
             {
-                if (!_pConf.Data.IsEnabled)
+                if (!_pConf.IsEnabled)
                     continue;
 
                 await foreach (var batch in _subsHandler.GetPatronsAsync())
@@ -327,8 +327,7 @@ public sealed class PatronageService
 
     public async Task<bool> LimitHitAsync(string name, ulong userId, int defaultMax)
     {
-        var data = _pConf.Data;
-        if (!data.IsEnabled)
+        if (!_pConf.IsEnabled)
             return true;
 
         var limit = await GetUserLimit(name, userId, defaultMax);
@@ -350,9 +349,10 @@ public sealed class PatronageService
 
     public async Task<int> GetUserLimit(string name, ulong userId, int defaultMax)
     {
-        var data = _pConf.Data;
-        if (!data.IsEnabled || _creds.GetCreds().OwnerIds.Contains(userId))
+        if (!_pConf.IsEnabled || _creds.GetCreds().OwnerIds.Contains(userId))
             return defaultMax;
+
+        var data = _pConf.Data;
 
         var mPatron = await GetPatronAsync(userId);
 
@@ -473,6 +473,6 @@ public sealed class PatronageService
         return (succ, fail);
     }
 
-    public PatronConfigData GetConfig()
-        => _pConf.Data;
+    public bool IsEnabled
+        => _pConf.IsEnabled;
 }

@@ -52,7 +52,16 @@ public partial class Administration
         [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task Timezone()
-            => await Response().Confirm(strs.timezone_guild(_service.GetTimeZoneOrUtc(ctx.Guild.Id))).SendAsync();
+        {
+            if (_service.GetGuildTimeZone(ctx.Guild.Id) is { } own)
+            {
+                await Response().Confirm(strs.timezone_guild(own)).SendAsync();
+                return;
+            }
+
+            var fallback = _service.GetBotDefaultTimeZone() ?? TimeZoneInfo.Utc;
+            await Response().Confirm(strs.timezone_guild_default(fallback)).SendAsync();
+        }
 
         [Cmd]
         [RequireContext(ContextType.Guild)]

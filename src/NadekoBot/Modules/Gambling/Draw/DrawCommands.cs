@@ -134,6 +134,7 @@ public partial class Gambling
         }
 
         [Cmd]
+        [SpendsCurrency]
         [RequireContext(ContextType.Guild)]
         public Task BetDraw(
             [OverrideTypeReader(typeof(BalanceTypeReader))]
@@ -143,6 +144,7 @@ public partial class Gambling
             => BetDrawInternal(amount, val, col);
 
         [Cmd]
+        [SpendsCurrency]
         [RequireContext(ContextType.Guild)]
         public Task BetDraw(
             [OverrideTypeReader(typeof(BalanceTypeReader))]

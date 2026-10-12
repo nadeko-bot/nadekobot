@@ -2,6 +2,9 @@
 
 public interface ICommandHandler
 {
+    event Func<IUserMessage, CommandInfo, Task> CommandExecuted;
+    event Func<CommandInfo, ITextChannel?, string, Task> CommandErrored;
+
     string GetPrefix(IGuild? ctxGuild);
     string GetPrefix(ulong? id = null);
     string SetDefaultPrefix(string toSet);

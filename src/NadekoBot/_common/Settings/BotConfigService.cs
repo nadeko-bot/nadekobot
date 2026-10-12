@@ -9,9 +9,20 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
     private static readonly TypedKey<BotConfig> _changeKey = new("config.bot.updated");
     public override string Name { get; } = "bot";
 
-    public BotConfigService(IConfigSeria serializer, IPubSub pubSub)
-        : base(FILE_PATH, serializer, pubSub, _changeKey)
+    // The help texts are embed JSON, and an embed description alone can hold 4096 characters.
+    public const int MAX_HELP_TEXT_LENGTH = 4000;
+    public const int MAX_PREFIX_LENGTH = 10;
+
+    private readonly BotPolicy _policy;
+
+    // The host controls the log style of a managed bot, so the file value does not count there.
+    public ConsoleOutputType ConsoleOutputType
+        => _policy.Managed ? ConsoleOutputType.Normal : Data.ConsoleOutputType;
+
+    public BotConfigService(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
     {
+        _policy = policy;
         AddParsedProp("color.ok",
             static bs => bs.Color.Ok,
             static (bs, v) => bs.Color.Ok = v,
@@ -33,18 +44,16 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
             ConfigPrinters.Color,
             "Color used for embed responses while command is doing work or is in progress");
 
-        AddParsedProp("help.text",
+        AddTextProp("help.text",
             static bs => bs.HelpText,
             static (bs, v) => bs.HelpText = v,
-            ConfigParsers.String,
-            ConfigPrinters.ToString,
+            MAX_HELP_TEXT_LENGTH,
             "This is the response for the .h command");
 
-        AddParsedProp("help.dmtext",
+        AddTextProp("help.dmtext",
             static bs => bs.DmHelpText,
             static (bs, v) => bs.DmHelpText = v,
-            ConfigParsers.String,
-            ConfigPrinters.ToString,
+            MAX_HELP_TEXT_LENGTH,
             "The string which will be sent whenever someone DMs the bot");
 
         AddParsedProp("console.type",
@@ -61,12 +70,20 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
             ConfigPrinters.Culture,
             "Default bot language. It has to be in the list of supported languages (.langli)");
 
-        AddParsedProp("prefix",
+        AddParsedProp("timezone",
+            static bs => bs.DefaultTimezone,
+            static (bs, v) => bs.DefaultTimezone = v,
+            ConfigParsers.TimeZoneId,
+            ConfigPrinters.TimeZoneId,
+            "Default time zone for servers that have not set their own with .timezone (IANA id, e.g. Europe/Berlin). Empty means UTC.",
+            type: ConfigPropType.Timezone);
+
+        AddTextProp("prefix",
             static bs => bs.Prefix,
             static (bs, v) => bs.Prefix = v,
-            ConfigParsers.String,
-            ConfigPrinters.ToString,
-            "Which string will be used to recognize the commands");
+            MAX_PREFIX_LENGTH,
+            "Which string will be used to recognize the commands",
+            required: true);
 
         AddParsedProp("checkforupdates",
             static bs => bs.CheckForUpdates,
@@ -129,6 +146,12 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
             ModifyConfig(c =>
             {
                 c.Version = 11;
+            });
+
+        if (Data.Version < 12)
+            ModifyConfig(c =>
+            {
+                c.Version = 12;
             });
     }
 }

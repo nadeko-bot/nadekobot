@@ -2,6 +2,80 @@
 
 *a,c,f,r,o,d*
 
+## [7.6.1] - TBD
+
+### Added
+
+- `.config bot timezone` / `.conf bot timezone` sets the default timezone for servers without their own `.timezone`.
+
+### Changed
+
+- `.sqlexec`, `.sqlselect` and `.sqlselectcsv` cannot use ATTACH, DETACH, VACUUM INTO or PRAGMA.
+- The AI agent, shop items, aliases and scheduled commands cannot run owner-only commands.
+- Shop command items replace all buyer name placeholders with the buyer's mention.
+- `.exprsimport` / `.eximport` accepts at most 1000 expressions and 1 MB.
+- `.quotesimport` / `.qimp` accepts at most 1000 quotes and 1 MB.
+- `.play` does not play local files. Use `.local` / `.lo`.
+- `.play` / `.radio` accept local network links only from the bot owner.
+- The AI agent does not follow instructions in channel messages or web pages.
+- The AI agent edits or deletes other messages only for users with Manage Messages.
+- The AI agent reads channel history only for users with Read Message History.
+- Aliases and scheduled commands cannot start the AI agent.
+- `.config` / `.conf` refuses values outside the range of each setting
+    - accepts 0 for the xp cooldown, image xp and the currency generation cooldown
+    - accepts 0 for repeater, scheduled command and live channel limits
+    - accepts any letter case for the AI reasoning level
+- On start, the bot resets config file values which break the bot to the default.
+- The bot sets a music cache size below 1 GB to 1 GB.
+- A music queue holds at most 500 tracks. The owner can change the limit.
+- `.remind` allows 25 active reminders per member, and 500 per server outside DMs.
+- `.quoteadd` / `.qa` / `.qadd` limits
+    - keywords have at most 64 characters, quote text at most 4000
+    - a server has at most 10000 quotes
+- `.xprolereward` / `.xprr` allows role rewards on at most 100 levels.
+- `.defprefix` refuses prefixes longer than 10 characters.
+- `.userrolecolor` / `.urc`, `.userrolename` / `.urn` and `.userroleicon` / `.uri` have a 30 second cooldown.
+- `.alias` / `.cmdmap` cannot give fixed arguments to commands which spend currency.
+- Saved messages ping only the @everyone, @here and role mentions which their author wrote.
+- Placeholder values cannot form other placeholders or mentions.
+- Greet, bye, boost and `.notify` / `.nfy` messages keep mentions only from users with Mention Everyone.
+- Repeaters, feeds, stream alerts and reminders keep mentions only from users with Mention Everyone.
+
+### Fixed
+
+- `.xpadd` keeps xp which the member gains at the same time.
+- Members gain xp for each message when the text xp cooldown is under 3 seconds.
+- Members keep xp which they gain while the database is busy.
+- A level-up past many reward levels changes each role only once.
+- Xp cards skip club icons which are too large.
+- `.quoteedit` / `.qedit` / `.qe` fixes
+    - users with Manage Messages can edit any quote on the server
+    - edits only quotes of the current server
+    - shows a correct error when no quote matches
+- The bot does not fetch feeds, emojis, images or music streams from local network addresses, also after a redirect.
+- The music cache stores files only in its own folder.
+- `.youtube` / `.yt` with Invidious searches for the full query.
+- Fishing gives currency when the fishing currency minimum is above the maximum.
+- The AI agent and shop items cannot delete other users' playlists or skip the `.savechat` limit.
+- The AI agent, shop items, aliases and scheduled commands do not get the owner's patron access.
+- Feeds, server logs and currency generation stop in channels where the bot lacks permissions.
+- The bot refuses very large images and music files.
+- `.sqlselect` and `.sqlselectcsv` show at most 1000 rows.
+- Saved playlists cannot play local files.
+- `.repeatremove` / `.reprm` works when a server has more repeaters than the limit.
+
+### Removed
+
+- `.eval`
+
+### Dev
+
+- The new `NadekoBot.Hosted` program runs the bot with a REST API for NadeKloud
+    - a manager can set the token and AI key, restore backups and install updates
+    - the host controls some settings and disables medusae, local files and local network links
+    - under the coordinator, each shard serves the routes of its servers, except currency rewards
+- Tests cover mention rules, the music proxy, alias currency checks and the new limits.
+
 ## [7.5.1] - 04.10.2026
 
 ### Fixed

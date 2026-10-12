@@ -35,9 +35,13 @@ public sealed partial class Music : NadekoModule<IMusicService>
     private static readonly SemaphoreSlim _voiceChannelLock = new(1, 1);
     private readonly ILogCommandService _logService;
     private readonly ILyricsService _lyricsService;
+    private readonly BotPolicy _policy;
+    private readonly IBotCreds _creds;
 
-    public Music(ILogCommandService logService, ILyricsService lyricsService)
+    public Music(ILogCommandService logService, ILyricsService lyricsService, BotPolicy policy, IBotCreds creds)
     {
+        _policy = policy;
+        _creds = creds;
         _logService = logService;
         _lyricsService = lyricsService;
     }
@@ -120,10 +124,20 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
         // create the player early (doesn't need voice proxy yet)
         var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
+        if (mp.IsQueueFull)
+        {
+            await Response().Error(strs.queue_full(mp.MaxQueueSize)).SendAsync();
+            return;
+        }
 
         // run voice join and track resolution in parallel
         var voiceTask = EnsureBotInVoiceChannelAsync(voiceChannelId.Value, botUser);
-        var resolveTask = mp.TryEnqueueTrackAsync(query, ctx.User.ToString(), asNext, forcePlatform);
+        var resolveTask = mp.TryEnqueueTrackAsync(
+            query,
+            ctx.User.ToString(),
+            asNext,
+            _policy.CanReachLocalNetwork(_creds, ctx.Message),
+            forcePlatform);
 
         await Task.WhenAll(voiceTask, resolveTask);
 
@@ -554,12 +568,14 @@ public sealed partial class Music : NadekoModule<IMusicService>
     [Cmd]
     [RequireContext(ContextType.Guild)]
     [OwnerOnly]
+    [NoManagedBot]
     public Task Local([Leftover] string path)
         => QueueByQuery(path, false, MusicPlatform.Local);
 
     [Cmd]
     [RequireContext(ContextType.Guild)]
     [OwnerOnly]
+    [NoManagedBot]
     public async Task LocalPlaylist([Leftover] string dirPath)
     {
         if (string.IsNullOrWhiteSpace(dirPath))
@@ -587,7 +603,10 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
         var mp = await _service.GetOrCreateMusicPlayerAsync((ITextChannel)ctx.Channel);
 
-        await _service.EnqueueDirectoryAsync(mp, dirPath, ctx.User.ToString());
+        await _service.EnqueueDirectoryAsync(mp,
+            dirPath,
+            ctx.User.ToString(),
+            _policy.CanReachLocalNetwork(_creds, ctx.Message));
 
         await Response().Confirm(strs.dir_queue_complete).SendAsync();
     }

@@ -87,6 +87,7 @@ public partial class Gambling
         }
 
         [Cmd]
+        [SpendsCurrency]
         [RequireContext(ContextType.Guild)]
         public async Task Buy(int index)
         {
@@ -260,13 +261,15 @@ public partial class Gambling
                 }
                 else
                 {
-                    var buyer = (IGuildUser)ctx.User;
+                    // The command runs as the entry's author, so no text the buyer chose (like a nickname) may reach it.
+                    var buyer = ctx.User;
                     var cmd = entry.Command
                                    .Replace("%you%", buyer.Mention)
                                    .Replace("%you.mention%", buyer.Mention)
-                                   .Replace("%you.username%", buyer.Username)
-                                   .Replace("%you.name%", buyer.GlobalName ?? buyer.Username)
-                                   .Replace("%you.nick%", buyer.DisplayName);
+                                   .Replace("%you.id%", buyer.Id.ToString())
+                                   .Replace("%you.username%", buyer.Mention)
+                                   .Replace("%you.name%", buyer.Mention)
+                                   .Replace("%you.nick%", buyer.Mention);
 
                     var eb = CreateEmbed()
                              .WithPendingColor()
@@ -286,7 +289,7 @@ public partial class Gambling
                             msg,
                             user,
                             cmd
-                        ));
+                        ) { BlocksOwnerCommands = true });
 
                     try
                     {

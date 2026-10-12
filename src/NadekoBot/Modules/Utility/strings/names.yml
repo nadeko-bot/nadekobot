@@ -26,8 +26,6 @@ emojiremove:
   - ed
   - emojidel
   - emojidelete
-eval:
-  - eval
 inrole:
   - inrole
 ping:

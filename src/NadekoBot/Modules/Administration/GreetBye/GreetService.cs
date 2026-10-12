@@ -248,11 +248,14 @@ public class GreetService : INService, IReadyExecutor
             channel: channel,
             user: user);
 
-        var text = SmartText.CreateFrom(conf.MessageText);
-        text = await _repSvc.ReplaceAsync(text, repCtx);
+        var template = SmartText.CreateFrom(conf.MessageText);
+        var text = await _repSvc.ReplaceAsync(template, repCtx);
         try
         {
-            var toDelete = await _sender.Response(channel).Text(text).Sanitize(false).SendAsync();
+            var toDelete = await _sender.Response(channel)
+                                        .Text(text)
+                                        .Mentions(TemplateMentions.FromTemplate(template))
+                                        .SendAsync();
             if (conf.AutoDeleteTimer > 0)
                 toDelete.DeleteAfter(conf.AutoDeleteTimer);
         }

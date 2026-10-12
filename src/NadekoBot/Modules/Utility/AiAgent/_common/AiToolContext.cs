@@ -19,4 +19,7 @@ public sealed class AiToolContext
 
     // Set by ask_user, to end the loop and wait for the reply of the user.
     public bool AskPending { get; set; }
+
+    // Messages which send_message sent in this session. The user may edit or delete them without Manage Messages.
+    public ConcurrentDictionary<ulong, bool> SentMessageIds { get; } = new();
 }

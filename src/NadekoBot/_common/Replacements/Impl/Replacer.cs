@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NadekoBot.Common;
 
@@ -24,86 +25,117 @@ public sealed partial class Replacer
         _inputData = inputData;
     }
 
+    // One pass over the template: a value which a placeholder inserts (a member's text, a name) is never scanned
+    // again, so it cannot form a new placeholder or a mention, for example "@every%rng1-1%one".
     public async ValueTask<string?> ReplaceAsync(string? input)
     {
         if (string.IsNullOrWhiteSpace(input))
             return input;
 
+        var spans = FindRegexSpansInternal(input);
         var firstPct = input.IndexOf('%');
-        if (firstPct >= 0)
-            input = await ApplyTokenReplacementsInternalAsync(input, firstPct);
+        if (firstPct < 0 && spans is null)
+            return input;
 
-        for (var i = 0; i < _regexOverrides.Count; i++)
-            input = await ApplyRegexReplacementInternalAsync(input, _regexOverrides[i]);
-
-        for (var i = 0; i < _baseRegexReps.Length; i++)
-        {
-            var rep = _baseRegexReps[i];
-            if (IsRegexOverridden(rep.Pattern))
-                continue;
-
-            input = await ApplyRegexReplacementInternalAsync(input, rep);
-        }
-
-        return input;
-    }
-
-    private async ValueTask<string> ApplyTokenReplacementsInternalAsync(string input, int firstPct)
-    {
-        var map = BuildTokenMap();
+        var map = firstPct >= 0 ? BuildTokenMap().GetAlternateLookup<ReadOnlySpan<char>>() : default;
+        var hasTokens = firstPct >= 0;
 
         var sb = new StringBuilder(input.Length);
-        sb.Append(input, 0, firstPct);
-
-        var i = firstPct;
+        var i = 0;
+        var s = 0;
         while (i < input.Length)
         {
-            // Bulk-copy everything up to the next '%'
-            var nextPct = input.IndexOf('%', i);
-            if (nextPct < 0)
+            // A token which was replaced can cover the start of a regex match.
+            while (spans is not null && s < spans.Count && spans[s].Match.Index < i)
+                s++;
+
+            var nextSpan = spans is not null && s < spans.Count ? spans[s].Match.Index : -1;
+            var nextPct = hasTokens ? input.IndexOf('%', i) : -1;
+            var next = nextSpan < 0 ? nextPct : nextPct < 0 ? nextSpan : Math.Min(nextPct, nextSpan);
+            if (next < 0)
             {
                 sb.Append(input, i, input.Length - i);
                 break;
             }
 
-            if (nextPct > i)
+            sb.Append(input, i, next - i);
+            i = next;
+
+            if (next == nextPct)
             {
-                sb.Append(input, i, nextPct - i);
-                i = nextPct;
+                var end = input.IndexOf('%', i + 1);
+                if (end >= 0 && map.TryGetValue(input.AsSpan(i, end - i + 1), out var rep))
+                {
+                    var value = await rep.GetValueAsync(_inputData);
+                    if (value is not null)
+                        sb.Append(value);
+                    i = end + 1;
+                    continue;
+                }
             }
 
-            // Find the closing '%'
-            var end = input.IndexOf('%', i + 1);
-            if (end < 0)
+            if (next == nextSpan)
             {
-                sb.Append(input, i, input.Length - i);
-                break;
+                var (match, regexRep) = spans![s++];
+                sb.Append(await regexRep.GetValueAsync(match, _inputData));
+                i = match.Index + match.Length;
+                continue;
             }
 
-            var token = input.Substring(i, end - i + 1);
-
-            if (map.TryGetValue(token, out var rep))
-            {
-                var value = await rep.GetValueAsync(_inputData);
-                if (value is not null)
-                    sb.Append(value);
-                i = end + 1;
-            }
-            else
-            {
-                sb.Append('%');
-                i++;
-            }
+            sb.Append('%');
+            i++;
         }
 
         return sb.ToString();
     }
 
+    // Each regex placeholder replaces its first match in the template. Overrides come first and win an overlap.
+    private List<(Match Match, RegexReplacementInfo Rep)>? FindRegexSpansInternal(string input)
+    {
+        List<(Match Match, RegexReplacementInfo Rep)>? spans = null;
+
+        for (var i = 0; i < _regexOverrides.Count; i++)
+            AddSpanInternal(ref spans, input, _regexOverrides[i]);
+
+        for (var i = 0; i < _baseRegexReps.Length; i++)
+        {
+            var rep = _baseRegexReps[i];
+            if (!IsRegexOverridden(rep.Pattern))
+                AddSpanInternal(ref spans, input, rep);
+        }
+
+        spans?.Sort(static (a, b) => a.Match.Index.CompareTo(b.Match.Index));
+        return spans;
+    }
+
+    private static void AddSpanInternal(
+        ref List<(Match Match, RegexReplacementInfo Rep)>? spans,
+        string input,
+        RegexReplacementInfo rep)
+    {
+        var match = rep.Regex.Match(input);
+        if (!match.Success)
+            return;
+
+        if (spans is not null)
+        {
+            var end = match.Index + match.Length;
+            foreach (var (other, _) in spans)
+            {
+                if (match.Index < other.Index + other.Length && other.Index < end)
+                    return;
+            }
+        }
+
+        (spans ??= new(2)).Add((match, rep));
+    }
+
+    // Tokens are ASCII, so an ordinal comparer is exact and allows span lookups.
     private Dictionary<string, ReplacementInfo> BuildTokenMap()
     {
         var map = new Dictionary<string, ReplacementInfo>(
             _baseReps.Length + _overrides.Count,
-            StringComparer.InvariantCulture);
+            StringComparer.Ordinal);
 
         for (var i = 0; i < _baseReps.Length; i++)
             map[_baseReps[i].Token] = _baseReps[i];
@@ -112,23 +144,6 @@ public sealed partial class Replacer
             map[_overrides[i].Token] = _overrides[i];
 
         return map;
-    }
-
-    private async ValueTask<string> ApplyRegexReplacementInternalAsync(string input, RegexReplacementInfo rep)
-    {
-        var match = rep.Regex.Match(input);
-        if (match.Success)
-        {
-            var sb = new StringBuilder();
-            sb.Append(input, 0, match.Index)
-              .Append(await rep.GetValueAsync(match, _inputData));
-
-            var lastIndex = match.Index + match.Length;
-            sb.Append(input, lastIndex, input.Length - lastIndex);
-            return sb.ToString();
-        }
-
-        return input;
     }
 
     private bool IsRegexOverridden(string pattern)

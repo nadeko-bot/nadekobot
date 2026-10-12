@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Nadeko.Common;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -8,58 +9,25 @@ namespace NadekoBot.Tests
     public class PubSubTests
     {
         [Test]
-        public async Task Test_EventPubSub_PubSub()
+        public async Task Test_EventPubSub_PubSub_IgnoresUnsubOfOtherHandlers()
         {
             TypedKey<int> key = "test_key";
             var expected = new Randomizer().Next();
             var pubsub = new EventPubSub();
+            var received = new List<int>();
             await pubsub.Sub(key, data =>
             {
-                Assert.That(expected, Is.EqualTo(data));
-                Assert.Pass();
-                return default;
-            });
-            await pubsub.Pub(key, expected);
-            Assert.Fail("Event not registered");
-        }
-        
-        [Test]
-        public async Task Test_EventPubSub_MeaninglessUnsub()
-        {
-            TypedKey<int> key = "test_key";
-            var expected = new Randomizer().Next();
-            var pubsub = new EventPubSub();
-            await pubsub.Sub(key, data =>
-            {
-                Assert.That(expected, Is.EqualTo(data));
-                Assert.Pass();
+                received.Add(data);
                 return default;
             });
             await pubsub.Unsub(key, _ => default);
-            await pubsub.Pub(key, expected);
-            Assert.Fail("Event not registered");
-        }
-        
-        [Test]
-        public async Task Test_EventPubSub_MeaninglessUnsubThatLooksTheSame()
-        {
-            TypedKey<int> key = "test_key";
-            var expected = new Randomizer().Next();
-            var pubsub = new EventPubSub();
-            await pubsub.Sub(key, data =>
-            {
-                Assert.That(expected, Is.EqualTo(data));
-                Assert.Pass();
-                return default;
-            });
             await pubsub.Unsub(key, data =>
             {
-                Assert.That(expected, Is.EqualTo(data));
-                Assert.Pass();
+                received.Add(data);
                 return default;
             });
             await pubsub.Pub(key, expected);
-            Assert.Fail("Event not registered");
+            Assert.That(received, Is.EqualTo(new[] { expected }), "Event not registered");
         }
         
         [Test]

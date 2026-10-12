@@ -96,6 +96,7 @@ public partial class Gambling
         }
 
         [Cmd]
+        [SpendsCurrency]
         public async Task Betflip([OverrideTypeReader(typeof(BalanceTypeReader))] long amount, BetFlipGuess guess)
         {
             if (!await CheckBetMandatory(amount) || amount == 1)

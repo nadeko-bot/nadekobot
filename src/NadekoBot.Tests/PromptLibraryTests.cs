@@ -34,18 +34,14 @@ public class PromptLibraryTests
     }
 
     [Test]
-    public void TryWrite_Soul_WritesFile()
+    public void TryWrite_WritesFileForEachKind()
     {
         var ok = _lib.TryWrite(PromptKind.Soul, "You are Nadeko.", out var error);
 
         Assert.That(ok, Is.True, error);
         Assert.That(File.ReadAllText(Path.Combine(_tempDir, "SOUL.md")), Is.EqualTo("You are Nadeko."));
-    }
 
-    [Test]
-    public void TryWrite_Operator_WritesFile()
-    {
-        var ok = _lib.TryWrite(PromptKind.Operator, "Be helpful.", out var error);
+        ok = _lib.TryWrite(PromptKind.Operator, "Be helpful.", out error);
 
         Assert.That(ok, Is.True, error);
         Assert.That(File.ReadAllText(Path.Combine(_tempDir, "OPERATOR.md")), Is.EqualTo("Be helpful."));
@@ -71,17 +67,8 @@ public class PromptLibraryTests
         await _lib.ReloadAsync();
 
         Assert.That(_lib.GetSoul(), Is.EqualTo("soul content"));
+        Assert.That(_lib.Read(PromptKind.Soul), Is.EqualTo("soul content"));
         Assert.That(_lib.GetOperatorDoc(), Is.EqualTo("operator content"));
-    }
-
-    [Test]
-    public async Task Read_ReturnsCurrentSnapshot()
-    {
-        File.WriteAllText(Path.Combine(_tempDir, "SOUL.md"), "raw content");
-
-        await _lib.ReloadAsync();
-
-        Assert.That(_lib.Read(PromptKind.Soul), Is.EqualTo("raw content"));
     }
 
     [Test]

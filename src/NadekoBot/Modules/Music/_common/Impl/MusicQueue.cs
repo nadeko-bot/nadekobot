@@ -8,6 +8,7 @@ public sealed partial class MusicQueue
     {
         public ITrackInfo TrackInfo { get; }
         public string Queuer { get; }
+        public bool AllowLocalNetwork { get; }
 
         public string Title
             => TrackInfo.Title;
@@ -25,10 +26,11 @@ public sealed partial class MusicQueue
             => TrackInfo.Platform;
 
 
-        public QueuedTrackInfo(ITrackInfo trackInfo, string queuer)
+        public QueuedTrackInfo(ITrackInfo trackInfo, string queuer, bool allowLocalNetwork = false)
         {
             TrackInfo = trackInfo;
             Queuer = queuer;
+            AllowLocalNetwork = allowLocalNetwork;
         }
     }
 }
@@ -73,10 +75,13 @@ public sealed partial class MusicQueue : IMusicQueue
     }
 
     public IQueuedTrackInfo Enqueue(ITrackInfo trackInfo, string queuer, out int enqueuedAt)
+        => Enqueue(trackInfo, queuer, false, out enqueuedAt);
+
+    public IQueuedTrackInfo Enqueue(ITrackInfo trackInfo, string queuer, bool allowLocalNetwork, out int enqueuedAt)
     {
         lock (_locker)
         {
-            var added = new QueuedTrackInfo(trackInfo, queuer);
+            var added = new QueuedTrackInfo(trackInfo, queuer, allowLocalNetwork);
             _lastQueued = enqueuedAt = tracks.Count;
             tracks.AddLast(added);
           
@@ -85,19 +90,19 @@ public sealed partial class MusicQueue : IMusicQueue
     }
 
 
-    public IQueuedTrackInfo EnqueueNext(ITrackInfo trackInfo, string queuer, out int trackIndex)
+    public IQueuedTrackInfo EnqueueNext(ITrackInfo trackInfo, string queuer, bool allowLocalNetwork, out int trackIndex)
     {
         lock (_locker)
         {
             if (tracks.Count == 0)
-                return Enqueue(trackInfo, queuer, out trackIndex);
+                return Enqueue(trackInfo, queuer, allowLocalNetwork, out trackIndex);
 
             var currentNode = tracks.First!;
             int i;
             for (i = 1; i <= index; i++)
                 currentNode = currentNode.Next!; // can't be null because index is always in range of the count
 
-            var added = new QueuedTrackInfo(trackInfo, queuer);
+            var added = new QueuedTrackInfo(trackInfo, queuer, allowLocalNetwork);
             trackIndex = i;
 
             tracks.AddAfter(currentNode, added);

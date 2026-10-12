@@ -130,6 +130,52 @@ public static class StringExtensions
     public static string SanitizeAllMentions(this string str)
         => str.SanitizeMentions().SanitizeRoleMentions();
 
+    // True when the text can ping @everyone, @here or a role, which needs the Mention Everyone permission.
+    public static bool HasMassMention(this string str)
+        => str.Contains("@everyone", StringComparison.InvariantCultureIgnoreCase)
+           || str.Contains("@here", StringComparison.InvariantCultureIgnoreCase)
+           || str.Contains("<@&", StringComparison.InvariantCulture);
+
+    // For a template saved by someone without Mention Everyone. Rich text is cleaned after the JSON is decoded,
+    // because "\u0040everyone" in the JSON is "@everyone" in the message.
+    public static string SanitizeTemplateMentions(this string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return text;
+
+        if (!text.AsSpan().TrimStart().StartsWith('{'))
+            return text.SanitizeAllMentions();
+
+        Newtonsoft.Json.Linq.JToken root;
+        try
+        {
+            root = Newtonsoft.Json.Linq.JToken.Parse(text);
+        }
+        catch (Newtonsoft.Json.JsonException)
+        {
+            return text.SanitizeAllMentions();
+        }
+
+        if (root is not Newtonsoft.Json.Linq.JContainer container)
+            return text.SanitizeAllMentions();
+
+        var changed = false;
+        foreach (var token in container.DescendantsAndSelf())
+        {
+            if (token is not Newtonsoft.Json.Linq.JValue { Type: Newtonsoft.Json.Linq.JTokenType.String, Value: string s })
+                continue;
+
+            var clean = s.SanitizeAllMentions();
+            if (ReferenceEquals(clean, s) || clean == s)
+                continue;
+
+            ((Newtonsoft.Json.Linq.JValue)token).Value = clean;
+            changed = true;
+        }
+
+        return changed ? root.ToString(Newtonsoft.Json.Formatting.None) : text;
+    }
+
     public static string ToBase64(this string plainText)
     {
         var plainTextBytes = Encoding.UTF8.GetBytes(plainText);

@@ -25,7 +25,12 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
 
     private readonly IGoogleApiService _google;
 
-    public YtdlYoutubeResolver(ITrackCacher trackCacher, IGoogleApiService google, SearchesConfigService scs)
+    public YtdlYoutubeResolver(
+        ITrackCacher trackCacher,
+        IGoogleApiService google,
+        SearchesConfigService scs,
+        BotPolicy policy,
+        PublicOnlyProxy proxy)
     {
         _trackCacher = trackCacher;
         _google = google;
@@ -38,7 +43,7 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
             "-e", "--get-url", "--get-id", "--get-thumbnail", "--get-duration",
             "--no-check-certificate",
             "-i", "--yes-playlist", "--"
-        ]);
+        ], policy, proxy);
 
         _ytdlIdOperation = new(
         [
@@ -46,7 +51,7 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
             "-f", "bestaudio[acodec=opus]/bestaudio/best",
             "-e", "--get-url", "--get-id", "--get-thumbnail", "--get-duration",
             "--no-check-certificate", "--"
-        ]);
+        ], policy, proxy);
 
         _ytdlSearchOperation = new(
         [
@@ -55,7 +60,7 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
             "-e", "--get-url", "--get-id", "--get-thumbnail", "--get-duration",
             "--no-check-certificate",
             "--default-search", "ytsearch:", "--"
-        ]);
+        ], policy, proxy);
     }
 
     private YtTrackData ResolveYtdlData(string ytdlOutputString)
@@ -250,10 +255,14 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
     }
 
     public Task<ITrackInfo?> ResolveByQueryAsync(string query)
-        => ResolveByQueryAsync(query, true);
+        => ResolveByQueryAsync(query, true, false);
 
-    public async Task<ITrackInfo?> ResolveByQueryAsync(string query, bool tryResolving)
+    public async Task<ITrackInfo?> ResolveByQueryAsync(string query, bool tryResolving, bool allowLocalNetwork)
     {
+        // Checked before the cache, so a member cannot replay a local link which the owner queued.
+        if (!allowLocalNetwork && !_ytdlSearchOperation.IsAllowedTarget(query))
+            return null;
+
         if (tryResolving)
         {
             var match = YoutubeHelpers.YtVideoIdRegex.Match(query);
@@ -266,7 +275,7 @@ public sealed class YtdlYoutubeResolver : IYoutubeResolver
         var cachedData = await _trackCacher.GetCachedDataByQueryAsync(query, MusicPlatform.Youtube);
         if (cachedData is null || string.IsNullOrWhiteSpace(cachedData.Title))
         {
-            var stringData = await _ytdlSearchOperation.GetDataAsync(query);
+            var stringData = await _ytdlSearchOperation.GetDataAsync(query, allowLocalNetwork);
             var trackData = ResolveYtdlData(stringData);
             if (string.IsNullOrWhiteSpace(trackData.Title))
                 return null;

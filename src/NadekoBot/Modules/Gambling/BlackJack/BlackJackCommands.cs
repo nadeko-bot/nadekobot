@@ -29,6 +29,7 @@ public partial class Gambling
         }
 
         [Cmd]
+        [SpendsCurrency]
         [RequireContext(ContextType.Guild)]
         public async Task BlackJack([OverrideTypeReader(typeof(BalanceTypeReader))] long amount)
         {

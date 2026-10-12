@@ -288,7 +288,7 @@ public partial class Administration
             }
 
             // Download the image
-            using var httpClient = _httpFactory.CreateClient();
+            using var httpClient = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
             using var response = await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
 
             // Check if the response is successful
@@ -317,10 +317,12 @@ public partial class Administration
             }
 
             // Save the image to a memory stream
-            await using var stream = await response.Content.ReadAsStreamAsync();
-            await using var memoryStream = new MemoryStream();
-            await stream.CopyToAsync(memoryStream);
-            memoryStream.Position = 0;
+            await using var memoryStream = await ExternalHttp.ReadLimitedStreamAsync(response.Content, 256 * 1024);
+            if (memoryStream is null)
+            {
+                await Response().Error(strs.userrole_icon_fail).SendAsync();
+                return;
+            }
 
             // Create Discord image from stream
             using var discordImage = new Image(memoryStream);

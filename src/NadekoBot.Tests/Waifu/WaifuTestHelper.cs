@@ -41,6 +41,9 @@ public sealed class TestDbService : DbService, IDisposable
     public override Task SetupAsync()
         => Task.CompletedTask;
 
+    public override string ConnectionString
+        => _connection.ConnectionString;
+
     public void Dispose()
     {
         _connection.Close();
@@ -61,7 +64,7 @@ public static class WaifuTestHelper
         var tmpDir = Path.Combine(Path.GetTempPath(), "nadeko_test_" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tmpDir);
         var tmpPath = Path.Combine(tmpDir, "waifu.yml");
-        return new WaifuConfigService(tmpPath, new YamlSeria(), Substitute.For<IPubSub>());
+        return new WaifuConfigService(tmpPath, new YamlSeria(), Substitute.For<IPubSub>(), new BotPolicy(false));
     }
 
     /// <summary>

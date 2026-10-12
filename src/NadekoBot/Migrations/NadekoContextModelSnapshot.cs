@@ -1709,6 +1709,10 @@ namespace NadekoBot.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GuildId");
+
+                    b.HasIndex("UserId");
+
                     b.HasIndex("When");
 
                     b.ToTable("Reminders");

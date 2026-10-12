@@ -31,14 +31,19 @@ public interface IQuoteService
     Task<int> RemoveAllByKeyword(ulong guildId, string keyword);
     Task<Quote?> GetQuoteByIdAsync(ulong guildId, int quoteId);
 
-    Task<Quote> AddQuoteAsync(
+    Task<Quote?> AddQuoteAsync(
         ulong guildId,
         ulong authorId,
         string authorName,
         string keyword,
         string text);
 
-    Task<Quote?> EditQuoteAsync(ulong authorId, int quoteId, string text);
+    Task<Quote?> EditQuoteAsync(
+        ulong guildId,
+        ulong userId,
+        bool isQuoteManager,
+        int quoteId,
+        string text);
     Task<Quote?> EditQuoteAsync(ulong guildId, int quoteId, string keyword, string text);
 
     Task<bool> DeleteQuoteAsync(

@@ -2,5 +2,5 @@
 
 public interface ITrackResolveProvider
 {
-    Task<ITrackInfo?> QuerySongAsync(string query, MusicPlatform? forcePlatform);
+    Task<ITrackInfo?> QuerySongAsync(string query, MusicPlatform? forcePlatform, bool allowLocalNetwork);
 }

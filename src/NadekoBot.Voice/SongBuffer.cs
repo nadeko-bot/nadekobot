@@ -23,7 +23,10 @@ namespace NadekoBot.Voice
     {
         private readonly Process _p;
 
-        private FfmpegTrackDataSource(int bitDepth, string streamUrl, bool isLocal)
+        // Some environments make ffmpeg skip its proxy for matching hosts.
+        private static readonly string[] _proxyBypassEnvVars = ["no_proxy", "NO_PROXY"];
+
+        private FfmpegTrackDataSource(int bitDepth, string streamUrl, bool isLocal, string? httpProxy)
         {
             var pcmType = bitDepth == 16 ? "s16le" : "f32le";
 
@@ -44,6 +47,14 @@ namespace NadekoBot.Voice
                     "-probesize", "32768",
                     "-analyzeduration", "0"
                 ] : (string[])[]),
+                // A proxy which checks each address stops redirects and DNS rebinding to the local network.
+                ..(!isLocal && httpProxy is not null ? ["-http_proxy", httpProxy] : (string[])[]),
+                // Without a whitelist a stream or playlist can make ffmpeg read local files or other protocols.
+                "-protocol_whitelist", isLocal
+                    ? "file"
+                    : httpProxy is null
+                        ? "http,https,tcp,tls,crypto"
+                        : "http,https,tcp,tls,crypto,httpproxy",
                 "-err_detect", "ignore_err",
                 "-i", streamUrl,
                 "-f", pcmType,
@@ -56,14 +67,20 @@ namespace NadekoBot.Voice
             foreach (var a in args)
                 psi.ArgumentList.Add(a);
 
+            if (httpProxy is not null)
+            {
+                foreach (var name in _proxyBypassEnvVars)
+                    psi.Environment.Remove(name);
+            }
+
             _p = Process.Start(psi)!;
         }
 
-        public static FfmpegTrackDataSource? Create(int bitDepth, string streamUrl, bool isLocal)
+        public static FfmpegTrackDataSource? Create(int bitDepth, string streamUrl, bool isLocal, string? httpProxy)
         {
             try
             {
-                return new FfmpegTrackDataSource(bitDepth, streamUrl, isLocal);
+                return new FfmpegTrackDataSource(bitDepth, streamUrl, isLocal, httpProxy);
             }
             catch (System.ComponentModel.Win32Exception)
             {

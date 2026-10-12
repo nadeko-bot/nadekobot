@@ -3,6 +3,7 @@ ar:
   alias_list: قائمة الاختصارات
   alias_limit_reached: 'هذا السيرفر لديه بالفعل {0} اختصارًا. أزل واحدًا قبل أن تضيف آخر.'
   alias_remove_fail: 'المشغّل {0} لم يكن لديه اختصار.'
+  alias_spends_currency: لا يمكن للاختصار أن يعطي وسائط لأمر يصرف العملة. استخدم %target% للوسائط، أو لا تعطِ أي وسائط.
   alias_removed: 'المشغّل {0} لم يعد لديه اختصار.'
   aliases_cleared: 'تمت إزالة جميع الاختصارات ({0}) في هذا السيرفر.'
   aliases_none: لم يتم العثور على اختصار
@@ -12,6 +13,7 @@ de-DE:
   alias_list: Liste der Aliasse
   alias_limit_reached: 'Dieser Server hat bereits {0} Aliases. Entferne einen, bevor du einen neuen hinzufügst.'
   alias_remove_fail: 'Auslöser {0} hatte kein Alias.'
+  alias_spends_currency: Ein Alias kann einem Befehl, der Währung ausgibt, keine Argumente geben. Nutze %target% für die Argumente oder gib keine an.
   alias_removed: 'Auslöser {0} hat kein Alias mehr.'
   aliases_cleared: 'Alle {0} Aliases auf diesem Server wurden entfernt.'
   aliases_none: Kein Alias gefunden
@@ -21,6 +23,7 @@ es-ES:
   alias_list: Lista de alias
   alias_limit_reached: 'Este servidor ya tiene {0} alias. Elimina uno antes de añadir otro.'
   alias_remove_fail: '{0} no era un alias.'
+  alias_spends_currency: Un alias no puede dar argumentos a un comando que gasta moneda. Usa %target% para los argumentos o no des ninguno.
   alias_removed: 'El comando {0} ya no tiene un alias.'
   aliases_cleared: 'Todos los alias {0} en este servidor han sido eliminados.'
   aliases_none: No se ha encontrado alias.
@@ -30,6 +33,7 @@ fr-FR:
   alias_list: Liste des pseudonymes
   alias_limit_reached: 'Ce serveur a déjà {0} alias. Enlève-en un avant d''en ajouter un autre.'
   alias_remove_fail: 'Le déclencheur {0} n''avait pas d''alias.'
+  alias_spends_currency: Un alias ne peut pas donner d'arguments à une commande qui dépense de la monnaie. Utilise %target% pour les arguments, ou n'en donne aucun.
   alias_removed: 'Le déclencheur {0} n''a plus d''alias.'
   aliases_cleared: 'Tous les alias {0} de ce serveur ont été enlevés.'
   aliases_none: Aucun pseudonyme trouvé
@@ -39,6 +43,7 @@ id-ID:
   alias_list: Daftar alias
   alias_limit_reached: 'Server ini sudah memiliki {0} alias. Hapus satu dulu sebelum menambah yang baru.'
   alias_remove_fail: 'Trigger {0} tidak punya alias.'
+  alias_spends_currency: Alias tidak bisa memberi argumen ke perintah yang memakai mata uang. Pakai %target% untuk argumennya, atau jangan beri argumen.
   alias_removed: 'Trigger {0} tidak lagi memiliki alias.'
   aliases_cleared: 'Semua {0} alias di server ini telah dihapus.'
   aliases_none: Tidak ada alias ditemukan
@@ -48,6 +53,7 @@ ja-JP:
   alias_list: エイリアスのリスト
   alias_limit_reached: 'このサーバーには既に{0}個のエイリアスがあります。追加する前に1つ削除してください。'
   alias_remove_fail: 'トリガ{0}にエイリアスがありませんでした。'
+  alias_spends_currency: エイリアスは通貨を使うコマンドに引数を渡せません。引数には %target% を使うか、引数を付けないでください。
   alias_removed: 'トリガ{0}にエイリアスがありません。'
   aliases_cleared: 'このサーバーの全{0}個のエイリアスが削除されました。'
   aliases_none: エイリアスがありません。
@@ -57,6 +63,7 @@ ko-KR:
   alias_list: 별칭 목록
   alias_limit_reached: '이 서버에는 이미 별칭이 {0}개 있어요. 새로 추가하려면 하나를 먼저 제거해 주세요.'
   alias_remove_fail: '트리거 {0}에 별칭이 없었어요.'
+  alias_spends_currency: 별칭은 화폐를 사용하는 명령어에 인수를 줄 수 없습니다. 인수에는 %target%을 사용하거나 인수를 주지 마세요.
   alias_removed: '트리거 {0}의 별칭이 제거되었어요.'
   aliases_cleared: '이 서버의 모든 {0}개 별칭이 제거되었어요.'
   aliases_none: 별칭을 찾을 수 없어요
@@ -66,6 +73,7 @@ pl-PL:
   alias_list: Lista aliasów
   alias_limit_reached: 'Ten serwer ma już {0} aliasów. Usuń jeden, zanim dodasz kolejny.'
   alias_remove_fail: 'Wyzwalacz {0} nie miał aliasu.'
+  alias_spends_currency: Alias nie może podawać argumentów do komendy, która wydaje walutę. Użyj %target% zamiast argumentów albo nie podawaj żadnych.
   alias_removed: 'Wyzwalacz {0} nie ma już aliasu.'
   aliases_cleared: 'Wszystkie aliasy ({0}) na tym serwerze zostały usunięte.'
   aliases_none: Nie znaleziono aliasów
@@ -75,6 +83,7 @@ pt-BR:
   alias_list: Lista de atalhos
   alias_limit_reached: 'Este servidor já tem {0} apelidos. Remova um antes de adicionar outro.'
   alias_remove_fail: 'Gatilho {0} não tinha um apelido.'
+  alias_spends_currency: Um alias não pode dar argumentos a um comando que gasta moeda. Use %target% para os argumentos ou não dê nenhum.
   alias_removed: 'Gatilho {0} não tem mais apelido.'
   aliases_cleared: 'Todos os apelidos {0} foram removidos nesse servidor.'
   aliases_none: Nehum apelido encontrado
@@ -84,6 +93,7 @@ ru-RU:
   alias_list: Список псевдонимов
   alias_limit_reached: 'На этом сервере уже {0} псевдонимов. Удали один, прежде чем добавить новый.'
   alias_remove_fail: 'У триггера {0} нет псевдонима.'
+  alias_spends_currency: Алиас не может передавать аргументы команде, которая тратит валюту. Используй %target% для аргументов или не указывай их.
   alias_removed: 'Триггер {0} больше не имеет псевдонима.'
   aliases_cleared: 'Все псевдонимы {0} на этом сервере удалены.'
   aliases_none: Псевдоним не найден
@@ -93,6 +103,7 @@ sr-Cyrl-RS:
   alias_list: Листа алијаса
   alias_limit_reached: 'Овај сервер већ има {0} алијаса. Уклони један пре него што додаш нови.'
   alias_remove_fail: 'Тригер {0} није имао алијас.'
+  alias_spends_currency: Алијас не може да да аргументе команди која троши валуту. Користи %target% за аргументе или не дај ниједан.
   alias_removed: 'Тригер {0} више нема алијас.'
   aliases_cleared: 'Свих {0} алијаса на овом серверу су уклоњени.'
   aliases_none: Алијас није пронађен
@@ -102,6 +113,7 @@ tr-TR:
   alias_list: Kısayol listesi
   alias_limit_reached: 'Bu sunucuda zaten {0} kısayol var. Yenisini eklemeden önce birini kaldır.'
   alias_remove_fail: '{0} tetikleyicisinin bir kısayolu yoktu.'
+  alias_spends_currency: Bir takma ad, para harcayan bir komuta argüman veremez. Argümanlar için %target% kullan ya da hiç argüman verme.
   alias_removed: '{0} tetikleyicisinin artık bir kısayolu yok.'
   aliases_cleared: 'Bu sunucudaki tüm {0} kısayol kaldırıldı.'
   aliases_none: Kısayol bulunamadı
@@ -111,6 +123,7 @@ ts-TS:
   alias_list: List of aliases
   alias_limit_reached: 'Hmph. This server already has {0} aliases. Remove one before you add another.'
   alias_remove_fail: 'Trigger {0} didn''t have an alias. Check before you ask, b-baka!'
+  alias_spends_currency: An alias can't give arguments to a command that spends currency. Use %target% for them, or give none. Not that hard.
   alias_removed: 'Removed the alias for trigger {0}.'
   aliases_cleared: 'All {0} aliases on this server have been removed. Hmph.'
   aliases_none: No aliases found.
@@ -120,6 +133,7 @@ uk-UA:
   alias_list: Список аліасів
   alias_limit_reached: 'На цьому сервері вже є {0} аліасів. Видали один, перш ніж додати новий.'
   alias_remove_fail: 'Тригер {0} не мав аліаса.'
+  alias_spends_currency: Аліас не може передавати аргументи команді, яка витрачає валюту. Використай %target% для аргументів або не вказуй їх.
   alias_removed: 'Тригер {0} більше не має аліаса.'
   aliases_cleared: 'Усі {0} аліасів на цьому сервері видалено.'
   aliases_none: Аліасів не знайдено
@@ -129,6 +143,7 @@ vi-VN:
   alias_list: Danh sách bí danh
   alias_limit_reached: 'Máy chủ này đã có {0} bí danh. Hãy xóa một cái trước khi thêm cái mới.'
   alias_remove_fail: 'Trigger {0} không có bí danh.'
+  alias_spends_currency: Bí danh không thể đưa tham số cho lệnh tiêu tiền tệ. Hãy dùng %target% cho tham số, hoặc không đưa tham số nào.
   alias_removed: 'Trigger {0} không còn bí danh nữa.'
   aliases_cleared: 'Tất cả {0} bí danh trên máy chủ này đã bị xóa.'
   aliases_none: Không tìm thấy bí danh nào
@@ -138,6 +153,7 @@ zh-CN:
   alias_list: 別名列表
   alias_limit_reached: '此服务器已经有 {0} 个别名了。请先删除一个再添加。'
   alias_remove_fail: '觸發器 {0} 沒有別名。'
+  alias_spends_currency: 别名不能给会花费货币的命令提供参数。请用 %target% 代替参数，或者不提供参数。
   alias_removed: '觸發器 {0} 不再有別名。'
   aliases_cleared: '此伺服器上的所有 {0} 別名均已刪除。'
   aliases_none: 找不到別名

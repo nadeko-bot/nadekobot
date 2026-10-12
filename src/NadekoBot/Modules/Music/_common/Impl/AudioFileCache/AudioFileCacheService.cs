@@ -1,5 +1,8 @@
+using System.Buffers;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
 using NadekoBot.Common.ModuleBehaviors;
 
 namespace NadekoBot.Modules.Music;
@@ -12,16 +15,23 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
     private const int EVICTION_CHECK_MINUTES = 30;
     private const int DOWNLOAD_BUFFER_SIZE = 81_920;
     private const string CACHE_DIRECTORY = "data/music_cache";
+    private const int MANAGED_MAX_CACHE_GB = 1;
     private const int STALE_PARTIAL_FILE_HOURS = 24;
+    private const long MAX_CACHE_TRACK_BYTES = 200L * 1024 * 1024;
+
+    public const string HTTP_CLIENT_NAME = "music-cache";
 
     private readonly AudioFileCacheConfigService _configService;
     private readonly IHttpClientFactory _httpFactory;
+    private readonly BotPolicy _policy;
     private readonly InFlightDict _inFlightDownloads = new();
 
     public AudioFileCacheService(
         AudioFileCacheConfigService configService,
-        IHttpClientFactory httpFactory)
+        IHttpClientFactory httpFactory,
+        BotPolicy policy)
     {
+        _policy = policy;
         _configService = configService;
         _httpFactory = httpFactory;
     }
@@ -117,6 +127,7 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
         if (dir is not null)
             Directory.CreateDirectory(dir);
 
+        var tooLarge = false;
         for (var attempt = 0; attempt < MAX_DOWNLOAD_RETRIES; attempt++)
         {
             try
@@ -129,7 +140,7 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
                     return;
                 }
 
-                using var http = _httpFactory.CreateClient();
+                using var http = _httpFactory.CreateClient(HTTP_CLIENT_NAME);
                 http.Timeout = TimeSpan.FromMinutes(10);
 
                 long existingBytes = 0;
@@ -160,6 +171,15 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
                     ? FileMode.Append
                     : FileMode.Create;
 
+                // A live or endless stream has no length, and it would fill the disk.
+                var startBytes = mode == FileMode.Append ? existingBytes : 0;
+                if (response.Content.Headers.ContentLength is not { } length
+                    || startBytes + length > MAX_CACHE_TRACK_BYTES)
+                {
+                    tooLarge = true;
+                    break;
+                }
+
                 await using (var fileStream = new FileStream(
                                  partialPath, mode, FileAccess.Write, FileShare.ReadWrite,
                                  bufferSize: DOWNLOAD_BUFFER_SIZE, useAsync: true))
@@ -169,6 +189,12 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
                     int bytesRead;
                     while ((bytesRead = await contentStream.ReadAsync(buffer)) > 0)
                     {
+                        if (fileStream.Position + bytesRead > MAX_CACHE_TRACK_BYTES)
+                        {
+                            tooLarge = true;
+                            break;
+                        }
+
                         await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead));
                         await fileStream.FlushAsync();
                         state.UpdateBytesWritten(fileStream.Position);
@@ -187,7 +213,11 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
             }
         }
 
-        if (File.Exists(partialPath) && new FileInfo(partialPath).Length > 0)
+        if (tooLarge)
+        {
+            Log.Information("Not caching {Path}: the stream has no length or is too large", finalPath);
+        }
+        else if (File.Exists(partialPath) && new FileInfo(partialPath).Length > 0)
         {
             // mark complete first so readers know the data is all there
             state.MarkComplete();
@@ -238,7 +268,10 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
             .ToList();
 
         var totalBytes = files.Sum(f => f.Length);
-        var maxBytes = _configService.Data.MaxCacheSizeGb * 1024L * 1024L * 1024L;
+        var maxGb = _policy.Managed
+            ? Math.Min(_configService.Data.MaxCacheSizeGb, MANAGED_MAX_CACHE_GB)
+            : _configService.Data.MaxCacheSizeGb;
+        var maxBytes = maxGb * 1024L * 1024L * 1024L;
         var targetBytes = (long)(maxBytes * 0.9);
 
         if (totalBytes <= maxBytes)
@@ -290,15 +323,35 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
         }
     }
 
-    private static string GetCacheKey(string trackId, MusicPlatform platform)
-        => platform switch
-        {
-            MusicPlatform.Youtube => $"yt/{trackId}",
-            _ => $"other/{trackId}"
-        };
+    private const int MAX_YOUTUBE_ID_LENGTH = 64;
+
+    private static readonly SearchValues<char> _youtubeIdChars =
+        SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-");
+
+    private static readonly string _cacheRoot = Path.GetFullPath(CACHE_DIRECTORY) + Path.DirectorySeparatorChar;
+
+    // A track id from yt-dlp's generic extractor is the last part of any URL, so only a real YouTube id is a file name.
+    public static string GetCacheKey(string trackId, MusicPlatform platform)
+    {
+        if (platform == MusicPlatform.Youtube
+            && trackId.Length is > 0 and <= MAX_YOUTUBE_ID_LENGTH
+            && !trackId.AsSpan().ContainsAnyExcept(_youtubeIdChars))
+            return $"yt/{trackId}";
+
+        Span<byte> hash = stackalloc byte[SHA256.HashSizeInBytes];
+        SHA256.HashData(Encoding.UTF8.GetBytes(trackId), hash);
+        var prefix = platform == MusicPlatform.Youtube ? "ytx" : "other";
+        return $"{prefix}/{Convert.ToHexStringLower(hash)}";
+    }
 
     private static string GetFilePath(string cacheKey)
-        => Path.Combine(CACHE_DIRECTORY, cacheKey + ".webm");
+    {
+        var path = Path.GetFullPath(Path.Combine(CACHE_DIRECTORY, cacheKey + ".webm"));
+        if (!path.StartsWith(_cacheRoot, StringComparison.Ordinal))
+            throw new InvalidOperationException("Music cache path is outside the cache directory");
+
+        return path;
+    }
 
     private static void TryDeleteFile(string path)
     {

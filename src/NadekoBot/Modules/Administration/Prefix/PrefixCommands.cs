@@ -48,6 +48,12 @@ public partial class Administration
                 return;
             }
 
+            if (toSet.Length > BotConfigService.MAX_PREFIX_LENGTH)
+            {
+                await Response().Error(strs.defprefix_too_long(BotConfigService.MAX_PREFIX_LENGTH)).SendAsync();
+                return;
+            }
+
             var oldPrefix = _cmdHandler.GetPrefix();
             var newPrefix = _cmdHandler.SetDefaultPrefix(toSet);
 

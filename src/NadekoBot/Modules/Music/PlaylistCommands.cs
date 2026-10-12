@@ -15,9 +15,11 @@ public sealed partial class Music
         private static readonly SemaphoreSlim _playlistLock = new(1, 1);
         private readonly DbService _db;
         private readonly IBotCreds _creds;
+        private readonly BotPolicy _policy;
 
-        public PlaylistCommands(DbService db, IBotCreds creds)
+        public PlaylistCommands(DbService db, IBotCreds creds, BotPolicy policy)
         {
+            _policy = policy;
             _db = db;
             _creds = creds;
         }
@@ -81,7 +83,7 @@ public sealed partial class Music
 
                 if (pl is not null)
                 {
-                    if (_creds.IsOwner(ctx.User) || pl.AuthorId == ctx.User.Id)
+                    if (BotPolicy.IsRealOwner(_creds, ctx.Message) || pl.AuthorId == ctx.User.Id)
                     {
                         uow.Set<MusicPlaylist>().Remove(pl);
                         await uow.SaveChangesAsync();
@@ -147,7 +149,9 @@ public sealed partial class Music
                 return;
             }
 
+            // A saved Local track would let any member play a file path from the host later.
             var songs = mp.GetQueuedTracks()
+                .Where(s => s.Platform != MusicPlatform.Local)
                 .Select(s => new PlaylistSong
                 {
                     Provider = s.Platform.ToString(),
@@ -254,7 +258,8 @@ public sealed partial class Music
 
                 await mp.EnqueueManyAsync(
                     songs.Select(x => (x.Query, (MusicPlatform)x.ProviderType)),
-                    ctx.User.ToString());
+                    ctx.User.ToString(),
+                    _policy.CanReachLocalNetwork(_creds, ctx.Message));
 
                 if (msg is not null)
                     await msg.ModifyAsync(m => m.Content = GetText(strs.playlist_queue_complete));

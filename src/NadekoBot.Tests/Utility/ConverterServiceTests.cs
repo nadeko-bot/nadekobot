@@ -91,7 +91,7 @@ public class ConverterServiceTests
         => Assert.That(actual, Is.EqualTo(expected).Within(Math.Abs(expected) * TOLERANCE));
 
     [Test]
-    public void SimpleAndPrefixedUnits()
+    public void SimplePrefixedAndTemperatureUnits()
     {
         AssertClose(Ok("m", "km", 1500), 1.5);
         AssertClose(Ok("MiB", "MB", 1), 1.048576);
@@ -103,11 +103,7 @@ public class ConverterServiceTests
 
         Assert.That(_svc.Convert("MG", "g", 1).Status, Is.EqualTo(ConvertStatus.UnknownUnit));
         Assert.That(_svc.Convert("dB", "B", 1).Status, Is.EqualTo(ConvertStatus.UnknownUnit));
-    }
 
-    [Test]
-    public void TemperatureUsesOffsets()
-    {
         AssertClose(Ok("C", "F", 100), 212);
         AssertClose(Ok("°F", "K", 32), 273.15);
         AssertClose(Ok("K", "celsius", 0), -273.15);
@@ -115,7 +111,7 @@ public class ConverterServiceTests
     }
 
     [Test]
-    public void CompoundUnitsAndFuelEconomy()
+    public void CompoundUnitsFuelEconomyAndErrors()
     {
         AssertClose(Ok("km/h", "mph", 100), 100 / 1.609344);
         AssertClose(Ok("m/s", "km/h", 10), 36);
@@ -129,11 +125,6 @@ public class ConverterServiceTests
         Assert.That(_svc.Convert("s", "Hz", 2).Status, Is.EqualTo(ConvertStatus.DimensionMismatch));
         Assert.That(_svc.Convert("mpg", "m2", 2).Status, Is.EqualTo(ConvertStatus.DimensionMismatch));
         Assert.That(_svc.Convert("m^20", "m", 1).Status, Is.EqualTo(ConvertStatus.InvalidExpression));
-    }
-
-    [Test]
-    public void MismatchAndUnknownUnits()
-    {
         Assert.That(_svc.Convert("m", "kg", 1).Status, Is.EqualTo(ConvertStatus.DimensionMismatch));
 
         var unknown = _svc.Convert("feeet", "m", 1);
@@ -190,7 +181,7 @@ public class ConverterServiceTests
     }
 
     [Test]
-    public void InputForms()
+    public void InputFormsAndSignificantDigitFormatting()
     {
         var en = CultureInfo.GetCultureInfo("en-US");
         var de = CultureInfo.GetCultureInfo("de-DE");
@@ -218,14 +209,8 @@ public class ConverterServiceTests
         Assert.That(ConvertInputParser.TryParse("km mi", en, out _), Is.False);
         Assert.That(ConvertInputParser.TryParse("5 km to mi now", en, out _), Is.False);
         Assert.That(ConvertInputParser.TryParse("NaN km mi", en, out _), Is.False);
-    }
 
-    [Test]
-    public void FormattingUsesSignificantDigits()
-    {
         var inv = CultureInfo.InvariantCulture;
-        var en = CultureInfo.GetCultureInfo("en-US");
-
         Assert.That(ConvertFormatter.FormatValue(0.1 + 0.2, inv), Is.EqualTo("0.3"));
         Assert.That(ConvertFormatter.FormatValue(1d / 3, inv), Is.EqualTo("0.333333333333"));
         Assert.That(ConvertFormatter.FormatValue(1234567.5, en), Is.EqualTo("1,234,567.5"));
@@ -235,7 +220,7 @@ public class ConverterServiceTests
     }
 
     [Test]
-    public void ParsersKeepOnlyCurrenciesAndMetals()
+    public async Task RatesKeepOnlyCurrenciesAndMetals_RefreshFallsBack()
     {
         var feed = RatesSources.ParseFeed(JsonDocument.Parse(Feed(1.17)).RootElement)!;
         var rates = CurrencyRates.FromDto(feed);
@@ -249,11 +234,7 @@ public class ConverterServiceTests
 
         var bad = RatesSources.ParseFeed(JsonDocument.Parse("""{"date":"x","eur":{"usd":1}}""").RootElement);
         Assert.That(bad, Is.Null);
-    }
 
-    [Test]
-    public async Task RefreshFallsBackAndRejectsBadSnapshots()
-    {
         _http.Responses[MIRROR] = Feed(1.17);
         _http.Responses[ECB] = ECB_BODY;
         Assert.That(await _svc.RefreshRatesAsync(), Is.True);

@@ -15,6 +15,9 @@ public sealed class DoAsUserMessage : IUserMessage
         _message = message;
     }
 
+    // Set when someone other than the user chose the text, such as the AI agent or a shop entry.
+    public bool BlocksOwnerCommands { get; init; }
+
     public ulong Id
         => _msg.Id;
 

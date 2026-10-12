@@ -130,7 +130,7 @@ public class AiAgentPromptCacheTests
         var credsProvider = Substitute.For<IBotCredsProvider>();
         credsProvider.GetCreds().Returns(creds);
 
-        return new AiAgentSession(factory, credsProvider);
+        return new AiAgentSession(factory, credsProvider, new NadekoBot.Common.BotPolicy(false));
     }
 
     private static AiToolContext CreateContext()

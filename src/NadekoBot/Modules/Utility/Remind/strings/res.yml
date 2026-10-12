@@ -12,3 +12,4 @@ reminder_server_list: List of server reminders
 reminders_none: No reminder on this page.
 when: When
 who_where: Who / Where
+reminder_limit: 'You can have at most {0} active reminders, and a server at most {1}. Delete a reminder first.'

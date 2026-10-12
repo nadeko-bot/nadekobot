@@ -112,7 +112,7 @@ public class ClubService : INService, IClubService
             if (!UrlExtensions.IsPublicUrl(url))
                 return SetClubIconResult.InvalidFileType;
 
-            using var http = _httpFactory.CreateClient();
+            using var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
             using var temp = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
 
             if (!temp.IsImage())

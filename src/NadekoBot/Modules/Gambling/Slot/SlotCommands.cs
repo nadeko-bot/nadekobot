@@ -44,6 +44,7 @@ public partial class Gambling
             => Task.CompletedTask;
 
         [Cmd]
+        [SpendsCurrency]
         public async Task Slot([OverrideTypeReader(typeof(BalanceTypeReader))] long amount)
         {
             if (!await CheckBetMandatory(amount))

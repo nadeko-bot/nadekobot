@@ -11,40 +11,44 @@ public sealed class XpConfigService : ConfigServiceBase<XpConfig>
     public override string Name
         => "xp";
 
-    public XpConfigService(IConfigSeria serializer, IPubSub pubSub)
-        : base(FILE_PATH, serializer, pubSub, _changeKey)
+    public XpConfigService(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
     {
-        AddParsedProp("txt.cooldown",
+        AddNumberProp("txt.cooldown",
             static conf => conf.TextXpCooldown,
             static (conf, v) => conf.TextXpCooldown = v,
             int.TryParse,
             static (f) => f.ToString("F2"),
-            "How often can the users receive XP, in seconds",
-            static x => x > 0);
+            "How often can the users receive XP, in seconds. 0 turns off xp from messages and images",
+            min: 0,
+            max: null);
 
-        AddParsedProp("txt.permsg",
+        AddNumberProp("txt.permsg",
             static conf => conf.TextXpPerMessage,
             static (conf, v) => conf.TextXpPerMessage = v,
             int.TryParse,
             ConfigPrinters.ToString,
             "How much XP will the users receive per message",
-            static x => x >= 0);
+            min: 0,
+            max: null, strict: true);
 
-        AddParsedProp("txt.perimage",
+        AddNumberProp("txt.perimage",
             static conf => conf.TextXpFromImage,
             static (conf, v) => conf.TextXpFromImage = v,
             int.TryParse,
             ConfigPrinters.ToString,
             "Amount of xp users gain from posting an image",
-            static x => x > 0);
+            min: 0,
+            max: null, strict: true);
 
-        AddParsedProp("voice.perminute",
+        AddNumberProp("voice.perminute",
             static conf => conf.VoiceXpPerMinute,
             static (conf, v) => conf.VoiceXpPerMinute = v,
             int.TryParse,
             ConfigPrinters.ToString,
             "Average amount of xp earned per minute in VC",
-            static x => x >= 0);
+            min: 0,
+            max: null, strict: true);
 
         AddParsedProp("shop.is_enabled",
             static conf => conf.Shop.IsEnabled,

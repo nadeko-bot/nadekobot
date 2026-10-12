@@ -7,89 +7,33 @@ namespace NadekoBot.Tests
     public class KwumTests
     {
         [Test]
-        public void TestDefaultHashCode()
+        public void TestGetHashCode()
         {
-            var num = default(kwum);
-
-            Assert.That(0, Is.EqualTo(num.GetHashCode()));
+            Assert.That(0, Is.EqualTo(default(kwum).GetHashCode()));
+            Assert.That(new kwum("234").GetHashCode(), Is.EqualTo(new kwum("234").GetHashCode()));
+            Assert.That(new kwum("234").GetHashCode(), Is.Not.EqualTo(new kwum("235").GetHashCode()));
+            Assert.That(new kwum("hgbkhdbk").GetHashCode(), Is.EqualTo(new kwum("hgbkhdbk").GetHashCode()));
         }
         
         [Test]
-        public void TestEqualGetHashCode()
+        public void TestEquality()
         {
-            var num1 = new kwum("234");
-            var num2 = new kwum("234");
-
-            Assert.That(num1.GetHashCode(), Is.EqualTo(num2.GetHashCode()));
+            Assert.That(new kwum("hgbkhd"), Is.EqualTo(new kwum("hgbkhd")));
+            Assert.That(new kwum("hgbk5d"), Is.Not.EqualTo(new kwum("hgbk4d")));
         }
         
         [Test]
-        public void TestNotEqualGetHashCode()
+        public void TestParse()
         {
-            var num1 = new kwum("234");
-            var num2 = new kwum("235");
+            Assert.That(kwum.TryParse("234e", out _), Is.True);
+            Assert.That(kwum.TryParse("1234", out _), Is.False);
 
-            Assert.That(num1.GetHashCode(), Is.Not.EqualTo(num2.GetHashCode()));
-        }
-        
-        [Test]
-        public void TestLongEqualGetHashCode()
-        {
-            var num1 = new kwum("hgbkhdbk");
-            var num2 = new kwum("hgbkhdbk");
-
-            Assert.That(num1.GetHashCode(), Is.EqualTo(num2.GetHashCode()));
-        }
-        
-        [Test]
-        public void TestEqual()
-        {
-            var num1 = new kwum("hgbkhd");
-            var num2 = new kwum("hgbkhd");
-
-            Assert.That(num1, Is.EqualTo(num2));
-        }
-        
-        [Test]
-        public void TestNotEqual()
-        {
-            var num1 = new kwum("hgbk5d");
-            var num2 = new kwum("hgbk4d");
-
-            Assert.That(num1, Is.Not.EqualTo(num2));
-        }
-        
-        [Test]
-        public void TestParseValidValue()
-        {
-            var validValue = "234e";
-
-            Assert.That(kwum.TryParse(validValue, out _), Is.True);
-        }
-
-        [Test]
-        public void TestParseInvalidValue()
-        {
-            var invalidValue = "1234";
-            Assert.That(kwum.TryParse(invalidValue, out _), Is.False);
-        }
-        
-        [Test]
-        public void TestCorrectParseValue()
-        {
             var validValue = "qwerf4bm";
-            kwum.TryParse(validValue, out var parsedValue);
-            
+            Assert.That(kwum.TryParse(validValue, out var parsedValue), Is.True);
             Assert.That(parsedValue, Is.EqualTo(new kwum(validValue)));
-        }
-        
-        [Test]
-        public void TestToString()
-        {
-            var validValue = "46g5yh";
-            kwum.TryParse(validValue, out var parsedValue);
-            
-            Assert.That(validValue, Is.EqualTo(parsedValue.ToString()));
+
+            Assert.That(kwum.TryParse("46g5yh", out var roundTrip), Is.True);
+            Assert.That(roundTrip.ToString(), Is.EqualTo("46g5yh"));
         }
 
         [Test]
@@ -111,6 +55,8 @@ namespace NadekoBot.Tests
             
             // leading zeros have no meaning
             Assert.That(new kwum("22225v"), Is.EqualTo(num));
+
+            Assert.That("322", Is.EqualTo(new kwum((int)Math.Pow(32, 2)).ToString()));
         }
 
         [Test]
@@ -121,13 +67,6 @@ namespace NadekoBot.Tests
             
             num = new kwum(int.MaxValue);
             Assert.That("3zzzzzz", Is.EqualTo(num.ToString()));
-        }
-
-        [Test]
-        public void TestPower()
-        {
-            var num = new kwum((int)Math.Pow(32, 2));
-            Assert.That("322", Is.EqualTo(num.ToString()));
         }
     }
 }

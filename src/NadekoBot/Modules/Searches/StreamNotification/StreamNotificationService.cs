@@ -309,7 +309,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
                                             var msg = await _sender.Response(textChannel)
                                                                    .Embed(GetEmbed(fs.GuildId, stream, false))
                                                                    .Text(message)
-                                                                   .Sanitize(false)
+                                                                   .Mentions(TemplateMentions.FromTemplate(fs.Message))
                                                                    .SendAsync();
 
                                             // only cache the ids of channel/message pairs 

@@ -79,7 +79,7 @@ public class AutoThreadTests
     }
 
     [Test]
-    public void Backfill_SelectsEligibleMessages_NewestFirst_OldestFirstOrder()
+    public void Backfill_SelectsEligibleMessagesOldestFirst_MediaModeNeedsFileOrLink()
     {
         // discord returns newest first
         var messages = new[]
@@ -97,12 +97,8 @@ public class AutoThreadTests
 
         var capped = AutoThreadService.SelectBackfillTargets(messages, AutoThreadMode.All, 2);
         Assert.That(capped.Select(x => x.Id), Is.EqualTo(new ulong[] { 20, 60 }));
-    }
 
-    [Test]
-    public void Backfill_MediaMode_KeepsOnlyAttachmentsAndLinks()
-    {
-        var messages = new[]
+        var mediaMessages = new[]
         {
             Message("http is a protocol", id: 4),
             Message("plain text", id: 3),
@@ -110,9 +106,9 @@ public class AutoThreadTests
             Message("with file", attachments: 1, id: 1)
         };
 
-        var targets = AutoThreadService.SelectBackfillTargets(messages, AutoThreadMode.Media, 10);
+        var media = AutoThreadService.SelectBackfillTargets(mediaMessages, AutoThreadMode.Media, 10);
 
-        Assert.That(targets.Select(x => x.Id), Is.EqualTo(new ulong[] { 1, 2 }));
+        Assert.That(media.Select(x => x.Id), Is.EqualTo(new ulong[] { 1, 2 }));
     }
 
     [Test]

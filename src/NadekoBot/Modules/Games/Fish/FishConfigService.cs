@@ -10,10 +10,15 @@ public sealed class FishConfigService : ConfigServiceBase<FishConfig>
     public override string Name
         => "fishing";
 
+    public const int MAX_CHANCE_WEIGHT = 1_000_000;
+
+    // The award is a random amount up to max + 1, which must not overflow.
+    public const long MAX_CURRENCY_AMOUNT = 1_000_000_000_000;
+
     public FishConfigService(
         IConfigSeria serializer,
-        IPubSub pubSub)
-        : base(FILE_PATH, serializer, pubSub, _changeKey)
+        IPubSub pubSub, BotPolicy policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
     {
         AddParsedProp("captcha",
             static conf => conf.RequireCaptcha,
@@ -21,43 +26,59 @@ public sealed class FishConfigService : ConfigServiceBase<FishConfig>
             bool.TryParse,
             ConfigPrinters.ToString);
 
-        AddParsedProp("chance.nothing",
+        AddNumberProp("chance.nothing",
             static conf => conf.Chance.Nothing,
             static (conf, v) => conf.Chance.Nothing = v,
             int.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Weight of the chance to catch nothing, relative to the other chance weights.",
+            min: 0,
+            max: MAX_CHANCE_WEIGHT, strict: true);
 
-        AddParsedProp("chance.fish",
+        AddNumberProp("chance.fish",
             static conf => conf.Chance.Fish,
             static (conf, v) => conf.Chance.Fish = v,
             int.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Weight of the chance to catch a fish, relative to the other chance weights.",
+            min: 0,
+            max: MAX_CHANCE_WEIGHT, strict: true);
 
-        AddParsedProp("chance.trash",
+        AddNumberProp("chance.trash",
             static conf => conf.Chance.Trash,
             static (conf, v) => conf.Chance.Trash = v,
             int.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Weight of the chance to catch trash, relative to the other chance weights.",
+            min: 0,
+            max: MAX_CHANCE_WEIGHT, strict: true);
 
-        AddParsedProp("chance.currency",
+        AddNumberProp("chance.currency",
             static conf => conf.Chance.Currency,
             static (conf, v) => conf.Chance.Currency = v,
             int.TryParse,
-            ConfigPrinters.ToString);
+            ConfigPrinters.ToString,
+            "Weight of the chance to catch currency, relative to the other chance weights.",
+            min: 0,
+            max: MAX_CHANCE_WEIGHT, strict: true);
 
-        AddParsedProp("currency.min",
+        AddNumberProp("currency.min",
             static conf => conf.CurrencyMin,
             static (conf, v) => conf.CurrencyMin = v,
             long.TryParse,
             ConfigPrinters.ToString,
-            "Min currency awarded when fishing out currency.");
+            "Min currency awarded when fishing out currency.",
+            min: 1,
+            max: MAX_CURRENCY_AMOUNT, strict: true);
 
-        AddParsedProp("currency.max",
+        AddNumberProp("currency.max",
             static conf => conf.CurrencyMax,
             static (conf, v) => conf.CurrencyMax = v,
             long.TryParse,
             ConfigPrinters.ToString,
-            "Max currency awarded when fishing out currency.");
+            "Max currency awarded when fishing out currency.",
+            min: 1,
+            max: MAX_CURRENCY_AMOUNT, strict: true);
 
         Migrate();
     }

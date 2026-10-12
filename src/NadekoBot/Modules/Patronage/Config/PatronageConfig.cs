@@ -12,8 +12,17 @@ public class PatronageConfig : ConfigServiceBase<PatronConfigData>
 
     private const string FILE_PATH = "data/patron.yml";
 
-    public PatronageConfig(IConfigSeria serializer, IPubSub pubSub) : base(FILE_PATH, serializer, pubSub, _changeKey)
+    private readonly BotPolicy _policy;
+
+    // A managed bot has no Patreon integration, so patron-only features are open to everyone.
+    public bool IsEnabled
+        => !_policy.Managed && Data.IsEnabled;
+
+    public PatronageConfig(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
     {
+        _policy = policy;
+
         AddParsedProp("enabled",
             static x => x.IsEnabled,
             static (x, v) => x.IsEnabled = v,

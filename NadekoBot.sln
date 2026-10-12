@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NadekoBot.Generators", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NadekoBot.StringsMerger", "src\NadekoBot.StringsMerger\NadekoBot.StringsMerger.csproj", "{488E7D2F-B1B0-42DC-B753-7EADCE60E55F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NadekoBot.Hosted", "src\NadekoBot.Hosted\NadekoBot.Hosted.csproj", "{419C9CE2-3038-4D8C-974C-0C2310BE5765}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,12 @@ Global
 		{488E7D2F-B1B0-42DC-B753-7EADCE60E55F}.GlobalNadeko|Any CPU.Build.0 = GlobalNadeko|Any CPU
 		{488E7D2F-B1B0-42DC-B753-7EADCE60E55F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{488E7D2F-B1B0-42DC-B753-7EADCE60E55F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{419C9CE2-3038-4D8C-974C-0C2310BE5765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{419C9CE2-3038-4D8C-974C-0C2310BE5765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{419C9CE2-3038-4D8C-974C-0C2310BE5765}.GlobalNadeko|Any CPU.ActiveCfg = Release|Any CPU
+		{419C9CE2-3038-4D8C-974C-0C2310BE5765}.GlobalNadeko|Any CPU.Build.0 = Release|Any CPU
+		{419C9CE2-3038-4D8C-974C-0C2310BE5765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{419C9CE2-3038-4D8C-974C-0C2310BE5765}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +105,7 @@ Global
 		{92770AF3-83EE-49F1-A0BB-79124D19A13D} = {04929013-5BAB-42B0-B9B2-8F2BB8F16AF2}
 		{2F4CF6D6-0C2F-4944-B204-9508CDA53195} = {04929013-5BAB-42B0-B9B2-8F2BB8F16AF2}
 		{488E7D2F-B1B0-42DC-B753-7EADCE60E55F} = {04929013-5BAB-42B0-B9B2-8F2BB8F16AF2}
+		{419C9CE2-3038-4D8C-974C-0C2310BE5765} = {04929013-5BAB-42B0-B9B2-8F2BB8F16AF2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F3F555C-855F-4BE8-B526-D062D3E8ACA4}

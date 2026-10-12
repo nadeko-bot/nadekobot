@@ -45,7 +45,7 @@ public interface IPatronageService
     /// <returns>The resulting <see cref="Patron"/> snapshot, or null if input is invalid.</returns>
     Task<Patron?> AddManualPatronAsync(ulong userId, long cents);
 
-    PatronConfigData GetConfig();
+    bool IsEnabled { get; }
     int PercentBonus(Patron? user);
     int PercentBonus(long amount);
 }

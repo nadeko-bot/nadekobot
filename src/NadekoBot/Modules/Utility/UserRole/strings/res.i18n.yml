@@ -12,6 +12,7 @@ ar:
   userrole_none_user: 'ليس لدى {0} أي أدوار مستخدم معيّنة.'
   userrole_not_found: الدور غير موجود أو غير معيّن لك.
   userrole_removed: 'تمت إزالة {0} من الدور {1}.'
+  userrole_cooldown: 'يمكنك تغيير رتبة المستخدم مرة أخرى بعد {0} ثانية.'
 
 de-DE:
   userrole_assigned: '{0} hat die Rolle {1} erhalten.'
@@ -27,6 +28,7 @@ de-DE:
   userrole_none_user: '{0} hat keine zugewiesenen Benutzerrollen.'
   userrole_not_found: Rolle nicht gefunden oder nicht dir zugewiesen.
   userrole_removed: '{0} wurde aus der Rolle {1} entfernt.'
+  userrole_cooldown: 'Du kannst eine Benutzerrolle in {0} Sekunden wieder ändern.'
 
 es-ES:
   userrole_assigned: '{0} ha recibido el rol {1}.'
@@ -42,6 +44,7 @@ es-ES:
   userrole_none_user: '{0} no tiene roles de usuario asignados.'
   userrole_not_found: Rol no encontrado o no asignado a ti.
   userrole_removed: '{0} ha sido eliminado del rol {1}.'
+  userrole_cooldown: 'Puedes cambiar un rol de usuario otra vez en {0} segundos.'
 
 fr-FR:
   userrole_assigned: '{0} a reçu le rôle {1}.'
@@ -57,6 +60,7 @@ fr-FR:
   userrole_none_user: '{0} n''a pas de rôles utilisateur attribués.'
   userrole_not_found: Rôle non trouvé ou non attribué à vous.
   userrole_removed: '{0} a été retiré du rôle {1}.'
+  userrole_cooldown: 'Tu pourras modifier un rôle utilisateur à nouveau dans {0} secondes.'
 
 id-ID:
   userrole_assigned: '{0} telah diberi role {1}.'
@@ -72,6 +76,7 @@ id-ID:
   userrole_none_user: '{0} tidak punya user role.'
   userrole_not_found: Role tidak ditemukan atau tidak ditetapkan ke kamu.
   userrole_removed: '{0} telah dihapus dari role {1}.'
+  userrole_cooldown: 'Kamu bisa mengubah role pengguna lagi dalam {0} detik.'
 
 ja-JP:
   userrole_assigned: '{0}にロール{1}が割り当てられました。'
@@ -87,6 +92,7 @@ ja-JP:
   userrole_none_user: '{0}にはユーザーロールが割り当てられていません。'
   userrole_not_found: ロールが見つからないか、あなたに割り当てられていません。
   userrole_removed: '{0}がロール{1}から削除されました。'
+  userrole_cooldown: '{0} 秒後にユーザーロールを再度変更できます。'
 
 ko-KR:
   userrole_assigned: '{0}에게 {1} 역할이 부여되었어요.'
@@ -102,6 +108,7 @@ ko-KR:
   userrole_none_user: '{0}에게 부여된 유저 역할이 없어요.'
   userrole_not_found: 역할을 찾을 수 없거나 부여되지 않았어요.
   userrole_removed: '{0}에게서 {1} 역할이 제거되었어요.'
+  userrole_cooldown: '{0}초 후에 사용자 역할을 다시 변경할 수 있습니다.'
 
 pl-PL:
   userrole_assigned: '{0} otrzymał rolę {1}.'
@@ -117,6 +124,7 @@ pl-PL:
   userrole_none_user: '{0} nie ma przypisanych ról użytkownika.'
   userrole_not_found: Rola nie została znaleziona lub nie jest ci przypisana.
   userrole_removed: '{0} został usunięty z roli {1}.'
+  userrole_cooldown: 'Rolę użytkownika możesz zmienić ponownie za {0} sekund.'
 
 pt-BR:
   userrole_assigned: '{0} recebeu o cargo {1}.'
@@ -132,6 +140,7 @@ pt-BR:
   userrole_none_user: '{0} não tem cargos de usuário atribuídos.'
   userrole_not_found: Cargo não encontrado ou não atribuído a você.
   userrole_removed: '{0} foi removido do cargo {1}.'
+  userrole_cooldown: 'Você pode alterar um cargo de usuário de novo em {0} segundos.'
 
 ru-RU:
   userrole_assigned: '{0} получил роль {1}.'
@@ -147,6 +156,7 @@ ru-RU:
   userrole_none_user: 'У {0} нет назначенных пользовательских ролей.'
   userrole_not_found: Роль не найдена или не назначена вам.
   userrole_removed: '{0} был удалён из роли {1}.'
+  userrole_cooldown: 'Вы сможете снова изменить роль пользователя через {0} сек.'
 
 sr-Cyrl-RS:
   userrole_assigned: '{0} је додељена улога {1}.'
@@ -162,6 +172,7 @@ sr-Cyrl-RS:
   userrole_none_user: '{0} нема додељених корисничких улога.'
   userrole_not_found: Улога није пронађена или вам није додељена.
   userrole_removed: '{0} је уклоњен/а из улоге {1}.'
+  userrole_cooldown: 'Улогу корисника можеш поново да промениш за {0} секунди.'
 
 tr-TR:
   userrole_assigned: '{0} kullanıcısına {1} rolü atandı.'
@@ -177,6 +188,7 @@ tr-TR:
   userrole_none_user: '{0} kullanıcısının atanmış kullanıcı rolü yok.'
   userrole_not_found: Rol bulunamadı veya sana atanmamış.
   userrole_removed: '{0} kullanıcısından {1} rolü kaldırıldı.'
+  userrole_cooldown: 'Kullanıcı rolünü {0} saniye sonra tekrar değiştirebilirsin.'
 
 ts-TS:
   userrole_assigned: '{0} has been given the role {1}.'
@@ -192,6 +204,7 @@ ts-TS:
   userrole_none_user: '{0} has no assigned user roles.'
   userrole_not_found: Role not found or not assigned to you.
   userrole_removed: '{0} has been removed from the role {1}.'
+  userrole_cooldown: 'W-wait {0} seconds before you change a user role again!'
 
 uk-UA:
   userrole_assigned: '{0} отримав(-ла) роль {1}.'
@@ -207,6 +220,7 @@ uk-UA:
   userrole_none_user: '{0} не має призначених ролей користувача.'
   userrole_not_found: Роль не знайдено або вона не призначена тобі.
   userrole_removed: '{0} було знято роль {1}.'
+  userrole_cooldown: 'Ви зможете знову змінити роль користувача через {0} с.'
 
 vi-VN:
   userrole_assigned: '{0} đã được gán vai trò {1}.'
@@ -222,6 +236,7 @@ vi-VN:
   userrole_none_user: '{0} không có vai trò người dùng nào.'
   userrole_not_found: Không tìm thấy vai trò hoặc vai trò chưa được gán cho bạn.
   userrole_removed: '{0} đã bị xóa khỏi vai trò {1}.'
+  userrole_cooldown: 'Bạn có thể đổi vai trò người dùng lần nữa sau {0} giây.'
 
 zh-CN:
   userrole_assigned: '{0} 已被分配身分組 {1}。'
@@ -237,3 +252,4 @@ zh-CN:
   userrole_none_user: '{0} 沒有已分配的使用者身分組。'
   userrole_not_found: 找不到身分組或未分配給你。
   userrole_removed: '{0} 已從身分組 {1} 中移除。'
+  userrole_cooldown: '你可以在 {0} 秒后再次修改用户身份组。'

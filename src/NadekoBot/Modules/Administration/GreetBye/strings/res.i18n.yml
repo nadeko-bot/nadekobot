@@ -25,6 +25,7 @@ ar:
   greetmsg_cur: 'رسالة الترحيب الحالية: {0}'
   greetmsg_enable: 'فعّل رسائل الترحيب بكتابة {0}'
   greetmsg_new: تم تعيين رسالة ترحيب جديدة.
+  greet_mentions_removed: ليس لديك صلاحية Mention Everyone. أزال البوت @everyone و@here ومنشن الرتب من الرسالة، ثم حفظها.
 
 de-DE:
   boost_off: Boost-Ankündigungen deaktiviert.
@@ -53,6 +54,7 @@ de-DE:
   greetmsg_cur: 'Derzeitige Willkommensnachricht: {0}'
   greetmsg_enable: 'Aktiviere Willkommensnachrichten durch das Schreiben von {0}'
   greetmsg_new: Neue Willkommensnachricht gesetzt
+  greet_mentions_removed: Du hast die Berechtigung Mention Everyone nicht. Der Bot hat @everyone, @here und Rollen-Erwähnungen aus der Nachricht entfernt und sie dann gespeichert.
 
 es-ES:
   boost_off: Los anuncios de Aumentos se han desactivado.
@@ -81,6 +83,7 @@ es-ES:
   greetmsg_cur: 'Mensaje de bienvenida actual: {0}'
   greetmsg_enable: 'Habilita los mensajes de bienvenida escribiendo {0}'
   greetmsg_new: Nuevo mensaje de bienvenida configurado.
+  greet_mentions_removed: No tienes el permiso Mention Everyone. El bot quitó @everyone, @here y las menciones de rol del mensaje, y luego lo guardó.
 
 fr-FR:
   boost_off: Annonces Boost désactivées.
@@ -109,6 +112,7 @@ fr-FR:
   greetmsg_cur: 'Message de bienvenue actuel : {0}'
   greetmsg_enable: 'Activez les messages de bienvenue en tapant {0}'
   greetmsg_new: Nouveau message d'accueil défini.
+  greet_mentions_removed: Tu n'as pas la permission Mention Everyone. Le bot a retiré @everyone, @here et les mentions de rôle du message, puis l'a enregistré.
 
 id-ID:
   boost_off: Pengumuman boost dinonaktifkan.
@@ -137,6 +141,7 @@ id-ID:
   greetmsg_cur: 'Pesan greet saat ini: {0}'
   greetmsg_enable: 'Aktifkan pesan greet dengan mengetik {0}'
   greetmsg_new: Pesan greet baru telah diatur.
+  greet_mentions_removed: Kamu tidak punya izin Mention Everyone. Bot menghapus @everyone, @here, dan mention role dari pesan, lalu menyimpannya.
 
 ja-JP:
   boost_off: ブーストアナウンスが無効になりました。
@@ -165,6 +170,7 @@ ja-JP:
   greetmsg_cur: '現在の参加時メッセージ: {0}'
   greetmsg_enable: '参加時メッセージを有効にするには、{0}と入力してください。'
   greetmsg_new: 新しい参加時メッセージが設定されました。
+  greet_mentions_removed: Mention Everyone 権限がありません。ボットはメッセージから @everyone、@here、ロールメンションを削除してから保存しました。
 
 ko-KR:
   boost_off: 부스트 알림이 비활성화되었습니다.
@@ -193,6 +199,7 @@ ko-KR:
   greetmsg_cur: '현재 환영 메시지: {0}'
   greetmsg_enable: '{0}을(를) 입력하여 환영 메시지를 활성화하세요'
   greetmsg_new: 새 환영 메시지가 설정되었습니다.
+  greet_mentions_removed: Mention Everyone 권한이 없습니다. 봇이 메시지에서 @everyone, @here, 역할 멘션을 제거한 뒤 저장했습니다.
 
 pl-PL:
   boost_off: Ogłoszenia o boostach wyłączone.
@@ -221,6 +228,7 @@ pl-PL:
   greetmsg_cur: 'Aktualna wiadomość powitalna: {0}'
   greetmsg_enable: 'Włącz wiadomości powitalne wpisując {0}'
   greetmsg_new: Ustawiono nową wiadomość powitalną.
+  greet_mentions_removed: Nie masz uprawnienia Mention Everyone. Bot usunął z wiadomości @everyone, @here i wzmianki ról, a potem ją zapisał.
 
 pt-BR:
   boost_off: Os anúncios de impulsionamento foram desativados.
@@ -249,6 +257,7 @@ pt-BR:
   greetmsg_cur: 'Mensagem de boas-vindas atual: {0}'
   greetmsg_enable: 'Digite {0} para ativar a mensagem de boas-vindas.'
   greetmsg_new: Mensagem de boas-vindas definida com sucesso.
+  greet_mentions_removed: Você não tem a permissão Mention Everyone. O bot removeu @everyone, @here e menções de cargo da mensagem e depois a salvou.
 
 ru-RU:
   boost_off: Буст-объявления отключены.
@@ -277,6 +286,7 @@ ru-RU:
   greetmsg_cur: 'Текущее приветственное сообщение: {0}'
   greetmsg_enable: 'Включено приветственное сообщение по нажатию {0}'
   greetmsg_new: Новое приветственное сообщение установленно.
+  greet_mentions_removed: У тебя нет права Mention Everyone. Бот убрал из сообщения @everyone, @here и упоминания ролей, а затем сохранил его.
 
 sr-Cyrl-RS:
   boost_off: Обавештења о бустовању искључена.
@@ -305,6 +315,7 @@ sr-Cyrl-RS:
   greetmsg_cur: 'Тренутна порука добродошлице: {0}'
   greetmsg_enable: 'Укључите поруке добродошлице куцањем {0}'
   greetmsg_new: Нова порука добродошлице је постављена.
+  greet_mentions_removed: Немаш дозволу Mention Everyone. Бот је уклонио @everyone, @here и помињања улога из поруке, па је сачувао.
 
 tr-TR:
   boost_off: Boost duyuruları devre dışı bırakıldı.
@@ -333,6 +344,7 @@ tr-TR:
   greetmsg_cur: 'Mevcut karşılama mesajı: {0}'
   greetmsg_enable: 'Karşılama mesajlarını etkinleştirmek için {0} yaz'
   greetmsg_new: Yeni karşılama mesajı ayarlandı.
+  greet_mentions_removed: Mention Everyone iznin yok. Bot mesajdan @everyone, @here ve rol etiketlerini kaldırdı, sonra mesajı kaydetti.
 
 ts-TS:
   boost_off: Boost announcements disabled.
@@ -361,6 +373,7 @@ ts-TS:
   greetmsg_cur: 'Current greet message: {0}'
   greetmsg_enable: 'Enable greet messages by typing {0}'
   greetmsg_new: New greet message set.
+  greet_mentions_removed: You don't have the Mention Everyone permission. I removed @everyone, @here and role mentions from the message, then saved it.
 
 uk-UA:
   boost_off: Оголошення про бусти вимкнено.
@@ -389,6 +402,7 @@ uk-UA:
   greetmsg_cur: 'Поточне привітальне повідомлення: {0}'
   greetmsg_enable: 'Увімкніть привітальні повідомлення, набравши {0}'
   greetmsg_new: Нове привітальне повідомлення встановлено.
+  greet_mentions_removed: У тебе немає дозволу Mention Everyone. Бот прибрав із повідомлення @everyone, @here та згадки ролей, а потім зберіг його.
 
 vi-VN:
   boost_off: Đã tắt thông báo boost.
@@ -417,6 +431,7 @@ vi-VN:
   greetmsg_cur: 'Tin nhắn chào mừng hiện tại: {0}'
   greetmsg_enable: 'Bật tin nhắn chào mừng bằng cách gõ {0}'
   greetmsg_new: Đã đặt tin nhắn chào mừng mới.
+  greet_mentions_removed: Bạn không có quyền Mention Everyone. Bot đã xóa @everyone, @here và các lượt nhắc vai trò khỏi tin nhắn, rồi lưu lại.
 
 zh-CN:
   boost_off: 增強公告已禁用。
@@ -445,3 +460,4 @@ zh-CN:
   greetmsg_cur: '現在的歡迎訊息：{0}'
   greetmsg_enable: '傳送{0}以啟用歡迎訊息'
   greetmsg_new: 已設置新的問候訊息。
+  greet_mentions_removed: 你没有 Mention Everyone 权限。机器人已从消息中移除 @everyone、@here 和身份组提及，然后保存了消息。

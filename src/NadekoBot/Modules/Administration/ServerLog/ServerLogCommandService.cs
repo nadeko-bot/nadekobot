@@ -120,6 +120,10 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
             return null;
         }
 
+        var perms = (await guild.GetCurrentUserAsync()).GetPermissions(channel);
+        if (!perms.ViewChannel || !perms.SendMessages || !perms.EmbedLinks)
+            return null;
+
         return channel;
     }
 

@@ -419,6 +419,7 @@ public partial class Xp : NadekoModule<XpService>
     }
 
     [Cmd]
+    [SpendsCurrency]
     public async Task XpShopBuy(XpShopInputType type, string key)
     {
         var result = await _service.BuyShopItemAsync(ctx.User.Id, (XpShopItemType)type, key);
@@ -456,6 +457,7 @@ public partial class Xp : NadekoModule<XpService>
     }
 
     [Cmd]
+    [SpendsCurrency]
     public async Task XpShopUse(XpShopInputType type, string key)
     {
         var result = await _service.UseShopItemAsync(ctx.User.Id, (XpShopItemType)type, key);

@@ -14,21 +14,19 @@ public class NewDeckTests
     }
 
     [Test]
-    public void TestCount()
+    public void TestDeckDraw()
     {
         Assert.That(52, Is.EqualTo(_deck.TotalCount));
         Assert.That(52, Is.EqualTo(_deck.CurrentCount));
-    }
-    
-    [Test]
-    public void TestDeckDraw()
-    {
+
         var card = _deck.Draw();
         
         Assert.That(card, Is.Not.Null);
         Assert.That(card.Suit, Is.EqualTo(RegularSuit.Hearts));
         Assert.That(card.Value, Is.EqualTo(RegularValue.Ace));
         Assert.That(_deck.CurrentCount, Is.EqualTo(_deck.TotalCount - 1));
+        Assert.That("Ace of Hearts", Is.EqualTo(card.GetName()));
+        Assert.That("Two of Hearts", Is.EqualTo(_deck.Draw()!.GetName()));
     }
 
     [Test]
@@ -47,16 +45,6 @@ public class NewDeckTests
         var noCard = _deck.Draw();
         
         Assert.That(noCard, Is.Null);
-    }
-
-    [Test]
-    public void TestCardGetName()
-    {
-        var ace = _deck.Draw()!;
-        var two = _deck.Draw()!;
-        
-        Assert.That("Ace of Hearts", Is.EqualTo(ace.GetName()));
-        Assert.That("Two of Hearts", Is.EqualTo(two.GetName()));
     }
 
     [Test]

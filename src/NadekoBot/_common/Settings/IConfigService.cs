@@ -12,5 +12,7 @@ public interface IConfigService
 
     string? GetComment(string prop);
 
+    ConfigPropInfo? GetPropInfo(string prop);
+
     bool SetSetting(string prop, string newValue);
 }

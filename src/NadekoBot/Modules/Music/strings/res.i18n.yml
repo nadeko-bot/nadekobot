@@ -48,6 +48,7 @@ ar:
   volume_input_invalid: يجب أن يكون مستوى الصوت بين 0 و100
   volume_set: 'تم تعيين مستوى الصوت إلى {0}%'
   wrongsong_success: 'عفوًا! تم حذف الأغنية الخاطئة: {0}'
+  queue_full: 'قائمة الانتظار ممتلئة. يمكنها أن تحمل {0} مقطعًا.'
 
 de-DE:
   attempting_to_queue: 'Versuche {0} Lieder in die Warteschlange zu setzen...'
@@ -99,6 +100,7 @@ de-DE:
   volume_input_invalid: Lautstärke muss zwischen 0 und 100 liegen
   volume_set: 'Lautstärke auf {0}% gesetzt.'
   wrongsong_success: 'Ups! Falscher Song entfernt: {0}'
+  queue_full: 'Die Warteschlange ist voll. Sie fasst {0} Titel.'
 
 es-ES:
   attempting_to_queue: 'Intentando añadir a la cola {0} canciones...'
@@ -150,6 +152,7 @@ es-ES:
   volume_input_invalid: Volumen debe estar entre 0 y 100
   volume_set: 'Volumen configurado al {0} %.'
   wrongsong_success: '¡Ups! Canción incorrecta eliminada: {0}'
+  queue_full: 'La cola está llena. Puede tener {0} pistas.'
 
 fr-FR:
   attempting_to_queue: 'Tentative d''ajout de {0} morceaux à la file d''attente...'
@@ -201,6 +204,7 @@ fr-FR:
   volume_input_invalid: Le volume doit être entre 0 et 100
   volume_set: 'Volume mis à {0}%'
   wrongsong_success: 'Oups ! Mauvaise chanson supprimée : {0}'
+  queue_full: 'La file d''attente est pleine. Elle peut contenir {0} pistes.'
 
 id-ID:
   attempting_to_queue: 'Mencoba mengantrikan {0} lagu...'
@@ -252,6 +256,7 @@ id-ID:
   volume_input_invalid: Volume harus antara 0 dan 100
   volume_set: 'Volume diatur ke {0}%'
   wrongsong_success: 'Ups! Lagu yang salah dihapus: {0}'
+  queue_full: 'Antrean penuh. Antrean bisa menampung {0} lagu.'
 
 ja-JP:
   attempting_to_queue: 'キューに{0}曲追加しようとしています...'
@@ -303,6 +308,7 @@ ja-JP:
   volume_input_invalid: 音量は0～100の数字である必要があります。
   volume_set: '音量を{0}%に設定しました'
   wrongsong_success: 'おっと！間違った曲を削除しました: {0}'
+  queue_full: 'キューがいっぱいです。最大 {0} 曲まで入ります。'
 
 ko-KR:
   attempting_to_queue: '{0}개의 트랙을 대기열에 추가하는 중...'
@@ -354,6 +360,7 @@ ko-KR:
   volume_input_invalid: 볼륨은 0에서 100 사이여야 해요
   volume_set: '볼륨이 {0}%로 설정되었어요'
   wrongsong_success: '이런! 잘못된 곡 제거됨: {0}'
+  queue_full: '대기열이 가득 찼습니다. 최대 {0}곡까지 담을 수 있습니다.'
 
 pl-PL:
   attempting_to_queue: 'Próba dodania {0} utworów do kolejki...'
@@ -405,6 +412,7 @@ pl-PL:
   volume_input_invalid: Głośność musi być między 0 a 100
   volume_set: 'Głośność ustawiona na {0}%'
   wrongsong_success: 'Ups! Usunięto zły utwór: {0}'
+  queue_full: 'Kolejka jest pełna. Mieści {0} utworów.'
 
 pt-BR:
   attempting_to_queue: 'Tentando adicionar {0} músicas à fila...'
@@ -456,6 +464,7 @@ pt-BR:
   volume_input_invalid: Volume deve estar entre 0 e 100
   volume_set: 'Volume ajustado para {0}%'
   wrongsong_success: 'Ops! Música errada removida: {0}'
+  queue_full: 'A fila está cheia. Ela comporta {0} faixas.'
 
 ru-RU:
   attempting_to_queue: 'Пробую поставить в очередь {0} песен...'
@@ -507,6 +516,7 @@ ru-RU:
   volume_input_invalid: Объем должен быть от 0 до 100
   volume_set: 'Громкость установлена на {0}%'
   wrongsong_success: 'Ой! Неправильная песня удалена: {0}'
+  queue_full: 'Очередь заполнена. В ней помещается {0} треков.'
 
 sr-Cyrl-RS:
   attempting_to_queue: 'Покушавам да додам {0} нумера у ред...'
@@ -558,6 +568,7 @@ sr-Cyrl-RS:
   volume_input_invalid: Јачина звука мора бити између 0 и 100
   volume_set: 'Јачина звука подешена на {0}%'
   wrongsong_success: 'Упс! Погрешна нумера уклоњена: {0}'
+  queue_full: 'Ред је пун. Може да прими {0} песама.'
 
 tr-TR:
   attempting_to_queue: '{0} parça sıraya ekleniyor...'
@@ -609,6 +620,7 @@ tr-TR:
   volume_input_invalid: Ses seviyesi 0 ile 100 arasında olmalı
   volume_set: 'Ses seviyesi %{0} olarak ayarlandı'
   wrongsong_success: 'Hay aksi! Yanlış şarkı kaldırıldı: {0}'
+  queue_full: 'Sıra dolu. En fazla {0} parça alabilir.'
 
 ts-TS:
   attempting_to_queue: 'Attempting to queue {0} tracks...'
@@ -660,6 +672,7 @@ ts-TS:
   volume_input_invalid: Volume must be between 0 and 100.
   volume_set: 'Volume set to {0}%'
   wrongsong_success: 'Wrong song removed: {0}'
+  queue_full: 'The queue is full. {0} tracks is the limit, okay?!'
 
 uk-UA:
   attempting_to_queue: 'Спроба додати в чергу {0} треків...'
@@ -711,6 +724,7 @@ uk-UA:
   volume_input_invalid: Гучність має бути від 0 до 100
   volume_set: 'Гучність встановлено на {0}%'
   wrongsong_success: 'Ой! Неправильний трек видалено: {0}'
+  queue_full: 'Черга заповнена. Вона вміщує {0} треків.'
 
 vi-VN:
   attempting_to_queue: 'Đang thử thêm {0} bài vào hàng đợi...'
@@ -762,6 +776,7 @@ vi-VN:
   volume_input_invalid: Âm lượng phải từ 0 đến 100
   volume_set: 'Đã đặt âm lượng thành {0}%'
   wrongsong_success: 'Ối! Đã xóa nhầm bài: {0}'
+  queue_full: 'Hàng chờ đã đầy. Hàng chờ chứa tối đa {0} bài.'
 
 zh-CN:
   attempting_to_queue: '正在嘗試將 {0} 首歌加入播放清單'
@@ -813,3 +828,4 @@ zh-CN:
   volume_input_invalid: 音量必須在 0 到 100 之間
   volume_set: '音量設定為 {0}%'
   wrongsong_success: '糟糕！錯誤的歌曲已移除：{0}'
+  queue_full: '队列已满，最多可容纳 {0} 首曲目。'

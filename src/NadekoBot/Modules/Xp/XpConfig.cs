@@ -12,7 +12,7 @@ public sealed class XpConfig
     [Comment("""How much XP will the users receive per message""")]
     public int TextXpPerMessage { get; set; } = 3;
 
-    [Comment("""How often can the users receive XP, in seconds""")]
+    [Comment("""How often can the users receive XP, in seconds. 0 turns off xp from messages and images""")]
     public int TextXpCooldown { get; set; } = 300;
 
     [Comment("""Amount of xp users gain from posting an image""")]

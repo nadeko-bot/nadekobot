@@ -22,6 +22,7 @@ ar:
   xp_receive_role: 'الحصول على رتبة {0}.'
   xp_role_reward_add_role: 'المستخدمون الذين يصلون إلى المستوى {0} سيحصلون على رتبة {1}.'
   xp_role_reward_cleared: 'الوصول إلى المستوى {0} لن يمنح رتبة بعد الآن.'
+  xp_role_reward_limit: 'يملك هذا الخادم بالفعل مكافآت رتب على {0} مستوى. احذف واحدة قبل أن تضيف أخرى.'
   xp_role_reward_remove_role: 'المستخدمون الذين يصلون إلى المستوى {0} سيفقدون رتبة {1}.'
   xp_shop_disabled: متجر XP معطّل من قبل المالك، أو لا توجد عناصر للبيع.
   xp_shop_item_cant_use: لا يمكنك استخدام هذا العنصر لأنه غير موجود أو لا تملكه.
@@ -60,6 +61,7 @@ de-DE:
   xp_receive_role: 'Erhalte die {0} Rolle.'
   xp_role_reward_add_role: 'Benutzer die das Level {0} erreichen werden die Rolle {1} erhalten.'
   xp_role_reward_cleared: 'Das erreichen von Level {0} wird nicht mehr mit einer Rolle belohnt.'
+  xp_role_reward_limit: 'Dieser Server hat schon Rollenbelohnungen auf {0} Leveln. Entferne eine, bevor du eine neue hinzufügst.'
   xp_role_reward_remove_role: 'Benutzer die das Level {0} erreichen werden die {1} Rolle verlieren.'
   xp_shop_disabled: Der XP-Shop ist vom Besitzer deaktiviert oder es gibt keine Artikel zum Verkauf.
   xp_shop_item_cant_use: Du kannst diesen Artikel nicht verwenden, da er nicht existiert oder dir nicht gehört.
@@ -98,6 +100,7 @@ es-ES:
   xp_receive_role: 'Recibirá el rol {0}.'
   xp_role_reward_add_role: 'Los usuarios que alcancen el nivel {0} recibirán el rol {1}.'
   xp_role_reward_cleared: 'Alcanzar el nivel {0} ya no recompensará un rol.'
+  xp_role_reward_limit: 'Este servidor ya tiene recompensas de rol en {0} niveles. Quita una antes de añadir otra.'
   xp_role_reward_remove_role: 'Los usuarios que alcancen el nivel {0} perderán el rol {1}.'
   xp_shop_disabled: La tienda de XP esta desactivada por el dueno, o no hay articulos a la venta.
   xp_shop_item_cant_use: No puedes usar este articulo porque no existe o no lo tienes.
@@ -136,6 +139,7 @@ fr-FR:
   xp_receive_role: 'Reçoit le rôle {0}.'
   xp_role_reward_add_role: 'L''utilisateur qui atteint le niveau {0} recevra le rôle {1}.'
   xp_role_reward_cleared: 'Atteindre le niveau {0} ne récompensera plus d''un rôle.'
+  xp_role_reward_limit: 'Ce serveur a déjà des récompenses de rôle sur {0} niveaux. Supprimes-en une avant d''en ajouter une autre.'
   xp_role_reward_remove_role: 'Les utilisateurs qui atteindront le niveau {0} perdront le rôle {1}.'
   xp_shop_disabled: Le magasin d'XP est désactivé par le propriétaire, ou il n'y a aucun item à vendre.
   xp_shop_item_cant_use: Vous ne pouvez pas utiliser cet item car il ne vous appartient pas ou il n'existe pas.
@@ -174,6 +178,7 @@ id-ID:
   xp_receive_role: 'Menerima role {0}.'
   xp_role_reward_add_role: 'Pengguna yang mencapai level {0} akan menerima role {1}.'
   xp_role_reward_cleared: 'Mencapai level {0} tidak lagi memberikan role.'
+  xp_role_reward_limit: 'Server ini sudah punya hadiah role di {0} level. Hapus satu sebelum menambah yang lain.'
   xp_role_reward_remove_role: 'Pengguna yang mencapai level {0} akan kehilangan role {1}.'
   xp_shop_disabled: Toko Xp dinonaktifkan oleh pemilik, atau tidak ada item yang dijual.
   xp_shop_item_cant_use: Kamu tidak bisa menggunakan item ini karena tidak ada atau kamu tidak memilikinya.
@@ -212,6 +217,7 @@ ja-JP:
   xp_receive_role: 'ロール{0}を獲得します。'
   xp_role_reward_add_role: 'レベル{0}に到達したユーザーはロール{1}を獲得します。'
   xp_role_reward_cleared: 'レベル{0}に到達してもロール報酬はなくなりました。'
+  xp_role_reward_limit: 'このサーバーには既に {0} レベル分のロール報酬があります。追加する前に1つ削除してください。'
   xp_role_reward_remove_role: 'レベル{0}に到達したユーザーはロール{1}を失います。'
   xp_shop_disabled: XPショップはオーナーにより無効になっているか、販売アイテムがありません。
   xp_shop_item_cant_use: このアイテムは存在しないか、所有していないため使用できません。
@@ -250,6 +256,7 @@ ko-KR:
   xp_receive_role: '{0} 역할을 받습니다.'
   xp_role_reward_add_role: '레벨 {0}에 도달한 유저는 {1} 역할을 받게 됩니다.'
   xp_role_reward_cleared: '레벨 {0}에 도달해도 더 이상 역할을 보상으로 받지 않습니다.'
+  xp_role_reward_limit: '이 서버에는 이미 {0}개 레벨에 역할 보상이 있습니다. 다른 보상을 추가하기 전에 하나를 제거하세요.'
   xp_role_reward_remove_role: '레벨 {0}에 도달한 유저는 {1} 역할을 잃게 됩니다.'
   xp_shop_disabled: XP 상점이 소유자에 의해 비활성화되었거나 판매 중인 아이템이 없습니다.
   xp_shop_item_cant_use: 이 아이템은 존재하지 않거나 소유하고 있지 않아 사용할 수 없습니다.
@@ -288,6 +295,7 @@ pl-PL:
   xp_receive_role: 'Otrzymanie roli {0}.'
   xp_role_reward_add_role: 'Użytkownicy, którzy osiągną poziom {0}, otrzymają rolę {1}.'
   xp_role_reward_cleared: 'Osiągnięcie poziomu {0} nie będzie już nagradzane rolą.'
+  xp_role_reward_limit: 'Ten serwer ma już nagrody w postaci ról na {0} poziomach. Usuń jedną, zanim dodasz kolejną.'
   xp_role_reward_remove_role: 'Użytkownicy, którzy osiągną poziom {0}, stracą rolę {1}.'
   xp_shop_disabled: Sklep XP jest wyłączony przez właściciela lub nie ma żadnych przedmiotów na sprzedaż.
   xp_shop_item_cant_use: Nie możesz użyć tego przedmiotu, ponieważ nie istnieje lub go nie posiadasz.
@@ -326,6 +334,7 @@ pt-BR:
   xp_receive_role: 'Recebe o cargo {0}.'
   xp_role_reward_add_role: 'Usuários que atingirem o nível {0} receberão o cargo {1}.'
   xp_role_reward_cleared: 'Atingir o nível {0} não irá mas entregar um cargo.'
+  xp_role_reward_limit: 'Este servidor já tem recompensas de cargo em {0} níveis. Remova uma antes de adicionar outra.'
   xp_role_reward_remove_role: 'Usuários que atingirem o nível {0} perderão o cargo {1}.'
   xp_shop_disabled: A loja de XP esta desativada pelo dono, ou nao ha itens a venda.
   xp_shop_item_cant_use: Voce nao pode usar este item pois ele nao existe ou voce nao o possui.
@@ -364,6 +373,7 @@ ru-RU:
   xp_receive_role: 'Получена роль {0}'
   xp_role_reward_add_role: 'Пользователи, которые достигнут {0} уровень, получат роль {1}.'
   xp_role_reward_cleared: 'Достижение уровня {0} больше не будет вознаграждать роль.'
+  xp_role_reward_limit: 'На этом сервере уже есть награды ролями на {0} уровнях. Удали одну, прежде чем добавить другую.'
   xp_role_reward_remove_role: 'Пользователи, которые достигнут {0} уровень, потеряют роль {1}.'
   xp_shop_disabled: Магазин опыта отключен владельцем или нет товаров в продаже.
   xp_shop_item_cant_use: Вы не можете использовать этот предмет, так как он не существует или не принадлежит вам.
@@ -402,6 +412,7 @@ sr-Cyrl-RS:
   xp_receive_role: 'Добијаш улогу {0}.'
   xp_role_reward_add_role: 'Корисници који достигну ниво {0} добиће улогу {1}.'
   xp_role_reward_cleared: 'Достизање нивоа {0} више неће награђивати улогом.'
+  xp_role_reward_limit: 'Овај сервер већ има награде улогама на {0} нивоа. Уклони једну пре него што додаш другу.'
   xp_role_reward_remove_role: 'Корисници који достигну ниво {0} изгубиће улогу {1}.'
   xp_shop_disabled: XP продавница је онемогућена од стране власника, или нема ствари на продају.
   xp_shop_item_cant_use: Не можеш да користиш ову ставку јер не постоји или је не поседујеш.
@@ -440,6 +451,7 @@ tr-TR:
   xp_receive_role: '{0} rolünü al.'
   xp_role_reward_add_role: '{0}. seviyeye ulaşan kullanıcılar {1} rolünü alacak.'
   xp_role_reward_cleared: '{0}. seviyeye ulaşmak artık rol ödülü vermeyecek.'
+  xp_role_reward_limit: 'Bu sunucuda zaten {0} seviyede rol ödülü var. Yenisini eklemeden önce birini kaldır.'
   xp_role_reward_remove_role: '{0}. seviyeye ulaşan kullanıcılar {1} rolünü kaybedecek.'
   xp_shop_disabled: Xp dükkanı sahip tarafından devre dışı bırakıldı veya satışta ürün yok.
   xp_shop_item_cant_use: Bu öğeyi kullanamazsın çünkü mevcut değil ya da sana ait değil.
@@ -478,6 +490,7 @@ ts-TS:
   xp_receive_role: 'Receive {0} role.'
   xp_role_reward_add_role: 'Users who reach level {0} will receive {1} role.'
   xp_role_reward_cleared: 'Reaching level {0} will no longer reward a role.'
+  xp_role_reward_limit: 'This server already has role rewards on {0} levels. Remove one before you add another.'
   xp_role_reward_remove_role: 'Users who reach level {0} will lose {1} role. Rules are rules.'
   xp_shop_disabled: Xp shop is disabled by the owner, or there are no items for sale.
   xp_shop_item_cant_use: You can't use this item as it doesn't exist or you don't own it. Hmph.
@@ -516,6 +529,7 @@ uk-UA:
   xp_receive_role: 'Отримати роль {0}.'
   xp_role_reward_add_role: 'Користувачі, які досягнуть рівня {0}, отримають роль {1}.'
   xp_role_reward_cleared: 'Досягнення рівня {0} більше не дає роль.'
+  xp_role_reward_limit: 'На цьому сервері вже є нагороди ролями на {0} рівнях. Видали одну, перш ніж додати іншу.'
   xp_role_reward_remove_role: 'Користувачі, які досягнуть рівня {0}, втратять роль {1}.'
   xp_shop_disabled: XP магазин вимкнено власником, або немає товарів у продажу.
   xp_shop_item_cant_use: Ви не можете використати цей предмет - він не існує або не належить вам.
@@ -554,6 +568,7 @@ vi-VN:
   xp_receive_role: 'Nhận vai trò {0}.'
   xp_role_reward_add_role: 'Người dùng đạt cấp {0} sẽ nhận được vai trò {1}.'
   xp_role_reward_cleared: 'Đạt cấp {0} sẽ không còn nhận được vai trò nữa.'
+  xp_role_reward_limit: 'Máy chủ này đã có phần thưởng vai trò ở {0} cấp. Hãy xóa một cái trước khi thêm cái khác.'
   xp_role_reward_remove_role: 'Người dùng đạt cấp {0} sẽ mất vai trò {1}.'
   xp_shop_disabled: Cửa hàng Xp đã bị chủ sở hữu tắt, hoặc không có vật phẩm nào đang bán.
   xp_shop_item_cant_use: Bạn không thể sử dụng vật phẩm này vì nó không tồn tại hoặc bạn không sở hữu nó.
@@ -592,6 +607,7 @@ zh-CN:
   xp_receive_role: '接收 {0} 身分組。'
   xp_role_reward_add_role: '達到等級 {0} 的使用者會得到 {1} 身份組'
   xp_role_reward_cleared: '達到等級 {0} 時將不再獲得身分組為獎勵'
+  xp_role_reward_limit: '此服务器已在 {0} 个等级上设置了身份组奖励。请先删除一个再添加。'
   xp_role_reward_remove_role: '達到等級 {0} 的使用者會喪失 {1} 身份組'
   xp_shop_disabled: 经验商店已被所有者禁用,或没有出售的物品。
   xp_shop_item_cant_use: 无法使用此物品,它不存在或你未拥有它。

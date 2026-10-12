@@ -1,6 +1,7 @@
 #nullable disable
 using SixLabors.ImageSharp.PixelFormats;
 using System.Globalization;
+using NadekoBot.Modules.Administration.Services;
 
 namespace NadekoBot.Services;
 
@@ -32,6 +33,17 @@ public static class ConfigParsers
         }
     }
 
+    // Same lookup as .timezone, stored as the zone's id. Empty input clears it, which means UTC.
+    public static bool TimeZoneId(string input, out string output)
+    {
+        output = null;
+        if (string.IsNullOrWhiteSpace(input))
+            return true;
+
+        output = GuildTimezoneService.TryFindTimeZone(input)?.Id;
+        return output is not null;
+    }
+
     public static bool InsensitiveEnum<T>(string input, out T output)
         where T: struct
         => Enum.TryParse(input, true, out output);
@@ -44,6 +56,9 @@ public static class ConfigPrinters
 
     public static string Culture(CultureInfo culture)
         => culture.Name;
+
+    public static string TimeZoneId(string id)
+        => string.IsNullOrEmpty(id) ? "UTC" : id;
 
     public static string Color(Rgba32 color)
         => ((uint)((color.B << 0) | (color.G << 8) | (color.R << 16))).ToString("X6");

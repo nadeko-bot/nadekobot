@@ -123,6 +123,8 @@ public sealed class SystemPromptBuilder(
 
         sb.AppendLine();
         sb.AppendLine(DefaultPrompts.PlatformGuidance);
+        sb.AppendLine();
+        sb.AppendLine(DefaultPrompts.UntrustedContent);
 
         if (guidance.Count > 0)
         {

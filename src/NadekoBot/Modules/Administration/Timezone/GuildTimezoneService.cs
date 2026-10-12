@@ -13,17 +13,24 @@ public sealed class GuildTimezoneService : ITimezoneService, IReadyExecutor, INS
     private readonly IReplacementPatternStore _repStore;
     private readonly ShardData _shardData;
     private readonly DiscordSocketClient _client;
+    private readonly BotConfigService _bcs;
+
+    private sealed record ResolvedZone(string Id, TimeZoneInfo Zone);
+
+    private volatile ResolvedZone _botDefault = new(null, null);
 
     public GuildTimezoneService(
         DbService db,
         IReplacementPatternStore repStore,
         ShardData shardData,
-        DiscordSocketClient client)
+        DiscordSocketClient client,
+        BotConfigService bcs)
     {
         _db = db;
         _repStore = repStore;
         _shardData = shardData;
         _client = client;
+        _bcs = bcs;
     }
 
     private static TimeZoneInfo TryGetById(string id)
@@ -79,13 +86,32 @@ public sealed class GuildTimezoneService : ITimezoneService, IReadyExecutor, INS
         return true;
     }
 
-    public TimeZoneInfo GetTimeZoneOrDefault(ulong? guildId)
+    public TimeZoneInfo GetGuildTimeZone(ulong? guildId)
     {
         if (guildId is ulong gid && _timezones.TryGetValue(gid, out var tz))
             return tz;
 
         return null;
     }
+
+    // Null when bot.yml has no default or one this system does not know.
+    public TimeZoneInfo GetBotDefaultTimeZone()
+    {
+        var id = _bcs.Data.DefaultTimezone;
+        var cached = _botDefault;
+        if (cached.Id == id)
+            return cached.Zone;
+
+        var zone = string.IsNullOrWhiteSpace(id) ? null : TryGetById(id);
+        if (zone is null && !string.IsNullOrWhiteSpace(id))
+            Log.Warning("Unknown defaultTimezone '{Id}' in bot.yml. Servers without a timezone use UTC", id);
+
+        _botDefault = new(id, zone);
+        return zone;
+    }
+
+    public TimeZoneInfo GetTimeZoneOrDefault(ulong? guildId)
+        => GetGuildTimeZone(guildId) ?? GetBotDefaultTimeZone();
 
     public async Task SetTimeZoneAsync(ulong guildId, TimeZoneInfo tz)
     {

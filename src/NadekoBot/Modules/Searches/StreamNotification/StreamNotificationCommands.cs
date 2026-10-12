@@ -130,7 +130,7 @@ public partial class Searches
 
             var canMentionEveryone = (ctx.User as IGuildUser)?.GuildPermissions.MentionEveryone ?? true;
             if (!canMentionEveryone)
-                message = message?.SanitizeAllMentions();
+                message = message?.SanitizeTemplateMentions();
 
             if (!_service.SetStreamMessage(ctx.Guild.Id, index, message, out var fs))
             {
@@ -151,7 +151,7 @@ public partial class Searches
         {
             var canMentionEveryone = (ctx.User as IGuildUser)?.GuildPermissions.MentionEveryone ?? true;
             if (!canMentionEveryone)
-                message = message?.SanitizeAllMentions();
+                message = message?.SanitizeTemplateMentions();
 
             var count = _service.SetStreamMessageForAll(ctx.Guild.Id, message);
 

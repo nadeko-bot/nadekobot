@@ -12,17 +12,18 @@ public sealed class YoutubeResolverFactory : IYoutubeResolverFactory
 {
     private readonly SearchesConfigService _ss;
     private readonly IServiceProvider _services;
+    private readonly BotPolicy _policy;
 
-    public YoutubeResolverFactory(SearchesConfigService ss, IServiceProvider services)
+    public YoutubeResolverFactory(SearchesConfigService ss, IServiceProvider services, BotPolicy policy)
     {
         _ss = ss;
         _services = services;
+        _policy = policy;
     }
 
     public IYoutubeResolver GetYoutubeResolver()
     {
-        var conf = _ss.Data;
-        if (conf.YtProvider == YoutubeSearcher.Invidious)
+        if (SearchEngineChoice.Yt(_ss.Data, _policy) == YoutubeSearcher.Invidious)
         {
             return _services.GetRequiredService<InvidiousYoutubeResolver>();
         }

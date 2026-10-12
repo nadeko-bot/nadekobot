@@ -6,10 +6,13 @@ ar:
   quote_id: 'الاقتباس {0}'
   quotes_deleted: 'تم حذف جميع الاقتباسات بالكلمة المفتاحية {0}.'
   quotes_deleted_count: 'تم حذف {0} اقتباسات.'
+  quotes_edit_none: لم يتم العثور على اقتباسات يمكنك تعديلها.
   quotes_notfound: لم يتم العثور على اقتباسات مطابقة لمعرّف الاقتباس المحدد.
   quotes_page: 'صفحة {0} من الاقتباسات'
   quotes_page_none: لم يتم العثور على اقتباسات في تلك الصفحة.
   quotes_remove_none: لم يتم العثور على اقتباسات يمكنك إزالتها.
+  quote_too_long: 'يمكن أن تحتوي الكلمة المفتاحية على {0} حرفًا كحد أقصى، ونص الاقتباس على {1}.'
+  quote_limit_reached: 'وصل هذا السيرفر إلى الحد الأقصى من الاقتباسات ({0}). احذف اقتباسًا أولًا.'
 
 de-DE:
   created_by: 'Erstellt von {0}'
@@ -19,10 +22,13 @@ de-DE:
   quote_id: 'Zitat {0}'
   quotes_deleted: 'Alle Zitate mit dem Stichwort {0} wurden gelöscht.'
   quotes_deleted_count: '{0} Zitate gelöscht.'
+  quotes_edit_none: Keine Zitate gefunden die du bearbeiten kannst.
   quotes_notfound: Keine Zitate gefunden zu der angegebenen Zitat ID.
   quotes_page: 'Seite {0} der Zitate'
   quotes_page_none: Keine Zitate auf dieser Seite gefunden.
   quotes_remove_none: Keine Zitate gefunden die du entfernen kannst.
+  quote_too_long: 'Ein Schlüsselwort darf höchstens {0} Zeichen haben, ein Zitattext höchstens {1}.'
+  quote_limit_reached: 'Dieser Server hat die maximale Anzahl an Zitaten ({0}). Lösche zuerst ein Zitat.'
 
 es-ES:
   created_by: 'Creada por {0}'
@@ -32,10 +38,13 @@ es-ES:
   quote_id: 'Cita {0}'
   quotes_deleted: 'Eliminadas todas las citas con la clave {0}.'
   quotes_deleted_count: '{0} citas eliminadas.'
+  quotes_edit_none: No se han encontrado citas que se puedan editar.
   quotes_notfound: No hay citas que coincidan con la ID especificada.
   quotes_page: 'Página {0} de citas'
   quotes_page_none: No se han encontrado citas en esta página.
   quotes_remove_none: No se han encontrado citas que se puedan borrar.
+  quote_too_long: 'Una palabra clave puede tener como máximo {0} caracteres, y el texto de una cita como máximo {1}.'
+  quote_limit_reached: 'Este servidor tiene el número máximo de citas ({0}). Borra una cita primero.'
 
 fr-FR:
   created_by: 'Créé par {0}'
@@ -45,10 +54,13 @@ fr-FR:
   quote_id: 'Citation {0}'
   quotes_deleted: 'Suppression de toutes les citations avec le mot-clé {0}.'
   quotes_deleted_count: '{0} citations supprimées.'
+  quotes_edit_none: Aucune citation que vous pouvez modifier n'a été trouvée.
   quotes_notfound: Aucune citation ne correspond à l'ID fourni.
   quotes_page: 'Page {0} de citations'
   quotes_page_none: Aucune citation trouvée sur cette page.
   quotes_remove_none: Aucune citation que vous pouvez enlever n'a été trouvée.
+  quote_too_long: 'Un mot-clé peut avoir au plus {0} caractères, et le texte d''une citation au plus {1}.'
+  quote_limit_reached: 'Ce serveur a atteint le nombre maximum de citations ({0}). Supprime d''abord une citation.'
 
 id-ID:
   created_by: 'Dibuat oleh {0}'
@@ -58,10 +70,13 @@ id-ID:
   quote_id: 'Quote {0}'
   quotes_deleted: 'Semua quote dengan kata kunci {0} telah dihapus.'
   quotes_deleted_count: '{0} quote dihapus.'
+  quotes_edit_none: Tidak ada quote yang bisa kamu edit.
   quotes_notfound: Tidak ada quote yang cocok dengan ID quote yang ditentukan.
   quotes_page: 'Halaman {0} dari quote'
   quotes_page_none: Tidak ada quote yang ditemukan di halaman itu.
   quotes_remove_none: Tidak ada quote yang bisa kamu hapus.
+  quote_too_long: 'Kata kunci maksimal {0} karakter, dan teks kutipan maksimal {1}.'
+  quote_limit_reached: 'Server ini sudah mencapai jumlah kutipan maksimal ({0}). Hapus satu kutipan dulu.'
 
 ja-JP:
   created_by: '{0}が作成'
@@ -71,10 +86,13 @@ ja-JP:
   quote_id: '引用 {0}'
   quotes_deleted: 'キーワード「{0}」の引用句を全て削除しました。'
   quotes_deleted_count: '{0}件の引用が削除されました。'
+  quotes_edit_none: 編集できる引用句が見つかりませんでした。
   quotes_notfound: 指定された見積もりIDに一致する見積もりは見つかりませんでした。
   quotes_page: '引用句 {0}ページ目'
   quotes_page_none: 指定されたページには引用句がありません。
   quotes_remove_none: 削除できる引用句が見つかりませんでした。
+  quote_too_long: 'キーワードは最大 {0} 文字、引用テキストは最大 {1} 文字です。'
+  quote_limit_reached: 'このサーバーの引用数は上限 ({0}) に達しています。先に引用を削除してください。'
 
 ko-KR:
   created_by: '{0}이(가) 생성'
@@ -84,10 +102,13 @@ ko-KR:
   quote_id: '명언 {0}'
   quotes_deleted: '{0} 키워드의 모든 명언이 삭제되었어요.'
   quotes_deleted_count: '명언 {0}개가 삭제되었어요.'
+  quotes_edit_none: 수정할 수 있는 명언을 찾을 수 없어요.
   quotes_notfound: 지정한 명언 ID와 일치하는 명언을 찾을 수 없어요.
   quotes_page: '명언 {0} 페이지'
   quotes_page_none: 해당 페이지에 명언이 없어요.
   quotes_remove_none: 삭제할 수 있는 명언을 찾을 수 없어요.
+  quote_too_long: '키워드는 최대 {0}자, 인용문 텍스트는 최대 {1}자까지 가능합니다.'
+  quote_limit_reached: '이 서버의 인용문 수가 최대치({0})에 도달했습니다. 먼저 인용문을 삭제하세요.'
 
 pl-PL:
   created_by: 'Utworzono przez {0}'
@@ -97,10 +118,13 @@ pl-PL:
   quote_id: 'Cytat {0}'
   quotes_deleted: 'Usunięto wszystkie cytaty ze słowem kluczowym {0}.'
   quotes_deleted_count: 'Usunięto {0} cytatów.'
+  quotes_edit_none: Nie znaleziono cytatów, które możesz edytować.
   quotes_notfound: Nie znaleziono cytatów pasujących do podanego ID.
   quotes_page: 'Strona {0} cytatów'
   quotes_page_none: Nie znaleziono cytatów na tej stronie.
   quotes_remove_none: Nie znaleziono cytatów, które możesz usunąć.
+  quote_too_long: 'Słowo kluczowe może mieć najwyżej {0} znaków, a tekst cytatu najwyżej {1}.'
+  quote_limit_reached: 'Ten serwer ma maksymalną liczbę cytatów ({0}). Najpierw usuń jakiś cytat.'
 
 pt-BR:
   created_by: 'Criado por {0}'
@@ -110,10 +134,13 @@ pt-BR:
   quote_id: 'Citação {0}'
   quotes_deleted: 'Todas citações com palavra-chave {0} foram deletadas.'
   quotes_deleted_count: '{0} citações excluídas.'
+  quotes_edit_none: Não encontramos citações que podem ser editadas.
   quotes_notfound: Nenhuma citação encontrada com o ID especificado.
   quotes_page: 'Página {0} das citações'
   quotes_page_none: Nenhuma citação foi encontrada nessa página.
   quotes_remove_none: Não encontramos citações que podem ser removidas.
+  quote_too_long: 'Uma palavra-chave pode ter no máximo {0} caracteres, e o texto de uma citação no máximo {1}.'
+  quote_limit_reached: 'Este servidor atingiu o número máximo de citações ({0}). Apague uma citação primeiro.'
 
 ru-RU:
   created_by: 'Создано {0}'
@@ -123,10 +150,13 @@ ru-RU:
   quote_id: 'Цитата {0}'
   quotes_deleted: 'Удалены все цитаты с ключевым словом {0}.'
   quotes_deleted_count: 'Удалено {0} цитат.'
+  quotes_edit_none: Не найдено цитат, которые можно изменить.
   quotes_notfound: Цитаты, соответствующие указанному ID цитаты, не найдены.
   quotes_page: 'Страница цитат {0}'
   quotes_page_none: На этой странице цитат не найдено.
   quotes_remove_none: Не найдено цитат, которые можно удалить.
+  quote_too_long: 'Ключевое слово может содержать не более {0} символов, а текст цитаты не более {1}.'
+  quote_limit_reached: 'На этом сервере максимальное число цитат ({0}). Сначала удалите цитату.'
 
 sr-Cyrl-RS:
   created_by: 'Креирао {0}'
@@ -136,10 +166,13 @@ sr-Cyrl-RS:
   quote_id: 'Цитат {0}'
   quotes_deleted: 'Обрисани сви цитати са кључном речи {0}.'
   quotes_deleted_count: 'Обрисано {0} цитата.'
+  quotes_edit_none: Нису пронађени цитати које можете изменити.
   quotes_notfound: Нису пронађени цитати који одговарају наведеном ID-у.
   quotes_page: 'Страна {0} цитата'
   quotes_page_none: Нису пронађени цитати на тој страни.
   quotes_remove_none: Нису пронађени цитати које можете уклонити.
+  quote_too_long: 'Кључна реч може имати највише {0} знакова, а текст цитата највише {1}.'
+  quote_limit_reached: 'Овај сервер има највећи број цитата ({0}). Прво обриши један цитат.'
 
 tr-TR:
   created_by: '{0} tarafından oluşturuldu'
@@ -149,10 +182,13 @@ tr-TR:
   quote_id: 'Alıntı {0}'
   quotes_deleted: '{0} anahtar kelimesine sahip tüm alıntılar silindi.'
   quotes_deleted_count: '{0} alıntı silindi.'
+  quotes_edit_none: Düzenleyebileceğin alıntı bulunamadı.
   quotes_notfound: Belirtilen alıntı kimliğiyle eşleşen alıntı bulunamadı.
   quotes_page: 'Alıntılar sayfa {0}'
   quotes_page_none: Bu sayfada alıntı bulunamadı.
   quotes_remove_none: Kaldırabileceğin alıntı bulunamadı.
+  quote_too_long: 'Bir anahtar kelime en fazla {0}, bir alıntı metni en fazla {1} karakter olabilir.'
+  quote_limit_reached: 'Bu sunucu en fazla alıntı sayısına ({0}) ulaştı. Önce bir alıntı sil.'
 
 ts-TS:
   created_by: 'Created by {0}'
@@ -162,10 +198,13 @@ ts-TS:
   quote_id: 'Quote {0}'
   quotes_deleted: 'Deleted all quotes with {0} keyword.'
   quotes_deleted_count: 'Deleted {0} quotes. That was a lot of work, b-baka!'
+  quotes_edit_none: No quotes found that you can edit. Hmph.
   quotes_notfound: No quotes found matching that ID.
   quotes_page: 'Page {0} of quotes'
   quotes_page_none: No quotes found on that page.
   quotes_remove_none: No quotes found that you can remove. Hmph.
+  quote_too_long: 'A keyword can have at most {0} characters, and a quote text at most {1}. Keep it short.'
+  quote_limit_reached: 'This server already has the maximum of {0} quotes. Delete one first, baka.'
 
 uk-UA:
   created_by: 'Створив {0}'
@@ -175,10 +214,13 @@ uk-UA:
   quote_id: 'Цитата {0}'
   quotes_deleted: 'Видалено всі цитати з ключовим словом {0}.'
   quotes_deleted_count: 'Видалено {0} цитат.'
+  quotes_edit_none: Не знайдено цитат, які ти можеш редагувати.
   quotes_notfound: Не знайдено цитат з вказаним ID.
   quotes_page: 'Сторінка {0} цитат'
   quotes_page_none: На цій сторінці цитат не знайдено.
   quotes_remove_none: Не знайдено цитат, які ти можеш видалити.
+  quote_too_long: 'Ключове слово може мати щонайбільше {0} символів, а текст цитати щонайбільше {1}.'
+  quote_limit_reached: 'На цьому сервері максимальна кількість цитат ({0}). Спочатку видаліть цитату.'
 
 vi-VN:
   created_by: 'Tạo bởi {0}'
@@ -188,10 +230,13 @@ vi-VN:
   quote_id: 'Trích dẫn {0}'
   quotes_deleted: 'Đã xóa tất cả trích dẫn với từ khóa {0}.'
   quotes_deleted_count: 'Đã xóa {0} trích dẫn.'
+  quotes_edit_none: Không tìm thấy trích dẫn nào mà bạn có thể chỉnh sửa.
   quotes_notfound: Không tìm thấy trích dẫn nào khớp với ID đã chỉ định.
   quotes_page: 'Trang {0} trích dẫn'
   quotes_page_none: Không tìm thấy trích dẫn nào trên trang đó.
   quotes_remove_none: Không tìm thấy trích dẫn nào mà bạn có thể xóa.
+  quote_too_long: 'Từ khóa có tối đa {0} ký tự, và nội dung trích dẫn tối đa {1} ký tự.'
+  quote_limit_reached: 'Máy chủ này đã đạt số trích dẫn tối đa ({0}). Hãy xóa một trích dẫn trước.'
 
 zh-CN:
   created_by: '由 {0} 創建'
@@ -201,7 +246,10 @@ zh-CN:
   quote_id: '引言 {0}'
   quotes_deleted: '刪除了所有帶有 {0} 關鍵字的引號。'
   quotes_deleted_count: '已刪除 {0} 則引言。'
+  quotes_edit_none: 沒有找到可以編輯的引號。
   quotes_notfound: 找不到與指定的報價 ID 匹配的報價。
   quotes_page: '第 {0} 頁報價'
   quotes_page_none: 在該頁面上沒有找到報價。
   quotes_remove_none: 沒有找到可以刪除的引號。
+  quote_too_long: '关键词最多 {0} 个字符，语录文本最多 {1} 个字符。'
+  quote_limit_reached: '本服务器的语录数量已达上限（{0}）。请先删除一条语录。'

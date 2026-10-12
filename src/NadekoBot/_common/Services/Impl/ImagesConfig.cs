@@ -12,8 +12,8 @@ public sealed class ImagesConfig : ConfigServiceBase<ImageUrls>
     public override string Name
         => "images";
 
-    public ImagesConfig(IConfigSeria serializer, IPubSub pubSub)
-        : base(PATH, serializer, pubSub, _changeKey)
+    public ImagesConfig(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+        : base(PATH, serializer, pubSub, _changeKey, policy)
     {
         Migrate();
     }

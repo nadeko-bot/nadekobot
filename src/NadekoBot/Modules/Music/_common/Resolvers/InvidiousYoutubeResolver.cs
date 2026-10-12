@@ -25,7 +25,7 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
 
     public async Task<ITrackInfo?> ResolveByQueryAsync(string query)
     {
-        using var http = _httpFactory.CreateClient();
+        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
 
         var items = await http.GetFromJsonAsync<List<InvidiousSearchResponse>>(
             $"{InvidiousApiUrl}/api/v1/search"
@@ -55,7 +55,7 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
     
     private async Task<InvTrackInfo?> InternalResolveByIdAsync(string id)
     {
-        using var http = _httpFactory.CreateClient();
+        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
 
         var res = await http.GetFromJsonAsync<InvidiousVideoResponse>(
             $"{InvidiousApiUrl}/api/v1/videos/{id}");
@@ -103,7 +103,7 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
         if (playlistId is null)
             yield break;
 
-        using var http = _httpFactory.CreateClient();
+        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
         var res = await http.GetFromJsonAsync<InvidiousPlaylistResponse>(
             $"{InvidiousApiUrl}/api/v1/playlists/{Uri.EscapeDataString(playlistId)}");
 
@@ -131,7 +131,7 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
         return match.Success ? match.Groups["id"].Value : null;
     }
 
-    public Task<ITrackInfo?> ResolveByQueryAsync(string query, bool tryExtractingId)
+    public Task<ITrackInfo?> ResolveByQueryAsync(string query, bool tryExtractingId, bool allowLocalNetwork)
         => ResolveByQueryAsync(query);
 
     public async Task<string?> GetStreamUrl(string videoId)

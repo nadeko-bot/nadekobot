@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NadekoBot.Common.ModuleBehaviors;
+using NadekoBot.Modules.Administration;
 
 namespace NadekoBot.Services;
 
@@ -215,21 +216,17 @@ public sealed class BehaviorHandler : IBehaviorHandler
         }
     }
 
-    public async ValueTask<string> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg)
+    public async ValueTask<IUserMessage> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg)
     {
         var newContent = await ExecInputTransformInternalAsync(inputTransformers, guild, usrMsg);
-        if (newContent is not null)
-            return newContent;
-        
-        var customs = _customExecs;
-        if (customs.Length > 0)
-        {
+        if (newContent is null && _customExecs is { Length: > 0 } customs)
             newContent = await ExecInputTransformInternalAsync(customs, guild, usrMsg);
-            if (newContent is not null)
-                return newContent;
-        }
 
-        return usrMsg.Content;
+        if (newContent is null)
+            return usrMsg;
+
+        // A server admin wrote the new text (for example an alias), so it must not run with the owner's rights.
+        return new DoAsUserMessage(usrMsg, usrMsg.Author, newContent) { BlocksOwnerCommands = true };
     }
 
     private async ValueTask<string?> ExecInputTransformInternalAsync<T>(T[] execs, SocketGuild? guild, IUserMessage usrMsg)

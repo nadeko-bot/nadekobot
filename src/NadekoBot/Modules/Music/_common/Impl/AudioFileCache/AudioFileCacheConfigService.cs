@@ -12,16 +12,26 @@ public sealed class AudioFileCacheConfigService : ConfigServiceBase<AudioFileCac
 
     public AudioFileCacheConfigService(
         IConfigSeria serializer,
-        IPubSub pubSub)
-        : base(FILE_PATH, serializer, pubSub, _changeKey)
+        IPubSub pubSub, BotPolicy policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
     {
-        AddParsedProp("maxcachesizegb",
+        AddNumberProp("maxcachesizegb",
             static c => c.MaxCacheSizeGb,
             static (c, v) => c.MaxCacheSizeGb = v,
             int.TryParse,
             ConfigPrinters.ToString,
             "Maximum total cache size in gigabytes. Minimum 1. Default 10",
-            static val => val >= 1);
+            min: 1,
+            max: null, clamp: true);
+
+        AddNumberProp("maxqueuesize",
+            static c => c.MaxQueueSize,
+            static (c, v) => c.MaxQueueSize = v,
+            int.TryParse,
+            ConfigPrinters.ToString,
+            "Maximum number of tracks in the queue of one server. Default 500",
+            min: 1,
+            max: 10000);
 
         Migrate();
     }
@@ -30,5 +40,12 @@ public sealed class AudioFileCacheConfigService : ConfigServiceBase<AudioFileCac
     {
         if (Data.Version < 1)
             ModifyConfig(c => { c.Version = 1; });
+
+        if (Data.Version < 2)
+            ModifyConfig(c =>
+            {
+                c.Version = 2;
+                c.MaxQueueSize = 500;
+            });
     }
 }

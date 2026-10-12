@@ -1,3 +1,4 @@
 purge_user_confirm: Are you sure that you want to purge {0} from the database?
 cleanup_done: "{0} guilds' data remain in the database."
 sql_confirm_exec: "Confirm SQL execution"
+sql_select_truncated: 'The result is too large. The bot shows at most {0} rows and cuts long values.'

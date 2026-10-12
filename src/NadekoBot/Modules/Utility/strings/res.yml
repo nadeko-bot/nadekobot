@@ -6,6 +6,7 @@ channelid: '{0} of this channel is {1}'
 commands_ran: Commands ran
 config_edit_fail: Failed setting {0} to the value {1}
 config_list: Config list
+config_locked: The host of this bot controls the {0} setting of the {1} configuration. You cannot change it.
 config_not_found: Configuration {0} not found
 config_prop_not_found: Property {0} not found on {1} configuration
 emoji_add_error: >-

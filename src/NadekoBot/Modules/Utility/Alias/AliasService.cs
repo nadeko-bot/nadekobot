@@ -18,18 +18,27 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
 
     private ConcurrentDictionary<ulong, ConcurrentDictionary<string, string>> _aliases = new();
 
+    private const string TARGET_PLACEHOLDER = "%target%";
+
     private readonly DbService _db;
     private readonly IMessageSenderService _sender;
     private readonly ShardData _shardData;
+    private readonly CommandService _cmds;
+    private readonly ICommandHandler _cmdHandler;
+    private readonly ConcurrentDictionary<(ulong GuildId, string Mapping), bool> _loggedBlocked = new();
 
     public AliasService(
         DbService db,
         IMessageSenderService sender,
-        ShardData shardData)
+        ShardData shardData,
+        CommandService cmds,
+        ICommandHandler cmdHandler)
     {
         _sender = sender;
         _shardData = shardData;
         _db = db;
+        _cmds = cmds;
+        _cmdHandler = cmdHandler;
     }
 
     public async Task<int> ClearAliases(ulong guildId)
@@ -56,10 +65,21 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
 
         if (_aliases.TryGetValue(guild.Id, out var maps))
         {
-            var newInput = FindMapping(maps, input);
+            var newInput = FindMapping(maps, input, out var mapping);
 
-            if (newInput is not null)
+            if (newInput is not null && mapping is not null)
             {
+                // Aliases saved before this check existed still exist, so the check also runs here.
+                if (GivesArgsToSpendingCommand(guild, mapping))
+                {
+                    if (_loggedBlocked.TryAdd((guild.Id, mapping), true))
+                        Log.Warning("Alias {Mapping} in guild {GuildId} gives fixed arguments to a command which spends currency. It does not run",
+                            mapping,
+                            guild.Id);
+
+                    return null;
+                }
+
                 try
                 {
                     var toDelete = await _sender.Response(channel)
@@ -82,9 +102,16 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
     }
 
     public static string? FindMapping(ConcurrentDictionary<string, string> maps, string input)
+        => FindMapping(maps, input, out _);
+
+    private static string? FindMapping(ConcurrentDictionary<string, string> maps, string input, out string? usedMapping)
     {
+        usedMapping = null;
         if (maps.TryGetValue(input, out var exact))
+        {
+            usedMapping = exact;
             return exact;
+        }
 
         // the longest trigger wins, so ".alias hi" and ".alias hi all" do not depend on dictionary order
         string? bestTrigger = null;
@@ -104,11 +131,69 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
         if (bestTrigger is null || bestMapping is null)
             return null;
 
+        usedMapping = bestMapping;
         var rest = input.AsSpan(bestTrigger.Length);
-        if (bestMapping.Contains("%target%", StringComparison.Ordinal))
-            return bestMapping.Replace("%target%", rest.ToString(), StringComparison.Ordinal);
+        if (bestMapping.Contains(TARGET_PLACEHOLDER, StringComparison.Ordinal))
+            return bestMapping.Replace(TARGET_PLACEHOLDER, rest.ToString(), StringComparison.Ordinal);
 
         return string.Concat(bestMapping, " ", rest);
+    }
+
+    public bool GivesArgsToSpendingCommand(IGuild guild, string mapping)
+        => GivesArgsToSpendingCommand(_cmds, _cmdHandler.GetPrefix(guild), mapping);
+
+    // An admin who fixes the amount or the receiver could make each member who uses the alias pay or give away currency.
+    public static bool GivesArgsToSpendingCommand(CommandService cmds, string prefix, string mapping)
+    {
+        var text = mapping.AsSpan().Trim();
+        if (!text.StartsWith(prefix, StringComparison.InvariantCulture))
+            return false;
+
+        var body = text[prefix.Length..].TrimStart().ToString();
+        var result = cmds.Search(body);
+        if (!result.IsSuccess)
+            return false;
+
+        foreach (var match in result.Commands)
+        {
+            if (!SpendsCurrency(match.Command))
+                continue;
+
+            var args = match.Alias.Length < body.Length
+                ? body.AsSpan(match.Alias.Length)
+                : ReadOnlySpan<char>.Empty;
+
+            if (HasFixedArgs(args))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool SpendsCurrency(CommandInfo cmd)
+    {
+        foreach (var attr in cmd.Attributes)
+        {
+            if (attr is SpendsCurrencyAttribute)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool HasFixedArgs(ReadOnlySpan<char> args)
+    {
+        while (true)
+        {
+            args = args.TrimStart();
+            if (args.IsEmpty)
+                return false;
+
+            if (!args.StartsWith(TARGET_PLACEHOLDER, StringComparison.Ordinal))
+                return true;
+
+            args = args[TARGET_PLACEHOLDER.Length..];
+        }
     }
 
     public async Task OnReadyAsync()

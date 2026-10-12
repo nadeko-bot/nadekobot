@@ -18,29 +18,28 @@ public sealed class TrackResolveProvider : ITrackResolveProvider
         _radioResolver = radioResolver;
     }
 
-    public Task<ITrackInfo?> QuerySongAsync(string query, MusicPlatform? forcePlatform)
+    public Task<ITrackInfo?> QuerySongAsync(string query, MusicPlatform? forcePlatform, bool allowLocalNetwork)
     {
         switch (forcePlatform)
         {
             case MusicPlatform.Radio:
-                return _radioResolver.ResolveByQueryAsync(query);
+                return _radioResolver.ResolveByQueryAsync(query, allowLocalNetwork);
             case MusicPlatform.Youtube:
-                return _ytResolver.GetYoutubeResolver().ResolveByQueryAsync(query);
+                return _ytResolver.GetYoutubeResolver().ResolveByQueryAsync(query, true, allowLocalNetwork);
             case MusicPlatform.Local:
-                return _localResolver.ResolveByQueryAsync(query);
+                return allowLocalNetwork
+                    ? _localResolver.ResolveByQueryAsync(query)
+                    : Task.FromResult<ITrackInfo?>(null);
             case null:
                 var match = YoutubeHelpers.YtVideoIdRegex.Match(query);
 
                 if (match.Success)
                     return _ytResolver.GetYoutubeResolver().ResolveByIdAsync(match.Groups["id"].Value);
 
-                if (Uri.TryCreate(query, UriKind.Absolute, out var uri) && uri.IsFile)
-                    return _localResolver.ResolveByQueryAsync(uri.AbsolutePath);
-
                 if (IsRadioLink(query))
-                    return _radioResolver.ResolveByQueryAsync(query);
+                    return _radioResolver.ResolveByQueryAsync(query, allowLocalNetwork);
 
-                return _ytResolver.GetYoutubeResolver().ResolveByQueryAsync(query, false);
+                return _ytResolver.GetYoutubeResolver().ResolveByQueryAsync(query, false, allowLocalNetwork);
             default:
                 Log.Error("Unsupported platform: {MusicPlatform}", forcePlatform);
                 return Task.FromResult<ITrackInfo?>(null);

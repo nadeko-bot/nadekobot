@@ -1,8 +1,9 @@
 alias:
   desc: |-
-    Create a custom alias for a certain Nadeko command. Provide no alias to remove the existing one.
+    Creates a custom alias for a command. Give no mapping to remove the alias.
+    An alias cannot give arguments to a command which spends currency. The member gives them.
   ex:
-    - allin {0}bf all h
+    - bf {0}betflip
   params:
     - trigger:
         desc: The alias name that will be used to invoke the command.

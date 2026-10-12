@@ -7,6 +7,7 @@ public partial class Owner
     [Group]
     [OwnerOnly]
     [NoPublicBot]
+    [NoManagedBot]
     public partial class Medusa : NadekoModule<IMedusaLoaderService>
     {
 

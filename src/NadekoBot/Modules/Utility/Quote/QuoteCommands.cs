@@ -1,4 +1,5 @@
 #nullable disable warnings
+using System.Text;
 using NadekoBot.Common.Yml;
 using NadekoBot.Db.Models;
 using YamlDotNet.Serialization;
@@ -155,7 +156,8 @@ public partial class Utility
 
             if (!(quote.Text.Length > 4096))
             {
-                await Response().Embed(eb).Interaction(quote.AuthorId == ctx.User.Id ? inter : null).SendAsync();
+                var canEdit = quote.AuthorId == ctx.User.Id || IsQuoteManager();
+                await Response().Embed(eb).Interaction(canEdit ? inter : null).SendAsync();
                 return;
             }
 
@@ -235,12 +237,26 @@ public partial class Utility
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
+        [Ratelimit(5)]
         public async Task QuoteAdd(string keyword, [Leftover] string text)
         {
             if (string.IsNullOrWhiteSpace(keyword) || string.IsNullOrWhiteSpace(text))
                 return;
 
+            if (keyword.Length > QuoteService.MAX_KEYWORD_LENGTH || text.Length > QuoteService.MAX_TEXT_LENGTH)
+            {
+                await Response()
+                      .Error(strs.quote_too_long(QuoteService.MAX_KEYWORD_LENGTH, QuoteService.MAX_TEXT_LENGTH))
+                      .SendAsync();
+                return;
+            }
+
             var quote = await _qs.AddQuoteAsync(ctx.Guild.Id, ctx.User.Id, ctx.User.Username, keyword, text);
+            if (quote is null)
+            {
+                await Response().Error(strs.quote_limit_reached(QuoteService.MAX_QUOTES_PER_SERVER)).SendAsync();
+                return;
+            }
 
             await Response()
                   .Confirm(strs.quote_added_new(Format.Code(new kwum(quote.Id).ToString())))
@@ -253,38 +269,44 @@ public partial class Utility
         public async Task QuoteEdit(kwum quoteId, [Leftover] string text)
         {
             if (string.IsNullOrWhiteSpace(text))
+                return;
+
+            if (text.Length > QuoteService.MAX_TEXT_LENGTH)
             {
+                await Response()
+                      .Error(strs.quote_too_long(QuoteService.MAX_KEYWORD_LENGTH, QuoteService.MAX_TEXT_LENGTH))
+                      .SendAsync();
                 return;
             }
 
-            var q = await _qs.EditQuoteAsync(ctx.User.Id, quoteId, text);
+            var q = await _qs.EditQuoteAsync(ctx.Guild.Id, ctx.User.Id, IsQuoteManager(), quoteId, text);
 
-            if (q is not null)
+            if (q is null)
             {
-                await Response()
-                      .Embed(CreateEmbed()
-                                    .WithOkColor()
-                                    .WithTitle(GetText(strs.quote_edited))
-                                    .WithDescription($"#{quoteId}")
-                                    .AddField(GetText(strs.trigger), q.Keyword)
-                                    .AddField(GetText(strs.response),
-                                        text.Length > 1024 ? GetText(strs.redacted_too_long) : text))
-                      .SendAsync();
+                await Response().Error(strs.quotes_edit_none).SendAsync();
+                return;
             }
-            else
-            {
-                await Response().Error(strs.expr_no_found_id).SendAsync();
-            }
+
+            await Response()
+                  .Embed(CreateEmbed()
+                         .WithOkColor()
+                         .WithTitle(GetText(strs.quote_edited))
+                         .WithDescription($"#{quoteId}")
+                         .AddField(GetText(strs.trigger), q.Keyword)
+                         .AddField(GetText(strs.response),
+                             text.Length > 1024 ? GetText(strs.redacted_too_long) : text))
+                  .SendAsync();
         }
+
+        private bool IsQuoteManager()
+            => ((IGuildUser)ctx.User).GuildPermissions.ManageMessages;
 
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task QuoteDelete(kwum quoteId)
         {
-            var hasManageMessages = ((IGuildUser)ctx.Message.Author).GuildPermissions.ManageMessages;
-
-            var success = await _qs.DeleteQuoteAsync(ctx.Guild.Id, ctx.User.Id, hasManageMessages, quoteId);
+            var success = await _qs.DeleteQuoteAsync(ctx.Guild.Id, ctx.User.Id, IsQuoteManager(), quoteId);
 
             if (success)
                 await Response().Confirm(strs.quote_deleted(quoteId)).SendAsync();
@@ -367,8 +389,15 @@ public partial class Utility
                     return;
                 }
 
-                using var client = _http.CreateClient();
-                input = await client.GetStringAsync(attachment.Url);
+                if (attachment.Size > QuoteService.MAX_IMPORT_CHARS)
+                {
+                    await Response().Error(strs.expr_import_invalid_data).SendAsync();
+                    return;
+                }
+
+                using var client = _http.CreateClient(ExternalHttp.CLIENT_NAME);
+                var bytes = await client.GetBytesLimitedAsync(attachment.Url, QuoteService.MAX_IMPORT_CHARS);
+                input = bytes is null ? null : Encoding.UTF8.GetString(bytes);
 
                 if (string.IsNullOrWhiteSpace(input))
                 {

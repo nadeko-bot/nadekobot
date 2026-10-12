@@ -8,6 +8,7 @@ ar:
   feed_out_of_range: الفهرس خارج النطاق.
   feed_removed: تمت إزالة التغذية.
   feed_auto_removed: 'تمت إزالة التغذية `{0}` تلقائياً بعد فشل متكرر في جلبها.'
+  feed_bot_missing_perms: 'يحتاج البوت إلى صلاحيات View Channel وSend Messages وEmbed Links في {0}.'
 
 de-DE:
   feed_added: Feed wurde hinzugefügt.
@@ -19,6 +20,7 @@ de-DE:
   feed_out_of_range: Kennziffer außerhalb des gültigen Bereichs.
   feed_removed: Feed wurde entfernt.
   feed_auto_removed: 'Feed `{0}` wurde nach wiederholten Abruffehlern automatisch entfernt.'
+  feed_bot_missing_perms: 'Der Bot braucht die Berechtigungen View Channel, Send Messages und Embed Links in {0}.'
 
 es-ES:
   feed_added: Contenido agregado.
@@ -30,6 +32,7 @@ es-ES:
   feed_out_of_range: Índice fuera de rango.
   feed_removed: Contenido removido.
   feed_auto_removed: 'El feed `{0}` fue eliminado automáticamente tras fallos repetidos al obtenerlo.'
+  feed_bot_missing_perms: 'El bot necesita los permisos View Channel, Send Messages y Embed Links en {0}.'
 
 fr-FR:
   feed_added: Le flux est ajouté.
@@ -41,6 +44,7 @@ fr-FR:
   feed_out_of_range: L'index est en dehors de la plage disponible.
   feed_removed: Le flux est supprimé.
   feed_auto_removed: 'Le flux `{0}` a été automatiquement supprimé après des échecs répétés.'
+  feed_bot_missing_perms: 'Le bot a besoin des permissions View Channel, Send Messages et Embed Links dans {0}.'
 
 id-ID:
   feed_added: Feed berhasil ditambahkan.
@@ -52,6 +56,7 @@ id-ID:
   feed_out_of_range: Indeks di luar jangkauan.
   feed_removed: Feed berhasil dihapus.
   feed_auto_removed: 'Feed `{0}` dihapus secara otomatis setelah berulang kali gagal mengambil data.'
+  feed_bot_missing_perms: 'Bot butuh izin View Channel, Send Messages, dan Embed Links di {0}.'
 
 ja-JP:
   feed_added: フィードが追加されました。
@@ -63,6 +68,7 @@ ja-JP:
   feed_out_of_range: インデックスが範囲外です。
   feed_removed: フィードが削除されました。
   feed_auto_removed: 'フィード `{0}` は取得の失敗が繰り返されたため、自動的に削除されました。'
+  feed_bot_missing_perms: 'ボットには {0} で View Channel、Send Messages、Embed Links の権限が必要です。'
 
 ko-KR:
   feed_added: 피드가 추가되었어요.
@@ -74,6 +80,7 @@ ko-KR:
   feed_out_of_range: 인덱스가 범위를 벗어났어요.
   feed_removed: 피드가 제거되었어요.
   feed_auto_removed: '피드 `{0}`이(가) 반복적인 가져오기 실패로 자동 제거되었어요.'
+  feed_bot_missing_perms: '봇은 {0}에서 View Channel, Send Messages, Embed Links 권한이 필요합니다.'
 
 pl-PL:
   feed_added: Dodano feed.
@@ -85,6 +92,7 @@ pl-PL:
   feed_out_of_range: Indeks poza zakresem.
   feed_removed: Usunięto feed.
   feed_auto_removed: 'Feed `{0}` został automatycznie usunięty po wielokrotnych błędach pobierania.'
+  feed_bot_missing_perms: 'Bot potrzebuje uprawnień View Channel, Send Messages i Embed Links w {0}.'
 
 pt-BR:
   feed_added: Feed adicionado.
@@ -96,6 +104,7 @@ pt-BR:
   feed_out_of_range: Índice fora de alcance.
   feed_removed: Feed removido.
   feed_auto_removed: 'O feed `{0}` foi removido automaticamente após falhas repetidas ao buscá-lo.'
+  feed_bot_missing_perms: 'O bot precisa das permissões View Channel, Send Messages e Embed Links em {0}.'
 
 ru-RU:
   feed_added: Лента добавлена.
@@ -107,6 +116,7 @@ ru-RU:
   feed_out_of_range: Указатель находится за пределами диапазона
   feed_removed: Лента новостей была удалена
   feed_auto_removed: 'Лента `{0}` была автоматически удалена из-за повторяющихся ошибок при получении.'
+  feed_bot_missing_perms: 'Боту нужны права View Channel, Send Messages и Embed Links в {0}.'
 
 sr-Cyrl-RS:
   feed_added: Фид додат.
@@ -118,6 +128,7 @@ sr-Cyrl-RS:
   feed_out_of_range: Индекс ван опсега.
   feed_removed: Фид уклоњен.
   feed_auto_removed: 'Фид `{0}` је аутоматски уклоњен након поновљених грешака при преузимању.'
+  feed_bot_missing_perms: 'Боту су потребне дозволе View Channel, Send Messages и Embed Links у {0}.'
 
 tr-TR:
   feed_added: Akış eklendi.
@@ -129,6 +140,7 @@ tr-TR:
   feed_out_of_range: İndeks aralık dışında.
   feed_removed: Akış kaldırıldı.
   feed_auto_removed: '`{0}` akışı tekrarlanan bağlantı hataları nedeniyle otomatik olarak kaldırıldı.'
+  feed_bot_missing_perms: 'Botun {0} kanalında View Channel, Send Messages ve Embed Links izinlerine ihtiyacı var.'
 
 ts-TS:
   feed_added: Feed added.
@@ -140,6 +152,7 @@ ts-TS:
   feed_out_of_range: Index out of range, b-baka!
   feed_removed: Feed removed.
   feed_auto_removed: 'Feed `{0}` was removed because it kept failing... not like I wanted to keep it or anything!'
+  feed_bot_missing_perms: 'I need View Channel, Send Messages and Embed Links in {0}. Give them to me first.'
 
 uk-UA:
   feed_added: Стрічку додано.
@@ -151,6 +164,7 @@ uk-UA:
   feed_out_of_range: Індекс поза межами.
   feed_removed: Стрічку видалено.
   feed_auto_removed: 'Стрічку `{0}` було автоматично видалено через повторювані помилки отримання.'
+  feed_bot_missing_perms: 'Боту потрібні дозволи View Channel, Send Messages і Embed Links у {0}.'
 
 vi-VN:
   feed_added: Đã thêm feed.
@@ -162,6 +176,7 @@ vi-VN:
   feed_out_of_range: Vị trí ngoài phạm vi.
   feed_removed: Đã xóa feed.
   feed_auto_removed: 'Feed `{0}` đã bị xóa tự động sau nhiều lần lấy dữ liệu thất bại.'
+  feed_bot_missing_perms: 'Bot cần các quyền View Channel, Send Messages và Embed Links trong {0}.'
 
 zh-CN:
   feed_added: 添加了新訂閱。
@@ -173,3 +188,4 @@ zh-CN:
   feed_out_of_range: 索引超出範圍。
   feed_removed: 訂閱源被移除。
   feed_auto_removed: '订阅源 `{0}` 因多次获取失败已被自动移除。'
+  feed_bot_missing_perms: '机器人需要在 {0} 中拥有 View Channel、Send Messages 和 Embed Links 权限。'

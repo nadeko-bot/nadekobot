@@ -10,40 +10,17 @@ namespace NadekoBot.Tests
     public class IndexedCollectionTests
     {
         [Test]
-        public void AddTest()
-        {
-            var collection = GetCollectionSample(Enumerable.Empty<ShopEntry>());
-
-            // Add the items
-            for (var counter = 0; counter < 10; counter++)
-                collection.Add(new ShopEntry());
-
-            // Evaluate the items are ordered
-            CheckIndices(collection);
-        }
-
-        [Test]
-        public void RemoveTest()
+        public void RemoveAndRemoveAtTest()
         {
             var collection = GetCollectionSample<ShopEntry>();
 
             collection.Remove(collection[1]);
-            collection.Remove(collection[1]);
-
-            // Evaluate the indices are ordered
             CheckIndices(collection);
-
-            Assert.That(collection.Count, Is.EqualTo(8));
-        }
-
-        [Test]
-        public void RemoveAtTest()
-        {
-            var collection = GetCollectionSample<ShopEntry>();
+            Assert.That(collection.Count, Is.EqualTo(9));
 
             // Remove items 5 and 7
+            collection.RemoveAt(4);
             collection.RemoveAt(5);
-            collection.RemoveAt(6);
 
             // Evaluate if the items got removed
             foreach (var item in collection){
@@ -51,6 +28,7 @@ namespace NadekoBot.Tests
             }
 
             CheckIndices(collection);
+            Assert.That(collection.Count, Is.EqualTo(7));
 
             // RemoveAt out of range
             Assert.Throws<ArgumentOutOfRangeException>(() => collection.RemoveAt(999), $"No exception thrown when removing from index 999 in a collection of size {collection.Count}.");
@@ -87,20 +65,14 @@ namespace NadekoBot.Tests
         }
 
         [Test]
-        public void IndexOfTest()
+        public void AddAndInsertTest()
         {
-            var collection = GetCollectionSample<ShopEntry>();
+            var collection = GetCollectionSample(Enumerable.Empty<ShopEntry>());
 
-            Assert.That(collection.IndexOf(collection[4]), Is.EqualTo(4));
-            Assert.That(collection.IndexOf(collection[0]), Is.EqualTo(0));
-            Assert.That(collection.IndexOf(collection[7]), Is.EqualTo(7));
-            Assert.That(collection.IndexOf(collection[9]), Is.EqualTo(9));
-        }
+            for (var counter = 0; counter < 10; counter++)
+                collection.Add(new ShopEntry() { Id = counter });
 
-        [Test]
-        public void InsertTest()
-        {
-            var collection = GetCollectionSample<ShopEntry>();
+            CheckIndices(collection);
 
             // Insert items at indices 5 and 7
             collection.Insert(5, new ShopEntry() { Id = 555 });
@@ -118,7 +90,7 @@ namespace NadekoBot.Tests
         }
 
         [Test]
-        public void ContainsTest()
+        public void ContainsAndIndexOfTest()
         {
             var subCol = new[]
             {
@@ -139,6 +111,10 @@ namespace NadekoBot.Tests
             Assert.That(collection.Contains(subCol[0]), Is.True);
             Assert.That(collection.Contains(subCol[1]), Is.False);
             Assert.That(collection.Contains(subCol[2]), Is.True);
+
+            Assert.That(collection.IndexOf(collection[4]), Is.EqualTo(4));
+            Assert.That(collection.IndexOf(subCol[0]), Is.EqualTo(10));
+            Assert.That(collection.IndexOf(subCol[2]), Is.EqualTo(11));
         }
 
         [Test]

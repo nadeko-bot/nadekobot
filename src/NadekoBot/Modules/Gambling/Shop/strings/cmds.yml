@@ -23,9 +23,8 @@ shopadd:
     If the item is a role, specify a role id or a role name.
     In case you're selling a command, and you need user's name, id etc, you can use the following placeholders:
     -     `%you%` - Buyer mention
-    -     `%you.username%` - Buyer's username
-    -     `%you.name%` - Buyer's global name
-    -     `%you.nick%` - Buyer's display name
+    -     `%you.id%` - Buyer's id
+    The command cannot use the buyer's name, because the buyer chooses it. Owner-only commands do not run from the shop.
     90% of currency from each purchase will be received by the user who added the item to the shop. This is configurable by the bot owner
   ex:
     - role 1000 Rich

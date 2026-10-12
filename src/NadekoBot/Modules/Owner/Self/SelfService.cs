@@ -22,6 +22,8 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
 
     private ConcurrentDictionary<ulong?, ConcurrentDictionary<int, Timer>> autoCommands = new();
 
+    private const int MAX_PROFILE_IMAGE_BYTES = 8 * 1024 * 1024;
+
     private readonly IHttpClientFactory _httpFactory;
     private readonly BotConfigService _bss;
     private readonly IPubSub _pubSub;
@@ -300,14 +302,15 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
 
         var uri = new Uri(img);
 
-        using var http = _httpFactory.CreateClient();
+        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
         using var sr = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
         if (!sr.IsImage())
             return false;
 
-        // i can't just do ReadAsStreamAsync because dicord.net's image poops itself
-        var imgData = await sr.Content.ReadAsByteArrayAsync();
-        await using var imgStream = imgData.ToStream();
+        await using var imgStream = await ExternalHttp.ReadLimitedStreamAsync(sr.Content, MAX_PROFILE_IMAGE_BYTES);
+        if (imgStream is null)
+            return false;
+
         await _client.CurrentUser.ModifyAsync(u => u.Avatar = new Image(imgStream));
 
         return true;
@@ -327,7 +330,7 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
 
         var uri = new Uri(img);
 
-        using var http = _httpFactory.CreateClient();
+        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
         using var sr = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
 
         if (!sr.IsImage())
@@ -335,12 +338,11 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
             return false;
         }
 
-        if (sr.GetContentLength() > 8.Megabytes())
+        await using var imageStream = await ExternalHttp.ReadLimitedStreamAsync(sr.Content, MAX_PROFILE_IMAGE_BYTES);
+        if (imageStream is null)
         {
             return false;
         }
-
-        await using var imageStream = await sr.Content.ReadAsStreamAsync();
 
         await _client.CurrentUser.ModifyAsync(x => x.Banner = new Image(imageStream));
         return true;

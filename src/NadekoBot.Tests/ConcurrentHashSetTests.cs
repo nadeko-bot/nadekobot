@@ -14,31 +14,24 @@ public class ConcurrentHashSetTests
     }
 
     [Test]
-    public void AddTest()
+    public void AddContainsTryRemoveTest()
     {
-        var result = _set.Add((1, 2));
-        
-        Assert.That(result, Is.EqualTo(true));
-        
-        result = _set.Add((1, 2));
-        
-        Assert.That(result, Is.EqualTo(false));
+        Assert.That(_set.Add((1, 2)), Is.EqualTo(true));
+        Assert.That(_set.Add((1, 2)), Is.EqualTo(false));
+        _set.Add((3, 2));
+
+        Assert.That(_set.Contains((1, 2)), Is.EqualTo(true));
+        Assert.That(_set.Contains((3, 2)), Is.EqualTo(true));
+        Assert.That(_set.Contains((2, 1)), Is.EqualTo(false));
+        Assert.That(_set.Contains((2, 3)), Is.EqualTo(false));
+
+        Assert.That(_set.TryRemove((1, 2)), Is.EqualTo(true));
+        Assert.That(_set.TryRemove((1, 2)), Is.EqualTo(false));
+        Assert.That(_set.Contains((1, 2)), Is.EqualTo(false));
     }
 
     [Test]
-    public void TryRemoveTest()
-    {
-        _set.Add((1, 2));
-        var result = _set.TryRemove((1, 2));
-        
-        Assert.That(result, Is.EqualTo(true));
-        
-        result = _set.TryRemove((1, 2));
-        Assert.That(result, Is.EqualTo(false));
-    }
-
-    [Test]
-    public void CountTest()
+    public void CountAndClearTest()
     {
         _set.Add((1, 2)); // 1
         _set.Add((1, 2)); // 1
@@ -47,32 +40,12 @@ public class ConcurrentHashSetTests
         
         _set.Add((3, 2)); // 3
         _set.Add((3, 2)); // 3
-         
-         Assert.That(_set.Count, Is.EqualTo(3));
-    }
-
-    [Test]
-    public void ClearTest()
-    {
-        _set.Add((1, 2));
-        _set.Add((1, 3));
-        _set.Add((1, 4));
         
+        Assert.That(_set.Count, Is.EqualTo(3));
+
         _set.Clear();
         
         Assert.That(_set.Count, Is.EqualTo(0));
-    }
-
-    [Test]
-    public void ContainsTest()
-    {
-        _set.Add((1, 2));
-        _set.Add((3, 2));
-        
-        Assert.That(_set.Contains((1, 2)), Is.EqualTo(true));
-        Assert.That(_set.Contains((3, 2)), Is.EqualTo(true));
-        Assert.That(_set.Contains((2, 1)), Is.EqualTo(false));
-        Assert.That(_set.Contains((2, 3)), Is.EqualTo(false));
     }
 
     [Test]

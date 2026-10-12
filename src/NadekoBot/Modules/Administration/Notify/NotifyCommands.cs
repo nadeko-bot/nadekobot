@@ -88,6 +88,14 @@ public partial class Administration
 
         private async Task NotifyInternalAsync(NotifyType @event, IMessageChannel? channel, [Leftover] string message)
         {
+            var mentionsRemoved = false;
+            if (ctx.User is not IGuildUser { GuildPermissions.MentionEveryone: true })
+            {
+                var clean = message.SanitizeTemplateMentions();
+                mentionsRemoved = !string.Equals(clean, message, StringComparison.Ordinal);
+                message = clean;
+            }
+
             var result = await _service.EnableAsync(ctx.Guild.Id, channel?.Id, @event, message);
 
             if(!result)
@@ -102,6 +110,9 @@ public partial class Administration
             await Response()
                 .Confirm(strs.notify_on(outChannel, Format.Bold(@event.ToString())))
                 .SendAsync();
+
+            if (mentionsRemoved)
+                await Response().Pending(strs.notify_mentions_removed).SendAsync();
         }
 
         [Cmd]

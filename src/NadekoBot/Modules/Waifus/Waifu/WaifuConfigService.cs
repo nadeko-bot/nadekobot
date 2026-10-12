@@ -10,35 +10,38 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
     public override string Name
         => "waifu";
 
-    public WaifuConfigService(IConfigSeria serializer, IPubSub pubSub)
-        : this(FILE_PATH, serializer, pubSub) { }
+    public WaifuConfigService(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+        : this(FILE_PATH, serializer, pubSub, policy) { }
 
-    internal WaifuConfigService(string filePath, IConfigSeria serializer, IPubSub pubSub)
-        : base(filePath, serializer, pubSub, _changeKey)
+    internal WaifuConfigService(string filePath, IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+        : base(filePath, serializer, pubSub, _changeKey, policy)
     {
-        AddParsedProp("minprice",
+        AddNumberProp("minprice",
             static c => c.MinPrice,
             static (c, v) => c.MinPrice = v,
             long.TryParse,
             ConfigPrinters.ToString,
             "Minimum price a waifu can have. Default 1000",
-            static val => val >= 0);
+            min: 0,
+            max: null, strict: true);
 
-        AddParsedProp("optincost",
+        AddNumberProp("optincost",
             static c => c.OptInCost,
             static (c, v) => c.OptInCost = v,
             long.TryParse,
             ConfigPrinters.ToString,
             "Cost to opt into the waifu system. Default 10000",
-            static val => val >= 0);
+            min: 0,
+            max: null, strict: true);
 
-        AddParsedProp("decay",
+        AddNumberProp("decay",
             static c => c.ManagerlessDecayPercent,
             static (c, v) => c.ManagerlessDecayPercent = v,
             int.TryParse,
             ConfigPrinters.ToString,
             "Price decay percentage per cycle for waifus without a manager (0-100). Default 10",
-            static val => val is >= 0 and <= 100);
+            min: 0,
+            max: 100, strict: true);
 
         Migrate();
     }

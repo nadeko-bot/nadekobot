@@ -5,6 +5,7 @@ using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Games.Quests;
 using System.Globalization;
+using System.Net;
 using SixLabors.Fonts;
 using SixLabors.Fonts.Unicode;
 using SixLabors.ImageSharp;
@@ -179,6 +180,10 @@ public class PlantPickService(
         if (!_generationChannels.Contains(channel.Id))
             return default;
 
+        var botPerms = ((SocketGuild)channel.Guild).CurrentUser.GetPermissions(channel);
+        if (!botPerms.ViewChannel || !botPerms.SendMessages || !botPerms.AttachFiles)
+            return default;
+
         _ = Task.Run(async () =>
         {
             try
@@ -231,7 +236,7 @@ public class PlantPickService(
                             dropAmount,
                             pw);
 
-                        if (toDelete.Length > 0)
+                        if (toDelete.Length > 0 && botPerms.ManageMessages)
                         {
                             var merged = GetText(channel.GuildId, strs.curgen_pl(total, config.Currency.Sign))
                                          + "\n> "
@@ -243,11 +248,29 @@ public class PlantPickService(
                     }
                 }
             }
-            catch
+            catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
             {
+                Log.Warning("Turning off currency generation in {GuildId}/{ChannelId}: the bot cannot post there",
+                    channel.GuildId,
+                    channel.Id);
+                await DisableGenerationInternalAsync(channel.GuildId, channel.Id);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Error generating currency in {ChannelId}", channel.Id);
             }
         });
         return default;
+    }
+
+    private async Task DisableGenerationInternalAsync(ulong gid, ulong cid)
+    {
+        await using var uow = db.GetDbContext();
+        await uow.GetTable<GCChannelId>()
+            .Where(x => x.ChannelId == cid && x.GuildId == gid)
+            .DeleteAsync();
+
+        _generationChannels.TryRemove(cid);
     }
 
     public async Task<long> PickAsync(

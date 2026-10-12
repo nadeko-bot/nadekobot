@@ -1,11 +1,15 @@
 using System;
 using System.Threading.Tasks;
+using Discord;
+using Discord.Commands;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common;
+using NadekoBot.Common.Attributes;
 using NadekoBot.Db.Models;
 using NadekoBot.Extensions;
 using NadekoBot.Modules.Utility.Services;
+using NadekoBot.Services;
 using NadekoBot.Tests.Waifu;
 using NonBlocking;
 using NSubstitute;
@@ -34,9 +38,7 @@ public class AliasServiceTests
     public async Task AddedAlias_IsCaseInsensitive()
     {
         using var db = new TestDbService();
-        var svc = new AliasService(db,
-            Substitute.For<IMessageSenderService>(),
-            new ShardData(null!, Substitute.For<IBotCreds>()));
+        var svc = CreateService(db);
 
         await svc.AddAliasAsync(1, "hi", ".say hello");
 
@@ -48,9 +50,7 @@ public class AliasServiceTests
     public async Task AddAlias_StopsAtTheLimitButStillUpdates()
     {
         using var db = new TestDbService();
-        var svc = new AliasService(db,
-            Substitute.For<IMessageSenderService>(),
-            new ShardData(null!, Substitute.For<IBotCreds>()));
+        var svc = CreateService(db);
 
         for (var i = 0; i < AliasService.MAX_ALIASES; i++)
             Assert.That(await svc.AddAliasAsync(1, $"a{i}", ".ping"), Is.EqualTo(AliasAddResult.Added));
@@ -68,4 +68,46 @@ public class AliasServiceTests
         Assert.That(await ctx.GetTable<CommandAlias>().CountAsyncLinqToDB(x => x.GuildId == 1),
             Is.EqualTo(AliasService.MAX_ALIASES));
     }
+
+    [Test]
+    public async Task SpendingCommand_TakesOnlyTargetArgsFromAnAlias()
+    {
+        var cmds = new CommandService();
+        await cmds.AddModuleAsync<SpendingTestModule>(null);
+
+        Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", ".bf 10 heads"), Is.True);
+        Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", " .BETFLIP 10 heads"), Is.True);
+        Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", ".give 1000 <@123>"), Is.True);
+        Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", ".give %target% 5"), Is.True);
+
+        Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", ".bf"), Is.False);
+        Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", ".bf %target%"), Is.False);
+        Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", ".hug 10 heads"), Is.False);
+        Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, "!", ".bf 10 heads"), Is.False);
+    }
+
+    private static AliasService CreateService(TestDbService db)
+        => new(db,
+            Substitute.For<IMessageSenderService>(),
+            new ShardData(null!, Substitute.For<IBotCreds>()),
+            new CommandService(),
+            Substitute.For<ICommandHandler>());
+}
+
+public sealed class SpendingTestModule : ModuleBase<ICommandContext>
+{
+    [Command("betflip")]
+    [Alias("bf")]
+    [SpendsCurrency]
+    public Task Betflip(long amount = 0, string guess = "")
+        => Task.CompletedTask;
+
+    [Command("give")]
+    [SpendsCurrency]
+    public Task Give(long amount, IUser user)
+        => Task.CompletedTask;
+
+    [Command("hug")]
+    public Task Hug([Remainder] string target = "")
+        => Task.CompletedTask;
 }

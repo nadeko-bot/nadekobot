@@ -26,7 +26,10 @@ quotedeleteauthor:
     - userId:
         desc: The ID of the user whose quotes are to be deleted.
 quoteedit:
-  desc: Edits a quote with the specified ID.
+  desc: |-
+    Edits the text of a quote with the specified ID.
+    You can edit your own quotes.
+    Users with the Manage Messages permission can edit any quote on the server.
   ex:
     - 55 This is the new response.
   params:

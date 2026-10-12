@@ -1,13 +1,13 @@
 using NadekoBot.Modules.Utility.Services;
 using Newtonsoft.Json;
+using System.Buffers;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
 using NadekoBot.Modules.Searches.Common;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.PixelFormats;
 using Image = SixLabors.ImageSharp.Image;
@@ -35,6 +35,9 @@ public partial class Utility : NadekoModule
         PropertyNamingPolicy = LowerCaseNamingPolicy.Default
     };
 
+    private const int MAX_EMOJI_BYTES = 256 * 1024;
+    private const long MAX_EMOJI_PIXELS = 1024L * 1024;
+
     private readonly DiscordSocketClient _client;
     private readonly ICoordinator _coord;
     private readonly IStatsService _stats;
@@ -42,7 +45,6 @@ public partial class Utility : NadekoModule
     private readonly DownloadTracker _tracker;
     private readonly IHttpClientFactory _httpFactory;
     private readonly VerboseErrorsService _veService;
-    private readonly IServiceProvider _services;
     private readonly AfkService _afkService;
 
     public Utility(
@@ -53,7 +55,6 @@ public partial class Utility : NadekoModule
         DownloadTracker tracker,
         IHttpClientFactory httpFactory,
         VerboseErrorsService veService,
-        IServiceProvider services,
         AfkService afkService)
     {
         _client = client;
@@ -63,7 +64,6 @@ public partial class Utility : NadekoModule
         _tracker = tracker;
         _httpFactory = httpFactory;
         _veService = veService;
-        _services = services;
         _afkService = afkService;
     }
 
@@ -434,20 +434,37 @@ public partial class Utility : NadekoModule
             return;
         }
 
-        using var http = _httpFactory.CreateClient();
-        using var res = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-        if (!res.IsImage() || res.GetContentLength() > 262_144)
+        byte[] imgBytes;
+        bool isGif;
+        using (var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME))
+        using (var res = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
+        {
+            if (!res.IsSuccessStatusCode
+                || !res.IsImage()
+                || await ExternalHttp.ReadLimitedAsync(res.Content, MAX_EMOJI_BYTES) is not { } img)
+            {
+                await Response().Error(strs.invalid_emoji_link).SendAsync();
+                return;
+            }
+
+            imgBytes = img.Buffer.AsSpan(0, img.Length).ToArray();
+            ArrayPool<byte>.Shared.Return(img.Buffer);
+        }
+
+        try
+        {
+            isGif = Image.DetectFormat(imgBytes) is GifFormat;
+        }
+        catch (Exception)
         {
             await Response().Error(strs.invalid_emoji_link).SendAsync();
             return;
         }
 
-        var isGif = res.Content.Headers.ContentType?.MediaType == "image/gif";
-        await using var imgStream = await res.Content.ReadAsStreamAsync();
         Emote em;
         try
         {
-            em = await ctx.Guild.CreateEmoteAsync(name, new(imgStream));
+            em = await ctx.Guild.CreateEmoteAsync(name, new(new MemoryStream(imgBytes, false)));
         }
         catch (HttpException hex) when (hex.DiscordCode == DiscordErrorCode.MaximumEmojisReached && !isGif)
         {
@@ -460,9 +477,14 @@ public partial class Utility : NadekoModule
                     await smc.DeferAsync();
                     try
                     {
-                        using var http2 = _httpFactory.CreateClient();
-                        await using var imgStream2 = await http2.GetStreamAsync(url);
-                        using var img = await Image.LoadAsync<Rgba32>(imgStream2);
+                        var info = Image.Identify(imgBytes);
+                        if ((long)info.Width * info.Height > MAX_EMOJI_PIXELS)
+                        {
+                            await Response().Error(strs.emoji_add_error).SendAsync();
+                            return;
+                        }
+
+                        using var img = Image.Load<Rgba32>(new DecoderOptions { MaxFrames = 1 }, imgBytes);
 
                         img.Frames.AddFrame(img.Frames[0]);
 
@@ -719,7 +741,7 @@ public partial class Utility : NadekoModule
     [Ratelimit(3600)]
     public async Task SaveChat(int cnt)
     {
-        if (!_creds.IsOwner(ctx.User) && cnt > 1000)
+        if (!BotPolicy.IsRealOwner(_creds, ctx.Message) && cnt > 1000)
             return;
 
         var msgs = new List<IMessage>(cnt);
@@ -804,70 +826,6 @@ public partial class Utility : NadekoModule
             await Response()
                 .Confirm(strs.afk_set)
                 .SendAsync();
-        }
-    }
-
-    [Cmd]
-    [NoPublicBot]
-    [OwnerOnly]
-    public async Task Eval([Leftover] string scriptText)
-    {
-        _ = ctx.Channel.TriggerTypingAsync();
-
-        if (scriptText.StartsWith("```cs"))
-            scriptText = scriptText[5..];
-        else if (scriptText.StartsWith("```"))
-            scriptText = scriptText[3..];
-
-        if (scriptText.EndsWith("```"))
-            scriptText = scriptText[..^3];
-
-        var script = CSharpScript.Create(scriptText,
-            ScriptOptions.Default
-                .WithReferences(this.GetType().Assembly)
-                .WithImports(
-                    "System",
-                    "System.Collections.Generic",
-                    "System.IO",
-                    "System.Linq",
-                    "System.Net.Http",
-                    "System.Threading",
-                    "System.Threading.Tasks",
-                    "NadekoBot",
-                    "NadekoBot.Extensions",
-                    "Microsoft.Extensions.DependencyInjection",
-                    "NadekoBot.Common",
-                    "NadekoBot.Modules",
-                    "System.Text",
-                    "System.Text.Json"),
-            globalsType: typeof(EvalGlobals));
-
-        try
-        {
-            var result = await script.RunAsync(new EvalGlobals()
-            {
-                ctx = this.ctx,
-                guild = this.ctx.Guild,
-                channel = this.ctx.Channel,
-                user = this.ctx.User,
-                self = this,
-                services = _services
-            });
-
-            var output = result.ReturnValue?.ToString();
-            if (!string.IsNullOrWhiteSpace(output))
-            {
-                var eb = CreateEmbed()
-                    .WithOkColor()
-                    .AddField("Code", scriptText)
-                    .AddField("Output", output.TrimTo(512)!);
-
-                _ = Response().Embed(eb).SendAsync();
-            }
-        }
-        catch (Exception ex)
-        {
-            await Response().Error(ex.Message).SendAsync();
         }
     }
 
