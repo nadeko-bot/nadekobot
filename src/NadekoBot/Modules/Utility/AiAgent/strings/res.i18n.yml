@@ -29,6 +29,26 @@ ar:
   aiprompt_empty: هذه المطالبة فارغة حاليًا.
   aiprompt_updated: 'تم تحديث المطالبة **{0}**.'
   aiprompt_write_failed: 'فشل في كتابة المطالبة: {0}'
+  agent_activity_working: جارٍ العمل على ذلك...
+  agent_activity_done: تم
+  agent_activity_waiting: بانتظار إجابتك
+  agent_activity_cancelled: تم الإلغاء
+  agent_activity_failed: توقف بسبب خطأ
+  agent_activity_steps: 'الخطوات: {0}'
+  agent_activity_earlier: '{0} من الخطوات السابقة غير معروضة'
+  agent_step_failed: '{0} (فشل)'
+  agent_step_search_commands: 'تم البحث في الأوامر عن "{0}"'
+  agent_step_search_data: 'تم البحث في بيانات الخادم عن "{0}"'
+  agent_step_data: 'تم الاطلاع على {0}'
+  agent_step_run_command: 'تم تشغيل {0}'
+  agent_step_send_message: 'تم إرسال رسالة في {0}'
+  agent_step_edit_message: تم تعديل رسالة
+  agent_step_get_message: تمت قراءة رسالة
+  agent_step_delete_message: تم حذف رسالة
+  agent_step_search_messages: تم البحث في الرسائل
+  agent_step_web_search: 'تم البحث في الويب عن "{0}"'
+  agent_step_time: تم حساب الوقت
+  agent_step_other: 'تم استخدام {0}'
 
 de-DE:
   agent_no_query: Du musst einen Prompt für den KI-Agenten angeben.
@@ -61,6 +81,26 @@ de-DE:
   aiprompt_empty: Dieser Prompt ist derzeit leer.
   aiprompt_updated: 'Prompt **{0}** wurde aktualisiert.'
   aiprompt_write_failed: 'Prompt konnte nicht geschrieben werden: {0}'
+  agent_activity_working: Bin dran...
+  agent_activity_done: Fertig
+  agent_activity_waiting: Warte auf deine Antwort
+  agent_activity_cancelled: Abgebrochen
+  agent_activity_failed: Wegen eines Fehlers gestoppt
+  agent_activity_steps: 'Schritte: {0}'
+  agent_activity_earlier: '{0} frühere Schritte werden nicht angezeigt'
+  agent_step_failed: '{0} (fehlgeschlagen)'
+  agent_step_search_commands: 'Befehle nach "{0}" durchsucht'
+  agent_step_search_data: 'Serverdaten nach "{0}" durchsucht'
+  agent_step_data: '{0} nachgeschlagen'
+  agent_step_run_command: '{0} ausgeführt'
+  agent_step_send_message: 'Nachricht in {0} gesendet'
+  agent_step_edit_message: Nachricht bearbeitet
+  agent_step_get_message: Nachricht gelesen
+  agent_step_delete_message: Nachricht gelöscht
+  agent_step_search_messages: Nachrichten durchsucht
+  agent_step_web_search: 'Im Web nach "{0}" gesucht'
+  agent_step_time: Zeit berechnet
+  agent_step_other: '{0} verwendet'
 
 es-ES:
   agent_no_query: Debes proporcionar un prompt para el agente de IA.
@@ -93,6 +133,26 @@ es-ES:
   aiprompt_empty: Este prompt está vacío ahora mismo.
   aiprompt_updated: 'El prompt **{0}** se ha actualizado.'
   aiprompt_write_failed: 'No se pudo escribir el prompt: {0}'
+  agent_activity_working: Trabajando en ello...
+  agent_activity_done: Hecho
+  agent_activity_waiting: Esperando tu respuesta
+  agent_activity_cancelled: Cancelado
+  agent_activity_failed: Se detuvo por un error
+  agent_activity_steps: 'Pasos: {0}'
+  agent_activity_earlier: 'No se muestran {0} pasos anteriores'
+  agent_step_failed: '{0} (falló)'
+  agent_step_search_commands: 'Buscó comandos para "{0}"'
+  agent_step_search_data: 'Buscó datos del servidor para "{0}"'
+  agent_step_data: 'Consultó {0}'
+  agent_step_run_command: 'Ejecutó {0}'
+  agent_step_send_message: 'Envió un mensaje en {0}'
+  agent_step_edit_message: Editó un mensaje
+  agent_step_get_message: Leyó un mensaje
+  agent_step_delete_message: Borró un mensaje
+  agent_step_search_messages: Buscó mensajes
+  agent_step_web_search: 'Buscó en la web "{0}"'
+  agent_step_time: Calculó una hora
+  agent_step_other: 'Usó {0}'
 
 fr-FR:
   agent_no_query: Tu dois fournir une requête pour l'agent IA.
@@ -125,6 +185,26 @@ fr-FR:
   aiprompt_empty: Ce prompt est actuellement vide.
   aiprompt_updated: 'Le prompt **{0}** a été mis à jour.'
   aiprompt_write_failed: 'Échec de l''écriture du prompt : {0}'
+  agent_activity_working: Je m'en occupe...
+  agent_activity_done: Terminé
+  agent_activity_waiting: En attente de ta réponse
+  agent_activity_cancelled: Annulé
+  agent_activity_failed: Arrêté à cause d'une erreur
+  agent_activity_steps: 'Étapes : {0}'
+  agent_activity_earlier: '{0} étapes précédentes ne sont pas affichées'
+  agent_step_failed: '{0} (échec)'
+  agent_step_search_commands: 'Commandes recherchées pour "{0}"'
+  agent_step_search_data: 'Données du serveur recherchées pour "{0}"'
+  agent_step_data: 'Consulté : {0}'
+  agent_step_run_command: 'Exécuté {0}'
+  agent_step_send_message: 'Message envoyé dans {0}'
+  agent_step_edit_message: Message modifié
+  agent_step_get_message: Message lu
+  agent_step_delete_message: Message supprimé
+  agent_step_search_messages: Messages recherchés
+  agent_step_web_search: 'Recherche web pour "{0}"'
+  agent_step_time: Heure calculée
+  agent_step_other: 'Utilisé : {0}'
 
 id-ID:
   agent_no_query: Kamu harus memberikan prompt untuk agen AI.
@@ -157,6 +237,26 @@ id-ID:
   aiprompt_empty: Prompt ini saat ini kosong.
   aiprompt_updated: 'Prompt **{0}** sudah diperbarui.'
   aiprompt_write_failed: 'Gagal menulis prompt: {0}'
+  agent_activity_working: Sedang dikerjakan...
+  agent_activity_done: Selesai
+  agent_activity_waiting: Menunggu jawabanmu
+  agent_activity_cancelled: Dibatalkan
+  agent_activity_failed: Berhenti karena terjadi error
+  agent_activity_steps: 'Langkah: {0}'
+  agent_activity_earlier: '{0} langkah sebelumnya tidak ditampilkan'
+  agent_step_failed: '{0} (gagal)'
+  agent_step_search_commands: 'Mencari perintah untuk "{0}"'
+  agent_step_search_data: 'Mencari data server untuk "{0}"'
+  agent_step_data: 'Melihat {0}'
+  agent_step_run_command: 'Menjalankan {0}'
+  agent_step_send_message: 'Mengirim pesan di {0}'
+  agent_step_edit_message: Mengedit pesan
+  agent_step_get_message: Membaca pesan
+  agent_step_delete_message: Menghapus pesan
+  agent_step_search_messages: Mencari pesan
+  agent_step_web_search: 'Mencari di web untuk "{0}"'
+  agent_step_time: Menghitung waktu
+  agent_step_other: 'Memakai {0}'
 
 ja-JP:
   agent_no_query: AIエージェントにプロンプトを入力してください。
@@ -189,6 +289,26 @@ ja-JP:
   aiprompt_empty: このプロンプトは現在空です。
   aiprompt_updated: 'プロンプト **{0}** を更新しました。'
   aiprompt_write_failed: 'プロンプトの書き込みに失敗しました: {0}'
+  agent_activity_working: 作業中...
+  agent_activity_done: 完了
+  agent_activity_waiting: あなたの返事を待っています
+  agent_activity_cancelled: キャンセルしました
+  agent_activity_failed: エラーで停止しました
+  agent_activity_steps: 'ステップ: {0}'
+  agent_activity_earlier: 'それより前の {0} ステップは表示されていません'
+  agent_step_failed: '{0} (失敗)'
+  agent_step_search_commands: 'コマンドを検索: "{0}"'
+  agent_step_search_data: 'サーバーデータを検索: "{0}"'
+  agent_step_data: '{0} を確認'
+  agent_step_run_command: '{0} を実行'
+  agent_step_send_message: '{0} にメッセージを送信'
+  agent_step_edit_message: メッセージを編集
+  agent_step_get_message: メッセージを読み込み
+  agent_step_delete_message: メッセージを削除
+  agent_step_search_messages: メッセージを検索
+  agent_step_web_search: 'ウェブ検索: "{0}"'
+  agent_step_time: 時刻を計算
+  agent_step_other: '{0} を使用'
 
 ko-KR:
   agent_no_query: AI 에이전트에 프롬프트를 입력해야 합니다.
@@ -221,6 +341,26 @@ ko-KR:
   aiprompt_empty: 이 프롬프트는 현재 비어 있습니다.
   aiprompt_updated: '프롬프트 **{0}**이(가) 업데이트되었습니다.'
   aiprompt_write_failed: '프롬프트 쓰기에 실패했습니다: {0}'
+  agent_activity_working: 작업 중...
+  agent_activity_done: 완료
+  agent_activity_waiting: 답변을 기다리는 중
+  agent_activity_cancelled: 취소됨
+  agent_activity_failed: 오류로 중단됨
+  agent_activity_steps: '단계: {0}'
+  agent_activity_earlier: '이전 단계 {0}개는 표시되지 않습니다'
+  agent_step_failed: '{0} (실패)'
+  agent_step_search_commands: '명령어 검색: "{0}"'
+  agent_step_search_data: '서버 데이터 검색: "{0}"'
+  agent_step_data: '{0} 조회'
+  agent_step_run_command: '{0} 실행'
+  agent_step_send_message: '{0}에 메시지 전송'
+  agent_step_edit_message: 메시지 수정
+  agent_step_get_message: 메시지 읽기
+  agent_step_delete_message: 메시지 삭제
+  agent_step_search_messages: 메시지 검색
+  agent_step_web_search: '웹 검색: "{0}"'
+  agent_step_time: 시간 계산
+  agent_step_other: '{0} 사용'
 
 pl-PL:
   agent_no_query: Musisz podać zapytanie dla agenta AI.
@@ -253,6 +393,26 @@ pl-PL:
   aiprompt_empty: Ten prompt jest obecnie pusty.
   aiprompt_updated: 'Prompt **{0}** został zaktualizowany.'
   aiprompt_write_failed: 'Nie udało się zapisać promptu: {0}'
+  agent_activity_working: Pracuję nad tym...
+  agent_activity_done: Gotowe
+  agent_activity_waiting: Czekam na twoją odpowiedź
+  agent_activity_cancelled: Anulowano
+  agent_activity_failed: Zatrzymano z powodu błędu
+  agent_activity_steps: 'Kroki: {0}'
+  agent_activity_earlier: 'Nie pokazano {0} wcześniejszych kroków'
+  agent_step_failed: '{0} (nie udało się)'
+  agent_step_search_commands: 'Przeszukano komendy pod kątem "{0}"'
+  agent_step_search_data: 'Przeszukano dane serwera pod kątem "{0}"'
+  agent_step_data: 'Sprawdzono {0}'
+  agent_step_run_command: 'Uruchomiono {0}'
+  agent_step_send_message: 'Wysłano wiadomość na {0}'
+  agent_step_edit_message: Edytowano wiadomość
+  agent_step_get_message: Odczytano wiadomość
+  agent_step_delete_message: Usunięto wiadomość
+  agent_step_search_messages: Przeszukano wiadomości
+  agent_step_web_search: 'Wyszukano w sieci "{0}"'
+  agent_step_time: Obliczono czas
+  agent_step_other: 'Użyto {0}'
 
 pt-BR:
   agent_no_query: Você precisa fornecer um prompt para o agente de IA.
@@ -285,6 +445,26 @@ pt-BR:
   aiprompt_empty: Este prompt está vazio no momento.
   aiprompt_updated: 'O prompt **{0}** foi atualizado.'
   aiprompt_write_failed: 'Falha ao gravar o prompt: {0}'
+  agent_activity_working: Trabalhando nisso...
+  agent_activity_done: Pronto
+  agent_activity_waiting: Esperando sua resposta
+  agent_activity_cancelled: Cancelado
+  agent_activity_failed: Parou por causa de um erro
+  agent_activity_steps: 'Etapas: {0}'
+  agent_activity_earlier: '{0} etapas anteriores não são mostradas'
+  agent_step_failed: '{0} (falhou)'
+  agent_step_search_commands: 'Procurou comandos para "{0}"'
+  agent_step_search_data: 'Procurou dados do servidor para "{0}"'
+  agent_step_data: 'Consultou {0}'
+  agent_step_run_command: 'Executou {0}'
+  agent_step_send_message: 'Enviou uma mensagem em {0}'
+  agent_step_edit_message: Editou uma mensagem
+  agent_step_get_message: Leu uma mensagem
+  agent_step_delete_message: Apagou uma mensagem
+  agent_step_search_messages: Procurou mensagens
+  agent_step_web_search: 'Pesquisou na web por "{0}"'
+  agent_step_time: Calculou um horário
+  agent_step_other: 'Usou {0}'
 
 ru-RU:
   agent_no_query: Вы должны указать запрос для ИИ-агента.
@@ -317,6 +497,26 @@ ru-RU:
   aiprompt_empty: Этот промпт сейчас пустой.
   aiprompt_updated: 'Промпт **{0}** обновлён.'
   aiprompt_write_failed: 'Не удалось записать промпт: {0}'
+  agent_activity_working: Работаю над этим...
+  agent_activity_done: Готово
+  agent_activity_waiting: Жду твоего ответа
+  agent_activity_cancelled: Отменено
+  agent_activity_failed: Остановлено из-за ошибки
+  agent_activity_steps: 'Шаги: {0}'
+  agent_activity_earlier: 'Ещё {0} ранних шагов не показано'
+  agent_step_failed: '{0} (ошибка)'
+  agent_step_search_commands: 'Поиск команд по запросу "{0}"'
+  agent_step_search_data: 'Поиск данных сервера по запросу "{0}"'
+  agent_step_data: 'Просмотрено: {0}'
+  agent_step_run_command: 'Выполнено {0}'
+  agent_step_send_message: 'Отправлено сообщение в {0}'
+  agent_step_edit_message: Сообщение изменено
+  agent_step_get_message: Сообщение прочитано
+  agent_step_delete_message: Сообщение удалено
+  agent_step_search_messages: Поиск по сообщениям
+  agent_step_web_search: 'Поиск в интернете по запросу "{0}"'
+  agent_step_time: Вычислено время
+  agent_step_other: 'Использовано: {0}'
 
 sr-Cyrl-RS:
   agent_no_query: Морате да унесете упит за АИ агента.
@@ -349,6 +549,26 @@ sr-Cyrl-RS:
   aiprompt_empty: Овај промпт је тренутно празан.
   aiprompt_updated: 'Промпт **{0}** је ажуриран.'
   aiprompt_write_failed: 'Неуспешно уписивање промпта: {0}'
+  agent_activity_working: Радим на томе...
+  agent_activity_done: Готово
+  agent_activity_waiting: Чекам твој одговор
+  agent_activity_cancelled: Отказано
+  agent_activity_failed: Заустављено због грешке
+  agent_activity_steps: 'Кораци: {0}'
+  agent_activity_earlier: '{0} ранијих корака није приказано'
+  agent_step_failed: '{0} (неуспешно)'
+  agent_step_search_commands: 'Претражене команде за "{0}"'
+  agent_step_search_data: 'Претражени подаци сервера за "{0}"'
+  agent_step_data: 'Погледано: {0}'
+  agent_step_run_command: 'Покренуто {0}'
+  agent_step_send_message: 'Послата порука у {0}'
+  agent_step_edit_message: Измењена порука
+  agent_step_get_message: Прочитана порука
+  agent_step_delete_message: Обрисана порука
+  agent_step_search_messages: Претражене поруке
+  agent_step_web_search: 'Претражен веб за "{0}"'
+  agent_step_time: Израчунато време
+  agent_step_other: 'Коришћено: {0}'
 
 tr-TR:
   agent_no_query: Yapay zeka ajanına bir istem belirtmelisin.
@@ -381,6 +601,26 @@ tr-TR:
   aiprompt_empty: Bu prompt şu an boş.
   aiprompt_updated: '**{0}** promptu güncellendi.'
   aiprompt_write_failed: 'Prompt yazılamadı: {0}'
+  agent_activity_working: Üzerinde çalışıyorum...
+  agent_activity_done: Bitti
+  agent_activity_waiting: Cevabını bekliyorum
+  agent_activity_cancelled: İptal edildi
+  agent_activity_failed: Bir hata yüzünden durdu
+  agent_activity_steps: 'Adımlar: {0}'
+  agent_activity_earlier: 'Önceki {0} adım gösterilmiyor'
+  agent_step_failed: '{0} (başarısız)'
+  agent_step_search_commands: '"{0}" için komutlar arandı'
+  agent_step_search_data: '"{0}" için sunucu verileri arandı'
+  agent_step_data: '{0} kontrol edildi'
+  agent_step_run_command: '{0} çalıştırıldı'
+  agent_step_send_message: '{0} kanalına mesaj gönderildi'
+  agent_step_edit_message: Bir mesaj düzenlendi
+  agent_step_get_message: Bir mesaj okundu
+  agent_step_delete_message: Bir mesaj silindi
+  agent_step_search_messages: Mesajlar arandı
+  agent_step_web_search: 'Web''de "{0}" arandı'
+  agent_step_time: Zaman hesaplandı
+  agent_step_other: '{0} kullanıldı'
 
 ts-TS:
   agent_no_query: You have to give the AI agent a prompt, you know!
@@ -413,6 +653,26 @@ ts-TS:
   aiprompt_empty: Hmph, this prompt is empty. Not like I care.
   aiprompt_updated: 'Prompt **{0}** updated. There, happy now?'
   aiprompt_write_failed: 'Failed to write prompt: {0}'
+  agent_activity_working: W-working on it, okay?!
+  agent_activity_done: Done. Obviously.
+  agent_activity_waiting: Waiting for your answer. Hurry up.
+  agent_activity_cancelled: Cancelled
+  agent_activity_failed: Stopped because of an error. Not my fault!
+  agent_activity_steps: 'Steps: {0}'
+  agent_activity_earlier: '{0} earlier steps are not shown'
+  agent_step_failed: '{0} (failed)'
+  agent_step_search_commands: 'Searched commands for "{0}"'
+  agent_step_search_data: 'Searched server data for "{0}"'
+  agent_step_data: 'Looked up {0}'
+  agent_step_run_command: 'Ran {0}'
+  agent_step_send_message: 'Sent a message in {0}'
+  agent_step_edit_message: Edited a message
+  agent_step_get_message: Read a message
+  agent_step_delete_message: Deleted a message
+  agent_step_search_messages: Searched messages
+  agent_step_web_search: 'Searched the web for "{0}"'
+  agent_step_time: Worked out a time
+  agent_step_other: 'Used {0}'
 
 uk-UA:
   agent_no_query: Ви повинні надати запит для ШІ-агента.
@@ -445,6 +705,26 @@ uk-UA:
   aiprompt_empty: Ця підказка зараз порожня.
   aiprompt_updated: 'Підказку **{0}** оновлено.'
   aiprompt_write_failed: 'Не вдалося записати підказку: {0}'
+  agent_activity_working: Працюю над цим...
+  agent_activity_done: Готово
+  agent_activity_waiting: Чекаю на твою відповідь
+  agent_activity_cancelled: Скасовано
+  agent_activity_failed: Зупинено через помилку
+  agent_activity_steps: 'Кроки: {0}'
+  agent_activity_earlier: 'Ще {0} попередніх кроків не показано'
+  agent_step_failed: '{0} (помилка)'
+  agent_step_search_commands: 'Пошук команд за запитом "{0}"'
+  agent_step_search_data: 'Пошук даних сервера за запитом "{0}"'
+  agent_step_data: 'Переглянуто: {0}'
+  agent_step_run_command: 'Виконано {0}'
+  agent_step_send_message: 'Надіслано повідомлення в {0}'
+  agent_step_edit_message: Повідомлення змінено
+  agent_step_get_message: Повідомлення прочитано
+  agent_step_delete_message: Повідомлення видалено
+  agent_step_search_messages: Пошук у повідомленнях
+  agent_step_web_search: 'Пошук в інтернеті за запитом "{0}"'
+  agent_step_time: Обчислено час
+  agent_step_other: 'Використано: {0}'
 
 vi-VN:
   agent_no_query: Bạn phải cung cấp một prompt cho tác nhân AI.
@@ -477,6 +757,26 @@ vi-VN:
   aiprompt_empty: Prompt này hiện đang trống.
   aiprompt_updated: 'Prompt **{0}** đã được cập nhật.'
   aiprompt_write_failed: 'Không thể ghi prompt: {0}'
+  agent_activity_working: Đang xử lý...
+  agent_activity_done: Xong
+  agent_activity_waiting: Đang chờ câu trả lời của bạn
+  agent_activity_cancelled: Đã hủy
+  agent_activity_failed: Đã dừng do có lỗi
+  agent_activity_steps: 'Số bước: {0}'
+  agent_activity_earlier: '{0} bước trước đó không được hiển thị'
+  agent_step_failed: '{0} (thất bại)'
+  agent_step_search_commands: 'Đã tìm lệnh cho "{0}"'
+  agent_step_search_data: 'Đã tìm dữ liệu máy chủ cho "{0}"'
+  agent_step_data: 'Đã tra cứu {0}'
+  agent_step_run_command: 'Đã chạy {0}'
+  agent_step_send_message: 'Đã gửi tin nhắn trong {0}'
+  agent_step_edit_message: Đã sửa một tin nhắn
+  agent_step_get_message: Đã đọc một tin nhắn
+  agent_step_delete_message: Đã xóa một tin nhắn
+  agent_step_search_messages: Đã tìm tin nhắn
+  agent_step_web_search: 'Đã tìm trên web "{0}"'
+  agent_step_time: Đã tính thời gian
+  agent_step_other: 'Đã dùng {0}'
 
 zh-CN:
   agent_no_query: 你必须为 AI 代理提供一个提示。
@@ -509,3 +809,23 @@ zh-CN:
   aiprompt_empty: 此提示词目前为空。
   aiprompt_updated: '提示词 **{0}** 已更新。'
   aiprompt_write_failed: '写入提示词失败：{0}'
+  agent_activity_working: 正在处理...
+  agent_activity_done: 完成
+  agent_activity_waiting: 等你回复
+  agent_activity_cancelled: 已取消
+  agent_activity_failed: 因出错而停止
+  agent_activity_steps: '步骤：{0}'
+  agent_activity_earlier: '前面还有 {0} 个步骤未显示'
+  agent_step_failed: '{0}（失败）'
+  agent_step_search_commands: '搜索了命令："{0}"'
+  agent_step_search_data: '搜索了服务器数据："{0}"'
+  agent_step_data: '查询了 {0}'
+  agent_step_run_command: '运行了 {0}'
+  agent_step_send_message: '在 {0} 发送了一条消息'
+  agent_step_edit_message: 编辑了一条消息
+  agent_step_get_message: 读取了一条消息
+  agent_step_delete_message: 删除了一条消息
+  agent_step_search_messages: 搜索了消息
+  agent_step_web_search: '在网上搜索了："{0}"'
+  agent_step_time: 计算了时间
+  agent_step_other: '使用了 {0}'

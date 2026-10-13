@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Utility.AiAgent;
 public sealed class AiAgentConfig
 {
     [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
-    public int Version { get; set; } = 8;
+    public int Version { get; set; } = 9;
 
     [Comment("Whether the AI agent feature is enabled. Default false")]
     public bool Enabled { get; set; } = false;
@@ -76,4 +76,7 @@ public sealed class AiAgentConfig
 
     [Comment("Whether AI agent text responses are sent as embeds. If false, sent as plain text. Default true")]
     public bool UseEmbed { get; set; } = true;
+
+    [Comment("Whether the agent shows a live message with the steps it takes while it works. Default true")]
+    public bool ShowActivity { get; set; } = true;
 }

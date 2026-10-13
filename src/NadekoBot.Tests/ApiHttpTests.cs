@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using LinqToDB;
+using LinqToDB.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Routing;
@@ -21,11 +23,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Time.Testing;
 using NadekoBot.Common;
 using NadekoBot.Common.Yml;
+using NadekoBot.Db.Models;
 using NadekoBot.Hosted;
 using NadekoBot.Hosted.Endpoints;
 using NadekoBot.Services;
 using NadekoBot.Tests.Waifu;
 using NUnit.Framework;
+using Serilog;
 
 namespace NadekoBot.Tests;
 
@@ -34,6 +38,8 @@ namespace NadekoBot.Tests;
 public sealed class ApiHttpTests
 {
     private const string API_KEY = "placeholder-key-xxxxxxxxxxxxxxxx";
+    private const string OWNER_A = "105635576866156544";
+    private const string OWNER_B = "145521851676884992";
 
     private string _dir = null!;
     private HostPaths _paths = null!;
@@ -134,7 +140,7 @@ public sealed class ApiHttpTests
     }
 
     [Test]
-    public async Task Creds_FirstUseSetsTheKeyAndKeepsTheToken()
+    public async Task Creds_FirstUseSetsTheKeyAndOwnersAndKeepsTheRest()
     {
         File.WriteAllText(_paths.Creds, Yaml.Serializer.Serialize(new Creds { Token = "tok" }));
         var bridge = new BotBridge();
@@ -146,8 +152,15 @@ public sealed class ApiHttpTests
         using (var shortKey = await _http!.PutAsync("/api/creds", Json(new { apiKey = "short" })))
             await AssertErrorAsync(shortKey, HttpStatusCode.BadRequest, "invalid_value");
 
-        using (var ok = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY })))
+        using (var noOwners = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY, ownerIds = Array.Empty<string>() })))
+            await AssertErrorAsync(noOwners, HttpStatusCode.BadRequest, "invalid_value");
+
+        Assert.That(await HealthAsync(), Is.EqualTo(HealthStatus.UNCONFIGURED));
+
+        using (var ok = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY, ownerIds = new[] { OWNER_A } })))
             Assert.That(ok.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
+
+        Assert.That(CredsFile.Read(_paths.Creds)!.OwnerIds, Is.EqualTo(new[] { ulong.Parse(OWNER_A) }));
 
         // The key applies at once, so a second caller which raced the first one cannot replace it.
         using (var raced = await _http.PutAsync("/api/creds", Json(new { apiKey = new string('z', 40) })))
@@ -166,6 +179,100 @@ public sealed class ApiHttpTests
             Assert.That(clear.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
 
         Assert.That(CredsFile.Read(_paths.Creds)!.Token, Is.Empty);
+        Assert.That(CredsFile.Read(_paths.Creds)!.OwnerIds, Is.EqualTo(new[] { ulong.Parse(OWNER_A) }));
+    }
+
+    [Test]
+    public async Task Owners_ReplaceTheListWithoutARestart()
+    {
+        File.WriteAllText(_paths.Creds, Yaml.Serializer.Serialize(new Creds { Token = "tok", OwnerIds = [ulong.Parse(OWNER_A)] }));
+        var creds = new FileCredsProvider(_paths.Creds);
+        using var db = new TestDbService();
+        await using (var ctx = db.GetDbContext())
+            await ctx.GetTable<DiscordUser>().InsertAsync(() => new DiscordUser { UserId = ulong.Parse(OWNER_B), Username = "stored" });
+
+        using var client = new DiscordSocketClient();
+        var services = new ServiceCollection()
+            .AddSingleton<IBotCredsProvider>(creds)
+            .AddSingleton<DbService>(db)
+            .AddSingleton(client)
+            .BuildServiceProvider();
+        var bridge = new BotBridge();
+        bridge.SetPhase(BotPhase.Starting);
+        bridge.SetReady(services, null);
+        await StartAsync(API_KEY, bridge);
+        Authorize();
+
+        Assert.That(await _http!.GetStringAsync("/api/owners"), Is.EqualTo($$"""{"owners":[{"id":"{{OWNER_A}}"}]}"""));
+
+        object[] refused =
+        [
+            new { ids = Array.Empty<string>() },
+            new { },
+            new { ids = new[] { "123" } },
+            new { ids = new[] { "0" + OWNER_A[1..] } },
+            new { ids = new[] { OWNER_A + "x" } },
+            new { ids = Enumerable.Range(0, OwnerIdList.MAX_OWNERS + 1).Select(i => (ulong.Parse(OWNER_A) + (ulong)i).ToString()).ToArray() }
+        ];
+        foreach (var body in refused)
+        {
+            using var res = await _http.PutAsync("/api/owners", Json(body));
+            await AssertErrorAsync(res, HttpStatusCode.BadRequest, "invalid_value");
+        }
+
+        Assert.That(CredsFile.Read(_paths.Creds)!.OwnerIds, Is.EqualTo(new[] { ulong.Parse(OWNER_A) }));
+
+        using var ok = await _http.PutAsync("/api/owners", Json(new { ids = new[] { OWNER_B, OWNER_A, OWNER_B } }));
+        Assert.That(ok.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(await ok.Content.ReadAsStringAsync(),
+            Is.EqualTo($$"""{"owners":[{"id":"{{OWNER_B}}","name":"stored"},{"id":"{{OWNER_A}}"}]}"""));
+
+        var expected = new[] { ulong.Parse(OWNER_B), ulong.Parse(OWNER_A) };
+        Assert.That(creds.GetCreds().OwnerIds, Is.EqualTo(expected));
+        Assert.That(CredsFile.Read(_paths.Creds)!.OwnerIds, Is.EqualTo(expected));
+        Assert.That(CredsFile.Read(_paths.Creds)!.Token, Is.EqualTo("tok"));
+    }
+
+    [Test]
+    public async Task Logs_StreamTheTailThenNewLinesWhileTheBotIsDown()
+    {
+        using var logs = new LogStreamService(TimeProvider.System);
+        logs.AddSecrets(null, API_KEY);
+        using var logger = new LoggerConfiguration().WriteTo.Sink(logs.Sink).CreateLogger();
+        foreach (var line in new[] { "one", "two", "three" })
+            logger.Information("line {Name}", line);
+
+        await ApiLogStreamTests.WaitForLinesAsync(logs, 3);
+
+        var bridge = new BotBridge();
+        bridge.SetPhase(BotPhase.NoToken);
+        await StartAsync(API_KEY, bridge, logs);
+        Authorize();
+
+        using (var negative = await _http!.GetAsync("/api/logs?tail=-1"))
+            await AssertErrorAsync(negative, HttpStatusCode.BadRequest, "invalid_value");
+
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        using var res = await _http.GetAsync("/api/logs?tail=2", HttpCompletionOption.ResponseHeadersRead, cts.Token);
+        Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(res.Content.Headers.ContentType?.MediaType, Is.EqualTo("text/event-stream"));
+        Assert.That(res.Headers.CacheControl?.NoStore, Is.True);
+
+        using var reader = new StreamReader(await res.Content.ReadAsStreamAsync(cts.Token));
+        Assert.That(await ReadLogTextAsync(reader, cts.Token), Is.EqualTo("line two"));
+        Assert.That(await ReadLogTextAsync(reader, cts.Token), Is.EqualTo("line three"));
+
+        logger.Warning("line {Key}", API_KEY);
+        Assert.That(await ReadLogTextAsync(reader, cts.Token), Is.EqualTo("line " + LogStreamService.REDACTED));
+    }
+
+    private static async Task<string?> ReadLogTextAsync(StreamReader reader, CancellationToken ct)
+    {
+        var data = await reader.ReadLineAsync(ct);
+        Assert.That(data, Does.StartWith("data: "));
+        Assert.That(await reader.ReadLineAsync(ct), Is.Empty);
+        var line = JsonSerializer.Deserialize(data!["data: ".Length..], ApiJsonContext.Default.LogLineDto)!;
+        return line.Text;
     }
 
     [Test]
@@ -387,7 +494,7 @@ public sealed class ApiHttpTests
         return names;
     }
 
-    private async Task StartAsync(string apiKey, BotBridge bridge)
+    private async Task StartAsync(string apiKey, BotBridge bridge, LogStreamService? logs = null)
     {
         var settings = new ApiSettings { Port = 0 }.WithKey(apiKey);
         _app = ApiHost.Build(
@@ -395,7 +502,8 @@ public sealed class ApiHttpTests
             _paths,
             settings,
             bridge,
-            new RestoreTarget(Path.Combine(_paths.DataDir, "NadekoBot.db")));
+            new RestoreTarget(Path.Combine(_paths.DataDir, "NadekoBot.db")),
+            logs);
 
         await _app.StartAsync();
         _http = new HttpClient { BaseAddress = new Uri(_app.Urls.First()) };

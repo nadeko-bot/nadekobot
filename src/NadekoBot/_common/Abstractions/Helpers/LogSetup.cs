@@ -1,3 +1,4 @@
+using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Text;
@@ -6,6 +7,9 @@ namespace Nadeko.Common;
 
 public static class LogSetup
 {
+    // The hosted program keeps recent lines for its API; each SetupLogger call replaces the logger, so it is added every time.
+    public static ILogEventSink? ExtraSink { get; set; }
+
     public static void SetupLogger(object source, IBotCreds? creds)
     {
         var config = new LoggerConfiguration().MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -25,6 +29,9 @@ public static class LogSetup
 
         if (!string.IsNullOrWhiteSpace(creds?.Seq.Url))
             config = config.WriteTo.Seq(creds.Seq.Url, apiKey: creds.Seq.ApiKey);
+
+        if (ExtraSink is { } sink)
+            config = config.WriteTo.Sink(sink);
 
         Log.Logger = config
             .CreateLogger();

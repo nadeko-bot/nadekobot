@@ -108,11 +108,13 @@ public static class ManagedEndpoints
         // The key is not trimmed: the manager must send exactly the key it will use.
         var token = body.Token?.Trim();
         var apiKey = body.ApiKey;
+        ulong[]? owners = null;
         if (!ApiSettings.IsValidKey(apiKey)
-            || (token is not null && !CredsFile.IsValidToken(token)))
+            || (token is not null && !CredsFile.IsValidToken(token))
+            || (body.OwnerIds is not null && !OwnerIdList.TryParse(body.OwnerIds, out owners)))
             return ApiErrors.InvalidValue;
 
-        if (!await creds.TrySetAsync(http.Request.Headers.Authorization.ToString(), apiKey, token))
+        if (!await creds.TrySetAsync(http.Request.Headers.Authorization.ToString(), apiKey, token, owners))
             return ApiErrors.Unauthorized;
 
         Log.Information("Credentials were updated over the API. Restarting to apply them");

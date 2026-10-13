@@ -1,5 +1,5 @@
 # DO NOT CHANGE THE VERSION MANUALLY
-version: 8
+version: 9
 # Whether the AI agent feature is enabled. Default false
 enabled: false
 # Base URL for the OpenAI-compatible API.
@@ -41,3 +41,5 @@ customHeaders:
 reasoningEffort: low
 # Whether AI agent text responses are sent as embeds. If false, sent as plain text. Default true
 useEmbed: true
+# Whether the agent shows a live message with the steps it takes while it works. Default true
+showActivity: true

@@ -19,6 +19,8 @@ public sealed class AiAgentService(
     IBotCredsProvider credsProvider,
     DiscordSocketClient client,
     IMessageSenderService sender,
+    IBotStrings strings,
+    ICommandHandler cmdHandler,
     IPatronageService patronageService,
     PatronageConfig patronageConfig,
     Prompts.SystemPromptBuilder systemPromptBuilder,
@@ -29,6 +31,10 @@ public sealed class AiAgentService(
     private readonly ConcurrentDictionary<ulong, ChannelMessageBuffer> _channelBuffers = new();
     private readonly ConcurrentDictionary<ulong, (bool Allowed, DateTime ExpiresUtc)> _patronCache = new();
     private readonly ConcurrentDictionary<ulong, ImmutableArray<AiAgentGuildSkill>> _skillCache = new();
+    private readonly ConcurrentDictionary<ulong, int> _liveActivityCount = new();
+
+    // Sessions above this count in one server run without a live activity message.
+    private const int MAX_LIVE_ACTIVITY_PER_GUILD = 5;
 
     private sealed record QueuedMessage(IGuild Guild, ITextChannel Channel, IUserMessage Message, string Text);
 
@@ -352,6 +358,7 @@ public sealed class AiAgentService(
             return false;
         }
 
+        AgentActivityReporter? activity = null;
         try
         {
             var context = new AiToolContext
@@ -389,22 +396,30 @@ public sealed class AiAgentService(
                 Prompts.SystemPromptBuilder.BuildTurn(context, DateTimeOffset.UtcNow),
                 BuildSkillPreamble(guild.Id, channel.Id, prompt));
 
+            activity = TryCreateActivityInternal(guild, channel, message, config);
+
             var result = await agentSession.RunAsync(
                 agentPrompt,
                 context,
                 tools,
                 schemas,
                 config,
+                activity,
                 cts.Token);
 
             if (result.TryPickT0(out var success, out var error))
             {
                 if (success.AskPending)
                 {
+                    await CompleteActivityInternalAsync(activity, AgentActivityStatus.Waiting);
                     conversationTracker.Open(message.Author.Id, channel.Id);
                 }
                 else
                 {
+                    await CompleteActivityInternalAsync(
+                        activity,
+                        success.WasCancelled ? AgentActivityStatus.Cancelled : AgentActivityStatus.Done);
+
                     var smart = SmartText.CreateFrom(success.Response);
 
                     if (smart is SmartEmbedTextArray)
@@ -420,7 +435,7 @@ public sealed class AiAgentService(
                                        .WithOkColor()
                                        .WithDescription(success.Response);
 
-                        if (success.ToolCallCount > 0)
+                        if (success.ToolCallCount > 0 && activity?.IsShown != true)
                             eb.WithFooter($"Tools used: {success.ToolCallCount}" +
                                           (success.WasCancelled ? " (cancelled)" : ""));
 
@@ -443,11 +458,13 @@ public sealed class AiAgentService(
             }
             else
             {
+                await CompleteActivityInternalAsync(activity, AgentActivityStatus.Failed);
                 await sender.Response(channel).Error(error.Value).SendAsync();
             }
         }
         catch (OperationCanceledException)
         {
+            await CompleteActivityInternalAsync(activity, AgentActivityStatus.Cancelled);
             await sender.Response(channel)
                         .Pending("Agent session was cancelled.")
                         .SendAsync();
@@ -455,12 +472,20 @@ public sealed class AiAgentService(
         catch (Exception ex)
         {
             Log.Error(ex, "Error in AI agent session for user {UserId}", userId);
+            await CompleteActivityInternalAsync(activity, AgentActivityStatus.Failed);
             await sender.Response(channel)
                         .Error("An error occurred while running the agent.")
                         .SendAsync();
         }
         finally
         {
+            if (activity is not null)
+            {
+                // Stops the worker if a send above threw before its own CompleteAsync call.
+                await CompleteActivityInternalAsync(activity, AgentActivityStatus.Failed);
+                ReleaseActivityInternal(guild.Id);
+            }
+
             var wasCancelled = cts.IsCancellationRequested;
             _activeSessions.TryRemove(userId, out _);
             cts.Dispose();
@@ -491,6 +516,59 @@ public sealed class AiAgentService(
         }
 
         return true;
+    }
+
+    private AgentActivityReporter? TryCreateActivityInternal(
+        IGuild guild,
+        ITextChannel channel,
+        IUserMessage trigger,
+        AiAgentConfig config)
+    {
+        if (!config.ShowActivity || guild is not SocketGuild sg)
+            return null;
+
+        // Channel overwrites can remove permissions which the bot has in the server.
+        var perms = sg.CurrentUser.GetPermissions(channel);
+        if (!perms.SendMessages)
+            return null;
+
+        var count = _liveActivityCount.AddOrUpdate(guild.Id, 1, static (_, c) => c + 1);
+        if (count > MAX_LIVE_ACTIVITY_PER_GUILD)
+        {
+            ReleaseActivityInternal(guild.Id);
+            return null;
+        }
+
+        // Discord refuses a reply from a bot which cannot read the message history.
+        return new AgentActivityReporter(
+            sender,
+            strings,
+            channel,
+            perms.ReadMessageHistory ? trigger : null,
+            cmdHandler.GetPrefix(guild),
+            config.UseEmbed && perms.EmbedLinks);
+    }
+
+    private void ReleaseActivityInternal(ulong guildId)
+    {
+        var count = _liveActivityCount.AddOrUpdate(guildId, 0, static (_, c) => c - 1);
+        if (count <= 0)
+            _liveActivityCount.TryRemove(new KeyValuePair<ulong, int>(guildId, count));
+    }
+
+    private static async Task CompleteActivityInternalAsync(AgentActivityReporter? activity, AgentActivityStatus status)
+    {
+        if (activity is null)
+            return;
+
+        try
+        {
+            await activity.CompleteAsync(status);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Could not complete the AI agent activity message");
+        }
     }
 
     private const int CHANNEL_BACKFILL_MAX = 100;

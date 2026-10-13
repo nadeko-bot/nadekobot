@@ -13,6 +13,7 @@ public interface IAiAgentSession
         IReadOnlyList<IAiTool> tools,
         IReadOnlyList<JsonElement> toolSchemas,
         AiAgentConfig config,
+        IAgentProgress? progress = null,
         CancellationToken ct = default);
 }
 

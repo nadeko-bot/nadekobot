@@ -30,7 +30,8 @@ public static class ApiHost
         HostPaths paths,
         ApiSettings settings,
         BotBridge bridge,
-        RestoreTarget restore)
+        RestoreTarget restore,
+        LogStreamService? logs = null)
     {
         var builder = WebApplication.CreateSlimBuilder(new WebApplicationOptions
         {
@@ -83,6 +84,11 @@ public static class ApiHost
         services.AddSingleton<BackupService>();
         services.AddSingleton<UpdateService>();
         services.AddSingleton<IProcessRestarter, ProcessRestarter>();
+        // The program passes the instance which the logger already writes to.
+        if (logs is not null)
+            services.AddSingleton(logs);
+        else
+            services.AddSingleton(static sp => new LogStreamService(sp.GetRequiredService<TimeProvider>()));
 
         AddBotService<ShardData>(services);
         AddBotService<ICoordinator>(services);
@@ -137,6 +143,7 @@ public static class ApiHost
         api.MapGroup(string.Empty)
             .WithMetadata(new ApiAccessMetadata(ApiAccess.Key))
             .MapSystemEndpoints()
+            .MapLogEndpoints()
             .MapUpdateEndpoint()
             .MapBackupFileEndpoints()
             .MapBackupWriteEndpoints();

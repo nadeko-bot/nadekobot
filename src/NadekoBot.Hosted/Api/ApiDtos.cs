@@ -196,7 +196,17 @@ public sealed record SetXpLevelRequest(int Level);
 
 public sealed record ErrorDto(string Error);
 
-public sealed record SetCredsRequest(string ApiKey, string? Token = null);
+public sealed record SetCredsRequest(string ApiKey, string? Token = null, string?[]? OwnerIds = null);
+
+public sealed record OwnerDto(
+    string Id,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Name = null);
+
+public sealed record OwnersDto(IReadOnlyList<OwnerDto> Owners);
+
+public sealed record SetOwnersRequest(string?[]? Ids = null);
+
+public sealed record LogLineDto(DateTime Ts, string Level, string Text);
 
 public sealed record UpdateAcceptedDto(string Version);
 

@@ -66,6 +66,20 @@ public static class CredsFile
     public static void WriteToken(string path, string token)
         => UpdateInternal(path, c => c.Token = token);
 
+    public static void WriteOwners(string path, ulong[] owners)
+        => UpdateInternal(path, c => c.OwnerIds = [..owners]);
+
+    // One write, so a token never applies without the owners which came with it.
+    public static void WriteTokenAndOwners(string path, string? token, ulong[]? owners)
+        => UpdateInternal(path, c =>
+        {
+            if (token is not null)
+                c.Token = token;
+
+            if (owners is not null)
+                c.OwnerIds = [..owners];
+        });
+
     // A null key also clears the legacy gpt3ApiKey, which the bot uses when aiApiKey is empty.
     public static void WriteAiKey(string path, string? key)
         => UpdateInternal(path, c =>
@@ -106,12 +120,12 @@ public static class CredsFile
     }
 }
 
-public sealed class CredsStore(ApiKey key, ApiSettings settings, HostPaths paths, BootGuard boot)
+public sealed class CredsStore(ApiKey key, ApiSettings settings, HostPaths paths, BootGuard boot, LogStreamService logs)
 {
     // The key check and both file writes are one step, so a racing first-use PUT cannot replace the key.
     private readonly SemaphoreSlim _write = new(1, 1);
 
-    public async Task<bool> TrySetAsync(string authorizationHeader, string apiKey, string? token)
+    public async Task<bool> TrySetAsync(string authorizationHeader, string apiKey, string? token, ulong[]? owners = null)
     {
         await _write.WaitAsync();
         try
@@ -119,26 +133,42 @@ public sealed class CredsStore(ApiKey key, ApiSettings settings, HostPaths paths
             if (key.IsSet && !key.Matches(authorizationHeader))
                 return false;
 
-            var previousCreds = token is not null && File.Exists(paths.Creds) ? File.ReadAllText(paths.Creds) : null;
-            if (token is not null)
-                CredsFile.WriteToken(paths.Creds, token);
+            var writesCreds = token is not null || owners is not null;
+            var previousCreds = writesCreds && File.Exists(paths.Creds) ? File.ReadAllText(paths.Creds) : null;
+            if (writesCreds)
+                CredsFile.WriteTokenAndOwners(paths.Creds, token, owners);
 
             try
             {
                 ApiSettingsFile.Save(paths.ApiSettings, settings.WithKey(apiKey));
             }
-            catch when (token is not null)
+            catch when (writesCreds)
             {
-                // A new token with the old key would apply on some later restart, after the caller got a 500.
+                // New creds with the old key would apply on some later restart, after the caller got a 500.
                 if (previousCreds is not null)
                     SecretFile.WriteAllText(paths.Creds, previousCreds);
                 else
                     File.Delete(paths.Creds);
                 throw;
             }
+
+            logs.AddSecrets(token, apiKey);
             key.Set(apiKey);
             boot.Reset();
             return true;
+        }
+        finally
+        {
+            _write.Release();
+        }
+    }
+
+    public async Task SetOwnersAsync(ulong[] owners)
+    {
+        await _write.WaitAsync();
+        try
+        {
+            CredsFile.WriteOwners(paths.Creds, owners);
         }
         finally
         {

@@ -33,6 +33,7 @@ public static class ApiEndpoints
         owner.MapFeedEndpoints();
         owner.MapBackupCreateEndpoint();
         owner.MapAiKeyEndpoints();
+        owner.MapOwnersEndpoints();
         return owner;
     }
 

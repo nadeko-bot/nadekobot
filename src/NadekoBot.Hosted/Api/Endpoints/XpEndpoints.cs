@@ -61,7 +61,7 @@ public static class XpEndpoints
                 uncached.Add(u.UserId);
         }
 
-        var stored = await ReadUsernamesInternalAsync(db, uncached);
+        var stored = await ReadStoredUsernamesAsync(db, uncached);
 
         var items = new XpUserDto[users.Count];
         i = 0;
@@ -76,7 +76,7 @@ public static class XpEndpoints
     }
 
     // Members who left or are not cached on large servers still have the name the bot stored last.
-    private static async Task<Dictionary<ulong, string?>> ReadUsernamesInternalAsync(DbService db, List<ulong> userIds)
+    public static async Task<Dictionary<ulong, string?>> ReadStoredUsernamesAsync(DbService db, List<ulong> userIds)
     {
         if (userIds.Count == 0)
             return [];

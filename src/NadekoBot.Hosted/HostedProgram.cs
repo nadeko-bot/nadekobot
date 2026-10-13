@@ -66,11 +66,14 @@ public static class HostedProgram
 
     public static async Task<int> RunAsync(HostArgs args)
     {
+        var mode = ModeFromEnvironment();
+        // Coordinated shards do not serve /api/logs, so they keep no lines.
+        var logs = mode == HostMode.Standalone ? new LogStreamService(TimeProvider.System) : null;
+        LogSetup.ExtraSink = logs?.Sink;
         LogSetup.SetupLogger(args.ShardId, null);
 
         var cwd = Directory.GetCurrentDirectory();
         var paths = new HostPaths(Path.Combine(cwd, DATA_DIR));
-        var mode = ModeFromEnvironment();
         var creds = CredsFile.LoadEffective(paths.Creds);
         var host = new HostContext(mode, args.ShardId, args.TotalShards ?? Math.Max(creds.TotalShards, 1));
         if (host.ShardId >= host.TotalShards)
@@ -89,6 +92,8 @@ public static class HostedProgram
             Log.Fatal("{Error}. Fix or delete the file", ex.Message);
             return EXIT_CONFIG_ERROR;
         }
+
+        logs?.AddSecrets(creds.Token, settings.ApiKey);
 
         if (mode == HostMode.Coordinated && !settings.HasKey)
         {
@@ -119,7 +124,7 @@ public static class HostedProgram
         var bridge = new BotBridge();
         bridge.SetPhase(string.IsNullOrWhiteSpace(token) ? BotPhase.NoToken : BotPhase.Starting);
 
-        var app = ApiHost.Build(host, paths, settings, bridge, new RestoreTarget(dbPath));
+        var app = ApiHost.Build(host, paths, settings, bridge, new RestoreTarget(dbPath), logs);
         await using var appScope = new BoundedDisposal(app, _gatewayStopTimeout);
         await app.StartAsync();
 

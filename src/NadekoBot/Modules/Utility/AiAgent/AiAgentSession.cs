@@ -29,12 +29,13 @@ public sealed class AiAgentSession(
         IReadOnlyList<IAiTool> tools,
         IReadOnlyList<JsonElement> toolSchemas,
         AiAgentConfig config,
+        IAgentProgress? progress = null,
         CancellationToken ct = default)
     {
         var usage = new SessionUsage();
         try
         {
-            return await RunLoopInternalAsync(prompt, context, tools, toolSchemas, config, usage, ct);
+            return await RunLoopInternalAsync(prompt, context, tools, toolSchemas, config, progress, usage, ct);
         }
         finally
         {
@@ -66,6 +67,7 @@ public sealed class AiAgentSession(
         IReadOnlyList<IAiTool> tools,
         IReadOnlyList<JsonElement> toolSchemas,
         AiAgentConfig config,
+        IAgentProgress? progress,
         SessionUsage usage,
         CancellationToken ct)
     {
@@ -159,12 +161,16 @@ public sealed class AiAgentSession(
                 };
             }
 
+            if (progress is not null && !string.IsNullOrWhiteSpace(assistantMsg.Content))
+                progress.OnNote(assistantMsg.Content);
+
             foreach (var toolCall in assistantMsg.ToolCalls)
             {
                 ct.ThrowIfCancellationRequested();
                 totalToolCalls++;
 
                 string result;
+                JsonElement args = default;
                 if (!toolMap.TryGetValue(toolCall.Function.Name, out var tool))
                 {
                     result = $"Error: Unknown tool '{toolCall.Function.Name}'";
@@ -173,12 +179,7 @@ public sealed class AiAgentSession(
                 {
                     try
                     {
-                        JsonElement args;
-                        if (string.IsNullOrWhiteSpace(toolCall.Function.Arguments))
-                        {
-                            args = default;
-                        }
-                        else
+                        if (!string.IsNullOrWhiteSpace(toolCall.Function.Arguments))
                         {
                             using var doc = JsonDocument.Parse(toolCall.Function.Arguments);
                             args = doc.RootElement.Clone();
@@ -201,6 +202,8 @@ public sealed class AiAgentSession(
                         result = $"Error: {ex.Message}";
                     }
                 }
+
+                progress?.OnToolCall(toolCall.Function.Name, args, IsErrorResult(result));
 
                 // A tool result can hold text from members or web pages, which must not pose as a <channel_update>.
                 messages.Add(new()
@@ -242,6 +245,11 @@ public sealed class AiAgentSession(
             WasCancelled = false
         };
     }
+
+    // Adapters return "Error..." text, and generated tool wrappers return {"error":...} JSON.
+    private static bool IsErrorResult(string result)
+        => result.StartsWith("Error", StringComparison.Ordinal)
+           || result.StartsWith("{\"error\"", StringComparison.Ordinal);
 
     private AiProviderInfo ResolveProviderInternal(AiAgentConfig config)
     {

@@ -10,12 +10,6 @@ namespace NadekoBot.Hosted.Endpoints;
 public static class FeedEndpoints
 {
     private const string LAST_EVENT_ID_HEADER = "Last-Event-ID";
-    private const string EVENT_STREAM_CONTENT_TYPE = "text/event-stream";
-    private const string NO_STORE = "no-store";
-
-    // Tells nginx-style proxies to pass each frame on at once.
-    private const string PROXY_BUFFERING_HEADER = "X-Accel-Buffering";
-    private const string PROXY_BUFFERING_OFF = "no";
 
     public static RouteGroupBuilder MapFeedEndpoints(this RouteGroupBuilder owner)
     {
@@ -37,9 +31,7 @@ public static class FeedEndpoints
             return;
         }
 
-        http.Response.Headers.ContentType = EVENT_STREAM_CONTENT_TYPE;
-        http.Response.Headers.CacheControl = NO_STORE;
-        http.Response.Headers[PROXY_BUFFERING_HEADER] = PROXY_BUFFERING_OFF;
+        SseResponse.SetHeaders(http.Response);
 
         // Ends the stream on shutdown, so a restart does not wait for open feeds.
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(
@@ -55,31 +47,13 @@ public static class FeedEndpoints
         {
             lastSent = WriteSnapshotInternal(body, feed, lastSent);
             await body.FlushAsync(ct);
-
-            var reader = subscription.Reader;
-            while (await reader.WaitToReadAsync(ct))
-            {
-                while (reader.TryRead(out var frame))
-                {
-                    if (frame.IsKeepAlive)
-                    {
-                        body.Write(frame.Bytes);
-                        continue;
-                    }
-
-                    if (frame.Id <= lastSent)
-                        continue;
-
-                    body.Write(frame.Bytes);
-                    lastSent = frame.Id;
-                }
-
-                await body.FlushAsync(ct);
-            }
         }
         catch (OperationCanceledException)
         {
+            return;
         }
+
+        await SseResponse.PumpAsync(body, subscription.Reader, lastSent, ct);
     }
 
     private static long WriteSnapshotInternal(PipeWriter body, CommandFeedService feed, long lastSent)

@@ -90,6 +90,13 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             ConfigPrinters.ToString,
             "Whether AI agent text responses are sent as embeds. Default true");
 
+        AddParsedProp("showactivity",
+            static c => c.ShowActivity,
+            static (c, v) => c.ShowActivity = v,
+            bool.TryParse,
+            ConfigPrinters.ToString,
+            "Whether the agent shows a live message with the steps it takes. Default true");
+
         Migrate();
     }
 
@@ -117,12 +124,13 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
         if (Data.Version < 7)
             MigrateSystemPromptToFileInternal();
 
-        // Versions 2-6 and 8 only removed properties, which the deserializer ignores.
-        if (Data.Version < 8)
+        // Versions 2-6 and 8 only removed properties, which the deserializer ignores,
+        // and version 9 only added one, which gets its default.
+        if (Data.Version < 9)
         {
             ModifyConfig(c =>
             {
-                c.Version = 8;
+                c.Version = 9;
             });
         }
     }

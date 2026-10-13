@@ -55,6 +55,9 @@ namespace NadekoBot.Hosted;
 [JsonSerializable(typeof(SetXpLevelRequest))]
 [JsonSerializable(typeof(ErrorDto))]
 [JsonSerializable(typeof(SetCredsRequest))]
+[JsonSerializable(typeof(OwnersDto))]
+[JsonSerializable(typeof(SetOwnersRequest))]
+[JsonSerializable(typeof(LogLineDto))]
 [JsonSerializable(typeof(UpdateAcceptedDto))]
 [JsonSerializable(typeof(DiskUsageDto))]
 public sealed partial class ApiJsonContext : JsonSerializerContext;

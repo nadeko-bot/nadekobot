@@ -70,7 +70,8 @@ stops with exit code 2.
 
 - Sets the Discord token and the API key, and restarts the bot.
 - Shows the bot status, its servers, and their channels and roles.
-- Reads and changes bot settings, and sets the owner's AI key.
+- Reads and changes bot settings and bot owners, and sets the owner's AI key.
+- Sends the console lines, also while the bot does not start.
 - Manages greets, expressions, quotes, warnings, warn punishments and xp.
 - Sends a live feed of the commands which users run.
 - Makes, downloads, imports and restores backups.
