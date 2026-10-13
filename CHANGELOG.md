@@ -2,6 +2,20 @@
 
 *a,c,f,r,o,d*
 
+## [7.6.2] - 13.10.2026
+
+### Added
+
+- The AI agent shows a live list of the steps it takes while it works.
+    - `.config aiagent showactivity` / `.conf aiagent showactivity` turns the list off
+
+### Dev
+
+- `NadekoBot.Hosted` has new API routes
+    - `GET`/`PUT /api/owners` read and replace the bot owners without a restart
+    - `PUT /api/creds` also sets the owners with `ownerIds`
+    - `GET /api/logs` streams the console lines, without the token and the API key
+
 ## [7.6.1] - 12.10.2026
 
 ### Added
