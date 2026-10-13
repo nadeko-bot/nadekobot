@@ -12,9 +12,6 @@
 ### Dev
 
 - `NadekoBot.Hosted` has new API routes
-    - `GET`/`PUT /api/owners` read and replace the bot owners without a restart
-    - `PUT /api/creds` also sets the owners with `ownerIds`
-    - `GET /api/logs` streams the console lines, without the token and the API key
 
 ## [7.6.1] - 12.10.2026
 
