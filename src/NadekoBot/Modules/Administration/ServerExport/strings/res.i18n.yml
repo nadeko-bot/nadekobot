@@ -1,0 +1,271 @@
+ar:
+  server_export_owner_only: لا يمكن إلا لمالك الخادم تصدير بيانات هذا الخادم.
+  server_export_self_only: شغّل هذا الأمر بنفسك. لا يمكن لاسم مستعار أو أمر مجدول أو وكيل الذكاء الاصطناعي تشغيله.
+  server_export_cooldown: 'يمكنك تصدير بيانات هذا الخادم مرة أخرى {0}.'
+  server_export_busy: البوت مشغول بعمليات تصدير أخرى. حاول مرة أخرى بعد 10 دقائق.
+  server_export_dm_closed: لا يستطيع البوت إرسال رسالة خاصة إليك. اسمح بالرسائل الخاصة من أعضاء الخادم وحاول مرة أخرى.
+  server_export_preparing: 'البوت يجهّز تصدير بيانات **{0}**.'
+  server_export_dm: |-
+    هذا هو تصدير بيانات **{0}**. استورد هذا الملف على بوت NadeKloud الخاص بك.
+    بعد الاستيراد، أزل هذا البوت من الخادم حتى لا يعمل البوتان في الوقت نفسه.
+  server_export_xp_omitted: 'لا يحتوي الملف على XP، لأن ملف XP كبير جداً على Discord. للحصول على تصدير كامل، تواصل مع `@br.eaker` أو المشرفين في خادم NadekoLog: {0}'
+  server_export_too_large: 'التصدير كبير جداً على Discord، حتى بدون XP. تواصل مع `@br.eaker` أو المشرفين في خادم NadekoLog: {0}'
+  server_export_sent: أرسل البوت تصدير البيانات إلى رسائلك الخاصة.
+  server_export_failed: فشل التصدير. حاول مرة أخرى بعد 10 دقائق.
+  server_export_saved: 'حفظ البوت التصدير في {0}'
+  server_export_no_data: ليس لدى البوت أي بيانات لهذا الخادم.
+
+de-DE:
+  server_export_owner_only: Nur der Serverbesitzer kann die Daten dieses Servers exportieren.
+  server_export_self_only: Führe diesen Befehl selbst aus. Ein Alias, ein geplanter Befehl oder der KI-Agent kann ihn nicht ausführen.
+  server_export_cooldown: 'Du kannst die Daten dieses Servers {0} erneut exportieren.'
+  server_export_busy: Der Bot ist mit anderen Exporten beschäftigt. Versuche es in 10 Minuten erneut.
+  server_export_dm_closed: Der Bot kann dir keine DM senden. Erlaube DMs von Servermitgliedern und versuche es erneut.
+  server_export_preparing: 'Der Bot bereitet den Datenexport von **{0}** vor.'
+  server_export_dm: |-
+    Das ist der Datenexport von **{0}**. Importiere diese Datei in deinen NadeKloud Bot.
+    Entferne danach diesen Bot vom Server, damit nicht beide Bots gleichzeitig arbeiten.
+  server_export_xp_omitted: 'Die Datei enthält kein XP, weil die XP-Datei zu groß für Discord ist. Für einen vollständigen Export wende dich an `@br.eaker` oder die Admins auf dem NadekoLog Server: {0}'
+  server_export_too_large: 'Der Export ist zu groß für Discord, auch ohne XP. Wende dich an `@br.eaker` oder die Admins auf dem NadekoLog Server: {0}'
+  server_export_sent: Der Bot hat den Datenexport an deine DMs gesendet.
+  server_export_failed: Der Export ist fehlgeschlagen. Versuche es in 10 Minuten erneut.
+  server_export_saved: 'Der Bot hat den Export in {0} gespeichert.'
+  server_export_no_data: Der Bot hat keine Daten für diesen Server.
+
+es-ES:
+  server_export_owner_only: Solo el dueño del servidor puede exportar los datos de este servidor.
+  server_export_self_only: Ejecuta este comando tú mismo. Un alias, un comando programado o el agente de IA no pueden ejecutarlo.
+  server_export_cooldown: 'Podrás exportar los datos de este servidor de nuevo {0}.'
+  server_export_busy: El bot está ocupado con otras exportaciones. Inténtalo de nuevo en 10 minutos.
+  server_export_dm_closed: El bot no puede enviarte un MD. Permite los MD de miembros del servidor e inténtalo de nuevo.
+  server_export_preparing: 'El bot está preparando la exportación de los datos de **{0}**.'
+  server_export_dm: |-
+    Esta es la exportación de los datos de **{0}**. Importa este archivo en tu bot de NadeKloud.
+    Después de la importación, quita este bot del servidor, para que los dos bots no actúen a la vez.
+  server_export_xp_omitted: 'El archivo no contiene xp, porque el archivo con xp es demasiado grande para Discord. Para una exportación completa, contacta con `@br.eaker` o con los admins del servidor NadekoLog: {0}'
+  server_export_too_large: 'La exportación es demasiado grande para Discord, incluso sin xp. Contacta con `@br.eaker` o con los admins del servidor NadekoLog: {0}'
+  server_export_sent: El bot te ha enviado la exportación de los datos por MD.
+  server_export_failed: La exportación ha fallado. Inténtalo de nuevo en 10 minutos.
+  server_export_saved: 'El bot ha guardado la exportación en {0}'
+  server_export_no_data: El bot no tiene datos de este servidor.
+
+fr-FR:
+  server_export_owner_only: Seul le propriétaire du serveur peut exporter les données de ce serveur.
+  server_export_self_only: Lance cette commande toi-même. Un alias, une commande programmée ou l'agent IA ne peut pas la lancer.
+  server_export_cooldown: 'Tu pourras exporter à nouveau les données de ce serveur {0}.'
+  server_export_busy: Le bot est occupé avec d'autres exports. Réessaie dans 10 minutes.
+  server_export_dm_closed: Le bot ne peut pas t'envoyer de MP. Autorise les MP des membres du serveur et réessaie.
+  server_export_preparing: 'Le bot prépare l''export des données de **{0}**.'
+  server_export_dm: |-
+    Voici l'export des données de **{0}**. Importe ce fichier sur ton bot NadeKloud.
+    Après l'import, retire ce bot du serveur pour que les deux bots n'agissent pas en même temps.
+  server_export_xp_omitted: 'Le fichier ne contient pas l''XP, car le fichier XP est trop volumineux pour Discord. Pour un export complet, contacte `@br.eaker` ou les admins du serveur NadekoLog : {0}'
+  server_export_too_large: 'L''export est trop volumineux pour Discord, même sans l''XP. Contacte `@br.eaker` ou les admins du serveur NadekoLog : {0}'
+  server_export_sent: Le bot a envoyé l'export des données dans tes MP.
+  server_export_failed: L'export a échoué. Réessaie dans 10 minutes.
+  server_export_saved: 'Le bot a enregistré l''export dans {0}'
+  server_export_no_data: Le bot n'a aucune donnée pour ce serveur.
+
+id-ID:
+  server_export_owner_only: Hanya pemilik server yang bisa mengekspor data server ini.
+  server_export_self_only: Jalankan perintah ini sendiri. Alias, perintah terjadwal, atau agen AI tidak bisa menjalankannya.
+  server_export_cooldown: 'Kamu bisa mengekspor data server ini lagi {0}.'
+  server_export_busy: Bot sedang sibuk dengan ekspor lain. Coba lagi dalam 10 menit.
+  server_export_dm_closed: Bot tidak bisa mengirim DM ke kamu. Izinkan DM dari anggota server lalu coba lagi.
+  server_export_preparing: 'Bot sedang menyiapkan ekspor data **{0}**.'
+  server_export_dm: |-
+    Ini adalah ekspor data **{0}**. Impor file ini di bot NadeKloud kamu.
+    Setelah impor, keluarkan bot ini dari server, agar kedua bot tidak sama-sama bertindak.
+  server_export_xp_omitted: 'File ini tidak berisi xp, karena file dengan xp terlalu besar untuk Discord. Untuk ekspor penuh, hubungi `@br.eaker` atau admin di server NadekoLog: {0}'
+  server_export_too_large: 'Ekspor terlalu besar untuk Discord, bahkan tanpa xp. Hubungi `@br.eaker` atau admin di server NadekoLog: {0}'
+  server_export_sent: Bot sudah mengirim ekspor data ke DM kamu.
+  server_export_failed: Ekspor gagal. Coba lagi dalam 10 menit.
+  server_export_saved: 'Bot menyimpan ekspor ke {0}'
+  server_export_no_data: Bot tidak punya data untuk server ini.
+
+ja-JP:
+  server_export_owner_only: このサーバーのデータをエクスポートできるのはサーバー所有者だけです。
+  server_export_self_only: このコマンドは自分で実行してください。エイリアス、スケジュールされたコマンド、AIエージェントは実行できません。
+  server_export_cooldown: 'このサーバーのデータは{0}にまたエクスポートできます。'
+  server_export_busy: ボットは他のエクスポートで忙しいです。10分後にもう一度試してください。
+  server_export_dm_closed: ボットがDMを送れません。サーバーメンバーからのDMを許可して、もう一度試してください。
+  server_export_preparing: 'ボットは**{0}**のデータエクスポートを準備しています。'
+  server_export_dm: |-
+    これは**{0}**のデータエクスポートです。このファイルをNadeKloudのボットにインポートしてください。
+    インポートしたら、このボットをサーバーから外してください。2つのボットが同時に動かないようにするためです。
+  server_export_xp_omitted: 'ファイルにxpが含まれていません。xpを含むファイルがDiscordには大きすぎるためです。完全なエクスポートが必要なら、`@br.eaker`かNadekoLogサーバーの管理者に連絡してください: {0}'
+  server_export_too_large: 'エクスポートはxpなしでもDiscordには大きすぎます。`@br.eaker`かNadekoLogサーバーの管理者に連絡してください: {0}'
+  server_export_sent: ボットがデータエクスポートをDMに送りました。
+  server_export_failed: エクスポートに失敗しました。10分後にもう一度試してください。
+  server_export_saved: 'ボットはエクスポートを{0}に保存しました。'
+  server_export_no_data: ボットはこのサーバーのデータを持っていません。
+
+ko-KR:
+  server_export_owner_only: 이 서버의 데이터를 내보낼 수 있는 사람은 서버 소유자뿐이에요.
+  server_export_self_only: 이 명령은 직접 실행해 주세요. 별칭, 예약된 명령, AI 에이전트는 실행할 수 없어요.
+  server_export_cooldown: '이 서버의 데이터는 {0}에 다시 내보낼 수 있어요.'
+  server_export_busy: 봇이 다른 내보내기 작업으로 바빠요. 10분 후에 다시 시도해 주세요.
+  server_export_dm_closed: 봇이 DM을 보낼 수 없어요. 서버 멤버의 DM을 허용하고 다시 시도해 주세요.
+  server_export_preparing: '봇이 **{0}**의 데이터 내보내기를 준비하고 있어요.'
+  server_export_dm: |-
+    **{0}**의 데이터 내보내기 파일이에요. 이 파일을 NadeKloud 봇에 가져오세요.
+    가져온 뒤에는 이 봇을 서버에서 제거해 주세요. 두 봇이 동시에 동작하지 않게 하기 위해서예요.
+  server_export_xp_omitted: 'xp가 포함된 파일이 Discord에 보내기엔 너무 커서 파일에 xp가 없어요. 전체 내보내기가 필요하면 `@br.eaker`나 NadekoLog 서버의 관리자에게 연락해 주세요: {0}'
+  server_export_too_large: 'xp 없이도 내보내기 파일이 Discord에 보내기엔 너무 커요. `@br.eaker`나 NadekoLog 서버의 관리자에게 연락해 주세요: {0}'
+  server_export_sent: 봇이 데이터 내보내기를 DM으로 보냈어요.
+  server_export_failed: 내보내기에 실패했어요. 10분 후에 다시 시도해 주세요.
+  server_export_saved: '봇이 내보내기를 {0}에 저장했어요.'
+  server_export_no_data: 봇이 이 서버의 데이터를 가지고 있지 않아요.
+
+pl-PL:
+  server_export_owner_only: Tylko właściciel serwera może wyeksportować dane tego serwera.
+  server_export_self_only: Uruchom tę komendę samodzielnie. Alias, zaplanowana komenda ani agent AI nie mogą jej uruchomić.
+  server_export_cooldown: 'Możesz znowu wyeksportować dane tego serwera {0}.'
+  server_export_busy: Bot jest zajęty innymi eksportami. Spróbuj ponownie za 10 minut.
+  server_export_dm_closed: Bot nie może wysłać ci DM-a. Zezwól na DM-y od członków serwera i spróbuj ponownie.
+  server_export_preparing: 'Bot przygotowuje eksport danych **{0}**.'
+  server_export_dm: |-
+    To jest eksport danych **{0}**. Zaimportuj ten plik na swoim bocie NadeKloud.
+    Po imporcie usuń tego bota z serwera, żeby oba boty nie działały naraz.
+  server_export_xp_omitted: 'Plik nie zawiera xp, bo plik z xp jest za duży dla Discorda. Aby uzyskać pełny eksport, skontaktuj się z `@br.eaker` lub adminami na serwerze NadekoLog: {0}'
+  server_export_too_large: 'Eksport jest za duży dla Discorda, nawet bez xp. Skontaktuj się z `@br.eaker` lub adminami na serwerze NadekoLog: {0}'
+  server_export_sent: Bot wysłał eksport danych na twoje DM-y.
+  server_export_failed: Eksport nie powiódł się. Spróbuj ponownie za 10 minut.
+  server_export_saved: 'Bot zapisał eksport w {0}'
+  server_export_no_data: Bot nie ma danych dla tego serwera.
+
+pt-BR:
+  server_export_owner_only: Só o dono do servidor pode exportar os dados deste servidor.
+  server_export_self_only: Execute este comando você mesmo. Um alias, um comando agendado ou o agente de IA não podem executá-lo.
+  server_export_cooldown: 'Você pode exportar os dados deste servidor de novo {0}.'
+  server_export_busy: O bot está ocupado com outras exportações. Tente de novo em 10 minutos.
+  server_export_dm_closed: O bot não consegue te enviar uma DM. Permita DMs de membros do servidor e tente de novo.
+  server_export_preparing: 'O bot está preparando a exportação dos dados de **{0}**.'
+  server_export_dm: |-
+    Esta é a exportação dos dados de **{0}**. Importe este arquivo no seu bot NadeKloud.
+    Depois da importação, remova este bot do servidor, para que os dois bots não ajam ao mesmo tempo.
+  server_export_xp_omitted: 'O arquivo não contém xp, porque o arquivo com xp é grande demais para o Discord. Para uma exportação completa, fale com `@br.eaker` ou com os admins no servidor NadekoLog: {0}'
+  server_export_too_large: 'A exportação é grande demais para o Discord, mesmo sem xp. Fale com `@br.eaker` ou com os admins no servidor NadekoLog: {0}'
+  server_export_sent: O bot enviou a exportação dos dados para as suas DMs.
+  server_export_failed: A exportação falhou. Tente de novo em 10 minutos.
+  server_export_saved: 'O bot salvou a exportação em {0}'
+  server_export_no_data: O bot não tem dados deste servidor.
+
+ru-RU:
+  server_export_owner_only: Только владелец сервера может экспортировать данные этого сервера.
+  server_export_self_only: Запусти эту команду сам. Алиас, запланированная команда или ИИ-агент не могут её запустить.
+  server_export_cooldown: 'Ты сможешь снова экспортировать данные этого сервера {0}.'
+  server_export_busy: Бот занят другими экспортами. Попробуй снова через 10 минут.
+  server_export_dm_closed: Бот не может отправить тебе личное сообщение. Разреши личные сообщения от участников сервера и попробуй снова.
+  server_export_preparing: 'Бот готовит экспорт данных **{0}**.'
+  server_export_dm: |-
+    Это экспорт данных **{0}**. Импортируй этот файл в своего бота NadeKloud.
+    После импорта удали этого бота с сервера, чтобы оба бота не работали одновременно.
+  server_export_xp_omitted: 'В файле нет xp, потому что файл с xp слишком большой для Discord. Для полного экспорта напиши `@br.eaker` или админам на сервере NadekoLog: {0}'
+  server_export_too_large: 'Экспорт слишком большой для Discord, даже без xp. Напиши `@br.eaker` или админам на сервере NadekoLog: {0}'
+  server_export_sent: Бот отправил экспорт данных тебе в личные сообщения.
+  server_export_failed: Экспорт не удался. Попробуй снова через 10 минут.
+  server_export_saved: 'Бот сохранил экспорт в {0}'
+  server_export_no_data: У бота нет данных для этого сервера.
+
+sr-Cyrl-RS:
+  server_export_owner_only: Samo vlasnik servera može da izveze podatke ovog servera.
+  server_export_self_only: Pokreni ovu komandu sam. Alias, zakazana komanda ili AI agent ne mogu da je pokrenu.
+  server_export_cooldown: 'Možeš ponovo da izvezeš podatke ovog servera {0}.'
+  server_export_busy: Bot je zauzet drugim izvozima. Pokušaj ponovo za 10 minuta.
+  server_export_dm_closed: Bot ne može da ti pošalje DM. Dozvoli DM od članova servera i pokušaj ponovo.
+  server_export_preparing: 'Bot priprema izvoz podataka **{0}**.'
+  server_export_dm: |-
+    Ovo je izvoz podataka **{0}**. Uvezi ovaj fajl na svog NadeKloud bota.
+    Posle uvoza, ukloni ovog bota sa servera, da oba bota ne rade istovremeno.
+  server_export_xp_omitted: 'Fajl ne sadrži xp, jer je fajl sa xp prevelik za Discord. Za potpun izvoz, kontaktiraj `@br.eaker` ili admine na NadekoLog serveru: {0}'
+  server_export_too_large: 'Izvoz je prevelik za Discord, čak i bez xp. Kontaktiraj `@br.eaker` ili admine na NadekoLog serveru: {0}'
+  server_export_sent: Bot je poslao izvoz podataka u tvoje DM.
+  server_export_failed: Izvoz nije uspeo. Pokušaj ponovo za 10 minuta.
+  server_export_saved: 'Bot je sačuvao izvoz u {0}'
+  server_export_no_data: Bot nema podatke za ovaj server.
+
+tr-TR:
+  server_export_owner_only: Yalnızca sunucu sahibi bu sunucunun verilerini dışa aktarabilir.
+  server_export_self_only: Bu komutu kendin çalıştır. Bir takma ad, zamanlanmış bir komut veya yapay zeka ajanı bunu çalıştıramaz.
+  server_export_cooldown: 'Bu sunucunun verilerini {0} tekrar dışa aktarabilirsin.'
+  server_export_busy: Bot başka dışa aktarmalarla meşgul. 10 dakika sonra tekrar dene.
+  server_export_dm_closed: Bot sana DM gönderemiyor. Sunucu üyelerinden DM'lere izin ver ve tekrar dene.
+  server_export_preparing: 'Bot **{0}** sunucusunun veri dışa aktarımını hazırlıyor.'
+  server_export_dm: |-
+    Bu, **{0}** sunucusunun veri dışa aktarımı. Bu dosyayı NadeKloud botunda içe aktar.
+    İçe aktardıktan sonra bu botu sunucudan çıkar, böylece iki bot birlikte hareket etmez.
+  server_export_xp_omitted: 'Dosya xp içermiyor, çünkü xp içeren dosya Discord için çok büyük. Tam bir dışa aktarım için `@br.eaker` ile veya NadekoLog sunucusundaki yöneticilerle iletişime geç: {0}'
+  server_export_too_large: 'Dışa aktarım, xp olmadan da Discord için çok büyük. `@br.eaker` ile veya NadekoLog sunucusundaki yöneticilerle iletişime geç: {0}'
+  server_export_sent: Bot veri dışa aktarımını DM'lerine gönderdi.
+  server_export_failed: Dışa aktarma başarısız oldu. 10 dakika sonra tekrar dene.
+  server_export_saved: 'Bot dışa aktarımı {0} konumuna kaydetti'
+  server_export_no_data: Botun bu sunucu için verisi yok.
+
+ts-TS:
+  server_export_owner_only: Only the server owner can export the data of this server.
+  server_export_self_only: Run this command yourself. An alias, a scheduled command, or the AI agent cannot run it.
+  server_export_cooldown: 'Hmph. You can export the data of this server again {0}.'
+  server_export_busy: The bot is busy with other exports. Try again in 10 minutes.
+  server_export_dm_closed: The bot cannot send you a DM. Allow DMs from server members and try again, got it?
+  server_export_preparing: 'The bot is preparing the data export of **{0}**.'
+  server_export_dm: |-
+    This is the data export of **{0}**. Import this file on your NadeKloud bot.
+    After the import, remove this bot from the server, so that the two bots do not both act.
+  server_export_xp_omitted: 'The file does not contain xp. It is not like I wanted to leave it out, but the file with xp is too large for Discord. For a full export, contact `@br.eaker` or the admins on the NadekoLog server: {0}'
+  server_export_too_large: 'The export is too large for Discord, also without xp. Contact `@br.eaker` or the admins on the NadekoLog server: {0}'
+  server_export_sent: Fine, the bot sent the data export to your DMs. Go check it yourself.
+  server_export_failed: The export failed. Try again in 10 minutes.
+  server_export_saved: 'The bot saved the export to {0}'
+  server_export_no_data: The bot has no data for this server. Nothing to export.
+
+uk-UA:
+  server_export_owner_only: Лише власник сервера може експортувати дані цього сервера.
+  server_export_self_only: Запусти цю команду самостійно. Псевдонім, запланована команда або AI-агент не можуть її запустити.
+  server_export_cooldown: 'Ти зможеш знову експортувати дані цього сервера {0}.'
+  server_export_busy: Бот зайнятий іншими експортами. Спробуй знову через 10 хвилин.
+  server_export_dm_closed: Бот не може надіслати тобі особисте повідомлення. Дозволь особисті повідомлення від учасників сервера і спробуй знову.
+  server_export_preparing: 'Бот готує експорт даних **{0}**.'
+  server_export_dm: |-
+    Це експорт даних **{0}**. Імпортуй цей файл у свого бота NadeKloud.
+    Після імпорту прибери цього бота із сервера, щоб обидва боти не діяли одночасно.
+  server_export_xp_omitted: 'Файл не містить xp, бо файл із xp завеликий для Discord. Для повного експорту звернися до `@br.eaker` або адмінів на сервері NadekoLog: {0}'
+  server_export_too_large: 'Експорт завеликий для Discord, навіть без xp. Звернися до `@br.eaker` або адмінів на сервері NadekoLog: {0}'
+  server_export_sent: Бот надіслав експорт даних у твої особисті повідомлення.
+  server_export_failed: Експорт не вдався. Спробуй знову через 10 хвилин.
+  server_export_saved: 'Бот зберіг експорт у {0}'
+  server_export_no_data: Бот не має даних для цього сервера.
+
+vi-VN:
+  server_export_owner_only: Chỉ chủ server mới có thể xuất dữ liệu của server này.
+  server_export_self_only: Hãy tự chạy lệnh này. Alias, lệnh theo lịch hoặc AI agent không thể chạy lệnh này.
+  server_export_cooldown: 'Bạn có thể xuất dữ liệu của server này lần nữa {0}.'
+  server_export_busy: Bot đang bận xử lý các bản xuất khác. Thử lại sau 10 phút.
+  server_export_dm_closed: Bot không thể gửi tin nhắn riêng cho bạn. Hãy cho phép tin nhắn riêng từ thành viên server rồi thử lại.
+  server_export_preparing: 'Bot đang chuẩn bị xuất dữ liệu của **{0}**.'
+  server_export_dm: |-
+    Đây là bản xuất dữ liệu của **{0}**. Hãy nhập tệp này vào bot NadeKloud của bạn.
+    Sau khi nhập, hãy xóa bot này khỏi server để hai bot không cùng hoạt động.
+  server_export_xp_omitted: 'Tệp không chứa xp vì tệp có xp quá lớn đối với Discord. Để có bản xuất đầy đủ, hãy liên hệ `@br.eaker` hoặc các admin trên server NadekoLog: {0}'
+  server_export_too_large: 'Bản xuất quá lớn đối với Discord, ngay cả khi không có xp. Hãy liên hệ `@br.eaker` hoặc các admin trên server NadekoLog: {0}'
+  server_export_sent: Bot đã gửi bản xuất dữ liệu vào tin nhắn riêng của bạn.
+  server_export_failed: Xuất dữ liệu thất bại. Thử lại sau 10 phút.
+  server_export_saved: 'Bot đã lưu bản xuất vào {0}'
+  server_export_no_data: Bot không có dữ liệu cho server này.
+
+zh-CN:
+  server_export_owner_only: 只有服务器所有者才能导出此服务器的数据。
+  server_export_self_only: 请自己运行此命令。别名、定时命令或 AI 智能体都无法运行它。
+  server_export_cooldown: '你可以在 {0} 后再次导出此服务器的数据。'
+  server_export_busy: 机器人正忙其他的导出任务。请在 10 分钟后重试。
+  server_export_dm_closed: 机器人无法给你发送私信。请允许接收服务器成员的私信后重试。
+  server_export_preparing: '机器人正在准备 **{0}** 的数据导出。'
+  server_export_dm: |-
+    这是 **{0}** 的数据导出文件。请在你的 NadeKloud 机器人上导入此文件。
+    导入后，请将此机器人移出服务器，以免两个机器人同时工作。
+  server_export_xp_omitted: '文件中不包含 XP，因为 XP 文件对 Discord 来说太大了。如需完整导出，请联系 `@br.eaker` 或 NadekoLog 服务器的管理员：{0}'
+  server_export_too_large: '导出文件对 Discord 来说太大了，即使不含 XP 也一样。请联系 `@br.eaker` 或 NadekoLog 服务器的管理员：{0}'
+  server_export_sent: 机器人已将数据导出发送到你的私信。
+  server_export_failed: 导出失败。请在 10 分钟后重试。
+  server_export_saved: '机器人已将导出保存到 {0}'
+  server_export_no_data: 机器人没有此服务器的数据。

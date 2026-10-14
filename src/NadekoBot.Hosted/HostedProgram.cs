@@ -173,7 +173,7 @@ public static class HostedProgram
         }
         else
         {
-            _ = Task.Run(() => StartBotInternalAsync(args, mode, bridge, boot, lifetime));
+            _ = Task.Run(() => StartBotInternalAsync(args, mode, paths, bridge, boot, lifetime));
             _ = ExitIfNotReadyInternalAsync(bridge, lifetime);
         }
 
@@ -231,6 +231,7 @@ public static class HostedProgram
     private static async Task StartBotInternalAsync(
         HostArgs args,
         HostMode mode,
+        HostPaths paths,
         BotBridge bridge,
         BootGuard? boot,
         IHostApplicationLifetime lifetime)
@@ -262,11 +263,18 @@ public static class HostedProgram
             if (client.ConnectionState != ConnectionState.Connected)
                 bridge.MarkDisconnected();
 
-            // Coordinated shards do not serve /api/feed, so they do no feed work.
-            var feed = mode == HostMode.Standalone
-                ? new CommandFeedService(bot.Services.GetRequiredService<ICommandHandler>(), bridge.Time)
-                : null;
-            if (bridge.SetReady(bot.Services, feed))
+            // Coordinated shards do not serve /api/feed or /activity, so they do no feed or activity work.
+            CommandFeedService? feed = null;
+            GuildActivityService? activity = null;
+            if (mode == HostMode.Standalone)
+            {
+                var commandHandler = bot.Services.GetRequiredService<ICommandHandler>();
+                feed = new CommandFeedService(commandHandler, bridge.Time);
+                activity = new GuildActivityService(paths.Activity, bridge.Time);
+                activity.Subscribe(commandHandler, client);
+            }
+
+            if (bridge.SetReady(bot.Services, feed, activity))
                 boot?.MarkReady();
         }
         catch (Exception ex)
@@ -323,6 +331,18 @@ public static class HostedProgram
     private static async Task StopGatewayInternalAsync(BotBridge bridge)
     {
         bridge.FeedOrNull?.Dispose();
+        if (bridge.ActivityOrNull is { } activity)
+        {
+            try
+            {
+                await activity.StopAsync().WaitAsync(_gatewayStopTimeout);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "The server activity was not written before the exit");
+            }
+        }
+
         if (bridge.Client is not { } client)
             return;
 

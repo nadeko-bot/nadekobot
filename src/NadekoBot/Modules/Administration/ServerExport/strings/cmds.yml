@@ -1,0 +1,14 @@
+serverexport:
+  desc: |-
+    Exports the data of this server to a file. You can import the file on a NadeKloud bot.
+    The file contains the server settings, permissions, expressions, quotes, xp, warnings, reminders and other server data.
+    The file does not contain currency, waifus, clubs, button roles, giveaways or bot settings.
+    The bot sends the file to the server owner in a DM. Only the server owner can use this command, once every 24 hours.
+    The bot owner can give a server id. Then the bot saves a full export to `data/server-exports/`.
+  ex:
+    - ''
+    - '123123123123123123'
+  params:
+    - {}
+    - guildId:
+        desc: "The id of the server to export."

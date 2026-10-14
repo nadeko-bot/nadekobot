@@ -217,40 +217,29 @@ public class UserPunishService : INService, IReadyExecutor
         }
     }
 
-    /// <summary>
-    ///     Used to prevent the bot from hitting 403's when it needs to
-    ///     apply punishments with insufficient permissions
-    /// </summary>
-    /// <param name="guild">Guild the punishment is applied in</param>
-    /// <param name="punish">Punishment to apply</param>
-    /// <returns>Whether the bot has sufficient permissions</returns>
+    // Checked before a punishment so the bot does not hit a 403 which nobody sees.
     private async Task<bool> CheckPermission(IGuild guild, PunishmentAction punish)
     {
+        var required = (ulong)RequiredPermissions(punish);
         var botUser = await guild.GetCurrentUserAsync();
-        switch (punish)
-        {
-            case PunishmentAction.Mute:
-                return botUser.GuildPermissions.MuteMembers && botUser.GuildPermissions.ManageRoles;
-            case PunishmentAction.Kick:
-                return botUser.GuildPermissions.KickMembers;
-            case PunishmentAction.Ban:
-                return botUser.GuildPermissions.BanMembers;
-            case PunishmentAction.Softban:
-                return botUser.GuildPermissions.BanMembers; // ban + unban
-            case PunishmentAction.RemoveRoles:
-                return botUser.GuildPermissions.ManageRoles;
-            case PunishmentAction.ChatMute:
-                return botUser.GuildPermissions.ManageRoles; // adds nadeko-mute role
-            case PunishmentAction.VoiceMute:
-                return botUser.GuildPermissions.MuteMembers;
-            case PunishmentAction.AddRole:
-                return botUser.GuildPermissions.ManageRoles;
-            case PunishmentAction.TimeOut:
-                return botUser.GuildPermissions.ModerateMembers;
-            default:
-                return true;
-        }
+        return (botUser.GuildPermissions.RawValue & required) == required;
     }
+
+    // Chat mute adds the mute role and softban is a ban and an unban.
+    public static GuildPermission RequiredPermissions(PunishmentAction punish)
+        => punish switch
+        {
+            PunishmentAction.Mute => GuildPermission.MuteMembers | GuildPermission.ManageRoles,
+            PunishmentAction.Kick => GuildPermission.KickMembers,
+            PunishmentAction.Ban => GuildPermission.BanMembers,
+            PunishmentAction.Softban => GuildPermission.BanMembers,
+            PunishmentAction.RemoveRoles => GuildPermission.ManageRoles,
+            PunishmentAction.ChatMute => GuildPermission.ManageRoles,
+            PunishmentAction.VoiceMute => GuildPermission.MuteMembers,
+            PunishmentAction.AddRole => GuildPermission.ManageRoles,
+            PunishmentAction.TimeOut => GuildPermission.ModerateMembers,
+            _ => 0
+        };
 
     public async Task CheckAllWarnExpiresAsync()
     {

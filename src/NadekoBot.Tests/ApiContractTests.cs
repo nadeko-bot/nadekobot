@@ -85,10 +85,13 @@ public sealed class ApiContractTests
         "DELETE /api/guilds/{guildId}/xp/rewards/roles/{level:int}",
         "PUT /api/guilds/{guildId}/xp/rewards/currency/{level:int}",
         "DELETE /api/guilds/{guildId}/xp/rewards/currency/{level:int}",
+        "POST /api/guilds/{guildId}/import",
         "POST /api/guilds/{guildId}/xp/users/{userId}/add",
         "PUT /api/guilds/{guildId}/xp/users/{userId}/level",
         "DELETE /api/guilds/{guildId}/xp/users/{userId}",
-        "DELETE /api/guilds/{guildId}/xp"
+        "DELETE /api/guilds/{guildId}/xp",
+        "GET /api/guilds/{guildId}/health",
+        "GET /api/guilds/{guildId}/activity"
     ];
 
     private const string DB_ENV = "bot_Db__ConnectionString";
@@ -140,7 +143,7 @@ public sealed class ApiContractTests
 
     // A coordinated shard serves server dashboards; a currency reward creates currency, so only the owner sets it.
     [Test]
-    public async Task CoordinatedRoutes_AreTheGuildRoutesWithoutCurrencyRewards()
+    public async Task CoordinatedRoutes_AreTheGuildRoutesWithoutTheOwnerGuildRoutes()
     {
         await using var app = Build(HostMode.Coordinated);
         var routes = ((IEndpointRouteBuilder)app).DataSources
@@ -153,7 +156,9 @@ public sealed class ApiContractTests
         var expected = _standaloneRoutes
             .Where(static r => r == "GET /api/health"
                                || (r.Contains("/api/guilds/{guildId}", StringComparison.Ordinal)
-                                   && !r.Contains("/xp/rewards/currency/", StringComparison.Ordinal)))
+                                   && !r.Contains("/xp/rewards/currency/", StringComparison.Ordinal)
+                                   && !r.EndsWith("/import", StringComparison.Ordinal)
+                                   && !r.EndsWith("/activity", StringComparison.Ordinal)))
             .ToArray();
         Assert.That(routes, Is.EquivalentTo(expected));
     }

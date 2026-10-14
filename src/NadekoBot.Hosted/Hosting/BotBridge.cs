@@ -40,6 +40,7 @@ public sealed class BotBridge(TimeProvider time)
     private volatile DiscordSocketClient? _client;
     private volatile IServiceProvider? _services;
     private volatile CommandFeedService? _feed;
+    private volatile GuildActivityService? _activity;
     private long _disconnectedAt;
 
     public BotBridge()
@@ -61,6 +62,12 @@ public sealed class BotBridge(TimeProvider time)
 
     public CommandFeedService? FeedOrNull
         => _feed;
+
+    public GuildActivityService Activity
+        => _activity ?? throw new InvalidOperationException("The activity counter is not running");
+
+    public GuildActivityService? ActivityOrNull
+        => _activity;
 
     public BotHealth Health(bool hasApiKey)
     {
@@ -90,10 +97,11 @@ public sealed class BotBridge(TimeProvider time)
         => _client = client;
 
     // A gateway close during startup may already have set a final phase, which readiness must not hide.
-    public bool SetReady(IServiceProvider services, CommandFeedService? feed)
+    public bool SetReady(IServiceProvider services, CommandFeedService? feed, GuildActivityService? activity = null)
     {
         _services = services;
         _feed = feed;
+        _activity = activity;
         if (Interlocked.CompareExchange(ref _phase, (int)BotPhase.Ready, (int)BotPhase.Starting)
             == (int)BotPhase.Starting)
             return true;

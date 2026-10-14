@@ -460,7 +460,14 @@ public sealed class NadekoContext : DbContext
 
         #endregion
 
-        modelBuilder.Entity<ImageOnlyChannel>(ioc => ioc.HasIndex(x => x.ChannelId).IsUnique());
+        modelBuilder.Entity<ImageOnlyChannel>(ioc =>
+        {
+            ioc.HasIndex(x => x.ChannelId).IsUnique();
+            ioc.HasIndex(x => x.GuildId);
+        });
+
+        modelBuilder.Entity<NadekoExpression>(e => e.HasIndex(x => x.GuildId));
+        modelBuilder.Entity<Repeater>(e => e.HasIndex(x => x.GuildId));
 
         var atch = modelBuilder.Entity<AutoTranslateChannel>();
         atch.HasIndex(x => x.GuildId).IsUnique(false);

@@ -143,7 +143,7 @@ public static partial class BackupArchive
         try
         {
             // ZipArchive loads every central directory entry up front, so the count is checked before it opens.
-            var entryCount = ReadEntryCountInternal(zip);
+            var entryCount = ReadEntryCount(zip);
             if (entryCount < 0)
                 return ApiErrors.NOT_A_ZIP;
             if (entryCount > BackupLimits.MAX_ENTRIES)
@@ -172,7 +172,7 @@ public static partial class BackupArchive
             if (FindDbEntry(archive) is not { } db)
                 return ApiErrors.MISSING_DB;
 
-            return HasSqliteHeaderInternal(db) ? null : ApiErrors.NOT_SQLITE;
+            return HasSqliteHeader(db) ? null : ApiErrors.NOT_SQLITE;
         }
         catch (InvalidDataException)
         {
@@ -219,7 +219,7 @@ public static partial class BackupArchive
 
     // Total entries from the end of central directory record (APPNOTE 4.3.16), or from its zip64 form
     // when the 16-bit field is saturated. -1 when the stream has no such record.
-    private static long ReadEntryCountInternal(Stream zip)
+    public static long ReadEntryCount(Stream zip)
     {
         var tailLength = (int)Math.Min(zip.Length, EOCD_SIZE + MAX_ZIP_COMMENT);
         if (tailLength < EOCD_SIZE)
@@ -295,7 +295,7 @@ public static partial class BackupArchive
         }
     }
 
-    private static bool HasSqliteHeaderInternal(ZipArchiveEntry entry)
+    public static bool HasSqliteHeader(ZipArchiveEntry entry)
     {
         Span<byte> header = stackalloc byte[SqliteHeader.Length];
         using var stream = entry.Open();

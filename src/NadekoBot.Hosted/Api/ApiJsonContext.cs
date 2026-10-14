@@ -36,6 +36,7 @@ namespace NadekoBot.Hosted;
 [JsonSerializable(typeof(BackupDto))]
 [JsonSerializable(typeof(BackupDto[]))]
 [JsonSerializable(typeof(List<BackupDto>))]
+[JsonSerializable(typeof(ServerImportDto))]
 [JsonSerializable(typeof(WarningDto))]
 [JsonSerializable(typeof(WarningListDto))]
 [JsonSerializable(typeof(ForgiveWarningRequest))]
@@ -60,4 +61,6 @@ namespace NadekoBot.Hosted;
 [JsonSerializable(typeof(LogLineDto))]
 [JsonSerializable(typeof(UpdateAcceptedDto))]
 [JsonSerializable(typeof(DiskUsageDto))]
+[JsonSerializable(typeof(GuildHealthDto))]
+[JsonSerializable(typeof(GuildActivityDto))]
 public sealed partial class ApiJsonContext : JsonSerializerContext;

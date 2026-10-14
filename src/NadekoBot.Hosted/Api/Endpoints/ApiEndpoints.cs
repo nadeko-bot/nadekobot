@@ -47,13 +47,16 @@ public static class ApiEndpoints
         guild.MapQuoteEndpoints();
         guild.MapWarnEndpoints();
         guild.MapXpEndpoints();
+        guild.MapHealthEndpoints();
         return guild;
     }
 
-    // Guild routes which only the owner's key reaches: standalone mode maps them, coordinated mode does not.
+    // Guild routes which only standalone mode maps: they create currency, replace data or need the activity counter.
     public static RouteGroupBuilder MapOwnerGuildEndpoints(this RouteGroupBuilder ownerGuild)
     {
         ownerGuild.MapXpCurrencyRewardEndpoints();
+        ownerGuild.MapActivityEndpoints();
+        ownerGuild.MapServerImportEndpoint();
         return ownerGuild;
     }
 

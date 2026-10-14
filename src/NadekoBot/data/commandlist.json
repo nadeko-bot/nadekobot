@@ -1392,6 +1392,21 @@
     },
     {
       "Aliases": [
+        ".serverexport",
+        ".srvexport"
+      ],
+      "Description": "Exports the data of this server to a file. You can import the file on a NadeKloud bot.\nThe file contains the server settings, permissions, expressions, quotes, xp, warnings, reminders and other server data.\nThe file does not contain currency, waifus, clubs, button roles, giveaways or bot settings.\nThe bot sends the file to the server owner in a DM. Only the server owner can use this command, once every 24 hours.\nThe bot owner can give a server id. Then the bot saves a full export to `data/server-exports/`.",
+      "Usage": [
+        ".serverexport",
+        ".serverexport 123123123123123123"
+      ],
+      "Submodule": "ServerExportCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
         ".logserver"
       ],
       "Description": "Enables or Disables ALL log events. If enabled, all log events will log to this channel.",

@@ -34,6 +34,8 @@ public sealed record HostPaths(string DataDir)
     public string UpdatePending => Path.Combine(DataDir, ".update-pending");
     public string UpdateTrial => Path.Combine(DataDir, ".update-trial");
     public string UpdateResult => Path.Combine(DataDir, ".update-result");
+    public string ServerImportDir => Path.Combine(DataDir, ".server-import");
+    public string Activity => Path.Combine(DataDir, "activity.db");
 }
 
 public sealed record RestoreTarget(string? DbPath);

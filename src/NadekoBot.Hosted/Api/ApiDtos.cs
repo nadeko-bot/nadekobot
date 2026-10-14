@@ -145,6 +145,8 @@ public sealed record FeedEventDto(
 
 public sealed record BackupDto(string FileName, long SizeBytes, DateTime CreatedAt);
 
+public sealed record ServerImportDto(BackupDto Backup, bool XpIncluded, long Rows);
+
 public sealed record WarningDto(
     int Id,
     string UserId,
@@ -211,3 +213,28 @@ public sealed record LogLineDto(DateTime Ts, string Level, string Text);
 public sealed record UpdateAcceptedDto(string Version);
 
 public sealed record DiskUsageDto(long UsedBytes, long TotalBytes);
+
+public sealed record GuildHealthDto(HealthBotDto Bot, IReadOnlyList<HealthCheckDto> Checks, HealthTimersDto Timers);
+
+public sealed record HealthBotDto(string? RoleId, int RolePosition, bool Administrator, IReadOnlyList<string> Missing);
+
+public sealed record HealthCheckDto(
+    string Feature,
+    string Status,
+    string? Issue,
+    string? Permission,
+    string? ChannelId,
+    string? RoleId,
+    int Count);
+
+public sealed record HealthTimersDto(int Mutes, int Bans, int TempRoles, DateTime? NextExpiry);
+
+public sealed record GuildActivityDto(
+    DateTime? Since,
+    IReadOnlyList<ActivityDayDto> Days,
+    IReadOnlyList<TopCommandDto> TopCommands,
+    IReadOnlyList<long> Hours);
+
+public sealed record ActivityDayDto(DateOnly Date, long Commands, long Errors, long Joins, long Leaves, long Warnings);
+
+public sealed record TopCommandDto(string Name, long Count);

@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20261009084134_init")]
+    [Migration("20261014181343_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -1181,6 +1181,8 @@ namespace NadekoBot.Migrations
                     b.HasIndex("ChannelId")
                         .IsUnique();
 
+                    b.HasIndex("GuildId");
+
                     b.ToTable("ImageOnlyChannels");
                 });
 
@@ -1430,6 +1432,8 @@ namespace NadekoBot.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
 
                     b.ToTable("Expressions");
                 });
@@ -1752,6 +1756,8 @@ namespace NadekoBot.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
 
                     b.ToTable("Repeaters");
                 });

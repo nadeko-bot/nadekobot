@@ -54,6 +54,7 @@ public sealed class BackupService(
     private const int RESTORING = 3;
     private const int DELETING = 4;
     private const int UPDATING = 5;
+    private const int SERVER_IMPORTING = 6;
 
     private int _busy;
 
@@ -110,6 +111,22 @@ public sealed class BackupService(
         if (TryBeginInternal(CREATING) is { } busy)
             return busy;
 
+        try
+        {
+            return await CreateLockedAsync(db);
+        }
+        finally
+        {
+            Volatile.Write(ref _busy, IDLE);
+        }
+    }
+
+    // For a caller which already holds the lock, such as a server import.
+    public async Task<BackupResult> CreateLockedAsync(DbService db)
+    {
+        if (target.DbPath is null)
+            return BackupResult.Conflict(ApiErrors.BACKUP_UNSUPPORTED);
+
         var id = Guid.NewGuid();
         var tempDbPath = Path.Combine(paths.BackupDir, $"{SNAPSHOT_TEMP_PREFIX}{id:N}{SNAPSHOT_EXTENSION}");
         var tempZipPath = Path.Combine(paths.BackupDir, $"{BACKUP_TEMP_PREFIX}{id:N}{BackupArchive.BACKUP_EXTENSION}");
@@ -139,7 +156,6 @@ public sealed class BackupService(
         {
             TryDeleteInternal(tempDbPath);
             TryDeleteInternal(tempZipPath);
-            Volatile.Write(ref _busy, IDLE);
         }
     }
 
@@ -265,6 +281,7 @@ public sealed class BackupService(
             IMPORTING => BackupResult.Conflict(ApiErrors.IMPORT_IN_PROGRESS),
             RESTORING => BackupResult.Conflict(ApiErrors.RESTORE_IN_PROGRESS),
             UPDATING => BackupResult.Conflict(ApiErrors.UPDATE_IN_PROGRESS),
+            SERVER_IMPORTING => BackupResult.Conflict(ApiErrors.SERVER_IMPORT_IN_PROGRESS),
             _ => BackupResult.Conflict(ApiErrors.DELETE_IN_PROGRESS)
         };
 
@@ -274,6 +291,13 @@ public sealed class BackupService(
 
     public void EndUpdate()
         => Interlocked.CompareExchange(ref _busy, IDLE, UPDATING);
+
+    // A server import makes a backup and writes the live database, so no other backup work may run meanwhile.
+    public BackupResult? TryBeginServerImport()
+        => TryBeginInternal(SERVER_IMPORTING);
+
+    public void EndServerImport()
+        => Interlocked.CompareExchange(ref _busy, IDLE, SERVER_IMPORTING);
 
     private BackupResult ReleaseInternal(BackupResult result)
     {

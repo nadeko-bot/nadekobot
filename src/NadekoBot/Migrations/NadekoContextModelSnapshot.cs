@@ -1178,6 +1178,8 @@ namespace NadekoBot.Migrations
                     b.HasIndex("ChannelId")
                         .IsUnique();
 
+                    b.HasIndex("GuildId");
+
                     b.ToTable("ImageOnlyChannels");
                 });
 
@@ -1427,6 +1429,8 @@ namespace NadekoBot.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
 
                     b.ToTable("Expressions");
                 });
@@ -1749,6 +1753,8 @@ namespace NadekoBot.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
 
                     b.ToTable("Repeaters");
                 });

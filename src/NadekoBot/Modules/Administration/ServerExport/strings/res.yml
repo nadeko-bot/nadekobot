@@ -1,0 +1,15 @@
+server_export_owner_only: Only the server owner can export the data of this server.
+server_export_self_only: Run this command yourself. An alias, a scheduled command or the AI agent cannot run it.
+server_export_cooldown: You can export the data of this server again {0}.
+server_export_busy: The bot is busy with other exports. Try again in 10 minutes.
+server_export_dm_closed: The bot cannot send you a DM. Allow DMs from server members and try again.
+server_export_preparing: The bot is preparing the data export of **{0}**.
+server_export_dm: |-
+  This is the data export of **{0}**. Import this file on your NadeKloud bot.
+  After the import, remove this bot from the server, so that the two bots do not both act.
+server_export_xp_omitted: 'The file does not contain xp, because the file with xp is too large for Discord. For a full export, contact `@br.eaker` or the admins on the NadekoLog server: {0}'
+server_export_too_large: 'The export is too large for Discord, also without xp. Contact `@br.eaker` or the admins on the NadekoLog server: {0}'
+server_export_sent: The bot sent the data export to your DMs.
+server_export_failed: The export failed. Try again in 10 minutes.
+server_export_saved: The bot saved the export to {0}
+server_export_no_data: The bot has no data for this server.

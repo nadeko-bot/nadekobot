@@ -82,6 +82,7 @@ public static class ApiHost
         services.AddSingleton<BootGuard>();
         services.AddSingleton<CredsStore>();
         services.AddSingleton<BackupService>();
+        services.AddSingleton<ServerImportService>();
         services.AddSingleton<UpdateService>();
         services.AddSingleton<IProcessRestarter, ProcessRestarter>();
         // The program passes the instance which the logger already writes to.
@@ -103,6 +104,7 @@ public static class ApiHost
         AddBotService<DbService>(services);
         AddBotService<IBotCredsProvider>(services);
         services.AddSingleton(static sp => sp.GetRequiredService<BotBridge>().Feed);
+        services.AddSingleton(static sp => sp.GetRequiredService<BotBridge>().Activity);
         services.AddSingleton(static sp =>
         {
             var bridge = sp.GetRequiredService<BotBridge>();

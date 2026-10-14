@@ -48,7 +48,8 @@ stops with exit code 2.
   container uses this mode.
 - **Coordinated** (the coordinator sets `NADEKOBOT_IS_COORDINATED=1`): each
   shard serves only `/api/health` and the server routes, on `port + shardId`.
-  The routes which set xp currency rewards are only in standalone mode.
+  The routes which set xp currency rewards and the server activity route
+  are only in standalone mode.
   For a server of a different shard, the shard answers `421 wrong_shard`.
   A shard without an `apiKey` runs with no API.
 
@@ -73,6 +74,10 @@ stops with exit code 2.
 - Reads and changes bot settings and bot owners, and sets the owner's AI key.
 - Sends the console lines, also while the bot does not start.
 - Manages greets, expressions, quotes, warnings, warn punishments and xp.
+- Shows which server features do not work because the bot cannot see a
+  channel or give a role.
+- Counts commands, command errors, joins and leaves for each server
+  (standalone mode only, in `data/activity.db`, which backups do not contain).
 - Sends a live feed of the commands which users run.
 - Makes, downloads, imports and restores backups.
 - Receives a new release. The supervisor installs it on the next start.

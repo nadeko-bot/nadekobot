@@ -2174,6 +2174,11 @@ namespace NadekoBot.Migrations
                 column: "Username");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Expressions_GuildId",
+                table: "Expressions",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FeedSub_GuildId_Url",
                 table: "FeedSub",
                 columns: new[] { "GuildId", "Url" },
@@ -2261,6 +2266,11 @@ namespace NadekoBot.Migrations
                 table: "ImageOnlyChannels",
                 column: "ChannelId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImageOnlyChannels_GuildId",
+                table: "ImageOnlyChannels",
+                column: "GuildId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LineUpUser_GuildId_ChannelId_DateAdded",
@@ -2380,6 +2390,11 @@ namespace NadekoBot.Migrations
                 name: "IX_Reminders_When",
                 table: "Reminders",
                 column: "When");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Repeaters_GuildId",
+                table: "Repeaters",
+                column: "GuildId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RewardedUsers_PlatformUserId",

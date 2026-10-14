@@ -52,6 +52,13 @@ public static class ApiErrors
 
     public const string DISK_UNAVAILABLE = "disk_unavailable";
 
+    public const string SERVER_IMPORT_IN_PROGRESS = "server_import_in_progress";
+    public const string BAD_EXPORT = "bad_export";
+    public const string GUILD_MISMATCH = "guild_mismatch";
+    public const string EXPORT_TOO_NEW = "export_too_new";
+    public const string SCHEMA_MISMATCH = "schema_mismatch";
+    public const string IMPORT_FAILED = "import_failed";
+
     public static readonly IResult NotFound = Create(NOT_FOUND, StatusCodes.Status404NotFound);
     public static readonly IResult InvalidValue = Create(INVALID_VALUE, StatusCodes.Status400BadRequest);
     public static readonly IResult ChannelNotFound = Create(CHANNEL_NOT_FOUND, StatusCodes.Status400BadRequest);
