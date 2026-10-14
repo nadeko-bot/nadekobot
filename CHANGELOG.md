@@ -2,6 +2,21 @@
 
 *a,c,f,r,o,d*
 
+## [7.6.3] - 14.10.2026
+
+### Added
+
+- `.serverexport` / `.srvexport` sends the server data to the server owner in a DM.
+    - import the file on a NadeKloud bot
+    - once every 24 hours
+    - the bot owner can save a full export with a server id
+
+### Dev
+
+- `NadekoBot.Hosted` can import a server export
+- `NadekoBot.Hosted` has new API routes for server health and activity
+- Added database indexes on the server id of expressions, repeaters and image-only channels
+
 ## [7.6.2] - 13.10.2026
 
 ### Added
