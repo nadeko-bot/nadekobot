@@ -28,6 +28,7 @@ public static class ApiErrors
     public const string TOO_MANY_STREAMS = "too_many_streams";
     public const string DISCORD_UNAVAILABLE = "discord_unavailable";
     public const string LIMIT_REACHED = "limit_reached";
+    public const string TRIGGER_TAKEN = "trigger_taken";
 
     public const string NAME_TAKEN = "name_taken";
     public const string BACKUP_IN_PROGRESS = "backup_in_progress";
@@ -50,6 +51,9 @@ public static class ApiErrors
     public const string VERSION_MISMATCH = "version_mismatch";
     public const string UPDATE_TRIAL_PENDING = "update_trial_pending";
 
+    public const string TOOL_INSTALL_IN_PROGRESS = "tool_install_in_progress";
+    public const string TOOL_CHECK_FAILED = "tool_check_failed";
+
     public const string DISK_UNAVAILABLE = "disk_unavailable";
 
     public const string SERVER_IMPORT_IN_PROGRESS = "server_import_in_progress";
@@ -71,6 +75,7 @@ public static class ApiErrors
     public static readonly IResult DiscordUnavailable = Create(DISCORD_UNAVAILABLE, StatusCodes.Status502BadGateway);
     public static readonly IResult Unauthorized = Create(UNAUTHORIZED, StatusCodes.Status401Unauthorized);
     public static readonly IResult LimitReached = Create(LIMIT_REACHED, StatusCodes.Status409Conflict);
+    public static readonly IResult TriggerTaken = Create(TRIGGER_TAKEN, StatusCodes.Status409Conflict);
 
     public static IResult Create(string code, int status)
         => Results.Json(new ErrorDto(code), ApiJsonContext.Default.ErrorDto, statusCode: status);

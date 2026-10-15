@@ -16,9 +16,15 @@ public sealed partial class YtLoader : INService
     ];
 
     private readonly IHttpClientFactory _httpFactory;
+    private readonly BotPolicy _policy;
+    private readonly PublicOnlyProxy _proxy;
 
-    public YtLoader(IHttpClientFactory httpFactory)
-        => _httpFactory = httpFactory;
+    public YtLoader(IHttpClientFactory httpFactory, BotPolicy policy, PublicOnlyProxy proxy)
+    {
+        _httpFactory = httpFactory;
+        _policy = policy;
+        _proxy = proxy;
+    }
 
     // public async Task<TrackInfo> LoadTrackByIdAsync(string videoId)
     // {
@@ -56,7 +62,10 @@ public sealed partial class YtLoader : INService
     {
         query = Uri.EscapeDataString(query);
 
-        using var http = _httpFactory.CreateClient();
+        // A managed bot with a YouTube proxy sends every YouTube request through it.
+        using var http = _policy.Managed && _proxy.HasYoutubeUpstream
+            ? _httpFactory.CreateClient(AudioFileCacheService.YOUTUBE_HTTP_CLIENT_NAME)
+            : _httpFactory.CreateClient();
         http.DefaultRequestHeaders.Add("Cookie", "CONSENT=YES+cb.20210530-19-p0.en+FX+071;");
 
         byte[] response;

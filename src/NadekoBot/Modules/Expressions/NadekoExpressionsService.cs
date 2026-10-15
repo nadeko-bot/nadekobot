@@ -408,6 +408,9 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
 
     private Task UpdateInternalAsync(ulong? maybeGuildId, NadekoExpression expr)
     {
+        // The row comes from the database, which keeps the placeholder; the cache matches against the real mention.
+        expr.Trigger = expr.Trigger.Replace(MENTION_PH, _client.CurrentUser.Mention);
+
         if (maybeGuildId is { } guildId)
             UpdateInternal(guildId, expr);
         else
@@ -803,6 +806,62 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         return expr;
     }
 
+    public async Task<SetTriggerResult> SetTriggerAsync(ulong? guildId, int id, string trigger, bool replace)
+    {
+        var overrideOn = guildId is { } gid && _expressionOverrideGuilds.Contains(gid);
+        var result = await SetTriggerInDbAsync(_db, guildId, id, trigger, overrideOn, replace);
+        if (result.Expr is not { } expr)
+            return result;
+
+        foreach (var deletedId in result.DeletedIds)
+            await DeleteInternalAsync(guildId, deletedId);
+
+        await UpdateInternalAsync(guildId, expr);
+        return result;
+    }
+
+    // With .exproverride on, a server keeps one expression for each trigger. The check is part of the update, so two
+    // renames at the same time cannot both pass it. Global expressions never use the override.
+    public static async Task<SetTriggerResult> SetTriggerInDbAsync(
+        DbService db,
+        ulong? guildId,
+        int id,
+        string trigger,
+        bool overrideOn,
+        bool replace)
+    {
+        trigger = trigger.Trim().ToLowerInvariant();
+        var unique = overrideOn && guildId is not null;
+
+        await using var ctx = db.GetDbContext();
+        await using var tx = await ctx.Database.BeginTransactionAsync();
+        var table = ctx.GetTable<NadekoExpression>();
+
+        int[] deleted = [];
+        if (unique && replace)
+        {
+            deleted = await table.Where(x => x.GuildId == guildId && x.Trigger == trigger && x.Id != id)
+                                 .DeleteWithOutputAsync(x => x.Id);
+        }
+
+        var target = table.Where(x => x.Id == id && x.GuildId == guildId);
+        if (unique && !replace)
+            target = target.Where(x => !table.Any(o => o.GuildId == guildId && o.Trigger == trigger && o.Id != id));
+
+        var rows = await target.Set(x => x.Trigger, trigger)
+                               .UpdateWithOutputAsync(static (_, inserted) => inserted);
+
+        // Without a commit, the deletes above roll back.
+        if (rows.Length == 0)
+        {
+            var exists = await table.AnyAsyncLinqToDB(x => x.Id == id && x.GuildId == guildId);
+            return new(exists ? SetTriggerStatus.Taken : SetTriggerStatus.NotFound, null, []);
+        }
+
+        await tx.CommitAsync();
+        return new(SetTriggerStatus.Renamed, rows[0], deleted);
+    }
+
 
     public async Task<NadekoExpression?> DeleteAsync(ulong? guildId, int id)
     {
@@ -877,3 +936,12 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
             });
     }
 }
+
+public enum SetTriggerStatus
+{
+    Renamed,
+    NotFound,
+    Taken
+}
+
+public readonly record struct SetTriggerResult(SetTriggerStatus Status, NadekoExpression? Expr, int[] DeletedIds);

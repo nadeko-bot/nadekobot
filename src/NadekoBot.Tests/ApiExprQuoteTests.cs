@@ -4,6 +4,7 @@ using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Db.Models;
 using NadekoBot.Hosted.Endpoints;
+using NadekoBot.Modules.NadekoExpressions;
 using NadekoBot.Tests.Waifu;
 using NUnit.Framework;
 
@@ -62,6 +63,57 @@ public sealed class ApiExprQuoteTests
         Assert.That(page2.Items[0].Trigger, Is.EqualTo("t39"));
 
         Assert.That(ExpressionEndpoints.BuildExprList(exprs, 5, BOT_MENTION).Items, Is.Empty);
+    }
+
+    [Test]
+    public async Task SetTrigger_KeepsDuplicatesUnlessOverrideIsOnThenAsksBeforeReplacing()
+    {
+        var renamed = await InsertExprAsync(1, "old");
+        var other = await InsertExprAsync(1, "hi");
+        var otherServer = await InsertExprAsync(2, "hi");
+
+        var dup = await NadekoExpressionsService.SetTriggerInDbAsync(_db, 1, renamed, "  HI ", false, false);
+        Assert.That((dup.Status, dup.Expr?.Trigger), Is.EqualTo((SetTriggerStatus.Renamed, "hi")));
+        Assert.That(dup.DeletedIds, Is.Empty);
+
+        await NadekoExpressionsService.SetTriggerInDbAsync(_db, 1, renamed, "old", false, false);
+        var taken = await NadekoExpressionsService.SetTriggerInDbAsync(_db, 1, renamed, "hi", true, false);
+        Assert.That(taken.Status, Is.EqualTo(SetTriggerStatus.Taken));
+        Assert.That(await ReadTriggerAsync(renamed), Is.EqualTo("old"));
+
+        var replaced = await NadekoExpressionsService.SetTriggerInDbAsync(_db, 1, renamed, "hi", true, true);
+        Assert.That(replaced.Status, Is.EqualTo(SetTriggerStatus.Renamed));
+        Assert.That(replaced.DeletedIds, Is.EqualTo(new[] { other }));
+        Assert.That(await ReadTriggerAsync(other), Is.Null);
+        Assert.That(await ReadTriggerAsync(otherServer), Is.EqualTo("hi"));
+
+        var wrongServer = await NadekoExpressionsService.SetTriggerInDbAsync(_db, 2, renamed, "x", true, true);
+        Assert.That(wrongServer.Status, Is.EqualTo(SetTriggerStatus.NotFound));
+        Assert.That(await ReadTriggerAsync(otherServer), Is.EqualTo("hi"));
+    }
+
+    private async Task<int> InsertExprAsync(ulong guildId, string trigger)
+    {
+        await using var ctx = _db.GetDbContext();
+        return await ctx.GetTable<NadekoExpression>()
+                        .InsertWithInt32IdentityAsync(() => new NadekoExpression
+                        {
+                            GuildId = guildId,
+                            Trigger = trigger,
+                            Response = "r",
+                            Reactions = "",
+                            AutoDeleteTrigger = false,
+                            DmResponse = false,
+                            ContainsAnywhere = false,
+                            AllowTarget = false
+                        });
+    }
+
+    private async Task<string> ReadTriggerAsync(int id)
+    {
+        await using var ctx = _db.GetDbContext();
+        var expr = await ctx.GetTable<NadekoExpression>().FirstOrDefaultAsyncLinqToDB(x => x.Id == id);
+        return expr?.Trigger;
     }
 
     [Test]

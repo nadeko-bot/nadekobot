@@ -36,6 +36,8 @@ public sealed record HostPaths(string DataDir)
     public string UpdateResult => Path.Combine(DataDir, ".update-result");
     public string ServerImportDir => Path.Combine(DataDir, ".server-import");
     public string Activity => Path.Combine(DataDir, "activity.db");
+    public string ToolsDir => Path.Combine(DataDir, "tools");
+    public string YoutubeProxy => Path.Combine(DataDir, ".youtube-proxy");
 }
 
 public sealed record RestoreTarget(string? DbPath);

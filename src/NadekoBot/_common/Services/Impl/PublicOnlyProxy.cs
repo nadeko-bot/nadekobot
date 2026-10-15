@@ -8,6 +8,8 @@ namespace NadekoBot.Services;
 // A loopback HTTP proxy for yt-dlp, ffmpeg and the music cache. Those programs follow redirects and resolve DNS
 // themselves, so a check of the first URL cannot stop them. The proxy checks the address of each connection
 // after DNS and connects only to the address it checked.
+// A managed bot can also get a YouTube proxy from its manager. YouTube signs each stream URL for the IP which asked
+// for it, so every YouTube connection (yt-dlp, ffmpeg, the cache) goes through it, and never around it.
 public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
 {
     private const int MAX_CONNECTIONS = 256;
@@ -25,6 +27,7 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
     private static readonly byte[] _connectOk = "HTTP/1.1 200 Connection established\r\n\r\n"u8.ToArray();
     private static readonly byte[] _badRequest = CreateStatus("400 Bad Request");
     private static readonly byte[] _forbidden = CreateStatus("403 Forbidden");
+    private static readonly byte[] _badGateway = CreateStatus("502 Bad Gateway");
     private static readonly byte[] _unavailable = CreateStatus("503 Service Unavailable");
 
     private static readonly string[] _droppedHeaders =
@@ -37,27 +40,50 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
     public static readonly string[] BypassEnvVars = ["no_proxy", "NO_PROXY"];
 
     private readonly Func<IPAddress, bool> _isAllowed;
-    private readonly DnsEndPoint? _upstream;
+    private readonly UpstreamProxy? _upstream;
+    private readonly YoutubeUpstreamSetting? _youtube;
+    private readonly YoutubeStats _stats;
     private readonly CancellationTokenSource _cts = new();
     private readonly Lock _startLock = new();
     private TcpListener? _listener;
     private volatile string? _url;
     private int _connections;
 
-    // A managed bot ignores the environment. A self-hosted bot keeps the HTTP proxy which some owners use for YouTube.
+    // A managed bot ignores the environment and takes its YouTube proxy from the manager. A self-hosted bot keeps the
+    // HTTP proxy which some owners use for YouTube.
     public PublicOnlyProxy(BotPolicy policy)
-        : this(UrlExtensions.IsPublicAddress, policy.Managed ? null : ReadUpstreamFromEnvironment())
+        : this(UrlExtensions.IsPublicAddress,
+            policy.Managed ? null : ReadUpstreamFromEnvironment(),
+            policy.Managed ? YoutubeUpstreamSetting.Default : null,
+            YoutubeStats.Shared)
     {
     }
 
-    private PublicOnlyProxy(Func<IPAddress, bool> isAllowed, DnsEndPoint? upstream)
+    private PublicOnlyProxy(
+        Func<IPAddress, bool> isAllowed,
+        UpstreamProxy? upstream,
+        YoutubeUpstreamSetting? youtube,
+        YoutubeStats stats)
     {
         _isAllowed = isAllowed;
         _upstream = upstream;
+        _youtube = youtube;
+        _stats = stats;
     }
 
     public static PublicOnlyProxy WithAddressCheck(Func<IPAddress, bool> isAllowed)
-        => new(isAllowed, null);
+        => new(isAllowed, null, null, new YoutubeStats(TimeProvider.System));
+
+    public static PublicOnlyProxy ForTests(
+        Func<IPAddress, bool> isAllowed,
+        UpstreamProxy? upstream,
+        YoutubeUpstreamSetting? youtube,
+        YoutubeStats stats)
+        => new(isAllowed, upstream, youtube, stats);
+
+    // Whether YouTube traffic must go through this proxy rather than a direct client.
+    public bool HasYoutubeUpstream
+        => _youtube?.Proxy is not null;
 
     public ICredentials? Credentials { get; set; }
 
@@ -102,7 +128,7 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
         }
     }
 
-    private static DnsEndPoint? ReadUpstreamFromEnvironment()
+    private static UpstreamProxy? ReadUpstreamFromEnvironment()
     {
         foreach (var name in _proxyEnvVars)
         {
@@ -110,8 +136,10 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
             if (string.IsNullOrWhiteSpace(value))
                 continue;
 
-            if (Uri.TryCreate(value, UriKind.Absolute, out var uri) && uri.Scheme == Uri.UriSchemeHttp)
-                return new DnsEndPoint(uri.IdnHost, uri.Port);
+            // Older versions ignored a path, so a proxy URL with one still works.
+            if (Uri.TryCreate(value.Trim(), UriKind.Absolute, out var uri)
+                && UpstreamProxy.TryParse(uri.GetLeftPart(UriPartial.Authority) + "/", out var proxy))
+                return proxy;
 
             Log.Warning("Ignoring {Name}: only an http:// proxy can carry music and yt-dlp traffic", name);
             return null;
@@ -184,11 +212,15 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
                 return;
             }
 
-            server = await ConnectCheckedInternalAsync(request.Host, request.Port, headerCts.Token);
+            var youtube = _youtube?.Proxy is { } yt && YoutubeHosts.Matches(request.Host, request.Port) ? yt : null;
+            server = youtube is not null
+                ? await ConnectViaYoutubeInternalAsync(youtube, request.Host, request.Port, headerCts.Token)
+                : await ConnectCheckedInternalAsync(request.Host, request.Port, headerCts.Token);
+
             if (server is null)
             {
                 Log.Debug("Public-only proxy refused {Host}:{Port}", request.Host, request.Port);
-                await clientStream.WriteAsync(_forbidden, headerCts.Token);
+                await clientStream.WriteAsync(youtube is not null ? _badGateway : _forbidden, headerCts.Token);
                 return;
             }
 
@@ -201,7 +233,9 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
             if (total > headLength)
                 await serverStream.WriteAsync(buf.AsMemory(headLength, total - headLength), headerCts.Token);
 
-            await RelayInternalAsync(clientStream, serverStream, server);
+            var bytes = await RelayInternalAsync(clientStream, serverStream, server);
+            if (youtube is not null)
+                _stats.AddProxyBytes(bytes);
         }
         catch (OperationCanceledException)
         {
@@ -365,7 +399,7 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
             connectCts.CancelAfter(_connectTimeout);
 
             var socket = _upstream is { } upstream
-                ? await ConnectViaUpstreamInternalAsync(upstream, address, port, connectCts.Token)
+                ? await ConnectViaUpstreamInternalAsync(upstream, null, FormatTarget(address, port), connectCts.Token)
                 : await ConnectDirectInternalAsync(address, port, connectCts.Token);
 
             if (socket is not null)
@@ -390,24 +424,70 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
         }
     }
 
-    // The upstream proxy gets the checked address, so it cannot resolve the name to a different one.
-    private static async Task<Socket?> ConnectViaUpstreamInternalAsync(
-        DnsEndPoint upstream,
-        IPAddress address,
+    private static string FormatTarget(IPAddress address, int port)
+        => address.AddressFamily == AddressFamily.InterNetworkV6
+            ? $"[{address}]:{port}"
+            : $"{address}:{port}";
+
+    // A YouTube host is on a fixed list of public names, so the YouTube proxy gets the name and resolves it itself:
+    // proxies refuse or flag a CONNECT to a bare IP. The proxy's own address must be public.
+    private async Task<Socket?> ConnectViaYoutubeInternalAsync(
+        UpstreamProxy youtube,
+        string host,
         int port,
+        CancellationToken ct)
+    {
+        IPAddress[] addresses;
+        try
+        {
+            addresses = IPAddress.TryParse(youtube.EndPoint.Host, out var literal)
+                ? [literal]
+                : await Dns.GetHostAddressesAsync(youtube.EndPoint.Host, ct);
+        }
+        catch (SocketException)
+        {
+            addresses = [];
+        }
+
+        foreach (var address in addresses)
+        {
+            if (!_isAllowed(address))
+                continue;
+
+            using var connectCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            connectCts.CancelAfter(_connectTimeout);
+            var endPoint = new IPEndPoint(address, youtube.EndPoint.Port);
+            if (await ConnectViaUpstreamInternalAsync(youtube, endPoint, $"{host}:{port}", connectCts.Token) is { } socket)
+                return socket;
+        }
+
+        Log.Warning("The YouTube proxy {Proxy} did not open a tunnel to {Host}:{Port}",
+            $"{youtube.EndPoint.Host}:{youtube.EndPoint.Port}",
+            host,
+            port);
+        _stats.Record(YoutubeOutcome.ProxyError);
+        return null;
+    }
+
+    // A self-hosted owner's upstream gets the checked address, so it cannot resolve the name to a different one.
+    private static async Task<Socket?> ConnectViaUpstreamInternalAsync(
+        UpstreamProxy upstream,
+        IPEndPoint? resolved,
+        string target,
         CancellationToken ct)
     {
         var socket = new Socket(SocketType.Stream, ProtocolType.Tcp) { NoDelay = true };
         var buf = ArrayPool<byte>.Shared.Rent(MAX_HEADER_BYTES);
         try
         {
-            await socket.ConnectAsync(upstream, ct);
-            var target = address.AddressFamily == AddressFamily.InterNetworkV6
-                ? $"[{address}]:{port}"
-                : $"{address}:{port}";
+            if (resolved is not null)
+                await socket.ConnectAsync(resolved, ct);
+            else
+                await socket.ConnectAsync(upstream.EndPoint, ct);
 
+            var auth = upstream.Authorization is { } a ? $"Proxy-Authorization: {a}\r\n" : string.Empty;
             await using var stream = new NetworkStream(socket, ownsSocket: false);
-            await stream.WriteAsync(Encoding.ASCII.GetBytes($"CONNECT {target} HTTP/1.1\r\nHost: {target}\r\n\r\n"), ct);
+            await stream.WriteAsync(Encoding.ASCII.GetBytes($"CONNECT {target} HTTP/1.1\r\nHost: {target}\r\n{auth}\r\n"), ct);
 
             var (headLength, total) = await ReadHeadInternalAsync(stream, buf, ct);
             if (headLength < 0 || total != headLength || !IsStatus200(buf.AsSpan(0, headLength)))
@@ -435,11 +515,13 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
         return space > 0 && head.Length >= space + 4 && head.Slice(space + 1, 3).SequenceEqual("200"u8);
     }
 
-    private static async Task RelayInternalAsync(Stream client, Stream server, Socket serverSocket)
+    // Returns the bytes moved in both directions.
+    private static async Task<long> RelayInternalAsync(Stream client, Stream server, Socket serverSocket)
     {
         using var idle = new CancellationTokenSource(_idleTimeout);
-        var up = PumpInternalAsync(client, server, idle);
-        var down = PumpInternalAsync(server, client, idle);
+        var moved = new Counter();
+        var up = PumpInternalAsync(client, server, idle, moved);
+        var down = PumpInternalAsync(server, client, idle, moved);
 
         // A client which closes its sending side still waits for the response.
         if (await Task.WhenAny(up, down) == up && up.IsCompletedSuccessfully)
@@ -471,9 +553,16 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
         {
             // closed or timed out
         }
+
+        return Volatile.Read(ref moved.Value);
     }
 
-    private static async Task PumpInternalAsync(Stream from, Stream to, CancellationTokenSource idle)
+    private sealed class Counter
+    {
+        public long Value;
+    }
+
+    private static async Task PumpInternalAsync(Stream from, Stream to, CancellationTokenSource idle, Counter moved)
     {
         var buf = ArrayPool<byte>.Shared.Rent(BUFFER_SIZE);
         try
@@ -485,6 +574,7 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
                     return;
 
                 await to.WriteAsync(buf.AsMemory(0, read), idle.Token);
+                Interlocked.Add(ref moved.Value, read);
                 idle.CancelAfter(_idleTimeout);
             }
         }

@@ -179,7 +179,8 @@ public sealed class MusicPlayer : IMusicPlayer
                             _vc.BitDepth,
                             streamUrl,
                             isLocal,
-                            httpProxy);
+                            httpProxy,
+                            MediaTools.Default.Ffmpeg);
 
                         if (source is null)
                         {

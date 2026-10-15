@@ -29,9 +29,10 @@ public sealed class YtdlOperation
         if (!allowLocalNetwork && !_proxy.TryGetUrl(out proxyUrl))
             return null;
 
+        var tools = MediaTools.Default;
         var psi = new ProcessStartInfo
         {
-            FileName = "yt-dlp",
+            FileName = tools.YtDlp,
             UseShellExecute = false,
             RedirectStandardError = true,
             RedirectStandardOutput = true,
@@ -43,6 +44,15 @@ public sealed class YtdlOperation
         // A config file in the working directory could make yt-dlp run any program.
         if (_ignoreConfig)
             psi.ArgumentList.Add("--ignore-config");
+
+        // YouTube needs a JavaScript runtime. Without an installed one, yt-dlp looks for deno on PATH by itself.
+        if (tools.Deno is { } deno)
+        {
+            psi.ArgumentList.Add("--js-runtimes");
+            psi.ArgumentList.Add("deno:" + deno);
+            psi.Environment["DENO_NO_UPDATE_CHECK"] = "1";
+            psi.Environment["DENO_NO_PROMPT"] = "1";
+        }
 
         if (File.Exists(COOKIES_PATH))
         {
@@ -130,6 +140,9 @@ public sealed class YtdlOperation
             if (!string.IsNullOrEmpty(err))
                 Log.Warning("yt-dlp warning: {YtdlWarning}", err);
 
+            if (!allowLocalNetwork)
+                YoutubeStats.Shared.RecordYtdl(err, !string.IsNullOrWhiteSpace(str));
+
             return str;
         }
         catch (Win32Exception)
@@ -156,14 +169,32 @@ public sealed class YtdlOperation
         Log.Debug("Executing {FileName} {Arguments}", process.StartInfo.FileName, process.StartInfo.Arguments);
         process.Start();
 
+        // A full stderr pipe would block yt-dlp.
+        var stderrTask = process.StandardError.ReadToEndAsync();
+        var gotOutput = false;
+        var finished = false;
         try
         {
             string line;
             while ((line = await process.StandardOutput.ReadLineAsync()) is not null)
+            {
+                gotOutput |= line.Length > 0;
                 yield return line;
+            }
+
+            finished = true;
         }
         finally
         {
+            if (finished)
+            {
+                var err = await stderrTask;
+                if (!string.IsNullOrEmpty(err))
+                    Log.Warning("yt-dlp warning: {YtdlWarning}", err);
+
+                YoutubeStats.Shared.RecordYtdl(err, gotOutput);
+            }
+
             try
             {
                 if (!process.HasExited)

@@ -20,21 +20,30 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
     private const long MAX_CACHE_TRACK_BYTES = 200L * 1024 * 1024;
 
     public const string HTTP_CLIENT_NAME = "music-cache";
+    public const string YOUTUBE_HTTP_CLIENT_NAME = "youtube-proxied";
 
     private readonly AudioFileCacheConfigService _configService;
     private readonly IHttpClientFactory _httpFactory;
     private readonly BotPolicy _policy;
+    private readonly PublicOnlyProxy _proxy;
     private readonly InFlightDict _inFlightDownloads = new();
 
     public AudioFileCacheService(
         AudioFileCacheConfigService configService,
         IHttpClientFactory httpFactory,
-        BotPolicy policy)
+        BotPolicy policy,
+        PublicOnlyProxy proxy)
     {
         _policy = policy;
         _configService = configService;
         _httpFactory = httpFactory;
+        _proxy = proxy;
     }
+
+    // Without a YouTube proxy a managed bot downloads directly, as before. With one, the download must use it: the
+    // stream URL is signed for the proxy's IP.
+    public static string ClientNameFor(BotPolicy policy, PublicOnlyProxy proxy, bool isYoutube)
+        => policy.Managed && isYoutube && proxy.HasYoutubeUpstream ? YOUTUBE_HTTP_CLIENT_NAME : HTTP_CLIENT_NAME;
 
     public Task OnReadyAsync()
     {
@@ -88,7 +97,8 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
 
         // start a new download
         var state = new CacheFileState();
-        var downloadTask = Task.Run(() => DownloadInternalAsync(filePath, partialPath, streamUrlFactory, state));
+        var isYoutube = platform == MusicPlatform.Youtube;
+        var downloadTask = Task.Run(() => DownloadInternalAsync(filePath, partialPath, streamUrlFactory, state, isYoutube));
 
         if (_inFlightDownloads.TryAdd(cacheKey, (downloadTask, state)))
         {
@@ -121,7 +131,8 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
         string finalPath,
         string partialPath,
         Func<Task<string?>> streamUrlFactory,
-        CacheFileState state)
+        CacheFileState state,
+        bool isYoutube)
     {
         var dir = Path.GetDirectoryName(finalPath);
         if (dir is not null)
@@ -140,7 +151,7 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
                     return;
                 }
 
-                using var http = _httpFactory.CreateClient(HTTP_CLIENT_NAME);
+                using var http = _httpFactory.CreateClient(ClientNameFor(_policy, _proxy, isYoutube));
                 http.Timeout = TimeSpan.FromMinutes(10);
 
                 long existingBytes = 0;
@@ -160,6 +171,9 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
 
                 if (response.StatusCode == HttpStatusCode.Forbidden)
                 {
+                    if (isYoutube)
+                        YoutubeStats.Shared.Record(YoutubeOutcome.Forbidden);
+
                     Log.Debug("Stream URL expired (403), will re-resolve on retry {Attempt}/{Max}",
                         attempt + 1, MAX_DOWNLOAD_RETRIES);
                     continue;

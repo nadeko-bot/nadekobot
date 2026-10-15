@@ -81,6 +81,8 @@ stops with exit code 2.
 - Sends a live feed of the commands which users run.
 - Makes, downloads, imports and restores backups.
 - Receives a new release. The supervisor installs it on the next start.
+- Installs new versions of yt-dlp, deno and ffmpeg, and sets a proxy for
+  YouTube traffic. Both are optional.
 
 ## Security
 
@@ -98,6 +100,7 @@ stops with exit code 2.
 
 - A user without root rights, which can write only to `data/`.
 - A port of 1024 or higher.
-- `ffmpeg` and `yt-dlp` on `PATH`.
+- `ffmpeg` and `yt-dlp` on `PATH`, unless the manager installs them over the
+  API. `deno` on `PATH` lets yt-dlp solve the YouTube JavaScript challenges.
 - A data volume without `noexec`, because the update check runs the new
-  program.
+  program and the installed tools run from `data/tools`.

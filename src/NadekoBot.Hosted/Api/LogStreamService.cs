@@ -28,6 +28,8 @@ public sealed class LogStreamService : IDisposable
     private static readonly byte[] _dataPrefix = "data: "u8.ToArray();
     private static readonly byte[] _frameEnd = "\n\n"u8.ToArray();
 
+    private const int MIN_EXTRA_SECRET_LENGTH = 6;
+
     private readonly SseHub _hub = new(BUFFER_CAPACITY, MAX_SUBSCRIBERS, SUBSCRIBER_CAPACITY);
     private readonly TimeProvider _time;
     private readonly CancellationTokenSource _stop = new();
@@ -72,6 +74,17 @@ public sealed class LogStreamService : IDisposable
         }
 
         _secretsKnown.TrySetResult();
+    }
+
+    // Adds one more value to hide, such as a proxy password. It does not release the queue.
+    public void AddSecret(string? secret)
+    {
+        // A very short value would hide common words in every line.
+        if (secret is not { Length: >= MIN_EXTRA_SECRET_LENGTH })
+            return;
+
+        lock (_secretsLock)
+            Volatile.Write(ref _secrets, AddSecretInternal(_secrets, secret));
     }
 
     private static string[] AddSecretInternal(string[] secrets, string? secret)

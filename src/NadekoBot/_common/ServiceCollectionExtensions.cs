@@ -114,6 +114,18 @@ public static class ServiceCollectionExtensions
                     ConnectTimeout = TimeSpan.FromSeconds(10)
                 });
 
+        // A managed bot with a YouTube proxy: YouTube traffic must leave through the IP which resolved the stream.
+        proxySvcs.AddHttpClient(AudioFileCacheService.YOUTUBE_HTTP_CLIENT_NAME)
+            .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+            {
+                Proxy = svcs.Resolve<PublicOnlyProxy>(),
+                UseProxy = true,
+                AllowAutoRedirect = true,
+                MaxAutomaticRedirections = ExternalHttp.MAX_REDIRECTS,
+                AutomaticDecompression = DecompressionMethods.All,
+                ConnectTimeout = TimeSpan.FromSeconds(10)
+            });
+
         proxySvcs.AddHttpClient("memelist")
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {

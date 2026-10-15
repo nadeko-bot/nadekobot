@@ -93,6 +93,7 @@ public static class HostedProgram
             return EXIT_CONFIG_ERROR;
         }
 
+        logs?.AddSecret(new YoutubeUpstreamSetting(paths.YoutubeProxy).Proxy?.Password);
         logs?.AddSecrets(creds.Token, settings.ApiKey);
 
         if (mode == HostMode.Coordinated && !settings.HasKey)

@@ -112,7 +112,9 @@ public sealed record UpdateExprRequest(
     bool? Ca = null,
     bool? Ad = null,
     bool? Dm = null,
-    IReadOnlyList<string>? Reactions = null);
+    IReadOnlyList<string>? Reactions = null,
+    string? Trigger = null,
+    bool? Replace = null);
 
 public sealed record QuoteDto(
     int Id,
@@ -213,6 +215,24 @@ public sealed record LogLineDto(DateTime Ts, string Level, string Text);
 public sealed record UpdateAcceptedDto(string Version);
 
 public sealed record DiskUsageDto(long UsedBytes, long TotalBytes);
+
+public sealed record ToolDto(string Name, string Version, string Digest, long InstalledAt);
+
+public sealed record ToolListDto(ToolDto[] Tools);
+
+public sealed record SetYoutubeProxyRequest(string? Id, string? Url);
+
+public sealed record YoutubeCountsDto(
+    long Ok,
+    long BotCheck,
+    long RateLimited,
+    long Forbidden,
+    long ProxyErrors,
+    long NoJsRuntime,
+    long OtherErrors,
+    long ProxyBytes);
+
+public sealed record YoutubeStatusDto(string? ProxyId, YoutubeCountsDto Hour, YoutubeCountsDto Day);
 
 public sealed record GuildHealthDto(HealthBotDto Bot, IReadOnlyList<HealthCheckDto> Checks, HealthTimersDto Timers);
 

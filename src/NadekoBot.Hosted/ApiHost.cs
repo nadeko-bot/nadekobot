@@ -84,6 +84,10 @@ public static class ApiHost
         services.AddSingleton<BackupService>();
         services.AddSingleton<ServerImportService>();
         services.AddSingleton<UpdateService>();
+        services.AddSingleton(new MediaTools(paths.ToolsDir));
+        services.AddSingleton<ToolService>();
+        services.AddSingleton(new YoutubeUpstreamSetting(paths.YoutubeProxy));
+        services.AddSingleton(YoutubeStats.Shared);
         services.AddSingleton<IProcessRestarter, ProcessRestarter>();
         // The program passes the instance which the logger already writes to.
         if (logs is not null)
@@ -147,6 +151,7 @@ public static class ApiHost
             .MapSystemEndpoints()
             .MapLogEndpoints()
             .MapUpdateEndpoint()
+            .MapMusicToolEndpoints()
             .MapBackupFileEndpoints()
             .MapBackupWriteEndpoints();
 

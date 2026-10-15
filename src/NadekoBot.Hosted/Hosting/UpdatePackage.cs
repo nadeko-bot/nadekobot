@@ -3,7 +3,8 @@ using System.IO.Compression;
 
 namespace NadekoBot.Hosted;
 
-// Unpacks a release tarball (one top-level folder, as `tar -czf x.tar.gz nadeko-hosted-linux-x64` makes it).
+// Unpacks a release tarball (one top-level folder, as `tar -czf x.tar.gz nadeko-hosted-linux-x64` makes it), or a
+// tool package of the same shape.
 public static class UpdatePackage
 {
     public const string EXECUTABLE = "NadekoBot.Hosted";
@@ -34,7 +35,8 @@ public static class UpdatePackage
         string destDir,
         long maxUncompressedBytes,
         long diskBudgetBytes,
-        CancellationToken ct)
+        CancellationToken ct,
+        string executable = EXECUTABLE)
     {
         Directory.CreateDirectory(destDir);
         var root = Path.GetFullPath(destDir);
@@ -95,7 +97,7 @@ public static class UpdatePackage
                         total = AddSizeInternal(total, entry.Length, maxUncompressedBytes);
                         disk = AddDiskInternal(disk, entry.Length, diskBudgetBytes);
                         await WriteFileInternalAsync(entry, path, ct);
-                        SetModeInternal(path, FileModeInternal(relative, entry.Mode));
+                        SetModeInternal(path, FileModeInternal(relative, entry.Mode, executable));
                         fileSizes.Add(relative, entry.Length);
                         break;
 
@@ -118,7 +120,7 @@ public static class UpdatePackage
                         disk = AddDiskInternal(disk, size, diskBudgetBytes);
                         EnsureParentInternal(path);
                         File.Copy(Path.Combine(root, linkRelative), path);
-                        SetModeInternal(path, FileModeInternal(relative, entry.Mode));
+                        SetModeInternal(path, FileModeInternal(relative, entry.Mode, executable));
                         fileSizes.Add(relative, size);
                         break;
 
@@ -138,8 +140,8 @@ public static class UpdatePackage
             throw new InvalidPackageException($"cannot unpack: {ex.Message}");
         }
 
-        if (!fileSizes.ContainsKey(EXECUTABLE))
-            throw new InvalidPackageException($"no {EXECUTABLE} at the top of the package");
+        if (!fileSizes.ContainsKey(executable))
+            throw new InvalidPackageException($"no {executable} at the top of the package");
     }
 
     // Compared before adding, so a crafted size near long.MaxValue cannot overflow past the limit.
@@ -221,10 +223,10 @@ public static class UpdatePackage
             Directory.CreateDirectory(dir);
     }
 
-    private static UnixFileMode FileModeInternal(string relative, UnixFileMode mode)
+    private static UnixFileMode FileModeInternal(string relative, UnixFileMode mode, string executable)
     {
         mode = (mode & ~SPECIAL_BITS) | OWNER_RW;
-        return relative == EXECUTABLE ? mode | EXEC_MODE : mode;
+        return relative == executable ? mode | EXEC_MODE : mode;
     }
 
     private static void SetModeInternal(string path, UnixFileMode mode)

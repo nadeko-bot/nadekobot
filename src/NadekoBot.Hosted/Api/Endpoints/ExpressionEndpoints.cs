@@ -132,7 +132,8 @@ public static class ExpressionEndpoints
         DbService db,
         DiscordSocketClient client)
     {
-        if (!ApiLimits.IsOptionalText(body.Response, ApiLimits.MAX_TEXT_LENGTH))
+        if (!ApiLimits.IsOptionalText(body.Response, ApiLimits.MAX_TEXT_LENGTH)
+            || !ApiLimits.IsOptionalText(body.Trigger, ApiLimits.MAX_KEYWORD_LENGTH))
             return ApiErrors.InvalidValue;
 
         string[]? reactions = null;
@@ -140,6 +141,17 @@ public static class ExpressionEndpoints
             return ApiErrors.InvalidValue;
 
         var guildId = guild?.Id;
+
+        // The rename goes first, so a refused trigger leaves every other field as it was.
+        if (body.Trigger is not null)
+        {
+            var renamed = await svc.SetTriggerAsync(guildId, id, body.Trigger, body.Replace ?? false);
+            if (renamed.Status == SetTriggerStatus.NotFound)
+                return ApiErrors.NotFound;
+            if (renamed.Status == SetTriggerStatus.Taken)
+                return ApiErrors.TriggerTaken;
+        }
+
         var current = await ReadExpressionInternalAsync(db, guildId, id);
         if (current is null)
             return ApiErrors.NotFound;

@@ -61,6 +61,10 @@ namespace NadekoBot.Hosted;
 [JsonSerializable(typeof(LogLineDto))]
 [JsonSerializable(typeof(UpdateAcceptedDto))]
 [JsonSerializable(typeof(DiskUsageDto))]
+[JsonSerializable(typeof(ToolDto))]
+[JsonSerializable(typeof(ToolListDto))]
+[JsonSerializable(typeof(SetYoutubeProxyRequest))]
+[JsonSerializable(typeof(YoutubeStatusDto))]
 [JsonSerializable(typeof(GuildHealthDto))]
 [JsonSerializable(typeof(GuildActivityDto))]
 public sealed partial class ApiJsonContext : JsonSerializerContext;

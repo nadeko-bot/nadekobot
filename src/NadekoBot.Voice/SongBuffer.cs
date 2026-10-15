@@ -26,13 +26,13 @@ namespace NadekoBot.Voice
         // Some environments make ffmpeg skip its proxy for matching hosts.
         private static readonly string[] _proxyBypassEnvVars = ["no_proxy", "NO_PROXY"];
 
-        private FfmpegTrackDataSource(int bitDepth, string streamUrl, bool isLocal, string? httpProxy)
+        private FfmpegTrackDataSource(int bitDepth, string streamUrl, bool isLocal, string? httpProxy, string ffmpeg)
         {
             var pcmType = bitDepth == 16 ? "s16le" : "f32le";
 
             var psi = new ProcessStartInfo
             {
-                FileName = "ffmpeg",
+                FileName = ffmpeg,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = false,
@@ -76,11 +76,16 @@ namespace NadekoBot.Voice
             _p = Process.Start(psi)!;
         }
 
-        public static FfmpegTrackDataSource? Create(int bitDepth, string streamUrl, bool isLocal, string? httpProxy)
+        public static FfmpegTrackDataSource? Create(
+            int bitDepth,
+            string streamUrl,
+            bool isLocal,
+            string? httpProxy,
+            string ffmpeg = "ffmpeg")
         {
             try
             {
-                return new FfmpegTrackDataSource(bitDepth, streamUrl, isLocal, httpProxy);
+                return new FfmpegTrackDataSource(bitDepth, streamUrl, isLocal, httpProxy, ffmpeg);
             }
             catch (System.ComponentModel.Win32Exception)
             {

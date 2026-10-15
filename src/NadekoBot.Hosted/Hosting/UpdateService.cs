@@ -70,7 +70,7 @@ public sealed class UpdateService(HostPaths paths, ApiSettings settings, BackupS
             string actual;
             try
             {
-                actual = await ReceiveInternalAsync(body, ct);
+                actual = await ReceiveToFileAsync(body, paths.UpdateUpload, ct);
             }
             catch (BadHttpRequestException ex)
             {
@@ -187,13 +187,14 @@ public sealed class UpdateService(HostPaths paths, ApiSettings settings, BackupS
         return Math.Max(0, (free - BackupArchive.FREE_SPACE_MARGIN_BYTES - databases) / 2);
     }
 
-    private async Task<string> ReceiveInternalAsync(Stream body, CancellationToken ct)
+    // Writes the body to a new file and returns its SHA-256 in lowercase hex.
+    public static async Task<string> ReceiveToFileAsync(Stream body, string path, CancellationToken ct)
     {
         using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         var buffer = ArrayPool<byte>.Shared.Rent(BUFFER_SIZE);
         try
         {
-            await using var dest = new FileStream(paths.UpdateUpload, FileMode.CreateNew, FileAccess.Write,
+            await using var dest = new FileStream(path, FileMode.CreateNew, FileAccess.Write,
                 FileShare.None, BUFFER_SIZE, useAsync: true);
             int read;
             while ((read = await body.ReadAsync(buffer.AsMemory(0, BUFFER_SIZE), ct)) > 0)

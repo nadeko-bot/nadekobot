@@ -2,6 +2,17 @@
 
 *a,c,f,r,o,d*
 
+## [7.6.4] - 16.10.2026
+
+### Fixed
+
+- YouTube playlists load when yt-dlp prints many warnings.
+- Expressions with `%bot.mention%` in the trigger work after an edit.
+
+### Dev
+
+- `NadekoBot.Hosted` can install yt-dlp, deno and ffmpeg, use a YouTube proxy set by its manager, and rename expression triggers.
+
 ## [7.6.3] - 14.10.2026
 
 ### Added
