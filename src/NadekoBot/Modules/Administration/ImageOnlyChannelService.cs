@@ -75,7 +75,15 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
             catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
             {
                 // disable if bot can't delete messages in the channel
-                await DisableAsync(((ITextChannel)toDelete.Channel).GuildId, toDelete.Channel.Id);
+                try
+                {
+                    await DisableAsync(((ITextChannel)toDelete.Channel).GuildId, toDelete.Channel.Id);
+                }
+                catch (Exception disableEx)
+                {
+                    Log.Warning(disableEx, "Unable to turn off the image-only or link-only channel {ChannelId}",
+                        toDelete.Channel.Id);
+                }
             }
             catch (Exception ex)
             {

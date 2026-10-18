@@ -32,11 +32,14 @@ public class LiveChannelService(
     public async Task OnReadyAsync()
     {
         // Load all existing live channels into memory
-        await using var uow = db.GetDbContext();
-        var configs = await uow.GetTable<LiveChannelConfig>()
-            .AsNoTracking()
-            .Where(Queries.GuildOnShard<LiveChannelConfig>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
-            .ToListAsyncLinqToDB();
+        List<LiveChannelConfig> configs;
+        await using (var uow = db.GetDbContext())
+        {
+            configs = await uow.GetTable<LiveChannelConfig>()
+                .AsNoTracking()
+                .Where(Queries.GuildOnShard<LiveChannelConfig>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
+                .ToListAsyncLinqToDB();
+        }
 
         foreach (var config in configs)
         {
@@ -47,6 +50,11 @@ public class LiveChannelService(
             guildDict[config.ChannelId] = config;
         }
 
+        _ = Task.Run(UpdateLoopInternalAsync);
+    }
+
+    private async Task UpdateLoopInternalAsync()
+    {
         using var timer = new PeriodicTimer(TimeSpan.FromMinutes(10));
         while (await timer.WaitForNextTickAsync())
         {

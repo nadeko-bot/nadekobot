@@ -47,21 +47,35 @@ public class RemindService : INService, IReadyExecutor, IRemindService
         }
     }
 
-    public async Task OnReadyAsync()
+    private static readonly TimeSpan _loopRetryDelay = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan _maxWait = TimeSpan.FromDays(30);
+
+    // Reminders due within this window run together, so the loop never waits for less than it.
+    private static readonly TimeSpan _dueWindow = TimeSpan.FromSeconds(2);
+
+    public Task OnReadyAsync()
+    {
+        _ = Task.Run(ReminderLoopInternalAsync);
+        return Task.CompletedTask;
+    }
+
+    private async Task ReminderLoopInternalAsync()
     {
         while (true)
         {
-            await OnReminderLoopTickInternalAsync();
+            if (!await OnReminderLoopTickInternalAsync())
+                await Task.Delay(_loopRetryDelay);
         }
     }
 
-    private async Task OnReminderLoopTickInternalAsync()
+    // Returns false after an error, so the loop waits before the next try.
+    private async Task<bool> OnReminderLoopTickInternalAsync()
     {
         try
         {
             var reminders = await GetRemindersBeforeAsync();
             if (reminders.Count == 0)
-                return;
+                return true;
 
             Log.Information("Executing {ReminderCount} reminders", reminders.Count);
 
@@ -76,7 +90,10 @@ public class RemindService : INService, IReadyExecutor, IRemindService
         catch (Exception ex)
         {
             Log.Warning(ex, "Error in reminder loop: {ErrorMessage}", ex.Message);
+            return false;
         }
+
+        return true;
     }
 
     private async Task RemoveReminders(IEnumerable<int> reminders)
@@ -88,56 +105,58 @@ public class RemindService : INService, IReadyExecutor, IRemindService
         await uow.SaveChangesAsync();
     }
 
+    // Zero means the reminder is due: it falls in the window which the delete takes.
+    public static TimeSpan GetReminderWait(DateTime when, DateTime now)
+    {
+        if (when <= now + _dueWindow)
+            return TimeSpan.Zero;
+
+        var wait = when - now;
+        return wait > _maxWait ? _maxWait : wait;
+    }
+
     private async Task<IReadOnlyList<Reminder>> GetRemindersBeforeAsync()
     {
         while (true)
         {
             _tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
-            await using var uow = _db.GetDbContext();
-            var earliest = await uow.Set<Reminder>()
-                .ToLinqToDBTable()
-                .Where(Queries.GuildOnShard<Reminder>(x => x.GuildId,
-                    _creds.TotalShards,
-                    _client.ShardId))
-                .OrderBy(x => x.When)
-                .FirstOrDefaultAsyncLinqToDB();
 
-            if (earliest == default)
+            DateTime? earliest;
+            await using (var uow = _db.GetDbContext())
+            {
+                earliest = await uow.GetTable<Reminder>()
+                    .Where(Queries.GuildOnShard<Reminder>(x => x.GuildId,
+                        _creds.TotalShards,
+                        _client.ShardId))
+                    .OrderBy(x => x.When)
+                    .Select(x => (DateTime?)x.When)
+                    .FirstOrDefaultAsyncLinqToDB();
+            }
+
+            if (earliest is null)
             {
                 await _tcs.Task;
                 continue;
             }
 
             var now = DateTime.UtcNow;
-            if (earliest.When > now.AddSeconds(2))
+            var wait = GetReminderWait(earliest.Value, now);
+            if (wait > TimeSpan.Zero)
             {
-                var diff = earliest.When - now;
-                if (diff > TimeSpan.FromDays(30))
-                {
-                    diff = TimeSpan.FromDays(30);
-                }
-                
-                if (diff < TimeSpan.FromSeconds(1))
-                {
-                    Log.Warning("Weird, delay is less than 1");
-                    await Task.Delay(1000);
-                }
-                else
-                {
-                    await Task.WhenAny(Task.Delay(diff), _tcs.Task);
-                    continue;
-                }
+                await Task.WhenAny(Task.Delay(wait), _tcs.Task);
+                continue;
             }
 
-            var reminders = await uow.Set<Reminder>()
-                .ToLinqToDBTable()
-                .Where(Queries.GuildOnShard<Reminder>(x => x.GuildId,
-                    _creds.TotalShards,
-                    _client.ShardId))
-                .Where(x => x.When <= now)
-                .DeleteWithOutputAsync();
-
-            return reminders;
+            var cutoff = now + _dueWindow;
+            await using (var uow = _db.GetDbContext())
+            {
+                return await uow.GetTable<Reminder>()
+                    .Where(Queries.GuildOnShard<Reminder>(x => x.GuildId,
+                        _creds.TotalShards,
+                        _client.ShardId))
+                    .Where(x => x.When <= cutoff)
+                    .DeleteWithOutputAsync();
+            }
         }
     }
 

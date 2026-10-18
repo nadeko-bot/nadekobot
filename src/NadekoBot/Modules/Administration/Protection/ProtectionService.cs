@@ -543,6 +543,12 @@ public class ProtectionService : IReadyExecutor, INService
 
     public async Task OnReadyAsync()
     {
+        await LoadSettingsInternalAsync();
+        _ = Task.Run(RunQueue);
+    }
+
+    private async Task LoadSettingsInternalAsync()
+    {
         await using var uow = _db.GetDbContext();
 
         var gids = _client.GetGuildIds();
@@ -580,8 +586,6 @@ public class ProtectionService : IReadyExecutor, INService
                 IgnoredChannelIds = BuildIgnoredChannelIds(config.IgnoredChannels)
             };
         }
-
-        await RunQueue();
     }
 
     private static FrozenSet<ulong> BuildIgnoredChannelIds(List<AntiSpamIgnore> list)

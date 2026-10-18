@@ -377,6 +377,7 @@ namespace NadekoBot.Migrations
                     ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     Url = table.Column<string>(type: "TEXT", nullable: true),
                     Message = table.Column<string>(type: "TEXT", nullable: true),
+                    FailingSince = table.Column<DateTime>(type: "TEXT", nullable: true),
                     DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>

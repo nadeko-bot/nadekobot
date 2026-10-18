@@ -1,5 +1,6 @@
 acrm_fail: Auto command not found on the specified index.
 autocmd_add: The command {0} will execute every {1}s in this channel.
+autocmd_interval_range: "The interval must be between {0} seconds and {1} days."
 autocmdlist_none: No auto commands on this page.
 bot_name: Bot's name changed to {0}
 bot_status: Bot status changed to {0}

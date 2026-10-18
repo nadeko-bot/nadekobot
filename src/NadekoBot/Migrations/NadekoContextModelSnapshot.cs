@@ -746,6 +746,9 @@ namespace NadekoBot.Migrations
                     b.Property<DateTime?>("DateAdded")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("FailingSince")
+                        .HasColumnType("TEXT");
+
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
 

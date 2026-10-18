@@ -23,8 +23,12 @@ public sealed class GamblingTxTracker(
     private NonBlocking.ConcurrentDictionary<string, (decimal Bet, decimal PaidOut)> globalStats = new();
     private ConcurrentBag<UserBetStats> userStats = new();
 
-    public async Task OnReadyAsync()
-        => await Task.WhenAll(RunUserStatsCollector(), RunBetStatsCollector());
+    public Task OnReadyAsync()
+    {
+        _ = Task.Run(RunUserStatsCollector);
+        _ = Task.Run(RunBetStatsCollector);
+        return Task.CompletedTask;
+    }
 
     public async Task RunBetStatsCollector()
     {
@@ -70,7 +74,7 @@ public sealed class GamblingTxTracker(
 
     private async Task RunUserStatsCollector()
     {
-        var timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
         while (await timer.WaitForNextTickAsync())
         {
             try
@@ -88,6 +92,8 @@ public sealed class GamblingTxTracker(
 
                 // rakeback
                 var rakebacks = new Dictionary<ulong, decimal>();
+
+                await using var uow = db.GetDbContext();
 
                 // update userstats
                 foreach (var (k, x) in users.GroupBy(x => (x.UserId, x.Game))
@@ -107,7 +113,6 @@ public sealed class GamblingTxTracker(
 
 
                     // bulk upsert in the future
-                    await using var uow = db.GetDbContext();
                     await uow.GetTable<UserBetStats>()
                         .InsertOrUpdateAsync(() => new()
                             {
@@ -138,8 +143,7 @@ public sealed class GamblingTxTracker(
 
                 foreach (var (k, v) in rakebacks)
                 {
-                    await db.GetDbContext()
-                        .GetTable<Rakeback>()
+                    await uow.GetTable<Rakeback>()
                         .InsertOrUpdateAsync(() => new()
                             {
                                 UserId = k,

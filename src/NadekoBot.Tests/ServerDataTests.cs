@@ -227,6 +227,7 @@ public sealed class ServerDataTests
             // The shape of an export from a bot before the guild id indexes.
             Exec(db, """
                      DELETE FROM __ServerExportIndex WHERE Name IN ('IX_Expressions_GuildId', 'IX_Repeaters_GuildId', 'IX_ImageOnlyChannels_GuildId');
+                     ALTER TABLE FeedSub DROP COLUMN FailingSince;
                      DELETE FROM __EFMigrationsHistory;
                      INSERT INTO __EFMigrationsHistory VALUES ('20261009084103_reminder-user-guild-index', '9.0.1');
                      """);

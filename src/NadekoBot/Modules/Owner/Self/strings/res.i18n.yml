@@ -1,6 +1,7 @@
 ar:
   acrm_fail: لم يتم العثور على الأمر التلقائي في الفهرس المحدد.
   autocmd_add: 'سيتم تنفيذ الأمر {0} كل {1} ثانية في هذه القناة.'
+  autocmd_interval_range: 'يجب أن تكون الفترة بين {0} ثانية و{1} يومًا.'
   autocmdlist_none: لا توجد أوامر تلقائية في هذه الصفحة.
   bot_name: 'تم تغيير اسم البوت إلى {0}'
   bot_status: 'تم تغيير حالة البوت إلى {0}'
@@ -38,6 +39,7 @@ ar:
 de-DE:
   acrm_fail: Automatischer Befehl für das angegebene Register nicht gefunden.
   autocmd_add: 'Der Befehl {0} wird alle {1}s in diesem Kanal ausgeführt.'
+  autocmd_interval_range: 'Das Intervall muss zwischen {0} Sekunden und {1} Tagen liegen.'
   autocmdlist_none: Keine automatischen Befehle auf dieser Seite.
   bot_name: 'Der Name des Bots wurde zu {0} geändert.'
   bot_status: 'Der Status des Bots wurde zu {0} geändert.'
@@ -75,6 +77,7 @@ de-DE:
 es-ES:
   acrm_fail: No hay comandos en en la página especificada.
   autocmd_add: 'El comando {0} se ejecutará cada {1}s en este canal.'
+  autocmd_interval_range: 'El intervalo debe estar entre {0} segundos y {1} días.'
   autocmdlist_none: No hay comandos automáticos en esta página.
   bot_name: 'El nombre del bot fue cambiado a {0}'
   bot_status: 'Estado del bot cambiado a {0}'
@@ -112,6 +115,7 @@ es-ES:
 fr-FR:
   acrm_fail: Commande automatique introuvable sur l'index spécifié.
   autocmd_add: 'La commande {0} s''exécutera toutes les {1} secondes dans ce salon.'
+  autocmd_interval_range: 'L''intervalle doit être compris entre {0} secondes et {1} jours.'
   autocmdlist_none: Aucune commande automatique sur cette page.
   bot_name: 'Le nom du bot a été changé pour {0}'
   bot_status: 'Le statut du bot a été changé pour {0}'
@@ -149,6 +153,7 @@ fr-FR:
 id-ID:
   acrm_fail: Auto command tidak ditemukan di index yang ditentukan.
   autocmd_add: 'Perintah {0} akan dijalankan setiap {1} detik di channel ini.'
+  autocmd_interval_range: 'Interval harus antara {0} detik dan {1} hari.'
   autocmdlist_none: Tidak ada auto command di halaman ini.
   bot_name: 'Nama bot diubah menjadi {0}'
   bot_status: 'Status bot diubah menjadi {0}'
@@ -186,6 +191,7 @@ id-ID:
 ja-JP:
   acrm_fail: 指定されたインデックスに自動コマンドが見つかりません。
   autocmd_add: 'コマンド{0}がこのチャンネルで{1}秒ごとに実行されます。'
+  autocmd_interval_range: '間隔は{0}秒から{1}日の間で指定してください。'
   autocmdlist_none: このページには自動コマンドがありません。
   bot_name: 'Bot名が《{0}》に変更されました'
   bot_status: 'Botのステータスが{0}に変更されました'
@@ -223,6 +229,7 @@ ja-JP:
 ko-KR:
   acrm_fail: 지정된 인덱스에서 자동 명령을 찾을 수 없어요.
   autocmd_add: '명령어 {0}이(가) 이 채널에서 {1}초마다 실행돼요.'
+  autocmd_interval_range: '간격은 {0}초에서 {1}일 사이여야 해요.'
   autocmdlist_none: 이 페이지에 자동 명령이 없어요.
   bot_name: '봇 이름이 {0}(으)로 변경되었어요'
   bot_status: '봇 상태가 {0}(으)로 변경되었어요'
@@ -260,6 +267,7 @@ ko-KR:
 pl-PL:
   acrm_fail: Nie znaleziono automatycznej komendy pod podanym indeksem.
   autocmd_add: 'Komenda {0} będzie wykonywana co {1}s na tym kanale.'
+  autocmd_interval_range: 'Interwał musi wynosić od {0} sekund do {1} dni.'
   autocmdlist_none: Brak automatycznych komend na tej stronie.
   bot_name: 'Nazwa bota zmieniona na {0}'
   bot_status: 'Status bota zmieniony na {0}'
@@ -297,6 +305,7 @@ pl-PL:
 pt-BR:
   acrm_fail: Comando automático não encontrado com o índice especificado.
   autocmd_add: 'O comando {0} será executado a cada {1}s neste canal.'
+  autocmd_interval_range: 'O intervalo deve ficar entre {0} segundos e {1} dias.'
   autocmdlist_none: Nenhum comando automático nessa página.
   bot_name: 'O nome do bot foi alterado para {0}'
   bot_status: 'O status do bot foi alterado para {0}'
@@ -334,6 +343,7 @@ pt-BR:
 ru-RU:
   acrm_fail: Автоматическая команда не найдена в указанном индексе.
   autocmd_add: 'Команда {0} будет выполняться каждые {1} в этом канале.'
+  autocmd_interval_range: 'Интервал должен быть от {0} секунд до {1} дней.'
   autocmdlist_none: На этой странице нет автоматических команд.
   bot_name: 'Имя бота изменено на {0}'
   bot_status: 'Статус бота изменен на {0}'
@@ -371,6 +381,7 @@ ru-RU:
 sr-Cyrl-RS:
   acrm_fail: Аутоматска команда није пронађена на наведеном индексу.
   autocmd_add: 'Команда {0} ће се извршавати сваких {1}с у овом каналу.'
+  autocmd_interval_range: 'Интервал мора бити између {0} секунди и {1} дана.'
   autocmdlist_none: Нема аутоматских команди на овој страници.
   bot_name: 'Име бота промењено у {0}'
   bot_status: 'Статус бота промењен у {0}'
@@ -408,6 +419,7 @@ sr-Cyrl-RS:
 tr-TR:
   acrm_fail: Belirtilen dizinde otomatik komut bulunamadı.
   autocmd_add: '{0} komutu bu kanalda her {1} saniyede bir çalıştırılacak.'
+  autocmd_interval_range: 'Aralık {0} saniye ile {1} gün arasında olmalı.'
   autocmdlist_none: Bu sayfada otomatik komut yok.
   bot_name: 'Botun adı {0} olarak değiştirildi'
   bot_status: 'Bot durumu {0} olarak değiştirildi'
@@ -445,6 +457,7 @@ tr-TR:
 ts-TS:
   acrm_fail: Auto command not found on the specified index.
   autocmd_add: 'The command {0} will execute every {1}s in this channel.'
+  autocmd_interval_range: 'The interval must be between {0} seconds and {1} days. Hmph, pick a real number.'
   autocmdlist_none: No auto commands on this page.
   bot_name: 'Bot''s name changed to {0}. I-it''s a nice name, I guess.'
   bot_status: 'Bot status changed to {0}'
@@ -482,6 +495,7 @@ ts-TS:
 uk-UA:
   acrm_fail: Автокоманда за вказаним індексом не знайдена.
   autocmd_add: 'Команда {0} виконуватиметься кожні {1}с у цьому каналі.'
+  autocmd_interval_range: 'Інтервал має бути від {0} секунд до {1} днів.'
   autocmdlist_none: На цій сторінці немає автокоманд.
   bot_name: 'Ім''я бота змінено на {0}'
   bot_status: 'Статус бота змінено на {0}'
@@ -519,6 +533,7 @@ uk-UA:
 vi-VN:
   acrm_fail: Không tìm thấy lệnh tự động ở chỉ mục đã chỉ định.
   autocmd_add: 'Lệnh {0} sẽ được thực thi mỗi {1} giây trong kênh này.'
+  autocmd_interval_range: 'Khoảng thời gian phải từ {0} giây đến {1} ngày.'
   autocmdlist_none: Không có lệnh tự động nào trên trang này.
   bot_name: 'Tên bot đã được đổi thành {0}'
   bot_status: 'Trạng thái bot đã được đổi thành {0}'
@@ -556,6 +571,7 @@ vi-VN:
 zh-CN:
   acrm_fail: 未找到指定的索引上的自動執行指令
   autocmd_add: '命令 {0} 將在此頻道中每隔 {1} 執行一次。'
+  autocmd_interval_range: '间隔必须在 {0} 秒到 {1} 天之间。'
   autocmdlist_none: 此頁面上沒有自動命令。
   bot_name: '機器人的名稱更改為 {0}'
   bot_status: '機器人狀態更改為 {0}'

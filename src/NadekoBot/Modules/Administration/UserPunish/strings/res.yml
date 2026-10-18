@@ -31,6 +31,7 @@ sbdm: |-
   You have been soft-banned from {0} server.
   Reason: {1}
 timedout_user: User Timed Out
+timeout_max_days: "A timeout can be at most {0} days."
 timeoutdm: |-
   You have been timed out in {0} server.
   Reason: {1}

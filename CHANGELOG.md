@@ -2,6 +2,26 @@
 
 *a,c,f,r,o,d*
 
+## [7.6.5] - 18.10.2026
+
+### Fixed
+
+- Fixed feeds getting deleted when YouTube was down. Now a feed is deleted only after 3 days of errors.
+- Fixed one failed feed post stopping all feeds until a restart.
+- Fixed `.temprole` sometimes never removing the role.
+- Fixed `.warnpunish` / `.warnp` accepting a `TimeOut` over 28 days, which then always failed. Now it refuses it.
+- Fixed `.timeout` failing with no clear error over 28 days. Now it says the limit is 28 days.
+- Fixed `.acadd` / `.autocmdadd` with an interval over 30 days breaking all auto commands. Now it refuses it.
+- Fixed music repeat retrying a broken track forever. Now the player stops after 3 failed tracks.
+- Fixed image-only and link-only channels stopping after a permission error.
+
+### Dev
+
+- Feed errors and deleted feeds are logged as warnings, with server and channel ids.
+- YouTube feeds are checked about every 10 minutes instead of every 30 seconds.
+- Fixed background loops spamming errors and leaking database connections.
+- `NadekoBot.Hosted` refuses a `timeout` warn punishment over 28 days.
+
 ## [7.6.4] - 16.10.2026
 
 ### Fixed

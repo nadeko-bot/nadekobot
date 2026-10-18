@@ -97,9 +97,18 @@ public sealed class RepeaterService : IReadyExecutor, INService
                 foreach (var chunk in toExecute.Chunk(5))
                     await chunk.Where(x => !_skipNext.TryRemove(x.Repeater.Id)).Select(Trigger).WhenAll();
 
-                // reinsert
+                // reinsert; one failure must not leave the rest due, or they post again every retry
                 foreach (var rep in toExecute)
-                    await HandlePostExecute(rep);
+                {
+                    try
+                    {
+                        await HandlePostExecute(rep);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "Error rescheduling repeater {RepeaterId}", rep.Repeater.Id);
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -606,6 +606,50 @@ public sealed class MuteService : INService, IReadyExecutor
         }
     }
 
+    // Returns true when the unban can work later.
+    private async Task<bool> TryUnbanInternalAsync(UnbanTimer timer)
+    {
+        var guild = _client.GetGuild(timer.GuildId);
+        if (guild is null)
+            return false;
+
+        if (!guild.IsConnected)
+            return true;
+
+        try
+        {
+            await guild.RemoveBanAsync(timer.UserId);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            var retry = TimedAction.ShouldRetry(ex);
+            Log.Warning("Couldn't unban user {UserId} in guild {GuildId} (retry: {Retry}): {ErrorMessage}",
+                timer.UserId,
+                timer.GuildId,
+                retry,
+                ex.Message);
+            return retry;
+        }
+    }
+
+    // The row goes only after the unban, so a failed call cannot leave the member banned for good.
+    private async Task FinishUnbanTimerInternalAsync(int id, DateTime cutoff, bool retry)
+    {
+        await using var uow = _db.GetDbContext();
+
+        // UnbanAt <= cutoff keeps a timer which a new timed ban set while the bot worked.
+        var row = uow.GetTable<UnbanTimer>().Where(x => x.Id == id && x.UnbanAt <= cutoff);
+        if (!retry)
+        {
+            await row.DeleteAsync();
+            return;
+        }
+
+        var retryAt = DateTime.UtcNow + TimedAction.RetryDelay;
+        await row.Set(x => x.UnbanAt, retryAt).UpdateAsync();
+    }
+
     private async Task UnbanLoopInternalAsync()
     {
         while (true)
@@ -651,25 +695,13 @@ public sealed class MuteService : INService, IReadyExecutor
                             _shardData.TotalShards,
                             _shardData.ShardId))
                         .Where(x => x.UnbanAt <= now)
-                        .DeleteWithOutputAsync();
+                        .ToArrayAsyncLinqToDB();
                 }
 
                 foreach (var timer in expired)
                 {
-                    try
-                    {
-                        var guild = _client.GetGuild(timer.GuildId);
-                        if (guild is not null)
-                            await guild.RemoveBanAsync(timer.UserId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Warning(ex,
-                            "Couldn't unban user {UserId} in guild {GuildId}",
-                            timer.UserId,
-                            timer.GuildId);
-                    }
-
+                    var retry = await TryUnbanInternalAsync(timer);
+                    await FinishUnbanTimerInternalAsync(timer.Id, now, retry);
                     await Task.Delay(_actionCooldown);
                 }
             }

@@ -79,14 +79,20 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
 
     public async Task OnReadyAsync()
     {
-        await using var uow = _db.GetDbContext();
+        await using (var uow = _db.GetDbContext())
+        {
+            var channels = await uow.HoneyPotChannels
+                                    .Select(x => new { x.ChannelId, x.Action })
+                                    .ToListAsyncLinqToDB();
 
-        var channels = await uow.HoneyPotChannels
-                                .Select(x => new { x.ChannelId, x.Action })
-                                .ToListAsyncLinqToDB();
+            _channels = new(channels.Select(x => KeyValuePair.Create(x.ChannelId, x.Action)));
+        }
 
-        _channels = new(channels.Select(x => KeyValuePair.Create(x.ChannelId, x.Action)));
+        _ = Task.Run(PunishLoopInternalAsync);
+    }
 
+    private async Task PunishLoopInternalAsync()
+    {
         while (await _punishments.Reader.WaitToReadAsync())
         {
             while (_punishments.Reader.TryRead(out var entry))

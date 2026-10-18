@@ -59,7 +59,8 @@ public static class ServerDataTables
         new("DelMsgOnCmdChannel"),
         new("DiscordPermOverrides"),
         new("Expressions"),
-        new("FeedSub"),
+        // The failure streak belongs to the old bot's checks.
+        new("FeedSub", NullOnExport: ["FailingSince"]),
         new("FlagTranslateChannel"),
         new("FollowedStream"),
         new("GCChannelId"),

@@ -77,8 +77,16 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
 
         autoCommands = uow.Set<AutoCommand>()
             .AsNoTracking()
-            .Where(x => x.Interval >= 5)
+            .Where(x => x.Interval >= MIN_AUTOCMD_INTERVAL)
             .AsEnumerable()
+            .Where(static x =>
+            {
+                if (IsValidAutoCommandInterval(x.Interval))
+                    return true;
+
+                Log.Warning("Skipping auto command {Id}: its interval of {Interval} s is over the limit", x.Id, x.Interval);
+                return false;
+            })
             .GroupBy(x => x.GuildId)
             .ToDictionary(x => x.Key,
                 y => y.ToDictionary(x => x.Id, TimerFromAutoCommand).ToConcurrent())
@@ -102,8 +110,18 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
         await LoadOwnerChannels();
     }
 
+    public const int MIN_AUTOCMD_INTERVAL = 5;
+    public const int MAX_AUTOCMD_INTERVAL_DAYS = 30;
+    private const int MAX_AUTOCMD_INTERVAL = MAX_AUTOCMD_INTERVAL_DAYS * 24 * 60 * 60;
+
+    public static bool IsValidAutoCommandInterval(int seconds)
+        => seconds is >= MIN_AUTOCMD_INTERVAL and <= MAX_AUTOCMD_INTERVAL;
+
     private Timer TimerFromAutoCommand(AutoCommand x)
-        => new(async obj => await ExecuteCommand((AutoCommand)obj), x, x.Interval * 1000, x.Interval * 1000);
+    {
+        var interval = TimeSpan.FromSeconds(x.Interval);
+        return new(async obj => await ExecuteCommand((AutoCommand)obj!), x, interval, interval);
+    }
 
     private async Task ExecuteCommand(AutoCommand cmd)
     {
@@ -129,6 +147,9 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
 
     public void AddNewAutoCommand(AutoCommand cmd)
     {
+        if (cmd.Interval != 0 && !IsValidAutoCommandInterval(cmd.Interval))
+            throw new ArgumentOutOfRangeException(nameof(cmd), cmd.Interval, "Auto command interval is out of range");
+
         using (var uow = _db.GetDbContext())
         {
             uow.Set<AutoCommand>().Add(cmd);

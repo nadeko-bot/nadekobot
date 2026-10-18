@@ -1,6 +1,7 @@
 autocommandadd:
   desc: |-
     Adds a command to the list of commands which will be executed automatically every X seconds.
+    The interval is 5 seconds to 30 days.
   ex:
     - 60 {0}prune 1000
   params:

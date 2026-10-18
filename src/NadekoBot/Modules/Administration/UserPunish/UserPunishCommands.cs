@@ -399,6 +399,12 @@ public partial class Administration
             if (punish is PunishmentAction.TimeOut && timespan is null)
                 return;
 
+            if (punish is PunishmentAction.TimeOut && timespan.Time > UserPunishService.MaxTimeout)
+            {
+                await Response().Error(strs.timeout_max_days(UserPunishService.MAX_TIMEOUT_DAYS)).SendAsync();
+                return;
+            }
+
             var success = await _service.WarnPunish(ctx.Guild.Id, number, punish, timespan);
 
             if (!success)
@@ -902,6 +908,12 @@ public partial class Administration
         [Priority(2)]
         public async Task Timeout(IUser globalUser, ParsedTimespan timespan, [Leftover] string msg = null)
         {
+            if (timespan.Time > UserPunishService.MaxTimeout)
+            {
+                await Response().Error(strs.timeout_max_days(UserPunishService.MAX_TIMEOUT_DAYS)).SendAsync();
+                return;
+            }
+
             var user = await ctx.Guild.GetUserAsync(globalUser.Id);
 
             if (user is null)

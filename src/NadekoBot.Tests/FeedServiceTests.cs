@@ -1,10 +1,19 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeHollow.FeedReader;
 using CodeHollow.FeedReader.Feeds;
 using Discord;
+using LinqToDB;
+using LinqToDB.EntityFrameworkCore;
+using Microsoft.Extensions.Time.Testing;
+using NadekoBot.Db.Models;
 using NadekoBot.Modules.Searches.Services;
+using NadekoBot.Tests.Waifu;
 using NUnit.Framework;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -350,5 +359,162 @@ VI. Gigue 15:19</media:description>
 
             Assert.That(id, Is.EqualTo(expected), expected);
         }
+    }
+
+    private static readonly DateTimeOffset _start = new(2026, 10, 18, 12, 0, 0, TimeSpan.Zero);
+
+    private static FeedHealth CreateHealth(FakeTimeProvider time, params (string Key, string Url)[] feeds)
+    {
+        var health = new FeedHealth(time);
+        Tick(health, feeds);
+        return health;
+    }
+
+    private static void Tick(FeedHealth health, (string Key, string Url)[] feeds)
+    {
+        health.BeginTick();
+        foreach (var (key, url) in feeds)
+            health.Touch(key, url);
+        health.EndTick();
+    }
+
+    [Test]
+    public void PollInterval_FollowsCacheHeaders()
+    {
+        var now = _start;
+
+        using var youtube = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent([]) };
+        youtube.Headers.CacheControl = new() { Public = true, MaxAge = TimeSpan.FromSeconds(900) };
+        youtube.Headers.Age = TimeSpan.FromSeconds(328);
+
+        using var plain = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent([]) };
+
+        using var daily = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent([]) };
+        daily.Headers.CacheControl = new() { MaxAge = TimeSpan.FromDays(1) };
+
+        using var noStore = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent([]) };
+        noStore.Headers.CacheControl = new() { NoStore = true, MaxAge = TimeSpan.FromMinutes(10) };
+
+        Assert.That(FeedHealth.GetPollInterval(FeedHealth.GetFreshness(youtube, now)),
+            Is.EqualTo(TimeSpan.FromSeconds(900 - 328 + 2)));
+        Assert.That(FeedHealth.GetPollInterval(FeedHealth.GetFreshness(plain, now)),
+            Is.EqualTo(FeedHealth.MinPollInterval));
+        Assert.That(FeedHealth.GetPollInterval(FeedHealth.GetFreshness(daily, now)),
+            Is.EqualTo(FeedHealth.MaxPollInterval));
+        Assert.That(FeedHealth.GetPollInterval(FeedHealth.GetFreshness(noStore, now)),
+            Is.EqualTo(FeedHealth.MinPollInterval));
+    }
+
+    [Test]
+    public void FailingFeed_IsRemovedAfterDays_ButNotWhileItsHostIsDown()
+    {
+        var time = new FakeTimeProvider(_start);
+        (string, string)[] feeds =
+        [
+            ("yt-ok", "https://www.youtube.com/feeds/videos.xml?channel_id=UCok"),
+            ("yt-dead", "https://www.youtube.com/feeds/videos.xml?channel_id=UCdead"),
+            ("solo", "https://blog.example.com/rss"),
+            ("down-1", "https://down.example.com/a.xml"),
+            ("down-2", "https://down.example.com/b.xml")
+        ];
+        var health = CreateHealth(time, feeds);
+
+        FeedFailure dead = default, solo = default, down = default;
+        for (var day = 0; day <= 14; day++)
+        {
+            Tick(health, feeds);
+            health.OnSuccess("yt-ok", null);
+            dead = health.OnFailure("yt-dead", 404, null);
+            solo = health.OnFailure("solo", 500, null);
+            down = health.OnFailure("down-1", 404, null);
+            health.OnFailure("down-2", 404, null);
+
+            if (day == 0)
+                Assert.That(dead.StreakStarted && solo.StreakStarted && down.StreakStarted, Is.True);
+
+            var streak = TimeSpan.FromDays(day);
+            Assert.That(dead.Remove, Is.EqualTo(streak >= FeedHealth.RemoveAfter), $"day {day}");
+            Assert.That(solo.Remove, Is.EqualTo(streak >= FeedHealth.RemoveAfter), $"day {day}");
+            Assert.That(down.Remove, Is.EqualTo(streak >= FeedHealth.RemoveAfterHostDown), $"day {day}");
+
+            time.Advance(TimeSpan.FromDays(1));
+        }
+
+        Assert.That(dead.StreakStarted, Is.False);
+    }
+
+    [Test]
+    public void HostPause_FollowsRetryAfter_AndSuccessResetsIt()
+    {
+        var time = new FakeTimeProvider(_start);
+        (string, string)[] feeds =
+        [
+            ("a", "https://www.youtube.com/feeds/videos.xml?channel_id=UCa"),
+            ("b", "https://www.youtube.com/feeds/videos.xml?channel_id=UCb"),
+            ("other", "https://other.example.com/rss")
+        ];
+        var health = CreateHealth(time, feeds);
+
+        health.OnFailure("a", 429, TimeSpan.FromSeconds(120));
+        Assert.That(health.IsDue("b"), Is.False);
+        Assert.That(health.IsDue("other"), Is.True);
+
+        time.Advance(TimeSpan.FromSeconds(121));
+        Assert.That(health.IsDue("b"), Is.True);
+
+        // The success resets the doubling, so the next pause without Retry-After is the first one again.
+        health.OnSuccess("b", null);
+        health.OnFailure("b", 403, null);
+        time.Advance(FeedHealth.FirstHostPause - TimeSpan.FromMinutes(1));
+        Assert.That(health.IsDue("a"), Is.False);
+        time.Advance(TimeSpan.FromMinutes(2));
+        Assert.That(health.IsDue("a"), Is.True);
+
+        Assert.That(FeedHealth.GetHostPause(null, 0), Is.EqualTo(FeedHealth.FirstHostPause));
+        Assert.That(FeedHealth.GetHostPause(null, 1), Is.EqualTo(FeedHealth.FirstHostPause * 2));
+        Assert.That(FeedHealth.GetHostPause(null, 10), Is.EqualTo(FeedHealth.MaxHostPause));
+        Assert.That(FeedHealth.GetHostPause(TimeSpan.FromSeconds(1), 3), Is.EqualTo(FeedHealth.MinHostPause));
+        Assert.That(FeedHealth.GetHostPause(TimeSpan.FromDays(1), 0), Is.EqualTo(FeedHealth.MaxHostPause));
+    }
+
+    [Test]
+    public async Task Streaks_AreSavedAndCleared_AndTheOldestStartLoadsBack()
+    {
+        using var db = new TestDbService();
+        var oldStart = _start.UtcDateTime.AddDays(-1);
+        var now = _start.UtcDateTime;
+
+        await using (var ctx = db.GetDbContext())
+        {
+            await ctx.BulkCopyAsync(new[]
+                {
+                    new FeedSub { GuildId = 1, ChannelId = 1, Url = RSS_URL, FailingSince = oldStart },
+                    new FeedSub { GuildId = 2, ChannelId = 2, Url = RSS_URL },
+                    new FeedSub { GuildId = 3, ChannelId = 3, Url = "https://other.example.com/rss" }
+                });
+        }
+
+        List<FeedSub> rows;
+        await using (var ctx = db.GetDbContext())
+            rows = await ctx.GetTable<FeedSub>().OrderBy(x => x.GuildId).ToListAsyncLinqToDB();
+
+        var started = new HashSet<int> { rows[0].Id, rows[1].Id };
+        await FeedsService.SaveStreaksAsync(db, started, [], now);
+
+        await using (var ctx = db.GetDbContext())
+            rows = await ctx.GetTable<FeedSub>().OrderBy(x => x.GuildId).ToListAsyncLinqToDB();
+
+        Assert.That(started, Is.Empty);
+        Assert.That(rows.Select(x => x.FailingSince), Is.EqualTo(new DateTime?[] { oldStart, now, null }));
+        Assert.That(FeedsService.GetFailingSince(rows.Where(x => x.Url == RSS_URL).ToList()), Is.EqualTo(oldStart));
+
+        var ended = new HashSet<int> { rows[0].Id, rows[1].Id };
+        await FeedsService.SaveStreaksAsync(db, [], ended, now);
+
+        await using (var ctx = db.GetDbContext())
+            rows = await ctx.GetTable<FeedSub>().ToListAsyncLinqToDB();
+
+        Assert.That(ended, Is.Empty);
+        Assert.That(rows.All(x => x.FailingSince is null), Is.True);
     }
 }

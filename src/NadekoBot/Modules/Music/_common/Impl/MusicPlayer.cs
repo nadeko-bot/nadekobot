@@ -13,6 +13,9 @@ public sealed class MusicPlayer : IMusicPlayer
     private const int MAX_SEND_ERRORS = 50;
     private const int ERROR_SLEEP_MS = 200;
 
+    // With repeat on, a track which cannot play comes back at once, so the player stops instead of retrying it.
+    private const int MAX_FAILED_TRACKS_IN_ROW = 3;
+
     public event Func<IMusicPlayer, IQueuedTrackInfo, Task>? OnCompleted;
     public event Func<IMusicPlayer, IQueuedTrackInfo, int, Task>? OnStarted;
     public event Func<IMusicPlayer, Task>? OnQueueStopped;
@@ -99,12 +102,14 @@ public sealed class MusicPlayer : IMusicPlayer
     {
         try
         {
+            var failedInRow = 0;
             while (!IsKilled)
             {
                 var track = _queue.GetCurrent(out var index);
 
                 if (track is null || IsStopped)
                 {
+                    failedInRow = 0;
                     await Task.Delay(500);
                     continue;
                 }
@@ -134,6 +139,7 @@ public sealed class MusicPlayer : IMusicPlayer
                     if (refused)
                     {
                         Log.Warning("Skipped {Track}: its stream is not on a public address", track.Title);
+                        StopAfterFailuresInternal(++failedInRow);
                         continue;
                     }
 
@@ -170,6 +176,7 @@ public sealed class MusicPlayer : IMusicPlayer
                         if (!isLocal && !track.AllowLocalNetwork && !_publicProxy.TryGetUrl(out httpProxy))
                         {
                             Log.Warning("Skipped {Track}: the public-only proxy is not available", track.Title);
+                            StopAfterFailuresInternal(++failedInRow);
                             continue;
                         }
 
@@ -193,6 +200,8 @@ public sealed class MusicPlayer : IMusicPlayer
                         await _songBuffer.BufferAsync(source, cts.Token);
                         songFinished = await RunSendLoopOnThreadAsync(TryReadAndSendPcm);
                     }
+
+                    failedInRow = 0;
                 }
                 catch (OperationCanceledException)
                 {
@@ -244,6 +253,15 @@ public sealed class MusicPlayer : IMusicPlayer
         {
             Log.Error(ex, "PlayLoop crashed");
         }
+    }
+
+    private void StopAfterFailuresInternal(int failedInRow)
+    {
+        if (failedInRow < MAX_FAILED_TRACKS_IN_ROW)
+            return;
+
+        IsStopped = true;
+        Log.Warning("Stopping the music player: {Count} tracks in a row could not play", failedInRow);
     }
 
     private async Task<bool> WaitForVoiceReadyAsync()

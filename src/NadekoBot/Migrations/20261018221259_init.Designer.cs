@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20261014181343_init")]
+    [Migration("20261018221259_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -747,6 +747,9 @@ namespace NadekoBot.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("DateAdded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("FailingSince")
                         .HasColumnType("TEXT");
 
                     b.Property<ulong>("GuildId")

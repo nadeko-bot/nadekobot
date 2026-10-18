@@ -62,4 +62,17 @@ public class RemindServiceTests
             Assert.That(await AddAsync(user, 0), Is.False);
         }
     }
+
+    // A reminder the loop does not wait for must be one the delete takes, or the loop spins until it is due.
+    [Test]
+    public void ReminderWait_IsZeroForEveryReminderInTheDueWindow()
+    {
+        var now = new DateTime(2026, 10, 18, 12, 0, 0, DateTimeKind.Utc);
+
+        Assert.That(RemindService.GetReminderWait(now.AddSeconds(-1), now), Is.EqualTo(TimeSpan.Zero));
+        Assert.That(RemindService.GetReminderWait(now.AddSeconds(1), now), Is.EqualTo(TimeSpan.Zero));
+        Assert.That(RemindService.GetReminderWait(now.AddSeconds(2), now), Is.EqualTo(TimeSpan.Zero));
+        Assert.That(RemindService.GetReminderWait(now.AddMinutes(5), now), Is.EqualTo(TimeSpan.FromMinutes(5)));
+        Assert.That(RemindService.GetReminderWait(now.AddDays(90), now), Is.EqualTo(TimeSpan.FromDays(30)));
+    }
 }

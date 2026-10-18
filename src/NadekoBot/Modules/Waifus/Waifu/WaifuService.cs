@@ -102,7 +102,10 @@ public sealed class WaifuService(
 
     private readonly TimeProvider _timeProvider = timeProvider ?? TimeProvider.System;
 
-    private double CycleHours => configService.Data.CycleHours;
+    // The file value has no bounds; 0 or less would break the cycle maths.
+    private double CycleHours => Math.Max(configService.Data.CycleHours, MIN_CYCLE_HOURS);
+    private const double MIN_CYCLE_HOURS = 1;
+    private static readonly TimeSpan _maxCycleWait = TimeSpan.FromDays(1);
     private double BaseReturnRate => configService.Data.BaseReturnRate;
     private double CyclesPerYear => 365.25 * 24 / CycleHours;
 
@@ -988,7 +991,10 @@ public sealed class WaifuService(
 
                 await CleanupOldCycleDataInternalAsync(currentCycle);
 
+                // Wait at most a day per pass; the next pass finds the same cycle and only waits again.
                 var delay = cycleEnd - _timeProvider.GetUtcNow().UtcDateTime;
+                if (delay > _maxCycleWait)
+                    delay = _maxCycleWait;
                 if (delay > TimeSpan.Zero)
                     await Task.Delay(delay);
             }

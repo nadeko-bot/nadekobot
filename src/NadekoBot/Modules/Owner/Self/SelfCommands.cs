@@ -142,8 +142,14 @@ public partial class Owner
             if (cmdText.StartsWith(prefix + "die", StringComparison.InvariantCulture))
                 return;
 
-            if (interval < 5)
+            if (!SelfService.IsValidAutoCommandInterval(interval))
+            {
+                await Response()
+                    .Error(strs.autocmd_interval_range(SelfService.MIN_AUTOCMD_INTERVAL,
+                        SelfService.MAX_AUTOCMD_INTERVAL_DAYS))
+                    .SendAsync();
                 return;
+            }
 
             var guser = (IGuildUser)ctx.User;
             var cmd = new AutoCommand

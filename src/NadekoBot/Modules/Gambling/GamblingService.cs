@@ -196,12 +196,12 @@ public class GamblingService : INService, IReadyExecutor
         }
     }
 
-    public bool UserHasTimelyReminder(ulong userId)
+    public async Task<bool> UserHasTimelyReminderAsync(ulong userId)
     {
-        var db = _db.GetDbContext();
-        return db.GetTable<Reminder>()
-            .Any(x => x.UserId == userId
-                      && x.Type == ReminderType.Timely);
+        await using var ctx = _db.GetDbContext();
+        return await ctx.GetTable<Reminder>()
+            .AnyAsyncLinqToDB(x => x.UserId == userId
+                                   && x.Type == ReminderType.Timely);
     }
 
     public async Task RemoveAllTimelyClaimsAsync()

@@ -13,6 +13,11 @@ public class FeedSub : DbEntity
     public string Url { get; set; }
 
     public string Message { get; set; }
+
+    /// <summary>
+    /// UTC time of the first failed check in the current failure streak. Null while the feed works.
+    /// </summary>
+    public DateTime? FailingSince { get; set; }
 }
 
 public sealed class FeedSubEntityConfiguration : IEntityTypeConfiguration<FeedSub>

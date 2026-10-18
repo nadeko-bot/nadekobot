@@ -1214,7 +1214,8 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 .ToConcurrent();
         }
 
-        await Task.WhenAll(PresenceUpdateTask(), IgnoreMessageIdsClearTask());
+        _ = Task.Run(PresenceUpdateTask);
+        _ = Task.Run(IgnoreMessageIdsClearTask);
     }
 
     private async Task IgnoreMessageIdsClearTask()
@@ -1222,6 +1223,27 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         using var timer = new PeriodicTimer(TimeSpan.FromHours(1));
         while (await timer.WaitForNextTickAsync())
             _ignoreMessageIds.Clear();
+    }
+
+    private async Task SendPresenceUpdatesInternalAsync(ITextChannel channel)
+    {
+        // Take the lines out first: without Send Messages they are dropped, so the queue cannot grow.
+        if (!PresenceUpdates.TryRemove(channel, out var msgs))
+            return;
+
+        try
+        {
+            if (!((SocketGuild)channel.Guild).CurrentUser.GetPermissions(channel).SendMessages)
+                return;
+
+            var title = GetText(channel.Guild, strs.presence_updates);
+            var desc = string.Join(Environment.NewLine, msgs);
+            await _sender.Response(channel).Confirm(title, desc.TrimTo(2048)!).SendAsync();
+        }
+        catch (Exception ex)
+        {
+            Serilog.Log.Warning("Unable to send presence updates to {ChannelId}: {ErrorMessage}", channel.Id, ex.Message);
+        }
     }
 
     private async Task PresenceUpdateTask()
@@ -1233,24 +1255,11 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
             {
                 var keys = PresenceUpdates.Keys.ToList();
 
-                await keys.Select(channel =>
-                    {
-                        if (!((SocketGuild)channel.Guild).CurrentUser.GetPermissions(channel).SendMessages)
-                            return Task.CompletedTask;
-
-                        if (PresenceUpdates.TryRemove(channel, out var msgs))
-                        {
-                            var title = GetText(channel.Guild, strs.presence_updates);
-                            var desc = string.Join(Environment.NewLine, msgs);
-                            return _sender.Response(channel).Confirm(title, desc.TrimTo(2048)!).SendAsync();
-                        }
-
-                        return Task.CompletedTask;
-                    })
-                    .WhenAll();
+                await keys.Select(SendPresenceUpdatesInternalAsync).WhenAll();
             }
-            catch
+            catch (Exception ex)
             {
+                Serilog.Log.Warning(ex, "Error sending presence updates");
             }
         }
     }

@@ -1,4 +1,3 @@
-﻿#nullable disable
 using CodeHollow.FeedReader;
 using CodeHollow.FeedReader.Feeds;
 using LinqToDB;
@@ -11,109 +10,69 @@ using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Searches.Services;
 
-public sealed partial class FeedsService : INService, IReadyExecutor
+public readonly record struct FeedFetchResult(Feed? Feed, int Status, TimeSpan? Freshness, TimeSpan? RetryAfter);
+
+public sealed partial class FeedsService(
+    DbService db,
+    DiscordSocketClient client,
+    IMessageSenderService sender,
+    ShardData shardData,
+    SearchesConfigService scs,
+    IHttpClientFactory httpFactory,
+    TimeProvider? timeProvider = null) : INService, IReadyExecutor
 {
     public const string USER_AGENT =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 OPR/123.0.0.0 (Edition beta)";
 
-    private const int MAX_FEED_ERRORS = 500;
     private const int MAX_FEED_BYTES = 4 * 1024 * 1024;
     private const int FEED_TIMEOUT_SECONDS = 15;
 
-    private readonly DbService _db;
-    private NonBlocking.ConcurrentDictionary<string, List<FeedSub>> _subs;
-    private readonly DiscordSocketClient _client;
-    private readonly IMessageSenderService _sender;
-    private readonly ShardData _shardData;
-    private readonly SearchesConfigService _scs;
-    private readonly IHttpClientFactory _httpFactory;
+    // Posts at most this many items when the bot is behind.
+    private const int MAX_ITEMS_PER_CHECK = 3;
+    private static readonly TimeSpan _tickInterval = TimeSpan.FromSeconds(10);
 
+    private readonly TimeProvider _time = timeProvider ?? TimeProvider.System;
+    private readonly FeedHealth _health = new(timeProvider ?? TimeProvider.System);
+
+    private NonBlocking.ConcurrentDictionary<string, List<FeedSub>> _subs = new();
     private readonly NonBlocking.ConcurrentDictionary<string, DateTime> _lastPosts = new();
-    private readonly Dictionary<string, uint> _errorCounters = new();
 
-    public FeedsService(
-        DbService db,
-        DiscordSocketClient client,
-        IMessageSenderService sender,
-        ShardData shardData,
-        SearchesConfigService scs,
-        IHttpClientFactory httpFactory)
-    {
-        _db = db;
-        _client = client;
-        _sender = sender;
-        _shardData = shardData;
-        _scs = scs;
-        _httpFactory = httpFactory;
-    }
+    // Only the feed loop uses these.
+    private readonly HashSet<int> _streakStarts = new();
+    private readonly HashSet<int> _streakEnds = new();
+    private readonly List<(string Key, List<FeedSub> Subs)> _due = new();
+    private readonly List<Task> _sendTasks = new();
 
     public async Task OnReadyAsync()
     {
-        await using (var uow = _db.GetDbContext())
+        await using (var uow = db.GetDbContext())
         {
-            var subs = await uow.Set<FeedSub>()
-                .AsQueryable()
-                .Where(Queries.GuildOnShard<FeedSub>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            var subs = await uow.GetTable<FeedSub>()
+                .Where(Queries.GuildOnShard<FeedSub>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
                 .ToListAsyncLinqToDB();
+
             _subs = subs
                 .GroupBy(x => x.Url.ToLower())
                 .ToDictionary(x => x.Key, x => x.ToList())
                 .ToConcurrent();
         }
 
-        await TrackFeeds();
+        foreach (var kvp in _subs)
+            _health.Touch(kvp.Key, kvp.Value[0].Url, GetFailingSince(kvp.Value));
+
+        _ = Task.Run(TrackFeedsLoopInternalAsync);
     }
 
-    private void ClearErrors(string url)
-        => _errorCounters.Remove(url);
-
-    private async Task<uint> AddError(string url, List<FeedSub> subs)
+    public static DateTime? GetFailingSince(List<FeedSub> subs)
     {
-        try
+        DateTime? min = null;
+        foreach (var sub in subs)
         {
-            var newValue = _errorCounters[url] = _errorCounters.GetValueOrDefault(url) + 1;
-
-            if (newValue >= MAX_FEED_ERRORS)
-            {
-                Log.Debug("Feed {FeedUrl} reached {MaxErrors} errors, removing {SubCount} subscription(s)",
-                    url,
-                    MAX_FEED_ERRORS,
-                    subs.Count);
-
-                await using var ctx = _db.GetDbContext();
-                await ctx.GetTable<FeedSub>()
-                    .DeleteAsync(x => subs.Select(s => s.Id).Contains(x.Id));
-
-                _subs.TryRemove(url, out _);
-                ClearErrors(url);
-
-                foreach (var sub in subs)
-                {
-                    try
-                    {
-                        var guild = _client.GetGuild(sub.GuildId);
-                        if (guild is null)
-                            continue;
-
-                        var ch = guild.GetTextChannel(sub.ChannelId);
-                        if (ch is null)
-                            continue;
-
-                        await _sender.Response(ch)
-                            .Error(strs.feed_auto_removed(url))
-                            .SendAsync();
-                    }
-                    catch { }
-                }
-            }
-
-            return newValue;
+            if (sub.FailingSince is { } since && (min is null || since < min))
+                min = since;
         }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Error adding rss errors...");
-            return 0;
-        }
+
+        return min;
     }
 
     private DateTime? GetPubDate(FeedItem item)
@@ -177,139 +136,253 @@ public sealed partial class FeedsService : INService, IReadyExecutor
         embed.WithTitle(title.TrimTo(256));
 
         var desc = feedItem.Description?.StripHtml();
-        if (!string.IsNullOrWhiteSpace(feedItem.Description))
+        if (!string.IsNullOrWhiteSpace(desc))
             embed.WithDescription(desc.TrimTo(2048));
 
         return embed;
     }
 
-    private async Task TrackFeeds()
+    private async Task TrackFeedsLoopInternalAsync()
     {
-        while (true)
+        using var timer = new PeriodicTimer(_tickInterval);
+        do
         {
-            var allSendTasks = new List<Task>(_subs.Count);
-            foreach (var kvp in _subs)
+            try
             {
-                if (kvp.Value.Count == 0)
+                await TrackFeedsTickInternalAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in the feed loop");
+            }
+            finally
+            {
+                _due.Clear();
+                _sendTasks.Clear();
+            }
+        } while (await timer.WaitForNextTickAsync());
+    }
+
+    private async Task TrackFeedsTickInternalAsync()
+    {
+        _health.BeginTick();
+        foreach (var kvp in _subs)
+        {
+            if (kvp.Value.Count == 0)
+                continue;
+
+            _health.Touch(kvp.Key, kvp.Value[0].Url);
+            if (_health.IsDue(kvp.Key))
+                _due.Add((kvp.Key, kvp.Value));
+        }
+
+        _health.EndTick();
+
+        foreach (var (key, subs) in _due)
+        {
+            // A feed checked earlier in this tick may have paused the host.
+            if (!_health.IsDue(key))
+                continue;
+
+            try
+            {
+                await CheckFeedInternalAsync(key, subs);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Error checking feed {FeedUrl}", subs[0].Url);
+            }
+        }
+
+        await Task.WhenAll(_sendTasks);
+        await SaveStreaksAsync(db, _streakStarts, _streakEnds, _time.GetUtcNow().UtcDateTime);
+    }
+
+    private async Task CheckFeedInternalAsync(string key, List<FeedSub> subs)
+    {
+        var rssUrl = subs[0].Url;
+        var result = await FetchFeedAsync(rssUrl);
+        if (result.Feed is not { } feed)
+        {
+            var failure = _health.OnFailure(key, result.Status, result.RetryAfter);
+            if (failure.StreakStarted)
+                MarkStreakInternal(subs, _streakStarts, _streakEnds);
+
+            if (failure.Remove)
+                await RemoveDeadFeedInternalAsync(key, subs, failure.Streak);
+
+            return;
+        }
+
+        if (_health.OnSuccess(key, result.Freshness))
+            MarkStreakInternal(subs, _streakEnds, _streakStarts);
+
+        var items = new List<(FeedItem Item, DateTime LastUpdate)>(MAX_ITEMS_PER_CHECK);
+        foreach (var item in feed.Items)
+        {
+            var pubDate = GetPubDate(item);
+
+            if (pubDate is null)
+                continue;
+
+            items.Add((item, pubDate.Value.ToUniversalTime()));
+
+            if (items.Count >= MAX_ITEMS_PER_CHECK)
+                break;
+        }
+
+        if (items.Count == 0)
+            return;
+
+        if (!_lastPosts.TryGetValue(key, out var lastFeedUpdate))
+        {
+            lastFeedUpdate = _lastPosts[key] = items[0].LastUpdate;
+        }
+
+        var deadSubs = new List<FeedSub>();
+
+        for (var index = 1; index <= items.Count; index++)
+        {
+            var (feedItem, itemUpdateDate) = items[^index];
+            if (itemUpdateDate <= lastFeedUpdate)
+                continue;
+
+            var embed = BuildFeedEmbed(sender.CreateEmbed(), feedItem, rssUrl);
+
+            _lastPosts[key] = itemUpdateDate;
+
+            foreach (var val in subs)
+            {
+                var guild = client.GetGuild(val.GuildId);
+                if (guild is null)
+                {
+                    if (!deadSubs.Contains(val))
+                        deadSubs.Add(val);
+                    continue;
+                }
+
+                var ch = guild.GetTextChannel(val.ChannelId);
+                if (ch is null || !CanPostIn(guild.CurrentUser, ch))
                     continue;
 
-                var rssUrl = kvp.Value.First().Url;
-                try
-                {
-                    var feed = await FetchFeedAsync(rssUrl);
-                    if (feed is null)
-                    {
-                        Log.Debug("Feed {FeedUrl} could not be read", rssUrl);
-                        await AddError(rssUrl, kvp.Value);
-                        continue;
-                    }
-
-                    var items = new List<(FeedItem Item, DateTime LastUpdate)>();
-                    foreach (var item in feed.Items)
-                    {
-                        var pubDate = GetPubDate(item);
-
-                        if (pubDate is null)
-                            continue;
-
-                        items.Add((item, pubDate.Value.ToUniversalTime()));
-
-                        // show at most 3 items if you're behind
-                        if (items.Count > 2)
-                            break;
-                    }
-
-                    if (items.Count == 0)
-                        continue;
-
-                    if (!_lastPosts.TryGetValue(kvp.Key, out var lastFeedUpdate))
-                    {
-                        lastFeedUpdate = _lastPosts[kvp.Key] = items[0].LastUpdate;
-                    }
-
-                    var deadSubs = new List<FeedSub>();
-
-                    for (var index = 1; index <= items.Count; index++)
-                    {
-                        var (feedItem, itemUpdateDate) = items[^index];
-                        if (itemUpdateDate <= lastFeedUpdate)
-                            continue;
-
-                        var embed = BuildFeedEmbed(_sender.CreateEmbed(), feedItem, rssUrl);
-
-                        _lastPosts[kvp.Key] = itemUpdateDate;
-
-                        var tasks = new List<Task>();
-
-                        foreach (var val in kvp.Value)
-                        {
-                            try
-                            {
-                                var guild = _client.GetGuild(val.GuildId);
-                                if (guild is null)
-                                {
-                                    deadSubs.Add(val);
-                                    continue;
-                                }
-
-                                var ch = guild.GetTextChannel(val.ChannelId);
-                                if (ch is null || !CanPostIn(guild.CurrentUser, ch))
-                                    continue;
-
-                                tasks.Add(SendFeedItemInternalAsync(ch, val, embed));
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.Debug(ex,
-                                    "Error sending feed update to {GuildId}/{ChannelId}",
-                                    val.GuildId,
-                                    val.ChannelId);
-                            }
-                        }
-
-                        allSendTasks.Add(tasks.WhenAll());
-                    }
-
-                    if (deadSubs.Count > 0)
-                    {
-                        Log.Debug(
-                            "Removing {Count} feed subscription(s) for {FeedUrl} - bot is no longer in those guilds: {GuildIds}",
-                            deadSubs.Count,
-                            rssUrl,
-                            string.Join(", ", deadSubs.Select(s => s.GuildId)));
-
-                        await using var ctx = _db.GetDbContext();
-                        await ctx.GetTable<FeedSub>()
-                            .DeleteAsync(x => deadSubs.Select(s => s.Id).Contains(x.Id));
-
-                        var deadIds = deadSubs.Select(s => s.Id).ToHashSet();
-                        _subs.AddOrUpdate(kvp.Key,
-                            [],
-                            (_, old) => old.Where(x => !deadIds.Contains(x.Id)).ToList());
-                    }
-
-                    ClearErrors(rssUrl);
-                }
-                catch (Exception ex)
-                {
-                    var errorCount = await AddError(rssUrl, kvp.Value);
-
-                    Log.Debug("An error occured while getting rss stream ({ErrorCount} / {MaxErrors}) {RssFeed}"
-                                + "\n {Message}",
-                        errorCount,
-                        MAX_FEED_ERRORS,
-                        rssUrl,
-                        $"[{ex.GetType().Name}]: {ex.Message}");
-                }
+                _sendTasks.Add(SendFeedItemInternalAsync(ch, val, embed));
             }
+        }
 
-            await Task.WhenAll(Task.WhenAll(allSendTasks), Task.Delay(30000));
+        if (deadSubs.Count > 0)
+        {
+            Log.Debug(
+                "Removing {Count} feed subscription(s) for {FeedUrl} - bot is no longer in those guilds: {GuildIds}",
+                deadSubs.Count,
+                rssUrl,
+                string.Join(", ", deadSubs.Select(s => s.GuildId)));
+
+            var deadIds = deadSubs.Select(s => s.Id).ToHashSet();
+            await using var ctx = db.GetDbContext();
+            await ctx.GetTable<FeedSub>()
+                .Where(x => deadIds.Contains(x.Id))
+                .DeleteAsync();
+
+            _subs.AddOrUpdate(key,
+                [],
+                (_, old) => old.Where(x => !deadIds.Contains(x.Id)).ToList());
+        }
+    }
+
+    private static void MarkStreakInternal(List<FeedSub> subs, HashSet<int> add, HashSet<int> remove)
+    {
+        foreach (var sub in subs)
+        {
+            add.Add(sub.Id);
+            remove.Remove(sub.Id);
+        }
+    }
+
+    // Clears both sets once they are saved; on a database error they stay for the next tick.
+    public static async Task SaveStreaksAsync(DbService db, HashSet<int> started, HashSet<int> ended, DateTime now)
+    {
+        if (started.Count == 0 && ended.Count == 0)
+            return;
+
+        await using var ctx = db.GetDbContext();
+        if (started.Count > 0)
+        {
+            await ctx.GetTable<FeedSub>()
+                .Where(x => started.Contains(x.Id) && x.FailingSince == null)
+                .Set(x => x.FailingSince, (DateTime?)now)
+                .UpdateAsync();
+
+            started.Clear();
+        }
+
+        if (ended.Count > 0)
+        {
+            await ctx.GetTable<FeedSub>()
+                .Where(x => ended.Contains(x.Id))
+                .Set(x => x.FailingSince, (DateTime?)null)
+                .UpdateAsync();
+
+            ended.Clear();
+        }
+    }
+
+    private async Task RemoveDeadFeedInternalAsync(string key, List<FeedSub> subs, TimeSpan streak)
+    {
+        var ids = subs.Select(x => x.Id).ToHashSet();
+
+        // The guild/channel list lets the owner add the feed back from the logs after a wrong removal.
+        Log.Warning("Removing feed {FeedUrl} from {Count} channel(s): it has failed for {Streak}. Channels: {Channels}",
+            subs[0].Url,
+            subs.Count,
+            streak,
+            string.Join(", ", subs.Select(static x => $"{x.GuildId}/{x.ChannelId}")));
+
+        await using (var ctx = db.GetDbContext())
+        {
+            await ctx.GetTable<FeedSub>()
+                .Where(x => ids.Contains(x.Id))
+                .DeleteAsync();
+        }
+
+        _subs.AddOrUpdate(key,
+            [],
+            (_, old) => old.Where(x => !ids.Contains(x.Id)).ToList());
+
+        _health.Forget(key);
+        _lastPosts.TryRemove(key, out _);
+        foreach (var id in ids)
+        {
+            _streakStarts.Remove(id);
+            _streakEnds.Remove(id);
+        }
+
+        foreach (var sub in subs)
+        {
+            try
+            {
+                var guild = client.GetGuild(sub.GuildId);
+                var ch = guild?.GetTextChannel(sub.ChannelId);
+                if (guild is null || ch is null || !CanPostIn(guild.CurrentUser, ch))
+                    continue;
+
+                await sender.Response(ch)
+                    .Error(strs.feed_auto_removed(sub.Url))
+                    .SendAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Warning("Unable to report the removed feed {FeedUrl} in {GuildId}/{ChannelId}: {ErrorMessage}",
+                    sub.Url,
+                    sub.GuildId,
+                    sub.ChannelId,
+                    ex.Message);
+            }
         }
     }
 
     public List<FeedSub> GetFeeds(ulong guildId)
     {
-        using var uow = _db.GetDbContext();
+        using var uow = db.GetDbContext();
 
         return uow.GetTable<FeedSub>()
             .Where(x => x.GuildId == guildId)
@@ -317,23 +390,44 @@ public sealed partial class FeedsService : INService, IReadyExecutor
             .ToList();
     }
 
-    public async Task<Feed?> FetchFeedAsync(string url)
+    public async Task<FeedFetchResult> FetchFeedAsync(string url)
     {
         if (!UrlExtensions.IsPublicUrl(url))
-            return null;
+            return default;
 
-        using var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
+        using var http = httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
         http.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", USER_AGENT);
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(FEED_TIMEOUT_SECONDS));
         try
         {
-            var data = await http.GetBytesLimitedAsync(url, MAX_FEED_BYTES, cts.Token);
-            return data is null ? null : FeedReader.ReadFromByteArray(data);
+            using var res = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+            var status = (int)res.StatusCode;
+            var now = _time.GetUtcNow();
+            if (!res.IsSuccessStatusCode)
+                return new(null, status, null, FeedHealth.GetRetryAfter(res, now));
+
+            if (await ExternalHttp.ReadLimitedAsync(res.Content, MAX_FEED_BYTES, cts.Token) is not { } data)
+                return new(null, status, null, null);
+
+            try
+            {
+                var feed = FeedReader.ReadFromByteArray(data.Buffer.AsSpan(0, data.Length).ToArray());
+                return new(feed, status, FeedHealth.GetFreshness(res, now), null);
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex, "Unable to parse feed {FeedUrl}", url);
+                return new(null, status, null, null);
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(data.Buffer);
+            }
         }
         catch (Exception ex)
         {
             Log.Debug(ex, "Unable to read feed {FeedUrl}", url);
-            return null;
+            return default;
         }
     }
 
@@ -341,7 +435,7 @@ public sealed partial class FeedsService : INService, IReadyExecutor
         ulong guildId,
         ulong channelId,
         string rssFeed,
-        string message)
+        string? message)
     {
         ArgumentNullException.ThrowIfNull(rssFeed, nameof(rssFeed));
 
@@ -350,13 +444,13 @@ public sealed partial class FeedsService : INService, IReadyExecutor
         if (!UrlExtensions.IsPublicUrl(feedUrl))
             return FeedAddResult.Invalid;
 
-        await using var uow = _db.GetDbContext();
+        await using var uow = db.GetDbContext();
         if (await uow.GetTable<FeedSub>().AnyAsyncLinqToDB(x => x.GuildId == guildId &&
                                                                 x.Url.ToLower() == feedUrl.ToLower()))
             return FeedAddResult.Duplicate;
 
         var count = await uow.GetTable<FeedSub>().CountAsyncLinqToDB(x => x.GuildId == guildId);
-        if (count >= _scs.Data.MaxFeeds)
+        if (count >= scs.Data.MaxFeeds)
             return FeedAddResult.LimitReached;
 
         var fs = await uow.GetTable<FeedSub>()
@@ -380,7 +474,7 @@ public sealed partial class FeedsService : INService, IReadyExecutor
         if (index < 0)
             return false;
 
-        using var uow = _db.GetDbContext();
+        using var uow = db.GetDbContext();
         var items = uow.Set<FeedSub>()
             .Where(x => x.GuildId == guildId)
             .OrderBy(x => x.Id)
@@ -409,7 +503,7 @@ public sealed partial class FeedsService : INService, IReadyExecutor
     {
         try
         {
-            await _sender.Response(ch)
+            await sender.Response(ch)
                 .Embed(embed)
                 .Text(string.IsNullOrWhiteSpace(sub.Message) ? string.Empty : sub.Message)
                 .Mentions(TemplateMentions.FromTemplate(sub.Message))
@@ -423,11 +517,19 @@ public sealed partial class FeedsService : INService, IReadyExecutor
                 sub.GuildId,
                 sub.ChannelId);
 
-            await using var ctx = _db.GetDbContext();
+            await using var ctx = db.GetDbContext();
             await ctx.GetTable<FeedSub>().DeleteAsync(x => x.Id == sub.Id);
             _subs.AddOrUpdate(sub.Url.ToLower(),
                 [],
                 (_, old) => old.Where(x => x.Id != sub.Id).ToList());
+        }
+        catch (Exception ex)
+        {
+            Log.Warning("Unable to post feed {FeedUrl} to {GuildId}/{ChannelId}: {ErrorMessage}",
+                sub.Url,
+                sub.GuildId,
+                sub.ChannelId,
+                ex.Message);
         }
     }
 
@@ -460,7 +562,7 @@ public sealed partial class FeedsService : INService, IReadyExecutor
 
         try
         {
-            using var http = _httpFactory.CreateClient();
+            using var http = httpFactory.CreateClient();
             http.Timeout = TimeSpan.FromSeconds(YT_RESOLVE_TIMEOUT_SECONDS);
             http.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", USER_AGENT);
 

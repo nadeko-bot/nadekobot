@@ -24,6 +24,8 @@ public class EventOptions : INadekoCommandOptions
         HelpText = "Number of hours the event should run for. Default 24.")]
     public int Hours { get; set; } = 24;
 
+    // The event timer refuses durations over ~49.7 days.
+    public const int MAX_HOURS = 30 * 24;
 
     public void NormalizeOptions()
     {
@@ -33,6 +35,8 @@ public class EventOptions : INadekoCommandOptions
             PotSize = 0;
         if (Hours <= 0)
             Hours = 24;
+        if (Hours > MAX_HOURS)
+            Hours = MAX_HOURS;
         if (PotSize != 0 && PotSize < Amount)
             PotSize = 0;
     }

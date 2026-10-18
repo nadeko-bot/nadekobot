@@ -18,6 +18,10 @@ public class UserPunishService : INService, IReadyExecutor
     private readonly IReplacementService _repSvc;
     private readonly TempRoleService _tempRoleService;
 
+    // Discord refuses a longer timeout.
+    public const int MAX_TIMEOUT_DAYS = 28;
+    public static readonly TimeSpan MaxTimeout = TimeSpan.FromDays(MAX_TIMEOUT_DAYS);
+
     public event Func<Warning, Task> OnUserWarned = static delegate { return Task.CompletedTask; };
 
     public UserPunishService(
@@ -396,7 +400,7 @@ public class UserPunishService : INService, IReadyExecutor
         if (punish is PunishmentAction.AddRole && role is null)
             return false;
 
-        if (punish is PunishmentAction.TimeOut && time is null)
+        if (punish is PunishmentAction.TimeOut && (time is null || time > MaxTimeout))
             return false;
 
         var timeMinutes = (int?)time?.TotalMinutes ?? 0;

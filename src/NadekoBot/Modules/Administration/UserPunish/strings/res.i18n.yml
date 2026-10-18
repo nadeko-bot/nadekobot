@@ -26,6 +26,7 @@ ar:
     لقد تم حظرك مؤقتًا من خادم {0}.
     السبب: {1}
   timedout_user: تم تقييد المستخدم مؤقتًا
+  timeout_max_days: 'يمكن أن يكون التقييد المؤقت {0} يومًا كحد أقصى.'
   timeoutdm: |-
     لقد تم تقييدك مؤقتًا في خادم {0}.
     السبب: {1}
@@ -88,6 +89,7 @@ de-DE:
     Du wurdest soft-banned vom {0} Server.
     Grund: {1}
   timedout_user: Benutzer mit Timeout
+  timeout_max_days: 'Ein Timeout kann höchstens {0} Tage dauern.'
   timeoutdm: |-
     Du hast einen Timeout auf dem Server {0} erhalten.
     Grund: {1}
@@ -150,6 +152,7 @@ es-ES:
     Has sido expulsado del servidor {0}.
     Razón: {1}
   timedout_user: Usuario con Timeout
+  timeout_max_days: 'Un timeout puede durar como máximo {0} días.'
   timeoutdm: |-
     Has recibido un timeout en el servidor {0}.
     Razón: {1}
@@ -212,6 +215,7 @@ fr-FR:
     Vous avez été radié du serveur {0}.
     Raison : {1}
   timedout_user: Utilisateur en Timeout
+  timeout_max_days: 'Un timeout peut durer au maximum {0} jours.'
   timeoutdm: |-
     Vous avez reçu un timeout sur le serveur {0}.
     Raison : {1}
@@ -274,6 +278,7 @@ id-ID:
     Kamu telah di-softban dari server {0}.
     Alasan: {1}
   timedout_user: User Di-timeout
+  timeout_max_days: 'Timeout maksimal {0} hari.'
   timeoutdm: |-
     Kamu telah di-timeout di server {0}.
     Alasan: {1}
@@ -336,6 +341,7 @@ ja-JP:
     あなたは《{0}》サーバーからソフトBANされました。
     理由: {1}
   timedout_user: タイムアウトされたユーザー
+  timeout_max_days: 'タイムアウトは最大{0}日までです。'
   timeoutdm: |-
     サーバー{0}でタイムアウトを受けました。
     理由: {1}
@@ -398,6 +404,7 @@ ko-KR:
     {0} 서버에서 소프트 밴되었습니다.
     사유: {1}
   timedout_user: 사용자 타임아웃됨
+  timeout_max_days: '타임아웃은 최대 {0}일까지 가능해요.'
   timeoutdm: |-
     {0} 서버에서 타임아웃되었습니다.
     사유: {1}
@@ -460,6 +467,7 @@ pl-PL:
     Zostałeś miękko zbanowany na serwerze {0}.
     Powód: {1}
   timedout_user: Użytkownik wyciszony czasowo
+  timeout_max_days: 'Timeout może trwać maksymalnie {0} dni.'
   timeoutdm: |-
     Otrzymałeś wyciszenie czasowe na serwerze {0}.
     Powód: {1}
@@ -522,6 +530,7 @@ pt-BR:
     Você foi temporariamente banido do servidor {0}.
     Motivo: {1}
   timedout_user: Usuário com Timeout
+  timeout_max_days: 'Um timeout pode durar no máximo {0} dias.'
   timeoutdm: |-
     Você recebeu timeout no servidor {0}.
     Motivo: {1}
@@ -584,6 +593,7 @@ ru-RU:
     Вы были заблокированы на сервере {0}.
     Причина: {1}
   timedout_user: Пользователь с Тайм-аутом
+  timeout_max_days: 'Тайм-аут может длиться не более {0} дней.'
   timeoutdm: |-
     Вы получили тайм-аут на сервере {0}.
     Причина: {1}
@@ -646,6 +656,7 @@ sr-Cyrl-RS:
     Софт-банован/а си са сервера {0}.
     Разлог: {1}
   timedout_user: Корисник искључен на одређено време
+  timeout_max_days: 'Тајмаут може трајати највише {0} дана.'
   timeoutdm: |-
     Искључен/а си на одређено време на серверу {0}.
     Разлог: {1}
@@ -708,6 +719,7 @@ tr-TR:
     {0} sunucusundan geçici olarak yasaklandın.
     Sebep: {1}
   timedout_user: Kullanıcı Zaman Aşımına Uğratıldı
+  timeout_max_days: 'Bir zaman aşımı en fazla {0} gün olabilir.'
   timeoutdm: |-
     {0} sunucusunda zaman aşımına uğratıldın.
     Sebep: {1}
@@ -770,6 +782,7 @@ ts-TS:
     You have been soft-banned from {0} server.
     Reason: {1}
   timedout_user: User Timed Out
+  timeout_max_days: 'A timeout can be at most {0} days. Discord''s rule, not mine.'
   timeoutdm: |-
     You have been timed out in {0} server.
     Reason: {1}
@@ -832,6 +845,7 @@ uk-UA:
     Тебе було софт-банено на сервері {0}.
     Причина: {1}
   timedout_user: Тайм-аут користувача
+  timeout_max_days: 'Тайм-аут може тривати не більше {0} днів.'
   timeoutdm: |-
     Тебе було відправлено в тайм-аут на сервері {0}.
     Причина: {1}
@@ -894,6 +908,7 @@ vi-VN:
     Bạn đã bị cấm tạm khỏi máy chủ {0}.
     Lý do: {1}
   timedout_user: Người dùng đã bị hạn chế thời gian
+  timeout_max_days: 'Thời gian timeout tối đa là {0} ngày.'
   timeoutdm: |-
     Bạn đã bị hạn chế thời gian trong máy chủ {0}.
     Lý do: {1}
@@ -956,6 +971,7 @@ zh-CN:
     你已被 {0} 伺服器軟性停權。
     理由：{1}
   timedout_user: 使用者已暫停
+  timeout_max_days: '暂停最多只能 {0} 天。'
   timeoutdm: |-
     您在伺服器 {0} 中被暫停。
     原因：{1}

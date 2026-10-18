@@ -13,6 +13,8 @@ namespace NadekoBot.Services;
 public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
 {
     private const int MAX_CONNECTIONS = 256;
+    private static readonly TimeSpan _minAcceptRetry = TimeSpan.FromMilliseconds(100);
+    private static readonly TimeSpan _maxAcceptRetry = TimeSpan.FromSeconds(5);
     private const int MAX_HEADER_BYTES = 16 * 1024;
     private const int BUFFER_SIZE = 16 * 1024;
     private const int LISTEN_BACKLOG = 512;
@@ -152,12 +154,14 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
     {
         var listener = _listener!;
         var ct = _cts.Token;
+        var acceptRetry = _minAcceptRetry;
         while (!ct.IsCancellationRequested)
         {
             Socket client;
             try
             {
                 client = await listener.AcceptSocketAsync(ct);
+                acceptRetry = _minAcceptRetry;
             }
             catch (OperationCanceledException)
             {
@@ -165,8 +169,10 @@ public sealed class PublicOnlyProxy : IWebProxy, INService, IDisposable
             }
             catch (Exception ex)
             {
+                // A lasting failure (no free file handles) would log 10 times per second without the backoff.
                 Log.Warning(ex, "Public-only proxy failed to accept a connection");
-                await Task.Delay(100, CancellationToken.None);
+                await Task.Delay(acceptRetry, CancellationToken.None);
+                acceptRetry = acceptRetry * 2 > _maxAcceptRetry ? _maxAcceptRetry : acceptRetry * 2;
                 continue;
             }
 

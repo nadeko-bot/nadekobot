@@ -103,19 +103,26 @@ public sealed class GiveawayService : INService, IReadyExecutor
     public async Task OnReadyAsync()
     {
         // load giveaways for this shard from the database
-        await using var ctx = _db.GetDbContext();
-
-        var gas = await ctx
+        GiveawayModel[] gas;
+        await using (var ctx = _db.GetDbContext())
+        {
+            gas = await ctx
                         .GetTable<GiveawayModel>()
                         .Where(Queries.GuildOnShard<GiveawayModel>(x => x.GuildId, _creds.TotalShards, _client.ShardId))
                         .ToArrayAsync();
+        }
 
         lock (_giveawayLock)
         {
             _giveawayCache = new(gas, _endsAtComparer);
         }
 
-        var timer = new PeriodicTimer(TimeSpan.FromMinutes(1));
+        _ = Task.Run(EndLoopInternalAsync);
+    }
+
+    private async Task EndLoopInternalAsync()
+    {
+        using var timer = new PeriodicTimer(TimeSpan.FromMinutes(1));
 
         while (await timer.WaitForNextTickAsync())
         {

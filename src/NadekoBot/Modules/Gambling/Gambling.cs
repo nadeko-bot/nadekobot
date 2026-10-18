@@ -189,7 +189,7 @@ public partial class Gambling : GamblingModule<GamblingService>
             }
             cb.AddRow(row);
         }
-        if (!_service.UserHasTimelyReminder(ctx.User.Id))
+        if (!await _service.UserHasTimelyReminderAsync(ctx.User.Id))
         {
             var secondRow = new ActionRowBuilder();
             secondRow.WithButton(inter.Button);
@@ -275,7 +275,7 @@ public partial class Gambling : GamblingModule<GamblingService>
             var interaction = CreateRemindMeInteraction(remainder.TotalMilliseconds);
 
             // Removes timely button if there is a timely reminder in DB
-            if (_service.UserHasTimelyReminder(ctx.User.Id))
+            if (await _service.UserHasTimelyReminderAsync(ctx.User.Id))
             {
                 interaction = null;
             }

@@ -125,6 +125,7 @@ softban:
 timeout:
   desc: |-
     Times the user out for the specified amount of time. You may optionally specify a reason, which will be sent to the user.
+    A timeout can be at most 28 days.
   ex:
     - '@Someone 3h Shut up!'
     - '@Someone 1h30m'
@@ -264,6 +265,7 @@ warnlogall:
 warnpunish:
   desc: |-
     Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or 'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut
+    A TimeOut can be at most 28 days.
   ex:
     - 3
     - 5 Ban

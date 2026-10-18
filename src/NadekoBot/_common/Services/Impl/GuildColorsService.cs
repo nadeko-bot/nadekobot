@@ -31,8 +31,8 @@ public sealed class GuildColorsService : IReadyExecutor, IGuildColorsService, IN
     public async Task SetOkColor(ulong guildId, Rgba32? color)
     {
         var toInsert = color?.ToHex();
-        await _db.GetDbContext()
-                 .GetTable<GuildColors>()
+        await using var ctx = _db.GetDbContext();
+        await ctx.GetTable<GuildColors>()
                  .InsertOrUpdateAsync(() => new()
                      {
                          GuildId = guildId,
@@ -59,8 +59,8 @@ public sealed class GuildColorsService : IReadyExecutor, IGuildColorsService, IN
     public async Task SetErrorColor(ulong guildId, Rgba32? color)
     {
         var toInsert = color?.ToHex();
-        await _db.GetDbContext()
-                 .GetTable<GuildColors>()
+        await using var ctx = _db.GetDbContext();
+        await ctx.GetTable<GuildColors>()
                  .InsertOrUpdateAsync(() => new()
                      {
                          GuildId = guildId,
@@ -87,8 +87,8 @@ public sealed class GuildColorsService : IReadyExecutor, IGuildColorsService, IN
     public async Task SetPendingColor(ulong guildId, Rgba32? color)
     {
         var toInsert = color?.ToHex();
-        await _db.GetDbContext()
-                 .GetTable<GuildColors>()
+        await using var ctx = _db.GetDbContext();
+        await ctx.GetTable<GuildColors>()
                  .InsertOrUpdateAsync(() => new()
                      {
                          GuildId = guildId,

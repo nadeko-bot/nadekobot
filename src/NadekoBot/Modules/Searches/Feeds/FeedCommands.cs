@@ -69,7 +69,7 @@ public partial class Searches
             if (!((IGuildUser)ctx.User).GetPermissions(channel).MentionEveryone)
                 message = message?.SanitizeTemplateMentions();
 
-            if (await _service.FetchFeedAsync(url) is null)
+            if ((await _service.FetchFeedAsync(url)).Feed is null)
             {
                 await Response().Error(strs.feed_cant_parse).SendAsync();
                 return;
