@@ -114,6 +114,33 @@ public class AiAgentPromptCacheTests
         Assert.That(second[^1], Does.Contain("\"tool\"").And.Contain("bot-posted"));
     }
 
+    [Test]
+    public async Task Session_CustomHeaderPlaceholdersUseTheGuildChannelAndUser()
+    {
+        var handler = new ScriptedHandler(
+            """{"choices":[{"message":{"role":"assistant","content":"done"},"finish_reason":"stop"}]}""");
+
+        var session = CreateSession(handler);
+        var prompt = new AiAgentPrompt("SYSTEM", "CONTEXT", null, "TURN", "REQUEST");
+        var config = new AiAgentConfig
+        {
+            CustomHeaders = new()
+            {
+                ["X-OpenRouter-Title"] = "Nadeko",
+                ["x-opencode-session"] = "nadeko-%channel.id%",
+                ["X-Ids"] = "%server.id%/%channel.id%/%user.id%"
+            }
+        };
+
+        var result = await session.RunAsync(prompt, CreateContext(guildId: 7, channelId: CHANNEL_ID, userId: 100), [], [], config);
+
+        Assert.That(result.IsT0, Is.True);
+        var headers = handler.Headers.Single();
+        Assert.That(headers["X-OpenRouter-Title"], Is.EqualTo("Nadeko"));
+        Assert.That(headers["x-opencode-session"], Is.EqualTo("nadeko-500"));
+        Assert.That(headers["X-Ids"], Is.EqualTo("7/500/100"));
+    }
+
     private static List<string> Messages(string body)
     {
         using var doc = JsonDocument.Parse(body);
@@ -133,15 +160,24 @@ public class AiAgentPromptCacheTests
         return new AiAgentSession(factory, credsProvider, new NadekoBot.Common.BotPolicy(false));
     }
 
-    private static AiToolContext CreateContext()
-        => new()
+    private static AiToolContext CreateContext(ulong guildId = 0, ulong channelId = 0, ulong userId = 0)
+    {
+        var guild = Substitute.For<Discord.IGuild>();
+        guild.Id.Returns(guildId);
+        var channel = Substitute.For<Discord.ITextChannel>();
+        channel.Id.Returns(channelId);
+        var user = Substitute.For<Discord.IGuildUser>();
+        user.Id.Returns(userId);
+
+        return new()
         {
-            Guild = Substitute.For<Discord.IGuild>(),
-            SourceChannel = Substitute.For<Discord.ITextChannel>(),
-            User = Substitute.For<Discord.IGuildUser>(),
+            Guild = guild,
+            SourceChannel = channel,
+            User = user,
             TriggerMessage = Substitute.For<Discord.IUserMessage>(),
             CancellationToken = CancellationToken.None
         };
+    }
 
     private sealed class PostingTool(ChannelMessageBuffer buffer, MessageSnapshot posted) : IAiTool
     {
@@ -161,10 +197,15 @@ public class AiAgentPromptCacheTests
     {
         private int _next;
         public List<string> Bodies { get; } = [];
+        public List<Dictionary<string, string>> Headers { get; } = [];
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {
             Bodies.Add(await request.Content!.ReadAsStringAsync(ct));
+            Headers.Add(request.Headers.ToDictionary(
+                static h => h.Key,
+                static h => string.Join(",", h.Value),
+                StringComparer.OrdinalIgnoreCase));
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(responses[_next++], Encoding.UTF8, "application/json")

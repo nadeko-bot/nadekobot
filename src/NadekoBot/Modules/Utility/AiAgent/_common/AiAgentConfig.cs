@@ -60,7 +60,8 @@ public sealed class AiAgentConfig
     [Comment("""
              Custom HTTP headers sent with every LLM request.
              Useful for provider-specific headers like X-OpenRouter-Title.
-             Example: { "X-OpenRouter-Title": "Nadeko" }
+             Values can use %server.id%, %channel.id% and %user.id%.
+             Example: { "X-OpenRouter-Title": "Nadeko", "x-opencode-session": "nadeko-%channel.id%" }
              """)]
     public Dictionary<string, string> CustomHeaders { get; set; } = new()
     {
