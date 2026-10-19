@@ -54,6 +54,14 @@ public sealed class AiAgentSession(
            || name.Equals("Cookie", StringComparison.OrdinalIgnoreCase)
            || name.StartsWith("Proxy-", StringComparison.OrdinalIgnoreCase);
 
+    // Lets a header such as x-opencode-session give each channel its own provider session,
+    // instead of one session for every server and channel of the bot.
+    private static string ReplaceHeaderPlaceholders(string value, AiToolContext context)
+        => value
+           .Replace("%server.id%", context.Guild.Id.ToString(), StringComparison.Ordinal)
+           .Replace("%channel.id%", context.SourceChannel.Id.ToString(), StringComparison.Ordinal)
+           .Replace("%user.id%", context.User.Id.ToString(), StringComparison.Ordinal);
+
     private sealed class SessionUsage
     {
         public int Requests;
@@ -125,7 +133,7 @@ public sealed class AiAgentSession(
                 ReasoningEffort = reasoningEffort
             };
 
-            var response = await CallLlmInternalAsync(provider, config, request, ct);
+            var response = await CallLlmInternalAsync(provider, config, context, request, ct);
             if (response is null)
                 return new Error<string>("Failed to get response from AI provider.");
 
@@ -262,6 +270,7 @@ public sealed class AiAgentSession(
     private async Task<AgentChatResponse?> CallLlmInternalAsync(
         AiProviderInfo provider,
         AiAgentConfig config,
+        AiToolContext context,
         AgentChatRequest request,
         CancellationToken ct)
     {
@@ -275,7 +284,7 @@ public sealed class AiAgentSession(
                 if (policy.Managed && IsReservedHeader(key))
                     continue;
 
-                http.DefaultRequestHeaders.TryAddWithoutValidation(key, value);
+                http.DefaultRequestHeaders.TryAddWithoutValidation(key, ReplaceHeaderPlaceholders(value, context));
             }
         }
 

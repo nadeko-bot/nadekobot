@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [Unreleased]
+
+### Added
+
+- AI agent `customHeaders` values can use `%server.id%`, `%channel.id%` and `%user.id%`, e.g. `x-opencode-session: nadeko-%channel.id%`.
+
 ## [7.6.6] - 19.10.2026
 
 ### Fixed
