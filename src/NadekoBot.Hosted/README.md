@@ -9,7 +9,8 @@ self-hosted `NadekoBot` program has no API and does not change.
 ## How it works
 
 1. The program reads `data/api.yml` and starts the API.
-2. It checks the Discord token, then starts the bot.
+2. It checks the Discord token and reads which privileged intents Discord
+   allows the bot. Then it starts the bot with only those intents.
 3. A manager can use the API before the bot is ready. Thus it can set a
    token, read the bot status, or restore a backup when the bot does not start.
 
@@ -66,6 +67,26 @@ stops with exit code 2.
 | `ok`            | the bot is ready                                        |
 | `disconnected`  | the bot has no connection to Discord for 30 s or more   |
 | `failed`        | the bot stopped its tries to start; `reason` tells why  |
+
+After the start, `intents` tells which privileged intents the bot asked
+Discord for: `{ presence, members, messageContent }`.
+
+## Privileged intents
+
+Discord must allow each privileged intent (Presence, Server Members, Message
+Content) for the bot's application. A bot which more than 10,000 users can see
+must apply for each one. The bot asks only for the intents which Discord
+allows, so it starts without the others:
+
+- Without Message Content, the bot answers commands in servers only when the
+  message mentions it: `@Bot help`.
+- Without Server Members, greet, bye and boost messages, auto-assign roles and
+  member logs do not work.
+- Without Presence, stream roles, game voice channels and presence logs do not
+  work.
+
+When Discord refuses an intent later (gateway close 4014), the bot is `failed`
+with `disallowed_intents` and starts again after 15 minutes.
 
 ## What the API does
 

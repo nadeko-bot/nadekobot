@@ -20,7 +20,7 @@ public sealed class XpRoleRewardTests
     {
         _db = new TestDbService();
         _svc = new XpService(null!, _db, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!,
-            null!, null!, null!, null!);
+            null!, null!, null!, null!, NadekoBot.Common.IntentState.All);
     }
 
     [TearDown]

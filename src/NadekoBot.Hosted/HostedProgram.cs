@@ -58,6 +58,7 @@ public static class HostedProgram
     private static readonly TimeSpan _tokenCheckTimeout = TimeSpan.FromSeconds(15);
     private static readonly TimeSpan _gatewayStopTimeout = TimeSpan.FromSeconds(5);
     private static readonly TimeSpan _startupTimeout = TimeSpan.FromMinutes(15);
+    private static readonly TimeSpan _disallowedIntentsRetry = TimeSpan.FromMinutes(15);
 
     public static HostMode ModeFromEnvironment()
         => Environment.GetEnvironmentVariable(HostContext.COORDINATED_ENV) == "1"
@@ -136,11 +137,12 @@ public static class HostedProgram
         var lifetime = app.Lifetime;
         var boot = mode == HostMode.Standalone ? app.Services.GetRequiredService<BootGuard>() : null;
 
-        var check = mode == HostMode.Standalone && !string.IsNullOrWhiteSpace(token)
-            ? await CheckTokenInternalAsync(app.Services.GetRequiredService<IHttpClientFactory>(),
+        var (check, intents) = mode == HostMode.Standalone && !string.IsNullOrWhiteSpace(token)
+            ? await CheckDiscordInternalAsync(app.Services.GetRequiredService<IHttpClientFactory>(),
                 token,
+                paths,
                 lifetime.ApplicationStopping)
-            : TokenCheck.Unknown;
+            : (TokenCheck.Unknown, (IntentState?)null);
 
         // Creds or a restart can stop the host during the token check; then nothing may start or count an attempt.
         if (lifetime.ApplicationStopping.IsCancellationRequested)
@@ -174,7 +176,7 @@ public static class HostedProgram
         }
         else
         {
-            _ = Task.Run(() => StartBotInternalAsync(args, mode, paths, bridge, boot, lifetime));
+            _ = Task.Run(() => StartBotInternalAsync(args, mode, paths, bridge, boot, lifetime, intents));
             _ = ExitIfNotReadyInternalAsync(bridge, lifetime);
         }
 
@@ -215,17 +217,38 @@ public static class HostedProgram
         FlushAndExit(1);
     }
 
-    private static async Task<TokenCheck> CheckTokenInternalAsync(IHttpClientFactory factory, string token, CancellationToken ct)
+    // When Discord does not say which privileged intents the application has, the bot uses the ones from the last start.
+    private static async Task<(TokenCheck Check, IntentState? Intents)> CheckDiscordInternalAsync(
+        IHttpClientFactory factory,
+        string token,
+        HostPaths paths,
+        CancellationToken ct)
     {
         var http = factory.CreateClient();
         http.Timeout = _tokenCheckTimeout;
+        var checker = new DiscordTokenChecker(http);
         try
         {
-            return await new DiscordTokenChecker(http).CheckAsync(token, ct);
+            var checkTask = checker.CheckAsync(token, ct);
+            var intentsTask = checker.ReadIntentsAsync(token, ct);
+            var check = await checkTask;
+            var intents = await intentsTask;
+
+            if (intents is not null)
+            {
+                IntentsFile.Write(paths.Intents, intents);
+            }
+            else if (check != TokenCheck.Invalid && IntentsFile.Read(paths.Intents) is { } known)
+            {
+                Log.Warning("Discord did not say which privileged intents the bot has. Using the ones from the last start");
+                intents = known;
+            }
+
+            return (check, intents);
         }
         catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
-            return TokenCheck.Unknown;
+            return (TokenCheck.Unknown, null);
         }
     }
 
@@ -235,7 +258,8 @@ public static class HostedProgram
         HostPaths paths,
         BotBridge bridge,
         BootGuard? boot,
-        IHostApplicationLifetime lifetime)
+        IHostApplicationLifetime lifetime,
+        IntentState? intents)
     {
         try
         {
@@ -247,12 +271,14 @@ public static class HostedProgram
                     {
                         ManagedPolicy.Register(svcs);
                         HostedCoordinator.Register(svcs, lifetime, bridge.Time);
-                    })
+                    },
+                    intents)
                 : new Bot(args.ShardId, args.TotalShards, ManagedPolicy.Register);
 
             var client = bot.Client;
+            bridge.SetIntents(bot.Intents);
             bridge.AttachClient(client);
-            client.Disconnected += ex => OnDisconnectedInternal(ex, client, bridge, boot);
+            client.Disconnected += ex => OnDisconnectedInternal(ex, client, bridge, boot, lifetime);
             client.Connected += () =>
             {
                 bridge.MarkConnected();
@@ -301,15 +327,19 @@ public static class HostedProgram
         Exception ex,
         DiscordSocketClient client,
         BotBridge bridge,
-        BootGuard? boot)
+        BootGuard? boot,
+        IHostApplicationLifetime lifetime)
     {
         bridge.MarkDisconnected();
 
+        var retry = false;
         switch ((ex as WebSocketClosedException)?.CloseCode)
         {
             case DISALLOWED_INTENTS_CLOSE_CODE:
-                Log.Error("Discord refused the privileged intents. Enable them in the developer portal and restart");
+                Log.Error("Discord refused a privileged intent which the bot asked for. The bot reads the intents from Discord again in {RetryIn}",
+                    _disallowedIntentsRetry);
                 bridge.SetFailed(FailureReason.DISALLOWED_INTENTS);
+                retry = true;
                 break;
             case AUTHENTICATION_FAILED_CLOSE_CODE:
                 Log.Error("Discord rejected the token. Set a new one with PUT /api/creds");
@@ -325,6 +355,10 @@ public static class HostedProgram
             boot?.Reset();
             boot?.KeepUpdate();
             await client.StopAsync();
+
+            // Discord can take an intent away (a missed yearly review); a new start asks only for the ones left.
+            if (retry)
+                await RetryLaterInternalAsync(_disallowedIntentsRetry, bridge.Time, lifetime);
         });
         return Task.CompletedTask;
     }

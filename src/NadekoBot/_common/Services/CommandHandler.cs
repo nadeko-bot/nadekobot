@@ -19,6 +19,7 @@ public sealed partial class CommandHandler : INService, ICommandHandler
     private readonly IBehaviorHandler _behaviorHandler;
     private readonly IServiceProvider _services;
     private readonly ShardData _shardData;
+    private readonly IntentState _intents;
 
     private ConcurrentDictionary<ulong, string> _prefixes = new();
 
@@ -31,8 +32,10 @@ public sealed partial class CommandHandler : INService, ICommandHandler
         BotConfigService bcs,
         IBehaviorHandler behaviorHandler,
         IServiceProvider services,
-        ShardData shardData)
+        ShardData shardData,
+        IntentState intents)
     {
+        _intents = intents;
         _client = client;
         _commandService = commandService;
         _bcs = bcs;
@@ -239,6 +242,10 @@ public sealed partial class CommandHandler : INService, ICommandHandler
         var messageContent = cmdMsg.Content;
 
         var prefix = GetPrefix(guild?.Id);
+        if (!_intents.MessageContent
+            && MentionPrefix.TryStrip(messageContent, _client.CurrentUser.Id, prefix, out var mentioned))
+            messageContent = mentioned;
+
         var isPrefixCommand = messageContent.StartsWith(".prefix", StringComparison.InvariantCultureIgnoreCase);
         // execute the command and measure the time it took
         if (isPrefixCommand || messageContent.StartsWith(prefix, StringComparison.InvariantCulture))

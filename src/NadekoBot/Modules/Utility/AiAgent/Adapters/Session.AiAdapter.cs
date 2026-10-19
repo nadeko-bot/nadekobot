@@ -5,6 +5,7 @@ namespace NadekoBot.Modules.Utility.AiAgent.Adapters;
 
 public sealed class SessionAiAdapter(
     ConversationWindowTracker tracker,
+    AgentMessageTracker agentMessages,
     IMessageSenderService sender) : IAiCoreToolGroup, INService
 {
     public string GroupName => "session";
@@ -65,7 +66,8 @@ public sealed class SessionAiAdapter(
             .WithPendingColor()
             .WithDescription(sb.ToString().TrimTo(4096));
 
-        await ctx.SourceChannel.SendMessageAsync(embed: eb.Build());
+        var sent = await ctx.SourceChannel.SendMessageAsync(embed: eb.Build());
+        agentMessages.Add(sent.Id);
 
         ctx.AskPending = true;
 

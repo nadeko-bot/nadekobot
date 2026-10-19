@@ -41,7 +41,17 @@ public enum CheckIssue : byte
     RoleMissing,
     RoleAboveBot,
     RoleManaged,
-    MissingPermission
+    MissingPermission,
+    IntentMissing
+}
+
+// A privileged intent which a feature needs. The declaration order is the order of the names.
+public enum HealthIntent : byte
+{
+    None,
+    Presence,
+    Members,
+    MessageContent
 }
 
 public readonly record struct HealthRole(int Position, bool Managed, bool Everyone);
@@ -135,8 +145,10 @@ public static class GuildHealth
     private static readonly string?[] _issueNames =
     [
         null, "channel_missing", "channel_no_access", "role_missing", "role_above_bot", "role_managed",
-        "missing_permission"
+        "missing_permission", "intent_missing"
     ];
+
+    private static readonly string?[] _intentNames = [null, "presence", "members", "messageContent"];
 
     // The permissions which the dashboard knows, in the order of the answer.
     private static readonly GuildPermission[] _checkedPermissions =
@@ -164,15 +176,25 @@ public static class GuildHealth
         Optional
     }
 
-    public static GuildHealthDto Evaluate<TGuild>(in TGuild guild, HealthSources src, HealthTimersDto timers)
+    public static GuildHealthDto Evaluate<TGuild>(
+        in TGuild guild,
+        HealthSources src,
+        HealthTimersDto timers,
+        IntentState? intents = null)
         where TGuild : struct, IHealthGuild
     {
         var checks = new CheckList();
+
+        // Without the Server Members intent, Discord sends no member join, leave or update events.
+        var noMembers = intents is { Members: false };
 
         foreach (var greet in src.Greets)
         {
             if (!greet.Enabled || FeatureOf(greet.Type) is not { } feature)
                 continue;
+
+            if (noMembers)
+                checks.Add(new(feature, CheckStatus.Broken, CheckIssue.IntentMissing, 0, null, null, HealthIntent.Members));
 
             if (greet.Type == GreetType.GreetDm)
             {
@@ -199,6 +221,9 @@ public static class GuildHealth
         foreach (var p in src.Punishments)
             AddPunishmentCheck(guild, ref checks, p);
 
+        if (noMembers && src.AutoAssignRoles.Count > 0)
+            checks.Add(new(HealthFeature.AutoAssign, CheckStatus.Broken, CheckIssue.IntentMissing, 0, null, null, HealthIntent.Members));
+
         foreach (var roleId in src.AutoAssignRoles)
             AddRoleCheck(guild, ref checks, HealthFeature.AutoAssign, roleId);
 
@@ -211,6 +236,10 @@ public static class GuildHealth
 
         foreach (var br in src.ButtonRoles)
             AddChannelRoleCheck(guild, ref checks, HealthFeature.ButtonRoles, br, needsView: false);
+
+        // Only the join, leave and member update logs need the intent; the other logs still work.
+        if (noMembers && src.LogChannels.Length > 0)
+            checks.Add(new(HealthFeature.Log, CheckStatus.Warning, CheckIssue.IntentMissing, 0, null, null, HealthIntent.Members));
 
         foreach (var channelId in src.LogChannels)
             AddChannelCheck(guild, ref checks, HealthFeature.Log, channelId, EmbedNeed.Required);
@@ -398,7 +427,8 @@ public static class GuildHealth
         CheckIssue Issue,
         GuildPermission Permission,
         ulong? ChannelId,
-        ulong? RoleId);
+        ulong? RoleId,
+        HealthIntent Intent = HealthIntent.None);
 
     // Items with equal keys become one check. Permission is part of the key, so a kick step and a ban step stay apart.
     private struct CheckList()
@@ -483,7 +513,8 @@ public static class GuildHealth
                     PermissionNameInternal(key.Permission),
                     key.ChannelId?.ToString(),
                     key.RoleId?.ToString(),
-                    _counts[idx]);
+                    _counts[idx],
+                    _intentNames[(int)key.Intent]);
             }
 
             return result;

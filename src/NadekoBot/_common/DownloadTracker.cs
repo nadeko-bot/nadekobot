@@ -1,7 +1,7 @@
 #nullable disable
 namespace NadekoBot.Common;
 
-public class DownloadTracker : INService
+public class DownloadTracker(IntentState intents) : INService
 {
     private ConcurrentDictionary<ulong, DateTime> LastDownloads { get; } = new();
     private readonly SemaphoreSlim _downloadUsersSemaphore = new(1, 1);
@@ -17,6 +17,10 @@ public class DownloadTracker : INService
         await Task.CompletedTask;
         return;
 #endif
+        // Discord sends the member list only to a bot with the Server Members intent.
+        if (!intents.Members)
+            return;
+
         await _downloadUsersSemaphore.WaitAsync();
         try
         {

@@ -12,6 +12,7 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
     // The help texts are embed JSON, and an embed description alone can hold 4096 characters.
     public const int MAX_HELP_TEXT_LENGTH = 4000;
     public const int MAX_PREFIX_LENGTH = 10;
+    private const string UNQUOTED_PREFIX = "~";
 
     private readonly BotPolicy _policy;
 
@@ -23,6 +24,14 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
         : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
     {
         _policy = policy;
+
+        // Older versions wrote a ~ prefix without quotes, which YAML reads as null.
+        if (Data.Prefix is null)
+        {
+            Log.Warning("Config {ConfigFile} has no prefix. Restoring the {Prefix} prefix", FILE_PATH, UNQUOTED_PREFIX);
+            ModifyConfig(static c => c.Prefix = UNQUOTED_PREFIX);
+        }
+
         AddParsedProp("color.ok",
             static bs => bs.Color.Ok,
             static (bs, v) => bs.Color.Ok = v,

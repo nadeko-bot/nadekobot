@@ -8,7 +8,15 @@ public sealed record HealthDto(
     int TotalShards,
     string Version,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Reason = null,
-    UpdateResultDto? Update = null);
+    UpdateResultDto? Update = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] HealthIntentsDto? Intents = null);
+
+// The privileged intents which the running bot asked Discord for.
+public sealed record HealthIntentsDto(bool Presence, bool Members, bool MessageContent)
+{
+    public static HealthIntentsDto? From(IntentState? intents)
+        => intents is null ? null : new(intents.Presence, intents.Members, intents.MessageContent);
+}
 
 // data/.update-result: Reason is set only for "failed" and "rollback_failed".
 public sealed record UpdateResultDto(string Result, string Version, string? Reason);
@@ -245,7 +253,8 @@ public sealed record HealthCheckDto(
     string? Permission,
     string? ChannelId,
     string? RoleId,
-    int Count);
+    int Count,
+    string? Intent = null);
 
 public sealed record HealthTimersDto(int Mutes, int Bans, int TempRoles, DateTime? NextExpiry);
 

@@ -29,7 +29,10 @@ public sealed class Bot : IBot
     private readonly Action<IContainer> _configureServices;
     // private readonly InteractionService _interactionService;
 
-    public Bot(int shardId, int? totalShards, Action<IContainer> configureServices = null)
+    public IntentState Intents { get; }
+
+    // A host which read the application's flags passes the privileged intents which Discord allows; null asks for all.
+    public Bot(int shardId, int? totalShards, Action<IContainer> configureServices = null, IntentState intents = null)
     {
         _configureServices = configureServices;
         ArgumentOutOfRangeException.ThrowIfLessThan(shardId, 0);
@@ -51,8 +54,12 @@ public sealed class Bot : IBot
             50;
 #endif
 
+        Intents = _creds.UsePrivilegedIntents ? intents ?? IntentState.All : IntentState.None;
         if (!_creds.UsePrivilegedIntents)
             Log.Warning("You are not using privileged intents. Some features will not work properly");
+        else if (!Intents.IsAll)
+            Log.Warning("Discord does not allow these privileged intents, so the bot connects without them: {Intents}",
+                Intents.MissingNames());
 
         Client = new(new()
         {
@@ -64,9 +71,7 @@ public sealed class Bot : IBot
             AlwaysDownloadUsers = false,
             AlwaysResolveStickers = false,
             AlwaysDownloadDefaultStickers = false,
-            GatewayIntents = _creds.UsePrivilegedIntents
-                ? GatewayIntents.All
-                : GatewayIntents.AllUnprivileged,
+            GatewayIntents = Intents.GatewayIntents,
             LogGatewayIntentWarnings = false,
             FormatUsersInBidirectionalUnicode = false,
             DefaultRetryMode = RetryMode.Retry502,
@@ -108,6 +113,7 @@ public sealed class Bot : IBot
         svcs.AddSingleton<Bot>(this);
         svcs.AddSingleton<IBot>(this);
         svcs.AddSingleton(new BotPolicy(false));
+        svcs.AddSingleton(Intents);
 
         svcs.AddSingleton<ISeria, JsonSeria>();
         svcs.AddSingleton<IConfigSeria, YamlSeria>();

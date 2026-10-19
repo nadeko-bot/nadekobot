@@ -137,10 +137,10 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
     {
         Func<string, bool> check = (checker, required) switch
         {
-            (null, false) => value => value.Length <= maxLength,
-            (null, true) => value => value.Length <= maxLength && !string.IsNullOrWhiteSpace(value),
-            (_, false) => value => value.Length <= maxLength && checker(value),
-            _ => value => value.Length <= maxLength && !string.IsNullOrWhiteSpace(value) && checker(value),
+            (null, false) => value => value is not null && value.Length <= maxLength,
+            (null, true) => value => !string.IsNullOrWhiteSpace(value) && value.Length <= maxLength,
+            (_, false) => value => value is not null && value.Length <= maxLength && checker(value),
+            _ => value => !string.IsNullOrWhiteSpace(value) && value.Length <= maxLength && checker(value),
         };
 
         AddPropInternal(key,
@@ -152,7 +152,8 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
             check,
             required ? static value => !string.IsNullOrWhiteSpace(value) : null,
             null,
-            new(ConfigPropType.Text, MaxLength: maxLength));
+            new(ConfigPropType.Text, MaxLength: maxLength),
+            nullIsInvalid: true);
     }
 
     protected void AddNumberProp<TProp>(
@@ -222,7 +223,8 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
         Func<TProp, bool>? checker,
         Func<TProp, bool>? selfHostChecker,
         Func<TProp, TProp>? clamp,
-        ConfigPropInfo info)
+        ConfigPropInfo info,
+        bool nullIsInvalid = false)
     {
         checker ??= static _ => true;
         // The owner of a self-hosted bot can edit the file anyway, so only a value which breaks the bot is reset there.
@@ -238,7 +240,7 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
             try
             {
                 var value = getter(config);
-                if (value is null || checker(value))
+                if (value is null ? !nullIsInvalid : checker(value))
                     return;
 
                 if (clamp is not null)

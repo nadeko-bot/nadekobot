@@ -38,6 +38,7 @@ public sealed record HostPaths(string DataDir)
     public string Activity => Path.Combine(DataDir, "activity.db");
     public string ToolsDir => Path.Combine(DataDir, "tools");
     public string YoutubeProxy => Path.Combine(DataDir, ".youtube-proxy");
+    public string Intents => Path.Combine(DataDir, ".intents");
 }
 
 public sealed record RestoreTarget(string? DbPath);

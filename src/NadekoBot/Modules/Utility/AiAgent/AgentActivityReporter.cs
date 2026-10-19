@@ -72,6 +72,9 @@ public sealed class AgentActivityReporter : IAgentProgress
     public bool IsShown
         => _message is not null;
 
+    public ulong? MessageId
+        => _message?.Id;
+
     public void OnNote(string text)
         => AddLineInternal(AgentActivityFormatter.FormatNote(text), false);
 

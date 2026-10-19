@@ -131,7 +131,13 @@ public static class ApiHost
         {
             var health = bridge.Health(key.IsSet);
             return Results.Json(
-                new HealthDto(health.Status, host.ShardId, host.TotalShards, _botVersion, health.Reason, update.Result),
+                new HealthDto(health.Status,
+                    host.ShardId,
+                    host.TotalShards,
+                    _botVersion,
+                    health.Reason,
+                    update.Result,
+                    HealthIntentsDto.From(bridge.Intents)),
                 ApiJsonContext.Default.HealthDto);
         }).WithMetadata(new ApiAccessMetadata(ApiAccess.Open));
 

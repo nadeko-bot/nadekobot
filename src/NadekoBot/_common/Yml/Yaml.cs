@@ -8,6 +8,7 @@ public class Yaml
 {
     public static ISerializer Serializer
         => new SerializerBuilder()
+           .WithQuotingNecessaryStrings()
            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
                                   .DisableAliases()
                                   .WithEmissionPhaseObjectGraphVisitor(args

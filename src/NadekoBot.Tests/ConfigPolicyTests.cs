@@ -166,10 +166,45 @@ public sealed class ConfigPolicyTests
             managed.Reload();
             Assert.That((managed.Data.Limit, managed.Data.Percent, managed.Data.Name, managed.Data.Title),
                 Is.EqualTo((7, 20, "ok", "t")));
+
+            System.IO.File.WriteAllText(path, "version: 1\ntitle: ~\n");
+            managed.Reload();
+            Assert.That(managed.Data.Title, Is.EqualTo("title"));
+            Assert.That(new LimitedConfigService(path, new BotPolicy(false)).Data.Title, Is.EqualTo("title"));
         }
         finally
         {
             System.IO.File.Delete(path);
+        }
+    }
+
+    [Test]
+    public void TextValues_WhichYamlReadsAsNull_SurviveASave_AndALostPrefixIsRestored()
+    {
+        const string botPath = "data/bot.yml";
+        var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"nadeko-cfg-{System.Guid.NewGuid():N}.yml");
+        var botBackup = System.IO.File.Exists(botPath) ? System.IO.File.ReadAllText(botPath) : null;
+        try
+        {
+            System.IO.File.WriteAllText(path, "version: 1\nname: '~'\ntitle: 'null'\n");
+            var service = new LimitedConfigService(path, new BotPolicy(false));
+            service.ModifyConfig(static c => c.Version = 2);
+            Assert.That((service.Data.Name, service.Data.Title), Is.EqualTo(("~", "null")));
+
+            var reloaded = new LimitedConfigService(path, new BotPolicy(false));
+            Assert.That((reloaded.Data.Version, reloaded.Data.Name, reloaded.Data.Title), Is.EqualTo((2, "~", "null")));
+
+            System.IO.File.WriteAllText(botPath, "version: 12\nprefix: ~\n");
+            Assert.That(Bot().Data.Prefix, Is.EqualTo("~"));
+            Assert.That(Bot().Data.Prefix, Is.EqualTo("~"));
+        }
+        finally
+        {
+            System.IO.File.Delete(path);
+            if (botBackup is null)
+                System.IO.File.Delete(botPath);
+            else
+                System.IO.File.WriteAllText(botPath, botBackup);
         }
     }
 

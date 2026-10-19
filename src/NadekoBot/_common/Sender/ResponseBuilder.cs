@@ -93,14 +93,23 @@ public sealed partial class ResponseBuilder
         return buildModel;
     }
 
-    public async Task<IUserMessage> SendAsync(bool ephemeral = false)
+    public Task<IUserMessage> SendAsync(bool ephemeral = false)
+        => SendInternalAsync(ephemeral, null);
+
+    // A split send returns only the last part, so this also collects the ids of the earlier parts.
+    public Task<IUserMessage> SendAsync(List<ulong> sentIds)
+        => SendInternalAsync(false, sentIds);
+
+    private async Task<IUserMessage> SendInternalAsync(bool ephemeral, List<ulong>? sentIds)
     {
         var model = await BuildAsync(ephemeral);
 
-        if (splitOnOverflow)
-            return await SendSplitAsync(model);
+        var sent = splitOnOverflow
+            ? await SendSplitAsync(model, sentIds)
+            : await SendAsync(model);
 
-        return await SendAsync(model);
+        sentIds?.Add(sent.Id);
+        return sent;
     }
 
     public async Task<IUserMessage> SendAsync(ResponseMessageModel model)
@@ -137,7 +146,7 @@ public sealed partial class ResponseBuilder
         return sentMsg;
     }
 
-    private async Task<IUserMessage> SendSplitAsync(ResponseMessageModel model)
+    private async Task<IUserMessage> SendSplitAsync(ResponseMessageModel model, List<ulong>? sentIds)
     {
         if (model.Embed is { } embed && embed.Description?.Length > MessageSplitter.MAX_EMBED_DESC_LENGTH)
         {
@@ -150,10 +159,12 @@ public sealed partial class ResponseBuilder
                     .WithColor(embed.Color ?? Color.Default)
                     .WithDescription(chunks[i]);
 
-                await model.TargetChannel.SendMessageAsync(
+                var part = await model.TargetChannel.SendMessageAsync(
                     embed: eb.Build(),
                     allowedMentions: model.SanitizeMentions,
                     messageReference: i == 0 ? model.MessageReference : null);
+
+                sentIds?.Add(part.Id);
 
                 await Task.Delay(500);
             }
@@ -186,6 +197,7 @@ public sealed partial class ResponseBuilder
             IUserMessage lastMsg = firstMsg;
             for (var i = 1; i < chunks.Count; i++)
             {
+                sentIds?.Add(lastMsg.Id);
                 await Task.Delay(500);
 
                 var components = i == chunks.Count - 1

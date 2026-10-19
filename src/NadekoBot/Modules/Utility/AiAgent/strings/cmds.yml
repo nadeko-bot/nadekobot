@@ -2,7 +2,8 @@ agent:
   desc: |-
     Runs an AI agent that can use tools to accomplish complex tasks on your behalf.
     The agent can read messages, send messages to channels, split long texts, and more.
-    All actions respect your permissions. You can also trigger this by @mentioning the bot.
+    All actions respect your permissions.
+    You can also start it when you mention the bot, or when you reply to an agent answer with the reply ping on.
   ex:
     - 'split the last long message in this channel and send the parts to #general'
     - 'get the message with ID 123456789 from #rules and post it in #announcements'

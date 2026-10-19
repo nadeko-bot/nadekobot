@@ -158,6 +158,40 @@ public sealed class ApiHealthActivityTests
     }
 
     [Test]
+    public void Health_MarksMemberFeaturesWithoutTheServerMembersIntent()
+    {
+        var guild = new FakeGuild(new GuildPermissions(administrator: true),
+            null,
+            new() { [1] = new HealthRole(1, false, false) },
+            new() { [100] = new ChannelPermissions(viewChannel: true, sendMessages: true, embedLinks: true) });
+        var sources = HealthSources.Empty with
+        {
+            Greets = [new(GreetType.Greet, true, 100, "hi"), new(GreetType.GreetDm, true, null, "hi")],
+            AutoAssignRoles = [1],
+            LogChannels = [100],
+            Repeaters = [new(100, "x")]
+        };
+        var timers = new HealthTimersDto(0, 0, 0, null);
+
+        var noMembers = GuildHealth.Evaluate(guild, sources, timers, new NadekoBot.Common.IntentState(true, false, true));
+        var missing = noMembers.Checks.Where(static c => c.Issue == "intent_missing")
+            .Select(static c => (c.Feature, c.Status, c.Intent))
+            .ToArray();
+        Assert.That(missing, Is.EquivalentTo(new (string, string, string?)[]
+        {
+            ("greet", "broken", "members"),
+            ("greetDm", "broken", "members"),
+            ("autoAssign", "broken", "members"),
+            ("log", "warning", "members")
+        }));
+        Assert.That(noMembers.Checks.Single(static c => c.Feature == "repeaters").Status, Is.EqualTo("ok"));
+
+        var all = GuildHealth.Evaluate(guild, sources, timers, NadekoBot.Common.IntentState.All);
+        Assert.That(all.Checks.Select(static c => c.Issue), Has.None.EqualTo("intent_missing"));
+        Assert.That(all.Checks.Select(static c => c.Intent), Is.All.Null);
+    }
+
+    [Test]
     public async Task HealthSources_ReadOnlyTheGuildAndCountOnlyFutureTimers()
     {
         var now = _start.UtcDateTime;

@@ -41,6 +41,7 @@ public sealed class BotBridge(TimeProvider time)
     private volatile IServiceProvider? _services;
     private volatile CommandFeedService? _feed;
     private volatile GuildActivityService? _activity;
+    private volatile IntentState? _intents;
     private long _disconnectedAt;
 
     public BotBridge()
@@ -68,6 +69,13 @@ public sealed class BotBridge(TimeProvider time)
 
     public GuildActivityService? ActivityOrNull
         => _activity;
+
+    // The privileged intents which the bot asked Discord for; null until the bot starts.
+    public IntentState? Intents
+        => _intents;
+
+    public void SetIntents(IntentState intents)
+        => _intents = intents;
 
     public BotHealth Health(bool hasApiKey)
     {

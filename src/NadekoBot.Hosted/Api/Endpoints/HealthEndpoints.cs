@@ -19,7 +19,7 @@ public static class HealthEndpoints
         return guild;
     }
 
-    private static async Task<IResult> GetHealth(GuildRef guildRef, DbService db, TimeProvider time)
+    private static async Task<IResult> GetHealth(GuildRef guildRef, DbService db, TimeProvider time, BotBridge bridge)
     {
         var guild = guildRef.Guild;
         if (guild.CurrentUser is null)
@@ -32,7 +32,7 @@ public static class HealthEndpoints
         if (guild.CurrentUser is not { } bot)
             return _notReady;
 
-        var dto = GuildHealth.Evaluate(new SocketHealthGuild(guild, bot), sources, timers);
+        var dto = GuildHealth.Evaluate(new SocketHealthGuild(guild, bot), sources, timers, bridge.Intents);
         return Results.Json(dto, ApiJsonContext.Default.GuildHealthDto);
     }
 

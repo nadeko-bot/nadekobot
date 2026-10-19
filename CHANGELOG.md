@@ -2,11 +2,28 @@
 
 *a,c,f,r,o,d*
 
-## [7.6.7] - TBD
+## [7.6.7] - 19.10.2026
 
 ### Added
 
-- AI agent customHeaders values can use %server.id%, %channel.id% and %user.id%.
+- AI agent `customHeaders` values can use `%server.id%`, `%channel.id%` and `%user.id%`.
+
+### Changed
+
+- The AI agent answers a reply only when the reply pings the bot.
+- The AI agent answers replies only to its own messages, not to other bot messages.
+- The NadeKloud bot asks Discord only for the privileged intents which its application has.
+- Without the Message Content intent, the bot runs commands which start with its mention, for example `@Bot help`.
+- Without the Message Content intent, every message gives text xp.
+
+### Fixed
+
+- Fixed a `~` prefix breaking all commands after the bot saved `bot.yml`. Now the bot restores it.
+
+### Dev
+
+- NadekoBot.Hosted reports the privileged intents of the bot and marks server features which need a missing intent.
+- Added tests for the intent flags, the mention prefix and the intent health checks.
 
 ## [7.6.6] - 19.10.2026
 

@@ -22,6 +22,7 @@ public partial class Utility
 
             """;
         private static readonly ISerializer _exportSerializer = new SerializerBuilder()
+                                                                .WithQuotingNecessaryStrings()
                                                                 .WithEventEmitter(args
                                                                     => new MultilineScalarFlowStyleEmitter(args))
                                                                 .WithNamingConvention(

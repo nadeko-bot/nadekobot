@@ -41,6 +41,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
     private readonly IPatronageService _ps;
     private readonly IBotCache _c;
+    private readonly IntentState _intents;
 
     private readonly INotifySubscriber _notifySub;
     private readonly XpCooldownMap _xpCooldowns = new();
@@ -68,9 +69,11 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         XpTemplateService templateService,
         XpRateService xpRateRateService,
         XpExclusionService xpExcl,
-        XpFormulaService xpFormula
+        XpFormulaService xpFormula,
+        IntentState intents
     )
     {
+        _intents = intents;
         _db = db;
         _images = images;
         _fonts = fonts;
@@ -582,7 +585,8 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             }
         }
 
-        var isText = arg.Content.Contains(' ') || arg.Content.Length >= 5;
+        // Without the Message Content intent the text is empty, so every message counts as text.
+        var isText = !_intents.MessageContent || arg.Content.Contains(' ') || arg.Content.Length >= 5;
 
         var (textRate, isItemRate) = _xpRateRateService.GetXpRate(XpRateType.Text, guild!.Id, gc.Id);
         if (!isItemRate && gc is SocketThreadChannel tc)

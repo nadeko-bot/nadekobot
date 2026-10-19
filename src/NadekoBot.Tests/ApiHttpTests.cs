@@ -110,11 +110,25 @@ public sealed class ApiHttpTests
         Assert.That(healthy, Does.Not.Contain("reason"));
         using (var none = JsonDocument.Parse(healthy))
             Assert.That(none.RootElement.GetProperty("update").ValueKind, Is.EqualTo(JsonValueKind.Null));
+        Assert.That(healthy, Does.Not.Contain("intents"));
 
+        bridge.SetIntents(new IntentState(false, true, true));
+        using (var fitted = JsonDocument.Parse(await _http.GetStringAsync("/api/health")))
+        {
+            Assert.That(fitted.RootElement.GetProperty("intents").GetRawText(),
+                Is.EqualTo("""{"presence":false,"members":true,"messageContent":true}"""));
+        }
+
+        bridge.SetIntents(IntentState.All);
         bridge.SetFailed(FailureReason.STARTUP_FAILED);
         var failedStart = JsonSerializer.Deserialize(await _http.GetStringAsync("/api/health"), ApiJsonContext.Default.HealthDto);
         Assert.That(failedStart,
-            Is.EqualTo(new HealthDto(HealthStatus.FAILED, 0, 1, StatsService.BotVersion, FailureReason.STARTUP_FAILED)));
+            Is.EqualTo(new HealthDto(HealthStatus.FAILED,
+                0,
+                1,
+                StatsService.BotVersion,
+                FailureReason.STARTUP_FAILED,
+                Intents: new HealthIntentsDto(true, true, true))));
 
         bridge.SetPhase(BotPhase.NoToken);
         File.WriteAllText(_paths.UpdateResult, "rollback_failed:7.6.1:no_previous_install\n");

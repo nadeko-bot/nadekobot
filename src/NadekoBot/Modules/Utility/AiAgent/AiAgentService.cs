@@ -15,6 +15,7 @@ public sealed class AiAgentService(
     EmbeddingService embedder,
     CommandSearchService searchService,
     ConversationWindowTracker conversationTracker,
+    AgentMessageTracker agentMessages,
     AiAgentWhitelistService whitelist,
     IBotCredsProvider credsProvider,
     DiscordSocketClient client,
@@ -24,7 +25,8 @@ public sealed class AiAgentService(
     IPatronageService patronageService,
     PatronageConfig patronageConfig,
     Prompts.SystemPromptBuilder systemPromptBuilder,
-    DbService db) : INService, IExecOnMessage, IExecNoCommand, IReadyExecutor
+    DbService db,
+    IntentState intents) : INService, IExecOnMessage, IExecNoCommand, IReadyExecutor
 {
     private readonly ConcurrentDictionary<ulong, CancellationTokenSource> _activeSessions = new();
     private readonly ConcurrentDictionary<ulong, System.Collections.Concurrent.ConcurrentQueue<QueuedMessage>> _pendingMessages = new();
@@ -120,6 +122,7 @@ public sealed class AiAgentService(
                 }
 
                 conversationTracker.CleanExpired(configService.Data.FollowUpWindowSeconds);
+                agentMessages.CleanExpired(DateTimeOffset.UtcNow);
 
                 foreach (var userId in _pendingMessages.Keys)
                 {
@@ -141,8 +144,11 @@ public sealed class AiAgentService(
         }
     }
 
-    // Runs before the command parsing, so an explicit mention always takes priority.
-    public async ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
+    // Runs before the command parsing, except without Message Content, where "@bot help" is a command.
+    public ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
+        => intents.MessageContent ? TryAnswerMentionAsync(guild, msg) : ValueTask.FromResult(false);
+
+    private async ValueTask<bool> TryAnswerMentionAsync(IGuild? guild, IUserMessage msg)
     {
         if (!IsAiEnabled)
             return false;
@@ -207,6 +213,9 @@ public sealed class AiAgentService(
         if (msg is DoAsUserMessage || msg.Author.IsBot)
             return;
 
+        if (!intents.MessageContent && await TryAnswerMentionAsync(guild, msg))
+            return;
+
         var config = configService.Data;
         var nadekoId = client.CurrentUser.Id;
 
@@ -224,7 +233,7 @@ public sealed class AiAgentService(
             }
         }
 
-        if (msg.ReferencedMessage?.Author?.Id == nadekoId
+        if (agentMessages.IsPingedReplyToAgent(msg, nadekoId)
             && searchService.IsReady
             && !string.IsNullOrWhiteSpace(msg.Content))
         {
@@ -421,13 +430,14 @@ public sealed class AiAgentService(
                         success.WasCancelled ? AgentActivityStatus.Cancelled : AgentActivityStatus.Done);
 
                     var smart = SmartText.CreateFrom(success.Response);
+                    var sentIds = new List<ulong>(1);
 
                     if (smart is SmartEmbedTextArray)
                     {
                         await sender.Response(channel)
                             .Text(smart)
                             .Split()
-                            .SendAsync();
+                            .SendAsync(sentIds);
                     }
                     else if (config.UseEmbed)
                     {
@@ -442,15 +452,18 @@ public sealed class AiAgentService(
                         await sender.Response(channel)
                             .Embed(eb)
                             .Split()
-                            .SendAsync();
+                            .SendAsync(sentIds);
                     }
                     else
                     {
                         await sender.Response(channel)
                             .Text(new SmartPlainText(success.Response))
                             .Split()
-                            .SendAsync();
+                            .SendAsync(sentIds);
                     }
+
+                    foreach (var sentId in sentIds)
+                        agentMessages.Add(sentId);
 
                     if (!context.SessionClosed)
                         conversationTracker.Open(message.Author.Id, channel.Id);
@@ -484,6 +497,9 @@ public sealed class AiAgentService(
                 // Stops the worker if a send above threw before its own CompleteAsync call.
                 await CompleteActivityInternalAsync(activity, AgentActivityStatus.Failed);
                 ReleaseActivityInternal(guild.Id);
+
+                if (activity.MessageId is { } activityId)
+                    agentMessages.Add(activityId);
             }
 
             var wasCancelled = cts.IsCancellationRequested;

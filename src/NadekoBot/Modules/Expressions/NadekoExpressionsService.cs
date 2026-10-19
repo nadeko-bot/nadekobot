@@ -35,6 +35,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         """;
 
     private static readonly ISerializer _exportSerializer = new SerializerBuilder()
+                                                            .WithQuotingNecessaryStrings()
                                                             .WithEventEmitter(args
                                                                 => new MultilineScalarFlowStyleEmitter(args))
                                                             .WithNamingConvention(CamelCaseNamingConvention.Instance)
