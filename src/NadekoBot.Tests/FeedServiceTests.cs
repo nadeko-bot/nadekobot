@@ -478,6 +478,47 @@ VI. Gigue 15:19</media:description>
     }
 
     [Test]
+    public void RestoredStreak_NeedsAnHourOfFailuresInThisRun()
+    {
+        var time = new FakeTimeProvider(_start);
+        var health = new FeedHealth(time);
+        health.BeginTick();
+        health.Touch("solo", "https://blog.example.com/rss", _start.UtcDateTime.AddDays(-5));
+        health.EndTick();
+
+        Assert.That(health.OnFailure("solo", 500, null).Remove, Is.False);
+
+        time.Advance(FeedHealth.MinObservedStreak);
+        Assert.That(health.OnFailure("solo", 500, null).Remove, Is.True);
+    }
+
+    [Test]
+    public void ForbiddenFeed_DoesNotBlockItsHost()
+    {
+        var time = new FakeTimeProvider(_start);
+        (string, string)[] feeds =
+        [
+            ("bad", "https://www.reddit.com/r/private/.rss"),
+            ("good", "https://www.reddit.com/r/public/.rss")
+        ];
+        var health = CreateHealth(time, feeds);
+
+        health.OnFailure("bad", 403, null);
+        Assert.That(health.IsDue("good"), Is.False);
+
+        time.Advance(FeedHealth.FirstHostPause);
+        Assert.That(health.IsDue("good"), Is.True);
+        Assert.That(health.IsDue("bad"), Is.False);
+
+        health.OnSuccess("good", null);
+        time.Advance(FeedHealth.GetFailureBackoff(1));
+        Assert.That(health.IsDue("bad"), Is.True);
+
+        health.OnFailure("bad", 403, null);
+        Assert.That(health.IsDue("good"), Is.True);
+    }
+
+    [Test]
     public async Task Streaks_AreSavedAndCleared_AndTheOldestStartLoadsBack()
     {
         using var db = new TestDbService();

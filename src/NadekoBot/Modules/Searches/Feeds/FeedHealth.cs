@@ -20,6 +20,9 @@ public sealed class FeedHealth(TimeProvider time)
     public static readonly TimeSpan RemoveAfter = TimeSpan.FromDays(3);
     public static readonly TimeSpan RemoveAfterHostDown = TimeSpan.FromDays(14);
 
+    // A streak loaded from the database can include days when the bot was off, so this run must see failures too.
+    public static readonly TimeSpan MinObservedStreak = TimeSpan.FromHours(1);
+
     // Poll just after the cached copy expires, so the next request gets the new copy.
     private static readonly TimeSpan _freshnessSlack = TimeSpan.FromSeconds(2);
 
@@ -33,6 +36,7 @@ public sealed class FeedHealth(TimeProvider time)
         public string Host;
         public DateTime NextPollAt;
         public DateTime? FailingSince;
+        public DateTime? ObservedSince;
         public int Failures;
         public int Generation;
         public bool Warned;
@@ -138,6 +142,7 @@ public sealed class FeedHealth(TimeProvider time)
         var now = Now;
         var recovered = feed.FailingSince is not null;
         feed.FailingSince = null;
+        feed.ObservedSince = null;
         feed.Failures = 0;
         feed.Warned = false;
         feed.NextPollAt = now + GetPollInterval(freshness);
@@ -166,8 +171,10 @@ public sealed class FeedHealth(TimeProvider time)
         var now = Now;
         var started = feed.FailingSince is null;
         var failingSince = feed.FailingSince ??= now;
+        var observedSince = feed.ObservedSince ??= now;
         feed.Failures++;
-        feed.NextPollAt = now + GetFailureBackoff(feed.Failures);
+        var backoff = GetFailureBackoff(feed.Failures);
+        feed.NextPollAt = now + backoff;
 
         ref var host = ref CollectionsMarshal.GetValueRefOrAddDefault(_hosts, feed.Host, out var hostExists);
         if (!hostExists)
@@ -177,10 +184,13 @@ public sealed class FeedHealth(TimeProvider time)
             host.FeedCount = 1;
         }
 
-        if (status is (int)HttpStatusCode.TooManyRequests or (int)HttpStatusCode.Forbidden)
+        if (ShouldPauseHost(status, failingSince, host.LastSuccessAt))
         {
             var pause = GetHostPause(retryAfter, host.PauseStep++);
             host.PausedUntil = now + pause;
+
+            // The other feeds of the host go first after the pause, so this feed alone cannot keep the host paused.
+            feed.NextPollAt = host.PausedUntil + backoff;
             Log.Warning("Feed host {Host} answered {Status}. The bot pauses its feeds for {Pause}",
                 feed.Host,
                 status,
@@ -205,15 +215,25 @@ public sealed class FeedHealth(TimeProvider time)
             Log.Warning("Feed {FeedUrl} has failed for {Streak}. Last status {Status}", feed.Url, streak, status);
         }
 
-        return new(started, ShouldRemove(streak, hostDown), streak);
+        return new(started, ShouldRemove(streak, now - observedSince, hostDown), streak);
     }
+
+    // A 403 after another feed of the host worked during this streak is a problem of this feed, not a block of the bot.
+    public static bool ShouldPauseHost(int status, DateTime failingSince, DateTime? hostLastSuccessAt)
+        => status switch
+        {
+            (int)HttpStatusCode.TooManyRequests => true,
+            (int)HttpStatusCode.Forbidden => hostLastSuccessAt is not { } last || last <= failingSince,
+            _ => false
+        };
 
     public static bool IsHostDown(int feedCount, DateTime? lastSuccessAt, DateTime now)
         => feedCount >= MIN_FEEDS_FOR_HOST_OUTAGE
            && (lastSuccessAt is not { } last || now - last >= HostDownAfter);
 
-    public static bool ShouldRemove(TimeSpan streak, bool hostDown)
-        => streak >= RemoveAfterHostDown || (streak >= RemoveAfter && !hostDown);
+    public static bool ShouldRemove(TimeSpan streak, TimeSpan observed, bool hostDown)
+        => observed >= MinObservedStreak
+           && (streak >= RemoveAfterHostDown || (streak >= RemoveAfter && !hostDown));
 
     public static TimeSpan GetPollInterval(TimeSpan? freshness)
         => Clamp((freshness ?? TimeSpan.Zero) + _freshnessSlack, MinPollInterval, MaxPollInterval);

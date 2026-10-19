@@ -2,6 +2,13 @@
 
 *a,c,f,r,o,d*
 
+## [7.6.6] - 19.10.2026
+
+### Fixed
+
+- Fixed a feed sometimes being deleted right after a restart. Now it must fail for 1 hour first.
+- Fixed one refused feed stopping the other feeds from the same site.
+
 ## [7.6.5] - 18.10.2026
 
 ### Fixed
