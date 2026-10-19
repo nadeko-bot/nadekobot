@@ -54,13 +54,21 @@ public sealed class AiAgentSession(
            || name.Equals("Cookie", StringComparison.OrdinalIgnoreCase)
            || name.StartsWith("Proxy-", StringComparison.OrdinalIgnoreCase);
 
-    // Lets a header such as x-opencode-session give each channel its own provider session,
-    // instead of one session for every server and channel of the bot.
+    // Lets the provider keep one session for each channel, for prompt caching.
     private static string ReplaceHeaderPlaceholders(string value, AiToolContext context)
-        => value
-           .Replace("%server.id%", context.Guild.Id.ToString(), StringComparison.Ordinal)
-           .Replace("%channel.id%", context.SourceChannel.Id.ToString(), StringComparison.Ordinal)
-           .Replace("%user.id%", context.User.Id.ToString(), StringComparison.Ordinal);
+    {
+        if (!value.Contains('%'))
+            return value;
+
+        if (value.Contains("%server.id%", StringComparison.Ordinal))
+            value = value.Replace("%server.id%", context.Guild.Id.ToString(), StringComparison.Ordinal);
+        if (value.Contains("%channel.id%", StringComparison.Ordinal))
+            value = value.Replace("%channel.id%", context.SourceChannel.Id.ToString(), StringComparison.Ordinal);
+        if (value.Contains("%user.id%", StringComparison.Ordinal))
+            value = value.Replace("%user.id%", context.User.Id.ToString(), StringComparison.Ordinal);
+
+        return value;
+    }
 
     private sealed class SessionUsage
     {
