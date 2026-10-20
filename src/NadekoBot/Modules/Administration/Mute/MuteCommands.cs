@@ -21,6 +21,7 @@ public partial class Administration
             {
                 await _service.MuteUser(target, ctx.User, type, reason);
                 await Response().Confirm(success).SendAsync();
+                await WarnMuteRejoinInternalAsync(type);
             }
             catch (Exception ex)
             {
@@ -49,12 +50,20 @@ public partial class Administration
             {
                 await _service.TimedMute(target, ctx.User, timespan.Time, type, reason);
                 await Response().Confirm(success((int)timespan.Time.TotalMinutes)).SendAsync();
+                await WarnMuteRejoinInternalAsync(type);
             }
             catch (Exception ex)
             {
                 Log.Warning(ex, "Error in timed mute command");
                 await Response().Error(strs.mute_error).SendAsync();
             }
+        }
+
+        // Without Server Members the bot gets no join event, so it cannot mute a member who leaves and joins again.
+        private async Task WarnMuteRejoinInternalAsync(MuteType type)
+        {
+            if (type != MuteType.Voice && !Intents.Members)
+                await Response().Pending(strs.mute_rejoin_no_members).SendAsync();
         }
 
         private async Task UnmuteInternalAsync(IGuildUser user, MuteType type, string reason, LocStr success)

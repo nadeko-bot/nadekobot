@@ -166,6 +166,8 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
             return null;
 
         var content = umsg.Content.AsSpan().Trim();
+        if (content.IsEmpty)
+            return null;
 
         if (newguildExpressions.TryGetValue(channel.Guild.Id, out var expressions) && expressions.Length > 0)
         {
@@ -638,7 +640,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         await using var uow = _db.GetDbContext();
         foreach (var entry in data)
         {
-            if (entry.Value is null)
+            if (entry.Value is null || string.IsNullOrWhiteSpace(entry.Key))
                 continue;
 
             var trigger = entry.Key;

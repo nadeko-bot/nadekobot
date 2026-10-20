@@ -100,6 +100,9 @@ public partial class Administration
                     Format.Bold(AutoThreadArchive.Pretty(minutes))))
                 .SendAsync();
 
+            if (mode == AutoThreadMode.Media)
+                await WarnIfNoMessageContentAsync("autothread");
+
             if (opts.Backfill == 0)
                 return;
 

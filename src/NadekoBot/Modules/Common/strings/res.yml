@@ -49,3 +49,6 @@ options: Options
 overloads: Overloads
 requires: Requires
 usage: Usage
+intent_missing_message_content: "{0} does not work, because the bot does not have the Message Content intent."
+intent_missing_members: "{0} does not fully work, because the bot does not have the Server Members intent."
+prompt_reply_hint: "The bot sees only messages which ping it. Reply to this message, or start your answer with a mention of the bot."

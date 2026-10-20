@@ -60,6 +60,41 @@ public sealed class IntentTests
     }
 
     [Test]
+    public void TextAfterMention_FeedsAliasesAndPrompts()
+    {
+        Assert.That(MentionPrefix.TryGetText("  <@42>  hi there  ", BOT_ID, out var alias) ? alias : null, Is.EqualTo("hi there"));
+        Assert.That(MentionPrefix.TryGetText("<@42>", BOT_ID, out _), Is.False);
+        Assert.That(MentionPrefix.TryGetText("hi", BOT_ID, out _), Is.False);
+
+        // Without Message Content: a mention or a reply which pings the bot gives the answer, other messages are empty.
+        Assert.That(MentionPrefix.ReadPromptInput("<@42> 1234", BOT_ID, hasMessageContent: false), Is.EqualTo("1234"));
+        Assert.That(MentionPrefix.ReadPromptInput("1234", BOT_ID, hasMessageContent: false), Is.EqualTo("1234"));
+        Assert.That(MentionPrefix.ReadPromptInput("", BOT_ID, hasMessageContent: false), Is.Null);
+        Assert.That(MentionPrefix.ReadPromptInput("  ", BOT_ID, hasMessageContent: false), Is.Null);
+        Assert.That(MentionPrefix.ReadPromptInput("<@42> 1234", BOT_ID, hasMessageContent: true), Is.EqualTo("<@42> 1234"));
+    }
+
+    [Test]
+    public void Close4014_RestartsAtOnceOnlyWhenDiscordTookAnAskedIntent()
+    {
+        var all = IntentState.All;
+        var noPresence = new IntentState(false, true, true);
+        var noMembers = new IntentState(true, false, true);
+
+        Assert.That(HostedProgram.RestartsAtOnce(all, noPresence, lastRetry: null), Is.True);
+        Assert.That(HostedProgram.RestartsAtOnce(all, all, lastRetry: null), Is.False);
+        Assert.That(HostedProgram.RestartsAtOnce(all, flags: null, lastRetry: null), Is.False);
+        Assert.That(HostedProgram.RestartsAtOnce(noMembers, all, lastRetry: null), Is.False);
+
+        // The marker stops a loop when Discord refuses the same start again.
+        Assert.That(HostedProgram.RestartsAtOnce(all, noPresence, lastRetry: noPresence), Is.False);
+        Assert.That(HostedProgram.RestartsAtOnce(all, IntentState.None, lastRetry: noPresence), Is.True);
+
+        // One intent swapped for another is also a lost intent.
+        Assert.That(HostedProgram.RestartsAtOnce(noMembers, noPresence, lastRetry: null), Is.True);
+    }
+
+    [Test]
     public void IntentsFile_KeepsEachSetAndRefusesAnUnknownFile()
     {
         for (var mask = 0; mask < 8; mask++)
@@ -76,8 +111,15 @@ public sealed class IntentTests
         try
         {
             Assert.That(IntentsFile.Read(path), Is.Null);
-            IntentsFile.Write(path, new IntentState(false, true, true));
+            Assert.That(IntentsFile.Write(path, new IntentState(false, true, true)), Is.True);
             Assert.That(IntentsFile.Read(path), Is.EqualTo(new IntentState(false, true, true)));
+
+            File.WriteAllText(path, string.Empty);
+            Assert.That(IntentsFile.Read(path), Is.Null);
+
+            IntentsFile.Delete(path);
+            IntentsFile.Delete(path);
+            Assert.That(File.Exists(path), Is.False);
         }
         finally
         {

@@ -51,6 +51,14 @@ public class TriviaQuestion
         if (Answer.Equals(guess, StringComparison.InvariantCulture))
             return true;
         var cleanGuess = Clean(guess);
+
+        // An empty message, or one of only stop words, cleans to "" and would match any answer which also cleans to "".
+        if (cleanGuess.Length == 0)
+        {
+            var trimmed = guess.AsSpan().Trim();
+            return !trimmed.IsEmpty && trimmed.Equals(Answer.AsSpan().Trim(), StringComparison.InvariantCultureIgnoreCase);
+        }
+
         if (CleanAnswer.Equals(cleanGuess, StringComparison.InvariantCulture))
             return true;
 

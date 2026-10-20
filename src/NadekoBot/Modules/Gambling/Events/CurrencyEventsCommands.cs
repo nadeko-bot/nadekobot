@@ -22,6 +22,9 @@ public partial class Gambling
         [OwnerOnly]
         public async Task EventStart(CurrencyEvent.Type ev, params string[] options)
         {
+            if (ev == CurrencyEvent.Type.GameStatus && await RefuseWithoutMessageContentAsync("eventstart"))
+                return;
+
             var (opts, _) = OptionsParser.ParseFrom(new EventOptions(), options);
             if (!await _service.TryCreateEventAsync(ctx.Guild.Id, ctx.Channel.Id, ev, opts, GetEmbed))
                 await Response().Error(strs.start_event_fail).SendAsync();

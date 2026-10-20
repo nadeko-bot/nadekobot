@@ -76,7 +76,7 @@ public sealed class AiAgentService(
         if (msg.Channel is not SocketTextChannel)
             return Task.CompletedTask;
 
-        if (!_channelBuffers.TryGetValue(msg.Channel.Id, out var buffer))
+        if (!_channelBuffers.TryGetValue(msg.Channel.Id, out var buffer) || IsUnreadable(userMsg))
             return Task.CompletedTask;
 
         buffer.Push(CreateSnapshot(userMsg));
@@ -606,6 +606,7 @@ public sealed class AiAgentService(
             .FlattenAsync();
 
         var snapshots = messages
+            .Where(m => !IsUnreadable(m))
             .OrderBy(m => m.Timestamp)
             .Select(m => CreateSnapshot(m))
             .ToList();
@@ -615,6 +616,12 @@ public sealed class AiAgentService(
 
         _channelBuffers.TryAdd(channel.Id, buffer);
     }
+
+    // Without Message Content, Discord sends the text of a member's message only when it mentions the bot.
+    private bool IsUnreadable(IMessage msg)
+        => !intents.MessageContent
+           && string.IsNullOrWhiteSpace(msg.Content)
+           && msg.Author.Id != client.CurrentUser.Id;
 
     private static MessageSnapshot CreateSnapshot(IMessage msg)
         => new(

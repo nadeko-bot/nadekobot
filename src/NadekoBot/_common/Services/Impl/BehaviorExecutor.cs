@@ -216,11 +216,11 @@ public sealed class BehaviorHandler : IBehaviorHandler
         }
     }
 
-    public async ValueTask<IUserMessage> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg)
+    public async ValueTask<IUserMessage> RunInputTransformersAsync(SocketGuild? guild, IUserMessage usrMsg, string content)
     {
-        var newContent = await ExecInputTransformInternalAsync(inputTransformers, guild, usrMsg);
+        var newContent = await ExecInputTransformInternalAsync(inputTransformers, guild, usrMsg, content);
         if (newContent is null && _customExecs is { Length: > 0 } customs)
-            newContent = await ExecInputTransformInternalAsync(customs, guild, usrMsg);
+            newContent = await ExecInputTransformInternalAsync(customs, guild, usrMsg, content);
 
         if (newContent is null)
             return usrMsg;
@@ -229,19 +229,19 @@ public sealed class BehaviorHandler : IBehaviorHandler
         return new DoAsUserMessage(usrMsg, usrMsg.Author, newContent) { BlocksOwnerCommands = true };
     }
 
-    private async ValueTask<string?> ExecInputTransformInternalAsync<T>(T[] execs, SocketGuild? guild, IUserMessage usrMsg)
+    private async ValueTask<string?> ExecInputTransformInternalAsync<T>(T[] execs, SocketGuild? guild, IUserMessage usrMsg, string content)
         where T : IInputTransformer
     {
         foreach (var exec in execs)
         {
             try
             {
-                var newContent = await exec.TransformInput(guild, usrMsg.Channel, usrMsg.Author, usrMsg.Content);
+                var newContent = await exec.TransformInput(guild, usrMsg.Channel, usrMsg.Author, content);
                 if (newContent is not null)
                 {
                     Log.Information("{ExecName} transformed content {OldContent} -> {NewContent}",
                         GetExecName(exec),
-                        usrMsg.Content,
+                        content,
                         newContent);
                     return newContent;
                 }

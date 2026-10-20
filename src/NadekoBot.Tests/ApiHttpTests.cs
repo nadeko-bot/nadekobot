@@ -197,6 +197,35 @@ public sealed class ApiHttpTests
     }
 
     [Test]
+    public async Task Creds_ANewTokenDeletesTheStoredIntents()
+    {
+        File.WriteAllText(_paths.Creds, Yaml.Serializer.Serialize(new Creds { Token = "tok" }));
+        var stored = new IntentState(true, false, true);
+        IntentsFile.Write(_paths.Intents, stored);
+        IntentsFile.Write(_paths.IntentsRetry, stored);
+
+        var bridge = new BotBridge();
+        bridge.SetPhase(BotPhase.Starting);
+        await StartAsync(API_KEY, bridge);
+        Authorize();
+
+        using (var owners = await _http!.PutAsync("/api/creds", Json(new { apiKey = API_KEY, ownerIds = new[] { OWNER_A } })))
+            Assert.That(owners.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
+        using (var same = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY, token = "tok" })))
+            Assert.That(same.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
+
+        Assert.That(IntentsFile.Read(_paths.Intents), Is.EqualTo(stored));
+        Assert.That(IntentsFile.Read(_paths.IntentsRetry), Is.EqualTo(stored));
+
+        using (var changed = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY, token = "other" })))
+            Assert.That(changed.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
+
+        Assert.That(File.Exists(_paths.Intents), Is.False);
+        Assert.That(File.Exists(_paths.IntentsRetry), Is.False);
+        Assert.That(CredsFile.Read(_paths.Creds)!.Token, Is.EqualTo("other"));
+    }
+
+    [Test]
     public async Task Owners_ReplaceTheListWithoutARestart()
     {
         File.WriteAllText(_paths.Creds, Yaml.Serializer.Serialize(new Creds { Token = "tok", OwnerIds = [ulong.Parse(OWNER_A)] }));

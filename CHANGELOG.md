@@ -2,7 +2,7 @@
 
 *a,c,f,r,o,d*
 
-## [7.6.7] - 19.10.2026
+## [7.6.7] - 20.10.2026
 
 ### Added
 
@@ -13,17 +13,31 @@
 - The AI agent answers a reply only when the reply pings the bot.
 - The AI agent answers replies only to its own messages, not to other bot messages.
 - The NadeKloud bot asks Discord only for the privileged intents which its application has.
-- Without the Message Content intent, the bot runs commands which start with its mention, for example `@Bot help`.
-- Without the Message Content intent, every message gives text xp.
+- When Discord takes away a privileged intent, the NadeKloud bot starts again at once without it.
+- Without the Message Content intent:
+    - commands and aliases work after the bot mention, for example `@Bot help`
+    - every message gives text xp
+    - anti-spam, filters and other features which read messages are off, and their commands tell you
+    - chat games do not start
+    - members answer bot questions with a reply which pings the bot
+- Without the Server Members intent, `.antiraid`, `.antialt`, `.stickyroles` and `.mute` tell you what does not work.
 
 ### Fixed
 
 - Fixed a `~` prefix breaking all commands after the bot saved `bot.yml`. Now the bot restores it.
+- Without the Message Content intent:
+    - anti-spam does not punish members who send a few messages
+    - image-only and link-only channels do not delete every message
+    - starboard posts keep their text when the star count changes
+- `.eximport` skips expressions with an empty trigger.
+- Trivia does not accept an empty message as the answer.
 
 ### Dev
 
 - NadekoBot.Hosted reports the privileged intents of the bot and marks server features which need a missing intent.
 - Added tests for the intent flags, the mention prefix and the intent health checks.
+- NadekoBot.Hosted restarts at once after gateway close 4014 and deletes the stored intents when the token changes.
+- Added tests for features without the Message Content intent, the fast restart and a token change.
 
 ## [7.6.6] - 19.10.2026
 

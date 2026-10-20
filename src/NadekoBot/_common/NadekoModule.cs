@@ -19,6 +19,7 @@ public abstract class NadekoModule : ModuleBase
     public INadekoInteractionService _inter { get; set; }
     public IReplacementService repSvc { get; set; }
     public IMessageSenderService _sender { get; set; }
+    public IntentState Intents { get; set; }
 
     protected string prefix
         => _cmdHandler.GetPrefix(ctx.Guild);
@@ -115,10 +116,11 @@ public abstract class NadekoModule : ModuleBase
                     || userMsg.Channel.Id != channelId)
                     return Task.CompletedTask;
 
-                if (validate is not null && !validate(arg.Content))
+                var input = MentionPrefix.ReadPromptInput(userMsg.Content, dsc.CurrentUser.Id, Intents.MessageContent);
+                if (input is null || (validate is not null && !validate(input)))
                     return Task.CompletedTask;
 
-                if (userInputTask.TrySetResult(arg.Content))
+                if (userInputTask.TrySetResult(input))
                     userMsg.DeleteAfter(1);
 
                 return Task.CompletedTask;
@@ -126,6 +128,35 @@ public abstract class NadekoModule : ModuleBase
             return Task.CompletedTask;
         }
     }
+
+    // The setting stays, so the feature works again once Discord allows the intent.
+    protected async Task WarnIfNoMessageContentAsync(string command)
+    {
+        if (!Intents.MessageContent)
+            await Response().Pending(strs.intent_missing_message_content(Format.Code(prefix + command))).SendAsync();
+    }
+
+    protected async Task WarnIfNoMembersAsync(string command)
+    {
+        if (!Intents.Members)
+            await Response().Pending(strs.intent_missing_members(Format.Code(prefix + command))).SendAsync();
+    }
+
+    protected async Task<bool> RefuseWithoutMessageContentAsync(string command)
+    {
+        if (Intents.MessageContent)
+            return false;
+
+        await Response().Error(strs.intent_missing_message_content(Format.Code(prefix + command))).SendAsync();
+        return true;
+    }
+
+    // Without Message Content, Discord sends the answer only when it pings the bot.
+    protected string WithPromptReplyHint(string text)
+        => Intents.MessageContent ? text : text + "\n" + GetText(strs.prompt_reply_hint);
+
+    protected string PromptReplyHintOrNull()
+        => Intents.MessageContent ? null : GetText(strs.prompt_reply_hint);
 
     protected async Task<bool> CheckRoleHierarchy(IGuildUser target)
     {

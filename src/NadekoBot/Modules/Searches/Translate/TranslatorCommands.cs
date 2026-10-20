@@ -58,7 +58,10 @@ public partial class Searches
             var toggle =
                 await _service.ToggleAtl(ctx.Guild.Id, ctx.Channel.Id, autoDelete == AutoDeleteAutoTranslate.Del);
             if (toggle)
+            {
                 await Response().Confirm(strs.atl_started).SendAsync();
+                await WarnIfNoMessageContentAsync("autotranslate");
+            }
             else
                 await Response().Confirm(strs.atl_stopped).SendAsync();
         }
@@ -121,7 +124,10 @@ public partial class Searches
         {
             var enabled = await _flagSvc.Toggle(ctx.Guild.Id, ctx.Channel.Id);
             if (enabled)
+            {
                 await Response().Confirm(strs.trfl_enabled).SendAsync();
+                await WarnIfNoMessageContentAsync("translateflags");
+            }
             else
                 await Response().Confirm(strs.trfl_disabled).SendAsync();
         }

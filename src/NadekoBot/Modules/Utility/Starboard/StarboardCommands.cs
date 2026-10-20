@@ -306,7 +306,7 @@ public partial class Utility
                 onlyAuthor: true,
                 singleUse: true);
 
-            var promptMsg = await smc.FollowupAsync(GetText(prompt),
+            var promptMsg = await smc.FollowupAsync(WithPromptReplyHint(GetText(prompt)),
                 components: new ComponentBuilder().WithButton(cancelBtn).Build(),
                 ephemeral: true);
 

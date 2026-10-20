@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
+using NadekoBot.Common;
 using NadekoBot.Extensions;
 using NadekoBot.Modules.Utility.AiAgent;
 using NadekoBot.Modules.Utility.AiAgent.Adapters;
@@ -19,7 +20,7 @@ public sealed class AiMessagingToolTests
     [Test]
     public async Task EditAndDelete_NeedManageMessagesExceptForMessagesTheSessionSent()
     {
-        var adapter = new MessagingAiAdapter(Substitute.For<IMessageSenderService>());
+        var adapter = new MessagingAiAdapter(Substitute.For<IMessageSenderService>(), IntentState.All);
         var member = CreateContext(manageMessages: false);
 
         var editDenied = Assert.ThrowsAsync<ToolException>(() => adapter.EditMessage(member, CHANNEL_ID, MESSAGE_ID, "x"));

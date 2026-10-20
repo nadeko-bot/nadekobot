@@ -244,6 +244,8 @@ public partial class Gambling : GamblingModule<GamblingService>
                     toSend = toSend
                         .Text("*[Sub on Patreon](https://patreon.com/nadekobot) to remove captcha.*");
 #endif
+                if (PromptReplyHintOrNull() is { } hint)
+                    toSend = toSend.Text(hint);
 
                 var captchaMessage = await toSend.SendAsync();
                 try

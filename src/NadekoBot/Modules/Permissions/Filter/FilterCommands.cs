@@ -74,6 +74,7 @@ public partial class Permissions
             if (enabled)
             {
                 await Response().Confirm(strs.invite_filter_server_on).SendAsync();
+                await WarnIfNoMessageContentAsync("srvrfilterinv");
             }
             else
             {
@@ -92,6 +93,7 @@ public partial class Permissions
             if (enabled)
             {
                 await Response().Confirm(strs.invite_filter_channel_on).SendAsync();
+                await WarnIfNoMessageContentAsync("chnlfilterinv");
             }
             else
             {
@@ -110,6 +112,7 @@ public partial class Permissions
             if (enabled)
             {
                 await Response().Confirm(strs.link_filter_server_on).SendAsync();
+                await WarnIfNoMessageContentAsync("srvrfilterlin");
             }
             else
             {
@@ -128,6 +131,7 @@ public partial class Permissions
             if (enabled)
             {
                 await Response().Confirm(strs.link_filter_channel_on).SendAsync();
+                await WarnIfNoMessageContentAsync("chnlfilterlin");
             }
             else
             {
@@ -146,6 +150,7 @@ public partial class Permissions
             if (enabled)
             {
                 await Response().Confirm(strs.word_filter_server_on).SendAsync();
+                await WarnIfNoMessageContentAsync("srvrfilterwords");
             }
             else
             {
@@ -164,6 +169,7 @@ public partial class Permissions
             if (enabled)
             {
                 await Response().Confirm(strs.word_filter_channel_on).SendAsync();
+                await WarnIfNoMessageContentAsync("chnlfilterwords");
             }
             else
             {

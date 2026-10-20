@@ -63,6 +63,9 @@ public partial class Games
         [RequireContext(ContextType.Guild)]
         public async Task Hangman([Leftover] string? type = null)
         {
+            if (await RefuseWithoutMessageContentAsync("hangman"))
+                return;
+
             if (!_service.StartHangman(ctx.Channel.Id, type, out var hangman))
             {
                 await Response().Error(strs.hangman_running).SendAsync();

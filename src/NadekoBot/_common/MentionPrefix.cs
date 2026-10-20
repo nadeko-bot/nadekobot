@@ -22,6 +22,32 @@ public static class MentionPrefix
         return true;
     }
 
+    public static bool TryGetText(string content, ulong botId, [NotNullWhen(true)] out string? text)
+    {
+        text = null;
+        if (!TryTrimMention(content.AsSpan().TrimStart(), botId, out var rest))
+            return false;
+
+        rest = rest.Trim();
+        if (rest.IsEmpty)
+            return false;
+
+        text = rest.ToString();
+        return true;
+    }
+
+    // Without Message Content, a reply which pings the bot has its text; other messages of the member are empty.
+    public static string? ReadPromptInput(string content, ulong botId, bool hasMessageContent)
+    {
+        if (hasMessageContent)
+            return content;
+
+        if (TryGetText(content, botId, out var text))
+            return text;
+
+        return string.IsNullOrWhiteSpace(content) ? null : content;
+    }
+
     // Discord writes a user mention as <@id>, and older clients as <@!id>.
     public static bool TryTrimMention(ReadOnlySpan<char> content, ulong botId, out ReadOnlySpan<char> rest)
     {

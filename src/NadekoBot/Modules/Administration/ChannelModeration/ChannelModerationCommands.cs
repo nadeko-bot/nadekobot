@@ -48,7 +48,10 @@ public partial class Administration
         {
             var newValue = await somethingOnly.ToggleAsync(ctx.Guild.Id, ctx.Channel.Id, OnlyChannelType.Image);
             if (newValue)
+            {
                 await Response().Confirm(strs.imageonly_enable).SendAsync();
+                await WarnIfNoMessageContentAsync("imageonlychannel");
+            }
             else
                 await Response().Pending(strs.imageonly_disable).SendAsync();
         }
@@ -63,7 +66,10 @@ public partial class Administration
         {
             var newValue = await somethingOnly.ToggleAsync(ctx.Guild.Id, ctx.Channel.Id, OnlyChannelType.Link);
             if (newValue)
+            {
                 await Response().Confirm(strs.linkonly_enable).SendAsync();
+                await WarnIfNoMessageContentAsync("linkonlychannel");
+            }
             else
                 await Response().Pending(strs.linkonly_disable).SendAsync();
         }

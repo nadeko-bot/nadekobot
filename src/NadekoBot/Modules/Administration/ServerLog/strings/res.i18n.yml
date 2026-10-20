@@ -60,6 +60,7 @@ ar:
   voice_server_undeafened: أُلغي الصمم من الخادم
   voice_server_unmuted: أُلغي كتم الصوت من الخادم
   xmuted_voice: 'المستخدم {0} من الدردشة الصوتية {1}'
+  log_text_unavailable: غير متاح. البوت لا يملك الـ intent المسمى Message Content.
 
 de-DE:
   avatar_changed: Avatar wurde geändert
@@ -123,6 +124,7 @@ de-DE:
   voice_server_undeafened: Server-Stummschaltung (Ton) aufgehoben
   voice_server_unmuted: Server-Stummschaltung (Mikrofon) aufgehoben
   xmuted_voice: 'Benutzer {0} von dem Sprachkanal {1}'
+  log_text_unavailable: Nicht verfügbar. Der Bot hat den Message Content Intent nicht.
 
 es-ES:
   avatar_changed: Avatar cambiado
@@ -186,6 +188,7 @@ es-ES:
   voice_server_undeafened: Desensordecido por el servidor
   voice_server_unmuted: Desilenciado por el servidor
   xmuted_voice: 'Usuario {0} de la llamada {1}'
+  log_text_unavailable: No disponible. El bot no tiene el intent Message Content.
 
 fr-FR:
   avatar_changed: Avatar changé
@@ -249,6 +252,7 @@ fr-FR:
   voice_server_undeafened: Sourdine levee par le serveur
   voice_server_unmuted: Micro reactive par le serveur
   xmuted_voice: 'Utilisateur {0} du vocal {1}'
+  log_text_unavailable: Non disponible. Le bot n'a pas l'intent Message Content.
 
 id-ID:
   avatar_changed: Avatar Diubah
@@ -312,6 +316,7 @@ id-ID:
   voice_server_undeafened: Pembisuan suara server dicabut
   voice_server_unmuted: Pembisuan server dicabut
   xmuted_voice: 'User {0} dari voice chat {1}'
+  log_text_unavailable: Tidak tersedia. Bot tidak punya intent Message Content.
 
 ja-JP:
   avatar_changed: 画像が変更されました。
@@ -375,6 +380,7 @@ ja-JP:
   voice_server_undeafened: サーバーによるスピーカーミュート解除
   voice_server_unmuted: サーバーによるマイクミュート解除
   xmuted_voice: 'ボイスチャット上で、ユーザー{0}を{1}がミュートしました'
+  log_text_unavailable: 利用できません。BotにMessage Content intentがありません。
 
 ko-KR:
   avatar_changed: 아바타 변경됨
@@ -438,6 +444,7 @@ ko-KR:
   voice_server_undeafened: 서버에서 소리 차단 해제됨
   voice_server_unmuted: 서버에서 음소거 해제됨
   xmuted_voice: '사용자 {0}을(를) 음성 채팅에서 {1}'
+  log_text_unavailable: 사용할 수 없습니다. 봇에 Message Content intent가 없습니다.
 
 pl-PL:
   avatar_changed: Zmieniono awatar
@@ -501,6 +508,7 @@ pl-PL:
   voice_server_undeafened: Odgluszony przez serwer
   voice_server_unmuted: Odciszony przez serwer (mikrofon)
   xmuted_voice: 'Użytkownik {0} na czacie głosowym {1}'
+  log_text_unavailable: Niedostępne. Bot nie ma intencji Message Content.
 
 pt-BR:
   avatar_changed: Avatar alterado
@@ -564,6 +572,7 @@ pt-BR:
   voice_server_undeafened: Desensurdecido pelo servidor
   voice_server_unmuted: Dessilenciado pelo servidor
   xmuted_voice: 'Usuário {0} do canal de voz {1}'
+  log_text_unavailable: Indisponível. O bot não tem o intent Message Content.
 
 ru-RU:
   avatar_changed: Аватар изменён
@@ -627,6 +636,7 @@ ru-RU:
   voice_server_undeafened: Заглушение сервером снято
   voice_server_unmuted: Микрофон включен сервером
   xmuted_voice: 'Пользователь {0} из голосового чата {1}'
+  log_text_unavailable: Недоступно. У бота нет интента Message Content.
 
 sr-Cyrl-RS:
   avatar_changed: Аватар промењен
@@ -690,6 +700,7 @@ sr-Cyrl-RS:
   voice_server_undeafened: Укинуто утишавање од стране сервера
   voice_server_unmuted: Укинуто утишавање микрофона од стране сервера
   xmuted_voice: 'Корисник {0} из гласовног чета {1}'
+  log_text_unavailable: Није доступно. Бот нема Message Content интент.
 
 tr-TR:
   avatar_changed: Avatar Değiştirildi
@@ -753,6 +764,7 @@ tr-TR:
   voice_server_undeafened: Sunucu tarafindan sagirlik kaldirildi
   voice_server_unmuted: Sunucu tarafindan ses acildi
   xmuted_voice: '{1} tarafından {0} kullanıcısının ses sohbeti susturuldu'
+  log_text_unavailable: Kullanılamıyor. Botta Message Content intent'i yok.
 
 ts-TS:
   avatar_changed: Avatar Changed
@@ -816,6 +828,7 @@ ts-TS:
   voice_server_undeafened: Server undeafened
   voice_server_unmuted: Server voice unmuted
   xmuted_voice: 'User {0} from voice chat {1}'
+  log_text_unavailable: Not available. The bot doesn't have the Message Content intent.
 
 uk-UA:
   avatar_changed: Аватар змінено
@@ -879,6 +892,7 @@ uk-UA:
   voice_server_undeafened: Заглушення сервером знято
   voice_server_unmuted: Мiкрофон увiмкнено сервером
   xmuted_voice: 'Користувача {0} замучено в голосовому чаті {1}'
+  log_text_unavailable: Недоступно. Бот не має інтенту Message Content.
 
 vi-VN:
   avatar_changed: Đã đổi ảnh đại diện
@@ -942,6 +956,7 @@ vi-VN:
   voice_server_undeafened: Da bat am thanh boi may chu
   voice_server_unmuted: Da bat tieng boi may chu
   xmuted_voice: 'Người dùng {0} khỏi chat thoại {1}'
+  log_text_unavailable: Không khả dụng. Bot không có intent Message Content.
 
 zh-CN:
   avatar_changed: 頭像更改了
@@ -1005,3 +1020,4 @@ zh-CN:
   voice_server_undeafened: 被服务器取消禁听
   voice_server_unmuted: 被服务器取消静音
   xmuted_voice: '來自語音頻道 {1} 的用戶 {0}'
+  log_text_unavailable: 不可用。机器人没有 Message Content intent。

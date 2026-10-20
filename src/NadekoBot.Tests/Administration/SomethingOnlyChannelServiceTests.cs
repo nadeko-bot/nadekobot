@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using NadekoBot.Common;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Administration.Services;
 using NadekoBot.Tests.Waifu;
@@ -26,7 +27,8 @@ public class SomethingOnlyChannelServiceTests
         _db = new TestDbService();
         _svc = new SomethingOnlyChannelService(new MemoryCache(new MemoryCacheOptions()),
             Substitute.For<DiscordSocketClient>(),
-            _db);
+            _db,
+            IntentState.All);
     }
 
     [TearDown]

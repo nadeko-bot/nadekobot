@@ -23,6 +23,9 @@ public partial class Games
         [NadekoOptions<TypingGame.Options>]
         public async Task TypeStart(params string[] args)
         {
+            if (await RefuseWithoutMessageContentAsync("typestart"))
+                return;
+
             var (options, _) = OptionsParser.ParseFrom(new TypingGame.Options(), args);
             var channel = (ITextChannel)ctx.Channel;
 

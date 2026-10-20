@@ -79,14 +79,19 @@ must apply for each one. The bot asks only for the intents which Discord
 allows, so it starts without the others:
 
 - Without Message Content, the bot answers commands in servers only when the
-  message mentions it: `@Bot help`.
-- Without Server Members, greet, bye and boost messages, auto-assign roles and
-  member logs do not work.
+  message mentions it: `@Bot help`. Features which read member messages
+  (anti-spam, image-only and link-only channels, filters, flag translation,
+  edit logs) do nothing, and chat games do not start.
+- Without Server Members, greet, bye and boost messages, auto-assign roles,
+  anti-raid, anti-alt, sticky roles and member logs do not work.
 - Without Presence, stream roles, game voice channels and presence logs do not
   work.
 
 When Discord refuses an intent later (gateway close 4014), the bot is `failed`
-with `disallowed_intents` and starts again after 15 minutes.
+with `disallowed_intents` and reads the intents from Discord again. When
+Discord took away an intent which the bot asked for, the bot exits at once and
+starts without it. Else it starts again after 15 minutes. A new token deletes
+the stored intents.
 
 ## What the API does
 

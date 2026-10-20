@@ -238,7 +238,12 @@ public sealed partial class CommandHandler : INService, ICommandHandler
 
         var interceptTime = Environment.TickCount - startTime;
 
-        var cmdMsg = await _behaviorHandler.RunInputTransformersAsync(guild, usrMsg);
+        var transformInput = usrMsg.Content;
+        if (!_intents.MessageContent
+            && MentionPrefix.TryGetText(transformInput, _client.CurrentUser.Id, out var afterMention))
+            transformInput = afterMention;
+
+        var cmdMsg = await _behaviorHandler.RunInputTransformersAsync(guild, usrMsg, transformInput);
         var messageContent = cmdMsg.Content;
 
         var prefix = GetPrefix(guild?.Id);

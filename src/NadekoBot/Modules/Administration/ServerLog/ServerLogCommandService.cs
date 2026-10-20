@@ -33,6 +33,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
     private readonly UserPunishService _punishService;
     private readonly IMessageSenderService _sender;
     private readonly ShardData _shardData;
+    private readonly IntentState _intents;
 
     public LogCommandService(
         DiscordSocketClient client,
@@ -44,9 +45,11 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         IMemoryCache memoryCache,
         UserPunishService punishService,
         IMessageSenderService sender,
-        ShardData shardData)
+        ShardData shardData,
+        IntentState intents)
     {
         _client = client;
+        _intents = intents;
         _memoryCache = memoryCache;
         _sender = sender;
         _strings = strings;
@@ -365,7 +368,8 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
     private Task HandleMessageUpdated(Cacheable<IMessage, ulong> optmsg, SocketMessage imsg2, ISocketMessageChannel ch)
     {
-        if (imsg2 is not IUserMessage after || after.IsAuthor(_client))
+        // Without Message Content both texts are empty, so the log entry would show no change.
+        if (!_intents.MessageContent || imsg2 is not IUserMessage after || after.IsAuthor(_client))
             return Task.CompletedTask;
 
         if ((optmsg.HasValue ? optmsg.Value : null) is not IUserMessage before)
@@ -1014,7 +1018,9 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 .WithTitle("🗑 " + GetText(logChannel.Guild, strs.msg_del(((ITextChannel)msg.Channel).Name)))
                 .WithDescription(msg.Author.ToString()!)
                 .AddField(GetText(logChannel.Guild, strs.content),
-                    string.IsNullOrWhiteSpace(resolvedMessage) ? "-" : resolvedMessage)
+                    !string.IsNullOrWhiteSpace(resolvedMessage) ? resolvedMessage
+                    : _intents.MessageContent ? "-"
+                    : GetText(logChannel.Guild, strs.log_text_unavailable))
                 .AddField("Id", msg.Id.ToString())
                 .WithFooter(CurrentTime(channel.Guild));
 

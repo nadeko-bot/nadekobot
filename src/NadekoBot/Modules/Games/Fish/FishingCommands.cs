@@ -42,6 +42,7 @@ public partial class Games
                     var toSend = Response()
                         .File(stream, "timely.png")
                         .Embed(CreateEmbed()
+                            .WithDescription(PromptReplyHintOrNull())
                             .WithFooter("captcha: type the text from the image")
                             .WithImageUrl("attachment://timely.png"));
 

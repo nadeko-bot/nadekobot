@@ -63,6 +63,22 @@ public static class CredsFile
     public static bool IsValidAiKey(ReadOnlySpan<char> key)
         => key.Length is > 0 and <= MAX_AI_KEY_LENGTH && !key.ContainsAnyExceptInRange('!', '~');
 
+    // False when there is no file or it cannot be read, so the caller treats the token as new.
+    public static bool HasToken(string? yaml, string token)
+    {
+        if (yaml is null)
+            return false;
+
+        try
+        {
+            return string.Equals(Yaml.Deserializer.Deserialize<Creds?>(yaml)?.Token, token, StringComparison.Ordinal);
+        }
+        catch (YamlException)
+        {
+            return false;
+        }
+    }
+
     public static void WriteToken(string path, string token)
         => UpdateInternal(path, c => c.Token = token);
 
@@ -135,6 +151,14 @@ public sealed class CredsStore(ApiKey key, ApiSettings settings, HostPaths paths
 
             var writesCreds = token is not null || owners is not null;
             var previousCreds = writesCreds && File.Exists(paths.Creds) ? File.ReadAllText(paths.Creds) : null;
+
+            // The stored intents belong to the application of the old token; a start while Discord does not answer must not use them.
+            if (token is not null && !CredsFile.HasToken(previousCreds, token))
+            {
+                IntentsFile.Delete(paths.Intents);
+                IntentsFile.Delete(paths.IntentsRetry);
+            }
+
             if (writesCreds)
                 CredsFile.WriteTokenAndOwners(paths.Creds, token, owners);
 

@@ -28,6 +28,7 @@ public class ProtectionService : IReadyExecutor, INService
     private readonly UserPunishService _punishService;
     private readonly INotifySubscriber _notifySub;
     private readonly ShardData _shardData;
+    private readonly IntentState _intents;
 
     private readonly Channel<PunishQueueItem> _punishUserQueue =
         Channel.CreateUnbounded<PunishQueueItem>(new()
@@ -42,8 +43,10 @@ public class ProtectionService : IReadyExecutor, INService
         DbService db,
         UserPunishService punishService,
         INotifySubscriber notifySub,
-        ShardData shardData)
+        ShardData shardData,
+        IntentState intents)
     {
+        _intents = intents;
         _client = client;
         _mute = mute;
         _db = db;
@@ -172,9 +175,10 @@ public class ProtectionService : IReadyExecutor, INService
         return Task.CompletedTask;
     }
 
-    private Task HandleAntiSpam(SocketMessage arg)
+    public Task HandleAntiSpam(IMessage arg)
     {
-        if (arg is not SocketUserMessage msg || msg.Author.IsBot)
+        // Without Message Content every message of a member looks the same, so each member would be punished.
+        if (!_intents.MessageContent || arg is not IUserMessage msg || msg.Author.IsBot)
             return Task.CompletedTask;
 
         if (msg.Channel is not ITextChannel channel)

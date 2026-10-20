@@ -49,6 +49,7 @@ public partial class Administration
                 minutes);
 
             await ctx.OkAsync();
+            await WarnIfNoMembersAsync("antialt");
         }
 
         [Cmd]
@@ -67,6 +68,7 @@ public partial class Administration
             await _service.StartAntiAltAsync(ctx.Guild.Id, minAgeMinutes, action, roleId: role.Id);
 
             await ctx.OkAsync();
+            await WarnIfNoMembersAsync("antialt");
         }
 
         [Cmd]
@@ -147,6 +149,8 @@ public partial class Administration
                 .Confirm(GetText(strs.prot_enable("Anti-Raid")),
                     $"{ctx.User.Mention} {GetAntiRaidString(stats)}")
                 .SendAsync();
+
+            await WarnIfNoMembersAsync("antiraid");
         }
 
         [Cmd]
@@ -218,6 +222,8 @@ public partial class Administration
                 .Confirm(GetText(strs.prot_enable("Anti-Spam")),
                     $"{ctx.User.Mention} {GetAntiSpamString(stats)}")
                 .SendAsync();
+
+            await WarnIfNoMessageContentAsync("antispam");
         }
 
         [Cmd]

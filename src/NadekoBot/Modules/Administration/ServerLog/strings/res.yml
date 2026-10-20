@@ -59,3 +59,4 @@ voice_server_muted: Server voice muted
 voice_server_undeafened: Server undeafened
 voice_server_unmuted: Server voice unmuted
 xmuted_voice: User {0} from voice chat {1}
+log_text_unavailable: "Not available. The bot does not have the Message Content intent."

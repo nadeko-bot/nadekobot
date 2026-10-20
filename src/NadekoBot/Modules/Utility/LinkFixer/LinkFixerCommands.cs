@@ -35,7 +35,10 @@ public partial class Utility
 
             var success = await _service.AddLinkFixAsync(ctx.Guild.Id, oldDomain, newDomain);
             if (success)
+            {
                 await Response().Confirm(strs.linkfix_added(Format.Bold(oldDomain), Format.Bold(newDomain))).SendAsync();
+                await WarnIfNoMessageContentAsync("linkfix");
+            }
             else
                 await Response().Error(strs.linkfix_already_exists(Format.Bold(oldDomain))).SendAsync();
         }

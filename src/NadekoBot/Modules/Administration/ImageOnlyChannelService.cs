@@ -15,6 +15,7 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
     private readonly IMemoryCache _ticketCache;
     private readonly DiscordSocketClient _client;
     private readonly DbService _db;
+    private readonly IntentState _intents;
     private readonly ConcurrentDictionary<ulong, ConcurrentHashSet<ulong>> _imageOnly;
     private readonly ConcurrentDictionary<ulong, ConcurrentHashSet<ulong>> _linkOnly;
 
@@ -27,11 +28,12 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         });
 
 
-    public SomethingOnlyChannelService(IMemoryCache ticketCache, DiscordSocketClient client, DbService db)
+    public SomethingOnlyChannelService(IMemoryCache ticketCache, DiscordSocketClient client, DbService db, IntentState intents)
     {
         _ticketCache = ticketCache;
         _client = client;
         _db = db;
+        _intents = intents;
 
         using var uow = _db.GetDbContext();
         _imageOnly = uow.Set<ImageOnlyChannel>()
@@ -161,7 +163,8 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
     public async ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
 #nullable disable
     {
-        if (msg.Channel is not ITextChannel tch)
+        // Without Message Content the bot cannot see a link, and would delete every message.
+        if (!_intents.MessageContent || msg.Channel is not ITextChannel tch)
             return false;
 
         if (_imageOnly.TryGetValue(tch.GuildId, out var chs) && chs.Contains(msg.Channel.Id))

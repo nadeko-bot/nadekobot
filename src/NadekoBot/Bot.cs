@@ -61,6 +61,9 @@ public sealed class Bot : IBot
             Log.Warning("Discord does not allow these privileged intents, so the bot connects without them: {Intents}",
                 Intents.MissingNames());
 
+        if (!Intents.MessageContent)
+            Log.Information("Without Message Content, users run commands with a mention, for example @Bot help");
+
         Client = new(new()
         {
             MessageCacheSize = messageCacheSize,

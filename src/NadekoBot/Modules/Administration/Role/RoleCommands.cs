@@ -217,6 +217,7 @@ public partial class Administration
             if (newState)
             {
                 await Response().Confirm(strs.sticky_roles_enabled).SendAsync();
+                await WarnIfNoMembersAsync("stickyroles");
             }
             else
             {

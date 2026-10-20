@@ -406,7 +406,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
             .ToList();
 
         var msg = await Response()
-            .Text(strs.queue_search_results)
+            .Text(WithPromptReplyHint(GetText(strs.queue_search_results)))
             .Embeds(embeds)
             .SendAsync();
 
@@ -855,6 +855,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
         }
 
         var embed = CreateEmbed()
+            .WithDescription(PromptReplyHintOrNull())
             .WithFooter("type 1-5 to select");
 
         for (var i = 0; i <= 5 && i < tracks.Count; i++)

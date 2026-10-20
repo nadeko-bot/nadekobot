@@ -33,6 +33,9 @@ public partial class Games
         [NadekoOptions<TriviaOptions>]
         public async Task Trivia(params string[] args)
         {
+            if (await RefuseWithoutMessageContentAsync("trivia"))
+                return;
+
             var (opts, _) = OptionsParser.ParseFrom(new TriviaOptions(), args);
 
             var config = _gamesConfig.Data;

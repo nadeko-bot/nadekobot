@@ -14,7 +14,8 @@ public sealed class StarboardService(
     DiscordSocketClient client,
     ShardData shardData,
     IMessageSenderService sender,
-    IBotStrings strings) : INService, IReadyExecutor
+    IBotStrings strings,
+    IntentState intents) : INService, IReadyExecutor
 {
     private const int MAX_CONTENT_LENGTH = 2048;
     private const int MIN_CONTENT_LENGTH = 32;
@@ -445,7 +446,8 @@ public sealed class StarboardService(
         ulong guildId,
         int fromPosition,
         int toPosition,
-        StarboardSettings settings)
+        StarboardSettings settings,
+        Dictionary<ulong, Embed>? oldEmbeds = null)
     {
         var total = await uow.GetTable<StarboardEntry>()
                              .Where(x => x.GuildId == guildId)
@@ -460,6 +462,11 @@ public sealed class StarboardService(
 
         // A shifted entry keeps its embed, so it is reused instead of fetching the message again.
         var view = await LoadBoardViewInternalAsync(uow, sbChannel, guildId, firstIndex, lastIndex);
+        if (oldEmbeds is not null)
+        {
+            foreach (var (starredId, embed) in oldEmbeds)
+                view.Embeds.TryAdd(starredId, embed);
+        }
 
         for (var index = firstIndex; index <= lastIndex; index++)
             await RenderMessageInternalAsync(uow, sbChannel, guildId, index, settings, view);
@@ -535,6 +542,13 @@ public sealed class StarboardService(
             if (hasCached && StarCountOf(cached!) == entry.StarCount)
             {
                 embeds.Add(cached!);
+                continue;
+            }
+
+            // Without Message Content a fetched message has no text, so the post keeps its text and gets the new count.
+            if (hasCached && !intents.MessageContent)
+            {
+                embeds.Add(WithStarCount(cached!, settings.FooterEmote, entry.StarCount, entry.MessageId));
                 continue;
             }
 
@@ -618,6 +632,12 @@ public sealed class StarboardService(
     }
 
     // The footer of every starboard embed is "{emote} {count} | {starred message id}".
+    public static string FormatFooter(string emote, int starCount, ulong starredId)
+        => $"{emote} {starCount} | {starredId}";
+
+    public static Embed WithStarCount(Embed embed, string emote, int starCount, ulong starredId)
+        => embed.ToEmbedBuilder().WithFooter(FormatFooter(emote, starCount, starredId)).Build();
+
     public static ulong? TryGetEntryId(Embed embed)
     {
         if (embed.Footer?.Text is not { } text)
@@ -707,7 +727,7 @@ public sealed class StarboardService(
                        .WithAuthor(message.Author.ToString(),
                            message.Author.GetAvatarUrl() ?? message.Author.GetDefaultAvatarUrl())
                        .WithColor(_starColor)
-                       .WithFooter($"{footerEmote} {starCount} | {message.Id}")
+                       .WithFooter(FormatFooter(footerEmote, starCount, message.Id))
                        .WithTimestamp(message.CreatedAt)
                        .AddField(strings.GetText(strs.starboard_source, channel.GuildId),
                            $"[#{channel.Name}]({message.GetJumpUrl()})");
@@ -861,19 +881,25 @@ public sealed class StarboardService(
             channelId);
 
         if (previousChannelId != channelId)
-            await MoveBoardInternalAsync(uow, guildId, _configs[guildId]);
+            await MoveBoardInternalAsync(uow, guildId, previousChannelId, _configs[guildId]);
     }
 
     // The old messages stay where they are. The bot only forgets them, so the channel keeps an archive.
     private async Task MoveBoardInternalAsync(
         NadekoContext uow,
         ulong guildId,
+        ulong previousChannelId,
         StarboardSettings settings)
     {
         var sem = _guildLocks[guildId % LOCK_STRIPES];
         await sem.WaitAsync();
         try
         {
+            // Without Message Content the old posts are the only copy of the text.
+            Dictionary<ulong, Embed>? oldEmbeds = null;
+            if (!intents.MessageContent && client.GetChannel(previousChannelId) is ITextChannel oldChannel)
+                oldEmbeds = (await LoadBoardViewInternalAsync(uow, oldChannel, guildId, 0, int.MaxValue)).Embeds;
+
             await uow.GetTable<StarboardMessage>()
                      .Where(x => x.GuildId == guildId)
                      .DeleteAsync();
@@ -912,7 +938,7 @@ public sealed class StarboardService(
             if (position == 0 || client.GetChannel(settings.ChannelId) is not ITextChannel sbChannel)
                 return;
 
-            await RenderRangeInternalAsync(uow, sbChannel, guildId, 0, position - 1, settings);
+            await RenderRangeInternalAsync(uow, sbChannel, guildId, 0, position - 1, settings, oldEmbeds);
         }
         finally
         {

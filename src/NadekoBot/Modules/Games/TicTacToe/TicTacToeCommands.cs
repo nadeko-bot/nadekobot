@@ -19,6 +19,9 @@ public partial class Games
         [NadekoOptions<TicTacToe.Options>]
         public async Task TicTacToe(params string[] args)
         {
+            if (await RefuseWithoutMessageContentAsync("tictactoe"))
+                return;
+
             var (options, _) = OptionsParser.ParseFrom(new TicTacToe.Options(), args);
             var channel = (ITextChannel)ctx.Channel;
 

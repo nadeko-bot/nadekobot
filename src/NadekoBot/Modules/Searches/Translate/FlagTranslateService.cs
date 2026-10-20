@@ -17,6 +17,7 @@ public sealed partial class FlagTranslateService : IReadyExecutor, INService
     private readonly DbService _db;
     private ConcurrentHashSet<ulong> _enabledChannels;
     private readonly IBotCache _cache;
+    private readonly IntentState _intents;
 
     // disallow same message being translated multiple times to the same language
     private readonly ConcurrentHashSet<(ulong, string)> _msgLangs = new();
@@ -27,8 +28,10 @@ public sealed partial class FlagTranslateService : IReadyExecutor, INService
         TranslateService ts,
         IMessageSenderService sender,
         DbService db,
-        IBotCache cache)
+        IBotCache cache,
+        IntentState intents)
     {
+        _intents = intents;
         _creds = creds;
         _client = client;
         _ts = ts;
@@ -82,7 +85,8 @@ public sealed partial class FlagTranslateService : IReadyExecutor, INService
         Cacheable<IMessageChannel, ulong> arg2,
         SocketReaction reaction)
     {
-        if (!_enabledChannels.Contains(reaction.Channel.Id))
+        // Without Message Content the bot would translate an empty text.
+        if (!_intents.MessageContent || !_enabledChannels.Contains(reaction.Channel.Id))
             return Task.CompletedTask;
 
         var runes = reaction.Emote.Name.EnumerateRunes();

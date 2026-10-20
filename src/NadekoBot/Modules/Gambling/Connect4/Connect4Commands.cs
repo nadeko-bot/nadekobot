@@ -45,6 +45,9 @@ public partial class Gambling
         [NadekoOptions<Connect4Game.Options>]
         public async Task Connect4(params string[] args)
         {
+            if (await RefuseWithoutMessageContentAsync("connect4"))
+                return;
+
             var (options, _) = OptionsParser.ParseFrom(new Connect4Game.Options(), args);
 
             var newGame = new Connect4Game(ctx.User.Id, ctx.User.ToString(), options);

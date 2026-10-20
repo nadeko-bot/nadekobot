@@ -13,6 +13,7 @@ ar:
   user_voice_mute: 'تم **كتم صوت** {0}.'
   user_voice_mute_time: 'تم **كتم صوت** {0} لمدة {1} دقيقة.'
   user_voice_unmute: 'تم **إلغاء كتم صوت** {0}.'
+  mute_rejoin_no_members: البوت لا يملك الـ intent المسمى Server Members. إذا غادر العضو ثم انضم مرة أخرى، فلن يكتمه البوت من جديد.
 
 de-DE:
   mute_error: Ich habe dafür wahrscheinlich nicht genügend Rechte.
@@ -29,6 +30,7 @@ de-DE:
   user_voice_mute: '{0} wurde im Sprach Kanal stummgeschaltet.'
   user_voice_mute_time: '{0} wurde **sprach gestummt** für {1} Minuten.'
   user_voice_unmute: '{0} wurde im **Sprachkanal entstummt**.'
+  mute_rejoin_no_members: Der Bot hat den Server Members Intent nicht. Wenn das Mitglied den Server verlässt und wieder beitritt, stummt der Bot es nicht erneut.
 
 es-ES:
   mute_error: Es probable que no tengas los permisos necesarios.
@@ -45,6 +47,7 @@ es-ES:
   user_voice_mute: '{0} ha sido **silenciado de voz**.'
   user_voice_mute_time: '{0} ha sido **silenciado en la llamada** durante {1} minutos.'
   user_voice_unmute: '{0} ha sido **desilenciado de voz**.'
+  mute_rejoin_no_members: El bot no tiene el intent Server Members. Si el miembro sale y vuelve a entrar, el bot no lo silenciará de nuevo.
 
 fr-FR:
   mute_error: Je n'ai certainement pas les permissions nécessaires pour cela.
@@ -61,6 +64,7 @@ fr-FR:
   user_voice_mute: '{0} a été **rendu muet** en vocal.'
   user_voice_mute_time: '{0} a été **rendu muet à l''oral** pendant {1} minutes.'
   user_voice_unmute: '{0} n''est **plus muet** en vocal.'
+  mute_rejoin_no_members: Le bot n'a pas l'intent Server Members. Si le membre quitte le serveur puis revient, le bot ne le rend pas muet à nouveau.
 
 id-ID:
   mute_error: Kemungkinan besar saya tidak punya izin yang diperlukan untuk itu.
@@ -77,6 +81,7 @@ id-ID:
   user_voice_mute: '{0} telah **dimute suaranya**.'
   user_voice_mute_time: '{0} telah **dimute suaranya** selama {1} menit.'
   user_voice_unmute: '{0} telah **diunmute suaranya**.'
+  mute_rejoin_no_members: Bot tidak punya intent Server Members. Kalau member keluar lalu bergabung lagi, bot tidak akan mute dia lagi.
 
 ja-JP:
   mute_error: 必要な権限がおそらくBotにありません。
@@ -93,6 +98,7 @@ ja-JP:
   user_voice_mute: '{0}は**音声ミュートにされました**。'
   user_voice_mute_time: '{0}が{1}分間**ボイスミュート**されました。'
   user_voice_unmute: '{0}の**音声ミュートが解除されました**。'
+  mute_rejoin_no_members: BotにServer Members intentがありません。メンバーが退出して再参加した場合、Botは再度ミュートしません。
 
 ko-KR:
   mute_error: 해당 작업에 필요한 권한이 없는 것 같습니다.
@@ -109,6 +115,7 @@ ko-KR:
   user_voice_mute: '{0}님이 **음성 뮤트**되었습니다.'
   user_voice_mute_time: '{0}님이 {1}분 동안 **음성 뮤트**되었습니다.'
   user_voice_unmute: '{0}님의 **음성 뮤트가 해제**되었습니다.'
+  mute_rejoin_no_members: 봇에 Server Members intent가 없습니다. 멤버가 나갔다가 다시 들어오면 봇이 다시 뮤트하지 않습니다.
 
 pl-PL:
   mute_error: Najprawdopodobniej nie mam wystarczających uprawnień.
@@ -125,6 +132,7 @@ pl-PL:
   user_voice_mute: '{0} został(a) **wyciszony(a)** głosowo.'
   user_voice_mute_time: '{0} został(a) **wyciszony(a)** głosowo na {1} minut.'
   user_voice_unmute: '{0} został(a) **odciszony(a)** głosowo.'
+  mute_rejoin_no_members: Bot nie ma intencji Server Members. Jeśli członek wyjdzie i dołączy ponownie, bot nie wyciszy go ponownie.
 
 pt-BR:
   mute_error: Não tenho a permissão necessária para isso.
@@ -141,6 +149,7 @@ pt-BR:
   user_voice_mute: '{0} foi **mutado** nos chats de voz.'
   user_voice_mute_time: '{0} foi **silenciado nos canais de voz** por {1} minutos.'
   user_voice_unmute: '{0} foi **desmutado** nos chats de voz.'
+  mute_rejoin_no_members: O bot não tem o intent Server Members. Se o membro sair e entrar de novo, o bot não vai silenciá-lo novamente.
 
 ru-RU:
   mute_error: У меня, скорее всего, нет прав на это.
@@ -157,6 +166,7 @@ ru-RU:
   user_voice_mute: '{0} был выдан запрет на общение в **голосовом чате**'
   user_voice_mute_time: '{0} был ** отключен звук ** в течение {1} минут.'
   user_voice_unmute: '{0} было выдано разрешение на общение в **голосовом чате**'
+  mute_rejoin_no_members: У бота нет интента Server Members. Если участник выйдет и зайдёт снова, бот не замьютит его повторно.
 
 sr-Cyrl-RS:
   mute_error: Највероватније немам потребну дозволу за то.
@@ -173,6 +183,7 @@ sr-Cyrl-RS:
   user_voice_mute: '{0} је **гласовно мутиран/а**.'
   user_voice_mute_time: '{0} је **гласовно мутиран/а** на {1} минута.'
   user_voice_unmute: '{0} је **гласовно одмутиран/а**.'
+  mute_rejoin_no_members: Бот нема Server Members интент. Ако члан изађе и поново уђе, бот га неће поново мутирати.
 
 tr-TR:
   mute_error: Büyük ihtimalle bunun için gerekli iznim yok.
@@ -189,6 +200,7 @@ tr-TR:
   user_voice_mute: '{0} **sesli sohbetten susturuldu**.'
   user_voice_mute_time: '{0}, {1} dakikalığına **sesli sohbetten susturuldu**.'
   user_voice_unmute: '{0} kullanıcısının **sesli sohbet susturması kaldırıldı**.'
+  mute_rejoin_no_members: Botta Server Members intent'i yok. Üye sunucudan çıkıp tekrar katılırsa bot onu yeniden susturmaz.
 
 ts-TS:
   mute_error: I don't have the right permissions for that, most likely.
@@ -205,6 +217,7 @@ ts-TS:
   user_voice_mute: '{0} has been **voice muted**.'
   user_voice_mute_time: '{0} has been **voice muted** for {1} minutes.'
   user_voice_unmute: '{0} has been **voice unmuted**.'
+  mute_rejoin_no_members: No Server Members intent. If the member leaves and joins again, the bot won't mute them again.
 
 uk-UA:
   mute_error: Скоріш за все, у мене немає необхідних дозволів для цього.
@@ -221,6 +234,7 @@ uk-UA:
   user_voice_mute: '{0} був **замучений** у голосовому чаті.'
   user_voice_mute_time: '{0} був **замучений** у голосовому чаті на {1} хвилин.'
   user_voice_unmute: '{0} був **розмучений** у голосовому чаті.'
+  mute_rejoin_no_members: Бот не має інтенту Server Members. Якщо учасник вийде й зайде знову, бот не заглушить його повторно.
 
 vi-VN:
   mute_error: Mình có thể không có đủ quyền để làm điều đó.
@@ -237,6 +251,7 @@ vi-VN:
   user_voice_mute: '{0} đã bị **mute thoại**.'
   user_voice_mute_time: '{0} đã bị **mute thoại** trong {1} phút.'
   user_voice_unmute: '{0} đã được **bỏ mute thoại**.'
+  mute_rejoin_no_members: Bot không có intent Server Members. Nếu thành viên rời đi rồi vào lại, bot sẽ không mute họ lại.
 
 zh-CN:
   mute_error: 機器人很可能沒有權限進行這個操作
@@ -253,3 +268,4 @@ zh-CN:
   user_voice_mute: '{0} 已被**靜音**。'
   user_voice_mute_time: '{0} 已被靜音 {1} 分鐘'
   user_voice_unmute: '{0} 已被**解除靜音**。'
+  mute_rejoin_no_members: 机器人没有 Server Members intent。如果该成员退出后重新加入，机器人不会再次禁言他。

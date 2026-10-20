@@ -5,7 +5,7 @@ using NadekoBot.AiAgent;
 
 namespace NadekoBot.Modules.Utility.AiAgent.Adapters;
 
-public sealed partial class MessagingAiAdapter(IMessageSenderService sender) : IAiCoreToolGroup, INService
+public sealed partial class MessagingAiAdapter(IMessageSenderService sender, IntentState intents) : IAiCoreToolGroup, INService
 {
     public string GroupName => "messaging";
     public string GroupDescription => "Send, edit, read, delete, and search Discord messages.";
@@ -13,6 +13,7 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender) : I
     private const int SEARCH_DEFAULT_COUNT = 20;
     private const int SEARCH_MAX_COUNT = 50;
     private const int SEARCH_MAX_CONTENT_LENGTH = 300;
+    private const string TEXT_UNAVAILABLE = "not available, because the bot does not have the Message Content intent";
 
     [GeneratedRegex(@"<#(\d+)>")]
     private static partial Regex ChannelMentionRegex();
@@ -122,6 +123,8 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender) : I
 
         if (!string.IsNullOrWhiteSpace(msg.Content))
             sb.AppendLine($"Content:\n{msg.Content}");
+        else if (!intents.MessageContent && msg.Author.Id != (await ctx.Guild.GetCurrentUserAsync()).Id)
+            sb.AppendLine($"Content: {TEXT_UNAVAILABLE}");
 
         foreach (var emb in msg.Embeds)
         {
@@ -187,6 +190,9 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender) : I
         var perms = ctx.User.GetPermissions(ch);
         if (!perms.ViewChannel || !perms.ReadMessageHistory)
             throw ToolException.MissingPermission("ReadMessageHistory");
+
+        if (!intents.MessageContent && !string.IsNullOrWhiteSpace(query))
+            throw ToolException.Forbidden($"Text search is {TEXT_UNAVAILABLE}. Search by user ID instead.");
 
         count = Math.Clamp(count, 1, SEARCH_MAX_COUNT);
 

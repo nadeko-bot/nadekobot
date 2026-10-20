@@ -46,6 +46,9 @@ ar:
   overloads: الاستخدامات البديلة
   requires: يتطلب
   usage: الاستخدام
+  intent_missing_message_content: 'لا يعمل {0} لأن البوت لا يملك الـ intent المسمى Message Content.'
+  intent_missing_members: 'لا يعمل {0} بشكل كامل لأن البوت لا يملك الـ intent المسمى Server Members.'
+  prompt_reply_hint: يرى البوت فقط الرسائل التي تشير إليه. رد على هذه الرسالة، أو ابدأ إجابتك بالإشارة إلى البوت.
 
 de-DE:
   cant_dm: Ich kann keine Nachrichten an dich senden. Stelle sicher, dass deine Direktnachrichten öffentlich sind. Gehe zu **Benutzereinstellungen (Zahnrad) ->  Privatsphäre & Sicherheit -> Direktnachrichten von Servermitgliedern erlauben**
@@ -95,6 +98,9 @@ de-DE:
   overloads: Überladungen
   requires: Benötigt
   usage: Nutzung
+  intent_missing_message_content: '{0} funktioniert nicht, weil der Bot den Message Content Intent nicht hat.'
+  intent_missing_members: '{0} funktioniert nicht vollständig, weil der Bot den Server Members Intent nicht hat.'
+  prompt_reply_hint: Der Bot sieht nur Nachrichten, die ihn erwähnen. Antworte auf diese Nachricht oder beginne deine Antwort mit einer Erwähnung des Bots.
 
 es-ES:
   cant_dm: No puedo mensajearte por privado. Comprueba que tus MD están abiertos. Ve a **opciones (botón del engranaje) -> Privacidad y seguridad -> Permitir mensajes directos de los miembros del servidor**
@@ -144,6 +150,9 @@ es-ES:
   overloads: Sobrecargas
   requires: Requiere
   usage: Modo de uso
+  intent_missing_message_content: '{0} no funciona, porque el bot no tiene el intent Message Content.'
+  intent_missing_members: '{0} no funciona del todo, porque el bot no tiene el intent Server Members.'
+  prompt_reply_hint: El bot solo ve los mensajes que lo mencionan. Responde a este mensaje o empieza tu respuesta con una mención al bot.
 
 fr-FR:
   cant_dm: Je ne peux pas te dm. Assure-toi que tes MP sont ouverts. Va dans **options (bouton en forme de rouage) -> Confidentialité et sécurité -> Autoriser les messages directs des membres du serveur**
@@ -193,6 +202,9 @@ fr-FR:
   overloads: Surcharges
   requires: Requiert
   usage: Usage
+  intent_missing_message_content: '{0} ne fonctionne pas, car le bot n''a pas l''intent Message Content.'
+  intent_missing_members: '{0} ne fonctionne pas entièrement, car le bot n''a pas l''intent Server Members.'
+  prompt_reply_hint: Le bot voit seulement les messages qui le mentionnent. Réponds à ce message, ou commence ta réponse par une mention du bot.
 
 id-ID:
   cant_dm: Aku nggak bisa kirim DM ke kamu. Pastikan DM kamu terbuka. Pergi ke **opsi (tombol gerigi) -> Privasi & Keamanan -> Izinkan pesan langsung dari anggota server**
@@ -242,6 +254,9 @@ id-ID:
   overloads: Overload
   requires: Membutuhkan
   usage: Penggunaan
+  intent_missing_message_content: '{0} tidak berfungsi karena bot tidak punya intent Message Content.'
+  intent_missing_members: '{0} tidak berfungsi sepenuhnya karena bot tidak punya intent Server Members.'
+  prompt_reply_hint: Bot hanya melihat pesan yang menyebutnya. Balas pesan ini, atau awali jawabanmu dengan mention bot.
 
 ja-JP:
   cant_dm: DMを送信できません。DMが開放されていることを確認してください。**設定（歯車ボタン）→プライバシー・安全→サーバーメンバーからのダイレクトメッセージを許可**
@@ -291,6 +306,9 @@ ja-JP:
   overloads: オーバーロード
   requires: 必要条件
   usage: 使用方法
+  intent_missing_message_content: 'BotにMessage Content intentがないため、{0}は動作しません。'
+  intent_missing_members: 'BotにServer Members intentがないため、{0}は一部動作しません。'
+  prompt_reply_hint: Botは自分がメンションされたメッセージしか見られません。このメッセージに返信するか、Botへのメンションで回答を始めてください。
 
 ko-KR:
   cant_dm: DM을 보낼 수 없어요. DM이 열려 있는지 확인해 주세요. **설정(톱니바퀴 버튼) -> 개인정보 보호 및 보안 -> 서버 멤버로부터의 다이렉트 메시지 허용**을 켜 주세요.
@@ -340,6 +358,9 @@ ko-KR:
   overloads: 오버로드
   requires: 필요 조건
   usage: 사용법
+  intent_missing_message_content: '봇에 Message Content intent가 없어서 {0} 기능이 작동하지 않습니다.'
+  intent_missing_members: '봇에 Server Members intent가 없어서 {0} 기능이 완전히 작동하지 않습니다.'
+  prompt_reply_hint: 봇은 자신을 멘션한 메시지만 볼 수 있습니다. 이 메시지에 답장하거나, 봇 멘션으로 답을 시작하세요.
 
 pl-PL:
   cant_dm: Nie mogę wysłać ci wiadomości prywatnej. Upewnij się, że masz otwarte DM. Przejdź do **opcje (przycisk koła zębatego) -> Prywatność i bezpieczeństwo -> Zezwalaj na wiadomości bezpośrednie od członków serwera**
@@ -389,6 +410,9 @@ pl-PL:
   overloads: Przeciążenia
   requires: Wymaga
   usage: Użycie
+  intent_missing_message_content: '{0} nie działa, ponieważ bot nie ma intencji Message Content.'
+  intent_missing_members: '{0} nie działa w pełni, ponieważ bot nie ma intencji Server Members.'
+  prompt_reply_hint: Bot widzi tylko wiadomości, które go oznaczają. Odpowiedz na tę wiadomość albo zacznij odpowiedź od oznaczenia bota.
 
 pt-BR:
   cant_dm: Eu não posso te mandar mensagem. Verifique que suas mensagens privadas estão abertas. Vá para **configurações -> Privacidade & Segurança -> Permitir mensagens diretas de membros do servidor**
@@ -438,6 +462,9 @@ pt-BR:
   overloads: Sobrecargas
   requires: Requer
   usage: Uso
+  intent_missing_message_content: '{0} não funciona, porque o bot não tem o intent Message Content.'
+  intent_missing_members: '{0} não funciona por completo, porque o bot não tem o intent Server Members.'
+  prompt_reply_hint: O bot só vê mensagens que mencionam ele. Responda a esta mensagem ou comece sua resposta mencionando o bot.
 
 ru-RU:
   cant_dm: Я не могу отправить ЛС. Убедитесь, что ваши ЛС открыты. Перейдите в ** параметры (кнопка с шестеренкой) -> Конфиденциальность и безопасность -> Разрешить прямые сообщения от участников сервера **
@@ -487,6 +514,9 @@ ru-RU:
   overloads: Перегрузки
   requires: Требуются
   usage: Использование
+  intent_missing_message_content: '{0} не работает, потому что у бота нет интента Message Content.'
+  intent_missing_members: '{0} работает не полностью, потому что у бота нет интента Server Members.'
+  prompt_reply_hint: Бот видит только сообщения, в которых его упоминают. Ответьте на это сообщение или начните ответ с упоминания бота.
 
 sr-Cyrl-RS:
   cant_dm: Не могу да ти пошаљем поруку. Провери да ли су ти DM-ови отворени. Иди на **опције (дугме зупчаник) -> Приватност и безбедност -> Дозволи директне поруке од чланова сервера**
@@ -536,6 +566,9 @@ sr-Cyrl-RS:
   overloads: Преоптерећења
   requires: Захтева
   usage: Употреба
+  intent_missing_message_content: '{0} не ради, јер бот нема Message Content интент.'
+  intent_missing_members: '{0} не ради у потпуности, јер бот нема Server Members интент.'
+  prompt_reply_hint: Бот види само поруке које га помињу. Одговори на ову поруку или почни одговор помињањем бота.
 
 tr-TR:
   cant_dm: Sana DM atamıyorum. DM'lerinin açık olduğundan emin ol. **Ayarlar (çark butonu) -> Gizlilik ve Güvenlik -> Sunucu üyelerinden gelen doğrudan mesajlara izin ver** seçeneğini aç.
@@ -585,6 +618,9 @@ tr-TR:
   overloads: Aşırı yüklemeler
   requires: Gerektirir
   usage: Kullanım
+  intent_missing_message_content: 'Botta Message Content intent''i olmadığı için {0} çalışmıyor.'
+  intent_missing_members: 'Botta Server Members intent''i olmadığı için {0} tam olarak çalışmıyor.'
+  prompt_reply_hint: Bot yalnızca kendisini etiketleyen mesajları görür. Bu mesajı yanıtla ya da cevabına botu etiketleyerek başla.
 
 ts-TS:
   cant_dm: I can't DM you. Make sure your DMs are open. Go to **options (cog button) -> Privacy & Safety -> Allow direct messages from server members**
@@ -634,6 +670,9 @@ ts-TS:
   overloads: Overloads
   requires: Requires
   usage: Usage
+  intent_missing_message_content: '{0} doesn''t work. The bot doesn''t have the Message Content intent, obviously.'
+  intent_missing_members: '{0} only half works. No Server Members intent, so don''t blame me.'
+  prompt_reply_hint: I-I can only see messages that ping me, okay? Reply to this message, or start your answer with a mention of the bot.
 
 uk-UA:
   cant_dm: Я не можу надіслати тобі особисте повідомлення. Переконайся, що DM відкриті. Перейди до **налаштувань (кнопка шестерінки) -> Конфіденційність -> Дозволити особисті повідомлення від учасників сервера**
@@ -683,6 +722,9 @@ uk-UA:
   overloads: Перевантаження
   requires: Потрібно
   usage: Використання
+  intent_missing_message_content: '{0} не працює, бо бот не має інтенту Message Content.'
+  intent_missing_members: '{0} працює не повністю, бо бот не має інтенту Server Members.'
+  prompt_reply_hint: Бот бачить лише повідомлення, у яких його згадують. Дайте відповідь на це повідомлення або почніть відповідь зі згадки бота.
 
 vi-VN:
   cant_dm: Tôi không thể nhắn tin riêng cho bạn. Hãy đảm bảo DM của bạn đang mở. Vào **tùy chọn (nút bánh răng) -> Quyền riêng tư & An toàn -> Cho phép tin nhắn trực tiếp từ thành viên server**
@@ -732,6 +774,9 @@ vi-VN:
   overloads: Cách dùng khác
   requires: Yêu cầu
   usage: Cách dùng
+  intent_missing_message_content: '{0} không hoạt động vì bot không có intent Message Content.'
+  intent_missing_members: '{0} không hoạt động đầy đủ vì bot không có intent Server Members.'
+  prompt_reply_hint: Bot chỉ thấy tin nhắn có nhắc đến nó. Hãy trả lời tin nhắn này, hoặc bắt đầu câu trả lời bằng cách nhắc đến bot.
 
 zh-CN:
   cant_dm: 我不能私訊你。確保您的 DM 已打開。轉到**設置->隱私&安全->允許來自伺服器成員的私人訊息**
@@ -781,3 +826,6 @@ zh-CN:
   overloads: 多載
   requires: 需求
   usage: 用法
+  intent_missing_message_content: '{0} 无法使用，因为机器人没有 Message Content intent。'
+  intent_missing_members: '{0} 无法完全正常使用，因为机器人没有 Server Members intent。'
+  prompt_reply_hint: 机器人只能看到提及它的消息。请回复这条消息，或者在回答开头提及机器人。

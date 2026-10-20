@@ -22,6 +22,9 @@ public partial class Games
         [NadekoOptions<AcrophobiaGame.Options>]
         public async Task Acrophobia(params string[] args)
         {
+            if (await RefuseWithoutMessageContentAsync("acrophobia"))
+                return;
+
             var (options, _) = OptionsParser.ParseFrom(new AcrophobiaGame.Options(), args);
             var channel = (ITextChannel)ctx.Channel;
 

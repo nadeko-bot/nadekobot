@@ -17,6 +17,9 @@ public partial class Games
         [RequireContext(ContextType.Guild)]
         public async Task CountUp()
         {
+            if (await RefuseWithoutMessageContentAsync("countup"))
+                return;
+
             var newGame = new CountUpGame(ctx.User.Id, ctx.User.ToString());
             CountUpGame countUp;
 

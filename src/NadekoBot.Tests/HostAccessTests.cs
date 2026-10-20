@@ -176,9 +176,10 @@ public sealed class HostAccessTests
         }
 
         var plain = Typed(".h");
-        Assert.That(await handler.RunInputTransformersAsync(null, plain), Is.SameAs(plain));
+        Assert.That(await handler.RunInputTransformersAsync(null, plain, plain.Content), Is.SameAs(plain));
 
-        var aliased = await handler.RunInputTransformersAsync(null, Typed("hi"));
+        var hi = Typed("hi");
+        var aliased = await handler.RunInputTransformersAsync(null, hi, hi.Content);
         Assert.That(aliased.Content, Is.EqualTo(".sqlexec DELETE FROM Quotes"));
         Assert.That(aliased.Author, Is.SameAs(owner));
         Assert.That(BotPolicy.IsRealOwner(creds, aliased), Is.False);

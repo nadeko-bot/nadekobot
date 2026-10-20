@@ -137,8 +137,9 @@ public static class HostedProgram
         var lifetime = app.Lifetime;
         var boot = mode == HostMode.Standalone ? app.Services.GetRequiredService<BootGuard>() : null;
 
+        var httpFactory = app.Services.GetRequiredService<IHttpClientFactory>();
         var (check, intents) = mode == HostMode.Standalone && !string.IsNullOrWhiteSpace(token)
-            ? await CheckDiscordInternalAsync(app.Services.GetRequiredService<IHttpClientFactory>(),
+            ? await CheckDiscordInternalAsync(httpFactory,
                 token,
                 paths,
                 lifetime.ApplicationStopping)
@@ -176,7 +177,11 @@ public static class HostedProgram
         }
         else
         {
-            _ = Task.Run(() => StartBotInternalAsync(args, mode, paths, bridge, boot, lifetime, intents));
+            // Coordinated shards ask for all intents, so new flags cannot change what their next start asks for.
+            Func<CancellationToken, Task<IntentState?>>? readIntents = mode == HostMode.Standalone
+                ? ct => ReadIntentsInternalAsync(httpFactory, token, ct)
+                : null;
+            _ = Task.Run(() => StartBotInternalAsync(args, mode, paths, bridge, boot, lifetime, intents, readIntents));
             _ = ExitIfNotReadyInternalAsync(bridge, lifetime);
         }
 
@@ -252,6 +257,19 @@ public static class HostedProgram
         }
     }
 
+    private static Task<IntentState?> ReadIntentsInternalAsync(IHttpClientFactory factory, string token, CancellationToken ct)
+    {
+        var http = factory.CreateClient();
+        http.Timeout = _tokenCheckTimeout;
+        return new DiscordTokenChecker(http).ReadIntentsAsync(token, ct);
+    }
+
+    // Restart at once only when Discord took away an intent which the bot asked for, and not twice for the same flags.
+    public static bool RestartsAtOnce(IntentState asked, IntentState? flags, IntentState? lastRetry)
+        => flags is not null
+           && (flags.MissingMask & ~asked.MissingMask) != 0
+           && flags != lastRetry;
+
     private static async Task StartBotInternalAsync(
         HostArgs args,
         HostMode mode,
@@ -259,7 +277,8 @@ public static class HostedProgram
         BotBridge bridge,
         BootGuard? boot,
         IHostApplicationLifetime lifetime,
-        IntentState? intents)
+        IntentState? intents,
+        Func<CancellationToken, Task<IntentState?>>? readIntents)
     {
         try
         {
@@ -278,7 +297,7 @@ public static class HostedProgram
             var client = bot.Client;
             bridge.SetIntents(bot.Intents);
             bridge.AttachClient(client);
-            client.Disconnected += ex => OnDisconnectedInternal(ex, client, bridge, boot, lifetime);
+            client.Disconnected += ex => OnDisconnectedInternal(ex, client, bridge, boot, lifetime, paths, readIntents);
             client.Connected += () =>
             {
                 bridge.MarkConnected();
@@ -302,7 +321,11 @@ public static class HostedProgram
             }
 
             if (bridge.SetReady(bot.Services, feed, activity))
+            {
                 boot?.MarkReady();
+                if (mode == HostMode.Standalone)
+                    IntentsFile.Delete(paths.IntentsRetry);
+            }
         }
         catch (Exception ex)
         {
@@ -328,7 +351,9 @@ public static class HostedProgram
         DiscordSocketClient client,
         BotBridge bridge,
         BootGuard? boot,
-        IHostApplicationLifetime lifetime)
+        IHostApplicationLifetime lifetime,
+        HostPaths paths,
+        Func<CancellationToken, Task<IntentState?>>? readIntents)
     {
         bridge.MarkDisconnected();
 
@@ -336,8 +361,7 @@ public static class HostedProgram
         switch ((ex as WebSocketClosedException)?.CloseCode)
         {
             case DISALLOWED_INTENTS_CLOSE_CODE:
-                Log.Error("Discord refused a privileged intent which the bot asked for. The bot reads the intents from Discord again in {RetryIn}",
-                    _disallowedIntentsRetry);
+                Log.Error("Discord refused a privileged intent which the bot asked for");
                 bridge.SetFailed(FailureReason.DISALLOWED_INTENTS);
                 retry = true;
                 break;
@@ -356,11 +380,50 @@ public static class HostedProgram
             boot?.KeepUpdate();
             await client.StopAsync();
 
+            if (!retry)
+                return;
+
             // Discord can take an intent away (a missed yearly review); a new start asks only for the ones left.
-            if (retry)
-                await RetryLaterInternalAsync(_disallowedIntentsRetry, bridge.Time, lifetime);
+            if (readIntents is not null
+                && bridge.Intents is { } asked
+                && await TryRestartForIntentsInternalAsync(asked, paths, readIntents, lifetime))
+                return;
+
+            Log.Information("The bot reads the intents from Discord again in {RetryIn}", _disallowedIntentsRetry);
+            await RetryLaterInternalAsync(_disallowedIntentsRetry, bridge.Time, lifetime);
         });
         return Task.CompletedTask;
+    }
+
+    // True when the process stops now. The marker keeps a start which Discord refuses again from a fast restart loop.
+    private static async Task<bool> TryRestartForIntentsInternalAsync(
+        IntentState asked,
+        HostPaths paths,
+        Func<CancellationToken, Task<IntentState?>> readIntents,
+        IHostApplicationLifetime lifetime)
+    {
+        IntentState? flags;
+        try
+        {
+            flags = await readIntents(lifetime.ApplicationStopping);
+        }
+        catch (OperationCanceledException) when (lifetime.ApplicationStopping.IsCancellationRequested)
+        {
+            return true;
+        }
+
+        if (flags is null)
+            return false;
+
+        IntentsFile.Write(paths.Intents, flags);
+        if (!RestartsAtOnce(asked, flags, IntentsFile.Read(paths.IntentsRetry))
+            || !IntentsFile.Write(paths.IntentsRetry, flags))
+            return false;
+
+        Log.Warning("Discord does not allow these privileged intents now: {Intents}. The bot starts again at once without them",
+            flags.MissingNames());
+        ProcessRestarter.StopForSupervisor(lifetime);
+        return true;
     }
 
     private static async Task StopGatewayInternalAsync(BotBridge bridge)

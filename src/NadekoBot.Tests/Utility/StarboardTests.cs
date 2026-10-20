@@ -36,7 +36,8 @@ public class StarboardTests
             client,
             new ShardData(client, creds),
             Substitute.For<IMessageSenderService>(),
-            Substitute.For<IBotStrings>());
+            Substitute.For<IBotStrings>(),
+            IntentState.All);
     }
 
     [TearDown]

@@ -20,7 +20,8 @@ public static class IntentsFile
         try
         {
             var info = new FileInfo(path);
-            if (!info.Exists || info.LinkTarget is not null || info.Length > MAX_BYTES)
+            // A valid file is never empty, and a fifo or device reports length 0, so this also keeps the read from blocking.
+            if (!info.Exists || info.LinkTarget is not null || info.Length is 0 or > MAX_BYTES)
                 return null;
 
             return Parse(File.ReadAllText(path));
@@ -61,17 +62,31 @@ public static class IntentsFile
     public static string Format(IntentState intents)
         => _lines[intents.MissingMask];
 
-    public static void Write(string path, IntentState intents)
+    public static bool Write(string path, IntentState intents)
     {
         var tmp = path + ".tmp";
         try
         {
             File.WriteAllText(tmp, Format(intents));
             File.Move(tmp, path, overwrite: true);
+            return true;
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             Log.Warning(ex, "Could not write {Path}", path);
+            return false;
+        }
+    }
+
+    public static void Delete(string path)
+    {
+        try
+        {
+            File.Delete(path);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            Log.Warning(ex, "Could not delete {Path}", path);
         }
     }
 }

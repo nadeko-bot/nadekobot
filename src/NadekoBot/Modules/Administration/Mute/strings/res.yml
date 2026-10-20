@@ -12,3 +12,4 @@ user_unmuted: '{0} has been **unmuted** from text and voice chat.'
 user_voice_mute: '{0} has been **voice muted**.'
 user_voice_mute_time: '{0} has been **voice muted** for {1} minutes.'
 user_voice_unmute: '{0} has been **voice unmuted**.'
+mute_rejoin_no_members: "The bot does not have the Server Members intent. If the member leaves and joins again, the bot does not mute them again."
