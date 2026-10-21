@@ -95,6 +95,22 @@ public sealed class IntentTests
     }
 
     [Test]
+    public void Close4014_SelfHostedBotExitsAtOnceOnlyWhenTheStartKnewTheFlags()
+    {
+        var all = IntentState.All;
+        var noContent = new IntentState(true, true, false);
+
+        Assert.That(SelfHostIntents.ExitsAtOnce(all, startKnewFlags: true, noContent), Is.True);
+        Assert.That(SelfHostIntents.ExitsAtOnce(noContent, startKnewFlags: true, IntentState.None), Is.True);
+
+        // The start asked for all without the flags; an exit at once could repeat while Discord does not answer.
+        Assert.That(SelfHostIntents.ExitsAtOnce(all, startKnewFlags: false, noContent), Is.False);
+        Assert.That(SelfHostIntents.ExitsAtOnce(all, startKnewFlags: true, flags: null), Is.False);
+        Assert.That(SelfHostIntents.ExitsAtOnce(noContent, startKnewFlags: true, all), Is.False);
+        Assert.That(SelfHostIntents.ExitsAtOnce(noContent, startKnewFlags: true, noContent), Is.False);
+    }
+
+    [Test]
     public void IntentsFile_KeepsEachSetAndRefusesAnUnknownFile()
     {
         for (var mask = 0; mask < 8; mask++)

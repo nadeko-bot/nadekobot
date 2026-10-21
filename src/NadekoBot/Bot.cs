@@ -31,16 +31,52 @@ public sealed class Bot : IBot
 
     public IntentState Intents { get; }
 
+    private readonly bool _startKnewFlags;
+    private int _refusedIntents;
+
     // A host which read the application's flags passes the privileged intents which Discord allows; null asks for all.
     public Bot(int shardId, int? totalShards, Action<IContainer> configureServices = null, IntentState intents = null)
+        : this(shardId, CreateCredsProvider(shardId, totalShards), configureServices, intents, exitsOnRefusedIntents: false)
+    {
+    }
+
+    // The self-hosted program: asks only for the intents which Discord allows, and exits when Discord refuses one.
+    public static async Task<Bot> CreateAsync(int shardId, int? totalShards)
+    {
+        var credsProvider = CreateCredsProvider(shardId, totalShards);
+        var creds = credsProvider.GetCreds();
+
+        // Coordinated shards ask for all intents, so one bad answer from Discord cannot turn off features on a shard.
+        var coordinated = IsCoordinated;
+        var intents = creds.UsePrivilegedIntents && !coordinated
+            ? await SelfHostIntents.ReadAsync(creds.Token)
+            : null;
+
+        return new Bot(shardId, credsProvider, null, intents, exitsOnRefusedIntents: !coordinated);
+    }
+
+    private static BotCredsProvider CreateCredsProvider(int shardId, int? totalShards)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(shardId, 0);
+        LogSetup.SetupLogger(shardId, null);
+        return new BotCredsProvider(totalShards);
+    }
+
+    private static bool IsCoordinated
+        => Environment.GetEnvironmentVariable("NADEKOBOT_IS_COORDINATED") == "1";
+
+    private Bot(
+        int shardId,
+        BotCredsProvider credsProvider,
+        Action<IContainer> configureServices,
+        IntentState intents,
+        bool exitsOnRefusedIntents)
     {
         _configureServices = configureServices;
-        ArgumentOutOfRangeException.ThrowIfLessThan(shardId, 0);
-
-        LogSetup.SetupLogger(shardId, null);
         ShardId = shardId;
-        _credsProvider = new BotCredsProvider(totalShards);
+        _credsProvider = credsProvider;
         _creds = _credsProvider.GetCreds();
+        _startKnewFlags = intents is not null;
 
         LogSetup.SetupLogger(shardId, _creds);
         Log.Information("Pid: {ProcessId}", Environment.ProcessId);
@@ -92,6 +128,9 @@ public sealed class Bot : IBot
         // _interactionService = new(Client.Rest);
 
         Client.Log += Client_Log;
+        if (exitsOnRefusedIntents)
+            Client.Disconnected += OnDisconnected;
+
         _loadedAssemblies =
         [
             typeof(Bot).Assembly // bot
@@ -134,7 +173,7 @@ public sealed class Bot : IBot
             .AddCache(_creds)
             .AddHttpClients();
 
-        if (Environment.GetEnvironmentVariable("NADEKOBOT_IS_COORDINATED") != "1")
+        if (!IsCoordinated)
         {
             svcs.AddSingleton<ICoordinator, SingleProcessCoordinator>();
         }
@@ -338,28 +377,15 @@ public sealed class Bot : IBot
         if (arg.Message?.Contains("unknown dispatch", StringComparison.InvariantCultureIgnoreCase) ?? false)
             return Task.CompletedTask;
 
-        if (arg.Exception is { InnerException: WebSocketClosedException { CloseCode: 4014 } })
+        if (arg.Exception is { InnerException: WebSocketClosedException { CloseCode: SelfHostIntents.DISALLOWED_INTENTS_CLOSE_CODE } })
         {
             Log.Error("""
-                      Login failed.
-
-                      *** Please enable privileged intents ***
-
-                      Certain Nadeko features require Discord's privileged gateway intents.
-                      These include greeting and goodbye messages, as well as creating the Owner message channels for DM forwarding.
-
-                      How to enable privileged intents:
-                      1. Head over to the Discord Developer Portal https://discord.com/developers/applications/
-                      2. Select your Application.
-                      3. Click on `Bot` in the left side navigation panel, and scroll down to the intents section.
-                      4. Enable all intents.
-                      5. Restart your bot.
-
-                      Read this only if your bot is in 100 or more servers:
-
-                      You'll need to apply to use the intents with Discord, but for small selfhosts, all that is required is enabling the intents in the developer portal.
-                      Yes, this is a new thing from Discord, as of October 2020. No, there's nothing we can do about it. Yes, we're aware it worked before.
-                      While waiting for your bot to be accepted, you can change the 'usePrivilegedIntents' inside your creds.yml to 'false', although this will break many of the nadeko's features
+                      Discord refused a privileged intent which the bot asked for (gateway close 4014).
+                      To use all features, turn on the privileged intents:
+                      1. Open https://discord.com/developers/applications/ and select your application.
+                      2. Click Bot and turn on Presence Intent, Server Members Intent and Message Content Intent.
+                      3. Save the changes and restart the bot.
+                      A bot in 100 or more servers must apply to Discord for each intent.
                       """);
             return Task.CompletedTask;
         }
@@ -385,6 +411,45 @@ public sealed class Bot : IBot
         }
 
         return Task.CompletedTask;
+    }
+
+    // Discord refuses the same intents on each reconnect, and each try uses one of the bot's daily logins.
+    private Task OnDisconnected(Exception ex)
+    {
+        if ((ex as WebSocketClosedException)?.CloseCode != SelfHostIntents.DISALLOWED_INTENTS_CLOSE_CODE
+            || Interlocked.Exchange(ref _refusedIntents, 1) == 1)
+            return Task.CompletedTask;
+
+        _ = Task.Run(ExitForRefusedIntentsInternalAsync);
+        return Task.CompletedTask;
+    }
+
+    private async Task ExitForRefusedIntentsInternalAsync()
+    {
+        try
+        {
+            await Client.StopAsync().WaitAsync(TimeSpan.FromSeconds(5));
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "The gateway did not close cleanly");
+        }
+
+        var flags = await SelfHostIntents.ReadAsync(_creds.Token);
+        if (flags is not null && flags.LacksAnyOf(Intents))
+        {
+            Log.Error("Discord does not allow these privileged intents now: {Intents}. "
+                      + "Turn them on in the Developer Portal, or start the bot again to run without them",
+                flags.MissingNames());
+        }
+
+        if (!SelfHostIntents.ExitsAtOnce(Intents, _startKnewFlags, flags))
+        {
+            Log.Error("The bot exits in {Delay}. Then start it again", SelfHostIntents.RetryDelay);
+            await Task.Delay(SelfHostIntents.RetryDelay);
+        }
+
+        Helpers.ReadErrorAndExit(SelfHostIntents.EXIT_DISALLOWED_INTENTS);
     }
 
     public async Task RunAndBlockAsync()

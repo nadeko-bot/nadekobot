@@ -18,7 +18,7 @@ public sealed class Creds : IBotCreds
     public ICollection<ulong> OwnerIds { get; set; }
 
     [Comment(
-        "Keep this on 'true' unless you're sure your bot shouldn't use privileged intents or you're waiting to be accepted")]
+        "Set to 'false' to ask Discord for no privileged intents. When 'true', the bot asks only for the privileged intents which your application has")]
     public bool UsePrivilegedIntents { get; set; }
 
     [Comment("""

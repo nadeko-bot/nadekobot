@@ -28,4 +28,4 @@ if (args.Length > 0 && args[0] != "run")
     }
 }
 
-await new Bot(shardId, totalShards).RunAndBlockAsync();
+await (await Bot.CreateAsync(shardId, totalShards)).RunAndBlockAsync();

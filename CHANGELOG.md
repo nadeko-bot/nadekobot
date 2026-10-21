@@ -12,6 +12,7 @@
 ### Changed
 
 - `.blackjack` / `.bj` pays 3:2 for a blackjack.
+- A self-hosted bot asks Discord only for the privileged intents which its application has.
 
 ### Fixed
 
@@ -39,12 +40,14 @@
 - `.stock` shows the correct change percent.
 - `.cmdcooldown` / `.cmdcd` with 0 seconds removes the cooldown.
 - `.commands` / `.cmds` does not start command cooldowns.
+- A self-hosted bot stops and names the missing intent when Discord refuses a privileged intent.
 
 ### Dev
 
 - Added tests for timely claims, the greet queue, blackjack results and currency event payouts.
 - Added tests for updates from v5 databases.
 - Added tests for stream follows, self-assigned roles, time lookups and command cooldowns.
+- Added tests for the intent check of the self-hosted bot.
 
 ## [7.6.7] - 20.10.2026
 

@@ -38,4 +38,8 @@ public sealed record IntentState(bool Presence, bool Members, bool MessageConten
 
     public string MissingNames()
         => _missingNames[MissingMask];
+
+    // True when this state misses an intent which the asked state has.
+    public bool LacksAnyOf(IntentState asked)
+        => (MissingMask & ~asked.MissingMask) != 0;
 }

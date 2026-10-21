@@ -267,7 +267,7 @@ public static class HostedProgram
     // Restart at once only when Discord took away an intent which the bot asked for, and not twice for the same flags.
     public static bool RestartsAtOnce(IntentState asked, IntentState? flags, IntentState? lastRetry)
         => flags is not null
-           && (flags.MissingMask & ~asked.MissingMask) != 0
+           && flags.LacksAnyOf(asked)
            && flags != lastRetry;
 
     private static async Task StartBotInternalAsync(
