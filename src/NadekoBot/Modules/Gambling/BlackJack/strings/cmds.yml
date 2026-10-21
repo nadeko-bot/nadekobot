@@ -4,7 +4,9 @@ blackjack:
     You must specify the amount you're betting. 
     Use `{0}hit`, `{0}stand` and `{0}double` commands to play. 
     Game is played with 4 decks. 
-    Dealer hits on soft 17 and wins draws.
+    The dealer hits on soft 17.
+    The bot gives the bet back on a tie.
+    A blackjack is 21 with the first two cards. It pays 3:2.
   ex:
     - 50
   params:

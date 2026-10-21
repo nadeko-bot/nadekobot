@@ -24,7 +24,6 @@ public class EventOptions : INadekoCommandOptions
         HelpText = "Number of hours the event should run for. Default 24.")]
     public int Hours { get; set; } = 24;
 
-    // The event timer refuses durations over ~49.7 days.
     public const int MAX_HOURS = 30 * 24;
 
     public void NormalizeOptions()

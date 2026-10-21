@@ -203,34 +203,56 @@ public class Blackjack
             hw = Dealer.GetHandValue();
         }
 
-        if (hw > 21)
-        {
-            foreach (var usr in Players)
-            {
-                if (usr.State is User.UserState.Stand or User.UserState.Blackjack)
-                    usr.State = User.UserState.Won;
-                else
-                    usr.State = User.UserState.Lost;
-            }
-        }
-        else
-        {
-            foreach (var usr in Players)
-            {
-                if (usr.State == User.UserState.Blackjack)
-                    usr.State = User.UserState.Won;
-                else if (usr.State == User.UserState.Stand)
-                    usr.State = hw < usr.GetHandValue() ? User.UserState.Won : User.UserState.Lost;
-                else
-                    usr.State = User.UserState.Lost;
-            }
-        }
-
         foreach (var usr in Players)
         {
-            if (usr.State is User.UserState.Won or User.UserState.Blackjack)
-                await _cs.AddAsync(usr.DiscordUser.Id, usr.Bet * 2, new("blackjack", "win"));
+            var (payout, natural) = Settle(usr, Dealer);
+            if (payout == 0)
+                continue;
+
+            var note = usr.State == User.UserState.Push ? "push" : natural ? "natural" : "win";
+            await _cs.AddAsync(usr.DiscordUser.Id, payout, new("blackjack", note));
         }
+    }
+
+    // sets the final state and returns the amount to give back; the natural must be read before Resolve replaces the state
+    public static (long Payout, bool Natural) Settle(User usr, Dealer dealer)
+    {
+        var natural = usr.State == User.UserState.Blackjack;
+        usr.State = Resolve(usr, dealer);
+        return (GetPayout(usr.State, natural, usr.Bet), natural);
+    }
+
+    // the amount given back, the bet included; a natural pays 3:2 with the odd half rounded down
+    public static long GetPayout(User.UserState result, bool natural, long bet)
+        => result switch
+        {
+            User.UserState.Won => natural ? (bet * 2) + (bet / 2) : bet * 2,
+            User.UserState.Push => bet,
+            _ => 0
+        };
+
+    public static User.UserState Resolve(User usr, Dealer dealer)
+    {
+        if (usr.State is not (User.UserState.Stand or User.UserState.Blackjack))
+            return User.UserState.Lost;
+
+        var dealerValue = dealer.GetHandValue();
+        var dealerNatural = dealer.Cards.Count == 2 && dealerValue == 21;
+
+        if (usr.State == User.UserState.Blackjack)
+            return dealerNatural ? User.UserState.Push : User.UserState.Won;
+
+        if (dealerValue > 21)
+            return User.UserState.Won;
+
+        if (dealerNatural)
+            return User.UserState.Lost;
+
+        var value = usr.GetHandValue();
+        if (value > dealerValue)
+            return User.UserState.Won;
+
+        return value == dealerValue ? User.UserState.Push : User.UserState.Lost;
     }
 
     public async Task<bool> Double(IUser u)
@@ -261,15 +283,8 @@ public class Blackjack
 
             u.Cards.Add(Deck.Draw());
 
-            if (u.GetHandValue() == 21)
-                //blackjack
-                u.State = User.UserState.Blackjack;
-            else if (u.GetHandValue() > 21)
-                // user busted
-                u.State = User.UserState.Bust;
-            else
-                //with double you just get one card, and then you're done
-                u.State = User.UserState.Stand;
+            // with double the player gets exactly one card, so the turn ends here
+            u.State = u.GetHandValue() > 21 ? User.UserState.Bust : User.UserState.Stand;
             currentUserMove.TrySetResult(true);
 
             return true;
@@ -303,12 +318,11 @@ public class Blackjack
 
             u.Cards.Add(Deck.Draw());
 
-            if (u.GetHandValue() == 21)
-                //blackjack
-                u.State = User.UserState.Blackjack;
-            else if (u.GetHandValue() > 21)
-                // user busted
+            var value = u.GetHandValue();
+            if (value > 21)
                 u.State = User.UserState.Bust;
+            else if (value == 21)
+                u.State = User.UserState.Stand;
 
             currentUserMove.TrySetResult(true);
 

@@ -1,4 +1,6 @@
 ﻿#nullable disable warnings
+using LinqToDB;
+using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Gambling.Common;
 using NadekoBot.Modules.Gambling.Services;
@@ -26,7 +28,6 @@ public partial class Gambling
         private readonly IImageCache _images;
         private readonly FontProvider _fonts;
         private readonly DbService _db;
-        private readonly Lock _slotStatsLock = new();
 
         public SlotCommands(
             IImageCache images,
@@ -40,11 +41,9 @@ public partial class Gambling
             _db = db;
         }
 
-        public Task Test()
-            => Task.CompletedTask;
-
         [Cmd]
         [SpendsCurrency]
+        [BotPerm(ChannelPerm.SendMessages | ChannelPerm.AttachFiles | ChannelPerm.EmbedLinks)]
         public async Task Slot([OverrideTypeReader(typeof(BalanceTypeReader))] long amount)
         {
             if (!await CheckBetMandatory(amount))
@@ -75,10 +74,10 @@ public partial class Gambling
             var bb = new ButtonBuilder(emote: Emoji.Parse("🔁"), customId: "slot:again", label: "Pull Again");
             var inter = _inter.Create(ctx.User.Id,
                 bb,
-                smc =>
+                async smc =>
                 {
-                    smc.DeferAsync();
-                    return Slot(amount);
+                    await smc.DeferAsync();
+                    await Slot(amount);
                 });
 
             var msg = await ctx.Channel.SendFileAsync(imgStream,
@@ -168,10 +167,10 @@ public partial class Gambling
             long ownedAmount;
             await using (var uow = _db.GetDbContext())
             {
-                ownedAmount = uow.Set<DiscordUser>()
-                                 .FirstOrDefault(x => x.UserId == ctx.User.Id)
-                                 ?.CurrencyAmount
-                              ?? 0;
+                ownedAmount = await uow.GetTable<DiscordUser>()
+                    .Where(x => x.UserId == ctx.User.Id)
+                    .Select(x => x.CurrencyAmount)
+                    .FirstOrDefaultAsyncLinqToDB();
             }
 
             var slotBg = await _images.GetSlotBgAsync();

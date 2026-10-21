@@ -112,10 +112,12 @@ public partial class Gambling
                     var full = $"{p.DiscordUser.ToString().TrimTo(20)} | Bet: {N(p.Bet)} | Value: {p.GetHandValue()}";
                     if (bj.State == Blackjack.GameState.Ended)
                     {
-                        if (p.State == User.UserState.Lost)
-                            full = "❌ " + full;
-                        else
-                            full = "✅ " + full;
+                        full = p.State switch
+                        {
+                            User.UserState.Lost => "❌ ",
+                            User.UserState.Push => "➖ ",
+                            _ => "✅ "
+                        } + full;
                     }
                     else if (p == bj.CurrentUser)
                         full = "▶ " + full;

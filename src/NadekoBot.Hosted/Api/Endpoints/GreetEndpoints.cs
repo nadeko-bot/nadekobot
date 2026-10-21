@@ -192,7 +192,7 @@ public static class GreetEndpoints
         return Results.Json(ToGreetDto(greetType, after), ApiJsonContext.Default.GreetDto);
     }
 
-    // The greet service caches settings and its setters do not clear the cache, so the API reads the table.
+    // The greet service caches settings and only SetGreet clears the cache, so the API reads the table.
     private static async Task<GreetSettings[]> ReadGreetsInternalAsync(DbService db, ulong guildId)
     {
         await using var ctx = db.GetDbContext();

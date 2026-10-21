@@ -80,6 +80,7 @@ public partial class Administration
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageGuild)]
+        [Ratelimit(5)]
         public Task GreetDmTest([Leftover] IGuildUser? user = null)
             => Test(GreetType.GreetDm, user);
 

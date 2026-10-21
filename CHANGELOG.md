@@ -2,6 +2,27 @@
 
 *a,c,f,r,o,d*
 
+## [7.7.0] - TBD
+
+### Changed
+
+- `.blackjack` / `.bj` pays 3:2 for a blackjack.
+
+### Fixed
+
+- `.timely` gives one claim per member for each period, on every shard.
+- A join raid on one server does not delay greet, bye and boost messages on other servers.
+- `.greet` and `.boost` turn off when their channel is deleted.
+- `.blackjack` / `.bj` pays correctly
+    - a tie with the dealer gives the bet back
+    - only the first two cards can make a blackjack
+- `.eventstart` events pay every member who claimed before the event ends.
+- `.slot` / `.slots` does not take the bet when the bot cannot send messages, attach files or embed links.
+
+### Dev
+
+- Added tests for timely claims, the greet queue, blackjack results and currency event payouts.
+
 ## [7.6.7] - 20.10.2026
 
 ### Added

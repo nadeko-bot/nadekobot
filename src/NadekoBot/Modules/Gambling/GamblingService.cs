@@ -22,6 +22,7 @@ public class GamblingService : INService, IReadyExecutor
     private readonly IPatronageService _ps;
     private readonly QuestService _quests;
     private readonly NadekoRandom _rng;
+    private readonly TimelyClaimStore _timely;
 
     private static readonly TypedKey<long> _curDecayKey = new("currency:last_decay");
 
@@ -40,10 +41,25 @@ public class GamblingService : INService, IReadyExecutor
         _ps = ps;
         _quests = quests;
         _rng = new NadekoRandom();
+        _timely = new(cache, TimeProvider.System);
     }
 
-    public Task OnReadyAsync()
-        => Task.WhenAll(CurrencyDecayLoopAsync(), TransactionClearLoopAsync());
+    public async Task OnReadyAsync()
+    {
+        if (_client.ShardId == 0)
+        {
+            try
+            {
+                await _cache.RemoveAsync(_oldTimelyKey);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Unable to delete the old timely claim list");
+            }
+        }
+
+        await Task.WhenAll(CurrencyDecayLoopAsync(), TransactionClearLoopAsync());
+    }
 
 
     public string GeneratePassword()
@@ -148,53 +164,11 @@ public class GamblingService : INService, IReadyExecutor
 
     private static readonly TypedKey<EconomyResult> _ecoKey = new("nadeko:economy");
 
-    private static readonly SemaphoreSlim _timelyLock = new(1, 1);
+    // the claim list of earlier versions, which shard 0 deletes once on start
+    private static readonly TypedKey<Dictionary<ulong, long>> _oldTimelyKey = new("timely:claims");
 
-    private static TypedKey<Dictionary<ulong, long>> _timelyKey
-        = new("timely:claims");
-
-
-    public async Task<TimeSpan?> ClaimTimelyAsync(ulong userId, int period)
-    {
-        if (period == 0)
-            return null;
-
-        await _timelyLock.WaitAsync();
-        try
-        {
-            // get the dictionary from the cache or get a new one
-            var dict = (await _cache.GetOrAddAsync(_timelyKey,
-                () => Task.FromResult(new Dictionary<ulong, long>())))!;
-
-            var now = DateTime.UtcNow;
-            var nowB = now.ToBinary();
-
-            // try to get users last claim
-            if (!dict.TryGetValue(userId, out var lastB))
-                lastB = dict[userId] = now.ToBinary();
-
-            var diff = now - DateTime.FromBinary(lastB);
-
-            // if its now, or too long ago => success
-            if (lastB == nowB || diff > period.Hours())
-            {
-                // update the cache
-                dict[userId] = nowB;
-                await _cache.AddAsync(_timelyKey, dict);
-
-                return null;
-            }
-            else
-            {
-                // otherwise return the remaining time
-                return period.Hours() - diff;
-            }
-        }
-        finally
-        {
-            _timelyLock.Release();
-        }
-    }
+    public Task<TimeSpan?> ClaimTimelyAsync(ulong userId, int period)
+        => _timely.TryClaimAsync(userId, period);
 
     public async Task<bool> UserHasTimelyReminderAsync(ulong userId)
     {
@@ -204,8 +178,8 @@ public class GamblingService : INService, IReadyExecutor
                                    && x.Type == ReminderType.Timely);
     }
 
-    public async Task RemoveAllTimelyClaimsAsync()
-        => await _cache.RemoveAsync(_timelyKey);
+    public Task RemoveAllTimelyClaimsAsync()
+        => _timely.ResetAllAsync();
 
     private string N(long amount)
         => CurrencyHelper.N(amount, CultureInfo.InvariantCulture, _gcs.Data.Currency.Sign);

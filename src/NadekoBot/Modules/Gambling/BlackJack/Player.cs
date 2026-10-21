@@ -37,7 +37,8 @@ public class User : Player
         Bust,
         Blackjack,
         Won,
-        Lost
+        Lost,
+        Push
     }
 
     public UserState State { get; set; } = UserState.Waiting;
