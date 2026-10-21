@@ -32,7 +32,12 @@ public sealed class NadekoDbService : DbService
         if (!await TryMigrateFromPostgresAsync())
             return;
 
-        await using var ctx = new NadekoContext(ConnString);
+        await MigrateSqliteAsync(ConnString, _creds.GetCreds().TotalShards);
+    }
+
+    public static async Task MigrateSqliteAsync(string connString, int totalShards)
+    {
+        await using var ctx = new NadekoContext(connString);
         await DbMigrator.RunAsync(ctx);
 
         var conn = ctx.Database.GetDbConnection();
@@ -40,7 +45,7 @@ public sealed class NadekoDbService : DbService
         try
         {
             await DbPragmas.ApplySetupAsync(conn);
-            await ShardIndexReconciler.RunAsync(ctx, _creds.GetCreds().TotalShards);
+            await ShardIndexReconciler.RunAsync(ctx, totalShards);
         }
         finally
         {

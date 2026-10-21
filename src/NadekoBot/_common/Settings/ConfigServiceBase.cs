@@ -21,6 +21,7 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
     protected readonly IPubSub _pubSub;
     private readonly TypedKey<TSettings> _changeKey;
     private readonly BotPolicy _policy;
+    private readonly Func<string, string>? _upgradeLegacy;
     private readonly Lock _writeLock = new();
 
     private TSettings _data;
@@ -37,13 +38,15 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
         IConfigSeria serializer,
         IPubSub pubSub,
         TypedKey<TSettings> changeKey,
-        BotPolicy policy)
+        BotPolicy policy,
+        Func<string, string>? upgradeLegacy = null)
     {
         _filePath = filePath;
         _serializer = serializer;
         _pubSub = pubSub;
         _changeKey = changeKey;
         _policy = policy;
+        _upgradeLegacy = upgradeLegacy;
 
         _data = new();
         Load();
@@ -71,7 +74,11 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
         TSettings data;
         try
         {
-            data = _serializer.Deserialize<TSettings>(File.ReadAllText(_filePath));
+            var text = File.ReadAllText(_filePath);
+            if (_upgradeLegacy is not null)
+                text = _upgradeLegacy(text);
+
+            data = _serializer.Deserialize<TSettings>(text);
         }
         catch (Exception ex)
         {
@@ -102,6 +109,9 @@ public abstract class ConfigServiceBase<TSettings> : IConfigService
     private void Save()
     {
         var strData = _serializer.Serialize(Data);
+        if (Path.GetDirectoryName(_filePath) is { Length: > 0 } dir)
+            Directory.CreateDirectory(dir);
+
         File.WriteAllText(_filePath, strData);
     }
 

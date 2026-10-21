@@ -1,5 +1,6 @@
 using NadekoBot.Common.Configs;
 using NadekoBot.Db.Models;
+using System.Globalization;
 
 namespace NadekoBot.Modules.Xp.Services;
 
@@ -12,7 +13,7 @@ public sealed class XpConfigService : ConfigServiceBase<XpConfig>
         => "xp";
 
     public XpConfigService(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
-        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy, UpgradeLegacyYaml)
     {
         AddNumberProp("txt.cooldown",
             static conf => conf.TextXpCooldown,
@@ -58,6 +59,30 @@ public sealed class XpConfigService : ConfigServiceBase<XpConfig>
             "Whether the xp shop is enabled");
 
         Migrate();
+    }
+
+    // 6.0 renamed the text xp keys and made voice xp a whole number. Before version 7 the cooldown was in minutes.
+    public static string UpgradeLegacyYaml(string yaml)
+        => LegacyYaml.EditBelowVersion(yaml, 11, static (root, version) =>
+        {
+            LegacyYaml.Rename(root, "xpPerMessage", "textXpPerMessage");
+            if (version < 7)
+                LegacyYaml.Rename(root, "messageXpCooldown", "textXpCooldown", static v => ScaleInternal(v, 60));
+            else
+                LegacyYaml.Rename(root, "messageXpCooldown", "textXpCooldown");
+
+            LegacyYaml.Rename(root, "xpFromImage", "textXpFromImage");
+            LegacyYaml.Convert(root, "voiceXpPerMinute", static v => ScaleInternal(v, 1));
+        });
+
+    private static string ScaleInternal(string value, int factor)
+    {
+        if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var number)
+            || !double.IsFinite(number))
+            return value;
+
+        var scaled = Math.Clamp(Math.Round(number * factor, MidpointRounding.AwayFromZero), int.MinValue, int.MaxValue);
+        return ((int)scaled).ToString(CultureInfo.InvariantCulture);
     }
 
     private void Migrate()

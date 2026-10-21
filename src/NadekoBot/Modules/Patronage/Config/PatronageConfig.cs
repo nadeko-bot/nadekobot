@@ -19,7 +19,7 @@ public class PatronageConfig : ConfigServiceBase<PatronConfigData>
         => !_policy.Managed && Data.IsEnabled;
 
     public PatronageConfig(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
-        : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
+        : base(FILE_PATH, serializer, pubSub, _changeKey, policy, UpgradeLegacyYaml)
     {
         _policy = policy;
 
@@ -32,6 +32,10 @@ public class PatronageConfig : ConfigServiceBase<PatronConfigData>
 
         Migrate();
     }
+
+    // 4.x kept the quotas of the old patron system under the same key, in another shape. 5.x dropped them too.
+    public static string UpgradeLegacyYaml(string yaml)
+        => LegacyYaml.EditBelowVersion(yaml, 3, static (root, _) => LegacyYaml.Remove(root, "quotas"));
 
     private void Migrate()
     {

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>true</ImplicitUsings>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <OutputType>exe</OutputType>
+        <NoWarn>CS1066;CS8981</NoWarn>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\NadekoBot\NadekoBot.csproj" />
+    </ItemGroup>
+
+    <!-- the referenced bot is copied with its own launcher, which would start the bot instead of this tool -->
+    <Target Name="RemoveBotLauncher" AfterTargets="Publish">
+        <Delete Files="$(PublishDir)NadekoBot;$(PublishDir)NadekoBot.exe;$(PublishDir)NadekoBot.runtimeconfig.json;$(PublishDir)NadekoBot.deps.json" />
+    </Target>
+</Project>

@@ -4,6 +4,11 @@
 
 ## [7.7.0] - TBD
 
+### Added
+
+- Self-hosters can run `NadekoBot migrate` to update the database without starting the bot.
+- Self-hosters can run `NadekoBot migrate-configs` to update `creds.yml` and the config files.
+
 ### Changed
 
 - `.blackjack` / `.bj` pays 3:2 for a blackjack.
@@ -18,10 +23,14 @@
     - only the first two cards can make a blackjack
 - `.eventstart` events pay every member who claimed before the event ends.
 - `.slot` / `.slots` does not take the bet when the bot cannot send messages, attach files or embed links.
+- An update from v5 does not fail on word filters of deleted servers.
+- A `patron.yml` from v4 does not stop the bot.
+- An update from v4 or v5 keeps the text xp settings of `xp.yml`.
 
 ### Dev
 
 - Added tests for timely claims, the greet queue, blackjack results and currency event payouts.
+- Added tests for updates from v5 databases.
 
 ## [7.6.7] - 20.10.2026
 

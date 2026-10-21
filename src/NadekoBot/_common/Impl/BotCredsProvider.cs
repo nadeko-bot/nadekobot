@@ -6,7 +6,7 @@ namespace NadekoBot.Services;
 
 public sealed class BotCredsProvider : IBotCredsProvider
 {
-    private const string CREDS_FILE_NAME = "data/creds.yml";
+    public const string CREDS_FILE_NAME = "data/creds.yml";
     private const string CREDS_EXAMPLE_FILE_NAME = "data/creds_example.yml";
 
     private string CredsPath { get; }
@@ -133,7 +133,7 @@ public sealed class BotCredsProvider : IBotCredsProvider
         File.WriteAllText(CREDS_FILE_NAME, ymlData);
     }
 
-    private void MigrateCredentials()
+    public static void MigrateCredentials()
     {
         if (File.Exists(CREDS_FILE_NAME))
         {

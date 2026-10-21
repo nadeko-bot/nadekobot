@@ -11,6 +11,7 @@ if (args.Length > 0 && args[0] != "run")
     if (!int.TryParse(args[0], out shardId))
     {
         Console.Error.WriteLine("Invalid first argument (shard id): {0}", args[0]);
+        Environment.ExitCode = 1;
         return;
     }
 
@@ -19,6 +20,7 @@ if (args.Length > 0 && args[0] != "run")
         if (!int.TryParse(args[1], out var shardCount))
         {
             Console.Error.WriteLine("Invalid second argument (total shards): {0}", args[1]);
+            Environment.ExitCode = 1;
             return;
         }
 

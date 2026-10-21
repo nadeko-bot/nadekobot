@@ -41,10 +41,12 @@ public static class ServiceCollectionExtensions
         return svcs;
     }
 
+    public static IEnumerable<Type> GetConfigServiceTypes(Assembly a)
+        => a.GetTypes().Where(static x => !x.IsAbstract && x.IsAssignableToGenericType(typeof(ConfigServiceBase<>)));
+
     public static IContainer AddConfigServices(this IContainer svcs, Assembly a)
     {
-        foreach (var type in a.GetTypes()
-                     .Where(x => !x.IsAbstract && x.IsAssignableToGenericType(typeof(ConfigServiceBase<>))))
+        foreach (var type in GetConfigServiceTypes(a))
         {
             svcs.RegisterMany([type],
                 getServiceTypes: type => type.GetImplementedTypes(ReflectionTools.AsImplementedType.SourceType),

@@ -110,6 +110,11 @@ insert into guildfilterconfig (Id, GuildId, FilterLinks, FilterInvites, FilterWo
 select Id, GuildId, FilterLinks, FilterInvites, FilterWords
 from guildconfigs;
 
+DELETE FROM FilteredWord WHERE GuildFilterConfigId NOT IN (SELECT Id FROM GuildFilterConfig);
+DELETE FROM FilterChannelId WHERE GuildFilterConfigId NOT IN (SELECT Id FROM GuildFilterConfig);
+DELETE FROM FilterLinksChannelId WHERE GuildFilterConfigId NOT IN (SELECT Id FROM GuildFilterConfig);
+DELETE FROM FilterWordsChannelId WHERE GuildFilterConfigId NOT IN (SELECT Id FROM GuildFilterConfig);
+
 DELETE FROM XPSettings WHERE GuildConfigId IS NULL OR GuildConfigId NOT IN (SELECT Id FROM GuildConfigs);
 UPDATE XpSettings
 SET GuildId = (SELECT GuildId FROM GuildConfigs WHERE GuildConfigs.Id = XpSettings.GuildConfigId);
