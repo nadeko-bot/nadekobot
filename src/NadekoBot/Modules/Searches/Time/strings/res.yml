@@ -1,5 +1,3 @@
 time_new: Time
 timezone: Timezone
-timezone_db_api_key: >-
-  You need to activate your TimezoneDB API key. You can do so by clicking on the
-  link you've received in the email with your API key.
+timezone_db_api_key: "You need to activate your TimezoneDB API key. You can do so by clicking on the link you've received in the email with your API key."

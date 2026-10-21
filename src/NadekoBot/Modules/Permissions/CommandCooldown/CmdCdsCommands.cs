@@ -27,11 +27,10 @@ public partial class Permissions
             }
 
             var name = cmdName.ToLowerInvariant();
-            await _service.AddCooldown(ctx.Guild.Id, name, secs);
+            await _service.SetCooldownAsync(ctx.Guild.Id, name, secs);
 
             if (secs == 0)
             {
-                await _service.ClearCooldowns(ctx.Guild.Id, cmdName);
                 await Response().Confirm(strs.cmdcd_cleared(Format.Bold(name))).SendAsync();
             }
             else

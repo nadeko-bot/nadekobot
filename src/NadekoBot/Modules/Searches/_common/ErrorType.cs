@@ -5,5 +5,6 @@ public enum ErrorType
     InvalidInput,
     NotFound,
     Unknown,
-    ApiKeyMissing
+    ApiKeyMissing,
+    ApiKeyInactive
 }

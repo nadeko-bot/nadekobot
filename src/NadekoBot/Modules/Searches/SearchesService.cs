@@ -3,6 +3,7 @@ using NadekoBot.Modules.Searches.Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OneOf;
+using System.Globalization;
 using System.Text.Json;
 
 namespace NadekoBot.Modules.Searches.Services;
@@ -94,21 +95,13 @@ public class SearchesService : INService
         }
     }
 
-    public Task<((string Address, DateTime Time, string TimeZoneName), ErrorType?)> GetTimeDataAsync(string arg)
-        => GetTimeDataFactory(arg);
-
-    //return _cache.GetOrAddCachedDataAsync($"nadeko_time_{arg}",
-    //    GetTimeDataFactory,
-    //    arg,
-    //    TimeSpan.FromMinutes(1));
-    private async Task<((string Address, DateTime Time, string TimeZoneName), ErrorType?)> GetTimeDataFactory(
+    public async Task<((string Address, DateTimeOffset Time, string ZoneId), ErrorType?)> GetTimeDataAsync(
         string query)
     {
         query = query.Trim();
 
         if (string.IsNullOrEmpty(query))
             return (default, ErrorType.InvalidInput);
-
 
         var locIqKey = _creds.GetCreds().LocationIqApiKey;
         var tzDbKey = _creds.GetCreds().TimezoneDbApiKey;
@@ -122,14 +115,11 @@ public class SearchesService : INService
                 async () =>
                 {
                     var url = "https://eu1.locationiq.com/v1/search.php?"
-                              + (string.IsNullOrWhiteSpace(locIqKey)
-                                  ? "key="
-                                  : $"key={locIqKey}&")
+                              + $"key={locIqKey}&"
                               + $"q={Uri.EscapeDataString(query)}&"
                               + "format=json";
 
-                    var res = await http.GetStringAsync(url);
-                    return res;
+                    return await http.GetStringAsync(url);
                 },
                 TimeSpan.FromHours(1));
 
@@ -141,28 +131,62 @@ public class SearchesService : INService
             }
 
             var geoData = responses[0];
+            var lat = geoData.Lat.ToString("F4", CultureInfo.InvariantCulture);
+            var lon = geoData.Lon.ToString("F4", CultureInfo.InvariantCulture);
 
-            using var req = new HttpRequestMessage(HttpMethod.Get,
-                "http://api.timezonedb.com/v2.1/get-time-zone?"
-                + $"key={tzDbKey}"
-                + $"&format=json"
-                + $"&by=position"
-                + $"&lat={geoData.Lat}"
-                + $"&lng={geoData.Lon}");
+            // only the zone id is cached; the time and the dst offset come from the local tz database
+            var zoneId = await _c.GetOrAddAsync(new($"searches:tzdb:{lat},{lon}"),
+                () => GetZoneIdInternalAsync(http, tzDbKey, lat, lon),
+                TimeSpan.FromDays(1));
 
-            using var geoRes = await http.SendAsync(req);
-            var resString = await geoRes.Content.ReadAsStringAsync();
-            var timeObj = JsonConvert.DeserializeObject<TimeZoneResult>(resString);
+            if (!TimeZoneInfo.TryFindSystemTimeZoneById(zoneId, out var zone))
+            {
+                Log.Warning("Unknown timezone id from TimezoneDB: {ZoneId}", zoneId);
+                return (default, ErrorType.Unknown);
+            }
 
-            var time = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timeObj.Timestamp);
-
-            return ((Address: responses[0].DisplayName, Time: time, TimeZoneName: timeObj.TimezoneName), default);
+            var now = DateTimeOffset.UtcNow;
+            return ((geoData.DisplayName, now.ToOffset(zone.GetUtcOffset(now)), zone.Id), default);
+        }
+        catch (TimezoneDbException ex)
+        {
+            Log.Warning("TimezoneDB request failed: {Message}", ex.Message);
+            return (default, ex.KeyProblem ? ErrorType.ApiKeyInactive : ErrorType.Unknown);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Weather error: {Message}", ex.Message);
+            Log.Warning(ex, "Time lookup failed for {Query}", query);
             return (default, ErrorType.NotFound);
         }
+    }
+
+    private static async Task<string> GetZoneIdInternalAsync(HttpClient http, string key, string lat, string lon)
+    {
+        var url = "https://api.timezonedb.com/v2.1/get-time-zone?"
+                  + $"key={Uri.EscapeDataString(key)}"
+                  + "&format=json&by=position"
+                  + $"&lat={lat}&lng={lon}";
+
+        using var res = await http.GetAsync(url);
+        var body = await res.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<TimeZoneResult>(body);
+
+        // throwing keeps the failure out of the cache
+        if (result is null || !string.Equals(result.Status, "OK", StringComparison.OrdinalIgnoreCase)
+                           || string.IsNullOrWhiteSpace(result.ZoneName))
+        {
+            var message = result?.Message ?? $"http {(int)res.StatusCode}";
+            var keyProblem = message.Contains("key", StringComparison.InvariantCultureIgnoreCase)
+                             || message.Contains("activat", StringComparison.InvariantCultureIgnoreCase);
+            throw new TimezoneDbException(message, keyProblem);
+        }
+
+        return result.ZoneName;
+    }
+
+    private sealed class TimezoneDbException(string message, bool keyProblem) : Exception(message)
+    {
+        public bool KeyProblem { get; } = keyProblem;
     }
 
     public string GetRandomImageUrl(ImageTag tag)

@@ -283,7 +283,8 @@ public sealed partial class Help : NadekoModule<HelpService>
                 ctx.Channel,
                 ctx.User,
                 cmd.Module.GetTopLevelModule().Name,
-                cmd.Name);
+                cmd.Name,
+                checkCooldown: false);
 
             if (result.IsAllowed)
                 allowed.Add(cmd);

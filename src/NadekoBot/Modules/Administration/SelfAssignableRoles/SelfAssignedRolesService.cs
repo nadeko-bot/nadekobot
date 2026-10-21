@@ -224,24 +224,18 @@ public class SelfAssignedRolesService : INService, IReadyExecutor
     }
 }
 
-public sealed class SarAssignerService : INService, IReadyExecutor
+public sealed class SarAssignerService(DbService db, XpFormulaService xpFormula) : INService, IReadyExecutor
 {
-    private readonly XpService _xp;
-    private readonly DbService _db;
-    private readonly XpFormulaService _xpFormula;
-
     private readonly Channel<SarAssignerDataItem> _channel =
         Channel.CreateBounded<SarAssignerDataItem>(100);
 
-
-    public SarAssignerService(XpService xp, DbService db, XpFormulaService xpFormula)
+    public Task OnReadyAsync()
     {
-        _xp = xp;
-        _db = db;
-        _xpFormula = xpFormula;
+        _ = Task.Run(AssignLoopInternalAsync);
+        return Task.CompletedTask;
     }
 
-    public async Task OnReadyAsync()
+    private async Task AssignLoopInternalAsync()
     {
         var reader = _channel.Reader;
         while (true)
@@ -250,55 +244,7 @@ public sealed class SarAssignerService : INService, IReadyExecutor
 
             try
             {
-                var sar = item.Group.Roles.First(x => x.RoleId == item.RoleId);
-
-                if (item.User.RoleIds.Contains(item.RoleId))
-                {
-                    item.CompletionTask.TrySetResult(new SarAlreadyHasRole());
-                    continue;
-                }
-
-                if (item.Group.RoleReq is { } rid)
-                {
-                    if (!item.User.RoleIds.Contains(rid))
-                    {
-                        item.CompletionTask.TrySetResult(new SarRoleRequirement(rid));
-                        continue;
-                    }
-
-                    // passed
-                }
-
-                // check level requirement
-                if (sar.LevelReq > 0)
-                {
-                    await using var ctx = _db.GetDbContext();
-                    var xpStats = await ctx.GetTable<UserXpStats>().GetGuildUserXp(sar.GuildId, item.User.Id);
-                    var f = _xpFormula.GetFormula(sar.GuildId);
-                    var lvlData = new LevelStats(xpStats?.Xp ?? 0, f.A, f.C);
-
-                    if (lvlData.Level < sar.LevelReq)
-                    {
-                        item.CompletionTask.TrySetResult(new SarLevelRequirement(sar.LevelReq));
-                        continue;
-                    }
-
-                    // passed
-                }
-
-                if (item.Group.IsExclusive)
-                {
-                    var rolesToRemove = item.Group.Roles
-                                            .Where(x => item.User.RoleIds.Contains(x.RoleId))
-                                            .Select(x => x.RoleId)
-                                            .ToArray();
-                    if (rolesToRemove.Length > 0)
-                        await item.User.RemoveRolesAsync(rolesToRemove);
-                }
-
-                await item.User.AddRoleAsync(item.RoleId);
-
-                item.CompletionTask.TrySetResult(new Success());
+                item.CompletionTask.TrySetResult(await AssignAsync(item.Group, item.User, item.RoleId));
             }
             catch (Exception ex)
             {
@@ -306,6 +252,76 @@ public sealed class SarAssignerService : INService, IReadyExecutor
                 item.CompletionTask.TrySetResult(new Error());
             }
         }
+    }
+
+    public async Task<SarAssignResult> AssignAsync(SarGroup group, IGuildUser user, ulong roleId)
+    {
+        var sar = group.Roles.First(x => x.RoleId == roleId);
+
+        if (user.RoleIds.Contains(roleId))
+            return new SarAlreadyHasRole();
+
+        // a required role which was deleted can not be met by anyone, so it no longer counts
+        if (group.RoleReq is { } rid
+            && user.Guild.GetRole(rid) is not null
+            && !user.RoleIds.Contains(rid))
+            return new SarRoleRequirement(rid);
+
+        if (sar.LevelReq > 0)
+        {
+            await using var ctx = db.GetDbContext();
+            var xpStats = await ctx.GetTable<UserXpStats>().GetGuildUserXp(sar.GuildId, user.Id);
+            var f = xpFormula.GetFormula(sar.GuildId);
+            var lvlData = new LevelStats(xpStats?.Xp ?? 0, f.A, f.C);
+
+            if (lvlData.Level < sar.LevelReq)
+                return new SarLevelRequirement(sar.LevelReq);
+        }
+
+        var role = user.Guild.GetRole(roleId);
+        if (role is null)
+            return new Error();
+
+        // checked before any call, a 403 counts toward Discord's invalid request limit
+        var botHierarchy = await GetBotHierarchyAsync(user.Guild);
+        if (role.IsManaged || role.Position >= botHierarchy)
+            return new SarInsuffPerms();
+
+        if (group.IsExclusive)
+        {
+            var rolesToRemove = new List<ulong>();
+            foreach (var x in group.Roles)
+            {
+                if (x.RoleId != roleId
+                    && user.RoleIds.Contains(x.RoleId)
+                    && user.Guild.GetRole(x.RoleId) is { } r
+                    && r.Position < botHierarchy)
+                    rolesToRemove.Add(x.RoleId);
+            }
+
+            if (rolesToRemove.Count > 0)
+                await user.RemoveRolesAsync(rolesToRemove);
+        }
+
+        await user.AddRoleAsync(roleId);
+
+        return new Success();
+    }
+
+    private static async Task<int> GetBotHierarchyAsync(IGuild guild)
+    {
+        var bot = await guild.GetCurrentUserAsync();
+        if (bot.Id == guild.OwnerId)
+            return int.MaxValue;
+
+        var top = 0;
+        foreach (var rid in bot.RoleIds)
+        {
+            if (guild.GetRole(rid) is { } r && r.Position > top)
+                top = r.Position;
+        }
+
+        return top;
     }
 
     public async Task Add(SarAssignerDataItem item)

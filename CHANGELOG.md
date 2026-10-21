@@ -26,11 +26,25 @@
 - An update from v5 does not fail on word filters of deleted servers.
 - A `patron.yml` from v4 does not stop the bot.
 - An update from v4 or v5 keeps the text xp settings of `xp.yml`.
+- Stream alerts start and stop correctly
+    - `.streamsclear` / `.stclear` stops the alerts at once
+    - `.streamremove` / `.strm` keeps other channels which follow the same stream
+    - `.streamadd` / `.sta` refuses a stream which the channel already follows
+- `.iam` and `.iamnot` / `.iamn` give clear errors
+    - `.iam` works when the required role of a group was deleted
+    - both say when the bot cannot give or take the role
+- `.sargroupname` / `.gn` gives the correct answer for a missing group and a removed name.
+- `.time` shows the correct time and timezone, also when many members use it.
+- `.crypto` / `.c` shows the price when the chart is not available.
+- `.stock` shows the correct change percent.
+- `.cmdcooldown` / `.cmdcd` with 0 seconds removes the cooldown.
+- `.commands` / `.cmds` does not start command cooldowns.
 
 ### Dev
 
 - Added tests for timely claims, the greet queue, blackjack results and currency event payouts.
 - Added tests for updates from v5 databases.
+- Added tests for stream follows, self-assigned roles, time lookups and command cooldowns.
 
 ## [7.6.7] - 20.10.2026
 

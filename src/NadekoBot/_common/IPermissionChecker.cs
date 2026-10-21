@@ -8,7 +8,8 @@ public interface IPermissionChecker
         IMessageChannel channel,
         IUser author,
         string module,
-        string? cmd);
+        string? cmd,
+        bool checkCooldown = true);
 }
 
 [GenerateOneOf]

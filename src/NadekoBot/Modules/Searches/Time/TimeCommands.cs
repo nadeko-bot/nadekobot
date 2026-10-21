@@ -24,6 +24,7 @@ public partial class Searches
                 ErrorType.ApiKeyMissing => strs.api_key_missing,
                 ErrorType.InvalidInput => strs.invalid_input,
                 ErrorType.NotFound => strs.not_found,
+                ErrorType.ApiKeyInactive => strs.timezone_db_api_key,
                 ErrorType.Unknown => strs.error_occured,
                 _ => strs.error_occured,
             };
@@ -46,18 +47,12 @@ public partial class Searches
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(data.TimeZoneName))
-            {
-                await Response().Error(strs.timezone_db_api_key).SendAsync();
-                return;
-            }
-
             var eb = CreateEmbed()
                      .WithOkColor()
                      .WithTitle(GetText(strs.time_new))
-                     .WithDescription(Format.Code(data.Time.ToString(Culture)))
+                     .WithDescription(Format.Code(data.Time.DateTime.ToString(Culture)))
                      .AddField(GetText(strs.location), string.Join('\n', data.Address.Split(", ")), true)
-                     .AddField(GetText(strs.timezone), data.TimeZoneName, true);
+                     .AddField(GetText(strs.timezone), $"{data.ZoneId} (UTC{data.Time:zzz})", true);
 
             await Response().Embed(eb).SendAsync();
         }

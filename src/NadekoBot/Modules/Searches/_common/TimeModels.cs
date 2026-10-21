@@ -5,11 +5,14 @@ namespace NadekoBot.Modules.Searches.Common;
 
 public class TimeZoneResult
 {
-    [JsonProperty("abbreviation")]
-    public string TimezoneName { get; set; }
+    [JsonProperty("status")]
+    public string Status { get; set; }
 
-    [JsonProperty("timestamp")]
-    public int Timestamp { get; set; }
+    [JsonProperty("message")]
+    public string Message { get; set; }
+
+    [JsonProperty("zoneName")]
+    public string ZoneName { get; set; }
 }
 
 public class LocationIqResponse

@@ -16,9 +16,7 @@ self_assign_no_excl: Self assigned roles are now not exclusive!
 self_assign_not: That role is not self-assignable.
 self_assign_not_have: You don't have {0} role.
 self_assign_not_level: That self-assignable role requires at least server level {0}.
-self_assign_perms: >-
-  I am unable to add that role to you. `I can't add roles to owners or other
-  roles higher than my role in the role hierarchy.`
+self_assign_perms: "I am unable to add that role to you. `I can't add roles to owners or other roles higher than my role in the role hierarchy.`"
 self_assign_rem: '{0} has been removed from the list of self-assignable roles.'
 self_assign_remove: You no longer have {0} role.
 self_assign_role_req: You need {0} role in order to assign yourself a role from group {1}

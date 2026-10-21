@@ -18,7 +18,13 @@ public partial class Searches
         [UserPerm(GuildPerm.ManageMessages)]
         public async Task StreamAdd(string link)
         {
-            var data = await _service.FollowStream(ctx.Guild.Id, ctx.Channel.Id, link);
+            var (data, result) = await _service.FollowStream(ctx.Guild.Id, ctx.Channel.Id, link);
+            if (result == StreamNotificationService.FollowStreamResult.AlreadyFollowed)
+            {
+                await Response().Error(strs.stream_already_followed(Format.Bold(data.Name))).SendAsync();
+                return;
+            }
+
             if (data is null)
             {
                 await Response().Error(strs.stream_not_added).SendAsync();

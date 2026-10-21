@@ -17,6 +17,7 @@ public partial class Administration
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
+        [BotPerm(GuildPerm.ManageRoles)]
         public async Task Iam([Leftover] IRole role)
         {
             var guildUser = (IGuildUser)ctx.User;
@@ -54,9 +55,9 @@ public partial class Administration
                     var resStr = error.Match(
                         _ => strs.error_occured,
                         lvlReq => strs.self_assign_not_level(Format.Bold(lvlReq.Level.ToString())),
-                        roleRq => strs.self_assign_role_req(Format.Bold(ctx.Guild.GetRole(roleRq.RoleId).ToString()
-                                                                        ?? "missing role " + roleRq.RoleId),
-                            group.Name),
+                        roleRq => strs.self_assign_role_req(
+                            Format.Bold(ctx.Guild.GetRole(roleRq.RoleId)?.Name ?? roleRq.RoleId.ToString()),
+                            group.Name ?? group.GroupNumber.ToString()),
                         _ => strs.self_assign_already(Format.Bold(role.Name)),
                         _ => strs.self_assign_perms);
 
@@ -77,6 +78,7 @@ public partial class Administration
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
+        [BotPerm(GuildPerm.ManageRoles)]
         public async Task Iamnot([Leftover] IRole role)
         {
             var guildUser = (IGuildUser)ctx.User;
@@ -175,18 +177,26 @@ public partial class Administration
         [Priority(0)]
         public async Task SarGroupName(int group, [Leftover] string name = null)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                name = null;
+
             var set = await _service.SetGroupNameAsync(ctx.Guild.Id, group, name);
 
-            if (set)
+            if (!set)
             {
-                await Response()
-                      .Confirm(strs.group_name_added(Format.Bold(group.ToString()), Format.Bold(name)))
-                      .SendAsync();
+                await Response().Error(strs.sar_group_not_found).SendAsync();
+                return;
             }
-            else
+
+            if (name is null)
             {
                 await Response().Confirm(strs.group_name_removed(Format.Bold(group.ToString()))).SendAsync();
+                return;
             }
+
+            await Response()
+                  .Confirm(strs.group_name_added(Format.Bold(group.ToString()), Format.Bold(name)))
+                  .SendAsync();
         }
 
         [Cmd]

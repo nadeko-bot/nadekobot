@@ -18,6 +18,7 @@ public partial class Searches
         }
 
         [Cmd]
+        [BotPerm(ChannelPerm.EmbedLinks | ChannelPerm.AttachFiles)]
         public async Task Stock([Leftover] string query)
         {
             using var typing = ctx.Channel.EnterTypingState();
@@ -63,7 +64,9 @@ public partial class Searches
                 : "\\🔻";
 
             var change = (stock.Price - stock.Close).ToString("N2", Culture);
-            var changePercent = (1 - (stock.Close / stock.Price)).ToString("P1", Culture);
+            var changePercent = stock.Close == 0
+                ? "?"
+                : ((stock.Price - stock.Close) / stock.Close).ToString("P1", Culture);
 
             var price = stock.Price.ToString("C2", localCulture);
 
@@ -101,7 +104,8 @@ public partial class Searches
 
 
         [Cmd]
-        public async Task Crypto(string name)
+        [BotPerm(ChannelPerm.EmbedLinks | ChannelPerm.AttachFiles)]
+        public async Task Crypto([Leftover] string name)
         {
             name = name?.ToUpperInvariant();
 
@@ -156,8 +160,7 @@ public partial class Searches
                                 .AddField(GetText(strs.price), price, true)
                                 .AddField(GetText(strs.volume_24h), volume, true)
                                 .AddField(GetText(strs.change_7d_24h), $"{sevenDay} / {lastDay}", true)
-                                .AddField(GetText(strs.market_cap_dominance), dominance, true)
-                                .WithImageUrl($"attachment://{fileName}");
+                                .AddField(GetText(strs.market_cap_dominance), dominance, true);
 
             if (crypto.CirculatingSupply is double cs)
             {
@@ -176,7 +179,14 @@ public partial class Searches
             }
 
 
-            await ctx.Channel.SendFileAsync(sparkline, fileName, embed: toSend.Build());
+            if (sparkline is null)
+            {
+                await Response().Embed(toSend).SendAsync();
+                return;
+            }
+
+            toSend.WithImageUrl($"attachment://{fileName}");
+            await Response().Embed(toSend).File(sparkline, fileName).SendAsync();
         }
 
         [Cmd]
@@ -185,8 +195,8 @@ public partial class Searches
             if (--page < 0)
                 return;
 
-            if (page > 25)
-                page = 25;
+            if (page > CryptoService.MAX_COINS_PAGE)
+                page = CryptoService.MAX_COINS_PAGE;
 
             await Response()
                   .Paginated()

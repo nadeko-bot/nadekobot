@@ -110,7 +110,17 @@ public sealed class CmdCdService : IExecPreCommand, IReadyExecutor, INService
         }
     }
 
-    public async Task ClearCooldowns(ulong guildId, string cmdName)
+    public Task SetCooldownAsync(ulong guildId, string cmdName, int secs)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(secs);
+
+        var name = cmdName.ToLowerInvariant();
+        return secs == 0
+            ? ClearCooldowns(guildId, name)
+            : AddCooldown(guildId, name, secs);
+    }
+
+    private async Task ClearCooldowns(ulong guildId, string cmdName)
     {
         if (_settings.TryGetValue(guildId, out var dict))
             dict.TryRemove(cmdName, out _);
@@ -123,7 +133,7 @@ public sealed class CmdCdService : IExecPreCommand, IReadyExecutor, INService
                  .DeleteAsync();
     }
 
-    public async Task AddCooldown(ulong guildId, string name, int secs)
+    private async Task AddCooldown(ulong guildId, string name, int secs)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(secs);
 

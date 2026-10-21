@@ -14,6 +14,8 @@ namespace NadekoBot.Modules.Searches.Services;
 
 public class CryptoService : INService
 {
+    public const int MAX_COINS_PAGE = 24;
+
     private readonly IBotCache _cache;
     private readonly IHttpClientFactory _httpFactory;
     private readonly IBotCreds _creds;
@@ -57,6 +59,7 @@ public class CryptoService : INService
                    && float.TryParse(y2Str, NumberStyles.Any, CultureInfo.InvariantCulture, out y2);
         }
 
+        PointF? last = null;
         foreach (XmlElement x in gElement.ChildNodes)
         {
             if (x.Name != "line")
@@ -65,17 +68,17 @@ public class CryptoService : INService
             if (GetValuesFromAttributes(x.Attributes, out var x1, out var y1, out var x2, out var y2))
             {
                 points[cnt++] = new(x1, y1);
-                // this point will be set twice to the same value
-                // on all points except the last one
-                if (cnt + 1 < points.Length)
-                    points[cnt + 1] = new(x2, y2);
+                last = new(x2, y2);
             }
         }
 
         if (cnt == 0)
             return [];
 
-        return points.Slice(0, cnt).ToArray();
+        var result = new PointF[cnt + 1];
+        points.Slice(0, cnt).CopyTo(result);
+        result[cnt] = last!.Value;
+        return result;
     }
 
     private SixLabors.ImageSharp.Image<Rgba32> GenerateSparklineChart(PointF[] points, bool up)
@@ -175,14 +178,14 @@ public class CryptoService : INService
         }
     }
 
-    private TypedKey<byte[]> GetSparklineKey(int id)
-        => new($"crypto:sparkline:{id}");
+    private static TypedKey<byte[]> GetSparklineKey(int id, bool up)
+        => new($"crypto:sparkline:{id}:{(up ? "up" : "down")}");
 
     public async Task<Stream?> GetSparklineAsync(int id, bool up)
     {
         try
         {
-            var bytes = await _cache.GetOrAddAsync(GetSparklineKey(id),
+            var bytes = await _cache.GetOrAddAsync(GetSparklineKey(id, up),
                 async () =>
                 {
                     // if it fails, generate a new one
@@ -224,8 +227,8 @@ public class CryptoService : INService
 
     public async Task<IReadOnlyCollection<GeckoCoinsResult>?> GetTopCoins(int page)
     {
-        if (page >= 25)
-            page = 24;
+        if (page > MAX_COINS_PAGE)
+            page = MAX_COINS_PAGE;
 
         using var http = _httpFactory.CreateClient();
 

@@ -30,12 +30,13 @@ public sealed class PermissionChecker : IPermissionChecker, INService
         IMessageChannel channel,
         IUser author,
         string module,
-        string? cmdName)
+        string? cmdName,
+        bool checkCooldown = true)
     {
         module = module.ToLowerInvariant();
         cmdName = cmdName?.ToLowerInvariant();
 
-        if (cmdName is not null && await _cmdCds.TryBlock(guild, author, cmdName))
+        if (checkCooldown && cmdName is not null && await _cmdCds.TryBlock(guild, author, cmdName))
         {
             return new PermCooldown();
         }
