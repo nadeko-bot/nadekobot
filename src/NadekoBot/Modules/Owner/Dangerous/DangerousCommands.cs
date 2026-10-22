@@ -141,24 +141,6 @@ public partial class Owner
             }
         }
 
-        [Cmd]
-        [OwnerOnly]
-        public async Task PurgeUser(ulong userId)
-        {
-            var embed = CreateEmbed()
-                .WithDescription(GetText(strs.purge_user_confirm(Format.Bold(userId.ToString()))));
-
-            if (!await PromptUserConfirmAsync(embed))
-                return;
-
-            await _ds.PurgeUserAsync(userId);
-            await ctx.OkAsync();
-        }
-
-        [Cmd]
-        [OwnerOnly]
-        public Task PurgeUser([Leftover] IUser user)
-            => PurgeUser(user.Id);
 
         [Cmd]
         [OwnerOnly]

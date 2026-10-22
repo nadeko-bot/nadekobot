@@ -16,6 +16,7 @@ ar:
   emoji_not_removed: 'لم تتم إزالة الإيموجيات التالية: {0}'
   inrole_users: المستخدمون
   inrole_nobody: لم يتم العثور على مستخدمين
+  members_incomplete: لا يرى البوت كل عضو في هذا السيرفر، لذلك قد تكون هذه القائمة غير مكتملة.
   invalid_emoji_link: الرابط المحدد إما ليس صورة أو يتجاوز 256 كيلوبايت.
   listservers: |-
     المعرّف: {0}
@@ -71,6 +72,7 @@ de-DE:
   emoji_not_removed: 'Die folgenden Emojis wurden nicht entfernt: {0}'
   inrole_users: Benutzer
   inrole_nobody: Keine Benutzer gefunden
+  members_incomplete: Der Bot sieht nicht alle Mitglieder dieses Servers, deshalb kann diese Liste unvollständig sein.
   invalid_emoji_link: Der angegebene Link is entweder kein Bild, oder größer als 256KB.
   listservers: |-
     ID: {0}
@@ -126,6 +128,7 @@ es-ES:
   emoji_not_removed: 'Los siguientes emojis no fueron eliminados: {0}'
   inrole_users: Usuarios
   inrole_nobody: No se encontraron usuarios
+  members_incomplete: El bot no ve a todos los miembros de este servidor, así que esta lista puede estar incompleta.
   invalid_emoji_link: La liga especificada o no es una imagen, o se excede de los 256KB.
   listservers: |-
     ID: {0}
@@ -181,6 +184,7 @@ fr-FR:
   emoji_not_removed: 'Les emojis suivants n''ont pas été supprimés : {0}'
   inrole_users: Utilisateurs
   inrole_nobody: Aucun utilisateur trouvé
+  members_incomplete: Le bot ne voit pas tous les membres de ce serveur, donc cette liste peut être incomplète.
   invalid_emoji_link: Le lien spécifié n'est pas une image ou excède 256KB.
   listservers: |-
     ID: {0}
@@ -236,6 +240,7 @@ id-ID:
   emoji_not_removed: 'Emoji berikut tidak bisa dihapus: {0}'
   inrole_users: Pengguna
   inrole_nobody: Tidak ada pengguna ditemukan
+  members_incomplete: Bot tidak melihat semua anggota di server ini, jadi daftar ini bisa tidak lengkap.
   invalid_emoji_link: Link yang ditentukan bukan gambar atau melebihi 256KB.
   listservers: |-
     ID: {0}
@@ -291,6 +296,7 @@ ja-JP:
   emoji_not_removed: '以下の絵文字は削除されませんでした: {0}'
   inrole_users: ユーザー
   inrole_nobody: ユーザーが見つかりませんでした
+  members_incomplete: ボットはこのサーバーのすべてのメンバーを認識できないため、このリストは不完全な場合があります。
   invalid_emoji_link: 指定されたリンクは画像ではないか、256KBを超えています。
   listservers: |-
     ID: {0}
@@ -346,6 +352,7 @@ ko-KR:
   emoji_not_removed: '다음 이모지가 제거되지 않았어요: {0}'
   inrole_users: 유저
   inrole_nobody: 유저를 찾을 수 없어요
+  members_incomplete: 봇이 이 서버의 모든 멤버를 볼 수 없어서 이 목록은 불완전할 수 있습니다.
   invalid_emoji_link: 지정된 링크가 이미지가 아니거나 256KB를 초과해요.
   listservers: |-
     ID: {0}
@@ -401,6 +408,7 @@ pl-PL:
   emoji_not_removed: 'Następujące emoji nie zostały usunięte: {0}'
   inrole_users: Użytkownicy
   inrole_nobody: Nie znaleziono użytkowników
+  members_incomplete: Bot nie widzi wszystkich członków tego serwera, więc ta lista może być niepełna.
   invalid_emoji_link: Podany link nie jest obrazem lub przekracza 256KB.
   listservers: |-
     ID: {0}
@@ -456,6 +464,7 @@ pt-BR:
   emoji_not_removed: 'Os seguintes emojis não foram removidos: {0}'
   inrole_users: Usuários
   inrole_nobody: Nenhum usuário encontrado
+  members_incomplete: O bot não vê todos os membros deste servidor, então esta lista pode estar incompleta.
   invalid_emoji_link: O link especificado não retorna para uma imagem ou excede 256KB.
   listservers: |-
     ID: {0}
@@ -511,6 +520,7 @@ ru-RU:
   emoji_not_removed: 'Следующие эмодзи не были удалены: {0}'
   inrole_users: Пользователи
   inrole_nobody: Пользователи не найдены
+  members_incomplete: Бот видит не всех участников этого сервера, поэтому список может быть неполным.
   invalid_emoji_link: Указанная ссылка либо не является изображением, либо превышает 256 КБ.
   listservers: |-
     Идентификатор: {0}
@@ -566,6 +576,7 @@ sr-Cyrl-RS:
   emoji_not_removed: 'Следећи емоџији нису уклоњени: {0}'
   inrole_users: Корисници
   inrole_nobody: Нису пронађени корисници
+  members_incomplete: Бот не види све чланове овог сервера, па ова листа може бити непотпуна.
   invalid_emoji_link: Наведени линк или није слика или прелази 256KB.
   listservers: |-
     ИД: {0}
@@ -621,6 +632,7 @@ tr-TR:
   emoji_not_removed: 'Şu emojiler kaldırılamadı: {0}'
   inrole_users: Kullanıcılar
   inrole_nobody: Kullanıcı bulunamadı
+  members_incomplete: Bot bu sunucudaki tüm üyeleri göremiyor, bu yüzden bu liste eksik olabilir.
   invalid_emoji_link: Belirtilen bağlantı ya bir resim değil ya da 256KB sınırını aşıyor.
   listservers: |-
     ID: {0}
@@ -676,6 +688,7 @@ ts-TS:
   emoji_not_removed: 'These emojis couldn''t be removed: {0}'
   inrole_users: Users
   inrole_nobody: No users found. Hmph, how empty.
+  members_incomplete: The bot can't see every member of this server, so this list might be incomplete. Not my fault.
   invalid_emoji_link: That link isn't an image or it's over 256KB. Check before sending next time.
   listservers: |-
     ID: {0}
@@ -731,6 +744,7 @@ uk-UA:
   emoji_not_removed: 'Ці емодзі не було видалено: {0}'
   inrole_users: Користувачі
   inrole_nobody: Користувачів не знайдено
+  members_incomplete: Бот бачить не всіх учасників цього сервера, тому цей список може бути неповним.
   invalid_emoji_link: Вказане посилання або не є зображенням, або перевищує 256КБ.
   listservers: |-
     ID: {0}
@@ -786,6 +800,7 @@ vi-VN:
   emoji_not_removed: 'Các emoji sau không được xóa: {0}'
   inrole_users: Người dùng
   inrole_nobody: Không tìm thấy người dùng
+  members_incomplete: Bot không thấy tất cả thành viên của server này, nên danh sách này có thể không đầy đủ.
   invalid_emoji_link: Liên kết được chỉ định không phải là ảnh hoặc vượt quá 256KB.
   listservers: |-
     ID: {0}
@@ -841,6 +856,7 @@ zh-CN:
   emoji_not_removed: '以下表情符號未被移除：{0}'
   inrole_users: 用户
   inrole_nobody: 未找到用户
+  members_incomplete: 机器人看不到本服务器的所有成员，所以这个列表可能不完整。
   invalid_emoji_link: 指定的連結不是圖像或超過 256KB。
   listservers: |-
     ID: {0}

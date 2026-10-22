@@ -27,7 +27,7 @@ public partial class Owner
         private readonly DbService _db;
         private readonly IBotActivityService _bas;
         private readonly IBotCredsProvider _credsProvider;
-        private readonly IntentState _intents;
+        private readonly DownloadTracker _tracker;
 
         public SelfCommands(
             DiscordSocketClient client,
@@ -37,9 +37,9 @@ public partial class Owner
             IMedusaLoaderService medusaLoader,
             IBotActivityService bas,
             IBotCredsProvider credsProvider,
-            IntentState intents)
+            DownloadTracker tracker)
         {
-            _intents = intents;
+            _tracker = tracker;
             _client = client;
             _db = db;
             _strings = strings;
@@ -60,8 +60,7 @@ public partial class Owner
         [OwnerOnly]
         public async Task CacheUsers(IGuild guild)
         {
-            // Discord sends the member list only to a bot with the Server Members intent.
-            var downloadUsersTask = _intents.Members ? guild.DownloadUsersAsync() : Task.CompletedTask;
+            var downloadUsersTask = _tracker.EnsureUsersDownloadedAsync(guild, force: true);
             var message = await Response().Pending(strs.cache_users_pending).SendAsync();
 
             await downloadUsersTask;

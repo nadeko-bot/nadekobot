@@ -35,16 +35,6 @@ deletexp:
     - ''
   params:
     - {}
-purgeuser:
-  desc: |-
-    Purge user from the database completely. This includes currency, xp, clubs that user owns, waifu info.
-  ex:
-    - '@Oblivion'
-  params:
-    - userId:
-        desc: The ID of the user to be purged from the system.
-    - user:
-        desc: The user account being purged.
 sqlexec:
   desc: |-
     Executes provided sql command and returns the number of affected rows. Dangerous.

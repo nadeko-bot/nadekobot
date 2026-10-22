@@ -109,20 +109,13 @@ public partial class Xp : NadekoModule<XpService>
         var (opts, _) = OptionsParser.ParseFrom(new LbOpts(), args);
 
         await ctx.Channel.TriggerTypingAsync();
-        if (opts.Clean)
-        {
-            await _tracker.EnsureUsersDownloadedAsync(ctx.Guild);
-        }
+        var incomplete = opts.Clean && !await _tracker.EnsureUsersDownloadedAsync(ctx.Guild);
+        ulong[] members = opts.Clean ? ((SocketGuild)ctx.Guild).Users.Map(static x => x.Id) : [];
 
         async Task<IReadOnlyCollection<UserXpStats>> GetPageItems(int curPage)
         {
-            var socketGuild = (SocketGuild)ctx.Guild;
             if (opts.Clean)
-            {
-                return await _service.GetGuildUserXps(ctx.Guild.Id,
-                    socketGuild.Users.Select(x => x.Id).ToList(),
-                    curPage);
-            }
+                return await _service.GetGuildUserXps(ctx.Guild.Id, members, curPage);
 
             return await _service.GetGuildUserXps(ctx.Guild.Id, curPage);
         }
@@ -135,9 +128,13 @@ public partial class Xp : NadekoModule<XpService>
             .Page((users, curPage) =>
             {
                 var embed = CreateEmbed().WithTitle(GetText(strs.server_leaderboard)).WithOkColor();
+                var note = incomplete ? GetText(strs.members_incomplete) : null;
 
                 if (!users.Any())
-                    return embed.WithDescription("-");
+                    return embed.WithDescription(note is null ? "-" : note + "\n\n-");
+
+                if (note is not null)
+                    embed.WithDescription(note);
 
                 var f = _xpFormula.GetFormula(ctx.Guild.Id);
                 for (var i = 0; i < users.Count; i++)

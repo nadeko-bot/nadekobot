@@ -888,15 +888,19 @@ public partial class Gambling : GamblingModule<GamblingService>
             opts.Clean = false;
         }
 
+        var incomplete = false;
+        ulong[] users = [];
+        if (opts.Clean)
+        {
+            await ctx.Channel.TriggerTypingAsync();
+            incomplete = !await _tracker.EnsureUsersDownloadedAsync(ctx.Guild);
+            users = ((SocketGuild)ctx.Guild).Users.Map(static x => x.Id);
+        }
 
         async Task<IReadOnlyCollection<DiscordUser>> GetTopRichest(int curPage)
         {
             if (opts.Clean)
             {
-                await ctx.Channel.TriggerTypingAsync();
-                await _tracker.EnsureUsersDownloadedAsync(ctx.Guild);
-
-                var users = ((SocketGuild)ctx.Guild).Users.Map(x => x.Id);
                 var perPage = 9;
 
                 await using var uow = _db.GetDbContext();
@@ -927,11 +931,16 @@ public partial class Gambling : GamblingModule<GamblingService>
                     .WithOkColor()
                     .WithTitle(CurrencySign + " " + GetText(strs.leaderboard));
 
+                var note = incomplete ? GetText(strs.members_incomplete) : null;
                 if (!toSend.Any())
                 {
-                    embed.WithDescription(GetText(strs.no_user_on_this_page));
+                    var empty = GetText(strs.no_user_on_this_page);
+                    embed.WithDescription(note is null ? empty : note + "\n\n" + empty);
                     return Task.FromResult(embed);
                 }
+
+                if (note is not null)
+                    embed.WithDescription(note);
 
                 for (var i = 0; i < toSend.Count; i++)
                 {

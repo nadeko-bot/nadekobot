@@ -1,0 +1,63 @@
+ar:
+  purge_user_confirm: 'هل تريد إزالة البيانات الشخصية لـ {0}؟ يستبدل البوت اسم المستخدم ويحذف نص ملف الويفو وقوائم المهام والتذكيرات والأوامر المجدولة. تبقى العملة وxp والويفوز والنوادي والتحذيرات والسجلات الأخرى.'
+  purge_user_done: 'أزال البوت البيانات الشخصية لـ {0} من {1} صفًا.'
+
+de-DE:
+  purge_user_confirm: 'Persönliche Daten von {0} entfernen? Der Bot ersetzt den Namen des Nutzers und löscht den Waifu-Profiltext, To-dos, Erinnerungen und geplante Befehle. Währung, xp, Waifus, Clubs, Verwarnungen und andere Einträge bleiben.'
+  purge_user_done: 'Der Bot hat die persönlichen Daten von {0} aus {1} Zeilen entfernt.'
+
+es-ES:
+  purge_user_confirm: '¿Quitar los datos personales de {0}? El bot reemplaza el nombre del usuario y borra el texto del perfil waifu, las tareas, los recordatorios y los comandos programados. La moneda, la xp, los waifus, los clubes, los avisos y otros registros se quedan.'
+  purge_user_done: 'El bot eliminó los datos personales de {0} de {1} filas.'
+
+fr-FR:
+  purge_user_confirm: 'Supprimer les données personnelles de {0} ? Le bot remplace le nom de l''utilisateur et supprime le texte du profil waifu, les tâches, les rappels et les commandes planifiées. La monnaie, l''xp, les waifus, les clubs, les avertissements et les autres enregistrements restent.'
+  purge_user_done: 'Le bot a supprimé les données personnelles de {0} de {1} lignes.'
+
+id-ID:
+  purge_user_confirm: 'Hapus data pribadi {0}? Bot mengganti nama pengguna dan menghapus teks profil waifu, tugas, pengingat, dan perintah terjadwal. Mata uang, xp, waifu, klub, peringatan, dan catatan lain tetap ada.'
+  purge_user_done: 'Bot telah menghapus data pribadi {0} dari {1} baris.'
+
+ja-JP:
+  purge_user_confirm: '{0} の個人データを削除しますか？ボットはユーザーの名前を置き換え、waifu プロフィールのテキスト、ToDo、リマインダー、予約コマンドを削除します。通貨、xp、waifu、クラブ、警告などの記録は残ります。'
+  purge_user_done: 'ボットは {1} 行から {0} の個人データを削除しました。'
+
+ko-KR:
+  purge_user_confirm: '{0}님의 개인 데이터를 삭제할까요? 봇이 사용자의 이름을 바꾸고 waifu 프로필 텍스트, 할 일, 알림, 예약 명령을 삭제합니다. 화폐, xp, waifu, 클럽, 경고 및 기타 기록은 남습니다.'
+  purge_user_done: '봇이 {1}개 행에서 {0}의 개인 데이터를 삭제했습니다.'
+
+pl-PL:
+  purge_user_confirm: 'Usunąć dane osobowe {0}? Bot zastępuje nazwę użytkownika i usuwa tekst profilu waifu, zadania, przypomnienia i zaplanowane komendy. Waluta, xp, waifu, kluby, ostrzeżenia i inne rekordy zostają.'
+  purge_user_done: 'Bot usunął dane osobowe {0} z {1} wierszy.'
+
+pt-BR:
+  purge_user_confirm: 'Remover os dados pessoais de {0}? O bot substitui o nome do usuário e apaga o texto do perfil waifu, tarefas, lembretes e comandos agendados. Moeda, xp, waifus, clubes, avisos e outros registros ficam.'
+  purge_user_done: 'O bot removeu os dados pessoais de {0} de {1} linhas.'
+
+ru-RU:
+  purge_user_confirm: 'Удалить личные данные {0}? Бот заменит имя пользователя и удалит текст профиля вайфу, задачи, напоминания и запланированные команды. Валюта, xp, вайфу, клубы, предупреждения и другие записи останутся.'
+  purge_user_done: 'Бот удалил личные данные {0} из {1} строк.'
+
+sr-Cyrl-RS:
+  purge_user_confirm: 'Да уклониш личне податке корисника {0}? Бот замењује име корисника и брише текст waifu профила, задатке, подсетнике и заказане команде. Валута, xp, waifu, клубови, упозорења и остали записи остају.'
+  purge_user_done: 'Бот је уклонио личне податке корисника {0} из {1} редова.'
+
+tr-TR:
+  purge_user_confirm: '{0} kişisinin kişisel verileri kaldırılsın mı? Bot, kullanıcının adını değiştirir ve waifu profil metnini, yapılacakları, hatırlatıcıları ve zamanlanmış komutları siler. Para birimi, xp, waifu, kulüpler, uyarılar ve diğer kayıtlar kalır.'
+  purge_user_done: 'Bot, {0} kullanıcısının kişisel verilerini {1} satırdan sildi.'
+
+ts-TS:
+  purge_user_confirm: 'Removing the personal data of {0}? Hmph, fine. The bot swaps the user''s name and wipes the waifu profile text, todos, reminders and scheduled commands. Currency, xp, waifus, clubs, warnings and other records stay, not that I care.'
+  purge_user_done: 'The bot removed {0}''s personal data from {1} rows. Don''t thank me.'
+
+uk-UA:
+  purge_user_confirm: 'Видалити особисті дані {0}? Бот замінить ім''я користувача та видалить текст профілю вайфу, завдання, нагадування й заплановані команди. Валюта, xp, вайфу, клуби, попередження та інші записи залишаться.'
+  purge_user_done: 'Бот видалив особисті дані {0} з {1} рядків.'
+
+vi-VN:
+  purge_user_confirm: 'Xóa dữ liệu cá nhân của {0}? Bot thay tên người dùng và xóa văn bản hồ sơ waifu, việc cần làm, lời nhắc và lệnh đã lên lịch. Tiền tệ, xp, waifu, câu lạc bộ, cảnh báo và các bản ghi khác vẫn giữ nguyên.'
+  purge_user_done: 'Bot đã xóa dữ liệu cá nhân của {0} khỏi {1} dòng.'
+
+zh-CN:
+  purge_user_confirm: '要移除 {0} 的个人数据吗？机器人会替换该用户的名称，并删除 waifu 个人资料文本、待办事项、提醒和定时命令。货币、xp、waifu、俱乐部、警告和其他记录会保留。'
+  purge_user_done: '机器人已从 {1} 行中移除 {0} 的个人数据。'

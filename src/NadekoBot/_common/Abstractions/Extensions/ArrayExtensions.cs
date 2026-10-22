@@ -43,10 +43,19 @@ public static class ArrayExtensions
     public static TOut[] Map<TIn, TOut>(this IReadOnlyCollection<TIn> col, Func<TIn, TOut> f)
     {
         var toReturn = new TOut[col.Count];
-        
+
+        // A live collection (a cache of the gateway) can change between Count and the enumeration.
         var i = 0;
         foreach (var item in col)
+        {
+            if (i == toReturn.Length)
+                Array.Resize(ref toReturn, (i * 2) + 1);
+
             toReturn[i++] = f(item);
+        }
+
+        if (i != toReturn.Length)
+            Array.Resize(ref toReturn, i);
 
         return toReturn;
     }

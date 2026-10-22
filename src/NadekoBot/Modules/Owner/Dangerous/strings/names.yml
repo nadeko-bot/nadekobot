@@ -8,8 +8,6 @@ deletewaifus:
   - deletewaifus
 deletexp:
   - deletexp
-purgeuser:
-  - purgeuser
 sqlexec:
   - sqlexec
 sqlselect:

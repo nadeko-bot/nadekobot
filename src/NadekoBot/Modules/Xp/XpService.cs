@@ -535,7 +535,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             .ToArrayAsyncLinqToDB();
     }
 
-    public async Task<IReadOnlyCollection<UserXpStats>> GetGuildUserXps(ulong guildId, List<ulong> users, int page)
+    public async Task<IReadOnlyCollection<UserXpStats>> GetGuildUserXps(ulong guildId, ulong[] users, int page)
     {
         await using var uow = _db.GetDbContext();
         return await uow.Set<UserXpStats>()

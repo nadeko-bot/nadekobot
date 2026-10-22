@@ -1,0 +1,13 @@
+purgeuser:
+  desc: |-
+    Removes the personal data of a user from the database.
+    The bot replaces the name of the user, and deletes the waifu profile text, todos, reminders and scheduled commands of the user.
+    Currency, xp, waifus, clubs, warnings and other records of the user stay.
+  ex:
+    - '123456789012345678'
+    - '@Oblivion'
+  params:
+    - userId:
+        desc: "The ID of the user."
+    - user:
+        desc: "The user."

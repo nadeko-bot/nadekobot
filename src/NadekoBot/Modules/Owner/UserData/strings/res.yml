@@ -1,0 +1,2 @@
+purge_user_confirm: "Remove the personal data of {0}? The bot replaces the name of the user and deletes the waifu profile text, todos, reminders and scheduled commands. Currency, xp, waifus, clubs, warnings and other records stay."
+purge_user_done: "The bot removed the personal data of {0} from {1} rows."

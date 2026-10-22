@@ -17,6 +17,7 @@ emoji_slots_full_retry_gif: All image emoji slots are full. Would you like to re
 emoji_not_removed: 'The following emojis were not removed: {0}'
 inrole_users: Users
 inrole_nobody: No users found
+members_incomplete: "The bot does not see every member of this server, so this list can be incomplete."
 invalid_emoji_link: Specified link is either not an image or exceeds 256KB.
 listservers: |-
   ID: {0}

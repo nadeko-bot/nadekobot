@@ -13,6 +13,10 @@
 
 - `.blackjack` / `.bj` pays 3:2 for a blackjack.
 - A self-hosted bot asks Discord only for the privileged intents which its application has.
+- `.purgeuser` removes only the personal data of a user, and works on the public bot
+    - replaces the name of the user
+    - deletes the waifu profile text, todos, reminders and scheduled commands
+    - keeps currency, xp, waifus, clubs, warnings and other records
 
 ### Fixed
 
@@ -41,6 +45,10 @@
 - `.cmdcooldown` / `.cmdcd` with 0 seconds removes the cooldown.
 - `.commands` / `.cmds` does not start command cooldowns.
 - A self-hosted bot stops and names the missing intent when Discord refuses a privileged intent.
+- `.inrole`, `.leaderboard` / `.lb` and `.xpleaderboard` / `.xplb` with `--clean` / `-c` show all members
+    - on the public bot, in servers with up to 10,000 members
+    - in larger servers, they say that the list can be incomplete
+    - a stuck member download does not block them
 
 ### Dev
 
@@ -48,6 +56,7 @@
 - Added tests for updates from v5 databases.
 - Added tests for stream follows, self-assigned roles, time lookups and command cooldowns.
 - Added tests for the intent check of the self-hosted bot.
+- Added tests for `.purgeuser` and the member download.
 
 ## [7.6.7] - 20.10.2026
 

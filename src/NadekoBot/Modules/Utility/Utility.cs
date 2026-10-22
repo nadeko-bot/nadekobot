@@ -163,7 +163,7 @@ public partial class Utility : NadekoModule
             return;
 
         await ctx.Channel.TriggerTypingAsync();
-        await _tracker.EnsureUsersDownloadedAsync(ctx.Guild);
+        var incomplete = !await _tracker.EnsureUsersDownloadedAsync(ctx.Guild);
 
         var users = await ctx.Guild.GetUsersAsync(
             CacheMode.CacheOnly
@@ -197,6 +197,9 @@ public partial class Utility : NadekoModule
                 var eb = CreateEmbed()
                     .WithOkColor()
                     .WithTitle($"{rolesText} ({roleUsers.Count})");
+
+                if (incomplete)
+                    eb.WithDescription(GetText(strs.members_incomplete));
 
                 if (pageUsers.Count == 0)
                     eb.AddField(GetText(strs.inrole_users), GetText(strs.inrole_nobody));

@@ -1,10 +1,5 @@
 #nullable disable
 using System.Data.Common;
-using LinqToDB;
-using LinqToDB.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using NadekoBot.Db.Models;
-using NadekoBot.Modules.Waifus.Waifu.Db;
 
 namespace NadekoBot.Modules.Owner.Services;
 
@@ -83,48 +78,6 @@ public class DangerousCommandsService : INService
 
         truncated = true;
         return text[..MAX_CELL_CHARS];
-    }
-
-    public async Task PurgeUserAsync(ulong userId)
-    {
-        await using var uow = _db.GetDbContext();
-        await using var tx = await uow.Database.BeginTransactionAsync();
-
-        // Remove fans of this waifu
-        await uow.GetTable<WaifuFan>()
-            .Where(x => x.WaifuUserId == userId)
-            .DeleteAsync();
-
-        // Remove this user's backing
-        await uow.GetTable<WaifuFan>()
-            .Where(x => x.UserId == userId)
-            .DeleteAsync();
-
-        // Remove cycle snapshots
-        await uow.GetTable<WaifuCycleSnapshot>()
-            .Where(x => x.WaifuUserId == userId)
-            .DeleteAsync();
-
-        // Remove cycles
-        await uow.GetTable<WaifuCycle>()
-            .Where(x => x.WaifuUserId == userId)
-            .DeleteAsync();
-
-        // Remove waifu
-        await uow.GetTable<WaifuInfo>()
-            .Where(x => x.UserId == userId)
-            .DeleteAsync();
-
-        // delete guild xp
-        await uow.GetTable<UserXpStats>().DeleteAsync(x => x.UserId == userId);
-
-        // delete currency transactions
-        await uow.GetTable<CurrencyTransaction>().DeleteAsync(x => x.UserId == userId);
-
-        // delete user, currency, and clubs go away with it
-        await uow.GetTable<DiscordUser>().DeleteAsync(u => u.UserId == userId);
-
-        await tx.CommitAsync();
     }
 
     public class SelectResult
