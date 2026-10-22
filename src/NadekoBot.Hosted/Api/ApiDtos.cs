@@ -228,7 +228,14 @@ public sealed record SetPresenceRequest(string? Status, SetPresenceActivityReque
 
 public sealed record SetPresenceActivityRequest(string? Type, string? Text, string? Url = null);
 
-public sealed record LogLineDto(DateTime Ts, string Level, string Text);
+// Template and Props rebuild the message part of Text; ExceptionAt is the index of the \n before the exception.
+public sealed record LogLineDto(
+    DateTime Ts,
+    string Level,
+    string Text,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Template = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] IReadOnlyDictionary<string, string>? Props = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] int? ExceptionAt = null);
 
 public sealed record UpdateAcceptedDto(string Version);
 

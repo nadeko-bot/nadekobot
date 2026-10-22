@@ -15,9 +15,9 @@ public readonly record struct FeedFrame(long Id, byte[] Bytes)
 }
 
 // The recent frames and the open streams of one SSE route. Ids must start above 0 and go up.
-public sealed class SseHub(int bufferCapacity, int maxSubscribers, int subscriberCapacity)
+public sealed class SseHub(int bufferCapacity, int maxSubscribers, int subscriberCapacity, long maxBufferBytes = long.MaxValue)
 {
-    private readonly FeedRingBuffer _buffer = new(bufferCapacity);
+    private readonly FeedRingBuffer _buffer = new(bufferCapacity, maxBufferBytes);
     // Copy-on-write: subscribing is rare, and publishing reads the array with no lock and no allocation.
     private FeedSubscriber[] _subscribers = [];
     private long _nextSubscriberId;
@@ -129,7 +129,7 @@ public sealed class FeedSubscription(SseHub hub, long id, ChannelReader<FeedFram
 }
 
 // Holds the most recent frames in id order.
-public sealed class FeedRingBuffer(int capacity = FeedRingBuffer.CAPACITY)
+public sealed class FeedRingBuffer(int capacity = FeedRingBuffer.CAPACITY, long maxBytes = long.MaxValue)
 {
     public const int CAPACITY = 256;
 
@@ -137,6 +137,7 @@ public sealed class FeedRingBuffer(int capacity = FeedRingBuffer.CAPACITY)
     private readonly FeedFrame[] _items = new FeedFrame[capacity];
     private int _head;
     private int _count;
+    private long _bytes;
 
     public int Capacity
         => capacity;
@@ -145,16 +146,22 @@ public sealed class FeedRingBuffer(int capacity = FeedRingBuffer.CAPACITY)
     {
         lock (_lock)
         {
-            if (_count < capacity)
-            {
-                _items[(_head + _count) % capacity] = frame;
-                _count++;
-                return;
-            }
+            // The new frame always stays, also when it alone is above the byte limit.
+            while (_count > 0 && (_count == capacity || _bytes + frame.Bytes.Length > maxBytes))
+                RemoveOldestInternal();
 
-            _items[_head] = frame;
-            _head = (_head + 1) % capacity;
+            _items[(_head + _count) % capacity] = frame;
+            _count++;
+            _bytes += frame.Bytes.Length;
         }
+    }
+
+    private void RemoveOldestInternal()
+    {
+        _bytes -= _items[_head].Bytes.Length;
+        _items[_head] = default;
+        _head = (_head + 1) % capacity;
+        _count--;
     }
 
     public int Snapshot(long sinceId, Span<FeedFrame> destination)

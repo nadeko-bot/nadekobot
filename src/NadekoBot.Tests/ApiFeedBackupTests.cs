@@ -42,6 +42,16 @@ public sealed class ApiFeedBackupTests
         Assert.That(ids.Length, Is.EqualTo(FeedRingBuffer.CAPACITY));
         Assert.That(ids[0], Is.EqualTo(300 - FeedRingBuffer.CAPACITY + 1));
         Assert.That(ids[^1], Is.EqualTo(300));
+
+        const int frameBytes = 30;
+        const int maxBytes = 100;
+        var capped = new FeedRingBuffer(FeedRingBuffer.CAPACITY, maxBytes);
+        for (var i = 1; i <= 5; i++)
+            capped.Add(new FeedFrame(i, new byte[frameBytes]));
+
+        Assert.That(SnapshotIds(capped, 0), Is.EqualTo(new long[] { 3, 4, 5 }), "the oldest frames go first when the bytes are above the limit");
+        capped.Add(new FeedFrame(6, new byte[maxBytes * 2]));
+        Assert.That(SnapshotIds(capped, 0), Is.EqualTo(new long[] { 6 }));
     }
 
     [Test]

@@ -73,6 +73,8 @@
 - Added tests for the intent check of the self-hosted bot.
 - Added tests for `.purgeuser` and the member download.
 - `NadekoBot.Hosted` API can read and set the bot's status and activity.
+- `NadekoBot.Hosted` API sends the template, the values and the exception start of each log line.
+- `NadekoBot.Hosted` API keeps the last 5,000 log lines, at most 8 MB.
 - Added tests for the saved bot status.
 - Added tests for the read-only owner SQL and for commands which the AI agent cannot run.
 
