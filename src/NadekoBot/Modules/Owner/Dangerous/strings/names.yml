@@ -1,11 +1,5 @@
-cleanupguilddata:
-  - cleanupguilddata
 deletecurrency:
   - deletecurrency
-deletewaifu:
-  - deletewaifu
-deletewaifus:
-  - deletewaifus
 deletexp:
   - deletexp
 sqlexec:

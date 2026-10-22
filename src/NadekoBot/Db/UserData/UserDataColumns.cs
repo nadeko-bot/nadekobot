@@ -67,7 +67,7 @@ public static class UserDataColumns
         ["ShopEntry.RoleName"] = "server content",
         ["StickyRoles.RoleIds"] = "the roles which the server gives back on a rejoin",
         ["Warnings.Reason"] = "a moderation record",
-        // The name of the moderator, stored without an id, so the purge cannot find the rows of a moderator.
+        // The moderator's name is part of the server's moderation log.
         ["Warnings.Moderator"] = "a moderation record",
         ["Warnings.ForgivenBy"] = "a moderation record",
         ["XpShopOwnedItem.ItemKey"] = "a purchase",

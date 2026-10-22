@@ -1,79 +1,175 @@
 ar:
-  cleanup_done: 'بيانات {0} خادم لا تزال موجودة في قاعدة البيانات.'
   sql_confirm_exec: تأكيد تنفيذ أمر SQL التالي
-  sql_select_truncated: 'النتيجة كبيرة جدًا. يعرض البوت {0} صفًا كحد أقصى ويقص القيم الطويلة.'
+  sql_select_truncated: 'النتيجة كبيرة جدًا. يحتفظ البوت بما لا يزيد عن {0} صفًا ويقص القيم الطويلة.'
+  sql_select_failed: 'فشل الاستعلام: {0}'
+  sql_select_timeout: 'استغرق الاستعلام أكثر من {0} ثانية، لذلك أوقفه البوت.'
+  sql_select_one_statement: أرسل استعلام SQL واحدًا فقط.
+  sql_select_busy: استعلام آخر قيد التشغيل. حاول مرة أخرى بعد انتهائه.
+  sql_exec_timeout: 'استغرق تنفيذ SQL وقتًا أطول من {0} ثانية، لذا أوقفه البوت. قد تبقى في قاعدة البيانات تغييرات العبارات التي انتهت قبل الإيقاف.'
+  confirm_action: أكّد هذا الإجراء
+  sql_select_too_big: 'توجد قيمة في النتيجة أكبر من {0} KiB. اختر جزءًا منها، مثلاً باستخدام substr().'
 
 de-DE:
-  cleanup_done: 'Daten von {0} Servern verbleiben in der Datenbank.'
   sql_confirm_exec: SQL-Ausführung bestätigen
-  sql_select_truncated: 'Das Ergebnis ist zu groß. Der Bot zeigt höchstens {0} Zeilen und kürzt lange Werte.'
+  sql_select_truncated: 'Das Ergebnis ist zu groß. Der Bot behält höchstens {0} Zeilen und kürzt lange Werte.'
+  sql_select_failed: 'Die Abfrage ist fehlgeschlagen: {0}'
+  sql_select_timeout: 'Die Abfrage hat länger als {0} Sekunden gedauert, deshalb hat der Bot sie gestoppt.'
+  sql_select_one_statement: Schick genau eine SQL-Abfrage.
+  sql_select_busy: Eine andere Abfrage läuft noch. Versuch es erneut, wenn sie fertig ist.
+  sql_exec_timeout: 'Das SQL hat länger als {0} Sekunden gedauert, deshalb hat der Bot es gestoppt. Änderungen von Anweisungen, die vor dem Stopp fertig waren, können in der Datenbank bleiben.'
+  confirm_action: Bestätige diese Aktion
+  sql_select_too_big: 'Ein Wert im Ergebnis ist größer als {0} KiB. Wähle nur einen Teil davon, zum Beispiel mit substr().'
 
 es-ES:
-  cleanup_done: 'Los datos de {0} servidores permanecen en la base de datos.'
   sql_confirm_exec: Confirmar ejecución SQL
-  sql_select_truncated: 'El resultado es demasiado grande. El bot muestra como máximo {0} filas y corta los valores largos.'
+  sql_select_truncated: 'El resultado es demasiado grande. El bot guarda como máximo {0} filas y corta los valores largos.'
+  sql_select_failed: 'La consulta falló: {0}'
+  sql_select_timeout: 'La consulta tardó más de {0} segundos, así que el bot la detuvo.'
+  sql_select_one_statement: Envía exactamente una consulta SQL.
+  sql_select_busy: Otra consulta sigue en curso. Vuelve a intentarlo cuando termine.
+  sql_exec_timeout: 'El SQL tardó más de {0} segundos, así que el bot lo detuvo. Los cambios de las sentencias que terminaron antes de la parada pueden quedarse en la base de datos.'
+  confirm_action: Confirma esta acción
+  sql_select_too_big: 'Un valor del resultado es mayor que {0} KiB. Selecciona solo una parte, por ejemplo con substr().'
 
 fr-FR:
-  cleanup_done: 'Les données de {0} serveurs restent dans la base de données.'
   sql_confirm_exec: Confirmer l'exécution SQL
-  sql_select_truncated: 'Le résultat est trop grand. Le bot affiche au plus {0} lignes et coupe les valeurs longues.'
+  sql_select_truncated: 'Le résultat est trop grand. Le bot garde au plus {0} lignes et coupe les valeurs longues.'
+  sql_select_failed: 'La requête a échoué : {0}'
+  sql_select_timeout: 'La requête a duré plus de {0} secondes, donc le bot l''a arrêtée.'
+  sql_select_one_statement: Envoie exactement une requête SQL.
+  sql_select_busy: Une autre requête est en cours. Réessaie quand elle sera terminée.
+  sql_exec_timeout: 'Ce SQL a duré plus de {0} secondes, donc le bot l''a arrêté. Les changements des requêtes terminées avant l''arrêt peuvent rester dans la base de données.'
+  confirm_action: Confirme cette action
+  sql_select_too_big: 'Une valeur du résultat dépasse {0} KiB. Sélectionne une partie de cette valeur, par exemple avec substr().'
 
 id-ID:
-  cleanup_done: 'Data {0} guild tersisa di database.'
   sql_confirm_exec: Konfirmasi eksekusi perintah SQL berikut
-  sql_select_truncated: 'Hasilnya terlalu besar. Bot menampilkan paling banyak {0} baris dan memotong nilai yang panjang.'
+  sql_select_truncated: 'Hasilnya terlalu besar. Bot menyimpan paling banyak {0} baris dan memotong nilai yang panjang.'
+  sql_select_failed: 'Kueri gagal: {0}'
+  sql_select_timeout: 'Kueri berjalan lebih dari {0} detik, jadi bot menghentikannya.'
+  sql_select_one_statement: Kirim tepat satu kueri SQL.
+  sql_select_busy: Kueri lain sedang berjalan. Coba lagi setelah selesai.
+  sql_exec_timeout: 'Kueri SQL berjalan lebih dari {0} detik, jadi bot menghentikannya. Perubahan dari pernyataan yang selesai sebelum dihentikan bisa tetap tersimpan di database.'
+  confirm_action: Konfirmasi tindakan ini
+  sql_select_too_big: 'Ada nilai di hasil yang lebih besar dari {0} KiB. Pilih sebagian saja, misalnya dengan substr().'
 
 ja-JP:
-  cleanup_done: '{0}サーバーのデータがデータベースに残っています。'
   sql_confirm_exec: SQL実行を確認
-  sql_select_truncated: '結果が大きすぎます。ボットは最大 {0} 行を表示し、長い値は切り詰めます。'
+  sql_select_truncated: '結果が大きすぎます。ボットは最大 {0} 行だけを保持し、長い値は切り詰めます。'
+  sql_select_failed: 'クエリが失敗しました: {0}'
+  sql_select_timeout: 'クエリが {0} 秒を超えたので、ボットが中断しました。'
+  sql_select_one_statement: SQLクエリを1つだけ送ってください。
+  sql_select_busy: 別のクエリを実行中です。終わってからもう一度試してください。
+  sql_exec_timeout: 'SQL の実行が {0} 秒を超えたため、ボットがその SQL を中止しました。中止前に完了したステートメントの変更はデータベースに残ることがあります。'
+  confirm_action: この操作を確認
+  sql_select_too_big: '結果内の値が {0} KiB を超えています。substr() などで一部だけを選択してください。'
 
 ko-KR:
-  cleanup_done: '데이터베이스에 {0}개 서버의 데이터가 남아 있습니다.'
   sql_confirm_exec: 다음 SQL 명령어의 실행을 확인해주세요
-  sql_select_truncated: '결과가 너무 큽니다. 봇은 최대 {0}행까지 보여주고 긴 값은 자릅니다.'
+  sql_select_truncated: '결과가 너무 큽니다. 봇은 최대 {0}행만 보관하고 긴 값은 자릅니다.'
+  sql_select_failed: '쿼리가 실패했습니다: {0}'
+  sql_select_timeout: '쿼리가 {0}초를 넘어서 봇이 중단했습니다.'
+  sql_select_one_statement: SQL 쿼리를 하나만 보내 주세요.
+  sql_select_busy: 다른 쿼리가 실행 중이에요. 끝난 뒤에 다시 시도해 주세요.
+  sql_exec_timeout: 'SQL 실행이 {0}초를 넘어서 봇이 해당 SQL을 중단했습니다. 중단 전에 끝난 문장의 변경 사항은 데이터베이스에 남아 있을 수 있습니다.'
+  confirm_action: 이 작업을 확인해주세요
+  sql_select_too_big: '결과의 값 중 하나가 {0} KiB보다 큽니다. substr() 같은 함수로 일부만 선택하세요.'
 
 pl-PL:
-  cleanup_done: 'Dane {0} serwerów pozostały w bazie danych.'
   sql_confirm_exec: Potwierdź wykonanie następującej komendy SQL
-  sql_select_truncated: 'Wynik jest za duży. Bot pokazuje najwyżej {0} wierszy i skraca długie wartości.'
+  sql_select_truncated: 'Wynik jest za duży. Bot zachowuje najwyżej {0} wierszy i skraca długie wartości.'
+  sql_select_failed: 'Zapytanie nie powiodło się: {0}'
+  sql_select_timeout: 'Zapytanie trwało dłużej niż {0} sekund, więc bot je zatrzymał.'
+  sql_select_one_statement: Wyślij dokładnie jedno zapytanie SQL.
+  sql_select_busy: Inne zapytanie jest w trakcie. Spróbuj ponownie, gdy się skończy.
+  sql_exec_timeout: 'Zapytanie SQL trwało dłużej niż {0} sekund, więc bot je zatrzymał. Zmiany z instrukcji, które zakończyły się przed zatrzymaniem, mogą zostać w bazie danych.'
+  confirm_action: Potwierdź tę akcję
+  sql_select_too_big: 'Jedna wartość w wyniku jest większa niż {0} KiB. Wybierz tylko jej część, na przykład przez substr().'
 
 pt-BR:
-  cleanup_done: 'Dados de {0} servidores permanecem no banco de dados.'
   sql_confirm_exec: Confirme a execução SQL
-  sql_select_truncated: 'O resultado é grande demais. O bot mostra no máximo {0} linhas e corta valores longos.'
+  sql_select_truncated: 'O resultado é grande demais. O bot guarda no máximo {0} linhas e corta valores longos.'
+  sql_select_failed: 'A consulta falhou: {0}'
+  sql_select_timeout: 'A consulta levou mais de {0} segundos, então o bot a interrompeu.'
+  sql_select_one_statement: Envie exatamente uma consulta SQL.
+  sql_select_busy: Outra consulta está em andamento. Tente de novo quando ela terminar.
+  sql_exec_timeout: 'O SQL demorou mais de {0} segundos, então o bot o interrompeu. As mudanças de comandos que terminaram antes da parada podem ficar no banco de dados.'
+  confirm_action: Confirme esta ação
+  sql_select_too_big: 'Um valor do resultado é maior que {0} KiB. Selecione só uma parte dele, por exemplo com substr().'
 
 ru-RU:
-  cleanup_done: 'Данные {0} серверов остаются в базе данных.'
   sql_confirm_exec: Подтвердите выполнение SQL
-  sql_select_truncated: 'Результат слишком большой. Бот показывает не более {0} строк и обрезает длинные значения.'
+  sql_select_truncated: 'Результат слишком большой. Бот сохраняет не более {0} строк и обрезает длинные значения.'
+  sql_select_failed: 'Запрос не удался: {0}'
+  sql_select_timeout: 'Запрос занял больше {0} секунд, поэтому бот его остановил.'
+  sql_select_one_statement: Отправь ровно один SQL-запрос.
+  sql_select_busy: Другой запрос ещё выполняется. Попробуй снова, когда он закончится.
+  sql_exec_timeout: 'Запрос SQL выполнялся дольше {0} секунд, поэтому бот остановил его. Изменения от инструкций, которые завершились до остановки, могут остаться в базе данных.'
+  confirm_action: Подтверди это действие
+  sql_select_too_big: 'Одно значение в результате больше {0} KiB. Выбери только его часть, например через substr().'
 
 sr-Cyrl-RS:
-  cleanup_done: 'Подаци о {0} серверима остају у бази података.'
   sql_confirm_exec: Потврдите извршавање следеће SQL команде
-  sql_select_truncated: 'Резултат је превелик. Бот приказује највише {0} редова и скраћује дугачке вредности.'
+  sql_select_truncated: 'Резултат је превелик. Бот задржава највише {0} редова и скраћује дугачке вредности.'
+  sql_select_failed: 'Упит није успео: {0}'
+  sql_select_timeout: 'Упит је трајао дуже од {0} секунди, па га је бот зауставио.'
+  sql_select_one_statement: Пошаљи тачно један SQL упит.
+  sql_select_busy: Други упит је у току. Покушај поново кад се заврши.
+  sql_exec_timeout: 'Упит SQL је трајао дуже од {0} секунди, па га је бот зауставио. Измене из наредби које су се завршиле пре заустављања могу остати у бази података.'
+  confirm_action: Потврди ову радњу
+  sql_select_too_big: 'Једна вредност у резултату је већа од {0} KiB. Изабери само њен део, на пример помоћу substr().'
 
 tr-TR:
-  cleanup_done: 'Veritabanında {0} sunucunun verisi kaldı.'
   sql_confirm_exec: Aşağıdaki SQL komutunun çalıştırılmasını onayla
-  sql_select_truncated: 'Sonuç çok büyük. Bot en fazla {0} satır gösterir ve uzun değerleri keser.'
+  sql_select_truncated: 'Sonuç çok büyük. Bot en fazla {0} satır saklar ve uzun değerleri keser.'
+  sql_select_failed: 'Sorgu başarısız oldu: {0}'
+  sql_select_timeout: 'Sorgu {0} saniyeden uzun sürdü, bu yüzden bot onu durdurdu.'
+  sql_select_one_statement: Tam olarak bir SQL sorgusu gönder.
+  sql_select_busy: Başka bir sorgu çalışıyor. Bitince tekrar dene.
+  sql_exec_timeout: 'SQL {0} saniyeden uzun sürdü, bu yüzden bot onu durdurdu. Durdurmadan önce biten komutların değişiklikleri veritabanında kalabilir.'
+  confirm_action: Bu işlemi onayla
+  sql_select_too_big: 'Sonuçtaki bir değer {0} KiB''den büyük. Sadece bir kısmını seç, örneğin substr() ile.'
 
 ts-TS:
-  cleanup_done: '{0} guilds'' data remain in the database.'
   sql_confirm_exec: Confirm SQL execution.
-  sql_select_truncated: 'The result is too big. I show at most {0} rows and cut long values.'
+  sql_select_truncated: 'The result is too big. I keep at most {0} rows and cut long values.'
+  sql_select_failed: 'The query failed: {0}'
+  sql_select_timeout: 'That query took longer than {0} seconds, so I stopped it.'
+  sql_select_one_statement: Send exactly one SQL query. One means one.
+  sql_select_busy: Another query is still running. Hmph, w-wait until it ends.
+  sql_exec_timeout: 'That SQL ran longer than {0} seconds, so I stopped it. Changes from statements that finished before the stop can stay in the database.'
+  confirm_action: Confirm this action. Don't make me ask twice.
+  sql_select_too_big: 'A value in the result is bigger than {0} KiB. Select just a part of it, for example with substr().'
 
 uk-UA:
-  cleanup_done: 'Дані {0} серверів залишилися в базі даних.'
   sql_confirm_exec: Підтвердіть виконання наступної SQL команди
-  sql_select_truncated: 'Результат завеликий. Бот показує щонайбільше {0} рядків і обрізає довгі значення.'
+  sql_select_truncated: 'Результат завеликий. Бот зберігає щонайбільше {0} рядків і обрізає довгі значення.'
+  sql_select_failed: 'Запит не вдався: {0}'
+  sql_select_timeout: 'Запит тривав довше ніж {0} секунд, тому бот його зупинив.'
+  sql_select_one_statement: Надішли рівно один SQL-запит.
+  sql_select_busy: Інший запит ще виконується. Спробуй знову, коли він завершиться.
+  sql_exec_timeout: 'Запит SQL виконувався довше ніж {0} секунд, тому бот зупинив його. Зміни від інструкцій, які завершилися до зупинки, можуть залишитися в базі даних.'
+  confirm_action: Підтвердь цю дію
+  sql_select_too_big: 'Одне значення в результаті більше за {0} KiB. Вибери лише його частину, наприклад через substr().'
 
 vi-VN:
-  cleanup_done: 'Dữ liệu của {0} server còn lại trong cơ sở dữ liệu.'
   sql_confirm_exec: Xác nhận thực thi lệnh SQL sau
-  sql_select_truncated: 'Kết quả quá lớn. Bot hiển thị tối đa {0} hàng và cắt bớt các giá trị dài.'
+  sql_select_truncated: 'Kết quả quá lớn. Bot giữ tối đa {0} hàng và cắt bớt các giá trị dài.'
+  sql_select_failed: 'Truy vấn thất bại: {0}'
+  sql_select_timeout: 'Truy vấn mất hơn {0} giây nên bot đã dừng nó.'
+  sql_select_one_statement: Chỉ gửi đúng một truy vấn SQL.
+  sql_select_busy: Một truy vấn khác đang chạy. Thử lại khi nó chạy xong nhé.
+  sql_exec_timeout: 'Câu lệnh SQL chạy lâu hơn {0} giây nên bot đã dừng nó. Các thay đổi từ những câu lệnh đã xong trước khi dừng có thể vẫn còn trong cơ sở dữ liệu.'
+  confirm_action: Xác nhận hành động này
+  sql_select_too_big: 'Có một giá trị trong kết quả lớn hơn {0} KiB. Hãy chọn một phần của nó, ví dụ bằng substr().'
 
 zh-CN:
-  cleanup_done: '{0} 個伺服器的資料保留在資料庫中。'
-  sql_confirm_exec: 確認 SQL 執行
-  sql_select_truncated: '结果太大。机器人最多显示 {0} 行，并截断过长的值。'
+  sql_confirm_exec: 确认 SQL 执行
+  sql_select_truncated: '结果太大。机器人最多保留 {0} 行，并截断过长的值。'
+  sql_select_failed: '查询失败：{0}'
+  sql_select_timeout: '查询耗时超过 {0} 秒，所以机器人已中止该查询。'
+  sql_select_one_statement: 请只发送一条 SQL 查询。
+  sql_select_busy: 另一个查询正在运行。等它结束后再试。
+  sql_exec_timeout: '这条 SQL 的执行时间超过了 {0} 秒，所以机器人停止了它。停止前已完成的语句所做的更改可能仍保存在数据库中。'
+  confirm_action: 确认此操作
+  sql_select_too_big: '结果中有一个值大于 {0} KiB。请只选择它的一部分，例如使用 substr()。'

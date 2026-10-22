@@ -1,11 +1,9 @@
 ﻿#nullable disable
-using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
+using Microsoft.Data.Sqlite;
 using NadekoBot.Modules.Gambling;
 using NadekoBot.Modules.Owner.Services;
-using NadekoBot.Modules.Owner.Dangerous;
 using NadekoBot.Modules.Xp;
+using SQLitePCL;
 
 namespace NadekoBot.Modules.Owner;
 
@@ -14,109 +12,21 @@ public partial class Owner
     [Group]
     [OwnerOnly]
     [NoPublicBot]
-    public partial class DangerousCommands : CleanupModuleBase
+    [NoAiAgent]
+    public partial class DangerousCommands : ConfirmActionModuleBase
     {
         private readonly DangerousCommandsService _ds;
         private readonly IGamblingCleanupService _gcs;
         private readonly IXpCleanupService _xcs;
-        private readonly ICleanupService _cleanupSvc;
 
         public DangerousCommands(
             DangerousCommandsService ds,
             IGamblingCleanupService gcs,
-            IXpCleanupService xcs,
-            ICleanupService cleanupSvc)
+            IXpCleanupService xcs)
         {
             _ds = ds;
             _gcs = gcs;
             _xcs = xcs;
-            _cleanupSvc = cleanupSvc;
-        }
-
-        [Cmd]
-        [OwnerOnly]
-        [RequireContext(ContextType.DM)]
-        public async Task CleanupGuildData()
-        {
-            var result = await _cleanupSvc.DeleteMissingGuildDataAsync();
-
-            if (result is null)
-            {
-                await ctx.ErrorAsync();
-                return;
-            }
-
-            await Response()
-                  .Confirm(strs.cleanup_done(result.GuildCount))
-                  .SendAsync();
-        }
-
-        [Cmd]
-        [OwnerOnly]
-        public async Task SqlSelect([Leftover] string sql)
-        {
-            var result = _ds.SelectSql(sql);
-            if (result.Truncated)
-                await Response().Pending(strs.sql_select_truncated(DangerousCommandsService.MAX_SELECT_ROWS)).SendAsync();
-
-            await Response()
-                   .Paginated()
-                   .Items(result.Results)
-                   .PageSize(20)
-                   .Page((items, _) =>
-                   {
-                       if (!items.Any())
-                           return CreateEmbed().WithErrorColor().WithFooter(sql).WithDescription("-");
-
-                       return CreateEmbed()
-                              .WithOkColor()
-                              .WithFooter(sql)
-                              .WithTitle(string.Join(" ║ ", result.ColumnNames))
-                              .WithDescription(string.Join('\n', items.Select(x => string.Join(" ║ ", x))));
-                   })
-                   .SendAsync();
-        }
-
-        [Cmd]
-        [OwnerOnly]
-        public async Task SqlSelectCsv([Leftover] string sql)
-        {
-            var result = _ds.SelectSql(sql);
-
-            // create a file stream and write the data as csv
-            using var ms = new MemoryStream();
-            await using var sw = new StreamWriter(ms);
-            await using var csv = new CsvWriter(sw,
-                new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    Delimiter = ","
-                });
-
-            foreach (var cn in result.ColumnNames)
-            {
-                csv.WriteField(cn);
-            }
-
-            await csv.NextRecordAsync();
-
-            foreach (var row in result.Results)
-            {
-                foreach (var field in row)
-                {
-                    csv.WriteField(field);
-                }
-
-                await csv.NextRecordAsync();
-            }
-
-
-            await csv.FlushAsync();
-            ms.Position = 0;
-
-            // send the file
-            await ctx.Channel.SendFileAsync(ms,
-                $"query_result_{DateTime.UtcNow.Ticks}.csv",
-                result.Truncated ? GetText(strs.sql_select_truncated(DangerousCommandsService.MAX_SELECT_ROWS)) : null);
         }
 
         [Cmd]
@@ -135,33 +45,22 @@ public partial class Owner
                 var res = await _ds.ExecuteSql(sql);
                 await Response().Confirm(res.ToString()).SendAsync();
             }
+            catch (SqliteException ex) when (ex.SqliteErrorCode == raw.SQLITE_INTERRUPT)
+            {
+                await Response()
+                      .Error(strs.sql_exec_timeout((int)DangerousCommandsService.ManagedExecTimeLimit.TotalSeconds))
+                      .SendAsync();
+            }
             catch (Exception ex)
             {
                 await Response().Error(ex.ToString()).SendAsync();
             }
         }
 
-
         [Cmd]
         [OwnerOnly]
         public Task DeleteXp()
             => ConfirmActionInternalAsync("Delete Xp", () => _xcs.DeleteXp());
-        
-        [Cmd]
-        [OwnerOnly]
-        public Task DeleteWaifus()
-            => ConfirmActionInternalAsync("Delete Waifus", () => _gcs.DeleteWaifus());
-
-        [Cmd]
-        [OwnerOnly]
-        public async Task DeleteWaifu(IUser user)
-            => await DeleteWaifu(user.Id);
-
-        [Cmd]
-        [OwnerOnly]
-        public Task DeleteWaifu(ulong userId)
-            => ConfirmActionInternalAsync($"Delete Waifu {userId}", () => _gcs.DeleteWaifu(userId));
-
 
         [Cmd]
         [OwnerOnly]

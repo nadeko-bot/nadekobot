@@ -22,7 +22,7 @@ public sealed class CommandSearchService(
     public static readonly TypedKey<bool> ReloadKey = new("cmdsearch.reload");
 
     // Bumped when the parsing changes but the file does not, to invalidate the cache once.
-    private static readonly byte[] _indexSchemaSalt = "v2-prefixless"u8.ToArray();
+    private static readonly byte[] _indexSchemaSalt = "v3-no-ai-agent"u8.ToArray();
 
     private readonly SemanticIndex<CommandEntry> _index = new(
         embedder,
@@ -151,7 +151,7 @@ public sealed class CommandSearchService(
         var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
         var cmdListHash = ComputeListHashInternal(cmdListBytes);
 
-        var commands = LoadCommandListInternal(cmdListBytes);
+        var commands = ParseCommandList(cmdListBytes);
         if (commands.Length == 0)
         {
             Log.Warning("CommandSearch: No commands found in commandlist.json");
@@ -300,7 +300,7 @@ public sealed class CommandSearchService(
             ? s[CommandListGenerator.DefaultPrefix.Length..]
             : s;
 
-    private static CommandEntry[] LoadCommandListInternal(byte[] jsonBytes)
+    public static CommandEntry[] ParseCommandList(byte[] jsonBytes)
     {
         using var doc = JsonDocument.Parse(jsonBytes);
 
@@ -331,7 +331,7 @@ public sealed class CommandSearchService(
                     ? reqEl.EnumerateArray().Select(static r => r.GetString() ?? "").ToArray()
                     : [];
 
-                if (aliases.Length == 0)
+                if (aliases.Length == 0 || requirements.Contains(NoAiAgentAttribute.REQUIREMENT))
                     continue;
 
                 var searchText = $"{string.Join(" ", aliases)} | {moduleName}/{submodule} | {desc}";

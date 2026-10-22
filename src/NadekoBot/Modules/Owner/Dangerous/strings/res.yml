@@ -1,3 +1,9 @@
-cleanup_done: "{0} guilds' data remain in the database."
 sql_confirm_exec: "Confirm SQL execution"
-sql_select_truncated: 'The result is too large. The bot shows at most {0} rows and cuts long values.'
+sql_select_truncated: 'The result is too large. The bot keeps at most {0} rows and cuts long values.'
+sql_select_failed: "The query failed: {0}"
+sql_select_timeout: "The query took longer than {0} seconds, so the bot stopped it."
+sql_select_one_statement: "Send exactly one SQL query."
+sql_select_busy: "Another query is running. Try again when it ends."
+sql_exec_timeout: "The SQL took longer than {0} seconds, so the bot stopped it. The changes of statements which finished before the stop can stay in the database."
+confirm_action: "Confirm this action"
+sql_select_too_big: "A value in the result is larger than {0} KiB. Select a part of it, for example with substr()."

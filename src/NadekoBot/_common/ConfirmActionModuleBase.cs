@@ -1,14 +1,14 @@
 ﻿#nullable disable
 namespace NadekoBot.Common;
 
-public abstract class CleanupModuleBase : NadekoModule
+public abstract class ConfirmActionModuleBase : NadekoModule
 {
     protected async Task ConfirmActionInternalAsync(string name, Func<Task> action)
     {
         try
         {
             var embed = CreateEmbed()
-                .WithTitle(GetText(strs.sql_confirm_exec))
+                .WithTitle(GetText(strs.confirm_action))
                 .WithDescription(name);
 
             if (!await PromptUserConfirmAsync(embed))

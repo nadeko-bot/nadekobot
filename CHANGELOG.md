@@ -21,6 +21,11 @@
     - `.setactivity` / `.setgame` and `.setstream` turn off `.rotateplaying` / `.ropl`
     - `.setstream` needs a stream name and a Twitch or YouTube link
 - `.rotateplaying` / `.ropl` shows the saved activity again when the rotation stops.
+- `.sqlselect` and `.sqlselectcsv` only read the database, and work on the public bot
+    - work only in DMs
+    - the AI agent cannot use them
+    - stop a query after 15 seconds
+- `.sqlexec` stops a query after 60 seconds on a NadeKloud bot.
 
 ### Fixed
 
@@ -56,6 +61,10 @@
 - `.setstatus` changes the status on every shard.
 - The bot shows its saved activity again after a `gamestatus` event ends.
 
+### Removed
+
+- `.deletewaifu`, `.deletewaifus` and `.cleanupguilddata`
+
 ### Dev
 
 - Added tests for timely claims, the greet queue, blackjack results and currency event payouts.
@@ -65,6 +74,7 @@
 - Added tests for `.purgeuser` and the member download.
 - `NadekoBot.Hosted` API can read and set the bot's status and activity.
 - Added tests for the saved bot status.
+- Added tests for the read-only owner SQL and for commands which the AI agent cannot run.
 
 ## [7.6.7] - 20.10.2026
 

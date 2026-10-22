@@ -110,6 +110,28 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
            .Select(a => a.GenericTypeArguments[0])
            .FirstOrDefault();
 
+    // Discord.Net checks the preconditions of every parent group, so the list must too.
+    private static bool HasPreconditionInternal<T>(CommandInfo cmd)
+        where T : PreconditionAttribute
+    {
+        foreach (var p in cmd.Preconditions)
+        {
+            if (p is T)
+                return true;
+        }
+
+        for (var m = cmd.Module; m is not null; m = m.Parent)
+        {
+            foreach (var p in m.Preconditions)
+            {
+                if (p is T)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     public static string[] GetCommandRequirements(CommandInfo cmd, GuildPerm? overrides = null)
     {
         var toReturn = new List<string>();
@@ -136,23 +158,13 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
                 toReturn.Add("Patron Only");
         }
 
-        if (cmd.Preconditions.Any(x => x is NoPublicBotAttribute)
-            || cmd.Module
-                  .Preconditions
-                  .Any(x => x is NoPublicBotAttribute)
-            || cmd.Module.GetTopLevelModule()
-                  .Preconditions
-                  .Any(x => x is NoPublicBotAttribute))
+        if (HasPreconditionInternal<NoPublicBotAttribute>(cmd))
             toReturn.Add("No Public Bot");
 
-        if (cmd.Preconditions
-               .Any(x => x is OnlyPublicBotAttribute)
-            || cmd.Module
-                  .Preconditions
-                  .Any(x => x is OnlyPublicBotAttribute)
-            || cmd.Module.GetTopLevelModule()
-                  .Preconditions
-                  .Any(x => x is OnlyPublicBotAttribute))
+        if (HasPreconditionInternal<NoAiAgentAttribute>(cmd))
+            toReturn.Add(NoAiAgentAttribute.REQUIREMENT);
+
+        if (HasPreconditionInternal<OnlyPublicBotAttribute>(cmd))
             toReturn.Add("Only Public Bot");
 
         var userPermString = cmd.Preconditions
