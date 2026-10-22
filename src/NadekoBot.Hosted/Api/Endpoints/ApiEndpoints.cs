@@ -34,6 +34,7 @@ public static class ApiEndpoints
         owner.MapBackupCreateEndpoint();
         owner.MapAiKeyEndpoints();
         owner.MapOwnersEndpoints();
+        owner.MapPresenceEndpoints();
         return owner;
     }
 

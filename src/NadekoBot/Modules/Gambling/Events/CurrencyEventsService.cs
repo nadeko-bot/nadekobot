@@ -2,6 +2,7 @@
 using NadekoBot.Modules.Gambling.Common;
 using NadekoBot.Modules.Gambling.Common.Events;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Owner.Services;
 
 namespace NadekoBot.Modules.Gambling.Services;
 
@@ -13,10 +14,12 @@ public class CurrencyEventsService : INService
 
     private readonly ConcurrentDictionary<ulong, ICurrencyEvent> _events = new();
     private readonly IMessageSenderService _sender;
+    private readonly IBotActivityService _activity;
 
     public CurrencyEventsService(DiscordSocketClient client, ICurrencyService cs, GamblingConfigService configService,
-        IMessageSenderService sender)
+        IMessageSenderService sender, IBotActivityService activity)
     {
+        _activity = activity;
         _client = client;
         _cs = cs;
         _configService = configService;
@@ -39,7 +42,7 @@ public class CurrencyEventsService : INService
         if (type == CurrencyEvent.Type.Reaction)
             ce = new ReactionEvent(_client, _cs, g, ch, opts, _configService.Data, _sender, embed);
         else if (type == CurrencyEvent.Type.GameStatus)
-            ce = new GameStatusEvent(_client, _cs, g, ch, opts, _sender, embed);
+            ce = new GameStatusEvent(_client, _cs, g, ch, opts, _sender, _activity, embed);
         else
             return false;
 

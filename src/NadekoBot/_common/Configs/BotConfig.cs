@@ -9,7 +9,7 @@ namespace NadekoBot.Common.Configs;
 public sealed class BotConfig
 {
     [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
-    public int Version { get; set; } = 12;
+    public int Version { get; set; } = 13;
 
     [Comment("""
         Most commands, when executed, have a small colored line
@@ -94,6 +94,12 @@ public sealed class BotConfig
         """)]
     public bool RotateStatuses { get; set; }
 
+    [Comment("""
+        The status and the activity which the bot shows beside its name.
+        Set them with .setstatus, .setactivity and .setstream, or on the dashboard.
+        """)]
+    public PresenceConfig Presence { get; set; } = new();
+
     public BotConfig()
     {
         var color = new ColorConfig();
@@ -155,6 +161,27 @@ public sealed class BotConfig
 
     public string Prefixed(string text)
         => Prefix + text;
+}
+
+public sealed class PresenceConfig
+{
+    [Comment("""Online, Idle, DoNotDisturb or Invisible""")]
+    public UserStatus Status { get; set; } = UserStatus.Online;
+
+    [Comment("""The activity line. Empty for none. While RotateStatuses is true, the rotation replaces it""")]
+    public PresenceActivity? Activity { get; set; }
+}
+
+public sealed class PresenceActivity
+{
+    [Comment("""Playing, Listening, Watching, Competing, CustomStatus or Streaming""")]
+    public ActivityType Type { get; set; } = ActivityType.CustomStatus;
+
+    [Comment("""1-128 characters. Bot placeholders such as %bot.name% work here""")]
+    public string Text { get; set; } = string.Empty;
+
+    [Comment("""An https Twitch or YouTube link, only for Streaming""")]
+    public string? Url { get; set; }
 }
 
 public sealed class BlockedConfig

@@ -17,6 +17,10 @@
     - replaces the name of the user
     - deletes the waifu profile text, todos, reminders and scheduled commands
     - keeps currency, xp, waifus, clubs, warnings and other records
+- `.setstatus`, `.setactivity` / `.setgame` and `.setstream` keep the bot's status after a restart
+    - `.setactivity` / `.setgame` and `.setstream` turn off `.rotateplaying` / `.ropl`
+    - `.setstream` needs a stream name and a Twitch or YouTube link
+- `.rotateplaying` / `.ropl` shows the saved activity again when the rotation stops.
 
 ### Fixed
 
@@ -49,6 +53,8 @@
     - on the public bot, in servers with up to 10,000 members
     - in larger servers, they say that the list can be incomplete
     - a stuck member download does not block them
+- `.setstatus` changes the status on every shard.
+- The bot shows its saved activity again after a `gamestatus` event ends.
 
 ### Dev
 
@@ -57,6 +63,8 @@
 - Added tests for stream follows, self-assigned roles, time lookups and command cooldowns.
 - Added tests for the intent check of the self-hosted bot.
 - Added tests for `.purgeuser` and the member download.
+- `NadekoBot.Hosted` API can read and set the bot's status and activity.
+- Added tests for the saved bot status.
 
 ## [7.6.7] - 20.10.2026
 

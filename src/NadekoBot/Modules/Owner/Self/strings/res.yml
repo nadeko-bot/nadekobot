@@ -1,4 +1,6 @@
 acrm_fail: Auto command not found on the specified index.
+activity_text_too_long: The activity text can have at most {0} characters.
+activity_use_setstream: Use {0} to show a stream.
 autocmd_add: The command {0} will execute every {1}s in this channel.
 autocmd_interval_range: "The interval must be between {0} seconds and {1} days."
 autocmdlist_none: No auto commands on this page.
@@ -36,3 +38,4 @@ shard_reconnecting: Shard {0} reconnecting.
 shutting_down: Shutting down
 startcmdlist_none: No startup commands on this page.
 startcmds_cleared: Cleared all startup commands.
+stream_link_invalid: The stream link must start with https:// and point to twitch.tv or youtube.com.

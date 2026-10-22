@@ -39,6 +39,10 @@ public static class ApiLimits
     public const int DISCORD_CALLS_PER_GUILD = 5;
     public static readonly TimeSpan DiscordCallWindow = TimeSpan.FromMinutes(1);
 
+    // Discord limits presence updates on each gateway connection, so a client loop must not use them up.
+    public const int PRESENCE_CHANGES = 5;
+    public static readonly TimeSpan PresenceWindow = TimeSpan.FromMinutes(1);
+
     public static bool IsText([NotNullWhen(true)] string? value, int maxLength)
         => !string.IsNullOrWhiteSpace(value) && value.Length <= maxLength;
 

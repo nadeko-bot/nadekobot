@@ -126,7 +126,10 @@ send:
           The recipient's preferred format for the message, such as plain text or formatted text with images and links.
 setactivity:
   desc: |-
-    Sets the bot's activity status. Optionally specify a type (Playing, Listening, Watching, Competing). Defaults to Custom status if no type given.
+    Sets the bot's activity. The bot keeps it after a restart and turns off `{0}ropl`.
+    Types: `Playing`, `Listening`, `Watching`, `Competing`. Without a type, the bot shows a custom status.
+    Without text, the bot removes the activity.
+    The text can have at most 128 characters and can use bot placeholders, for example `%bot.name%`.
   ex:
     - Just chilling
     - Playing with snakes
@@ -163,7 +166,8 @@ setname:
     - newName:
         desc: The new name given to the bot.
 setstatus:
-  desc: Sets the bot's status. (Online/Idle/Dnd/Invisible)
+  desc: |-
+    Sets the bot's status: `Online`, `Idle`, `Dnd` or `Invisible`. The bot keeps it after a restart.
   ex:
     - Idle
   params:
@@ -171,14 +175,15 @@ setstatus:
         desc: The current state or mode of the bot's presence in a chat.
 setstream:
   desc: |-
-    Sets the bots stream. First parameter is the twitch link, second parameter is stream name.
+    Sets the bot's stream. The bot keeps it after a restart and turns off `{0}ropl`.
+    The link must start with `https://` and point to twitch.tv or youtube.com.
   ex:
-    - TWITCHLINK Hello
+    - https://twitch.tv/nadeko Hello
   params:
     - url:
-        desc: The URL of the Twitch channel's live stream page.
+        desc: The link of the Twitch or YouTube stream page.
       name:
-        desc: The name of the stream being set.
+        desc: The name of the stream, at most 128 characters.
 shardstats:
   desc: |-
     Stats for shards. Paginated with 25 shards per page.

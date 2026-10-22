@@ -218,6 +218,16 @@ public sealed record OwnersDto(IReadOnlyList<OwnerDto> Owners);
 
 public sealed record SetOwnersRequest(string?[]? Ids = null);
 
+// Url is set only for "streaming".
+public sealed record PresenceDto(string Status, PresenceActivityDto? Activity, bool Rotating);
+
+public sealed record PresenceActivityDto(string Type, string Text, string? Url);
+
+// Activity must be in the body; null removes the activity.
+public sealed record SetPresenceRequest(string? Status, SetPresenceActivityRequest? Activity);
+
+public sealed record SetPresenceActivityRequest(string? Type, string? Text, string? Url = null);
+
 public sealed record LogLineDto(DateTime Ts, string Level, string Text);
 
 public sealed record UpdateAcceptedDto(string Version);

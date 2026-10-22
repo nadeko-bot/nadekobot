@@ -474,7 +474,8 @@ public partial class Owner
         [OwnerOnly]
         public async Task SetStatus([Leftover] SettableUserStatus status)
         {
-            await _client.SetStatusAsync(SettableUserStatusToUserStatus(status));
+            if (!await ReplyPresenceErrorAsync(await _bas.SetStatusAsync(SettableUserStatusToUserStatus(status))))
+                return;
 
             await Response().Confirm(strs.bot_status(Format.Bold(status.ToString()))).SendAsync();
         }
@@ -503,10 +504,14 @@ public partial class Owner
         [OwnerOnly]
         public async Task SetActivity(ActivityType? type, [Leftover] string game = null)
         {
-            // var rep = new ReplacementBuilder().WithDefault(Context).Build();
+            if (type == ActivityType.Streaming)
+            {
+                await Response().Error(strs.activity_use_setstream(Format.Code(prefix + "setstream"))).SendAsync();
+                return;
+            }
 
-            var repCtx = new ReplacementContext(ctx);
-            await _bas.SetActivityAsync(game is null ? game : await repSvc.ReplaceAsync(game, repCtx), type);
+            if (!await ReplyPresenceErrorAsync(await _bas.SetActivityAsync(type, game)))
+                return;
 
             await Response().Confirm(strs.set_activity).SendAsync();
         }
@@ -524,13 +529,29 @@ public partial class Owner
 
         [Cmd]
         [OwnerOnly]
-        public async Task SetStream(string url, [Leftover] string name = null)
+        public async Task SetStream(string url, [Leftover] string name)
         {
-            name ??= "";
-
-            await _bas.SetStreamAsync(name, url);
+            if (!await ReplyPresenceErrorAsync(await _bas.SetStreamAsync(url, name)))
+                return;
 
             await Response().Confirm(strs.set_stream).SendAsync();
+        }
+
+        private async Task<bool> ReplyPresenceErrorAsync(PresenceError error)
+        {
+            if (error == PresenceError.None)
+                return true;
+
+            await Response()
+                  .Error(error switch
+                  {
+                      PresenceError.Text => strs.activity_text_too_long(BotPresence.MAX_TEXT_LENGTH),
+                      PresenceError.Url => strs.stream_link_invalid,
+                      _ => strs.invalid_format
+                  })
+                  .SendAsync();
+
+            return false;
         }
 
         public enum SendWhere
@@ -595,21 +616,13 @@ public partial class Owner
             await ctx.OkAsync();
         }
 
-        private static UserStatus SettableUserStatusToUserStatus(SettableUserStatus sus)
-        {
-            switch (sus)
+        public static UserStatus SettableUserStatusToUserStatus(SettableUserStatus sus)
+            => sus switch
             {
-                case SettableUserStatus.Online:
-                    return UserStatus.Online;
-                case SettableUserStatus.Invisible:
-                    return UserStatus.Invisible;
-                case SettableUserStatus.Idle:
-                    return UserStatus.AFK;
-                case SettableUserStatus.Dnd:
-                    return UserStatus.DoNotDisturb;
-            }
-
-            return UserStatus.Online;
-        }
+                SettableUserStatus.Invisible => UserStatus.Invisible,
+                SettableUserStatus.Idle => UserStatus.Idle,
+                SettableUserStatus.Dnd => UserStatus.DoNotDisturb,
+                _ => UserStatus.Online
+            };
     }
 }

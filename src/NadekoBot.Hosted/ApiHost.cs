@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NadekoBot.Hosted.Endpoints;
 using NadekoBot.Modules.Administration.Services;
 using NadekoBot.Modules.NadekoExpressions;
+using NadekoBot.Modules.Owner.Services;
 using NadekoBot.Modules.Utility;
 using NadekoBot.Modules.Xp;
 using NadekoBot.Modules.Xp.Services;
@@ -19,6 +20,7 @@ namespace NadekoBot.Hosted;
 public static class ApiHost
 {
     public const string DISCORD_CALL_POLICY = "discord-call";
+    public const string PRESENCE_POLICY = "presence";
 
     private const ApiAccess GUILD_ACCESS = ApiAccess.Key | ApiAccess.Bot | ApiAccess.Guild;
     private const ApiAccess OWNER_ACCESS = ApiAccess.Key | ApiAccess.Bot;
@@ -67,6 +69,14 @@ public static class ApiHost
                     Window = ApiLimits.DiscordCallWindow,
                     QueueLimit = 0
                 }));
+            o.AddPolicy(PRESENCE_POLICY, static _ => RateLimitPartition.GetFixedWindowLimiter(
+                0,
+                static _ => new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = ApiLimits.PRESENCE_CHANGES,
+                    Window = ApiLimits.PresenceWindow,
+                    QueueLimit = 0
+                }));
         });
 
         services.AddHttpClient();
@@ -107,6 +117,7 @@ public static class ApiHost
         AddBotService<XpFormulaService>(services);
         AddBotService<DbService>(services);
         AddBotService<IBotCredsProvider>(services);
+        AddBotService<BotActivityService>(services);
         services.AddSingleton(static sp => sp.GetRequiredService<BotBridge>().Feed);
         services.AddSingleton(static sp => sp.GetRequiredService<BotBridge>().Activity);
         services.AddSingleton(static sp =>

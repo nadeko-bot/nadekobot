@@ -1,172 +1,277 @@
-﻿#nullable disable
-using Microsoft.EntityFrameworkCore;
+﻿using LinqToDB;
+using LinqToDB.EntityFrameworkCore;
+using NadekoBot.Common.Configs;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 
 namespace NadekoBot.Modules.Owner.Services;
 
-public sealed class BotActivityService : IBotActivityService, IReadyExecutor, INService
+public sealed class BotActivityService(
+    IPubSub pubSub,
+    DiscordSocketClient client,
+    DbService db,
+    IReplacementService rep,
+    BotConfigService bss) : IBotActivityService, IReadyExecutor, INService
 {
-    private readonly TypedKey<ActivityPubData> _activitySetKey = new("activity.set");
+    private static readonly TypedKey<PresencePubData> _presenceKey = new("presence.apply");
+    private static readonly TimeSpan _rotateInterval = TimeSpan.FromMinutes(1);
 
-    private readonly IPubSub _pubSub;
-    private readonly DiscordSocketClient _client;
-    private readonly DbService _db;
-    private readonly IReplacementService _rep;
-    private readonly BotConfigService _bss;
+    // Placeholder replacement awaits, so an older activity change could finish after a newer one.
+    private long _activityVersion;
 
-    public BotActivityService(
-        IPubSub pubSub,
-        DiscordSocketClient client,
-        DbService db,
-        IReplacementService rep,
-        BotConfigService bss)
-    {
-        _pubSub = pubSub;
-        _client = client;
-        _db = db;
-        _rep = rep;
-        _bss = bss;
-    }
-
-    public async Task<string> RemovePlayingAsync(int index)
+    public async Task<string?> RemovePlayingAsync(int index)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(index);
 
-        await using var uow = _db.GetDbContext();
-        var toRemove = await uow.Set<RotatingPlayingStatus>()
-                                .AsQueryable()
-                                .AsNoTracking()
+        await using var ctx = db.GetDbContext();
+        var toRemove = await ctx.GetTable<RotatingPlayingStatus>()
+                                .OrderBy(x => x.Id)
                                 .Skip(index)
-                                .FirstOrDefaultAsync();
+                                .FirstOrDefaultAsyncLinqToDB();
 
         if (toRemove is null)
             return null;
 
-        uow.Remove(toRemove);
-        await uow.SaveChangesAsync();
+        await ctx.GetTable<RotatingPlayingStatus>()
+                 .Where(x => x.Id == toRemove.Id)
+                 .DeleteAsync();
+
         return toRemove.Status;
     }
 
     public async Task AddPlaying(ActivityType activityType, string status)
     {
-        await using var uow = _db.GetDbContext();
-        var toAdd = new RotatingPlayingStatus
-        {
-            Status = status,
-            Type = (NadekoBot.Db.DbActivityType)activityType
-        };
-        uow.Add(toAdd);
-        await uow.SaveChangesAsync();
+        await using var ctx = db.GetDbContext();
+        await ctx.GetTable<RotatingPlayingStatus>()
+                 .InsertAsync(() => new()
+                 {
+                     Status = status,
+                     Type = (DbActivityType)activityType
+                 });
     }
 
-    public void DisableRotatePlaying()
-    {
-        _bss.ModifyConfig(bs => { bs.RotateStatuses = false; });
-    }
-
-    public bool ToggleRotatePlaying()
+    public async Task<bool> ToggleRotatePlayingAsync()
     {
         var enabled = false;
-        _bss.ModifyConfig(bs => { enabled = bs.RotateStatuses = !bs.RotateStatuses; });
+        bss.ModifyConfig(bs => { enabled = bs.RotateStatuses = !bs.RotateStatuses; });
+
+        // The last rotation entry would stay until a restart.
+        if (!enabled)
+            await PublishSavedInternalAsync();
+
         return enabled;
     }
 
     public IReadOnlyList<RotatingPlayingStatus> GetRotatingStatuses()
     {
-        using var uow = _db.GetDbContext();
-        return uow.Set<RotatingPlayingStatus>().AsNoTracking().ToList();
+        using var ctx = db.GetDbContext();
+        return ctx.GetTable<RotatingPlayingStatus>().OrderBy(x => x.Id).ToList();
     }
 
-    public Task SetActivityAsync(string game, ActivityType? type)
-        => _pubSub.Pub(_activitySetKey,
-            new()
-            {
-                Name = game,
-                Link = null,
-                Type = type,
-                Disable = true
-            });
-
-    public Task SetStreamAsync(string name, string link)
-        => _pubSub.Pub(_activitySetKey,
-            new()
-            {
-                Name = name,
-                Link = link,
-                Type = ActivityType.Streaming,
-                Disable = true
-            });
-
-    private sealed class ActivityPubData
+    public BotPresenceState GetPresence()
     {
-        public string Name { get; init; }
-        public string Link { get; init; }
-        public ActivityType? Type { get; init; }
-        public bool Disable { get; init; }
+        var data = bss.Data;
+        var (status, activity) = BotPresence.Normalize(data.Presence);
+        return new(status, activity, data.RotateStatuses);
+    }
+
+    public async Task<PresenceError> SetPresenceAsync(UserStatus status, ActivityType? type, string? text, string? url)
+    {
+        if (!BotPresence.IsSettableStatus(status))
+            return PresenceError.Status;
+
+        PresenceActivity? activity = null;
+        if (type is { } t)
+        {
+            var error = BotPresence.TryCreateActivity(t, text, url, out activity);
+            if (error != PresenceError.None)
+                return error;
+        }
+
+        await SaveActivityInternalAsync(status, activity);
+        return PresenceError.None;
+    }
+
+    public async Task<PresenceError> SetStatusAsync(UserStatus status)
+    {
+        if (!BotPresence.IsSettableStatus(status))
+            return PresenceError.Status;
+
+        bss.ModifyConfig(c =>
+        {
+            c.Presence ??= new();
+            c.Presence.Status = status;
+        });
+
+        // The activity stays as it is, so a running rotation keeps going.
+        await pubSub.Pub(_presenceKey, new() { Status = status });
+        return PresenceError.None;
+    }
+
+    public async Task<PresenceError> SetActivityAsync(ActivityType? type, string? text)
+    {
+        PresenceActivity? activity = null;
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            var error = BotPresence.TryCreateActivity(type ?? ActivityType.CustomStatus, text, null, out activity);
+            if (error != PresenceError.None)
+                return error;
+        }
+
+        await SaveActivityInternalAsync(null, activity);
+        return PresenceError.None;
+    }
+
+    public async Task<PresenceError> SetStreamAsync(string url, string name)
+    {
+        var error = BotPresence.TryCreateActivity(ActivityType.Streaming, name, url, out var activity);
+        if (error != PresenceError.None)
+            return error;
+
+        await SaveActivityInternalAsync(null, activity);
+        return PresenceError.None;
+    }
+
+    public Task ApplySavedAsync()
+        => ApplyInternalAsync(SavedPubDataInternal()).AsTask();
+
+    private Task SaveActivityInternalAsync(UserStatus? status, PresenceActivity? activity)
+    {
+        bss.ModifyConfig(c =>
+        {
+            c.Presence ??= new();
+            if (status is { } s)
+                c.Presence.Status = s;
+
+            c.Presence.Activity = activity;
+            c.RotateStatuses = false;
+        });
+
+        return PublishSavedInternalAsync();
+    }
+
+    private Task PublishSavedInternalAsync()
+        => pubSub.Pub(_presenceKey, SavedPubDataInternal());
+
+    private PresencePubData SavedPubDataInternal()
+    {
+        var (status, activity) = BotPresence.Normalize(bss.Data.Presence);
+        return new()
+        {
+            Status = status,
+            SetActivity = true,
+            Type = activity?.Type ?? ActivityType.Playing,
+            Text = activity?.Text,
+            Url = activity?.Url
+        };
+    }
+
+    private async ValueTask ApplyInternalAsync(PresencePubData data)
+    {
+        // A rotation tick which was sent before the rotation stopped must not replace the saved activity.
+        if (data.FromRotation && !bss.Data.RotateStatuses)
+            return;
+
+        var version = data.FromRotation || !data.SetActivity
+            ? Volatile.Read(ref _activityVersion)
+            : Interlocked.Increment(ref _activityVersion);
+
+        try
+        {
+            if (data.Status is { } status && client.Status != status)
+                await client.SetStatusAsync(status);
+
+            if (!data.SetActivity)
+                return;
+
+            var text = data.Text is null
+                ? null
+                : await rep.ReplaceAsync(data.Text, new(client: client));
+
+            // A placeholder can make the text longer; the cut must not split a surrogate pair.
+            if (text is { Length: > BotPresence.MAX_TEXT_LENGTH })
+            {
+                text = text[..(char.IsHighSurrogate(text[BotPresence.MAX_TEXT_LENGTH - 1])
+                    ? BotPresence.MAX_TEXT_LENGTH - 1
+                    : BotPresence.MAX_TEXT_LENGTH)];
+            }
+
+            if (version != Volatile.Read(ref _activityVersion) || (data.FromRotation && !bss.Data.RotateStatuses))
+                return;
+
+            if (IsShownInternal(client.Activity, data.Type, text, data.Url))
+                return;
+
+            await client.SetGameAsync(text, data.Url, data.Type);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to set the bot's presence");
+        }
+    }
+
+    private static bool IsShownInternal(IActivity? current, ActivityType type, string? text, string? url)
+    {
+        if (string.IsNullOrEmpty(text))
+            return current is null;
+
+        if (current is null || current.Type != type)
+            return false;
+
+        return current switch
+        {
+            CustomStatusGame custom => custom.State == text,
+            StreamingGame stream => stream.Name == text && stream.Url == url,
+            _ => current.Name == text
+        };
     }
 
     public async Task OnReadyAsync()
     {
-        await _pubSub.Sub(_activitySetKey,
-            async data =>
-            {
-                if (_client.ShardId == 0 && data.Disable)
-                {
-                    DisableRotatePlaying();
-                }
+        await pubSub.Sub(_presenceKey, ApplyInternalAsync);
 
-                try
-                {
-                    if (data.Type is { } activityType)
-                    {
-                        await _client.SetGameAsync(data.Name, data.Link, activityType);
-                    }
-                    else
-                    {
-                        await _client.SetCustomStatusAsync(data.Name);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning(ex, "Error setting activity");
-                }
-            });
+        // Discord.Net sends the presence again in each identify, so a reconnect keeps it.
+        await ApplySavedAsync();
 
-        if (_client.ShardId != 0)
-            return;
+        if (client.ShardId == 0)
+            _ = Task.Run(RotateLoopInternalAsync);
+    }
 
-        using var timer = new PeriodicTimer(TimeSpan.FromMinutes(1));
+    private async Task RotateLoopInternalAsync()
+    {
+        using var timer = new PeriodicTimer(_rotateInterval);
         var index = 0;
         while (await timer.WaitForNextTickAsync())
         {
             try
             {
-                if (!_bss.Data.RotateStatuses)
+                if (!bss.Data.RotateStatuses)
                     continue;
 
-                IReadOnlyList<RotatingPlayingStatus> rotatingStatuses;
-                await using (var uow = _db.GetDbContext())
+                List<RotatingPlayingStatus> statuses;
+                await using (var ctx = db.GetDbContext())
                 {
-                    rotatingStatuses = uow.Set<RotatingPlayingStatus>().AsNoTracking().OrderBy(x => x.Id).ToList();
+                    statuses = await ctx.GetTable<RotatingPlayingStatus>()
+                                        .OrderBy(x => x.Id)
+                                        .ToListAsyncLinqToDB();
                 }
 
-                if (rotatingStatuses.Count == 0)
+                if (statuses.Count == 0)
                     continue;
 
-                var playingStatus = index >= rotatingStatuses.Count
-                    ? rotatingStatuses[index = 0]
-                    : rotatingStatuses[index++];
+                if (index >= statuses.Count)
+                    index = 0;
 
-                var statusText = await _rep.ReplaceAsync(playingStatus.Status, new(client: _client));
+                var next = statuses[index++];
 
-                await _pubSub.Pub(_activitySetKey,
+                // Each shard fills in the placeholders, so the text goes out as the owner wrote it.
+                await pubSub.Pub(_presenceKey,
                     new()
                     {
-                        Name = statusText,
-                        Link = null,
-                        Type = (ActivityType)playingStatus.Type,
-                        Disable = false
+                        SetActivity = true,
+                        Type = (ActivityType)next.Type,
+                        Text = next.Status,
+                        FromRotation = true
                     });
             }
             catch (Exception ex)
@@ -174,5 +279,15 @@ public sealed class BotActivityService : IBotActivityService, IReadyExecutor, IN
                 Log.Error(ex, "Rotating playing status errored: {ErrorMessage}", ex.Message);
             }
         }
+    }
+
+    public sealed class PresencePubData
+    {
+        public UserStatus? Status { get; init; }
+        public bool SetActivity { get; init; }
+        public ActivityType Type { get; init; }
+        public string? Text { get; init; }
+        public string? Url { get; init; }
+        public bool FromRotation { get; init; }
     }
 }

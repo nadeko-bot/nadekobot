@@ -27,6 +27,7 @@ using NadekoBot.Db.Models;
 using NadekoBot.Hosted;
 using NadekoBot.Hosted.Endpoints;
 using NadekoBot.Services;
+using NadekoBot.Tests.Owner;
 using NadekoBot.Tests.Waifu;
 using NUnit.Framework;
 using Serilog;
@@ -276,6 +277,91 @@ public sealed class ApiHttpTests
         Assert.That(CredsFile.Read(_paths.Creds)!.Token, Is.EqualTo("tok"));
     }
 
+    [Test]
+    public async Task Presence_SavesTheStatusAndRefusesBadValues()
+    {
+        using var db = new TestDbService();
+        using var client = new DiscordSocketClient();
+        var bss = await StartPresenceApiAsync(db, client);
+
+        try
+        {
+            Assert.That(await _http!.GetStringAsync("/api/presence"),
+                Is.EqualTo("""{"status":"online","activity":null,"rotating":true}"""));
+
+            const string saved = """{"status":"idle","activity":{"type":"streaming","text":"live","url":"https://twitch.tv/nadeko"},"rotating":false}""";
+            var valid = new { status = "idle", activity = new { type = "streaming", text = " live ", url = "https://twitch.tv/nadeko" } };
+            using (var ok = await _http.PutAsync("/api/presence", Json(valid)))
+            {
+                Assert.That(ok.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(await ok.Content.ReadAsStringAsync(), Is.EqualTo(saved));
+            }
+
+            object[] refused =
+            [
+                new { status = "offline", activity = (object?)null },
+                new { status = "online", activity = new { type = "streaming", text = "live", url = "https://example.com/live" } },
+                new { status = "online", activity = new { type = "playing", text = "x", url = "https://twitch.tv/nadeko" } }
+            ];
+            foreach (var body in refused)
+            {
+                using var res = await _http.PutAsync("/api/presence", Json(body));
+                await AssertErrorAsync(res, HttpStatusCode.BadRequest, "invalid_value");
+            }
+
+            using (var noActivity = await _http.PutAsync("/api/presence", Json(new { status = "online" })))
+                await AssertErrorAsync(noActivity, HttpStatusCode.BadRequest, "bad_request");
+
+            Assert.That(await _http.GetStringAsync("/api/presence"), Is.EqualTo(saved));
+        }
+        finally
+        {
+            BotPresenceTests.ResetConfig(bss);
+        }
+    }
+
+    [Test]
+    public async Task Presence_RefusesChangesOverTheLimitForOneMinute()
+    {
+        using var db = new TestDbService();
+        using var client = new DiscordSocketClient();
+        var bss = await StartPresenceApiAsync(db, client);
+
+        try
+        {
+            var body = new { status = "online", activity = new { type = "playing", text = "x" } };
+            for (var i = 0; i < ApiLimits.PRESENCE_CHANGES; i++)
+            {
+                using var ok = await _http!.PutAsync("/api/presence", Json(body));
+                Assert.That(ok.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            }
+
+            using var limited = await _http!.PutAsync("/api/presence", Json(body));
+            await AssertErrorAsync(limited, (HttpStatusCode)429, "rate_limited");
+
+            using var read = await _http.GetAsync("/api/presence");
+            Assert.That(read.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        }
+        finally
+        {
+            BotPresenceTests.ResetConfig(bss);
+        }
+    }
+
+    private async Task<BotConfigService> StartPresenceApiAsync(TestDbService db, DiscordSocketClient client)
+    {
+        var bss = BotPresenceTests.CreateConfig();
+        bss.ModifyConfig(static c => c.RotateStatuses = true);
+        var services = new ServiceCollection()
+            .AddSingleton(BotPresenceTests.CreateService(db, bss, client))
+            .BuildServiceProvider();
+        var bridge = new BotBridge();
+        bridge.SetPhase(BotPhase.Starting);
+        bridge.SetReady(services, null);
+        await StartAsync(API_KEY, bridge);
+        Authorize();
+        return bss;
+    }
     [Test]
     public async Task Logs_StreamTheTailThenNewLinesWhileTheBotIsDown()
     {

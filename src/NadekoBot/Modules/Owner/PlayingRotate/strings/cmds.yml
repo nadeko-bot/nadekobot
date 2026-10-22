@@ -31,6 +31,7 @@ removeplaying:
 rotateplaying:
   desc: |-
     Toggles rotation of playing status of the dynamic strings you previously specified.
+    When the rotation stops, the bot shows the activity which `{0}setactivity` or `{0}setstream` set.
   ex:
     - ''
   params:

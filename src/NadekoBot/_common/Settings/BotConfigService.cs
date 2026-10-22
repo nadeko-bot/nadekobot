@@ -162,5 +162,12 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
             {
                 c.Version = 12;
             });
+
+        if (Data.Version < 13)
+            ModifyConfig(c =>
+            {
+                c.Version = 13;
+                c.Presence ??= new();
+            });
     }
 }

@@ -1,5 +1,7 @@
 ar:
   acrm_fail: لم يتم العثور على الأمر التلقائي في الفهرس المحدد.
+  activity_text_too_long: 'يمكن أن يحتوي نص النشاط على {0} حرفًا كحد أقصى.'
+  activity_use_setstream: 'استخدم {0} لعرض بث.'
   autocmd_add: 'سيتم تنفيذ الأمر {0} كل {1} ثانية في هذه القناة.'
   autocmd_interval_range: 'يجب أن تكون الفترة بين {0} ثانية و{1} يومًا.'
   autocmdlist_none: لا توجد أوامر تلقائية في هذه الصفحة.
@@ -35,9 +37,12 @@ ar:
   shutting_down: جارٍ الإيقاف
   startcmdlist_none: لا توجد أوامر بدء تشغيل في هذه الصفحة.
   startcmds_cleared: تم مسح جميع أوامر بدء التشغيل.
+  stream_link_invalid: 'يجب أن يبدأ رابط البث بـ https:// وأن يشير إلى twitch.tv أو youtube.com.'
 
 de-DE:
   acrm_fail: Automatischer Befehl für das angegebene Register nicht gefunden.
+  activity_text_too_long: 'Der Aktivitätstext darf höchstens {0} Zeichen lang sein.'
+  activity_use_setstream: 'Nutze {0}, um einen Stream anzuzeigen.'
   autocmd_add: 'Der Befehl {0} wird alle {1}s in diesem Kanal ausgeführt.'
   autocmd_interval_range: 'Das Intervall muss zwischen {0} Sekunden und {1} Tagen liegen.'
   autocmdlist_none: Keine automatischen Befehle auf dieser Seite.
@@ -73,9 +78,12 @@ de-DE:
   shutting_down: Sich schließen.
   startcmdlist_none: Keine Startbefehle auf dieser Seite.
   startcmds_cleared: Alle Startbefehle wurden entfernt.
+  stream_link_invalid: 'Der Stream-Link muss mit https:// beginnen und auf twitch.tv oder youtube.com zeigen.'
 
 es-ES:
   acrm_fail: No hay comandos en en la página especificada.
+  activity_text_too_long: 'El texto de la actividad puede tener como máximo {0} caracteres.'
+  activity_use_setstream: 'Usa {0} para mostrar un directo.'
   autocmd_add: 'El comando {0} se ejecutará cada {1}s en este canal.'
   autocmd_interval_range: 'El intervalo debe estar entre {0} segundos y {1} días.'
   autocmdlist_none: No hay comandos automáticos en esta página.
@@ -111,9 +119,12 @@ es-ES:
   shutting_down: Apagando...
   startcmdlist_none: No hay comandos de inicio en esta página.
   startcmds_cleared: Eliminados todos los comandos de inicio.
+  stream_link_invalid: 'El enlace del directo debe empezar por https:// y apuntar a twitch.tv o youtube.com.'
 
 fr-FR:
   acrm_fail: Commande automatique introuvable sur l'index spécifié.
+  activity_text_too_long: 'Le texte de l''activité peut faire au maximum {0} caractères.'
+  activity_use_setstream: 'Utilise {0} pour afficher un stream.'
   autocmd_add: 'La commande {0} s''exécutera toutes les {1} secondes dans ce salon.'
   autocmd_interval_range: 'L''intervalle doit être compris entre {0} secondes et {1} jours.'
   autocmdlist_none: Aucune commande automatique sur cette page.
@@ -149,9 +160,12 @@ fr-FR:
   shutting_down: Arrêt
   startcmdlist_none: Aucune commandes de démarrage trouvée sur cette page.
   startcmds_cleared: Toutes les commandes de démarrage ont été effacées.
+  stream_link_invalid: 'Le lien du stream doit commencer par https:// et pointer vers twitch.tv ou youtube.com.'
 
 id-ID:
   acrm_fail: Auto command tidak ditemukan di index yang ditentukan.
+  activity_text_too_long: 'Teks aktivitas maksimal {0} karakter.'
+  activity_use_setstream: 'Gunakan {0} untuk menampilkan stream.'
   autocmd_add: 'Perintah {0} akan dijalankan setiap {1} detik di channel ini.'
   autocmd_interval_range: 'Interval harus antara {0} detik dan {1} hari.'
   autocmdlist_none: Tidak ada auto command di halaman ini.
@@ -187,9 +201,12 @@ id-ID:
   shutting_down: Mematikan
   startcmdlist_none: Tidak ada startup command di halaman ini.
   startcmds_cleared: Semua startup command dihapus.
+  stream_link_invalid: 'Link stream harus diawali https:// dan mengarah ke twitch.tv atau youtube.com.'
 
 ja-JP:
   acrm_fail: 指定されたインデックスに自動コマンドが見つかりません。
+  activity_text_too_long: 'アクティビティのテキストは最大{0}文字までです。'
+  activity_use_setstream: '配信を表示するには{0}を使ってください。'
   autocmd_add: 'コマンド{0}がこのチャンネルで{1}秒ごとに実行されます。'
   autocmd_interval_range: '間隔は{0}秒から{1}日の間で指定してください。'
   autocmdlist_none: このページには自動コマンドがありません。
@@ -225,9 +242,12 @@ ja-JP:
   shutting_down: シャットダウンしています
   startcmdlist_none: このページには起動コマンドはありません。
   startcmds_cleared: すべての起動コマンドをクリアしました。
+  stream_link_invalid: '配信リンクは https:// で始まり、twitch.tv か youtube.com を指している必要があります。'
 
 ko-KR:
   acrm_fail: 지정된 인덱스에서 자동 명령을 찾을 수 없어요.
+  activity_text_too_long: '활동 텍스트는 최대 {0}자까지 가능해요.'
+  activity_use_setstream: '방송을 표시하려면 {0}을(를) 사용하세요.'
   autocmd_add: '명령어 {0}이(가) 이 채널에서 {1}초마다 실행돼요.'
   autocmd_interval_range: '간격은 {0}초에서 {1}일 사이여야 해요.'
   autocmdlist_none: 이 페이지에 자동 명령이 없어요.
@@ -263,9 +283,12 @@ ko-KR:
   shutting_down: 종료 중
   startcmdlist_none: 이 페이지에 시작 명령이 없어요.
   startcmds_cleared: 모든 시작 명령이 초기화되었어요.
+  stream_link_invalid: '방송 링크는 https://로 시작하고 twitch.tv 또는 youtube.com을 가리켜야 해요.'
 
 pl-PL:
   acrm_fail: Nie znaleziono automatycznej komendy pod podanym indeksem.
+  activity_text_too_long: 'Tekst aktywności może mieć maksymalnie {0} znaków.'
+  activity_use_setstream: 'Użyj {0}, aby pokazać stream.'
   autocmd_add: 'Komenda {0} będzie wykonywana co {1}s na tym kanale.'
   autocmd_interval_range: 'Interwał musi wynosić od {0} sekund do {1} dni.'
   autocmdlist_none: Brak automatycznych komend na tej stronie.
@@ -301,9 +324,12 @@ pl-PL:
   shutting_down: Wyłączanie
   startcmdlist_none: Brak komend startowych na tej stronie.
   startcmds_cleared: Wyczyszczono wszystkie komendy startowe.
+  stream_link_invalid: 'Link do streama musi zaczynać się od https:// i prowadzić do twitch.tv lub youtube.com.'
 
 pt-BR:
   acrm_fail: Comando automático não encontrado com o índice especificado.
+  activity_text_too_long: 'O texto da atividade pode ter no máximo {0} caracteres.'
+  activity_use_setstream: 'Use {0} para mostrar uma transmissão.'
   autocmd_add: 'O comando {0} será executado a cada {1}s neste canal.'
   autocmd_interval_range: 'O intervalo deve ficar entre {0} segundos e {1} dias.'
   autocmdlist_none: Nenhum comando automático nessa página.
@@ -339,9 +365,12 @@ pt-BR:
   shutting_down: Desligando
   startcmdlist_none: Não há comandos de inicialização nessa página.
   startcmds_cleared: Todos os comandos de inicialização foram removidos.
+  stream_link_invalid: 'O link da transmissão precisa começar com https:// e apontar para twitch.tv ou youtube.com.'
 
 ru-RU:
   acrm_fail: Автоматическая команда не найдена в указанном индексе.
+  activity_text_too_long: 'Текст активности может содержать не больше {0} символов.'
+  activity_use_setstream: 'Используй {0}, чтобы показать стрим.'
   autocmd_add: 'Команда {0} будет выполняться каждые {1} в этом канале.'
   autocmd_interval_range: 'Интервал должен быть от {0} секунд до {1} дней.'
   autocmdlist_none: На этой странице нет автоматических команд.
@@ -377,9 +406,12 @@ ru-RU:
   shutting_down: Выключаюсь
   startcmdlist_none: Никаких команд авто-запуска на этой странице.
   startcmds_cleared: Очищены все команды авто-запуска.
+  stream_link_invalid: 'Ссылка на стрим должна начинаться с https:// и вести на twitch.tv или youtube.com.'
 
 sr-Cyrl-RS:
   acrm_fail: Аутоматска команда није пронађена на наведеном индексу.
+  activity_text_too_long: 'Текст активности може имати највише {0} карактера.'
+  activity_use_setstream: 'Користи {0} да прикажеш стрим.'
   autocmd_add: 'Команда {0} ће се извршавати сваких {1}с у овом каналу.'
   autocmd_interval_range: 'Интервал мора бити између {0} секунди и {1} дана.'
   autocmdlist_none: Нема аутоматских команди на овој страници.
@@ -415,9 +447,12 @@ sr-Cyrl-RS:
   shutting_down: Гашење
   startcmdlist_none: Нема стартних команди на овој страници.
   startcmds_cleared: Све стартне команде обрисане.
+  stream_link_invalid: 'Линк стрима мора да почиње са https:// и да води на twitch.tv или youtube.com.'
 
 tr-TR:
   acrm_fail: Belirtilen dizinde otomatik komut bulunamadı.
+  activity_text_too_long: 'Etkinlik metni en fazla {0} karakter olabilir.'
+  activity_use_setstream: 'Yayın göstermek için {0} kullan.'
   autocmd_add: '{0} komutu bu kanalda her {1} saniyede bir çalıştırılacak.'
   autocmd_interval_range: 'Aralık {0} saniye ile {1} gün arasında olmalı.'
   autocmdlist_none: Bu sayfada otomatik komut yok.
@@ -453,9 +488,12 @@ tr-TR:
   shutting_down: Kapatılıyor
   startcmdlist_none: Bu sayfada başlangıç komutu yok.
   startcmds_cleared: Tüm başlangıç komutları temizlendi.
+  stream_link_invalid: 'Yayın bağlantısı https:// ile başlamalı ve twitch.tv ya da youtube.com adresine gitmeli.'
 
 ts-TS:
   acrm_fail: Auto command not found on the specified index.
+  activity_text_too_long: 'Hmph, the activity text can have {0} characters at most. Keep it short.'
+  activity_use_setstream: 'Use {0} to show a stream.'
   autocmd_add: 'The command {0} will execute every {1}s in this channel.'
   autocmd_interval_range: 'The interval must be between {0} seconds and {1} days. Hmph, pick a real number.'
   autocmdlist_none: No auto commands on this page.
@@ -491,9 +529,12 @@ ts-TS:
   shutting_down: Shutting down. I-I'll be back!
   startcmdlist_none: No startup commands on this page.
   startcmds_cleared: Cleared all startup commands.
+  stream_link_invalid: 'The stream link must start with https:// and point to twitch.tv or youtube.com. I-it''s not that hard!'
 
 uk-UA:
   acrm_fail: Автокоманда за вказаним індексом не знайдена.
+  activity_text_too_long: 'Текст активності може мати щонайбільше {0} символів.'
+  activity_use_setstream: 'Використовуй {0}, щоб показати стрим.'
   autocmd_add: 'Команда {0} виконуватиметься кожні {1}с у цьому каналі.'
   autocmd_interval_range: 'Інтервал має бути від {0} секунд до {1} днів.'
   autocmdlist_none: На цій сторінці немає автокоманд.
@@ -529,9 +570,12 @@ uk-UA:
   shutting_down: Вимкнення
   startcmdlist_none: На цій сторінці немає команд запуску.
   startcmds_cleared: Усі команди запуску очищено.
+  stream_link_invalid: 'Посилання на стрим має починатися з https:// і вести на twitch.tv або youtube.com.'
 
 vi-VN:
   acrm_fail: Không tìm thấy lệnh tự động ở chỉ mục đã chỉ định.
+  activity_text_too_long: 'Nội dung hoạt động chỉ được tối đa {0} ký tự.'
+  activity_use_setstream: 'Dùng {0} để hiển thị buổi phát trực tiếp.'
   autocmd_add: 'Lệnh {0} sẽ được thực thi mỗi {1} giây trong kênh này.'
   autocmd_interval_range: 'Khoảng thời gian phải từ {0} giây đến {1} ngày.'
   autocmdlist_none: Không có lệnh tự động nào trên trang này.
@@ -567,9 +611,12 @@ vi-VN:
   shutting_down: Đang tắt
   startcmdlist_none: Không có lệnh khởi động nào trên trang này.
   startcmds_cleared: Đã xóa tất cả lệnh khởi động.
+  stream_link_invalid: 'Liên kết phát trực tiếp phải bắt đầu bằng https:// và trỏ tới twitch.tv hoặc youtube.com.'
 
 zh-CN:
   acrm_fail: 未找到指定的索引上的自動執行指令
+  activity_text_too_long: '活动文字最多只能有 {0} 个字符。'
+  activity_use_setstream: '使用 {0} 来显示直播。'
   autocmd_add: '命令 {0} 將在此頻道中每隔 {1} 執行一次。'
   autocmd_interval_range: '间隔必须在 {0} 秒到 {1} 天之间。'
   autocmdlist_none: 此頁面上沒有自動命令。
@@ -605,3 +652,4 @@ zh-CN:
   shutting_down: 正在關閉
   startcmdlist_none: 此頁面上沒有啟動命令。
   startcmds_cleared: 清除所有啟動命令。
+  stream_link_invalid: '直播链接必须以 https:// 开头，并指向 twitch.tv 或 youtube.com。'

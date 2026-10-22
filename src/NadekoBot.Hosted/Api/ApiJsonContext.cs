@@ -58,6 +58,8 @@ namespace NadekoBot.Hosted;
 [JsonSerializable(typeof(SetCredsRequest))]
 [JsonSerializable(typeof(OwnersDto))]
 [JsonSerializable(typeof(SetOwnersRequest))]
+[JsonSerializable(typeof(PresenceDto))]
+[JsonSerializable(typeof(SetPresenceRequest))]
 [JsonSerializable(typeof(LogLineDto))]
 [JsonSerializable(typeof(UpdateAcceptedDto))]
 [JsonSerializable(typeof(DiskUsageDto))]

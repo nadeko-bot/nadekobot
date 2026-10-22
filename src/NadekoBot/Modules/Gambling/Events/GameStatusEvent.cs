@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Owner.Services;
 
 namespace NadekoBot.Modules.Gambling.Common.Events;
 
@@ -23,6 +24,7 @@ public class GameStatusEvent : ICurrencyEvent
 
     private readonly Lock _stopLock = new();
     private readonly IMessageSenderService _sender;
+    private readonly IBotActivityService _activity;
 
     private static readonly NadekoRandom _rng = new NadekoRandom();
 
@@ -33,9 +35,11 @@ public class GameStatusEvent : ICurrencyEvent
         ITextChannel ch,
         EventOptions opt,
         IMessageSenderService sender,
+        IBotActivityService activity,
         Func<CurrencyEvent.Type, EventOptions, long, EmbedBuilder> embedFunc)
     {
         _client = client;
+        _activity = activity;
         _guild = g;
         _embedFunc = embedFunc;
         _channel = ch;
@@ -80,7 +84,7 @@ public class GameStatusEvent : ICurrencyEvent
             _client.MessageDeleted -= OnMessageDeleted;
             _client.MessageReceived -= HandleMessage;
             _cts.Cancel();
-            _ = _client.SetGameAsync(null);
+            _ = _activity.ApplySavedAsync();
             _ = DeleteInternalAsync(msg);
             _ = OnEnded?.Invoke(_guild.Id);
         }

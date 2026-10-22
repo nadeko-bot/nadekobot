@@ -12,7 +12,7 @@ public partial class Owner
         [OwnerOnly]
         public async Task RotatePlaying()
         {
-            if (_service.ToggleRotatePlaying())
+            if (await _service.ToggleRotatePlayingAsync())
                 await Response().Confirm(strs.ropl_enabled).SendAsync();
             else
                 await Response().Confirm(strs.ropl_disabled).SendAsync();

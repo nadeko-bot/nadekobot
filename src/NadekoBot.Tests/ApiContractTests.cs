@@ -59,6 +59,8 @@ public sealed class ApiContractTests
         "DELETE /api/ai-key",
         "GET /api/owners",
         "PUT /api/owners",
+        "GET /api/presence",
+        "PUT /api/presence",
         "GET /api/guilds/{guildId}",
         "GET /api/guilds/{guildId}/channels",
         "GET /api/guilds/{guildId}/roles",
