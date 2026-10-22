@@ -1,4 +1,5 @@
 ﻿using NadekoBot.Common.Configs;
+using NadekoBot.Modules.Music;
 
 namespace NadekoBot.Modules.Searches;
 
@@ -11,6 +12,7 @@ public class SearchesConfigService : ConfigServiceBase<SearchesConfig>
         => "searches";
 
     public const int MAX_PER_SERVER = 1000;
+    public const int MAX_MUSIC_SERVICE_URL_LENGTH = 200;
 
     public SearchesConfigService(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
         : base(FILE_PATH, serializer, pubSub, _changeKey, policy)
@@ -35,6 +37,13 @@ public class SearchesConfigService : ConfigServiceBase<SearchesConfig>
             ConfigParsers.InsensitiveEnum,
             ConfigPrinters.ToString,
             "Which search provider will be used for the .youtube and .q commands");
+
+        AddTextProp("musicServiceUrl",
+            static sc => sc.MusicServiceUrl,
+            static (sc, v) => sc.MusicServiceUrl = v,
+            MAX_MUSIC_SERVICE_URL_LENGTH,
+            "Url of the NadekoBot music service which the 'service' ytProvider uses",
+            static v => v.Length == 0 || MusicServiceClient.ParseBaseUrl(v) is not null);
 
         AddNumberProp("followedStreams.maxCount",
             static sc => sc.FollowedStreams.MaxCount,
@@ -73,6 +82,14 @@ public class SearchesConfigService : ConfigServiceBase<SearchesConfig>
             ModifyConfig(c =>
             {
                 c.Version = 6;
+            });
+        }
+
+        if (Data.Version < 7)
+        {
+            ModifyConfig(c =>
+            {
+                c.Version = 7;
             });
         }
     }

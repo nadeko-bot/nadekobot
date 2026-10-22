@@ -66,6 +66,8 @@ namespace NadekoBot.Hosted;
 [JsonSerializable(typeof(ToolDto))]
 [JsonSerializable(typeof(ToolListDto))]
 [JsonSerializable(typeof(SetYoutubeProxyRequest))]
+[JsonSerializable(typeof(SetMusicServiceRequest))]
+[JsonSerializable(typeof(MusicServiceDto))]
 [JsonSerializable(typeof(YoutubeStatusDto))]
 [JsonSerializable(typeof(GuildHealthDto))]
 [JsonSerializable(typeof(GuildActivityDto))]

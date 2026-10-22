@@ -15,6 +15,7 @@ public sealed record BotPolicy(bool Managed)
         ("searches", "webEngine"),
         ("searches", "imgEngine"),
         ("searches", "ytProvider"),
+        ("searches", "musicServiceUrl"),
     ];
 
     // The owner of a self-hosted bot owns its network.

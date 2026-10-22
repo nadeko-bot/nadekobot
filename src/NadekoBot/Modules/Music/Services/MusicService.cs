@@ -6,6 +6,8 @@ namespace NadekoBot.Modules.Music.Services;
 
 public sealed class MusicService : IMusicService, IPlaceholderProvider
 {
+    private const int SEARCH_RESULTS = 5;
+
     private readonly AyuVoiceStateService _voiceStateService;
     private readonly ITrackResolveProvider _trackResolveProvider;
     private readonly DbService _db;
@@ -267,12 +269,26 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
 
     private async Task<IList<(string Title, string Url, string Thumb)>> SearchGoogleApiVideosAsync(string query)
     {
-        var result = await _googleApiService.GetVideoInfosByKeywordAsync(query, 5);
+        var result = await _googleApiService.GetVideoInfosByKeywordAsync(query, SEARCH_RESULTS);
         return result.Select(x => (x.Name, x.Url, x.Thumbnail)).ToList();
     }
 
     public async Task<IList<(string Title, string Url, string Thumbnail)>> SearchVideosAsync(string query)
     {
+        // A bot which uses the music service does not connect to YouTube or to the Google API.
+        if (_ytResolver.GetYoutubeResolver() is ServiceYoutubeResolver service)
+        {
+            var tracks = await service.Service.SearchAsync(query, SEARCH_RESULTS);
+            var results = new (string, string, string)[tracks.Length];
+            for (var i = 0; i < tracks.Length; i++)
+            {
+                var t = ServiceYoutubeResolver.ToTrackInfo(tracks[i]);
+                results[i] = (t.Title, t.Url, t.Thumbnail);
+            }
+
+            return results;
+        }
+
         try
         {
             IList<(string, string, string)> videos = await SearchYtLoaderVideosAsync(query);

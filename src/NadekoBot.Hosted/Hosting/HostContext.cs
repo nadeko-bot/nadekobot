@@ -38,6 +38,7 @@ public sealed record HostPaths(string DataDir)
     public string Activity => Path.Combine(DataDir, "activity.db");
     public string ToolsDir => Path.Combine(DataDir, "tools");
     public string YoutubeProxy => Path.Combine(DataDir, ".youtube-proxy");
+    public string MusicService => Path.Combine(DataDir, ".music-service");
     public string Intents => Path.Combine(DataDir, ".intents");
     public string IntentsRetry => Path.Combine(DataDir, ".intents-retry");
 }

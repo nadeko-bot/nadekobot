@@ -26,10 +26,17 @@ namespace NadekoBot.Voice
         // Some environments make ffmpeg skip its proxy for matching hosts.
         private static readonly string[] _proxyBypassEnvVars = ["no_proxy", "NO_PROXY"];
 
-        private FfmpegTrackDataSource(int bitDepth, string streamUrl, bool isLocal, string? httpProxy, string ffmpeg)
-        {
-            var pcmType = bitDepth == 16 ? "s16le" : "f32le";
+        private static readonly string[] _proxyEnvVars =
+            ["http_proxy", "HTTP_PROXY", "https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"];
 
+        private FfmpegTrackDataSource(
+            int bitDepth,
+            string streamUrl,
+            bool isLocal,
+            string? httpProxy,
+            string? headers,
+            string ffmpeg)
+        {
             var psi = new ProcessStartInfo
             {
                 FileName = ffmpeg,
@@ -39,32 +46,7 @@ namespace NadekoBot.Voice
                 CreateNoWindow = true,
             };
 
-            string[] args = [
-                ..(!isLocal ? [
-                    "-reconnect", "1",
-                    "-reconnect_streamed", "1",
-                    "-reconnect_delay_max", "5",
-                    "-probesize", "32768",
-                    "-analyzeduration", "0"
-                ] : (string[])[]),
-                // A proxy which checks each address stops redirects and DNS rebinding to the local network.
-                ..(!isLocal && httpProxy is not null ? ["-http_proxy", httpProxy] : (string[])[]),
-                // Without a whitelist a stream or playlist can make ffmpeg read local files or other protocols.
-                "-protocol_whitelist", isLocal
-                    ? "file"
-                    : httpProxy is null
-                        ? "http,https,tcp,tls,crypto"
-                        : "http,https,tcp,tls,crypto,httpproxy",
-                "-err_detect", "ignore_err",
-                "-i", streamUrl,
-                "-f", pcmType,
-                "-ar", "48000",
-                "-vn", "-ac", "2",
-                "pipe:1",
-                "-loglevel", "error"
-            ];
-
-            foreach (var a in args)
+            foreach (var a in BuildArguments(bitDepth, streamUrl, isLocal, httpProxy, headers))
                 psi.ArgumentList.Add(a);
 
             if (httpProxy is not null)
@@ -73,19 +55,62 @@ namespace NadekoBot.Voice
                     psi.Environment.Remove(name);
             }
 
+            // The headers hold a key, which must not go to a proxy of the environment.
+            if (!string.IsNullOrEmpty(headers))
+            {
+                foreach (var name in _proxyEnvVars)
+                    psi.Environment.Remove(name);
+            }
+
             _p = Process.Start(psi)!;
         }
+
+        // The headers can hold a key, so the arguments never go to a log.
+        public static string[] BuildArguments(
+            int bitDepth,
+            string streamUrl,
+            bool isLocal,
+            string? httpProxy,
+            string? headers)
+            => [
+                ..(!isLocal ? [
+                    "-reconnect", "1",
+                    "-reconnect_streamed", "1",
+                    "-reconnect_delay_max", "5",
+                    // A fresh YouTube link can answer 403 for a moment before it works.
+                    "-reconnect_on_http_error", "403",
+                    "-probesize", "32768",
+                    "-analyzeduration", "0"
+                ] : (string[])[]),
+                // A proxy which checks each address stops redirects and DNS rebinding to the local network.
+                ..(!isLocal && httpProxy is not null ? ["-http_proxy", httpProxy] : (string[])[]),
+                ..(!isLocal && !string.IsNullOrEmpty(headers) ? ["-headers", headers] : (string[])[]),
+                // Without a whitelist a stream or playlist can make ffmpeg read local files or other protocols.
+                "-protocol_whitelist", isLocal
+                    ? "file"
+                    : httpProxy is null
+                        ? "http,https,tcp,tls,crypto"
+                        : "http,https,tcp,tls,crypto,httpproxy",
+                "-err_detect", "ignore_err",
+                "-i", streamUrl,
+                "-f", bitDepth == 16 ? "s16le" : "f32le",
+                "-ar", "48000",
+                "-vn", "-ac", "2",
+                "pipe:1",
+                "-loglevel", "error"
+            ];
 
         public static FfmpegTrackDataSource? Create(
             int bitDepth,
             string streamUrl,
             bool isLocal,
             string? httpProxy,
-            string ffmpeg = "ffmpeg")
+            string ffmpeg = "ffmpeg",
+            string? headers = null)
         {
             try
             {
-                return new FfmpegTrackDataSource(bitDepth, streamUrl, isLocal, httpProxy, ffmpeg);
+                return new FfmpegTrackDataSource(bitDepth, streamUrl, isLocal, httpProxy, headers, ffmpeg);
             }
             catch (System.ComponentModel.Win32Exception)
             {

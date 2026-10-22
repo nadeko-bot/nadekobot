@@ -23,11 +23,11 @@ public sealed class YoutubeResolverFactory : IYoutubeResolverFactory
 
     public IYoutubeResolver GetYoutubeResolver()
     {
-        if (SearchEngineChoice.Yt(_ss.Data, _policy) == YoutubeSearcher.Invidious)
+        return SearchEngineChoice.Yt(_ss.Data, _policy) switch
         {
-            return _services.GetRequiredService<InvidiousYoutubeResolver>();
-        }
-
-        return _services.GetRequiredService<YtdlYoutubeResolver>();
+            YoutubeSearcher.Invidious => _services.GetRequiredService<InvidiousYoutubeResolver>(),
+            YoutubeSearcher.Service => _services.GetRequiredService<ServiceYoutubeResolver>(),
+            _ => _services.GetRequiredService<YtdlYoutubeResolver>()
+        };
     }
 }

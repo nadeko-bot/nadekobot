@@ -144,6 +144,24 @@ public sealed partial class MusicQueue : IMusicQueue
         }
     }
 
+    // Null when the next track is the current one or the queue ends.
+    public IQueuedTrackInfo? GetNext(bool wrap)
+    {
+        lock (_locker)
+        {
+            var next = index + 1;
+            if (next >= tracks.Count)
+            {
+                if (!wrap)
+                    return null;
+
+                next = 0;
+            }
+
+            return next == index ? null : tracks.ElementAtOrDefault(next);
+        }
+    }
+
     public void Advance()
     {
         lock (_locker)

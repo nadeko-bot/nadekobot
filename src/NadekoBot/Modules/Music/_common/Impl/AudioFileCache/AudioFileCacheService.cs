@@ -27,13 +27,19 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
     private readonly BotPolicy _policy;
     private readonly PublicOnlyProxy _proxy;
     private readonly InFlightDict _inFlightDownloads = new();
+    private readonly TimeProvider _time;
+
+    // A fresh YouTube link can answer 403 for a few seconds, so the same link gets these retries before a new one.
+    private static readonly TimeSpan[] _forbiddenRetryDelays = [TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(4)];
 
     public AudioFileCacheService(
         AudioFileCacheConfigService configService,
         IHttpClientFactory httpFactory,
         BotPolicy policy,
-        PublicOnlyProxy proxy)
+        PublicOnlyProxy proxy,
+        TimeProvider? timeProvider = null)
     {
+        _time = timeProvider ?? TimeProvider.System;
         _policy = policy;
         _configService = configService;
         _httpFactory = httpFactory;
@@ -139,6 +145,8 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
             Directory.CreateDirectory(dir);
 
         var tooLarge = false;
+        var forbidden = false;
+        var completed = false;
         for (var attempt = 0; attempt < MAX_DOWNLOAD_RETRIES; attempt++)
         {
             try
@@ -160,21 +168,18 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
 
                 state.UpdateBytesWritten(existingBytes);
 
-                using var request = new HttpRequestMessage(HttpMethod.Get, streamUrl);
-                if (existingBytes > 0)
-                    request.Headers.Range = new RangeHeaderValue(existingBytes, null);
-
-                using var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+                using var response = await SendWithForbiddenRetriesInternalAsync(http, streamUrl, existingBytes);
 
                 if (response.StatusCode == HttpStatusCode.RequestedRangeNotSatisfiable)
-                    break;
-
-                if (response.StatusCode == HttpStatusCode.Forbidden)
                 {
-                    if (isYoutube)
-                        YoutubeStats.Shared.Record(YoutubeOutcome.Forbidden);
+                    completed = true;
+                    break;
+                }
 
-                    Log.Debug("Stream URL expired (403), will re-resolve on retry {Attempt}/{Max}",
+                forbidden = response.StatusCode == HttpStatusCode.Forbidden;
+                if (forbidden)
+                {
+                    Log.Debug("Stream URL answered 403, will re-resolve on retry {Attempt}/{Max}",
                         attempt + 1, MAX_DOWNLOAD_RETRIES);
                     continue;
                 }
@@ -215,6 +220,7 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
                     }
                 }
 
+                completed = !tooLarge;
                 break;
             }
             catch (Exception ex) when (ex is HttpRequestException or IOException or TaskCanceledException)
@@ -231,7 +237,8 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
         {
             Log.Information("Not caching {Path}: the stream has no length or is too large", finalPath);
         }
-        else if (File.Exists(partialPath) && new FileInfo(partialPath).Length > 0)
+        // A download which an error or a 403 stopped is not a whole song.
+        else if (completed && File.Exists(partialPath) && new FileInfo(partialPath).Length > 0)
         {
             // mark complete first so readers know the data is all there
             state.MarkComplete();
@@ -250,8 +257,31 @@ public sealed class AudioFileCacheService : INService, IReadyExecutor
             return;
         }
 
+        if (forbidden && isYoutube)
+            YoutubeStats.Shared.Record(YoutubeOutcome.Forbidden);
+
         state.MarkFailed();
         TryDeleteFile(partialPath);
+    }
+
+    private async Task<HttpResponseMessage> SendWithForbiddenRetriesInternalAsync(
+        HttpClient http,
+        string streamUrl,
+        long existingBytes)
+    {
+        for (var retry = 0;; retry++)
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, streamUrl);
+            if (existingBytes > 0)
+                request.Headers.Range = new RangeHeaderValue(existingBytes, null);
+
+            var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            if (response.StatusCode != HttpStatusCode.Forbidden || retry == _forbiddenRetryDelays.Length)
+                return response;
+
+            response.Dispose();
+            await Task.Delay(_forbiddenRetryDelays[retry], _time);
+        }
     }
 
     private async Task EvictionLoopAsync()

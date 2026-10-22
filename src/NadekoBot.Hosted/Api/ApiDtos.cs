@@ -247,6 +247,11 @@ public sealed record ToolListDto(ToolDto[] Tools);
 
 public sealed record SetYoutubeProxyRequest(string? Id, string? Url);
 
+public sealed record SetMusicServiceRequest(string? Id, string? Url, string? Key);
+
+// Never the key: the bot owner must not see it.
+public sealed record MusicServiceDto(string? Id, string? Url);
+
 public sealed record YoutubeCountsDto(
     long Ok,
     long BotCheck,

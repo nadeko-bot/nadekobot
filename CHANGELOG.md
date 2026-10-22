@@ -8,6 +8,8 @@
 
 - Self-hosters can run `NadekoBot migrate` to update the database without starting the bot.
 - Self-hosters can run `NadekoBot migrate-configs` to update `creds.yml` and the config files.
+- `ytProvider: service` in `searches.yml` plays and searches YouTube through a NadekoBot music service.
+- A NadeKloud bot plays and searches YouTube through the host's music service, when the host sets one.
 
 ### Changed
 
@@ -60,6 +62,7 @@
     - a stuck member download does not block them
 - `.setstatus` changes the status on every shard.
 - The bot shows its saved activity again after a `gamestatus` event ends.
+- A YouTube song plays when YouTube refuses its new link for a few seconds.
 
 ### Removed
 

@@ -12,6 +12,7 @@ public interface IMusicQueue
 
     public IReadOnlyCollection<IQueuedTrackInfo> List();
     IQueuedTrackInfo? GetCurrent(out int index);
+    IQueuedTrackInfo? GetNext(bool wrap);
     void Advance();
     void Clear();
     bool SetIndex(int index);

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
+using NadekoBot.Modules.Music;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace NadekoBot.Hosted.Endpoints;
@@ -21,6 +22,9 @@ public static class MusicToolEndpoints
         system.MapGet("/youtube", GetYoutube);
         system.MapPut("/youtube/proxy", SetYoutubeProxy);
         system.MapDelete("/youtube/proxy", ClearYoutubeProxy);
+        system.MapGet("/music-service", GetMusicService);
+        system.MapPut("/music-service", SetMusicService);
+        system.MapDelete("/music-service", ClearMusicService);
         return system;
     }
 
@@ -108,6 +112,36 @@ public static class MusicToolEndpoints
     {
         proxy.Clear();
         Log.Information("The YouTube proxy was removed. YouTube traffic goes direct");
+        return Results.NoContent();
+    }
+
+    // Never the key, which other bots share.
+    private static IResult GetMusicService(MusicServiceSetting service)
+    {
+        var current = service.Current;
+        return Results.Json(new MusicServiceDto(current?.Id, current?.BaseUrl), ApiJsonContext.Default.MusicServiceDto);
+    }
+
+    // The key becomes a log secret before the file exists, so no line which the bot writes with it shows the key.
+    // The bot uses the service from its next search; no restart.
+    private static IResult SetMusicService(
+        SetMusicServiceRequest body,
+        MusicServiceSetting service,
+        LogStreamService logs)
+    {
+        if (!MusicServiceSetting.TryCreate(body.Id, body.Url, body.Key, out var entry))
+            return ApiErrors.InvalidValue;
+
+        logs.AddSecret(entry.Key);
+        service.Set(entry);
+        Log.Information("The music service is now {MusicServiceId}", entry.Id);
+        return Results.NoContent();
+    }
+
+    private static IResult ClearMusicService(MusicServiceSetting service)
+    {
+        service.Clear();
+        Log.Information("The music service was removed. YouTube music uses yt-dlp");
         return Results.NoContent();
     }
 }

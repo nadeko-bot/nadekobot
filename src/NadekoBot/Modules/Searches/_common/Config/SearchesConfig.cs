@@ -5,7 +5,7 @@ namespace NadekoBot.Modules.Searches;
 public sealed class SearchesConfig
 {
     [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
-    public int Version { get; set; } = 6;
+    public int Version { get; set; } = 7;
 
     [Comment("""
              Which engine should .search command
@@ -35,8 +35,16 @@ public sealed class SearchesConfig
              - `ytdlp` - default, recommended easy, uses `yt-dlp`. Requires `yt-dlp` to be installed and it's path added to env variables
 
              - `invidious` - recommended advanced, uses invidious api. Requires at least one invidious instance specified in the `invidiousInstances` property
+
+             - `service` - uses a NadekoBot music service for search and music. Requires `musicServiceUrl` below and the key in the NADEKOBOT_MUSIC_SERVICE_KEY environment variable
              """)]
     public YoutubeSearcher YtProvider { get; set; } = YoutubeSearcher.Ytdlp;
+
+    [Comment("""
+             Url of the NadekoBot music service which 'service' as the 'ytProvider' uses. Example: `http://10.0.0.5:8080`
+             The key goes in the NADEKOBOT_MUSIC_SERVICE_KEY environment variable.
+             """)]
+    public string MusicServiceUrl { get; set; } = string.Empty;
 
     [Comment("""
              Set the searx instance urls in case you want to use 'searx' for either img or web search.
@@ -84,5 +92,6 @@ public enum YoutubeSearcher
     Ytdl = 1,
     Ytdlp = 1,
     Invid = 3,
-    Invidious = 3
+    Invidious = 3,
+    Service = 4
 }

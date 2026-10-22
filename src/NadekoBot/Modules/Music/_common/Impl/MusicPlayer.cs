@@ -134,8 +134,9 @@ public sealed class MusicPlayer : IMusicPlayer
                         _ = p1.StartSpeakingAsync();
 
                     _ = OnStarted?.Invoke(this, track, index);
+                    PrefetchNextInternal();
 
-                    var (streamUrl, refused) = await GetStreamSourceAsync(track);
+                    var (streamUrl, refused, serviceHeaders) = await GetStreamSourceAsync(track);
                     if (refused)
                     {
                         Log.Warning("Skipped {Track}: its stream is not on a public address", track.Title);
@@ -173,7 +174,10 @@ public sealed class MusicPlayer : IMusicPlayer
                         }
 
                         string? httpProxy = null;
-                        if (!isLocal && !track.AllowLocalNetwork && !_publicProxy.TryGetUrl(out httpProxy))
+                        if (!isLocal
+                            && serviceHeaders is null
+                            && !track.AllowLocalNetwork
+                            && !_publicProxy.TryGetUrl(out httpProxy))
                         {
                             Log.Warning("Skipped {Track}: the public-only proxy is not available", track.Title);
                             StopAfterFailuresInternal(++failedInRow);
@@ -187,7 +191,8 @@ public sealed class MusicPlayer : IMusicPlayer
                             streamUrl,
                             isLocal,
                             httpProxy,
-                            MediaTools.Default.Ffmpeg);
+                            MediaTools.Default.Ffmpeg,
+                            serviceHeaders);
 
                         if (source is null)
                         {
@@ -295,7 +300,15 @@ public sealed class MusicPlayer : IMusicPlayer
                && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
     }
 
-    private async Task<(string? Url, bool Refused)> GetStreamSourceAsync(IQueuedTrackInfo track)
+    // The owner set the service url, so its own audio links may point to the local network.
+    public static bool IsTrustedServiceStream(MusicPlatform platform, string? serviceBaseUrl, string url)
+        => platform == MusicPlatform.Youtube
+           && serviceBaseUrl is not null
+           && MusicServiceClient.HasSameOrigin(serviceBaseUrl, url);
+
+    // ServiceHeaders is set only for a stream of the music service.
+    private async Task<(string? Url, bool Refused, string? ServiceHeaders)> GetStreamSourceAsync(
+        IQueuedTrackInfo track)
     {
         if (track.TrackInfo is SimpleTrackInfo sti)
         {
@@ -308,9 +321,9 @@ public sealed class MusicPlayer : IMusicPlayer
 
             if (sti.StreamUrl is not null
                 && !IsAllowedStreamUrl(sti.Platform, track.AllowLocalNetwork, sti.StreamUrl))
-                return (null, true);
+                return (null, true, null);
 
-            return (sti.StreamUrl, false);
+            return (sti.StreamUrl, false, null);
         }
 
         var trackId = track.TrackInfo.Id;
@@ -318,20 +331,36 @@ public sealed class MusicPlayer : IMusicPlayer
 
         var cachedPath = _audioFileCache.GetCachedPath(trackId, platform);
         if (cachedPath is not null)
-            return (cachedPath, false);
+            return (cachedPath, false, null);
 
-        var url = await _ytResolverFactory.GetYoutubeResolver().GetStreamUrl(trackId);
+        var resolver = _ytResolverFactory.GetYoutubeResolver();
+        var url = await resolver.GetStreamUrl(trackId);
         if (url is null)
-            return (null, false);
+            return (null, false, null);
+
+        // The service keeps its own copy, so the bot's file cache does not download it again.
+        if (resolver is ServiceYoutubeResolver service
+            && IsTrustedServiceStream(platform, service.Service.BaseUrl, url))
+            return (url, false, service.Service.FfmpegHeaders ?? string.Empty);
 
         if (!IsAllowedStreamUrl(platform, track.AllowLocalNetwork, url))
-            return (null, true);
+            return (null, true, null);
 
         // Only public streams go to the cache, so a member cannot replay a local stream which the owner queued.
         if (!track.AllowLocalNetwork || UrlExtensions.IsPublicUrl(url))
             _audioFileCache.GetOrStartDownload(trackId, platform, () => Task.FromResult<string?>(url));
 
-        return (url, false);
+        return (url, false, null);
+    }
+
+    private void PrefetchNextInternal()
+    {
+        if (Repeat == PlayerRepeatType.Track
+            || _ytResolverFactory.GetYoutubeResolver() is not ServiceYoutubeResolver service
+            || _queue.GetNext(Repeat == PlayerRepeatType.Queue) is not { Platform: MusicPlatform.Youtube } next)
+            return;
+
+        _ = service.Service.PrefetchAsync(next.TrackInfo.Id);
     }
 
     private bool? TryReadAndSendPcm(IVoiceProxy proxy)
@@ -564,6 +593,21 @@ public sealed class MusicPlayer : IMusicPlayer
         if (IsQueueFull)
             return default;
 
+        var result = await EnqueueInternalAsync(query, queuer, asNext, allowLocalNetwork, forcePlatform);
+        if (result.QueuedTrack is { Platform: MusicPlatform.Youtube } queued
+            && _ytResolverFactory.GetYoutubeResolver() is ServiceYoutubeResolver service)
+            _ = service.Service.PrefetchAsync(queued.TrackInfo.Id);
+
+        return result;
+    }
+
+    private async Task<(IQueuedTrackInfo? QueuedTrack, int Index)> EnqueueInternalAsync(
+        string query,
+        string queuer,
+        bool asNext,
+        bool allowLocalNetwork,
+        MusicPlatform? forcePlatform)
+    {
         var song = await _trackResolveProvider.QuerySongAsync(query, forcePlatform, allowLocalNetwork);
         if (song is null || IsQueueFull)
             return default;
@@ -591,7 +635,8 @@ public sealed class MusicPlayer : IMusicPlayer
                            var (query, platform) = data;
                            try
                            {
-                               await TryEnqueueTrackAsync(query, queuer, false, allowLocalNetwork, platform);
+                               if (!IsQueueFull)
+                                   await EnqueueInternalAsync(query, queuer, false, allowLocalNetwork, platform);
                                errorCount = 0;
                            }
                            catch (Exception ex)

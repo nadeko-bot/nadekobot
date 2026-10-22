@@ -13,6 +13,7 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
     private readonly GoogleSearchService _gss;
     private readonly YoutubeDataApiSearchService _ytdata;
     private readonly InvidiousYtSearchService _iYtSs;
+    private readonly ServiceYtSearchService _serviceYt;
     private readonly GoogleScrapeService _gscs;
     private readonly BraveSearchService _brave;
     private readonly DuckDuckGoScrapeService _ddg;
@@ -26,6 +27,7 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         YtDlpSearchService ytdlp,
         YoutubeDataApiSearchService ytdata,
         InvidiousYtSearchService iYtSs,
+        ServiceYtSearchService serviceYt,
         BraveSearchService brave,
         DuckDuckGoScrapeService ddg,
         BotPolicy policy)
@@ -36,6 +38,7 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
         _gss = gss;
         _gscs = gscs;
         _iYtSs = iYtSs;
+        _serviceYt = serviceYt;
         _ytdata = ytdata;
         _brave = brave;
         _ddg = ddg;
@@ -69,6 +72,7 @@ public sealed class DefaultSearchServiceFactory : ISearchServiceFactory, INServi
             YoutubeSearcher.YtDataApiv3 => _ytdata,
             YoutubeSearcher.Invidious => _iYtSs,
             YoutubeSearcher.Ytdlp => _ytdlp,
+            YoutubeSearcher.Service => _serviceYt,
             _ => throw new ArgumentOutOfRangeException()
         };
 }

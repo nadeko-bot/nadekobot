@@ -64,6 +64,7 @@ public static class ServiceCollectionExtensions
         svcs.AddSingleton<ITrackResolveProvider, TrackResolveProvider>();
         svcs.AddSingleton<YtdlYoutubeResolver>();
         svcs.AddSingleton<InvidiousYoutubeResolver>();
+        svcs.AddSingleton<ServiceYoutubeResolver>();
         svcs.AddSingleton<IYoutubeResolverFactory, YoutubeResolverFactory>();
         svcs.AddSingleton<ILocalTrackResolver, LocalTrackResolver>();
         svcs.AddSingleton<IRadioResolver, RadioResolver>();
@@ -102,6 +103,17 @@ public static class ServiceCollectionExtensions
             .ConfigurePrimaryHttpMessageHandler(() => svcs.Resolve<BotPolicy>().Managed
                 ? ExternalHttp.CreateHandler()
                 : new HttpClientHandler());
+
+        // The owner sets the music service url, often a local address, so a self-hosted bot may reach the local network.
+        // A managed bot reaches only the service which the manager set.
+        proxySvcs.AddHttpClient(MusicServiceClient.HTTP_CLIENT_NAME, static c => c.Timeout = TimeSpan.FromSeconds(30))
+            .ConfigurePrimaryHttpMessageHandler(() => svcs.Resolve<BotPolicy>().Managed
+                ? MusicServiceSetting.Default.CreateHandler()
+                : new SocketsHttpHandler
+                {
+                    AllowAutoRedirect = false,
+                    ConnectTimeout = TimeSpan.FromSeconds(10)
+                });
 
         // A self-hosted bot keeps the system proxy, which some owners use for YouTube, behind the address check.
         proxySvcs.AddHttpClient(AudioFileCacheService.HTTP_CLIENT_NAME)

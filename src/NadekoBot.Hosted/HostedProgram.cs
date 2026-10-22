@@ -2,6 +2,7 @@ using Discord.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NadekoBot.Modules.Music;
 
 namespace NadekoBot.Hosted;
 
@@ -95,6 +96,7 @@ public static class HostedProgram
         }
 
         logs?.AddSecret(new YoutubeUpstreamSetting(paths.YoutubeProxy).Proxy?.Password);
+        logs?.AddSecret(new MusicServiceSetting(paths.MusicService).Current?.Key);
         logs?.AddSecrets(creds.Token, settings.ApiKey);
 
         if (mode == HostMode.Coordinated && !settings.HasKey)

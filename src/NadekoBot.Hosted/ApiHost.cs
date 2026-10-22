@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NadekoBot.Hosted.Endpoints;
 using NadekoBot.Modules.Administration.Services;
+using NadekoBot.Modules.Music;
 using NadekoBot.Modules.NadekoExpressions;
 using NadekoBot.Modules.Owner.Services;
 using NadekoBot.Modules.Utility;
@@ -97,6 +98,7 @@ public static class ApiHost
         services.AddSingleton(new MediaTools(paths.ToolsDir));
         services.AddSingleton<ToolService>();
         services.AddSingleton(new YoutubeUpstreamSetting(paths.YoutubeProxy));
+        services.AddSingleton(new MusicServiceSetting(paths.MusicService));
         services.AddSingleton(YoutubeStats.Shared);
         services.AddSingleton<IProcessRestarter, ProcessRestarter>();
         // The program passes the instance which the logger already writes to.
