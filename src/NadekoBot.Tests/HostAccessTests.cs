@@ -57,6 +57,27 @@ public sealed class HostAccessTests
     }
 
     [Test]
+    public void Ytdl_SearchNamesTheExtractorButLinksStayLinks()
+    {
+        Assert.That(YtdlOperation.PrepareSearchTarget(" Metallica: Enter Sandman ", 1, false, false),
+            Is.EqualTo("ytsearch1:Metallica: Enter Sandman"));
+        Assert.That(YtdlOperation.PrepareSearchTarget("lofi: beats", 5, false, false), Is.EqualTo("ytsearch5:lofi: beats"));
+
+        foreach (var unchanged in new[]
+                 {
+                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "youtu.be/dQw4w9WgXcQ", "dQw4w9WgXcQ",
+                     "https://soundcloud.com/a/b"
+                 })
+            Assert.That(YtdlOperation.PrepareSearchTarget(unchanged, 1, false, false), Is.EqualTo(unchanged), unchanged);
+
+        Assert.That(YtdlOperation.PrepareSearchTarget("http://127.0.0.1:8080/a.mp3", 1, false, false), Is.Null);
+        Assert.That(YtdlOperation.PrepareSearchTarget("127.0.0.1/a.mp3", 1, true, false), Is.Null);
+        Assert.That(YtdlOperation.PrepareSearchTarget("127.0.0.1/youtube.com/watch?v=dQw4w9WgXcQ", 1, false, false), Is.Null);
+        Assert.That(YtdlOperation.PrepareSearchTarget("lofi.beats/chill", 1, false, false), Is.EqualTo("ytsearch1:lofi.beats/chill"));
+        Assert.That(YtdlOperation.PrepareSearchTarget("http://127.0.0.1:8080/a.mp3", 1, false, true),
+            Is.EqualTo("http://127.0.0.1:8080/a.mp3"));
+    }
+    [Test]
     public void StreamUrls_MustBePublicUnlessTheOwnerQueuedThem()
     {
         Assert.That(MusicPlayer.IsAllowedStreamUrl(MusicPlatform.Local, false, "/music/a.mp3"), Is.False);

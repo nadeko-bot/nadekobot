@@ -63,6 +63,7 @@
 - `.setstatus` changes the status on every shard.
 - The bot shows its saved activity again after a `gamestatus` event ends.
 - A YouTube song plays when YouTube refuses its new link for a few seconds.
+- `.play` and `.youtube` / `.yt` work with a colon in the search text.
 
 ### Removed
 

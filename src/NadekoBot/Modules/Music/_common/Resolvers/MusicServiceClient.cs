@@ -26,7 +26,6 @@ public sealed class MusicServiceClient(
 
     private const int MAX_RESPONSE_BYTES = 2 * 1024 * 1024;
     private const int MAX_QUERY_LENGTH = 200;
-    private const int VIDEO_ID_LENGTH = 11;
     private const int MIN_PLAYLIST_ID_LENGTH = 12;
     private const int MAX_PLAYLIST_ID_LENGTH = 64;
     private const int MAX_LOGGED_ERROR_LENGTH = 64;
@@ -43,7 +42,7 @@ public sealed class MusicServiceClient(
     private sealed record PrefetchBody(string[] Ids);
 
     public static bool IsVideoId(ReadOnlySpan<char> id)
-        => id.Length == VIDEO_ID_LENGTH && !id.ContainsAnyExcept(_idChars);
+        => YoutubeHelpers.IsVideoId(id);
 
     public static bool IsPlaylistId(ReadOnlySpan<char> id)
         => id.Length is >= MIN_PLAYLIST_ID_LENGTH and <= MAX_PLAYLIST_ID_LENGTH && !id.ContainsAnyExcept(_idChars);

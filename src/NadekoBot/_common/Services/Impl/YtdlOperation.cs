@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using NadekoBot.Modules.Music;
 
 namespace NadekoBot.Services;
 
@@ -98,6 +99,34 @@ public sealed class YtdlOperation
     public bool IsAllowedTarget(string arg)
         => IsAllowedTarget(arg, _bareHostIsUrl);
 
+    // yt-dlp reads "word: more words" as a link with the scheme "word" and skips --default-search, so a search
+    // names its extractor. Links and bare video ids go through as they are. Null when the text is refused.
+    public static string PrepareSearchTarget(string query, int count, bool bareHostIsUrl, bool allowLocalNetwork)
+    {
+        var q = query.AsSpan().Trim();
+        var asIs = q.Contains("://", StringComparison.Ordinal)
+                   || YoutubeHelpers.IsVideoId(q)
+                   || YoutubeHelpers.YtVideoIdRegex.IsMatch(q);
+
+        // Text which yt-dlp gets as it is must not be a local link, even without a scheme.
+        if (!allowLocalNetwork && !IsAllowedTarget(query, bareHostIsUrl || asIs))
+            return null;
+
+        return asIs ? q.ToString() : $"ytsearch{count}:{q}";
+    }
+
+    public Task<string> SearchAsync(string query, int count, bool allowLocalNetwork = false)
+    {
+        var target = PrepareSearchTarget(query, count, _bareHostIsUrl, allowLocalNetwork);
+        if (target is null)
+        {
+            Log.Information("yt-dlp refused a non-public target: {Target}", query);
+            return Task.FromResult<string>(default);
+        }
+
+        return GetDataInternalAsync([target], allowLocalNetwork, targetsChecked: true);
+    }
+
     private bool AreAllowedTargets(string[] args)
     {
         foreach (var a in args)
@@ -118,9 +147,9 @@ public sealed class YtdlOperation
     public Task<string> GetDataAsync(string arg, bool allowLocalNetwork)
         => GetDataInternalAsync([arg], allowLocalNetwork);
 
-    private async Task<string> GetDataInternalAsync(string[] args, bool allowLocalNetwork)
+    private async Task<string> GetDataInternalAsync(string[] args, bool allowLocalNetwork, bool targetsChecked = false)
     {
-        if (!allowLocalNetwork && !AreAllowedTargets(args))
+        if (!allowLocalNetwork && !targetsChecked && !AreAllowedTargets(args))
             return default;
 
         try
