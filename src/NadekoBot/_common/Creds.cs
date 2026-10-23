@@ -161,6 +161,13 @@ public sealed class Creds : IBotCreds
              """)]
     public string BraveSearchApiKey { get; set; }
 
+    [Comment("""
+             OMDb API key. Used only for the .movie command.
+             Get a free key (1,000 requests per day) at https://www.omdbapi.com/apikey.aspx
+             The NADEKOBOT_OMDB_API_KEY environment variable overrides this value.
+             """)]
+    public string OmdbApiKey { get; set; }
+
     public Creds()
     {
         Token = string.Empty;
@@ -189,6 +196,7 @@ public sealed class Creds : IBotCreds
         Seq = new();
         SteamApiKey = string.Empty;
         BraveSearchApiKey = string.Empty;
+        OmdbApiKey = string.Empty;
     }
 
     public class DbOptions

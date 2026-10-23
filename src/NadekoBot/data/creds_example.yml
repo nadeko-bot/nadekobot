@@ -121,3 +121,7 @@ seq:
 # Steam Web API key. Used for steam related commands.
 # Obtain by registerting a Web API key at https://steamcommunity.com/dev/apikey
 steamApiKey: ''
+# OMDb API key. Used only for the .movie command.
+# Get a free key (1,000 requests per day) at https://www.omdbapi.com/apikey.aspx
+# The NADEKOBOT_OMDB_API_KEY environment variable overrides this value.
+omdbApiKey: ''

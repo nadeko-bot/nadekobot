@@ -1,47 +1,79 @@
 ar:
   imdb_fail: فشل في العثور على ذلك الفيلم.
+  omdb_api_missing: لم يحدد مالك البوت مفتاح OmdbApiKey. لا يمكنك استخدام هذه الميزة.
+  omdb_api_refused: مفتاح OMDb الخاص بمالك البوت لا يعمل أو وصل إلى حده اليومي.
 
 de-DE:
   imdb_fail: Der Film konnte nicht gefunden werden.
+  omdb_api_missing: Der Bot-Besitzer hat OmdbApiKey nicht festgelegt. Du kannst diese Funktion nicht nutzen.
+  omdb_api_refused: Der OMDb-Schlüssel des Bot-Besitzers funktioniert nicht oder hat sein Tageslimit erreicht.
 
 es-ES:
   imdb_fail: Error encontrando esa película.
+  omdb_api_missing: El propietario del bot no especificó OmdbApiKey. No puedes usar esta opción.
+  omdb_api_refused: La clave de OMDb del propietario del bot no funciona o ha alcanzado su límite diario.
 
 fr-FR:
   imdb_fail: Échec pour trouver ce film.
+  omdb_api_missing: Le propriétaire du bot n'a pas spécifié OmdbApiKey. Vous ne pouvez pas utiliser cette fonctionnalité.
+  omdb_api_refused: La clé OMDb du propriétaire du bot ne fonctionne pas ou a atteint sa limite quotidienne.
 
 id-ID:
   imdb_fail: Gagal menemukan film tersebut.
+  omdb_api_missing: Pemilik bot belum menyetel OmdbApiKey. Kamu nggak bisa pakai fitur ini.
+  omdb_api_refused: Kunci OMDb milik pemilik bot nggak berfungsi atau sudah mencapai batas harian.
 
 ja-JP:
   imdb_fail: 指定された映画が見つかりませんでした。
+  omdb_api_missing: ボットの所有者がOmdbApiKeyを指定していないため、この機能は使用できません。
+  omdb_api_refused: ボット所有者のOMDbキーが無効か、1日の上限に達しています。
 
 ko-KR:
   imdb_fail: 해당 영화를 찾지 못했어요.
+  omdb_api_missing: 봇 소유자가 OmdbApiKey를 설정하지 않았어요. 이 기능을 사용할 수 없습니다.
+  omdb_api_refused: 봇 소유자의 OMDb 키가 작동하지 않거나 일일 한도에 도달했어요.
 
 pl-PL:
   imdb_fail: Nie udało się znaleźć tego filmu.
+  omdb_api_missing: Właściciel bota nie podał OmdbApiKey. Nie możesz korzystać z tej funkcji.
+  omdb_api_refused: Klucz OMDb właściciela bota nie działa albo osiągnął dzienny limit.
 
 pt-BR:
   imdb_fail: Não foi possível encontrar esse filme.
+  omdb_api_missing: O proprietário do bot não especificou a chave OmdbApiKey, portanto não é possível utilizar esse comando.
+  omdb_api_refused: A chave OMDb do proprietário do bot não funciona ou atingiu o limite diário.
 
 ru-RU:
   imdb_fail: Не удалось найти этот фильм.
+  omdb_api_missing: Владелец бота не указал OmdbApiKey. Вы не можете использовать эту функцию.
+  omdb_api_refused: Ключ OMDb владельца бота не работает или достиг дневного лимита.
 
 sr-Cyrl-RS:
   imdb_fail: Нисам успео да пронађем тај филм.
+  omdb_api_missing: Власник бота није навео OmdbApiKey. Не можеш да користиш ову функцију.
+  omdb_api_refused: OMDb кључ власника бота не ради или је достигао дневно ограничење.
 
 tr-TR:
   imdb_fail: O film bulunamadı.
+  omdb_api_missing: Bot sahibi OmdbApiKey belirtmemiş. Bu özelliği kullanamazsın.
+  omdb_api_refused: Bot sahibinin OMDb anahtarı çalışmıyor veya günlük sınırına ulaştı.
 
 ts-TS:
   imdb_fail: Failed to find that movie.
+  omdb_api_missing: Bot owner didn't set the OmdbApiKey. You can't use this right now.
+  omdb_api_refused: The bot owner's OMDb key doesn't work or hit its daily limit. Not my fault.
 
 uk-UA:
   imdb_fail: Не вдалося знайти цей фільм.
+  omdb_api_missing: Власник бота не вказав OmdbApiKey. Ти не можеш використовувати цю функцію.
+  omdb_api_refused: Ключ OMDb власника бота не працює або досяг денного ліміту.
 
 vi-VN:
   imdb_fail: Không tìm thấy phim đó.
+  omdb_api_missing: Chủ bot chưa thiết lập OmdbApiKey. Bạn không thể sử dụng chức năng này.
+  omdb_api_refused: Khóa OMDb của chủ bot không hoạt động hoặc đã đạt giới hạn hằng ngày.
 
 zh-CN:
   imdb_fail: 找不到那部電影。
+  omdb_api_missing: 机器人所有者没有指定 OmdbApiKey。你不能使用此功能。
+  omdb_api_refused: 机器人所有者的 OMDb 密钥无效，或者已经达到每日上限。

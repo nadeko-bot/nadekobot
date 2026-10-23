@@ -6,7 +6,7 @@ namespace NadekoBot.Modules.Searches;
 public partial class Searches
 {
     [Group]
-    public partial class MovieCommands : NadekoModule<SearchesService>
+    public partial class MovieCommands : NadekoModule<MovieService>
     {
         private async Task<bool> ValidateQuery([MaybeNullWhen(false)] string query)
         {
@@ -25,10 +25,17 @@ public partial class Searches
 
             await ctx.Channel.TriggerTypingAsync();
 
-            var movie = await _service.GetMovieDataAsync(query);
-            if (movie is null)
+            var result = await _service.GetMovieDataAsync(query);
+            if (result.TryPickT1(out var error, out var movie))
             {
-                await Response().Error(strs.imdb_fail).SendAsync();
+                await Response()
+                      .Error(error switch
+                      {
+                          MovieError.MissingKey => strs.omdb_api_missing,
+                          MovieError.KeyRefused => strs.omdb_api_refused,
+                          _ => strs.imdb_fail
+                      })
+                      .SendAsync();
                 return;
             }
 
@@ -39,9 +46,9 @@ public partial class Searches
                          .WithTitle(movie.Title)
                          .WithUrl($"https://www.imdb.com/title/{movie.ImdbId}/")
                          .WithDescription(movie.Plot.TrimTo(1000))
-                         .AddField("Rating", movie.ImdbRating, true) 
-                         .AddField("Genre", movie.Genre, true)
-                         .AddField("Year", movie.Year, true)
+                         .AddField("Rating", movie.ImdbRating ?? "N/A", true)
+                         .AddField("Genre", movie.Genre ?? "N/A", true)
+                         .AddField("Year", movie.Year ?? "N/A", true)
                          .WithImageUrl(Uri.IsWellFormedUriString(movie.Poster, UriKind.Absolute)
                              ? movie.Poster
                              : null))

@@ -28,6 +28,8 @@
     - the AI agent cannot use them
     - stop a query after 15 seconds
 - `.sqlexec` stops a query after 60 seconds on a NadeKloud bot.
+- `.anime`, `.manga` and `.movie` do not use the nadeko.bot services.
+    - `.movie` needs a free OMDb key: `omdbApiKey` in `creds.yml` or the `NADEKOBOT_OMDB_API_KEY` environment variable
 
 ### Fixed
 
@@ -69,6 +71,11 @@
 
 - `.deletewaifu`, `.deletewaifus` and `.cleanupguilddata`
 
+### Obsolete
+
+- `aniapi.nadeko.bot` and `omdbapi.nadeko.bot` stop 3 days after the public bot gets this version.
+- Older versions then lose `.anime`, `.manga` and `.movie`.
+
 ### Dev
 
 - Added tests for timely claims, the greet queue, blackjack results and currency event payouts.
@@ -81,6 +88,7 @@
 - `NadekoBot.Hosted` API keeps the last 5,000 log lines, at most 8 MB.
 - Added tests for the saved bot status.
 - Added tests for the read-only owner SQL and for commands which the AI agent cannot run.
+- Added tests for the AniList and OMDb searches.
 
 ## [7.6.7] - 20.10.2026
 

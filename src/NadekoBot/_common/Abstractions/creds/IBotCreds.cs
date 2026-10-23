@@ -30,6 +30,7 @@ public interface IBotCreds
     SeqConfig Seq { get; set; }
     string SteamApiKey { get; }
     string BraveSearchApiKey { get; }
+    string OmdbApiKey { get; }
 }
 
 public interface IVotesSettings

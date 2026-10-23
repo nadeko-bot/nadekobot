@@ -349,29 +349,6 @@ public class SearchesService : INService
         }
     }
 
-    public async Task<OmdbMovie> GetMovieDataAsync(string name)
-    {
-        name = name.Trim().ToLowerInvariant();
-        return await _c.GetOrAddAsync(new($"movie:{name}"),
-            () => GetMovieDataFactory(name),
-            TimeSpan.FromDays(1));
-    }
-
-    private async Task<OmdbMovie> GetMovieDataFactory(string name)
-    {
-        using var http = _httpFactory.CreateClient();
-        var res = await http.GetStringAsync("https://omdbapi.nadeko.bot/"
-                                            + $"?t={Uri.EscapeDataString(name.Trim())}"
-                                            + "&y="
-                                            + "&plot=full"
-                                            + "&r=json");
-        var movie = JsonConvert.DeserializeObject<OmdbMovie>(res);
-        if (movie?.Title is null)
-            return null;
-        movie.Poster = await _google.ShortenUrl(movie.Poster);
-        return movie;
-    }
-
     public async Task<int> GetSteamAppIdByName(string query)
     {
         const string steamGameIdsKey = "steam_names_to_appid";

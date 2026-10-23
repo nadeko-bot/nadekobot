@@ -98,6 +98,8 @@ public static class HostedProgram
         logs?.AddSecret(new YoutubeUpstreamSetting(paths.YoutubeProxy).Proxy?.Password);
         logs?.AddSecret(new MusicServiceSetting(paths.MusicService).Current?.Key);
         logs?.AddSecrets(creds.Token, settings.ApiKey);
+        logs?.AddSecret(creds.OmdbApiKey);
+        logs?.AddSecret(Environment.GetEnvironmentVariable(NadekoBot.Modules.Searches.Services.MovieService.KEY_ENV_VAR));
 
         if (mode == HostMode.Coordinated && !settings.HasKey)
         {

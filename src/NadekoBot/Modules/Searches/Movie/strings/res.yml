@@ -1,1 +1,3 @@
 imdb_fail: Failed to find that movie.
+omdb_api_missing: Bot owner didn't specify OmdbApiKey. You can't use this functionality.
+omdb_api_refused: The bot owner's OMDb key does not work, or it reached its daily limit.
