@@ -28,6 +28,10 @@ public sealed class GiveawayService : INService, IReadyExecutor
     });
 
     private SortedSet<GiveawayModel> _giveawayCache = new(_endsAtComparer);
+
+    // message id -> giveaway id, so a reaction on any other message costs no database read
+    private readonly ConcurrentDictionary<ulong, int> _giveawayMessages = new();
+    private volatile bool _loaded;
     private readonly Lock _giveawayLock = new();
     private readonly NadekoRandom _rng;
 
@@ -69,11 +73,15 @@ public sealed class GiveawayService : INService, IReadyExecutor
         if (user.IsBot || user.IsWebhook)
             return;
 
-        if (r.Emote is Emoji e && e.Name == GiveawayEmoji)
+        if (r.Emote is Emoji e && e.Name == GiveawayEmoji && IsGiveawayMessage(msg.Id))
         {
             await LeaveGivawayAsync(msg.Id, user.Id);
         }
     }
+
+    // until the first load is done, every message may be a giveaway
+    private bool IsGiveawayMessage(ulong messageId)
+        => !_loaded || _giveawayMessages.ContainsKey(messageId);
 
     private async Task OnReactionAdded(
         Cacheable<IUserMessage, ulong> msg,
@@ -94,7 +102,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
             return;
 
 
-        if (r.Emote is Emoji e && e.Name == GiveawayEmoji)
+        if (r.Emote is Emoji e && e.Name == GiveawayEmoji && IsGiveawayMessage(msg.Id))
         {
             await JoinGivawayAsync(msg.Id, user.Id, user.Username);
         }
@@ -116,6 +124,11 @@ public sealed class GiveawayService : INService, IReadyExecutor
         {
             _giveawayCache = new(gas, _endsAtComparer);
         }
+
+        foreach (var ga in gas)
+            _giveawayMessages[ga.MessageId] = ga.Id;
+
+        _loaded = true;
 
         _ = Task.Run(EndLoopInternalAsync);
     }
@@ -181,6 +194,8 @@ public sealed class GiveawayService : INService, IReadyExecutor
             _giveawayCache.Add(ga);
         }
 
+        _giveawayMessages[ga.MessageId] = ga.Id;
+
         return ga.Id;
     }
 
@@ -207,6 +222,8 @@ public sealed class GiveawayService : INService, IReadyExecutor
         {
             _giveawayCache.Remove(giveaway);
         }
+
+        _giveawayMessages.TryRemove(giveaway.MessageId, out _);
 
         var winner = PickWinner(giveaway);
 
@@ -266,6 +283,8 @@ public sealed class GiveawayService : INService, IReadyExecutor
         {
             _giveawayCache.Remove(ga[0]);
         }
+
+        _giveawayMessages.TryRemove(ga[0].MessageId, out _);
 
         return true;
     }

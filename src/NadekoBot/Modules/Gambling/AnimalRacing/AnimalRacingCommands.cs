@@ -43,42 +43,53 @@ public partial class Gambling
         {
             var (options, _) = OptionsParser.ParseFrom(new RaceOptions(), args);
 
+            // a race without animals never starts and so never ends
+            if (_gamesConf.Data.RaceAnimals.Count == 0)
+                return Response().Error(strs.error_occured).SendAsync();
+
             var ar = new AnimalRace(options, _cs, _gamesConf.Data.RaceAnimals.Shuffle(), _quests);
             if (!_service.AnimalRaces.TryAdd(ctx.Guild.Id, ar))
                 return Response()
                     .Error(GetText(strs.animal_race), GetText(strs.animal_race_already_started))
                     .SendAsync();
 
-            ar.Initialize();
-
             var count = 0;
+            var channelId = ctx.Channel.Id;
 
             Task ClientMessageReceived(SocketMessage arg)
             {
-                _ = Task.Run(() =>
-                {
-                    try
-                    {
-                        if (arg.Channel.Id == ctx.Channel.Id)
-                        {
-                            if (ar.CurrentPhase == AnimalRace.Phase.Running && ++count % 9 == 0)
-                                raceMessage = null;
-                        }
-                    }
-                    catch
-                    {
-                    }
-                });
+                // every 9 messages the race message is sent again, so it stays visible
+                if (arg.Channel.Id == channelId
+                    && ar.CurrentPhase == AnimalRace.Phase.Running
+                    && Interlocked.Increment(ref count) % 9 == 0)
+                    raceMessage = null;
+
                 return Task.CompletedTask;
+            }
+
+            void EndRace()
+            {
+                _client.MessageReceived -= ClientMessageReceived;
+                _service.AnimalRaces.TryRemove(ctx.Guild.Id, out _);
+            }
+
+            Task ArOnStartingFailed(AnimalRace race)
+            {
+                EndRace();
+                race.Dispose();
+                return Response().Error(strs.animal_race_failed).SendAsync();
             }
 
             Task ArOnEnded(AnimalRace race)
             {
-                _client.MessageReceived -= ClientMessageReceived;
-                _service.AnimalRaces.TryRemove(ctx.Guild.Id, out _);
-                var winner = race.FinishedUsers[0];
+                EndRace();
+                var failed = race.Failed || race.FinishedUsers.Count == 0;
+                var winner = failed ? null : race.FinishedUsers[0];
                 var multi = race.Multi;
                 ar.Dispose();
+                if (winner is null)
+                    return Response().Error(strs.error_occured).SendAsync();
+
                 if (winner.Bet > 0)
                 {
                     return Response()
@@ -99,11 +110,12 @@ public partial class Gambling
                     .SendAsync();
             }
 
-            ar.OnStartingFailed += Ar_OnStartingFailed;
+            ar.OnStartingFailed += ArOnStartingFailed;
             ar.OnStateUpdate += Ar_OnStateUpdate;
             ar.OnEnded += ArOnEnded;
             ar.OnStarted += Ar_OnStarted;
             _client.MessageReceived += ClientMessageReceived;
+            ar.Initialize();
 
             return Response()
                 .Confirm(GetText(strs.animal_race),
@@ -147,12 +159,6 @@ public partial class Gambling
             }
         }
 
-        private Task Ar_OnStartingFailed(AnimalRace race)
-        {
-            _service.AnimalRaces.TryRemove(ctx.Guild.Id, out _);
-            race.Dispose();
-            return Response().Error(strs.animal_race_failed).SendAsync();
-        }
 
         [Cmd]
         [SpendsCurrency]

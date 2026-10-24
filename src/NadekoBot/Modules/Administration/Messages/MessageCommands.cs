@@ -117,6 +117,7 @@ public partial class Administration
 
         [Cmd]
         [UserPerm(ChannelPerm.ManageMessages)]
+        [BotPerm(ChannelPerm.ManageMessages)]
         public async Task AutoPublish()
         {
             if (ctx.Channel.GetChannelType() != ChannelType.News)

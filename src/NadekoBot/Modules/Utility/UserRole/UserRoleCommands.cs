@@ -1,3 +1,4 @@
+using System.Net;
 using NadekoBot.Modules.Utility.UserRole;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -36,14 +37,32 @@ public partial class Utility
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
+        [BotPerm(GuildPerm.ManageRoles)]
         public async Task UserRoleAssign(IGuildUser user, IRole role)
         {
-            if (!await CheckRoleHierarchy(role))
+            if (role.Id == ctx.Guild.EveryoneRole.Id || role.IsManaged)
             {
-                await Response().Error(strs.hierarchy).SendAsync();
+                await Response().Error(strs.userrole_role_invalid).SendAsync();
                 return;
             }
-            
+
+            // sends its own error
+            if (!await CheckRoleHierarchy(role))
+                return;
+
+            if (!user.RoleIds.Contains(role.Id))
+            {
+                try
+                {
+                    await user.AddRoleAsync(role);
+                }
+                catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
+                {
+                    await Response().Error(strs.hierarchy).SendAsync();
+                    return;
+                }
+            }
+
             var success = await _urs.AddRoleAsync(ctx.Guild.Id, user.Id, role.Id);
 
             if (!success)
@@ -57,15 +76,34 @@ public partial class Utility
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
+        [BotPerm(GuildPerm.ManageRoles)]
         public async Task UserRoleRemove(IUser user, IRole role)
             => await UserRoleRemove(user, role.Id);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageRoles)]
+        [BotPerm(GuildPerm.ManageRoles)]
         public async Task UserRoleRemove(IUser user, ulong roleId)
         {
             var role = ctx.Guild.GetRole(roleId);
+
+            // the role is taken first, so a failure keeps the row which says the member has it
+            if (role is not null && user is IGuildUser member && member.RoleIds.Contains(roleId))
+            {
+                if (!await CheckRoleHierarchy(role))
+                    return;
+
+                try
+                {
+                    await member.RemoveRoleAsync(role);
+                }
+                catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
+                {
+                    await Response().Error(strs.hierarchy).SendAsync();
+                    return;
+                }
+            }
 
             var success = await _urs.RemoveRoleAsync(ctx.Guild.Id, user.Id, roleId);
             if (!success)

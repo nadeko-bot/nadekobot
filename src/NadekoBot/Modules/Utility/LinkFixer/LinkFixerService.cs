@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.RegularExpressions;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
@@ -23,45 +24,80 @@ public partial class LinkFixerService(DbService db, ShardData shardData) : IRead
 
         foreach (var fix in linkFixes)
         {
-            var guildDict = _guildLinkFixes.GetOrAdd(fix.GuildId, _ => new(StringComparer.InvariantCultureIgnoreCase));
+            var guildDict = _guildLinkFixes.GetOrAdd(fix.GuildId, static _ => new(StringComparer.InvariantCultureIgnoreCase));
             guildDict.TryAdd(fix.OldDomain.ToLowerInvariant(), fix.NewDomain);
         }
     }
 
+    public const int MAX_FIXED_LINKS = 5;
+
     public async ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
-        if (guild is null)
+        if (guild is not SocketGuild sg)
             return;
 
-        var guildId = guild.Id;
-        if (!_guildLinkFixes.TryGetValue(guildId, out var guildDict))
+        if (!_guildLinkFixes.TryGetValue(guild.Id, out var guildDict) || guildDict.IsEmpty)
             return;
 
-        var content = msg.Content;
+        // a reply needs read message history too, a 403 here would repeat on every message
+        if (msg.Channel is not IGuildChannel channel)
+            return;
+
+        var perms = sg.CurrentUser.GetPermissions(channel);
+        var canSend = channel is IThreadChannel ? perms.SendMessagesInThreads : perms.SendMessages;
+        if (!canSend || !perms.ReadMessageHistory)
+            return;
+
+        var reply = BuildReply(msg.Content, guildDict);
+        if (reply is null)
+            return;
+
+        await msg.ReplyAsync(reply, allowedMentions: AllowedMentions.None);
+    }
+
+    public static string? BuildReply(string? content, IReadOnlyDictionary<string, string> fixes)
+    {
         if (string.IsNullOrWhiteSpace(content))
-            return;
+            return null;
 
-        var words = content.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        foreach (var word in words)
+        StringBuilder? sb = null;
+        var found = 0;
+        foreach (var range in content.AsSpan().SplitAny(" \r\n\t"))
         {
-            var match = FullUrlRegex().Match(word);
+            var (start, length) = range.GetOffsetAndLength(content.Length);
+            if (length == 0)
+                continue;
+
+            var match = FullUrlRegex().Match(content, start, length);
             if (!match.Success)
                 continue;
 
-            var domain = match.Groups["domain"].Value;
-            if (string.IsNullOrWhiteSpace(domain))
+            if (!fixes.TryGetValue(match.Groups["domain"].Value, out var newDomain))
                 continue;
 
-            if (!guildDict.TryGetValue(domain, out var newDomain))
+            var prefix = match.Groups["prefix"];
+            var suffix = match.Groups["suffix"];
+            var lineLength = prefix.Length + newDomain.Length + suffix.Length;
+            if ((sb?.Length ?? 0) + (found > 0 ? 1 : 0) + lineLength > DiscordConfig.MaxMessageSize)
                 continue;
 
-            var newUrl = match.Groups["prefix"].Value + newDomain + match.Groups["suffix"].Value;
-            await msg.ReplyAsync(newUrl, allowedMentions: AllowedMentions.None);
+            sb ??= new();
+            if (found > 0)
+                sb.Append('\n');
+
+            sb.Append(prefix.ValueSpan)
+              .Append(newDomain)
+              .Append(suffix.ValueSpan);
+
+            if (++found == MAX_FIXED_LINKS)
+                break;
         }
+
+        return sb?.ToString();
     }
 
     [GeneratedRegex(@"(?<prefix>https?://)(?:www.)?(?<domain>[a-zA-Z0-9\-\.]+)(?<suffix>/.*)?")]
-    private partial Regex FullUrlRegex();
+    private static partial Regex FullUrlRegex();
     
     [GeneratedRegex(@"(?<prefix>https?://)?(?:ww[w\d].)?(?<domain>[a-zA-Z0-9\-\.]+)(?<suffix>/.*)?")]
     public partial Regex PartialUrlRegex();
@@ -77,7 +113,8 @@ public partial class LinkFixerService(DbService db, ShardData shardData) : IRead
     {
         oldDomain = oldDomain.ToLowerInvariant();
 
-        var guildDict = _guildLinkFixes.GetOrAdd(guildId, _ => new ConcurrentDictionary<string, string>());
+        var guildDict = _guildLinkFixes.GetOrAdd(guildId,
+            static _ => new ConcurrentDictionary<string, string>(StringComparer.InvariantCultureIgnoreCase));
         guildDict[oldDomain] = newDomain;
 
         await using var uow = db.GetDbContext();

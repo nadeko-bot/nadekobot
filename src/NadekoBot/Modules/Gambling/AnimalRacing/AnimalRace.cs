@@ -109,6 +109,7 @@ public sealed class AnimalRace : IDisposable
         }
     }
 
+    // every path must fire OnStartingFailed or OnEnded, the commands clean up only on those events
     private async Task Start()
     {
         CurrentPhase = Phase.Running;
@@ -116,24 +117,41 @@ public sealed class AnimalRace : IDisposable
         {
             foreach (var user in _users)
             {
-                if (user.Bet > 0)
-                    await _currency.AddAsync(user.UserId,
-                        user.Bet,
-                        new("animalrace", "refund"));
+                if (user.Bet <= 0)
+                    continue;
+
+                try
+                {
+                    await _currency.AddAsync(user.UserId, user.Bet, new("animalrace", "refund"));
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Animal race refund of {Amount} to {UserId} failed", user.Bet, user.UserId);
+                }
             }
 
-            _ = OnStartingFailed?.Invoke(this);
             CurrentPhase = Phase.Ended;
+            _ = OnStartingFailed?.Invoke(this);
             return;
         }
 
-        foreach (var user in _users)
+        try
         {
-            await _quests.ReportActionAsync(user.UserId, QuestEventType.RaceJoined);
+            foreach (var user in _users)
+                await _quests.ReportActionAsync(user.UserId, QuestEventType.RaceJoined);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Animal race could not report the race quest");
         }
 
         _ = OnStarted?.Invoke(this);
-        _ = Task.Run(async () =>
+        _ = Task.Run(RunInternalAsync);
+    }
+
+    private async Task RunInternalAsync()
+    {
+        try
         {
             var rng = new NadekoRandom();
             while (!_users.All(x => x.Progress >= 60))
@@ -161,12 +179,22 @@ public sealed class AnimalRace : IDisposable
                     (long)(FinishedUsers[0].Bet * Multi),
                     new("animalrace", "win"));
             }
-
+        }
+        catch (Exception ex)
+        {
+            Failed = true;
+            Log.Error(ex, "Animal race failed while running");
+        }
+        finally
+        {
+            CurrentPhase = Phase.Ended;
             _ = OnEnded?.Invoke(this);
-        });
+        }
     }
 
     public double Multi { get; set; } = BASE_MULTIPLIER;
+
+    public bool Failed { get; private set; }
 
     public void Dispose()
     {
@@ -175,7 +203,7 @@ public sealed class AnimalRace : IDisposable
         OnEnded = null;
         OnStartingFailed = null;
         OnStateUpdate = null;
-        _locker.Dispose();
+        // the semaphore is not disposed: OnStartingFailed runs while it is held, and the holder still releases it
         _users.Clear();
     }
 }

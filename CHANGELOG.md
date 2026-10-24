@@ -2,6 +2,26 @@
 
 *a,c,f,r,o,d*
 
+## [7.7.1] - TBD
+
+### Fixed
+
+- A `.race` which does not start leaves nothing running in the bot.
+- `.autopublish` needs Manage Messages in the channel.
+- The bot turns auto-publish off in a server where it cannot publish.
+- The link fixer sends one reply for each message
+    - fixes up to 5 links
+    - does nothing where the bot cannot reply
+    - finds links with capital letters
+- `.userroleassign` / `.ura` gives the role to the member
+    - refuses @everyone and integration roles
+- `.userroleremove` / `.urr` takes the role from the member.
+
+### Dev
+
+- Giveaways read the database only for reactions on giveaway messages.
+- Added link fixer tests.
+
 ## [7.7.0] - 24.10.2026
 
 ### Added
