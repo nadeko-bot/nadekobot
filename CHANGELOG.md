@@ -2,24 +2,23 @@
 
 *a,c,f,r,o,d*
 
-## [7.7.0] - TBD
+## [7.7.0] - 24.10.2026
 
 ### Added
 
-- Self-hosters can run `NadekoBot migrate` to update the database without starting the bot.
-- Self-hosters can run `NadekoBot migrate-configs` to update `creds.yml` and the config files.
-- `ytProvider: service` in `searches.yml` plays and searches YouTube through a NadekoBot music service.
+- `ytProvider: service` in `searches.yml` plays and searches YouTube through a NadekoBot music service
+    - set `musicServiceUrl` in `searches.yml` and the key in the `NADEKOBOT_MUSIC_SERVICE_KEY` environment variable
 - A NadeKloud bot plays and searches YouTube through the host's music service, when the host sets one.
 
 ### Changed
 
-- `.blackjack` / `.bj` pays 3:2 for a blackjack.
 - A self-hosted bot asks Discord only for the privileged intents which its application has.
 - `.purgeuser` removes only the personal data of a user, and works on the public bot
-    - replaces the name of the user
+    - replaces the name of the user with `[deleted]`
     - deletes the waifu profile text, todos, reminders and scheduled commands
     - keeps currency, xp, waifus, clubs, warnings and other records
 - `.setstatus`, `.setactivity` / `.setgame` and `.setstream` keep the bot's status after a restart
+    - `.setstatus` changes the status on every shard
     - `.setactivity` / `.setgame` and `.setstream` turn off `.rotateplaying` / `.ropl`
     - `.setstream` needs a stream name and a Twitch or YouTube link
 - `.rotateplaying` / `.ropl` shows the saved activity again when the rotation stops.
@@ -27,16 +26,17 @@
     - work only in DMs
     - the AI agent cannot use them
     - stop a query after 15 seconds
-- `.sqlexec` stops a query after 60 seconds on a NadeKloud bot.
-- `.anime`, `.manga` and `.movie` do not use the nadeko.bot services.
-    - `.movie` needs a free OMDb key: `omdbApiKey` in `creds.yml` or the `NADEKOBOT_OMDB_API_KEY` environment variable
+- `.sqlexec` stops a write after 60 seconds on a NadeKloud bot.
+- `.anime` / `.ani`, `.manga` / `.mang` and `.movie` / `.omdb` get their data from AniList and OMDb
+    - `.movie` / `.omdb` needs a free OMDb key: `omdbApiKey` in `creds.yml` or the `NADEKOBOT_OMDB_API_KEY` environment variable
 
 ### Fixed
 
 - `.timely` gives one claim per member for each period, on every shard.
 - A join raid on one server does not delay greet, bye and boost messages on other servers.
-- `.greet` and `.boost` turn off when their channel is deleted.
+- `.greet` and `.boost` turn off when someone deletes their channel.
 - `.blackjack` / `.bj` pays correctly
+    - a blackjack pays 3:2
     - a tie with the dealer gives the bet back
     - only the first two cards can make a blackjack
 - `.eventstart` events pay every member who claimed before the event ends.
@@ -51,7 +51,7 @@
 - `.iam` and `.iamnot` / `.iamn` give clear errors
     - `.iam` works when the required role of a group was deleted
     - both say when the bot cannot give or take the role
-- `.sargroupname` / `.gn` gives the correct answer for a missing group and a removed name.
+- `.groupname` / `.gn` gives the correct answer for a missing group and a removed name.
 - `.time` shows the correct time and timezone, also when many members use it.
 - `.crypto` / `.c` shows the price when the chart is not available.
 - `.stock` shows the correct change percent.
@@ -62,10 +62,9 @@
     - on the public bot, in servers with up to 10,000 members
     - in larger servers, they say that the list can be incomplete
     - a stuck member download does not block them
-- `.setstatus` changes the status on every shard.
 - The bot shows its saved activity again after a `gamestatus` event ends.
 - A YouTube song plays when YouTube refuses its new link for a few seconds.
-- `.play` and `.youtube` / `.yt` work with a colon in the search text.
+- `.play` / `.p` and `.youtube` / `.yt` work with a colon in the search text.
 
 ### Removed
 
@@ -74,21 +73,15 @@
 ### Obsolete
 
 - `aniapi.nadeko.bot` and `omdbapi.nadeko.bot` stop 3 days after the public bot gets this version.
-- Older versions then lose `.anime`, `.manga` and `.movie`.
+- Older versions then lose `.anime` / `.ani`, `.manga` / `.mang` and `.movie` / `.omdb`.
 
 ### Dev
 
-- Added tests for timely claims, the greet queue, blackjack results and currency event payouts.
-- Added tests for updates from v5 databases.
-- Added tests for stream follows, self-assigned roles, time lookups and command cooldowns.
-- Added tests for the intent check of the self-hosted bot.
-- Added tests for `.purgeuser` and the member download.
-- `NadekoBot.Hosted` API can read and set the bot's status and activity.
-- `NadekoBot.Hosted` API sends the template, the values and the exception start of each log line.
-- `NadekoBot.Hosted` API keeps the last 5,000 log lines, at most 8 MB.
-- Added tests for the saved bot status.
-- Added tests for the read-only owner SQL and for commands which the AI agent cannot run.
-- Added tests for the AniList and OMDb searches.
+- Added tests for timely claims, greets, blackjack, currency events, stream alerts, self-assigned roles, `.time` and cooldowns.
+- Added tests for database and config updates, intents, `.purgeuser`, member downloads, bot status, owner SQL and AI agent limits.
+- Added tests for the music service and the AniList and OMDb searches.
+- `NadekoBot.Hosted` API sets the bot status and the music service setting, and sends structured log lines.
+- `NadekoBot.Migrate` updates a database or the config files without the bot.
 
 ## [7.6.7] - 20.10.2026
 
