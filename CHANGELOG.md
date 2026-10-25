@@ -2,7 +2,11 @@
 
 *a,c,f,r,o,d*
 
-## [7.7.1] - TBD
+## [7.7.1] - 25.10.2026
+
+### Changed
+
+- The bot sends the DM help text to each user at most once in 10 seconds.
 
 ### Fixed
 
@@ -17,12 +21,16 @@
     - refuses @everyone and integration roles
 - `.userroleremove` / `.urr` takes the role from the member.
 - The first song after the bot joins a voice channel has sound.
+- The bot sends the DM help text
+    - for keywords in any letter case
+    - for every DM when the keyword list is empty
 
 ### Dev
 
 - Giveaways read the database only for reactions on giveaway messages.
 - Added link fixer tests.
 - Added voice connection tests.
+- Added DM help text tests.
 
 ## [7.7.0] - 24.10.2026
 
