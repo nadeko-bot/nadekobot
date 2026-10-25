@@ -16,6 +16,7 @@ namespace NadekoBot.Voice
         private readonly int bitDepth;
 
         public LibOpusEncoder Encoder { get; }
+        private LibOpusDecoder? _decoder;
         private readonly ArrayPool<byte> _arrayPool;
 
         // pre-allocated buffers to avoid per-packet heap allocations
@@ -27,7 +28,7 @@ namespace NadekoBot.Voice
         public int BitDepth => bitDepth * 8;
         public int Delay => frameDelay;
 
-        private int FrameSizePerChannel => Encoder.FrameSizePerChannel;
+        public int FrameSizePerChannel => Encoder.FrameSizePerChannel;
         public int InputLength => FrameSizePerChannel * channels * bitDepth;
 
         EncodeDelegate Encode;
@@ -168,8 +169,21 @@ namespace NadekoBot.Voice
             }
         }
 
+        // Decodes one packet into a frame in the input format. Returns the samples per channel, or a negative OpusError.
+        public int DecodeFrame(ReadOnlySpan<byte> packet, Span<byte> pcm, bool reset)
+        {
+            var decoder = _decoder ??= new LibOpusDecoder(sampleRate, channels);
+            if (reset)
+                decoder.Reset();
+
+            return decoder.Decode(packet, pcm.Slice(0, InputLength), bitDepth == sizeof(float));
+        }
+
         public void Dispose()
-            => Encoder.Dispose();
+        {
+            Encoder.Dispose();
+            _decoder?.Dispose();
+        }
     }
 
     public enum SendPcmError

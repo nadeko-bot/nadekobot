@@ -12,6 +12,11 @@ public sealed class MusicPlayer : IMusicPlayer
 {
     private const int MAX_SEND_ERRORS = 50;
     private const int ERROR_SLEEP_MS = 200;
+    private const int IDLE_WAIT_MS = 500;
+    private const int NO_PROXY_WAIT_MS = 200;
+    private const int VOICE_READY_POLL_MS = 20;
+    private const int VOICE_READY_TIMEOUT_MS = 10_000;
+    private const float UNITY_VOLUME_EPSILON = 0.0001f;
 
     // With repeat on, a track which cannot play comes back at once, so the player stops instead of retrying it.
     private const int MAX_FAILED_TRACKS_IN_ROW = 3;
@@ -42,6 +47,16 @@ public sealed class MusicPlayer : IMusicPlayer
     private readonly AudioFileCacheConfigService _musicConfig;
     private readonly ISongBuffer _songBuffer;
     private readonly PublicOnlyProxy _publicProxy;
+    private readonly Func<IVoiceProxy, SendResult> _sendPcm;
+    private readonly Func<IVoiceProxy, SendResult> _sendOpus;
+
+    // Wakes the play loop when a track, a proxy or a skip arrives, instead of waiting for the next poll.
+    private readonly SemaphoreSlim _wake = new(0, 1);
+
+    private volatile OpusStreamSource? _opusSource;
+    private bool _decodingOpus;
+    private byte[]? _opusFrame;
+    private byte[]? _decodedPcm;
 
     private volatile bool skipped;
     private int? forceIndex;
@@ -79,12 +94,31 @@ public sealed class MusicPlayer : IMusicPlayer
             _adjustVolume = AdjustVolumeFloat32;
 
         _songBuffer = new PoopyBufferImmortalized(_vc.InputLength);
+        _sendPcm = TryReadAndSendPcm;
+        _sendOpus = TryReadAndSendOpus;
 
         _ = Task.Run(PlayLoopAsync);
     }
 
     public void SetProxy(IVoiceProxy proxy)
-        => _proxy = proxy;
+    {
+        _proxy = proxy;
+        WakeInternal();
+    }
+
+    private void WakeInternal()
+    {
+        if (_wake.CurrentCount > 0)
+            return;
+
+        try
+        {
+            _wake.Release();
+        }
+        catch (SemaphoreFullException)
+        {
+        }
+    }
 
     private static VoiceClient GetVoiceClient(QualityPreset qualityPreset)
         => qualityPreset switch
@@ -110,13 +144,13 @@ public sealed class MusicPlayer : IMusicPlayer
                 if (track is null || IsStopped)
                 {
                     failedInRow = 0;
-                    await Task.Delay(500);
+                    await _wake.WaitAsync(IDLE_WAIT_MS);
                     continue;
                 }
 
                 if (_proxy is null)
                 {
-                    await Task.Delay(200);
+                    await _wake.WaitAsync(NO_PROXY_WAIT_MS);
                     continue;
                 }
 
@@ -128,6 +162,8 @@ public sealed class MusicPlayer : IMusicPlayer
                 }
 
                 using var cts = new CancellationTokenSource();
+                OpusStreamSource? opus = null;
+                FfmpegTrackDataSource? ffmpeg = null;
                 try
                 {
                     if (_proxy is { } p1)
@@ -136,65 +172,59 @@ public sealed class MusicPlayer : IMusicPlayer
                     _ = OnStarted?.Invoke(this, track, index);
                     PrefetchNextInternal();
 
-                    var (streamUrl, refused, serviceHeaders) = await GetStreamSourceAsync(track);
-                    if (refused)
+                    // Voice connects while the stream opens, so the first frame goes out as soon as both are ready.
+                    var voiceReady = WaitForVoiceReadyAsync(cts.Token);
+
+                    var source = await GetStreamSourceAsync(track);
+                    if (source.Refused)
                     {
                         Log.Warning("Skipped {Track}: its stream is not on a public address", track.Title);
                         StopAfterFailuresInternal(++failedInRow);
                         continue;
                     }
 
-                    var isLocal = track.Platform == MusicPlatform.Local
-                                  || (streamUrl is not null
-                                      && !streamUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase));
-
-                    if (!await WaitForVoiceReadyAsync())
+                    if (source.Url is not { } streamUrl)
                     {
-                        Log.Warning("Voice not ready after 10s, skipping track");
+                        IsStopped = true;
+                        Log.Warning("Stream URL was null for track {Track}", track.Title);
                         continue;
                     }
 
-                    var songFinished = false;
+                    var isLocal = track.Platform == MusicPlatform.Local
+                                  || !streamUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase);
 
-                    // passthrough only for cached local files at unity volume
-                    if (isLocal && track.Platform == MusicPlatform.Youtube
-                        && Math.Abs(Volume - 1f) < 0.0001f
-                        && streamUrl is not null)
+                    string? httpProxy = null;
+                    if (!isLocal
+                        && source.Service is null
+                        && !track.AllowLocalNetwork
+                        && !_publicProxy.TryGetUrl(out httpProxy))
                     {
-                        songFinished = await TryPlayOpusPassthroughAsync(streamUrl);
+                        Log.Warning("Skipped {Track}: the public-only proxy is not available", track.Title);
+                        StopAfterFailuresInternal(++failedInRow);
+                        continue;
                     }
 
-                    if (!songFinished)
+                    opus = await TryOpenOpusInternalAsync(track, source.Service, streamUrl, isLocal, cts.Token);
+
+                    Task buffered;
+                    if (opus is not null)
                     {
-                        if (streamUrl is null)
-                        {
-                            IsStopped = true;
-                            Log.Warning("Stream URL was null for track {Track}", track.Title);
-                            continue;
-                        }
-
-                        string? httpProxy = null;
-                        if (!isLocal
-                            && serviceHeaders is null
-                            && !track.AllowLocalNetwork
-                            && !_publicProxy.TryGetUrl(out httpProxy))
-                        {
-                            Log.Warning("Skipped {Track}: the public-only proxy is not available", track.Title);
-                            StopAfterFailuresInternal(++failedInRow);
-                            continue;
-                        }
-
+                        Log.Debug("Using Opus passthrough for {Track}", track.Title);
+                        buffered = opus.WaitBufferedAsync();
+                    }
+                    else
+                    {
                         _songBuffer.Reset();
 
-                        using var source = FfmpegTrackDataSource.Create(
+                        ffmpeg = FfmpegTrackDataSource.Create(
                             _vc.BitDepth,
                             streamUrl,
                             isLocal,
                             httpProxy,
                             MediaTools.Default.Ffmpeg,
-                            serviceHeaders);
+                            source.Service is null ? null : source.Service.FfmpegHeaders ?? string.Empty);
 
-                        if (source is null)
+                        if (ffmpeg is null)
                         {
                             IsStopped = true;
                             Log.Error("Please install ffmpeg and make sure it's added to your "
@@ -202,10 +232,27 @@ public sealed class MusicPlayer : IMusicPlayer
                             continue;
                         }
 
-                        await _songBuffer.BufferAsync(source, cts.Token);
-                        songFinished = await RunSendLoopOnThreadAsync(TryReadAndSendPcm);
+                        buffered = _songBuffer.BufferAsync(ffmpeg, cts.Token);
                     }
 
+                    if (!await voiceReady)
+                    {
+                        if (!skipped && !IsStopped && !IsKilled)
+                            Log.Warning("Voice not ready after 10s, skipping track");
+
+                        continue;
+                    }
+
+                    if (!await WaitWhilePlayingAsync(buffered))
+                        continue;
+
+                    if (opus is not null)
+                    {
+                        _opusSource = opus;
+                        _decodingOpus = false;
+                    }
+
+                    await RunSendLoopOnThreadAsync(opus is null ? _sendPcm : _sendOpus);
                     failedInRow = 0;
                 }
                 catch (OperationCanceledException)
@@ -220,6 +267,12 @@ public sealed class MusicPlayer : IMusicPlayer
                 finally
                 {
                     await cts.CancelAsync();
+
+                    _opusSource = null;
+                    if (opus is not null)
+                        await opus.DisposeAsync();
+
+                    ffmpeg?.Dispose();
 
                     _ = OnCompleted?.Invoke(this, track);
 
@@ -269,22 +322,52 @@ public sealed class MusicPlayer : IMusicPlayer
         Log.Warning("Stopping the music player: {Count} tracks in a row could not play", failedInRow);
     }
 
-    private async Task<bool> WaitForVoiceReadyAsync()
+    // A test frame would light the speaking ring before the song has audio, so this only reads the gateway state.
+    private async Task<bool> WaitForVoiceReadyAsync(CancellationToken ct)
     {
-        var elapsed = Stopwatch.StartNew();
-        while (elapsed.ElapsedMilliseconds < 10_000)
+        var start = Stopwatch.GetTimestamp();
+        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(VOICE_READY_POLL_MS));
+        do
         {
             if (IsStopped || IsKilled || skipped)
                 return false;
 
-            var proxy = _proxy;
-            if (proxy is not null && proxy.SendOpusFrame(_vc, OpusSilenceFrame, OpusSilenceFrame.Length))
+            if (_proxy is { IsReady: true })
                 return true;
 
-            await Task.Delay(ERROR_SLEEP_MS);
-        }
+            if (Stopwatch.GetElapsedTime(start).TotalMilliseconds >= VOICE_READY_TIMEOUT_MS)
+                return false;
+        } while (await WaitForTickInternalAsync(timer, ct));
 
         return false;
+    }
+
+    // False when a skip or a stop comes before the task ends, so a stalled stream does not hold the queue.
+    private async Task<bool> WaitWhilePlayingAsync(Task task)
+    {
+        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(VOICE_READY_POLL_MS));
+        while (!task.IsCompleted)
+        {
+            if (IsStopped || IsKilled || skipped)
+                return false;
+
+            await timer.WaitForNextTickAsync();
+        }
+
+        await task;
+        return true;
+    }
+
+    private static async ValueTask<bool> WaitForTickInternalAsync(PeriodicTimer timer, CancellationToken ct)
+    {
+        try
+        {
+            return await timer.WaitForNextTickAsync(ct);
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
+        }
     }
 
     // yt-dlp and Invidious can return any URL, and ffmpeg reads a value without "http" as a local file.
@@ -306,9 +389,10 @@ public sealed class MusicPlayer : IMusicPlayer
            && serviceBaseUrl is not null
            && MusicServiceClient.HasSameOrigin(serviceBaseUrl, url);
 
-    // ServiceHeaders is set only for a stream of the music service.
-    private async Task<(string? Url, bool Refused, string? ServiceHeaders)> GetStreamSourceAsync(
-        IQueuedTrackInfo track)
+    // Service is set only for a stream of the music service.
+    private readonly record struct StreamSource(string? Url, bool Refused, MusicServiceClient? Service);
+
+    private async Task<StreamSource> GetStreamSourceAsync(IQueuedTrackInfo track)
     {
         if (track.TrackInfo is SimpleTrackInfo sti)
         {
@@ -321,9 +405,9 @@ public sealed class MusicPlayer : IMusicPlayer
 
             if (sti.StreamUrl is not null
                 && !IsAllowedStreamUrl(sti.Platform, track.AllowLocalNetwork, sti.StreamUrl))
-                return (null, true, null);
+                return new(null, true, null);
 
-            return (sti.StreamUrl, false, null);
+            return new(sti.StreamUrl, false, null);
         }
 
         var trackId = track.TrackInfo.Id;
@@ -331,26 +415,26 @@ public sealed class MusicPlayer : IMusicPlayer
 
         var cachedPath = _audioFileCache.GetCachedPath(trackId, platform);
         if (cachedPath is not null)
-            return (cachedPath, false, null);
+            return new(cachedPath, false, null);
 
         var resolver = _ytResolverFactory.GetYoutubeResolver();
         var url = await resolver.GetStreamUrl(trackId);
         if (url is null)
-            return (null, false, null);
+            return new(null, false, null);
 
         // The service keeps its own copy, so the bot's file cache does not download it again.
         if (resolver is ServiceYoutubeResolver service
             && IsTrustedServiceStream(platform, service.Service.BaseUrl, url))
-            return (url, false, service.Service.FfmpegHeaders ?? string.Empty);
+            return new(url, false, service.Service);
 
         if (!IsAllowedStreamUrl(platform, track.AllowLocalNetwork, url))
-            return (null, true, null);
+            return new(null, true, null);
 
         // Only public streams go to the cache, so a member cannot replay a local stream which the owner queued.
         if (!track.AllowLocalNetwork || UrlExtensions.IsPublicUrl(url))
             _audioFileCache.GetOrStartDownload(trackId, platform, () => Task.FromResult<string?>(url));
 
-        return (url, false, null);
+        return new(url, false, null);
     }
 
     private void PrefetchNextInternal()
@@ -363,17 +447,57 @@ public sealed class MusicPlayer : IMusicPlayer
         _ = service.Service.PrefetchAsync(next.TrackInfo.Id);
     }
 
-    private bool? TryReadAndSendPcm(IVoiceProxy proxy)
+    private enum SendResult
+    {
+        Sent,
+        Failed,
+        Starved,
+        End
+    }
+
+    private SendResult TryReadAndSendPcm(IVoiceProxy proxy)
     {
         var data = _songBuffer.Read(_vc.InputLength, out var length);
         if (data.Length == 0)
-            return null;
+            return SendResult.End;
 
         _adjustVolume(data, Volume);
-        return proxy.SendPcmFrame(_vc, data, length);
+        return proxy.SendPcmFrame(_vc, data, length) ? SendResult.Sent : SendResult.Failed;
     }
 
-    private Task<bool> RunSendLoopOnThreadAsync(Func<IVoiceProxy, bool?> tryReadAndSend)
+    // Sends the packets as they are at full volume. At another volume it decodes, scales and encodes each packet.
+    private SendResult TryReadAndSendOpus(IVoiceProxy proxy)
+    {
+        if (_opusSource is not { } source)
+            return SendResult.End;
+
+        var frame = _opusFrame ??= new byte[OpusPacketRing.MAX_PACKET_SIZE];
+        switch (source.TryRead(frame, out var length))
+        {
+            case OpusReadResult.End:
+                return SendResult.End;
+            case OpusReadResult.Starved:
+                return SendResult.Starved;
+        }
+
+        var volume = Volume;
+        if (Math.Abs(volume - 1f) < UNITY_VOLUME_EPSILON)
+        {
+            _decodingOpus = false;
+            return proxy.SendOpusFrame(_vc, frame, length) ? SendResult.Sent : SendResult.Failed;
+        }
+
+        var pcm = _decodedPcm ??= new byte[_vc.InputLength];
+        var reset = !_decodingOpus;
+        _decodingOpus = true;
+        if (_vc.DecodeFrame(frame.AsSpan(0, length), pcm, reset) != _vc.FrameSizePerChannel)
+            return proxy.SendOpusFrame(_vc, frame, length) ? SendResult.Sent : SendResult.Failed;
+
+        _adjustVolume(pcm, volume);
+        return proxy.SendPcmFrame(_vc, pcm, pcm.Length) ? SendResult.Sent : SendResult.Failed;
+    }
+
+    private Task<bool> RunSendLoopOnThreadAsync(Func<IVoiceProxy, SendResult> tryReadAndSend)
     {
         var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -399,7 +523,7 @@ public sealed class MusicPlayer : IMusicPlayer
         return tcs.Task;
     }
 
-    private bool SendFrameLoop(Func<IVoiceProxy, bool?> tryReadAndSend)
+    private bool SendFrameLoop(Func<IVoiceProxy, SendResult> tryReadAndSend)
     {
         using var sleeper = PrecisionSleeper.Create();
         var ticksPerFrame = (long)(Stopwatch.Frequency * _vc.Delay / 1000.0);
@@ -432,13 +556,20 @@ public sealed class MusicPlayer : IMusicPlayer
             {
                 var result = tryReadAndSend(proxy);
 
-                if (result is null)
+                if (result == SendResult.End)
                 {
                     SendSilenceFrames(5);
                     return true;
                 }
 
-                if (result is true)
+                if (result == SendResult.Starved)
+                {
+                    Thread.Sleep(_vc.Delay);
+                    nextFrameTick = Stopwatch.GetTimestamp();
+                    continue;
+                }
+
+                if (result == SendResult.Sent)
                 {
                     if (errorCount > 0)
                     {
@@ -475,33 +606,41 @@ public sealed class MusicPlayer : IMusicPlayer
         return false;
     }
 
-    private async Task<bool> TryPlayOpusPassthroughAsync(string filePath)
+    // Only YouTube audio: a cached file or a stream of the music service. Null means ffmpeg plays the track.
+    private async Task<OpusStreamSource?> TryOpenOpusInternalAsync(
+        IQueuedTrackInfo track,
+        MusicServiceClient? service,
+        string streamUrl,
+        bool isLocal,
+        CancellationToken ct)
     {
-        try
+        if (track.Platform != MusicPlatform.Youtube || (service is null && !isLocal))
+            return null;
+
+        Stream? stream;
+        if (service is not null)
         {
-            using var demuxer = new WebmOpusDemuxer(filePath);
-            if (!demuxer.Initialize() || !demuxer.IsOpus)
-                return false;
-
-            Log.Debug("Using Opus passthrough for {FilePath}", filePath);
-
-            bool? TryReadAndSendOpus(IVoiceProxy proxy)
+            stream = await service.OpenAudioAsync(streamUrl, ct);
+        }
+        else
+        {
+            try
             {
-                if (!demuxer.TryReadPacket(out var opusData, out var opusLength))
-                    return null;
-
-                return proxy.SendOpusFrame(_vc, opusData, opusLength);
+                stream = WebmOpusDemuxer.OpenFile(streamUrl);
             }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                Log.Debug(ex, "Could not open the cached file for Opus passthrough");
+                return null;
+            }
+        }
 
-            return await RunSendLoopOnThreadAsync(TryReadAndSendOpus);
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Opus passthrough failed, falling back to ffmpeg");
-            return false;
-        }
+        if (stream is null)
+            return null;
+
+        // A packet must last one voice frame, because the send loop sends one packet per frame.
+        return await OpusStreamSource.OpenAsync(stream, _vc.FrameSizePerChannel, ct);
     }
-
     private static readonly byte[] OpusSilenceFrame = [0xF8, 0xFF, 0xFE];
 
     private void SendSilenceFrames(int count)
@@ -613,10 +752,12 @@ public sealed class MusicPlayer : IMusicPlayer
             return default;
 
         int index;
-        if (asNext)
-            return (_queue.EnqueueNext(song, queuer, allowLocalNetwork, out index), index);
+        var queued = asNext
+            ? _queue.EnqueueNext(song, queuer, allowLocalNetwork, out index)
+            : _queue.Enqueue(song, queuer, allowLocalNetwork, out index);
 
-        return (_queue.Enqueue(song, queuer, allowLocalNetwork, out index), index);
+        WakeInternal();
+        return (queued, index);
     }
 
     public async Task EnqueueManyAsync(
@@ -661,13 +802,22 @@ public sealed class MusicPlayer : IMusicPlayer
         => _queue.Count >= MaxQueueSize;
 
     public void EnqueueTrack(ITrackInfo track, string queuer)
-        => _queue.Enqueue(track, queuer, out _);
+    {
+        _queue.Enqueue(track, queuer, out _);
+        WakeInternal();
+    }
 
     public void EnqueueTrack(ITrackInfo track, string queuer, bool allowLocalNetwork)
-        => _queue.Enqueue(track, queuer, allowLocalNetwork, out _);
+    {
+        _queue.Enqueue(track, queuer, allowLocalNetwork, out _);
+        WakeInternal();
+    }
 
     public void EnqueueTracks(IEnumerable<ITrackInfo> tracks, string queuer)
-        => _queue.EnqueueMany(tracks, queuer);
+    {
+        _queue.EnqueueMany(tracks, queuer);
+        WakeInternal();
+    }
 
     public void SetRepeat(PlayerRepeatType type)
         => Repeat = type;
@@ -695,6 +845,7 @@ public sealed class MusicPlayer : IMusicPlayer
         skipped = true;
         IsStopped = false;
         IsPaused = false;
+        WakeInternal();
     }
 
     public bool MoveTo(int index)
@@ -705,6 +856,7 @@ public sealed class MusicPlayer : IMusicPlayer
             skipped = true;
             IsStopped = false;
             IsPaused = false;
+            WakeInternal();
             return true;
         }
 

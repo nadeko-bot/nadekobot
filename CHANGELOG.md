@@ -2,6 +2,24 @@
 
 *a,c,f,r,o,d*
 
+## [7.7.2] - 25.10.2026
+
+### Changed
+
+- The bot starts a song sooner after it joins a voice channel.
+- The bot uses less CPU and memory to play songs from the music service.
+
+### Fixed
+
+- The green ring of the bot does not blink before a song starts.
+- Cached songs play correctly with the Medium and Low `.musicquality` / `.mquality` presets.
+- `.volume` / `.vol` changes the volume of a cached song while it plays.
+- The bot joins a voice channel also when other members join or leave voice at the same time.
+
+### Dev
+
+- Added Opus passthrough tests.
+
 ## [7.7.1] - 25.10.2026
 
 ### Changed

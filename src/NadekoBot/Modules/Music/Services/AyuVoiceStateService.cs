@@ -147,13 +147,25 @@ public sealed class AyuVoiceStateService : INService
     private SemaphoreSlim GetVoiceGatewayLock(ulong guildId)
         => _voiceGatewayLocks.GetOrAdd(guildId, new SemaphoreSlim(1, 1));
 
+    private void StopGatewayInternal(ulong guildId)
+    {
+        if (_voiceProxies.TryGetValue(guildId, out var proxy))
+        {
+            _ = proxy.StopGateway();
+            proxy.SetGateway(null);
+        }
+    }
+
     private async Task LeaveVoiceChannelInternalAsync(ulong guildId)
     {
         var complete = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
         Task OnUserVoiceStateUpdated(SocketUser user, SocketVoiceState oldState, SocketVoiceState newState)
         {
-            if (user is SocketGuildUser guildUser && guildUser.Guild.Id == guildId && newState.VoiceChannel?.Id is null)
+            if (user.Id == CurrentUserId
+                && user is SocketGuildUser guildUser
+                && guildUser.Guild.Id == guildId
+                && newState.VoiceChannel?.Id is null)
                 complete.TrySetResult(true);
 
             return Task.CompletedTask;
@@ -163,11 +175,7 @@ public sealed class AyuVoiceStateService : INService
         {
             _client.UserVoiceStateUpdated += OnUserVoiceStateUpdated;
 
-            if (_voiceProxies.TryGetValue(guildId, out var proxy))
-            {
-                _ = proxy.StopGateway();
-                proxy.SetGateway(null);
-            }
+            StopGatewayInternal(guildId);
 
             await SendLeaveVoiceChannelInternalAsync(guildId);
             await Task.WhenAny(Task.Delay(1500), complete.Task);
@@ -201,12 +209,13 @@ public sealed class AyuVoiceStateService : INService
 
         Task OnUserVoiceStateUpdated(SocketUser user, SocketVoiceState oldState, SocketVoiceState newState)
         {
-            if (user is SocketGuildUser guildUser && guildUser.Guild.Id == guildId)
+            if (user.Id == CurrentUserId && user is SocketGuildUser guildUser && guildUser.Guild.Id == guildId)
             {
+                // A late leave event of an earlier leave must not end this join, so only another channel fails it.
                 if (newState.VoiceChannel?.Id == channelId)
                     voiceStateUpdatedSource.TrySetResult(newState.VoiceSessionId);
-
-                voiceStateUpdatedSource.TrySetResult(null);
+                else if (newState.VoiceChannel is not null)
+                    voiceStateUpdatedSource.TrySetResult(null);
             }
 
             return Task.CompletedTask;
@@ -279,13 +288,18 @@ public sealed class AyuVoiceStateService : INService
         }
     }
 
-    public async Task<IVoiceProxy> JoinVoiceChannel(ulong guildId, ulong channelId, bool forceReconnect = true)
+    public async Task<IVoiceProxy> JoinVoiceChannel(ulong guildId, ulong channelId)
     {
         var gwLock = GetVoiceGatewayLock(guildId);
         await gwLock.WaitAsync();
         try
         {
-            await LeaveVoiceChannelInternalAsync(guildId);
+            // Discord sends no leave event when the bot is in no voice channel, so a leave would only wait.
+            if (_client.GetGuild(guildId)?.CurrentUser?.VoiceChannel is null)
+                StopGatewayInternal(guildId);
+            else
+                await LeaveVoiceChannelInternalAsync(guildId);
+
             return await InternalConnectToVcAsync(guildId, channelId);
         }
         finally

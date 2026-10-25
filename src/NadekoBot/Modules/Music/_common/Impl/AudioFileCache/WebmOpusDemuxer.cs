@@ -1,345 +1,365 @@
+using System.Buffers;
+
 namespace NadekoBot.Modules.Music;
 
+// Reads the Opus packets of a WebM file front to back, so it works on a network stream which cannot seek.
 public sealed class WebmOpusDemuxer : IDisposable
 {
     private const uint EBML_HEADER = 0x1A45DFA3;
     private const uint SEGMENT = 0x18538067;
     private const uint CLUSTER = 0x1F43B675;
     private const uint SIMPLE_BLOCK = 0xA3;
-    private const uint TIMECODE = 0xE7;
     private const uint TRACKS = 0x1654AE6B;
     private const uint TRACK_ENTRY = 0xAE;
+    private const uint TRACK_NUMBER = 0xD7;
     private const uint CODEC_ID = 0x86;
-    private const uint SEGMENT_INFO = 0x1549A966;
-    private const uint SEEK_HEAD = 0x114D9B74;
-    private const uint CUES = 0x1C53BB6B;
-    private const uint TAGS = 0x1254C367;
     private const uint BLOCK_GROUP = 0xA0;
     private const uint BLOCK = 0xA1;
-    private const uint VOID = 0xEC;
-    private const uint TIMESTAMP_SCALE = 0x2AD7B1;
 
+    private const long UNKNOWN_SIZE = long.MaxValue;
     private const int MAX_OPUS_PACKET_SIZE = 61_440;
 
-    private readonly FileStream _stream;
-    private readonly byte[] _readBuffer;
-    private bool _headerParsed;
-    private bool _isOpus;
+    // Track number (1 or 2 bytes here), relative timecode (2) and flags (1).
+    private const int MIN_BLOCK_HEADER_SIZE = 4;
+    private const int MAX_BLOCK_HEADER_SIZE = 5;
+    private const int MAX_BLOCK_SIZE = MAX_OPUS_PACKET_SIZE + MAX_BLOCK_HEADER_SIZE;
+    private const int MAX_ELEMENT_HEADER_SIZE = 12;
+    private const int MAX_CODEC_ID_SIZE = 32;
+    private const int MAX_UINT_SIZE = 8;
+    private const byte LACING_FLAGS = 0x06;
+    private const int BUFFER_SIZE = 1 << 16;
 
-    public bool IsOpus => _isOpus;
+    private readonly Stream _stream;
+    private byte[]? _buffer;
+    private int _start;
+    private int _end;
+    private bool _eof;
+    private long _position;
+    private ulong _opusTrack;
+    private int _packetStart;
+    private int _packetLength;
 
-    public WebmOpusDemuxer(string filePath)
+    public bool IsOpus { get; private set; }
+
+    // Valid until the next read.
+    public ReadOnlyMemory<byte> Packet
+        => Bytes.AsMemory(_packetStart, _packetLength);
+
+    private byte[] Bytes
+        => _buffer ?? throw new ObjectDisposedException(nameof(WebmOpusDemuxer));
+
+    private int Available
+        => _end - _start;
+
+    private readonly record struct ElementHeader(uint Id, long Size);
+
+    public WebmOpusDemuxer(Stream stream)
     {
-        _stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite,
-            bufferSize: 81_920, useAsync: false);
-        _readBuffer = new byte[MAX_OPUS_PACKET_SIZE];
+        _stream = stream;
+        _buffer = ArrayPool<byte>.Shared.Rent(BUFFER_SIZE);
     }
 
-    public bool Initialize()
+    public static FileStream OpenFile(string filePath)
+        => new(filePath,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.ReadWrite,
+            bufferSize: 1,
+            FileOptions.Asynchronous | FileOptions.SequentialScan);
+
+    // Reads the headers up to the first cluster. False when the stream is not WebM with an Opus track.
+    public async ValueTask<bool> InitializeAsync(CancellationToken ct = default)
     {
-        if (_headerParsed)
-            return _isOpus;
-
-        _headerParsed = true;
-
         try
         {
-            var (headerId, headerSize) = ReadElementHeader();
-            if (headerId != EBML_HEADER)
+            var header = await ReadElementHeaderAsync(ct);
+            if (header.Id != EBML_HEADER)
                 return false;
 
-            Skip(headerSize);
+            await SkipAsync(header.Size, ct);
 
-            var (segId, _) = ReadElementHeader();
-            if (segId != SEGMENT)
+            if ((await ReadElementHeaderAsync(ct)).Id != SEGMENT)
                 return false;
 
-            ScanSegmentHeaders();
-            return _isOpus;
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Failed to parse WebM header");
-            return false;
-        }
-    }
-
-    public bool TryReadPacket(out byte[] data, out int length)
-    {
-        data = _readBuffer;
-        length = 0;
-
-        try
-        {
             while (true)
             {
-                if (!HasDataAvailable(1))
-                    return false;
-
-                var (elementId, elementSize) = ReadElementHeader();
-
-                switch (elementId)
+                header = await ReadElementHeaderAsync(ct);
+                switch (header.Id)
                 {
-                    case CLUSTER:
-                    case BLOCK_GROUP:
-                        continue;
-
-                    case TIMECODE:
-                        Skip(elementSize);
-                        continue;
-
-                    case SIMPLE_BLOCK:
-                    case BLOCK:
-                        return ReadSimpleBlockOpusData(elementSize, out data, out length);
-
-                    case CUES:
-                    case TAGS:
-                    case VOID:
-                        Skip(elementSize);
-                        continue;
-
-                    default:
-                        if (elementSize > 0 && elementSize < _stream.Length - _stream.Position)
-                            Skip(elementSize);
-                        else
+                    case 0:
+                        return false;
+                    case TRACKS:
+                        await ParseTracksAsync(header.Size, ct);
+                        if (!IsOpus)
                             return false;
-                        continue;
+                        break;
+                    case CLUSTER:
+                        return IsOpus;
+                    default:
+                        await SkipAsync(header.Size, ct);
+                        break;
                 }
             }
         }
-        catch (EndOfStreamException)
+        catch (Exception ex) when (ex is EndOfStreamException or InvalidDataException)
         {
-            return false;
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Error reading WebM Opus packet at position {Position}", _stream.Position);
+            Log.Debug(ex, "The stream is not a WebM file with Opus audio");
             return false;
         }
     }
 
-    private bool ReadSimpleBlockOpusData(long blockSize, out byte[] data, out int length)
+    // Returns the length of the next packet, or 0 at the end of the stream.
+    public async ValueTask<int> ReadPacketAsync(CancellationToken ct = default)
     {
-        data = _readBuffer;
-        length = 0;
-
-        var trackByte = ReadByte();
-        int trackHeaderSize;
-        if ((trackByte & 0x80) != 0)
-            trackHeaderSize = 1;
-        else if ((trackByte & 0x40) != 0)
+        _packetLength = 0;
+        while (true)
         {
-            ReadByte();
+            var header = await ReadElementHeaderAsync(ct);
+            switch (header.Id)
+            {
+                case 0:
+                    return 0;
+                case CLUSTER:
+                case BLOCK_GROUP:
+                    continue;
+                case SIMPLE_BLOCK:
+                case BLOCK:
+                    if (await ReadBlockAsync(header.Size, ct))
+                        return _packetLength;
+                    continue;
+                default:
+                    await SkipAsync(header.Size, ct);
+                    continue;
+            }
+        }
+    }
+
+    private async ValueTask<bool> ReadBlockAsync(long size, CancellationToken ct)
+    {
+        if (size is < MIN_BLOCK_HEADER_SIZE or > MAX_BLOCK_SIZE)
+        {
+            await SkipAsync(size, ct);
+            return false;
+        }
+
+        var length = (int)size;
+        if (!await FillAsync(length, ct))
+            throw new EndOfStreamException();
+
+        var block = Bytes.AsSpan(_start, length);
+        int trackHeaderSize;
+        ulong track;
+        if ((block[0] & 0x80) != 0)
+        {
+            trackHeaderSize = 1;
+            track = (ulong)(block[0] & 0x7F);
+        }
+        else if ((block[0] & 0x40) != 0)
+        {
             trackHeaderSize = 2;
+            track = (ulong)(((block[0] & 0x3F) << 8) | block[1]);
         }
         else
         {
-            Skip(blockSize - 1);
+            Consume(length);
             return false;
         }
 
-        // skip relative timecode (2 bytes) and flags (1 byte)
-        Skip(3);
-
-        var opusDataSize = (int)(blockSize - trackHeaderSize - 3);
-
-        if (opusDataSize <= 0 || opusDataSize > MAX_OPUS_PACKET_SIZE)
+        var headerSize = trackHeaderSize + 3;
+        if (length <= headerSize)
         {
-            if (opusDataSize > 0)
-                Skip(opusDataSize);
+            Consume(length);
             return false;
         }
 
-        ReadExact(data, opusDataSize);
-        length = opusDataSize;
+        var flags = block[headerSize - 1];
+        var start = _start + headerSize;
+        Consume(length);
+
+        if (track != _opusTrack || (flags & LACING_FLAGS) != 0)
+            return false;
+
+        _packetStart = start;
+        _packetLength = length - headerSize;
         return true;
     }
 
-    private void ScanSegmentHeaders()
+    private async ValueTask ParseTracksAsync(long size, CancellationToken ct)
     {
-        while (HasDataAvailable(1))
+        var end = CheckedEnd(size);
+        while (_position < end)
         {
-            var pos = _stream.Position;
-            var (elementId, elementSize) = ReadElementHeader();
-
-            switch (elementId)
-            {
-                case SEGMENT_INFO:
-                    ParseSegmentInfo(elementSize);
-                    break;
-
-                case TRACKS:
-                    ParseTracks(elementSize);
-                    break;
-
-                case CLUSTER:
-                    _stream.Position = pos;
-                    return;
-
-                case SEEK_HEAD:
-                case CUES:
-                case TAGS:
-                case VOID:
-                    Skip(elementSize);
-                    break;
-
-                default:
-                    if (elementSize > 0 && elementSize < _stream.Length - _stream.Position)
-                        Skip(elementSize);
-                    else
-                        return;
-                    break;
-            }
-        }
-    }
-
-    private void ParseSegmentInfo(long size)
-    {
-        var end = _stream.Position + size;
-        while (_stream.Position < end)
-        {
-            var (id, sz) = ReadElementHeader();
-            if (id == TIMESTAMP_SCALE)
-                ReadUint(sz);
+            var header = await ReadElementHeaderAsync(ct);
+            if (header.Id == TRACK_ENTRY)
+                await ParseTrackEntryAsync(header.Size, ct);
             else
-                Skip(sz);
+                await SkipAsync(header.Size, ct);
         }
     }
 
-    private void ParseTracks(long size)
+    private async ValueTask ParseTrackEntryAsync(long size, CancellationToken ct)
     {
-        var end = _stream.Position + size;
-        while (_stream.Position < end)
+        var end = CheckedEnd(size);
+        ulong number = 0;
+        var isOpus = false;
+        while (_position < end)
         {
-            var (id, sz) = ReadElementHeader();
-            if (id == TRACK_ENTRY)
-                ParseTrackEntry(sz);
+            var header = await ReadElementHeaderAsync(ct);
+            if (header.Id == TRACK_NUMBER)
+                number = await ReadUintAsync(header.Size, ct);
+            else if (header.Id == CODEC_ID)
+                isOpus = await ReadCodecIsOpusAsync(header.Size, ct);
             else
-                Skip(sz);
+                await SkipAsync(header.Size, ct);
         }
-    }
 
-    private void ParseTrackEntry(long size)
-    {
-        var end = _stream.Position + size;
-        while (_stream.Position < end)
+        if (isOpus && !IsOpus)
         {
-            var (id, sz) = ReadElementHeader();
-            if (id == CODEC_ID)
-            {
-                var codecBytes = new byte[sz];
-                ReadExact(codecBytes, (int)sz);
-                var codecStr = System.Text.Encoding.ASCII.GetString(codecBytes);
-                if (codecStr == "A_OPUS")
-                    _isOpus = true;
-            }
-            else
-            {
-                Skip(sz);
-            }
+            IsOpus = true;
+            _opusTrack = number;
         }
     }
 
-    private bool HasDataAvailable(long needed)
-        => _stream.Position + needed <= _stream.Length;
+    private long CheckedEnd(long size)
+        => size == UNKNOWN_SIZE ? throw new InvalidDataException("A WebM header element has no size") : _position + size;
 
-    private (uint Id, long Size) ReadElementHeader()
+    private async ValueTask<ulong> ReadUintAsync(long size, CancellationToken ct)
     {
+        if (size is < 0 or > MAX_UINT_SIZE)
+            throw new InvalidDataException("A WebM number is too long");
+
+        if (!await FillAsync((int)size, ct))
+            throw new EndOfStreamException();
+
+        ulong value = 0;
+        for (var i = 0; i < size; i++)
+            value = (value << 8) | ReadByte();
+
+        return value;
+    }
+
+    private async ValueTask<bool> ReadCodecIsOpusAsync(long size, CancellationToken ct)
+    {
+        if (size is <= 0 or > MAX_CODEC_ID_SIZE)
+        {
+            await SkipAsync(size, ct);
+            return false;
+        }
+
+        var length = (int)size;
+        if (!await FillAsync(length, ct))
+            throw new EndOfStreamException();
+
+        var isOpus = Bytes.AsSpan(_start, length).SequenceEqual("A_OPUS"u8);
+        Consume(length);
+        return isOpus;
+    }
+
+    // Id 0 means the stream ended at an element boundary.
+    private async ValueTask<ElementHeader> ReadElementHeaderAsync(CancellationToken ct)
+    {
+        await FillAsync(MAX_ELEMENT_HEADER_SIZE, ct);
+        if (Available == 0)
+            return default;
+
         var id = ReadVintId();
-        var size = ReadVintSize();
-        return (id, size);
+        return new(id, ReadVintSize());
     }
 
     private uint ReadVintId()
     {
         var first = ReadByte();
-
-        if ((first & 0x80) != 0)
-            return first;
-
-        if ((first & 0x40) != 0)
-            return (uint)((first << 8) | ReadByte());
-
-        if ((first & 0x20) != 0)
+        var length = first switch
         {
-            var b1 = ReadByte();
-            var b2 = ReadByte();
-            return (uint)((first << 16) | (b1 << 8) | b2);
-        }
+            >= 0x80 => 1,
+            >= 0x40 => 2,
+            >= 0x20 => 3,
+            >= 0x10 => 4,
+            _ => throw new InvalidDataException($"Invalid EBML element id byte 0x{first:X2}")
+        };
 
-        if ((first & 0x10) != 0)
-        {
-            var b1 = ReadByte();
-            var b2 = ReadByte();
-            var b3 = ReadByte();
-            return (uint)((first << 24) | (b1 << 16) | (b2 << 8) | b3);
-        }
+        uint id = first;
+        for (var i = 1; i < length; i++)
+            id = (id << 8) | ReadByte();
 
-        throw new InvalidDataException($"Invalid EBML element ID leading byte: 0x{first:X2}");
+        return id;
     }
 
     private long ReadVintSize()
     {
         var first = ReadByte();
-        int length;
-        long value;
+        if (first == 0)
+            throw new InvalidDataException("Invalid EBML size byte 0x00");
 
-        if ((first & 0x80) != 0) { length = 1; value = first & 0x7F; }
-        else if ((first & 0x40) != 0) { length = 2; value = first & 0x3F; }
-        else if ((first & 0x20) != 0) { length = 3; value = first & 0x1F; }
-        else if ((first & 0x10) != 0) { length = 4; value = first & 0x0F; }
-        else if ((first & 0x08) != 0) { length = 5; value = first & 0x07; }
-        else if ((first & 0x04) != 0) { length = 6; value = first & 0x03; }
-        else if ((first & 0x02) != 0) { length = 7; value = first & 0x01; }
-        else { length = 8; value = 0; }
-
+        var length = System.Numerics.BitOperations.LeadingZeroCount((uint)first) - 23;
+        long value = first & ((0x80 >> (length - 1)) - 1);
         for (var i = 1; i < length; i++)
             value = (value << 8) | ReadByte();
 
-        var allOnes = (1L << (7 * length)) - 1;
-        if (value == allOnes)
-            return long.MaxValue;
-
-        return value;
-    }
-
-    private ulong ReadUint(long size)
-    {
-        ulong value = 0;
-        for (var i = 0; i < size; i++)
-            value = (value << 8) | ReadByte();
-        return value;
+        return value == (1L << (7 * length)) - 1 ? UNKNOWN_SIZE : value;
     }
 
     private byte ReadByte()
     {
-        var b = _stream.ReadByte();
-        if (b < 0)
+        if (_start == _end)
             throw new EndOfStreamException();
-        return (byte)b;
+
+        _position++;
+        return Bytes[_start++];
     }
 
-    private void ReadExact(byte[] buffer, int count)
+    private void Consume(int count)
     {
-        var totalRead = 0;
-        while (totalRead < count)
+        _start += count;
+        _position += count;
+    }
+
+    private async ValueTask SkipAsync(long count, CancellationToken ct)
+    {
+        if (count == UNKNOWN_SIZE)
+            throw new InvalidDataException("Cannot skip a WebM element without a size");
+
+        while (count > 0)
         {
-            var read = _stream.Read(buffer, totalRead, count - totalRead);
-            if (read == 0)
+            if (Available == 0 && !await FillAsync(1, ct))
                 throw new EndOfStreamException();
 
-            totalRead += read;
+            var n = (int)Math.Min(count, Available);
+            Consume(n);
+            count -= n;
         }
     }
 
-    private void Skip(long count)
+    // False when the stream ends before count bytes.
+    private async ValueTask<bool> FillAsync(int count, CancellationToken ct)
     {
-        if (count <= 0)
-            return;
+        if (Available >= count)
+            return true;
 
-        _stream.Position += count;
+        var buffer = Bytes;
+        if (_start > 0)
+        {
+            Buffer.BlockCopy(buffer, _start, buffer, 0, Available);
+            _end -= _start;
+            _start = 0;
+        }
+
+        while (!_eof && _end < count)
+        {
+            var read = await _stream.ReadAsync(buffer.AsMemory(_end, BUFFER_SIZE - _end), ct);
+            if (read == 0)
+                _eof = true;
+            else
+                _end += read;
+        }
+
+        return _end >= count;
     }
 
     public void Dispose()
-        => _stream.Dispose();
+    {
+        _stream.Dispose();
+        if (Interlocked.Exchange(ref _buffer, null) is { } buffer)
+            ArrayPool<byte>.Shared.Return(buffer);
+    }
 }

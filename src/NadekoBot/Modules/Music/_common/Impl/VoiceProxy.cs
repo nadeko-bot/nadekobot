@@ -24,6 +24,9 @@ public sealed class VoiceProxy : IVoiceProxy
             _ => VoiceProxyState.Stopped
         };
 
+    public bool IsReady
+        => Volatile.Read(ref gateway) is { CanSendAudio: true };
+
     private VoiceGateway gateway;
 
     // The wanted speaking state outlives a gateway, because a join or a move replaces the gateway during a track.

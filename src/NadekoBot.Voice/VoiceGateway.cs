@@ -199,7 +199,15 @@ namespace NadekoBot.Voice
             {
                 Log.Error(ex, "Error handling payload with opcode {OpCode}: {Message}", payload.OpCode, ex.Message);
             }
+            finally
+            {
+                RefreshDaveReadyInternal();
+            }
         }
+
+        // Only the websocket thread calls into libdave here, so the player never reads a session which closes.
+        private void RefreshDaveReadyInternal()
+            => _daveReady = DaveManager is not { } dave || dave.HasKeyRatchet;
 
         private Task _ws_BinaryPayloadReceived(byte[] data)
         {
@@ -246,6 +254,10 @@ namespace NadekoBot.Voice
             catch (Exception ex)
             {
                 Log.Error(ex, "Error handling binary voice payload: {Message}", ex.Message);
+            }
+            finally
+            {
+                RefreshDaveReadyInternal();
             }
 
             return Task.CompletedTask;
@@ -504,6 +516,7 @@ namespace NadekoBot.Voice
             if(!_stopCancellationToken.IsCancellationRequested)
                 _stopCancellationSource.Cancel();
 
+            _daveReady = false;
             DaveManager?.Dispose();
             DaveManager = null;
 
@@ -739,6 +752,7 @@ namespace NadekoBot.Voice
             _heartbeatTimer?.Dispose();
             _heartbeatTimer = null;
 
+            _daveReady = false;
             DaveManager?.Dispose();
             DaveManager = null;
 
@@ -755,7 +769,21 @@ namespace NadekoBot.Voice
             return _ws.RunAndBlockAsync(_websocketUrl, _stopCancellationToken);
         }
 
-        public bool Started { get; set; }
+        private volatile bool _started;
+        private volatile bool _daveReady;
+
+        public bool Started
+        {
+            get => _started;
+            set => _started = value;
+        }
+
+        // The same checks as VoiceClient.SendOpusFrame, so the player knows that a frame can go out without sending one.
+        public bool CanSendAudio
+            => Started
+               && !Stopped
+               && SecretKey.Length == Sodium.KEY_SIZE
+               && (DaveProtocolVersion == 0 || _daveReady);
 
         public async Task SendCommandPayloadAsync(VoicePayload payload)
         {

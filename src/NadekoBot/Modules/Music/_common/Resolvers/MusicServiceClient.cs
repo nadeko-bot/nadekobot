@@ -113,6 +113,15 @@ public sealed class MusicServiceClient(
     public string? GetAudioUrl(string videoId)
         => BaseUrl is { } b && IsVideoId(videoId) ? $"{b}/v1/audio/{videoId}" : null;
 
+    // The audio of a stream url which the resolver gave, for Opus passthrough. Null when it is not WebM Opus.
+    public Task<ServiceAudioStream?> OpenAudioAsync(string url, CancellationToken ct)
+    {
+        if (BaseUrl is not { } baseUrl || !HasSameOrigin(baseUrl, url) || Key.Length == 0)
+            return Task.FromResult<ServiceAudioStream?>(null);
+
+        return ServiceAudioStream.OpenAsync(httpFactory.CreateClient(HTTP_CLIENT_NAME), url, Key, ct);
+    }
+
     public async Task<MusicServiceTrack[]> SearchAsync(string query, int limit)
     {
         var q = TrimQuery(query);

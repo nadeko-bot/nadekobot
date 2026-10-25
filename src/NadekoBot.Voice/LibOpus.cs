@@ -21,6 +21,21 @@ namespace NadekoBot.Voice
 
         [DllImport(OPUS, EntryPoint = "opus_encoder_ctl", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int EncoderCtl(IntPtr st, OpusCtl request, int value);
+
+        [DllImport(OPUS, EntryPoint = "opus_decoder_create", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr CreateDecoder(int Fs, int channels, out OpusError error);
+
+        [DllImport(OPUS, EntryPoint = "opus_decoder_destroy", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DestroyDecoder(IntPtr decoder);
+
+        [DllImport(OPUS, EntryPoint = "opus_decode", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int Decode(IntPtr st, byte* data, int len, byte* pcm, int frame_size, int decode_fec);
+
+        [DllImport(OPUS, EntryPoint = "opus_decode_float", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int DecodeFloat(IntPtr st, byte* data, int len, byte* pcm, int frame_size, int decode_fec);
+
+        [DllImport(OPUS, EntryPoint = "opus_decoder_ctl", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int DecoderCtl(IntPtr st, int request);
     }
 
     public enum OpusApplication
@@ -83,6 +98,46 @@ namespace NadekoBot.Voice
 
         public void Dispose()
             => LibOpus.DestroyEncoder(_encoderPtr);
+    }
+
+    public sealed unsafe class LibOpusDecoder : IDisposable
+    {
+        private const int RESET_STATE = 4028;
+
+        private readonly IntPtr _decoderPtr;
+        private readonly int _channels;
+        private bool _disposed;
+
+        public LibOpusDecoder(int sampleRate, int channels)
+        {
+            _channels = channels;
+            _decoderPtr = LibOpus.CreateDecoder(sampleRate, channels, out var error);
+            if (error != OpusError.OK)
+                throw new ExternalException(error.ToString());
+        }
+
+        public void Reset()
+            => LibOpus.DecoderCtl(_decoderPtr, RESET_STATE);
+
+        // Returns the samples per channel which it wrote, or a negative OpusError.
+        public int Decode(ReadOnlySpan<byte> packet, Span<byte> pcm, bool float32)
+        {
+            var frameSize = pcm.Length / (_channels * (float32 ? sizeof(float) : sizeof(short)));
+            fixed (byte* inPtr = packet)
+            fixed (byte* outPtr = pcm)
+                return float32
+                    ? LibOpus.DecodeFloat(_decoderPtr, inPtr, packet.Length, outPtr, frameSize, 0)
+                    : LibOpus.Decode(_decoderPtr, inPtr, packet.Length, outPtr, frameSize, 0);
+        }
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+            LibOpus.DestroyDecoder(_decoderPtr);
+        }
     }
 
     public enum OpusCtl
