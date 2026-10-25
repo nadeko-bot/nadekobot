@@ -17,24 +17,30 @@ public sealed class VoiceProxy : IVoiceProxy
     private const int DELAY_ON_ERROR_MILISECONDS = 200;
 
     public VoiceProxyState State
-        => gateway switch
+        => Volatile.Read(ref gateway) switch
         {
             { Started: true, Stopped: false } => VoiceProxyState.Started,
             { Stopped: false } => VoiceProxyState.Created,
             _ => VoiceProxyState.Stopped
         };
 
-
     private VoiceGateway gateway;
 
+    // The wanted speaking state outlives a gateway, because a join or a move replaces the gateway during a track.
+    private int _speaking;
+    private readonly Func<VoiceGateway, Task> _sendSpeaking;
+
     public VoiceProxy(VoiceGateway initial)
-        => gateway = initial;
+    {
+        gateway = initial;
+        _sendSpeaking = gw => gw.SendSpeakingAsync((VoiceSpeaking.State)Volatile.Read(ref _speaking));
+    }
 
     public bool SendPcmFrame(VoiceClient vc, Span<byte> data, int length)
     {
         try
         {
-            var gw = gateway;
+            var gw = Volatile.Read(ref gateway);
             if (gw is null || gw.Stopped || !gw.Started)
             {
                 Log.Warning("SendPcmFrame rejected: gateway null={IsNull}, stopped={Stopped}, started={Started}",
@@ -58,7 +64,7 @@ public sealed class VoiceProxy : IVoiceProxy
     {
         try
         {
-            var gw = gateway;
+            var gw = Volatile.Read(ref gateway);
             if (gw is null || gw.Stopped || !gw.Started)
             {
                 Log.Warning("SendOpusFrame rejected: gateway null={IsNull}, stopped={Stopped}, started={Started}",
@@ -86,7 +92,7 @@ public sealed class VoiceProxy : IVoiceProxy
 
             try
             {
-                var gw = gateway;
+                var gw = Volatile.Read(ref gateway);
                 if (gw is null || !gw.ConnectingFinished.Task.IsCompleted)
                 {
                     ++errorCount;
@@ -111,23 +117,38 @@ public sealed class VoiceProxy : IVoiceProxy
 
     public void SetGateway(VoiceGateway newGateway)
     {
-        var old = gateway;
-        gateway = newGateway;
+        // Full fences on both sides: either this sees a new speaking state, or SetSpeakingInternal sees this gateway.
+        var old = Interlocked.Exchange(ref gateway, newGateway);
+        if (newGateway is not null)
+            newGateway.Speaking = (VoiceSpeaking.State)Volatile.Read(ref _speaking);
+
         old?.Dispose();
     }
 
+    public bool IsGatewayFor(ulong channelId, string token, string endpoint)
+        => Volatile.Read(ref gateway) is { } gw && gw.IsFor(channelId, token, endpoint);
+
     public Task StartSpeakingAsync()
-        => RunGatewayAction(gw => gw.SendSpeakingAsync(VoiceSpeaking.State.Microphone));
+        => SetSpeakingInternalAsync(VoiceSpeaking.State.Microphone);
 
     public Task StopSpeakingAsync()
-        => RunGatewayAction(gw => gw.SendSpeakingAsync(VoiceSpeaking.State.None));
+        => SetSpeakingInternalAsync(VoiceSpeaking.State.None);
 
-    public async Task StartGateway()
-        => await gateway.Start();
+    private Task SetSpeakingInternalAsync(VoiceSpeaking.State state)
+    {
+        Interlocked.Exchange(ref _speaking, (int)state);
+        if (Volatile.Read(ref gateway) is { } gw)
+            gw.Speaking = state;
+
+        return RunGatewayAction(_sendSpeaking);
+    }
+
+    public Task StartGateway()
+        => Volatile.Read(ref gateway)?.Start() ?? Task.CompletedTask;
 
     public Task StopGateway()
     {
-        if (gateway is { } gw)
+        if (Volatile.Read(ref gateway) is { } gw)
             return gw.StopAsync();
 
         return Task.CompletedTask;

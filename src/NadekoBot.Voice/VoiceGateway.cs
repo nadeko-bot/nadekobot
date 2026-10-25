@@ -49,6 +49,7 @@ namespace NadekoBot.Voice
         public ushort MyPort { get; private set; }
         private bool _shouldResume;
         private int _lastSeqAck = -1;
+        private volatile int _speaking;
 
         public int DaveProtocolVersion { get; private set; }
         public DaveSessionManager? DaveManager { get; private set; }
@@ -98,22 +99,30 @@ namespace NadekoBot.Voice
 
         private async Task SendLoop()
         {
-            while (!_stopCancellationToken.IsCancellationRequested)
+            try
             {
-                try
+                await foreach (var qi in _channel.Reader.ReadAllAsync(_stopCancellationToken))
                 {
-                    var qi = await _channel.Reader.ReadAsync(_stopCancellationToken);
-
-                    var json = JsonConvert.SerializeObject(qi.Payload);
-
-                    if (!_stopCancellationToken.IsCancellationRequested)
+                    try
+                    {
+                        var json = JsonConvert.SerializeObject(qi.Payload);
                         await _ws.SendAsync(Encoding.UTF8.GetBytes(json));
-                    _ = Task.Run(() => qi.Result.TrySetResult(true));
+                        qi.Result.TrySetResult(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        qi.Result.TrySetException(ex);
+                    }
                 }
-                catch (ChannelClosedException)
-                {
-                    Log.Warning("Voice gateway send channel is closed");
-                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                _channel.Writer.TryComplete();
+                while (_channel.Reader.TryRead(out var left))
+                    left.Result.TrySetCanceled();
             }
         }
 
@@ -521,9 +530,25 @@ namespace NadekoBot.Voice
                     SendDaveMlsKeyPackage();
             }
 
+            // Clients link the audio of an ssrc to its user only after Speaking, so each new session repeats it.
+            if (Speaking != VoiceSpeaking.State.None)
+                _ = SendSpeakingOnConnectInternalAsync();
+
             _ = Task.Run(() => ConnectingFinished.TrySetResult(true));
 
             return Task.CompletedTask;
+        }
+
+        private async Task SendSpeakingOnConnectInternalAsync()
+        {
+            try
+            {
+                await SendSpeakingAsync(Speaking);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Voice gateway couldn't send the speaking state");
+            }
         }
 
         private Task ResumeAsync()
@@ -603,7 +628,14 @@ namespace NadekoBot.Voice
             _receivedAck = 1;
             _heartbeatTimer = new(async _ =>
             {
-                await SendHeartbeatAsync();
+                try
+                {
+                    await SendHeartbeatAsync();
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Voice gateway couldn't send a heartbeat");
+                }
             }, default, data.HeartbeatInterval, data.HeartbeatInterval);
 
             if (_shouldResume)
@@ -669,8 +701,19 @@ namespace NadekoBot.Voice
             });
         }
 
+        public VoiceSpeaking.State Speaking
+        {
+            get => (VoiceSpeaking.State)_speaking;
+            set => _speaking = (int)value;
+        }
+
+        public bool IsFor(ulong channelId, string token, string endpoint)
+            => _channelId == channelId && _token == token && _endpoint == endpoint;
+
         public Task SendSpeakingAsync(VoiceSpeaking.State speaking)
-            => SendCommandPayloadAsync(new()
+        {
+            _speaking = (int)speaking;
+            return SendCommandPayloadAsync(new()
             {
                 OpCode = VoiceOpCode.Speaking,
                 Data = JToken.FromObject(new VoiceSpeaking
@@ -680,6 +723,7 @@ namespace NadekoBot.Voice
                     Speaking = (int)speaking
                 })
             });
+        }
 
         public Task StopAsync()
         {

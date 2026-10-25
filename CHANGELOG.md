@@ -16,11 +16,13 @@
 - `.userroleassign` / `.ura` gives the role to the member
     - refuses @everyone and integration roles
 - `.userroleremove` / `.urr` takes the role from the member.
+- The first song after the bot joins a voice channel has sound.
 
 ### Dev
 
 - Giveaways read the database only for reactions on giveaway messages.
 - Added link fixer tests.
+- Added voice connection tests.
 
 ## [7.7.0] - 24.10.2026
 

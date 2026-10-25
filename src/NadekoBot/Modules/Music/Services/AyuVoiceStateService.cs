@@ -1,6 +1,5 @@
 ﻿#nullable disable
 using NadekoBot.Voice;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace NadekoBot.Modules.Music.Services;
@@ -92,53 +91,42 @@ public sealed class AyuVoiceStateService : INService
     /// </summary>
     private Task PersistentOnVoiceServerUpdated(SocketVoiceServer data)
     {
-        var guildId = data.Guild.Id;
-
-        if (!_voiceProxies.TryGetValue(guildId, out var proxy))
+        if (string.IsNullOrWhiteSpace(data.Endpoint) || !_voiceProxies.ContainsKey(data.Guild.Id))
             return Task.CompletedTask;
 
-        if (!_voiceSessions.TryGetValue(guildId, out var session))
-            return Task.CompletedTask;
-
-        _ = Task.Run(async () =>
-        {
-            var gwLock = GetVoiceGatewayLock(guildId);
-            if (!await gwLock.WaitAsync(0))
-            {
-                // Lock is held by InternalConnectToVcAsync or LeaveVoiceChannelInternalAsync,
-                // meaning this is a normal join/leave, not an external move.
-                return;
-            }
-
-            try
-            {
-                Log.Debug("Voice channel move detected for guild {GuildId}, reconnecting to channel {ChannelId}",
-                    guildId, session.ChannelId);
-
-                var sw = Stopwatch.StartNew();
-
-                _ = proxy.StopGateway();
-                Log.Debug("Voice move: StopGateway fired at {ElapsedMs}ms", sw.ElapsedMilliseconds);
-
-                var gw = new VoiceGateway(guildId, session.ChannelId, CurrentUserId,
-                    session.SessionId, data.Token, data.Endpoint);
-                proxy.SetGateway(gw);
-                Log.Debug("Voice move: SetGateway completed at {ElapsedMs}ms", sw.ElapsedMilliseconds);
-
-                _ = proxy.StartGateway();
-                Log.Debug("Voice move: StartGateway fired at {ElapsedMs}ms", sw.ElapsedMilliseconds);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to reconnect voice after channel move in guild {GuildId}", guildId);
-            }
-            finally
-            {
-                gwLock.Release();
-            }
-        });
-
+        _ = Task.Run(() => ReconnectAfterServerUpdateInternalAsync(data.Guild.Id, data.Token, data.Endpoint));
         return Task.CompletedTask;
+    }
+
+    private async Task ReconnectAfterServerUpdateInternalAsync(ulong guildId, string token, string endpoint)
+    {
+        var gwLock = GetVoiceGatewayLock(guildId);
+        await gwLock.WaitAsync();
+        try
+        {
+            // A join builds its gateway from this same event, so only a move or a join which timed out gets past this.
+            if (!_voiceProxies.TryGetValue(guildId, out var proxy)
+                || !_voiceSessions.TryGetValue(guildId, out var session)
+                || _client.GetGuild(guildId)?.CurrentUser?.VoiceChannel?.Id != session.ChannelId
+                || proxy.IsGatewayFor(session.ChannelId, token, endpoint))
+                return;
+
+            Log.Debug("Voice channel move detected for guild {GuildId}, reconnecting to channel {ChannelId}",
+                guildId, session.ChannelId);
+
+            _ = proxy.StopGateway();
+            proxy.SetGateway(new VoiceGateway(guildId, session.ChannelId, CurrentUserId,
+                session.SessionId, token, endpoint));
+            _ = proxy.StartGateway();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to reconnect voice after channel move in guild {GuildId}", guildId);
+        }
+        finally
+        {
+            gwLock.Release();
+        }
     }
 
     private Task InvokeSendVoiceStateUpdateAsync(
