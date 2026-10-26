@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [7.7.3] - 26.10.2026
+
+### Fixed
+
+- Music commands do not use more memory each time they run.
+
 ## [7.7.2] - 25.10.2026
 
 ### Changed

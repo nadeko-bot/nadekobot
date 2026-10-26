@@ -25,6 +25,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     private readonly ConcurrentDictionary<ulong, IMusicPlayer> _players;
     private readonly ConcurrentDictionary<ulong, (ITextChannel Default, ITextChannel? Override)> _outputChannels;
     private readonly ConcurrentDictionary<ulong, MusicPlayerSettings> _settings;
+    private readonly ConcurrentDictionary<ulong, SemaphoreSlim> _createLocks = new();
 
     public MusicService(
         AyuVoiceStateService voiceStateService,
@@ -90,11 +91,27 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     public Task JoinVoiceChannelAsync(ulong guildId, ulong voiceChannelId)
         => _voiceStateService.JoinVoiceChannel(guildId, voiceChannelId);
 
+    // A new player starts a play loop and rents a large buffer, so a server gets one only when it has none.
     public async Task<IMusicPlayer> GetOrCreateMusicPlayerAsync(ITextChannel contextChannel)
     {
-        var newPLayer = await CreateMusicPlayerInternalAsync(contextChannel.GuildId, contextChannel);
-        return _players.GetOrAdd(contextChannel.GuildId, newPLayer);
+        var guildId = contextChannel.GuildId;
+        var (player, created) = await OncePerKey.GetOrCreateAsync(_players,
+            _createLocks,
+            guildId,
+            (Service: this, Channel: contextChannel),
+            static s => s.Service.CreateMusicPlayerInternalAsync(s.Channel.GuildId, s.Channel));
+
+        // The player's messages follow the last music command, and a deleted music channel falls back to it.
+        if (!created)
+            _outputChannels[guildId] = (contextChannel, GetSavedMusicChannelInternal(guildId));
+
+        return player;
     }
+
+    private ITextChannel? GetSavedMusicChannelInternal(ulong guildId)
+        => _settings.TryGetValue(guildId, out var settings) && settings.MusicChannelId is { } channelId
+            ? _client.GetGuild(guildId)?.GetTextChannel(channelId)
+            : null;
 
     public bool TryGetMusicPlayer(ulong guildId, [MaybeNullWhen(false)] out IMusicPlayer musicPlayer)
         => _players.TryGetValue(guildId, out musicPlayer);
