@@ -2,6 +2,14 @@
 
 *a,c,f,r,o,d*
 
+## [7.7.4] - 26.10.2026
+
+### Fixed
+
+- The bot posts no music message in a channel where it cannot post, so a lost permission no longer makes an error for each song.
+- `.playlist` / `.pl` answers OK when reading the playlist stops after some songs, instead of an error.
+- The help text of `.destroy` / `.d` tells what the command does.
+
 ## [7.7.3] - 26.10.2026
 
 ### Fixed

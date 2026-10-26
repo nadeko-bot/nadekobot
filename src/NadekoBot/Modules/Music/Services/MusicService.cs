@@ -132,13 +132,20 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     public async Task<int> EnqueueYoutubePlaylistAsync(IMusicPlayer mp, string query, string queuer)
     {
         var count = 0;
-        await foreach (var track in _ytResolver.GetYoutubeResolver().ResolveTracksFromPlaylistAsync(query))
+        try
         {
-            if (mp.IsKilled || mp.IsQueueFull)
-                break;
+            await foreach (var track in _ytResolver.GetYoutubeResolver().ResolveTracksFromPlaylistAsync(query))
+            {
+                if (mp.IsKilled || mp.IsQueueFull)
+                    break;
 
-            mp.EnqueueTrack(track, queuer);
-            ++count;
+                mp.EnqueueTrack(track, queuer);
+                ++count;
+            }
+        }
+        catch (Exception ex) when (count > 0)
+        {
+            Log.Warning(ex, "Reading a YouTube playlist stopped after {Count} tracks", count);
         }
 
         return count;
@@ -203,16 +210,52 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
 
     public async Task<IUserMessage?> SendToOutputAsync(ulong guildId, EmbedBuilder embed)
     {
-        if (_outputChannels.TryGetValue(guildId, out var chan))
-        {
-            var msg = await _sender.Response(chan.Override ?? chan.Default)
-                                   .Embed(embed)
-                                   .SendAsync();
-            return msg;
-        }
+        if (!_outputChannels.TryGetValue(guildId, out var chan))
+            return null;
 
-        return null;
+        var channel = chan.Override ?? chan.Default;
+        if (!CanSendEmbedInternal(channel))
+            return null;
+
+        return await _sender.Response(channel)
+                            .Embed(embed)
+                            .SendAsync();
     }
+
+    // Each track sends messages, so a channel which lost a permission must not cost a 403 for each one.
+    private static bool CanSendEmbedInternal(ITextChannel channel)
+    {
+        if (channel is not SocketGuildChannel guildChannel || guildChannel.Guild.CurrentUser is not { } me)
+            return true;
+
+        // Discord computes the permissions of a thread from its parent channel, which does not show thread membership.
+        if (channel is SocketThreadChannel thread)
+            return thread.ParentChannel is { } parent
+                   && CanSendEmbed(me.GetPermissions(parent),
+                       thread: true,
+                       outsidePrivateThread: thread.IsPrivateThread && !thread.HasJoined,
+                       me.TimedOutUntil,
+                       DateTimeOffset.UtcNow);
+
+        return CanSendEmbed(me.GetPermissions(guildChannel),
+            thread: false,
+            outsidePrivateThread: false,
+            me.TimedOutUntil,
+            DateTimeOffset.UtcNow);
+    }
+
+    // A timeout is not part of the channel permissions, but Discord refuses each message while it lasts.
+    public static bool CanSendEmbed(
+        ChannelPermissions perms,
+        bool thread,
+        bool outsidePrivateThread,
+        DateTimeOffset? timedOutUntil,
+        DateTimeOffset now)
+        => !outsidePrivateThread
+           && (timedOutUntil is not { } until || until <= now)
+           && perms.ViewChannel
+           && (thread ? perms.SendMessagesInThreads : perms.SendMessages)
+           && perms.EmbedLinks;
 
     private Func<IMusicPlayer, IQueuedTrackInfo, Task> OnTrackCompleted(ulong guildId)
     {

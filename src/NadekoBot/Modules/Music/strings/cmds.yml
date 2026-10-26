@@ -13,7 +13,8 @@ deleteplaylists:
     - {}
 destroy:
   desc: |-
-    Completely stops the music and unbinds the bot from the channel. (may cause weird behaviour)
+    Stops the music, clears the queue and makes the bot leave the voice channel.
+    You must be in the same voice channel as the bot.
   ex:
     - ''
   params:

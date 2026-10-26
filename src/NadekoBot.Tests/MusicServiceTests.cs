@@ -7,11 +7,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Discord;
+using Discord.WebSocket;
 using Microsoft.Extensions.Time.Testing;
 using Nadeko.Common;
 using NadekoBot.Common;
 using NadekoBot.Common.Configs;
 using NadekoBot.Modules.Music;
+using NadekoBot.Modules.Music.Resolvers;
+using NadekoBot.Modules.Music.Services;
 using NadekoBot.Modules.Searches;
 using NadekoBot.Services;
 using NadekoBot.Voice;
@@ -209,6 +213,58 @@ public sealed class MusicServiceTests
         var calls = _handler.Requests.Count;
         await _client.PrefetchAsync("not-an-id");
         Assert.That(_handler.Requests.Count, Is.EqualTo(calls));
+    }
+
+    [Test]
+    public async Task YoutubePlaylist_KeepsTheTracksQueuedBeforeAFailure()
+    {
+        var resolver = Substitute.For<IYoutubeResolver>();
+        var factory = Substitute.For<IYoutubeResolverFactory>();
+        factory.GetYoutubeResolver().Returns(resolver);
+        using var discord = new DiscordSocketClient();
+        var service = new MusicService(null!, null!, null!, factory, null!, discord, null!, null!, null!, null!, null!, null!, null!);
+        var mp = Substitute.For<IMusicPlayer>();
+
+        resolver.ResolveTracksFromPlaylistAsync(Arg.Any<string>()).Returns(_ => FailingPlaylistInternal(2));
+        Assert.That(await service.EnqueueYoutubePlaylistAsync(mp, "mix", "queuer"), Is.EqualTo(2));
+        mp.Received(2).EnqueueTrack(Arg.Any<ITrackInfo>(), "queuer");
+
+        resolver.ResolveTracksFromPlaylistAsync(Arg.Any<string>()).Returns(_ => FailingPlaylistInternal(0));
+        Assert.ThrowsAsync<HttpRequestException>(() => service.EnqueueYoutubePlaylistAsync(mp, "mix", "queuer"));
+    }
+
+    private static async IAsyncEnumerable<ITrackInfo> FailingPlaylistInternal(int tracksBeforeFailure)
+    {
+        for (var i = 0; i < tracksBeforeFailure; i++)
+        {
+            await Task.Yield();
+            yield return new RemoteTrackInfo(VIDEO_ID, "Song " + i, "u", "", TimeSpan.Zero, MusicPlatform.Youtube);
+        }
+
+        throw new HttpRequestException("the playlist stopped");
+    }
+
+    [Test]
+    public void PlayerMessages_NeedViewSendAndEmbed()
+    {
+        var now = DateTimeOffset.UtcNow;
+        var all = new ChannelPermissions(viewChannel: true, sendMessages: true, embedLinks: true);
+        var allThread = new ChannelPermissions(viewChannel: true, sendMessagesInThreads: true, embedLinks: true);
+        Assert.That(MusicService.CanSendEmbed(all, false, false, null, now), Is.True);
+        Assert.That(MusicService.CanSendEmbed(allThread, true, false, null, now), Is.True);
+        Assert.That(MusicService.CanSendEmbed(all, false, false, now.AddMinutes(-1), now), Is.True, "an ended timeout");
+
+        foreach (var (perms, thread, outside, until) in new (ChannelPermissions, bool, bool, DateTimeOffset?)[]
+                 {
+                     (new ChannelPermissions(sendMessages: true, embedLinks: true), false, false, null),
+                     (new ChannelPermissions(viewChannel: true, embedLinks: true), false, false, null),
+                     (new ChannelPermissions(viewChannel: true, sendMessages: true), false, false, null),
+                     (all, true, false, null),
+                     (allThread, true, true, null),
+                     (all, false, false, now.AddMinutes(5))
+                 })
+            Assert.That(MusicService.CanSendEmbed(perms, thread, outside, until, now), Is.False,
+                $"{perms.RawValue} thread={thread} outside={outside} until={until}");
     }
 
     [Test]
