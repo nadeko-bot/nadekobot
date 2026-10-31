@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NadekoBot.Hosted.Endpoints;
 using NadekoBot.Modules.Administration.Services;
 using NadekoBot.Modules.Music;
+using NadekoBot.Modules.Music.Services;
 using NadekoBot.Modules.NadekoExpressions;
 using NadekoBot.Modules.Owner.Services;
 using NadekoBot.Modules.Utility;
@@ -98,7 +99,7 @@ public static class ApiHost
         services.AddSingleton(new MediaTools(paths.ToolsDir));
         services.AddSingleton<ToolService>();
         services.AddSingleton(new YoutubeUpstreamSetting(paths.YoutubeProxy));
-        services.AddSingleton(new MusicServiceSetting(paths.MusicService));
+        services.AddSingleton(MusicServiceSetting.For(paths.MusicService));
         services.AddSingleton(YoutubeStats.Shared);
         services.AddSingleton<IProcessRestarter, ProcessRestarter>();
         // The program passes the instance which the logger already writes to.
@@ -120,6 +121,10 @@ public static class ApiHost
         AddBotService<DbService>(services);
         AddBotService<IBotCredsProvider>(services);
         AddBotService<BotActivityService>(services);
+        AddBotService<IMusicService>(services);
+        AddBotService<NadekoBot.Modules.Searches.Services.FeedsService>(services);
+        AddBotService<NadekoBot.Modules.Searches.Services.StreamNotificationService>(services);
+        services.AddSingleton<VoiceChangeLimiter>();
         services.AddSingleton(static sp => sp.GetRequiredService<BotBridge>().Feed);
         services.AddSingleton(static sp => sp.GetRequiredService<BotBridge>().Activity);
         services.AddSingleton(static sp =>

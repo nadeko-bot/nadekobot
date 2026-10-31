@@ -1,2 +1,3 @@
+calc_no_result: "The expression has an unknown name or gives no result."
 calcops: List of functions in {0}calc command
 result: Result

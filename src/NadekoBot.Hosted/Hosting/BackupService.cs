@@ -48,6 +48,9 @@ public sealed class BackupService(
 
     private const int BUFFER_SIZE = 81920;
 
+    private const int ENOSPC = 28;
+    private const int ERROR_DISK_FULL = 112;
+
     private const int IDLE = 0;
     private const int CREATING = 1;
     private const int IMPORTING = 2;
@@ -193,11 +196,21 @@ public sealed class BackupService(
                 }
             }
 
-            var (invalid, _) = await BackupArchive.ValidateFileAsync(tempPath, ImportLimits);
-            if (invalid is not null)
-                return BackupResult.Invalid(invalid);
+            var format = BackupImport.DetectFile(tempPath);
+            if (format is ImportFormat.Unknown)
+                return BackupResult.Invalid(ApiErrors.UNKNOWN_FORMAT);
 
-            return PublishInternal(tempPath);
+            if (format is ImportFormat.Zip)
+            {
+                var (invalid, _) = await BackupArchive.ValidateFileAsync(tempPath, ImportLimits);
+                if (invalid is not null)
+                    return BackupResult.Invalid(invalid);
+
+                if (!await Task.Run(() => BackupImport.ZipHasWal(tempPath)))
+                    return PublishInternal(tempPath);
+            }
+
+            return await ConvertInternalAsync(tempPath, format);
         }
         catch (IOException ex) when (!ct.IsCancellationRequested)
         {
@@ -209,6 +222,49 @@ public sealed class BackupService(
         {
             TryDeleteInternal(tempPath);
             Volatile.Write(ref _busy, IDLE);
+        }
+    }
+
+    // Writes the usable files of the upload into an archive of the same layout as CreateAsync.
+    private async Task<BackupResult> ConvertInternalAsync(string uploadPath, ImportFormat format)
+    {
+        var id = Guid.NewGuid();
+        var stagingDir = Path.Combine(paths.BackupDir, $"{IMPORT_TEMP_PREFIX}{id:N}");
+        var zipPath = stagingDir + BackupArchive.BACKUP_EXTENSION;
+        try
+        {
+            var staged = await Task.Run(() => BackupImport.Stage(uploadPath, format, stagingDir, ImportLimits));
+            if (staged.Error is ApiErrors.NO_SPACE)
+                return BackupResult.NoSpace;
+            if (staged.Error is not null)
+                return BackupResult.Invalid(staged.Error);
+
+            if (await Task.Run(() => BackupImport.FinishDatabase(staged.DbPath)) is { } dbError)
+                return dbError is ApiErrors.NO_SPACE ? BackupResult.NoSpace : BackupResult.Invalid(dbError);
+
+            await using (var zipStream = new FileStream(zipPath, FileMode.CreateNew, FileAccess.Write, FileShare.None,
+                             BUFFER_SIZE, useAsync: true))
+            using (var archive = new ZipArchive(zipStream, ZipArchiveMode.Create))
+            {
+                await AddEntryInternalAsync(archive, staged.DbPath, BackupArchive.DB_ENTRY_NAME, CompressionLevel.Fastest);
+                foreach (var (path, entryName) in staged.Settings)
+                    await AddEntryInternalAsync(archive, path, entryName, CompressionLevel.Optimal);
+            }
+
+            // The settings files still go through the archive check, which refuses YAML aliases.
+            var (invalid, _) = await BackupArchive.ValidateFileAsync(zipPath, ImportLimits);
+            return invalid is null ? PublishInternal(zipPath) : BackupResult.Invalid(invalid);
+        }
+        catch (IOException ex) when (IsDiskFullInternal(ex, paths.BackupDir))
+        {
+            // Read the disk before the cleanup below frees the staged files.
+            Log.Warning(ex, "Importing a backup filled the disk");
+            return BackupResult.NoSpace;
+        }
+        finally
+        {
+            TryDeleteDirectoryInternal(stagingDir);
+            TryDeleteInternal(zipPath);
         }
     }
 
@@ -368,6 +424,22 @@ public sealed class BackupService(
             foreach (var file in dir.EnumerateFiles(prefix + ANY_FILE_PATTERN))
                 TryDeleteInternal(file.FullName);
         }
+
+        foreach (var staging in dir.EnumerateDirectories(IMPORT_TEMP_PREFIX + ANY_FILE_PATTERN))
+            TryDeleteDirectoryInternal(staging.FullName);
+    }
+
+    private static void TryDeleteDirectoryInternal(string path)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+                Directory.Delete(path, recursive: true);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            Log.Warning(ex, "Failed to delete the temporary import folder {Path}", path);
+        }
     }
 
     private static async Task SnapshotDatabaseInternalAsync(DbService db, string destPath)
@@ -396,6 +468,10 @@ public sealed class BackupService(
                 await conn.CloseAsync();
         }
     }
+
+    private static bool IsDiskFullInternal(IOException ex, string dir)
+        => ex.HResult is ENOSPC or ERROR_DISK_FULL
+           || BackupArchive.FreeBytes(dir) is { } free && free < BackupArchive.FREE_SPACE_MARGIN_BYTES;
 
     private static void TryDeleteInternal(string path)
     {

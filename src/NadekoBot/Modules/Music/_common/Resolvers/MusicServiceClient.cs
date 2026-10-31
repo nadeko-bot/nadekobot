@@ -13,6 +13,31 @@ public sealed record MusicServicePlaylist(string? Id, string? Title, MusicServic
 
 public sealed record MusicServicePlaylistRef(string? Id, string? Title, string? Url);
 
+public sealed record MusicServiceChannel(string? Id, string? Name, string? Avatar);
+
+public sealed record MusicServiceLiveVideo(string? VideoId, string? Title, string? Thumbnail, int? Viewers);
+
+// Status is "live", "offline", "missing" (no such channel) or "unknown" (the service could not check it now).
+public sealed record MusicServiceLiveChannel(
+    string? Id,
+    string? Status,
+    string? Name,
+    string? Avatar,
+    MusicServiceLiveVideo? Live);
+
+public sealed record MusicServiceUpload(string? Id, string? Title, string? Thumbnail);
+
+public enum MusicServiceStatus
+{
+    Ok,
+    NotFound,
+    Failed
+}
+
+public readonly record struct MusicServiceChannelResult(MusicServiceStatus Status, MusicServiceChannel? Channel);
+
+public readonly record struct MusicServiceUploadsResult(MusicServiceStatus Status, MusicServiceUpload[] Videos);
+
 // The NadekoBot music service (ndkloud docs/specs/music-service.md). It looks songs up and downloads them through
 // its own exits, so a bot which uses it never connects to YouTube.
 public sealed class MusicServiceClient(
@@ -23,9 +48,13 @@ public sealed class MusicServiceClient(
     public const string HTTP_CLIENT_NAME = "music-service";
     public const string KEY_ENV_VAR = "NADEKOBOT_MUSIC_SERVICE_KEY";
     public const int MAX_SEARCH_LIMIT = 10;
+    public const int MAX_RELATED_LIMIT = 25;
+    public const int MAX_LIVE_CHANNELS = 50;
 
     private const int MAX_RESPONSE_BYTES = 2 * 1024 * 1024;
     private const int MAX_QUERY_LENGTH = 200;
+    private const int MAX_CHANNEL_INPUT_LENGTH = 512;
+    private const int CHANNEL_ID_LENGTH = 24;
     private const int MIN_PLAYLIST_ID_LENGTH = 12;
     private const int MAX_PLAYLIST_ID_LENGTH = 64;
     private const int MAX_LOGGED_ERROR_LENGTH = 64;
@@ -41,8 +70,20 @@ public sealed class MusicServiceClient(
 
     private sealed record PrefetchBody(string[] Ids);
 
+    private sealed record LiveBody(IReadOnlyList<string> Channels);
+
+    private sealed record LiveList(MusicServiceLiveChannel[]? Channels);
+
+    private sealed record UploadList(string? Id, MusicServiceUpload[]? Videos);
+
+    // A 404 with another code, such as not_found for a route which an older service lacks, is not a missing channel.
+    private const string ERROR_UNAVAILABLE = "unavailable";
+
     public static bool IsVideoId(ReadOnlySpan<char> id)
         => YoutubeHelpers.IsVideoId(id);
+
+    public static bool IsChannelId(ReadOnlySpan<char> id)
+        => id.Length == CHANNEL_ID_LENGTH && id.StartsWith("UC") && !id.ContainsAnyExcept(_idChars);
 
     public static bool IsPlaylistId(ReadOnlySpan<char> id)
         => id.Length is >= MIN_PLAYLIST_ID_LENGTH and <= MAX_PLAYLIST_ID_LENGTH && !id.ContainsAnyExcept(_idChars);
@@ -90,7 +131,7 @@ public sealed class MusicServiceClient(
 
             parsed = new(raw, ParseBaseUrl(raw));
             _baseUrl = parsed;
-            if (parsed.Value is null)
+            if (parsed.Value is null && !string.IsNullOrWhiteSpace(raw))
                 Log.Warning("The music service is the ytProvider, but musicServiceUrl in searches.yml is not a valid url");
 
             return parsed.Value;
@@ -110,6 +151,9 @@ public sealed class MusicServiceClient(
     public string? FfmpegHeaders
         => Key.Length == 0 ? null : $"Authorization: Bearer {Key}\r\n";
 
+    public bool IsConfigured
+        => BaseUrl is not null && Key.Length > 0;
+
     public string? GetAudioUrl(string videoId)
         => BaseUrl is { } b && IsVideoId(videoId) ? $"{b}/v1/audio/{videoId}" : null;
 
@@ -123,6 +167,10 @@ public sealed class MusicServiceClient(
     }
 
     public async Task<MusicServiceTrack[]> SearchAsync(string query, int limit)
+        => await TrySearchAsync(query, limit) ?? [];
+
+    // Null when the service did not answer, so a caller can tell a failure from no results.
+    public async Task<MusicServiceTrack[]?> TrySearchAsync(string query, int limit)
     {
         var q = TrimQuery(query);
         if (q.IsEmpty)
@@ -131,7 +179,7 @@ public sealed class MusicServiceClient(
         var res = await GetInternalAsync<TrackList>(
             $"/v1/search?q={Uri.EscapeDataString(q.ToString())}&limit={Math.Clamp(limit, 1, MAX_SEARCH_LIMIT)}",
             "search");
-        return ValidTracks(res?.Tracks);
+        return res is null ? null : ValidTracks(res.Tracks);
     }
 
     public async Task<MusicServicePlaylistRef?> SearchPlaylistAsync(string query)
@@ -166,6 +214,100 @@ public sealed class MusicServiceClient(
 
         var res = await GetInternalAsync<MusicServicePlaylist>($"/v1/playlists/{playlistId}", "playlist");
         return res is null ? null : res with { Tracks = ValidTracks(res.Tracks) };
+    }
+
+    // Songs related to a video, without the video itself. Null when the service did not answer.
+    public async Task<MusicServiceTrack[]?> GetRelatedAsync(string videoId, int limit)
+    {
+        if (!IsVideoId(videoId))
+            return null;
+
+        var res = await GetInternalAsync<TrackList>(
+            $"/v1/related/{videoId}?limit={Math.Clamp(limit, 1, MAX_RELATED_LIMIT)}",
+            "related");
+        return res is null ? null : ValidTracks(res.Tracks);
+    }
+
+    // Takes a channel link, an @handle link, a /c/ or /user/ link, a channel id or an @handle.
+    public async Task<MusicServiceChannelResult> ResolveChannelAsync(string input)
+    {
+        var q = input.AsSpan().Trim();
+        if (q.IsEmpty || q.Length > MAX_CHANNEL_INPUT_LENGTH)
+            return new(MusicServiceStatus.NotFound, null);
+
+        var (res, status, error) = await SendInternalAsync<MusicServiceChannel>(
+            HttpMethod.Get,
+            $"/v1/channels/resolve?url={Uri.EscapeDataString(q.ToString())}",
+            null,
+            "channel resolve");
+
+        if (res is { Id: { } id } && IsChannelId(id))
+            return new(MusicServiceStatus.Ok, res);
+
+        return status == HttpStatusCode.BadRequest || IsMissing(status, error)
+            ? new(MusicServiceStatus.NotFound, null)
+            : new(MusicServiceStatus.Failed, null);
+    }
+
+    // The newest uploads of a channel, newest first, with a valid video id each.
+    public async Task<MusicServiceUploadsResult> GetUploadsAsync(string channelId)
+    {
+        if (!IsChannelId(channelId))
+            return new(MusicServiceStatus.NotFound, []);
+
+        var (res, status, error) = await SendInternalAsync<UploadList>(
+            HttpMethod.Get,
+            $"/v1/channels/{channelId}/uploads",
+            null,
+            "uploads");
+
+        // A list for another channel would post its videos into this feed.
+        if (res is { Id: { } id } && string.Equals(id, channelId, StringComparison.Ordinal))
+            return new(MusicServiceStatus.Ok, ValidUploads(res.Videos));
+
+        return IsMissing(status, error)
+            ? new(MusicServiceStatus.NotFound, [])
+            : new(MusicServiceStatus.Failed, []);
+    }
+
+    private static bool IsMissing(HttpStatusCode? status, string? error)
+        => status == HttpStatusCode.NotFound && string.Equals(error, ERROR_UNAVAILABLE, StringComparison.Ordinal);
+
+    private static MusicServiceUpload[] ValidUploads(MusicServiceUpload[]? videos)
+    {
+        if (videos is null or { Length: 0 })
+            return [];
+
+        var count = 0;
+        foreach (var v in videos)
+        {
+            if (v is { Id: { } id } && IsVideoId(id))
+                count++;
+        }
+
+        if (count == videos.Length)
+            return videos;
+
+        var valid = new MusicServiceUpload[count];
+        var i = 0;
+        foreach (var v in videos)
+        {
+            if (v is { Id: { } id } && IsVideoId(id))
+                valid[i++] = v;
+        }
+
+        return valid;
+    }
+
+    // The live state of up to MAX_LIVE_CHANNELS channels. Null when the service did not answer.
+    public async Task<MusicServiceLiveChannel[]?> GetLiveAsync(IReadOnlyList<string> channelIds)
+    {
+        if (channelIds.Count is 0 or > MAX_LIVE_CHANNELS)
+            return null;
+
+        var body = JsonSerializer.Serialize(new LiveBody(channelIds), JsonSerializerOptions.Web);
+        var (res, _, _) = await SendInternalAsync<LiveList>(HttpMethod.Post, "/v1/live", body, "live");
+        return res is null ? null : res.Channels ?? [];
     }
 
     // Asks the service to download a song before it plays. A failure only means the song downloads when it plays.
@@ -228,32 +370,44 @@ public sealed class MusicServiceClient(
 
     private async Task<T?> GetInternalAsync<T>(string pathAndQuery, string route)
         where T : class
+        => (await SendInternalAsync<T>(HttpMethod.Get, pathAndQuery, null, route)).Value;
+
+    // Status is null when no answer came. Error is the code of an error answer.
+    private async Task<(T? Value, HttpStatusCode? Status, string? Error)> SendInternalAsync<T>(
+        HttpMethod method,
+        string pathAndQuery,
+        string? jsonBody,
+        string route)
+        where T : class
     {
         if (BaseUrl is not { } baseUrl)
-            return null;
+            return (null, null, null);
 
         try
         {
             using var http = httpFactory.CreateClient(HTTP_CLIENT_NAME);
-            using var req = new HttpRequestMessage(HttpMethod.Get, baseUrl + pathAndQuery);
+            using var req = new HttpRequestMessage(method, baseUrl + pathAndQuery);
             req.Headers.Authorization = new("Bearer", Key);
             req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            if (jsonBody is not null)
+                req.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
             using var res = await http.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
             if (await ExternalHttp.ReadLimitedAsync(res.Content, MAX_RESPONSE_BYTES) is not { } body)
             {
                 Log.Warning("The music service {Route} answer is too large", route);
-                return null;
+                return (null, res.StatusCode, null);
             }
 
             try
             {
                 var span = body.Buffer.AsSpan(0, body.Length);
                 if (res.IsSuccessStatusCode)
-                    return JsonSerializer.Deserialize<T>(span, JsonSerializerOptions.Web);
+                    return (JsonSerializer.Deserialize<T>(span, JsonSerializerOptions.Web), res.StatusCode, null);
 
-                LogErrorInternal(route, res.StatusCode, ReadErrorCode(span));
-                return null;
+                var error = ReadErrorCode(span);
+                LogErrorInternal(route, res.StatusCode, error);
+                return (null, res.StatusCode, error);
             }
             finally
             {
@@ -263,7 +417,7 @@ public sealed class MusicServiceClient(
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException)
         {
             Log.Warning(ex, "Music service {Route} request failed", route);
-            return null;
+            return (null, null, null);
         }
     }
 

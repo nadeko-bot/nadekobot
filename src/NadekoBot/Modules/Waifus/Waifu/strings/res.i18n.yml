@@ -96,6 +96,8 @@ ar:
   waifu_dm_new_manager_replaced: '**{0}** أصبح مديرك الآن (بدلا من **{1}**)! دفعوا **{2}**.'
   notify_waifu_manager_replaced: وايفو - تم استبدال المدير
   notify_waifu_new_manager: وايفو - مدير جديد
+  waifu_btn_fans: المعجبون
+  waifu_you_are_fan: 'أنت معجب بـ **{0}**.'
 
 de-DE:
   waifu_not_opted_in: Diese Person ist noch nicht der Waifu-Welt beigetreten.
@@ -195,6 +197,8 @@ de-DE:
   waifu_dm_new_manager_replaced: '**{0}** ist jetzt dein Manager (hat **{1}** ersetzt)! Sie haben **{2}** bezahlt.'
   notify_waifu_manager_replaced: Waifu - Manager ersetzt
   notify_waifu_new_manager: Waifu - Neuer Manager
+  waifu_btn_fans: Fans
+  waifu_you_are_fan: 'Du bist Fan von **{0}**.'
 
 es-ES:
   waifu_not_opted_in: Esa persona aún no ha entrado al mundo waifu.
@@ -294,6 +298,8 @@ es-ES:
   waifu_dm_new_manager_replaced: '**{0}** ahora es tu manager (reemplazo a **{1}**)! Pagaron **{2}**.'
   notify_waifu_manager_replaced: Waifu - Manager reemplazado
   notify_waifu_new_manager: Waifu - Nuevo manager
+  waifu_btn_fans: Fans
+  waifu_you_are_fan: 'Eres fan de **{0}**.'
 
 fr-FR:
   waifu_not_opted_in: Cette personne n'a pas encore rejoint le monde waifu.
@@ -393,6 +399,8 @@ fr-FR:
   waifu_dm_new_manager_replaced: '**{0}** est maintenant ton manager (a remplace **{1}**) ! Ils ont paye **{2}**.'
   notify_waifu_manager_replaced: Waifu - Manager remplace
   notify_waifu_new_manager: Waifu - Nouveau manager
+  waifu_btn_fans: Fans
+  waifu_you_are_fan: 'Vous êtes fan de **{0}**.'
 
 id-ID:
   waifu_not_opted_in: Orang itu belum bergabung ke dunia waifu.
@@ -492,6 +500,8 @@ id-ID:
   waifu_dm_new_manager_replaced: '**{0}** sekarang manajermu (menggantikan **{1}**)! Mereka membayar **{2}**.'
   notify_waifu_manager_replaced: Waifu - Manajer Diganti
   notify_waifu_new_manager: Waifu - Manajer Baru
+  waifu_btn_fans: Fan
+  waifu_you_are_fan: 'Kamu fan dari **{0}**.'
 
 ja-JP:
   waifu_not_opted_in: その人はまだワイフの世界に参加していません。
@@ -591,6 +601,8 @@ ja-JP:
   waifu_dm_new_manager_replaced: '**{0}** があなたの新しいマネージャーになりました(**{1}** と交代)! 支払い額: **{2}**。'
   notify_waifu_manager_replaced: Waifu - マネージャー交代
   notify_waifu_new_manager: Waifu - 新しいマネージャー
+  waifu_btn_fans: ファン
+  waifu_you_are_fan: 'あなたは**{0}**のファンです。'
 
 ko-KR:
   waifu_not_opted_in: 그 사람은 아직 와이푸 세계에 참여하지 않았어요.
@@ -690,6 +702,8 @@ ko-KR:
   waifu_dm_new_manager_replaced: '**{0}**이(가) 당신의 새 매니저입니다(**{1}** 교체)! **{2}**를 지불했습니다.'
   notify_waifu_manager_replaced: Waifu - 매니저 교체
   notify_waifu_new_manager: Waifu - 새 매니저
+  waifu_btn_fans: 팬
+  waifu_you_are_fan: '당신은 **{0}**의 팬이에요.'
 
 pl-PL:
   waifu_not_opted_in: Ta osoba jeszcze nie dołączyła do świata waifu.
@@ -789,6 +803,8 @@ pl-PL:
   waifu_dm_new_manager_replaced: '**{0}** jest teraz twoim menedzerem (zastapil(-a) **{1}**)! Zaplacili **{2}**.'
   notify_waifu_manager_replaced: Waifu - Menedzer zastapiony
   notify_waifu_new_manager: Waifu - Nowy menedzer
+  waifu_btn_fans: Fani
+  waifu_you_are_fan: 'Jesteś fanem **{0}**.'
 
 pt-BR:
   waifu_not_opted_in: Essa pessoa ainda não entrou no mundo waifu.
@@ -888,6 +904,8 @@ pt-BR:
   waifu_dm_new_manager_replaced: '**{0}** agora e seu/sua gerente (substituiu **{1}**)! Pagaram **{2}**.'
   notify_waifu_manager_replaced: Waifu - Gerente substituido
   notify_waifu_new_manager: Waifu - Novo gerente
+  waifu_btn_fans: Fãs
+  waifu_you_are_fan: 'Você é fã de **{0}**.'
 
 ru-RU:
   waifu_not_opted_in: Этот человек ещё не вступил в мир вайфу.
@@ -987,6 +1005,8 @@ ru-RU:
   waifu_dm_new_manager_replaced: '**{0}** теперь ваш менеджер (заменил **{1}**)! Они заплатили **{2}**.'
   notify_waifu_manager_replaced: Waifu - Менеджер заменен
   notify_waifu_new_manager: Waifu - Новый менеджер
+  waifu_btn_fans: Фанаты
+  waifu_you_are_fan: 'Вы фанат **{0}**.'
 
 sr-Cyrl-RS:
   waifu_not_opted_in: Та особа још није ушла у ваифу свет.
@@ -1086,6 +1106,8 @@ sr-Cyrl-RS:
   waifu_dm_new_manager_replaced: '**{0}** је сада твој менаџер (заменио/ла **{1}**)! Платили су **{2}**.'
   notify_waifu_manager_replaced: Waifu - Менаџер замењен
   notify_waifu_new_manager: Waifu - Нови менаџер
+  waifu_btn_fans: Фанови
+  waifu_you_are_fan: 'Фан си корисника **{0}**.'
 
 tr-TR:
   waifu_not_opted_in: Bu kişi henüz waifu dünyasına katılmamış.
@@ -1185,6 +1207,8 @@ tr-TR:
   waifu_dm_new_manager_replaced: '**{0}** artik yoneticin (**{1}** yerine)! **{2}** odediler.'
   notify_waifu_manager_replaced: Waifu - Yonetici Degistirildi
   notify_waifu_new_manager: Waifu - Yeni Yonetici
+  waifu_btn_fans: Fanlar
+  waifu_you_are_fan: '**{0}** kişisinin fanısın.'
 
 ts-TS:
   waifu_not_opted_in: That person hasn't joined the waifu world yet.
@@ -1284,6 +1308,8 @@ ts-TS:
   waifu_dm_new_manager_replaced: '**{0}** is your manager now (replaced **{1}**)! They paid **{2}**... whatever.'
   notify_waifu_manager_replaced: Waifu - Manager Replaced
   notify_waifu_new_manager: Waifu - New Manager
+  waifu_btn_fans: Fans
+  waifu_you_are_fan: 'You''re a fan of **{0}**. Obviously.'
 
 uk-UA:
   waifu_not_opted_in: Ця людина ще не приєдналась до світу вайфу.
@@ -1383,6 +1409,8 @@ uk-UA:
   waifu_dm_new_manager_replaced: '**{0}** тепер ваш менеджер (замінив **{1}**)! Вони заплатили **{2}**.'
   notify_waifu_manager_replaced: Waifu - Менеджера замінено
   notify_waifu_new_manager: Waifu - Новий менеджер
+  waifu_btn_fans: Фанати
+  waifu_you_are_fan: 'Ти фанат **{0}**.'
 
 vi-VN:
   waifu_not_opted_in: Người đó chưa tham gia thế giới waifu.
@@ -1482,6 +1510,8 @@ vi-VN:
   waifu_dm_new_manager_replaced: '**{0}** gio la quan ly cua ban (thay the **{1}**)! Ho da tra **{2}**.'
   notify_waifu_manager_replaced: Waifu - Quan ly bi thay the
   notify_waifu_new_manager: Waifu - Quan ly moi
+  waifu_btn_fans: Fan
+  waifu_you_are_fan: 'Bạn là fan của **{0}**.'
 
 zh-CN:
   waifu_not_opted_in: 該使用者尚未加入老婆世界。
@@ -1581,3 +1611,5 @@ zh-CN:
   waifu_dm_new_manager_replaced: '**{0}** 现在是你的管理员了(替换了 **{1}**)! 对方支付了 **{2}**。'
   notify_waifu_manager_replaced: Waifu - 管理员被替换
   notify_waifu_new_manager: Waifu - 新管理员
+  waifu_btn_fans: 粉丝
+  waifu_you_are_fan: '你是 **{0}** 的粉丝。'

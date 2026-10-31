@@ -1,4 +1,5 @@
 ﻿using NadekoBot.Db.Models;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 
@@ -33,16 +34,19 @@ public class TrovoProvider : Provider
     public override Task<bool> IsValidUrl(string url)
         => Task.FromResult(_urlRegex.IsMatch(url));
 
-    public override Task<StreamData?> GetStreamDataByUrlAsync(string url)
+    public override Task<StreamLookup> LookupByUrlAsync(string url)
     {
         var match = _urlRegex.Match(url);
         if (match.Length == 0)
-            return Task.FromResult(default(StreamData?));
+            return Task.FromResult(StreamLookup.NotFound);
 
-        return GetStreamDataAsync(match.Groups["channel"].Value);
+        return FetchInternalAsync(match.Groups["channel"].Value);
     }
 
     public override async Task<StreamData?> GetStreamDataAsync(string login)
+        => (await FetchInternalAsync(login)).Data;
+
+    private async Task<StreamLookup> FetchInternalAsync(string login)
     {
         using var http = _httpClientFactory.CreateClient();
 
@@ -68,19 +72,28 @@ public class TrovoProvider : Provider
                     Username = login
                 });
 
-            res.EnsureSuccessStatusCode();
+            if (!res.IsSuccessStatusCode)
+            {
+                Log.Warning("Trovo answered {StatusCode} for trovo.live/{TrovoId}", (int)res.StatusCode, login);
+                if (!IsUnknownChannel(res.StatusCode))
+                    return StreamLookup.Unavailable;
+
+                _failingStreams.TryAdd(login, UtcNow);
+                return StreamLookup.NotFound;
+            }
 
             var data = await res.Content.ReadFromJsonAsync<TrovoGetUsersResponse>();
 
             if (data is null)
             {
                 Log.Warning("An empty response received while retrieving stream data for trovo.live/{TrovoId}", login);
-                _failingStreams.TryAdd(login, DateTime.UtcNow);
-                return null;
+                _failingStreams.TryAdd(login, UtcNow);
+                return StreamLookup.NotFound;
             }
 
+            _failingStreams.TryRemove(login, out _);
             _failingStreams.TryRemove(data.Username, out _);
-            return new()
+            return StreamLookup.Found(new()
             {
                 IsLive = data.IsLive,
                 Game = data.CategoryName,
@@ -92,16 +105,20 @@ public class TrovoProvider : Provider
                 StreamUrl = data.ChannelUrl,
                 UniqueName = data.Username,
                 Preview = data.Thumbnail
-            };
+            });
         }
         catch (Exception ex)
         {
+            // an outage says nothing about the channel, so it does not count toward the 12-hour delete
             Log.Warning(ex, "Error retrieving stream data for trovo.live/{TrovoId}", login);
-            _failingStreams.TryAdd(login, DateTime.UtcNow);
-            return null;
+            return StreamLookup.Unavailable;
         }
     }
 
+    // Trovo answers a 4xx for a name which does not exist; a refused client id or a rate limit is not about the name.
+    private static bool IsUnknownChannel(HttpStatusCode status)
+        => (int)status is >= 400 and < 500
+           && status is not (HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden or HttpStatusCode.TooManyRequests);
     public override async Task<IReadOnlyCollection<StreamData>> GetStreamDataAsync(List<string> usernames)
     {
         var trovoClientId = _creds.GetCreds().TrovoClientId;

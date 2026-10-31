@@ -22,9 +22,6 @@ localplaylist:
   - lopl
 lyrics:
   - lyrics
-musicquality:
-  - musicquality
-  - mquality
 next:
   - next
   - 'n'

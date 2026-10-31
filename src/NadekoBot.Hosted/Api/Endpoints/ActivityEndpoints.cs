@@ -12,8 +12,6 @@ public static class ActivityEndpoints
 {
     public const int DEFAULT_DAYS = 7;
 
-    private static readonly IResult _notReady = ApiErrors.Create(ApiErrors.NOT_READY, StatusCodes.Status503ServiceUnavailable);
-
     public static RouteGroupBuilder MapActivityEndpoints(this RouteGroupBuilder ownerGuild)
     {
         ownerGuild.MapGet("/activity", GetActivity);
@@ -42,7 +40,7 @@ public static class ActivityEndpoints
 
         var report = await activity.ReadAsync(guild.Id, dayCount, http.RequestAborted);
         if (report is null)
-            return _notReady;
+            return ApiErrors.NotReady;
 
         var warnings = await CountWarningsPerDayAsync(db, guild.Id, report.FirstDay, dayCount);
         return Results.Json(ToDto(report, warnings), ApiJsonContext.Default.GuildActivityDto);

@@ -4,13 +4,23 @@ using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Music;
 using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Searches.Services;
 
 public readonly record struct FeedFetchResult(Feed? Feed, int Status, TimeSpan? Freshness, TimeSpan? RetryAfter);
+
+public enum FeedCheckResult
+{
+    Ok,
+    Unreadable,
+    Unavailable
+}
 
 public sealed partial class FeedsService(
     DbService db,
@@ -19,6 +29,7 @@ public sealed partial class FeedsService(
     ShardData shardData,
     SearchesConfigService scs,
     IHttpClientFactory httpFactory,
+    MusicServiceClient music,
     TimeProvider? timeProvider = null) : INService, IReadyExecutor
 {
     public const string USER_AGENT =
@@ -31,6 +42,11 @@ public sealed partial class FeedsService(
     private const int MAX_ITEMS_PER_CHECK = 3;
     private static readonly TimeSpan _tickInterval = TimeSpan.FromSeconds(10);
 
+    // The service keeps a channel's uploads for 10 minutes, so a new video shows within 15.
+    private static readonly TimeSpan _uploadsPollInterval = TimeSpan.FromMinutes(5);
+    private const string YT_WATCH_URL = "https://www.youtube.com/watch?v=";
+    private const string YT_FEED_PATH = "/feeds/videos.xml";
+
     private readonly TimeProvider _time = timeProvider ?? TimeProvider.System;
     private readonly FeedHealth _health = new(timeProvider ?? TimeProvider.System);
 
@@ -42,6 +58,11 @@ public sealed partial class FeedsService(
     private readonly HashSet<int> _streakEnds = new();
     private readonly List<(string Key, List<FeedSub> Subs)> _due = new();
     private readonly List<Task> _sendTasks = new();
+    private readonly Dictionary<string, HashSet<string>?> _seenVideos = new();
+
+    // Read once per tick: on a managed bot the setting comes from a file.
+    private bool _serviceFeeds;
+    private readonly Dictionary<string, string?> _ytFeedChannels = new();
 
     public async Task OnReadyAsync()
     {
@@ -166,12 +187,17 @@ public sealed partial class FeedsService(
     private async Task TrackFeedsTickInternalAsync()
     {
         _health.BeginTick();
+        _serviceFeeds = music.IsConfigured;
         foreach (var kvp in _subs)
         {
             if (kvp.Value.Count == 0)
                 continue;
 
-            _health.Touch(kvp.Key, kvp.Value[0].Url);
+            // The feeds which the music service reads share one host, apart from youtube.com.
+            var url = kvp.Value[0].Url;
+            _health.Touch(kvp.Key,
+                url,
+                sourceHost: GetServiceChannelInternal(kvp.Key, url) is null ? null : MusicServiceClient.HTTP_CLIENT_NAME);
             if (_health.IsDue(kvp.Key))
                 _due.Add((kvp.Key, kvp.Value));
         }
@@ -201,16 +227,16 @@ public sealed partial class FeedsService(
     private async Task CheckFeedInternalAsync(string key, List<FeedSub> subs)
     {
         var rssUrl = subs[0].Url;
+        if (GetServiceChannelInternal(key, rssUrl) is { } channelId)
+        {
+            await CheckUploadsInternalAsync(key, subs, rssUrl, channelId);
+            return;
+        }
+
         var result = await FetchFeedAsync(rssUrl);
         if (result.Feed is not { } feed)
         {
-            var failure = _health.OnFailure(key, result.Status, result.RetryAfter);
-            if (failure.StreakStarted)
-                MarkStreakInternal(subs, _streakStarts, _streakEnds);
-
-            if (failure.Remove)
-                await RemoveDeadFeedInternalAsync(key, subs, failure.Streak);
-
+            await OnFeedFailureInternalAsync(key, subs, result.Status, result.RetryAfter);
             return;
         }
 
@@ -247,46 +273,195 @@ public sealed partial class FeedsService(
             if (itemUpdateDate <= lastFeedUpdate)
                 continue;
 
-            var embed = BuildFeedEmbed(sender.CreateEmbed(), feedItem, rssUrl);
-
             _lastPosts[key] = itemUpdateDate;
-
-            foreach (var val in subs)
-            {
-                var guild = client.GetGuild(val.GuildId);
-                if (guild is null)
-                {
-                    if (!deadSubs.Contains(val))
-                        deadSubs.Add(val);
-                    continue;
-                }
-
-                var ch = guild.GetTextChannel(val.ChannelId);
-                if (ch is null || !CanPostIn(guild.CurrentUser, ch))
-                    continue;
-
-                _sendTasks.Add(SendFeedItemInternalAsync(ch, val, embed));
-            }
+            QueuePostInternal(subs, BuildFeedEmbed(sender.CreateEmbed(), feedItem, rssUrl), deadSubs);
         }
 
-        if (deadSubs.Count > 0)
+        await RemoveLeftGuildSubsInternalAsync(key, rssUrl, deadSubs);
+    }
+
+    // YouTube answers feeds/videos.xml with 404 to many hosts, so a bot with the music service reads the channel's
+    // uploads there. Only a missing channel counts as a failure; a service error keeps the streak as it is.
+    private async Task CheckUploadsInternalAsync(string key, List<FeedSub> subs, string rssUrl, string channelId)
+    {
+        var res = await music.GetUploadsAsync(channelId);
+        if (res.Status == MusicServiceStatus.NotFound)
         {
-            Log.Debug(
-                "Removing {Count} feed subscription(s) for {FeedUrl} - bot is no longer in those guilds: {GuildIds}",
-                deadSubs.Count,
-                rssUrl,
-                string.Join(", ", deadSubs.Select(s => s.GuildId)));
-
-            var deadIds = deadSubs.Select(s => s.Id).ToHashSet();
-            await using var ctx = db.GetDbContext();
-            await ctx.GetTable<FeedSub>()
-                .Where(x => deadIds.Contains(x.Id))
-                .DeleteAsync();
-
-            _subs.AddOrUpdate(key,
-                [],
-                (_, old) => old.Where(x => !deadIds.Contains(x.Id)).ToList());
+            await OnFeedFailureInternalAsync(key, subs, (int)HttpStatusCode.NotFound, null);
+            return;
         }
+
+        if (res.Status != MusicServiceStatus.Ok)
+        {
+            _health.OnUnavailable(key);
+            return;
+        }
+
+        if (_health.OnSuccess(key, _uploadsPollInterval))
+            MarkStreakInternal(subs, _streakEnds, _streakStarts);
+
+        var videos = res.Videos;
+        ref var seen = ref CollectionsMarshal.GetValueRefOrAddDefault(_seenVideos, key, out _);
+        var count = TakeNewVideos(videos, ref seen);
+        if (count == 0)
+            return;
+
+        var deadSubs = new List<FeedSub>();
+        for (var i = count - 1; i >= 0; i--)
+            QueuePostInternal(subs, BuildVideoEmbed(sender.CreateEmbed(), videos[i], rssUrl), deadSubs);
+
+        await RemoveLeftGuildSubsInternalAsync(key, rssUrl, deadSubs);
+    }
+
+    // How many of the newest videos to post, at most MAX_ITEMS_PER_CHECK, and the ids to remember. The first read
+    // after a start or an add only learns the list, also an empty one. A later empty answer keeps the known ids.
+    public static int TakeNewVideos(MusicServiceUpload[] videos, ref HashSet<string>? seen)
+    {
+        if (seen is null)
+        {
+            seen = new(videos.Length, StringComparer.Ordinal);
+            AddVideoIdsInternal(seen, videos);
+            return 0;
+        }
+
+        if (videos.Length == 0)
+            return 0;
+
+        var count = Math.Min(CountNewVideosInternal(videos, seen), MAX_ITEMS_PER_CHECK);
+        seen.Clear();
+        AddVideoIdsInternal(seen, videos);
+        return count;
+    }
+
+    // The dates of the list are approximate, so a video is new when it is above the first video of the last list.
+    // A video which comes back lower in the list does not count.
+    private static int CountNewVideosInternal(MusicServiceUpload[] videos, HashSet<string> seen)
+    {
+        for (var i = 0; i < videos.Length; i++)
+        {
+            if (seen.Contains(videos[i].Id!))
+                return i;
+        }
+
+        return videos.Length;
+    }
+
+    private static void AddVideoIdsInternal(HashSet<string> seen, MusicServiceUpload[] videos)
+    {
+        foreach (var video in videos)
+            seen.Add(video.Id!);
+    }
+
+    public static EmbedBuilder BuildVideoEmbed(EmbedBuilder embed, MusicServiceUpload video, string rssUrl)
+    {
+        embed.WithFooter(rssUrl)
+            .WithUrl(YT_WATCH_URL + video.Id)
+            .WithTitle((string.IsNullOrWhiteSpace(video.Title) ? "-" : video.Title).TrimTo(256));
+
+        if (Uri.TryCreate(video.Thumbnail, UriKind.Absolute, out var thumb)
+            && (thumb.Scheme == Uri.UriSchemeHttps || thumb.Scheme == Uri.UriSchemeHttp))
+            embed.WithImageUrl(video.Thumbnail);
+
+        return embed;
+    }
+
+    // The channel of a YouTube upload feed which this bot reads from the music service, else null.
+    private string? GetServiceChannelInternal(string key, string url)
+    {
+        if (!_serviceFeeds)
+            return null;
+
+        ref var channelId = ref CollectionsMarshal.GetValueRefOrAddDefault(_ytFeedChannels, key, out var exists);
+        if (!exists)
+            channelId = TryGetYtFeedChannelId(url, out var id) ? id : null;
+
+        return channelId;
+    }
+
+    public static bool TryGetYtFeedChannelId(string url, [NotNullWhen(true)] out string? channelId)
+    {
+        channelId = null;
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)
+            || (uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeHttp)
+            || uri.Host is not ("youtube.com" or "www.youtube.com" or "m.youtube.com")
+            || !uri.AbsolutePath.Equals(YT_FEED_PATH, StringComparison.OrdinalIgnoreCase))
+            return false;
+
+        var match = YtFeedChannelIdRegex().Match(uri.Query);
+        if (!match.Success || !MusicServiceClient.IsChannelId(match.Groups["id"].ValueSpan))
+            return false;
+
+        channelId = match.Groups["id"].Value;
+        return true;
+    }
+
+    // Reads a feed once before the bot adds it, from the music service for a YouTube upload feed when it can.
+    public async Task<FeedCheckResult> CheckNewFeedAsync(string url)
+    {
+        if (music.IsConfigured && TryGetYtFeedChannelId(url, out var channelId))
+        {
+            return (await music.GetUploadsAsync(channelId)).Status switch
+            {
+                MusicServiceStatus.Ok => FeedCheckResult.Ok,
+                MusicServiceStatus.NotFound => FeedCheckResult.Unreadable,
+                _ => FeedCheckResult.Unavailable
+            };
+        }
+
+        return (await FetchFeedAsync(url)).Feed is null ? FeedCheckResult.Unreadable : FeedCheckResult.Ok;
+    }
+
+    private async Task OnFeedFailureInternalAsync(string key, List<FeedSub> subs, int status, TimeSpan? retryAfter)
+    {
+        var failure = _health.OnFailure(key, status, retryAfter);
+        if (failure.StreakStarted)
+            MarkStreakInternal(subs, _streakStarts, _streakEnds);
+
+        if (failure.Remove)
+            await RemoveDeadFeedInternalAsync(key, subs, failure.Streak);
+    }
+
+    // Queues the embed for each sub, and collects the subs of servers which the bot left.
+    private void QueuePostInternal(List<FeedSub> subs, EmbedBuilder embed, List<FeedSub> deadSubs)
+    {
+        foreach (var val in subs)
+        {
+            var guild = client.GetGuild(val.GuildId);
+            if (guild is null)
+            {
+                if (!deadSubs.Contains(val))
+                    deadSubs.Add(val);
+                continue;
+            }
+
+            var ch = guild.GetTextChannel(val.ChannelId);
+            if (ch is null || !CanPostIn(guild.CurrentUser, ch))
+                continue;
+
+            _sendTasks.Add(SendFeedItemInternalAsync(ch, val, embed));
+        }
+    }
+
+    private async Task RemoveLeftGuildSubsInternalAsync(string key, string rssUrl, List<FeedSub> deadSubs)
+    {
+        if (deadSubs.Count == 0)
+            return;
+
+        Log.Debug(
+            "Removing {Count} feed subscription(s) for {FeedUrl} - bot is no longer in those guilds: {GuildIds}",
+            deadSubs.Count,
+            rssUrl,
+            string.Join(", ", deadSubs.Select(s => s.GuildId)));
+
+        var deadIds = deadSubs.Select(s => s.Id).ToHashSet();
+        await using var ctx = db.GetDbContext();
+        await ctx.GetTable<FeedSub>()
+            .Where(x => deadIds.Contains(x.Id))
+            .DeleteAsync();
+
+        _subs.AddOrUpdate(key,
+            [],
+            (_, old) => old.Where(x => !deadIds.Contains(x.Id)).ToList());
     }
 
     private static void MarkStreakInternal(List<FeedSub> subs, HashSet<int> add, HashSet<int> remove)
@@ -350,6 +525,8 @@ public sealed partial class FeedsService(
 
         _health.Forget(key);
         _lastPosts.TryRemove(key, out _);
+        _seenVideos.Remove(key);
+        _ytFeedChannels.Remove(key);
         foreach (var id in ids)
         {
             _streakStarts.Remove(id);
@@ -431,7 +608,23 @@ public sealed partial class FeedsService(
         }
     }
 
-    public async Task<FeedAddResult> AddFeedAsync(
+    public int MaxFeeds
+        => scs.Data.MaxFeeds;
+
+    public async Task<List<FeedSub>> GetFeedsAsync(ulong guildId)
+    {
+        await using var uow = db.GetDbContext();
+        return await uow.GetTable<FeedSub>()
+            .Where(x => x.GuildId == guildId)
+            .OrderBy(x => x.Id)
+            .ToListAsyncLinqToDB();
+    }
+
+    // The subscriptions which the feed loop of this shard posts to.
+    public IReadOnlyList<FeedSub> GetTrackedSubs(string url)
+        => _subs.TryGetValue(url.ToLower(), out var subs) ? subs : [];
+
+    public async Task<(FeedAddResult Result, FeedSub? Sub)> AddFeedAsync(
         ulong guildId,
         ulong channelId,
         string rssFeed,
@@ -442,31 +635,115 @@ public sealed partial class FeedsService(
         var feedUrl = rssFeed.Trim();
 
         if (!UrlExtensions.IsPublicUrl(feedUrl))
-            return FeedAddResult.Invalid;
+            return (FeedAddResult.Invalid, null);
 
+        var max = scs.Data.MaxFeeds;
         await using var uow = db.GetDbContext();
-        if (await uow.GetTable<FeedSub>().AnyAsyncLinqToDB(x => x.GuildId == guildId &&
-                                                                x.Url.ToLower() == feedUrl.ToLower()))
-            return FeedAddResult.Duplicate;
+        await using var lctx = uow.CreateLinqToDBContext();
+        var table = lctx.GetTable<FeedSub>();
 
-        var count = await uow.GetTable<FeedSub>().CountAsyncLinqToDB(x => x.GuildId == guildId);
-        if (count >= scs.Data.MaxFeeds)
-            return FeedAddResult.LimitReached;
+        // the duplicate check, the server limit and the insert are one statement, so parallel adds cannot pass them
+        var ids = await lctx.SelectQuery(() => 1)
+            .Where(_ => !table.Any(x => x.GuildId == guildId && x.Url.ToLower() == feedUrl.ToLower())
+                        && table.Count(x => x.GuildId == guildId) < max)
+            .InsertWithOutputAsync(table,
+                _ => new FeedSub
+                {
+                    GuildId = guildId,
+                    ChannelId = channelId,
+                    Url = feedUrl,
+                    Message = message
+                },
+                x => x.Id);
 
-        var fs = await uow.GetTable<FeedSub>()
-            .InsertWithOutputAsync(() => new FeedSub
-            {
-                GuildId = guildId,
-                ChannelId = channelId,
-                Url = feedUrl,
-                Message = message
-            });
+        if (ids.Length == 0)
+        {
+            var duplicate = await table.AnyAsyncLinqToDB(x => x.GuildId == guildId
+                                                              && x.Url.ToLower() == feedUrl.ToLower());
+            return (duplicate ? FeedAddResult.Duplicate : FeedAddResult.LimitReached, null);
+        }
+
+        var fs = new FeedSub
+        {
+            Id = ids[0],
+            GuildId = guildId,
+            ChannelId = channelId,
+            Url = feedUrl,
+            Message = message
+        };
 
         _subs.AddOrUpdate(fs.Url.ToLower(),
             [fs],
             (_, old) => old.Append(fs).ToList());
 
-        return FeedAddResult.Success;
+        return (FeedAddResult.Success, fs);
+    }
+
+    // Changes only the given fields. The feed loop reads the new row from the next check on.
+    public async Task<FeedSub?> UpdateFeedAsync(ulong guildId, int id, ulong? channelId, bool setMessage, string? message)
+    {
+        await using var uow = db.GetDbContext();
+        var feeds = uow.GetTable<FeedSub>().Where(x => x.Id == id && x.GuildId == guildId);
+        if (channelId is null && !setMessage)
+            return await feeds.FirstOrDefaultAsyncLinqToDB();
+
+        var update = feeds.AsUpdatable();
+        if (channelId is { } newChannel)
+            update = update.Set(x => x.ChannelId, newChannel);
+        if (setMessage)
+        {
+            var newMessage = string.IsNullOrEmpty(message) ? null : message;
+            update = update.Set(x => x.Message, newMessage);
+        }
+
+        var rows = await update.UpdateWithOutputAsync(static (_, inserted) => inserted);
+        if (rows.Length == 0)
+            return null;
+
+        var updated = rows[0];
+        var key = updated.Url.ToLower();
+
+        // Only replaces a tracked entry, so an update which races a removal cannot track the removed feed again.
+        while (_subs.TryGetValue(key, out var old))
+        {
+            if (ReplaceSubInternal(old, updated) is not { } next || _subs.TryUpdate(key, next, old))
+                break;
+        }
+
+        return updated;
+    }
+
+    public async Task<bool> RemoveFeedAsync(ulong guildId, int id)
+    {
+        await using var uow = db.GetDbContext();
+        var deleted = await uow.GetTable<FeedSub>()
+            .Where(x => x.Id == id && x.GuildId == guildId)
+            .DeleteWithOutputAsync();
+
+        if (deleted.Length == 0)
+            return false;
+
+        var removedId = deleted[0].Id;
+        _subs.AddOrUpdate(deleted[0].Url.ToLower(),
+            [],
+            (_, old) => old.Where(x => x.Id != removedId).ToList());
+
+        return true;
+    }
+
+    private static List<FeedSub>? ReplaceSubInternal(List<FeedSub> subs, FeedSub updated)
+    {
+        for (var i = 0; i < subs.Count; i++)
+        {
+            if (subs[i].Id != updated.Id)
+                continue;
+
+            var next = new List<FeedSub>(subs);
+            next[i] = updated;
+            return next;
+        }
+
+        return null;
     }
 
     public bool RemoveFeed(ulong guildId, int index)
@@ -535,6 +812,9 @@ public sealed partial class FeedsService(
 
     private const int YT_RESOLVE_TIMEOUT_SECONDS = 10;
 
+    [GeneratedRegex(@"(?:^|[?&])channel_id=(?<id>[^&#]+)")]
+    private static partial Regex YtFeedChannelIdRegex();
+
     [GeneratedRegex(@"youtube\.com/channel/(?<id>UC[\w-]+)")]
     private static partial Regex YtChannelUrlRegex();
 
@@ -550,15 +830,55 @@ public sealed partial class FeedsService(
     [GeneratedRegex(@"^@?[A-Za-z0-9._-]{3,30}$")]
     private static partial Regex YtBareHandleRegex();
 
-    public async Task<string?> ResolveYtChannelIdAsync(string input)
+    public static string YtFeedUrl(string channelId)
+        => $"https://www.youtube.com/feeds/videos.xml?channel_id={channelId}";
+
+    private static readonly string[] _ytChannelPaths = ["/channel/", "/@", "/c/", "/user/"];
+
+    // A channel page link, not a feed link: the bot turns it into the upload feed of the channel.
+    public static bool IsYtChannelLink(string url)
+    {
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)
+            || uri.Host is not ("youtube.com" or "www.youtube.com" or "m.youtube.com"))
+            return false;
+
+        var path = uri.AbsolutePath;
+        foreach (var prefix in _ytChannelPaths)
+        {
+            if (path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+
+        return false;
+    }
+
+    // The upload feed of a YouTube channel link, the same link for other feeds, null when the channel is not found.
+    // Unavailable is true when the music service could not answer.
+    public async Task<(string? Url, bool Unavailable)> ResolveFeedUrlAsync(string url)
+    {
+        if (!IsYtChannelLink(url))
+            return (url, false);
+
+        var (channelId, unavailable) = await ResolveYtChannelIdAsync(url);
+        return (channelId is null ? null : YtFeedUrl(channelId), unavailable);
+    }
+
+    public async Task<(string? ChannelId, bool Unavailable)> ResolveYtChannelIdAsync(string input)
     {
         var direct = YtChannelUrlRegex().Match(input);
         if (direct.Success)
-            return direct.Groups["id"].Value;
+            return (direct.Groups["id"].Value, false);
+
+        var trimmed = input.Trim();
+        if (MusicServiceClient.IsChannelId(trimmed))
+            return (trimmed, false);
+
+        if (music.IsConfigured)
+            return await ResolveThroughServiceInternalAsync(trimmed);
 
         var pageUrl = BuildYtPageUrl(input);
         if (pageUrl is null)
-            return null;
+            return (null, false);
 
         try
         {
@@ -574,13 +894,29 @@ public sealed partial class FeedsService(
             response.EnsureSuccessStatusCode();
 
             await using var stream = await response.Content.ReadAsStreamAsync(cts.Token);
-            return await ScanForChannelIdAsync(stream, cts.Token);
+            return (await ScanForChannelIdAsync(stream, cts.Token), false);
         }
         catch (Exception ex)
         {
             Log.Warning(ex, "Failed to resolve youtube channel id from {Input}", input);
-            return null;
+            return (null, false);
         }
+    }
+
+    // YouTube refuses its pages to many hosts, so a bot which uses the music service asks the service.
+    private async Task<(string? ChannelId, bool Unavailable)> ResolveThroughServiceInternalAsync(string input)
+    {
+        if (input.Length == 0)
+            return (null, false);
+
+        var query = input[0] != '@' && YtBareHandleRegex().IsMatch(input) ? "@" + input : input;
+        var res = await music.ResolveChannelAsync(query);
+        return res.Status switch
+        {
+            MusicServiceStatus.Ok => (res.Channel?.Id, false),
+            MusicServiceStatus.Failed => (null, true),
+            _ => (null, false)
+        };
     }
 
     private static ReadOnlySpan<byte> CanonicalAnchor

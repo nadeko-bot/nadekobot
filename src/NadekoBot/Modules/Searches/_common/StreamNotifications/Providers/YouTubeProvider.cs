@@ -1,18 +1,28 @@
 using NadekoBot.Db.Models;
+using NadekoBot.Modules.Music;
+using NadekoBot.Modules.Searches.Services;
 using System.Text.RegularExpressions;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
 namespace NadekoBot.Modules.Searches.Common.StreamNotifications.Providers;
 
-/// <summary>
-/// Provider for tracking YouTube livestreams
-/// </summary>
+// Tracks YouTube livestreams through Invidious when searches.yml lists an instance, else through the music service.
 public sealed partial class YouTubeProvider : Provider
 {
+    private const string LIVE_GAME = "Livestream";
+    private const string STATUS_LIVE = "live";
+    private const string STATUS_OFFLINE = "offline";
+    private const string STATUS_MISSING = "missing";
+    private const string WATCH_URL = "https://youtube.com/watch?v=";
+    private const string CHANNEL_URL = "https://www.youtube.com/channel/";
+
     private readonly IHttpClientFactory _httpFactory;
     private readonly SearchesConfigService _scs;
+    private readonly MusicServiceClient _music;
     private readonly NadekoRandom _rng = new();
+    private readonly ConcurrentDictionary<string, byte> _loggedNonIds = new();
 
     /// <summary>
     /// Regex to match YouTube handles
@@ -31,18 +41,18 @@ public sealed partial class YouTubeProvider : Provider
     public override FollowedStream.FType Platform
         => FollowedStream.FType.Youtube;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="YouTubeProvider"/> class.
-    /// </summary>
-    /// <param name="httpFactory">The HTTP client factory to create HTTP clients.</param>
     public YouTubeProvider(
         IHttpClientFactory httpFactory,
-        SearchesConfigService scs
-    )
+        SearchesConfigService scs,
+        MusicServiceClient music)
     {
         _httpFactory = httpFactory;
         _scs = scs;
+        _music = music;
     }
+
+    private bool UseInvidious
+        => _scs.Data.InvidiousInstances is { Count: > 0 };
 
     /// <summary>
     /// Checks whether the specified url is a valid YouTube url.
@@ -52,20 +62,55 @@ public sealed partial class YouTubeProvider : Provider
     public override Task<bool> IsValidUrl(string url)
     {
         var success = HandleRegex().IsMatch(url)
-                      || ChannelIdRegex().IsMatch(url);
+                      || ChannelIdRegex().IsMatch(url)
+                      || FeedsService.IsYtChannelLink(url);
 
         return Task.FromResult(success);
     }
 
-    /// <summary>
-    /// Gets stream data of the stream on the specified YouTube url
-    /// </summary>
-    /// <param name="url">Url of the stream</param>
-    /// <returns><see cref="StreamData"/> of the specified stream. Null if none found</returns>
-    public override async Task<StreamData?> GetStreamDataByUrlAsync(string url)
+    public override async Task<StreamLookup> LookupByUrlAsync(string url)
+    {
+        if (UseInvidious)
+        {
+            var data = await GetInvidiousDataByUrlInternalAsync(url);
+            return data is null ? StreamLookup.NotFound : StreamLookup.Found(data);
+        }
+
+        if (!_music.IsConfigured)
+            return StreamLookup.Unavailable;
+
+        var resolved = await _music.ResolveChannelAsync(url);
+        if (resolved.Status == MusicServiceStatus.NotFound)
+            return StreamLookup.NotFound;
+
+        if (resolved.Channel is not { Id: { } id } channel)
+            return StreamLookup.Unavailable;
+
+        // The service could not check the channel now, but the resolve found it, so the next check fills its state.
+        var live = await _music.GetLiveAsync([id]);
+        var entry = FindInternal(live, id);
+        if (entry?.Status == STATUS_MISSING)
+            return StreamLookup.NotFound;
+
+        // An offline channel has no name in the live answer, so the name of the resolve stays.
+        var found = entry?.Status is STATUS_LIVE or STATUS_OFFLINE
+            ? ToStreamData(id, entry with
+              {
+                  Name = string.IsNullOrWhiteSpace(entry.Name) ? channel.Name : entry.Name,
+                  Avatar = entry.Avatar ?? channel.Avatar
+              })
+            : ToStreamData(id, new MusicServiceLiveChannel(id, STATUS_OFFLINE, channel.Name, channel.Avatar, null));
+
+        if (string.IsNullOrWhiteSpace(found.Name))
+            found.Name = id;
+
+        return StreamLookup.Found(found);
+    }
+
+    private async Task<StreamData?> GetInvidiousDataByUrlInternalAsync(string url)
     {
         var match = ChannelIdRegex().Match(url);
-        var channelId = string.Empty;
+        string? channelId;
         if (!match.Success)
         {
             var handleMatch = HandleRegex().Match(url);
@@ -79,7 +124,7 @@ public sealed partial class YouTubeProvider : Provider
             if (instances is not { Count: > 0 })
                 return null;
 
-            var invInstance = instances[_rng.Next(0, _scs.Data.InvidiousInstances.Count)];
+            var invInstance = instances[_rng.Next(0, instances.Count)];
 
             using var client = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
             client.BaseAddress = new Uri(invInstance);
@@ -108,6 +153,9 @@ public sealed partial class YouTubeProvider : Provider
     /// <returns><see cref="StreamData"/> of the channel. Null if none found</returns>
     public override async Task<StreamData?> GetStreamDataAsync(string channelId)
     {
+        if (!UseInvidious)
+            return (await GetServiceDataInternalAsync([channelId])).FirstOrDefault();
+
         try
         {
             var instances = _scs.Data.InvidiousInstances;
@@ -119,9 +167,24 @@ public sealed partial class YouTubeProvider : Provider
             using var client = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
             client.BaseAddress = new Uri(invInstance);
 
-            var channel = await client.GetFromJsonAsync<InvidiousChannelResponse>($"/api/v1/channels/{channelId}");
+            using var channelResponse = await client.GetAsync($"/api/v1/channels/{channelId}");
+
+            // Only a 404 means the channel is gone. An outage or a slow instance must not delete the follow.
+            if (channelResponse.StatusCode == HttpStatusCode.NotFound)
+            {
+                _failingStreams.TryAdd(channelId, UtcNow);
+                return null;
+            }
+
+            if (!channelResponse.IsSuccessStatusCode)
+                return null;
+
+            var channel = await channelResponse.Content.ReadFromJsonAsync<InvidiousChannelResponse>();
             if (channel is null)
                 return null;
+
+            // The channel answers, so it exists. A channel which is not live is not a failing channel.
+            _failingStreams.TryRemove(channelId, out _);
 
             var response =
                 await client.GetFromJsonAsync<InvChannelStreamsResponse>($"/api/v1/channels/{channelId}/streams");
@@ -146,7 +209,7 @@ public sealed partial class YouTubeProvider : Provider
 
             return new StreamData()
             {
-                Game = "Livestream",
+                Game = LIVE_GAME,
                 Name = vid.Author,
                 Preview = vid.Thumbnails
                     .Skip(1)
@@ -157,14 +220,13 @@ public sealed partial class YouTubeProvider : Provider
                 AvatarUrl = avatarUrl,
                 IsLive = isLive,
                 StreamType = FollowedStream.FType.Youtube,
-                StreamUrl = "https://youtube.com/watch?v=" + vid.VideoId,
+                StreamUrl = WATCH_URL + vid.VideoId,
                 UniqueName = vid.AuthorId,
             };
         }
         catch (Exception ex)
         {
             Log.Warning(ex, "Unable to get stream data for a youtube channel {ChannelId}", channelId);
-            _failingStreams.TryAdd(channelId, DateTime.UtcNow);
             return null;
         }
     }
@@ -176,6 +238,9 @@ public sealed partial class YouTubeProvider : Provider
     /// <returns><see cref="StreamData"/> of all users, in the same order. Null for every ID not found.</returns>
     public override async Task<IReadOnlyCollection<StreamData>> GetStreamDataAsync(List<string> channelIds)
     {
+        if (!UseInvidious)
+            return await GetServiceDataInternalAsync(channelIds);
+
         var results = new List<StreamData>(channelIds.Count);
         foreach (var group in channelIds.Chunk(5))
         {
@@ -190,8 +255,105 @@ public sealed partial class YouTubeProvider : Provider
 
         return results;
     }
-}
 
+    // Only "missing" marks a channel as failing. An unknown state or a service error keeps the last known state,
+    // so an outage of the service does not delete every YouTube follow 12 hours later.
+    private async Task<List<StreamData>> GetServiceDataInternalAsync(List<string> channelIds)
+    {
+        var results = new List<StreamData>(channelIds.Count);
+        if (!_music.IsConfigured)
+            return results;
+
+        var batch = new List<string>(MusicServiceClient.MAX_LIVE_CHANNELS);
+        foreach (var id in channelIds)
+        {
+            if (!MusicServiceClient.IsChannelId(id))
+            {
+                if (_loggedNonIds.TryAdd(id, 0))
+                    Log.Warning("YouTube follow {Name} is not a channel id, so the music service cannot check it", id);
+                continue;
+            }
+
+            batch.Add(id);
+            if (batch.Count == MusicServiceClient.MAX_LIVE_CHANNELS)
+            {
+                await AddServiceBatchInternalAsync(batch, results);
+                batch.Clear();
+            }
+        }
+
+        if (batch.Count > 0)
+            await AddServiceBatchInternalAsync(batch, results);
+
+        return results;
+    }
+
+    private async Task AddServiceBatchInternalAsync(List<string> batch, List<StreamData> results)
+    {
+        var live = await _music.GetLiveAsync(batch);
+        if (live is null)
+            return;
+
+        foreach (var id in batch)
+        {
+            var entry = FindInternal(live, id);
+            switch (entry?.Status)
+            {
+                case STATUS_LIVE or STATUS_OFFLINE:
+                    _failingStreams.TryRemove(id, out _);
+                    results.Add(ToStreamData(id, entry));
+                    break;
+                case STATUS_MISSING:
+                    _failingStreams.TryAdd(id, UtcNow);
+                    break;
+            }
+        }
+    }
+
+    private static MusicServiceLiveChannel? FindInternal(MusicServiceLiveChannel[]? channels, string id)
+    {
+        if (channels is null)
+            return null;
+
+        foreach (var c in channels)
+        {
+            if (string.Equals(c.Id, id, StringComparison.Ordinal))
+                return c;
+        }
+
+        return null;
+    }
+
+    // The id is the one the bot asked for, so the key of the data matches the followed stream.
+    private static StreamData ToStreamData(string id, MusicServiceLiveChannel channel)
+    {
+        var video = channel.Live;
+        var isLive = channel.Status == STATUS_LIVE
+                     && video?.VideoId is { } videoId
+                     && MusicServiceClient.IsVideoId(videoId);
+
+        return new()
+        {
+            StreamType = FollowedStream.FType.Youtube,
+            UniqueName = id,
+            // The live answer has no name for an offline channel; the check keeps the last known one.
+            Name = string.IsNullOrWhiteSpace(channel.Name) ? string.Empty : channel.Name,
+            AvatarUrl = HttpUrlOrNull(channel.Avatar),
+            IsLive = isLive,
+            Game = LIVE_GAME,
+            Title = isLive ? video!.Title : null,
+            Preview = isLive ? HttpUrlOrNull(video!.Thumbnail) : null,
+            Viewers = isLive ? video!.Viewers ?? 0 : 0,
+            StreamUrl = isLive ? WATCH_URL + video!.VideoId : CHANNEL_URL + id
+        };
+    }
+
+    // Discord refuses an embed with an image link which is not http(s).
+    private static string? HttpUrlOrNull(string? url)
+        => Uri.TryCreate(url, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp)
+            ? url
+            : null;
+}
 public sealed class InvidiousChannelResponse
 {
     [JsonPropertyName("authorId")]

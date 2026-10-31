@@ -16,6 +16,8 @@ public partial class Administration
             AddRole
         }
 
+        private const int MAX_WARN_REASON_LENGTH = 1000;
+
         private readonly MuteService _mute;
 
         public UserPunishCommands(MuteService mute)
@@ -304,7 +306,10 @@ public partial class Administration
         public async Task WarnDelete(ulong userId, int index)
         {
             if (--index < 0)
+            {
+                await Response().Error(strs.warning_not_found).SendAsync();
                 return;
+            }
 
             var warn = await _service.WarnDelete(ctx.Guild.Id, userId, index);
 
@@ -314,7 +319,44 @@ public partial class Administration
                 return;
             }
 
-            await Response().Confirm(strs.warning_deleted(Format.Bold(index.ToString()))).SendAsync();
+            await Response().Confirm(strs.warning_deleted(Format.Bold((index + 1).ToString()))).SendAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.BanMembers)]
+        public Task WarnEdit(IGuildUser user, int index, [Leftover] string reason)
+            => WarnEdit(user.Id, index, reason);
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.BanMembers)]
+        public async Task WarnEdit(ulong userId, int index, [Leftover] string reason)
+        {
+            if (string.IsNullOrWhiteSpace(reason))
+                return;
+
+            if (index < 1)
+            {
+                await Response().Error(strs.warning_not_found).SendAsync();
+                return;
+            }
+
+            if (reason.Length > MAX_WARN_REASON_LENGTH)
+            {
+                await Response().Error(strs.warning_reason_too_long(MAX_WARN_REASON_LENGTH)).SendAsync();
+                return;
+            }
+
+            var success = await _service.WarnEditAsync(ctx.Guild.Id, userId, index - 1, reason);
+            if (!success)
+            {
+                await Response().Error(strs.warning_not_found).SendAsync();
+                return;
+            }
+
+            var userStr = Format.Bold((ctx.Guild as SocketGuild)?.GetUser(userId)?.ToString() ?? userId.ToString());
+            await Response().Confirm(strs.warning_edited(Format.Bold(index.ToString()), userStr)).SendAsync();
         }
 
         [Cmd]

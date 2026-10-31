@@ -11,8 +11,6 @@ namespace NadekoBot.Hosted.Endpoints;
 
 public static class HealthEndpoints
 {
-    private static readonly IResult _notReady = ApiErrors.Create(ApiErrors.NOT_READY, StatusCodes.Status503ServiceUnavailable);
-
     public static RouteGroupBuilder MapHealthEndpoints(this RouteGroupBuilder guild)
     {
         guild.MapGet("/health", GetHealth);
@@ -23,14 +21,14 @@ public static class HealthEndpoints
     {
         var guild = guildRef.Guild;
         if (guild.CurrentUser is null)
-            return _notReady;
+            return ApiErrors.NotReady;
 
         var sources = await ReadSourcesAsync(db, guild.Id);
         var timers = await ReadTimersAsync(db, guild.Id, time.GetUtcNow().UtcDateTime);
 
         // The cache can change while the reads run, so the bot user is read again after them.
         if (guild.CurrentUser is not { } bot)
-            return _notReady;
+            return ApiErrors.NotReady;
 
         var dto = GuildHealth.Evaluate(new SocketHealthGuild(guild, bot), sources, timers, bridge.Intents);
         return Results.Json(dto, ApiJsonContext.Default.GuildHealthDto);

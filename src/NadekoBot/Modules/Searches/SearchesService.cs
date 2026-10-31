@@ -67,7 +67,7 @@ public class SearchesService : INService
     {
         query = query.Trim().ToLowerInvariant();
 
-        return await _c.GetOrAddAsync(new($"nadeko_weather_{query}"),
+        return await _c.GetOrAddAsync(new($"nadeko_weather_v2_{query}"),
             async () => await GetWeatherDataFactory(query),
             TimeSpan.FromHours(3));
     }

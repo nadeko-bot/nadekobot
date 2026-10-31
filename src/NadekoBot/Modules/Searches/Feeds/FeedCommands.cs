@@ -20,10 +20,10 @@ public partial class Searches
         [Priority(2)]
         public async Task YtUploadNotif(string url, ITextChannel? channel = null, [Leftover] string? message = null)
         {
-            var channelId = await _service.ResolveYtChannelIdAsync(url);
+            var (channelId, unavailable) = await _service.ResolveYtChannelIdAsync(url);
             if (channelId is null)
             {
-                await Response().Error(strs.invalid_input).SendAsync();
+                await Response().Error(unavailable ? strs.feed_yt_unavailable : strs.invalid_input).SendAsync();
                 return;
             }
 
@@ -32,7 +32,7 @@ public partial class Searches
             if (!((IGuildUser)ctx.User).GetPermissions(channel).MentionEveryone)
                 message = message?.SanitizeTemplateMentions();
 
-            await Feed($"https://www.youtube.com/feeds/videos.xml?channel_id={channelId}", channel, message);
+            await Feed(FeedsService.YtFeedUrl(channelId), channel, message);
         }
 
         [Cmd]
@@ -69,13 +69,17 @@ public partial class Searches
             if (!((IGuildUser)ctx.User).GetPermissions(channel).MentionEveryone)
                 message = message?.SanitizeTemplateMentions();
 
-            if ((await _service.FetchFeedAsync(url)).Feed is null)
+            switch (await _service.CheckNewFeedAsync(url))
             {
-                await Response().Error(strs.feed_cant_parse).SendAsync();
-                return;
+                case FeedCheckResult.Unreadable:
+                    await Response().Error(strs.feed_cant_parse).SendAsync();
+                    return;
+                case FeedCheckResult.Unavailable:
+                    await Response().Error(strs.feed_yt_unavailable).SendAsync();
+                    return;
             }
 
-            var result = await _service.AddFeedAsync(ctx.Guild.Id, channel.Id, url, message);
+            var (result, _) = await _service.AddFeedAsync(ctx.Guild.Id, channel.Id, url, message);
             if (result == FeedAddResult.Success)
             {
                 await Response().Confirm(strs.feed_added).SendAsync();

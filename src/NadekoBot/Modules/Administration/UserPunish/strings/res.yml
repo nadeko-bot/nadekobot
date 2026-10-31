@@ -4,13 +4,9 @@ bandm: |-
   You have been banned from {0} server.
   Reason: {1}
 banmsg_default: No ban message set. Default behavior will be used.
-banmsg_disabled: >-
-  Ban messages are disabled. You can enable them by setting a banmsg to
-  something other than '-'.
+banmsg_disabled: "Ban messages are disabled. You can enable them by setting a banmsg to something other than '-'."
 banned_user: User Banned
-cant_apply_punishment: >-
-  Can't apply punishment. Please make sure I have sufficient permissions, and
-  that my role is above any other role in the server settings.
+cant_apply_punishment: "Can't apply punishment. Please make sure I have sufficient permissions, and that my role is above any other role in the server settings."
 duration: Duration
 invalid: Invalid / Can't be found ({0})
 kickdm: |-
@@ -23,9 +19,7 @@ mass_kill_completed: Mass Banning and Blacklisting of {0} users is complete.
 mass_kill_in_progress: Mass Banning and Blacklisting of {0} users is in progress...
 moderator: Moderator
 reason: Reason
-role_too_high: >-
-  You can't use this command with roles which are above your highest role,
-  unless you're server administrator.
+role_too_high: "You can't use this command with roles which are above your highest role, unless you're server administrator."
 sb_user: User soft-banned
 sbdm: |-
   You have been soft-banned from {0} server.
@@ -53,15 +47,13 @@ warn_weight: 'Weight: {0}'
 warned_on: Warned on {0} server
 warned_on_by: On {0} at {1} by {2}
 warnmsg_default: No warn message set. Default behavior will be used.
-warnmsg_disabled: >-
-  Warn messages are disabled. You can enable them by setting a warnmsg to
-  something other than '-'.
-warning_clear_fail: >-
-  Warning not cleared. Either the warning at that index doesn't exist, or it has
-  already been cleared.
+warnmsg_disabled: "Warn messages are disabled. You can enable them by setting a warnmsg to something other than '-'."
+warning_clear_fail: "Warning not cleared. Either the warning at that index doesn't exist, or it has already been cleared."
 warning_cleared: Warning {0} has been cleared for {1}.
 warning_deleted: Warning {0} has been deleted.
+warning_edited: "Warning {0} for {1} has a new reason."
 warning_not_found: Warning not found.
+warning_reason_too_long: "A warning reason can have at most {0} characters."
 warnings_cleared: All warnings have been cleared for {0}.
 warnings_list: List of all warned users on the server
 warnings_none: No warning on this page.

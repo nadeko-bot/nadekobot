@@ -1,0 +1,30 @@
+bj_already_seated: You already sit at a blackjack table. Finish that round first.
+bj_blackjack: Blackjack
+bj_btn_double: Double
+bj_btn_hit: Hit
+bj_btn_split: Split
+bj_btn_stand: Stand
+bj_btn_start: Start
+bj_busy: The blackjack table is busy. Try again in a moment.
+bj_dealer: Dealer
+bj_dealer_draws: Dealer draws
+bj_join_line: Join with {0}
+bj_new_table: '{0} opens a new table'
+bj_not_your_turn: It is not your turn.
+bj_note_mismatch: Refund · error
+bj_note_restart: Refund · bot restart
+bj_note_stopped: Refund · table stopped
+bj_note_unpaid: Refund · payout failed
+bj_only_host: Only {0} can start the round.
+bj_player: Player {0}
+bj_round_running: A round is already running at this table. Wait until it ends.
+bj_soft: soft {0}
+bj_starts: Starts {0}
+bj_stopped: The table stopped. Every hand was played out.
+bj_stopped_joining: The table stopped. The bot refunded every bet.
+bj_table_closed: This blackjack table closed. Use {0} to open a new one.
+bj_table_full: This blackjack table is full.
+bj_title: Blackjack
+bj_too_many_tables: This server already has {0} open blackjack tables. Wait until one ends.
+bj_turn: '▶ {0} · {1}'
+bj_turn_hand: '▶ {0} · hand {1} · {2}'

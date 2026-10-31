@@ -217,11 +217,31 @@ warndelete:
     - user:
         desc: The user whose warning is being deleted.
       index:
-        desc: The index of the warning to be deleted.
+        desc: The number of the warning in the warnlog.
     - userId:
         desc: The ID of the user whose warning is being deleted.
       index:
-        desc: The index of the warning to be deleted.
+        desc: The number of the warning in the warnlog.
+warnedit:
+  desc: |-
+    Changes the reason of a user's warning.
+    The index is the number of the warning in `{0}warnlog`.
+  ex:
+    - '@Someone 2 Spam in #general'
+    - '123123123123 1 Rude to other members'
+  params:
+    - user:
+        desc: "The user whose warning the bot changes."
+      index:
+        desc: "The number of the warning in the warnlog."
+      reason:
+        desc: "The new reason for the warning."
+    - userId:
+        desc: "The ID of the user whose warning the bot changes."
+      index:
+        desc: "The number of the warning in the warnlog."
+      reason:
+        desc: "The new reason for the warning."
 warnexpire:
   desc: |-
     Gets or sets the number of days after which the warnings will be cleared automatically. This setting works retroactively. If you want to delete the warnings instead of clearing them, you can set the `--delete` optional parameter. Provide no parameter to see currently set expiry.

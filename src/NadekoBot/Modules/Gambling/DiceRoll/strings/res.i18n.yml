@@ -1,5 +1,8 @@
 ar:
   dice_invalid_number: 'عدد غير صالح. يمكنك رمي {0}-{1} نرد في المرة الواحدة.'
+  dice_invalid_dnd: نرد غير صالح. استخدم الصيغة `XdY`، على سبيل المثال `2d6` أو `d20+3` أو `4dF`.
+  dice_invalid_range: نطاق غير صالح. استخدم رقمًا واحدًا، على سبيل المثال `100`، أو رقمين، على سبيل المثال `5-15`.
+  dice_invalid_sides: 'يمكن أن يكون للنرد من 1 إلى {0} وجهًا.'
   dice_rolled: 'رمى {0}'
   dice_rolled_num: 'نتيجة النرد: {0}'
   rolls: الرميات
@@ -8,6 +11,9 @@ ar:
 
 de-DE:
   dice_invalid_number: 'Ungültige Nummer wurde angegeben. Du kannst {0}-{1} Würfel auf einmal werfen.'
+  dice_invalid_dnd: Ungültiger Würfel. Benutze das Format `XdY`, zum Beispiel `2d6`, `d20+3` oder `4dF`.
+  dice_invalid_range: Ungültiger Bereich. Benutze eine Zahl, zum Beispiel `100`, oder zwei Zahlen, zum Beispiel `5-15`.
+  dice_invalid_sides: 'Ein Würfel kann 1-{0} Seiten haben.'
   dice_rolled: 'würfelte {0}'
   dice_rolled_num: 'Würfel geworfen: {0}'
   rolls: Würfe
@@ -16,6 +22,9 @@ de-DE:
 
 es-ES:
   dice_invalid_number: 'Número especificado no válido. Puedes lanzar {0}-{1} dados a la vez.'
+  dice_invalid_dnd: Dados no válidos. Usa el formato `XdY`, por ejemplo `2d6`, `d20+3` o `4dF`.
+  dice_invalid_range: Rango no válido. Usa un número, por ejemplo `100`, o dos números, por ejemplo `5-15`.
+  dice_invalid_sides: 'Un dado puede tener de 1 a {0} caras.'
   dice_rolled: 'sacó {0}.'
   dice_rolled_num: 'Dados lanzados: {0}'
   rolls: Tiradas
@@ -24,6 +33,9 @@ es-ES:
 
 fr-FR:
   dice_invalid_number: 'Nombre spécifié invalide. Vous pouvez jeter {0}-{1} dés à la fois.'
+  dice_invalid_dnd: Dés invalides. Utilisez le format `XdY`, par exemple `2d6`, `d20+3` ou `4dF`.
+  dice_invalid_range: Plage invalide. Utilisez un nombre, par exemple `100`, ou deux nombres, par exemple `5-15`.
+  dice_invalid_sides: 'Un dé peut avoir 1-{0} faces.'
   dice_rolled: 'tiré au sort {0}'
   dice_rolled_num: 'Dés lancés: {0}'
   rolls: Lancés
@@ -32,6 +44,9 @@ fr-FR:
 
 id-ID:
   dice_invalid_number: 'Angka yang dimasukkan tidak valid. Kamu bisa melempar {0}-{1} dadu sekaligus.'
+  dice_invalid_dnd: Dadu tidak valid. Pakai format `XdY`, contohnya `2d6`, `d20+3`, atau `4dF`.
+  dice_invalid_range: Rentang tidak valid. Pakai satu angka, contohnya `100`, atau dua angka, contohnya `5-15`.
+  dice_invalid_sides: 'Dadu bisa punya 1-{0} sisi.'
   dice_rolled: 'melempar {0}'
   dice_rolled_num: 'Dadu dilempar: {0}'
   rolls: Lemparan
@@ -40,6 +55,9 @@ id-ID:
 
 ja-JP:
   dice_invalid_number: '数が正しくありません。一度に{0}～{1}個のサイコロを振ることができます。'
+  dice_invalid_dnd: 'サイコロの指定が正しくありません。`XdY` の形式で指定してください。例: `2d6`、`d20+3`、`4dF`。'
+  dice_invalid_range: 範囲の指定が正しくありません。`100` のような1つの数値か、`5-15` のような2つの数値を使ってください。
+  dice_invalid_sides: 'サイコロの面は1～{0}までです。'
   dice_rolled: 'はサイコロを振り、{0}が出ました。'
   dice_rolled_num: 'サイコロを振りました: {0}個'
   rolls: ロール結果
@@ -48,6 +66,9 @@ ja-JP:
 
 ko-KR:
   dice_invalid_number: '잘못된 숫자예요. 한 번에 {0}~{1}개의 주사위를 굴릴 수 있어요.'
+  dice_invalid_dnd: '주사위 형식이 잘못됐어요. `XdY` 형식으로 입력해 주세요. 예: `2d6`, `d20+3`, `4dF`.'
+  dice_invalid_range: 범위가 잘못됐어요. `100`처럼 숫자 하나 또는 `5-15`처럼 숫자 두 개를 사용해 주세요.
+  dice_invalid_sides: '주사위의 면은 1~{0}개까지예요.'
   dice_rolled: '{0}이(가) 나왔어요'
   dice_rolled_num: '주사위 결과: {0}'
   rolls: 굴리기
@@ -56,6 +77,9 @@ ko-KR:
 
 pl-PL:
   dice_invalid_number: 'Podano nieprawidłową liczbę. Możesz rzucić od {0} do {1} kości naraz.'
+  dice_invalid_dnd: Nieprawidłowa kość. Użyj formatu `XdY`, na przykład `2d6`, `d20+3` lub `4dF`.
+  dice_invalid_range: Nieprawidłowy zakres. Użyj jednej liczby, na przykład `100`, albo dwóch liczb, na przykład `5-15`.
+  dice_invalid_sides: 'Kość może mieć od 1 do {0} ścianek.'
   dice_rolled: 'wyrzucił/a {0}'
   dice_rolled_num: 'Wynik rzutu: {0}'
   rolls: Rzuty
@@ -64,6 +88,9 @@ pl-PL:
 
 pt-BR:
   dice_invalid_number: 'Número inválido. Você pode rolar {0}-{1} dados de uma vez.'
+  dice_invalid_dnd: Dados inválidos. Use o formato `XdY`, por exemplo `2d6`, `d20+3` ou `4dF`.
+  dice_invalid_range: Intervalo inválido. Use um número, por exemplo `100`, ou dois números, por exemplo `5-15`.
+  dice_invalid_sides: 'Um dado pode ter de 1 a {0} lados.'
   dice_rolled: 'rolou {0}'
   dice_rolled_num: 'Dados rolados: {0}'
   rolls: Rolagens
@@ -72,6 +99,9 @@ pt-BR:
 
 ru-RU:
   dice_invalid_number: 'Неправильное число. Вы можете бросить только {0}-{1} костей одновременно.'
+  dice_invalid_dnd: Неверные кубики. Используйте формат `XdY`, например `2d6`, `d20+3` или `4dF`.
+  dice_invalid_range: Неверный диапазон. Укажите одно число, например `100`, или два числа, например `5-15`.
+  dice_invalid_sides: 'У кубика может быть от 1 до {0} сторон.'
   dice_rolled: 'выпало {0}'
   dice_rolled_num: 'Кости брошены: {0}'
   rolls: Броски
@@ -80,6 +110,9 @@ ru-RU:
 
 sr-Cyrl-RS:
   dice_invalid_number: 'Неважећи број. Можеш бацити {0}-{1} коцкица одједном.'
+  dice_invalid_dnd: Неважеће коцкице. Користи формат `XdY`, на пример `2d6`, `d20+3` или `4dF`.
+  dice_invalid_range: Неважећи опсег. Користи један број, на пример `100`, или два броја, на пример `5-15`.
+  dice_invalid_sides: 'Коцкица може имати од 1 до {0} страна.'
   dice_rolled: 'бацио/ла {0}'
   dice_rolled_num: 'Бачена коцкица: {0}'
   rolls: Бацања
@@ -88,6 +121,9 @@ sr-Cyrl-RS:
 
 tr-TR:
   dice_invalid_number: 'Geçersiz sayı belirtildi. Aynı anda {0}-{1} zar atabilirsin.'
+  dice_invalid_dnd: Geçersiz zar. `XdY` biçimini kullan, örneğin `2d6`, `d20+3` ya da `4dF`.
+  dice_invalid_range: Geçersiz aralık. Tek sayı kullan, örneğin `100`, ya da iki sayı, örneğin `5-15`.
+  dice_invalid_sides: 'Bir zarın 1-{0} yüzü olabilir.'
   dice_rolled: '{0} atıldı'
   dice_rolled_num: 'Atılan zar: {0}'
   rolls: Atışlar
@@ -96,6 +132,9 @@ tr-TR:
 
 ts-TS:
   dice_invalid_number: 'Invalid number specified. You can roll {0}-{1} dice at once.'
+  dice_invalid_dnd: Invalid dice. Use the format `XdY`, for example `2d6`, `d20+3` or `4dF`.
+  dice_invalid_range: Invalid range. Use one number, for example `100`, or two numbers, for example `5-15`.
+  dice_invalid_sides: 'A die can have 1-{0} sides. D-did you really try to roll more?'
   dice_rolled: 'rolled {0}'
   dice_rolled_num: 'Dice rolled: {0}'
   rolls: Rolls
@@ -104,6 +143,9 @@ ts-TS:
 
 uk-UA:
   dice_invalid_number: 'Неправильне число. Можна кидати від {0} до {1} кубиків за раз.'
+  dice_invalid_dnd: Неправильні кубики. Використай формат `XdY`, наприклад `2d6`, `d20+3` або `4dF`.
+  dice_invalid_range: Неправильний діапазон. Використай одне число, наприклад `100`, або два числа, наприклад `5-15`.
+  dice_invalid_sides: 'У кубика може бути від 1 до {0} граней.'
   dice_rolled: 'випало {0}'
   dice_rolled_num: 'Кубик випав: {0}'
   rolls: Кидки
@@ -112,6 +154,9 @@ uk-UA:
 
 vi-VN:
   dice_invalid_number: 'Số không hợp lệ. Bạn có thể tung {0}-{1} xúc xắc cùng lúc.'
+  dice_invalid_dnd: Xúc xắc không hợp lệ. Dùng định dạng `XdY`, ví dụ `2d6`, `d20+3` hoặc `4dF`.
+  dice_invalid_range: Khoảng không hợp lệ. Dùng một số, ví dụ `100`, hoặc hai số, ví dụ `5-15`.
+  dice_invalid_sides: 'Xúc xắc chỉ có từ 1 đến {0} mặt.'
   dice_rolled: 'đã tung {0}'
   dice_rolled_num: 'Xúc xắc tung được: {0}'
   rolls: Lượt tung
@@ -120,6 +165,9 @@ vi-VN:
 
 zh-CN:
   dice_invalid_number: '指定的數字錯誤，你一次可以骰 {0} ~ {1} 顆骰子'
+  dice_invalid_dnd: 骰子无效。请使用 `XdY` 格式，例如 `2d6`、`d20+3` 或 `4dF`。
+  dice_invalid_range: 范围无效。请使用一个数字，例如 `100`，或者两个数字，例如 `5-15`。
+  dice_invalid_sides: '骰子可以有 1-{0} 个面。'
   dice_rolled: '骰出了 {0}'
   dice_rolled_num: '已投擲：{0}'
   rolls: 掷骰结果

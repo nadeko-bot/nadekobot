@@ -4,14 +4,12 @@ ar:
   autodc_disable: لن أقوم بالانفصال عن القناة الصوتية بعد الآن عند عدم وجود مقاطع أخرى للتشغيل.
   autodc_enable: سأقوم بالانفصال عن القناة الصوتية عند عدم وجود مقاطع أخرى للتشغيل.
   autoplaying: يتم إضافة مقاطع ذات صلة تلقائيًا.
-  current_music_quality: 'جودة الموسيقى الحالية المعيّنة هي: {0}'
   dir_queue_complete: اكتملت إضافة المجلد إلى قائمة الانتظار.
   fairplay: ''
   from_position: من الموضع
   music_autoplay_off: تم تعطيل التشغيل التلقائي للموسيقى.
-  music_autoplay_on: تم تفعيل التشغيل التلقائي للموسيقى. سأقوم بإضافة مقاطع ذات صلة تلقائيًا بعد انتهاء كل مقطع.
+  music_autoplay_on: تم تفعيل التشغيل التلقائي للموسيقى. لن تتكرر قائمة الانتظار الآن. سأضيف أغنية ذات صلة عندما تبدأ آخر أغنية في قائمة الانتظار.
   music_fairplay: تم إعادة ترتيب قائمة الانتظار بشكل عادل.
-  music_quality_set: 'تم تعيين جودة الموسيقى إلى {0}. ستحتاج إلى إيقاف وإعادة تشغيل مشغّل الموسيقى ليتم تطبيق التغيير.'
   no_last_queued_found: لم يتم العثور على آخر مقطع تم إضافته.
   no_lyrics_found: لم يتم العثور على كلمات الأغنية.
   no_player: لا يوجد مشغّل موسيقى نشط.
@@ -24,6 +22,8 @@ ar:
   playlist_id_not_found: قائمة التشغيل بهذا المعرّف غير موجودة.
   playlist_queue_complete: اكتملت إضافة قائمة التشغيل إلى قائمة الانتظار.
   playlist_saved: تم حفظ قائمة التشغيل
+  playlist_limit: 'يمكنك حفظ {0} قائمة تشغيل على الأكثر. احذف واحدة قبل أن تحفظ قائمة جديدة. {1} يعرض قوائمك.'
+  no_playlists: لم يتم العثور على قوائم تشغيل محفوظة.
   playlists: '`#{0}` - **{1}** بواسطة *{2}* ({3} مقطع)'
   playlists_page: 'الصفحة {0} من قوائم التشغيل المحفوظة'
   queue: قائمة الانتظار
@@ -56,14 +56,12 @@ de-DE:
   autodc_disable: Ich werde nicht mehr den Sprachkanal verlassen, sobald es keine Lieder mehr zu spielen gibt.
   autodc_enable: Ich werde den Sprachkanal verlassen, sobald es keine Lieder mehr zu spielen gibt.
   autoplaying: Fügt automatisch verwandte Titel hinzu.
-  current_music_quality: 'Aktuelle Musikqualität: {0}'
   dir_queue_complete: Verzeichnis Warteschlange komplett.
   fairplay: ''
   from_position: Von Position
   music_autoplay_off: Musik-Autoplay deaktiviert.
-  music_autoplay_on: Musik-Autoplay aktiviert. Ich werde automatisch verwandte Titel nach jedem Titel in die Warteschlange stellen.
+  music_autoplay_on: Autoplay ist aktiviert. Die Warteschlange wird nicht wiederholt. Wenn der letzte Titel in der Warteschlange startet, füge ich einen ähnlichen Titel hinzu.
   music_fairplay: Die Musikwarteschlange wurde fair neu geordnet.
-  music_quality_set: 'Musikqualität wurde auf {0} gestellt. Du musst den Musikplayer zerstören und neu starten damit die Änderungen übernommen werden.'
   no_last_queued_found: Kein zuletzt hinzugefügter Track gefunden.
   no_lyrics_found: Keine Songtexte gefunden.
   no_player: Keine aktiven Musik Spieler.
@@ -76,6 +74,8 @@ de-DE:
   playlist_id_not_found: Eine Playlist mit dieser ID existiert nicht.
   playlist_queue_complete: Playlist Warteschlange fertig.
   playlist_saved: Playlist gespeichert
+  playlist_limit: 'Du kannst höchstens {0} gespeicherte Playlists haben. Lösche eine, bevor du eine neue speicherst. {1} zeigt deine an.'
+  no_playlists: Keine gespeicherten Playlists gefunden.
   playlists: '`#{0}` - **{1}** von *{2}* ({3} Lieder)'
   playlists_page: 'Seite {0} der gespeicherten Playlists'
   queue: Warteschlange
@@ -108,14 +108,12 @@ es-ES:
   autodc_disable: Ya no me desconectaré del canal de voz cuando no queden canciones por reproducir.
   autodc_enable: Me desconectaré del canal de voz cuando no queden más canciones por reproducir.
   autoplaying: Añade automáticamente pistas relacionadas.
-  current_music_quality: 'Actualmente la calidad de música está establecida en: {0}'
   dir_queue_complete: Cola de directorio completa.
   fairplay: ''
   from_position: Desde la posición
   music_autoplay_off: Reproducción automática desactivada.
-  music_autoplay_on: Reproducción automática activada. Pondré en cola automáticamente las pistas relacionadas después de que cada pista termine de reproducirse.
+  music_autoplay_on: Reproducción automática activada. La cola ya no se repite. Añadiré una canción relacionada cuando empiece la última canción de la cola.
   music_fairplay: La cola de música ha sido reorganizada de forma justa.
-  music_quality_set: 'La calidad de la música se ha establecido en {0}. Tendrás que eliminar y reiniciar el reproductor de música para que el cambio surta efecto.'
   no_last_queued_found: No se encontró ninguna pista añadida recientemente.
   no_lyrics_found: No se encontraron letras.
   no_player: No hay reproducción activa.
@@ -128,6 +126,8 @@ es-ES:
   playlist_id_not_found: No existe una lista con esa ID.
   playlist_queue_complete: Lista de reproducción añadida a la cola.
   playlist_saved: Lista guardada
+  playlist_limit: 'Puedes tener como máximo {0} listas guardadas. Borra una antes de guardar una nueva. {1} muestra las tuyas.'
+  no_playlists: No se encontraron listas guardadas.
   playlists: '`#{0}` - **{1}** por *{2}* ({3} canciones)'
   playlists_page: 'Página {0} de las playlist guardadas'
   queue: Cola
@@ -160,14 +160,12 @@ fr-FR:
   autodc_disable: Je ne me déconnecterai plus du salon vocal lorsqu'il n'y aura plus de morceaux à jouer.
   autodc_enable: Je me déconnecterai du salon vocal lorsqu'il n'y aura plus de morceaux à jouer.
   autoplaying: Ajout automatique des pistes relatives.
-  current_music_quality: 'Qualité de musique actuellement réglée sur : {0}'
   dir_queue_complete: File d'attente du répertoire terminée.
   fairplay: ''
   from_position: De la position
   music_autoplay_off: Lecture automatique désactivée.
-  music_autoplay_on: Lecture automatique activée. Les pistes s'enchaîneront automatiquement à la fin de chaque lectures.
+  music_autoplay_on: Lecture automatique activée. La file d'attente ne se répète plus. J'ajouterai une chanson similaire quand la dernière chanson de la file d'attente commencera.
   music_fairplay: La file de musique a été réorganisée équitablement.
-  music_quality_set: 'La qualité de la musique a été définie sur {0}. Vous devrez arrêter et redémarrer le lecteur de musique pour que le changement prenne effet.'
   no_last_queued_found: Aucune piste récemment ajoutée trouvée.
   no_lyrics_found: Aucune parole trouvée.
   no_player: Aucun lecteur de musique actif.
@@ -180,7 +178,9 @@ fr-FR:
   playlist_id_not_found: Une liste de lecture avec cet ID n'existe pas.
   playlist_queue_complete: La file d'attente de la liste de lecture est terminée.
   playlist_saved: Liste de lecture sauvegardée
-  playlists: '`#{0}` - *{1}** par *{2}* ({3} chansons)'
+  playlist_limit: 'Vous pouvez avoir au maximum {0} listes de lecture enregistrées. Supprimez-en une avant d''en enregistrer une nouvelle. {1} affiche les vôtres.'
+  no_playlists: Aucune liste de lecture enregistrée.
+  playlists: '`#{0}` - **{1}** par *{2}* ({3} chansons)'
   playlists_page: 'Page {0} des listes de lecture enregistrées'
   queue: File d'attente
   queue_cleared: File d'attente de musique effacée.
@@ -212,14 +212,12 @@ id-ID:
   autodc_disable: Aku tidak akan lagi keluar dari voice channel saat tidak ada lagu yang tersisa.
   autodc_enable: Aku akan keluar dari voice channel saat tidak ada lagu yang tersisa.
   autoplaying: Otomatis menambahkan lagu terkait.
-  current_music_quality: 'Kualitas musik saat ini: {0}'
   dir_queue_complete: Antrean direktori selesai.
   fairplay: ''
   from_position: Dari posisi
   music_autoplay_off: Autoplay musik dinonaktifkan.
-  music_autoplay_on: Autoplay musik diaktifkan. Aku akan otomatis mengantrikan lagu terkait setelah setiap lagu selesai diputar.
+  music_autoplay_on: Autoplay musik aktif. Antrean tidak diulang lagi. Aku akan menambahkan lagu terkait saat lagu terakhir di antrean mulai diputar.
   music_fairplay: Antrean musik sudah diurutkan ulang secara adil.
-  music_quality_set: 'Kualitas musik sudah diatur ke {0}. Kamu harus menghentikan dan memulai ulang pemutar musik agar perubahan berlaku.'
   no_last_queued_found: Lagu terakhir yang diantrikan tidak ditemukan.
   no_lyrics_found: Lirik tidak ditemukan.
   no_player: Tidak ada pemutar musik yang aktif.
@@ -232,6 +230,8 @@ id-ID:
   playlist_id_not_found: Playlist dengan ID tersebut tidak ada.
   playlist_queue_complete: Antrean playlist selesai.
   playlist_saved: Playlist disimpan
+  playlist_limit: 'Kamu bisa punya paling banyak {0} playlist tersimpan. Hapus satu dulu sebelum menyimpan yang baru. {1} menampilkan playlist kamu.'
+  no_playlists: Tidak ada playlist tersimpan.
   playlists: '`#{0}` - **{1}** oleh *{2}* ({3} lagu)'
   playlists_page: 'Halaman {0} dari playlist tersimpan'
   queue: Antrean
@@ -264,26 +264,26 @@ ja-JP:
   autodc_disable: 再生する曲がなくなってもボイスチャンネルから切断しません。
   autodc_enable: 再生する曲がなくなればボイスチャンネルから切断します。
   autoplaying: 自動再生
-  current_music_quality: '現在の音楽品質は{0}です'
   dir_queue_complete: ディレクトリからの読み込みが完了しました。
   fairplay: ''
   from_position: '変更前:'
   music_autoplay_off: 音楽の自動再生が無効になりました。
-  music_autoplay_on: 音楽の自動再生が有効になりました。各トラックの再生後、関連するトラックを自動的にキューに追加します。
+  music_autoplay_on: 自動再生をオンにしました。キューの繰り返しはオフになりました。キューの最後の曲が始まったら、関連する曲を追加します。
   music_fairplay: 音楽キューが公平に並べ替えられました。
-  music_quality_set: '音楽品質が{0}に設定されました。変更を反映するにはミュージックプレイヤーを破棄して再起動する必要があります。'
   no_last_queued_found: 最後にキューに追加されたトラックが見つかりません。
   no_lyrics_found: 歌詞が見つかりません。
   no_player: 有効な音楽プレーヤーがありません。
   not_with_bot_in_voice: Botと同じボイスチャンネルにいません。
   now_playing: 再生中の曲
   player_queue: 'プレーヤーキュー - ページ {0}/{1}'
-  playlist_delete_fail: 再生リストを削除できませんでした。。指定された再生リストが存在しないか、削除する権限がありません。
+  playlist_delete_fail: 再生リストを削除できませんでした。指定された再生リストが存在しないか、削除する権限がありません。
   playlist_deleted: 再生リストが削除されました。
   playlist_name_too_long: 再生リスト名は20文字以内にしてください。
   playlist_id_not_found: 指定されたIDの再生リストが存在しません。
   playlist_queue_complete: 再生リストからの読み込みが完了しました。
   playlist_saved: 再生リストを保存しました
+  playlist_limit: '保存できる再生リストは最大 {0} 個です。新しく保存する前に、どれかを削除してください。{1} で自分の再生リストを表示できます。'
+  no_playlists: 保存された再生リストはありません。
   playlists: '`#{0}` - 「**{1}**」 作者: *{2}* （全{3}曲）'
   playlists_page: '保存された再生リストの{0}ページ目'
   queue: キュー
@@ -316,14 +316,12 @@ ko-KR:
   autodc_disable: 더 이상 재생할 트랙이 없어도 음성 채널에서 나가지 않을게요.
   autodc_enable: 더 이상 재생할 트랙이 없으면 음성 채널에서 나갈게요.
   autoplaying: 관련 트랙을 자동으로 추가해요.
-  current_music_quality: '현재 설정된 음악 품질: {0}'
   dir_queue_complete: 디렉토리 대기열 추가 완료.
   fairplay: ''
   from_position: 이동 전 위치
   music_autoplay_off: 음악 자동재생이 비활성화되었어요.
-  music_autoplay_on: 음악 자동재생이 활성화되었어요. 각 트랙 재생이 끝나면 관련 트랙을 자동으로 대기열에 추가할게요.
+  music_autoplay_on: 자동 재생이 켜졌어요. 대기열은 이제 반복하지 않아요. 대기열의 마지막 곡이 시작되면 관련 곡을 추가할게요.
   music_fairplay: 음악 대기열이 공정하게 재정렬되었어요.
-  music_quality_set: '음악 품질이 {0}(으)로 설정되었어요. 변경 사항을 적용하려면 음악 플레이어를 종료하고 다시 시작해야 해요.'
   no_last_queued_found: 마지막으로 대기열에 추가된 트랙을 찾을 수 없어요.
   no_lyrics_found: 가사를 찾을 수 없어요.
   no_player: 활성화된 음악 플레이어가 없어요.
@@ -336,6 +334,8 @@ ko-KR:
   playlist_id_not_found: 해당 ID의 재생목록이 존재하지 않아요.
   playlist_queue_complete: 재생목록 대기열 추가 완료.
   playlist_saved: 재생목록이 저장되었어요
+  playlist_limit: '저장된 재생목록은 최대 {0}개까지 가질 수 있어요. 새로 저장하기 전에 하나를 삭제해 주세요. {1}로 내 재생목록을 볼 수 있어요.'
+  no_playlists: 저장된 재생목록이 없어요.
   playlists: '`#{0}` - **{1}** by *{2}* ({3}개 트랙)'
   playlists_page: '저장된 재생목록 {0} 페이지'
   queue: 대기열
@@ -368,14 +368,12 @@ pl-PL:
   autodc_disable: Nie będę już rozłączać się z kanału głosowego, gdy nie ma więcej utworów do odtworzenia.
   autodc_enable: Rozłączę się z kanału głosowego, gdy nie będzie więcej utworów do odtworzenia.
   autoplaying: Automatycznie dodaje powiązane utwory.
-  current_music_quality: 'Aktualnie ustawiona jakość muzyki to: {0}'
   dir_queue_complete: Kolejkowanie katalogu zakończone.
   fairplay: ''
   from_position: Z pozycji
   music_autoplay_off: Automatyczne odtwarzanie wyłączone.
-  music_autoplay_on: Automatyczne odtwarzanie włączone. Automatycznie dodam powiązane utwory po zakończeniu każdego utworu.
+  music_autoplay_on: Autoodtwarzanie włączone. Kolejka nie będzie już powtarzana. Gdy zacznie się ostatni utwór w kolejce, dodam podobny utwór.
   music_fairplay: Kolejka muzyki została sprawiedliwie uporządkowana.
-  music_quality_set: 'Jakość muzyki ustawiona na {0}. Musisz zniszczyć i ponownie uruchomić odtwarzacz, aby zmiana zaczęła obowiązywać.'
   no_last_queued_found: Nie znaleziono ostatnio dodanego utworu.
   no_lyrics_found: Nie znaleziono tekstu piosenki.
   no_player: Brak aktywnego odtwarzacza muzyki.
@@ -388,6 +386,8 @@ pl-PL:
   playlist_id_not_found: Playlista o tym ID nie istnieje.
   playlist_queue_complete: Kolejkowanie playlisty zakończone.
   playlist_saved: Playlista zapisana
+  playlist_limit: 'Możesz mieć najwyżej {0} zapisanych playlist. Usuń jedną, zanim zapiszesz nową. {1} pokazuje twoje playlisty.'
+  no_playlists: Nie znaleziono zapisanych playlist.
   playlists: '`#{0}` - **{1}** od *{2}* ({3} utworów)'
   playlists_page: 'Strona {0} zapisanych playlist'
   queue: Kolejka
@@ -420,14 +420,12 @@ pt-BR:
   autodc_disable: Não me desconectarei do canal de voz quando não houver mais músicas para serem reproduzidas.
   autodc_enable: Desconectarei do canal de voz quando não houver mais músicas para reproduzir.
   autoplaying: Trilhas similares automaticamente adicionadas.
-  current_music_quality: 'A atual qualidade musical definida é: {0}'
   dir_queue_complete: Diretório adicionado à fila.
   fairplay: ''
   from_position: Da posição
   music_autoplay_off: Autoplay desativado.
-  music_autoplay_on: Autoplay ativo. Tocarei automaticamente a fila de trilhas similares ao fim de cada trilha.
+  music_autoplay_on: Reprodução automática ativada. A fila não se repete mais. Vou adicionar uma música relacionada quando a última música da fila começar.
   music_fairplay: A fila de música foi reorganizada de forma justa.
-  music_quality_set: 'A qualidade da música foi definida par {0}. Você terá que destruir e reiniciar o reprodutor para que as alterações tenham efeito.'
   no_last_queued_found: Nenhuma faixa adicionada recentemente encontrada.
   no_lyrics_found: Nenhuma letra encontrada.
   no_player: Não há música em reprodução.
@@ -440,6 +438,8 @@ pt-BR:
   playlist_id_not_found: Não existe uma playlist com essa ID.
   playlist_queue_complete: Playlist adicionada à fila.
   playlist_saved: Playlist salva
+  playlist_limit: 'Você pode ter no máximo {0} playlists salvas. Apague uma antes de salvar uma nova. {1} mostra as suas.'
+  no_playlists: Nenhuma playlist salva encontrada.
   playlists: '''#{0}'' - **{1}** por *{2}* ({3} músicas)'
   playlists_page: 'Página {0} de playlists salvas'
   queue: Fila
@@ -472,14 +472,12 @@ ru-RU:
   autodc_disable: Я больше не буду отключаться от голосового канала, когда больше нет песен для воспроизведения.
   autodc_enable: Я отключусь от голосового канала, когда больше не будет песен для воспроизведения.
   autoplaying: Автоматически добавляет похожие треки.
-  current_music_quality: 'Текущее качество музыки: {0}'
   dir_queue_complete: Очередь каталогов завершена.
   fairplay: ''
   from_position: С позиции
   music_autoplay_off: Автовоспроизведение музыки отключено.
-  music_autoplay_on: Автовоспроизведение музыки включено. Я буду автоматически добавлять похожие треки после окончания каждого трека.
+  music_autoplay_on: Автовоспроизведение включено. Очередь больше не повторяется. Когда начнется последний трек в очереди, я добавлю похожий трек.
   music_fairplay: Очередь музыки была справедливо переупорядочена.
-  music_quality_set: 'Качество музыки установлено на {0}. Вам нужно будет уничтожить и перезапустить музыкальный проигрыватель, чтобы изменения вступили в силу.'
   no_last_queued_found: Последний добавленный трек не найден.
   no_lyrics_found: Текст песни не найден.
   no_player: Отсутствует активный музыкальный проигрыватель.
@@ -492,6 +490,8 @@ ru-RU:
   playlist_id_not_found: Плейлист с таким ID не существует.
   playlist_queue_complete: Добавление плейлиста в очередь воспроизведения завершено.
   playlist_saved: Плейлист сохранен
+  playlist_limit: 'У вас может быть не больше {0} сохраненных плейлистов. Удалите один, прежде чем сохранить новый. {1} покажет ваши плейлисты.'
+  no_playlists: Сохраненных плейлистов не найдено.
   playlists: '`#{0}` - **{1}** от *{2}* ({3} песен)'
   playlists_page: 'Страница {0} сохраненных плейлистов'
   queue: Очередь
@@ -524,14 +524,12 @@ sr-Cyrl-RS:
   autodc_disable: Више се нећу дисконектовати из гласовног канала кад нема више нумера за пуштање.
   autodc_enable: Дисконектоваћу се из гласовног канала кад нема више нумера за пуштање.
   autoplaying: Аутоматски додаје сличне нумере.
-  current_music_quality: 'Тренутно подешен квалитет музике је: {0}'
   dir_queue_complete: Ред фасцикле завршен.
   fairplay: ''
   from_position: Са позиције
   music_autoplay_off: Аутоматско пуштање музике искључено.
-  music_autoplay_on: Аутоматско пуштање музике укључено. Аутоматски ћу додавати сличне нумере после сваке завршене.
+  music_autoplay_on: Аутоматско пуштање је укључено. Ред се више не понавља. Када почне последња песма у реду, додаћу сличну песму.
   music_fairplay: Ред музике је фер преуређен.
-  music_quality_set: 'Квалитет музике је подешен на {0}. Мораш уништити и поново покренути музички плејер да би промена ступила на снагу.'
   no_last_queued_found: Није пронађена последња додата нумера.
   no_lyrics_found: Текст песме није пронађен.
   no_player: Нема активног музичког плејера.
@@ -544,6 +542,8 @@ sr-Cyrl-RS:
   playlist_id_not_found: Плејлиста са тим ID-ом не постоји.
   playlist_queue_complete: Ред плејлисте завршен.
   playlist_saved: Плејлиста сачувана
+  playlist_limit: 'Можеш да имаш највише {0} сачуваних плејлиста. Обриши једну пре него што сачуваш нову. {1} приказује твоје плејлисте.'
+  no_playlists: Нема сачуваних плејлиста.
   playlists: '`#{0}` - **{1}** од *{2}* ({3} нумера)'
   playlists_page: 'Страница {0} сачуваних плејлиста'
   queue: Ред
@@ -576,14 +576,12 @@ tr-TR:
   autodc_disable: Çalacak parça kalmadığında artık ses kanalından ayrılmayacağım.
   autodc_enable: Çalacak parça kalmadığında ses kanalından ayrılacağım.
   autoplaying: İlgili parçaları otomatik olarak ekler.
-  current_music_quality: 'Şu anki müzik kalitesi: {0}'
   dir_queue_complete: Klasör sıraya ekleme tamamlandı.
   fairplay: ''
   from_position: Başlangıç pozisyonu
   music_autoplay_off: Müzik otomatik çalma devre dışı.
-  music_autoplay_on: Müzik otomatik çalma etkin. Her parça bittikten sonra otomatik olarak ilgili parçaları sıraya ekleyeceğim.
+  music_autoplay_on: Otomatik oynatma açıldı. Sıra artık tekrarlanmayacak. Sıradaki son şarkı başladığında benzer bir şarkı ekleyeceğim.
   music_fairplay: Müzik sırası adil olarak yeniden sıralandı.
-  music_quality_set: 'Müzik kalitesi {0} olarak ayarlandı. Değişikliğin geçerli olması için müzik oynatıcıyı kapatıp yeniden başlatman gerekiyor.'
   no_last_queued_found: Son sıraya eklenen parça bulunamadı.
   no_lyrics_found: Şarkı sözü bulunamadı.
   no_player: Aktif müzik oynatıcı yok.
@@ -596,6 +594,8 @@ tr-TR:
   playlist_id_not_found: Bu ID'ye sahip çalma listesi mevcut değil.
   playlist_queue_complete: Çalma listesi sıraya ekleme tamamlandı.
   playlist_saved: Çalma listesi kaydedildi
+  playlist_limit: 'En fazla {0} kayıtlı çalma listen olabilir. Yenisini kaydetmeden önce birini sil. {1} seninkileri gösterir.'
+  no_playlists: Kayıtlı çalma listesi bulunamadı.
   playlists: '`#{0}` - **{1}** *{2}* tarafından ({3} parça)'
   playlists_page: 'Kayıtlı çalma listelerinin {0}. sayfası'
   queue: Sıra
@@ -628,14 +628,12 @@ ts-TS:
   autodc_disable: I'll stay in the voice channel even when there's nothing to play.
   autodc_enable: I'll disconnect from voice when there's nothing left to play.
   autoplaying: Automatically adding related tracks.
-  current_music_quality: 'Currently set music quality is: {0}'
   dir_queue_complete: Directory queue complete.
   fairplay: ''
   from_position: From position
   music_autoplay_off: Music autoplay disabled.
-  music_autoplay_on: Music autoplay enabled. I'll automatically queue related tracks after each one finishes.
+  music_autoplay_on: Autoplay is on. Queue doesn't repeat now. When the last song in the queue starts, I'll add a related one. Not that I care what you listen to.
   music_fairplay: Music queue has been fairly reordered. I-I'm always fair.
-  music_quality_set: 'Music quality set to {0}. You''ll need to restart the music player for it to take effect.'
   no_last_queued_found: No last queued track found. Did you even queue anything?
   no_lyrics_found: Couldn't find any lyrics.
   no_player: No active music player. Start one first.
@@ -648,6 +646,8 @@ ts-TS:
   playlist_id_not_found: A playlist with that ID doesn't exist. Check your numbers.
   playlist_queue_complete: Playlist queue complete.
   playlist_saved: Playlist saved.
+  playlist_limit: 'You can have at most {0} saved playlists. Delete one first if you want a new one, hmph. {1} lists yours.'
+  no_playlists: No saved playlists. Nothing here, okay?
   playlists: '`#{0}` - **{1}** by *{2}* ({3} tracks)'
   playlists_page: 'Page {0} of saved playlists'
   queue: Queue
@@ -680,14 +680,12 @@ uk-UA:
   autodc_disable: Я більше не буду від''єднуватися від голосового каналу, коли треки закінчаться.
   autodc_enable: Я від''єднаюся від голосового каналу, коли треки закінчаться.
   autoplaying: Автоматично додає пов''язані треки.
-  current_music_quality: 'Поточна якість музики: {0}'
   dir_queue_complete: Чергу з директорії додано.
   fairplay: ''
   from_position: З позиції
   music_autoplay_off: Автоматичне відтворення вимкнено.
-  music_autoplay_on: Автоматичне відтворення увімкнено. Я буду автоматично додавати пов''язані треки після кожного.
+  music_autoplay_on: Автовідтворення увімкнено. Черга більше не повторюється. Коли почнеться останній трек у черзі, я додам схожий трек.
   music_fairplay: Чергу музики було справедливо перевпорядковано.
-  music_quality_set: 'Якість музики встановлено на {0}. Потрібно зупинити та перезапустити плеєр, щоб зміни набули чинності.'
   no_last_queued_found: Не знайдено останній доданий трек.
   no_lyrics_found: Текст пісні не знайдено.
   no_player: Немає активного музичного плеєра.
@@ -700,6 +698,8 @@ uk-UA:
   playlist_id_not_found: Плейлист з таким ID не існує.
   playlist_queue_complete: Плейлист додано в чергу.
   playlist_saved: Плейлист збережено
+  playlist_limit: 'У тебе може бути не більше {0} збережених плейлистів. Видали один, перш ніж зберегти новий. {1} покаже твої плейлисти.'
+  no_playlists: Збережених плейлистів не знайдено.
   playlists: '`#{0}` - **{1}** від *{2}* ({3} треків)'
   playlists_page: 'Сторінка {0} збережених плейлистів'
   queue: Черга
@@ -732,14 +732,12 @@ vi-VN:
   autodc_disable: Mình sẽ không rời kênh thoại khi hết bài hát nữa.
   autodc_enable: Mình sẽ rời kênh thoại khi hết bài hát.
   autoplaying: Tự động thêm các bài liên quan.
-  current_music_quality: 'Chất lượng nhạc hiện tại: {0}'
   dir_queue_complete: Đã thêm xong thư mục vào hàng đợi.
   fairplay: ''
   from_position: Từ vị trí
   music_autoplay_off: Đã tắt tự động phát nhạc.
-  music_autoplay_on: Đã bật tự động phát nhạc. Mình sẽ tự động thêm bài liên quan sau khi mỗi bài kết thúc.
+  music_autoplay_on: Đã bật tự động phát. Hàng đợi giờ không lặp lại nữa. Khi bài cuối cùng trong hàng chờ bắt đầu, mình sẽ thêm một bài liên quan.
   music_fairplay: Hàng đợi nhạc đã được sắp xếp lại công bằng.
-  music_quality_set: 'Chất lượng nhạc đã được đặt thành {0}. Bạn cần tắt và khởi động lại trình phát nhạc để thay đổi có hiệu lực.'
   no_last_queued_found: Không tìm thấy bài hát cuối cùng trong hàng đợi.
   no_lyrics_found: Không tìm thấy lời bài hát.
   no_player: Không có trình phát nhạc nào đang hoạt động.
@@ -752,6 +750,8 @@ vi-VN:
   playlist_id_not_found: Playlist với ID đó không tồn tại.
   playlist_queue_complete: Đã thêm xong playlist vào hàng đợi.
   playlist_saved: Đã lưu playlist
+  playlist_limit: 'Bạn chỉ có thể lưu tối đa {0} playlist. Hãy xóa một playlist trước khi lưu playlist mới. {1} sẽ liệt kê playlist của bạn.'
+  no_playlists: Không tìm thấy playlist đã lưu nào.
   playlists: '`#{0}` - **{1}** bởi *{2}* ({3} bài)'
   playlists_page: 'Trang {0} các playlist đã lưu'
   queue: Hàng đợi
@@ -784,14 +784,12 @@ zh-CN:
   autodc_disable: 我將不會在沒有任何歌曲可以播放時退出語音頻道
   autodc_enable: 我將會在沒有任何歌曲可以播放時退出語音頻道
   autoplaying: 自動添加相關曲目。
-  current_music_quality: '目前設定的音樂播放品質為：{0}'
   dir_queue_complete: 目錄列隊完成。
   fairplay: ''
   from_position: 從位置
   music_autoplay_off: 音樂自動播放已禁用。
-  music_autoplay_on: 啟用音樂自動播放。每首曲目播放完畢後，我會自動將相關曲目排隊。
+  music_autoplay_on: 已开启自动播放。队列现在不会重复了。当队列中的最后一首歌开始播放时，我会添加一首相关歌曲。
   music_fairplay: 音樂佇列已公平重新排序。
-  music_quality_set: '音樂播放品質已被設定為 {0}，設定將在完全停止(destroy)並重新啟動音樂播放器後生效'
   no_last_queued_found: 找不到最近加入佇列的曲目。
   no_lyrics_found: 找不到歌詞。
   no_player: 沒有運作中的音樂撥放器。
@@ -804,6 +802,8 @@ zh-CN:
   playlist_id_not_found: 具有該 ID 的播放列表不存在。
   playlist_queue_complete: 播放清單載入完畢
   playlist_saved: 播放列表已保存
+  playlist_limit: '你最多只能保存 {0} 个播放列表。请先删除一个，再保存新的。{1} 可以列出你的播放列表。'
+  no_playlists: 没有找到已保存的播放列表。
   playlists: '`#{0}` - **{1}** *{2}*（{3} 首曲目）'
   playlists_page: '已保存播放列表的第 {0} 頁'
   queue: 列隊

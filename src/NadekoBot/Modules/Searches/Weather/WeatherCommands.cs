@@ -8,12 +8,7 @@ public partial class Searches
     [Group]
     public partial class WeatherCommands : NadekoModule<SearchesService>
     {
-        private readonly ITimezoneService _tzSvc;
-
-        public WeatherCommands(ITimezoneService tzSvc)
-        {
-            _tzSvc = tzSvc;
-        }
+        private const int MAX_UTC_OFFSET_MINUTES = 14 * 60;
 
         private async Task<bool> ValidateQuery([MaybeNullWhen(false)] string query)
         {
@@ -39,21 +34,24 @@ public partial class Searches
             {
                 var f = StandardConversions.CelsiusToFahrenheit;
 
-                var tz = _tzSvc.GetTimeZoneOrUtc(ctx.Guild?.Id);
-                var sunrise = data.Sys.Sunrise.ToUnixTimestamp();
-                var sunset = data.Sys.Sunset.ToUnixTimestamp();
-                sunrise = sunrise.ToOffset(tz.GetUtcOffset(sunrise));
-                sunset = sunset.ToOffset(tz.GetUtcOffset(sunset));
+                // sunrise and sunset are shown in the city's own time, which the API sends as a UTC shift in seconds
+                var cityOffset = TimeSpan.FromMinutes(Math.Clamp(data.TimezoneOffsetSeconds / 60,
+                    -MAX_UTC_OFFSET_MINUTES,
+                    MAX_UTC_OFFSET_MINUTES));
+                var sunrise = data.Sys.Sunrise.ToUnixTimestamp().ToOffset(cityOffset);
+                var sunset = data.Sys.Sunset.ToUnixTimestamp().ToOffset(cityOffset);
                 var timezone = $"UTC{sunrise:zzz}";
+                var hasWeather = data.Weather is { Count: > 0 };
+                var conditions = hasWeather
+                    ? string.Join(", ", data.Weather!.Select(w => w.Main))
+                    : "-";
 
                 embed
                     .AddField("🌍 " + Format.Bold(GetText(strs.location)),
                         $"[{data.Name + ", " + data.Sys.Country}](https://openweathermap.org/city/{data.Id})",
                         true)
                     .AddField("📏 " + Format.Bold(GetText(strs.latlong)), $"{data.Coord.Lat}, {data.Coord.Lon}", true)
-                    .AddField("☁ " + Format.Bold(GetText(strs.condition)),
-                        string.Join(", ", data.Weather.Select(w => w.Main)),
-                        true)
+                    .AddField("☁ " + Format.Bold(GetText(strs.condition)), conditions, true)
                     .AddField("😓 " + Format.Bold(GetText(strs.humidity)), $"{data.Main.Humidity}%", true)
                     .AddField("💨 " + Format.Bold(GetText(strs.wind_speed)), data.Wind.Speed + " m/s", true)
                     .AddField("🌡 " + Format.Bold(GetText(strs.temperature)),
@@ -66,7 +64,9 @@ public partial class Searches
                     .AddField("🌇 " + Format.Bold(GetText(strs.sunset)), $"{sunset:HH:mm} {timezone}", true)
                     .WithOkColor()
                     .WithFooter("Powered by openweathermap.org",
-                        $"https://openweathermap.org/img/w/{data.Weather[0].Icon}.png");
+                        hasWeather
+                            ? $"https://openweathermap.org/img/w/{data.Weather![0].Icon}.png"
+                            : null);
             }
 
             await Response().Embed(embed).SendAsync();

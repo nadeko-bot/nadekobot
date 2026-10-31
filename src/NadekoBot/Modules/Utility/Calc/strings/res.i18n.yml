@@ -1,63 +1,79 @@
 ar:
+  calc_no_result: التعبير يحتوي على اسم غير معروف أو لا يعطي نتيجة.
   calcops: 'قائمة الدوال في أمر {0}calc'
   result: النتيجة
 
 de-DE:
+  calc_no_result: Der Ausdruck enthält einen unbekannten Namen oder ergibt kein Ergebnis.
   calcops: 'Liste der Funktionen im {0}calc Befehl'
   result: Ergebnis
 
 es-ES:
+  calc_no_result: La expresión tiene un nombre desconocido o no da resultado.
   calcops: 'Lista de funciones en el comando {0}calc'
   result: Resultado
 
 fr-FR:
+  calc_no_result: L'expression contient un nom inconnu ou ne donne aucun résultat.
   calcops: 'Liste des fonctions dans {0} commande calc'
   result: Résultat
 
 id-ID:
+  calc_no_result: Ekspresinya berisi nama yang tidak dikenal atau tidak menghasilkan nilai.
   calcops: 'Daftar fungsi di perintah {0}calc'
   result: Hasil
 
 ja-JP:
+  calc_no_result: 式に不明な名前が含まれているか、結果が出ません。
   calcops: '{0}calcコマンド用の関数一覧'
   result: 結果
 
 ko-KR:
+  calc_no_result: 식에 알 수 없는 이름이 있거나 결과가 나오지 않아요.
   calcops: '{0}calc 명령어에서 사용 가능한 함수 목록'
   result: 결과
 
 pl-PL:
+  calc_no_result: Wyrażenie zawiera nieznaną nazwę albo nie daje wyniku.
   calcops: 'Lista funkcji w komendzie {0}calc'
   result: Wynik
 
 pt-BR:
+  calc_no_result: A expressão tem um nome desconhecido ou não dá resultado.
   calcops: 'Lista de funções em {0}calc comando'
   result: Resultado
 
 ru-RU:
+  calc_no_result: В выражении неизвестное имя или оно не даёт результата.
   calcops: 'Список функций в команде {0}calc'
   result: Результат
 
 sr-Cyrl-RS:
+  calc_no_result: Израз има непознато име или не даје резултат.
   calcops: 'Листа функција у команди {0}calc'
   result: Резултат
 
 tr-TR:
+  calc_no_result: İfadede tanınmayan bir isim var ya da ifade bir sonuç vermiyor.
   calcops: '{0}calc komutundaki fonksiyonların listesi'
   result: Sonuç
 
 ts-TS:
+  calc_no_result: The expression has an unknown name or gives no result. Type it properly.
   calcops: 'Here are the functions for the {0}calc command. D-don''t say I never help you.'
   result: Result
 
 uk-UA:
+  calc_no_result: У виразі є невідоме ім'я, або він не дає результату.
   calcops: 'Список функцій команди {0}calc'
   result: Результат
 
 vi-VN:
+  calc_no_result: Biểu thức có tên không xác định hoặc không cho ra kết quả.
   calcops: 'Danh sách hàm trong lệnh {0}calc'
   result: Kết quả
 
 zh-CN:
+  calc_no_result: 表达式包含未知的名称，或者没有结果。
   calcops: '{0}calc 命令中的函數列表'
   result: 結果

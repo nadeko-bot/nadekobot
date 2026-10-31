@@ -37,11 +37,20 @@ public interface IMusicPlayer : IDisposable
         string queuer,
         bool allowLocalNetwork);
     bool TogglePause();
+    void SetPaused(bool paused);
     IQueuedTrackInfo? MoveTrack(int from, int to);
     bool IsQueueFull { get; }
     int MaxQueueSize { get; }
     void EnqueueTrack(ITrackInfo track, string queuer);
     void EnqueueTrack(ITrackInfo track, string queuer, bool allowLocalNetwork);
+
+    // Default when the queue is full.
+    (IQueuedTrackInfo? QueuedTrack, int Index) EnqueueResolvedTrack(
+        ITrackInfo track,
+        string queuer,
+        bool asNext,
+        bool allowLocalNetwork);
+
     void EnqueueTracks(IEnumerable<ITrackInfo> tracks, string queuer);
     void SetRepeat(PlayerRepeatType type);
     void ShuffleQueue();

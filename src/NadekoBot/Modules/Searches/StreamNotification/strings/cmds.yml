@@ -15,7 +15,7 @@ streamcheck:
         desc: The URL of the stream being checked.
 streamlist:
   desc: |-
-    Lists all streams you are following on this server and their respective indexes.
+    Lists all streams you are following on this server and their IDs.
   ex:
     - ''
   params:
@@ -23,12 +23,12 @@ streamlist:
         desc: The number of the page to retrieve from the list of followed streams.
 streammessage:
   desc: |-
-    Sets the message which will show when the stream on the specified index comes online. You can use %user% and %platform% placeholders.
+    Sets the message which will show when the stream with the specified ID comes online. (use `{0}stl` to see IDs) You can use %user% and %platform% placeholders.
   ex:
     - 1 Hey @erryone %user% is back online on %platform%!1!!
   params:
-    - index:
-        desc: The index of the stream to set the coming online message for.
+    - id:
+        desc: The ID of the stream to set the coming online message for.
       message:
         desc: The text to be displayed in the stream's online status message.
 streammessageall:
@@ -54,12 +54,12 @@ streamonlinedelete:
     - {}
 streamremove:
   desc: |-
-    Stops following the stream on the specified index. (use `{0}stl` to see indexes)
+    Stops following the stream with the specified ID. (use `{0}stl` to see IDs)
   ex:
     - 2
   params:
-    - index:
-        desc: The index at which to stop following the stream.
+    - id:
+        desc: The ID of the followed stream to remove.
 streamsclear:
   desc: Removes all followed streams on this server.
   ex:

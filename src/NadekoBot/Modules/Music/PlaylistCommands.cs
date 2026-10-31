@@ -12,7 +12,6 @@ public sealed partial class Music
     [Group]
     public sealed partial class PlaylistCommands : NadekoModule<IMusicService>
     {
-        private static readonly SemaphoreSlim _playlistLock = new(1, 1);
         private readonly DbService _db;
         private readonly IBotCreds _creds;
         private readonly BotPolicy _policy;
@@ -24,53 +23,43 @@ public sealed partial class Music
             _creds = creds;
         }
 
-        private async Task EnsureBotInVoiceChannelAsync(ulong voiceChannelId, IGuildUser botUser = null)
-        {
-            botUser ??= await ctx.Guild.GetCurrentUserAsync();
-            await _voiceChannelLock.WaitAsync();
-            try
-            {
-                if (botUser.VoiceChannel?.Id is null || !_service.TryGetMusicPlayer(ctx.Guild.Id, out _))
-                    await _service.JoinVoiceChannelAsync(ctx.Guild.Id, voiceChannelId);
-            }
-            finally
-            {
-                _voiceChannelLock.Release();
-            }
-        }
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [Priority(1)]
+        public Task Playlists([Leftover] int page = 1)
+            => ListPlaylistsInternalAsync(null, page);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
-        public async Task Playlists([Leftover] int page = 1)
+        [Priority(0)]
+        public Task Playlists(IUser user, [Leftover] int page = 1)
+            => ListPlaylistsInternalAsync(user.Id, page);
+
+        private async Task ListPlaylistsInternalAsync(ulong? authorId, int page)
         {
             if (page <= 0)
                 return;
-            
+
+            var total = await _service.CountPlaylistsAsync(authorId);
+            if (total == 0)
+            {
+                await Response().Error(strs.no_playlists).SendAsync();
+                return;
+            }
+
+            var lastPage = (total - 1) / MusicService.PLAYLISTS_PER_PAGE;
             await Response()
                 .Paginated()
-                .PageItems(GetPlaylistsOnPage)
-                .Page((playlists, num) =>
-                {
-                    var embed = CreateEmbed()
-                        .WithAuthor(GetText(strs.playlists_page(num + 1)), MUSIC_ICON_URL)
-                        .WithDescription(
-                            playlists.Select(r => GetText(strs.playlists(r.Id, r.Name, r.Author, r.Songs.Count)))
-                                .Join("\n"))
-                        .WithOkColor();
-
-                    return embed;
-                })
+                .PageItems(num => _service.GetPlaylistsPageAsync(authorId, num))
+                .TotalElements(total)
+                .PageSize(MusicService.PLAYLISTS_PER_PAGE)
+                .CurrentPage(Math.Min(page - 1, lastPage))
+                .Page((playlists, num) => CreateEmbed()
+                    .WithAuthor(GetText(strs.playlists_page(num + 1)), MUSIC_ICON_URL)
+                    .WithDescription(playlists.Select(r => GetText(strs.playlists(r.Id, r.Name, r.Author, r.SongCount))).Join("\n"))
+                    .WithOkColor())
                 .SendAsync();
-            
-            return;
-
-            async Task<IReadOnlyCollection<MusicPlaylist>> GetPlaylistsOnPage(int num)
-            {
-                await using var uow = _db.GetDbContext();
-                return uow.Set<MusicPlaylist>().GetPlaylistsOnPage(num);
-            }
         }
-
         [Cmd]
         [RequireContext(ContextType.Guild)]
         public async Task PlaylistDelete([Leftover] int id)
@@ -161,18 +150,20 @@ public sealed partial class Music
                 })
                 .ToList();
 
-            MusicPlaylist playlist;
-            await using (var uow = _db.GetDbContext())
+            // An empty playlist would use one of the member's saved playlist slots.
+            if (songs.Count == 0)
             {
-                playlist = new()
-                {
-                    Name = name,
-                    Author = ctx.User.Username,
-                    AuthorId = ctx.User.Id,
-                    Songs = songs.ToList(),
-                };
-                uow.Set<MusicPlaylist>().Add(playlist);
-                await uow.SaveChangesAsync();
+                await Response().Error(strs.track_not_found).SendAsync();
+                return;
+            }
+
+            var playlistId = await _service.SavePlaylistAsync(name, ctx.User.Id, ctx.User.Username, songs);
+            if (playlistId is not { } id)
+            {
+                await Response()
+                    .Error(strs.playlist_limit(MusicService.MAX_PLAYLISTS_PER_USER, Format.Code($"{prefix}playlists {ctx.User.Id}")))
+                    .SendAsync();
+                return;
             }
 
             await Response()
@@ -180,7 +171,7 @@ public sealed partial class Music
                     .WithOkColor()
                     .WithTitle(GetText(strs.playlist_saved))
                     .AddField(GetText(strs.name), name)
-                    .AddField(GetText(strs.id), playlist.Id.ToString()))
+                    .AddField(GetText(strs.id), id.ToString()))
                 .SendAsync();
         }
 
@@ -200,8 +191,7 @@ public sealed partial class Music
         public async Task PlaylistLoad(int id, params string[] args)
         {
             var opts = OptionsParser.ParseFrom(new PlaylistLoadOptions(), args).Item1;
-            // expensive action, 1 at a time
-            await _playlistLock.WaitAsync();
+            await _service.WaitPlaylistLoadAsync();
             try
             {
                 var user = (IGuildUser)ctx.User;
@@ -216,7 +206,7 @@ public sealed partial class Music
                 _ = ctx.Channel.TriggerTypingAsync();
 
                 var botUser = await ctx.Guild.GetCurrentUserAsync();
-                await EnsureBotInVoiceChannelAsync(voiceChannelId!.Value, botUser);
+                await _service.EnsureVoiceChannelAsync(ctx.Guild.Id, voiceChannelId!.Value);
 
                 if (botUser.VoiceChannel?.Id != voiceChannelId)
                 {
@@ -241,6 +231,12 @@ public sealed partial class Music
                     return;
                 }
 
+                if (mp.IsQueueFull)
+                {
+                    await Response().Error(strs.queue_full(mp.MaxQueueSize)).SendAsync();
+                    return;
+                }
+
                 IUserMessage msg = null;
                 try
                 {
@@ -262,11 +258,24 @@ public sealed partial class Music
                     _policy.CanReachLocalNetwork(_creds, ctx.Message));
 
                 if (msg is not null)
-                    await msg.ModifyAsync(m => m.Content = GetText(strs.playlist_queue_complete));
+                {
+                    try
+                    {
+                        await msg.ModifyAsync(m => m.Embed = CreateEmbed()
+                            .WithOkColor()
+                            .WithDescription(GetText(strs.playlist_queue_complete))
+                            .Build());
+                    }
+                    catch (HttpException ex)
+                    {
+                        // The songs are queued; the message may be gone.
+                        Log.Debug("Unable to edit the playlist load message: {ErrorMessage}", ex.Message);
+                    }
+                }
             }
             finally
             {
-                _playlistLock.Release();
+                _service.ExitPlaylistLoad();
             }
         }
 

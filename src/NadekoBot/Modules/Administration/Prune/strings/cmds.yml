@@ -1,15 +1,19 @@
 prune:
   desc: |-
-    `{0}prune` removes all Nadeko's messages in the last 100 messages. `{0}prune X` removes last `X` number of messages from the channel (up to 1000). `{0}prune @Someone` removes all Someone's messages in the last 100 messages. `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID to only prune messages after that message. The progress message has a Cancel button which stops the prune.
+    Removes messages from the channel.
+    - `{0}prune` removes the bot's messages from the last 100 messages.
+    - `{0}prune X` removes the last `X` messages (up to 1000).
+    - `{0}prune @Someone [X]` removes the last `X` messages of that user (100 if you leave it out). The bot removes only their messages from the last 2 weeks.
+    - `{0}prune ID [X]` with the ID of a message in this channel removes the messages after that message (up to 1000, or `X`). With any other ID, the bot removes the messages of the user with that ID.
+    Options:
+    - `--safe` / `-s` skips pinned messages
+    - `--after` / `-a` followed by a message ID removes only messages after that message
+    The progress message has a Cancel button which stops the prune.
   ex:
-    - ''
     - '-s'
-    - 5
     - 5 --safe
-    - '@Someone'
-    - '@Someone --safe'
-    - '@Someone X'
-    - '@Someone X -s'
+    - '@Someone 10 -s'
+    - '1234567890123456789'
   params:
     - args:
         desc: |-
@@ -26,13 +30,13 @@ prune:
       args:
         desc: |-
           Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
-    - userId:
-        desc: The ID of a user to filter messages by.
+    - id:
+        desc: The ID of a message in this channel after which to remove the messages, or the ID of a user whose messages to remove.
       count:
         desc: The number of messages to remove (up to 1000).
       args:
         desc: |-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
+          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message. With a message ID, the bot ignores `--after`.
 prunecancel:
   desc: Cancels an active prune if there is any.
   ex:

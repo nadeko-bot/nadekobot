@@ -30,7 +30,6 @@ namespace NadekoBot.Voice
             ["http_proxy", "HTTP_PROXY", "https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"];
 
         private FfmpegTrackDataSource(
-            int bitDepth,
             string streamUrl,
             bool isLocal,
             string? httpProxy,
@@ -46,7 +45,7 @@ namespace NadekoBot.Voice
                 CreateNoWindow = true,
             };
 
-            foreach (var a in BuildArguments(bitDepth, streamUrl, isLocal, httpProxy, headers))
+            foreach (var a in BuildArguments(streamUrl, isLocal, httpProxy, headers))
                 psi.ArgumentList.Add(a);
 
             if (httpProxy is not null)
@@ -65,9 +64,8 @@ namespace NadekoBot.Voice
             _p = Process.Start(psi)!;
         }
 
-        // The headers can hold a key, so the arguments never go to a log.
+        // The headers can hold a key, so the arguments never go to a log. The player reads float samples.
         public static string[] BuildArguments(
-            int bitDepth,
             string streamUrl,
             bool isLocal,
             string? httpProxy,
@@ -93,7 +91,7 @@ namespace NadekoBot.Voice
                         : "http,https,tcp,tls,crypto,httpproxy",
                 "-err_detect", "ignore_err",
                 "-i", streamUrl,
-                "-f", bitDepth == 16 ? "s16le" : "f32le",
+                "-f", "f32le",
                 "-ar", "48000",
                 "-vn", "-ac", "2",
                 "pipe:1",
@@ -101,7 +99,6 @@ namespace NadekoBot.Voice
             ];
 
         public static FfmpegTrackDataSource? Create(
-            int bitDepth,
             string streamUrl,
             bool isLocal,
             string? httpProxy,
@@ -110,7 +107,7 @@ namespace NadekoBot.Voice
         {
             try
             {
-                return new FfmpegTrackDataSource(bitDepth, streamUrl, isLocal, httpProxy, headers, ffmpeg);
+                return new FfmpegTrackDataSource(streamUrl, isLocal, httpProxy, headers, ffmpeg);
             }
             catch (System.ComponentModel.Win32Exception)
             {

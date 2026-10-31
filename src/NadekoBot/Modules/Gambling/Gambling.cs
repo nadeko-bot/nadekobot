@@ -439,10 +439,16 @@ public partial class Gambling : GamblingModule<GamblingService>
                 foreach (var tr in trs)
                 {
                     var change = tr.Amount >= 0 ? "🔵" : "🔴";
-                    var kwumId = new kwum(tr.Id).ToString();
-                    var date = $"#{Format.Code(kwumId)} `〖{GetFormattedCurtrDate(tr)}〗`";
+                    sb.Append(change).Append(' ');
+                    if (tr.DateAdded is DateTime added)
+                    {
+                        sb.Append("<t:").Append(AsUtc(added).ToUnixTimeSeconds()).Append(":d> ");
+                    }
 
-                    sb.AppendLine($"\\{change} {date} {Format.Bold(N(tr.Amount))}");
+                    sb.Append('#')
+                      .Append(Format.Code(new kwum(tr.Id).ToString()))
+                      .Append(' ');
+                    sb.AppendLine(Format.Bold(N(tr.Amount)));
                     var transactionString = GetHumanReadableTransaction(tr.Type, tr.Extra, tr.OtherId);
                     if (transactionString is not null)
                     {
@@ -460,8 +466,9 @@ public partial class Gambling : GamblingModule<GamblingService>
             }).SendAsync();
     }
 
-    private static string GetFormattedCurtrDate(CurrencyTransaction ct)
-        => $"{ct.DateAdded:HH:mm yyyy-MM-dd}";
+    // stored times are utc; the ticks ignore Kind, so an unspecified Kind cannot shift by the server's time zone
+    private static DateTimeOffset AsUtc(DateTime utc)
+        => new(utc.Ticks, TimeSpan.Zero);
 
     [Cmd]
     public async Task CurrencyTransaction(kwum id)
@@ -499,7 +506,10 @@ public partial class Gambling : GamblingModule<GamblingService>
             eb.AddField("Note", tr.Note);
         }
 
-        eb.WithFooter(GetFormattedCurtrDate(tr));
+        if (tr.DateAdded is DateTime added)
+        {
+            eb.WithTimestamp(AsUtc(added));
+        }
 
         await Response().Embed(eb).SendAsync();
     }

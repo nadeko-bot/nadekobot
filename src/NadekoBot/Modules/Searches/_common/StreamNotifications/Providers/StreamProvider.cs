@@ -2,6 +2,31 @@
 
 namespace NadekoBot.Modules.Searches.Common.StreamNotifications.Providers;
 
+public enum StreamLookupStatus
+{
+    Found,
+    NotFound,
+    // The platform cannot answer now: no key, a refused key, or a network or server error.
+    Unavailable,
+    // No provider accepts the link.
+    Unsupported
+}
+
+public readonly record struct StreamLookup(
+    StreamLookupStatus Status,
+    StreamData? Data,
+    FollowedStream.FType? Platform = null)
+{
+    public static StreamLookup NotFound
+        => new(StreamLookupStatus.NotFound, null);
+
+    public static StreamLookup Unavailable
+        => new(StreamLookupStatus.Unavailable, null);
+
+    public static StreamLookup Found(StreamData data)
+        => new(StreamLookupStatus.Found, data);
+}
+
 /// <summary>
 ///     Abstract class implemented by providers of all supported platforms
 /// </summary>
@@ -11,6 +36,11 @@ public abstract class Provider
     ///     Type of the platform.
     /// </summary>
     public abstract FollowedStream.FType Platform { get; }
+
+    public TimeProvider Time { get; set; } = TimeProvider.System;
+
+    protected DateTime UtcNow
+        => Time.GetUtcNow().UtcDateTime;
 
     /// <summary>
     ///     Gets the stream usernames which fail to execute due to an error, and when they started throwing errors.
@@ -32,13 +62,16 @@ public abstract class Provider
     /// <returns>True if valid, otherwise false</returns>
     public abstract Task<bool> IsValidUrl(string url);
 
+    // Tells a streamer who does not exist from a platform which cannot answer now.
+    public abstract Task<StreamLookup> LookupByUrlAsync(string url);
+
     /// <summary>
     ///     Gets stream data of the stream on the specified url on this <see cref="Platform" />
     /// </summary>
     /// <param name="url">Url of the stream</param>
     /// <returns><see cref="StreamData" /> of the specified stream. Null if none found</returns>
-
-    public abstract Task<StreamData?> GetStreamDataByUrlAsync(string url);
+    public async Task<StreamData?> GetStreamDataByUrlAsync(string url)
+        => (await LookupByUrlAsync(url)).Data;
 
     /// <summary>
     ///     Gets stream data of the specified id/username on this <see cref="Platform" />
@@ -60,5 +93,5 @@ public abstract class Provider
     /// </summary>
     /// <param name="login"></param>
     public virtual void ClearErrorsFor(string login)
-        => _failingStreams.Clear();
+        => _failingStreams.TryRemove(login, out _);
 }

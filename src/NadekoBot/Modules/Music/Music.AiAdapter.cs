@@ -57,10 +57,9 @@ public sealed class MusicAiAdapter(IMusicService music) : IAiToolGroup, INServic
         return Task.FromResult(new MusicQueueDto(true, tracks.Count, mp.CurrentIndex, entries));
     }
 
-    [AiTool("get_music_settings", "Returns this server's music settings: quality, repeat mode, auto-disconnect, etc.")]
-    public async Task<MusicSettingsDto> GetMusicSettings(AiToolContext ctx)
+    [AiTool("get_music_settings", "Returns the volume, repeat mode and autoplay of this server's music player.")]
+    public Task<MusicSettingsDto> GetMusicSettings(AiToolContext ctx)
     {
-        var quality = await music.GetMusicQualityAsync(ctx.Guild.Id);
         float? volume = null;
         string? repeat = null;
         bool? autoPlay = null;
@@ -71,7 +70,7 @@ public sealed class MusicAiAdapter(IMusicService music) : IAiToolGroup, INServic
             autoPlay = mp.AutoPlay;
         }
 
-        return new(quality.ToString(), volume, repeat, autoPlay);
+        return Task.FromResult(new MusicSettingsDto(volume, repeat, autoPlay));
     }
 }
 
@@ -81,4 +80,4 @@ public sealed record MusicQueueDto(bool PlayerActive, int TotalCount, int Curren
 
 public readonly record struct MusicTrackDto(int Index, string Title, string Url, TimeSpan Duration, string Platform, string? Queuer);
 
-public readonly record struct MusicSettingsDto(string Quality, float? Volume, string? Repeat, bool? AutoPlay);
+public readonly record struct MusicSettingsDto(float? Volume, string? Repeat, bool? AutoPlay);

@@ -196,6 +196,40 @@ namespace NadekoBot.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BlackjackRoundState",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Cards = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlackjackRoundState", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BlackjackStake",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Kind = table.Column<byte>(type: "INTEGER", nullable: false),
+                    Amount = table.Column<long>(type: "INTEGER", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlackjackStake", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Blacklist",
                 columns: table => new
                 {
@@ -701,7 +735,6 @@ namespace NadekoBot.Migrations
                     MusicChannelId = table.Column<ulong>(type: "INTEGER", nullable: true),
                     Volume = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 100),
                     AutoDisconnect = table.Column<bool>(type: "INTEGER", nullable: false),
-                    QualityPreset = table.Column<int>(type: "INTEGER", nullable: false),
                     AutoPlay = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -2090,6 +2123,22 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_BlackjackRoundState_ChannelId",
+                table: "BlackjackRoundState",
+                column: "ChannelId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlackjackStake_ChannelId_UserId",
+                table: "BlackjackStake",
+                columns: new[] { "ChannelId", "UserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlackjackStake_UserId",
+                table: "BlackjackStake",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ButtonRole_GuildId",
                 table: "ButtonRole",
                 column: "GuildId");
@@ -2819,6 +2868,12 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "BanTemplates");
+
+            migrationBuilder.DropTable(
+                name: "BlackjackRoundState");
+
+            migrationBuilder.DropTable(
+                name: "BlackjackStake");
 
             migrationBuilder.DropTable(
                 name: "Blacklist");

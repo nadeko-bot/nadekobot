@@ -228,6 +228,9 @@ public sealed class ServerDataTests
             Exec(db, """
                      DELETE FROM __ServerExportIndex WHERE Name IN ('IX_Expressions_GuildId', 'IX_Repeaters_GuildId', 'IX_ImageOnlyChannels_GuildId');
                      ALTER TABLE FeedSub DROP COLUMN FailingSince;
+                     DELETE FROM __ServerExportIndex WHERE TableName IN ('BlackjackStake', 'BlackjackRoundState');
+                     DROP TABLE BlackjackStake;
+                     DROP TABLE BlackjackRoundState;
                      DELETE FROM __EFMigrationsHistory;
                      INSERT INTO __EFMigrationsHistory VALUES ('20261009084103_reminder-user-guild-index', '9.0.1');
                      """);
@@ -241,6 +244,8 @@ public sealed class ServerDataTests
 
         Assert.That(result.Error, Is.Null);
         Assert.That(result.Import!.XpIncluded, Is.False);
+        Assert.That(Scalar(live, "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'BlackjackRoundState'"),
+            Is.EqualTo(1));
         Assert.That(Text(live, "SELECT Prefix FROM GuildConfigs WHERE GuildId = 101"), Is.EqualTo("src"));
         Assert.That(Scalar(live, "SELECT SUM(Xp) FROM UserXpStats WHERE GuildId = 101"), Is.EqualTo(3000));
     }

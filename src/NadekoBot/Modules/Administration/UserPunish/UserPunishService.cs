@@ -624,6 +624,7 @@ public class UserPunishService : INService, IReadyExecutor
         var warn = await uow.GetTable<Warning>()
                             .Where(x => x.GuildId == guildId && x.UserId == userId)
                             .OrderByDescending(x => x.DateAdded)
+                            .ThenByDescending(x => x.Id)
                             .Skip(index)
                             .FirstOrDefaultAsyncLinqToDB();
 
@@ -635,6 +636,29 @@ public class UserPunishService : INService, IReadyExecutor
         }
 
         return warn;
+    }
+
+    public async Task<bool> WarnEditAsync(ulong guildId, ulong userId, int index, string reason)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+
+        await using var uow = _db.GetDbContext();
+        var table = uow.GetTable<Warning>();
+
+        // same order as .warnlog so the index matches what the moderator sees
+        var updated = await table
+                            .Where(x => x.Id
+                                        == table
+                                           .Where(w => w.GuildId == guildId && w.UserId == userId)
+                                           .OrderByDescending(w => w.DateAdded)
+                                           .ThenByDescending(w => w.Id)
+                                           .Skip(index)
+                                           .Select(w => w.Id)
+                                           .FirstOrDefault())
+                            .Set(x => x.Reason, reason)
+                            .UpdateAsync();
+
+        return updated > 0;
     }
 
     public async Task<bool> WarnDelete(ulong guildId, int id)
@@ -658,6 +682,7 @@ public class UserPunishService : INService, IReadyExecutor
         var latest = await uow.GetTable<Warning>()
                               .Where(x => x.GuildId == guildId)
                               .OrderByDescending(x => x.DateAdded)
+                              .ThenByDescending(x => x.Id)
                               .Skip(10 * (page - 1))
                               .Take(10)
                               .ToListAsyncLinqToDB();
@@ -695,6 +720,7 @@ public class UserPunishService : INService, IReadyExecutor
         var latest = await uow.GetTable<Warning>()
                               .Where(x => x.GuildId == guildId && x.UserId == userId)
                               .OrderByDescending(x => x.DateAdded)
+                              .ThenByDescending(x => x.Id)
                               .Skip(10 * (page - 1))
                               .Take(10)
                               .ToListAsyncLinqToDB();

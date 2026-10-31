@@ -6,6 +6,7 @@ using NadekoBot.Services.Currency;
 using NadekoBot.Db.Models;
 using System.Collections.Concurrent;
 using NadekoBot.Modules.Games.Quests;
+using NadekoBot.Modules.Gambling.Blackjack;
 
 namespace NadekoBot.Services;
 
@@ -174,7 +175,13 @@ public sealed class GamblingTxTracker(
             return;
 
         await Task.Yield();
-        
+
+        if (txData.Type == BlackjackTx.TYPE)
+        {
+            TrackBlackjackAddInternal(userId, amount, txData.Extra);
+            return;
+        }
+
         if (_gamblingTypes.Contains(txData.Type))
         {
             globalStats.AddOrUpdate(txData.Type,
@@ -244,6 +251,36 @@ public sealed class GamblingTxTracker(
         });
     }
 
+    // A push pays back without a win, and a refund undoes the stake as if the bet never happened.
+    private void TrackBlackjackAddInternal(ulong userId, long amount, string extra)
+    {
+        var refund = BlackjackTx.IsRefund(extra);
+        globalStats.AddOrUpdate(BlackjackTx.TYPE,
+            static (_, x) => x.Refund ? (-x.Amount, 0) : (0, x.Amount),
+            static (_, old, x) => x.Refund ? (old.Bet - x.Amount, old.PaidOut) : (old.Bet, old.PaidOut + x.Amount),
+            (Refund: refund, Amount: (decimal)amount));
+
+        var (win, lose, bet, paidOut, maxWin) = extra switch
+        {
+            BlackjackTx.PUSH => (0, -1, 0L, amount, 0L),
+            BlackjackTx.DOUBLE_REFUND => (0, 0, -amount, 0L, 0L),
+            _ when refund => (0, -1, -amount, 0L, 0L),
+            _ => (1, -1, 0L, amount, amount)
+        };
+
+        userStats.Add(new()
+        {
+            UserId = userId,
+            Game = GamblingGame.Blackjack,
+            WinCount = win,
+            LoseCount = lose,
+            TotalBet = bet,
+            PaidOut = paidOut,
+            MaxBet = 0,
+            MaxWin = maxWin,
+        });
+    }
+
     public async Task TrackRemove(ulong userId, long amount, TxData? txData)
     {
         if (txData is null)
@@ -266,12 +303,17 @@ public sealed class GamblingTxTracker(
             UserId = userId,
             Game = type,
             WinCount = 0,
-            LoseCount = 1,
+            // a double raises the bet of a hand which already counts as a loss
+            LoseCount = txData is { Type: BlackjackTx.TYPE, Extra: BlackjackTx.DOUBLE } ? 0 : 1,
             TotalBet = amount,
             PaidOut = 0,
             MaxBet = amount,
             MaxWin = 0
         });
+
+        // blackjack reports a bet when the round is paid out, because the bot can refund a stake
+        if (txData.Type == BlackjackTx.TYPE)
+            return;
 
         await quests.ReportActionAsync(userId,
             QuestEventType.BetPlaced,
@@ -327,7 +369,7 @@ public sealed class GamblingTxTracker(
             GamblingGame.Betroll => 0.04m,
             GamblingGame.Betdraw => 0.04m,
             GamblingGame.Slots => 0.034m,
-            GamblingGame.Blackjack => 0.02m,
+            GamblingGame.Blackjack => 0.0088m,
             GamblingGame.Lula => 0.025m,
             GamblingGame.Race => 0.06m,
             _ => 0

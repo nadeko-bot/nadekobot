@@ -40,6 +40,7 @@ public sealed class FeedHealth(TimeProvider time)
         public int Failures;
         public int Generation;
         public bool Warned;
+        public bool HostGiven;
     }
 
     private struct HostState
@@ -65,16 +66,27 @@ public sealed class FeedHealth(TimeProvider time)
     public void BeginTick()
         => _generation++;
 
-    public void Touch(string key, string url, DateTime? failingSince = null)
+    // A host given here replaces the host of the url, for a feed which the bot reads from another source.
+    public void Touch(string key, string url, DateTime? failingSince = null, string? sourceHost = null)
     {
         var now = Now;
         ref var feed = ref CollectionsMarshal.GetValueRefOrAddDefault(_feeds, key, out var exists);
         if (!exists)
         {
             feed.Url = url;
-            feed.Host = GetHost(url);
             feed.NextPollAt = now;
             feed.FailingSince = failingSince;
+        }
+
+        if (sourceHost is not null)
+        {
+            feed.Host = sourceHost;
+            feed.HostGiven = true;
+        }
+        else if (!exists || feed.HostGiven)
+        {
+            feed.Host = GetHost(url);
+            feed.HostGiven = false;
         }
 
         feed.Generation = _generation;
@@ -160,6 +172,17 @@ public sealed class FeedHealth(TimeProvider time)
         }
 
         return recovered;
+    }
+
+    // The source could not answer: the feed waits, and its failure streak stays as it is.
+    public void OnUnavailable(string key)
+    {
+        ref var feed = ref CollectionsMarshal.GetValueRefOrNullRef(_feeds, key);
+        if (Unsafe.IsNullRef(ref feed))
+            return;
+
+        feed.Failures++;
+        feed.NextPollAt = Now + GetFailureBackoff(feed.Failures);
     }
 
     public FeedFailure OnFailure(string key, int status, TimeSpan? retryAfter)

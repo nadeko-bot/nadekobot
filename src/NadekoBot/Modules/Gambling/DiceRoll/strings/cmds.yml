@@ -1,37 +1,44 @@
 nroll:
   desc: |-
-    Rolls in a given range. If you specify just one number instead of the range, it will roll from 0 to that number.
+    Rolls a random number in a range.
+    If you give one number, the bot rolls a number between 0 and that number.
   ex:
     - 5
     - 5-15
+    - -10-10
   params:
     - range:
-        desc: |-
-          The minimum and maximum values for the random number generation process.
+        desc: "One number, or the minimum and maximum separated with `-`."
 roll:
   desc: |-
-    Rolls 1-100. If you supply a number `X` it rolls up to 30 normal dice. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`. `Y` can be a letter 'F' if you want to roll fate dice instead of dnd.
+    Rolls 1-100. If you supply a number `X` it rolls up to 30 normal dice.
+    The format `XdY` rolls `X` dice (1-50) with `Y` sides (1-100000). `dY` rolls one die.
+    You can add or subtract numbers, for example `d20+3` or `2d6+1-2`.
+    `XdF` rolls `X` fate dice (1-100).
   ex:
     - ''
     - 7
     - 3d5
+    - d20+3
     - 5dF
   params:
     - {}
     - num:
-        desc: The number of sides on the dice being rolled.
+        desc: The number of dice to roll (1-30).
     - arg:
-        desc: |-
-          The input string specifies the type of dice roll or the number of dice to roll, allowing users to customize their random outcome.
+        desc: The dice to roll in the format `XdY`, `XdY+A-B` or `XdF`.
 rolluo:
   desc: |-
-    Rolls `X` normal dice (up to 30) unordered. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`.
+    Rolls `X` normal dice (up to 30) and shows them in the order the bot rolled them.
+    The format `XdY` rolls `X` dice (1-50) with `Y` sides (1-100000). `dY` rolls one die.
+    You can add or subtract numbers, for example `d20+3` or `2d6+1-2`.
+    `XdF` rolls `X` fate dice (1-100).
   ex:
     - ''
     - 7
     - 3d5
   params:
     - num:
-        desc: The number of sides on the dice being rolled.
+        desc: The number of dice to roll (1-30).
     - arg:
-        desc: The number of sides on the dice to be rolled.
+        desc: The dice to roll in the format `XdY`, `XdY+A-B` or `XdF`.

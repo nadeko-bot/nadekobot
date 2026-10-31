@@ -9,6 +9,8 @@ namespace NadekoBot.Hosted.Endpoints;
 public static class BackupEndpoints
 {
     private const string ZIP_CONTENT_TYPE = "application/zip";
+    // Any other file the import reads (tar, gzip, 7z, a bare database); the bot tells them apart by their first bytes.
+    private const string BINARY_CONTENT_TYPE = "application/octet-stream";
     private const int DOWNLOAD_BUFFER_SIZE = 81920;
 
     public static RouteGroupBuilder MapBackupCreateEndpoint(this RouteGroupBuilder owner)
@@ -37,7 +39,8 @@ public static class BackupEndpoints
 
     private static async Task<IResult> ImportBackup(HttpContext http, ApiSettings settings, BackupService backups)
     {
-        if (!HasMediaType(http.Request.ContentType, ZIP_CONTENT_TYPE))
+        if (!HasMediaType(http.Request.ContentType, ZIP_CONTENT_TYPE)
+            && !HasMediaType(http.Request.ContentType, BINARY_CONTENT_TYPE))
             return ApiErrors.Create(ApiErrors.UNSUPPORTED_MEDIA_TYPE, StatusCodes.Status415UnsupportedMediaType);
 
         var limit = settings.MaxImportBytes;

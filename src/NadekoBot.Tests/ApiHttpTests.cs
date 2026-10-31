@@ -26,9 +26,12 @@ using NadekoBot.Common.Yml;
 using NadekoBot.Db.Models;
 using NadekoBot.Hosted;
 using NadekoBot.Hosted.Endpoints;
+using NadekoBot.Modules.Music;
+using NadekoBot.Modules.Music.Services;
 using NadekoBot.Services;
 using NadekoBot.Tests.Owner;
 using NadekoBot.Tests.Waifu;
+using NSubstitute;
 using NUnit.Framework;
 using Serilog;
 
@@ -623,6 +626,169 @@ public sealed class ApiHttpTests
         return names;
     }
 
+    [Test]
+    public async Task MusicSearch_ValidatesTheQueryAndTellsAFailureFromNoResults()
+    {
+        var music = Substitute.For<IMusicService>();
+        music.SearchTracksAsync("lofi", 2).Returns(new MusicSearchResult(
+        [
+            new RemoteTrackInfo("dQw4w9WgXcQ",
+                "Song",
+                "https://youtube.com/watch?v=dQw4w9WgXcQ",
+                string.Empty,
+                TimeSpan.FromSeconds(212),
+                MusicPlatform.Youtube)
+        ], false));
+        music.SearchTracksAsync("nothing", MusicEndpoints.DEFAULT_SEARCH_LIMIT).Returns(new MusicSearchResult([], false));
+        music.SearchTracksAsync("down", MusicEndpoints.DEFAULT_SEARCH_LIMIT).Returns(new MusicSearchResult([], true));
+        using var db = new TestDbService();
+        using var client = new DiscordSocketClient();
+        await StartMusicApiAsync(music, db, client);
+
+        Assert.That(await _http!.GetStringAsync("/api/music/search?q=lofi&limit=2"),
+            Is.EqualTo("""{"tracks":[{"id":"dQw4w9WgXcQ","title":"Song","url":"https://youtube.com/watch?v=dQw4w9WgXcQ","thumbnail":null,"durationSec":212}]}"""));
+        Assert.That(await _http.GetStringAsync("/api/music/search?q=nothing"), Is.EqualTo("""{"tracks":[]}"""));
+
+        using (var down = await _http.GetAsync("/api/music/search?q=down"))
+            await AssertErrorAsync(down, HttpStatusCode.ServiceUnavailable, "music_unavailable");
+
+        string[] refused =
+        [
+            "/api/music/search", "/api/music/search?q=%20", "/api/music/search?q=" + new string('a', 201),
+            "/api/music/search?q=x&limit=0", "/api/music/search?q=x&limit=6"
+        ];
+        foreach (var path in refused)
+        {
+            using var res = await _http.GetAsync(path);
+            await AssertErrorAsync(res, HttpStatusCode.BadRequest, "invalid_value");
+        }
+
+        using (var noGuild = await _http.GetAsync("/api/guilds/123/music"))
+            await AssertErrorAsync(noGuild, HttpStatusCode.NotFound, "not_found");
+        using (var noGuildAdd = await _http.PostAsync("/api/guilds/123/music/tracks", Json(new { query = "x" })))
+            await AssertErrorAsync(noGuildAdd, HttpStatusCode.NotFound, "not_found");
+    }
+
+    [Test]
+    public async Task Notifications_AnswerNotFoundForAGuildTheBotIsNotIn()
+    {
+        using var db = new TestDbService();
+        using var client = new DiscordSocketClient();
+        await StartMusicApiAsync(Substitute.For<IMusicService>(), db, client);
+
+        (HttpMethod Method, string Path)[] routes =
+        [
+            (HttpMethod.Get, "feeds"), (HttpMethod.Post, "feeds"), (HttpMethod.Put, "feeds/1"), (HttpMethod.Delete, "feeds/1"),
+            (HttpMethod.Get, "streams"), (HttpMethod.Post, "streams"), (HttpMethod.Put, "streams/1"),
+            (HttpMethod.Delete, "streams/1"), (HttpMethod.Put, "streams/settings")
+        ];
+        foreach (var (method, path) in routes)
+        {
+            using var req = new HttpRequestMessage(method, "/api/guilds/123/" + path);
+            if (method != HttpMethod.Get && method != HttpMethod.Delete)
+                req.Content = Json(new { url = "https://example.com/feed.xml", channelId = "1" });
+
+            using var res = await _http!.SendAsync(req);
+            await AssertErrorAsync(res, HttpStatusCode.NotFound, "not_found");
+        }
+    }
+
+    [Test]
+    public async Task MusicPlaylists_SaveListReplaceAndDeleteAndRefuseOtherLinks()    {
+        using var db = new TestDbService();
+        using var client = new DiscordSocketClient();
+        var music = new MusicService(null!, null!, db, null!, null!, client, null!, null!, null!, null!, null!, null!,
+            null!);
+        await StartMusicApiAsync(music, db, client);
+
+        var songs = new[]
+        {
+            new { title = "One", url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PLabcdefghijklmnop" },
+            new { title = "Two", url = "https://youtu.be/9bZkp7q19f0?t=10" },
+            new { title = " Three ", url = "https://music.youtube.com/watch?feature=share&v=kJQP7kiw5Fk" }
+        };
+        int id;
+        using (var created = await _http!.PostAsync("/api/music/playlists", Json(new { name = " Chill ", songs })))
+        {
+            Assert.That(created.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            var dto = JsonSerializer.Deserialize(await created.Content.ReadAsStringAsync(), ApiJsonContext.Default.PlaylistDto)!;
+            Assert.That(dto.Name, Is.EqualTo("Chill"));
+            Assert.That(dto.SongCount, Is.EqualTo(3));
+            Assert.That(dto.Songs.Select(static s => s.Title), Is.EqualTo(new[] { "One", "Two", "Three" }));
+            Assert.That(dto.Songs.Select(static s => s.Url),
+                Is.EqualTo(new[]
+                {
+                    "https://youtube.com/watch?v=dQw4w9WgXcQ", "https://youtube.com/watch?v=9bZkp7q19f0",
+                    "https://youtube.com/watch?v=kJQP7kiw5Fk"
+                }));
+            id = dto.Id;
+        }
+
+        using (var empty = await _http.PostAsync("/api/music/playlists", Json(new { name = "Empty", songs = Array.Empty<object>() })))
+            Assert.That(empty.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+        var page = JsonSerializer.Deserialize(await _http.GetStringAsync("/api/music/playlists"), ApiJsonContext.Default.PlaylistPageDto)!;
+        Assert.That(page.Total, Is.EqualTo(2));
+        Assert.That(page.Playlists.Select(static p => (p.Name, p.SongCount)), Is.EqualTo(new[] { ("Empty", 0), ("Chill", 3) }));
+
+        var tooMany = Enumerable.Repeat(songs[0], PlaylistEndpoints.MAX_SONGS + 1).ToArray();
+        object[] refused =
+        [
+            new { name = "Chill", songs = new[] { new { title = "Sc", url = "https://soundcloud.com/a/b" } } },
+            new { name = "Chill", songs = new[] { new { title = "List", url = "https://youtube.com/playlist?list=PLabcdefghijklmnop" } } },
+            new { name = "Chill", songs = new[] { new { title = "Fake", url = "https://youtube.com.evil.com/watch?v=dQw4w9WgXcQ" } } },
+            new { name = "Chill", songs = new[] { new { title = " ", url = "https://youtu.be/dQw4w9WgXcQ" } } },
+            new { name = " ", songs },
+            new { name = new string('a', PlaylistEndpoints.MAX_NAME_LENGTH + 1), songs },
+            new { name = "Chill", songs = tooMany },
+            new { name = "Chill" }
+        ];
+        foreach (var body in refused)
+        {
+            using var res = await _http.PutAsync($"/api/music/playlists/{id}", Json(body));
+            await AssertErrorAsync(res, HttpStatusCode.BadRequest, "invalid_value");
+        }
+
+        var replacement = new { name = "Chill 2", by = "123", songs = new[] { new { title = "Four", url = "http://m.youtube.com/watch?v=OPf0YbXqDm0" } } };
+        using (var replaced = await _http.PutAsync($"/api/music/playlists/{id}", Json(replacement)))
+            Assert.That(replaced.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+        var read = JsonSerializer.Deserialize(await _http.GetStringAsync($"/api/music/playlists/{id}"), ApiJsonContext.Default.PlaylistDto)!;
+        Assert.That((read.Id, read.Name, read.AuthorId, read.SongCount), Is.EqualTo((id, "Chill 2", "0", 1)));
+        Assert.That(read.Songs, Is.EqualTo(new[] { new PlaylistSongDto("Four", "https://youtube.com/watch?v=OPf0YbXqDm0") }));
+        Assert.That(await CountSongsAsync(db), Is.EqualTo(1));
+
+        using (var missing = await _http.PutAsync("/api/music/playlists/9999", Json(replacement)))
+            await AssertErrorAsync(missing, HttpStatusCode.NotFound, "not_found");
+
+        using (var deleted = await _http.DeleteAsync($"/api/music/playlists/{id}"))
+            Assert.That(deleted.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+        using (var gone = await _http.GetAsync($"/api/music/playlists/{id}"))
+            await AssertErrorAsync(gone, HttpStatusCode.NotFound, "not_found");
+        using (var again = await _http.DeleteAsync($"/api/music/playlists/{id}"))
+            await AssertErrorAsync(again, HttpStatusCode.NotFound, "not_found");
+        Assert.That(await CountSongsAsync(db), Is.Zero);
+    }
+
+    private static async Task<int> CountSongsAsync(TestDbService db)
+    {
+        await using var ctx = db.GetDbContext();
+        return await ctx.GetTable<PlaylistSong>().CountAsyncLinqToDB();
+    }
+
+    private async Task StartMusicApiAsync(IMusicService music, TestDbService db, DiscordSocketClient client)
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(music)
+            .AddSingleton<DbService>(db)
+            .AddSingleton(client)
+            .BuildServiceProvider();
+        var bridge = new BotBridge();
+        bridge.SetPhase(BotPhase.Starting);
+        bridge.SetReady(services, null);
+        await StartAsync(API_KEY, bridge);
+        Authorize();
+    }
     private async Task StartAsync(string apiKey, BotBridge bridge, LogStreamService? logs = null)
     {
         var settings = new ApiSettings { Port = 0 }.WithKey(apiKey);

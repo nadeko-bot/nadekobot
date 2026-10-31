@@ -1,0 +1,511 @@
+ar:
+  bj_already_seated: أنت تجلس بالفعل على طاولة بلاك جاك. أكمل تلك الجولة أولاً.
+  bj_blackjack: بلاك جاك
+  bj_btn_double: مضاعفة
+  bj_btn_hit: سحب
+  bj_btn_split: تقسيم
+  bj_btn_stand: توقف
+  bj_btn_start: ابدأ
+  bj_busy: طاولة البلاك جاك مشغولة. حاول مرة أخرى بعد قليل.
+  bj_dealer: الموزع
+  bj_dealer_draws: الموزع يسحب
+  bj_join_line: 'انضم بـ {0}'
+  bj_new_table: '{0} يفتح طاولة جديدة'
+  bj_not_your_turn: ليس دورك.
+  bj_note_mismatch: استرداد · خطأ
+  bj_note_restart: استرداد · إعادة تشغيل البوت
+  bj_note_stopped: استرداد · توقفت الطاولة
+  bj_note_unpaid: استرداد · فشل الدفع
+  bj_only_host: 'فقط {0} يمكنه بدء الجولة.'
+  bj_player: 'اللاعب {0}'
+  bj_round_running: هناك جولة جارية بالفعل على هذه الطاولة. انتظر حتى تنتهي.
+  bj_soft: 'سوفت {0}'
+  bj_starts: 'تبدأ {0}'
+  bj_stopped: توقفت الطاولة. لُعبت كل الأيدي حتى النهاية.
+  bj_stopped_joining: توقفت الطاولة. أعاد البوت كل الرهانات.
+  bj_table_closed: 'أُغلقت طاولة البلاك جاك هذه. استخدم {0} لفتح طاولة جديدة.'
+  bj_table_full: طاولة البلاك جاك هذه ممتلئة.
+  bj_title: بلاك جاك
+  bj_too_many_tables: 'يوجد بالفعل {0} طاولات بلاك جاك مفتوحة في هذا السيرفر. انتظر حتى تنتهي إحداها.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · اليد {1} · {2}'
+
+de-DE:
+  bj_already_seated: Du sitzt schon an einem Blackjack-Tisch. Spiel erst diese Runde zu Ende.
+  bj_blackjack: Blackjack
+  bj_btn_double: Verdoppeln
+  bj_btn_hit: Karte
+  bj_btn_split: Teilen
+  bj_btn_stand: Stehen
+  bj_btn_start: Starten
+  bj_busy: Der Blackjack-Tisch ist gerade beschäftigt. Versuch es gleich noch mal.
+  bj_dealer: Dealer
+  bj_dealer_draws: Dealer zieht
+  bj_join_line: 'Mitmachen mit {0}'
+  bj_new_table: '{0} eröffnet einen neuen Tisch'
+  bj_not_your_turn: Du bist nicht dran.
+  bj_note_mismatch: Rückerstattung · Fehler
+  bj_note_restart: Rückerstattung · Bot-Neustart
+  bj_note_stopped: Rückerstattung · Tisch gestoppt
+  bj_note_unpaid: Rückerstattung · Auszahlung fehlgeschlagen
+  bj_only_host: 'Nur {0} kann die Runde starten.'
+  bj_player: 'Spieler {0}'
+  bj_round_running: An diesem Tisch läuft schon eine Runde. Warte, bis sie vorbei ist.
+  bj_soft: 'soft {0}'
+  bj_starts: 'Startet {0}'
+  bj_stopped: Der Tisch wurde gestoppt. Alle Hände wurden ausgespielt.
+  bj_stopped_joining: Der Tisch wurde gestoppt. Der Bot hat alle Einsätze zurückerstattet.
+  bj_table_closed: 'Dieser Blackjack-Tisch ist geschlossen. Nutze {0}, um einen neuen zu eröffnen.'
+  bj_table_full: Dieser Blackjack-Tisch ist voll.
+  bj_title: Blackjack
+  bj_too_many_tables: 'Dieser Server hat schon {0} offene Blackjack-Tische. Warte, bis einer davon vorbei ist.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · Hand {1} · {2}'
+
+es-ES:
+  bj_already_seated: Ya estás en una mesa de blackjack. Termina esa ronda primero.
+  bj_blackjack: Blackjack
+  bj_btn_double: Doblar
+  bj_btn_hit: Pedir
+  bj_btn_split: Separar
+  bj_btn_stand: Plantarse
+  bj_btn_start: Empezar
+  bj_busy: La mesa de blackjack está ocupada. Inténtalo de nuevo en un momento.
+  bj_dealer: Crupier
+  bj_dealer_draws: El crupier pide carta
+  bj_join_line: 'Únete con {0}'
+  bj_new_table: '{0} abre una mesa nueva'
+  bj_not_your_turn: No es tu turno.
+  bj_note_mismatch: Reembolso · error
+  bj_note_restart: Reembolso · reinicio del bot
+  bj_note_stopped: Reembolso · mesa detenida
+  bj_note_unpaid: Reembolso · fallo en el pago
+  bj_only_host: 'Solo {0} puede empezar la ronda.'
+  bj_player: 'Jugador {0}'
+  bj_round_running: Ya hay una ronda en curso en esta mesa. Espera a que termine.
+  bj_soft: 'blando {0}'
+  bj_starts: 'Empieza {0}'
+  bj_stopped: La mesa se detuvo. Todas las manos se jugaron hasta el final.
+  bj_stopped_joining: La mesa se detuvo. El bot devolvió todas las apuestas.
+  bj_table_closed: 'Esta mesa de blackjack se cerró. Usa {0} para abrir una nueva.'
+  bj_table_full: Esta mesa de blackjack está llena.
+  bj_title: Blackjack
+  bj_too_many_tables: 'Este servidor ya tiene {0} mesas de blackjack abiertas. Espera a que termine una.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · mano {1} · {2}'
+
+fr-FR:
+  bj_already_seated: Vous êtes déjà assis à une table de blackjack. Terminez d'abord cette manche.
+  bj_blackjack: Blackjack
+  bj_btn_double: Doubler
+  bj_btn_hit: Carte
+  bj_btn_split: Séparer
+  bj_btn_stand: Rester
+  bj_btn_start: Démarrer
+  bj_busy: La table de blackjack est occupée. Réessayez dans un instant.
+  bj_dealer: Croupier
+  bj_dealer_draws: Le croupier tire
+  bj_join_line: 'Pour rejoindre : {0}'
+  bj_new_table: '{0} ouvre une nouvelle table'
+  bj_not_your_turn: Ce n'est pas votre tour.
+  bj_note_mismatch: Remboursement · erreur
+  bj_note_restart: Remboursement · redémarrage du bot
+  bj_note_stopped: Remboursement · table arrêtée
+  bj_note_unpaid: Remboursement · échec du paiement
+  bj_only_host: 'Seul {0} peut lancer la manche.'
+  bj_player: 'Joueur {0}'
+  bj_round_running: Une manche est déjà en cours à cette table. Attendez la fin.
+  bj_soft: 'soft {0}'
+  bj_starts: 'Début {0}'
+  bj_stopped: La table s'est arrêtée. Toutes les mains ont été jouées jusqu'au bout.
+  bj_stopped_joining: La table s'est arrêtée. Le bot a remboursé toutes les mises.
+  bj_table_closed: 'Cette table de blackjack est fermée. Utilisez {0} pour en ouvrir une nouvelle.'
+  bj_table_full: Cette table de blackjack est complète.
+  bj_title: Blackjack
+  bj_too_many_tables: 'Ce serveur a déjà {0} tables de blackjack ouvertes. Attendez que l''une d''elles se termine.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · main {1} · {2}'
+
+id-ID:
+  bj_already_seated: Kamu sudah duduk di meja blackjack. Selesaikan ronde itu dulu.
+  bj_blackjack: Blackjack
+  bj_btn_double: Double
+  bj_btn_hit: Hit
+  bj_btn_split: Split
+  bj_btn_stand: Stand
+  bj_btn_start: Mulai
+  bj_busy: Meja blackjack sedang sibuk. Coba lagi sebentar lagi.
+  bj_dealer: Bandar
+  bj_dealer_draws: Bandar menarik kartu
+  bj_join_line: 'Gabung dengan {0}'
+  bj_new_table: '{0} membuka meja baru'
+  bj_not_your_turn: Belum giliranmu.
+  bj_note_mismatch: Pengembalian dana · kesalahan
+  bj_note_restart: Pengembalian dana · bot dimulai ulang
+  bj_note_stopped: Pengembalian dana · meja dihentikan
+  bj_note_unpaid: Pengembalian dana · pembayaran gagal
+  bj_only_host: 'Hanya {0} yang bisa memulai ronde.'
+  bj_player: 'Pemain {0}'
+  bj_round_running: Sudah ada ronde yang berjalan di meja ini. Tunggu sampai selesai.
+  bj_soft: 'soft {0}'
+  bj_starts: 'Mulai {0}'
+  bj_stopped: Meja dihentikan. Semua tangan dimainkan sampai selesai.
+  bj_stopped_joining: Meja dihentikan. Bot sudah mengembalikan semua taruhan.
+  bj_table_closed: 'Meja blackjack ini sudah ditutup. Gunakan {0} untuk membuka meja baru.'
+  bj_table_full: Meja blackjack ini sudah penuh.
+  bj_title: Blackjack
+  bj_too_many_tables: 'Server ini sudah punya {0} meja blackjack yang terbuka. Tunggu sampai salah satunya selesai.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · tangan {1} · {2}'
+
+ja-JP:
+  bj_already_seated: すでにブラックジャックのテーブルに座っています。先にそのラウンドを終えてください。
+  bj_blackjack: ブラックジャック
+  bj_btn_double: ダブル
+  bj_btn_hit: ヒット
+  bj_btn_split: スプリット
+  bj_btn_stand: スタンド
+  bj_btn_start: 開始
+  bj_busy: ブラックジャックのテーブルは処理中です。少し待ってからもう一度試してください。
+  bj_dealer: ディーラー
+  bj_dealer_draws: ディーラーが引いています
+  bj_join_line: '{0} で参加'
+  bj_new_table: '{0} で新しいテーブルを開けます'
+  bj_not_your_turn: あなたの番ではありません。
+  bj_note_mismatch: 返金 · エラー
+  bj_note_restart: 返金 · ボットの再起動
+  bj_note_stopped: 返金 · テーブル停止
+  bj_note_unpaid: 返金 · 支払い失敗
+  bj_only_host: 'ラウンドを開始できるのは {0} だけです。'
+  bj_player: 'プレイヤー {0}'
+  bj_round_running: このテーブルではすでにラウンドが進行中です。終わるまで待ってください。
+  bj_soft: 'ソフト {0}'
+  bj_starts: '{0}に開始'
+  bj_stopped: テーブルが停止しました。すべてのハンドは最後までプレイされました。
+  bj_stopped_joining: テーブルが停止しました。ボットがすべてのベットを返金しました。
+  bj_table_closed: 'このブラックジャックのテーブルは閉じられました。{0} で新しいテーブルを開いてください。'
+  bj_table_full: このブラックジャックのテーブルは満席です。
+  bj_title: ブラックジャック
+  bj_too_many_tables: 'このサーバーにはすでに {0} 個のブラックジャックのテーブルが開いています。どれかが終わるまで待ってください。'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · ハンド {1} · {2}'
+
+ko-KR:
+  bj_already_seated: 이미 블랙잭 테이블에 앉아 있어요. 먼저 그 라운드를 끝내세요.
+  bj_blackjack: 블랙잭
+  bj_btn_double: 더블
+  bj_btn_hit: 히트
+  bj_btn_split: 스플릿
+  bj_btn_stand: 스탠드
+  bj_btn_start: 시작
+  bj_busy: 블랙잭 테이블이 처리 중이에요. 잠시 후 다시 시도하세요.
+  bj_dealer: 딜러
+  bj_dealer_draws: 딜러가 카드를 뽑는 중
+  bj_join_line: '{0} 명령어로 참가'
+  bj_new_table: '{0} 명령어로 새 테이블을 열 수 있어요'
+  bj_not_your_turn: 지금은 차례가 아니에요.
+  bj_note_mismatch: 환불 · 오류
+  bj_note_restart: 환불 · 봇 재시작
+  bj_note_stopped: 환불 · 테이블 중지
+  bj_note_unpaid: 환불 · 지급 실패
+  bj_only_host: '{0}님만 라운드를 시작할 수 있어요.'
+  bj_player: '플레이어 {0}'
+  bj_round_running: 이 테이블에서 이미 라운드가 진행 중이에요. 끝날 때까지 기다리세요.
+  bj_soft: '소프트 {0}'
+  bj_starts: '{0} 시작'
+  bj_stopped: 테이블이 멈췄어요. 모든 핸드는 끝까지 진행됐어요.
+  bj_stopped_joining: 테이블이 멈췄어요. 봇이 모든 베팅을 환불했어요.
+  bj_table_closed: '이 블랙잭 테이블은 닫혔어요. {0} 명령어로 새 테이블을 여세요.'
+  bj_table_full: 이 블랙잭 테이블은 꽉 찼어요.
+  bj_title: 블랙잭
+  bj_too_many_tables: '이 서버에는 이미 열린 블랙잭 테이블이 {0}개 있어요. 하나가 끝날 때까지 기다리세요.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · 핸드 {1} · {2}'
+
+pl-PL:
+  bj_already_seated: Już siedzisz przy stole do blackjacka. Najpierw dokończ tę rundę.
+  bj_blackjack: Blackjack
+  bj_btn_double: Podwój
+  bj_btn_hit: Dobierz
+  bj_btn_split: Rozdziel
+  bj_btn_stand: Pas
+  bj_btn_start: Start
+  bj_busy: Stół do blackjacka jest zajęty. Spróbuj ponownie za chwilę.
+  bj_dealer: Krupier
+  bj_dealer_draws: Krupier dobiera
+  bj_join_line: 'Dołącz przez {0}'
+  bj_new_table: '{0} otwiera nowy stół'
+  bj_not_your_turn: To nie twoja kolej.
+  bj_note_mismatch: Zwrot · błąd
+  bj_note_restart: Zwrot · restart bota
+  bj_note_stopped: Zwrot · stół zatrzymany
+  bj_note_unpaid: Zwrot · wypłata nieudana
+  bj_only_host: 'Tylko {0} może rozpocząć rundę.'
+  bj_player: 'Gracz {0}'
+  bj_round_running: Przy tym stole trwa już runda. Poczekaj, aż się skończy.
+  bj_soft: 'soft {0}'
+  bj_starts: 'Start {0}'
+  bj_stopped: Stół się zatrzymał. Wszystkie ręce zostały rozegrane do końca.
+  bj_stopped_joining: Stół się zatrzymał. Bot zwrócił wszystkie zakłady.
+  bj_table_closed: 'Ten stół do blackjacka został zamknięty. Użyj {0}, aby otworzyć nowy.'
+  bj_table_full: Ten stół do blackjacka jest pełny.
+  bj_title: Blackjack
+  bj_too_many_tables: 'Ten serwer ma już maksymalną liczbę otwartych stołów do blackjacka ({0}). Poczekaj, aż jeden się skończy.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · ręka {1} · {2}'
+
+pt-BR:
+  bj_already_seated: Você já está numa mesa de blackjack. Termine aquela rodada primeiro.
+  bj_blackjack: Blackjack
+  bj_btn_double: Dobrar
+  bj_btn_hit: Pedir
+  bj_btn_split: Dividir
+  bj_btn_stand: Parar
+  bj_btn_start: Começar
+  bj_busy: A mesa de blackjack está ocupada. Tente de novo daqui a pouco.
+  bj_dealer: Crupiê
+  bj_dealer_draws: O crupiê está comprando
+  bj_join_line: 'Entre com {0}'
+  bj_new_table: '{0} abre uma nova mesa'
+  bj_not_your_turn: Não é a sua vez.
+  bj_note_mismatch: Reembolso · erro
+  bj_note_restart: Reembolso · bot reiniciado
+  bj_note_stopped: Reembolso · mesa parada
+  bj_note_unpaid: Reembolso · pagamento falhou
+  bj_only_host: 'Só {0} pode começar a rodada.'
+  bj_player: 'Jogador {0}'
+  bj_round_running: Já tem uma rodada rolando nesta mesa. Espere ela terminar.
+  bj_soft: 'soft {0}'
+  bj_starts: 'Começa {0}'
+  bj_stopped: A mesa parou. Todas as mãos foram jogadas até o fim.
+  bj_stopped_joining: A mesa parou. O bot devolveu todas as apostas.
+  bj_table_closed: 'Esta mesa de blackjack fechou. Use {0} para abrir uma nova.'
+  bj_table_full: Esta mesa de blackjack está cheia.
+  bj_title: Blackjack
+  bj_too_many_tables: 'Este servidor já tem {0} mesas de blackjack abertas. Espere uma terminar.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · mão {1} · {2}'
+
+ru-RU:
+  bj_already_seated: Вы уже сидите за столом блэкджека. Сначала доиграйте тот раунд.
+  bj_blackjack: Блэкджек
+  bj_btn_double: Удвоить
+  bj_btn_hit: Ещё
+  bj_btn_split: Сплит
+  bj_btn_stand: Хватит
+  bj_btn_start: Начать
+  bj_busy: Стол блэкджека занят. Попробуйте ещё раз через минутку.
+  bj_dealer: Дилер
+  bj_dealer_draws: Дилер берёт карты
+  bj_join_line: 'Присоединяйтесь: {0}'
+  bj_new_table: '{0} открывает новый стол'
+  bj_not_your_turn: Сейчас не ваш ход.
+  bj_note_mismatch: Возврат · ошибка
+  bj_note_restart: Возврат · перезапуск бота
+  bj_note_stopped: Возврат · стол остановлен
+  bj_note_unpaid: Возврат · сбой выплаты
+  bj_only_host: 'Начать раунд может только {0}.'
+  bj_player: 'Игрок {0}'
+  bj_round_running: За этим столом уже идёт раунд. Подождите, пока он закончится.
+  bj_soft: 'мягкие {0}'
+  bj_starts: 'Начало {0}'
+  bj_stopped: Стол остановился. Все руки были доиграны до конца.
+  bj_stopped_joining: Стол остановлен. Бот вернул все ставки.
+  bj_table_closed: 'Этот стол блэкджека закрыт. Используйте {0}, чтобы открыть новый.'
+  bj_table_full: Этот стол блэкджека заполнен.
+  bj_title: Блэкджек
+  bj_too_many_tables: 'На этом сервере уже открыто столов блэкджека: {0}. Подождите, пока один закончится.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · рука {1} · {2}'
+
+sr-Cyrl-RS:
+  bj_already_seated: Већ седиш за столом за блекџек. Прво заврши ту рунду.
+  bj_blackjack: Блекџек
+  bj_btn_double: Дуплирај
+  bj_btn_hit: Карта
+  bj_btn_split: Подели
+  bj_btn_stand: Стој
+  bj_btn_start: Почни
+  bj_busy: Сто за блекџек је заузет. Покушај поново за тренутак.
+  bj_dealer: Дилер
+  bj_dealer_draws: Дилер вуче
+  bj_join_line: 'Придружи се са {0}'
+  bj_new_table: '{0} отвара нови сто'
+  bj_not_your_turn: Ниси на потезу.
+  bj_note_mismatch: Повраћај · грешка
+  bj_note_restart: Повраћај · рестарт бота
+  bj_note_stopped: Повраћај · сто заустављен
+  bj_note_unpaid: Повраћај · исплата није успела
+  bj_only_host: 'Само {0} може да покрене рунду.'
+  bj_player: 'Играч {0}'
+  bj_round_running: За овим столом већ траје рунда. Сачекај да се заврши.
+  bj_soft: 'меко {0}'
+  bj_starts: 'Почиње {0}'
+  bj_stopped: Сто је заустављен. Све руке су одигране до краја.
+  bj_stopped_joining: Сто је заустављен. Бот је вратио све улоге.
+  bj_table_closed: 'Овај сто за блекџек је затворен. Користи {0} да отвориш нови.'
+  bj_table_full: Овај сто за блекџек је пун.
+  bj_title: Блекџек
+  bj_too_many_tables: 'Овај сервер већ има отворених столова за блекџек: {0}. Сачекај да се један заврши.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · рука {1} · {2}'
+
+tr-TR:
+  bj_already_seated: Zaten bir blackjack masasındasın. Önce o turu bitir.
+  bj_blackjack: Blackjack
+  bj_btn_double: Katla
+  bj_btn_hit: Kart çek
+  bj_btn_split: Böl
+  bj_btn_stand: Dur
+  bj_btn_start: Başlat
+  bj_busy: Blackjack masası meşgul. Birazdan tekrar dene.
+  bj_dealer: Krupiye
+  bj_dealer_draws: Krupiye kart çekiyor
+  bj_join_line: '{0} ile katıl'
+  bj_new_table: '{0} yeni bir masa açar'
+  bj_not_your_turn: Sıra sende değil.
+  bj_note_mismatch: İade · hata
+  bj_note_restart: İade · bot yeniden başladı
+  bj_note_stopped: İade · masa durduruldu
+  bj_note_unpaid: İade · ödeme başarısız
+  bj_only_host: 'Turu yalnızca {0} başlatabilir.'
+  bj_player: 'Oyuncu {0}'
+  bj_round_running: Bu masada zaten bir tur oynanıyor. Bitmesini bekle.
+  bj_soft: 'soft {0}'
+  bj_starts: '{0} başlıyor'
+  bj_stopped: Masa durdu. Tüm eller sonuna kadar oynandı.
+  bj_stopped_joining: Masa durdu. Bot tüm bahisleri iade etti.
+  bj_table_closed: 'Bu blackjack masası kapandı. Yenisini açmak için {0} kullan.'
+  bj_table_full: Bu blackjack masası dolu.
+  bj_title: Blackjack
+  bj_too_many_tables: 'Bu sunucuda zaten {0} açık blackjack masası var. Birinin bitmesini bekle.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · el {1} · {2}'
+
+ts-TS:
+  bj_already_seated: You already sit at a blackjack table. Finish that round first, baka.
+  bj_blackjack: Blackjack
+  bj_btn_double: Double
+  bj_btn_hit: Hit
+  bj_btn_split: Split
+  bj_btn_stand: Stand
+  bj_btn_start: Start
+  bj_busy: The blackjack table is busy. Try again in a moment.
+  bj_dealer: Dealer
+  bj_dealer_draws: Dealer draws
+  bj_join_line: 'Join with {0}'
+  bj_new_table: '{0} opens a new table'
+  bj_not_your_turn: Hmph, it's not your turn. Wait.
+  bj_note_mismatch: Refund · error
+  bj_note_restart: Refund · bot restart
+  bj_note_stopped: Refund · table stopped
+  bj_note_unpaid: Refund · payout failed
+  bj_only_host: 'Only {0} can start the round. Not you.'
+  bj_player: 'Player {0}'
+  bj_round_running: A round is already running at this table. Wait until it ends.
+  bj_soft: 'soft {0}'
+  bj_starts: 'Starts {0}'
+  bj_stopped: Table's stopped. Every hand played out. Fine, you still get your answer.
+  bj_stopped_joining: The table stopped. Every bet got refunded.
+  bj_table_closed: 'This blackjack table is closed. Use {0} to open a new one.'
+  bj_table_full: This table is full. You're too late, baka.
+  bj_title: Blackjack
+  bj_too_many_tables: 'This server already has {0} open blackjack tables. Wait until one ends. Seriously, how many do you need?'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · hand {1} · {2}'
+
+uk-UA:
+  bj_already_seated: Ти вже сидиш за столом блекджеку. Спершу дограй той раунд.
+  bj_blackjack: Блекджек
+  bj_btn_double: Подвоїти
+  bj_btn_hit: Ще
+  bj_btn_split: Спліт
+  bj_btn_stand: Досить
+  bj_btn_start: Почати
+  bj_busy: Стіл блекджеку зайнятий. Спробуй ще раз за хвилинку.
+  bj_dealer: Дилер
+  bj_dealer_draws: Дилер бере карти
+  bj_join_line: 'Приєднуйся: {0}'
+  bj_new_table: '{0} відкриває новий стіл'
+  bj_not_your_turn: Зараз не твій хід.
+  bj_note_mismatch: Повернення · помилка
+  bj_note_restart: Повернення · перезапуск бота
+  bj_note_stopped: Повернення · стіл зупинено
+  bj_note_unpaid: Повернення · збій виплати
+  bj_only_host: 'Почати раунд може лише {0}.'
+  bj_player: 'Гравець {0}'
+  bj_round_running: За цим столом уже йде раунд. Зачекай, поки він закінчиться.
+  bj_soft: 'м''які {0}'
+  bj_starts: 'Старт {0}'
+  bj_stopped: Стіл зупинився. Усі руки було дограно до кінця.
+  bj_stopped_joining: Стіл зупинено. Бот повернув усі ставки.
+  bj_table_closed: 'Цей стіл блекджеку закрито. Використай {0}, щоб відкрити новий.'
+  bj_table_full: Цей стіл блекджеку заповнений.
+  bj_title: Блекджек
+  bj_too_many_tables: 'На цьому сервері вже відкрито столів блекджеку: {0}. Зачекай, поки один закінчиться.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · рука {1} · {2}'
+
+vi-VN:
+  bj_already_seated: Bạn đang ngồi ở một bàn blackjack rồi. Hãy chơi xong ván đó trước.
+  bj_blackjack: Blackjack
+  bj_btn_double: Gấp đôi
+  bj_btn_hit: Rút bài
+  bj_btn_split: Tách bài
+  bj_btn_stand: Dừng
+  bj_btn_start: Bắt đầu
+  bj_busy: Bàn blackjack đang bận. Thử lại sau một lát nhé.
+  bj_dealer: Nhà cái
+  bj_dealer_draws: Nhà cái đang rút bài
+  bj_join_line: 'Tham gia bằng {0}'
+  bj_new_table: '{0} mở bàn mới'
+  bj_not_your_turn: Chưa đến lượt bạn.
+  bj_note_mismatch: Hoàn tiền · lỗi
+  bj_note_restart: Hoàn tiền · bot khởi động lại
+  bj_note_stopped: Hoàn tiền · bàn đã dừng
+  bj_note_unpaid: Hoàn tiền · trả thưởng thất bại
+  bj_only_host: 'Chỉ {0} mới có thể bắt đầu ván.'
+  bj_player: 'Người chơi {0}'
+  bj_round_running: Bàn này đang có một ván rồi. Hãy đợi ván kết thúc.
+  bj_soft: 'mềm {0}'
+  bj_starts: 'Bắt đầu {0}'
+  bj_stopped: Bàn đã dừng. Mọi tay bài đều được chơi đến cùng.
+  bj_stopped_joining: Bàn đã dừng. Bot đã hoàn lại mọi cược.
+  bj_table_closed: 'Bàn blackjack này đã đóng. Dùng {0} để mở bàn mới.'
+  bj_table_full: Bàn blackjack này đã đầy.
+  bj_title: Blackjack
+  bj_too_many_tables: 'Máy chủ này đã có {0} bàn blackjack đang mở. Hãy đợi một bàn kết thúc.'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · tay {1} · {2}'
+
+zh-CN:
+  bj_already_seated: 你已经坐在一张21点牌桌上了。先打完那一局。
+  bj_blackjack: 黑杰克
+  bj_btn_double: 加倍
+  bj_btn_hit: 要牌
+  bj_btn_split: 分牌
+  bj_btn_stand: 停牌
+  bj_btn_start: 开始
+  bj_busy: 21点牌桌正忙，请稍后再试。
+  bj_dealer: 庄家
+  bj_dealer_draws: 庄家要牌中
+  bj_join_line: '用 {0} 加入'
+  bj_new_table: '用 {0} 开一张新牌桌'
+  bj_not_your_turn: 还没轮到你。
+  bj_note_mismatch: 退款 · 出错
+  bj_note_restart: 退款 · 机器人重启
+  bj_note_stopped: 退款 · 牌桌已停止
+  bj_note_unpaid: 退款 · 派奖失败
+  bj_only_host: '只有 {0} 可以开始本局。'
+  bj_player: '玩家 {0}'
+  bj_round_running: 这张牌桌已经有一局在进行中。请等它结束。
+  bj_soft: '软 {0}'
+  bj_starts: '{0}开始'
+  bj_stopped: 牌桌已停止。所有手牌都已打完。
+  bj_stopped_joining: 牌桌已停止。机器人已退还所有下注。
+  bj_table_closed: '这张21点牌桌已关闭。使用 {0} 开一张新牌桌。'
+  bj_table_full: 这张21点牌桌已满。
+  bj_title: 21点
+  bj_too_many_tables: '本服务器已有 {0} 张开放的21点牌桌。请等其中一张结束。'
+  bj_turn: '▶ {0} · {1}'
+  bj_turn_hand: '▶ {0} · 第 {1} 手 · {2}'

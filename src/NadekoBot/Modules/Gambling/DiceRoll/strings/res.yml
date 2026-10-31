@@ -1,4 +1,7 @@
 dice_invalid_number: Invalid number specified. You can roll {0}-{1} dice at once.
+dice_invalid_dnd: "Invalid dice. Use the format `XdY`, for example `2d6`, `d20+3` or `4dF`."
+dice_invalid_range: "Invalid range. Use one number, for example `100`, or two numbers, for example `5-15`."
+dice_invalid_sides: "A die can have 1-{0} sides."
 dice_rolled: rolled {0}
 dice_rolled_num: 'Dice rolled: {0}'
 rolls: Rolls

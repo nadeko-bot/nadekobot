@@ -10,7 +10,8 @@ public static class WarningExtensions
     {
         var query = warnings.AsQueryable()
                             .Where(x => x.GuildId == guildId && x.UserId == userId)
-                            .OrderByDescending(x => x.DateAdded);
+                            .OrderByDescending(x => x.DateAdded)
+                            .ThenByDescending(x => x.Id);
 
         return query.ToArray();
     }
@@ -27,6 +28,7 @@ public static class WarningExtensions
         var warn = warnings.AsQueryable()
                            .Where(x => x.GuildId == guildId && x.UserId == userId)
                            .OrderByDescending(x => x.DateAdded)
+                           .ThenByDescending(x => x.Id)
                            .Skip(index)
                            .FirstOrDefault();
 

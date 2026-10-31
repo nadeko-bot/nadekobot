@@ -33,6 +33,9 @@ warn:
 warnclear:
   - warnclear
   - warnc
+warnedit:
+  - warnedit
+  - warnreason
 warndelete:
   - warndelete
   - warnrm

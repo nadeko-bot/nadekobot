@@ -39,6 +39,10 @@ public static class ApiLimits
     public const int DISCORD_CALLS_PER_GUILD = 5;
     public static readonly TimeSpan DiscordCallWindow = TimeSpan.FromMinutes(1);
 
+    // Each voice join and leave is a gateway event, and a shard may send 120 gateway events per minute.
+    public const int VOICE_CHANGES_PER_GUILD = 5;
+    public static readonly TimeSpan VoiceChangeWindow = TimeSpan.FromMinutes(1);
+
     // Discord limits presence updates on each gateway connection, so a client loop must not use them up.
     public const int PRESENCE_CHANGES = 5;
     public static readonly TimeSpan PresenceWindow = TimeSpan.FromMinutes(1);

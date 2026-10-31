@@ -52,7 +52,9 @@ ar:
   warning_clear_fail: لم يتم مسح التحذير. إما أن التحذير في ذلك الترتيب غير موجود، أو تم مسحه بالفعل.
   warning_cleared: 'تم مسح التحذير {0} للمستخدم {1}.'
   warning_deleted: 'تم حذف التحذير {0}.'
+  warning_edited: 'تم تعيين سبب جديد للتحذير {0} للمستخدم {1}.'
   warning_not_found: التحذير غير موجود.
+  warning_reason_too_long: 'يمكن أن يحتوي سبب التحذير على {0} حرفًا كحد أقصى.'
   warnings_cleared: 'تم مسح جميع التحذيرات للمستخدم {0}.'
   warnings_list: قائمة جميع المستخدمين المحذرين في السيرفر
   warnings_none: لا توجد تحذيرات في هذه الصفحة.
@@ -115,7 +117,9 @@ de-DE:
   warning_clear_fail: Warnung wurde nicht gelöscht. Entweder gibt es die Warnung mit diesem Index nicht, oder sie wurde bereits gelöscht.
   warning_cleared: 'Warnung {0} wurde für {1} entfernt.'
   warning_deleted: 'Warnung {0} wurde gelöscht.'
+  warning_edited: 'Warnung {0} für {1} hat einen neuen Grund.'
   warning_not_found: Warnung nicht gefunden.
+  warning_reason_too_long: 'Ein Warnungsgrund darf höchstens {0} Zeichen haben.'
   warnings_cleared: 'Alle Warnungen für {0} wurden entfernt.'
   warnings_list: Liste aller gewarnten Nutzer auf diesem Server
   warnings_none: Keine Warnungen auf dieser Seite.
@@ -178,7 +182,9 @@ es-ES:
   warning_clear_fail: Advertencias no eliminadas. O la advertencia con ese índice no existe, o ya ha sido eliminada.
   warning_cleared: 'Advertencia {0} ha sido reiniciada para {1}.'
   warning_deleted: 'La advertencia {0} ha sido eliminada.'
+  warning_edited: 'La advertencia {0} para {1} tiene una razón nueva.'
   warning_not_found: Advertencia no encontrada.
+  warning_reason_too_long: 'La razón de una advertencia puede tener como máximo {0} caracteres.'
   warnings_cleared: 'Todas las advertencias han sido reiniciadas para {0}.'
   warnings_list: Lista de usuarios advertidos en el servidor
   warnings_none: No hay castigos configurados.
@@ -241,7 +247,9 @@ fr-FR:
   warning_clear_fail: Avertissement non effacé. Soit l'avertissement sur cet index n'existe pas, soit il a déjà été effacé.
   warning_cleared: 'L''avertissement {0} a été effacé pour {1}.'
   warning_deleted: 'L''avertissement {0} a été supprimé.'
+  warning_edited: 'L''avertissement {0} de {1} a une nouvelle raison.'
   warning_not_found: Avertissement non trouvé.
+  warning_reason_too_long: 'Une raison d''avertissement peut avoir au maximum {0} caractères.'
   warnings_cleared: 'Tous les avertissements ont été effacés pour {0}.'
   warnings_list: Liste des utilisateurs ayant reçus un avertissement sur ce serveur
   warnings_none: Aucun avertissement sur cette page.
@@ -304,7 +312,9 @@ id-ID:
   warning_clear_fail: Peringatan tidak dihapus. Peringatan di indeks tersebut tidak ada, atau sudah dihapus sebelumnya.
   warning_cleared: 'Peringatan {0} telah dihapus untuk {1}.'
   warning_deleted: 'Peringatan {0} telah dihapus.'
+  warning_edited: 'Peringatan {0} untuk {1} punya alasan baru.'
   warning_not_found: Peringatan tidak ditemukan.
+  warning_reason_too_long: 'Alasan peringatan maksimal {0} karakter.'
   warnings_cleared: 'Semua peringatan telah dihapus untuk {0}.'
   warnings_list: Daftar semua pengguna yang diperingatkan di server
   warnings_none: Tidak ada peringatan di halaman ini.
@@ -367,7 +377,9 @@ ja-JP:
   warning_clear_fail: 警告がクリアされませんでした。そのインデックスの警告が存在しないか、すでにクリアされています。
   warning_cleared: '{1}の警告{0}がクリアされました。'
   warning_deleted: '警告{0}が削除されました。'
+  warning_edited: '{1}の警告{0}の理由が変更されました。'
   warning_not_found: 警告が見つかりません。
+  warning_reason_too_long: '警告の理由は最大{0}文字までです。'
   warnings_cleared: 'すべての警告は{0}でクリアされています。'
   warnings_list: サーバーで警告されたユーザーのリスト
   warnings_none: このページでは警告は表示されません。
@@ -430,7 +442,9 @@ ko-KR:
   warning_clear_fail: 경고를 해제하지 못했어요. 해당 번호의 경고가 존재하지 않거나 이미 해제되었어요.
   warning_cleared: '{1}의 경고 {0}이(가) 해제되었어요.'
   warning_deleted: '경고 {0}이(가) 삭제되었어요.'
+  warning_edited: '{1}의 경고 {0}의 사유가 바뀌었어요.'
   warning_not_found: 경고를 찾을 수 없어요.
+  warning_reason_too_long: '경고 사유는 최대 {0}자까지 가능해요.'
   warnings_cleared: '{0}의 모든 경고가 해제되었어요.'
   warnings_list: 서버의 경고 받은 유저 전체 목록
   warnings_none: 이 페이지에 경고가 없어요.
@@ -493,7 +507,9 @@ pl-PL:
   warning_clear_fail: Nie udało się usunąć ostrzeżenia. Ostrzeżenie o tym indeksie nie istnieje lub zostało już usunięte.
   warning_cleared: 'Ostrzeżenie {0} zostało usunięte dla {1}.'
   warning_deleted: 'Ostrzeżenie {0} zostało skasowane.'
+  warning_edited: 'Ostrzeżenie {0} dla {1} ma nowy powód.'
   warning_not_found: Nie znaleziono ostrzeżenia.
+  warning_reason_too_long: 'Powód ostrzeżenia może mieć najwyżej {0} znaków.'
   warnings_cleared: 'Wszystkie ostrzeżenia zostały usunięte dla {0}.'
   warnings_list: Lista wszystkich ostrzeżonych użytkowników na serwerze
   warnings_none: Brak ostrzeżeń na tej stronie.
@@ -556,7 +572,9 @@ pt-BR:
   warning_clear_fail: Erro. Não há advertência nesse índice ou ela já foi removida.
   warning_cleared: 'A advertência #{0} do usuário {1} foi removida.'
   warning_deleted: 'O aviso {0} foi excluído.'
+  warning_edited: 'O aviso {0} de {1} tem um novo motivo.'
   warning_not_found: Aviso não encontrado.
+  warning_reason_too_long: 'O motivo de um aviso pode ter no máximo {0} caracteres.'
   warnings_cleared: 'Todas as advertências do usuário {0} foram removidas.'
   warnings_list: Lista de usuários advertidos no servidor
   warnings_none: Há nenhuma advertência nessa página.
@@ -619,7 +637,9 @@ ru-RU:
   warning_clear_fail: Предупреждение не было снято. Или никакого предупреждения под таким индексом не существует, или оно уже было снято.
   warning_cleared: 'Предупреждение {0} было снято для {1}'
   warning_deleted: 'Предупреждение {0} было удалено.'
+  warning_edited: 'У предупреждения {0} пользователя {1} новая причина.'
   warning_not_found: Предупреждение не найдено.
+  warning_reason_too_long: 'Причина предупреждения может содержать не больше {0} символов.'
   warnings_cleared: 'Все предупреждения пользователя {0} были сняты.'
   warnings_list: Список всех людей с предупреждениями на этом сервере
   warnings_none: Никаких предупреждений на этой странице
@@ -682,7 +702,9 @@ sr-Cyrl-RS:
   warning_clear_fail: Упозорење није обрисано. Или упозорење на том индексу не постоји, или је већ обрисано.
   warning_cleared: 'Упозорење {0} је обрисано за {1}.'
   warning_deleted: 'Упозорење {0} је избрисано.'
+  warning_edited: 'Упозорење {0} за {1} има нови разлог.'
   warning_not_found: Упозорење није пронађено.
+  warning_reason_too_long: 'Разлог упозорења може имати највише {0} знакова.'
   warnings_cleared: 'Сва упозорења су обрисана за {0}.'
   warnings_list: Листа свих упозорених корисника на серверу
   warnings_none: Нема упозорења на овој страници.
@@ -745,7 +767,9 @@ tr-TR:
   warning_clear_fail: Uyarı temizlenemedi. Ya o indekste bir uyarı yok ya da zaten temizlenmiş.
   warning_cleared: '{1} için {0}. uyarı temizlendi.'
   warning_deleted: '{0}. uyarı silindi.'
+  warning_edited: '{1} kullanıcısının {0}. uyarısına yeni bir sebep yazıldı.'
   warning_not_found: Uyarı bulunamadı.
+  warning_reason_too_long: 'Bir uyarı sebebi en fazla {0} karakter olabilir.'
   warnings_cleared: '{0} için tüm uyarılar temizlendi.'
   warnings_list: Sunucudaki tüm uyarılmış kullanıcıların listesi
   warnings_none: Bu sayfada uyarı yok.
@@ -808,7 +832,9 @@ ts-TS:
   warning_clear_fail: Warning not cleared. Either the warning at that index doesn't exist, or it has already been cleared.
   warning_cleared: 'Warning {0} has been cleared for {1}.'
   warning_deleted: 'Warning {0} has been deleted.'
+  warning_edited: 'Warning {0} for {1} has a new reason. Try reading it this time.'
   warning_not_found: Warning not found.
+  warning_reason_too_long: 'A warning reason can have at most {0} characters. Hmph.'
   warnings_cleared: 'All warnings have been cleared for {0}.'
   warnings_list: List of all warned users on the server
   warnings_none: No warnings on this page.
@@ -871,7 +897,9 @@ uk-UA:
   warning_clear_fail: Попередження не знято. Або попередження з таким індексом не існує, або воно вже було знято.
   warning_cleared: 'Попередження {0} було знято для {1}.'
   warning_deleted: 'Попередження {0} було видалено.'
+  warning_edited: 'Попередження {0} для {1} має нову причину.'
   warning_not_found: Попередження не знайдено.
+  warning_reason_too_long: 'Причина попередження може мати щонайбільше {0} символів.'
   warnings_cleared: 'Усі попередження для {0} були зняті.'
   warnings_list: Список усіх попереджених користувачів на сервері
   warnings_none: Немає попереджень на цій сторінці.
@@ -934,7 +962,9 @@ vi-VN:
   warning_clear_fail: Không thể xóa cảnh cáo. Cảnh cáo ở vị trí đó không tồn tại, hoặc đã được xóa rồi.
   warning_cleared: 'Cảnh cáo {0} đã được xóa cho {1}.'
   warning_deleted: 'Cảnh cáo {0} đã bị xóa.'
+  warning_edited: 'Cảnh cáo {0} của {1} đã có lý do mới.'
   warning_not_found: Không tìm thấy cảnh cáo.
+  warning_reason_too_long: 'Lý do cảnh cáo chỉ có tối đa {0} ký tự.'
   warnings_cleared: 'Tất cả cảnh cáo đã được xóa cho {0}.'
   warnings_list: Danh sách tất cả người dùng bị cảnh cáo trên server
   warnings_none: Không có cảnh cáo nào trên trang này.
@@ -997,7 +1027,9 @@ zh-CN:
   warning_clear_fail: 警告未清除。該索引處的警告不存在，或者已被清除。
   warning_cleared: '{1} 的警告 {0} 已清除。'
   warning_deleted: '警告 {0} 已刪除。'
+  warning_edited: '用户 {1} 的警告 {0} 有了新原因。'
   warning_not_found: 找不到警告。
+  warning_reason_too_long: '警告原因最多只能有 {0} 个字符。'
   warnings_cleared: '已清除 {0} 的所有警告。'
   warnings_list: 伺服器上所有警告用戶的列表
   warnings_none: 此頁面上沒有警告。

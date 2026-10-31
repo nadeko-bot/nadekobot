@@ -1,5 +1,6 @@
 ﻿using NadekoBot.Db.Models;
 using Newtonsoft.Json;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Searches.Common.StreamNotifications.Providers;
@@ -18,25 +19,16 @@ public class PicartoProvider : Provider
         => _httpClientFactory = httpClientFactory;
 
     public override Task<bool> IsValidUrl(string url)
+        => Task.FromResult(Regex.IsMatch(url));
+
+    public override async Task<StreamLookup> LookupByUrlAsync(string url)
     {
         var match = Regex.Match(url);
         if (!match.Success)
-            return Task.FromResult(false);
+            return StreamLookup.NotFound;
 
-        // var username = match.Groups["name"].Value;
-        return Task.FromResult(true);
-    }
-
-    public override Task<StreamData?> GetStreamDataByUrlAsync(string url)
-    {
-        var match = Regex.Match(url);
-        if (match.Success)
-        {
-            var name = match.Groups["name"].Value;
-            return GetStreamDataAsync(name);
-        }
-
-        return Task.FromResult<StreamData?>(null);
+        using var http = CreateClientInternal();
+        return await FetchInternalAsync(http, match.Groups["name"].Value);
     }
 
     public override async Task<StreamData?> GetStreamDataAsync(string login)
@@ -51,36 +43,55 @@ public class PicartoProvider : Provider
         if (logins.Count == 0)
             return [];
 
-        using var http = _httpClientFactory.CreateClient();
+        using var http = CreateClientInternal();
         var toReturn = new List<StreamData>();
         foreach (var login in logins)
         {
-            try
-            {
-                http.DefaultRequestHeaders.Accept.Add(new("application/json"));
-                // get id based on the username
-                using var res = await http.GetAsync($"https://api.picarto.tv/v1/channel/name/{login}");
-
-                if (!res.IsSuccessStatusCode)
-                    continue;
-
-                var userData =
-                    JsonConvert.DeserializeObject<PicartoChannelResponse>(await res.Content.ReadAsStringAsync())!;
-
-                toReturn.Add(ToStreamData(userData));
-                _failingStreams.TryRemove(login, out _);
-            }
-            catch (Exception ex)
-            {
-                Log.Warning("Something went wrong retreiving {StreamPlatform} stream data for {Login}: {ErrorMessage}",
-                    Platform,
-                    login,
-                    ex.Message);
-                _failingStreams.TryAdd(login, DateTime.UtcNow);
-            }
+            var lookup = await FetchInternalAsync(http, login);
+            if (lookup.Data is { } data)
+                toReturn.Add(data);
         }
 
         return toReturn;
+    }
+
+    private HttpClient CreateClientInternal()
+    {
+        var http = _httpClientFactory.CreateClient();
+        http.DefaultRequestHeaders.Accept.Add(new("application/json"));
+        return http;
+    }
+
+    private async Task<StreamLookup> FetchInternalAsync(HttpClient http, string login)
+    {
+        try
+        {
+            // get id based on the username
+            using var res = await http.GetAsync($"https://api.picarto.tv/v1/channel/name/{login}");
+
+            if (!res.IsSuccessStatusCode)
+            {
+                if (res.StatusCode != HttpStatusCode.NotFound)
+                    return StreamLookup.Unavailable;
+
+                _failingStreams.TryAdd(login, UtcNow);
+                return StreamLookup.NotFound;
+            }
+
+            var userData =
+                JsonConvert.DeserializeObject<PicartoChannelResponse>(await res.Content.ReadAsStringAsync())!;
+
+            _failingStreams.TryRemove(login, out _);
+            return StreamLookup.Found(ToStreamData(userData));
+        }
+        catch (Exception ex)
+        {
+            Log.Warning("Something went wrong retreiving {StreamPlatform} stream data for {Login}: {ErrorMessage}",
+                Platform,
+                login,
+                ex.Message);
+            return StreamLookup.Unavailable;
+        }
     }
 
     private StreamData ToStreamData(PicartoChannelResponse stream)

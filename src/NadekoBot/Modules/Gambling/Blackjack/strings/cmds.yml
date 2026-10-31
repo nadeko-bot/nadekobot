@@ -1,0 +1,17 @@
+blackjack:
+  desc: |-
+    Opens a blackjack table in this channel with your bet, or joins the open table.
+    Other members join for 20 seconds. The round starts when this time ends, when all 5 seats are full, or when the member in the first seat presses Start.
+    The players act in seat order with the buttons. Each decision has a time limit of 30 seconds, then the hand stands.
+    Actions:
+    - `Hit` takes one more card
+    - `Stand` keeps the hand
+    - `Double` doubles the bet, takes one card and stands. It works only on 9, 10 or 11, on the first two cards of a hand which is not split
+    - `Split` makes two hands from two cards of the same rank, for example K and K. The new hand costs the bet again. A player can split once. A split hand can only hit or stand. A split ace gets one card
+    The dealer hits soft 17. A dealer blackjack takes the full bet of every hand, except a player blackjack, which is a push.
+    Blackjack pays 3:2. A win pays 1:1. A push refunds the bet.
+  ex:
+    - '100'
+  params:
+    - amount:
+        desc: "The amount of currency to bet."

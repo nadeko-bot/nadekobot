@@ -2,6 +2,69 @@
 
 *a,c,f,r,o,d*
 
+## [7.8.0] - 31.10.2026
+
+### Added
+
+- `.playlists` / `.pls` lists the saved playlists of one member.
+- `.warnedit` / `.warnreason` changes the reason of a warning.
+
+### Changed
+
+- `.playlistsave` / `.plsave` / `.psave` saves at most 25 playlists for each member.
+- `.queueautoplay` / `.qap` has a new song source and timing
+    - works on bots which use the music service
+    - adds a related song when the last song in the queue starts
+    - turns repeat off
+- `.streamlist` / `.stl` shows the ID of each followed stream, and `.streamremove` / `.strm` and `.streammessage` / `.stm` take that ID.
+- `.prune` / `.clear` with a message ID removes the messages after that message.
+- `.waifu` / `.w` shows fans and the backed waifu on the card
+    - a Fans button opens the list of fans
+    - a fan who uses it alone sees the card of the waifu they back
+- `.blackjack` / `.bj` is a table game with buttons
+    - up to 5 members play at one table, with split, double on 9 to 11, and a 30 second limit for each decision
+    - the dealer takes the second card after all players, and a dealer blackjack takes doubled and split bets
+    - the bot finishes a round after a restart, and a table it cannot post is refunded
+- Blackjack bets give less rakeback.
+- `.streamadd` / `.sta` / `.stadd`, `.ytuploadnotif` / `.yun` and YouTube feeds work on bots which use the music service.
+- `.streamadd` / `.sta` / `.stadd`, `.ytuploadnotif` / `.yun` and `.feed` / `.feedadd` tell when the bot cannot check the platform now.
+- `.currencytransactions` / `.curtrs` and `.currencytransaction` / `.curtr` show when a transaction happened, in the time zone of the reader
+    - `.curtrs` shows the date of each transaction
+    - `.curtr` shows the date and time
+
+### Fixed
+
+- `.playlistload` / `.pload` / `.plload` / `.pll` shows "Playlist queue complete" in its embed.
+- `.playlist` / `.pl` and `.playlistload` / `.pload` tell the member when the queue is full.
+- `.weather` / `.we` shows sunrise and sunset in the local time of the city.
+- `.calculate` / `.calc` shows an error for unknown names and invalid expressions.
+- `.nroll` and `.roll` read dice input correctly
+    - show an error for invalid input
+    - `.nroll` accepts negative and large numbers
+    - `.roll` accepts `d20`, `2D6` and several modifiers
+- `.warndelete` / `.warnrm` / `.warnd` shows the correct warning number.
+- The deleted message log ignores messages which are deleted in the log channel.
+- `.playlists` / `.pls` opens the page which the member asks for.
+- YouTube stream alerts work again after a bot restart.
+- Stream offline alerts work when the platform changes the letter case of the name.
+- The bot deletes a followed stream only after 12 hours of failed checks in a row.
+    - a YouTube channel fails only when YouTube answers 404
+    - one channel which refuses a message does not stop the other alerts
+- `.feed` / `.feedadd` keeps the feed limit when two feeds are added at the same time.
+- Refunded bets no longer give rakeback.
+
+### Removed
+
+- `.musicquality` / `.mquality`. The bot always plays music at the highest quality.
+- `.hit`, `.stand` and `.double`. The buttons of `.blackjack` / `.bj` replace them.
+
+### Dev
+
+- Added music, feed and stream routes and more backup import formats to `NadekoBot.Hosted`.
+- Added dice input, warning edit and blackjack tests.
+- Added feed, followed stream and YouTube live tests.
+- The music service setting file has a size limit, and the bot deletes old temporary copies of it.
+
 ## [7.7.4] - 26.10.2026
 
 ### Fixed

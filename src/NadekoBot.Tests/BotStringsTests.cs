@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Discord;
 using Discord.Commands;
 using NadekoBot.Common;
 using NadekoBot.Common.Attributes;
@@ -102,6 +103,25 @@ namespace NadekoBot.Tests
                 Assert.Pass();
             else
                 Assert.Warn("There are some unused entries in strings/names.yml");
+        }
+
+        // the help embed shows the description in one field, and Discord refuses a longer field value
+        [Test]
+        public void CommandDescriptionsFitInAnEmbedField()
+        {
+            var stringsSource = new LocalFileStringsSource(responsesPath, commandsPath);
+
+            var tooLong = new List<string>();
+            foreach (var (locale, commands) in stringsSource.GetCommandStrings())
+            {
+                foreach (var (name, cmd) in commands)
+                {
+                    if (cmd.Desc is { Length: > EmbedFieldBuilder.MaxFieldValueLength })
+                        tooLong.Add($"{locale} {name}: {cmd.Desc.Length}");
+                }
+            }
+
+            Assert.That(tooLong, Is.Empty);
         }
 
         [Test]

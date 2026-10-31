@@ -44,6 +44,10 @@ public static class ApiErrors
     public const string NOT_SQLITE = "not_sqlite";
     public const string UNSAFE_ENTRY = "unsafe_entry";
     public const string ARCHIVE_TOO_LARGE = "archive_too_large";
+    public const string UNKNOWN_FORMAT = "unknown_format";
+    public const string DAMAGED_ARCHIVE = "damaged_archive";
+    public const string ENCRYPTED_ARCHIVE = "encrypted_archive";
+    public const string DB_DAMAGED = "db_damaged";
 
     public const string UPDATE_IN_PROGRESS = "update_in_progress";
     public const string CHECKSUM_MISMATCH = "checksum_mismatch";
@@ -63,6 +67,18 @@ public static class ApiErrors
     public const string SCHEMA_MISMATCH = "schema_mismatch";
     public const string IMPORT_FAILED = "import_failed";
 
+    public const string NO_PLAYER = "no_player";
+    public const string TRACK_NOT_FOUND = "track_not_found";
+    public const string PLAYLIST_NOT_FOUND = "playlist_not_found";
+    public const string MUSIC_UNAVAILABLE = "music_unavailable";
+    public const string LOAD_IN_PROGRESS = "load_in_progress";
+
+    public const string FEED_NOT_FOUND = "feed_not_found";
+    public const string FEED_UNREADABLE = "feed_unreadable";
+    public const string DUPLICATE_ENTRY = "duplicate_entry";
+    public const string UNSUPPORTED_LINK = "unsupported_link";
+    public const string PLATFORM_UNAVAILABLE = "platform_unavailable";
+    public const string STREAM_NOT_FOUND = "stream_not_found";
     public static readonly IResult NotFound = Create(NOT_FOUND, StatusCodes.Status404NotFound);
     public static readonly IResult InvalidValue = Create(INVALID_VALUE, StatusCodes.Status400BadRequest);
     public static readonly IResult ChannelNotFound = Create(CHANNEL_NOT_FOUND, StatusCodes.Status400BadRequest);
@@ -76,7 +92,30 @@ public static class ApiErrors
     public static readonly IResult Unauthorized = Create(UNAUTHORIZED, StatusCodes.Status401Unauthorized);
     public static readonly IResult LimitReached = Create(LIMIT_REACHED, StatusCodes.Status409Conflict);
     public static readonly IResult TriggerTaken = Create(TRIGGER_TAKEN, StatusCodes.Status409Conflict);
+    public static readonly IResult NotReady = Create(NOT_READY, StatusCodes.Status503ServiceUnavailable);
+    public static readonly IResult NoPlayer = Create(NO_PLAYER, StatusCodes.Status409Conflict);
+    public static readonly IResult TrackNotFound = Create(TRACK_NOT_FOUND, StatusCodes.Status404NotFound);
+    public static readonly IResult PlaylistNotFound = Create(PLAYLIST_NOT_FOUND, StatusCodes.Status404NotFound);
+    public static readonly IResult MusicUnavailable = Create(MUSIC_UNAVAILABLE, StatusCodes.Status503ServiceUnavailable);
+    public static readonly IResult LoadInProgress = Create(LOAD_IN_PROGRESS, StatusCodes.Status409Conflict);
+    public static readonly IResult FeedNotFound = Create(FEED_NOT_FOUND, StatusCodes.Status404NotFound);
+    public static readonly IResult FeedUnreadable = Create(FEED_UNREADABLE, StatusCodes.Status422UnprocessableEntity);
+    public static readonly IResult DuplicateEntry = Create(DUPLICATE_ENTRY, StatusCodes.Status409Conflict);
+    public static readonly IResult UnsupportedLink = Create(UNSUPPORTED_LINK, StatusCodes.Status422UnprocessableEntity);
+    // The platform found no such streamer.
+    public static readonly IResult StreamUnknown = Create(STREAM_NOT_FOUND, StatusCodes.Status422UnprocessableEntity);
+    // The server follows no stream with this id.
+    public static readonly IResult StreamNotFound = Create(STREAM_NOT_FOUND, StatusCodes.Status404NotFound);
 
+    public static IResult LimitReachedWithMax(int max)
+        => Results.Json(new LimitReachedDto(LIMIT_REACHED, max),
+            ApiJsonContext.Default.LimitReachedDto,
+            statusCode: StatusCodes.Status409Conflict);
+
+    public static IResult PlatformUnavailable(string platform)
+        => Results.Json(new PlatformErrorDto(PLATFORM_UNAVAILABLE, platform),
+            ApiJsonContext.Default.PlatformErrorDto,
+            statusCode: StatusCodes.Status503ServiceUnavailable);
     public static IResult Create(string code, int status)
         => Results.Json(new ErrorDto(code), ApiJsonContext.Default.ErrorDto, statusCode: status);
 
@@ -100,4 +139,20 @@ public static class ApiErrors
             >= StatusCodes.Status500InternalServerError => INTERNAL_ERROR,
             _ => BAD_REQUEST
         };
+}
+
+// 429 rate_limited with Retry-After in whole seconds, so a dashboard can say when to try again.
+public sealed class RateLimitedResult(int retryAfterSeconds) : IResult, IStatusCodeHttpResult
+{
+    public int RetryAfterSeconds
+        => retryAfterSeconds;
+
+    public int? StatusCode
+        => StatusCodes.Status429TooManyRequests;
+
+    public Task ExecuteAsync(HttpContext httpContext)
+    {
+        httpContext.Response.Headers.RetryAfter = retryAfterSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        return ApiErrors.WriteAsync(httpContext, StatusCodes.Status429TooManyRequests, ApiErrors.RATE_LIMITED);
+    }
 }

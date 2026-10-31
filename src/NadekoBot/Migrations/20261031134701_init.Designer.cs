@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20261018221259_init")]
+    [Migration("20261031134701_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -1305,9 +1305,6 @@ namespace NadekoBot.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("PlayerRepeat")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("QualityPreset")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Volume")
@@ -2630,6 +2627,66 @@ namespace NadekoBot.Migrations
                         .IsUnique();
 
                     b.ToTable("XpShopOwnedItem");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Gambling.Blackjack.BlackjackRoundState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("Cards")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId")
+                        .IsUnique();
+
+                    b.ToTable("BlackjackRoundState");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Gambling.Blackjack.BlackjackStake", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte>("Kind")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ChannelId", "UserId");
+
+                    b.ToTable("BlackjackStake");
                 });
 
             modelBuilder.Entity("NadekoBot.Modules.Games.Fish.Db.ChannelSpotOverride", b =>

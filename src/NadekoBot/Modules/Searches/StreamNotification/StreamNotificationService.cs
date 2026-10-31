@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Searches.Common;
+using NadekoBot.Modules.Music;
 using NadekoBot.Modules.Searches.Common.StreamNotifications;
+using NadekoBot.Modules.Searches.Common.StreamNotifications.Providers;
 
 namespace NadekoBot.Modules.Searches.Services;
 
@@ -21,7 +23,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
 
     private Dictionary<StreamDataKey, HashSet<ulong>> _trackCounter = new();
 
-    private Dictionary<StreamDataKey, Dictionary<ulong, HashSet<FollowedStream>>> _shardTrackedStreams;
+    private Dictionary<StreamDataKey, Dictionary<ulong, HashSet<FollowedStream>>> _shardTrackedStreams = new();
     private readonly ConcurrentHashSet<ulong> _offlineNotificationServers = [];
     private readonly ConcurrentHashSet<ulong> _deleteOnOfflineServers = [];
 
@@ -53,7 +55,8 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         IMessageSenderService sender,
         SearchesConfigService config,
         ShardData shardData,
-        IReplacementService repSvc)
+        IReplacementService repSvc,
+        MusicServiceClient music)
     {
         _db = db;
         _client = client;
@@ -64,7 +67,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         _repSvc = repSvc;
         _shardData = shardData;
 
-        _streamTracker = new(httpFactory, creds, config);
+        _streamTracker = new(httpFactory, creds, config, music);
 
         StreamsOnlineKey = new("streams.online");
         StreamsOfflineKey = new("streams.offline");
@@ -121,17 +124,12 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
                                            _shardData.ShardId))
                                        .ToListAsyncLinqToDB();
 
-        _shardTrackedStreams = followedStreams.GroupBy(x => new
-                                              {
-                                                  x.Type,
-                                                  Name = x.Username
-                                              })
-                                              .ToList()
-                                              .ToDictionary(
-                                                  x => new StreamDataKey(x.Key.Type, x.Key.Name),
-                                                  x => x.GroupBy(y => y.GuildId)
-                                                        .ToDictionary(y => y.Key,
-                                                            y => y.AsEnumerable().ToHashSet()));
+        // grouped by the key itself, so names which differ only in letter case land in one entry
+        _shardTrackedStreams = followedStreams.GroupBy(static x => new StreamDataKey(x.Type, x.Username))
+                                              .ToDictionary(static x => x.Key,
+                                                  static x => x.GroupBy(static y => y.GuildId)
+                                                               .ToDictionary(static y => y.Key,
+                                                                   static y => y.AsEnumerable().ToHashSet()));
 
         // shard 0 will keep track of when there are no more guilds which track a stream
         if (_client.ShardId == 0)
@@ -141,13 +139,9 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
             foreach (var fs in allFollowedStreams)
                 _streamTracker.AddLastData(fs.CreateKey(), null, false);
 
-            _trackCounter = allFollowedStreams.GroupBy(x => new
-                                              {
-                                                  x.Type,
-                                                  Name = x.Username
-                                              })
-                                              .ToDictionary(x => new StreamDataKey(x.Key.Type, x.Key.Name),
-                                                  x => x.Select(fs => fs.GuildId).ToHashSet());
+            _trackCounter = allFollowedStreams.GroupBy(static x => new StreamDataKey(x.Type, x.Username))
+                                              .ToDictionary(static x => x.Key,
+                                                  static x => x.Select(static fs => fs.GuildId).ToHashSet());
         }
     }
 
@@ -182,9 +176,11 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
                         errorLimit,
                         string.Join(", ", kvp.Value));
 
+                    // stream keys match in any letter case, so the delete does too
+                    var names = kvp.Value.Select(static x => x.ToLowerInvariant()).ToList();
                     var toDelete = uow.Set<FollowedStream>()
                                       .AsQueryable()
-                                      .Where(x => x.Type == kvp.Key && kvp.Value.Contains(x.Username))
+                                      .Where(x => x.Type == kvp.Key && names.Contains(x.Username.ToLower()))
                                       .ToList();
 
                     uow.RemoveRange(toDelete);
@@ -259,23 +255,32 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
     {
         foreach (var stream in offlineStreams)
         {
-            var targets = GetTargets(stream.CreateKey());
-            if (targets.Length > 0)
+            var key = stream.CreateKey();
+            var targets = GetTargets(key);
+
+            foreach (var fs in targets)
             {
-                await targets
-                      // send offline stream notifications only to guilds which enable it with .stoff
-                      .Where(x => _offlineNotificationServers.Contains(x.GuildId))
-                      .Select(fs =>
-                      {
-                          var ch = _client.GetGuild(fs.GuildId)
-                                          ?.GetTextChannel(fs.ChannelId);
+                // send offline stream notifications only to guilds which enable it with .stoff
+                if (!_offlineNotificationServers.Contains(fs.GuildId))
+                    continue;
 
-                          if (ch is null)
-                              return Task.CompletedTask;
+                try
+                {
+                    var ch = _client.GetGuild(fs.GuildId)
+                                    ?.GetTextChannel(fs.ChannelId);
 
-                          return _sender.Response(ch).Embed(GetEmbed(fs.GuildId, stream)).SendAsync();
-                      })
-                      .WhenAll();
+                    if (ch is null || !FeedsService.CanPostIn(ch.Guild.CurrentUser, ch))
+                        continue;
+
+                    await _sender.Response(ch).Embed(GetEmbed(fs.GuildId, stream)).SendAsync();
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex,
+                        "Unable to post the offline notification of {Stream} in guild {GuildId}",
+                        key.Name,
+                        fs.GuildId);
+                }
             }
         }
     }
@@ -287,58 +292,59 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         {
             var key = stream.CreateKey();
             var targets = GetTargets(key);
-            if (targets.Length > 0)
+            if (targets.Length == 0)
+                continue;
+
+            var pairs = new List<(ulong, ulong)>(targets.Length);
+
+            foreach (var fs in targets)
             {
-                var messages = await targets
-                                        .Select(async fs =>
-                                        {
-                                            var textChannel = _client.GetGuild(fs.GuildId)
-                                                                     ?.GetTextChannel(fs.ChannelId);
-
-                                            if (textChannel is null)
-                                                return default;
-
-                                            var repCtx = new ReplacementContext(guild: textChannel.Guild,
-                                                    client: _client)
-                                                .WithOverride("%platform%", () => fs.Type.ToString());
-
-
-                                            var message = string.IsNullOrWhiteSpace(fs.Message)
-                                                ? ""
-                                                : await _repSvc.ReplaceAsync(fs.Message, repCtx);
-
-                                            var msg = await _sender.Response(textChannel)
-                                                                   .Embed(GetEmbed(fs.GuildId, stream, false))
-                                                                   .Text(message)
-                                                                   .Mentions(TemplateMentions.FromTemplate(fs.Message))
-                                                                   .SendAsync();
-
-                                            // only cache the ids of channel/message pairs 
-                                            if (_deleteOnOfflineServers.Contains(fs.GuildId))
-                                                return (textChannel.Id, msg.Id);
-                                            else
-                                                return default;
-                                        })
-                                        .WhenAll();
-
-
-                // push online stream messages to redis
-                // when streams go offline, any server which
-                // has the online stream message deletion feature
-                // enabled will have the online messages deleted
                 try
                 {
-                    var pairs = messages
-                                .Where(x => x != default)
-                                .Select(x => (x.Item1, x.Item2))
-                                .ToList();
+                    var textChannel = _client.GetGuild(fs.GuildId)
+                                             ?.GetTextChannel(fs.ChannelId);
 
-                    if (pairs.Count > 0)
-                        await OnlineMessagesSent(key.Type, key.Name, pairs);
+                    if (textChannel is null
+                        || !FeedsService.CanPostIn(textChannel.Guild.CurrentUser, textChannel))
+                        continue;
+
+                    var repCtx = new ReplacementContext(guild: textChannel.Guild, client: _client)
+                        .WithOverride("%platform%", () => fs.Type.ToString());
+
+                    var message = string.IsNullOrWhiteSpace(fs.Message)
+                        ? ""
+                        : await _repSvc.ReplaceAsync(fs.Message, repCtx);
+
+                    var msg = await _sender.Response(textChannel)
+                                           .Embed(GetEmbed(fs.GuildId, stream, false))
+                                           .Text(message)
+                                           .Mentions(TemplateMentions.FromTemplate(fs.Message))
+                                           .SendAsync();
+
+                    // only cache the ids of channel/message pairs 
+                    if (_deleteOnOfflineServers.Contains(fs.GuildId))
+                        pairs.Add((textChannel.Id, msg.Id));
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.Warning(ex,
+                        "Unable to post the online notification of {Stream} in guild {GuildId}",
+                        key.Name,
+                        fs.GuildId);
                 }
+            }
+
+            // push online stream messages to redis
+            // when streams go offline, any server which
+            // has the online stream message deletion feature
+            // enabled will have the online messages deleted
+            try
+            {
+                if (pairs.Count > 0)
+                    await OnlineMessagesSent(key.Type, key.Name, pairs);
+            }
+            catch
+            {
             }
         }
     }
@@ -437,48 +443,37 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         return followedStreams.Length;
     }
 
-    public async Task<FollowedStream> UnfollowStreamAsync(ulong guildId, int index)
+    public async Task<FollowedStream> UnfollowStreamByIdAsync(ulong guildId, int id)
     {
-        FollowedStream fs;
-        await using (var uow = _db.GetDbContext())
-        {
-            var fss = await uow.Set<FollowedStream>()
-                               .AsQueryable()
-                               .Where(x => x.GuildId == guildId)
-                               .OrderBy(x => x.Id)
-                               .ToListAsyncEF();
+        await using var uow = _db.GetDbContext();
+        var deleted = await uow.GetTable<FollowedStream>()
+                               .Where(x => x.Id == id && x.GuildId == guildId)
+                               .DeleteWithOutputAsync();
 
-            // out of range
-            if (fss.Count <= index)
-                return null;
+        if (deleted.Length == 0)
+            return null;
 
-            fs = fss[index];
-            uow.Remove(fs);
+        await AfterUnfollowInternalAsync(uow, deleted[0]);
+        return deleted[0];
+    }
 
-            await uow.SaveChangesAsync();
+    private async Task AfterUnfollowInternalAsync(DbContext uow, FollowedStream fs)
+    {
+        // shard 0 counts followers per server, and the local map holds one entry per channel,
+        // so another row of the same stream must keep them; read after the delete so parallel removes all see it
+        var guildId = fs.GuildId;
+        var type = fs.Type;
+        var username = fs.Username;
+        var channels = await uow.GetTable<FollowedStream>()
+                                .Where(x => x.GuildId == guildId && x.Type == type && x.Username.ToLower() == username.ToLower())
+                                .Select(x => x.ChannelId)
+                                .ToListAsyncLinqToDB();
 
-            // shard 0 counts followers per server, and the local map holds one entry per channel,
-            // so another row of the same stream must keep them; read after the delete so parallel removes all see it
-            var type = fs.Type;
-            var username = fs.Username;
-            var channels = await uow.GetTable<FollowedStream>()
-                                    .Where(x => x.GuildId == guildId && x.Type == type && x.Username == username)
-                                    .Select(x => x.ChannelId)
-                                    .ToListAsyncLinqToDB();
+        if (!channels.Contains(fs.ChannelId))
+            RemoveLocal(guildId, [fs]);
 
-            var sameServer = channels.Count > 0;
-            var sameChannel = channels.Contains(fs.ChannelId);
-
-            if (!sameChannel)
-                RemoveLocal(guildId, [fs]);
-
-            if (sameServer)
-                return fs;
-        }
-
-        await PublishUnfollowStream(fs);
-
-        return fs;
+        if (channels.Count == 0)
+            await PublishUnfollowStream(fs);
     }
 
     private void PublishFollowStream(FollowedStream fs)
@@ -497,15 +492,29 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
                 GuildId = fs.GuildId
             });
 
-    public async Task<(StreamData Data, FollowStreamResult Result)> FollowStream(
+    public readonly record struct FollowStreamOutcome(
+        FollowStreamResult Result,
+        StreamData Data,
+        FollowedStream Stream,
+        FollowedStream.FType? Platform);
+
+    public async Task<FollowStreamOutcome> FollowStream(
         ulong guildId,
         ulong channelId,
-        string url)
+        string url,
+        string message = null)
     {
-        var data = await _streamTracker.GetStreamDataByUrlAsync(url);
+        var lookup = await _streamTracker.LookupByUrlAsync(url);
+        switch (lookup.Status)
+        {
+            case StreamLookupStatus.Unsupported:
+                return new(FollowStreamResult.Unsupported, null, null, null);
+            case StreamLookupStatus.Unavailable:
+                return new(FollowStreamResult.Unavailable, null, null, lookup.Platform);
+        }
 
-        if (data is null)
-            return (null, FollowStreamResult.NotFound);
+        if (lookup.Data is not { } data)
+            return new(FollowStreamResult.NotFound, null, null, lookup.Platform);
 
         var fs = new FollowedStream
         {
@@ -513,25 +522,26 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
             Username = data.UniqueName,
             PrettyName = data.Name,
             ChannelId = channelId,
-            GuildId = guildId
+            GuildId = guildId,
+            Message = string.IsNullOrEmpty(message) ? null : message
         };
 
         await using (var uow = _db.GetDbContext())
         {
             var result = await TryAddFollowAsync(uow, fs, _config.Data.FollowedStreams.MaxCount);
             if (result != FollowStreamResult.Followed)
-                return (result == FollowStreamResult.AlreadyFollowed ? data : null, result);
+                return new(result, result == FollowStreamResult.AlreadyFollowed ? data : null, null, data.StreamType);
         }
 
         // this shard posts the alerts for this channel when shard 0 publishes a status change of the stream
         lock (_shardLock)
         {
-            GetLocalGuildStreams(data.CreateKey(), guildId).Add(fs);
+            GetLocalGuildStreams(fs.CreateKey(), guildId).Add(fs);
         }
 
         PublishFollowStream(fs);
 
-        return (data, FollowStreamResult.Followed);
+        return new(FollowStreamResult.Followed, data, fs, data.StreamType);
     }
 
     public static async Task<FollowStreamResult> TryAddFollowAsync(DbContext ctx, FollowedStream fs, int maxCount)
@@ -541,7 +551,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         var type = fs.Type;
         var name = fs.Username;
         var prettyName = fs.PrettyName;
-
+        var message = fs.Message;
         // the duplicate check, the server limit and the insert are one statement, so parallel adds cannot pass them
         await using var lctx = ctx.CreateLinqToDBContext();
         var table = lctx.GetTable<FollowedStream>();
@@ -549,7 +559,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
             .Where(_ => !table.Any(x => x.GuildId == guildId
                                         && x.ChannelId == channelId
                                         && x.Type == type
-                                        && x.Username == name)
+                                        && x.Username.ToLower() == name.ToLower())
                         && (maxCount == -1 || table.Count(x => x.GuildId == guildId) < maxCount))
             .InsertWithOutputAsync(table,
                 _ => new FollowedStream
@@ -559,6 +569,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
                     Type = type,
                     Username = name,
                     PrettyName = prettyName,
+                    Message = message,
                 },
                 x => x.Id);
 
@@ -571,7 +582,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         var duplicate = await table.AnyAsyncLinqToDB(x => x.GuildId == guildId
                                                           && x.ChannelId == channelId
                                                           && x.Type == type
-                                                          && x.Username == name);
+                                                          && x.Username.ToLower() == name.ToLower());
         return duplicate ? FollowStreamResult.AlreadyFollowed : FollowStreamResult.LimitReached;
     }
 
@@ -672,20 +683,17 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
 
     public bool SetStreamMessage(
         ulong guildId,
-        int index,
+        int id,
         string message,
         out FollowedStream fs)
     {
         using var uow = _db.GetDbContext();
-        var fss = uow.Set<FollowedStream>().AsQueryable().Where(x => x.GuildId == guildId).OrderBy(x => x.Id).ToList();
+        fs = uow.Set<FollowedStream>()
+                .FirstOrDefault(x => x.GuildId == guildId && x.Id == id);
 
-        if (fss.Count <= index)
-        {
-            fs = null;
+        if (fs is null)
             return false;
-        }
 
-        fs = fss[index];
         fs.Message = message;
         lock (_shardLock)
         {
@@ -733,12 +741,177 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         return all.Count;
     }
 
+    public int MaxFollowedStreams
+        => _config.Data.FollowedStreams.MaxCount;
+
+    public async Task<List<FollowedStream>> GetStreamsAsync(ulong guildId)
+    {
+        await using var uow = _db.GetDbContext();
+        return await uow.GetTable<FollowedStream>()
+                        .Where(x => x.GuildId == guildId)
+                        .OrderBy(x => x.Id)
+                        .ToListAsyncLinqToDB();
+    }
+
+    public async Task<(bool NotifyOffline, bool DeleteOnlineMessage)> GetStreamSettingsAsync(ulong guildId)
+    {
+        await using var uow = _db.GetDbContext();
+        var row = await uow.GetTable<GuildConfig>()
+                           .Where(x => x.GuildId == guildId)
+                           .Select(x => new
+                           {
+                               x.NotifyStreamOffline,
+                               x.DeleteStreamOnlineMessage
+                           })
+                           .FirstOrDefaultAsyncLinqToDB();
+
+        return row is null ? (false, false) : (row.NotifyStreamOffline, row.DeleteStreamOnlineMessage);
+    }
+
+    // Sets each given value, unlike .stoff and .stondel, which toggle.
+    public async Task<(bool NotifyOffline, bool DeleteOnlineMessage)> SetStreamSettingsAsync(
+        ulong guildId,
+        bool? notifyOffline,
+        bool? deleteOnlineMessage)
+    {
+        if (notifyOffline is null && deleteOnlineMessage is null)
+            return await GetStreamSettingsAsync(guildId);
+
+        await using var uow = _db.GetDbContext();
+        await uow.EnsureGuildConfigAsync(guildId);
+
+        var update = uow.GetTable<GuildConfig>().Where(x => x.GuildId == guildId).AsUpdatable();
+        if (notifyOffline is { } offline)
+            update = update.Set(x => x.NotifyStreamOffline, offline);
+        if (deleteOnlineMessage is { } delete)
+            update = update.Set(x => x.DeleteStreamOnlineMessage, delete);
+
+        var rows = await update.UpdateWithOutputAsync((_, inserted) => new
+        {
+            inserted.NotifyStreamOffline,
+            inserted.DeleteStreamOnlineMessage
+        });
+
+        var (newOffline, newDelete) = rows.Length > 0
+            ? (rows[0].NotifyStreamOffline, rows[0].DeleteStreamOnlineMessage)
+            : (false, false);
+
+        if (newOffline)
+            _offlineNotificationServers.Add(guildId);
+        else
+            _offlineNotificationServers.TryRemove(guildId);
+
+        if (newDelete)
+            _deleteOnOfflineServers.Add(guildId);
+        else
+            _deleteOnOfflineServers.TryRemove(guildId);
+
+        return (newOffline, newDelete);
+    }
+
+    public enum UpdateStreamResult
+    {
+        Updated,
+        NotFound,
+        Duplicate
+    }
+
+    // A parallel channel change of the same row makes the conditional update miss; then it reads the row again.
+    private const int MAX_UPDATE_ATTEMPTS = 3;
+
+    // Changes only the given fields. A new channel must not already follow the same stream.
+    public async Task<(UpdateStreamResult Result, FollowedStream Stream)> UpdateStreamAsync(
+        ulong guildId,
+        int id,
+        ulong? channelId,
+        bool setMessage,
+        string message)
+    {
+        await using var uow = _db.GetDbContext();
+        var table = uow.GetTable<FollowedStream>();
+        var newMessage = string.IsNullOrEmpty(message) ? null : message;
+
+        for (var attempt = 0; attempt < MAX_UPDATE_ATTEMPTS; attempt++)
+        {
+            // A projection, because an entity which this context tracks would replace the returned row.
+            var old = await table.Where(x => x.Id == id && x.GuildId == guildId)
+                                 .Select(x => new
+                                 {
+                                     x.ChannelId,
+                                     x.Type,
+                                     x.Username
+                                 })
+                                 .FirstOrDefaultAsyncLinqToDB();
+            if (old is null)
+                return (UpdateStreamResult.NotFound, null);
+
+            var oldChannel = old.ChannelId;
+            var newChannel = channelId ?? oldChannel;
+            var type = old.Type;
+            var name = old.Username;
+
+            var update = table
+                         .Where(x => x.Id == id
+                                     && x.GuildId == guildId
+                                     && x.ChannelId == oldChannel
+                                     && !table.Any(y => y.Id != id
+                                                        && y.GuildId == guildId
+                                                        && y.ChannelId == newChannel
+                                                        && y.Type == type
+                                                        && y.Username.ToLower() == name.ToLower()))
+                         .AsUpdatable();
+
+            if (channelId is not null)
+                update = update.Set(x => x.ChannelId, newChannel);
+            if (setMessage)
+                update = update.Set(x => x.Message, newMessage);
+            if (channelId is null && !setMessage)
+                update = update.Set(x => x.ChannelId, oldChannel);
+
+            var rows = await update.UpdateWithOutputAsync(static (_, inserted) => inserted);
+            if (rows.Length == 0)
+            {
+                var current = await table.Where(x => x.Id == id && x.GuildId == guildId)
+                                         .Select(x => (ulong?)x.ChannelId)
+                                         .FirstOrDefaultAsyncLinqToDB();
+                if (current is null)
+                    return (UpdateStreamResult.NotFound, null);
+
+                if (current != oldChannel)
+                    continue;
+
+                return (UpdateStreamResult.Duplicate, null);
+            }
+
+            var updated = rows[0];
+
+            // the local set compares the channel, so the old entry goes out before the new one comes in
+            lock (_shardLock)
+            {
+                var streams = GetLocalGuildStreams(updated.CreateKey(), guildId);
+                streams.Remove(new FollowedStream
+                {
+                    ChannelId = oldChannel,
+                    Type = type,
+                    Username = name
+                });
+                streams.Add(updated);
+            }
+
+            return (UpdateStreamResult.Updated, updated);
+        }
+
+        return (UpdateStreamResult.Duplicate, null);
+    }
+
     public enum FollowStreamResult
     {
         Followed,
         NotFound,
         AlreadyFollowed,
-        LimitReached
+        LimitReached,
+        Unsupported,
+        Unavailable
     }
 
     public sealed class FollowStreamPubData
@@ -760,7 +933,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
         {
             var fs = all[index];
             if (guild.GetTextChannel(fs.ChannelId) is null)
-                await UnfollowStreamAsync(fs.GuildId, index);
+                await UnfollowStreamByIdAsync(fs.GuildId, fs.Id);
             else
                 allStreams.Insert(0, fs);
         }

@@ -85,43 +85,49 @@ public sealed class TwitchHelixProvider : Provider
         => await _api.Value.Auth.GetAccessTokenAsync();
 
     public override Task<bool> IsValidUrl(string url)
+        => Task.FromResult(Regex.IsMatch(url));
+
+    public override async Task<StreamLookup> LookupByUrlAsync(string url)
     {
         var match = Regex.Match(url);
         if (!match.Success)
-        {
-            return Task.FromResult(false);
-        }
+            return StreamLookup.NotFound;
 
-        return Task.FromResult(true);
-    }
+        var (data, ok) = await FetchInternalAsync([match.Groups["name"].Value]);
+        if (!ok)
+            return StreamLookup.Unavailable;
 
-    public override Task<StreamData?> GetStreamDataByUrlAsync(string url)
-    {
-        var match = Regex.Match(url);
-        if (match.Success)
-        {
-            var name = match.Groups["name"].Value;
-            return GetStreamDataAsync(name);
-        }
+        foreach (var d in data)
+            return StreamLookup.Found(d);
 
-        return Task.FromResult<StreamData?>(null);
+        return StreamLookup.NotFound;
     }
 
     public override async Task<StreamData?> GetStreamDataAsync(string login)
     {
-        var data = await GetStreamDataAsync([login]);
-
+        var (data, _) = await FetchInternalAsync([login]);
         return data.FirstOrDefault();
     }
 
     public override async Task<IReadOnlyCollection<StreamData>> GetStreamDataAsync(List<string> logins)
+        => (await FetchInternalAsync(logins)).Data;
+
+    // Ok is false when Twitch could not answer, so the caller can tell that from a login which does not exist.
+    private async Task<(IReadOnlyCollection<StreamData> Data, bool Ok)> FetchInternalAsync(List<string> logins)
     {
         if (logins.Count == 0)
-        {
-            return Array.Empty<StreamData>();
-        }
+            return ([], true);
 
-        var token = await EnsureTokenValidAsync();
+        string? token;
+        try
+        {
+            token = await EnsureTokenValidAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning("Twitch refused the client id and client secret: {ErrorMessage}", ex.Message);
+            return ([], false);
+        }
 
         if (token is null)
         {
@@ -131,7 +137,7 @@ public sealed class TwitchHelixProvider : Provider
                 _warned = true;
             }
 
-            return Array.Empty<StreamData>();
+            return ([], false);
         }
 
         using var http = _httpClientFactory.CreateClient();
@@ -164,20 +170,21 @@ public sealed class TwitchHelixProvider : Provider
                     if (loginsSet.Remove(lowerLogin))
                     {
                         dataDict[lowerLogin] = UserToStreamData(user);
+                        _failingStreams.TryRemove(lowerLogin, out _);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Log.Warning(ex, "Something went wrong retreiving {StreamPlatform} streams", Platform);
-                return [];
+                return ([], false);
             }
         }
         
         // any item left over loginsSet is an invalid username
         foreach (var login in loginsSet)
         {
-            _failingStreams.TryAdd(login, DateTime.UtcNow);
+            _failingStreams.TryAdd(login, UtcNow);
         }
         
         // only get streams for users which exist
@@ -208,11 +215,11 @@ public sealed class TwitchHelixProvider : Provider
             catch (Exception ex)
             {
                 Log.Warning(ex, "Something went wrong retreiving {StreamPlatform} streams", Platform);
-                return [];
+                return ([], false);
             }
         }
 
-        return dataDict.Values;
+        return (dataDict.Values, true);
     }
 
     private StreamData UserToStreamData(HelixUsersResponse.User user)

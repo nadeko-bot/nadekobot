@@ -1,7 +1,7 @@
 #nullable disable
 using SixLabors.ImageSharp;
+using System.Text;
 using SixLabors.ImageSharp.PixelFormats;
-using System.Text.RegularExpressions;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace NadekoBot.Modules.Gambling;
@@ -11,11 +11,6 @@ public partial class Gambling
     [Group]
     public partial class DiceRollCommands : NadekoModule
     {
-        private static readonly Regex _dndRegex = new(@"^(?<n1>\d+)d(?<n2>\d+)(?:\+(?<add>\d+))?(?:\-(?<sub>\d+))?$",
-            RegexOptions.Compiled);
-
-        private static readonly Regex _fudgeRegex = new(@"^(?<n1>\d+)d(?:F|f)$", RegexOptions.Compiled);
-
         private static readonly char[] _fateRolls = ['-', ' ', '+'];
         private readonly IImageCache _images;
 
@@ -130,79 +125,94 @@ public partial class Gambling
 
         private async Task InternallDndRoll(string arg, bool ordered)
         {
-            Match match;
-            if ((match = _fudgeRegex.Match(arg)).Length != 0
-                && int.TryParse(match.Groups["n1"].ToString(), out var n1)
-                && n1 is > 0 and < 500)
+            if (!DiceParser.TryParseDnd(arg, out var roll))
             {
-                var rng = new NadekoRandom();
-
-                var rolls = new List<char>();
-
-                for (var i = 0; i < n1; i++)
-                    rolls.Add(_fateRolls[rng.Next(0, _fateRolls.Length)]);
-                var embed = CreateEmbed()
-                               .WithOkColor()
-                               .WithAuthor(ctx.User)
-                               .WithDescription(GetText(strs.dice_rolled_num(Format.Bold(n1.ToString()))))
-                               .AddField(Format.Bold("Result"),
-                                   string.Join(" ", rolls.Select(c => Format.Code($"[{c}]"))));
-
-                await Response().Embed(embed).SendAsync();
+                await Response().Error(strs.dice_invalid_dnd).SendAsync();
+                return;
             }
-            else if ((match = _dndRegex.Match(arg)).Length != 0)
+
+            var maxDice = roll.IsFate ? DiceParser.MAX_FATE_DICE : DiceParser.MAX_DICE;
+            if (roll.Count < 1 || roll.Count > maxDice)
             {
-                var rng = new NadekoRandom();
-                if (int.TryParse(match.Groups["n1"].ToString(), out n1)
-                    && int.TryParse(match.Groups["n2"].ToString(), out var n2)
-                    && n1 <= 50
-                    && n2 <= 100000
-                    && n1 > 0
-                    && n2 > 0)
+                await Response().Error(strs.dice_invalid_number(1, maxDice)).SendAsync();
+                return;
+            }
+
+            if (roll.Sides > DiceParser.MAX_SIDES)
+            {
+                await Response().Error(strs.dice_invalid_sides(DiceParser.MAX_SIDES)).SendAsync();
+                return;
+            }
+
+            var rng = new NadekoRandom();
+            if (roll.IsFate)
+            {
+                var rolls = new StringBuilder(roll.Count * 6);
+                for (var i = 0; i < roll.Count; i++)
                 {
-                    if (!int.TryParse(match.Groups["add"].Value, out var add))
-                        add = 0;
-                    if (!int.TryParse(match.Groups["sub"].Value, out var sub))
-                        sub = 0;
+                    if (i > 0)
+                        rolls.Append(' ');
 
-                    var arr = new int[n1];
-                    for (var i = 0; i < n1; i++)
-                        arr[i] = rng.Next(1, n2 + 1);
-
-                    var sum = arr.Sum();
-                    var embed = CreateEmbed()
-                                   .WithOkColor()
-                                   .WithAuthor(ctx.User)
-                                   .WithDescription(GetText(strs.dice_rolled_num(n1 + $"`1 - {n2}`")))
-                                   .AddField(Format.Bold(GetText(strs.rolls)),
-                                       string.Join(" ",
-                                           (ordered ? arr.OrderBy(x => x).AsEnumerable() : arr).Select(x
-                                               => Format.Code(x.ToString()))))
-                                   .AddField(Format.Bold("Sum"),
-                                       sum + " + " + add + " - " + sub + " = " + (sum + add - sub));
-                    await Response().Embed(embed).SendAsync();
+                    rolls.Append("`[").Append(_fateRolls[rng.Next(0, _fateRolls.Length)]).Append("]`");
                 }
+
+                var fateEmbed = CreateEmbed()
+                    .WithOkColor()
+                    .WithAuthor(ctx.User)
+                    .WithDescription(GetText(strs.dice_rolled_num(Format.Bold(roll.Count.ToString()))))
+                    .AddField(Format.Bold(GetText(strs.rolls)), rolls.ToString());
+
+                await Response().Embed(fateEmbed).SendAsync();
+                return;
             }
+
+            var arr = new int[roll.Count];
+            long sum = 0;
+            for (var i = 0; i < arr.Length; i++)
+            {
+                arr[i] = rng.Next(1, roll.Sides + 1);
+                sum += arr[i];
+            }
+
+            if (ordered)
+                Array.Sort(arr);
+
+            var rollsText = new StringBuilder(arr.Length * 9);
+            for (var i = 0; i < arr.Length; i++)
+            {
+                if (i > 0)
+                    rollsText.Append(' ');
+
+                rollsText.Append('`').Append(arr[i]).Append('`');
+            }
+
+            var embed = CreateEmbed()
+                .WithOkColor()
+                .WithAuthor(ctx.User)
+                .WithDescription(GetText(strs.dice_rolled_num($"{Format.Bold(roll.Count.ToString())} {Format.Code($"d{roll.Sides}")}")))
+                .AddField(Format.Bold(GetText(strs.rolls)), rollsText.ToString())
+                .AddField(Format.Bold(GetText(strs.total)),
+                    $"{sum} + {roll.Add} - {roll.Sub} = {sum + roll.Add - roll.Sub}");
+
+            await Response().Embed(embed).SendAsync();
         }
 
         [Cmd]
         public async Task NRoll([Leftover] string range)
         {
-            int rolled;
-            if (range.Contains("-"))
+            if (!DiceParser.TryParseRange(range, out var min, out var max))
             {
-                var arr = range.Split('-').Take(2).Select(int.Parse).ToArray();
-                if (arr[0] > arr[1])
-                {
-                    await Response().Error(strs.second_larger_than_first).SendAsync();
-                    return;
-                }
-
-                rolled = new NadekoRandom().Next(arr[0], arr[1] + 1);
+                await Response().Error(strs.dice_invalid_range).SendAsync();
+                return;
             }
-            else
-                rolled = new NadekoRandom().Next(0, int.Parse(range) + 1);
 
+            if (min > max)
+            {
+                await Response().Error(strs.second_larger_than_first).SendAsync();
+                return;
+            }
+
+            var rolled = new NadekoRandom().NextLong(min, max + 1);
             await Response().Confirm(strs.dice_rolled(Format.Bold(rolled.ToString()))).SendAsync();
         }
 

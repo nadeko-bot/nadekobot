@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -30,6 +31,7 @@ public sealed class MusicServiceTests
     private const string KEY = "nadeko-public.test-signature";
     private const string VIDEO_ID = "dQw4w9WgXcQ";
     private const string OTHER_ID = "9bZkp7q5f_0";
+    private const string THIRD_ID = "kJQP7kiw5Fk";
     private const string PLAYLIST_ID = "PLabcdefghijklmnop";
 
     private sealed class FakeServiceHandler : HttpMessageHandler
@@ -108,18 +110,18 @@ public sealed class MusicServiceTests
         var headers = _client.FfmpegHeaders!;
         Assert.That(headers, Is.EqualTo($"Authorization: Bearer {KEY}\r\n"));
 
-        var args = FfmpegTrackDataSource.BuildArguments(16, _client.GetAudioUrl(VIDEO_ID)!, false, null, headers);
+        var args = FfmpegTrackDataSource.BuildArguments(_client.GetAudioUrl(VIDEO_ID)!, false, null, headers);
         Assert.That(args, Does.Not.Contain("-http_proxy"));
         Assert.That(args[Array.IndexOf(args, "-headers") + 1], Is.EqualTo(headers));
         Assert.That(args[Array.IndexOf(args, "-reconnect_on_http_error") + 1], Is.EqualTo("403"));
         Assert.That(args[Array.IndexOf(args, "-protocol_whitelist") + 1], Is.EqualTo("http,https,tcp,tls,crypto"));
         Assert.That(Array.IndexOf(args, "-headers"), Is.LessThan(Array.IndexOf(args, "-i")));
 
-        var proxied = FfmpegTrackDataSource.BuildArguments(16, "https://example.com/a.mp3", false, "http://127.0.0.1:1", null);
+        var proxied = FfmpegTrackDataSource.BuildArguments("https://example.com/a.mp3", false, "http://127.0.0.1:1", null);
         Assert.That(proxied, Does.Contain("-http_proxy"));
         Assert.That(proxied, Does.Not.Contain("-headers"));
 
-        var local = FfmpegTrackDataSource.BuildArguments(16, "/music/a.mp3", true, null, headers);
+        var local = FfmpegTrackDataSource.BuildArguments("/music/a.mp3", true, null, headers);
         Assert.That(local, Does.Not.Contain("-headers"));
         Assert.That(local, Does.Not.Contain("-reconnect_on_http_error"));
         Assert.That(local[Array.IndexOf(local, "-protocol_whitelist") + 1], Is.EqualTo("file"));
@@ -196,6 +198,42 @@ public sealed class MusicServiceTests
     }
 
     [Test]
+    public async Task Autoplay_ReadsRelatedSongsAndPicksOneWhichIsNotQueued()
+    {
+        _handler.Respond = req => req.RequestUri!.AbsolutePath switch
+        {
+            "/v1/related/" + VIDEO_ID => Json(HttpStatusCode.OK,
+                $$"""{"tracks":[{{TrackJson(VIDEO_ID, "Seed")}},{"id":"bad/id","title":"x"},{{TrackJson(OTHER_ID, "Queued")}},{{TrackJson(THIRD_ID, "Fresh")}}]}"""),
+            "/v1/related/" + OTHER_ID => Json(HttpStatusCode.OK, """{"tracks":[]}"""),
+            _ => Json(HttpStatusCode.ServiceUnavailable, """{"error":"no_exit"}""")
+        };
+
+        var tracks = await _client.GetRelatedAsync(VIDEO_ID, 100);
+        Assert.That(_handler.Requests[^1].PathAndQuery, Is.EqualTo($"/v1/related/{VIDEO_ID}?limit={MusicServiceClient.MAX_RELATED_LIMIT}"));
+        Assert.That(tracks!.Select(static t => t.Id), Is.EqualTo(new[] { VIDEO_ID, OTHER_ID, THIRD_ID }));
+        Assert.That(await _client.GetRelatedAsync(OTHER_ID, 5), Is.Empty);
+        Assert.That(await _client.GetRelatedAsync(THIRD_ID, 5), Is.Null, "an error is not an empty list");
+
+        var calls = _handler.Requests.Count;
+        Assert.That(await _client.GetRelatedAsync("../v1/x", 5), Is.Null);
+        Assert.That(_handler.Requests.Count, Is.EqualTo(calls));
+
+        var queued = Substitute.For<IQueuedTrackInfo>();
+        queued.Platform.Returns(MusicPlatform.Youtube);
+        queued.TrackInfo.Returns(new RemoteTrackInfo(OTHER_ID, "Queued", "u", "", TimeSpan.Zero, MusicPlatform.Youtube));
+        for (var seed = 0; seed < 20; seed++)
+            Assert.That(MusicPlayer.PickRelated(tracks, VIDEO_ID, [queued], new Random(seed))?.Id, Is.EqualTo(THIRD_ID));
+
+        Assert.That(MusicPlayer.PickRelated(tracks[..2], VIDEO_ID, [queued], new Random(1)), Is.Null);
+
+        var radio = Substitute.For<IQueuedTrackInfo>();
+        radio.Platform.Returns(MusicPlatform.Radio);
+        radio.TrackInfo.Returns(new RemoteTrackInfo(OTHER_ID, "Radio", "u", "", TimeSpan.Zero, MusicPlatform.Radio));
+        Assert.That(MusicPlayer.PickRelated(tracks[..3], VIDEO_ID, [radio], new Random(1))?.Id, Is.EqualTo(OTHER_ID),
+            "only a queued YouTube song blocks the pick");
+    }
+
+    [Test]
     public async Task Prefetch_PostsTheIdAndNeverThrows()
     {
         _handler.Respond = _ => new HttpResponseMessage(HttpStatusCode.Accepted);
@@ -216,6 +254,37 @@ public sealed class MusicServiceTests
     }
 
     [Test]
+    public async Task PlaylistLoad_ReleasesTheLoadLockAfterAFinishedOrFailedLoad()
+    {
+        using var discord = new DiscordSocketClient();
+        var service = new MusicService(null!, null!, null!, null!, null!, discord, null!, null!, null!, null!, null!, null!, null!);
+        (string, MusicPlatform)[] songs = [("song", MusicPlatform.Youtube)];
+
+        var failing = Substitute.For<IMusicPlayer>();
+        failing.EnqueueManyAsync(default!, default!, default)
+            .ReturnsForAnyArgs(Task.FromException(new InvalidOperationException("the player was killed")));
+        var finishing = Substitute.For<IMusicPlayer>();
+        finishing.EnqueueManyAsync(default!, default!, default).ReturnsForAnyArgs(Task.CompletedTask);
+
+        foreach (var mp in new[] { failing, finishing })
+        {
+            Assert.That(service.TryEnterPlaylistLoad(), Is.True);
+            Assert.That(service.TryEnterPlaylistLoad(), Is.False, "a second load waits for the first");
+            service.StartPlaylistLoad(mp, songs, "queuer");
+
+            var released = false;
+            for (var i = 0; i < 200 && !released; i++)
+            {
+                await Task.Delay(10);
+                released = service.TryEnterPlaylistLoad();
+            }
+
+            Assert.That(released, Is.True);
+            service.ExitPlaylistLoad();
+        }
+    }
+
+    [Test]
     public async Task YoutubePlaylist_KeepsTheTracksQueuedBeforeAFailure()
     {
         var resolver = Substitute.For<IYoutubeResolver>();
@@ -224,10 +293,13 @@ public sealed class MusicServiceTests
         using var discord = new DiscordSocketClient();
         var service = new MusicService(null!, null!, null!, factory, null!, discord, null!, null!, null!, null!, null!, null!, null!);
         var mp = Substitute.For<IMusicPlayer>();
+        mp.EnqueueResolvedTrack(Arg.Any<ITrackInfo>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<bool>())
+          .Returns((Substitute.For<IQueuedTrackInfo>(), 0));
 
         resolver.ResolveTracksFromPlaylistAsync(Arg.Any<string>()).Returns(_ => FailingPlaylistInternal(2));
-        Assert.That(await service.EnqueueYoutubePlaylistAsync(mp, "mix", "queuer"), Is.EqualTo(2));
-        mp.Received(2).EnqueueTrack(Arg.Any<ITrackInfo>(), "queuer");
+        var result = await service.EnqueueYoutubePlaylistAsync(mp, "mix", "queuer");
+        Assert.That((result.Status, result.Added), Is.EqualTo((MusicAddStatus.Added, 2)));
+        mp.Received(2).EnqueueResolvedTrack(Arg.Any<ITrackInfo>(), "queuer", false, false);
 
         resolver.ResolveTracksFromPlaylistAsync(Arg.Any<string>()).Returns(_ => FailingPlaylistInternal(0));
         Assert.ThrowsAsync<HttpRequestException>(() => service.EnqueueYoutubePlaylistAsync(mp, "mix", "queuer"));

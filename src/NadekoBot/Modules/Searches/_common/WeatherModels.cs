@@ -64,4 +64,7 @@ public class WeatherData
     public int Id { get; set; }
     public string Name { get; set; }
     public int Cod { get; set; }
+
+    [JsonProperty("timezone")]
+    public int TimezoneOffsetSeconds { get; set; }
 }

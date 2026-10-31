@@ -301,7 +301,8 @@ public sealed class RakebackService: INService
         await using var uow = _db.GetDbContext();
 
         var rbs = await uow.GetTable<Rakeback>()
-                          .Where(x => x.UserId == userId)
+                          // a negative amount is owed for refunded bets, and later rakeback pays it off
+                          .Where(x => x.UserId == userId && x.Amount >= 1)
                           .DeleteWithOutputAsync((x) => x.Amount);
         
         if(rbs.Length == 0)

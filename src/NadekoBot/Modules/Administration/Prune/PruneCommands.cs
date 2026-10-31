@@ -12,6 +12,9 @@ public partial class Administration
         private const int MAX_PRUNE_COUNT = 1000;
         private const int DEFAULT_PRUNE_COUNT = 100;
 
+        // lets .prune <id> pick its default count after it learns if the id is a user or a message
+        private const int TARGET_DEFAULT_COUNT = -1;
+
         private static readonly TimeSpan _twoWeeks = TimeSpan.FromDays(14);
 
         public sealed class PruneOptions : INadekoCommandOptions
@@ -69,7 +72,55 @@ public partial class Administration
         [BotPerm(ChannelPerm.ManageMessages)]
         [NadekoOptions<PruneOptions>]
         [Priority(1)]
-        public async Task Prune(int count, params string[] args)
+        public Task Prune(int count, params string[] args)
+            => PruneAllInternalAsync(count, null, args);
+
+        //prune @user [x]
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(ChannelPerm.ManageMessages)]
+        [BotPerm(ChannelPerm.ManageMessages)]
+        [NadekoOptions<PruneOptions>]
+        [Priority(0)]
+        public Task Prune(IGuildUser user, int count = DEFAULT_PRUNE_COUNT, params string[] args)
+            => PruneUserInternalAsync(user.Id, count, args);
+
+        //prune userid|messageid [x]
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(ChannelPerm.ManageMessages)]
+        [BotPerm(ChannelPerm.ManageMessages)]
+        [NadekoOptions<PruneOptions>]
+        [Priority(0)]
+        public async Task Prune(ulong id, int count = TARGET_DEFAULT_COUNT, params string[] args)
+        {
+            // ids are unique across entity types, so an id of a message in this channel is not a user id
+            if (await IsChannelMessageAsync(id))
+            {
+                await PruneAllInternalAsync(count == TARGET_DEFAULT_COUNT ? MAX_PRUNE_COUNT : count,
+                    id,
+                    args);
+                return;
+            }
+
+            await PruneUserInternalAsync(id,
+                count == TARGET_DEFAULT_COUNT ? DEFAULT_PRUNE_COUNT : count,
+                args);
+        }
+
+        private async Task<bool> IsChannelMessageAsync(ulong id)
+        {
+            try
+            {
+                return await ctx.Channel.GetMessageAsync(id) is not null;
+            }
+            catch (HttpException ex) when (ex.DiscordCode == DiscordErrorCode.UnknownMessage)
+            {
+                return false;
+            }
+        }
+
+        private async Task PruneAllInternalAsync(int count, ulong? afterMessageId, string[] args)
         {
             // the command message itself is also deleted
             count++;
@@ -86,27 +137,10 @@ public partial class Administration
                 opts.Safe
                     ? static m => !m.IsPinned
                     : static _ => true,
-                opts.After);
+                afterMessageId ?? opts.After);
         }
 
-        //prune @user [x]
-        [Cmd]
-        [RequireContext(ContextType.Guild)]
-        [UserPerm(ChannelPerm.ManageMessages)]
-        [BotPerm(ChannelPerm.ManageMessages)]
-        [NadekoOptions<PruneOptions>]
-        [Priority(0)]
-        public Task Prune(IGuildUser user, int count = DEFAULT_PRUNE_COUNT, params string[] args)
-            => Prune(user.Id, count, args);
-
-        //prune userid [x]
-        [Cmd]
-        [RequireContext(ContextType.Guild)]
-        [UserPerm(ChannelPerm.ManageMessages)]
-        [BotPerm(ChannelPerm.ManageMessages)]
-        [NadekoOptions<PruneOptions>]
-        [Priority(0)]
-        public async Task Prune(ulong userId, int count = DEFAULT_PRUNE_COUNT, params string[] args)
+        private async Task PruneUserInternalAsync(ulong userId, int count, string[] args)
         {
             if (userId == ctx.User.Id)
                 count++;

@@ -112,16 +112,48 @@ public partial class Waifus
             ephemeral: true);
     }
 
-    private async Task ShowWaifuCardAsync(ulong targetUserId, string? banner = null)
+    private NadekoInteractionBase CreateFansInteraction(ulong waifuUserId)
+        => _inter.Create(ctx.User.Id,
+            new ButtonBuilder(
+                label: GetText(strs.waifu_btn_fans),
+                customId: "waifu:fans",
+                emote: new Emoji("👥")),
+            async smc =>
+            {
+                await smc.DeferAsync();
+                await WaifuFansInternalAsync(waifuUserId);
+            });
+
+    private async Task ShowWaifuCardAsync(ulong targetUserId)
+    {
+        if (!await TryShowWaifuCardAsync(targetUserId))
+            await Response().Error(strs.waifu_not_opted_in).SendAsync();
+    }
+
+    private async Task<bool> TryShowWaifuCardAsync(
+        ulong targetUserId,
+        string? banner = null,
+        bool showBank = false,
+        IReadOnlyList<NadekoInteractionBase>? extraInteractions = null,
+        IUser? knownTargetUser = null)
     {
         var info = await svc.GetWaifuInfoAsync(targetUserId);
         if (info is null)
+            return false;
+
+        var isOwnCard = targetUserId == ctx.User.Id;
+        if (isOwnCard && banner is null)
         {
-            await Response().Error(strs.waifu_not_opted_in).SendAsync();
-            return;
+            var backing = await svc.GetBackingAsync(ctx.User.Id);
+            if (backing is { } backedId)
+            {
+                var backedUser = await ctx.Client.GetUserAsync(backedId);
+                banner = GetText(strs.waifu_you_are_fan(backedUser?.ToString() ?? backedId.ToString()));
+                showBank = true;
+            }
         }
 
-        var targetUser = await ctx.Client.GetUserAsync(targetUserId);
+        var targetUser = knownTargetUser ?? await ctx.Client.GetUserAsync(targetUserId);
 
         var manager = info.ManagerId.HasValue
             ? await ctx.Client.GetUserAsync(info.ManagerId.Value)
@@ -199,7 +231,6 @@ public partial class Waifus
             .AddField(GetText(strs.waifu_field_manager), manager?.ToString() ?? "-", true)
             .AddField(GetText(strs.waifu_field_price), CurrencyHelper.N(info.Price, Culture, currSign), true);
 
-        var isOwnCard = targetUserId == ctx.User.Id;
         var footerParts = new List<string>
         {
             GetText(strs.waifu_footer_fee(info.WaifuFeePercent))
@@ -226,6 +257,12 @@ public partial class Waifus
 
         var resp = Response().Embed(eb);
 
+        if (info.FanCount > 0)
+            resp = resp.Interaction(CreateFansInteraction(targetUserId));
+
+        if (showBank)
+            resp = resp.Interaction(CreateBankInteraction());
+
         if (isOwnCard)
         {
             var pending = await svc.GetPendingPayoutAsync(ctx.User.Id);
@@ -233,7 +270,14 @@ public partial class Waifus
                 resp = resp.Interaction(CreateCollectPayoutInteraction());
         }
 
+        if (extraInteractions is not null)
+        {
+            foreach (var inter in extraInteractions)
+                resp = resp.Interaction(inter);
+        }
+
         await resp.SendAsync();
+        return true;
     }
 
     [Cmd]
@@ -280,11 +324,24 @@ public partial class Waifus
         {
             var backedUser = await ctx.Client.GetUserAsync(backing.Value);
             var backedName = backedUser?.ToString() ?? backing.Value.ToString();
+
+            List<NadekoInteractionBase> fanInteractions = [CreateOptInInteraction()];
+            if (isManager)
+                fanInteractions.Add(CreateWaifuListInteraction());
+
+            if (await TryShowWaifuCardAsync(backing.Value,
+                    banner: GetText(strs.waifu_fan_not_waifu(backedName)),
+                    showBank: true,
+                    extraInteractions: fanInteractions,
+                    knownTargetUser: backedUser))
+                return;
+
             var resp = Response()
                 .Error(strs.waifu_fan_not_waifu(backedName))
-                .Interaction(CreateOptInInteraction());
-            if (isManager)
-                resp = resp.Interaction(CreateWaifuListInteraction());
+                .Interaction(CreateBankInteraction());
+            foreach (var inter in fanInteractions)
+                resp = resp.Interaction(inter);
+
             await resp.SendAsync();
             return;
         }

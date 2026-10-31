@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace NadekoBot.Hosted;
@@ -264,6 +265,75 @@ public sealed record YoutubeCountsDto(
 
 public sealed record YoutubeStatusDto(string? ProxyId, YoutubeCountsDto Hour, YoutubeCountsDto Day);
 
+// DurationSec is 0 when the length is not known.
+public sealed record MusicTrackDto(string Id, string Title, string Url, string? Thumbnail, int DurationSec);
+
+public sealed record MusicSearchDto(IReadOnlyList<MusicTrackDto> Tracks);
+
+// Platform is "youtube", "radio" or "local".
+public sealed record QueuedTrackDto(
+    int Index,
+    string Id,
+    string Title,
+    string Url,
+    string? Thumbnail,
+    int DurationSec,
+    string Platform,
+    string Queuer);
+
+// Repeat is "none", "track" or "queue".
+public sealed record MusicStateDto(
+    string? VoiceChannelId,
+    bool Player,
+    bool Paused,
+    bool Stopped,
+    string Repeat,
+    bool Autoplay,
+    int Volume,
+    int? CurrentIndex,
+    int MaxQueueSize,
+    IReadOnlyList<QueuedTrackDto> Tracks);
+
+public sealed record AddTracksRequest(
+    string? Query = null,
+    bool? Playlist = null,
+    bool? Next = null,
+    string? VoiceChannelId = null,
+    string? By = null);
+
+public sealed record AddTracksDto(int Added, QueuedTrackDto? First);
+
+public sealed record MoveTrackRequest(int From, int To);
+
+public sealed record PlayTrackRequest(int Index);
+
+public sealed record UpdateMusicRequest(bool? Paused = null, string? Repeat = null, int? Volume = null);
+
+public sealed record LoadPlaylistRequest(string? VoiceChannelId = null, bool? Shuffle = null, string? By = null);
+
+public sealed record LoadStartedDto(int SongCount);
+
+public sealed record PlaylistInfoDto(int Id, string Name, string AuthorId, string AuthorName, int SongCount);
+
+public sealed record PlaylistPageDto(int Total, IReadOnlyList<PlaylistInfoDto> Playlists);
+
+public sealed record PlaylistSongDto(string Title, string Url);
+
+public sealed record PlaylistDto(
+    int Id,
+    string Name,
+    string AuthorId,
+    string AuthorName,
+    int SongCount,
+    IReadOnlyList<PlaylistSongDto> Songs);
+
+public sealed record SavePlaylistSongRequest(string? Title = null, string? Url = null);
+
+public sealed record SavePlaylistRequest(
+    string? Name = null,
+    SavePlaylistSongRequest?[]? Songs = null,
+    string? By = null);
+
 public sealed record GuildHealthDto(HealthBotDto Bot, IReadOnlyList<HealthCheckDto> Checks, HealthTimersDto Timers);
 
 public sealed record HealthBotDto(string? RoleId, int RolePosition, bool Administrator, IReadOnlyList<string> Missing);
@@ -289,3 +359,33 @@ public sealed record GuildActivityDto(
 public sealed record ActivityDayDto(DateOnly Date, long Commands, long Errors, long Joins, long Leaves, long Warnings);
 
 public sealed record TopCommandDto(string Name, long Count);
+public sealed record LimitReachedDto(string Error, int Max);
+
+public sealed record PlatformErrorDto(string Error, string Platform);
+
+// FailingSince is the first failed check of the current streak, null while the feed works.
+public sealed record FeedSubDto(int Id, string Url, string ChannelId, string? Message, DateTime? FailingSince);
+
+public sealed record FeedListDto(IReadOnlyList<FeedSubDto> Feeds, int Max);
+
+public sealed record CreateFeedRequest(string? Url = null, string? ChannelId = null, string? Message = null);
+
+// Message is a JsonElement so that a missing field keeps the message and null clears it.
+public sealed record UpdateFeedRequest(string? ChannelId = null, JsonElement Message = default);
+
+// Platform is "twitch", "picarto", "youtube", "facebook", "trovo" or "kick".
+public sealed record FollowedStreamDto(int Id, string Platform, string Name, string Url, string ChannelId, string? Message);
+
+public sealed record StreamListDto(
+    IReadOnlyList<FollowedStreamDto> Streams,
+    int Max,
+    bool NotifyOffline,
+    bool DeleteOnlineMessage);
+
+public sealed record CreateStreamRequest(string? Url = null, string? ChannelId = null, string? Message = null);
+
+public sealed record UpdateStreamRequest(string? ChannelId = null, JsonElement Message = default);
+
+public sealed record StreamSettingsDto(bool NotifyOffline, bool DeleteOnlineMessage);
+
+public sealed record UpdateStreamSettingsRequest(bool? NotifyOffline = null, bool? DeleteOnlineMessage = null);

@@ -17,5 +17,5 @@ public record StreamData
     public string AvatarUrl { get; set; }
 
     public StreamDataKey CreateKey()
-        => new(StreamType, UniqueName.ToLower());
+        => new(StreamType, UniqueName);
 }

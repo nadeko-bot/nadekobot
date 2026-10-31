@@ -62,18 +62,6 @@ lyrics:
   params:
     - name:
         desc: The song to look up lyrics for.
-musicquality:
-  desc: |-
-    Gets or sets the default music player quality. Available settings: Highest, High, Medium, Low. Default is **Highest**. Provide no argument to see current setting.
-  ex:
-    - ''
-    - High
-    - Low
-  params:
-    - {}
-    - preset:
-        desc: |-
-          The selected preset determines the level of audio compression and processing applied to the music playback.
 next:
   desc: |-
     Goes to the next song in the queue. You have to be in the same voice channel as the bot.
@@ -129,7 +117,7 @@ playlistdelete:
         desc: The identifier for the playlist to be deleted.
 playlistload:
   desc: |-
-    Loads a saved playlist using its ID. Use `{0}pls` to list all saved playlists and `{0}save` to save new ones. Use `--shuffle` to load in random order.
+    Loads a saved playlist using its ID. Use `{0}pls` to list all saved playlists and `{0}plsave` to save new ones. Use `--shuffle` to load in random order.
   ex:
     - 5
     - 5 --shuffle
@@ -137,15 +125,23 @@ playlistload:
     - id:
         desc: The id of the playlist to be loaded.
 playlists:
-  desc: Lists all playlists. Paginated, 20 per page.
+  desc: |-
+    Lists the saved playlists, 20 on each page.
+    You can specify a member to list only that member's saved playlists.
   ex:
     - 1
+    - '@Someone 2'
   params:
     - page:
         desc: The page number to display.
+    - user:
+        desc: The member whose saved playlists the bot lists.
+      page:
+        desc: The page number to display.
 playlistsave:
   desc: |-
-    Saves a playlist under a certain name. Playlist name must be no longer than 20 characters.
+    Saves the current queue as a playlist under a name of at most 20 characters.
+    Each member can have at most 25 saved playlists.
   ex:
     - classical1
   params:
@@ -172,7 +168,8 @@ queue:
         desc: The search term used to identify the song to be queued.
 queueautoplay:
   desc: |-
-    Toggles autoplay - When the song is finished, automatically queue a related Youtube song. (Works only for Youtube songs)
+    Turns autoplay on or off. When the last song in the queue starts, the bot adds a related YouTube song.
+    Autoplay works only for YouTube songs. Turning it on turns repeat off.
   ex:
     - ''
   params:

@@ -2,6 +2,8 @@ waifu:
   desc: |-
     Shows waifu/hubby information including stats, fans, and returns.
     If you're a fan and use it without arguments, it shows your target waifu's card.
+    The card has a Fans button when the waifu has fans.
+    If you're a fan, the card also has a button which shows your bank balance.
   ex:
     - ''
     - '@user'
@@ -18,7 +20,7 @@ waifuhelp:
     - {}
 waifufans:
   desc: |-
-    Shows all fans backing a waifu and their last cycle earnings.
+    Shows all fans backing a waifu.
   ex:
     - ''
     - '@user'

@@ -1,7 +1,6 @@
 using NadekoBot.Voice;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Music.Resolvers;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -21,6 +20,12 @@ public sealed class MusicPlayer : IMusicPlayer
     // With repeat on, a track which cannot play comes back at once, so the player stops instead of retrying it.
     private const int MAX_FAILED_TRACKS_IN_ROW = 3;
 
+    private const string AUTOPLAY_QUEUER = "Autoplay";
+    private const int GOOGLE_RELATED_COUNT = 5;
+
+    // The related song loads while the last song plays. This is how long the end of that song waits for it.
+    private const int AUTOPLAY_WAIT_MS = 5_000;
+
     public event Func<IMusicPlayer, IQueuedTrackInfo, Task>? OnCompleted;
     public event Func<IMusicPlayer, IQueuedTrackInfo, int, Task>? OnStarted;
     public event Func<IMusicPlayer, Task>? OnQueueStopped;
@@ -34,8 +39,7 @@ public sealed class MusicPlayer : IMusicPlayer
 
     public float Volume { get; private set; } = 1.0f;
 
-    private readonly AdjustVolumeDelegate _adjustVolume;
-    private readonly VoiceClient _vc;
+    private readonly VoiceClient _vc = new();
 
     private readonly IMusicQueue _queue;
     private readonly ITrackResolveProvider _trackResolveProvider;
@@ -60,6 +64,8 @@ public sealed class MusicPlayer : IMusicPlayer
 
     private volatile bool skipped;
     private int? forceIndex;
+    private Task? _autoplay;
+    private IQueuedTrackInfo? _autoplayFor;
 
     public bool AutoPlay { get; set; }
 
@@ -73,7 +79,6 @@ public sealed class MusicPlayer : IMusicPlayer
         AudioFileCacheService audioFileCache,
         AudioFileCacheConfigService musicConfig,
         PublicOnlyProxy publicProxy,
-        QualityPreset qualityPreset,
         bool autoPlay)
     {
         _publicProxy = publicProxy;
@@ -86,12 +91,6 @@ public sealed class MusicPlayer : IMusicPlayer
         _googleApiService = googleApiService;
         _audioFileCache = audioFileCache;
         AutoPlay = autoPlay;
-
-        _vc = GetVoiceClient(qualityPreset);
-        if (_vc.BitDepth == 16)
-            _adjustVolume = AdjustVolumeInt16;
-        else
-            _adjustVolume = AdjustVolumeFloat32;
 
         _songBuffer = new PoopyBufferImmortalized(_vc.InputLength);
         _sendPcm = TryReadAndSendPcm;
@@ -119,18 +118,6 @@ public sealed class MusicPlayer : IMusicPlayer
         {
         }
     }
-
-    private static VoiceClient GetVoiceClient(QualityPreset qualityPreset)
-        => qualityPreset switch
-        {
-            QualityPreset.Highest or QualityPreset.High => new(),
-            QualityPreset.Medium or QualityPreset.Low => new(SampleRate._48k,
-                Bitrate._96k,
-                Channels.Two,
-                FrameDelay.Delay40,
-                BitDepthEnum.UInt16),
-            _ => throw new ArgumentOutOfRangeException(nameof(qualityPreset), qualityPreset, null)
-        };
 
     private async Task PlayLoopAsync()
     {
@@ -171,6 +158,7 @@ public sealed class MusicPlayer : IMusicPlayer
 
                     _ = OnStarted?.Invoke(this, track, index);
                     PrefetchNextInternal();
+                    StartAutoplayInternal(track);
 
                     // Voice connects while the stream opens, so the first frame goes out as soon as both are ready.
                     var voiceReady = WaitForVoiceReadyAsync(cts.Token);
@@ -217,7 +205,6 @@ public sealed class MusicPlayer : IMusicPlayer
                         _songBuffer.Reset();
 
                         ffmpeg = FfmpegTrackDataSource.Create(
-                            _vc.BitDepth,
                             streamUrl,
                             isLocal,
                             httpProxy,
@@ -276,26 +263,11 @@ public sealed class MusicPlayer : IMusicPlayer
 
                     _ = OnCompleted?.Invoke(this, track);
 
-                    if (AutoPlay && track.Platform == MusicPlatform.Youtube)
-                    {
-                        try
-                        {
-                            var relatedSongs =
-                                await _googleApiService.GetRelatedVideosAsync(track.TrackInfo.Id, 5);
-                            var related = relatedSongs.Shuffle().FirstOrDefault();
-                            if (related is not null)
-                            {
-                                var relatedTrack =
-                                    await _trackResolveProvider.QuerySongAsync(related, MusicPlatform.Youtube, false);
-                                if (relatedTrack is not null)
-                                    EnqueueTrack(relatedTrack, "Autoplay");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Warning(ex, "Failed queueing a related song via autoplay");
-                        }
-                    }
+                    // Autoplay can be turned on while the last song plays. Without the related song the queue ends
+                    // here, so the end of the song waits for it.
+                    StartAutoplayInternal(track);
+                    if (_autoplay is { IsCompleted: false } pending)
+                        await WaitForAutoplayInternalAsync(pending);
 
                     HandleQueuePostTrack();
                     skipped = false;
@@ -437,6 +409,102 @@ public sealed class MusicPlayer : IMusicPlayer
         return new(url, false, null);
     }
 
+    private void StartAutoplayInternal(IQueuedTrackInfo track)
+    {
+        if (!AutoPlay
+            || Repeat != PlayerRepeatType.None
+            || track.Platform != MusicPlatform.Youtube
+            || !_queue.IsLast()
+            || ReferenceEquals(_autoplayFor, track))
+            return;
+
+        _autoplayFor = track;
+        _autoplay = QueueRelatedInternalAsync(track.TrackInfo.Id);
+    }
+
+    // Runs once per song and never retries, so a failing source costs one request for each song.
+    private async Task QueueRelatedInternalAsync(string videoId)
+    {
+        try
+        {
+            if (_ytResolverFactory.GetYoutubeResolver() is ServiceYoutubeResolver service)
+            {
+                if (await service.Service.GetRelatedAsync(videoId, MusicServiceClient.MAX_RELATED_LIMIT) is not { } tracks)
+                    return;
+
+                if (!CanAutoplayInternal() || PickRelated(tracks, videoId, _queue.List(), Random.Shared) is not { } pick)
+                    return;
+
+                EnqueueTrack(ServiceYoutubeResolver.ToTrackInfo(pick), AUTOPLAY_QUEUER);
+                _ = service.Service.PrefetchAsync(pick.Id!);
+                return;
+            }
+
+            var related = (await _googleApiService.GetRelatedVideosAsync(videoId, GOOGLE_RELATED_COUNT)).Shuffle().FirstOrDefault();
+            if (related is null)
+                return;
+
+            var relatedTrack = await _trackResolveProvider.QuerySongAsync(related, MusicPlatform.Youtube, false);
+            if (relatedTrack is not null
+                && CanAutoplayInternal()
+                && relatedTrack.Id != videoId
+                && !IsQueuedInternal(_queue.List(), relatedTrack.Id))
+                EnqueueTrack(relatedTrack, AUTOPLAY_QUEUER);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed queueing a related song via autoplay");
+        }
+    }
+
+    // The answer can come after .queueautoplay off, a clear, a full queue or .destroy.
+    private bool CanAutoplayInternal()
+        => AutoPlay && !IsKilled && _queue.Count > 0 && !IsQueueFull;
+
+    // A skip, a stop or a destroy ends the wait at once.
+    private async Task WaitForAutoplayInternalAsync(Task pending)
+    {
+        var start = Stopwatch.GetTimestamp();
+        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(VOICE_READY_POLL_MS));
+        while (!pending.IsCompleted
+               && !IsKilled
+               && !IsStopped
+               && !skipped
+               && Stopwatch.GetElapsedTime(start).TotalMilliseconds < AUTOPLAY_WAIT_MS)
+            await timer.WaitForNextTickAsync();
+    }
+
+    // A random related song which is not the one that started it and not already in the queue.
+    public static MusicServiceTrack? PickRelated(
+        MusicServiceTrack[] candidates,
+        string playedId,
+        IReadOnlyCollection<IQueuedTrackInfo> queue,
+        Random rng)
+    {
+        Span<int> eligible = stackalloc int[MusicServiceClient.MAX_RELATED_LIMIT];
+        var count = 0;
+        for (var i = 0; i < candidates.Length && count < eligible.Length; i++)
+        {
+            if (candidates[i].Id is not { } id || id == playedId || IsQueuedInternal(queue, id))
+                continue;
+
+            eligible[count++] = i;
+        }
+
+        return count == 0 ? null : candidates[eligible[rng.Next(count)]];
+    }
+
+    private static bool IsQueuedInternal(IReadOnlyCollection<IQueuedTrackInfo> queue, string videoId)
+    {
+        foreach (var queued in queue)
+        {
+            if (queued.Platform == MusicPlatform.Youtube && queued.TrackInfo.Id == videoId)
+                return true;
+        }
+
+        return false;
+    }
+
     private void PrefetchNextInternal()
     {
         if (Repeat == PlayerRepeatType.Track
@@ -461,7 +529,7 @@ public sealed class MusicPlayer : IMusicPlayer
         if (data.Length == 0)
             return SendResult.End;
 
-        _adjustVolume(data, Volume);
+        AdjustVolumeFloat32(data, Volume);
         return proxy.SendPcmFrame(_vc, data, length) ? SendResult.Sent : SendResult.Failed;
     }
 
@@ -493,7 +561,7 @@ public sealed class MusicPlayer : IMusicPlayer
         if (_vc.DecodeFrame(frame.AsSpan(0, length), pcm, reset) != _vc.FrameSizePerChannel)
             return proxy.SendOpusFrame(_vc, frame, length) ? SendResult.Sent : SendResult.Failed;
 
-        _adjustVolume(pcm, volume);
+        AdjustVolumeFloat32(pcm, volume);
         return proxy.SendPcmFrame(_vc, pcm, pcm.Length) ? SendResult.Sent : SendResult.Failed;
     }
 
@@ -693,24 +761,9 @@ public sealed class MusicPlayer : IMusicPlayer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void AdjustVolumeInt16(Span<byte> audioSamples, float volume)
-    {
-        if (Math.Abs(volume - 1f) < 0.0001f)
-            return;
-
-        var samples = MemoryMarshal.Cast<byte, short>(audioSamples);
-
-        for (var i = 0; i < samples.Length; i++)
-        {
-            ref var sample = ref samples[i];
-            sample = (short)(sample * volume);
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void AdjustVolumeFloat32(Span<byte> audioSamples, float volume)
     {
-        if (Math.Abs(volume - 1f) < 0.0001f)
+        if (Math.Abs(volume - 1f) < UNITY_VOLUME_EPSILON)
             return;
 
         var samples = MemoryMarshal.Cast<byte, float>(audioSamples);
@@ -748,13 +801,22 @@ public sealed class MusicPlayer : IMusicPlayer
         MusicPlatform? forcePlatform)
     {
         var song = await _trackResolveProvider.QuerySongAsync(query, forcePlatform, allowLocalNetwork);
-        if (song is null || IsQueueFull)
+        return song is null ? default : EnqueueResolvedTrack(song, queuer, asNext, allowLocalNetwork);
+    }
+
+    public (IQueuedTrackInfo? QueuedTrack, int Index) EnqueueResolvedTrack(
+        ITrackInfo track,
+        string queuer,
+        bool asNext,
+        bool allowLocalNetwork)
+    {
+        if (IsQueueFull)
             return default;
 
         int index;
         var queued = asNext
-            ? _queue.EnqueueNext(song, queuer, allowLocalNetwork, out index)
-            : _queue.Enqueue(song, queuer, allowLocalNetwork, out index);
+            ? _queue.EnqueueNext(track, queuer, allowLocalNetwork, out index)
+            : _queue.Enqueue(track, queuer, allowLocalNetwork, out index);
 
         WakeInternal();
         return (queued, index);
@@ -894,6 +956,9 @@ public sealed class MusicPlayer : IMusicPlayer
     public bool TogglePause()
         => IsPaused = !IsPaused;
 
+    public void SetPaused(bool paused)
+        => IsPaused = paused;
+
     public IQueuedTrackInfo? MoveTrack(int from, int to)
         => _queue.MoveTrack(from, to);
 
@@ -907,8 +972,6 @@ public sealed class MusicPlayer : IMusicPlayer
         _songBuffer.Dispose();
         _vc.Dispose();
     }
-
-    private delegate void AdjustVolumeDelegate(Span<byte> data, float volume);
 
     public void SetFairplay()
     {

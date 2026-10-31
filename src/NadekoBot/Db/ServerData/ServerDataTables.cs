@@ -116,6 +116,8 @@ public static class ServerDataTables
         "TempVoiceChannel",
         // Currency of the old bot.
         "PlantedCurrency",
+        "BlackjackStake",
+        "BlackjackRoundState",
     ]);
 
     public static readonly FrozenSet<string> Parents = GetParentsInternal();

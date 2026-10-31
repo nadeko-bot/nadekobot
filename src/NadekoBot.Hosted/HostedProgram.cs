@@ -96,9 +96,17 @@ public static class HostedProgram
         }
 
         logs?.AddSecret(new YoutubeUpstreamSetting(paths.YoutubeProxy).Proxy?.Password);
-        logs?.AddSecret(new MusicServiceSetting(paths.MusicService).Current?.Key);
+        var musicService = MusicServiceSetting.For(paths.MusicService);
+        if (!ReferenceEquals(musicService, MusicServiceSetting.Default))
+            Log.Error("The music service setting {Path} is not the file which the bot reads: {BotPath}",
+                musicService.FilePath,
+                MusicServiceSetting.Default.FilePath);
+
+        musicService.DeleteStaleTempFiles();
+        logs?.AddSecret(musicService.Current?.Key);
         logs?.AddSecrets(creds.Token, settings.ApiKey);
         logs?.AddSecret(creds.OmdbApiKey);
+        logs?.AddSecret(creds.TwitchClientSecret);
         logs?.AddSecret(Environment.GetEnvironmentVariable(NadekoBot.Modules.Searches.Services.MovieService.KEY_ENV_VAR));
 
         if (mode == HostMode.Coordinated && !settings.HasKey)

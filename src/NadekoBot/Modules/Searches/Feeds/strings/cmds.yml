@@ -1,7 +1,7 @@
 feed:
   desc: |-
-    Subscribes to a feed.
-    Bot will post an update up to once every 10 seconds.
+    Subscribes to a feed. The bot posts each new item of the feed.
+    The bot checks a YouTube channel for uploads every 5 minutes.
     You can have up to 10 feeds on one server.
     All feeds must have unique URLs.
     Set a channel as a second optional parameter to specify where to send the updates.
@@ -38,20 +38,21 @@ feedremove:
         desc: The index of the feed to stop tracking.
 ytuploadnotif:
   desc: |-
-    Subscribe to a youtube channel's upload rss feed.
+    Subscribes to a YouTube channel's uploads. The bot posts a message when the channel uploads a video.
+    Give the channel link, its @handle or its channel ID.
+    The bot checks the channel every 5 minutes.
     You can optionally specify a message which will be posted with an update.
-    This is just a shortcut for `.feed` with a url of the youtube channel's rss feed.
   ex:
     - https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow
-    - 'https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow New video is posted'
+    - 'https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow #videos New video is posted'
   params:
     - url:
-        desc: The URL of the YouTube channel's RSS feed to subscribe to.
+        desc: The link to the YouTube channel.
       message:
         desc: "The text to be displayed in the notification when an upload is detected."
     - url:
-        desc: The URL of the YouTube channel's RSS feed to subscribe to.
+        desc: The link to the YouTube channel.
       channel:
-        desc: "The ID of the YouTube channel to subscribe to notifications for, or the text channel where updates will be posted."
+        desc: "The text channel where the bot posts the uploads."
       message:
         desc: "The text to be displayed in the notification when an upload is detected."

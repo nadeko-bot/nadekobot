@@ -35,22 +35,9 @@ public class MusicPlayerSettings
     public bool AutoDisconnect { get; set; }
 
     /// <summary>
-    ///     Selected quality preset for the music player
-    /// </summary>
-    public QualityPreset QualityPreset { get; set; }
-
-    /// <summary>
     ///     Whether the bot will automatically queue related songs
     /// </summary>
     public bool AutoPlay { get; set; }
-}
-
-public enum QualityPreset
-{
-    Highest,
-    High,
-    Medium,
-    Low
 }
 
 public enum PlayerRepeatType

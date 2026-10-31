@@ -1009,7 +1009,7 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
         {
             ITextChannel? logChannel;
             if ((logChannel = await TryGetLogChannel(channel.Guild, LogType.MessageDeleted)) is null
-                || logChannel.Id == msg.Id)
+                || logChannel.Id == channel.Id)
                 return;
 
             var resolvedMessage = msg.Resolve(TagHandling.FullName);

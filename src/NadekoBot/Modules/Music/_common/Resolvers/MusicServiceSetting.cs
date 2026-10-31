@@ -12,6 +12,10 @@ public sealed class MusicServiceSetting(string path)
     public const int MAX_URL_LENGTH = 256;
     public const int MIN_KEY_LENGTH = 32;
     public const int MAX_KEY_LENGTH = 512;
+    public const int MAX_FILE_BYTES = 4096;
+
+    // A temp file this old is left from a write which stopped, not one which is running now.
+    private static readonly TimeSpan _staleTempAge = TimeSpan.FromMinutes(1);
 
     private const string ID_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._:-";
     private const string KEY_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~+/=";
@@ -19,8 +23,17 @@ public sealed class MusicServiceSetting(string path)
     public static MusicServiceSetting Default { get; } =
         new(Path.GetFullPath(Path.Combine("data", ".music-service")));
 
+    // The bot and the API must share one instance, so a write updates the copy which the bot reads at once.
+    public static MusicServiceSetting For(string path)
+    {
+        var full = Path.GetFullPath(path);
+        var comparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+        return string.Equals(full, Default.FilePath, comparison) ? Default : new(full);
+    }
+
     private readonly Lock _lock = new();
     private (DateTime Stamp, long Length, Entry? Entry) _cache = (default, -2, null);
+    private int _generation;
 
     public sealed record Entry(string Id, string BaseUrl, string Key, string Host, int Port);
 
@@ -42,15 +55,22 @@ public sealed class MusicServiceSetting(string path)
                 return null;
             }
 
+            int seen;
             lock (_lock)
             {
                 if (_cache.Stamp == stamp && _cache.Length == length)
                     return _cache.Entry;
+
+                seen = _generation;
             }
 
-            var entry = length < 0 ? null : ReadInternal();
+            var entry = length < 0 ? null : ReadInternal(length);
             lock (_lock)
-                _cache = (stamp, length, entry);
+            {
+                // A Set or Clear which ran during the read wins: its entry is newer than this one.
+                if (_generation == seen)
+                    _cache = (stamp, length, entry);
+            }
 
             return entry;
         }
@@ -95,19 +115,25 @@ public sealed class MusicServiceSetting(string path)
         if (!string.IsNullOrEmpty(dir))
             Directory.CreateDirectory(dir);
 
+        DeleteStaleTempFiles();
         var temp = $"{FilePath}.{Guid.NewGuid():N}.tmp";
         var options = new FileStreamOptions { Mode = FileMode.CreateNew, Access = FileAccess.Write };
         if (!OperatingSystem.IsWindows())
             options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
 
+        long length;
+        DateTime stamp;
         try
         {
             using (var fs = new FileStream(temp, options))
             {
                 fs.Write(Encoding.UTF8.GetBytes($"id={entry.Id}\nurl={entry.BaseUrl}\nkey={entry.Key}\n"));
                 fs.Flush(flushToDisk: true);
+                length = fs.Length;
             }
 
+            // A rename keeps the time, so this describes the file which this call wrote, also when another write follows.
+            stamp = File.GetLastWriteTimeUtc(temp);
             File.Move(temp, FilePath, overwrite: true);
         }
         finally
@@ -115,12 +141,48 @@ public sealed class MusicServiceSetting(string path)
             if (File.Exists(temp))
                 File.Delete(temp);
         }
+
+        // The time and length of the file can stay the same for a new key, so the cache takes the entry directly.
+        lock (_lock)
+        {
+            _generation++;
+            _cache = (stamp, length, entry);
+        }
     }
 
     public void Clear()
     {
+        DeleteStaleTempFiles();
         if (File.Exists(FilePath))
             File.Delete(FilePath);
+
+        lock (_lock)
+        {
+            _generation++;
+            _cache = (default, -1, null);
+        }
+    }
+
+    // A temp file of a write which stopped holds the key.
+    public void DeleteStaleTempFiles()
+    {
+        var dir = Path.GetDirectoryName(FilePath);
+        if (string.IsNullOrEmpty(dir) || !Directory.Exists(dir))
+            return;
+
+        var oldest = DateTime.UtcNow - _staleTempAge;
+        foreach (var file in Directory.EnumerateFiles(dir, Path.GetFileName(FilePath) + ".*.tmp"))
+        {
+            try
+            {
+                if (File.GetLastWriteTimeUtc(file) < oldest)
+                    File.Delete(file);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                Log.Warning("Could not delete the old temporary file {Path}: {Error}", file, ex.Message);
+            }
+        }
     }
 
     // The client of a managed bot connects only to the service which the manager set, also on a private address,
@@ -154,12 +216,27 @@ public sealed class MusicServiceSetting(string path)
         }
     }
 
-    private Entry? ReadInternal()
+    private Entry? ReadInternal(long length)
     {
+        if (length > MAX_FILE_BYTES)
+        {
+            Log.Warning("Ignoring {Path}: it is larger than {Max} bytes", FilePath, MAX_FILE_BYTES);
+            return null;
+        }
+
         string text;
         try
         {
-            text = File.ReadAllText(FilePath);
+            using var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            Span<byte> buffer = stackalloc byte[MAX_FILE_BYTES + 1];
+            var read = fs.ReadAtLeast(buffer, buffer.Length, throwOnEndOfStream: false);
+            if (read > MAX_FILE_BYTES)
+            {
+                Log.Warning("Ignoring {Path}: it is larger than {Max} bytes", FilePath, MAX_FILE_BYTES);
+                return null;
+            }
+
+            text = Encoding.UTF8.GetString(buffer[..read]);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {

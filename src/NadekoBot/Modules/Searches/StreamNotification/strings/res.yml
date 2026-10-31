@@ -3,6 +3,7 @@ stream_message_set: Announcement message when {0} stream goes online has been se
 stream_message_set_all: All {0} followed streams now have the specified announcement message.
 stream_no: No such stream.
 stream_not_added: "Stream was not added. Either stream doesn't exist, that platform is unsupported, or you've reached the maximum number of streams allowed."
+stream_platform_unavailable: "The bot cannot check {0} streams now. Try again later."
 stream_already_followed: "This channel already follows {0}."
 stream_not_following: You're not following that stream on this server.
 stream_not_following_any: You're not following any streams.

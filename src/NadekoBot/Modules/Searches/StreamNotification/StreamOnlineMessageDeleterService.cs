@@ -86,8 +86,10 @@ public sealed class StreamOnlineMessageDeleterService : INService, IReadyExecuto
         foreach (var sd in streamDatas)
         {
             var key = sd.CreateKey();
+            // older rows hold the name in lower case
+            var name = key.Name.ToLowerInvariant();
             var toDelete = await ctx.GetTable<StreamOnlineMessage>()
-                                    .Where(x => (x.Type == key.Type && x.Name == key.Name)
+                                    .Where(x => (x.Type == key.Type && x.Name.ToLower() == name)
                                                 || Sql.DateDiff(Sql.DateParts.Day, x.DateAdded, DateTime.UtcNow) > 1)
                                     .DeleteWithOutputAsync();
 

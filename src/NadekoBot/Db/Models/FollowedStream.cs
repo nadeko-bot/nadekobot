@@ -26,11 +26,11 @@ public class FollowedStream
 
     protected bool Equals(FollowedStream other)
         => ChannelId == other.ChannelId
-           && Username.Trim().ToUpperInvariant() == other.Username.Trim().ToUpperInvariant()
+           && Username.AsSpan().Trim().Equals(other.Username.AsSpan().Trim(), StringComparison.OrdinalIgnoreCase)
            && Type == other.Type;
 
     public override int GetHashCode()
-        => HashCode.Combine(ChannelId, Username, (int)Type);
+        => HashCode.Combine(ChannelId, string.GetHashCode(Username.AsSpan().Trim(), StringComparison.OrdinalIgnoreCase), (int)Type);
 
     public override bool Equals(object obj)
         => obj is FollowedStream fs && Equals(fs);

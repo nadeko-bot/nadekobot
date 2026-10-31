@@ -32,7 +32,6 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
     private const int LQ_ITEMS_PER_PAGE = 9;
 
-    private static readonly SemaphoreSlim _voiceChannelLock = new(1, 1);
     private readonly ILogCommandService _logService;
     private readonly ILyricsService _lyricsService;
     private readonly BotPolicy _policy;
@@ -67,21 +66,6 @@ public sealed partial class Music : NadekoModule<IMusicService>
         return true;
     }
 
-    private async Task EnsureBotInVoiceChannelAsync(ulong voiceChannelId, IGuildUser botUser = null)
-    {
-        botUser ??= await ctx.Guild.GetCurrentUserAsync();
-        await _voiceChannelLock.WaitAsync();
-        try
-        {
-            if (botUser.VoiceChannel?.Id is null || !_service.TryGetMusicPlayer(ctx.Guild.Id, out _))
-                await _service.JoinVoiceChannelAsync(ctx.Guild.Id, voiceChannelId);
-        }
-        finally
-        {
-            _voiceChannelLock.Release();
-        }
-    }
-
     private async Task<bool> QueuePreconditionInternalAsync()
     {
         var user = (IGuildUser)ctx.User;
@@ -96,7 +80,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
         _ = ctx.Channel.TriggerTypingAsync();
 
         var botUser = await ctx.Guild.GetCurrentUserAsync();
-        await EnsureBotInVoiceChannelAsync(voiceChannelId!.Value, botUser);
+        await _service.EnsureVoiceChannelAsync(ctx.Guild.Id, voiceChannelId!.Value);
 
         if (botUser.VoiceChannel?.Id != voiceChannelId)
         {
@@ -131,7 +115,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
         }
 
         // run voice join and track resolution in parallel
-        var voiceTask = EnsureBotInVoiceChannelAsync(voiceChannelId.Value, botUser);
+        var voiceTask = _service.EnsureVoiceChannelAsync(ctx.Guild.Id, voiceChannelId.Value);
         var resolveTask = mp.TryEnqueueTrackAsync(
             query,
             ctx.User.ToString(),
@@ -338,7 +322,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
                 add += "🔂 " + GetText(strs.repeating_track) + "\n";
             else
             {
-                if (mp.AutoPlay)
+                if (mp.AutoPlay && repeatType == PlayerRepeatType.None)
                     add += "↪ " + GetText(strs.autoplaying) + "\n";
                 // if (mp.FairPlay && !mp.Autoplay)
                 //     add += " " + GetText(strs.fairplay) + "\n";
@@ -593,7 +577,7 @@ public sealed partial class Music : NadekoModule<IMusicService>
         _ = ctx.Channel.TriggerTypingAsync();
 
         var botUser = await ctx.Guild.GetCurrentUserAsync();
-        await EnsureBotInVoiceChannelAsync(voiceChannelId!.Value, botUser);
+        await _service.EnsureVoiceChannelAsync(ctx.Guild.Id, voiceChannelId!.Value);
 
         if (botUser.VoiceChannel?.Id != voiceChannelId)
         {
@@ -664,8 +648,14 @@ public sealed partial class Music : NadekoModule<IMusicService>
         _ = ctx.Channel.TriggerTypingAsync();
 
 
-        var queuedCount = await _service.EnqueueYoutubePlaylistAsync(mp, playlistQuery, ctx.User.ToString());
-        if (queuedCount == 0)
+        var queued = await _service.EnqueueYoutubePlaylistAsync(mp, playlistQuery, ctx.User.ToString());
+        if (queued.Status == MusicAddStatus.QueueFull)
+        {
+            await Response().Error(strs.queue_full(mp.MaxQueueSize)).SendAsync();
+            return;
+        }
+
+        if (queued.Added == 0)
         {
             await Response().Error(strs.no_search_results).SendAsync();
             return;
@@ -771,24 +761,6 @@ public sealed partial class Music : NadekoModule<IMusicService>
             await Response().Confirm(strs.autodc_enable).SendAsync();
         else
             await Response().Confirm(strs.autodc_disable).SendAsync();
-    }
-
-    [Cmd]
-    [RequireContext(ContextType.Guild)]
-    [UserPerm(GuildPerm.Administrator)]
-    public async Task MusicQuality()
-    {
-        var quality = await _service.GetMusicQualityAsync(ctx.Guild.Id);
-        await Response().Confirm(strs.current_music_quality(Format.Bold(quality.ToString()))).SendAsync();
-    }
-
-    [Cmd]
-    [RequireContext(ContextType.Guild)]
-    [UserPerm(GuildPerm.Administrator)]
-    public async Task MusicQuality(QualityPreset preset)
-    {
-        await _service.SetMusicQualityAsync(ctx.Guild.Id, preset);
-        await Response().Confirm(strs.music_quality_set(Format.Bold(preset.ToString()))).SendAsync();
     }
 
     [Cmd]

@@ -58,8 +58,7 @@ public sealed partial class YtLoader
         public override string Title { get; }
         public override string Thumb { get; }
         public override TimeSpan Duration { get; }
-
-        private readonly string _videoId;
+        public string Id { get; }
 
         public YtTrackInfo(string title, string videoId, string thumb, TimeSpan duration)
         {
@@ -67,8 +66,7 @@ public sealed partial class YtLoader
             Thumb = thumb;
             Url = BASE_YOUTUBE_URL + videoId;
             Duration = duration;
-
-            _videoId = videoId;
+            Id = videoId;
         }
     }
 }

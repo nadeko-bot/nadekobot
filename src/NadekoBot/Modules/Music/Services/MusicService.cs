@@ -1,4 +1,6 @@
-﻿using NadekoBot.Db.Models;
+﻿using LinqToDB;
+using LinqToDB.EntityFrameworkCore;
+using NadekoBot.Db.Models;
 using NadekoBot.Modules.Music.Resolvers;
 using System.Diagnostics.CodeAnalysis;
 
@@ -7,6 +9,7 @@ namespace NadekoBot.Modules.Music.Services;
 public sealed class MusicService : IMusicService, IPlaceholderProvider
 {
     private const int SEARCH_RESULTS = 5;
+    public const int MAX_PLAYLISTS_PER_USER = 25;
 
     private readonly AyuVoiceStateService _voiceStateService;
     private readonly ITrackResolveProvider _trackResolveProvider;
@@ -25,7 +28,9 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     private readonly ConcurrentDictionary<ulong, IMusicPlayer> _players;
     private readonly ConcurrentDictionary<ulong, (ITextChannel Default, ITextChannel? Override)> _outputChannels;
     private readonly ConcurrentDictionary<ulong, MusicPlayerSettings> _settings;
+    private readonly ConcurrentDictionary<ulong, SemaphoreSlim> _voiceLocks = new();
     private readonly ConcurrentDictionary<ulong, SemaphoreSlim> _createLocks = new();
+    private readonly SemaphoreSlim _playlistLoadLock = new(1, 1);
 
     public MusicService(
         AyuVoiceStateService voiceStateService,
@@ -66,7 +71,13 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     private void DisposeMusicPlayer(IMusicPlayer musicPlayer)
     {
         musicPlayer.Kill();
-        _ = Task.Delay(10_000).ContinueWith(_ => musicPlayer.Dispose());
+        _ = DisposeLaterInternalAsync(musicPlayer);
+    }
+
+    private static async Task DisposeLaterInternalAsync(IMusicPlayer musicPlayer)
+    {
+        await Task.Delay(10_000);
+        musicPlayer.Dispose();
     }
 
     private void RemoveMusicPlayer(ulong guildId)
@@ -91,19 +102,42 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
     public Task JoinVoiceChannelAsync(ulong guildId, ulong voiceChannelId)
         => _voiceStateService.JoinVoiceChannel(guildId, voiceChannelId);
 
-    // A new player starts a play loop and rents a large buffer, so a server gets one only when it has none.
-    public async Task<IMusicPlayer> GetOrCreateMusicPlayerAsync(ITextChannel contextChannel)
+    // The lock covers the check too, so two callers of this method cannot both join.
+    public Task<bool> EnsureVoiceChannelAsync(ulong guildId, ulong voiceChannelId)
+        => JoinLockedInternalAsync(guildId, voiceChannelId, onlyWhenNeeded: true);
+
+    private async Task<bool> JoinLockedInternalAsync(ulong guildId, ulong voiceChannelId, bool onlyWhenNeeded)
     {
-        var guildId = contextChannel.GuildId;
+        var voiceLock = _voiceLocks.GetOrAdd(guildId, static _ => new SemaphoreSlim(1, 1));
+        await voiceLock.WaitAsync();
+        try
+        {
+            if (onlyWhenNeeded
+                && _client.GetGuild(guildId)?.CurrentUser?.VoiceChannel is not null
+                && _players.ContainsKey(guildId))
+                return true;
+
+            return await _voiceStateService.JoinVoiceChannel(guildId, voiceChannelId) is not null;
+        }
+        finally
+        {
+            voiceLock.Release();
+        }
+    }
+
+    // A new player starts a play loop and rents a large buffer, so a server gets one only when it has none.
+    public async Task<IMusicPlayer> GetOrCreateMusicPlayerAsync(ITextChannel defaultChannel, bool followChannel = true)
+    {
+        var guildId = defaultChannel.GuildId;
         var (player, created) = await OncePerKey.GetOrCreateAsync(_players,
             _createLocks,
             guildId,
-            (Service: this, Channel: contextChannel),
+            (Service: this, Channel: defaultChannel),
             static s => s.Service.CreateMusicPlayerInternalAsync(s.Channel.GuildId, s.Channel));
 
         // The player's messages follow the last music command, and a deleted music channel falls back to it.
-        if (!created)
-            _outputChannels[guildId] = (contextChannel, GetSavedMusicChannelInternal(guildId));
+        if (!created && followChannel)
+            _outputChannels[guildId] = (defaultChannel, GetSavedMusicChannelInternal(guildId));
 
         return player;
     }
@@ -129,18 +163,27 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         }
     }
 
-    public async Task<int> EnqueueYoutubePlaylistAsync(IMusicPlayer mp, string query, string queuer)
+    public async Task<MusicAddResult> EnqueueYoutubePlaylistAsync(IMusicPlayer mp, string query, string queuer)
     {
+        if (mp.IsQueueFull)
+            return new(MusicAddStatus.QueueFull);
+
         var count = 0;
+        IQueuedTrackInfo? first = null;
+        var firstIndex = 0;
         try
         {
             await foreach (var track in _ytResolver.GetYoutubeResolver().ResolveTracksFromPlaylistAsync(query))
             {
-                if (mp.IsKilled || mp.IsQueueFull)
+                if (mp.IsKilled)
                     break;
 
-                mp.EnqueueTrack(track, queuer);
-                ++count;
+                var (queued, index) = mp.EnqueueResolvedTrack(track, queuer, false, false);
+                if (queued is null)
+                    break;
+
+                if (count++ == 0)
+                    (first, firstIndex) = (queued, index);
             }
         }
         catch (Exception ex) when (count > 0)
@@ -148,8 +191,188 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
             Log.Warning(ex, "Reading a YouTube playlist stopped after {Count} tracks", count);
         }
 
-        return count;
+        return count == 0
+            ? new(MusicAddStatus.NotFound)
+            : new(MusicAddStatus.Added, count, first, firstIndex);
     }
+
+    // The track resolves while the bot joins, so it plays as soon as the voice connection is ready.
+    public async Task<MusicAddResult> AddTrackAsync(
+        IMusicPlayer mp,
+        ulong guildId,
+        ulong? joinChannelId,
+        string query,
+        string queuer,
+        bool asNext)
+    {
+        var resolveTask = ResolveTrackInternalAsync(query);
+        if (joinChannelId is { } channelId && !await EnsureVoiceChannelAsync(guildId, channelId))
+            return new(MusicAddStatus.JoinFailed);
+
+        if (await resolveTask is not { } track)
+            return new(MusicAddStatus.NotFound);
+
+        var (queued, index) = mp.EnqueueResolvedTrack(track, queuer, asNext, false);
+        if (queued is null)
+            return new(MusicAddStatus.QueueFull);
+
+        AttachProxy(guildId);
+        if (queued.Platform == MusicPlatform.Youtube
+            && _ytResolver.GetYoutubeResolver() is ServiceYoutubeResolver service)
+            _ = service.Service.PrefetchAsync(queued.TrackInfo.Id);
+
+        return new(MusicAddStatus.Added, 1, queued, index);
+    }
+
+    public async Task<MusicAddResult> AddYoutubePlaylistAsync(
+        IMusicPlayer mp,
+        ulong guildId,
+        ulong? joinChannelId,
+        string query,
+        string queuer)
+    {
+        if (joinChannelId is { } channelId && !await EnsureVoiceChannelAsync(guildId, channelId))
+            return new(MusicAddStatus.JoinFailed);
+
+        AttachProxy(guildId);
+        try
+        {
+            return await EnqueueYoutubePlaylistAsync(mp, query, queuer);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Reading a YouTube playlist failed");
+            return new(MusicAddStatus.NotFound);
+        }
+    }
+
+    // Local files need forcePlatform, so this never resolves one.
+    private async Task<ITrackInfo?> ResolveTrackInternalAsync(string query)
+    {
+        try
+        {
+            return await _trackResolveProvider.QuerySongAsync(query, null, false);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Resolving a track failed");
+            return null;
+        }
+    }
+
+    public Task WaitPlaylistLoadAsync()
+        => _playlistLoadLock.WaitAsync();
+
+    public bool TryEnterPlaylistLoad()
+        => _playlistLoadLock.Wait(0);
+
+    public void ExitPlaylistLoad()
+        => _playlistLoadLock.Release();
+
+    public void StartPlaylistLoad(
+        IMusicPlayer mp,
+        IReadOnlyList<(string Query, MusicPlatform Platform)> songs,
+        string queuer)
+        => _ = Task.Run(async () =>
+        {
+            try
+            {
+                await mp.EnqueueManyAsync(songs, queuer, false);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Loading a saved playlist failed");
+            }
+            finally
+            {
+                _playlistLoadLock.Release();
+            }
+        });
+
+    // Counts and inserts in one statement, so parallel saves of one member cannot pass the cap.
+    public async Task<int?> SavePlaylistAsync(
+        string name,
+        ulong authorId,
+        string authorName,
+        IReadOnlyList<PlaylistSong> songs)
+    {
+        await using var uow = _db.GetDbContext();
+        await using var tx = await uow.Database.BeginTransactionAsync();
+        await using var lctx = uow.CreateLinqToDBContext();
+        var playlists = lctx.GetTable<MusicPlaylist>();
+        var now = DateTime.UtcNow;
+        var ids = await lctx.SelectQuery(() => 1)
+                           .Where(_ => playlists.Count(p => p.AuthorId == authorId) < MAX_PLAYLISTS_PER_USER)
+                           .InsertWithOutputAsync(playlists,
+                               _ => new MusicPlaylist
+                               {
+                                   Name = name,
+                                   Author = authorName,
+                                   AuthorId = authorId,
+                                   DateAdded = now
+                               },
+                               p => p.Id);
+
+        if (ids.Length == 0)
+            return null;
+
+        var saved = new MusicPlaylist { Id = ids[0] };
+        uow.Attach(saved);
+        saved.Songs.AddRange(songs);
+        await uow.SaveChangesAsync();
+        await tx.CommitAsync();
+        return saved.Id;
+    }
+
+    public const int PLAYLISTS_PER_PAGE = 20;
+
+    // The shadow key of PlaylistSong. linq2db sees no association for it, so queries name the column.
+    public const string PLAYLIST_KEY = "MusicPlaylistId";
+
+    public async Task<int> CountPlaylistsAsync(ulong? authorId)
+    {
+        await using var uow = _db.GetDbContext();
+        var playlists = uow.GetTable<MusicPlaylist>();
+        return authorId is { } id
+            ? await playlists.CountAsyncLinqToDB(p => p.AuthorId == id)
+            : await playlists.CountAsyncLinqToDB();
+    }
+
+    // Counts the songs in SQL, so a page never loads the songs themselves.
+    public async Task<IReadOnlyCollection<SavedPlaylistInfo>> GetPlaylistsPageAsync(ulong? authorId, int page)
+    {
+        if (page < 0 || page > int.MaxValue / PLAYLISTS_PER_PAGE)
+            return [];
+
+        await using var uow = _db.GetDbContext();
+        var playlists = uow.GetTable<MusicPlaylist>();
+        var songs = uow.GetTable<PlaylistSong>();
+        var query = authorId is { } id ? playlists.Where(p => p.AuthorId == id) : playlists;
+        var rows = await query
+                         .OrderBy(static p => p.Id)
+                         .Skip(page * PLAYLISTS_PER_PAGE)
+                         .Take(PLAYLISTS_PER_PAGE)
+                         .Select(p => new
+                         {
+                             p.Id,
+                             p.Name,
+                             p.Author,
+                             SongCount = songs.Count(s => Sql.Property<int?>(s, PLAYLIST_KEY) == p.Id)
+                         })
+                         .ToArrayAsyncLinqToDB();
+
+        var result = new SavedPlaylistInfo[rows.Length];
+        for (var i = 0; i < rows.Length; i++)
+        {
+            var r = rows[i];
+            result[i] = new(r.Id, r.Name ?? string.Empty, r.Author ?? string.Empty, r.SongCount);
+        }
+
+        return result;
+    }
+
+    public int MaxQueueSize
+        => _musicConfig.Data.MaxQueueSize;
 
     public async Task EnqueueDirectoryAsync(IMusicPlayer mp, string dirPath, string queuer, bool allowLocalNetwork)
     {
@@ -191,7 +414,6 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
             _audioFileCache,
             _musicConfig,
             _publicProxy,
-            settings.QualityPreset,
             settings.AutoPlay);
 
         mp.SetRepeat(settings.PlayerRepeat);
@@ -312,7 +534,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
             if (!_voiceStateService.TryGetProxy(guildId, out var proxy)
                 || proxy.State == VoiceProxy.VoiceProxyState.Stopped)
             {
-                await JoinVoiceChannelAsync(guildId, voiceChannelId);
+                await JoinLockedInternalAsync(guildId, voiceChannelId, onlyWhenNeeded: false);
                 AttachProxy(guildId);
             }
         }
@@ -321,39 +543,59 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         return true;
     }
 
-    private async Task<IList<(string Title, string Url, string Thumb)>> SearchYtLoaderVideosAsync(string query)
-    {
-        var result = await _ytLoader.LoadResultsAsync(query);
-        return result.Select(x => (x.Title, x.Url, x.Thumb)).ToList();
-    }
-
-    private async Task<IList<(string Title, string Url, string Thumb)>> SearchGoogleApiVideosAsync(string query)
-    {
-        var result = await _googleApiService.GetVideoInfosByKeywordAsync(query, SEARCH_RESULTS);
-        return result.Select(x => (x.Name, x.Url, x.Thumbnail)).ToList();
-    }
-
     public async Task<IList<(string Title, string Url, string Thumbnail)>> SearchVideosAsync(string query)
     {
+        var tracks = (await SearchTracksAsync(query, SEARCH_RESULTS)).Tracks;
+        var results = new (string, string, string)[tracks.Count];
+        for (var i = 0; i < results.Length; i++)
+        {
+            var t = tracks[i];
+            results[i] = (t.Title, t.Url, t.Thumbnail);
+        }
+
+        return results;
+    }
+
+    public async Task<MusicSearchResult> SearchTracksAsync(string query, int limit)
+    {
+        limit = Math.Clamp(limit, 1, SEARCH_RESULTS);
+
         // A bot which uses the music service does not connect to YouTube or to the Google API.
         if (_ytResolver.GetYoutubeResolver() is ServiceYoutubeResolver service)
         {
-            var tracks = await service.Service.SearchAsync(query, SEARCH_RESULTS);
-            var results = new (string, string, string)[tracks.Length];
-            for (var i = 0; i < tracks.Length; i++)
-            {
-                var t = ServiceYoutubeResolver.ToTrackInfo(tracks[i]);
-                results[i] = (t.Title, t.Url, t.Thumbnail);
-            }
+            if (await service.Service.TrySearchAsync(query, limit) is not { } found)
+                return new([], true);
 
-            return results;
+            var tracks = new ITrackInfo[Math.Min(found.Length, limit)];
+            for (var i = 0; i < tracks.Length; i++)
+                tracks[i] = ServiceYoutubeResolver.ToTrackInfo(found[i]);
+
+            return new(tracks, false);
         }
 
+        var failed = true;
         try
         {
-            IList<(string, string, string)> videos = await SearchYtLoaderVideosAsync(query);
-            if (videos.Count > 0)
-                return videos;
+            if (await _ytLoader.LoadResultsAsync(query) is { } videos)
+            {
+                failed = false;
+                if (videos.Count > 0)
+                {
+                    var tracks = new ITrackInfo[Math.Min(videos.Count, limit)];
+                    for (var i = 0; i < tracks.Length; i++)
+                    {
+                        var v = videos[i];
+                        tracks[i] = new RemoteTrackInfo(v is YtLoader.YtTrackInfo yt ? yt.Id : string.Empty,
+                            v.Title,
+                            v.Url,
+                            v.Thumb,
+                            v.Duration,
+                            MusicPlatform.Youtube);
+                    }
+
+                    return new(tracks, false);
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -362,7 +604,11 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
 
         try
         {
-            return await SearchGoogleApiVideosAsync(query);
+            var tracks = new List<ITrackInfo>(limit);
+            foreach (var v in await _googleApiService.GetVideoInfosByKeywordAsync(query, limit))
+                tracks.Add(new RemoteTrackInfo(v.Id, v.Name, v.Url, v.Thumbnail, TimeSpan.Zero, MusicPlatform.Youtube));
+
+            return new(tracks, false);
         }
         catch (Exception ex)
         {
@@ -371,7 +617,7 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
                 ex.Message);
         }
 
-        return Array.Empty<(string, string, string)>();
+        return new([], failed);
     }
 
     private string GetText(ulong guildId, LocStr str)
@@ -421,6 +667,18 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         await uow.SaveChangesAsync();
 
         return toReturn;
+    }
+
+    public async Task<MusicPlayerSettings> GetSavedSettingsAsync(ulong guildId)
+    {
+        if (_settings.TryGetValue(guildId, out var cached))
+            return cached;
+
+        await using var uow = _db.GetDbContext();
+        return await uow.GetTable<MusicPlayerSettings>()
+                        .Where(x => x.GuildId == guildId)
+                        .FirstOrDefaultAsyncLinqToDB()
+               ?? new MusicPlayerSettings { GuildId = guildId };
     }
 
     private async Task ModifySettingsInternalAsync<TState>(
@@ -499,27 +757,24 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         return newState;
     }
 
-    public async Task<QualityPreset> GetMusicQualityAsync(ulong guildId)
-    {
-        await using var uow = _db.GetDbContext();
-        var settings = await uow.Set<MusicPlayerSettings>().ForGuildAsync(guildId);
-        return settings.QualityPreset;
-    }
-
-    public Task SetMusicQualityAsync(ulong guildId, QualityPreset preset)
-        => ModifySettingsInternalAsync(guildId,
-            (settings, _) => { settings.QualityPreset = preset; },
-            preset);
-
     public async Task<bool> ToggleQueueAutoPlayAsync(ulong guildId)
     {
         var newValue = false;
         await ModifySettingsInternalAsync(guildId,
-            (settings, _) => newValue = settings.AutoPlay = !settings.AutoPlay,
+            (settings, _) =>
+            {
+                newValue = settings.AutoPlay = !settings.AutoPlay;
+                if (newValue)
+                    settings.PlayerRepeat = PlayerRepeatType.None;
+            },
             false);
 
         if (TryGetMusicPlayer(guildId, out var mp))
+        {
             mp.AutoPlay = newValue;
+            if (newValue)
+                mp.SetRepeat(PlayerRepeatType.None);
+        }
 
         return newValue;
     }

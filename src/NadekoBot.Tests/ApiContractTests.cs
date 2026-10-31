@@ -64,6 +64,12 @@ public sealed class ApiContractTests
         "PUT /api/owners",
         "GET /api/presence",
         "PUT /api/presence",
+        "GET /api/music/search",
+        "GET /api/music/playlists",
+        "GET /api/music/playlists/{id:int}",
+        "POST /api/music/playlists",
+        "PUT /api/music/playlists/{id:int}",
+        "DELETE /api/music/playlists/{id:int}",
         "GET /api/guilds/{guildId}",
         "GET /api/guilds/{guildId}/channels",
         "GET /api/guilds/{guildId}/roles",
@@ -102,7 +108,26 @@ public sealed class ApiContractTests
         "DELETE /api/guilds/{guildId}/xp/users/{userId}",
         "DELETE /api/guilds/{guildId}/xp",
         "GET /api/guilds/{guildId}/health",
-        "GET /api/guilds/{guildId}/activity"
+        "GET /api/guilds/{guildId}/activity",
+        "GET /api/guilds/{guildId}/music",
+        "PUT /api/guilds/{guildId}/music",
+        "DELETE /api/guilds/{guildId}/music",
+        "POST /api/guilds/{guildId}/music/tracks",
+        "DELETE /api/guilds/{guildId}/music/tracks/{index:int}",
+        "POST /api/guilds/{guildId}/music/tracks/move",
+        "POST /api/guilds/{guildId}/music/play",
+        "POST /api/guilds/{guildId}/music/skip",
+        "POST /api/guilds/{guildId}/music/shuffle",
+        "POST /api/guilds/{guildId}/music/playlists/{id:int}/load",
+        "GET /api/guilds/{guildId}/feeds",
+        "POST /api/guilds/{guildId}/feeds",
+        "PUT /api/guilds/{guildId}/feeds/{id:int}",
+        "DELETE /api/guilds/{guildId}/feeds/{id:int}",
+        "GET /api/guilds/{guildId}/streams",
+        "POST /api/guilds/{guildId}/streams",
+        "PUT /api/guilds/{guildId}/streams/settings",
+        "PUT /api/guilds/{guildId}/streams/{id:int}",
+        "DELETE /api/guilds/{guildId}/streams/{id:int}"
     ];
 
     private const string DB_ENV = "bot_Db__ConnectionString";
@@ -153,6 +178,7 @@ public sealed class ApiContractTests
     }
 
     // A coordinated shard serves server dashboards; a currency reward creates currency, so only the owner sets it.
+    // Music is a patron feature on the public bot, so its routes are standalone only too, as are feeds and streams.
     [Test]
     public async Task CoordinatedRoutes_AreTheGuildRoutesWithoutTheOwnerGuildRoutes()
     {
@@ -169,7 +195,10 @@ public sealed class ApiContractTests
                                || (r.Contains("/api/guilds/{guildId}", StringComparison.Ordinal)
                                    && !r.Contains("/xp/rewards/currency/", StringComparison.Ordinal)
                                    && !r.EndsWith("/import", StringComparison.Ordinal)
-                                   && !r.EndsWith("/activity", StringComparison.Ordinal)))
+                                   && !r.EndsWith("/activity", StringComparison.Ordinal)
+                                   && !r.Contains("/music", StringComparison.Ordinal)
+                                   && !r.Contains("/feeds", StringComparison.Ordinal)
+                                   && !r.Contains("/streams", StringComparison.Ordinal)))
             .ToArray();
         Assert.That(routes, Is.EquivalentTo(expected));
     }

@@ -35,6 +35,7 @@ public static class ApiEndpoints
         owner.MapAiKeyEndpoints();
         owner.MapOwnersEndpoints();
         owner.MapPresenceEndpoints();
+        owner.MapMusicEndpoints();
         return owner;
     }
 
@@ -52,12 +53,16 @@ public static class ApiEndpoints
         return guild;
     }
 
-    // Guild routes which only standalone mode maps: they create currency, replace data or need the activity counter.
+    // Guild routes which only standalone mode maps: they create currency, replace data, need the activity counter,
+    // or play music, which is a patron feature on the public bot.
     public static RouteGroupBuilder MapOwnerGuildEndpoints(this RouteGroupBuilder ownerGuild)
     {
         ownerGuild.MapXpCurrencyRewardEndpoints();
+        ownerGuild.MapGuildMusicEndpoints();
         ownerGuild.MapActivityEndpoints();
         ownerGuild.MapServerImportEndpoint();
+        ownerGuild.MapWebFeedEndpoints();
+        ownerGuild.MapStreamEndpoints();
         return ownerGuild;
     }
 

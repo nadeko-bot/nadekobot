@@ -18,10 +18,47 @@ public interface IMusicService
     /// <param name="voiceChannelId">Id of the voice channel</param>
     public Task JoinVoiceChannelAsync(ulong guildId, ulong voiceChannelId);
 
-    Task<IMusicPlayer> GetOrCreateMusicPlayerAsync(ITextChannel contextChannel);
+    // Joins when the bot is in no voice channel or the server has no player. False when Discord did not confirm the join.
+    Task<bool> EnsureVoiceChannelAsync(ulong guildId, ulong voiceChannelId);
+
+    // followChannel moves the default output of an existing player to this channel, as a music command does.
+    Task<IMusicPlayer> GetOrCreateMusicPlayerAsync(ITextChannel defaultChannel, bool followChannel = true);
     bool TryGetMusicPlayer(ulong guildId, [MaybeNullWhen(false)] out IMusicPlayer musicPlayer);
     void AttachProxy(ulong guildId);
-    Task<int> EnqueueYoutubePlaylistAsync(IMusicPlayer mp, string playlistId, string queuer);
+    Task<MusicAddResult> EnqueueYoutubePlaylistAsync(IMusicPlayer mp, string query, string queuer);
+
+    // joinChannelId is set when the bot must join before the track can play.
+    Task<MusicAddResult> AddTrackAsync(
+        IMusicPlayer mp,
+        ulong guildId,
+        ulong? joinChannelId,
+        string query,
+        string queuer,
+        bool asNext);
+
+    Task<MusicAddResult> AddYoutubePlaylistAsync(
+        IMusicPlayer mp,
+        ulong guildId,
+        ulong? joinChannelId,
+        string query,
+        string queuer);
+
+    Task<MusicSearchResult> SearchTracksAsync(string query, int limit);
+
+    // The saved settings which a new player uses; reading creates no row.
+    Task<MusicPlayerSettings> GetSavedSettingsAsync(ulong guildId);
+    int MaxQueueSize { get; }
+    Task<int> CountPlaylistsAsync(ulong? authorId);
+    Task<IReadOnlyCollection<SavedPlaylistInfo>> GetPlaylistsPageAsync(ulong? authorId, int page);
+    Task<int?> SavePlaylistAsync(string name, ulong authorId, string authorName, IReadOnlyList<PlaylistSong> songs);
+
+    // One saved playlist loads at a time on a shard, because each song is a resolver call.
+    Task WaitPlaylistLoadAsync();
+    bool TryEnterPlaylistLoad();
+    void ExitPlaylistLoad();
+
+    // Takes over the load lock which the caller entered and releases it when the songs are queued.
+    void StartPlaylistLoad(IMusicPlayer mp, IReadOnlyList<(string Query, MusicPlatform Platform)> songs, string queuer);
     Task EnqueueDirectoryAsync(IMusicPlayer mp, string dirPath, string queuer, bool allowLocalNetwork);
     Task<IUserMessage?> SendToOutputAsync(ulong guildId, EmbedBuilder embed);
     Task<bool> PlayAsync(ulong guildId, ulong voiceChannelId);
@@ -30,8 +67,6 @@ public interface IMusicService
     Task SetRepeatAsync(ulong guildId, PlayerRepeatType repeatType);
     Task SetVolumeAsync(ulong guildId, int value);
     Task<bool> ToggleAutoDisconnectAsync(ulong guildId);
-    Task<QualityPreset> GetMusicQualityAsync(ulong guildId);
-    Task SetMusicQualityAsync(ulong guildId, QualityPreset preset);
     Task<bool> ToggleQueueAutoPlayAsync(ulong guildId);
     Task<bool> FairplayAsync(ulong guildId);
     Task<IQueuedTrackInfo?> RemoveLastQueuedTrackAsync(ulong guildId);

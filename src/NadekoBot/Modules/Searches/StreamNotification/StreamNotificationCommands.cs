@@ -18,7 +18,13 @@ public partial class Searches
         [UserPerm(GuildPerm.ManageMessages)]
         public async Task StreamAdd(string link)
         {
-            var (data, result) = await _service.FollowStream(ctx.Guild.Id, ctx.Channel.Id, link);
+            var (result, data, _, platform) = await _service.FollowStream(ctx.Guild.Id, ctx.Channel.Id, link);
+            if (result == StreamNotificationService.FollowStreamResult.Unavailable && platform is { } type)
+            {
+                await Response().Error(strs.stream_platform_unavailable(Format.Bold(type.ToString()))).SendAsync();
+                return;
+            }
+
             if (result == StreamNotificationService.FollowStreamResult.AlreadyFollowed)
             {
                 await Response().Error(strs.stream_already_followed(Format.Bold(data.Name))).SendAsync();
@@ -42,12 +48,9 @@ public partial class Searches
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(1)]
-        public async Task StreamRemove(int index)
+        public async Task StreamRemove(int id)
         {
-            if (--index < 0)
-                return;
-
-            var fs = await _service.UnfollowStreamAsync(ctx.Guild.Id, index);
+            var fs = await _service.UnfollowStreamByIdAsync(ctx.Guild.Id, id);
             if (fs is null)
             {
                 await Response().Error(strs.stream_no).SendAsync();
@@ -89,10 +92,9 @@ public partial class Searches
                         return CreateEmbed().WithDescription(GetText(strs.streams_none)).WithErrorColor();
 
                     var eb = CreateEmbed().WithTitle(GetText(strs.streams_follow_title)).WithOkColor();
-                    for (var index = 0; index < elements.Count; index++)
+                    foreach (var elem in elements)
                     {
-                        var elem = elements[index];
-                        eb.AddField($"**#{index + 1 + (12 * cur)}** {(elem.PrettyName ?? elem.Username).ToLower()}",
+                        eb.AddField($"**#{elem.Id}** {(elem.PrettyName ?? elem.Username).ToLower()}",
                             $"【{elem.Type}】\n<#{elem.ChannelId}>\n{elem.Message?.TrimTo(50)}",
                             true);
                     }
@@ -129,16 +131,13 @@ public partial class Searches
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
-        public async Task StreamMessage(int index, [Leftover] string message)
+        public async Task StreamMessage(int id, [Leftover] string message)
         {
-            if (--index < 0)
-                return;
-
             var canMentionEveryone = (ctx.User as IGuildUser)?.GuildPermissions.MentionEveryone ?? true;
             if (!canMentionEveryone)
                 message = message?.SanitizeTemplateMentions();
 
-            if (!_service.SetStreamMessage(ctx.Guild.Id, index, message, out var fs))
+            if (!_service.SetStreamMessage(ctx.Guild.Id, id, message, out var fs))
             {
                 await Response().Confirm(strs.stream_not_following).SendAsync();
                 return;

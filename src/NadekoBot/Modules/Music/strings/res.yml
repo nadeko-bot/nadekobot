@@ -1,38 +1,28 @@
 attempting_to_queue: Attempting to queue {0} tracks...
 joined_voice: "Joined voice channel {0}."
-autodc_disable: >-
-  I will no longer disconnect from the voice channel when there are no more
-  tracks to play.
-autodc_enable: >-
-  I will disconnect from the voice channel when there are no more tracks to
-  play.
+autodc_disable: I will no longer disconnect from the voice channel when there are no more tracks to play.
+autodc_enable: I will disconnect from the voice channel when there are no more tracks to play.
 autoplaying: Automatically adds related tracks.
-current_music_quality: 'Currently set music quality is: {0}'
 dir_queue_complete: Directory queue complete.
 fairplay: ''
 from_position: From position
 music_autoplay_off: Music autoplay disabled.
-music_autoplay_on: >-
-  Music autoplay enabled. I will automatically queue related tracks after each
-  track finishes playing.
+music_autoplay_on: Music autoplay enabled. The queue does not repeat now. I will add a related song when the last song in the queue starts.
 music_fairplay: Music queue has been fairly reordered.
-music_quality_set: >-
-  Music quality has been set to {0}. You will have to destroy and restart music
-  player for the change to take effect.
 no_last_queued_found: No last queued track found.
 no_lyrics_found: No lyrics found.
 no_player: No active music player.
 not_with_bot_in_voice: You are not in the same voice channel as the bot.
 now_playing: Now playing
 player_queue: Player queue - Page {0}/{1}
-playlist_delete_fail: >-
-  Failed to delete that playlist. It either doesn't exist, or you are not its
-  author.
+playlist_delete_fail: "Failed to delete that playlist. It either doesn't exist, or you are not its author."
 playlist_deleted: Playlist deleted.
 playlist_name_too_long: Playlist name must be no longer than 20 characters.
 playlist_id_not_found: Playlist with that ID doesn't exist.
 playlist_queue_complete: Playlist queue complete.
 playlist_saved: Playlist saved
+playlist_limit: 'You can have at most {0} saved playlists. Delete one before you save a new one. {1} lists yours.'
+no_playlists: No saved playlists found.
 playlists: '`#{0}` - **{1}** by *{2}* ({3} tracks)'
 playlists_page: Page {0} of saved playlists
 queue: Queue
@@ -48,16 +38,12 @@ removed_track_error: Track on that index doesn't exist
 repeating_none: Player will stop once the end of queue is reached.
 repeating_queue: Player will repeat the queue.
 repeating_track: Player will keep repeating the same track.
-set_music_channel: >-
-  I will now output playing, finished, paused and removed tracks in this
-  channel.
+set_music_channel: I will now output playing, finished, paused and removed tracks in this channel.
 song_skips_after: ''
 to_position: To position
 track_moved: Track moved
 track_not_found: No track found.
-unset_music_channel: >-
-  I will now output playing, finished, paused and removed tracks of the newly
-  created music players in the channel music was started from.
+unset_music_channel: I will now output playing, finished, paused and removed tracks of the newly created music players in the channel music was started from.
 volume_input_invalid: Volume must be between 0 and 100
 volume_set: Volume set to {0}%
 wrongsong_success: 'Oops! Wrong song removed: {0}'
