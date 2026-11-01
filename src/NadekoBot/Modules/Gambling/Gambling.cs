@@ -439,15 +439,15 @@ public partial class Gambling : GamblingModule<GamblingService>
                 foreach (var tr in trs)
                 {
                     var change = tr.Amount >= 0 ? "🔵" : "🔴";
-                    sb.Append(change).Append(' ');
+                    sb.Append(Format.Code(new kwum(tr.Id).ToString()))
+                      .Append(' ')
+                      .Append(change)
+                      .Append(' ');
                     if (tr.DateAdded is DateTime added)
                     {
                         sb.Append("<t:").Append(AsUtc(added).ToUnixTimeSeconds()).Append(":d> ");
                     }
 
-                    sb.Append('#')
-                      .Append(Format.Code(new kwum(tr.Id).ToString()))
-                      .Append(' ');
                     sb.AppendLine(Format.Bold(N(tr.Amount)));
                     var transactionString = GetHumanReadableTransaction(tr.Type, tr.Extra, tr.OtherId);
                     if (transactionString is not null)
