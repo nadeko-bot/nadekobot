@@ -3,7 +3,7 @@
 ### Prerequisites
 
 - Windows 10 or later (64-bit)
-- [.net 8 sdk](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.net 9 sdk](https://dotnet.microsoft.com/download/dotnet/9.0)
 - If you want nadeko to play music: [Visual C++ 2010 (x86)] and [Visual C++ 2017 (x64)] (both are required, you may install them later)
 - [git](https://git-scm.com/downloads) - needed to clone the repository (you can also download the zip manually and extract it, but this guide assumes you're using git)
 - **Optional** Any code editor, for example [Visual Studio Code](https://code.visualstudio.com/Download)

@@ -1,0 +1,9 @@
+hello:
+  desc: "Says hello to everyone, or to the member you mention."
+  args:
+    - ""
+    - "@Someone"
+info:
+  desc: "Shows the name and the age of an employee. Separate them with a comma."
+  args:
+    - "John,24"

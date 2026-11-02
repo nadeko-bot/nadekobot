@@ -1,0 +1,62 @@
+name: Publish Medusa Template
+
+on:
+  push:
+    branches: ["v6"]
+    paths:
+      - 'src/Nadeko.Medusa.Template/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FEED: https://www.myget.org/F/nadeko
+
+concurrency:
+  group: medusa-template
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: ${{ github.repository == 'nadeko-bot/nadekobot' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Pack
+        working-directory: src/Nadeko.Medusa.Template
+        run: dotnet pack -c Release -o packed
+
+      - name: Check the version
+        id: version
+        working-directory: src/Nadeko.Medusa.Template
+        run: |
+          version=$(dotnet msbuild -getProperty:PackageVersion)
+          versions=$(curl -sSfL --retry 3 "$FEED/api/v3/flatcontainer/nadeko-medusa/index.json" || echo '{"versions":[]}')
+          if echo "$versions" | jq -e --arg v "$version" '.versions | index($v)' > /dev/null; then
+            echo "::warning::nadeko-medusa $version is already on MyGet. Bump PackageVersion in Nadeko.Medusa.Template.csproj to publish the change."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check the template
+        if: steps.version.outputs.publish == 'true'
+        working-directory: src/Nadeko.Medusa.Template
+        run: |
+          dotnet new install packed/nadeko-medusa.*.nupkg
+          dotnet new nadeko-medusa -o "$RUNNER_TEMP/medusa_check" -n medusa_check
+          dotnet build "$RUNNER_TEMP/medusa_check/medusa_check.csproj" -warnaserror
+
+      - name: Push
+        if: steps.version.outputs.publish == 'true'
+        working-directory: src/Nadeko.Medusa.Template
+        run: dotnet nuget push packed/*.nupkg --source "$FEED/api/v2/package" --api-key "${{ secrets.MYGET_API_KEY }}" --skip-duplicate

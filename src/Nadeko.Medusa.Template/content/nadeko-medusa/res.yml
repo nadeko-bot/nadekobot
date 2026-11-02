@@ -1,0 +1,2 @@
+medusa.description: "This is my medusa's description"
+hello: "Hello {0}, from res.yml!"

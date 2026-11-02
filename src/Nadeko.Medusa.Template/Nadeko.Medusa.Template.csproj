@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>nadeko-medusa</PackageId>
+    <PackageVersion>7.0.0</PackageVersion>
+    <Title>Nadeko Medusa Template</Title>
+    <Authors>NadekoBot Team</Authors>
+    <Description>Project template for a NadekoBot medusa (plugin).</Description>
+    <PackageTags>dotnet-new;templates;nadeko;medusa</PackageTags>
+    <PackageProjectUrl>https://github.com/nadeko-bot/nadekobot/tree/v6/src/Nadeko.Medusa.Template</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageType>Template</PackageType>
+
+    <TargetFramework>net9.0</TargetFramework>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="content\**\*" Exclude="content\**\bin\**;content\**\obj\**" />
+    <Compile Remove="**\*" />
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>

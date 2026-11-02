@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "NadekoBot Team",
+  "classifications": [ "nadeko", "medusa", "template" ],
+  "identity": "nadeko-medusa",
+  "name": "Nadeko Medusa",
+  "shortName": "nadeko-medusa",
+  "sourceName":"nadeko-medusa",
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            ".idea/**",
+            ".vs/**",
+            "bin/**",
+            "obj/**",
+            ".git/**"
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}

@@ -2,43 +2,47 @@
 
 ## Getting started
 
-This section will guide you through how to create a simple custom medusa. You can find the entirety of this code hosted [here](https://gitlab.com/nadeko/example_medusa)
+This section will guide you through how to create a simple custom medusa. The project template, with its example commands, is [here](https://github.com/nadeko-bot/nadekobot/tree/v6/src/Nadeko.Medusa.Template/content/nadeko-medusa).
 
 ## Prerequisite
 
-- [.net8 sdk](https://dotnet.microsoft.com/en-us/download) installed
+- [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed
+- NadekoBot 7.x
 - Optional: use [vscode](https://code.visualstudio.com/download) to write code
 
 ## Guide
 
-- Open your favorite terminal and navigate to a folder where you will keep your project .
+- Open your favorite terminal and navigate to a folder where you will keep your project.
 
 - Create a new folder and move into it
-    - `mkdir example_medusa `
+    - `mkdir example_medusa`
     - `cd example_medusa`
 
-- Install nadeko-medusa template
-    - `dotnet new install nadeko-medusa`
+- Install the nadeko-medusa template from the NadekoBot MyGet feed
+    - `dotnet new install nadeko-medusa --nuget-source https://www.myget.org/F/nadeko/api/v3/index.json`
 
 - Make a new Nadeko Medusa project
     - `dotnet new nadeko-medusa`
 
+- Optional: to keep the medusa on one version of the medusa library, open `example_medusa.csproj` and change the `Nadeko.Medusa` version from `7.*` to the version of your bot, for example `7.8.0`
+
 ## Build it
 
 - Build your Medusa into a dll that Nadeko can load. In your terminal, type:
-    - `dotnet publish -o bin/medusae/example_medusa /p:DebugType=embedded`
+    - `dotnet publish -o bin/medusae/example_medusa`
 
 - Done. You can now try it out in action.
 
 ## Try it out
 
-- Copy the `bin/medusae/example_medusa` folder into your NadekoBot's `data/medusae/` folder. (Nadeko version 4.1.0+)
+- Copy the `bin/medusae/example_medusa` folder into your NadekoBot's `data/medusae/` folder.
 
 - Load it with `.meload example_medusa`
 
 - In the channel your bot can see, run the following commands to try it out
-    - `.hello` and
+    - `.hello`
     - `.hello @<someone>`
+    - `.info John,24`
 
 - Check its information with
     - `.meinfo example_medusa`
