@@ -20,6 +20,9 @@ local:
 localplaylist:
   - localplaylist
   - lopl
+loop:
+  - loop
+  - queueloop
 lyrics:
   - lyrics
 next:
@@ -57,6 +60,10 @@ playlistsave:
 playlistshow:
   - playlistshow
   - plshow
+previous:
+  - previous
+  - prev
+  - back
 queue:
   - queue
   - q
@@ -90,6 +97,9 @@ queuefind:
 radio:
   - radio
   - ra
+repeat:
+  - repeat
+  - songrepeat
 setmusicchannel:
   - setmusicchannel
   - smch

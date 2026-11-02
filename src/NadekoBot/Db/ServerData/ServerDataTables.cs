@@ -48,6 +48,7 @@ public static class ServerDataTables
         new("XpCurrencyReward", Owner: new("XpSettingsId", "XpSettings"), HasGuildId: false),
         new("XpRoleReward", Owner: new("XpSettingsId", "XpSettings"), HasGuildId: false),
         new("AiAgentGuildSkill"),
+        new("AllowedLinkDomain"),
         new("AntiAltSetting"),
         new("AntiRaidSetting"),
         new("AutoPublishChannel"),

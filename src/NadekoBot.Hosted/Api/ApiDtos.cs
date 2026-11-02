@@ -201,6 +201,8 @@ public sealed record XpRewardsDto(
 
 public sealed record SetXpRoleRewardRequest(string RoleId, bool? Remove = null);
 
+public sealed record SetXpLevelRoleRewardRequest(bool? Remove = null);
+
 public sealed record SetXpCurrencyRewardRequest(int Amount);
 
 public sealed record AddXpRequest(long Amount);

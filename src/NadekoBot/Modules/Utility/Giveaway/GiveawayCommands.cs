@@ -17,6 +17,16 @@ public partial class Utility
                 return;
             }
 
+            var winnerCount = 1;
+            var space = message.IndexOf(' ');
+            if (space > 0
+                && GiveawayService.TryParseWinnerCount(message.AsSpan(0, space), out var parsed)
+                && !message.AsSpan(space).IsWhiteSpace())
+            {
+                winnerCount = parsed;
+                message = message[(space + 1)..].TrimStart();
+            }
+
             var eb = CreateEmbed()
                 .WithPendingColor()
                 .WithTitle(GetText(strs.giveaway_starting))
@@ -25,7 +35,12 @@ public partial class Utility
             var startingMsg = await Response().Embed(eb).SendAsync();
 
             var maybeId =
-                await _service.StartGiveawayAsync(ctx.Guild.Id, ctx.Channel.Id, startingMsg.Id, duration, message);
+                await _service.StartGiveawayAsync(ctx.Guild.Id,
+                    ctx.Channel.Id,
+                    startingMsg.Id,
+                    duration,
+                    message,
+                    winnerCount);
 
 
             if (maybeId is not int id)
@@ -39,7 +54,7 @@ public partial class Utility
                 .WithOkColor()
                 .WithTitle(GetText(strs.giveaway_started))
                 .AddField(GetText(strs.lasts_until), TimestampTag.FromDateTime(DateTime.UtcNow.Add(duration)), true)
-                // .AddField(GetText(strs.winners_count), "1", true)
+                .AddField(GetText(strs.winners_count), winnerCount.ToString(), true)
                 .WithFooter($"id:  {new kwum(id).ToString()}");
 
             await startingMsg.AddReactionAsync(new Emoji(GiveawayService.GiveawayEmoji));

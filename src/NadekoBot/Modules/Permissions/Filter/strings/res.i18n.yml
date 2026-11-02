@@ -15,6 +15,13 @@ ar:
   word_filter_channel_on: تم تفعيل تصفية الكلمات في هذه القناة.
   word_filter_server_off: تم تعطيل تصفية الكلمات في هذا الخادم.
   word_filter_server_on: تم تفعيل تصفية الكلمات في هذا الخادم.
+  link_allow_added: 'الروابط إلى {0} ونطاقاته الفرعية تمر الآن من تصفية الروابط.'
+  link_allow_removed: 'الروابط إلى {0} لم تعد تمر من تصفية الروابط.'
+  link_allow_invalid: 'هذا ليس نطاقًا صالحًا. مثال: `youtube.com`'
+  link_allow_limit: 'يسمح هذا الخادم بالفعل بـ {0} نطاقًا. احذف واحدًا قبل أن تضيف آخر.'
+  link_allow_list: نطاقات الروابط المسموح بها
+  link_allow_none: تصفية الروابط لا تسمح بأي نطاق في هذا الخادم.
+  link_allow_cleared: تصفية الروابط لا تسمح بأي نطاق في هذا الخادم الآن.
 
 de-DE:
   filter_word_add: 'Das Wort {0} wurde zu der Liste an gefilterten Wörtern hinzugefügt.'
@@ -33,6 +40,13 @@ de-DE:
   word_filter_channel_on: Wort Filterung wurde in diesem Kanal aktiviert.
   word_filter_server_off: Wort Filterung wurde auf diesem Server deaktiviert.
   word_filter_server_on: Wort Filterung wurde auf diesem Server aktiviert.
+  link_allow_added: 'Links zu {0} und seinen Subdomains kommen jetzt durch den Link-Filter.'
+  link_allow_removed: 'Links zu {0} kommen nicht mehr durch den Link-Filter.'
+  link_allow_invalid: 'Das ist keine gültige Domain. Beispiel: `youtube.com`'
+  link_allow_limit: 'Dieser Server erlaubt bereits {0} Domains. Entferne eine, bevor du eine neue hinzufügst.'
+  link_allow_list: Erlaubte Link-Domains
+  link_allow_none: Der Link-Filter erlaubt auf diesem Server keine Domains.
+  link_allow_cleared: Der Link-Filter erlaubt auf diesem Server jetzt keine Domains.
 
 es-ES:
   filter_word_add: 'Se ha añadido la palabra {0} a la lista de palabras filtradas.'
@@ -51,6 +65,13 @@ es-ES:
   word_filter_channel_on: Filtro de groserías activado en este canal.
   word_filter_server_off: Filtro de groserías desactivado en este servidor.
   word_filter_server_on: Filtro de groserías activado en este servidor.
+  link_allow_added: 'Los enlaces a {0} y sus subdominios ahora pasan el filtro de enlaces.'
+  link_allow_removed: 'Los enlaces a {0} ya no pasan el filtro de enlaces.'
+  link_allow_invalid: 'Ese no es un dominio válido. Ejemplo: `youtube.com`'
+  link_allow_limit: 'Este servidor ya permite {0} dominios. Quita uno antes de añadir otro.'
+  link_allow_list: Dominios de enlaces permitidos
+  link_allow_none: El filtro de enlaces no permite ningún dominio en este servidor.
+  link_allow_cleared: El filtro de enlaces ya no permite ningún dominio en este servidor.
 
 fr-FR:
   filter_word_add: 'Le mot {0} a été ajouté à la liste des mots filtrés.'
@@ -69,6 +90,13 @@ fr-FR:
   word_filter_channel_on: Le filtre du langage est activé sur ce salon.
   word_filter_server_off: Le filtre du langage est désactivé sur ce serveur.
   word_filter_server_on: Le filtre du langage est activé sur ce serveur.
+  link_allow_added: 'Les liens vers {0} et ses sous-domaines passent maintenant le filtre de liens.'
+  link_allow_removed: 'Les liens vers {0} ne passent plus le filtre de liens.'
+  link_allow_invalid: 'Ce n''est pas un domaine valide. Exemple : `youtube.com`'
+  link_allow_limit: 'Ce serveur autorise déjà {0} domaines. Supprime-en un avant d''en ajouter un autre.'
+  link_allow_list: Domaines de liens autorisés
+  link_allow_none: Le filtre de liens n'autorise aucun domaine sur ce serveur.
+  link_allow_cleared: Désormais, le filtre de liens n'autorise aucun domaine sur ce serveur.
 
 id-ID:
   filter_word_add: 'Kata {0} ditambahkan ke daftar kata yang difilter.'
@@ -87,6 +115,13 @@ id-ID:
   word_filter_channel_on: Filter kata diaktifkan di channel ini.
   word_filter_server_off: Filter kata dinonaktifkan di server ini.
   word_filter_server_on: Filter kata diaktifkan di server ini.
+  link_allow_added: 'Tautan ke {0} dan subdomainnya sekarang lolos filter link.'
+  link_allow_removed: 'Tautan ke {0} tidak lagi lolos filter link.'
+  link_allow_invalid: 'Itu bukan domain yang valid. Contoh: `youtube.com`'
+  link_allow_limit: 'Server ini sudah mengizinkan {0} domain. Hapus satu sebelum menambah yang lain.'
+  link_allow_list: Domain link yang diizinkan
+  link_allow_none: Filter link tidak mengizinkan domain apa pun di server ini.
+  link_allow_cleared: Filter link sekarang tidak mengizinkan domain apa pun di server ini.
 
 ja-JP:
   filter_word_add: 'フィルター対象語句一覧に「{0}」を追加しました。'
@@ -105,6 +140,13 @@ ja-JP:
   word_filter_channel_on: このチャンネルでは、語句のフィルタリングが有効になりました。
   word_filter_server_off: このサーバーでは、語句のフィルタリングが無効になりました。
   word_filter_server_on: このサーバーでは、語句のフィルタリングが有効になりました。
+  link_allow_added: '{0}とそのサブドメインへのリンクはリンクフィルターを通るようになりました。'
+  link_allow_removed: '{0}へのリンクはリンクフィルターを通らなくなりました。'
+  link_allow_invalid: '有効なドメインではありません。例: `youtube.com`'
+  link_allow_limit: 'このサーバーは既に{0}個のドメインを許可しています。追加する前に1つ削除してください。'
+  link_allow_list: 許可されたリンクドメイン
+  link_allow_none: このサーバーではリンクフィルターがドメインを許可していません。
+  link_allow_cleared: このサーバーではリンクフィルターがドメインを許可しなくなりました。
 
 ko-KR:
   filter_word_add: '필터링 단어 목록에 {0} 단어를 추가했어요.'
@@ -123,6 +165,13 @@ ko-KR:
   word_filter_channel_on: 이 채널에서 단어 필터링이 활성화되었어요.
   word_filter_server_off: 이 서버에서 단어 필터링이 비활성화되었어요.
   word_filter_server_on: 이 서버에서 단어 필터링이 활성화되었어요.
+  link_allow_added: '{0} 및 하위 도메인 링크가 이제 링크 필터를 통과해요.'
+  link_allow_removed: '{0} 링크는 더 이상 링크 필터를 통과하지 않아요.'
+  link_allow_invalid: '유효한 도메인이 아니에요. 예: `youtube.com`'
+  link_allow_limit: '이 서버는 이미 {0}개의 도메인을 허용하고 있어요. 추가하기 전에 하나를 제거하세요.'
+  link_allow_list: 허용된 링크 도메인
+  link_allow_none: 이 서버의 링크 필터는 어떤 도메인도 허용하지 않아요.
+  link_allow_cleared: 이 서버의 링크 필터는 이제 어떤 도메인도 허용하지 않아요.
 
 pl-PL:
   filter_word_add: 'Dodano słowo {0} do listy filtrowanych słów.'
@@ -141,6 +190,13 @@ pl-PL:
   word_filter_channel_on: Filtrowanie słów włączone na tym kanale.
   word_filter_server_off: Filtrowanie słów wyłączone na tym serwerze.
   word_filter_server_on: Filtrowanie słów włączone na tym serwerze.
+  link_allow_added: 'Linki do {0} i jego subdomen przechodzą teraz filtr linków.'
+  link_allow_removed: 'Linki do {0} nie przechodzą już filtra linków.'
+  link_allow_invalid: 'To nie jest prawidłowa domena. Przykład: `youtube.com`'
+  link_allow_limit: 'Ten serwer już pozwala na {0} domen. Usuń jedną, zanim dodasz kolejną.'
+  link_allow_list: Dozwolone domeny linków
+  link_allow_none: Filtr linków nie pozwala na żadne domeny na tym serwerze.
+  link_allow_cleared: Filtr linków nie pozwala teraz na żadne domeny na tym serwerze.
 
 pt-BR:
   filter_word_add: 'A palavra {0} foi adicionada à lista de palavras filtradas.'
@@ -159,6 +215,13 @@ pt-BR:
   word_filter_channel_on: O filtro de palavras foi ativado nesse canal.
   word_filter_server_off: O filtro de palavras foi desativado nesse servidor.
   word_filter_server_on: O filtro de palavras foi ativado nesse servidor.
+  link_allow_added: 'Links para {0} e seus subdomínios agora passam pelo filtro de links.'
+  link_allow_removed: 'Links para {0} não passam mais pelo filtro de links.'
+  link_allow_invalid: 'Esse não é um domínio válido. Exemplo: `youtube.com`'
+  link_allow_limit: 'Este servidor já permite {0} domínios. Remova um antes de adicionar outro.'
+  link_allow_list: Domínios de links permitidos
+  link_allow_none: O filtro de links não permite nenhum domínio neste servidor.
+  link_allow_cleared: O filtro de links não permite mais nenhum domínio neste servidor.
 
 ru-RU:
   filter_word_add: 'Слово {0} было добавлено в список фильтрующихся слов.'
@@ -177,6 +240,13 @@ ru-RU:
   word_filter_channel_on: Фильтрация слов была включена для этого канала.
   word_filter_server_off: Фильтрация слов была отключена для этого сервера.
   word_filter_server_on: Фильтрация слов была включена для этого сервера.
+  link_allow_added: 'Ссылки на {0} и его поддомены теперь проходят фильтр ссылок.'
+  link_allow_removed: 'Ссылки на {0} больше не проходят фильтр ссылок.'
+  link_allow_invalid: 'Это недействительный домен. Пример: `youtube.com`'
+  link_allow_limit: 'Этот сервер уже разрешает {0} доменов. Удали один, прежде чем добавить другой.'
+  link_allow_list: Разрешённые домены ссылок
+  link_allow_none: Фильтр ссылок не разрешает ни одного домена на этом сервере.
+  link_allow_cleared: Теперь фильтр ссылок не разрешает ни одного домена на этом сервере.
 
 sr-Cyrl-RS:
   filter_word_add: 'Реч {0} додата на листу филтрираних речи.'
@@ -195,6 +265,13 @@ sr-Cyrl-RS:
   word_filter_channel_on: Филтрирање речи укључено на овом каналу.
   word_filter_server_off: Филтрирање речи искључено на овом серверу.
   word_filter_server_on: Филтрирање речи укључено на овом серверу.
+  link_allow_added: 'Линкови ка {0} и његове поддомене сада пролазе филтер линкова.'
+  link_allow_removed: 'Линкови ка {0} више не пролазе филтер линкова.'
+  link_allow_invalid: 'То није исправан домен. Пример: `youtube.com`'
+  link_allow_limit: 'Овај сервер већ дозвољава {0} домена. Уклони један пре него што додаш други.'
+  link_allow_list: Дозвољени домени линкова
+  link_allow_none: Филтер линкова не дозвољава ниједан домен на овом серверу.
+  link_allow_cleared: Филтер линкова сада не дозвољава ниједан домен на овом серверу.
 
 tr-TR:
   filter_word_add: '{0} kelimesi filtrelenen kelimeler listesine eklendi.'
@@ -213,6 +290,13 @@ tr-TR:
   word_filter_channel_on: Bu kanalda kelime filtreleme etkinleştirildi.
   word_filter_server_off: Bu sunucuda kelime filtreleme devre dışı bırakıldı.
   word_filter_server_on: Bu sunucuda kelime filtreleme etkinleştirildi.
+  link_allow_added: '{0} ve alt alan adlarına giden bağlantılar artık bağlantı filtresinden geçiyor.'
+  link_allow_removed: '{0} bağlantıları artık bağlantı filtresinden geçmiyor.'
+  link_allow_invalid: 'Bu geçerli bir alan adı değil. Örnek: `youtube.com`'
+  link_allow_limit: 'Bu sunucu zaten {0} alan adına izin veriyor. Yenisini eklemeden önce birini kaldır.'
+  link_allow_list: İzin verilen bağlantı alan adları
+  link_allow_none: Bağlantı filtresi bu sunucuda hiçbir alan adına izin vermiyor.
+  link_allow_cleared: Bağlantı filtresi bu sunucuda artık hiçbir alan adına izin vermiyor.
 
 ts-TS:
   filter_word_add: 'Added word {0} to the filtered words list.'
@@ -231,6 +315,13 @@ ts-TS:
   word_filter_channel_on: Word filtering enabled on this channel.
   word_filter_server_off: Word filtering disabled on this server.
   word_filter_server_on: Word filtering enabled on this server.
+  link_allow_added: 'Links to {0} and its subdomains pass the link filter now.'
+  link_allow_removed: 'Links to {0} don''t pass the link filter anymore.'
+  link_allow_invalid: 'That''s not a valid domain. Example: `youtube.com`. Look properly.'
+  link_allow_limit: 'This server already allows {0} domains. Remove one before you add another.'
+  link_allow_list: Allowed link domains
+  link_allow_none: The link filter allows no domains on this server.
+  link_allow_cleared: The link filter allows no domains on this server now.
 
 uk-UA:
   filter_word_add: 'Слово {0} додано до списку відфільтрованих слів.'
@@ -249,6 +340,13 @@ uk-UA:
   word_filter_channel_on: Фільтрацію слів на цьому каналі увімкнено.
   word_filter_server_off: Фільтрацію слів на цьому сервері вимкнено.
   word_filter_server_on: Фільтрацію слів на цьому сервері увімкнено.
+  link_allow_added: 'Посилання на {0} та його піддомени тепер проходять фільтр посилань.'
+  link_allow_removed: 'Посилання на {0} більше не проходять фільтр посилань.'
+  link_allow_invalid: 'Це недійсний домен. Приклад: `youtube.com`'
+  link_allow_limit: 'Цей сервер уже дозволяє {0} доменів. Видали один, перш ніж додати інший.'
+  link_allow_list: Дозволені домени посилань
+  link_allow_none: Фільтр посилань не дозволяє жодного домену на цьому сервері.
+  link_allow_cleared: Тепер фільтр посилань не дозволяє жодного домену на цьому сервері.
 
 vi-VN:
   filter_word_add: 'Đã thêm từ {0} vào danh sách từ bị lọc.'
@@ -267,6 +365,13 @@ vi-VN:
   word_filter_channel_on: Đã bật lọc từ trên kênh này.
   word_filter_server_off: Đã tắt lọc từ trên máy chủ này.
   word_filter_server_on: Đã bật lọc từ trên máy chủ này.
+  link_allow_added: 'Liên kết đến {0} và các tên miền con giờ đi qua bộ lọc liên kết.'
+  link_allow_removed: 'Liên kết đến {0} không còn đi qua bộ lọc liên kết nữa.'
+  link_allow_invalid: 'Đó không phải tên miền hợp lệ. Ví dụ: `youtube.com`'
+  link_allow_limit: 'Máy chủ này đã cho phép {0} tên miền. Hãy xóa một cái trước khi thêm cái khác.'
+  link_allow_list: Tên miền liên kết được phép
+  link_allow_none: Bộ lọc liên kết không cho phép tên miền nào trên máy chủ này.
+  link_allow_cleared: Bộ lọc liên kết hiện không cho phép tên miền nào trên máy chủ này.
 
 zh-CN:
   filter_word_add: '{0} 已加入過濾詞彙列表'
@@ -285,3 +390,10 @@ zh-CN:
   word_filter_channel_on: 此頻道已啟用文字過濾
   word_filter_server_off: 此伺服器已停用文字過濾
   word_filter_server_on: 此伺服器已啟用文字過濾
+  link_allow_added: '指向 {0} 及其子域名的链接现在会通过链接过滤。'
+  link_allow_removed: '指向 {0} 的链接不再通过链接过滤。'
+  link_allow_invalid: 这不是有效的域名。例如：`youtube.com`
+  link_allow_limit: '此服务器已经允许 {0} 个域名。请先删除一个再添加。'
+  link_allow_list: 允许的链接域名
+  link_allow_none: 此服务器的链接过滤不允许任何域名。
+  link_allow_cleared: 此服务器的链接过滤现在不允许任何域名。

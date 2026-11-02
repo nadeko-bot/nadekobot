@@ -51,6 +51,7 @@ namespace NadekoBot.Hosted;
 [JsonSerializable(typeof(XpCurrencyRewardDto))]
 [JsonSerializable(typeof(XpRewardsDto))]
 [JsonSerializable(typeof(SetXpRoleRewardRequest))]
+[JsonSerializable(typeof(SetXpLevelRoleRewardRequest))]
 [JsonSerializable(typeof(SetXpCurrencyRewardRequest))]
 [JsonSerializable(typeof(AddXpRequest))]
 [JsonSerializable(typeof(SetXpLevelRequest))]

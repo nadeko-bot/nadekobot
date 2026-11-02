@@ -144,7 +144,16 @@ public sealed class MusicPlayer : IMusicPlayer
                 if (skipped)
                 {
                     skipped = false;
-                    _queue.Advance();
+
+                    // A jump (.play <n>, .previous) while the player was idle already chose the track.
+                    if (forceIndex is { } jumpTo)
+                    {
+                        forceIndex = null;
+                        _queue.SetIndex(jumpTo);
+                    }
+                    else
+                        _queue.Advance();
+
                     continue;
                 }
 
@@ -269,7 +278,7 @@ public sealed class MusicPlayer : IMusicPlayer
                     if (_autoplay is { IsCompleted: false } pending)
                         await WaitForAutoplayInternalAsync(pending);
 
-                    HandleQueuePostTrack();
+                    HandleQueuePostTrack(skipped);
                     skipped = false;
 
                     if (_proxy is { } p3)
@@ -600,11 +609,9 @@ public sealed class MusicPlayer : IMusicPlayer
 
         while (!IsStopped && !IsKilled)
         {
+            // The play loop clears the flag, because it decides where a skip goes.
             if (skipped)
-            {
-                skipped = false;
                 return false;
-            }
 
             if (IsPaused)
             {
@@ -730,7 +737,7 @@ public sealed class MusicPlayer : IMusicPlayer
         }
     }
 
-    private void HandleQueuePostTrack()
+    private void HandleQueuePostTrack(bool wasSkipped)
     {
         if (forceIndex is { } index)
         {
@@ -741,8 +748,17 @@ public sealed class MusicPlayer : IMusicPlayer
 
         var (repeat, isStopped) = (Repeat, IsStopped);
 
-        if (repeat == PlayerRepeatType.Track || isStopped)
+        if (isStopped)
             return;
+
+        // Song repeat plays the song again only when it ends; a skip moves on.
+        if (repeat == PlayerRepeatType.Track)
+        {
+            if (wasSkipped)
+                _queue.Advance();
+
+            return;
+        }
 
         if (repeat == PlayerRepeatType.None)
         {
@@ -912,17 +928,29 @@ public sealed class MusicPlayer : IMusicPlayer
 
     public bool MoveTo(int index)
     {
-        if (_queue.SetIndex(index))
-        {
-            forceIndex = index;
-            skipped = true;
-            IsStopped = false;
-            IsPaused = false;
-            WakeInternal();
-            return true;
-        }
+        if (!_queue.SetIndex(index))
+            return false;
 
-        return false;
+        JumpInternal(index);
+        return true;
+    }
+
+    public bool Previous()
+    {
+        if (!_queue.TrySetPrevious(out var index))
+            return false;
+
+        JumpInternal(index);
+        return true;
+    }
+
+    private void JumpInternal(int index)
+    {
+        forceIndex = index;
+        skipped = true;
+        IsStopped = false;
+        IsPaused = false;
+        WakeInternal();
     }
 
     public void SetVolume(int newVolume)

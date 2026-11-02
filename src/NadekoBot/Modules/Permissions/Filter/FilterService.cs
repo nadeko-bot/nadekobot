@@ -1,4 +1,5 @@
 #nullable disable
+using System.Collections.Frozen;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,11 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
 
     public ConcurrentHashSet<ulong> LinkFilteringChannels { get; } = [];
     public ConcurrentHashSet<ulong> LinkFilteringServers { get; } = [];
+
+    public const int MAX_ALLOWED_DOMAINS = 50;
+
+    private readonly ConcurrentDictionary<ulong, AllowedDomainSet> _allowedDomains = new();
+    private long _allowedDomainsVersion;
 
     public int Priority
         => int.MaxValue - 1;
@@ -84,6 +90,18 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
                 var fws = _serverFilteredWords.GetOrAdd(conf.GuildId, static _ => new());
                 fws.Bulk(conf.FilteredWords.Select(static x => x.Word));
             }
+        }
+
+        var version = Interlocked.Increment(ref _allowedDomainsVersion);
+        var domains = await uow.GetTable<AllowedLinkDomain>()
+            .Where(Queries.GuildOnShard<AllowedLinkDomain>(x => x.GuildId, _shardData.TotalShards, _shardData.ShardId))
+            .Select(x => new { x.GuildId, x.Domain })
+            .ToListAsyncLinqToDB();
+
+        foreach (var group in domains.GroupBy(static x => x.GuildId))
+        {
+            StoreAllowedDomainsInternal(group.Key,
+                new(version, group.Select(static x => x.Domain).ToFrozenSet(StringComparer.OrdinalIgnoreCase)));
         }
     }
 
@@ -234,11 +252,14 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         if (usrMsg is null)
             return false;
 
+        if (!LinkFilteringChannels.Contains(usrMsg.Channel.Id) && !LinkFilteringServers.Contains(guild.Id))
+            return false;
+
         if (usrMsg.Channel is ITextChannel ch && usrMsg.Author is IGuildUser gu && gu.GetPermissions(ch).ManageMessages)
             return false;
 
-        if ((LinkFilteringChannels.Contains(usrMsg.Channel.Id) || LinkFilteringServers.Contains(guild.Id))
-            && (usrMsg.Content.TryGetUrlPath(out _) || ForwardedHasLink(usrMsg.ForwardedMessages)))
+        var allowed = _allowedDomains.TryGetValue(guild.Id, out var set) ? set.Domains : null;
+        if (LinkHosts.HasBlockedLink(usrMsg.Content, allowed) || ForwardedHasBlockedLink(usrMsg.ForwardedMessages, allowed))
         {
             Log.Information("User {UserName} [{UserId}] sent a filtered link to {ChannelId} channel",
                 usrMsg.Author.ToString(),
@@ -259,13 +280,101 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         return false;
     }
 
-    private static bool ForwardedHasLink(IReadOnlyCollection<MessageSnapshot> forwards)
+    private static bool ForwardedHasBlockedLink(IReadOnlyCollection<MessageSnapshot> forwards, FrozenSet<string> allowed)
     {
         foreach (var f in forwards)
-            if (f.Message?.Content.TryGetUrlPath(out _) == true)
+        {
+            if (f.Message?.Content is { } content && LinkHosts.HasBlockedLink(content, allowed))
                 return true;
+        }
+
         return false;
     }
+
+    // Adds the domain, or removes it when the server already allows it.
+    public async Task<LinkAllowResult> ToggleAllowedLinkDomainAsync(ulong guildId, string domain)
+    {
+        var result = await ToggleAllowedLinkDomainAsync(_db, guildId, domain);
+        if (result != LinkAllowResult.LimitReached)
+            await ReloadAllowedDomainsInternalAsync(guildId);
+
+        return result;
+    }
+
+    public static async Task<LinkAllowResult> ToggleAllowedLinkDomainAsync(DbService db, ulong guildId, string domain)
+    {
+        await using var uow = db.GetDbContext();
+        var removed = await uow.GetTable<AllowedLinkDomain>()
+            .Where(x => x.GuildId == guildId && x.Domain == domain)
+            .DeleteAsync();
+
+        if (removed > 0)
+            return LinkAllowResult.Removed;
+
+        // The count and the insert are one statement, so parallel commands cannot pass the cap.
+        await using var lctx = uow.CreateLinqToDBContext();
+        var domains = lctx.GetTable<AllowedLinkDomain>();
+        try
+        {
+            var inserted = await lctx.SelectQuery(() => 1)
+                .Where(_ => domains.Count(d => d.GuildId == guildId) < MAX_ALLOWED_DOMAINS)
+                .InsertAsync(domains,
+                    _ => new AllowedLinkDomain
+                    {
+                        GuildId = guildId,
+                        Domain = domain,
+                    });
+
+            return inserted > 0 ? LinkAllowResult.Added : LinkAllowResult.LimitReached;
+        }
+        catch (Microsoft.Data.Sqlite.SqliteException ex)
+            when (ex.SqliteExtendedErrorCode == NadekoBot.Db.DbExtensions.SQLITE_CONSTRAINT_UNIQUE)
+        {
+            // another command added the same domain a moment ago
+            return LinkAllowResult.Added;
+        }
+    }
+
+    public async Task<IReadOnlyList<string>> GetAllowedLinkDomainsAsync(ulong guildId)
+    {
+        await using var uow = _db.GetDbContext();
+        return await uow.GetTable<AllowedLinkDomain>()
+            .Where(x => x.GuildId == guildId)
+            .OrderBy(x => x.Domain)
+            .Select(x => x.Domain)
+            .ToListAsyncLinqToDB();
+    }
+
+    public async Task ClearAllowedLinkDomainsAsync(ulong guildId)
+    {
+        await using (var uow = _db.GetDbContext())
+        {
+            await uow.GetTable<AllowedLinkDomain>()
+                .Where(x => x.GuildId == guildId)
+                .DeleteAsync();
+        }
+
+        await ReloadAllowedDomainsInternalAsync(guildId);
+    }
+
+    // A load which starts later sees every write before it, so only a newer load may replace the set.
+    private async Task ReloadAllowedDomainsInternalAsync(ulong guildId)
+    {
+        var version = Interlocked.Increment(ref _allowedDomainsVersion);
+
+        await using var uow = _db.GetDbContext();
+        var domains = await uow.GetTable<AllowedLinkDomain>()
+            .Where(x => x.GuildId == guildId)
+            .Select(x => x.Domain)
+            .ToListAsyncLinqToDB();
+
+        StoreAllowedDomainsInternal(guildId, new(version, domains.ToFrozenSet(StringComparer.OrdinalIgnoreCase)));
+    }
+
+    private void StoreAllowedDomainsInternal(ulong guildId, AllowedDomainSet next)
+        => _allowedDomains.AddOrUpdate(guildId, next, (_, old) => old.Version > next.Version ? old : next);
+
+    private sealed record AllowedDomainSet(long Version, FrozenSet<string> Domains);
 
     public async Task<ServerFilterSettings> GetFilterSettings(ulong guildId)
     {

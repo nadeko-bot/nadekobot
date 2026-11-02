@@ -14,3 +14,10 @@ word_filter_channel_off: Word filtering disabled on this channel.
 word_filter_channel_on: Word filtering enabled on this channel.
 word_filter_server_off: Word filtering disabled on this server.
 word_filter_server_on: Word filtering enabled on this server.
+link_allow_added: "Links to {0} and its subdomains now pass the link filter."
+link_allow_removed: "Links to {0} no longer pass the link filter."
+link_allow_invalid: "That is not a valid domain. Example: `youtube.com`"
+link_allow_limit: "This server already allows {0} domains. Remove one before you add another."
+link_allow_list: "Allowed link domains"
+link_allow_none: "The link filter allows no domains on this server."
+link_allow_cleared: "The link filter allows no domains on this server now."

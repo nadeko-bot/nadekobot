@@ -10,6 +10,9 @@ ar:
   feed_auto_removed: 'تمت إزالة التغذية `{0}` تلقائياً بعد فشل متكرر في جلبها.'
   feed_bot_missing_perms: 'يحتاج البوت إلى صلاحيات View Channel وSend Messages وEmbed Links في {0}.'
   feed_yt_unavailable: لا يستطيع البوت التحقق من قنوات YouTube الآن. حاول مرة أخرى لاحقًا.
+  feed_message_set: ينشر البوت الرسالة الجديدة مع كل تحديث لهذه التغذية.
+  feed_message_cleared: ينشر البوت هذه التغذية بدون رسالة.
+  feed_message_too_long: 'يمكن أن تحتوي رسالة التغذية على {0} حرفًا كحد أقصى.'
 
 de-DE:
   feed_added: Feed wurde hinzugefügt.
@@ -23,6 +26,9 @@ de-DE:
   feed_auto_removed: 'Feed `{0}` wurde nach wiederholten Abruffehlern automatisch entfernt.'
   feed_bot_missing_perms: 'Der Bot braucht die Berechtigungen View Channel, Send Messages und Embed Links in {0}.'
   feed_yt_unavailable: Der Bot kann YouTube-Kanäle gerade nicht prüfen. Versuche es später erneut.
+  feed_message_set: Der Bot postet die neue Nachricht bei jedem Update dieses Feeds.
+  feed_message_cleared: Der Bot postet diesen Feed ohne Nachricht.
+  feed_message_too_long: 'Eine Feed-Nachricht darf höchstens {0} Zeichen haben.'
 
 es-ES:
   feed_added: Contenido agregado.
@@ -36,6 +42,9 @@ es-ES:
   feed_auto_removed: 'El feed `{0}` fue eliminado automáticamente tras fallos repetidos al obtenerlo.'
   feed_bot_missing_perms: 'El bot necesita los permisos View Channel, Send Messages y Embed Links en {0}.'
   feed_yt_unavailable: El bot no puede comprobar los canales de YouTube ahora. Inténtalo de nuevo más tarde.
+  feed_message_set: El bot publica el mensaje nuevo con cada actualización de este feed.
+  feed_message_cleared: El bot publica este feed sin mensaje.
+  feed_message_too_long: 'Un mensaje de feed puede tener como máximo {0} caracteres.'
 
 fr-FR:
   feed_added: Le flux est ajouté.
@@ -49,6 +58,9 @@ fr-FR:
   feed_auto_removed: 'Le flux `{0}` a été automatiquement supprimé après des échecs répétés.'
   feed_bot_missing_perms: 'Le bot a besoin des permissions View Channel, Send Messages et Embed Links dans {0}.'
   feed_yt_unavailable: Le bot ne peut pas vérifier les chaînes YouTube pour le moment. Réessayez plus tard.
+  feed_message_set: Le bot publie le nouveau message à chaque mise à jour de ce flux.
+  feed_message_cleared: Le bot publie ce flux sans message.
+  feed_message_too_long: 'Un message de flux peut contenir au maximum {0} caractères.'
 
 id-ID:
   feed_added: Feed berhasil ditambahkan.
@@ -62,6 +74,9 @@ id-ID:
   feed_auto_removed: 'Feed `{0}` dihapus secara otomatis setelah berulang kali gagal mengambil data.'
   feed_bot_missing_perms: 'Bot butuh izin View Channel, Send Messages, dan Embed Links di {0}.'
   feed_yt_unavailable: Bot tidak bisa memeriksa channel YouTube sekarang. Coba lagi nanti.
+  feed_message_set: Bot mengirim pesan baru di setiap pembaruan feed ini.
+  feed_message_cleared: Bot mengirim feed ini tanpa pesan.
+  feed_message_too_long: 'Pesan feed bisa berisi paling banyak {0} karakter.'
 
 ja-JP:
   feed_added: フィードが追加されました。
@@ -75,6 +90,9 @@ ja-JP:
   feed_auto_removed: 'フィード `{0}` は取得の失敗が繰り返されたため、自動的に削除されました。'
   feed_bot_missing_perms: 'ボットには {0} で View Channel、Send Messages、Embed Links の権限が必要です。'
   feed_yt_unavailable: 現在、ボットはYouTubeチャンネルを確認できません。後でもう一度お試しください。
+  feed_message_set: このフィードが更新されるたびに、ボットは新しいメッセージを投稿します。
+  feed_message_cleared: ボットはこのフィードをメッセージなしで投稿します。
+  feed_message_too_long: 'フィードのメッセージは最大 {0} 文字です。'
 
 ko-KR:
   feed_added: 피드가 추가되었어요.
@@ -88,6 +106,9 @@ ko-KR:
   feed_auto_removed: '피드 `{0}`이(가) 반복적인 가져오기 실패로 자동 제거되었어요.'
   feed_bot_missing_perms: '봇은 {0}에서 View Channel, Send Messages, Embed Links 권한이 필요합니다.'
   feed_yt_unavailable: 지금은 봇이 YouTube 채널을 확인할 수 없어요. 나중에 다시 시도해 주세요.
+  feed_message_set: 봇은 이 피드가 업데이트될 때마다 새 메시지를 게시해요.
+  feed_message_cleared: 봇은 이 피드를 메시지 없이 게시해요.
+  feed_message_too_long: '피드 메시지는 최대 {0}자까지 가능해요.'
 
 pl-PL:
   feed_added: Dodano feed.
@@ -101,6 +122,9 @@ pl-PL:
   feed_auto_removed: 'Feed `{0}` został automatycznie usunięty po wielokrotnych błędach pobierania.'
   feed_bot_missing_perms: 'Bot potrzebuje uprawnień View Channel, Send Messages i Embed Links w {0}.'
   feed_yt_unavailable: Bot nie może teraz sprawdzić kanałów YouTube. Spróbuj ponownie później.
+  feed_message_set: Bot publikuje nową wiadomość przy każdej aktualizacji tego feedu.
+  feed_message_cleared: Bot publikuje ten feed bez wiadomości.
+  feed_message_too_long: 'Wiadomość feedu może mieć najwyżej {0} znaków.'
 
 pt-BR:
   feed_added: Feed adicionado.
@@ -114,6 +138,9 @@ pt-BR:
   feed_auto_removed: 'O feed `{0}` foi removido automaticamente após falhas repetidas ao buscá-lo.'
   feed_bot_missing_perms: 'O bot precisa das permissões View Channel, Send Messages e Embed Links em {0}.'
   feed_yt_unavailable: O bot não consegue verificar canais do YouTube agora. Tente novamente mais tarde.
+  feed_message_set: O bot publica a nova mensagem a cada atualização deste feed.
+  feed_message_cleared: O bot publica este feed sem mensagem.
+  feed_message_too_long: 'Uma mensagem de feed pode ter no máximo {0} caracteres.'
 
 ru-RU:
   feed_added: Лента добавлена.
@@ -127,6 +154,9 @@ ru-RU:
   feed_auto_removed: 'Лента `{0}` была автоматически удалена из-за повторяющихся ошибок при получении.'
   feed_bot_missing_perms: 'Боту нужны права View Channel, Send Messages и Embed Links в {0}.'
   feed_yt_unavailable: Бот сейчас не может проверить каналы YouTube. Попробуйте позже.
+  feed_message_set: Бот публикует новое сообщение при каждом обновлении этой ленты.
+  feed_message_cleared: Бот публикует эту ленту без сообщения.
+  feed_message_too_long: 'Сообщение ленты может содержать не более {0} символов.'
 
 sr-Cyrl-RS:
   feed_added: Фид додат.
@@ -140,6 +170,9 @@ sr-Cyrl-RS:
   feed_auto_removed: 'Фид `{0}` је аутоматски уклоњен након поновљених грешака при преузимању.'
   feed_bot_missing_perms: 'Боту су потребне дозволе View Channel, Send Messages и Embed Links у {0}.'
   feed_yt_unavailable: Бот тренутно не може да провери YouTube канале. Покушај поново касније.
+  feed_message_set: Бот објављује нову поруку при сваком ажурирању овог фида.
+  feed_message_cleared: Бот објављује овај фид без поруке.
+  feed_message_too_long: 'Порука фида може имати највише {0} знакова.'
 
 tr-TR:
   feed_added: Akış eklendi.
@@ -153,6 +186,9 @@ tr-TR:
   feed_auto_removed: '`{0}` akışı tekrarlanan bağlantı hataları nedeniyle otomatik olarak kaldırıldı.'
   feed_bot_missing_perms: 'Botun {0} kanalında View Channel, Send Messages ve Embed Links izinlerine ihtiyacı var.'
   feed_yt_unavailable: Bot şu anda YouTube kanallarını kontrol edemiyor. Daha sonra tekrar dene.
+  feed_message_set: Bot bu akışın her güncellemesinde yeni mesajı paylaşır.
+  feed_message_cleared: Bot bu akışı mesaj olmadan paylaşır.
+  feed_message_too_long: 'Bir akış mesajı en fazla {0} karakter olabilir.'
 
 ts-TS:
   feed_added: Feed added.
@@ -166,6 +202,9 @@ ts-TS:
   feed_auto_removed: 'Feed `{0}` was removed because it kept failing... not like I wanted to keep it or anything!'
   feed_bot_missing_perms: 'I need View Channel, Send Messages and Embed Links in {0}. Give them to me first.'
   feed_yt_unavailable: Hmph, I can't check YouTube channels right now. Try again later, baka.
+  feed_message_set: The bot posts the new message with each update of this feed.
+  feed_message_cleared: The bot posts this feed without a message.
+  feed_message_too_long: 'A feed message can have at most {0} characters. Cut it down.'
 
 uk-UA:
   feed_added: Стрічку додано.
@@ -179,6 +218,9 @@ uk-UA:
   feed_auto_removed: 'Стрічку `{0}` було автоматично видалено через повторювані помилки отримання.'
   feed_bot_missing_perms: 'Боту потрібні дозволи View Channel, Send Messages і Embed Links у {0}.'
   feed_yt_unavailable: Бот зараз не може перевірити канали YouTube. Спробуй пізніше.
+  feed_message_set: Бот публікує нове повідомлення з кожним оновленням цієї стрічки.
+  feed_message_cleared: Бот публікує цю стрічку без повідомлення.
+  feed_message_too_long: 'Повідомлення стрічки може містити щонайбільше {0} символів.'
 
 vi-VN:
   feed_added: Đã thêm feed.
@@ -192,6 +234,9 @@ vi-VN:
   feed_auto_removed: 'Feed `{0}` đã bị xóa tự động sau nhiều lần lấy dữ liệu thất bại.'
   feed_bot_missing_perms: 'Bot cần các quyền View Channel, Send Messages và Embed Links trong {0}.'
   feed_yt_unavailable: Bot hiện không thể kiểm tra kênh YouTube. Hãy thử lại sau.
+  feed_message_set: Bot đăng tin nhắn mới mỗi lần feed này cập nhật.
+  feed_message_cleared: Bot đăng feed này mà không kèm tin nhắn.
+  feed_message_too_long: 'Tin nhắn của feed có thể dài tối đa {0} ký tự.'
 
 zh-CN:
   feed_added: 添加了新訂閱。
@@ -205,3 +250,6 @@ zh-CN:
   feed_auto_removed: '订阅源 `{0}` 因多次获取失败已被自动移除。'
   feed_bot_missing_perms: '机器人需要在 {0} 中拥有 View Channel、Send Messages 和 Embed Links 权限。'
   feed_yt_unavailable: 机器人现在无法检查 YouTube 频道。请稍后再试。
+  feed_message_set: 机器人会在这条订阅每次更新时发布新消息。
+  feed_message_cleared: 机器人发布这条订阅时不附带消息。
+  feed_message_too_long: '订阅消息最多可以有 {0} 个字符。'

@@ -2,6 +2,49 @@
 
 *a,c,f,r,o,d*
 
+## [7.9.0] - TBD
+
+### Added
+
+- `.ga start` picks up to 20 winners, for example `.ga start 1h 3w prize`.
+- `.linkallow` / `.la` lets links to a domain and its subdomains pass the link filter
+    - `.linkallowlist` / `.lal` lists the allowed domains
+    - `.linkallowclear` / `.lac` removes all allowed domains
+- `.prune` / `.clear` has filters for bots, humans, links, files, embeds, invites, pings and text.
+- `.feedmessage` / `.feedmsg` changes the message of a feed.
+- Feed messages have the placeholders `%feed.title%`, `%feed.url%`, `%feed.description%`, `%feed.image%` and `%feed.source%`.
+- `.repeat` / `.songrepeat` turns song repeat on or off.
+- `.loop` / `.queueloop` turns queue repeat on or off.
+- `.previous` / `.prev` / `.back` plays the previous song in the queue.
+
+### Changed
+
+- `.xprolereward` / `.xprr` gives several roles at one level
+    - `.xprr <level> <role>` removes the reward of one role
+    - a server has at most 100 role rewards
+- `.srvrfilterlin` / `.sfl` and `.chnlfilterlin` / `.cfl` find links in any part of a message.
+- The repeating message command is `.repeatadd` / `.repadd`.
+- Shop items, aliases, startup and scheduled commands which use `.repeat` must use `.repeatadd`.
+- On a new server, the music queue does not repeat.
+- `.currencytransactions` / `.curtrs` shows the transaction id first, without `#`.
+- The bot has its own fonts. It does not read them from `data/fonts`.
+- `data/fonts` is optional. Fonts there add the characters which the bot's fonts do not have.
+- The default xp card aligns the name, rank, xp bar and club name.
+
+### Fixed
+
+- `.play <number>` plays the chosen song after `.stop` or the end of the queue.
+- `.next` / `.n` plays the next song while song repeat is on.
+- A missing or broken font in `data/fonts` does not stop the bot.
+- The xp card shows the avatar and the club icon as smooth circles.
+- The xp card shows the rank as solid digits.
+- The xp card keeps a long rank or level on the line of its label.
+
+### Dev
+
+- `NadekoBot.Hosted` has routes for each role reward of a level.
+- The bot uses ImageSharp 3.2.0, which fixes known security issues.
+
 ## [7.8.0] - 31.10.2026
 
 ### Added

@@ -9,3 +9,6 @@ feed_removed: Feed removed.
 feed_auto_removed: "Feed `{0}` was automatically removed after repeated failures to fetch it."
 feed_bot_missing_perms: 'The bot needs the View Channel, Send Messages and Embed Links permissions in {0}.'
 feed_yt_unavailable: "The bot cannot check YouTube channels now. Try again later."
+feed_message_set: "The bot posts the new message with each update of this feed."
+feed_message_cleared: "The bot posts this feed without a message."
+feed_message_too_long: "A feed message can have at most {0} characters."

@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20261031134701_init")]
+    [Migration("20261031160231_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -73,6 +73,28 @@ namespace NadekoBot.Migrations
                         .IsUnique();
 
                     b.ToTable("AiAgentWhitelistEntry");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.AllowedLinkDomain", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Domain")
+                        .IsRequired()
+                        .HasMaxLength(253)
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "Domain")
+                        .IsUnique();
+
+                    b.ToTable("AllowedLinkDomain");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.AntiAltSetting", b =>
@@ -977,6 +999,11 @@ namespace NadekoBot.Migrations
 
                     b.Property<ulong>("MessageId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<int>("WinnerCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(1);
 
                     b.HasKey("Id");
 
@@ -2567,7 +2594,7 @@ namespace NadekoBot.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("XpSettingsId", "Level")
+                    b.HasIndex("XpSettingsId", "Level", "RoleId")
                         .IsUnique();
 
                     b.ToTable("XpRoleReward");

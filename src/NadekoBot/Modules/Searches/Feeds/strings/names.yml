@@ -8,6 +8,9 @@ feedremove:
   - feedremove
   - feedrm
   - feeddel
+feedmessage:
+  - feedmessage
+  - feedmsg
 ytuploadnotif:
   - ytuploadnotif
   - yun

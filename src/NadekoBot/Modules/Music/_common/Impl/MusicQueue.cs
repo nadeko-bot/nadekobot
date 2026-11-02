@@ -171,6 +171,21 @@ public sealed partial class MusicQueue : IMusicQueue
         }
     }
 
+    // From the first track it goes to the last one.
+    public bool TrySetPrevious(out int newIndex)
+    {
+        lock (_locker)
+        {
+            newIndex = 0;
+            if (tracks.Count == 0)
+                return false;
+
+            newIndex = index > 0 && index <= tracks.Count ? index - 1 : tracks.Count - 1;
+            index = newIndex;
+            return true;
+        }
+    }
+
     public void Clear()
     {
         lock (_locker)

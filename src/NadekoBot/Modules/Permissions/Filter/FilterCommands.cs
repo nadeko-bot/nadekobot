@@ -141,6 +141,68 @@ public partial class Permissions
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.Administrator)]
+        public async Task LinkAllow([Leftover] string domain)
+        {
+            var normalized = LinkHosts.NormalizeDomain(domain);
+            if (normalized is null)
+            {
+                await Response().Error(strs.link_allow_invalid).SendAsync();
+                return;
+            }
+
+            var result = await _service.ToggleAllowedLinkDomainAsync(ctx.Guild.Id, normalized);
+            switch (result)
+            {
+                case LinkAllowResult.Added:
+                    await Response().Confirm(strs.link_allow_added(Format.Code(normalized))).SendAsync();
+                    break;
+                case LinkAllowResult.Removed:
+                    await Response().Confirm(strs.link_allow_removed(Format.Code(normalized))).SendAsync();
+                    break;
+                default:
+                    await Response().Error(strs.link_allow_limit(FilterService.MAX_ALLOWED_DOMAINS)).SendAsync();
+                    break;
+            }
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        public async Task LinkAllowList(int page = 1)
+        {
+            if (--page < 0)
+                return;
+
+            var domains = await _service.GetAllowedLinkDomainsAsync(ctx.Guild.Id);
+            if (domains.Count == 0)
+            {
+                await Response().Confirm(strs.link_allow_none).SendAsync();
+                return;
+            }
+
+            await Response()
+                  .Paginated()
+                  .Items(domains)
+                  .PageSize(15)
+                  .CurrentPage(page)
+                  .Page((items, _) => CreateEmbed()
+                                      .WithOkColor()
+                                      .WithTitle(GetText(strs.link_allow_list))
+                                      .WithDescription(string.Join('\n', items.Select(static d => Format.Code(d)))))
+                  .SendAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.Administrator)]
+        public async Task LinkAllowClear()
+        {
+            await _service.ClearAllowedLinkDomainsAsync(ctx.Guild.Id);
+            await Response().Confirm(strs.link_allow_cleared).SendAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
         public async Task SrvrFilterWords()
         {
             var channel = (ITextChannel)ctx.Channel;

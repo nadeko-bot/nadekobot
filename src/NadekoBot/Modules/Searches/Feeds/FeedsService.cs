@@ -30,6 +30,7 @@ public sealed partial class FeedsService(
     SearchesConfigService scs,
     IHttpClientFactory httpFactory,
     MusicServiceClient music,
+    IReplacementService repSvc,
     TimeProvider? timeProvider = null) : INService, IReadyExecutor
 {
     public const string USER_AGENT =
@@ -106,32 +107,26 @@ public sealed partial class FeedsService(
     }
 
     /// <summary>
-    /// Builds an embed from a parsed feed item, extracting title, description, link, and thumbnail.
+    /// Extracts the title, description, link and image of a parsed feed item.
     /// </summary>
-    public static EmbedBuilder BuildFeedEmbed(EmbedBuilder embed, FeedItem feedItem, string rssUrl)
+    public static FeedPost GetFeedPost(FeedItem feedItem)
     {
-        embed.WithFooter(rssUrl);
-
         var link = feedItem.SpecificItem.Link;
-        if (!string.IsNullOrWhiteSpace(link) && Uri.IsWellFormedUriString(link, UriKind.Absolute))
-            embed.WithUrl(link);
+        if (!IsWebUrl(link))
+            link = null;
 
-        var title = string.IsNullOrWhiteSpace(feedItem.Title) ? "-" : feedItem.Title;
-
-        var gotImage = false;
+        string? imageUrl = null;
         if (feedItem.SpecificItem is MediaRssFeedItem mrfi
             && (mrfi.Enclosure?.MediaType?.StartsWith("image/") ?? false))
         {
             var imgUrl = mrfi.Enclosure.Url;
-            if (!string.IsNullOrWhiteSpace(imgUrl)
-                && Uri.IsWellFormedUriString(imgUrl, UriKind.Absolute))
+            if (IsWebUrl(imgUrl))
             {
-                embed.WithImageUrl(imgUrl);
-                gotImage = true;
+                imageUrl = imgUrl;
             }
         }
 
-        if (!gotImage && feedItem.SpecificItem is AtomFeedItem afi)
+        if (imageUrl is null && feedItem.SpecificItem is AtomFeedItem afi)
         {
             var previewElement = afi.Element.Descendants()
                 .FirstOrDefault(x => x.Name.LocalName == "preview");
@@ -145,23 +140,81 @@ public sealed partial class FeedsService(
             if (previewElement is not null)
             {
                 var urlAttribute = previewElement.Attribute("url");
-                if (urlAttribute is not null
-                    && !string.IsNullOrWhiteSpace(urlAttribute.Value)
-                    && Uri.IsWellFormedUriString(urlAttribute.Value, UriKind.Absolute))
+                if (urlAttribute is not null && IsWebUrl(urlAttribute.Value))
                 {
-                    embed.WithImageUrl(urlAttribute.Value);
+                    imageUrl = urlAttribute.Value;
                 }
             }
         }
 
-        embed.WithTitle(title.TrimTo(256));
+        var title = (string.IsNullOrWhiteSpace(feedItem.Title) ? "-" : feedItem.Title).TrimTo(256) ?? "-";
 
-        var desc = feedItem.Description?.StripHtml();
-        if (!string.IsNullOrWhiteSpace(desc))
-            embed.WithDescription(desc.TrimTo(2048));
+        var desc = string.IsNullOrWhiteSpace(feedItem.Description)
+            ? null
+            : feedItem.Description.StripHtml().TrimTo(2048);
+
+        return new(link, title, desc, imageUrl);
+    }
+
+    public static EmbedBuilder BuildFeedEmbed(EmbedBuilder embed, in FeedPost post, string rssUrl)
+    {
+        embed.WithFooter(rssUrl)
+             .WithTitle(post.Title);
+
+        if (post.Link is not null)
+            embed.WithUrl(post.Link);
+
+        if (post.ImageUrl is not null)
+            embed.WithImageUrl(post.ImageUrl);
+
+        if (post.Description is not null)
+            embed.WithDescription(post.Description);
 
         return embed;
     }
+
+    /// <summary>
+    /// Fills the feed placeholders in the subscription message.
+    /// Embed json replaces the default feed embed, plain text is posted above it.
+    /// </summary>
+    public async ValueTask<FeedMessage> BuildFeedMessageAsync(
+        string message,
+        FeedPost post,
+        string rssUrl,
+        ReplacementContext repCtx)
+    {
+        // Skip the parse for plain text.
+        SmartText text = message.AsSpan().TrimStart() is ['{', ..]
+            ? SmartText.CreateFrom(message)
+            : new SmartPlainText(message);
+
+        // the feed's author chose these values, not the server staff
+        repCtx.WithOverride("%feed.url%", () => SanitizeFeedValue(post.Link))
+              .WithOverride("%feed.title%", () => SanitizeFeedValue(post.Title))
+              .WithOverride("%feed.description%", () => SanitizeFeedValue(post.Description))
+              .WithOverride("%feed.image%", () => SanitizeFeedValue(post.ImageUrl))
+              .WithOverride("%feed.source%", () => SanitizeFeedValue(rssUrl));
+
+        var replaced = await repSvc.ReplaceAsync(text, repCtx);
+
+        // the values can make the message longer than Discord allows, and a refused post is never sent again
+        replaced = replaced switch
+        {
+            SmartPlainText { Text.Length: > DiscordConfig.MaxMessageSize } plain
+                => new SmartPlainText(plain.Text[..DiscordConfig.MaxMessageSize]),
+            SmartEmbedTextArray { Content.Length: > DiscordConfig.MaxMessageSize } arr
+                => arr with { Content = arr.Content[..DiscordConfig.MaxMessageSize] },
+            _ => replaced
+        };
+
+        return new(replaced, replaced is not SmartEmbedTextArray);
+    }
+
+    // TemplateMentions allows user mentions, so a member mention in a feed title would ping
+    private static string SanitizeFeedValue(string? value)
+        => string.IsNullOrEmpty(value)
+            ? string.Empty
+            : value.SanitizeAllMentions().Replace("<@", "<@\u200B", StringComparison.Ordinal);
 
     private async Task TrackFeedsLoopInternalAsync()
     {
@@ -274,7 +327,8 @@ public sealed partial class FeedsService(
                 continue;
 
             _lastPosts[key] = itemUpdateDate;
-            QueuePostInternal(subs, BuildFeedEmbed(sender.CreateEmbed(), feedItem, rssUrl), deadSubs);
+            var post = GetFeedPost(feedItem);
+            QueuePostInternal(subs, post, BuildFeedEmbed(sender.CreateEmbed(), post, rssUrl), rssUrl, deadSubs);
         }
 
         await RemoveLeftGuildSubsInternalAsync(key, rssUrl, deadSubs);
@@ -308,7 +362,11 @@ public sealed partial class FeedsService(
 
         var deadSubs = new List<FeedSub>();
         for (var i = count - 1; i >= 0; i--)
-            QueuePostInternal(subs, BuildVideoEmbed(sender.CreateEmbed(), videos[i], rssUrl), deadSubs);
+            QueuePostInternal(subs,
+                GetVideoPost(videos[i]),
+                BuildVideoEmbed(sender.CreateEmbed(), videos[i], rssUrl),
+                rssUrl,
+                deadSubs);
 
         await RemoveLeftGuildSubsInternalAsync(key, rssUrl, deadSubs);
     }
@@ -352,14 +410,23 @@ public sealed partial class FeedsService(
             seen.Add(video.Id!);
     }
 
+    public static FeedPost GetVideoPost(MusicServiceUpload video)
+        => new(YT_WATCH_URL + video.Id,
+            (string.IsNullOrWhiteSpace(video.Title) ? "-" : video.Title).TrimTo(256) ?? "-",
+            null,
+            IsWebUrl(video.Thumbnail) ? video.Thumbnail : null);
+
+    private static bool IsWebUrl(string? url)
+        => Uri.TryCreate(url, UriKind.Absolute, out var uri)
+           && (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp);
+
     public static EmbedBuilder BuildVideoEmbed(EmbedBuilder embed, MusicServiceUpload video, string rssUrl)
     {
         embed.WithFooter(rssUrl)
             .WithUrl(YT_WATCH_URL + video.Id)
             .WithTitle((string.IsNullOrWhiteSpace(video.Title) ? "-" : video.Title).TrimTo(256));
 
-        if (Uri.TryCreate(video.Thumbnail, UriKind.Absolute, out var thumb)
-            && (thumb.Scheme == Uri.UriSchemeHttps || thumb.Scheme == Uri.UriSchemeHttp))
+        if (IsWebUrl(video.Thumbnail))
             embed.WithImageUrl(video.Thumbnail);
 
         return embed;
@@ -421,8 +488,13 @@ public sealed partial class FeedsService(
             await RemoveDeadFeedInternalAsync(key, subs, failure.Streak);
     }
 
-    // Queues the embed for each sub, and collects the subs of servers which the bot left.
-    private void QueuePostInternal(List<FeedSub> subs, EmbedBuilder embed, List<FeedSub> deadSubs)
+    // Queues the post for each sub, and collects the subs of servers which the bot left.
+    private void QueuePostInternal(
+        List<FeedSub> subs,
+        FeedPost post,
+        EmbedBuilder embed,
+        string rssUrl,
+        List<FeedSub> deadSubs)
     {
         foreach (var val in subs)
         {
@@ -438,7 +510,7 @@ public sealed partial class FeedsService(
             if (ch is null || !CanPostIn(guild.CurrentUser, ch))
                 continue;
 
-            _sendTasks.Add(SendFeedItemInternalAsync(ch, val, embed));
+            _sendTasks.Add(SendFeedItemInternalAsync(ch, val, post, embed, rssUrl));
         }
     }
 
@@ -713,6 +785,20 @@ public sealed partial class FeedsService(
         return updated;
     }
 
+    // The feed at the position which .feedlist shows, counted from 0.
+    public async Task<FeedSub?> GetFeedAtAsync(ulong guildId, int index)
+    {
+        if (index < 0)
+            return null;
+
+        await using var uow = db.GetDbContext();
+        return await uow.GetTable<FeedSub>()
+            .Where(x => x.GuildId == guildId)
+            .OrderBy(x => x.Id)
+            .Skip(index)
+            .FirstOrDefaultAsyncLinqToDB();
+    }
+
     public async Task<bool> RemoveFeedAsync(ulong guildId, int id)
     {
         await using var uow = db.GetDbContext();
@@ -776,15 +862,30 @@ public sealed partial class FeedsService(
         return perms.ViewChannel && perms.SendMessages && perms.EmbedLinks;
     }
 
-    private async Task SendFeedItemInternalAsync(ITextChannel ch, FeedSub sub, EmbedBuilder embed)
+    private async Task SendFeedItemInternalAsync(
+        ITextChannel ch,
+        FeedSub sub,
+        FeedPost post,
+        EmbedBuilder embed,
+        string rssUrl)
     {
         try
         {
-            await sender.Response(ch)
-                .Embed(embed)
-                .Text(string.IsNullOrWhiteSpace(sub.Message) ? string.Empty : sub.Message)
-                .Mentions(TemplateMentions.FromTemplate(sub.Message))
-                .SendAsync();
+            var response = sender.Response(ch).Mentions(TemplateMentions.FromTemplate(sub.Message));
+            if (string.IsNullOrWhiteSpace(sub.Message))
+            {
+                await response.Embed(embed).SendAsync();
+                return;
+            }
+
+            var repCtx = new ReplacementContext(client: client, guild: ch.Guild, channel: ch);
+            var msg = await BuildFeedMessageAsync(sub.Message, post, rssUrl, repCtx);
+
+            response = response.Text(msg.Text);
+            if (msg.WithDefaultEmbed)
+                response = response.Embed(embed);
+
+            await response.SendAsync();
         }
         catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
         {

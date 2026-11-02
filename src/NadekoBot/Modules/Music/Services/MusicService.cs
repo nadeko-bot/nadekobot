@@ -529,18 +529,31 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
         if (!TryGetMusicPlayer(guildId, out var mp))
             return false;
 
-        if (mp.IsStopped)
-        {
-            if (!_voiceStateService.TryGetProxy(guildId, out var proxy)
-                || proxy.State == VoiceProxy.VoiceProxyState.Stopped)
-            {
-                await JoinLockedInternalAsync(guildId, voiceChannelId, onlyWhenNeeded: false);
-                AttachProxy(guildId);
-            }
-        }
-
+        await RejoinIfStoppedInternalAsync(guildId, voiceChannelId, mp);
         mp.Next();
         return true;
+    }
+
+    public async Task<bool> PreviousAsync(ulong guildId, ulong voiceChannelId)
+    {
+        if (!TryGetMusicPlayer(guildId, out var mp))
+            return false;
+
+        await RejoinIfStoppedInternalAsync(guildId, voiceChannelId, mp);
+        return mp.Previous();
+    }
+
+    private async Task RejoinIfStoppedInternalAsync(ulong guildId, ulong voiceChannelId, IMusicPlayer mp)
+    {
+        if (!mp.IsStopped)
+            return;
+
+        if (!_voiceStateService.TryGetProxy(guildId, out var proxy)
+            || proxy.State == VoiceProxy.VoiceProxyState.Stopped)
+        {
+            await JoinLockedInternalAsync(guildId, voiceChannelId, onlyWhenNeeded: false);
+            AttachProxy(guildId);
+        }
     }
 
     public async Task<IList<(string Title, string Url, string Thumbnail)>> SearchVideosAsync(string query)
@@ -732,6 +745,25 @@ public sealed class MusicService : IMusicService, IPlaceholderProvider
 
         if (TryGetMusicPlayer(guildId, out var mp))
             mp.SetRepeat(repeatType);
+    }
+
+    public async Task<PlayerRepeatType> ToggleRepeatAsync(ulong guildId, PlayerRepeatType mode)
+    {
+        var settings = await GetSettingsInternalAsync(guildId);
+
+        await using var ctx = _db.GetDbContext();
+        var result = await ctx.GetTable<MusicPlayerSettings>()
+                              .Where(x => x.GuildId == guildId)
+                              .Set(x => x.PlayerRepeat, x => x.PlayerRepeat == mode ? PlayerRepeatType.None : mode)
+                              .UpdateWithOutputAsync(static (_, n) => n.PlayerRepeat);
+
+        var newValue = result.Length > 0 ? result[0] : PlayerRepeatType.None;
+        settings.PlayerRepeat = newValue;
+
+        if (TryGetMusicPlayer(guildId, out var mp))
+            mp.SetRepeat(newValue);
+
+        return newValue;
     }
 
     public async Task SetVolumeAsync(ulong guildId, int value)

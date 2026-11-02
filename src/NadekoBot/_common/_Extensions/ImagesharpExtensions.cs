@@ -11,45 +11,25 @@ namespace NadekoBot.Extensions;
 
 public static class ImagesharpExtensions
 {
-    // https://github.com/SixLabors/Samples/blob/master/ImageSharp/AvatarWithRoundedCorner/Program.cs
-    public static IImageProcessingContext ApplyRoundedCorners(this IImageProcessingContext ctx, float cornerRadius)
+    private static readonly GraphicsOptions _keepInsideMask = new()
     {
-        var size = ctx.GetCurrentSize();
-        var corners = BuildCorners(size.Width, size.Height, cornerRadius);
+        AlphaCompositionMode = PixelAlphaCompositionMode.DestIn
+    };
 
-        ctx.SetGraphicsOptions(new GraphicsOptions
+    // Crops the image to the size without stretching and keeps only an anti-aliased ellipse.
+    public static void ToCircle(this Image<Rgba32> img, int width, int height)
+    {
+        img.Mutate(x => x.Resize(new ResizeOptions
         {
-            Antialias = true,
-            // enforces that any part of this shape that has color is punched out of the background
-            AlphaCompositionMode = PixelAlphaCompositionMode.DestOut
-        });
+            Size = new(width, height),
+            Mode = ResizeMode.Crop,
+            Sampler = KnownResamplers.Lanczos3
+        }));
 
-        foreach (var c in corners)
-            ctx = ctx.Fill(SixLabors.ImageSharp.Color.Red, c);
-
-        return ctx;
-    }
-
-    private static IPathCollection BuildCorners(int imageWidth, int imageHeight, float cornerRadius)
-    {
-        // first create a square
-        var rect = new RectangularPolygon(-0.5f, -0.5f, cornerRadius, cornerRadius);
-
-        // then cut out of the square a circle so we are left with a corner
-        var cornerTopLeft = rect.Clip(new EllipsePolygon(cornerRadius - 0.5f, cornerRadius - 0.5f, cornerRadius));
-
-        // corner is now a corner shape positions top left
-        //lets make 3 more positioned correctly, we can do that by translating the original around the center of the image
-
-        var rightPos = imageWidth - cornerTopLeft.Bounds.Width + 1;
-        var bottomPos = imageHeight - cornerTopLeft.Bounds.Height + 1;
-
-        // move it across the width of the image - the width of the shape
-        var cornerTopRight = cornerTopLeft.RotateDegree(90).Translate(rightPos, 0);
-        var cornerBottomLeft = cornerTopLeft.RotateDegree(-90).Translate(0, bottomPos);
-        var cornerBottomRight = cornerTopLeft.RotateDegree(180).Translate(rightPos, bottomPos);
-
-        return new PathCollection(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight);
+        using var mask = new Image<Rgba32>(width, height);
+        mask.Mutate(m => m.Fill(SixLabors.ImageSharp.Color.White,
+            new EllipsePolygon(width / 2f, height / 2f, width, height)));
+        img.Mutate(x => x.DrawImage(mask, _keepInsideMask));
     }
 
     public static Color ToDiscordColor(this Rgba32 color)

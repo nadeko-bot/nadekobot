@@ -24,6 +24,8 @@ public static class XpEndpoints
         guild.MapGet("/xp/rewards", GetRewards);
         guild.MapPut("/xp/rewards/roles/{level:int}", SetRoleReward);
         guild.MapDelete("/xp/rewards/roles/{level:int}", DeleteRoleReward);
+        guild.MapPut("/xp/rewards/roles/{level:int}/{roleId}", SetLevelRoleReward);
+        guild.MapDelete("/xp/rewards/roles/{level:int}/{roleId}", DeleteLevelRoleReward);
         guild.MapPost("/xp/users/{userId}/add", AddUserXp).RequireRateLimiting(ApiHost.DISCORD_CALL_POLICY);
         guild.MapPut("/xp/users/{userId}/level", SetUserLevel);
         guild.MapDelete("/xp/users/{userId}", ResetUserXp);
@@ -105,15 +107,16 @@ public static class XpEndpoints
 
         var roleRewards = settings.RoleRewards;
         var roles = new XpRoleRewardDto[roleRewards.Count];
-        var roleLevels = new int[roles.Length];
+        // a level can have several roles, so the role id keeps the order stable
+        var roleKeys = new (int Level, ulong RoleId)[roles.Length];
         var i = 0;
         foreach (var r in roleRewards)
         {
-            roleLevels[i] = r.Level;
+            roleKeys[i] = (r.Level, r.RoleId);
             roles[i++] = new XpRoleRewardDto(r.Level, r.RoleId.ToString(), r.Remove);
         }
 
-        Array.Sort(roleLevels, roles);
+        Array.Sort(roleKeys, roles);
 
         var currencyRewards = settings.CurrencyRewards;
         var currency = new XpCurrencyRewardDto[currencyRewards.Count];
@@ -130,30 +133,59 @@ public static class XpEndpoints
         return new XpRewardsDto(roles, currency);
     }
 
-    private static async Task<IResult> SetRoleReward(
+    // Replaces every role reward of the level with this one.
+    private static Task<IResult> SetRoleReward(
         GuildRef guild,
         int level,
         SetXpRoleRewardRequest body,
         XpService svc)
+        => SetRoleRewardInternalAsync(guild, level, body.RoleId, body.Remove ?? false, svc, replaceLevel: true);
+
+    // Adds or changes one role reward and keeps the other roles of the level.
+    private static Task<IResult> SetLevelRoleReward(
+        GuildRef guild,
+        int level,
+        string roleId,
+        SetXpLevelRoleRewardRequest? body,
+        XpService svc)
+        => SetRoleRewardInternalAsync(guild, level, roleId, body?.Remove ?? false, svc, replaceLevel: false);
+
+    private static async Task<IResult> SetRoleRewardInternalAsync(
+        GuildRef guild,
+        int level,
+        string roleIdText,
+        bool remove,
+        XpService svc,
+        bool replaceLevel)
     {
         if (!IsRewardLevel(level))
             return ApiErrors.InvalidValue;
 
-        if (!ApiLimits.TryParseId(body.RoleId, out var roleId) || guild.Guild.GetRole(roleId) is not { } role)
+        if (!ApiLimits.TryParseId(roleIdText, out var roleId) || guild.Guild.GetRole(roleId) is not { } role)
             return ApiErrors.RoleNotFound;
 
         if (!RoleChecks.CanBotAssign(guild.Guild, role))
             return ApiErrors.MissingPermissions;
 
-        if (!await svc.SetRoleRewardAsync(guild.Id, level, roleId, body.Remove ?? false))
-            return ApiErrors.LimitReached;
+        var ok = replaceLevel
+            ? await svc.ReplaceLevelRoleRewardAsync(guild.Id, level, roleId, remove)
+            : await svc.SetRoleRewardAsync(guild.Id, level, roleId, remove);
 
-        return Results.NoContent();
+        return ok ? Results.NoContent() : ApiErrors.LimitReached;
     }
 
     private static async Task<IResult> DeleteRoleReward(GuildRef guild, int level, XpService svc)
     {
         await svc.ResetRoleRewardAsync(guild.Id, level);
+        return Results.NoContent();
+    }
+
+    private static async Task<IResult> DeleteLevelRoleReward(GuildRef guild, int level, string roleId, XpService svc)
+    {
+        if (!ApiLimits.TryParseId(roleId, out var id))
+            return ApiErrors.InvalidValue;
+
+        await svc.ResetRoleRewardAsync(guild.Id, level, id);
         return Results.NoContent();
     }
 

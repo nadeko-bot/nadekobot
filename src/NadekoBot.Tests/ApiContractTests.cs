@@ -100,6 +100,8 @@ public sealed class ApiContractTests
         "GET /api/guilds/{guildId}/xp/rewards",
         "PUT /api/guilds/{guildId}/xp/rewards/roles/{level:int}",
         "DELETE /api/guilds/{guildId}/xp/rewards/roles/{level:int}",
+        "PUT /api/guilds/{guildId}/xp/rewards/roles/{level:int}/{roleId}",
+        "DELETE /api/guilds/{guildId}/xp/rewards/roles/{level:int}/{roleId}",
         "PUT /api/guilds/{guildId}/xp/rewards/currency/{level:int}",
         "DELETE /api/guilds/{guildId}/xp/rewards/currency/{level:int}",
         "POST /api/guilds/{guildId}/import",

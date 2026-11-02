@@ -96,56 +96,56 @@ public partial class Utility
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(-2)]
-        public Task Repeat([Leftover] string message)
-            => Repeat(ctx.Channel, null, null, message);
+        public Task RepeatAdd([Leftover] string message)
+            => RepeatAdd(ctx.Channel, null, null, message);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(-1)]
-        public Task Repeat(ITextChannel channel, [Leftover] string message)
-            => Repeat(channel, null, null, message);
+        public Task RepeatAdd(ITextChannel channel, [Leftover] string message)
+            => RepeatAdd(channel, null, null, message);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(0)]
-        public Task Repeat(ParsedTimespan interval, [Leftover] string message)
-            => Repeat(ctx.Channel, null, interval, message);
+        public Task RepeatAdd(ParsedTimespan interval, [Leftover] string message)
+            => RepeatAdd(ctx.Channel, null, interval, message);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(0)]
-        public Task Repeat(ITextChannel channel, ParsedTimespan interval, [Leftover] string message)
-            => Repeat(channel, null, interval, message);
+        public Task RepeatAdd(ITextChannel channel, ParsedTimespan interval, [Leftover] string message)
+            => RepeatAdd(channel, null, interval, message);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(1)]
-        public Task Repeat(GuildDateTime timeOfDay, [Leftover] string message)
-            => Repeat(timeOfDay, null, message);
+        public Task RepeatAdd(GuildDateTime timeOfDay, [Leftover] string message)
+            => RepeatAdd(timeOfDay, null, message);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(1)]
-        public Task Repeat(ITextChannel channel, GuildDateTime timeOfDay, [Leftover] string message)
-            => Repeat(channel, timeOfDay, null, message);
+        public Task RepeatAdd(ITextChannel channel, GuildDateTime timeOfDay, [Leftover] string message)
+            => RepeatAdd(channel, timeOfDay, null, message);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(2)]
-        public Task Repeat(GuildDateTime? timeOfDay, ParsedTimespan? interval, [Leftover] string message)
-            => Repeat(ctx.Channel, timeOfDay, interval, message);
+        public Task RepeatAdd(GuildDateTime? timeOfDay, ParsedTimespan? interval, [Leftover] string message)
+            => RepeatAdd(ctx.Channel, timeOfDay, interval, message);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.ManageMessages)]
         [Priority(3)]
-        public async Task Repeat(IMessageChannel channel, GuildDateTime? timeOfDay, ParsedTimespan? interval,
+        public async Task RepeatAdd(IMessageChannel channel, GuildDateTime? timeOfDay, ParsedTimespan? interval,
             [Leftover] string message)
         {
             if (channel is not ITextChannel txtCh || txtCh.GuildId != ctx.Guild.Id)

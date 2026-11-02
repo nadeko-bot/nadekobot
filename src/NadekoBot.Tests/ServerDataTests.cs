@@ -231,6 +231,13 @@ public sealed class ServerDataTests
                      DELETE FROM __ServerExportIndex WHERE TableName IN ('BlackjackStake', 'BlackjackRoundState');
                      DROP TABLE BlackjackStake;
                      DROP TABLE BlackjackRoundState;
+                     ALTER TABLE GiveawayModel DROP COLUMN WinnerCount;
+                     UPDATE __ServerExportIndex
+                     SET Name = 'IX_XpRoleReward_XpSettingsId_Level',
+                         Sql = 'CREATE UNIQUE INDEX "IX_XpRoleReward_XpSettingsId_Level" ON "XpRoleReward" ("XpSettingsId", "Level")'
+                     WHERE Name = 'IX_XpRoleReward_XpSettingsId_Level_RoleId';
+                     DELETE FROM __ServerExportIndex WHERE TableName = 'AllowedLinkDomain';
+                     DROP TABLE AllowedLinkDomain;
                      DELETE FROM __EFMigrationsHistory;
                      INSERT INTO __EFMigrationsHistory VALUES ('20261009084103_reminder-user-guild-index', '9.0.1');
                      """);

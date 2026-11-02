@@ -10,7 +10,8 @@ public class XpRoleRewardEntityConfiguration : IEntityTypeConfiguration<XpRoleRe
         builder.HasIndex(x => new
               {
                    x.XpSettingsId,
-                   x.Level
+                   x.Level,
+                   x.RoleId
                })
                .IsUnique();
     }

@@ -34,7 +34,7 @@ public static class DbExtensions
         return gfc;
     }
 
-    private const int SQLITE_CONSTRAINT_UNIQUE = 2067;
+    public const int SQLITE_CONSTRAINT_UNIQUE = 2067;
 
     // the columns have no sql defaults, so the missing row is inserted through ef with the model defaults
     public static async Task EnsureGuildConfigAsync(this DbContext ctx, ulong guildId)

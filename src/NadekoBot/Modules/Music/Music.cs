@@ -529,6 +529,44 @@ public sealed partial class Music : NadekoModule<IMusicService>
 
     [Cmd]
     [RequireContext(ContextType.Guild)]
+    public Task Repeat()
+        => ToggleRepeatInternalAsync(PlayerRepeatType.Track);
+
+    [Cmd]
+    [RequireContext(ContextType.Guild)]
+    public Task Loop()
+        => ToggleRepeatInternalAsync(PlayerRepeatType.Queue);
+
+    private async Task ToggleRepeatInternalAsync(PlayerRepeatType mode)
+    {
+        var valid = await ValidateAsync();
+        if (!valid)
+            return;
+
+        var newValue = await _service.ToggleRepeatAsync(ctx.Guild.Id, mode);
+        if (newValue == PlayerRepeatType.Track)
+            await Response().Confirm(strs.repeating_track).SendAsync();
+        else if (newValue == PlayerRepeatType.Queue)
+            await Response().Confirm(strs.repeating_queue).SendAsync();
+        else
+            await Response().Confirm(strs.repeating_none).SendAsync();
+    }
+
+    [Cmd]
+    [RequireContext(ContextType.Guild)]
+    public async Task Previous()
+    {
+        var valid = await ValidateAsync();
+        if (!valid)
+            return;
+
+        var success = await _service.PreviousAsync(ctx.Guild.Id, ((IGuildUser)ctx.User).VoiceChannel.Id);
+        if (!success)
+            await Response().Error(strs.no_player).SendAsync();
+    }
+
+    [Cmd]
+    [RequireContext(ContextType.Guild)]
     public async Task Pause()
     {
         var valid = await ValidateAsync();

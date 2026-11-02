@@ -60,6 +60,12 @@ public partial class Searches
 
             channel ??= (ITextChannel)ctx.Channel;
 
+            if (message?.Length > DiscordConfig.MaxMessageSize)
+            {
+                await Response().Error(strs.feed_message_too_long(DiscordConfig.MaxMessageSize)).SendAsync();
+                return;
+            }
+
             if (!FeedsService.CanPostIn(await ctx.Guild.GetCurrentUserAsync(), channel))
             {
                 await Response().Error(strs.feed_bot_missing_perms(channel.Mention)).SendAsync();
@@ -108,6 +114,40 @@ public partial class Searches
                 await Response().Confirm(strs.feed_removed).SendAsync();
             else
                 await Response().Error(strs.feed_out_of_range).SendAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.ManageMessages)]
+        public async Task FeedMessage(int index, [Leftover] string? message = null)
+        {
+            if (message?.Length > DiscordConfig.MaxMessageSize)
+            {
+                await Response().Error(strs.feed_message_too_long(DiscordConfig.MaxMessageSize)).SendAsync();
+                return;
+            }
+
+            var sub = await _service.GetFeedAtAsync(ctx.Guild.Id, index - 1);
+            if (sub is null)
+            {
+                await Response().Error(strs.feed_out_of_range).SendAsync();
+                return;
+            }
+
+            var channel = await ctx.Guild.GetTextChannelAsync(sub.ChannelId);
+            if (channel is null || !((IGuildUser)ctx.User).GetPermissions(channel).MentionEveryone)
+                message = message?.SanitizeTemplateMentions();
+
+            if (await _service.UpdateFeedAsync(ctx.Guild.Id, sub.Id, null, true, message) is null)
+            {
+                await Response().Error(strs.feed_out_of_range).SendAsync();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(message))
+                await Response().Confirm(strs.feed_message_cleared).SendAsync();
+            else
+                await Response().Confirm(strs.feed_message_set).SendAsync();
         }
 
         [Cmd]

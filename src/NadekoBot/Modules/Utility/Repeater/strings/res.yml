@@ -10,10 +10,8 @@ repeater_dont_skip_next: Next trigger of this repeater won't be skipped.
 repeater_exceed_limit: You cannot have more than {0} repeaters per server.
 repeater_redundant_no: Repeater **#{0}** won't post redundant messages anymore.
 repeater_redundant_yes: Repeater **#{0}** will post redundant messages from now on.
-repeater_remove_fail: >-
-  Failed removing repeater on that index. Either you've specified invalid index,
-  or repeater was in executing state at that time, in which case, try again in a
-  few seconds.
+repeater_remove_fail: |-
+  Failed removing repeater on that index. Either you've specified invalid index, or repeater was in executing state at that time, in which case, try again in a few seconds.
 repeater_removed: 'Repeater #{0} Removed'
 repeater_skip_next: Next trigger of this repeater will be skipped.
 repeaters_none: No repeaters running on this server.

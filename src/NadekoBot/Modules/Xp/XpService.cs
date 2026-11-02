@@ -26,7 +26,10 @@ namespace NadekoBot.Modules.Xp.Services;
 
 public class XpService : INService, IReadyExecutor, IExecNoCommand
 {
-    private const int MAX_CLUB_IMAGE_BYTES = 8 * 1024 * 1024;
+    private const int MAX_ICON_IMAGE_BYTES = 8 * 1024 * 1024;
+    public const int LEVEL_MAX_WIDTH = 33;
+    public const int RANK_MAX_WIDTH = 40;
+    private static readonly TimeSpan _iconCacheExpiry = TimeSpan.FromHours(48);
     public const int MAX_ROLE_REWARDS = 100;
 
     private readonly DbService _db;
@@ -474,22 +477,30 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                 .LoadWith(x => x.RoleRewards));
     }
 
-    public async Task ResetRoleRewardAsync(ulong guildId, int level)
+    public async Task<int> ResetRoleRewardAsync(ulong guildId, int level)
     {
         await using var uow = _db.GetDbContext();
-        var settings = await uow.XpSettingsFor(guildId, set => set.LoadWith(x => x.RoleRewards));
-
-        var toRemove = settings.RoleRewards.FirstOrDefault(x => x.Level == level);
-        if (toRemove is not null)
-        {
-            uow.Remove(toRemove);
-            settings.RoleRewards.Remove(toRemove);
-        }
-
-        await uow.SaveChangesAsync();
+        return await uow.GetTable<XpRoleReward>()
+                        .Where(x => x.Level == level
+                                    && uow.GetTable<XpSettings>()
+                                          .Any(s => s.Id == x.XpSettingsId && s.GuildId == guildId))
+                        .DeleteAsync();
     }
 
-    // False when the server already has MAX_ROLE_REWARDS levels with a role reward.
+    public async Task<bool> ResetRoleRewardAsync(ulong guildId, int level, ulong roleId)
+    {
+        await using var uow = _db.GetDbContext();
+        var deleted = await uow.GetTable<XpRoleReward>()
+                               .Where(x => x.Level == level
+                                           && x.RoleId == roleId
+                                           && uow.GetTable<XpSettings>()
+                                                 .Any(s => s.Id == x.XpSettingsId && s.GuildId == guildId))
+                               .DeleteAsync();
+
+        return deleted > 0;
+    }
+
+    // False when the server already has MAX_ROLE_REWARDS role rewards.
     public async Task<bool> SetRoleRewardAsync(
         ulong guildId,
         int level,
@@ -497,31 +508,80 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         bool remove)
     {
         await using var uow = _db.GetDbContext();
-        var settings = await uow.XpSettingsFor(guildId, set => set.LoadWith(x => x.RoleRewards));
+        var settingsId = (await uow.XpSettingsFor(guildId)).Id;
+        return await SetRoleRewardInternalAsync(uow, settingsId, level, roleId, remove);
+    }
 
-        var rew = settings.RoleRewards.FirstOrDefault(x => x.Level == level);
+    // The level keeps only this role reward. False when the server already has MAX_ROLE_REWARDS role rewards.
+    public async Task<bool> ReplaceLevelRoleRewardAsync(
+        ulong guildId,
+        int level,
+        ulong roleId,
+        bool remove)
+    {
+        await using var uow = _db.GetDbContext();
+        var settingsId = (await uow.XpSettingsFor(guildId)).Id;
 
-        if (rew is not null)
-        {
-            rew.RoleId = roleId;
-            rew.Remove = remove;
-        }
-        else
-        {
-            if (settings.RoleRewards.Count >= MAX_ROLE_REWARDS)
-                return false;
+        await using var tran = await uow.Database.BeginTransactionAsync();
+        await uow.GetTable<XpRoleReward>()
+                 .Where(x => x.XpSettingsId == settingsId && x.Level == level && x.RoleId != roleId)
+                 .DeleteAsync();
 
-            settings.RoleRewards.Add(new()
-            {
-                Level = level,
-                RoleId = roleId,
-                Remove = remove,
-            });
-        }
+        if (!await SetRoleRewardInternalAsync(uow, settingsId, level, roleId, remove))
+            return false;
 
-        await uow.SaveChangesAsync();
+        await tran.CommitAsync();
         return true;
     }
+
+    private static async Task<bool> SetRoleRewardInternalAsync(
+        DbContext uow,
+        int settingsId,
+        int level,
+        ulong roleId,
+        bool remove)
+    {
+        var updated = await UpdateRoleRewardInternalAsync(uow, settingsId, level, roleId, remove);
+        if (updated > 0)
+            return true;
+
+        // The count and the insert are one statement, so parallel commands cannot pass the cap.
+        await using var lctx = uow.CreateLinqToDBContext();
+        var rewards = lctx.GetTable<XpRoleReward>();
+        try
+        {
+            var inserted = await lctx.SelectQuery(() => 1)
+                                     .Where(_ => rewards.Count(r => r.XpSettingsId == settingsId) < MAX_ROLE_REWARDS)
+                                     .InsertAsync(rewards,
+                                         _ => new XpRoleReward
+                                         {
+                                             XpSettingsId = settingsId,
+                                             Level = level,
+                                             RoleId = roleId,
+                                             Remove = remove,
+                                             DateAdded = DateTime.UtcNow,
+                                         });
+
+            return inserted > 0;
+        }
+        catch (Microsoft.Data.Sqlite.SqliteException ex)
+            when (ex.SqliteExtendedErrorCode == NadekoBot.Db.DbExtensions.SQLITE_CONSTRAINT_UNIQUE)
+        {
+            // another command inserted the same role at the same level a moment ago
+            return await UpdateRoleRewardInternalAsync(uow, settingsId, level, roleId, remove) > 0;
+        }
+    }
+
+    private static Task<int> UpdateRoleRewardInternalAsync(
+        DbContext uow,
+        int settingsId,
+        int level,
+        ulong roleId,
+        bool remove)
+        => uow.GetTable<XpRoleReward>()
+              .Where(x => x.XpSettingsId == settingsId && x.Level == level && x.RoleId == roleId)
+              .Set(x => x.Remove, remove)
+              .UpdateAsync();
 
     public async Task<IReadOnlyCollection<UserXpStats>> GetGuildUserXps(ulong guildId, int page)
     {
@@ -687,30 +747,30 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             }
 
             var avatarUrl = stats.User.RealAvatarUrl();
-            var avatarFetchTask = Task.Run(async () =>
+            var avatarFetchTask = !template.User.Icon.Show ? null : Task.Run(async () =>
             {
                 try
                 {
                     if (avatarUrl is null)
                         return null;
 
-                    var result = await _c.GetImageDataAsync(avatarUrl);
+                    var iconKey = GetIconKey(avatarUrl, template.User.Icon.Size);
+                    var result = await _c.GetAsync(iconKey);
                     if (result.TryPickT0(out var imgData, out _))
                         return imgData;
 
-                    using var http = _httpFactory.CreateClient();
+                    using var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
 
-                    var avatarData = await http.GetByteArrayAsync(avatarUrl);
-                    using var tempDraw = Image.Load<Rgba32>(avatarData);
+                    var avatarData = await http.GetBytesLimitedAsync(avatarUrl.ToString(), MAX_ICON_IMAGE_BYTES);
+                    if (avatarData is null || !ImageCache.IsWithinPixelLimit(avatarData))
+                        return null;
 
-                    tempDraw.Mutate(x => x
-                        .Resize(template.User.Icon.Size.X, template.User.Icon.Size.Y)
-                        .ApplyRoundedCorners(Math.Max(template.User.Icon.Size.X,
-                                                 template.User.Icon.Size.Y)
-                                             / 2.0f));
+                    using var tempDraw = Image.Load<Rgba32>(new DecoderOptions { MaxFrames = 1 }, avatarData);
+
+                    tempDraw.ToCircle(template.User.Icon.Size.X, template.User.Icon.Size.Y);
                     await using var stream = await tempDraw.ToStreamAsync();
                     var data = stream.ToArray();
-                    await _c.SetImageDataAsync(avatarUrl, data);
+                    await _c.AddAsync(iconKey, data, expiry: _iconCacheExpiry);
                     return data;
                 }
                 catch (Exception)
@@ -766,37 +826,17 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                         Brushes.Solid(template.Club.Name.Color));
                 }
 
-                Font GetTruncatedFont(
-                    FontFamily fontFamily,
-                    int fontSize,
-                    FontStyle style,
-                    string text,
-                    int maxSize)
-                {
-                    var font = fontFamily.CreateFont(fontSize, style);
-                    var size = TextMeasurer.MeasureSize(text, new(font));
-                    var scale = maxSize / size.Width;
-                    if (scale < 1)
-                        font = fontFamily.CreateFont(fontSize * scale, style);
-
-                    return font;
-                }
-
-
                 if (template.User.Level.Show)
                 {
-                    var guildLevelFont = GetTruncatedFont(
+                    var guildLevelStr = stats.Guild.Level.ToString();
+                    var (guildLevelFont, levelOrigin) = GetFitLayout(
                         _fonts.NotoSans,
                         template.User.Level.FontSize,
-                        FontStyle.Bold,
-                        stats.Guild.Level.ToString(),
-                        33);
-
-
-                    x.DrawText(stats.Guild.Level.ToString(),
-                        guildLevelFont,
-                        template.User.Level.Color,
+                        guildLevelStr,
+                        LEVEL_MAX_WIDTH,
                         new(template.User.Level.Pos.X, template.User.Level.Pos.Y));
+
+                    x.DrawText(guildLevelStr, guildLevelFont, template.User.Level.Color, levelOrigin);
                 }
 
 
@@ -825,29 +865,23 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                         Brushes.Solid(template.User.Xp.Guild.Color));
                 }
 
-                var rankPen = new SolidPen(Color.White, 1);
-                //ranking
-
                 if (template.User.Rank.Show)
                 {
                     var guildRankStr = stats.GuildRanking.ToString();
-
-                    var guildRankFont = GetTruncatedFont(
+                    var (guildRankFont, rankOrigin) = GetFitLayout(
                         _fonts.NotoSans,
                         template.User.Rank.FontSize,
-                        FontStyle.Bold,
                         guildRankStr,
-                        22);
+                        RANK_MAX_WIDTH,
+                        new(template.User.Rank.Pos.X, template.User.Rank.Pos.Y));
 
                     x.DrawText(
                         new RichTextOptions(guildRankFont)
                         {
-                            Origin = new(template.User.Rank.Pos.X, template.User.Rank.Pos.Y)
+                            Origin = rankOrigin
                         },
                         guildRankStr,
-                        Brushes.Solid(template.User.Rank.Color),
-                        rankPen
-                    );
+                        Brushes.Solid(template.User.Rank.Color));
                 }
             });
 
@@ -888,6 +922,24 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
 
             return output;
         });
+
+    public static (Font Font, PointF Origin) GetFitLayout(
+        FontFamily fontFamily,
+        int fontSize,
+        string text,
+        int maxWidth,
+        PointF pos)
+    {
+        var fullFont = fontFamily.CreateFont(fontSize, FontStyle.Bold);
+        var bounds = TextMeasurer.MeasureBounds(text, new(fullFont));
+        if (bounds.Width <= maxWidth)
+            return (fullFont, pos);
+
+        var scale = maxWidth / bounds.Width;
+
+        // the layout scales with the font size, so moving down by the lost part of the ink bottom keeps the full-size baseline
+        return (fontFamily.CreateFont(fontSize * scale, FontStyle.Bold), new(pos.X, pos.Y + bounds.Bottom * (1 - scale)));
+    }
 
     private async Task<byte[]?> GetXpBackgroundAsync(ulong userId)
     {
@@ -963,6 +1015,10 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             new PointF(x2, y2)));
     }
 
+    // The generic image cache keeps the original image under image:{url}, so round icons need their own key.
+    private static TypedKey<byte[]> GetIconKey(Uri url, XpTemplatePos size)
+        => new($"xpicon:v2:{size.X}x{size.Y}:{url}");
+
     private async Task DrawClubImage(XpTemplate template, Image<Rgba32> img, FullUserStats stats)
     {
         if (!string.IsNullOrWhiteSpace(stats.User.Club?.ImageUrl))
@@ -970,7 +1026,8 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
             try
             {
                 var imgUrl = new Uri(stats.User.Club.ImageUrl);
-                var result = await _c.GetImageDataAsync(imgUrl);
+                var iconKey = GetIconKey(imgUrl, template.Club.Icon.Size);
+                var result = await _c.GetAsync(iconKey);
                 if (!result.TryPickT0(out var data, out _))
                 {
                     using (var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME))
@@ -979,7 +1036,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                         if (!temp.IsSuccessStatusCode || !temp.IsImage())
                             return;
 
-                        if (await ExternalHttp.ReadLimitedAsync(temp.Content, MAX_CLUB_IMAGE_BYTES) is not { } imgData)
+                        if (await ExternalHttp.ReadLimitedAsync(temp.Content, MAX_ICON_IMAGE_BYTES) is not { } imgData)
                             return;
 
                         try
@@ -989,11 +1046,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                                 return;
 
                             using var tempDraw = Image.Load<Rgba32>(new DecoderOptions { MaxFrames = 1 }, bytes);
-                            tempDraw.Mutate(x => x
-                                .Resize(template.Club.Icon.Size.X, template.Club.Icon.Size.Y)
-                                .ApplyRoundedCorners(Math.Max(template.Club.Icon.Size.X,
-                                                         template.Club.Icon.Size.Y)
-                                                     / 2.0f));
+                            tempDraw.ToCircle(template.Club.Icon.Size.X, template.Club.Icon.Size.Y);
                             await using var tds = await tempDraw.ToStreamAsync();
                             data = tds.ToArray();
                         }
@@ -1003,7 +1056,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
                         }
                     }
 
-                    await _c.SetImageDataAsync(imgUrl, data);
+                    await _c.AddAsync(iconKey, data, expiry: _iconCacheExpiry);
                 }
 
                 using var toDraw = Image.Load(data);

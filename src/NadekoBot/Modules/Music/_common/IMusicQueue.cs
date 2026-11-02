@@ -16,6 +16,7 @@ public interface IMusicQueue
     void Advance();
     void Clear();
     bool SetIndex(int index);
+    bool TrySetPrevious(out int index);
     bool TryRemoveAt(int index, out IQueuedTrackInfo? trackInfo, out bool isCurrent);
     void RemoveCurrent();
     IQueuedTrackInfo? MoveTrack(int from, int to);

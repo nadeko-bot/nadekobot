@@ -169,5 +169,20 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
                 c.Version = 13;
                 c.Presence ??= new();
             });
+
+        if (Data.Version < 14)
+            ModifyConfig(static c =>
+            {
+                c.Version = 14;
+                RenameBlockedCommandInternal(c.Blocked?.Commands);
+                RenameBlockedCommandInternal(c.DmBlocked?.Commands);
+            });
+    }
+
+    // The music command took the name "repeat" from the repeating message command.
+    private static void RenameBlockedCommandInternal(HashSet<string>? commands)
+    {
+        if (commands is not null && commands.Remove("repeat"))
+            commands.Add("repeatadd");
     }
 }

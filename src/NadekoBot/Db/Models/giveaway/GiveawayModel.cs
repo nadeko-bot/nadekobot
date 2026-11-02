@@ -12,4 +12,8 @@ public sealed class GiveawayModel
 
     public IList<GiveawayUser> Participants { get; set; } = new List<GiveawayUser>();
     public DateTime EndsAt { get; set; }
+    /// <summary>
+    /// How many members win when the giveaway ends, 1 to 20.
+    /// </summary>
+    public int WinnerCount { get; set; } = 1;
 }

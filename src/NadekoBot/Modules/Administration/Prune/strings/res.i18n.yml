@@ -4,6 +4,7 @@ ar:
   prune_cancelled: تم إلغاء عملية الحذف.
   prune_not_found: لم يتم العثور على عملية حذف نشطة في هذا السيرفر.
   prune_progress: 'جارٍ الحذف... تم حذف {0}/{1} رسالة.'
+  prune_bots_humans: استخدم `--bots` أو `--humans`، وليس كليهما.
 
 de-DE:
   prune_already_running: Eine Bereinigung läuft bereits auf diesem Server.
@@ -11,6 +12,7 @@ de-DE:
   prune_cancelled: Die Bereinigung wurde abgebrochen.
   prune_not_found: Keine aktive Bereinigung auf diesem Server gefunden.
   prune_progress: 'Bereinigung... {0}/{1} Nachrichten gelöscht.'
+  prune_bots_humans: Nutze `--bots` oder `--humans`, nicht beides.
 
 es-ES:
   prune_already_running: Ya hay una limpieza en progreso en este servidor.
@@ -18,6 +20,7 @@ es-ES:
   prune_cancelled: La limpieza fue cancelada.
   prune_not_found: No se encontró ninguna limpieza activa en este servidor.
   prune_progress: 'Limpiando... {0}/{1} mensajes eliminados.'
+  prune_bots_humans: Usa `--bots` o `--humans`, no ambos.
 
 fr-FR:
   prune_already_running: Un nettoyage est déjà en cours sur ce serveur.
@@ -25,6 +28,7 @@ fr-FR:
   prune_cancelled: Le nettoyage a été annulé.
   prune_not_found: Aucun nettoyage actif trouvé sur ce serveur.
   prune_progress: 'Nettoyage... {0}/{1} messages supprimés.'
+  prune_bots_humans: Utilise `--bots` ou `--humans`, pas les deux.
 
 id-ID:
   prune_already_running: Prune sudah sedang berjalan di server ini.
@@ -32,6 +36,7 @@ id-ID:
   prune_cancelled: Prune dibatalkan.
   prune_not_found: Tidak ditemukan prune aktif di server ini.
   prune_progress: 'Sedang pruning... {0}/{1} pesan dihapus.'
+  prune_bots_humans: Pakai `--bots` atau `--humans`, jangan keduanya.
 
 ja-JP:
   prune_already_running: このサーバーでは既にプルーンが実行中です。
@@ -39,6 +44,7 @@ ja-JP:
   prune_cancelled: プルーンがキャンセルされました。
   prune_not_found: このサーバーでアクティブなプルーンは見つかりませんでした。
   prune_progress: 'プルーン中... {0}/{1}メッセージ削除済み。'
+  prune_bots_humans: '`--bots` か `--humans` のどちらかを使ってください。両方は使えません。'
 
 ko-KR:
   prune_already_running: 이 서버에서 이미 정리가 진행 중이에요.
@@ -46,6 +52,7 @@ ko-KR:
   prune_cancelled: 정리가 취소되었어요.
   prune_not_found: 이 서버에서 진행 중인 정리를 찾을 수 없어요.
   prune_progress: '정리 중... {0}/{1}개 메시지 삭제됨.'
+  prune_bots_humans: '`--bots` 또는 `--humans` 중 하나만 사용하세요. 둘 다는 안 됩니다.'
 
 pl-PL:
   prune_already_running: Na tym serwerze już trwa czyszczenie.
@@ -53,6 +60,7 @@ pl-PL:
   prune_cancelled: Czyszczenie zostało anulowane.
   prune_not_found: Nie znaleziono aktywnego czyszczenia na tym serwerze.
   prune_progress: 'Czyszczenie... {0}/{1} wiadomości usunięto.'
+  prune_bots_humans: Użyj `--bots` albo `--humans`, nie obu naraz.
 
 pt-BR:
   prune_already_running: Uma limpeza já está em andamento neste servidor.
@@ -60,6 +68,7 @@ pt-BR:
   prune_cancelled: A limpeza foi cancelada.
   prune_not_found: Nenhuma limpeza ativa foi encontrada neste servidor.
   prune_progress: 'Limpando... {0}/{1} mensagens excluídas.'
+  prune_bots_humans: Use `--bots` ou `--humans`, não os dois.
 
 ru-RU:
   prune_already_running: Очистка уже выполняется на этом сервере.
@@ -67,6 +76,7 @@ ru-RU:
   prune_cancelled: Очистка была отменена.
   prune_not_found: Активная очистка не найдена на этом сервере.
   prune_progress: 'Очистка... {0}/{1} сообщений удалено.'
+  prune_bots_humans: Используй `--bots` или `--humans`, но не оба сразу.
 
 sr-Cyrl-RS:
   prune_already_running: Чишћење је већ у току на овом серверу.
@@ -74,6 +84,7 @@ sr-Cyrl-RS:
   prune_cancelled: Чишћење је отказано.
   prune_not_found: Није пронађено активно чишћење на овом серверу.
   prune_progress: 'Чишћење... {0}/{1} порука обрисано.'
+  prune_bots_humans: Користи `--bots` или `--humans`, не оба.
 
 tr-TR:
   prune_already_running: Bu sunucuda zaten bir temizleme çalışıyor.
@@ -81,6 +92,7 @@ tr-TR:
   prune_cancelled: Temizleme iptal edildi.
   prune_not_found: Bu sunucuda aktif bir temizleme bulunamadı.
   prune_progress: 'Temizleniyor... {0}/{1} mesaj silindi.'
+  prune_bots_humans: '`--bots` veya `--humans` kullan, ikisini birden değil.'
 
 ts-TS:
   prune_already_running: A prune is already running on this server. Be patient.
@@ -88,6 +100,7 @@ ts-TS:
   prune_cancelled: Pruning was cancelled. I-it's not like I wanted to do it anyway.
   prune_not_found: No active prune was found on this server.
   prune_progress: 'Pruning... {0}/{1} messages deleted. I-I''m working on it, okay?!'
+  prune_bots_humans: Use `--bots` or `--humans`, n-not both.
 
 uk-UA:
   prune_already_running: На цьому сервері вже виконується очищення.
@@ -95,6 +108,7 @@ uk-UA:
   prune_cancelled: Очищення скасовано.
   prune_not_found: На цьому сервері не знайдено активного очищення.
   prune_progress: 'Очищення... {0}/{1} повідомлень видалено.'
+  prune_bots_humans: Використай `--bots` або `--humans`, не обидва.
 
 vi-VN:
   prune_already_running: Đang có một lệnh dọn tin nhắn chạy trên máy chủ này rồi.
@@ -102,6 +116,7 @@ vi-VN:
   prune_cancelled: Đã hủy việc dọn tin nhắn.
   prune_not_found: Không tìm thấy lệnh dọn tin nhắn nào đang chạy trên máy chủ này.
   prune_progress: 'Đang dọn... đã xóa {0}/{1} tin nhắn.'
+  prune_bots_humans: Dùng `--bots` hoặc `--humans`, không dùng cả hai.
 
 zh-CN:
   prune_already_running: 此伺服器已有清理正在進行中。
@@ -109,3 +124,4 @@ zh-CN:
   prune_cancelled: 清理已取消。
   prune_not_found: 在此伺服器上未找到進行中的清理。
   prune_progress: '清理中... 已刪除 {0}/{1} 則訊息。'
+  prune_bots_humans: 请使用 `--bots` 或 `--humans`，不要同时使用两者。

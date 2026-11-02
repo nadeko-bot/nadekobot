@@ -55,6 +55,15 @@ localplaylist:
   params:
     - dirPath:
         desc: The path to the directory containing the songs to be queued.
+loop:
+  desc: |-
+    Turns queue repeat on or off. While it is on, the bot plays the queue again after the last song.
+    Turning it on turns song repeat off.
+    You must be in the same voice channel as the bot.
+  ex:
+    - ''
+  params:
+    - {}
 lyrics:
   desc: Looks up lyrics for a song. Very hit or miss.
   ex:
@@ -64,7 +73,7 @@ lyrics:
         desc: The song to look up lyrics for.
 next:
   desc: |-
-    Goes to the next song in the queue. You have to be in the same voice channel as the bot.
+    Goes to the next song in the queue. You must be in the same voice channel as the bot.
   ex:
     - ''
   params:
@@ -77,6 +86,14 @@ nowplaying:
     - {}
 pause:
   desc: Pauses or Unpauses the song.
+  ex:
+    - ''
+  params:
+    - {}
+previous:
+  desc: |-
+    Plays the previous song in the queue. When the current song is the first in the queue, the bot plays the last song.
+    You must be in the same voice channel as the bot.
   ex:
     - ''
   params:
@@ -195,6 +212,7 @@ queuerepeat:
     - `n` / `no` - player will stop once it reaches the end of the queue
     - `s` / `song` - player will repeat current song
     - `q` / `queue` or empty - player will repeat entire music queue
+    Use `{0}loop` or `{0}repeat` to turn queue or song repeat on and off.
   ex:
     - ''
     - 'n'
@@ -235,6 +253,16 @@ radio:
   params:
     - radioLink:
         desc: The URL of the radio station to be played.
+repeat:
+  desc: |-
+    Turns song repeat on or off. While it is on, the bot repeats the current song.
+    Turning it on turns queue repeat off.
+    You must be in the same voice channel as the bot.
+    Use `{0}repeatadd` to repeat a message.
+  ex:
+    - ''
+  params:
+    - {}
 setmusicchannel:
   desc: |-
     Sets the current channel as the default music output channel. This will output playing, finished, paused and removed songs to that channel instead of the channel where the first song was queued in. Persistent server setting.

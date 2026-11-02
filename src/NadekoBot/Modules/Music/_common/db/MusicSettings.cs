@@ -16,7 +16,7 @@ public class MusicPlayerSettings
     /// <summary>
     ///     Queue repeat type
     /// </summary>
-    public PlayerRepeatType PlayerRepeat { get; set; } = PlayerRepeatType.Queue;
+    public PlayerRepeatType PlayerRepeat { get; set; } = PlayerRepeatType.None;
 
     /// <summary>
     ///     Channel id the bot will always try to send track related messages to

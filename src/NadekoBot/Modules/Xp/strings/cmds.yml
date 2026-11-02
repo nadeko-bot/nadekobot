@@ -90,23 +90,28 @@ xprewsreset:
     - {}
 xprolereward:
   desc: |-
-    Add or remove a role from the user who reaches the specified level.
-    Provide no action and role name in order to remove the role reward.
+    Adds or removes a role when the user reaches the specified level.
+    One level can add and remove several roles.
+    Provide only the level to clear all role rewards at that level.
+    Provide the level and a role to clear the reward for that role.
   ex:
-    - 1 rm Newbie
-    - 3 add Social
-    - 5 add Member
     - 5
+    - 5 Newbie
+    - 5 add Member
   params:
     - level:
-        desc: The level at which the user should be rewarded with the role.
+        desc: The level whose role rewards the bot clears.
+    - level:
+        desc: The level at which the role reward is set.
+      role:
+        desc: The role whose reward the bot clears.
     - level:
         desc: The level at which the user should be rewarded with the role.
       action:
         desc: |-
           The type of operation to perform on the user's roles, either adding or removing one.
       role:
-        desc: The type of authority or privilege being granted or revoked.
+        desc: The role which the bot adds or removes at this level.
 xpshop:
   desc: |-
     Access the xp shop (if enabled). You can purchase either xp card frames or backgrounds. You can optionally provide a page number.

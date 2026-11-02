@@ -1,6 +1,6 @@
 giveawaycancel:
   desc: |-
-    Cancels a giveaway. Specify the ID of the giveaway to cancel. The winner will not be chosen.
+    Cancels a giveaway. Specify the ID of the giveaway to cancel. The bot does not pick winners.
   ex:
     - ab3
   params:
@@ -8,7 +8,7 @@ giveawaycancel:
         desc: The identifier for the giveaway being cancelled.
 giveawayend:
   desc: |-
-    Prematurely ends a giveaway and selects a winner. Specify the ID of the giveaway to end.
+    Ends a giveaway now and picks the winners. Specify the ID of the giveaway to end.
   ex:
     - ab3
   params:
@@ -22,7 +22,8 @@ giveawaylist:
     - {}
 giveawayreroll:
   desc: |-
-    Rerolls a giveaway. Specify the ID of the giveaway to reroll. This is only active within 24h after the giveaway has ended or until the bot restarts.
+    Rerolls a giveaway. Specify the ID of the giveaway to reroll. The bot picks one new winner who did not win before.
+    This is only active within 24h after the giveaway has ended or until the bot restarts.
   ex:
     - cd3
   params:
@@ -30,11 +31,10 @@ giveawayreroll:
         desc: The identifier for the specific giveaway being rerolled.
 giveawaystart:
   desc: |-
-    Starts a giveaway. Specify the duration (between 1 minute and 30 days) followed by the prize.
+    Starts a giveaway. Specify the duration (up to 30 days) followed by the prize.
+    To pick more than one winner, put the number of winners and `w` before the prize, for example `3w`. The maximum is 20 winners.
   ex:
-    - 12h We are giving away one copy of our latest album!
-    - 15m Quick giveaway for a free course!
-    - 1d Join to win 1000$!
+    - 12h 3w We are giving away three copies of our latest album!
   params:
     - duration:
         desc: The length of time for which the giveaway will be active.

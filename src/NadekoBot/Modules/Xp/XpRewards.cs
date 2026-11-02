@@ -106,6 +106,25 @@ public partial class Xp
 
         [Cmd]
         [UserPerm(GuildPerm.Administrator)]
+        [RequireContext(ContextType.Guild)]
+        [Priority(0)]
+        public async Task XpRoleReward(int level, [Leftover] IRole role)
+        {
+            if (!await _service.ResetRoleRewardAsync(ctx.Guild.Id, level, role.Id))
+            {
+                await Response()
+                    .Error(strs.xp_role_reward_role_not_found(Format.Bold(role.ToString()), level))
+                    .SendAsync();
+                return;
+            }
+
+            await Response()
+                .Confirm(strs.xp_role_reward_role_cleared(level, Format.Bold(role.ToString())))
+                .SendAsync();
+        }
+
+        [Cmd]
+        [UserPerm(GuildPerm.Administrator)]
         [BotPerm(GuildPerm.ManageRoles)]
         [RequireContext(ContextType.Guild)]
         [Priority(1)]

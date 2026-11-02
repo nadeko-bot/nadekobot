@@ -15,6 +15,15 @@ filterword:
   - fw
 fwclear:
   - fwclear
+linkallow:
+  - linkallow
+  - la
+linkallowlist:
+  - linkallowlist
+  - lal
+linkallowclear:
+  - linkallowclear
+  - lac
 lstfilterwords:
   - lstfilterwords
   - lfw

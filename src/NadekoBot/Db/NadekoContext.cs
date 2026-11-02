@@ -562,6 +562,10 @@ public sealed class NadekoContext : DbContext
             .HasForeignKey(x => x.GiveawayId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<GiveawayModel>()
+            .Property(x => x.WinnerCount)
+            .HasDefaultValue(1);
+
         modelBuilder.Entity<GiveawayUser>(gu => gu
             .HasIndex(x => new
             {

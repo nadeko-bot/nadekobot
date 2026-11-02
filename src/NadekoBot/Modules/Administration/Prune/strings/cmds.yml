@@ -3,40 +3,43 @@ prune:
     Removes messages from the channel.
     - `{0}prune` removes the bot's messages from the last 100 messages.
     - `{0}prune X` removes the last `X` messages (up to 1000).
-    - `{0}prune @Someone [X]` removes the last `X` messages of that user (100 if you leave it out). The bot removes only their messages from the last 2 weeks.
-    - `{0}prune ID [X]` with the ID of a message in this channel removes the messages after that message (up to 1000, or `X`). With any other ID, the bot removes the messages of the user with that ID.
-    Options:
-    - `--safe` / `-s` skips pinned messages
-    - `--after` / `-a` followed by a message ID removes only messages after that message
-    The progress message has a Cancel button which stops the prune.
+    - `{0}prune @Someone [X]` removes the last `X` messages of that user from the last 2 weeks (default 100).
+    - `{0}prune ID [X]` removes the messages after that message, or the messages of the user with that ID.
+    Options: `--safe` / `-s` skips pinned messages. `--after` / `-a` with a message ID removes only later messages.
+    Filters remove only messages which match all of them. `X` then counts matching messages.
+    - `--bots` / `-b`, `--humans` / `-u`
+    - `--links` / `-l`, `--files` / `-f`, `--embeds` / `-e`
+    - `--invites` / `-i` server invites
+    - `--pings` / `-p` mentions of members, roles or everyone
+    - `--contains` / `-c` followed by a text
   ex:
-    - '-s'
-    - 5 --safe
+    - '--bots'
+    - 100 --links --humans
     - '@Someone 10 -s'
-    - '1234567890123456789'
+    - '1234567890123456789 -c "free nitro"'
   params:
     - args:
         desc: |-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
+          Options and filters, for example `--safe` or `--bots`.
     - count:
         desc: The number of messages to remove (up to 1000).
       args:
         desc: |-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
+          Options and filters, for example `--safe` or `--bots`.
     - user:
         desc: The user whose messages are to be removed from the channel.
       count:
         desc: The number of messages to remove (up to 1000).
       args:
         desc: |-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message.
+          Options and filters, for example `--safe` or `--links`.
     - id:
         desc: The ID of a message in this channel after which to remove the messages, or the ID of a user whose messages to remove.
       count:
         desc: The number of messages to remove (up to 1000).
       args:
         desc: |-
-          Optional flags: `--safe` / `-s` to skip pinned messages, `--after` / `-a` followed by a message ID to only prune messages after that message. With a message ID, the bot ignores `--after`.
+          Options and filters, for example `--safe` or `--bots`. With a message ID, the bot ignores `--after`.
 prunecancel:
   desc: Cancels an active prune if there is any.
   ex:

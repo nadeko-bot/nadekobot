@@ -25,7 +25,7 @@ public class XpTemplate
             Pos = new()
             {
                 X = 65,
-                Y = 8
+                Y = 21
             }
         },
         Icon = new()
@@ -55,11 +55,11 @@ public class XpTemplate
         Rank = new()
         {
             Show = true,
-            FontSize = 20,
+            FontSize = 18,
             Pos = new()
             {
-                X = 100,
-                Y = 115
+                X = 98,
+                Y = 107
             }
         },
         Xp = new()
@@ -70,7 +70,7 @@ public class XpTemplate
                 Guild = new()
                 {
                     Direction = XpTemplateDirection.Right,
-                    Length = 275,
+                    Length = 280,
                     Color = new(0, 0, 0, 0.4f),
                     PointA = new()
                     {
@@ -80,7 +80,7 @@ public class XpTemplate
                     PointB = new()
                     {
                         X = 180,
-                        Y = 145
+                        Y = 146
                     }
                 }
             },
@@ -90,8 +90,8 @@ public class XpTemplate
                 FontSize = 25,
                 Pos = new()
                 {
-                    X = 330,
-                    Y = 104
+                    X = 331,
+                    Y = 105
                 }
             }
         }
@@ -118,8 +118,8 @@ public class XpTemplate
             FontSize = 20,
             Pos = new()
             {
-                X = 394,
-                Y = 40
+                X = 386,
+                Y = 35
             },
             Show = true
         }

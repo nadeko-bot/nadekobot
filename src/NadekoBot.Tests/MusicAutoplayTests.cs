@@ -54,7 +54,7 @@ public sealed class MusicAutoplayTests
         }
     }
 
-    // A new server repeats the queue, so autoplay must turn repeat off or it never adds a song.
+    // While the queue repeats, autoplay never adds a song, so turning autoplay on must turn repeat off.
     [Test]
     public async Task QueueAutoPlay_TurnsRepeatOffAndLeavesItOff()
     {

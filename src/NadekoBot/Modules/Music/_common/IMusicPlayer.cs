@@ -18,6 +18,7 @@ public interface IMusicPlayer : IDisposable
     IQueuedTrackInfo? GetCurrentTrack(out int index);
     void Next();
     bool MoveTo(int index);
+    bool Previous();
     void SetVolume(int newVolume);
 
     void Kill();

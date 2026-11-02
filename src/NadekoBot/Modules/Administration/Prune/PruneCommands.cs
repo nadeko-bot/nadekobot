@@ -33,6 +33,33 @@ public partial class Administration
                 Required = false)]
             public ulong? After { get; set; }
 
+            [Option(shortName: 'b', longName: "bots", Default = false, HelpText = "Prune only messages from bots.", Required = false)]
+            public bool Bots { get; set; }
+
+            [Option(shortName: 'u', longName: "humans", Default = false, HelpText = "Prune only messages from members who are not bots.", Required = false)]
+            public bool Humans { get; set; }
+
+            [Option(shortName: 'l', longName: "links", Default = false, HelpText = "Prune only messages with a link.", Required = false)]
+            public bool Links { get; set; }
+
+            [Option(shortName: 'f', longName: "files", Default = false, HelpText = "Prune only messages with a file.", Required = false)]
+            public bool Files { get; set; }
+
+            [Option(shortName: 'e', longName: "embeds", Default = false, HelpText = "Prune only messages with an embed.", Required = false)]
+            public bool Embeds { get; set; }
+
+            [Option(shortName: 'i', longName: "invites", Default = false, HelpText = "Prune only messages with a server invite.", Required = false)]
+            public bool Invites { get; set; }
+
+            [Option(shortName: 'p', longName: "pings", Default = false, HelpText = "Prune only messages which mention someone.", Required = false)]
+            public bool Pings { get; set; }
+
+            [Option(shortName: 'c', longName: "contains", Default = null, HelpText = "Prune only messages which contain the text.", Required = false)]
+            public string Contains { get; set; }
+
+            public PruneFilter ToFilter()
+                => new(Bots, Humans, Links, Files, Embeds, Invites, Pings, Contains);
+
             public void NormalizeOptions()
             {
             }
@@ -52,9 +79,33 @@ public partial class Administration
         [NadekoOptions<PruneOptions>]
         public async Task Prune(params string[] args)
         {
-            var (opts, _) = OptionsParser.ParseFrom(new PruneOptions(), args);
+            var (opts, parsed) = OptionsParser.ParseFrom(new PruneOptions(), args);
+            if (!parsed)
+            {
+                await Response().Error(strs.invalid_input).SendAsync();
+                return;
+            }
 
             var user = await ctx.Guild.GetCurrentUserAsync();
+
+            // a filter prunes the messages of everyone, so it must not fall back to the bot's own messages
+            if (!opts.ToFilter().IsEmpty)
+            {
+                if (ctx.Channel is not ITextChannel tch || !((IGuildUser)ctx.User).GetPermissions(tch).ManageMessages)
+                {
+                    await Response().Error(strs.insuf_perms_u).SendAsync();
+                    return;
+                }
+
+                if (!user.GetPermissions(tch).ManageMessages)
+                {
+                    await Response().Error(strs.insuf_perms_i).SendAsync();
+                    return;
+                }
+
+                await Prune(DEFAULT_PRUNE_COUNT, args);
+                return;
+            }
 
             ctx.Message.DeleteAfter(3);
 
@@ -131,12 +182,24 @@ public partial class Administration
             if (count > MAX_PRUNE_COUNT)
                 count = MAX_PRUNE_COUNT;
 
-            var (opts, _) = OptionsParser.ParseFrom(new PruneOptions(), args);
+            var (opts, parsed) = OptionsParser.ParseFrom(new PruneOptions(), args);
+            if (!parsed)
+            {
+                await Response().Error(strs.invalid_input).SendAsync();
+                return;
+            }
 
+            var filter = opts.ToFilter();
+            if (filter is { Bots: true, Humans: true })
+            {
+                await Response().Error(strs.prune_bots_humans).SendAsync();
+                return;
+            }
+
+            var cmdMsgId = ctx.Message.Id;
+            var safe = opts.Safe;
             await RunPruneAsync(count,
-                opts.Safe
-                    ? static m => !m.IsPinned
-                    : static _ => true,
+                m => m.Id == cmdMsgId || ((!safe || !m.IsPinned) && filter.Matches(m)),
                 afterMessageId ?? opts.After);
         }
 
@@ -151,12 +214,24 @@ public partial class Administration
             if (count > MAX_PRUNE_COUNT)
                 count = MAX_PRUNE_COUNT;
 
-            var (opts, _) = OptionsParser.ParseFrom(new PruneOptions(), args);
+            var (opts, parsed) = OptionsParser.ParseFrom(new PruneOptions(), args);
+            if (!parsed)
+            {
+                await Response().Error(strs.invalid_input).SendAsync();
+                return;
+            }
 
+            var filter = opts.ToFilter();
+            if (filter is { Bots: true, Humans: true })
+            {
+                await Response().Error(strs.prune_bots_humans).SendAsync();
+                return;
+            }
+
+            var safe = opts.Safe;
+            var cmdMsgId = userId == ctx.User.Id ? ctx.Message.Id : 0;
             await RunPruneAsync(count,
-                opts.Safe
-                    ? m => m.Author.Id == userId && !m.IsPinned
-                    : m => m.Author.Id == userId,
+                m => m.Id == cmdMsgId || (m.Author.Id == userId && (!safe || !m.IsPinned) && filter.Matches(m)),
                 opts.After,
                 DateTimeOffset.UtcNow - _twoWeeks);
         }

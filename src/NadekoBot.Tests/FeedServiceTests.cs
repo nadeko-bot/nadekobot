@@ -7,6 +7,7 @@ using Discord;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.Extensions.Time.Testing;
+using NadekoBot.Common;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Searches.Services;
 using NadekoBot.Tests.Waifu;
@@ -318,7 +319,7 @@ VI. Gigue 15:19</media:description>
         Assert.That(first.SpecificItem, Is.InstanceOf<AtomFeedItem>());
         Assert.That(first.PublishingDate, Is.Not.Null);
 
-        var embed = FeedsService.BuildFeedEmbed(new EmbedBuilder(), first, RSS_URL);
+        var embed = FeedsService.BuildFeedEmbed(new EmbedBuilder(), FeedsService.GetFeedPost(first), RSS_URL);
 
         Assert.That(embed.Title, Is.EqualTo("Johannes Brahms - Cello Sonata No. 1 in E Minor, Op. 38"));
         Assert.That(embed.Url, Is.EqualTo("https://www.youtube.com/watch?v=-gmGalwAe5A"));
@@ -327,7 +328,7 @@ VI. Gigue 15:19</media:description>
 
         foreach (var item in _feed.Items)
         {
-            var itemEmbed = FeedsService.BuildFeedEmbed(new EmbedBuilder(), item, RSS_URL);
+            var itemEmbed = FeedsService.BuildFeedEmbed(new EmbedBuilder(), FeedsService.GetFeedPost(item), RSS_URL);
             Assert.That(itemEmbed.ImageUrl, Is.Not.Null.And.Not.Empty,
                 $"Missing thumbnail for: {item.Title}");
         }
@@ -441,6 +442,71 @@ VI. Gigue 15:19</media:description>
         }
 
         Assert.That(dead.StreakStarted, Is.False);
+    }
+
+    private static FeedsService CreateMessageService()
+        => new(null!, null!, null!, null!, null!, null!, null!, new ReplacementService(new ReplacementPatternStore()));
+
+    [Test]
+    public async Task FeedMessage_PlainText_FillsPlaceholdersAndKeepsDefaultEmbed()
+    {
+        var post = FeedsService.GetFeedPost(_feed.Items.First());
+
+        var msg = await CreateMessageService().BuildFeedMessageAsync(
+            "New: %feed.title% %feed.url% (%feed.source%) %feed.unknown%",
+            post,
+            RSS_URL,
+            new ReplacementContext());
+
+        Assert.That(msg.WithDefaultEmbed, Is.True);
+        Assert.That(msg.Text, Is.EqualTo(new SmartPlainText(
+            $"New: Johannes Brahms - Cello Sonata No. 1 in E Minor, Op. 38 https://www.youtube.com/watch?v=-gmGalwAe5A ({RSS_URL}) %feed.unknown%")));
+    }
+
+    [Test]
+    public async Task FeedMessage_EmbedJson_FillsPlaceholdersAndReplacesDefaultEmbed()
+    {
+        var post = FeedsService.GetFeedPost(_feed.Items.First()) with { ImageUrl = null };
+
+        var msg = await CreateMessageService().BuildFeedMessageAsync(
+            """
+            { "content": "Upload!", "embeds": [ { "title": "%feed.title%", "url": "%feed.url%", "image": "%feed.image%" } ] }
+            """,
+            post,
+            RSS_URL,
+            new ReplacementContext());
+
+        Assert.That(msg.WithDefaultEmbed, Is.False);
+        var arr = msg.Text as SmartEmbedTextArray;
+        Assert.That(arr, Is.Not.Null);
+        Assert.That(arr!.Content, Is.EqualTo("Upload!"));
+        Assert.That(arr.Embeds[0].Title, Is.EqualTo(post.Title));
+        Assert.That(arr.Embeds[0].Url, Is.EqualTo(post.Link));
+        Assert.That(arr.GetEmbedBuilders()[0].ImageUrl, Is.Null.Or.Empty);
+    }
+
+    [Test]
+    public async Task FeedMessage_ValuesCannotPingOrFormPlaceholders_AndTheMessageFitsDiscord()
+    {
+        var post = FeedsService.GetFeedPost(_feed.Items.First()) with
+        {
+            Title = "<@123> <@&456> @everyone %feed.url%",
+            Description = new string('x', 2048)
+        };
+
+        var msg = await CreateMessageService().BuildFeedMessageAsync(
+            "%feed.title% %feed.description%",
+            post,
+            RSS_URL,
+            new ReplacementContext());
+
+        var text = ((SmartPlainText)msg.Text).Text;
+        // ordinal, because a culture compare skips the zero-width space which breaks the mention
+        Assert.That(text.Contains("<@123>", StringComparison.Ordinal), Is.False);
+        Assert.That(text.Contains("<@&456>", StringComparison.Ordinal), Is.False);
+        Assert.That(text.Contains("@everyone", StringComparison.Ordinal), Is.False);
+        Assert.That(text.Contains("%feed.url%", StringComparison.Ordinal), Is.True);
+        Assert.That(text.Length, Is.EqualTo(DiscordConfig.MaxMessageSize));
     }
 
     [Test]

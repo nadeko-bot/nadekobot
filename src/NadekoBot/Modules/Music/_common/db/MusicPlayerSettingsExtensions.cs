@@ -15,7 +15,7 @@ public static class MusicPlayerSettingsExtensions
             var newSettings = new MusicPlayerSettings
             {
                 GuildId = guildId,
-                PlayerRepeat = PlayerRepeatType.Queue
+                PlayerRepeat = PlayerRepeatType.None
             };
 
             await settings.AddAsync(newSettings);

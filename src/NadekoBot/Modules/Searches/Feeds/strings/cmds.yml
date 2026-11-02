@@ -4,12 +4,20 @@ feed:
     The bot checks a YouTube channel for uploads every 5 minutes.
     You can have up to 10 feeds on one server.
     All feeds must have unique URLs.
-    Set a channel as a second optional parameter to specify where to send the updates.
-    You can optionally specify a message after the channel name which will be posted with an update.
+    Set a channel after the url to send the updates to another channel.
+    You can give a message after the url or after the channel. The bot posts it with each update.
+    Use `{0}feedmessage` to change the message later.
+    The message can contain these placeholders:
+    - `%feed.title%` is the title of the post
+    - `%feed.url%` is the link to the post
+    - `%feed.description%` is the text of the post
+    - `%feed.image%` is the image url of the post
+    - `%feed.source%` is the url of the feed
+    Server placeholders also work.
+    If the message is embed json, the bot posts it instead of the default embed.
   ex:
     - https://blog.playstation.com/feed/
-    - 'https://blog.playstation.com/feed/ #updates'
-    - 'https://blog.playstation.com/feed/ #updates New playstation rss feed post!'
+    - 'https://blog.playstation.com/feed/ #updates New post: %feed.title% %feed.url%'
   params:
     - url:
         desc: "The URL of the feed to subscribe to, used to retrieve new content for posting."
@@ -28,6 +36,19 @@ feedlist:
   params:
     - page:
         desc: The page number to display.
+feedmessage:
+  desc: |-
+    Changes the message which the bot posts with each update of a feed.
+    The message can use the same placeholders and embed json as `{0}feed`.
+    Leave out the message to remove it.
+    Use `{0}feeds` to see the numbers of the feeds.
+  ex:
+    - '1 New post: %feed.title% %feed.url%'
+  params:
+    - index:
+        desc: The number of the feed in the feed list.
+      message:
+        desc: The new message. Leave it out to remove the message.
 feedremove:
   desc: |-
     Stops tracking a feed on the given index. Use `{0}feeds` command to see a list of feeds and their indexes.
@@ -42,6 +63,7 @@ ytuploadnotif:
     Give the channel link, its @handle or its channel ID.
     The bot checks the channel every 5 minutes.
     You can optionally specify a message which will be posted with an update.
+    The message can use the same placeholders and embed json as `{0}feed`.
   ex:
     - https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow
     - 'https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow #videos New video is posted'

@@ -62,9 +62,13 @@ public interface IMusicService
     Task EnqueueDirectoryAsync(IMusicPlayer mp, string dirPath, string queuer, bool allowLocalNetwork);
     Task<IUserMessage?> SendToOutputAsync(ulong guildId, EmbedBuilder embed);
     Task<bool> PlayAsync(ulong guildId, ulong voiceChannelId);
+    Task<bool> PreviousAsync(ulong guildId, ulong voiceChannelId);
     Task<IList<(string Title, string Url, string Thumbnail)>> SearchVideosAsync(string query);
     Task<bool> SetMusicChannelAsync(ulong guildId, ulong? channelId);
     Task SetRepeatAsync(ulong guildId, PlayerRepeatType repeatType);
+
+    // Sets the mode, or None when the mode is already on. Returns the new value.
+    Task<PlayerRepeatType> ToggleRepeatAsync(ulong guildId, PlayerRepeatType mode);
     Task SetVolumeAsync(ulong guildId, int value);
     Task<bool> ToggleAutoDisconnectAsync(ulong guildId);
     Task<bool> ToggleQueueAutoPlayAsync(ulong guildId);

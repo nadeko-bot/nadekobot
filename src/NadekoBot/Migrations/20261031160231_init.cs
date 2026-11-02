@@ -43,6 +43,20 @@ namespace NadekoBot.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AllowedLinkDomain",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Domain = table.Column<string>(type: "TEXT", maxLength: 253, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AllowedLinkDomain", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AntiAltSetting",
                 columns: table => new
                 {
@@ -510,7 +524,8 @@ namespace NadekoBot.Migrations
                     MessageId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     Message = table.Column<string>(type: "TEXT", nullable: true),
-                    EndsAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    EndsAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    WinnerCount = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
@@ -2060,6 +2075,12 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_AllowedLinkDomain_GuildId_Domain",
+                table: "AllowedLinkDomain",
+                columns: new[] { "GuildId", "Domain" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AntiAltSetting_GuildId",
                 table: "AntiAltSetting",
                 column: "GuildId",
@@ -2771,9 +2792,9 @@ namespace NadekoBot.Migrations
                 column: "GuildId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_XpRoleReward_XpSettingsId_Level",
+                name: "IX_XpRoleReward_XpSettingsId_Level_RoleId",
                 table: "XpRoleReward",
-                columns: new[] { "XpSettingsId", "Level" },
+                columns: new[] { "XpSettingsId", "Level", "RoleId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -2841,6 +2862,9 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "AiAgentWhitelistEntry");
+
+            migrationBuilder.DropTable(
+                name: "AllowedLinkDomain");
 
             migrationBuilder.DropTable(
                 name: "AntiAltSetting");

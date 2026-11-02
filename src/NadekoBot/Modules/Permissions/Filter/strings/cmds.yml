@@ -1,13 +1,14 @@
 chnlfilterinv:
   desc: |-
-    Toggles automatic deletion of invites posted in the channel. Does not negate the `{0}srvrfilterinv` enabled setting. Does not affect users with the Administrator permission.
+    Toggles automatic deletion of invites posted in the channel. Does not negate the `{0}srvrfilterinv` enabled setting. Does not affect users with the Administrator permission or with Manage Messages in the channel.
   ex:
     - ''
   params:
     - {}
 chnlfilterlin:
   desc: |-
-    Toggles automatic deletion of links posted in the channel. Does not negate the `{0}srvrfilterlin` enabled setting. Does not affect users with the Administrator permission.
+    Toggles automatic deletion of links posted in the channel. Does not negate the `{0}srvrfilterlin` enabled setting. Does not affect users with the Administrator permission or with Manage Messages in the channel.
+    Use `{0}linkallow` to let the links of one domain pass the filter.
   ex:
     - ''
   params:
@@ -39,6 +40,30 @@ fwclear:
     - ''
   params:
     - {}
+linkallow:
+  desc: |-
+    Lets links to a domain and its subdomains through the link filter, or removes the domain if the server already allows it.
+    For example, `youtube.com` also allows `www.youtube.com` and `m.youtube.com`.
+    A message passes only if every link in it goes to an allowed domain.
+    A server can allow up to 50 domains.
+  ex:
+    - youtube.com
+  params:
+    - domain:
+        desc: "The domain, for example youtube.com."
+linkallowlist:
+  desc: Shows the domains whose links pass the link filter.
+  ex:
+    - ''
+  params:
+    - page:
+        desc: The page number to display.
+linkallowclear:
+  desc: Removes all domains which pass the link filter.
+  ex:
+    - ''
+  params:
+    - {}
 lstfilterwords:
   desc: Shows a list of filtered words.
   ex:
@@ -48,14 +73,15 @@ lstfilterwords:
         desc: The current page number in the list of filtered words.
 srvrfilterinv:
   desc: |-
-    Toggles automatic deletion of invites posted in the server. Does not affect users with the Administrator permission.
+    Toggles automatic deletion of invites posted in the server. Does not affect users with the Administrator permission or with Manage Messages in the channel.
   ex:
     - ''
   params:
     - {}
 srvrfilterlin:
   desc: |-
-    Toggles automatic deletion of links posted in the server. Does not affect users with the Administrator permission.
+    Toggles automatic deletion of links posted in the server. Does not affect users with the Administrator permission or with Manage Messages in the channel.
+    Use `{0}linkallow` to let the links of one domain pass the filter.
   ex:
     - ''
   params:

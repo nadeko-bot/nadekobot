@@ -4,6 +4,9 @@ using Microsoft.Extensions.Caching.Memory;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using NadekoBot.Modules.Utility.UserNotifications;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace NadekoBot.Modules.Utility;
 
@@ -12,6 +15,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
     public static string GiveawayEmoji = "🎉";
 
     private const string NOTIFY_GIVEAWAY_WON = "giveaway.won";
+    public const int MAX_WINNERS = 20;
 
     private readonly DbService _db;
     private readonly IBotCreds _creds;
@@ -166,7 +170,8 @@ public sealed class GiveawayService : INService, IReadyExecutor
         ulong channelId,
         ulong messageId,
         TimeSpan duration,
-        string message)
+        string message,
+        int winnerCount = 1)
     {
         await using var ctx = _db.GetDbContext();
 
@@ -187,6 +192,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
                               ChannelId = channelId,
                               Message = message,
                               EndsAt = endsAt,
+                              WinnerCount = Math.Clamp(winnerCount, 1, MAX_WINNERS),
                           });
 
         lock (_giveawayLock)
@@ -213,10 +219,14 @@ public sealed class GiveawayService : INService, IReadyExecutor
         if (giveaway is null)
             return false;
 
-        await ctx
-              .GetTable<GiveawayModel>()
-              .Where(x => x.Id == id)
-              .DeleteAsync();
+        // the timer and .ga end can race; only the call which deletes the row ends the giveaway
+        var deleted = await ctx
+                            .GetTable<GiveawayModel>()
+                            .Where(x => x.Id == id)
+                            .DeleteAsync();
+
+        if (deleted == 0)
+            return false;
 
         lock (_giveawayLock)
         {
@@ -225,29 +235,53 @@ public sealed class GiveawayService : INService, IReadyExecutor
 
         _giveawayMessages.TryRemove(giveaway.MessageId, out _);
 
-        var winner = PickWinner(giveaway);
+        var winners = PickWinners(giveaway, Math.Clamp(giveaway.WinnerCount, 1, MAX_WINNERS));
 
-        await OnGiveawayEnded(giveaway, winner);
+        await OnGiveawayEnded(giveaway, winners);
 
         return true;
     }
 
-    private GiveawayUser? PickWinner(GiveawayModel giveaway)
+    private GiveawayUser[] PickWinners(GiveawayModel giveaway, int count)
     {
-        if (giveaway.Participants.Count == 0)
-            return default;
+        var participants = giveaway.Participants as List<GiveawayUser> ?? giveaway.Participants.ToList();
+        var winners = PickWinners(participants, count, _rng);
 
-        if (giveaway.Participants.Count == 1)
-        {
-            // as this is the last participant, rerolls no longer possible
+        if (participants.Count == 0)
             _cache.Remove($"reroll:{giveaway.Id}");
-            return giveaway.Participants[0];
+        else
+            _cache.Set($"reroll:{giveaway.Id}", new GiveawayRerollData(giveaway), TimeSpan.FromDays(1));
+
+        giveaway.Participants = participants;
+        return winners;
+    }
+
+    // removes the winners from the participants, so a reroll can only pick someone else
+    public static GiveawayUser[] PickWinners(List<GiveawayUser> participants, int count, NadekoRandom rng)
+    {
+        var n = Math.Min(Math.Max(count, 1), participants.Count);
+        if (n == 0)
+            return [];
+
+        var span = CollectionsMarshal.AsSpan(participants);
+        for (var i = 0; i < n; i++)
+        {
+            var j = rng.Next(i, span.Length);
+            (span[i], span[j]) = (span[j], span[i]);
         }
 
-        var winner = giveaway.Participants[_rng.Next(0, giveaway.Participants.Count)];
+        var winners = span[..n].ToArray();
+        participants.RemoveRange(0, n);
+        return winners;
+    }
 
-        HandleWinnerSelection(giveaway, winner);
-        return winner;
+    public static bool TryParseWinnerCount(ReadOnlySpan<char> token, out int count)
+    {
+        count = 0;
+        return token.Length > 1
+               && (token[^1] == 'w' || token[^1] == 'W')
+               && int.TryParse(token[..^1], NumberStyles.None, CultureInfo.InvariantCulture, out count)
+               && count is >= 1 and <= MAX_WINNERS;
     }
 
     public async Task<bool> RerollGiveawayAsync(ulong guildId, int giveawayId)
@@ -257,12 +291,10 @@ public sealed class GiveawayService : INService, IReadyExecutor
         if (rerollModel is null || rerollModel.Giveaway.GuildId != guildId)
             return false;
 
-        var winner = PickWinner(rerollModel.Giveaway);
+        var winners = PickWinners(rerollModel.Giveaway, 1);
 
-        if (winner is not null)
-        {
-            await OnGiveawayEnded(rerollModel.Giveaway, winner);
-        }
+        if (winners.Length > 0)
+            await OnGiveawayEnded(rerollModel.Giveaway, winners, isReroll: true);
 
         return true;
     }
@@ -345,7 +377,7 @@ public sealed class GiveawayService : INService, IReadyExecutor
         return true;
     }
 
-    public async Task OnGiveawayEnded(GiveawayModel ga, GiveawayUser? winner)
+    public async Task OnGiveawayEnded(GiveawayModel ga, GiveawayUser[] winners, bool isReroll = false)
     {
         var culture = _localization.GetCultureInfo(ga.GuildId);
 
@@ -360,29 +392,35 @@ public sealed class GiveawayService : INService, IReadyExecutor
         if (msg is null)
             return;
 
-        var winnerStr = winner is null
-            ? "-"
-            : $"""
-               {winner.Name}
-               <@{winner.UserId}>
-               {Format.Code(winner.UserId.ToString())}
-               """;
+        var winnerStr = winners.Length switch
+        {
+            0 => "-",
+            1 => $"""
+                  {winners[0].Name}
+                  <@{winners[0].UserId}>
+                  {Format.Code(winners[0].UserId.ToString())}
+                  """,
+            // names and ids of 20 winners would not fit the 1024 character field limit
+            _ => FormatMentions(winners, '\n')
+        };
 
         var eb = _sender.CreateEmbed(ch.GuildId)
                         .WithOkColor()
                         .WithTitle(GetText(strs.giveaway_ended))
                         .WithDescription(ga.Message)
                         .WithFooter($"id: {new kwum(ga.Id).ToString()}")
-                        .AddField(GetText(strs.winner),
+                        .AddField(winners.Length == 1 ? GetText(strs.winner) : GetText(strs.winners_count),
                             winnerStr,
-                            true);
+                            winners.Length <= 1);
 
         try
         {
-            await msg.ModifyAsync(x => x.Embed = eb.Build());
+            // one rerolled winner must not replace the list of the other winners
+            if (!isReroll || ga.WinnerCount <= 1)
+                await msg.ModifyAsync(x => x.Embed = eb.Build());
 
-            if (winner is not null)
-                await _sender.Response(ch).Message(msg).Text($"🎉 <@{winner.UserId}>").SendAsync();
+            if (winners.Length > 0)
+                await _sender.Response(ch).Message(msg).Text("🎉 " + FormatMentions(winners, ' ')).SendAsync();
         }
         catch
         {
@@ -390,34 +428,42 @@ public sealed class GiveawayService : INService, IReadyExecutor
             await _sender.Response(ch).Embed(eb).SendAsync();
         }
 
-        if (winner is not null && _userNotify is not null)
-        {
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    var msgStr = strs.giveaway_dm_won(ga.Message.TrimTo(200));
-                    var notifyEmbed = new EmbedBuilder()
-                        .WithColor(new Discord.Color(0xF1, 0xC4, 0x0F))
-                        .WithTitle("Giveaway Won!")
-                        .WithDescription(_strings.GetText(msgStr.Key, (ulong?)null, msgStr.Params));
+        if (winners.Length > 0 && _userNotify is not null)
+            _ = Task.Run(() => NotifyWinnersInternalAsync(_userNotify, ga.Message, winners));
+    }
 
-                    await _userNotify.NotifyAsync(winner.UserId, NOTIFY_GIVEAWAY_WON, notifyEmbed);
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning(ex, "Failed to send giveaway won notification");
-                }
-            });
+    private async Task NotifyWinnersInternalAsync(UserNotifyService userNotify, string prize, GiveawayUser[] winners)
+    {
+        var msgStr = strs.giveaway_dm_won(prize.TrimTo(200));
+        var notifyEmbed = new EmbedBuilder()
+            .WithColor(new Discord.Color(0xF1, 0xC4, 0x0F))
+            .WithTitle("Giveaway Won!")
+            .WithDescription(_strings.GetText(msgStr.Key, (ulong?)null, msgStr.Params));
+
+        foreach (var winner in winners)
+        {
+            try
+            {
+                await userNotify.NotifyAsync(winner.UserId, NOTIFY_GIVEAWAY_WON, notifyEmbed);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Failed to send giveaway won notification");
+            }
         }
     }
 
-    private void HandleWinnerSelection(GiveawayModel ga, GiveawayUser winner)
+    private static string FormatMentions(GiveawayUser[] winners, char separator)
     {
-        ga.Participants = ga.Participants.Where(x => x.UserId != winner.UserId).ToList();
+        var sb = new StringBuilder(winners.Length * 24);
+        foreach (var w in winners)
+        {
+            if (sb.Length > 0)
+                sb.Append(separator);
+            sb.Append("<@").Append(w.UserId).Append('>');
+        }
 
-        var rerollData = new GiveawayRerollData(ga);
-        _cache.Set($"reroll:{ga.Id}", rerollData, TimeSpan.FromDays(1));
+        return sb.ToString();
     }
 }
 

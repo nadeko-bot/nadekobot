@@ -129,7 +129,8 @@ public sealed class NotificationApiTests
             new ShardData(_client, Substitute.For<IBotCreds>()),
             _config,
             _factory,
-            _music);
+            _music,
+            Substitute.For<IReplacementService>());
 
     private StreamNotificationService CreateStreams(IBotCreds? creds = null)
         => new(_db,
