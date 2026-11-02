@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="seal-fill" x1="5" y1="-3" x2="27" y2="35" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e0457e"/>
+      <stop offset="1" stop-color="#a8124c"/>
+    </linearGradient>
+  </defs>
+  <path d="M0 0H32V24.96L24.96 32H0Z" fill="url(#seal-fill)"/>
+  <g transform="translate(16 16) scale(1.3) translate(-12 -12)" fill="#fff" fill-opacity=".55" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 11.6L10 6.4L10.7 5.2L11.4 6L12 4.8L12.6 6L13.3 5.2L14 6.4Z"/>
+    <path transform="rotate(72 12 12)" d="M12 11.6L10 6.4L10.7 5.2L11.4 6L12 4.8L12.6 6L13.3 5.2L14 6.4Z"/>
+    <path transform="rotate(144 12 12)" d="M12 11.6L10 6.4L10.7 5.2L11.4 6L12 4.8L12.6 6L13.3 5.2L14 6.4Z"/>
+    <path transform="rotate(216 12 12)" d="M12 11.6L10 6.4L10.7 5.2L11.4 6L12 4.8L12.6 6L13.3 5.2L14 6.4Z"/>
+    <path transform="rotate(288 12 12)" d="M12 11.6L10 6.4L10.7 5.2L11.4 6L12 4.8L12.6 6L13.3 5.2L14 6.4Z"/>
+    <circle cx="12" cy="12" r="1.4" fill-opacity="1" stroke="none"/>
+  </g>
+</svg>

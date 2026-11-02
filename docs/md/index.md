@@ -20,6 +20,16 @@ To self-host your own Nadeko, use the guides below:
 
 In case you need any help, join our [Discord server][discord-server] where we may provide support.
 
+<div class="nk-panel">
+<div class="nk-panel-head">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.6 9.1 4.75 4.75 0 0 0 7 18.5Z" fill="currentColor" fill-opacity=".2"/></svg>
+<span class="nk-panel-title"><span class="nk-ink">nade</span><span class="nk-pink">kloud</span></span>
+<span class="nk-panel-aside">Hosted NadekoBot</span>
+</div>
+<p>Want your own bot without the setup? <strong>NadeKloud</strong> runs your NadekoBot for you. You do not install anything or edit config files.</p>
+<a class="md-button" href="https://cloud.nadeko.bot/">Try NadeKloud</a>
+</div>
+
 ## About Nadeko
 
 NadekoBot is an [open source project][github]. Any issues with the bot may be filed [here][issues].

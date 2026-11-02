@@ -6,18 +6,19 @@ docs_dir: 'md'
 
 theme:
     name: material
+    custom_dir: overrides
     palette:
           - media: "(prefers-color-scheme: light)"
             scheme: default
-            primary: indigo
-            accent: blue
+            primary: custom
+            accent: custom
             toggle:
                 icon: material/weather-sunny
                 name: Switch to dark mode
           - media: "(prefers-color-scheme: dark)"
             scheme: slate
-            primary: black
-            accent: blue
+            primary: custom
+            accent: custom
             toggle:
                 icon: material/weather-night
                 name: Switch to light mode
@@ -25,16 +26,18 @@ theme:
         - navigation.instant
         - navigation.expand
         - navigation.top
-    font:
-        text: Source Sans Pro
-        code: Source Code Pro
-    logo: assets/favicon.png
-    favicon: assets/favicon.png
+    font: false
+    logo: assets/seal.svg
+    favicon: assets/seal.svg
     icon:
         repo: material/github
 
 extra:
   homepage: https://nadeko.bot
+
+extra_css:
+    - assets/stylesheets/fonts.css
+    - assets/stylesheets/nadeko.css
 
 plugins:
     - search
