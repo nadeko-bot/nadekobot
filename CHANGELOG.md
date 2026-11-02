@@ -30,6 +30,7 @@
 - The bot has its own fonts. It does not read them from `data/fonts`.
 - `data/fonts` is optional. Fonts there add the characters which the bot's fonts do not have.
 - The default xp card aligns the name, rank, xp bar and club name.
+- The bot does not read TIFF images.
 
 ### Fixed
 
@@ -43,7 +44,7 @@
 ### Dev
 
 - `NadekoBot.Hosted` has routes for each role reward of a level.
-- The bot uses ImageSharp 3.2.0, which fixes known security issues.
+- AngleSharp 1.9.0 and SQLite 3.54.0 fix known security issues.
 
 ## [7.8.0] - 31.10.2026
 

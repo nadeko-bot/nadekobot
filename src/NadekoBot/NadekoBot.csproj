@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AngleSharp" Version="1.2.0">
+        <PackageReference Include="AngleSharp" Version="1.9.0">
             <PrivateAssets>all</PrivateAssets>
             <Publish>True</Publish>
         </PackageReference>
@@ -55,7 +55,6 @@
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.1" />
-        <PackageReference Include="Microsoft.SyndicationFeed.ReaderWriter" Version="1.0.2" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="NonBlocking" Version="2.1.2" />
         <PackageReference Include="OneOf" Version="3.0.271" />
@@ -64,7 +63,7 @@
         <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
 
         <PackageReference Include="SixLabors.Fonts" Version="2.1.3" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.2.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
         <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />
         <PackageReference Include="SixLabors.Shapes" Version="1.0.0-beta0009" />
         <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
@@ -88,6 +87,8 @@
         <PackageReference Include="linq2db.EntityFrameworkCore" Version="9.0.0" />
 
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.1" />
+        <!-- EF Core 9 brings 2.1.10, which bundles a vulnerable SQLite -->
+        <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.14" />
         <PackageReference Include="Npgsql" Version="9.0.3" />
 
         <!-- Used by stream notifications -->

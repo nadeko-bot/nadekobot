@@ -51,7 +51,7 @@ public sealed class ImageCache : IImageCache, INService
                     return bytes;
 
                 // An empty array marks a rejected image, so the bot does not download it again.
-                Log.Warning("Image {Url} is too large to decode", url);
+                Log.Warning("Image {Url} is too large or not a supported format", url);
                 return [];
             },
             expiry: TimeSpan.FromHours(48));
