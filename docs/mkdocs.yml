@@ -1,4 +1,5 @@
 site_name: 'NadekoBot'
+site_description: 'Guides to host your own NadekoBot, the free, open source Discord bot, and to use its AI agent, waifu system and medusa plugins.'
 site_url: 'https://docs.nadeko.bot/'
 repo_url: 'https://github.com/nadeko-bot/nadekobot'
 site_author: 'Breaker'
@@ -7,6 +8,7 @@ docs_dir: 'md'
 theme:
     name: material
     custom_dir: overrides
+    language: en
     palette:
           - media: "(prefers-color-scheme: light)"
             scheme: default
@@ -26,6 +28,7 @@ theme:
         - navigation.instant
         - navigation.expand
         - navigation.top
+        - content.code.copy
     font: false
     logo: assets/seal.svg
     favicon: assets/seal.svg
@@ -33,7 +36,8 @@ theme:
         repo: material/github
 
 extra:
-  homepage: https://nadeko.bot
+    homepage: https://nadeko.bot
+    og_image: https://nadeko.bot/img/og-nadeko.png
 
 extra_css:
     - assets/stylesheets/fonts.css
@@ -43,8 +47,11 @@ plugins:
     - search
     - exclude:
         glob:
-          - 'guides/vps-linux-guide.md'
-          - 'snippets/supported-platforms.md'
+          - 'snippets/*'
+    - redirects:
+        redirect_maps:
+          'medusa/snek-lifecycle.md': 'medusa/creating-a-medusa.md#lifecycle'
+          'guides/vps-linux-guide.md': 'guides/linux-server.md'
 
 markdown_extensions:
     - attr_list
@@ -59,8 +66,10 @@ markdown_extensions:
     - pymdownx.superfences
     - pymdownx.blocks.tab:
         alternate_style: true
-    - pymdownx.snippets
+    - pymdownx.snippets:
+        check_paths: true
     - pymdownx.details
+    - pymdownx.keys
     - pymdownx.emoji:
         emoji_index: !!python/name:material.extensions.emoji.twemoji
         emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -68,21 +77,20 @@ markdown_extensions:
 nav:
     - Home: index.md
     - Guides:
-        - Desktop Guide: guides/desktop-guide.md
-        - CLI Guide: guides/cli-guide.md
-        - Docker Guide: guides/docker-guide.md
-        - Source Guide: guides/source-guide.md
-    - Commands:
-        - Commands List: https://nadeko.bot/commands
-    - Features Explained:
-        - Basic Creds: creds-guide.md
-        - Waifu System: waifu-guide.md
-        - AI Agent:
+        - Create a Discord bot: creds-guide.md
+        - Get a Linux server: guides/linux-server.md
+        - Desktop guide (Upeko): guides/desktop-guide.md
+        - CLI guide: guides/cli-guide.md
+        - Docker guide: guides/docker-guide.md
+        - Source guide: guides/source-guide.md
+    - Commands: https://nadeko.bot/commands/
+    - Features:
+        - Waifu system: waifu-guide.md
+        - AI agent:
             - Overview: ai-agent/overview.md
-            - Owner Setup: ai-agent/owner-setup.md
-            - Usage and Skills: ai-agent/usage.md
-        - Medusa System:
-            - medusa/getting-started.md
-            - medusa/creating-a-medusa.md
-            - medusa/snek-lifecycle.md
+            - Owner setup: ai-agent/owner-setup.md
+            - Usage and skills: ai-agent/usage.md
+        - Medusa plugins:
+            - Getting started: medusa/getting-started.md
+            - Create a medusa: medusa/creating-a-medusa.md
     - Donate: donate.md

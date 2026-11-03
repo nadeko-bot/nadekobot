@@ -1,168 +1,128 @@
-# Creating A Medusa
+---
+title: Create a NadekoBot medusa plugin in C#
+description: Create a NadekoBot medusa with the dotnet template. Build it, load it in your bot, and learn sneks, commands, parsers, services, strings and the lifecycle.
+---
 
-## Getting started
+# Create a medusa
 
-This section will guide you through how to create a simple custom medusa. The project template, with its example commands, is [here](https://github.com/nadeko-bot/nadekobot/tree/v6/src/Nadeko.Medusa.Template/content/nadeko-medusa).
+This page shows how to make, build and load a medusa. The project template has example commands. You can see the template [on GitHub](https://github.com/nadeko-bot/nadekobot/tree/v6/src/Nadeko.Medusa.Template/content/nadeko-medusa).
 
-## Prerequisite
+## Before you start
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed
-- NadekoBot 7.x
-- Optional: use [vscode](https://code.visualstudio.com/download) to write code
+- Install the [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0).
+- Use a NadekoBot which you host yourself, version 7 or later.
+- Optional: install a code editor, for example [Visual Studio Code](https://code.visualstudio.com/).
 
-## Guide
+## Make the project
 
-- Open your favorite terminal and navigate to a folder where you will keep your project.
+1. Open a terminal and go to the folder for your projects.
+2. Make a folder for the medusa and go into it:
 
-- Create a new folder and move into it
-    - `mkdir example_medusa`
-    - `cd example_medusa`
+    ```sh
+    mkdir example_medusa
+    cd example_medusa
+    ```
 
-- Install the nadeko-medusa template from the NadekoBot MyGet feed
-    - `dotnet new install nadeko-medusa --nuget-source https://www.myget.org/F/nadeko/api/v3/index.json`
+3. Install the template from the NadekoBot MyGet feed:
 
-- Make a new Nadeko Medusa project
-    - `dotnet new nadeko-medusa`
+    ```sh
+    dotnet new install nadeko-medusa --nuget-source https://www.myget.org/F/nadeko/api/v3/index.json
+    ```
 
-- Optional: to keep the medusa on one version of the medusa library, open `example_medusa.csproj` and change the `Nadeko.Medusa` version from `7.*` to the version of your bot, for example `7.8.0`
+4. Make the project:
 
-## Build it
+    ```sh
+    dotnet new nadeko-medusa
+    ```
 
-- Build your Medusa into a dll that Nadeko can load. In your terminal, type:
-    - `dotnet publish -o bin/medusae/example_medusa`
+The project uses the newest `Nadeko.Medusa` 7 package. To use the package version of your bot, open `example_medusa.csproj` and change `7.*` to your bot version, for example `7.8.0`.
 
-- Done. You can now try it out in action.
+## Build and load the medusa
 
-## Try it out
+1. Build the medusa:
 
-- Copy the `bin/medusae/example_medusa` folder into your NadekoBot's `data/medusae/` folder.
+    ```sh
+    dotnet publish -o bin/medusae/example_medusa
+    ```
 
-- Load it with `.meload example_medusa`
-
-- In the channel your bot can see, run the following commands to try it out
+2. Copy the folder `bin/medusae/example_medusa` into the `data/medusae` folder of your bot. The folder and the `.dll` file must have the same name: `data/medusae/example_medusa/example_medusa.dll`.
+3. In Discord, type `.meload example_medusa`.
+4. Try the example commands:
     - `.hello`
-    - `.hello @<someone>`
+    - `.hello @someone`
     - `.info John,24`
+5. Type `.meinfo example_medusa` to see its sneks and its number of commands.
+6. Type `.meunload example_medusa` to unload it.
 
-- Check its information with
-    - `.meinfo example_medusa`
+## Parts of a medusa
 
-- Unload it
-    - `.meunload example_medusa`
+| Part | What it is |
+|---|---|
+| Medusa | The project. It builds into one `.dll` file, with optional extra files. It can have sneks, param parsers and services. |
+| Snek | A class which becomes one module of the bot. Each snek has one instance while the medusa is loaded. |
+| Snek command | A method with the `[cmd]` attribute. It works like a normal bot command. |
+| Param parser | A class which turns the text of an argument into your own type. |
+| Service | A class with the `[svc]` attribute, which you can inject into sneks and commands. |
 
-- :tada: Congrats! You've just made your first medusa! :tada:
-
-
-
-## Theory
-
-Medusa system allows you to write independent medusae (known as "modules", "cogs" or "plugins" in other software) which you can then load, unload and update at will without restarting the bot.
-
-The system itself borrows some design from the current way Nadeko's Modules are written but mostly from never-released `Ayu.Commands` system which was designed to be used for a full Nadeko v3 rewrite.
-
-The medusa base classes used for development are open source [here](https://github.com/nadeko-bot/nadekobot/tree/v6/src/Nadeko.Medusa) in case you need reference, as there is no generated documentation at the moment.
-
-## Term list
-
-### Medusa
-
-- The project itself which compiles to a single `.dll` (and some optional auxiliary files), it can contain multiple [Sneks](#snek), [Services](#service), and [ParamParsers](#param-parser)
+The base classes are open source in [Nadeko.Medusa](https://github.com/nadeko-bot/nadekobot/tree/v6/src/Nadeko.Medusa).
 
 ### Snek
 
-- A class which will be added as a single Module to NadekoBot on load. It also acts as a [lifecycle handler](snek-lifecycle.md) and as a singleton service with the support for initialize and cleanup.
-- It can contain a Snek (called SubSnek) but only 1 level of nesting is supported (you can only have a snek contain a subsnek, but a subsnek can't contain any other sneks)
-- Sneks can have their own prefix
-    - For example if you set this to 'test' then a command called 'cmd' will have to be invoked by using `.test cmd` instead of `.cmd`
+- A snek can have one level of sub-sneks. A sub-snek is a nested class in the snek class. It cannot have more sneks in it.
+- A snek can have a prefix. If the prefix is `test`, the command `cmd` becomes `.test cmd`.
 
-### Snek Command
+### Snek command
 
-- Acts as a normal command
-- Has context injected as a first argument which controls where the command can be executed
-    - `AnyContext` the command can be executed in both DMs and Servers
-    - `GuildContext` the command can only be executed in Servers
-    - `DmContext` the command can only be executed in DMs
-- Support the usual features such as default values, leftover, params, etc.
-- It also supports dependency injection via `[inject]` attribute. These dependencies must come after the context and before any input parameters
-- Supports `ValueTask`, `Task`, `Task<T>` and `void` return types
+- The first parameter is the context. It sets where the command works:
+    - `AnyContext`: in servers and in direct messages
+    - `GuildContext`: only in servers
+    - `DmContext`: only in direct messages
+- Parameters with the `[inject]` attribute come after the context and before the normal parameters. The bot puts services in them.
+- Commands support default values, `[leftover]` and `params`.
+- `[user_perm]` and `[bot_perm]` set the permissions which a command needs. `[bot_owner_only]` makes a command owner-only.
+- A command can return `ValueTask`, `Task`, `Task<T>` or `void`. The bot does not load a command which returns `ValueTask<T>`.
 
-### Param Parser
+### Param parser
 
-- Allows custom parsing of command arguments into your own types.
-- Overriding existing parsers (for example for IGuildUser, etc...) can cause issues.
+A param parser inherits from `ParamParser<T>`. The template has `EmployeeInfoParser`, which turns `John,24` into an `EmployeeInfo`. The bot keeps its own parsers. If your parser is for a type which the bot already parses (for example `IGuildUser`), the bot ignores your parser. Use your own types.
 
 ### Service
 
-- Usually not needed.
-- They are marked with a `[svc]` attribute, and offer a way to inject dependencies to different parts of your medusa.
-- Transient and Singleton lifetimes are supported.
+Most medusae do not need services. Mark a class with `[svc(Lifetime.Singleton)]` or `[svc(Lifetime.Transient)]`, then inject it with `[inject]`.
 
-### Localization
+## Strings
 
-Response and command strings can be kept in one of three different places based on whether you plan to allow support for localization
+Keep the response strings and the command descriptions in one of three places:
 
-option 1) `res.yml` and `cmds.yml`
+- **`res.yml` and `cmds.yml`** in the project folder. Use this if you do not need translations now. The build copies the files to the output.
+- **The `strings` folder**, for translations: `strings/res/en-us.yml` and `strings/cmds/en-us.yml`, and one more file in each folder for each language, for example `strings/res/ru-ru.yml`.
+- **In the code.** Put the command description in the `[cmd]` attribute, and send text which is not translated.
 
-If you don't plan on having your app localized, but you just *may* in the future, you should keep your strings in the `res.yml` and `cmds.yml` file the root folder of your project, and they will be automatically copied to the output whenever you build your medusa.
+If `res.yml` exists, the bot ignores the `strings/res` folder. If `cmds.yml` exists, the bot ignores the `strings/cmds` folder. The template has both files, so delete them when you change to the `strings` folder.
 
-**Example project folder structure:**
-    - uwu/
-        - uwu.csproj
-        - uwu.cs
-        - res.yml
-        - cmds.yml
+When you change a response file of a loaded medusa, type `.stringsreload`. The bot loads the new strings without a reload of the medusa.
 
-**Example output folder structure:**
-    - medusae/uwu/
-        - uwu.dll
-        - res.yml
-        - cmds.yml
+## Lifecycle
 
-option 2) `strings` folder
+A snek can override these methods:
 
-If you plan on having your app localized (or want to allow your consumers to easily add languages themselves), you should keep your response strings in the `strings/res/en-us.yml` and your command strings in `strings/cmds/en-us.yml` file. This will be your base file, and from there you can make support for additional languages, for example `strings/res/ru-ru.yml` and `strings/cmds/ru-ru.yml`
+| Method | When the bot calls it |
+|---|---|
+| `InitializeAsync` | When the bot loads the medusa. |
+| `DisposeAsync` | When the bot unloads the medusa. |
+| `ExecOnMessageAsync` | First, for each message. Return `true` to stop the bot from processing the message. |
+| `ExecInputTransformAsync` | Next. Return the new text of the message, or `null` to keep it. The bot looks for a command in the new text. |
+| `ExecPreCommandAsync` | After the bot finds a command (of any module), before it runs. Return `true` to stop the command. |
+| `ExecPostCommandAsync` | After a command runs without an error. |
+| `ExecOnNoCommandAsync` | When no command runs: the bot finds no command, or a check stops the command. The bot calls this method or `ExecPostCommandAsync`, never both. |
 
-**Example project folder structure:**
-    - uwu/
-        - uwu.csproj
-        - uwu.cs
-        - strings/
-            - res/
-                - en-us.yml
-                - ru-ru.yml
-            - cmds/
-                - en-us.yml
-                - ru-ru.yml
+## Unload problems
 
-**Example output folder structure:**
-    - medusae/uwu/
-        - uwu.dll
-        - strings/
-            - res/
-                - en-us.yml
-                - ru-ru.yml
-            - cmds/
-                - en-us.yml
-                - ru-ru.yml
+The bot can unload a medusa only when nothing holds a reference to its code. To keep your medusa unloadable:
 
-option 3) In the code
+- In `DisposeAsync`, remove each reference which the bot or its services have to your objects (for example event handlers).
+- Keep commands short. A long task holds a reference to your code.
 
-If you don't want any auxiliary files, and you don't want to bother making new .yml files to keep your strings in, you can specify the command strings directly in the `[cmd]` attribute itself, and use non-localized methods for message sending in your commands.
+If a medusa does not unload, type `.meunload`, then restart the bot. To find the cause, read the [.NET guide to assembly unloadability](https://learn.microsoft.com/dotnet/standard/assembly/unloadability).
 
-If you update your response strings .yml file(s) while the medusa is loaded and running, running `.stringsreload` will reload the responses without the need to reload the medusa or restart the bot.
-
-### Bot medusa config file
-
-- Medusa config is kept in `data/medusae/medusa.yml` file in NadekoBot installation folder
-- At the moment this config only keeps track of which medusae are currently loaded (they will also be always loaded at startup)
-- If a medusa is causing issues and you're unable to unload it, you can remove it from the `loaded:` list in this config file and restart the bot. It won't be loaded next time the bot is started up
-
-### Unloadability issues
-
-To make sure your medusa can be properly unloaded/reloaded you must:
-
--  Make sure that none of your types and objects are referenced by the Bot or Bot's services after the DisposeAsync is called on your Snek instances.
-
-- Make sure that all of your commands execute quickly and don't have any long running tasks, as they will hold a reference to a type from your assembly
-
-- If you are still having issues, you can always run `.meunload` followed by a bot restart, or if you want to find what is causing the medusa unloadability issues, you can check the [microsoft's assembly unloadability debugging guide](https://docs.microsoft.com/en-us/dotnet/standard/assembly/unloadability)
+If a medusa breaks the bot and you cannot unload it, remove its name from the `loaded` list in `data/medusae/medusa.yml`, then restart the bot.

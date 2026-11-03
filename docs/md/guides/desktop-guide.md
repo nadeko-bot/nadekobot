@@ -1,55 +1,72 @@
-# NadekoBot Desktop Guide (via Upeko)
+---
+title: Install NadekoBot with Upeko (Windows, Linux, macOS)
+description: Install and run your own NadekoBot with Upeko, the desktop app for Windows, Linux and macOS. Download the bot, add the token and start it.
+---
 
-### Supported Operating Systems
+# Desktop guide (Upeko)
+
+Upeko is a desktop app which installs, starts and updates NadekoBot. Use it on your own computer. The bot is online only while Upeko runs.
+
+## Before you start
+
+- [Create a Discord bot](../creds-guide.md) and copy its token.
+- Use one of these systems (64-bit):
 
 --8<-- "md/snippets/supported-platforms.md"
 
----
+## Install the bot
 
-??? note "Creating a Discord Bot & Getting Credentials"
-    --8<-- "md/creds-guide.md"
+1. Download Upeko from the [latest release](https://github.com/nadeko-bot/upeko/releases/latest):
 
----
+    | System | File |
+    |---|---|
+    | Windows | `upeko-win-x64.exe` (`upeko-win-arm64.exe` on ARM) |
+    | macOS | `upeko-osx-arm64.app.zip` (Apple chip) or `upeko-osx-x64.app.zip` (Intel) |
+    | Linux | `upeko-linux-x64` (`upeko-linux-arm64` on ARM) |
 
-## Setup
+    On Linux, make the file executable before you start it: `chmod +x upeko-linux-x64`.
 
-1. Download and run the [upeko](https://github.com/nadeko-bot/upeko/releases/latest).
+2. Start Upeko and click **Create Instance**.
 
-    ![Create a new bot](../assets/upeko-1.png "Create a new bot")
+    ![Upeko with no bots: the Create Instance button and the ffmpeg, yt-dlp and js status at the top](../assets/upeko-add-instance.png)
 
-2. Click the plus button to add a new bot
+3. For music, look at the three tools at the top: **ffmpeg**, **yt-dlp** and **js** (Deno). A red dot means that the tool is missing.
+4. Click the name of each missing tool to install it. The dot becomes green.
 
-    ![Open bot page](../assets/upeko-2.png "Open bot page")
+    !!! note "Linux"
+        If the ffmpeg dot stays red, install ffmpeg with your package manager, for example `sudo apt install ffmpeg`. Then start Upeko again.
 
-3. If you want to use the music module, click on **`Install`** next to `ffmpeg` and `yt-dlp` at the top
-4. Click on the newly created bot
+5. Click the new bot to open its page.
 
-    ![Bot Setup](../assets/upeko-3.png "Bot Setup")
+    ![The new bot in the Instances list with the status Not Downloaded](../assets/upeko-instance-list.png)
 
-5. Click on **DOWNLOAD** at the lower right
+6. Click **Download & Install**. The download is about 90 MB. The installed bot needs about 490 MB of disk space.
 
-    ![Download](../assets/upeko-4.png "Download")
-    ![Creds](../assets/upeko-5.png "Edit creds")
+    ![The bot page with the install path and the Download & Install button](../assets/upeko-download-install.png)
 
-6. When installation is finished, click on **`CREDS`** (`1`) above the **`RUN`** (`3`) button on the lower left
-    - **`2`** simply opens your bot's data folder.
-7. Paste in your **BOT TOKEN** previously obtained via [Creating a Discord Bot & Getting Credentials](#creating-your-own-discord-bot), then save your changes.
+7. When the status is **Ready**, click **creds.yml** in **Shortcuts**. The file opens in your text editor. If no app opens, click **Data Folder** and open `creds.yml` with a text editor.
 
-## Starting NadekoBot
+    ![The bot page after the install: status Ready, the Start button and the creds.yml shortcut](../assets/upeko-start.png)
 
-- Either click on **`RUN`** button in the updater or run the bot via its desktop shortcut.
+8. Put your token between the quotes of the `token` field, then save the file.
 
-## Updating NadekoBot
+    ![creds.yml open in a text editor, with YOUR_BOT_TOKEN in the token field](../assets/upeko-creds.png)
 
-!!! warning "IMPORTANT"
+## Start the bot
 
-    - Make sure Nadeko is closed and not running
-        - Run `.die` in a connected server to make sure.
-    - Make sure you don't have `data` folder, bot folder, or any other bot file open in any program, as the updater will fail to replace your version
+Click **Start**. The bot comes online in your server after a few seconds.
 
-1. Run `upeko` if not already running
-2. Click on your bot
-3. Click on **`Check for updates`**
-4. If updates are available, you will be able to click on the Update button
-5. Click `Update`
-6. Click `RUN` after it's done
+**Data Folder** in **Shortcuts** opens the bot's `data` folder, which has the database and the config files.
+
+## Update the bot
+
+1. If the bot runs, click **Stop Instance**.
+2. Click **Check Updates** on the bot page.
+3. If a new version is available, click **Update**. Upeko installs the new version and keeps your `data` folder.
+4. Click **Start**.
+
+If the update fails, close each program that has a bot file open, then try again.
+
+## Next step
+
+To keep the bot online all day, use the [CLI guide](cli-guide.md) or the [Docker guide](docker-guide.md) on a [Linux server](linux-server.md).

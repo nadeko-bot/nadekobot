@@ -1,30 +1,38 @@
-# Getting Started
+---
+title: NadekoBot medusa plugins - add your own commands
+description: Medusae are plugins for a self-hosted NadekoBot. They add commands and features without a change to the bot's code, and you load them while the bot runs.
+---
 
-## What is the Medusa system?
+# Medusa plugins
 
-- It is a dynamic module/plugin/cog system for NadekoBot introduced in **NadekoBot 4.1.0**
+A medusa is a plugin for a self-hosted NadekoBot. It adds commands and features without a change to the bot's code. You can load, unload and update a medusa while the bot runs.
 
-- Allows developers to add custom functionality to Nadeko without modifying the original code
+A bot on NadeKloud cannot load medusae.
 
-- Allows for those custom features to be updated during bot runtime (if properly written), without the need for bot restart.
+## Manage medusae
 
-- They are added to `data/medusae` folder and are loaded, unloaded and handled through discord commands.
-    - `.meload` Loads the specified medusa (see `.h .meload`)
-    - `.meunload` Unloads the specified medusa (see `.h .meunload`)
-    - `.meinfo` Checks medusae information (see `.h .meinfo`)
-    - `.melist` Lists the available medusae (see `.h .melist`)
+Put each medusa in its own folder in `data/medusae`. The folder and the `.dll` file must have the same name, for example `data/medusae/mymedusa/mymedusa.dll`. Then use these owner-only commands:
 
-## How to make one?
+| Command | What it does |
+|---|---|
+| `.medusalist` / `.melist` | Shows the folders in `data/medusae`, and which of them are loaded |
+| `.medusaload <name>` / `.meload` | Loads a medusa |
+| `.medusaunload <name>` / `.meunload` | Unloads a medusa |
+| `.medusareload <name>` / `.mereload` | Unloads a medusa and loads it again |
+| `.medusainfo <name>` / `.meinfo` | Shows the description, the sneks and the number of commands of a medusa |
 
-Medusae are written in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/) programming language, so you will need at least low-intermediate knowledge of it in order to make a useful Medusa.
+The bot loads the same medusae again after a restart. It keeps the list in the `loaded` list of `data/medusae/medusa.yml`.
 
-Follow the [creating a medusa guide](creating-a-medusa.md)
+## Use only medusae which you trust
 
-## Where to get medusae other people made?
+!!! danger
+    A medusa runs with all the rights of the bot. A bad medusa can steal your bot token, and it can read and delete the files on the computer.
 
-⚠ *It is EXTREMELY, and I repeat **EXTREMELY** dangerous to run medusae of strangers or people you don't FULLY trust.* ⚠
-⚠ *It can not only lead to your bot being stolen, but it also puts your entire computer and personal files in jeopardy.* ⚠
+- Load only medusae which you wrote, or which come from a person you trust completely.
+- Run the bot on a server which runs nothing else.
 
-**It is strongly recommended to run only the medusae you yourself wrote, and only on a hosted VPS or dedicated server which ONLY hosts your bot, to minimize the potential damage caused by bad actors.**
+To find medusae from other people, ask in the `#dev-and-modding` channel of the [NadekoBot Discord server](https://discord.nadeko.bot/).
 
-No easy way at the moment, except asking in the `#dev-and-modding` chat in [#NadekoLog server](https://discord.nadeko.bot)
+## Make a medusa
+
+You write a medusa in C#. You need some knowledge of C# and .NET. Read [Create a medusa](creating-a-medusa.md).

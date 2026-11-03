@@ -1,24 +1,32 @@
-# NadekoBot Documentation
+---
+title: Install and host your own Discord bot
+description: Host your own NadekoBot, the free, open source Discord bot. Pick a guide for Upeko, the CLI installer, Docker or the source code.
+---
 
-<!-- ![img][header] -->
+# NadekoBot docs
 
-## Inviting Nadeko
+NadekoBot is a free, open source Discord bot for moderation, games, XP and leveling, an economy with Nadeko Flowers, and hundreds of utility commands.
 
-There are two versions of Nadeko, a public bot and a self-hostable bot.
+## Use the public bot
 
-To invite public Nadeko to your server or to view its commands, click on the buttons below:
+Add the public NadekoBot to your server. You do not install anything.
 
-[:material-plus: Add Nadeko to your server][invite]{ .md-button .md-button--primary }
-[:material-format-list-text: View commands][commands]{ .md-button }
+[:material-plus: Add NadekoBot to your server][invite]{ .md-button .md-button--primary }
+[:material-format-list-text: Commands][commands]{ .md-button }
 
-To self-host your own Nadeko, use the guides below:
+## Host your own bot
 
-- [:material-television-guide: Desktop guide (Windows/Linux/macOS)][desktop-guide]
-- [:material-console: CLI guide (Linux/macOS)][cli-guide]
-- [:material-docker: Docker guide][docker-guide]
-- [:material-source-branch: From source guide][from-source-guide]
+Each option below needs your own Discord bot. First, [create a Discord bot](creds-guide.md) and copy its token. Then pick a guide:
 
-In case you need any help, join our [Discord server][discord-server] where we may provide support.
+| Your setup | Guide |
+|---|---|
+| No server and no setup (paid hosting, free trial) | [NadeKloud](https://cloud.nadeko.bot/) |
+| Use a window app on Windows, Linux or macOS | [Desktop guide (Upeko)][desktop-guide] |
+| Use the terminal on Linux or macOS | [CLI guide][cli-guide] |
+| Run the bot in a Docker container | [Docker guide][docker-guide] |
+| Build the bot from its source code | [Source guide][source-guide] |
+
+A server keeps the bot online all day. [Get a Linux server](guides/linux-server.md), then use the CLI guide or the Docker guide.
 
 <div class="nk-panel">
 <div class="nk-panel-head">
@@ -26,25 +34,29 @@ In case you need any help, join our [Discord server][discord-server] where we ma
 <span class="nk-panel-title"><span class="nk-ink">nade</span><span class="nk-pink">kloud</span></span>
 <span class="nk-panel-aside">Hosted NadekoBot</span>
 </div>
-<p>Want your own bot without the setup? <strong>NadeKloud</strong> runs your NadekoBot for you. You do not install anything or edit config files.</p>
+<p>Want your own bot without the setup? <strong>NadeKloud</strong> is paid hosting for NadekoBot, with a free trial. It runs your bot for you, and you set it up in a web dashboard.</p>
 <a class="md-button" href="https://cloud.nadeko.bot/">Try NadeKloud</a>
 </div>
 
-## About Nadeko
+## Features
 
-NadekoBot is an [open source project][github]. Any issues with the bot may be filed [here][issues].
+- [AI agent](ai-agent/overview.md): members ask the bot for things in plain language.
+- [Waifu system](waifu-guide.md): an economy game with waifus, fans and managers.
+- [Medusa plugins](medusa/getting-started.md): add your own commands to a self-hosted bot.
 
-If you're unsure whether something is an issue, ask in our support server first.
+## Get help
 
-[Donations are welcome][donate], and we rely on your contributions to help keep the project alive.
+- Ask in the [NadekoBot Discord server][discord-server].
+- Report a bug on [GitHub][issues]. If you are not sure that it is a bug, ask in the Discord server first.
+- NadekoBot is [open source][github]. [Donations][donate] keep the project alive.
 
 [invite]: https://invite.nadeko.bot/
 [commands]: https://nadeko.bot/commands/
-[desktop-guide]: ./guides/desktop-guide.md
-[cli-guide]: ./guides/cli-guide.md
-[docker-guide]: ./guides/docker-guide.md
-[from-source-guide]: ./guides/source-guide.md
+[desktop-guide]: guides/desktop-guide.md
+[cli-guide]: guides/cli-guide.md
+[docker-guide]: guides/docker-guide.md
+[source-guide]: guides/source-guide.md
 [discord-server]: https://discord.nadeko.bot/
 [github]: https://github.com/nadeko-bot/nadekobot
 [issues]: https://github.com/nadeko-bot/nadekobot/issues
-[donate]: ./donate.md
+[donate]: donate.md

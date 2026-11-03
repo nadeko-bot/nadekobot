@@ -1,37 +1,41 @@
+---
+title: Donate to NadekoBot - support the bot on Patreon or PayPal
+description: Support NadekoBot, the free, open source Discord bot, with Patreon or PayPal. Donors get a Patron role, private channels and flowers.
+---
+
 # Donate
 
-Nadeko is an [open-source project][github], and we rely on your help to develop the bot, pay hosting fees, maintain our website and more.
-Donations go a long way in helping us keep the project alive, and we appreciate every single one of them.
+NadekoBot is an [open source project][github]. Donations pay for development, hosting and the website.
 
-## Perks
+## What you get
 
-Donating to us also gives you the following benefits:
-
-- A hoisted **Patron** role in [Nadeko Discord server][discord-server]
-- Access to exclusive **#noticed** text and voice channels
-- **3000 flowers** on the public bot per dollar donated (after fees)
+- The **Patron** role in the [NadekoBot Discord server][discord-server]
+- Access to the private **#noticed** text and voice channels
+- **3,000 flowers** on the public bot for each dollar you donate, after fees
 
 ## Patreon
 
-You can set up a monthly pledge on [Patreon][patreon] and support the project's growth, and also get flower rewards for every month you donate!
+Pledge each month on [Patreon][patreon]. You get flowers for each month of your pledge.
 
-!!! Note
-    Connect your Discord account on Patreon to receive your flowers automatically
+!!! note
+    Connect your Discord account on Patreon. The bot then adds your flowers automatically.
 
-[![img][patreon-button]][patreon]
+[![Donate with Patreon][patreon-button]][patreon]
 
 ## PayPal
 
-You can also donate to us through [PayPal][paypal] for one-time donations using the button below, or by donating to `nadekodiscordbot@gmail.com`.
+Make a one-time donation on [PayPal][paypal], or send the money to [nadekodiscordbot@gmail.com](mailto:nadekodiscordbot@gmail.com).
 
-!!! Note
-    Mention your Discord username or user id in the payment note to receive flower rewards.
+!!! note
+    Write your Discord user ID in the payment note. Then you get your flowers.
 
-[![img][paypal-button]][paypal]
+[![Donate with PayPal][paypal-button]][paypal]
+
+NadekoBot is free to use. To host your own bot, start with the [setup guides](index.md).
 
 [github]: https://github.com/nadeko-bot/nadekobot
 [discord-server]: https://discord.nadeko.bot/
 [patreon]: https://www.patreon.com/nadekobot
-[patreon-button]: ./assets/patreon.png
+[patreon-button]: assets/patreon.png
 [paypal]: https://paypal.me/Kwoth
-[paypal-button]: ./assets/paypal.png
+[paypal-button]: assets/paypal.png

@@ -1,82 +1,96 @@
-﻿# Waifu System
+﻿---
+title: NadekoBot waifu system - back, manage and feed waifus
+description: How the NadekoBot waifu system works. Become a waifu, back one with your bank balance, buy the manager position and collect the payout of each cycle.
+---
 
-The waifu system is an opt-in economy. You opt in to become a waifu, other users back you with their bank balance, and every cycle pays out based on your mood, food, and manager fee.
+# Waifu system
+
+The NadekoBot waifu system is an economy game. Members join as waifus. Fans back a waifu with their bank balance, and a manager buys the right to manage the waifu. At the end of each cycle, the bot pays the fans, the waifu and the manager.
+
+Type `.waifuhelp` / `.whelp` in Discord for a short overview.
 
 ## Roles
 
-- **Waifu** - opted-in user. Receives cycle payouts. Can be backed by fans and owned by a manager.
-- **Fan** - a user backing a waifu. Their bank balance counts toward that waifu's returns.
-- **Manager** - whoever bought the waifu's manager slot. Earns a cut of the waifu's fee each cycle.
+| Role | How you get it | What you get |
+|---|---|---|
+| Waifu | `.waifuoptin` / `.woptin` (costs 10,000) | The waifu fee from each cycle |
+| Fan | `.waifuback @user` / `.wback` | A share of the returns, based on your bank balance |
+| Manager | `.waifubuy <amount> @user` / `.wbuy` | A cut of the waifu fee |
 
-A user can be all three at once: a waifu, a fan of someone else, and a manager of a third person.
+You can have all three roles at the same time. You do not have to be a waifu to be a fan or a manager. You cannot back or manage yourself.
 
-## Becoming a waifu
+The bot takes the opt-in cost, the bids and the gifts from your wallet. The payouts go to your wallet.
 
-*You don't have to be a waifu in order to be a manager or become a fan of another waifu*
+## How a cycle pays
 
-1. Run `.waifuoptin` to join. Costs 10,000 by default (configurable as `OptInCost`).
-2. Put money in your bank with `.deposit <amount>`. Only your bank balance counts as backing.
-3. Run `.waifu` to see your own card, or `.waifu @user` to see someone else's.
-4. Opt out anytime with `.waifuoptout`. You cannot opt out while you have fans.
+A cycle is 24 hours. At the end of each cycle, the bot calculates the returns for each waifu which has a manager:
 
-## Backing a Waifu
+- **Backing**: the total bank balance of the fans, up to 1,000,000.
+- **Rate**: 17% per year, divided over the cycles of the year.
+- **Stats**: the average of mood and food. Full stats pay 100%. Empty stats pay nothing.
 
-Pick one waifu and back her with `.waifuback @user`. Your entire bank balance counts toward their returns while you back her. You can only back one waifu at a time.
+The bot then splits the returns:
 
-Run `.waifuback` with no argument to stop. Switching targets is a single command: `.waifuback @newuser` prompts you to confirm the switch.
+1. The waifu fee (1% to 5% of the returns) goes to the waifu and the manager. The manager gets 15% of the fee, and the waifu gets the rest of it.
+2. The fans share the rest of the returns in proportion to their bank balance.
 
-## Cycles and Payouts
+The payouts add up until you claim them with `.waifupayout` / `.wp`.
 
-A cycle is 24 hours by default (`CycleHours`). At the end of each cycle, every waifu earns payouts based on:
+A waifu without a manager earns nothing, and its fans earn nothing too.
 
-- Total backing from their fans (capped at `DefaultReturnsCap`, 1,000,000 by default)
-- Annual base rate of 17% (`BaseReturnRate`), prorated per cycle
-- Stat multiplier from `(mood + food) / 2`. Full stats pay 100%, empty stats pay 0%.
-- The waifu's fee, split between the waifu and their manager
+## Be a waifu
 
-Claim your earnings with `.waifupayout`. Payouts accumulate until you claim them.
+1. Type `.waifuoptin` to join. It costs 10,000.
+2. Type `.waifu` / `.w` to see your card. Type `.waifu @user` to see the card of another member.
+3. To leave, type `.waifuoptout` / `.woptout`. You can leave only when you have no fans. Your manager then loses the position.
 
-## Mood and Food
+## Back a waifu
 
-Waifus have two stats from 0 to 100%. Both decay over time and boost payouts when full.
+1. Put money in your bank with `.bank deposit <amount>`. Only your bank balance counts. Backing is free, and the money stays in your bank.
+2. Type `.waifuback @user` to back a waifu. You can back only one waifu at a time.
 
-**Free actions** (2 per user per day, set by `MaxDailyActions`):
+The bot reads your bank balance when a cycle starts. A deposit counts from the next cycle.
+3. To change to a different waifu, type `.waifuback @other`. The bot asks you to confirm.
+4. To stop, type `.waifuback` without a user.
 
-- `.hug @user`, `.kiss @user`, `.pat @user` - raise mood
-- `.nom @user` - raises food
+## Manage a waifu
 
-**Gift shop** rotates 8 items daily. Run `.waifugiftshop` to see today's selection, then `.waifugift <item> @user` to send one. Prefix with a count to send multiples, for example `.waifugift 5xcookie @user`.
+1. Type `.waifubuy <amount> @user`. Your bid must be at least 15% more than the price of the waifu. Your bid becomes the new price.
+2. The bot splits your bid:
+    - The previous manager gets back up to the old price. If the waifu has no manager, nobody gets this part.
+    - The waifu gets half of the rest.
+    - The bot removes the other half from the economy.
+3. The bot asks you to confirm the bid.
+4. As the waifu, set your fee with `.waifufee <1-5>` / `.wfee`.
 
-## Becoming a Manager
+To see the waifus which you manage, type `.waifulist` / `.wlist`. To stop managing a waifu, type `.waifuresign @user` / `.wresign`. You get no refund, and the price of the waifu goes down to 1,000.
 
-Buy the manager slot on any waifu with `.waifubuy <amount> @user`. Your bid must beat the current price by at least 15% (`ManagerBuyPremium`). The surplus splits: half to the waifu, the rest burned or refunded to the previous manager.
+## Mood and food
 
-As manager:
+Mood and food go from 0% to 100%. Both go down slowly over time. Keep them high to get a higher payout.
 
-- Set the waifu's fee with `.waifufee <1-5>`. Fee is a percent skimmed from cycle payouts.
-- You keep 15% of that fee (`ManagerCutPercent`); the waifu keeps the rest.
-- List your managed waifus with `.waifulist`.
-- Step down with `.waifuresign @user`.
+- **Free actions**: `.hug`, `.kiss` and `.pat` raise the mood of the waifu which you mention. `.nom` raises food. Each member gets 2 free actions per day (3 for patrons).
+- **Gifts**: type `.waifugiftshop` / `.wgs` to see today's gifts. The shop changes its gifts every day at 00:00 UTC. Type `.waifugift <item> @user` / `.wg` to give a gift. To give more than one, put the count and `x` before the item, without spaces: `.waifugift 5xcookie @user`.
 
-## Command Reference
+## Commands
 
-| Command | Purpose |
-|---------|---------|
-| `.waifu [@user]` | Show a waifu card |
-| `.waifuoptin` / `.waifuoptout` | Join or leave the system |
-| `.waifuback [@user]` | Start, switch, or stop backing |
-| `.waifubuy <amount> @user` | Buy manager slot |
-| `.waifuresign @user` | Step down as manager |
-| `.waifufee <1-5>` | Set your fee percent (waifu only) |
-| `.waifupayout` | Claim pending payouts |
-| `.waifugiftshop` | View today's gift rotation |
-| `.waifugift <item> @user` | Send a gift |
-| `.hug` `.kiss` `.pat` `.nom` | Raise mood or food |
-| `.waifulist [@user]` | Waifus managed by a user |
-| `.waifufans [@user]` | Fans backing a user |
-| `.waifulb [price\|backing]` | Leaderboard |
+| Command | What it does |
+|---|---|
+| `.waifu [@user]` | Shows a waifu card |
+| `.waifuoptin` / `.waifuoptout` | Joins or leaves the waifu system |
+| `.waifuback [@user]` | Backs a waifu, changes to a different waifu, or stops |
+| `.waifubuy <amount> @user` | Buys the manager position |
+| `.waifuresign @user` | Stops managing a waifu |
+| `.waifufee <1-5>` | Sets your waifu fee |
+| `.waifupayout` | Claims your payouts |
+| `.waifugiftshop` | Shows the gifts of today |
+| `.waifugift <item> @user` | Gives a gift |
+| `.hug`, `.kiss`, `.pat`, `.nom` | Raise mood or food |
+| `.waifulist [@user]` | Shows the waifus which a member manages |
+| `.waifufans [@user]` | Shows the fans of a waifu |
+| `.waifuleaderboard [price]` / `.wlb` | Shows the top waifus by backing, or by price |
 
-Run `.h <command>` in Discord for full usage details.
+You can see all [commands](https://nadeko.bot/commands/) on the NadekoBot site. In Discord, type `.h <command>` for details.
 
 !!! note "Bot owners"
-    Every price, rate, and gift item lives in `data/waifu.yml`. Edit it to retune cycle length, return rate, opt-in cost, daily action limits, or the full gift shop catalog. Comments in the file document each field.
+    The prices, rates, limits and gifts are in `data/waifu.yml`. The numbers on this page are the defaults. The fee range of 1% to 5% is fixed. To host your own bot, start with [Create a Discord bot](creds-guide.md).

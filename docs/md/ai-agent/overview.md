@@ -1,51 +1,33 @@
-# AI Agent
+---
+title: NadekoBot AI agent - talk to the bot in plain language
+description: The NadekoBot AI agent reads your message, runs the right bot commands for you and replies with the result. Learn what it does and who controls it.
+---
 
-The AI agent lets users talk to the bot in plain language. It reads messages, picks which commands or data lookups to run, and replies with the result.
+# AI agent
 
-Example: a user says "show me my waifu stats and give 100 currency to Alice". The agent finds `.waifuinfo`, runs it, parses the output, runs `.give 100 @Alice`, and posts a summary.
+The NadekoBot AI agent lets you talk to the bot in plain language. The agent reads your message and finds the commands it needs. It runs them as you and replies with the result.
 
-## What's in the box
+Example: you write `@Nadeko show my XP and give 100 flowers to @Alice`. The agent gets your XP, runs `.give 100 @Alice` and tells you what it did.
 
-- `.agent <message>` -- start a turn. The agent decides which tools to call.
-- Prompt files on disk (`data/ai/prompts/`) control the bot's personality and operator rules.
-- Skills (stored per guild) let server admins add instructions that apply to every turn in that guild, or only in one channel.
-- Data tools return JSON for reads (balances, stats, config) so the agent doesn't have to parse embeds.
-- `run_command` is how writes happen -- the agent invokes real bot commands through the normal permission pipeline.
+## What the agent can do
 
-## How a turn flows
+- **Read data.** The agent reads balances, XP, settings and other data through read-only tools.
+- **Run commands.** The agent runs normal bot commands as you. It can do only what you can do with the same commands. It never runs owner-only commands.
+- **Send messages.** The agent posts messages in the channels where you can send messages. It edits only messages of the bot.
 
-```mermaid
-flowchart LR
-  U[user msg] --> A[agent loop]
-  A --> C[core tools]
-  A --> SD[search_data_tools]
-  SD --> D[data tools]
-  C --> RC[run_command]
-  C --> SC[search_commands]
-```
+An alias, a scheduled command or a command which the agent runs never starts the agent.
 
-Core tools are always in the LLM context. Data tools are discovered on demand via `search_data_tools`, so the tool list stays small even with dozens of adapters.
+## Who controls the agent
 
-## Who controls what
-
-| Layer | Who edits | Scope |
+| Who | What they control | Where |
 |---|---|---|
-| `SOUL.md`, `OPERATOR.md` | Bot owner | Whole bot process |
-| Skills (`AiAgentGuildSkill`) | Server admins | One guild, or one channel in that guild |
-| The agent's replies | No one directly | Constrained by the two above + user permissions |
+| Bot owner | The AI provider and key, the model, who can use the agent, and the base prompts | `creds.yml`, `data/ai-agent.yml`, `.agentwhitelist`, `.aiprompt` |
+| Members with the Administrator permission | Extra instructions for their server or one channel (skills) | `.agentskilladd`, `.agentchannelskilladd` |
+| Members | Their own requests | `.agent`, a mention, a reply, the name of the bot |
 
-The agent runs as the invoking user. It can't do anything that user can't do through normal commands. Tools that require `ManageMessages`, `Administrator`, or bot-owner status are hidden from users who don't have those perms.
+Skills cannot give a member more permissions. A skill only changes the style and the topics of the answers.
 
-## Terminology
+## Next steps
 
-- **SOUL** -- the bot's identity. One markdown file, owner-edited.
-- **OPERATOR** -- rules from the owner to the agent (tone, red lines, etc.).
-- **Skill** -- guild-level instruction stored in the DB.
-- **Channel skill** -- same but scoped to one channel.
-- **Data tool** -- a read-only function the agent calls to fetch JSON. Adapters live next to the feature code.
-- **Core tool** -- `ask_user`, `send_message`, `run_command`, `search_commands`, `search_data_tools`, `describe_data_tool`, `invoke_data_tool`. Always loaded.
-
-## Next
-
-- [Owner setup](owner-setup.md) -- creds, model config, prompt files.
-- [Usage and skills](usage.md) -- `.agent`, skills, channel skills.
+- [Owner setup](owner-setup.md): turn on the agent on your own bot.
+- [Usage and skills](usage.md): start the agent and add skills.

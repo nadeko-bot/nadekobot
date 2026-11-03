@@ -1,230 +1,166 @@
-# NadekoBot CLI Guide (via Bash Installer)
+---
+title: Install NadekoBot on Linux or macOS with the CLI installer
+description: Install your own NadekoBot on Linux or macOS with the bash installer. Add the token, install the music tools, and keep the bot online with tmux or systemd.
+---
 
-### Supported Operating Systems
+# CLI guide (Linux and macOS)
+
+The bash installer downloads NadekoBot, adds your token, installs the music tools and starts the bot. Use it on a Linux server or on your own Linux or macOS computer.
+
+## Before you start
+
+The installer works on these 64-bit systems:
 
 --8<-- "md/snippets/supported-platforms.md:linux"
 --8<-- "md/snippets/supported-platforms.md:macos"
 
-### Prerequisites
+You also need:
 
-macOS:
+- [Create a Discord bot](../creds-guide.md) and copy its token.
+- To keep the bot online all day, [get a Linux server](linux-server.md).
+- Install `curl`. Most systems already have it.
 
-- [Homebrew](https://brew.sh/)
-- [Curl](#__tabbed_1_5)
+    /// tab | Ubuntu, Debian, Mint
 
-Linux:
-
-- [Curl](#__tabbed_1_1)
-
----
-
-??? note "24/7 Up-time via VPS (Digital Ocean Guide)"
-    --8<-- "md/guides/vps-linux-guide.md"
-
-??? note "Creating a Discord Bot & Getting Credentials"
-    --8<-- "md/creds-guide.md"
-
----
-
-## Installation Instructions
-
-Open Terminal (if you're on an installation with a window manager) and navigate to the location where you want to install the bot (for example `cd ~`)
-
-1. First make sure that curl is installed
-
-    /// tab | Ubuntu | Debian | Mint
-
-    ```bash
+    ```sh
     sudo apt install curl
     ```
 
     ///
-    /// tab | Rocky | Alma | Fedora
+    /// tab | Fedora, Rocky, Alma
 
-    ```bash
+    ```sh
     sudo dnf install curl
     ```
 
     ///
     /// tab | openSUSE
 
-    ```bash
+    ```sh
     sudo zypper install curl
     ```
 
     ///
-    /// tab | Arch | Artix
+    /// tab | Arch, Artix
 
-    ```bash
+    ```sh
     sudo pacman -S curl
     ```
 
     ///
     /// tab | macOS
 
-    ```bash
+    Install [Homebrew](https://brew.sh/), then:
+
+    ```sh
     brew install curl
     ```
 
     ///
 
-2. Download and run the **new** installer script
-    ``` sh
+## Install the bot
+
+1. Go to your home folder, then download and start the installer:
+
+    ```sh
     cd ~
     curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh
     bash n-install.sh
     ```
-3. Install the bot (type `1` and press enter)
-4. Edit creds (type `3` and press enter)
-    - *ALTERNATIVELY*, you can exit the installer (option `6`) and edit `nadeko/creds.yml` file yourself
-5. Follow the instruction [below](#creating-your-own-discord-bot) to create your own Discord bot and obtain the credentials needed to run it.
-    - After you're done, you can close nano (and save the file) by inputting, in order:
-        - `CTRL` + `X`
-        - `Y`
-        - `Enter`
-6. Run the installer script again
-    - `bash n-install.sh`
-7. Run the bot (type `3` and press enter)
-8. Done!
 
-## Update Instructions
+    ![The NadekoBot installer menu: 1 Install, 2 Run, 3 Add Token, 4 Install music dependencies, 5 Exit](../assets/cli-installer-menu.png)
 
-1. ⚠ Stop the bot ⚠
-2. Navigate to your bot's folder, we'll use home directory as an example
-    - `cd ~`
-3. Simply re-install the bot with a newer version by running the installer script
-    - `curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh && bash n-install.sh`
-4. Select option 1, and select a NEWER version
+2. Type `1` (**Install**) and press ++enter++.
+3. Type `1` to select the latest version and press ++enter++. The installer puts the bot in the `nadeko` folder.
 
-## Running Nadeko
+    ![The installer downloads the selected version and shows Installation complete](../assets/cli-installer-install.png)
 
-There are two main methods to run NadekoBot: using `tmux` (macOS and Linux) or using `systemd` with a script (Linux only).
+4. Press ++enter++ to go back to the menu.
+5. Type `3` (**Add Token**), paste your token and press ++enter++. In most Linux terminals, paste with ++ctrl+shift+v++.
+6. For music, type `4` (**Install music dependencies**) and press ++enter++. Type `y` at each question. The installer installs ffmpeg and yt-dlp. It also installs Deno if your system has no JavaScript runtime.
+7. Type `2` (**Run**) and press ++enter++. The bot comes online in your server.
 
-/// tab | Tmux (Preferred Method)
+The bot stops when you close the terminal. To keep it running, do the steps in the next section.
 
-Using `tmux` is the simplest method, and is therefore recommended for most users.
+Your token, owner IDs and API keys are in `nadeko/data/creds.yml`. To edit the file, type `nano nadeko/data/creds.yml`. To save and exit nano, press ++ctrl+x++, then ++y++, then ++enter++. Restart the bot after you edit the file.
 
-!!! warning
-    Before proceeding, make sure your bot is not currently running by either running `.die` in your Discord server or exiting the process with `Ctrl+C`.
+## Keep the bot running
 
-1. Access the directory where `n-install.sh` and `nadeko` is located.
-2. Create a new tmux session: `tmux new -s nadeko`
-    - The above command will create a new session named **nadeko**. You may replace **nadeko** with any name you prefer.
-3. Run the installer: `bash n-install.sh`
-4. Start the bot by typing `3` and pressing `Enter`.
-5. Detach from the tmux session, allowing the bot to run in the background:
-    - Press `Ctrl` + `B`
-    - Then press `D`
+/// tab | tmux (Linux and macOS)
 
-Now check your Discord server, the bot should be online. Nadeko should now be running in the background of your system.
+tmux keeps the bot running after you close the terminal.
 
-To re-open the tmux session to either update, restart, or whatever, execute `tmux a -t nadeko`. *(Make sure to replace "nadeko" with your session name. If you didn't change it, leave it as it is.)*
+1. Stop the bot if it runs: press ++ctrl+c++.
+2. Start a tmux session:
+
+    ```sh
+    tmux new -s nadeko
+    ```
+
+3. Type `bash n-install.sh`, then type `2` (**Run**).
+4. Press ++ctrl+b++, then ++d++. The bot continues to run in the background.
+
+To go back to the bot, type `tmux a -t nadeko`.
 
 ///
-/// tab | Systemd
+/// tab | systemd (Linux)
 
-!!! note
-    Systemd is only available on Linux. macOS utilizes Launchd, which is not covered in this guide. If you're on macOS, please use the `tmux` method, or use [Upeko](desktop-guide.md) to run NadekoBot.
+systemd starts the bot when the server starts and restarts it after a crash. The `.die` command stops the bot.
 
-This method is a bit more complex and involved, but comes with the added benefit of better error logging and control over what happens before and after the startup of Nadeko.
+1. Stop the bot if it runs: press ++ctrl+c++.
+2. In your home folder, create the service:
 
-1. Access the directory where `n-install.sh` and `nadeko` is located.
-2. Use the following command to create a service that will be used to execute `NadekoRun.bash`:
-    ```bash
-    echo "[Unit]
-    Description=NadekoBot service
-    After=network.target
-    StartLimitIntervalSec=60
-    StartLimitBurst=2
+    ```sh
+    cd ~
+    sudo tee /etc/systemd/system/nadeko.service > /dev/null <<EOF
+    [Unit]
+    Description=NadekoBot
+    After=network-online.target
+    Wants=network-online.target
+    StartLimitIntervalSec=120
+    StartLimitBurst=3
 
     [Service]
-    Type=simple
     User=$USER
-    WorkingDirectory=$PWD
-    ExecStart=/bin/bash NadekoRun.bash
-    #ExecStart=./nadeko/NadekoBot
+    WorkingDirectory=$PWD/nadeko
+    Environment=PATH=$HOME/.local/bin:$HOME/.deno/bin:/usr/local/bin:/usr/bin:/bin
+    ExecStartPre=-$HOME/.local/bin/yt-dlp -U
+    ExecStart=$PWD/nadeko/NadekoBot
     Restart=on-failure
-    RestartSec=5
-    StandardOutput=journal
-    StandardError=journal
-    SyslogIdentifier=NadekoBot
+    RestartSec=10
 
     [Install]
-    WantedBy=multi-user.target" | sudo tee /etc/systemd/system/nadeko.service
-    ```
-3. Make the new service available: `sudo systemctl daemon-reload`
-4. Create `NadekoRun.bash` in the current directory (for example `nano NadekoRun.bash`), paste the following, then save:
-    ```bash
-    #!/bin/bash
-
-    export PATH="$HOME/.local/bin:$PATH"
-
-    is_python3_installed=$(command -v python3 &>/dev/null && echo true || echo false)
-    is_yt_dlp_installed=$(command -v yt-dlp &>/dev/null && echo true || echo false)
-
-    [[ $is_python3_installed == true ]] \
-        && echo "[INFO] python3 path: $(which python3)" \
-        && echo "[INFO] python3 version: $(python3 --version)"
-    [[ $is_yt_dlp_installed == true ]] \
-        && echo "[INFO] yt-dlp path: $(which yt-dlp)"
-
-    echo "[INFO] Running NadekoBot in the background with auto restart"
-    if [[ $is_yt_dlp_installed == true ]]; then
-        yt-dlp -U || echo "[ERROR] Failed to update 'yt-dlp'" >&2
-    fi
-
-    echo "[INFO] Starting NadekoBot..."
-
-    while true; do
-        if [[ -d "$PWD/nadeko" ]]; then
-            cd "$PWD/nadeko" || {
-                echo "[ERROR] Failed to change working directory to '$PWD/nadeko'" >&2
-                echo "[INFO] Exiting..."
-                exit 1
-            }
-        else
-            echo "[WARN] '$PWD/nadeko' doesn't exist" >&2
-            echo "[INFO] Exiting..."
-            exit 1
-        fi
-
-        ./NadekoBot || {
-            echo "[ERROR] An error occurred when trying to start NadekoBot" >&2
-            echo "[INFO] Exiting..."
-            exit 1
-        }
-
-        echo "[INFO] Waiting 5 seconds..."
-        sleep 5
-        if [[ $is_yt_dlp_installed == true ]]; then
-            yt-dlp -U || echo "[ERROR] Failed to update 'yt-dlp'" >&2
-        fi
-        echo "[INFO] Restarting NadekoBot..."
-    done
-
-    echo "[INFO] Stopping NadekoBot..."
+    WantedBy=multi-user.target
+    EOF
     ```
 
-With everything set up, you can run NadekoBot in one of three modes:
+3. Start the bot now and at each boot:
 
-1. **Auto-Restart Mode**: NadekoBot will restart automatically if you restart it via the `.die` command.
-    - To enable this mode, start the service: `sudo systemctl start nadeko`
-2. **Auto-Restart on Reboot Mode**: In addition to auto-restarting after `.die`, NadekoBot will also start automatically on system reboot.
-    - To enable this mode, run:
-        ```bash
-        sudo systemctl enable nadeko
-        sudo systemctl start nadeko
-        ```
-3. **Standard Mode**: NadekoBot will stop completely when you use `.die`, without restarting automatically.
-    - To switch to this mode:
-        1. Stop the service: `sudo systemctl stop nadeko`
-        2. Edit the service file: `sudo <editor> /etc/systemd/system/nadeko.service`
-        3. Modify the `ExecStart` line:
-            - **Comment out**: `ExecStart=/bin/bash NadekoRun.bash`
-            - **Uncomment**: `#ExecStart=./nadeko/NadekoBot`
-        4. Save and exit the editor.
-        5. Reload systemd: `sudo systemctl daemon-reload`
-        6. Disable automatic startup: `sudo systemctl disable nadeko`
-        7. Start NadekoBot manually: `sudo systemctl start nadeko`
+    ```sh
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now nadeko
+    ```
+
+| Task | Command |
+|---|---|
+| Stop the bot | `sudo systemctl stop nadeko` |
+| Start the bot | `sudo systemctl start nadeko` |
+| Show the bot's log | `journalctl -u nadeko -f` |
 
 ///
+
+## Update the bot
+
+1. Stop the bot. With systemd, type `sudo systemctl stop nadeko`. In other cases, type `.die` in Discord.
+2. Go to your home folder, then download and start the installer again:
+
+    ```sh
+    cd ~
+    curl -L -o n-install.sh https://raw.githubusercontent.com/nadeko-bot/bash-installer/refs/heads/v6/n-install.sh
+    bash n-install.sh
+    ```
+
+3. Type `1` (**Install**), select the newest version, then type `y`.
+4. Start the bot again. With systemd, type `sudo systemctl start nadeko`. In other cases, type `2` (**Run**) in the installer.
+
+The installer keeps your `data` folder. It also puts a copy of the old `data` folder in `nadeko_backups`.

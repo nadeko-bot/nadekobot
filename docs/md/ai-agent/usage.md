@@ -1,129 +1,78 @@
-# Usage and Skills
+---
+title: Use the NadekoBot AI agent and add skills
+description: Start the NadekoBot AI agent with a mention, .agent, a reply or the bot's name. Server admins add skills to change how it answers in their server.
+---
 
-## Talking to the agent
+# Usage and skills
 
-You have four ways to trigger the agent. Pick whichever is convenient.
+The bot owner turns on the AI agent and chooses who can use it. If the agent does not answer, ask the owner of the bot. The agent works only in a server channel, not in a direct message.
 
-### Ping the bot (easiest)
+## Start the agent
 
-Mention the bot at the start of your message. Everything after the mention is the query.
+| Method | Example |
+|---|---|
+| Mention the bot at the start of your message | `@Nadeko what is my balance?` |
+| Use the `.agent` / `.ai` command | `.agent show the top 5 xp members` |
+| Reply to an answer of the agent, with the reply ping on | `and Bob?` |
+| Say the name of the bot | `hey Nadeko, warn @Bob for spam` |
 
-```
-@Nadeko what's my currency balance?
-@Nadeko give 500 to @Alice
-```
+A mention and `.agent` start the agent for each request. A reply and the name of the bot start it only when your message looks like a request. "lol" or "thanks" does not start it.
 
-This always runs the agent. No intent check, no prefix needed. Requires permission to use the agent (see the bottom of this page).
+After the agent answers, you can continue in the same channel without a mention. This works for 2 minutes (the bot owner can change this time). In this time, each message which you send in that channel goes to the agent:
 
-### The `.agent` command
-
-```
-.agent show me who has the most xp this month
-```
-
-Same result as a ping, just using the bot's prefix instead of a mention. Handy if pings are off in the channel or if you like typing.
-
-### Reply to a bot message
-
-Reply to any message the bot sent. If your reply reads like a question or a command, the agent picks it up. If it reads like a reaction ("lol", "thanks"), the bot ignores you.
-
-### Say the bot's name
-
-If the owner enabled name triggers, mentioning the bot by name works too:
-
-```
-hey Nadeko, warn @Bob for spamming
-what's my xp Nadeko?
-```
-
-Same intent check as replies. Casual mentions of the name won't trigger the agent. Owners can turn this off if it's noisy.
-
-### Follow-up messages
-
-Right after the agent replies, you get a short follow-up window (a few seconds, set by the owner). Inside that window, any message you send in the same channel counts as a continuation. No ping or prefix needed.
-
-```
-@Nadeko how much currency does Alice have?
-  → Alice has 5,000 currency.
+```text
+@Nadeko how many flowers does Alice have?
+  Alice has 5,000 flowers.
 and Bob?
-  → Bob has 1,200 currency.
+  Bob has 1,200 flowers.
 ```
 
-### Cancelling a turn
-
-`.agentcancel` stops the current session for your user. Use it if the agent is slow or stuck in a loop. Your conversation history for that session is dropped.
+To stop an answer which is running, type `.agentcancel` / `.aic`.
 
 ## Skills
 
-Skills are short instructions server admins add to shape the agent inside their server. They're stored in the bot's database.
+A skill is an instruction which server admins add for the agent. A server skill works in all channels. A channel skill works only in its channel. A skill changes the style and the topics of the answers. It cannot give a member more permissions.
 
-- A skill is a name plus an instruction, up to 2000 characters.
-- Every guild can have up to 50 skills.
-- Each enabled skill is prepended to the user's message before the agent sees it, wrapped in a `[SERVER INSTRUCTIONS]` block.
+- A server can have up to 10 skills. Server skills and channel skills count together.
+- A skill name can have up to 50 characters. An instruction can have up to 2,000 characters.
+- You need the **Administrator** permission.
 
-### Guild skills
+### Server skills
 
-Apply to every agent turn in the server, regardless of channel.
+A server skill works in all channels of the server.
 
 | Command | What it does |
 |---|---|
-| `.agentskilladd <name> <instruction>` | Create a skill. |
-| `.agentskillremove <name>` | Delete it. |
-| `.agentskilltoggle <name>` | Enable or disable without deleting. |
-| `.agentskilllist` | Show all skills with their toggle state. |
-
-Requires **Administrator** in the guild.
+| `.agentskilladd <name> <instruction>` / `.aisa` | Adds a skill |
+| `.agentskillremove <name>` / `.aisr` | Removes a skill |
+| `.agentskilltoggle <name>` / `.aist` | Turns a skill on or off |
+| `.agentskilllist` / `.aisl` | Shows the skills, with buttons to turn them on or off |
 
 Example:
 
-```
-.agentskilladd support-tone Always reply in a calm, professional tone. Never joke about tickets.
-.agentskilladd no-price-talk Do not quote prices. If asked, say to check #pricing.
+```text
+.agentskilladd tone Reply in a calm, formal tone.
+.agentskilladd prices Do not tell prices. Tell members to read #pricing.
 ```
 
 ### Channel skills
 
-Same idea, but only active when the agent runs in that specific channel.
+A channel skill works only in the channel where you add it. Use it for a channel with its own rules, for example a formal `#support` channel.
 
 | Command | What it does |
 |---|---|
-| `.agentchannelskilladd <name> <instruction>` | Create a channel skill. |
-| `.agentchannelskillremove <name>` | Delete it. |
-| `.agentchannelskilltoggle <name>` | Enable or disable. |
-| `.agentchannelskilllist` | Show channel skills for the current channel. |
-
-Requires **Administrator**.
-
-Good fit for channels with their own rules: a `#support` channel that wants formal tone, a `#memes` channel that wants the opposite, a `#announcements` channel where the agent should stay quiet.
-
-### Guild vs channel skills at a glance
-
-| | Guild skill | Channel skill |
-|---|---|---|
-| Scope | every channel in the guild | one channel |
-| Row key | (guild, name) | (guild, channel, name) |
-| Use when | rule is about the server as a whole | rule is about one space |
-
-You can have the same name in both places -- a guild-level `tone` skill and a channel-level `tone` skill that overrides it in one channel.
-
-## What the agent can do
-
-Writes go through real bot commands. The agent calls `run_command`, which runs the command as the invoking user under the normal permission pipeline. If you don't have `ManageMessages`, neither does the agent when acting for you.
-
-Reads go through **data tools** -- typed, JSON-returning functions registered per feature (xp, waifus, reminders, moderation, etc.). The agent doesn't have them all loaded at once; it calls `search_data_tools` with a query like "user xp stats" and the infrastructure returns the best matches to pull into context.
+| `.agentchannelskilladd <name> <instruction>` / `.aicsa` | Adds a skill to this channel |
+| `.agentchannelskillremove <name>` / `.aicsr` | Removes a skill from this channel |
+| `.agentchannelskilltoggle <name>` / `.aicst` | Turns a channel skill on or off |
+| `.agentchannelskilllist` / `.aicsl` | Shows the skills of this channel |
 
 ## Privacy
 
-- Conversation history is per user and lives in memory only. It's dropped when `.agentcancel` fires or the bot restarts.
-- User-private reads (your reminders, your quests) are keyed on the invoking user's ID. The agent can't read another user's private data even if you ask it to.
-- A sanitizer runs on display names and channel names before they reach the model, so mention tokens and prompt-injection tricks in names are neutralized.
+- The agent keeps the conversation only in memory, not in the database. It forgets the recent messages of a channel after 30 minutes without activity, and after a restart of the bot.
+- The agent reads your private data (for example your reminders) only for you. It cannot read the private data of another member.
+- The bot removes hidden tags and control characters from names and messages before the AI model sees them.
 
-## Permission to use the agent
+## Related pages
 
-The bot owner sets this. Typically:
-
-- Bot owner: always allowed.
-- Active patron (if patronage is enabled): allowed. See [Donate](../donate.md).
-- Everyone else: ignored silently. Pings, replies, name triggers, and `.agent` all do nothing.
-
-If nothing happens when you try to use the agent, the bot is either not configured or your user isn't on the allow list. Ask the bot's host.
+- [AI agent overview](overview.md)
+- [Owner setup](owner-setup.md)

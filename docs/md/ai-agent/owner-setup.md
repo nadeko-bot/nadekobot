@@ -1,73 +1,98 @@
-# Owner Setup
+---
+title: Set up the NadekoBot AI agent on your own bot
+description: Turn on the NadekoBot AI agent on a self-hosted bot. Add an OpenAI-compatible API key, pick a model, choose who can use it and edit the prompts.
+---
 
-This page is for bot owners (self-hosters). If you just want to use the agent on a server where someone else is hosting the bot, see [Usage and Skills](usage.md).
+# Owner setup
 
-## 1. Pick a model provider
+This page is for the owner of a self-hosted NadekoBot. To use the agent on a bot which someone else hosts, read [Usage and skills](usage.md).
 
-You need an OpenAI-compatible API that supports **tool / function calling**. Known to work:
+## Pick an AI provider
 
-- OpenAI direct (gpt-5.x, o-series)
-- OpenRouter (fallback routing across providers)
-- Anthropic via OpenRouter or a compatibility shim
-- Self-hosted vLLM / llama.cpp with an OpenAI-compatible front-end, if the model supports tool calls
+The agent needs an OpenAI-compatible chat API with tool calling (function calling). These providers work:
 
-A model without tool calling will just talk -- it won't be able to run commands or read data.
+- OpenAI
+- OpenRouter, which can send a request to other models if one fails
+- A local server (vLLM, llama.cpp) with an OpenAI-compatible API and a model with tool calling
 
-## 2. Set credentials
+A provider or model without tool calling refuses the requests of the agent, and the agent does not answer.
 
-Open `data/ai/ai-agent.yml` (created on first startup if missing). Key fields:
+## Turn on the agent
 
-```yaml
-ModelName: gpt-5.4            # one model
-Models:                       # or a list for providers that route (e.g. OpenRouter)
-  - gpt-5.4
-  - claude-3.7-sonnet
-BaseUrl: https://openrouter.ai/api/v1
-ApiKey: sk-or-v1-...
-ReasoningEffort: medium       # for models that support it
-UseEmbed: true                # false = plain-text replies
-```
+1. Put your API key in `aiApiKey` in `data/creds.yml`, then restart the bot.
+2. Open `data/ai-agent.yml` and set these fields:
 
-Restart the bot after editing creds or `BaseUrl`. `ModelName`, `Models`, `ReasoningEffort`, and `UseEmbed` can also be changed at runtime via the config commands (see `.h .config aiagent`).
+    ```yaml
+    enabled: true
+    # Without /v1/chat/completions at the end
+    apiUrl: https://openrouter.ai/api
+    modelName: openai/gpt-5.4
+    ```
 
-## 3. Understand the prompt files
+3. Type `.configreload aiagent` in Discord, or restart the bot.
 
-Path: `data/ai/prompts/`. Layout:
+The bot needs the **Message Content** intent (see [Create a Discord bot](../creds-guide.md#turn-on-the-privileged-intents)). Without it, only a mention of the bot starts the agent. The name trigger, the follow-up time and the channel memory then do not work.
 
-```
-data/ai/prompts/
-├── SOUL.md              owner-edited, bot identity
-└── OPERATOR.md          owner-edited, rules for the agent
-```
+You can also change most settings in Discord with `.config aiagent <setting> <value>`. For example: `.config aiagent model openai/gpt-5.4`. Type `.config aiagent` to see all settings.
 
-- `SOUL.md` and `OPERATOR.md` are seeded automatically on first run.
-- Placeholders: `{botName}` (the global name of the bot) and `{botId}` are the same on every server.
-- `{guildName}`, `{channelName}` and `{userName}` also work, but they make the prompt different for each server, channel or user. Then the model provider can't reuse its prompt cache, and each request costs more. The agent already gets the server, channel, user, the bot's server nickname and the current time in a separate context message.
-- Size limit: 20 KB per file.
-- A filesystem watcher picks up edits with a 1 second debounce. No restart needed.
+| Setting | Default | What it does |
+|---|---|---|
+| `enabled` | `false` | Turns the agent on or off |
+| `model` | `gpt-5.4` | The model name |
+| `reasoning` | `low` | The reasoning effort: `none`, `low`, `medium`, `high` or `xhigh` |
+| `maxtools` | `10` | The maximum number of tool calls in one request |
+| `maxtokens` | `16384` | The maximum number of tokens in one answer |
+| `temperature` | `0.3` | A lower value gives answers which change less |
+| `memory` | `20` | The number of recent channel messages which the agent remembers. `0` turns it off |
+| `memoryexpiry` | `30` | The minutes without activity before the agent forgets a channel |
+| `useembed` | `true` | `false` sends answers as plain text |
+| `showactivity` | `true` | Shows a live message with the steps of the agent |
 
-!!! note "Scope"
-    These files are process-global. Every guild your bot serves sees the same SOUL and OPERATOR. Per-guild behavior belongs in skills.
+In `data/ai-agent.yml`, some of these settings have longer names, for example `modelName`, `maxTokens`, `reasoningEffort` and `memoryIdleExpiryMinutes`. To turn off reasoning, set `reasoningEffort` to an empty value in the file.
 
-## 4. Owner commands
+These settings are only in `data/ai-agent.yml`:
 
-`.aiprompt` is owner-only. Run it with no arguments to get a panel with two buttons (SOUL and OPERATOR). Clicking either is the same as running `.aiprompt soul` or `.aiprompt operator` directly: the bot shows the current contents and offers an Edit button that opens a Discord modal with Save / Cancel built in.
+- `models`: a list of models for providers like OpenRouter. When the first model fails, the provider tries the next one.
+- `nameTriggerEnabled`: the agent starts when a member says the name of the bot. Default `true`.
+- `followUpWindowSeconds`: the seconds after an answer in which a member can continue without a mention. Default `120`. `0` turns it off.
+- `allowedTools`: the tools which the agent can use. Empty means all tools.
+- `customHeaders`: extra HTTP headers for each request to the provider.
 
-Saves go through a `.tmp` file and atomic rename, so an interrupted edit won't leave a half-written prompt on disk.
+## Choose who can use the agent
 
-## 5. Access control
+The bot owner can always use the agent. Other people can use it only when you allow them. The bot ignores everyone else.
 
-The agent won't reply to arbitrary users by default. Current policy:
+| Command | What it does |
+|---|---|
+| `.agentwhitelist @user` / `.aiwl` | Allows one user, or removes the user again |
+| `.agentwhitelistrole <role>` / `.aiwlr` | Allows all members of a role |
+| `.agentwhitelistserver [server id]` / `.aiwls` | Allows all members of a server (default: this server) |
+| `.agentwhitelistlist` / `.aiwll` | Shows who is allowed |
 
-- The bot owner can always use it.
-- Active patrons can use it if patronage is enabled (`patronage.enabled: true` in `data/patronage.yml`).
-- Everyone else gets ignored silently.
+If patronage is on (`isEnabled: true` in `data/patron.yml`), active patrons can also use the agent.
 
-Cache: allow/deny is cached per user for 1 minute to avoid a DB hit on every message.
+## Edit the prompts
 
-## 6. Troubleshooting
+Two files in `data/ai/prompts/` control how the agent talks. The bot creates them on the first start.
 
-- **Agent doesn't respond.** Check logs for auth errors on the provider, confirm the user is an owner or active patron, and confirm the model supports tool calling. A 400 "unknown parameter: tools" is the fingerprint of a model without tool-call support.
-- **Edits to `SOUL.md` don't show up.** Look for `PromptLibrary: loaded SOUL ...` in the logs after your save. If you don't see it, the watcher didn't fire -- save again or restart the bot. Some editors write via replace-rename; the watcher handles both.
-- **Agent says it can't find a tool.** Data tools are discovered on demand via `search_data_tools`. The agent is supposed to call that first when looking for reads. If it's refusing to search, your prompt may be steering it away -- check `SOUL.md` and `OPERATOR.md`.
-- **Prompt is too large.** If SOUL + OPERATOR + command list exceed the model's context budget, trim them.
+- `SOUL.md`: who the bot is (name, personality, tone).
+- `OPERATOR.md`: your rules for the agent (topics, limits, things it must not do).
+
+Every server sees the same two files. For rules of one server, use [skills](usage.md#skills).
+
+To edit a file in Discord, type `.aiprompt`, select **SOUL** or **OPERATOR**, then click **Edit**. You can also edit the files directly. The bot loads a changed file in about one second. A file can have up to 20 KB.
+
+!!! warning
+    The Discord editor holds only 4,000 characters. If a file is longer, edit it on disk. When you save a longer file in the Discord editor, the bot keeps only the first 4,000 characters.
+
+You can use these placeholders in the prompts:
+
+- `{botName}` and `{botId}`: the name and the ID of the bot.
+- `{guildName}`, `{channelName}` and `{userName}`: these work too, but they make the prompt different for each server, channel and user. Then the provider cannot cache the prompt, and each request costs more. The agent already gets these values in a separate message.
+
+## Troubleshooting
+
+- **The agent does not answer.** Make sure that `enabled` is `true`, `aiApiKey` is set and the user is allowed. Look for errors from the provider in the bot's log.
+- **The log shows `AI embedding runtime (ONNX) failed to load`.** The agent is off until the next start. On Windows, install the Microsoft Visual C++ Redistributable (x64).
+- **The log shows `unknown parameter: tools`.** The model does not support tool calling. Pick a different model.
+- **A change in `SOUL.md` does not work.** The log shows `PromptLibrary: loaded SOUL` after the bot loads the file. If you do not see it, save the file again or restart the bot.

@@ -1,35 +1,71 @@
-## Creating your own Discord bot
+---
+title: Create a Discord bot and get its token
+description: Create a Discord application for your own NadekoBot, copy the bot token, turn on the privileged intents and invite the bot to your server.
+---
 
-This guide will show you how to create your own discord bot, invite it to your server, and obtain the credentials needed to run it.
+# Create a Discord bot
 
-1. Go to [the Discord developer application page][DiscordApp].
-2. Log in with your Discord account.
-3. Click **New Application**.
-4. Fill out the **Name** field however you like, accept the terms, and confirm.
-5. Go to the **Bot** tab on the left sidebar.
-6. **Optional:** Add bot's avatar and description.
-7. Click the **Reset Token** button, select **Yes, do it!** to confirm token reset, then copy the token that is revealed.
+Before you install NadekoBot, you need a Discord bot account and its token. This page shows how to create the bot, get the token and invite the bot to your server.
 
-    !!! warning "IMPORTANT"
-        **Keep your token safe**: The token is like a password for your bot. Anyone with this token can control your bot. If you accidentally share your token, reset it immediately to prevent unauthorized access.
+## Create the bot and copy the token
 
-8. Paste your token into the `token` field within `creds.yml`.
-9. Scroll down to the **`Privileged Gateway Intents`** section.
-    - You MUST enable the following:
-        - **PRESENCE INTENT**
-        - **SERVER MEMBERS INTENT**
-        - **MESSAGE CONTENT INTENT**
+1. Open the [Discord Developer Portal](https://discord.com/developers/applications) and log in.
+2. Click **New Application**.
+3. Type a name for the bot.
+4. Accept the terms and click **Create**.
+5. On the left, click **Bot**.
+6. Click **Reset Token**, then click **Yes, do it!**.
+7. Copy the token.
+8. Put the token in the `token` field of `creds.yml`. Your install guide tells you where this file is.
 
-### Inviting your bot to your server
+!!! warning "Keep the token secret"
+    The token is the password of your bot. A person with the token can control the bot. If someone sees your token, reset it immediately. A reset stops the old token, so put the new token in `creds.yml`.
 
-![Invite the bot to your server](https://cdn.nadeko.bot/tutorial/bot-invite-guide.gif)
+## Turn on the privileged intents
 
-- From the **General Information** tab, copy your `Application ID`.
-- Replace the `YOUR_CLIENT_ID_HERE` in the following link, with your `Client ID`:
-  `https://discordapp.com/oauth2/authorize?client_id=YOUR_CLIENT_ID_HERE&scope=bot&permissions=66186303`
-    - The link should now look something like this: `https://discordapp.com/oauth2/authorize?client_id=123123123123&scope=bot&permissions=66186303`
-- Access that newly created link, pick your Discord server, click `Authorize` and confirm with the captcha at the end.
-- The bot should now be in your server!
+1. On the **Bot** page, go to **Privileged Gateway Intents**.
+2. Turn on all three intents:
+    - **Presence Intent**
+    - **Server Members Intent**
+    - **Message Content Intent**
+3. Click **Save Changes**.
 
+Without these intents, some features do not work. Without **Message Content Intent**, the bot runs a command only when the message starts with a mention of the bot.
 
-[DiscordApp]: https://discordapp.com/developers/applications/me
+## Set yourself as the owner
+
+The owner can use the owner-only commands, for example `.die` and `.config`. On the first start, the bot adds the owner of the Discord application to the `ownerIds` list. To add more owners, do these steps:
+
+1. In Discord, open **User Settings** > **Advanced** and turn on **Developer Mode**.
+2. Right-click your name and click **Copy User ID**.
+3. Put the ID in the `ownerIds` list of `creds.yml`:
+
+    ```yaml
+    ownerIds:
+      - 123456789012345678
+    ```
+
+## Invite the bot to your server
+
+![The Discord Developer Portal: copy the Application ID, open the invite link and authorize the bot](https://cdn.nadeko.bot/tutorial/bot-invite-guide.gif)
+
+1. On the left, click **General Information** and copy the **Application ID**.
+2. In this link, replace `YOUR_APPLICATION_ID` with your Application ID:
+
+    ```
+    https://discord.com/oauth2/authorize?client_id=YOUR_APPLICATION_ID&scope=bot&permissions=66186303
+    ```
+
+3. Open the link in your browser.
+4. Select your server and click **Authorize**.
+
+The bot is now in your server. It stays offline until you start it.
+
+## Next step
+
+Install the bot with one of the guides:
+
+- [Desktop guide (Upeko)](guides/desktop-guide.md) for Windows, Linux and macOS
+- [CLI guide](guides/cli-guide.md) for Linux and macOS
+- [Docker guide](guides/docker-guide.md)
+- [Source guide](guides/source-guide.md)

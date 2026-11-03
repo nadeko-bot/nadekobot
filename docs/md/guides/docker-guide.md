@@ -1,72 +1,129 @@
-# Docker Guide
-
-### Prerequisites
-
-- [Docker Core Engine](https://docs.docker.com/engine/install/)
-- [Docker Compose](https://docs.docker.com/compose/install/) (optional, but recommended)
-
+---
+title: Run your own NadekoBot with Docker or Docker Compose
+description: Run your own NadekoBot in a Docker container. Start it with Docker Compose or docker run, keep the data in a folder on your server and update it with one pull.
 ---
 
-??? note "Creating a Discord Bot & Getting Credentials"
-    --8<-- "md/creds-guide.md"
+# Docker guide
 
----
+The NadekoBot image is `ghcr.io/nadeko-bot/nadekobot:v6`. It has ffmpeg, yt-dlp and Deno, so music works without more steps. The bot keeps its database and config files in `/app/data`.
 
-## Installing NadekoBot with Docker
+## Before you start
 
-When deploying NadekoBot with Docker, you have two options: using [Docker](#__tabbed_1_1) or [Docker Compose](#__tabbed_1_2). The following sections provide step-by-step instructions for both methods.
+- [Create a Discord bot](../creds-guide.md) and copy its token.
+- Install [Docker Engine](https://docs.docker.com/engine/install/) with the Compose plugin.
+- To keep the bot online all day, [get a Linux server](linux-server.md).
+- The commands on this page are for Linux and macOS. On Windows, use Docker Desktop and type the commands in WSL.
 
-/// tab | Docker
+## Start the bot
 
-### Deploying NadekoBot with Docker
-
-1. Move to a directory where you want your Nadekobot's data folder to be (data folder will keep the database and config files) and create a data folder there.
-    ``` sh
-    cd ~ && mkdir nadeko && cd nadeko && mkdir data
-    ```
-2. Mount the newly created empty data folder as a volume while starting your docker container. Replace YOUR_TOKEN_HERE with the bot token obtained from the creds guide above.
-    ``` sh
-    docker run -d --name nadeko ghcr.io/nadeko-bot/nadekobot:v6 -e bot_token=YOUR_TOKEN_HERE -v "./data:/app/data" && docker logs -f --tail 500 nadeko
-    ```
-3. Enjoy! 🎉
-
-### Updating your bot
-
-If you want to update nadekobot to the latest version, all you have to do is pull the latest image and re-run.
-
-1. Pull the latest image
-    ``` sh
-    docker pull ghcr.io/nadeko-bot/nadekobot:v6
-    ```
-2. Re-run your bot the same way you did before
-    ``` sh
-    docker run -d --name nadeko ghcr.io/nadeko-bot/nadekobot:v6 -e bot_token=YOUR_TOKEN_HERE -v "./data:/app/data" && docker logs -f --tail 500 nadeko
-    ```
-3. Done! 🎉
-
-///
 /// tab | Docker Compose
 
-1. **Choose Your Workspace:** Select a directory where you'll set up your NadekoBot stack. Use your terminal to navigate to this directory. For the purpose of this guide, we'll use `/opt/stacks/nadeko/` as an example, but you can choose any directory that suits your needs.
-2. **Create a Docker Compose File:** In this directory, create a Docker Compose file named `docker-compose.yml`. You can use any text editor for this task. For instance, to use the `nano` editor, type `nano docker-compose.yml`.
-3. **Configure Your Docker Compose File:** Populate your Docker Compose file with the following configuration:
-    ``` yml
+1. Make a folder for the bot and go into it:
+
+    ```sh
+    mkdir -p ~/nadeko && cd ~/nadeko
+    ```
+
+2. Create the file `compose.yml` (for example with `nano compose.yml`) with this text. Put your token in `bot_token` and your [time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in `TZ`:
+
+    ```yaml
     services:
       nadeko:
         image: ghcr.io/nadeko-bot/nadekobot:v6
         container_name: nadeko
         restart: unless-stopped
         environment:
-          TZ: Europe/Rome # Modify this to your timezone
-          bot_token: YOUR_TOKEN_HERE
+          TZ: Europe/Rome
+          bot_token: YOUR_BOT_TOKEN
         volumes:
-          - /opt/stacks/nadeko/data:/app/data
-    networks: {}
+          - ./data:/app/data
     ```
 
-1. **Launch Your Bot:** Now, you're ready to run Docker Compose. Use the following command: `docker compose up -d`.
-2. **Navigate to Your Directory:** Use `cd /opt/stacks/nadeko/` to go to the directory containing your Docker Compose file.
-3. **Pull the Latest Images:** Use `docker compose pull` to fetch the latest images.
-4. **Restart Your Containers:** Use `docker compose up -d` to restart the containers.
+3. Start the bot and show its log:
+
+    ```sh
+    docker compose up -d
+    docker compose logs -f
+    ```
 
 ///
+/// tab | docker run
+
+1. Make a folder for the bot and go into it:
+
+    ```sh
+    mkdir -p ~/nadeko && cd ~/nadeko
+    ```
+
+2. Start the bot. Put your token in place of `YOUR_BOT_TOKEN` and your [time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in place of `Europe/Rome`:
+
+    ```sh
+    docker run -d --name nadeko --restart unless-stopped \
+      -e TZ=Europe/Rome \
+      -e bot_token=YOUR_BOT_TOKEN \
+      -v "$PWD/data:/app/data" \
+      ghcr.io/nadeko-bot/nadekobot:v6
+    ```
+
+3. Show the log:
+
+    ```sh
+    docker logs -f nadeko
+    ```
+
+///
+
+On the first start, the log shows lines like these. Then the bot comes online in your server.
+
+```text
+[12:17:22 INF] | #0 | Pid: 1
+[12:17:23 INF] | #0 | Database does not exist. Creating a new database...
+[12:17:24 INF] | #0 | Shard 0 logging in ...
+[12:17:25 INF] | #0 | All services loaded in 1.24s
+```
+
+To stop the log, press ++ctrl+c++. The bot continues to run.
+
+If the log shows `401: Unauthorized`, the token is wrong, and the container restarts again and again. Stop it with `docker stop nadeko`. Then put the correct token in `compose.yml` and type `docker compose up -d`. With `docker run`, type `docker rm -f nadeko` and run the command again with the correct token.
+
+## Change the settings
+
+The bot puts its files in the `data` folder: `creds.yml`, the config files and the database `NadekoBot.db`. To change `creds.yml`, edit the file, then restart the bot:
+
+```sh
+nano data/creds.yml
+docker restart nadeko
+```
+
+The bot writes these files as `root`. If your user is not `root`, use `sudo nano data/creds.yml`.
+
+`bot_token` in the container settings replaces the `token` field of `creds.yml`. To change the token, change `bot_token` and start the container again as in step 2.
+
+## Stop the bot
+
+The bot restarts after `.die`, because of `restart: unless-stopped`. To stop the bot, type `docker stop nadeko`.
+
+## Update the bot
+
+/// tab | Docker Compose
+
+```sh
+cd ~/nadeko
+docker compose pull
+docker compose up -d
+```
+
+///
+/// tab | docker run
+
+```sh
+cd ~/nadeko
+docker pull ghcr.io/nadeko-bot/nadekobot:v6
+docker rm -f nadeko
+```
+
+Then start the bot with the same `docker run` command as before.
+
+///
+
+The update keeps the `data` folder.
