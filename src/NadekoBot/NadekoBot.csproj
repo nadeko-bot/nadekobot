@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AngleSharp" Version="1.2.0">
+        <PackageReference Include="AngleSharp" Version="1.5.0">
             <PrivateAssets>all</PrivateAssets>
             <Publish>True</Publish>
         </PackageReference>
