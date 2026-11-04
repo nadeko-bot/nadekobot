@@ -10,7 +10,7 @@ public sealed class StatsService : IStatsService, IReadyExecutor, INService
         => typeof(Bot).Assembly.GetName().Version?.ToString(3) ?? "custom";
 
     public string Author
-        => "Kwoth#2452";
+        => "Breaker";
 
     public double MessagesPerSecond
         => MessageCounter / GetUptime().TotalSeconds;

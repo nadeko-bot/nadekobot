@@ -19,6 +19,7 @@
 
 ### Changed
 
+- `.stats` shows Breaker as the author.
 - `.xprolereward` / `.xprr` gives several roles at one level
     - `.xprr <level> <role>` removes the reward of one role
     - a server has at most 100 role rewards

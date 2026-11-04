@@ -1947,9 +1947,9 @@
       "Aliases": [
         ".unban"
       ],
-      "Description": "Unbans a user with the provided user#discrim or id.",
+      "Description": "Unbans a user with the provided username or ID.",
       "Usage": [
-        ".unban kwoth#1234",
+        ".unban breaker",
         ".unban 123123123"
       ],
       "Submodule": "UserPunishCommands",

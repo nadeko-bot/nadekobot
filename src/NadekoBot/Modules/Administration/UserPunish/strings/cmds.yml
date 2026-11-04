@@ -137,13 +137,13 @@ timeout:
       msg:
         desc: The brief message explaining why the user was timed out.
 unban:
-  desc: Unbans a user with the provided user#discrim or id.
+  desc: Unbans a user with the provided username or ID.
   ex:
-    - kwoth#1234
+    - breaker
     - 123123123
   params:
     - user:
-        desc: The ID of the user being unbanned.
+        desc: The username of the user to unban.
     - userId:
         desc: The ID of the user to be unbanned.
 warn:

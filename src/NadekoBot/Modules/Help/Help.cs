@@ -8,7 +8,6 @@ namespace NadekoBot.Modules.Help;
 public sealed partial class Help : NadekoModule<HelpService>
 {
     public const string PATREON_URL = "https://patreon.com/nadekobot";
-    public const string PAYPAL_URL = "https://paypal.me/Kwoth";
 
     // Discord allows at most 25 options per select menu and 25 fields per embed.
     private const int SELECT_MENU_PAGE_SIZE = 15;
