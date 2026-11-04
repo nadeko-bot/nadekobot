@@ -148,7 +148,7 @@ public sealed class ApiContractTests
         => Directory.Delete(_dir, recursive: true);
 
     [Test]
-    public async Task Routes_MatchTheContractWithOptionalPageAndSinceAndEveryHandlerServiceIsRegistered()
+    public async Task Routes_MatchTheContractInEachModeWithOptionalPageAndSinceAndEveryHandlerServiceIsRegistered()
     {
         await using var app = Build(HostMode.Standalone);
         var endpoints = ((IEndpointRouteBuilder)app).DataSources
@@ -177,15 +177,11 @@ public sealed class ApiContractTests
             .ToArray();
         Assert.That(pageAndSince, Is.Not.Empty);
         Assert.That(pageAndSince.Select(static p => p.IsOptional), Is.All.True);
-    }
 
-    // A coordinated shard serves server dashboards; a currency reward creates currency, so only the owner sets it.
-    // Music is a patron feature on the public bot, so its routes are standalone only too, as are feeds and streams.
-    [Test]
-    public async Task CoordinatedRoutes_AreTheGuildRoutesWithoutTheOwnerGuildRoutes()
-    {
-        await using var app = Build(HostMode.Coordinated);
-        var routes = ((IEndpointRouteBuilder)app).DataSources
+        // A coordinated shard serves server dashboards; a currency reward creates currency, so only the owner sets it.
+        // Music is a patron feature on the public bot, so its routes are standalone only too, as are feeds and streams.
+        await using var coordinated = Build(HostMode.Coordinated);
+        var coordinatedRoutes = ((IEndpointRouteBuilder)coordinated).DataSources
             .SelectMany(static d => d.Endpoints)
             .OfType<RouteEndpoint>()
             .Select(static e => $"{e.Metadata.GetMetadata<IHttpMethodMetadata>()!.HttpMethods[0]} "
@@ -202,45 +198,11 @@ public sealed class ApiContractTests
                                    && !r.Contains("/feeds", StringComparison.Ordinal)
                                    && !r.Contains("/streams", StringComparison.Ordinal)))
             .ToArray();
-        Assert.That(routes, Is.EquivalentTo(expected));
+        Assert.That(coordinatedRoutes, Is.EquivalentTo(expected));
     }
 
     [Test]
-    public async Task Gate_AnswersNotFoundForAGuildTheBotIsNotIn()
-    {
-        var bridge = new BotBridge();
-        bridge.AttachClient(new DiscordSocketClient());
-        bridge.SetPhase(BotPhase.Starting);
-        bridge.SetReady(new ServiceCollection().BuildServiceProvider(), null);
-        var reached = false;
-        var gate = new ApiGateMiddleware(
-            _ =>
-            {
-                reached = true;
-                return Task.CompletedTask;
-            },
-            new ApiKey(string.Empty),
-            bridge,
-            new HostContext(HostMode.Standalone, 0, 1));
-
-        foreach (var guildId in new[] { "123", "not-a-number" })
-        {
-            var http = new DefaultHttpContext();
-            http.SetEndpoint(new Endpoint(null,
-                new EndpointMetadataCollection(new ApiAccessMetadata(ApiAccess.Bot | ApiAccess.Guild)),
-                "test"));
-            http.Request.RouteValues[ApiGateMiddleware.GUILD_ID_ROUTE_VALUE] = guildId;
-
-            await gate.InvokeAsync(http);
-
-            Assert.That(http.Response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
-        }
-
-        Assert.That(reached, Is.False);
-    }
-
-    [Test]
-    public void ApiSettings_RejectUnsafeOrBrokenValuesAndKeysWhichAreNotToken68()
+    public void ApiSettings_RejectUnsafeOrBrokenValuesAndKeysWhichAreNotToken68AndSaveOnlyForTheOwner()
     {
         Assert.That(new ApiSettings().Validate(0), Is.Null);
         Assert.That(new ApiSettings { Address = "::1" }.Validate(0), Is.Null);
@@ -277,6 +239,14 @@ public sealed class ApiContractTests
 
         Assert.That(valid.Where(static k => ApiSettings.IsValidKey(k)), Is.EqualTo(valid));
         Assert.That(invalid.Where(static k => ApiSettings.IsValidKey(k)), Is.Empty);
+
+        var saved = Path.Combine(_dir, "api.yml");
+        ApiSettingsFile.Save(saved, new ApiSettings().WithKey(valid[0]));
+        var loaded = ApiSettingsFile.LoadOrCreate(saved);
+        Assert.That(File.ReadAllText(saved), Does.Not.Contain("hasKey"));
+        Assert.That((loaded.ApiKey, loaded.Address), Is.EqualTo((valid[0], "127.0.0.1")));
+        if (!OperatingSystem.IsWindows())
+            Assert.That(File.GetUnixFileMode(saved), Is.EqualTo(UnixFileMode.UserRead | UnixFileMode.UserWrite));
     }
 
     [Test]
@@ -327,10 +297,11 @@ public sealed class ApiContractTests
     }
 
     [Test]
-    public void BootGuard_StopsAfterRepeatedFailedStartsUntilResetOrRetryTime()
+    public void BootGuard_StopsAfterRepeatedFailedStartsUntilResetOrRetryTimeAndReadyEndsTheTrial()
     {
         var time = new Microsoft.Extensions.Time.Testing.FakeTimeProvider();
-        var guard = new BootGuard(new HostPaths(_dir), time);
+        var paths = new HostPaths(_dir);
+        var guard = new BootGuard(paths, time);
 
         for (var i = 0; i < BootGuard.MAX_ATTEMPTS; i++)
             Assert.That(guard.TryBeginAttempt(), Is.True);
@@ -352,10 +323,17 @@ public sealed class ApiContractTests
         Assert.That(guard.TryBeginAttempt(), Is.False);
 
         // The clock moved back a day: the wait stays at most RetryAfter, and the next start may try.
-        var earlier = new BootGuard(new HostPaths(_dir),
+        var earlier = new BootGuard(paths,
             new Microsoft.Extensions.Time.Testing.FakeTimeProvider(time.GetUtcNow() - TimeSpan.FromDays(1)));
         Assert.That(earlier.UntilRetry(), Is.LessThanOrEqualTo(BootGuard.RetryAfter));
         Assert.That(earlier.TryBeginAttempt(), Is.True);
+
+        // Only a start which gets ready ends the update trial.
+        File.WriteAllText(paths.UpdateTrial, "1");
+        guard.MarkReady();
+        Assert.That(File.Exists(paths.UpdateTrial), Is.False);
+        Assert.That(File.Exists(paths.BootAttempts), Is.False);
+        Assert.DoesNotThrow(guard.MarkReady);
     }
 
     [Test]

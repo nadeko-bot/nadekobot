@@ -46,7 +46,7 @@ public class GuildTimezoneServiceTests
         => _db.Dispose();
 
     [Test]
-    public void TryFindTimeZone_IgnoresCaseAndAcceptsCities()
+    public void TimeZoneLookupAndParser_IgnoreCaseAcceptCitiesAndClearOnEmpty()
     {
         var berlin = GuildTimezoneService.TryFindTimeZone("Europe/Berlin");
         Assert.That(berlin, Is.Not.Null);
@@ -57,10 +57,21 @@ public class GuildTimezoneServiceTests
 
         Assert.That(GuildTimezoneService.TryFindTimeZone("Nowhere/Atlantis"), Is.Null);
         Assert.That(GuildTimezoneService.TryFindTimeZone("   "), Is.Null);
+
+        Assert.That(ConfigParsers.TimeZoneId(" America/New_York ", out var id), Is.True);
+        Assert.That(id, Is.EqualTo("America/New_York"));
+        Assert.That(ConfigParsers.TimeZoneId("berlin", out id), Is.True);
+        Assert.That(id, Is.EqualTo("Europe/Berlin"));
+
+        Assert.That(ConfigParsers.TimeZoneId("Nowhere/Atlantis", out _), Is.False);
+
+        Assert.That(ConfigParsers.TimeZoneId("  ", out id), Is.True);
+        Assert.That(id, Is.Null);
+        Assert.That(ConfigPrinters.TimeZoneId(id!), Is.EqualTo("UTC"));
     }
 
     [Test]
-    public async Task SetTimeZone_CreatesUpdatesAndClearsTheGuildSetting()
+    public async Task GuildZone_IsStoredAndFallsBackToTheBotDefaultThenUtc()
     {
         var berlin = GuildTimezoneService.TryFindTimeZone("Europe/Berlin")!;
         var tokyo = GuildTimezoneService.TryFindTimeZone("Asia/Tokyo")!;
@@ -77,13 +88,7 @@ public class GuildTimezoneServiceTests
 
         await using var ctx = _db.GetDbContext();
         Assert.That(await ctx.GetTable<GuildConfig>().CountAsyncLinqToDB(x => x.GuildId == GUILD_ID), Is.EqualTo(1));
-    }
 
-    [Test]
-    public async Task GuildZone_ThenBotDefault_ThenUtc()
-    {
-        var berlin = GuildTimezoneService.TryFindTimeZone("Europe/Berlin")!;
-        var tokyo = GuildTimezoneService.TryFindTimeZone("Asia/Tokyo")!;
         try
         {
             Assert.That(_svc.GetTimeZoneOrUtc(GUILD_ID), Is.SameAs(TimeZoneInfo.Utc));
@@ -101,21 +106,6 @@ public class GuildTimezoneServiceTests
         {
             _bcs.ModifyConfig(c => c.DefaultTimezone = null);
         }
-    }
-
-    [Test]
-    public void TimeZoneIdParser_AcceptsZonesAndClearsOnEmpty()
-    {
-        Assert.That(ConfigParsers.TimeZoneId(" America/New_York ", out var id), Is.True);
-        Assert.That(id, Is.EqualTo("America/New_York"));
-        Assert.That(ConfigParsers.TimeZoneId("berlin", out id), Is.True);
-        Assert.That(id, Is.EqualTo("Europe/Berlin"));
-
-        Assert.That(ConfigParsers.TimeZoneId("Nowhere/Atlantis", out _), Is.False);
-
-        Assert.That(ConfigParsers.TimeZoneId("  ", out id), Is.True);
-        Assert.That(id, Is.Null);
-        Assert.That(ConfigPrinters.TimeZoneId(id!), Is.EqualTo("UTC"));
     }
 
     private async Task<string?> StoredIdAsync()

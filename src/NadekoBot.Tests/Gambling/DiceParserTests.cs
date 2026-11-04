@@ -6,7 +6,7 @@ namespace NadekoBot.Tests.Gambling;
 public class DiceParserTests
 {
     [Test]
-    public void TryParseRange_AcceptsNumbersAndRangesAndRejectsGarbage()
+    public void Parsers_AcceptRangesAndDndRollsAndRejectGarbage()
     {
         Assert.That(DiceParser.TryParseRange("100", out var min, out var max), Is.True);
         Assert.That((min, max), Is.EqualTo((0L, 100L)));
@@ -22,11 +22,7 @@ public class DiceParserTests
 
         foreach (var bad in new[] { "", "abc", "5-", "-", "1-2-3", "99999999999" })
             Assert.That(DiceParser.TryParseRange(bad, out _, out _), Is.False, bad);
-    }
 
-    [Test]
-    public void TryParseDnd_ParsesCountSidesModifiersAndFate()
-    {
         Assert.That(DiceParser.TryParseDnd("3d6", out var roll), Is.True);
         Assert.That(roll, Is.EqualTo(new DndRoll(3, 6, 0, 0)));
 

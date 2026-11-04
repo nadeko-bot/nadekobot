@@ -38,7 +38,7 @@ public class WaifuBackingTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task BecomeFan_CreatesOrMovesSingleFanRecord_ManagerKeepsOldWaifu()
+    public async Task BecomeAndStopBeingFan_KeepOneFanRecordAndTheManagerStays()
     {
         await using (var ctx = _db.GetDbContext())
         {
@@ -67,27 +67,11 @@ public class WaifuBackingTests
             var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
             Assert.That(wi.ManagerUserId, Is.EqualTo(2001));
         }
-    }
 
-    [Test]
-    public async Task StopBeingFan_DeletesRowOrReturnsNotBacking()
-    {
-        await using (var ctx = _db.GetDbContext())
-        {
-            await WaifuTestHelper.CreateWaifu(ctx, 1001);
-            await WaifuTestHelper.CreateFan(ctx, 2001, 1001);
-        }
-
-        var notBacking = await _svc.StopBeingFanAsync(9999);
-        Assert.That(notBacking.IsT0, Is.True, "Expected ErrNotBacking");
-
-        var result = await _svc.StopBeingFanAsync(2001);
-        Assert.That(result.IsT1, Is.True, "Expected Success");
+        Assert.That((await _svc.StopBeingFanAsync(9999)).IsT0, Is.True, "Expected ErrNotBacking");
+        Assert.That((await _svc.StopBeingFanAsync(2001)).IsT1, Is.True, "Expected Success");
 
         await using (var ctx = _db.GetDbContext())
-        {
-            var fan = await ctx.GetTable<WaifuFan>().FirstOrDefaultAsyncLinqToDB(x => x.UserId == 2001);
-            Assert.That(fan, Is.Null);
-        }
+            Assert.That(await ctx.GetTable<WaifuFan>().FirstOrDefaultAsyncLinqToDB(x => x.UserId == 2001), Is.Null);
     }
 }

@@ -40,8 +40,18 @@ public sealed class DangerousSqlTests
     }
 
     [Test]
-    public void OwnerSql_CannotTouchOtherFilesOrPragmas()
+    public async Task OwnerSql_WorksOnTheBotsTablesButCannotTouchOtherFilesOrPragmas()
     {
+        await _svc.ExecuteSql("CREATE TABLE t (x INTEGER)");
+        Assert.That(await _svc.ExecuteSql("INSERT INTO t (x) VALUES (5)"), Is.EqualTo(1));
+        Assert.That(_svc.SelectSql("SELECT x FROM t").Results[0][0], Is.EqualTo("5"));
+
+        await using var conn = new SqliteConnection(_db.ConnectionString);
+        conn.Open();
+        await using var cmd = conn.CreateCommand();
+        cmd.CommandText = "PRAGMA user_version";
+        Assert.DoesNotThrow(() => cmd.ExecuteScalar());
+
         foreach (var sql in new[]
                  {
                      $"ATTACH DATABASE '{_target}' AS x",
@@ -122,7 +132,7 @@ public sealed class DangerousSqlTests
     }
 
     [Test]
-    public void SqlSelect_StopsARunawayQueryAtTheTimeLimit()
+    public void SqlSelect_StopsAtTheTimeAndRowLimitsAndCutsLongValues()
     {
         // The native progress handler must keep its deadline alive through a collection.
         GC.Collect();
@@ -134,10 +144,23 @@ public sealed class DangerousSqlTests
             TimeSpan.FromMilliseconds(300)));
 
         Assert.That(ex!.SqliteErrorCode, Is.EqualTo(SQLitePCL.raw.SQLITE_INTERRUPT));
+
+        var rows = _svc.SelectSql(
+            "WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n LIMIT 5000) SELECT x FROM n");
+        Assert.That((rows.Results.Count, rows.Truncated),
+            Is.EqualTo((DangerousCommandsService.MAX_SELECT_ROWS, true)));
+
+        var big = _svc.SelectSql("SELECT hex(randomblob(100000)), 'small'");
+        Assert.That(big.Truncated, Is.True);
+        Assert.That(big.Results[0][0].Length, Is.LessThanOrEqualTo(1000));
+        Assert.That(big.Results[0][1], Is.EqualTo("small"));
+
+        var small = _svc.SelectSql("SELECT 1, 'a'");
+        Assert.That((small.Results.Count, small.Truncated), Is.EqualTo((1, false)));
     }
 
     [Test]
-    public async Task SqlExec_StopsARunawayWriteAndKeepsNoRows()
+    public async Task SqlExec_StopsARunawayWriteAndCapsTheGrowthOfTheDatabase()
     {
         await _svc.ExecuteSql("CREATE TABLE t (x INTEGER)");
 
@@ -147,19 +170,15 @@ public sealed class DangerousSqlTests
 
         Assert.That(ex!.SqliteErrorCode, Is.EqualTo(SQLitePCL.raw.SQLITE_INTERRUPT));
         Assert.That(_svc.SelectSql("SELECT count(*) FROM t").Results[0][0], Is.EqualTo("0"));
-    }
 
-    [Test]
-    public async Task SqlExec_WithALimitCapsTheGrowthOfTheDatabase()
-    {
         await _svc.ExecuteSql("CREATE TABLE b (x BLOB)");
         var rows = (OwnerSqlConnection.EXEC_MAX_GROWTH_BYTES / 10_000_000) + 2;
 
-        var ex = Assert.ThrowsAsync<SqliteException>(() => _svc.ExecuteSql(
+        var full = Assert.ThrowsAsync<SqliteException>(() => _svc.ExecuteSql(
             $"WITH RECURSIVE r(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM r LIMIT {rows}) INSERT INTO b SELECT zeroblob(10000000) FROM r",
             TimeSpan.FromSeconds(30)));
 
-        Assert.That(ex!.SqliteErrorCode, Is.EqualTo(SQLitePCL.raw.SQLITE_FULL));
+        Assert.That(full!.SqliteErrorCode, Is.EqualTo(SQLitePCL.raw.SQLITE_FULL));
         Assert.That(await _svc.ExecuteSql("INSERT INTO b SELECT zeroblob(10000000)", null), Is.EqualTo(1));
     }
 
@@ -189,37 +208,6 @@ public sealed class DangerousSqlTests
         Assert.That(results, Has.Exactly(1).TypeOf<DangerousCommandsService.QueryBusyException>());
         Assert.That(results, Has.Exactly(1).TypeOf<SqliteException>());
         Assert.That(_svc.SelectSql("SELECT 1").Results, Has.Count.EqualTo(1));
-    }
-
-    [Test]
-    public async Task OwnerSql_WorksOnTheBotsTables_AndBotQueriesKeepPragmas()
-    {
-        await _svc.ExecuteSql("CREATE TABLE t (x INTEGER)");
-        Assert.That(await _svc.ExecuteSql("INSERT INTO t (x) VALUES (5)"), Is.EqualTo(1));
-        Assert.That(_svc.SelectSql("SELECT x FROM t").Results[0][0], Is.EqualTo("5"));
-
-        await using var conn = new SqliteConnection(_db.ConnectionString);
-        conn.Open();
-        await using var cmd = conn.CreateCommand();
-        cmd.CommandText = "PRAGMA user_version";
-        Assert.DoesNotThrow(() => cmd.ExecuteScalar());
-    }
-
-    [Test]
-    public void SqlSelect_StopsAtTheRowLimitAndCutsLongValues()
-    {
-        var rows = _svc.SelectSql(
-            "WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n LIMIT 5000) SELECT x FROM n");
-        Assert.That((rows.Results.Count, rows.Truncated),
-            Is.EqualTo((DangerousCommandsService.MAX_SELECT_ROWS, true)));
-
-        var big = _svc.SelectSql("SELECT hex(randomblob(100000)), 'small'");
-        Assert.That(big.Truncated, Is.True);
-        Assert.That(big.Results[0][0].Length, Is.LessThanOrEqualTo(1000));
-        Assert.That(big.Results[0][1], Is.EqualTo("small"));
-
-        var small = _svc.SelectSql("SELECT 1, 'a'");
-        Assert.That((small.Results.Count, small.Truncated), Is.EqualTo((1, false)));
     }
 
     private sealed class FileDbService(string path) : DbService

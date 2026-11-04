@@ -26,7 +26,7 @@ public sealed class ApiExprQuoteTests
         => _db.Dispose();
 
     [Test]
-    public void TryParseReactions_AcceptsOnlyAFewEmojisOrEmotesTheBotHas()
+    public void ExprInput_AcceptsOnlyAFewUsableReactionsAndTheListSortsPagesAndShowsTheStoredTrigger()
     {
         using var client = new DiscordSocketClient();
 
@@ -41,11 +41,7 @@ public sealed class ApiExprQuoteTests
         Assert.That(ExpressionEndpoints.TryParseReactions(["not an emoji"], client, null, out _), Is.False);
         Assert.That(ExpressionEndpoints.TryParseReactions(["👍@@@👎"], client, null, out _), Is.False);
         Assert.That(ExpressionEndpoints.TryParseReactions([" "], client, null, out _), Is.False);
-    }
 
-    [Test]
-    public void BuildExprList_SortsPaginatesAndShowsTheStoredTrigger()
-    {
         var exprs = new NadekoExpression[45];
         for (var i = 0; i < exprs.Length; i++)
             exprs[i] = new NadekoExpression { Id = i, Trigger = $"t{i:D2}", Response = "r", Reactions = "a@@@b" };
@@ -66,7 +62,7 @@ public sealed class ApiExprQuoteTests
     }
 
     [Test]
-    public async Task SetTrigger_KeepsDuplicatesUnlessOverrideIsOnThenAsksBeforeReplacing()
+    public async Task Edits_ChangeOnlyRowsOfTheirServerAndATakenTriggerNeedsOverrideAndConsent()
     {
         var renamed = await InsertExprAsync(1, "old");
         var other = await InsertExprAsync(1, "hi");
@@ -90,6 +86,32 @@ public sealed class ApiExprQuoteTests
         var wrongServer = await NadekoExpressionsService.SetTriggerInDbAsync(_db, 2, renamed, "x", true, true);
         Assert.That(wrongServer.Status, Is.EqualTo(SetTriggerStatus.NotFound));
         Assert.That(await ReadTriggerAsync(otherServer), Is.EqualTo("hi"));
+
+        int quoteId;
+        await using (var ctx = _db.GetDbContext())
+        {
+            quoteId = await ctx.GetTable<Quote>()
+                          .InsertWithInt32IdentityAsync(() => new Quote
+                          {
+                              GuildId = 1,
+                              Keyword = "OLD",
+                              Text = "old text",
+                              AuthorName = "bob",
+                              AuthorId = 2
+                          });
+        }
+
+        var rekeyed = await QuoteEndpoints.UpdateQuoteAsync(_db, 1, quoteId, "new", null);
+        Assert.That((rekeyed?.Keyword, rekeyed?.Text), Is.EqualTo(("NEW", "old text")));
+
+        var edited = await QuoteEndpoints.UpdateQuoteAsync(_db, 1, quoteId, null, "new text");
+        Assert.That((edited?.Keyword, edited?.Text), Is.EqualTo(("NEW", "new text")));
+
+        Assert.That(await QuoteEndpoints.UpdateQuoteAsync(_db, 2, quoteId, "x", "y"), Is.Null);
+
+        await using var check = _db.GetDbContext();
+        var stored = await check.GetTable<Quote>().FirstAsyncLinqToDB(x => x.Id == quoteId);
+        Assert.That((stored.Keyword, stored.Text), Is.EqualTo(("NEW", "new text")));
     }
 
     private async Task<int> InsertExprAsync(ulong guildId, string trigger)
@@ -114,35 +136,5 @@ public sealed class ApiExprQuoteTests
         await using var ctx = _db.GetDbContext();
         var expr = await ctx.GetTable<NadekoExpression>().FirstOrDefaultAsyncLinqToDB(x => x.Id == id);
         return expr?.Trigger;
-    }
-
-    [Test]
-    public async Task UpdateQuote_SetsOnlyTheGivenFieldsOfTheGuildsQuote()
-    {
-        int id;
-        await using (var ctx = _db.GetDbContext())
-        {
-            id = await ctx.GetTable<Quote>()
-                          .InsertWithInt32IdentityAsync(() => new Quote
-                          {
-                              GuildId = 1,
-                              Keyword = "OLD",
-                              Text = "old text",
-                              AuthorName = "bob",
-                              AuthorId = 2
-                          });
-        }
-
-        var renamed = await QuoteEndpoints.UpdateQuoteAsync(_db, 1, id, "new", null);
-        Assert.That((renamed?.Keyword, renamed?.Text), Is.EqualTo(("NEW", "old text")));
-
-        var edited = await QuoteEndpoints.UpdateQuoteAsync(_db, 1, id, null, "new text");
-        Assert.That((edited?.Keyword, edited?.Text), Is.EqualTo(("NEW", "new text")));
-
-        Assert.That(await QuoteEndpoints.UpdateQuoteAsync(_db, 2, id, "x", "y"), Is.Null);
-
-        await using var check = _db.GetDbContext();
-        var stored = await check.GetTable<Quote>().FirstAsyncLinqToDB(x => x.Id == id);
-        Assert.That((stored.Keyword, stored.Text), Is.EqualTo(("NEW", "new text")));
     }
 }

@@ -46,18 +46,14 @@ public class GiveawayWinnersTests
     }
 
     [Test]
-    public void WinnerToken_AcceptsOneToMaxWithSuffix()
+    public async Task WinnerCountAndPicks_StayInRangeAndRerollPicksSomeoneElse()
     {
         Assert.That(GiveawayService.TryParseWinnerCount("3w", out var three) && three == 3, Is.True);
         Assert.That(GiveawayService.TryParseWinnerCount($"{GiveawayService.MAX_WINNERS}W", out _), Is.True);
 
         foreach (var bad in new[] { "0w", $"{GiveawayService.MAX_WINNERS + 1}w", "w", "3", "-3w", "3x", "Nitro" })
             Assert.That(GiveawayService.TryParseWinnerCount(bad, out _), Is.False, bad);
-    }
 
-    [Test]
-    public async Task End_PicksDistinctWinnersAndRerollPicksSomeoneElse()
-    {
         var id = await _svc.StartGiveawayAsync(GUILD_ID, 1, MESSAGE_ID, TimeSpan.FromHours(1), "prize", 3);
         Assert.That(id, Is.Not.Null);
 

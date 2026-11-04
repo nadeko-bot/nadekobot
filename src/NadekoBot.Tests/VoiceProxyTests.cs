@@ -17,8 +17,18 @@ public sealed class VoiceProxyTests
         => new(GUILD_ID, channelId, USER_ID, "session", token, endpoint);
 
     [Test]
-    public async Task SpeakingState_ReachesEachGatewaySetLater()
+    public async Task Gateway_MatchesOnlyItsEvent_AndGetsTheSpeakingState()
     {
+        var matcher = new VoiceProxy(null!);
+        Assert.That(matcher.IsGatewayFor(CHANNEL_ID, "token", "voice.example:443"), Is.False);
+
+        matcher.SetGateway(NewGateway());
+        Assert.That(matcher.IsGatewayFor(CHANNEL_ID, "token", "voice.example:443"), Is.True);
+        Assert.That(matcher.IsGatewayFor(5, "token", "voice.example:443"), Is.False);
+        Assert.That(matcher.IsGatewayFor(CHANNEL_ID, "new-token", "voice.example:443"), Is.False);
+        Assert.That(matcher.IsGatewayFor(CHANNEL_ID, "token", "other.example:443"), Is.False);
+        matcher.SetGateway(null!);
+
         var proxy = new VoiceProxy(null!);
 
         await proxy.StartSpeakingAsync();
@@ -40,20 +50,6 @@ public sealed class VoiceProxyTests
         var next = NewGateway();
         proxy.SetGateway(next);
         Assert.That(next.Speaking, Is.EqualTo(VoiceSpeaking.State.None));
-        proxy.SetGateway(null!);
-    }
-
-    [Test]
-    public void IsGatewayFor_MatchesOnlyTheEventWhichMadeTheGateway()
-    {
-        var proxy = new VoiceProxy(null!);
-        Assert.That(proxy.IsGatewayFor(CHANNEL_ID, "token", "voice.example:443"), Is.False);
-
-        proxy.SetGateway(NewGateway());
-        Assert.That(proxy.IsGatewayFor(CHANNEL_ID, "token", "voice.example:443"), Is.True);
-        Assert.That(proxy.IsGatewayFor(5, "token", "voice.example:443"), Is.False);
-        Assert.That(proxy.IsGatewayFor(CHANNEL_ID, "new-token", "voice.example:443"), Is.False);
-        Assert.That(proxy.IsGatewayFor(CHANNEL_ID, "token", "other.example:443"), Is.False);
         proxy.SetGateway(null!);
     }
 }

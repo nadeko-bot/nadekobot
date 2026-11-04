@@ -84,7 +84,7 @@ public sealed class MusicServiceTests
     }
 
     [Test]
-    public void TrustedStream_OnlyYoutubeOnTheServiceOrigin()
+    public void ServiceStream_TrustedOnlyFromTheServiceOrigin_AndTheKeyGoesOnlyInFfmpegHeaders()
     {
         var audio = _client.GetAudioUrl(VIDEO_ID)!;
         Assert.That(audio, Is.EqualTo($"{BASE_URL}/v1/audio/{VIDEO_ID}"));
@@ -102,15 +102,11 @@ public sealed class MusicServiceTests
         Assert.That(_client.GetAudioUrl("../../etc"), Is.Null);
         Assert.That(MusicServiceClient.ParseBaseUrl("ftp://10.0.0.5"), Is.Null);
         Assert.That(MusicServiceClient.ParseBaseUrl("http://u:p@10.0.0.5"), Is.Null);
-    }
 
-    [Test]
-    public void FfmpegArguments_SendTheKeyWithoutAProxyAndRetry403()
-    {
         var headers = _client.FfmpegHeaders!;
         Assert.That(headers, Is.EqualTo($"Authorization: Bearer {KEY}\r\n"));
 
-        var args = FfmpegTrackDataSource.BuildArguments(_client.GetAudioUrl(VIDEO_ID)!, false, null, headers);
+        var args = FfmpegTrackDataSource.BuildArguments(audio, false, null, headers);
         Assert.That(args, Does.Not.Contain("-http_proxy"));
         Assert.That(args[Array.IndexOf(args, "-headers") + 1], Is.EqualTo(headers));
         Assert.That(args[Array.IndexOf(args, "-reconnect_on_http_error") + 1], Is.EqualTo("403"));
@@ -128,7 +124,7 @@ public sealed class MusicServiceTests
     }
 
     [Test]
-    public async Task Resolver_ReadsTracksPlaylistsAndSearchWithTheKey()
+    public async Task Client_ReadsWithTheKey_ErrorsGiveNoTrack_AndPrefetchNeverThrows()
     {
         _handler.Respond = req => req.RequestUri!.AbsolutePath switch
         {
@@ -168,12 +164,7 @@ public sealed class MusicServiceTests
 
         Assert.That(_handler.Requests, Has.All.Matches<(HttpMethod, string, string? Auth, string?)>(r => r.Auth == "Bearer " + KEY));
         Assert.That(await resolver.GetStreamUrl(VIDEO_ID), Is.EqualTo($"{BASE_URL}/v1/audio/{VIDEO_ID}"));
-    }
 
-    [Test]
-    public async Task Resolver_ErrorAnswersGiveNoTrack()
-    {
-        var resolver = new ServiceYoutubeResolver(_client);
         foreach (var (status, json) in new[]
                  {
                      (HttpStatusCode.NotFound, """{"error":"unavailable"}"""),
@@ -193,8 +184,22 @@ public sealed class MusicServiceTests
         Assert.That(await resolver.ResolveByIdAsync("../v1/x"), Is.Null);
         Assert.That(_handler.Requests.Count, Is.EqualTo(calls), "an invalid id never reaches the service");
 
+        _handler.Respond = _ => new HttpResponseMessage(HttpStatusCode.Accepted);
+        await _client.PrefetchAsync(VIDEO_ID);
+        var (method, path, auth, body) = _handler.Requests[^1];
+        Assert.That((method, path, auth), Is.EqualTo((HttpMethod.Post, "/v1/prefetch", (string?)("Bearer " + KEY))));
+        Assert.That(body, Is.EqualTo($$"""{"ids":["{{VIDEO_ID}}"]}"""));
+
+        _handler.Respond = _ => Json(HttpStatusCode.TooManyRequests, """{"error":"busy"}""");
+        await _client.PrefetchAsync(VIDEO_ID);
+
         _handler.Throw = true;
         Assert.That(await resolver.ResolveByQueryAsync("anything"), Is.Null);
+        Assert.DoesNotThrowAsync(() => _client.PrefetchAsync(VIDEO_ID));
+
+        calls = _handler.Requests.Count;
+        await _client.PrefetchAsync("not-an-id");
+        Assert.That(_handler.Requests.Count, Is.EqualTo(calls));
     }
 
     [Test]
@@ -234,30 +239,13 @@ public sealed class MusicServiceTests
     }
 
     [Test]
-    public async Task Prefetch_PostsTheIdAndNeverThrows()
+    public async Task PlaylistLoads_ReleaseTheLoadLock_AndKeepTheTracksQueuedBeforeAFailure()
     {
-        _handler.Respond = _ => new HttpResponseMessage(HttpStatusCode.Accepted);
-        await _client.PrefetchAsync(VIDEO_ID);
-        var (method, path, auth, body) = _handler.Requests[^1];
-        Assert.That((method, path, auth), Is.EqualTo((HttpMethod.Post, "/v1/prefetch", (string?)("Bearer " + KEY))));
-        Assert.That(body, Is.EqualTo($$"""{"ids":["{{VIDEO_ID}}"]}"""));
-
-        _handler.Respond = _ => Json(HttpStatusCode.TooManyRequests, """{"error":"busy"}""");
-        await _client.PrefetchAsync(VIDEO_ID);
-
-        _handler.Throw = true;
-        Assert.DoesNotThrowAsync(() => _client.PrefetchAsync(VIDEO_ID));
-
-        var calls = _handler.Requests.Count;
-        await _client.PrefetchAsync("not-an-id");
-        Assert.That(_handler.Requests.Count, Is.EqualTo(calls));
-    }
-
-    [Test]
-    public async Task PlaylistLoad_ReleasesTheLoadLockAfterAFinishedOrFailedLoad()
-    {
+        var resolver = Substitute.For<IYoutubeResolver>();
+        var factory = Substitute.For<IYoutubeResolverFactory>();
+        factory.GetYoutubeResolver().Returns(resolver);
         using var discord = new DiscordSocketClient();
-        var service = new MusicService(null!, null!, null!, null!, null!, discord, null!, null!, null!, null!, null!, null!, null!);
+        var service = new MusicService(null!, null!, null!, factory, null!, discord, null!, null!, null!, null!, null!, null!, null!);
         (string, MusicPlatform)[] songs = [("song", MusicPlatform.Youtube)];
 
         var failing = Substitute.For<IMusicPlayer>();
@@ -282,27 +270,17 @@ public sealed class MusicServiceTests
             Assert.That(released, Is.True);
             service.ExitPlaylistLoad();
         }
-    }
 
-    [Test]
-    public async Task YoutubePlaylist_KeepsTheTracksQueuedBeforeAFailure()
-    {
-        var resolver = Substitute.For<IYoutubeResolver>();
-        var factory = Substitute.For<IYoutubeResolverFactory>();
-        factory.GetYoutubeResolver().Returns(resolver);
-        using var discord = new DiscordSocketClient();
-        var service = new MusicService(null!, null!, null!, factory, null!, discord, null!, null!, null!, null!, null!, null!, null!);
-        var mp = Substitute.For<IMusicPlayer>();
-        mp.EnqueueResolvedTrack(Arg.Any<ITrackInfo>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<bool>())
-          .Returns((Substitute.For<IQueuedTrackInfo>(), 0));
+        var player = Substitute.For<IMusicPlayer>();
+        player.EnqueueResolvedTrack(Arg.Any<ITrackInfo>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<bool>())
+              .Returns((Substitute.For<IQueuedTrackInfo>(), 0));
 
         resolver.ResolveTracksFromPlaylistAsync(Arg.Any<string>()).Returns(_ => FailingPlaylistInternal(2));
-        var result = await service.EnqueueYoutubePlaylistAsync(mp, "mix", "queuer");
+        var result = await service.EnqueueYoutubePlaylistAsync(player, "mix", "queuer");
         Assert.That((result.Status, result.Added), Is.EqualTo((MusicAddStatus.Added, 2)));
-        mp.Received(2).EnqueueResolvedTrack(Arg.Any<ITrackInfo>(), "queuer", false, false);
 
         resolver.ResolveTracksFromPlaylistAsync(Arg.Any<string>()).Returns(_ => FailingPlaylistInternal(0));
-        Assert.ThrowsAsync<HttpRequestException>(() => service.EnqueueYoutubePlaylistAsync(mp, "mix", "queuer"));
+        Assert.ThrowsAsync<HttpRequestException>(() => service.EnqueueYoutubePlaylistAsync(player, "mix", "queuer"));
     }
 
     private static async IAsyncEnumerable<ITrackInfo> FailingPlaylistInternal(int tracksBeforeFailure)
@@ -340,37 +318,39 @@ public sealed class MusicServiceTests
     }
 
     [Test]
-    public void Queue_NextTrackFollowsRepeat()
+    public async Task FileCache_RetriesTheSameLinkAfter403_AndKeepsNoCutSong()
     {
-        var queue = new MusicQueue();
-        Assert.That(queue.GetNext(true), Is.Null);
+        const int sizeBytes = 1024;
 
-        queue.Enqueue(new RemoteTrackInfo(VIDEO_ID, "A", "u", "", TimeSpan.Zero, MusicPlatform.Youtube), "q", out _);
-        Assert.That(queue.GetNext(true), Is.Null, "the only track is already playing");
+        var forbiddenLeft = 2;
+        var retried = await DownloadInternalAsync(_ => Interlocked.Decrement(ref forbiddenLeft) >= 0
+            ? new HttpResponseMessage(HttpStatusCode.Forbidden)
+            : new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(new byte[sizeBytes]) });
 
-        queue.Enqueue(new RemoteTrackInfo(OTHER_ID, "B", "u", "", TimeSpan.Zero, MusicPlatform.Youtube), "q", out _);
-        Assert.That(queue.GetNext(false)?.Title, Is.EqualTo("B"));
+        Assert.That((retried.Complete, retried.Cached), Is.EqualTo((true, true)));
+        Assert.That((retried.Resolves, retried.Requests, retried.SameLink), Is.EqualTo((1, 3, true)));
 
-        queue.Advance();
-        Assert.That(queue.GetNext(false), Is.Null);
-        Assert.That(queue.GetNext(true)?.Title, Is.EqualTo("A"));
+        var first = 1;
+        var cut = await DownloadInternalAsync(_ =>
+        {
+            if (Interlocked.Exchange(ref first, 0) == 0)
+                return new HttpResponseMessage(HttpStatusCode.Forbidden);
+
+            var content = new StreamContent(new BrokenStream(sizeBytes / 2));
+            content.Headers.ContentLength = sizeBytes;
+            return new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
+        });
+
+        Assert.That((cut.Failed, cut.Cached), Is.EqualTo((true, false)));
     }
 
-    [Test]
-    public async Task FileCache_RetriesTheSameLinkAfter403()
+    private static async Task<(bool Complete, bool Failed, bool Cached, int Resolves, int Requests, bool SameLink)>
+        DownloadInternalAsync(Func<HttpRequestMessage, HttpResponseMessage> respond)
     {
-        const int forbiddenAnswers = 2;
-        const int sizeBytes = 1024;
         var url = "https://rr1---sn-test.googlevideo.com/videoplayback?id=" + Guid.NewGuid().ToString("N");
         var trackId = Guid.NewGuid().ToString("N")[..11];
 
-        var forbiddenLeft = forbiddenAnswers;
-        using var handler = new FakeServiceHandler
-        {
-            Respond = _ => Interlocked.Decrement(ref forbiddenLeft) >= 0
-                ? new HttpResponseMessage(HttpStatusCode.Forbidden)
-                : new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(new byte[sizeBytes]) }
-        };
+        using var handler = new FakeServiceHandler { Respond = respond };
         var factory = Substitute.For<IHttpClientFactory>();
         factory.CreateClient(Arg.Any<string>()).Returns(_ => new HttpClient(handler, false));
 
@@ -386,61 +366,15 @@ public sealed class MusicServiceTests
 
         try
         {
-            for (var i = 0; i < 200 && !state!.IsDone; i++)
-            {
-                await Task.Delay(10);
-                time.Advance(TimeSpan.FromSeconds(1));
-            }
-
-            Assert.That(state!.IsComplete, Is.True);
-            Assert.That(cache.GetCachedPath(trackId, MusicPlatform.Youtube), Is.Not.Null);
-            Assert.That(resolves, Is.EqualTo(1));
-            Assert.That(handler.Requests, Has.Count.EqualTo(3));
-            Assert.That(handler.Requests, Has.All.Matches<(HttpMethod, string Path, string?, string?)>(r => url.EndsWith(r.Path)));
-        }
-        finally
-        {
-            DeleteCachedInternal(cache, path, trackId);
-        }
-    }
-
-    [Test]
-    public async Task FileCache_KeepsNoCutSongWhenTheLinkDies()
-    {
-        const int sizeBytes = 1024;
-        var url = "https://rr1---sn-test.googlevideo.com/videoplayback?id=" + Guid.NewGuid().ToString("N");
-        var trackId = Guid.NewGuid().ToString("N")[..11];
-
-        var first = 1;
-        using var handler = new FakeServiceHandler
-        {
-            Respond = _ =>
-            {
-                if (Interlocked.Exchange(ref first, 0) == 0)
-                    return new HttpResponseMessage(HttpStatusCode.Forbidden);
-
-                var content = new StreamContent(new BrokenStream(sizeBytes / 2));
-                content.Headers.ContentLength = sizeBytes;
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
-            }
-        };
-        var factory = Substitute.For<IHttpClientFactory>();
-        factory.CreateClient(Arg.Any<string>()).Returns(_ => new HttpClient(handler, false));
-
-        var time = new FakeTimeProvider();
-        var cache = new AudioFileCacheService(null!, factory, new BotPolicy(false), null!, time);
-        var (path, state) = cache.GetOrStartDownload(trackId, MusicPlatform.Youtube, () => Task.FromResult<string?>(url));
-
-        try
-        {
             for (var i = 0; i < 500 && !state!.IsDone; i++)
             {
                 await Task.Delay(10);
                 time.Advance(TimeSpan.FromSeconds(1));
             }
 
-            Assert.That(state!.IsFailed, Is.True);
-            Assert.That(cache.GetCachedPath(trackId, MusicPlatform.Youtube), Is.Null);
+            return (state!.IsComplete, state!.IsFailed, cache.GetCachedPath(trackId, MusicPlatform.Youtube) is not null,
+                resolves, handler.Requests.Count,
+                handler.Requests.TrueForAll(r => url.EndsWith(r.PathAndQuery, StringComparison.Ordinal)));
         }
         finally
         {

@@ -28,21 +28,16 @@ public class WebmOpusDemuxerTests
     }
 
     [Test]
-    public async Task ReadsEveryPacketOfTheClip()
-    {
-        var packets = await ReadAllPacketsAsync(WebmOpusDemuxer.OpenFile(GetNyanpassuClipPath()));
-
-        // ffprobe: 25 packets of 20 ms.
-        Assert.That(packets, Has.Count.EqualTo(25));
-        Assert.That(packets.All(p => p.Length is > 0 and < 2000), Is.True);
-        Assert.That(packets.All(p => OpusPacket.GetSamplesPerChannel(p) == 960), Is.True);
-    }
-
-    [Test]
-    public async Task NetworkStreamGivesTheSamePacketsAndOtherFormatsAreRefused()
+    public async Task ReadsEveryPacketFromAFileOrASlowStreamAndRefusesOtherFormats()
     {
         var bytes = await File.ReadAllBytesAsync(GetNyanpassuClipPath());
-        var fromFile = await ReadAllPacketsAsync(new MemoryStream(bytes));
+        var fromFile = await ReadAllPacketsAsync(WebmOpusDemuxer.OpenFile(GetNyanpassuClipPath()));
+
+        // ffprobe: 25 packets of 20 ms.
+        Assert.That(fromFile, Has.Count.EqualTo(25));
+        Assert.That(fromFile.All(p => p.Length is > 0 and < 2000), Is.True);
+        Assert.That(fromFile.All(p => OpusPacket.GetSamplesPerChannel(p) == 960), Is.True);
+
         var fromTrickle = await ReadAllPacketsAsync(new TrickleStream(bytes));
 
         Assert.That(fromTrickle, Has.Count.EqualTo(fromFile.Count));

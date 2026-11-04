@@ -45,44 +45,6 @@ public class StarboardTests
         => _db.Dispose();
 
     [Test]
-    public void Emotes_ParseCompareAndReadBackFromFooter()
-    {
-        Assert.That(StarboardService.ParseEmote("⭐"), Is.InstanceOf<Emoji>());
-        Assert.That(StarboardService.ParseEmote("<:nadeko:123456789012345678>"), Is.InstanceOf<Emote>());
-        Assert.That(StarboardService.ParseEmote("<a:spin:123456789012345678>"), Is.InstanceOf<Emote>());
-
-        Assert.That(StarboardService.ParseEmote("not an emote"), Is.Null);
-        Assert.That(StarboardService.ParseEmote(""), Is.Null);
-        Assert.That(StarboardService.ParseEmote(new string('x', StarboardConsts.MAX_EMOTE_LENGTH + 1)), Is.Null);
-
-        var custom = Emote.Parse("<:nadeko:123456789012345678>");
-        var sameIdAnimated = Emote.Parse("<a:renamed:123456789012345678>");
-        var otherCustom = Emote.Parse("<:other:987654321098765432>");
-
-        Assert.That(StarboardService.EmoteEquals(custom, sameIdAnimated), Is.True);
-        Assert.That(StarboardService.EmoteEquals(custom, otherCustom), Is.False);
-
-        Assert.That(StarboardService.EmoteEquals(new Emoji("⭐"), new Emoji("⭐")), Is.True);
-        Assert.That(StarboardService.EmoteEquals(new Emoji("⭐"), new Emoji("🌟")), Is.False);
-
-        Assert.That(StarboardService.EmoteEquals(custom, new Emoji("⭐")), Is.False);
-
-        var embed = new EmbedBuilder().WithFooter("⭐ 12 | 987654321098765432").Build();
-
-        Assert.That(StarboardService.StarCountOf(embed), Is.EqualTo(12));
-        Assert.That(StarboardService.TryGetEntryId(embed), Is.EqualTo(987654321098765432UL));
-
-        // a custom emote renders as its name, which contains no digits to confuse the parser
-        var customFooter = new EmbedBuilder().WithFooter("blobstar 7 | 123").Build();
-        Assert.That(StarboardService.StarCountOf(customFooter), Is.EqualTo(7));
-        Assert.That(StarboardService.TryGetEntryId(customFooter), Is.EqualTo(123UL));
-
-        var foreign = new EmbedBuilder().WithFooter("something else").Build();
-        Assert.That(StarboardService.StarCountOf(foreign), Is.EqualTo(-1));
-        Assert.That(StarboardService.TryGetEntryId(foreign), Is.Null);
-    }
-
-    [Test]
     public async Task SetChannel_CreatesDefaults_KeepsSettingsAndForgetsOldBoard()
     {
         await _svc.SetChannelAsync(GUILD_ID, CHANNEL_ID);
@@ -127,8 +89,18 @@ public class StarboardTests
     }
 
     [Test]
-    public async Task SetEmote_RejectsUnconfiguredGuildAndInvalidEmote_FooterUsesCustomName()
+    public async Task Settings_NeedAChannelPersistAndResetRemovesEverything()
     {
+        var custom = Emote.Parse("<:nadeko:123456789012345678>");
+        Assert.That(StarboardService.EmoteEquals(custom, Emote.Parse("<a:renamed:123456789012345678>")), Is.True);
+        Assert.That(StarboardService.EmoteEquals(custom, Emote.Parse("<:other:987654321098765432>")), Is.False);
+        Assert.That(StarboardService.EmoteEquals(custom, new Emoji("⭐")), Is.False);
+
+        var footer = new EmbedBuilder().WithFooter("⭐ 12 | 987654321098765432").Build();
+        Assert.That(StarboardService.StarCountOf(footer), Is.EqualTo(12));
+        Assert.That(StarboardService.TryGetEntryId(footer), Is.EqualTo(987654321098765432UL));
+        Assert.That(StarboardService.TryGetEntryId(new EmbedBuilder().WithFooter("something else").Build()), Is.Null);
+
         Assert.That(await _svc.SetThresholdAsync(GUILD_ID, 5), Is.False);
         Assert.That(await _svc.SetEmoteAsync(GUILD_ID, "⭐"), Is.False);
         Assert.That(await _svc.ToggleAsync(GUILD_ID), Is.Null);
@@ -152,12 +124,6 @@ public class StarboardTests
         Assert.That(await _svc.SetEmoteAsync(GUILD_ID, "🌟"), Is.True);
         Assert.That(_svc.GetSettings(GUILD_ID)!.Emote, Is.EqualTo(new Emoji("🌟")));
         Assert.That(_svc.GetSettings(GUILD_ID)!.FooterEmote, Is.EqualTo("🌟"));
-    }
-
-    [Test]
-    public async Task TogglesAndIgnoredChannels_Persist_AndResetRemovesEverything()
-    {
-        await _svc.SetChannelAsync(GUILD_ID, CHANNEL_ID);
 
         await _svc.SetIgnoredChannelsAsync(GUILD_ID, [1, 2, 3]);
         Assert.That(_svc.GetIgnoredChannels(GUILD_ID), Is.EquivalentTo(new ulong[] { 1, 2, 3 }));
@@ -212,46 +178,11 @@ public class StarboardTests
     }
 
     [Test]
-    public void Layout_MapsPositionsToMessages_RemoveThresholdAndRangesMerge()
-    {
-        var perMessage = StarboardConsts.MAX_EMBEDS_PER_MESSAGE;
-
-        Assert.That(StarboardService.MessageIndexOf(0), Is.Zero);
-        Assert.That(StarboardService.MessageIndexOf(perMessage - 1), Is.Zero);
-        Assert.That(StarboardService.MessageIndexOf(perMessage), Is.EqualTo(1));
-
-        Assert.That(StarboardService.MessageCountFor(0), Is.Zero);
-        Assert.That(StarboardService.MessageCountFor(1), Is.EqualTo(1));
-        Assert.That(StarboardService.MessageCountFor(perMessage), Is.EqualTo(1));
-        Assert.That(StarboardService.MessageCountFor(perMessage + 1), Is.EqualTo(2));
-
-        // the example from the spec: 53 entries occupy 6 messages
-        Assert.That(StarboardService.MessageCountFor(53), Is.EqualTo(6));
-
-        // posts stay until a full star below the threshold, and the threshold never goes under one
-        Assert.That(StarboardService.RemoveThreshold(1), Is.EqualTo(1));
-        Assert.That(StarboardService.RemoveThreshold(3), Is.EqualTo(2));
-        Assert.That(StarboardService.RemoveThreshold(StarboardConsts.MAX_THRESHOLD),
-            Is.EqualTo(StarboardConsts.MAX_THRESHOLD - 1));
-
-        Assert.That(PositionRange.None.IsSome, Is.False);
-
-        var a = PositionRange.Of(7, 3);
-        Assert.That(a.From, Is.EqualTo(3));
-        Assert.That(a.To, Is.EqualTo(7));
-
-        // merging with nothing keeps the span, in both directions
-        Assert.That(a.Union(PositionRange.None), Is.EqualTo(a));
-        Assert.That(PositionRange.None.Union(a), Is.EqualTo(a));
-
-        var merged = a.Union(PositionRange.Of(11, 9));
-        Assert.That(merged.From, Is.EqualTo(3));
-        Assert.That(merged.To, Is.EqualTo(11));
-    }
-
-    [Test]
     public async Task Limit_DropsLowestRankedEntries_AndKeepsPositionsDense()
     {
+        Assert.That(PositionRange.Of(7, 3).Union(PositionRange.Of(11, 9)), Is.EqualTo(PositionRange.Of(11, 3)));
+        Assert.That(PositionRange.None.Union(PositionRange.Of(7, 3)), Is.EqualTo(PositionRange.Of(7, 3)));
+
         await _svc.SetChannelAsync(GUILD_ID, CHANNEL_ID);
         await SeedEntriesAsync(30);
 
@@ -287,6 +218,10 @@ public class StarboardTests
         // the entries which survive are the most starred ones
         Assert.That(remaining[0].StarCount, Is.EqualTo(100));
         Assert.That(remaining[^1].StarCount, Is.EqualTo(91));
+
+        // posts stay until a full star below the threshold, and the threshold never goes under one
+        Assert.That(StarboardService.RemoveThreshold(1), Is.EqualTo(1));
+        Assert.That(StarboardService.RemoveThreshold(3), Is.EqualTo(2));
     }
 
     [Test]

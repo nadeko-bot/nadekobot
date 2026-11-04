@@ -41,7 +41,7 @@ public sealed class NoAiAgentTests
     }
 
     [Test]
-    public void CommandSearch_LeavesOutNoAiAgentCommands()
+    public async Task CommandSearch_LeavesOutNoAiAgentCommands_AlsoFromParentGroups()
     {
         var json = $$"""
             {
@@ -58,11 +58,7 @@ public sealed class NoAiAgentTests
 
         Assert.That(entries, Has.Length.EqualTo(1));
         Assert.That(entries[0].Aliases, Is.EqualTo(new[] { "setstatus" }));
-    }
 
-    [Test]
-    public async Task Requirements_SeeNoAiAgentOnEveryParentGroup()
-    {
         var cmds = new CommandService();
         await cmds.AddModuleAsync<TopModule>(null);
 

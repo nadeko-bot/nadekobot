@@ -63,7 +63,7 @@ public sealed class ApiToolTests
     }
 
     [Test]
-    public async Task Tools_NeedTheKey()
+    public async Task Install_NeedsTheKeyAndRefusesBadRequestsAndToolsWhichFailTheirCheck()
     {
         using var anonymous = new HttpClient { BaseAddress = _http!.BaseAddress };
         using var list = await anonymous.GetAsync("/api/tools");
@@ -71,6 +71,54 @@ public sealed class ApiToolTests
 
         using var proxy = await anonymous.GetAsync("/api/youtube");
         Assert.That(proxy.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+
+        var package = Package("yt-dlp", "#!/bin/sh\necho 1\n");
+
+        using (var unknown = await _http.SendAsync(InstallRequest("bash", package)))
+            await AssertErrorAsync(unknown, HttpStatusCode.NotFound, "not_found");
+
+        using (var wrongSha = await _http.SendAsync(InstallRequest("yt-dlp", package, sha256: new string('0', 64))))
+            await AssertErrorAsync(wrongSha, HttpStatusCode.BadRequest, "checksum_mismatch");
+
+        foreach (var version in new[] { "", "../x", ".hidden", "-x", "a/b", new string('1', 65) })
+        {
+            using var bad = await _http.SendAsync(InstallRequest("yt-dlp", package, version));
+            await AssertErrorAsync(bad, HttpStatusCode.BadRequest, "bad_request");
+        }
+
+        foreach (var digest in new[] { "", "sha256:abc", "md5:" + new string('0', 64), DIGEST.ToUpperInvariant() })
+        {
+            using var bad = await _http.SendAsync(InstallRequest("yt-dlp", package, digest: digest));
+            await AssertErrorAsync(bad, HttpStatusCode.BadRequest, "bad_request");
+        }
+
+        using (var otherName = await _http.SendAsync(InstallRequest("deno", package)))
+            await AssertErrorAsync(otherName, HttpStatusCode.BadRequest, "bad_package");
+
+        using (var removeUnknown = await _http.DeleteAsync("/api/tools/bash"))
+            Assert.That(removeUnknown.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+
+        using (var deno = await _http.SendAsync(InstallRequest("deno", Package("deno", "#!/bin/sh\necho 2\n"))))
+            Assert.That(deno.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+        using (var ffmpeg = await _http.SendAsync(InstallRequest("ffmpeg",
+                   Package("ffmpeg", "#!/bin/sh\nprintf 'Supported file protocols:\\nInput:\\n  file\\n  https\\n'\n"))))
+            Assert.That(ffmpeg.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+        using (var noHttps = await _http.SendAsync(InstallRequest("ffmpeg",
+                   Package("ffmpeg", "#!/bin/sh\necho file\n"),
+                   "2",
+                   DIGEST.Replace("0123", "cccc"))))
+            await AssertErrorAsync(noHttps, HttpStatusCode.BadRequest, "tool_check_failed");
+
+        using (var failing = await _http.SendAsync(InstallRequest("yt-dlp", Package("yt-dlp", "#!/bin/sh\nexit 1\n"))))
+            await AssertErrorAsync(failing, HttpStatusCode.BadRequest, "tool_check_failed");
+
+        var tools = new MediaTools(_paths.ToolsDir);
+        Assert.That(tools.Deno, Is.Not.Null);
+        Assert.That(tools.Manifest("ffmpeg")?.Version, Is.EqualTo(VERSION), "a failed check keeps the current tool");
+        Assert.That(tools.Manifest("yt-dlp"), Is.Null);
+        Assert.That(Directory.GetFileSystemEntries(tools.ToolDir("yt-dlp")), Is.Empty, "no leftovers");
     }
 
     [Test]
@@ -110,62 +158,6 @@ public sealed class ApiToolTests
             Assert.That(removed.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
 
         Assert.That(tools.YtDlp, Is.EqualTo("yt-dlp"));
-    }
-
-    [Test]
-    public async Task Install_ChecksEachToolInThisSandbox()
-    {
-        using (var deno = await _http!.SendAsync(InstallRequest("deno", Package("deno", "#!/bin/sh\necho 2\n"))))
-            Assert.That(deno.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
-        using (var ffmpeg = await _http.SendAsync(InstallRequest("ffmpeg",
-                   Package("ffmpeg", "#!/bin/sh\nprintf 'Supported file protocols:\\nInput:\\n  file\\n  https\\n'\n"))))
-            Assert.That(ffmpeg.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
-        using (var noHttps = await _http.SendAsync(InstallRequest("ffmpeg",
-                   Package("ffmpeg", "#!/bin/sh\necho file\n"),
-                   "2",
-                   DIGEST.Replace("0123", "cccc"))))
-            await AssertErrorAsync(noHttps, HttpStatusCode.BadRequest, "tool_check_failed");
-
-        using (var failing = await _http.SendAsync(InstallRequest("yt-dlp", Package("yt-dlp", "#!/bin/sh\nexit 1\n"))))
-            await AssertErrorAsync(failing, HttpStatusCode.BadRequest, "tool_check_failed");
-
-        var tools = new MediaTools(_paths.ToolsDir);
-        Assert.That(tools.Deno, Is.Not.Null);
-        Assert.That(tools.Manifest("ffmpeg")?.Version, Is.EqualTo(VERSION), "a failed check keeps the current tool");
-        Assert.That(tools.Manifest("yt-dlp"), Is.Null);
-        Assert.That(Directory.GetFileSystemEntries(tools.ToolDir("yt-dlp")), Is.Empty, "no leftovers");
-    }
-
-    [Test]
-    public async Task Install_RefusesBadRequests()
-    {
-        var package = Package("yt-dlp", "#!/bin/sh\necho 1\n");
-
-        using (var unknown = await _http!.SendAsync(InstallRequest("bash", package)))
-            await AssertErrorAsync(unknown, HttpStatusCode.NotFound, "not_found");
-
-        using (var wrongSha = await _http.SendAsync(InstallRequest("yt-dlp", package, sha256: new string('0', 64))))
-            await AssertErrorAsync(wrongSha, HttpStatusCode.BadRequest, "checksum_mismatch");
-
-        foreach (var version in new[] { "", "../x", ".hidden", "-x", "a/b", new string('1', 65) })
-        {
-            using var bad = await _http.SendAsync(InstallRequest("yt-dlp", package, version));
-            await AssertErrorAsync(bad, HttpStatusCode.BadRequest, "bad_request");
-        }
-
-        foreach (var digest in new[] { "", "sha256:abc", "md5:" + new string('0', 64), DIGEST.ToUpperInvariant() })
-        {
-            using var bad = await _http.SendAsync(InstallRequest("yt-dlp", package, digest: digest));
-            await AssertErrorAsync(bad, HttpStatusCode.BadRequest, "bad_request");
-        }
-
-        using (var otherName = await _http.SendAsync(InstallRequest("deno", package)))
-            await AssertErrorAsync(otherName, HttpStatusCode.BadRequest, "bad_package");
-
-        using (var removeUnknown = await _http.DeleteAsync("/api/tools/bash"))
-            Assert.That(removeUnknown.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
 
     [Test]

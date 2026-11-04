@@ -69,16 +69,6 @@ public class MovieSearchTests
     }
 
     [Test]
-    public async Task WithoutAKey_ReturnsMissingKeyAndSendsNoRequest()
-    {
-        var result = await CreateService("", "  ").GetMovieDataAsync("the matrix");
-
-        Assert.That(result.TryPickT1(out var error, out _), Is.True);
-        Assert.That(error, Is.EqualTo(MovieError.MissingKey));
-        Assert.That(_handler.Calls, Is.Zero);
-    }
-
-    [Test]
     public async Task TheEnvironmentKeyWinsOverCredsAndTheFieldsMap()
     {
         var result = await CreateService("env-key", "creds-key").GetMovieDataAsync("  The Matrix ");
@@ -102,8 +92,13 @@ public class MovieSearchTests
     }
 
     [Test]
-    public async Task FailuresMapToTheirErrorAndAreNotCached()
+    public async Task MissingKeyAndFailuresMapToTheirErrorAndAreNotCached()
     {
+        var noKey = await CreateService("", "  ").GetMovieDataAsync("the matrix");
+        Assert.That(noKey.TryPickT1(out var error, out _), Is.True);
+        Assert.That(error, Is.EqualTo(MovieError.MissingKey));
+        Assert.That(_handler.Calls, Is.Zero, "no key sends no request");
+
         var svc = CreateService("key", "");
 
         _handler.Body = """{"Response":"False","Error":"Movie not found!"}""";

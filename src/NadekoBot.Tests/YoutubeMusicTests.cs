@@ -27,7 +27,7 @@ public sealed class YoutubeMusicTests
         => Directory.Delete(_dir, recursive: true);
 
     [Test]
-    public void Hosts_MatchOnlyYoutubeNamesOnWebPorts()
+    public void HostsAndUpstreamProxy_TakeOnlyYoutubeNamesAndAPlainHttpProxyUrl()
     {
         foreach (var host in new[]
                  {
@@ -45,11 +45,7 @@ public sealed class YoutubeMusicTests
 
         Assert.That(YoutubeHosts.Matches("www.youtube.com", 80), Is.True);
         Assert.That(YoutubeHosts.Matches("www.youtube.com", 8080), Is.False);
-    }
 
-    [Test]
-    public void UpstreamProxy_TakesOnlyAPlainHttpProxyUrl()
-    {
         Assert.That(UpstreamProxy.TryParse("http://1.2.3.4:8080/", out var plain), Is.True);
         Assert.That((plain.EndPoint.Host, plain.EndPoint.Port, plain.Authorization), Is.EqualTo(("1.2.3.4", 8080, (string?)null)));
 
@@ -67,7 +63,7 @@ public sealed class YoutubeMusicTests
     }
 
     [Test]
-    public void Setting_ReadsTheFileAgainWhenItChanges()
+    public async Task Proxy_ReadsTheSettingAndSendsYoutubeThroughTheUpstreamByNameWithAuth()
     {
         var setting = new YoutubeUpstreamSetting(Path.Combine(_dir, ".youtube-proxy"));
         Assert.That(setting.Current, Is.Null);
@@ -83,16 +79,11 @@ public sealed class YoutubeMusicTests
 
         setting.Clear();
         Assert.That(setting.Current, Is.Null);
-    }
 
-    [Test]
-    public async Task Proxy_SendsYoutubeThroughTheUpstreamByNameWithAuth()
-    {
         using var upstream = new TcpListener(IPAddress.Loopback, 0);
         upstream.Start();
         var served = ServeTunnelInternalAsync(upstream);
 
-        var setting = new YoutubeUpstreamSetting(Path.Combine(_dir, ".youtube-proxy"));
         setting.Set("p1", $"http://user:pw@127.0.0.1:{((IPEndPoint)upstream.LocalEndpoint).Port}/");
         var stats = new YoutubeStats(TimeProvider.System);
 
@@ -116,7 +107,7 @@ public sealed class YoutubeMusicTests
     }
 
     [Test]
-    public async Task Proxy_GivesBadGatewayAndCountsItWhenTheUpstreamFails()
+    public async Task Proxy_GivesBadGatewayWhenTheUpstreamFails_AndWithoutASettingTreatsYoutubeLikeAnyHost()
     {
         // A port with no listener.
         var closed = new TcpListener(IPAddress.Loopback, 0);
@@ -133,24 +124,20 @@ public sealed class YoutubeMusicTests
         var response = await SendInternalAsync(url, "CONNECT rr1.googlevideo.com:443 HTTP/1.1\r\n\r\n");
         Assert.That(response, Does.StartWith("HTTP/1.1 502"));
         Assert.That(stats.LastHour().ProxyErrors, Is.EqualTo(1));
+
+        var noSetting = new YoutubeUpstreamSetting(Path.Combine(_dir, ".youtube-proxy-none"));
+        var plainStats = new YoutubeStats(TimeProvider.System);
+        using var plainProxy = PublicOnlyProxy.ForTests(static _ => false, null, noSetting, plainStats);
+        Assert.That(plainProxy.HasYoutubeUpstream, Is.False);
+        Assert.That(plainProxy.TryGetUrl(out var plainUrl), Is.True);
+
+        var refused = await SendInternalAsync(plainUrl, "CONNECT www.youtube.com:443 HTTP/1.1\r\n\r\n");
+        Assert.That(refused, Does.StartWith("HTTP/1.1 403"), "the address check, not the YouTube proxy");
+        Assert.That(plainStats.LastHour().ProxyErrors, Is.Zero);
     }
 
     [Test]
-    public async Task Proxy_WithoutASettingTreatsYoutubeLikeAnyHost()
-    {
-        var setting = new YoutubeUpstreamSetting(Path.Combine(_dir, ".youtube-proxy"));
-        var stats = new YoutubeStats(TimeProvider.System);
-        using var proxy = PublicOnlyProxy.ForTests(static _ => false, null, setting, stats);
-        Assert.That(proxy.HasYoutubeUpstream, Is.False);
-        Assert.That(proxy.TryGetUrl(out var url), Is.True);
-
-        var response = await SendInternalAsync(url, "CONNECT www.youtube.com:443 HTTP/1.1\r\n\r\n");
-        Assert.That(response, Does.StartWith("HTTP/1.1 403"), "the address check, not the YouTube proxy");
-        Assert.That(stats.LastHour().ProxyErrors, Is.Zero);
-    }
-
-    [Test]
-    public void Classify_ReadsYtDlpErrors()
+    public void Stats_ClassifyYtDlpErrorsAndKeepTheLastHourAndDay()
     {
         Assert.That(YoutubeStats.Classify("", true), Is.EqualTo(((YoutubeOutcome?)YoutubeOutcome.Ok, false)));
         Assert.That(YoutubeStats.Classify("", false), Is.EqualTo(((YoutubeOutcome?)null, false)));
@@ -165,11 +152,7 @@ public sealed class YoutubeMusicTests
         Assert.That(
             YoutubeStats.Classify("WARNING: [youtube] No supported JavaScript runtime could be found.", true),
             Is.EqualTo(((YoutubeOutcome?)YoutubeOutcome.Ok, true)));
-    }
 
-    [Test]
-    public void Stats_KeepTheLastHourAndDay()
-    {
         var time = new FakeTimeProvider(DateTimeOffset.Parse("2026-10-15T00:00:00Z"));
         var stats = new YoutubeStats(time);
         stats.Record(YoutubeOutcome.Ok);

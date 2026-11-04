@@ -146,7 +146,7 @@ public sealed class NotificationApiTests
             _music);
 
     [Test]
-    public async Task Feeds_AddRefusesDuplicatesAndTheLimitAndEditsAndRemovesByIdWithTheLoopCache()
+    public async Task Feeds_AddRefusesDuplicatesAndTheLimitAndEditsAndRemovesByIdWithTheLoopCacheAndTheMessageField()
     {
         var feeds = CreateFeeds();
         const string first = "https://1.1.1.1/a.xml";
@@ -175,6 +175,22 @@ public sealed class NotificationApiTests
         Assert.That(await feeds.RemoveFeedAsync(GUILD, id), Is.True);
         Assert.That(feeds.GetTrackedSubs(first).Select(static x => x.GuildId), Is.EqualTo(new[] { OTHER_GUILD }));
         Assert.That((await feeds.GetFeedsAsync(GUILD)).Select(static x => x.Url), Is.EqualTo(new[] { "https://1.1.1.1/b.xml" }));
+
+        // A missing message field keeps the message, null clears it, and text sets it.
+        (bool Ok, bool Set, string? Message) ParseMessage(string json)
+        {
+            var body = JsonSerializer.Deserialize(json, ApiJsonContext.Default.UpdateFeedRequest)!;
+            var ok = NotificationInput.TryReadMessage(body.Message, out var set, out var message);
+            return (ok, set, message);
+        }
+
+        Assert.That(ParseMessage("""{"channelId":"1"}"""), Is.EqualTo((true, false, (string?)null)));
+        Assert.That(ParseMessage("""{"message":null}"""), Is.EqualTo((true, true, (string?)null)));
+        Assert.That(ParseMessage("""{"message":""}"""), Is.EqualTo((true, true, (string?)null)));
+        Assert.That(ParseMessage("""{"message":"<@&1> live"}"""), Is.EqualTo((true, true, (string?)"<@&1> live")));
+        Assert.That(ParseMessage($$"""{"message":"{{new string('a', NotificationInput.MAX_MESSAGE_LENGTH + 1)}}"}""").Ok, Is.False);
+        Assert.That(ParseMessage("""{"message":5}""").Ok, Is.False);
+        Assert.That(NotificationInput.IsMessage(new string('a', NotificationInput.MAX_MESSAGE_LENGTH)), Is.True);
     }
 
     [Test]
@@ -215,7 +231,7 @@ public sealed class NotificationApiTests
     }
 
     [Test]
-    public async Task Feeds_YouTubeUploadsComeFromTheServiceAndOnlyAMissingChannelFails()
+    public async Task Feeds_YouTubeUploadsComeFromTheServiceNewVideosAreFoundByIdAndOnlyAMissingChannelFails()
     {
         var channel = ChannelId('c');
         var feedUrl = FeedsService.YtFeedUrl(channel);
@@ -260,11 +276,7 @@ public sealed class NotificationApiTests
         Assert.That(FeedsService.TryGetYtFeedChannelId($"https://www.youtube.com/feeds/videos.xml?x=1&channel_id={channel}", out _));
         Assert.That(FeedsService.TryGetYtFeedChannelId("https://www.youtube.com/feeds/videos.xml?user=nadeko", out _), Is.False);
         Assert.That(FeedsService.TryGetYtFeedChannelId($"https://example.com/feeds/videos.xml?channel_id={channel}", out _), Is.False);
-    }
 
-    [Test]
-    public void Uploads_NewVideosAreFoundByIdAndAServiceOutageKeepsTheStreak()
-    {
         static MusicServiceUpload[] List(params string[] ids)
             => ids.Select(static x => new MusicServiceUpload(x, x, null)).ToArray();
 
@@ -314,14 +326,14 @@ public sealed class NotificationApiTests
     }
 
     [Test]
-    public async Task Streams_StartWithNamesWhichDifferOnlyInLetterCase()
+    public async Task Streams_MatchNamesAndKeysInAnyLetterCase()
     {
         // Both servers are on shard 1 of 2, the shard of the test client.
-        const ulong first = 1UL << 22;
-        const ulong second = 3UL << 22;
+        const ulong firstGuild = 1UL << 22;
+        const ulong secondGuild = 3UL << 22;
         await using (var ctx = _db.GetDbContext())
         {
-            foreach (var (guildId, name) in new[] { (first, "Nadeko"), (second, "nadeko") })
+            foreach (var (guildId, name) in new[] { (firstGuild, "Nadeko"), (secondGuild, "nadeko") })
             {
                 await StreamNotificationService.TryAddFollowAsync(ctx,
                     new FollowedStream { GuildId = guildId, ChannelId = CHANNEL, Type = FollowedStream.FType.Trovo, Username = name },
@@ -334,11 +346,49 @@ public sealed class NotificationApiTests
         var streams = CreateStreams(creds);
 
         Assert.DoesNotThrowAsync(() => streams.OnReadyAsync());
-        Assert.That((await streams.GetStreamsAsync(first)).Count + (await streams.GetStreamsAsync(second)).Count, Is.EqualTo(2));
+        Assert.That((await streams.GetStreamsAsync(firstGuild)).Count + (await streams.GetStreamsAsync(secondGuild)).Count, Is.EqualTo(2));
+
+        var stored = new StreamDataKey(FollowedStream.FType.Youtube, _live);
+        var fromData = new StreamData { StreamType = FollowedStream.FType.Youtube, UniqueName = _live.ToLowerInvariant() }.CreateKey();
+        Assert.That(fromData, Is.EqualTo(stored));
+        Assert.That(new HashSet<StreamDataKey> { stored }.Contains(fromData), Is.True);
+        Assert.That(new StreamDataKey(FollowedStream.FType.Twitch, _live), Is.Not.EqualTo(stored));
+
+        var row = new FollowedStream { ChannelId = CHANNEL, Username = "Nadeko ", Type = FollowedStream.FType.Twitch };
+        var same = new FollowedStream { ChannelId = CHANNEL, Username = "nadeko", Type = FollowedStream.FType.Twitch };
+        Assert.That(new HashSet<FollowedStream> { row }.Contains(same), Is.True);
+
+        // A stream goes offline after two offline checks in a row, also when the platform changes the name's case.
+        static StreamData Trovo(string name, bool live)
+            => new() { StreamType = FollowedStream.FType.Trovo, UniqueName = name, Name = name, IsLive = live };
+
+        // An answer without a name or avatar (YouTube offline) keeps the last ones for the alert.
+        static StreamData Nameless(string name)
+            => new() { StreamType = FollowedStream.FType.Trovo, UniqueName = name, Name = string.Empty, IsLive = false };
+
+        var checker = new NotifChecker([]);
+        var first = Trovo("Nadeko", true);
+        first.AvatarUrl = "https://example.com/a.png";
+        checker.AddLastData(new StreamDataKey(FollowedStream.FType.Trovo, "Nadeko"), first, true);
+        var online = new List<StreamData>();
+        var offline = new List<StreamData>();
+        checker.ApplyCheck([Nameless("nadeko")], online, offline);
+        Assert.That((online.Count, offline.Count), Is.EqualTo((0, 0)));
+        checker.ApplyCheck([Nameless("NADEKO")], online, offline);
+        Assert.That((online.Count, offline.Count, offline[0].Name, offline[0].AvatarUrl),
+            Is.EqualTo((0, 1, "Nadeko", "https://example.com/a.png")));
+        checker.ApplyCheck([Trovo("Nadeko", true)], online, offline);
+        Assert.That((online.Count, offline.Count), Is.EqualTo((1, 1)));
+        Assert.That(checker.GetAllData(), Has.Count.EqualTo(1));
+
+        // With no name ever known, the alert shows the channel id.
+        checker.ApplyCheck([Nameless("other")], online, offline);
+        Assert.That(checker.GetAllData()[new StreamDataKey(FollowedStream.FType.Trovo, "other")]!.Name, Is.EqualTo("other"));
     }
 
     [Test]
-    public async Task Streams_EditRefusesADuplicateChannelAndTheSettingsAreSetNotToggled()    {
+    public async Task Streams_EditRefusesADuplicateChannelTheSettingsAreSetNotToggledAndLinksShowEachPlatform()
+    {
         var streams = CreateStreams();
         FollowedStream Row(ulong channelId, string? message)
             => new()
@@ -385,12 +435,8 @@ public sealed class NotificationApiTests
         Assert.That((await streams.UnfollowStreamByIdAsync(GUILD, first.Id))?.Id, Is.EqualTo(first.Id));
         Assert.That(await streams.UnfollowStreamByIdAsync(GUILD, first.Id), Is.Null);
         Assert.That((await streams.GetStreamsAsync(GUILD)).Select(static x => x.ChannelId), Is.EqualTo(new[] { OTHER_CHANNEL }));
-    }
 
-    [Test]
-    public void StreamLinks_ShowThePageOfEachPlatform()
-    {
-        var expected = new Dictionary<FollowedStream.FType, (string, string)>
+        var platforms = new Dictionary<FollowedStream.FType, (string, string)>
         {
             [FollowedStream.FType.Twitch] = ("twitch", "https://twitch.tv/x"),
             [FollowedStream.FType.Picarto] = ("picarto", "https://picarto.tv/x"),
@@ -401,7 +447,7 @@ public sealed class NotificationApiTests
         };
 
         foreach (var type in Enum.GetValues<FollowedStream.FType>())
-            Assert.That((StreamEndpoints.PlatformName(type), StreamEndpoints.StreamUrl(type, "x")), Is.EqualTo(expected[type]), type.ToString());
+            Assert.That((StreamEndpoints.PlatformName(type), StreamEndpoints.StreamUrl(type, "x")), Is.EqualTo(platforms[type]), type.ToString());
     }
 
     private string LiveAnswer(string? body)
@@ -509,65 +555,5 @@ public sealed class NotificationApiTests
         var unconfigured = new NotifChecker([new YouTubeProvider(_factory, _config, noService)]);
         Assert.That(await unconfigured.LookupByUrlAsync(link),
             Is.EqualTo(new StreamLookup(StreamLookupStatus.Unavailable, null, FollowedStream.FType.Youtube)));
-    }
-
-    [Test]
-    public void StreamKeys_MatchInAnyLetterCase()
-    {
-        var stored = new StreamDataKey(FollowedStream.FType.Youtube, _live);
-        var fromData = new StreamData { StreamType = FollowedStream.FType.Youtube, UniqueName = _live.ToLowerInvariant() }.CreateKey();
-        Assert.That(fromData, Is.EqualTo(stored));
-        Assert.That(new HashSet<StreamDataKey> { stored }.Contains(fromData), Is.True);
-        Assert.That(new StreamDataKey(FollowedStream.FType.Twitch, _live), Is.Not.EqualTo(stored));
-
-        var row = new FollowedStream { ChannelId = CHANNEL, Username = "Nadeko ", Type = FollowedStream.FType.Twitch };
-        var same = new FollowedStream { ChannelId = CHANNEL, Username = "nadeko", Type = FollowedStream.FType.Twitch };
-        Assert.That(new HashSet<FollowedStream> { row }.Contains(same), Is.True);
-
-        // A stream goes offline after two offline checks in a row, also when the platform changes the name's case.
-        static StreamData Trovo(string name, bool live)
-            => new() { StreamType = FollowedStream.FType.Trovo, UniqueName = name, Name = name, IsLive = live };
-
-        // An answer without a name or avatar (YouTube offline) keeps the last ones for the alert.
-        static StreamData Nameless(string name)
-            => new() { StreamType = FollowedStream.FType.Trovo, UniqueName = name, Name = string.Empty, IsLive = false };
-
-        var checker = new NotifChecker([]);
-        var first = Trovo("Nadeko", true);
-        first.AvatarUrl = "https://example.com/a.png";
-        checker.AddLastData(new StreamDataKey(FollowedStream.FType.Trovo, "Nadeko"), first, true);
-        var online = new List<StreamData>();
-        var offline = new List<StreamData>();
-        checker.ApplyCheck([Nameless("nadeko")], online, offline);
-        Assert.That((online.Count, offline.Count), Is.EqualTo((0, 0)));
-        checker.ApplyCheck([Nameless("NADEKO")], online, offline);
-        Assert.That((online.Count, offline.Count, offline[0].Name, offline[0].AvatarUrl),
-            Is.EqualTo((0, 1, "Nadeko", "https://example.com/a.png")));
-        checker.ApplyCheck([Trovo("Nadeko", true)], online, offline);
-        Assert.That((online.Count, offline.Count), Is.EqualTo((1, 1)));
-        Assert.That(checker.GetAllData(), Has.Count.EqualTo(1));
-
-        // With no name ever known, the alert shows the channel id.
-        checker.ApplyCheck([Nameless("other")], online, offline);
-        Assert.That(checker.GetAllData()[new StreamDataKey(FollowedStream.FType.Trovo, "other")]!.Name, Is.EqualTo("other"));
-    }
-
-    [Test]
-    public void UpdateMessage_AMissingFieldKeepsItNullClearsItAndTextSetsIt()
-    {
-        (bool Ok, bool Set, string? Message) Parse(string json)
-        {
-            var body = JsonSerializer.Deserialize(json, ApiJsonContext.Default.UpdateFeedRequest)!;
-            var ok = NotificationInput.TryReadMessage(body.Message, out var set, out var message);
-            return (ok, set, message);
-        }
-
-        Assert.That(Parse("""{"channelId":"1"}"""), Is.EqualTo((true, false, (string?)null)));
-        Assert.That(Parse("""{"message":null}"""), Is.EqualTo((true, true, (string?)null)));
-        Assert.That(Parse("""{"message":""}"""), Is.EqualTo((true, true, (string?)null)));
-        Assert.That(Parse("""{"message":"<@&1> live"}"""), Is.EqualTo((true, true, (string?)"<@&1> live")));
-        Assert.That(Parse($$"""{"message":"{{new string('a', NotificationInput.MAX_MESSAGE_LENGTH + 1)}}"}""").Ok, Is.False);
-        Assert.That(Parse("""{"message":5}""").Ok, Is.False);
-        Assert.That(NotificationInput.IsMessage(new string('a', NotificationInput.MAX_MESSAGE_LENGTH)), Is.True);
     }
 }

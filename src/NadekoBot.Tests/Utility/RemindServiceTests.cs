@@ -30,7 +30,7 @@ public class RemindServiceTests
         => _svc.AddReminderAsync(userId, 1, guildId, false, DateTime.UtcNow.AddDays(1), "hi", type);
 
     [Test]
-    public async Task Add_StopsAtTheMemberAndServerLimits()
+    public async Task Add_StopsAtTheMemberAndServerLimits_AndDmRemindersHaveOnlyTheMemberLimit()
     {
         for (var i = 0; i < RemindService.MAX_REMINDERS_PER_USER; i++)
             Assert.That(await AddAsync(USER_ID, GUILD_ID), Is.True);
@@ -47,16 +47,12 @@ public class RemindServiceTests
 
         Assert.That(await AddAsync(9999, GUILD_ID), Is.False);
         Assert.That(await AddAsync(9999, GUILD_ID + 1), Is.True);
-    }
 
-    // Every DM reminder has server id 0, so a server limit there would let a few members block DM reminders for all.
-    [Test]
-    public async Task DmReminders_HaveOnlyTheMemberLimit()
-    {
-        var added = 0;
-        for (var user = 1UL; added <= RemindService.MAX_REMINDERS_PER_SERVER; user++)
+        // Every DM reminder has server id 0, so a server limit there would let a few members block DM reminders for all.
+        var dmAdded = 0;
+        for (var user = 100_000UL; dmAdded <= RemindService.MAX_REMINDERS_PER_SERVER; user++)
         {
-            for (var i = 0; i < RemindService.MAX_REMINDERS_PER_USER; i++, added++)
+            for (var i = 0; i < RemindService.MAX_REMINDERS_PER_USER; i++, dmAdded++)
                 Assert.That(await AddAsync(user, 0), Is.True);
 
             Assert.That(await AddAsync(user, 0), Is.False);

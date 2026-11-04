@@ -63,7 +63,7 @@ public sealed class XpRoleRewardTests
     }
 
     [Test]
-    public async Task SetRoleReward_KeepsAddAndRemoveAtOneLevel_AndUpdatesSameRole()
+    public async Task SetAndResetRoleReward_KeepAddAndRemoveAtOneLevelOnlyInThatGuild()
     {
         await _svc.SetRoleRewardAsync(GUILD_ID, 5, MEMBER_ROLE, false);
         await _svc.SetRoleRewardAsync(GUILD_ID, 5, NEWBIE_ROLE, true);
@@ -85,27 +85,7 @@ public sealed class XpRoleRewardTests
         // the dashboard's level route keeps only the role it sets
         Assert.That(await _svc.ReplaceLevelRoleRewardAsync(GUILD_ID, 5, NEWBIE_ROLE, false), Is.True);
         Assert.That(await GetRewardsAsync(), Is.EqualTo(new[] { (5, NEWBIE_ROLE, false) }));
-    }
 
-    [Test]
-    public async Task SetRoleReward_StopsAtTheLimitButStillUpdatesAReward()
-    {
-        for (var level = 1; level <= XpService.MAX_ROLE_REWARDS; level++)
-            Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID, level, MEMBER_ROLE, false), Is.True);
-
-        Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID, XpService.MAX_ROLE_REWARDS + 1, MEMBER_ROLE, false), Is.False);
-        Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID, 1, NEWBIE_ROLE, false), Is.False);
-        Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID, 1, MEMBER_ROLE, true), Is.True);
-        Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID + 1, 1, MEMBER_ROLE, false), Is.True);
-
-        var rewards = await GetRewardsAsync();
-        Assert.That(rewards, Has.Length.EqualTo(XpService.MAX_ROLE_REWARDS));
-        Assert.That(rewards[0], Is.EqualTo((1, MEMBER_ROLE, true)));
-    }
-
-    [Test]
-    public async Task ResetRoleReward_ClearsOneRoleOrTheWholeLevel_OnlyInThatGuild()
-    {
         const ulong otherGuildId = 222;
 
         await _svc.SetRoleRewardAsync(GUILD_ID, 5, MEMBER_ROLE, false);
@@ -128,5 +108,21 @@ public sealed class XpRoleRewardTests
         await using var ctx = _db.GetDbContext();
         var total = await ctx.GetTable<XpRoleReward>().CountAsyncLinqToDB();
         Assert.That(total, Is.EqualTo(2));
+    }
+
+    [Test]
+    public async Task SetRoleReward_StopsAtTheLimitButStillUpdatesAReward()
+    {
+        for (var level = 1; level <= XpService.MAX_ROLE_REWARDS; level++)
+            Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID, level, MEMBER_ROLE, false), Is.True);
+
+        Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID, XpService.MAX_ROLE_REWARDS + 1, MEMBER_ROLE, false), Is.False);
+        Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID, 1, NEWBIE_ROLE, false), Is.False);
+        Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID, 1, MEMBER_ROLE, true), Is.True);
+        Assert.That(await _svc.SetRoleRewardAsync(GUILD_ID + 1, 1, MEMBER_ROLE, false), Is.True);
+
+        var rewards = await GetRewardsAsync();
+        Assert.That(rewards, Has.Length.EqualTo(XpService.MAX_ROLE_REWARDS));
+        Assert.That(rewards[0], Is.EqualTo((1, MEMBER_ROLE, true)));
     }
 }

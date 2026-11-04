@@ -40,7 +40,7 @@ public class WaifuMoodActionTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task ImproveMood_IncreasesByActionAndCapsAt1000()
+    public async Task ImproveMood_IncreasesByActionCapsAt1000AndNeedsAWaifuAndActionsLeft()
     {
         // Hug=50, Kiss=75, Pat=37
         await using (var ctx = _db.GetDbContext())
@@ -63,11 +63,7 @@ public class WaifuMoodActionTests
             Assert.That((await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1003)).Mood, Is.EqualTo(37));
             Assert.That((await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1004)).Mood, Is.EqualTo(1000));
         }
-    }
 
-    [Test]
-    public async Task ImproveMood_NonWaifuOrNoActionsLeft_Fails()
-    {
         var nonWaifu = await _svc.ImproveMoodAsync(2001, 1009, WaifuAction.Hug);
         Assert.That(nonWaifu.IsT3, Is.True, "Expected NoEffect");
 
@@ -75,9 +71,9 @@ public class WaifuMoodActionTests
             .Returns(new System.Threading.Tasks.ValueTask<OneOf.OneOf<int, None>>((OneOf.OneOf<int, None>)2));
 
         await using (var ctx = _db.GetDbContext())
-            await WaifuTestHelper.CreateWaifu(ctx, 1001, mood: 500);
+            await WaifuTestHelper.CreateWaifu(ctx, 1005, mood: 500);
 
-        var noActions = await _svc.ImproveMoodAsync(2001, 1001, WaifuAction.Hug);
+        var noActions = await _svc.ImproveMoodAsync(2001, 1005, WaifuAction.Hug);
         Assert.That(noActions.IsT1, Is.True, "Expected ErrNoActionsLeft");
     }
 

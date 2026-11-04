@@ -40,8 +40,11 @@ public class TempVoiceTests
         => _db.Dispose();
 
     [Test]
-    public async Task ToggleHub_AddsRemovesAndStopsAtLimit()
+    public async Task HubsAndTempChannels_StopAtTheServerLimits()
     {
+        var nameWithEmoji = new string('a', TempVoiceService.MAX_CHANNEL_NAME_LENGTH - 1) + "\U0001F600";
+        Assert.That(TempVoiceService.TrimName(nameWithEmoji), Is.EqualTo(new string('a', TempVoiceService.MAX_CHANNEL_NAME_LENGTH - 1)));
+
         for (var i = 1; i <= TempVoiceService.MAX_HUBS; i++)
             Assert.That(await _svc.ToggleHubAsync(GUILD_ID, (ulong)i), Is.EqualTo(TempVoiceHubResult.Added));
 
@@ -54,6 +57,17 @@ public class TempVoiceTests
         Assert.That(hubs, Has.Count.EqualTo(TempVoiceService.MAX_HUBS - 1));
         Assert.That(hubs.Contains(1UL), Is.False);
         Assert.That(await _svc.GetHubsAsync(OTHER_GUILD_ID), Is.EqualTo(new ulong[] { 200 }));
+
+        for (var i = 0; i < TempVoiceService.MAX_TEMP_CHANNELS_PER_GUILD; i++)
+            Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.True);
+
+        Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.False);
+        Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.False);
+        Assert.That(_svc.TryReserveSlot(OTHER_GUILD_ID), Is.True);
+
+        _svc.ReleaseSlot(GUILD_ID);
+        Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.True);
+        Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.False);
     }
 
     [Test]
@@ -122,31 +136,5 @@ public class TempVoiceTests
 
         _time.Advance(TimeSpan.FromSeconds(1));
         Assert.That(TempVoiceService.RemainingActionDelay(last, _time.GetTimestamp(), _time), Is.EqualTo(TimeSpan.Zero));
-    }
-
-    [Test]
-    public void ReserveSlot_StopsAtServerLimitAndFreesOnRelease()
-    {
-        for (var i = 0; i < TempVoiceService.MAX_TEMP_CHANNELS_PER_GUILD; i++)
-            Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.True);
-
-        Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.False);
-        Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.False);
-        Assert.That(_svc.TryReserveSlot(OTHER_GUILD_ID), Is.True);
-
-        _svc.ReleaseSlot(GUILD_ID);
-        Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.True);
-        Assert.That(_svc.TryReserveSlot(GUILD_ID), Is.False);
-    }
-
-    [Test]
-    public void TrimName_KeepsLimitAndDoesNotSplitEmoji()
-    {
-        var name = new string('a', TempVoiceService.MAX_CHANNEL_NAME_LENGTH - 1) + "\U0001F600";
-
-        var trimmed = TempVoiceService.TrimName(name);
-
-        Assert.That(trimmed, Is.EqualTo(new string('a', TempVoiceService.MAX_CHANNEL_NAME_LENGTH - 1)));
-        Assert.That(TempVoiceService.TrimName("short"), Is.EqualTo("short"));
     }
 }

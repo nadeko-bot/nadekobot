@@ -43,7 +43,7 @@ public sealed class HostAccessTests
     }
 
     [Test]
-    public void Ytdl_RefusesLocalTargets()
+    public void Ytdl_RefusesLocalTargetsAndSearchesOnlyText()
     {
         string[] refused = ["http://127.0.0.1:8080/a.mp3", "https://192.168.1.5/x", "ftp://10.0.0.1/f", "file:///etc/passwd"];
         foreach (var target in refused)
@@ -54,11 +54,7 @@ public sealed class HostAccessTests
         Assert.That(YtdlOperation.IsAllowedTarget("10.0.0.1/a lofi mix", false), Is.True);
         Assert.That(YtdlOperation.IsAllowedTarget("https://www.youtube.com/watch?v=dQw4w9WgXcQ", false), Is.True);
         Assert.That(YtdlOperation.IsAllowedTarget("-f", true), Is.True);
-    }
 
-    [Test]
-    public void Ytdl_SearchNamesTheExtractorButLinksStayLinks()
-    {
         Assert.That(YtdlOperation.PrepareSearchTarget(" Metallica: Enter Sandman ", 1, false, false),
             Is.EqualTo("ytsearch1:Metallica: Enter Sandman"));
         Assert.That(YtdlOperation.PrepareSearchTarget("lofi: beats", 5, false, false), Is.EqualTo("ytsearch5:lofi: beats"));
@@ -77,8 +73,9 @@ public sealed class HostAccessTests
         Assert.That(YtdlOperation.PrepareSearchTarget("http://127.0.0.1:8080/a.mp3", 1, false, true),
             Is.EqualTo("http://127.0.0.1:8080/a.mp3"));
     }
+
     [Test]
-    public void StreamUrls_MustBePublicUnlessTheOwnerQueuedThem()
+    public async Task LocalMedia_PlaysOnlyWhenTheOwnerQueuedIt()
     {
         Assert.That(MusicPlayer.IsAllowedStreamUrl(MusicPlatform.Local, false, "/music/a.mp3"), Is.False);
         Assert.That(MusicPlayer.IsAllowedStreamUrl(MusicPlatform.Local, true, "/music/a.mp3"), Is.True);
@@ -86,10 +83,21 @@ public sealed class HostAccessTests
         Assert.That(MusicPlayer.IsAllowedStreamUrl(MusicPlatform.Radio, false, "http://10.0.0.5/live"), Is.False);
         Assert.That(MusicPlayer.IsAllowedStreamUrl(MusicPlatform.Radio, true, "http://10.0.0.5/live"), Is.True);
         Assert.That(MusicPlayer.IsAllowedStreamUrl(MusicPlatform.Youtube, false, "https://1.1.1.1/v.webm"), Is.True);
+
+        var local = Substitute.For<ILocalTrackResolver>();
+        var provider = new TrackResolveProvider(Substitute.For<IYoutubeResolverFactory>(),
+            local,
+            Substitute.For<IRadioResolver>());
+
+        Assert.That(await provider.QuerySongAsync("/etc/passwd.mp3", MusicPlatform.Local, false), Is.Null);
+        await local.DidNotReceiveWithAnyArgs().ResolveByQueryAsync(default!);
+
+        await provider.QuerySongAsync("/music/a.mp3", MusicPlatform.Local, true);
+        await local.Received(1).ResolveByQueryAsync("/music/a.mp3");
     }
 
     [Test]
-    public void LocalNetwork_OnlyForTheRealOwnerOfASelfHostedBot()
+    public async Task OwnerAccess_OnlyForTheRealOwnerAndNeverForTextWhichOthersChose()
     {
         var owner = Substitute.For<IUser>();
         owner.Id.Returns(1UL);
@@ -114,21 +122,60 @@ public sealed class HostAccessTests
         Assert.That(new BotPolicy(true).CanReachLocalNetwork(creds, ownerMsg), Is.False);
         Assert.That(BotPolicy.IsRealOwner(creds, ownerMsg), Is.True);
         Assert.That(BotPolicy.IsRealOwner(creds, agentMsg), Is.False);
-    }
 
-    [Test]
-    public async Task LocalTracks_OnlyWhenLocalAccessIsAllowed()
-    {
-        var local = Substitute.For<ILocalTrackResolver>();
-        var provider = new TrackResolveProvider(Substitute.For<IYoutubeResolverFactory>(),
-            local,
-            Substitute.For<IRadioResolver>());
+        var alias = Substitute.For<IInputTransformer>();
+        alias.TransformInput(Arg.Any<IGuild?>(), Arg.Any<IMessageChannel>(), Arg.Any<IUser>(), "hi")
+             .Returns(new ValueTask<string?>(".sqlexec DELETE FROM Quotes"));
 
-        Assert.That(await provider.QuerySongAsync("/etc/passwd.mp3", MusicPlatform.Local, false), Is.Null);
-        await local.DidNotReceiveWithAnyArgs().ResolveByQueryAsync(default!);
+        var handler = new BehaviorHandler(new ServiceCollection()
+                                          .AddSingleton(alias)
+                                          .BuildServiceProvider());
+        handler.Initialize();
 
-        await provider.QuerySongAsync("/music/a.mp3", MusicPlatform.Local, true);
-        await local.Received(1).ResolveByQueryAsync("/music/a.mp3");
+        IUserMessage Typed(string text)
+        {
+            var msg = Substitute.For<IUserMessage>();
+            msg.Author.Returns(owner);
+            msg.Content.Returns(text);
+            return msg;
+        }
+
+        var plain = Typed(".h");
+        Assert.That(await handler.RunInputTransformersAsync(null, plain, plain.Content), Is.SameAs(plain));
+
+        var hi = Typed("hi");
+        var aliased = await handler.RunInputTransformersAsync(null, hi, hi.Content);
+        Assert.That(aliased.Content, Is.EqualTo(".sqlexec DELETE FROM Quotes"));
+        Assert.That(aliased.Author, Is.SameAs(owner));
+        Assert.That(BotPolicy.IsRealOwner(creds, aliased), Is.False);
+
+        var credsProvider = Substitute.For<IBotCredsProvider>();
+        credsProvider.GetCreds().Returns(creds);
+
+        IServiceProvider Services(bool managed)
+            => new ServiceCollection()
+               .AddSingleton(credsProvider)
+               .AddSingleton(new BotPolicy(managed))
+               .BuildServiceProvider();
+
+        ICommandContext Context(bool blocksOwner)
+        {
+            var ctx = Substitute.For<ICommandContext>();
+            ctx.User.Returns(owner);
+            ctx.Message.Returns(new DoAsUserMessage(Substitute.For<IUserMessage>(), owner, ".die")
+            {
+                BlocksOwnerCommands = blocksOwner
+            });
+            return ctx;
+        }
+
+        var ownerOnly = new OwnerOnlyAttribute();
+        Assert.That((await ownerOnly.CheckPermissionsAsync(Context(false), null!, Services(false))).IsSuccess, Is.True);
+        Assert.That((await ownerOnly.CheckPermissionsAsync(Context(true), null!, Services(false))).IsSuccess, Is.False);
+
+        var noManaged = new NoManagedBotAttribute();
+        Assert.That((await noManaged.CheckPermissionsAsync(Context(false), null!, Services(false))).IsSuccess, Is.True);
+        Assert.That((await noManaged.CheckPermissionsAsync(Context(false), null!, Services(true))).IsSuccess, Is.False);
     }
 
     [Test]
@@ -172,42 +219,7 @@ public sealed class HostAccessTests
     }
 
     [Test]
-    public async Task AliasText_NeverRunsAsTheOwner()
-    {
-        var owner = Substitute.For<IUser>();
-        owner.Id.Returns(1UL);
-        var creds = Substitute.For<IBotCreds>();
-        creds.OwnerIds.Returns(new[] { 1UL });
-
-        var alias = Substitute.For<IInputTransformer>();
-        alias.TransformInput(Arg.Any<IGuild?>(), Arg.Any<IMessageChannel>(), Arg.Any<IUser>(), "hi")
-             .Returns(new ValueTask<string?>(".sqlexec DELETE FROM Quotes"));
-
-        var handler = new BehaviorHandler(new ServiceCollection()
-                                          .AddSingleton(alias)
-                                          .BuildServiceProvider());
-        handler.Initialize();
-
-        IUserMessage Typed(string text)
-        {
-            var msg = Substitute.For<IUserMessage>();
-            msg.Author.Returns(owner);
-            msg.Content.Returns(text);
-            return msg;
-        }
-
-        var plain = Typed(".h");
-        Assert.That(await handler.RunInputTransformersAsync(null, plain, plain.Content), Is.SameAs(plain));
-
-        var hi = Typed("hi");
-        var aliased = await handler.RunInputTransformersAsync(null, hi, hi.Content);
-        Assert.That(aliased.Content, Is.EqualTo(".sqlexec DELETE FROM Quotes"));
-        Assert.That(aliased.Author, Is.SameAs(owner));
-        Assert.That(BotPolicy.IsRealOwner(creds, aliased), Is.False);
-    }
-
-    [Test]
-    public async Task ExternalClient_DoesNotConnectToTheLocalNetwork()
+    public async Task ExternalHttp_StaysOffTheLocalNetworkAndStopsAtTheSizeLimit()
     {
         var listener = new TcpListener(IPAddress.Loopback, 0);
         listener.Start();
@@ -226,11 +238,7 @@ public sealed class HostAccessTests
         {
             listener.Stop();
         }
-    }
 
-    [Test]
-    public async Task ReadLimited_ReturnsNullOverTheLimit()
-    {
         var data = new byte[200_000];
         Random.Shared.NextBytes(data);
 
@@ -243,42 +251,6 @@ public sealed class HostAccessTests
 
         Assert.That(await ExternalHttp.ReadLimitedAsync(new StreamContent(new NonSeekableStream(data)), 199_999),
             Is.Null);
-    }
-
-    [Test]
-    public async Task OwnerAndManagedOnlyCommands_RefuseTextChosenByOthers()
-    {
-        var owner = Substitute.For<IUser>();
-        owner.Id.Returns(1UL);
-        var creds = Substitute.For<IBotCreds>();
-        creds.OwnerIds.Returns(new[] { 1UL });
-        var credsProvider = Substitute.For<IBotCredsProvider>();
-        credsProvider.GetCreds().Returns(creds);
-
-        IServiceProvider Services(bool managed)
-            => new ServiceCollection()
-               .AddSingleton(credsProvider)
-               .AddSingleton(new BotPolicy(managed))
-               .BuildServiceProvider();
-
-        ICommandContext Context(bool blocksOwner)
-        {
-            var ctx = Substitute.For<ICommandContext>();
-            ctx.User.Returns(owner);
-            ctx.Message.Returns(new DoAsUserMessage(Substitute.For<IUserMessage>(), owner, ".die")
-            {
-                BlocksOwnerCommands = blocksOwner
-            });
-            return ctx;
-        }
-
-        var ownerOnly = new OwnerOnlyAttribute();
-        Assert.That((await ownerOnly.CheckPermissionsAsync(Context(false), null!, Services(false))).IsSuccess, Is.True);
-        Assert.That((await ownerOnly.CheckPermissionsAsync(Context(true), null!, Services(false))).IsSuccess, Is.False);
-
-        var noManaged = new NoManagedBotAttribute();
-        Assert.That((await noManaged.CheckPermissionsAsync(Context(false), null!, Services(false))).IsSuccess, Is.True);
-        Assert.That((await noManaged.CheckPermissionsAsync(Context(false), null!, Services(true))).IsSuccess, Is.False);
     }
 
     private sealed class NonSeekableStream(byte[] data) : System.IO.MemoryStream(data)

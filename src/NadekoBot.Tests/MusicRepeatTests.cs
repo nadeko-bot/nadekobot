@@ -62,8 +62,21 @@ public sealed class MusicRepeatTests
     }
 
     [Test]
-    public void Previous_GoesBackOneAndWrapsFromFirstToLast()
+    public void Queue_NextFollowsRepeat_AndPreviousWrapsFromFirstToLast()
     {
+        var repeating = new MusicQueue();
+        Assert.That(repeating.GetNext(true), Is.Null);
+
+        repeating.Enqueue(Track("A"), "q", out _);
+        Assert.That(repeating.GetNext(true), Is.Null, "the only track is already playing");
+
+        repeating.Enqueue(Track("B"), "q", out _);
+        Assert.That(repeating.GetNext(false)?.Title, Is.EqualTo("B"));
+
+        repeating.Advance();
+        Assert.That(repeating.GetNext(false), Is.Null);
+        Assert.That(repeating.GetNext(true)?.Title, Is.EqualTo("A"));
+
         var queue = new MusicQueue();
         Assert.That(queue.TrySetPrevious(out _), Is.False);
 

@@ -47,11 +47,11 @@ public sealed class ApiMusicTests
     }
 
     [Test]
-    public void State_ListsTheQueueInOrderWithPlatformsLengthsAndTheCurrentTrack()
+    public void QueueState_ListsTheTracksAndTheRoutesChangeThePlayerOrAnswerNoPlayer()
     {
         var queue = new MusicQueue();
-        queue.Enqueue(new RemoteTrackInfo("dQw4w9WgXcQ", "Song", "https://youtube.com/watch?v=dQw4w9WgXcQ", "https://i.ytimg.com/a.jpg", TimeSpan.FromSeconds(212.6), MusicPlatform.Youtube), "Kwoth", out _);
-        queue.Enqueue(new SimpleTrackInfo("Radio", "https://radio.example/a.m3u", "", TimeSpan.MaxValue, MusicPlatform.Radio), "Kwoth", out _);
+        queue.Enqueue(new RemoteTrackInfo("dQw4w9WgXcQ", "Song", "https://youtube.com/watch?v=dQw4w9WgXcQ", "https://i.ytimg.com/a.jpg", TimeSpan.FromSeconds(212.6), MusicPlatform.Youtube), "Breaker", out _);
+        queue.Enqueue(new SimpleTrackInfo("Radio", "https://radio.example/a.m3u", "", TimeSpan.MaxValue, MusicPlatform.Radio), "Breaker", out _);
         queue.Enqueue(new SimpleTrackInfo("File", "/music/a.mp3", "", TimeSpan.Zero, MusicPlatform.Local), "Nadeko", out _);
         var tracks = queue.List();
 
@@ -74,43 +74,28 @@ public sealed class ApiMusicTests
         Assert.That(state.Tracks.Select(static t => (t.Index, t.Id, t.Platform, t.DurationSec, t.Thumbnail, t.Queuer)),
             Is.EqualTo(new[]
             {
-                (0, "dQw4w9WgXcQ", "youtube", 212, (string?)"https://i.ytimg.com/a.jpg", "Kwoth"),
-                (1, "", "radio", 0, null, "Kwoth"),
+                (0, "dQw4w9WgXcQ", "youtube", 212, (string?)"https://i.ytimg.com/a.jpg", "Breaker"),
+                (1, "", "radio", 0, null, "Breaker"),
                 (2, "", "local", 0, null, "Nadeko")
             }));
 
         mp.GetCurrentTrack(out Arg.Any<int>()).Returns((IQueuedTrackInfo?)null);
         Assert.That(MusicEndpoints.ToStateDto(null, mp).CurrentIndex, Is.Null);
-    }
 
-    [Test]
-    public void VoiceChangeLimiter_GivesEachServerFivePermitsThenTheWait()
-    {
-        using var limiter = new VoiceChangeLimiter();
-        for (var i = 0; i < ApiLimits.VOICE_CHANGES_PER_GUILD; i++)
-            Assert.That(limiter.TryAcquire(1), Is.Null);
-
-        Assert.That(limiter.TryAcquire(1), Is.InRange(1, (int)ApiLimits.VoiceChangeWindow.TotalSeconds));
-        Assert.That(limiter.TryAcquire(2), Is.Null);
-    }
-
-    [Test]
-    public void QueueRoutes_ChangeThePlayerAndAnswerWithTheStateOrNoPlayer()
-    {
-        var mp = PlayerWithQueue();
-        var music = MusicWithPlayer(mp);
-        var first = mp.GetQueuedTracks().First();
-        mp.TryRemoveTrackAt(1, out Arg.Any<IQueuedTrackInfo?>()).Returns(true);
-        mp.MoveTrack(0, 2).Returns(first);
-        mp.MoveTrack(5, 0).Returns((IQueuedTrackInfo?)null);
-        mp.MoveTo(2).Returns(true);
+        var player = PlayerWithQueue();
+        var music = MusicWithPlayer(player);
+        var first = player.GetQueuedTracks().First();
+        player.TryRemoveTrackAt(1, out Arg.Any<IQueuedTrackInfo?>()).Returns(true);
+        player.MoveTrack(0, 2).Returns(first);
+        player.MoveTrack(5, 0).Returns((IQueuedTrackInfo?)null);
+        player.MoveTo(2).Returns(true);
 
         Assert.That(Read(MusicEndpoints.RemoveTrackAt(GUILD, VOICE, 1, music)).Status, Is.EqualTo(200));
         Assert.That(Read(MusicEndpoints.MoveTrackTo(GUILD, VOICE, new MoveTrackRequest(0, 2), music)).Value,
             Is.TypeOf<MusicStateDto>().With.Property(nameof(MusicStateDto.VoiceChannelId)).EqualTo(VOICE.ToString()));
         Assert.That(Read(MusicEndpoints.PlayTrackAt(GUILD, VOICE, new PlayTrackRequest(2), music)).Status, Is.EqualTo(200));
         Assert.That(Read(MusicEndpoints.ShuffleQueue(GUILD, VOICE, music)).Status, Is.EqualTo(200));
-        mp.Received(1).ShuffleQueue();
+        player.Received(1).ShuffleQueue();
         music.Received(1).AttachProxy(GUILD);
 
         IResult[] refused =
@@ -170,7 +155,7 @@ public sealed class ApiMusicTests
     }
 
     [Test]
-    public async Task AddTracks_JoinsOnlyWhenNeededAndMapsEachResult()
+    public async Task AddTracks_JoinsOnlyWhenNeededMapsEachResultAndLimitsJoinsForEachServer()
     {
         var mp = PlayerWithQueue();
         var music = MusicWithPlayer(mp);
@@ -217,6 +202,8 @@ public sealed class ApiMusicTests
         for (var i = 2; i < ApiLimits.VOICE_CHANGES_PER_GUILD; i++)
             Assert.That(limiter.TryAcquire(GUILD), Is.Null);
         Assert.That(await MusicEndpoints.AddTracksAsync(GUILD, join, QUEUER, new AddTracksRequest("song"), music, limiter), Is.TypeOf<RateLimitedResult>());
+        Assert.That(limiter.TryAcquire(GUILD), Is.InRange(1, (int)ApiLimits.VoiceChangeWindow.TotalSeconds));
+        Assert.That(limiter.TryAcquire(OTHER_GUILD), Is.Null);
 
         // PickVoiceChannel reads guild.GetVoiceChannel, which also returns a stage channel.
         Assert.That(typeof(Discord.WebSocket.SocketStageChannel).IsSubclassOf(typeof(Discord.WebSocket.SocketVoiceChannel)), Is.True);
@@ -232,8 +219,8 @@ public sealed class ApiMusicTests
             var songs = new[] { "dQw4w9WgXcQ", "9bZkp7q19f0", "kJQP7kiw5Fk" }
                 .Select(static id => new PlaylistSong { Title = id, Query = "https://youtube.com/watch?v=" + id, Provider = "Youtube", ProviderType = MusicType.YouTube })
                 .ToList();
-            var withSongs = new MusicPlaylist { Name = "Chill", Author = "Kwoth", Songs = songs };
-            var none = new MusicPlaylist { Name = "Empty", Author = "Kwoth" };
+            var withSongs = new MusicPlaylist { Name = "Chill", Author = "Breaker", Songs = songs };
+            var none = new MusicPlaylist { Name = "Empty", Author = "Breaker" };
             ctx.AddRange(withSongs, none);
             await ctx.SaveChangesAsync();
             (full, empty) = (withSongs.Id, none.Id);
@@ -278,7 +265,7 @@ public sealed class ApiMusicTests
     private const ulong GUILD = 1;
     private const ulong OTHER_GUILD = 2;
     private const ulong VOICE = 42;
-    private const string QUEUER = "Kwoth";
+    private const string QUEUER = "Breaker";
 
     private static IMusicPlayer PlayerWithQueue()
     {

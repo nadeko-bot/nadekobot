@@ -93,7 +93,7 @@ public sealed class ServerDataTests
     }
 
     [Test]
-    public void Build_KeepsOnlyTheGuildsRowsAndListsIndexesInsteadOfBuildingThem()
+    public async Task Export_KeepsOnlyTheGuildsRowsListsIndexesAndReservesOncePerCooldown()
     {
         var live = NewDb();
         SeedInternal(live, GUILD, "src");
@@ -118,11 +118,7 @@ public sealed class ServerDataTests
         ServerDataExporter.DropXp(export);
         Assert.That(Scalar(export, "SELECT COUNT(*) FROM UserXpStats"), Is.EqualTo(0));
         Assert.That(Scalar(live, "SELECT COUNT(*) FROM UserXpStats"), Is.EqualTo(4));
-    }
 
-    [Test]
-    public void ManifestAndIndexParsing_AcceptOnlyTheirOwnShape()
-    {
         var manifest = new ServerExportManifest(GUILD, new string('n', 300), new DateTime(2026, 10, 14, 0, 0, 0, DateTimeKind.Utc),
             "7.6.3", "20261014181343_init", XpIncluded: false);
         var ms = new MemoryStream();
@@ -146,13 +142,7 @@ public sealed class ServerDataTests
                      """CREATE INDEX "I""X" ON "A" ("B")"""
                  })
             Assert.That(ServerDataIndex.TryParse(bad), Is.Null, bad);
-    }
 
-    [Test]
-    public async Task ExportService_ReservesOncePerCooldownAndAFailureWaitsLess()
-    {
-        var live = NewDb();
-        SeedInternal(live, GUILD, "src");
         var svc = new ServerExportService(new FileDbService(live), new MemoryBotCache(),
             new ShardData(Substitute.For<DiscordSocketClient>(), Substitute.For<IBotCreds>()));
 
@@ -220,45 +210,7 @@ public sealed class ServerDataTests
     }
 
     [Test]
-    public async Task Import_MigratesAnOlderExportAndKeepsTheLiveXpWhenTheExportHasNone()
-    {
-        var zip = ExportZipInternal(GUILD, xp: false, stagedEdit: static db =>
-        {
-            // The shape of an export from a bot before the guild id indexes.
-            Exec(db, """
-                     DELETE FROM __ServerExportIndex WHERE Name IN ('IX_Expressions_GuildId', 'IX_Repeaters_GuildId', 'IX_ImageOnlyChannels_GuildId');
-                     ALTER TABLE FeedSub DROP COLUMN FailingSince;
-                     DELETE FROM __ServerExportIndex WHERE TableName IN ('BlackjackStake', 'BlackjackRoundState');
-                     DROP TABLE BlackjackStake;
-                     DROP TABLE BlackjackRoundState;
-                     ALTER TABLE GiveawayModel DROP COLUMN WinnerCount;
-                     UPDATE __ServerExportIndex
-                     SET Name = 'IX_XpRoleReward_XpSettingsId_Level',
-                         Sql = 'CREATE UNIQUE INDEX "IX_XpRoleReward_XpSettingsId_Level" ON "XpRoleReward" ("XpSettingsId", "Level")'
-                     WHERE Name = 'IX_XpRoleReward_XpSettingsId_Level_RoleId';
-                     DELETE FROM __ServerExportIndex WHERE TableName = 'AllowedLinkDomain';
-                     DROP TABLE AllowedLinkDomain;
-                     DELETE FROM __EFMigrationsHistory;
-                     INSERT INTO __EFMigrationsHistory VALUES ('20261009084103_reminder-user-guild-index', '9.0.1');
-                     """);
-        });
-
-        var (import, live, _) = NewTarget();
-        SeedInternal(live, GUILD, "old");
-        Exec(live, "UPDATE UserXpStats SET Xp = Xp * 100");
-
-        var result = await import.ImportAsync(GUILD, zip, zip.Length, new FileDbService(live), CancellationToken.None);
-
-        Assert.That(result.Error, Is.Null);
-        Assert.That(result.Import!.XpIncluded, Is.False);
-        Assert.That(Scalar(live, "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'BlackjackRoundState'"),
-            Is.EqualTo(1));
-        Assert.That(Text(live, "SELECT Prefix FROM GuildConfigs WHERE GuildId = 101"), Is.EqualTo("src"));
-        Assert.That(Scalar(live, "SELECT SUM(Xp) FROM UserXpStats WHERE GuildId = 101"), Is.EqualTo(3000));
-    }
-
-    [Test]
-    public async Task Import_RefusesBadExportsAndLeavesTheDatabaseAsItWas()
+    public async Task Import_RefusesBadExportsThenMigratesAnOlderOneAndKeepsTheLiveXp()
     {
         var (import, live, paths) = NewTarget();
         SeedInternal(live, GUILD, "old");
@@ -303,6 +255,37 @@ public sealed class ServerDataTests
         Assert.That(Text(live, "SELECT Prefix FROM GuildConfigs WHERE GuildId = 101"), Is.EqualTo("old"));
         Assert.That(Scalar(live, "SELECT COUNT(*) FROM Quotes WHERE GuildId = 101"), Is.EqualTo(1));
         Assert.That(Directory.Exists(paths.ServerImportDir), Is.False);
+
+        var older = ExportZipInternal(GUILD, xp: false, stagedEdit: static d =>
+        {
+            // The shape of an export from a bot before the guild id indexes.
+            Exec(d, """
+                    DELETE FROM __ServerExportIndex WHERE Name IN ('IX_Expressions_GuildId', 'IX_Repeaters_GuildId', 'IX_ImageOnlyChannels_GuildId');
+                    ALTER TABLE FeedSub DROP COLUMN FailingSince;
+                    DELETE FROM __ServerExportIndex WHERE TableName IN ('BlackjackStake', 'BlackjackRoundState');
+                    DROP TABLE BlackjackStake;
+                    DROP TABLE BlackjackRoundState;
+                    ALTER TABLE GiveawayModel DROP COLUMN WinnerCount;
+                    UPDATE __ServerExportIndex
+                    SET Name = 'IX_XpRoleReward_XpSettingsId_Level',
+                        Sql = 'CREATE UNIQUE INDEX "IX_XpRoleReward_XpSettingsId_Level" ON "XpRoleReward" ("XpSettingsId", "Level")'
+                    WHERE Name = 'IX_XpRoleReward_XpSettingsId_Level_RoleId';
+                    DELETE FROM __ServerExportIndex WHERE TableName = 'AllowedLinkDomain';
+                    DROP TABLE AllowedLinkDomain;
+                    DELETE FROM __EFMigrationsHistory;
+                    INSERT INTO __EFMigrationsHistory VALUES ('20261009084103_reminder-user-guild-index', '9.0.1');
+                    """);
+        });
+        Exec(live, "UPDATE UserXpStats SET Xp = Xp * 100");
+
+        var result = await import.ImportAsync(GUILD, older, older.Length, db, CancellationToken.None);
+
+        Assert.That(result.Error, Is.Null);
+        Assert.That(result.Import!.XpIncluded, Is.False);
+        Assert.That(Scalar(live, "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'BlackjackRoundState'"),
+            Is.EqualTo(1));
+        Assert.That(Text(live, "SELECT Prefix FROM GuildConfigs WHERE GuildId = 101"), Is.EqualTo("src"));
+        Assert.That(Scalar(live, "SELECT SUM(Xp) FROM UserXpStats WHERE GuildId = 101"), Is.EqualTo(3000));
     }
 
     private (ServerImportService Import, string Live, HostPaths Paths) NewTarget()

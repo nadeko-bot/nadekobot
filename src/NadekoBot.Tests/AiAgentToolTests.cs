@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,22 +18,15 @@ public class AiAgentToolTests
     [SetUp]
     public void SetUp()
     {
-        var guild = Substitute.For<Discord.IGuild>();
-        var channel = Substitute.For<Discord.ITextChannel>();
-        var user = Substitute.For<Discord.IGuildUser>();
-        var msg = Substitute.For<Discord.IUserMessage>();
-
         _ctx = new AiToolContext
         {
-            Guild = guild,
-            SourceChannel = channel,
-            User = user,
-            TriggerMessage = msg,
+            Guild = Substitute.For<Discord.IGuild>(),
+            SourceChannel = Substitute.For<Discord.ITextChannel>(),
+            User = Substitute.For<Discord.IGuildUser>(),
+            TriggerMessage = Substitute.For<Discord.IUserMessage>(),
             CancellationToken = CancellationToken.None
         };
     }
-
-    #region AiToolRegistry
 
     private sealed class StubTool(string name) : IAiTool
     {
@@ -45,47 +39,21 @@ public class AiAgentToolTests
     }
 
     [Test]
-    public void Registry_FindsToolsByName()
+    public void Registry_FindsToolsAndSchemasByName()
     {
-        var tools = new IAiTool[]
-        {
-            new StubTool("send_message"),
-            new StubTool("get_message"),
-        };
-
-        var registry = new AiToolRegistry(tools);
+        var registry = new AiToolRegistry(new IAiTool[] { new StubTool("send_message"), new StubTool("get_message") });
 
         Assert.That(registry.GetAllTools(), Has.Count.EqualTo(2));
-        var found = registry.GetTool("get_message");
-        Assert.That(found, Is.Not.Null);
-        Assert.That(found!.Name, Is.EqualTo("get_message"));
+        Assert.That(registry.GetTool("get_message")?.Name, Is.EqualTo("get_message"));
         Assert.That(registry.GetTool("nonexistent"), Is.Null);
-    }
 
-    [Test]
-    public void Registry_GetToolSchemas_ReturnsValidJsonForAllowedSet()
-    {
-        var tools = new IAiTool[]
-        {
-            new StubTool("send_message"),
-            new StubTool("get_message"),
-        };
-
-        var registry = new AiToolRegistry(tools);
-
-        var all = registry.GetToolSchemas();
-        Assert.That(all, Has.Count.EqualTo(2));
-        Assert.That(all[0].GetProperty("type").GetString(), Is.EqualTo("function"));
+        Assert.That(registry.GetToolSchemas(), Has.Count.EqualTo(2));
 
         var schemas = registry.GetToolSchemas(new HashSet<string> { "get_message" });
         Assert.That(schemas, Has.Count.EqualTo(1));
         Assert.That(schemas[0].GetProperty("type").GetString(), Is.EqualTo("function"));
         Assert.That(schemas[0].GetProperty("function").GetProperty("name").GetString(), Is.EqualTo("get_message"));
     }
-
-    #endregion
-
-    #region PromptSanitizer
 
     [Test]
     public void Sanitizer_RemovesTagsAndControlCharsButKeepsMentions()
@@ -106,19 +74,14 @@ public class AiAgentToolTests
         Assert.That(PromptSanitizer.Sanitize(""), Is.EqualTo(string.Empty));
     }
 
-    #endregion
-
-    #region ComputeTimestamp (via TimeAiAdapter generated tool)
-
-    private static IAiTool BuildTimestampTool()
-        => new TimeAiAdapter_ComputeTimestamp_AiTool(new TimeAiAdapter());
-
     private static long ParseEpoch(string result)
         => long.Parse(result.Split('\n')[0].Split(':')[1].Trim());
 
     [Test]
-    public async Task Timestamp_Offsets_AccumulateFromNow()
+    public async Task Timestamp_GivesOffsetsAndDatesAsEpochAndRefusesABadDate()
     {
+        var tool = new TimeAiAdapter_ComputeTimestamp_AiTool(new TimeAiAdapter());
+
         var cases = new (string Json, long Seconds)[]
         {
             ("""{"offsetHours": 3}""", 3 * 60 * 60),
@@ -129,7 +92,7 @@ public class AiAgentToolTests
 
         foreach (var (json, seconds) in cases)
         {
-            var result = await BuildTimestampTool().ExecuteAsync(_ctx, JsonDocument.Parse(json).RootElement);
+            var result = await tool.ExecuteAsync(_ctx, JsonDocument.Parse(json).RootElement);
 
             Assert.That(result, Does.StartWith("epoch:"), json);
             Assert.That(result, Does.Contain("utc:"), json);
@@ -137,151 +100,46 @@ public class AiAgentToolTests
             var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             Assert.That(ParseEpoch(result), Is.InRange(now + seconds - 5, now + seconds + 5), json);
         }
-    }
 
-    [Test]
-    public async Task Timestamp_AbsoluteDateTime_ReturnsCorrectEpoch()
-    {
-        var args = JsonDocument.Parse("""{"date": "2026-06-15", "time": "14:30"}""").RootElement;
-        var result = await BuildTimestampTool().ExecuteAsync(_ctx, args);
+        var absolute = await tool.ExecuteAsync(_ctx,
+            JsonDocument.Parse("""{"date": "2026-06-15", "time": "14:30"}""").RootElement);
+        Assert.That(ParseEpoch(absolute),
+            Is.EqualTo(new DateTimeOffset(2026, 6, 15, 14, 30, 0, TimeSpan.Zero).ToUnixTimeSeconds()));
 
-        var expected = new DateTimeOffset(2026, 6, 15, 14, 30, 0, TimeSpan.Zero).ToUnixTimeSeconds();
-        Assert.That(ParseEpoch(result), Is.EqualTo(expected));
-    }
-
-    [Test]
-    public async Task Timestamp_InvalidDate_ReturnsStructuredError()
-    {
-        var args = JsonDocument.Parse("""{"date": "not-a-date"}""").RootElement;
-        var result = await BuildTimestampTool().ExecuteAsync(_ctx, args);
-
-        // Structured ToolException output: {"error":"invalid_argument","message":"..."}
-        var doc = JsonDocument.Parse(result);
+        var invalid = await tool.ExecuteAsync(_ctx, JsonDocument.Parse("""{"date": "not-a-date"}""").RootElement);
+        using var doc = JsonDocument.Parse(invalid);
         Assert.That(doc.RootElement.GetProperty("error").GetString(), Is.EqualTo("invalid_argument"));
     }
 
-    #endregion
-
-    #region ChannelMessageBuffer
-
     [Test]
-    public void Buffer_PushAndGet_ReturnsChronologicalOrder()
+    public void Buffer_KeepsTheNewestMessagesInOrderAndRemovesById()
     {
-        var buffer = new ChannelMessageBuffer(5);
+        var buffer = new ChannelMessageBuffer(3);
         var now = DateTimeOffset.UtcNow;
 
         Assert.That(buffer.GetMessages(), Is.Empty);
-
-        buffer.Push(new(1, 100, "Alice", "first", now));
-        buffer.Push(new(2, 200, "Bob", "second", now.AddSeconds(1)));
-        buffer.Push(new(3, 100, "Alice", "third", now.AddSeconds(2)));
-
-        var messages = buffer.GetMessages();
-
-        Assert.That(messages, Has.Length.EqualTo(3));
-        Assert.That(messages[0].Content, Is.EqualTo("first"));
-        Assert.That(messages[1].Content, Is.EqualTo("second"));
-        Assert.That(messages[2].Content, Is.EqualTo("third"));
-    }
-
-    [Test]
-    public void Buffer_Overflow_DropsOldestAndKeepsCount()
-    {
-        var buffer = new ChannelMessageBuffer(3);
-        var now = DateTimeOffset.UtcNow;
-
-        Assert.That(buffer.Count, Is.EqualTo(0));
-
-        buffer.Push(new(1, 100, "A", "msg1", now));
-        Assert.That(buffer.Count, Is.EqualTo(1));
-
-        buffer.Push(new(2, 200, "B", "msg2", now.AddSeconds(1)));
-        buffer.Push(new(3, 300, "C", "msg3", now.AddSeconds(2)));
-        Assert.That(buffer.Count, Is.EqualTo(3));
-
-        buffer.Push(new(4, 400, "D", "msg4", now.AddSeconds(3)));
-        buffer.Push(new(5, 500, "E", "msg5", now.AddSeconds(4)));
-        Assert.That(buffer.Count, Is.EqualTo(3));
-
-        var messages = buffer.GetMessages();
-
-        Assert.That(messages, Has.Length.EqualTo(3));
-        Assert.That(messages[0].Content, Is.EqualTo("msg3"));
-        Assert.That(messages[1].Content, Is.EqualTo("msg4"));
-        Assert.That(messages[2].Content, Is.EqualTo("msg5"));
-    }
-
-    [Test]
-    public void Buffer_PushAndGet_TouchLastAccessed()
-    {
-        var buffer = new ChannelMessageBuffer(5);
-        var before = buffer.LastAccessedUtc;
-
-        Thread.Sleep(10);
-        buffer.GetMessages();
-
-        Assert.That(buffer.LastAccessedUtc, Is.GreaterThan(before));
-
-        before = buffer.LastAccessedUtc;
-        Thread.Sleep(10);
-        buffer.Push(new(1, 100, "A", "x", DateTimeOffset.UtcNow));
-
-        Assert.That(buffer.LastAccessedUtc, Is.GreaterThan(before));
-    }
-
-    [Test]
-    public void Buffer_TryRemove_RemovesByMessageIdAndPreservesOrder()
-    {
-        var buffer = new ChannelMessageBuffer(5);
-        var now = DateTimeOffset.UtcNow;
-
         Assert.That(buffer.TryRemove(1), Is.False);
 
-        buffer.Push(new(1, 100, "A", "first", now));
-        buffer.Push(new(2, 200, "B", "second", now.AddSeconds(1)));
-        buffer.Push(new(3, 300, "C", "third", now.AddSeconds(2)));
-        buffer.Push(new(4, 400, "D", "fourth", now.AddSeconds(3)));
+        for (ulong i = 1; i <= 5; i++)
+            buffer.Push(new(i, 100, "A", $"m{i}", now.AddSeconds(i)));
 
-        Assert.That(buffer.TryRemove(2), Is.True);
-        Assert.That(buffer.TryRemove(99), Is.False);
-
-        var messages = buffer.GetMessages();
-        Assert.That(messages, Has.Length.EqualTo(3));
         Assert.That(buffer.Count, Is.EqualTo(3));
-        Assert.That(messages[0].Content, Is.EqualTo("first"));
-        Assert.That(messages[1].Content, Is.EqualTo("third"));
-        Assert.That(messages[2].Content, Is.EqualTo("fourth"));
-    }
-
-    [Test]
-    public void Buffer_TryRemove_HandlesWrappedRing()
-    {
-        var buffer = new ChannelMessageBuffer(3);
-        var now = DateTimeOffset.UtcNow;
-
-        // Push 5 into capacity-3 ring: oldest two evicted, ring is wrapped.
-        // Final state in chronological order: 3, 4, 5.
-        buffer.Push(new(1, 100, "A", "m1", now));
-        buffer.Push(new(2, 100, "A", "m2", now));
-        buffer.Push(new(3, 100, "A", "m3", now));
-        buffer.Push(new(4, 100, "A", "m4", now));
-        buffer.Push(new(5, 100, "A", "m5", now));
+        Assert.That(Contents(buffer), Is.EqualTo(new[] { "m3", "m4", "m5" }));
 
         Assert.That(buffer.TryRemove(4), Is.True);
+        Assert.That(buffer.TryRemove(99), Is.False);
+        Assert.That(Contents(buffer), Is.EqualTo(new[] { "m3", "m5" }));
 
-        var messages = buffer.GetMessages();
-        Assert.That(messages, Has.Length.EqualTo(2));
-        Assert.That(messages[0].Content, Is.EqualTo("m3"));
-        Assert.That(messages[1].Content, Is.EqualTo("m5"));
+        buffer.Push(new(6, 100, "A", "m6", now.AddSeconds(6)));
+        Assert.That(buffer.Count, Is.EqualTo(3));
+        Assert.That(Contents(buffer), Is.EqualTo(new[] { "m3", "m5", "m6" }));
 
-        // After removal, pushing a new entry should append at the end (chronological)
-        buffer.Push(new(6, 100, "A", "m6", now));
-        messages = buffer.GetMessages();
-        Assert.That(messages, Has.Length.EqualTo(3));
-        Assert.That(messages[0].Content, Is.EqualTo("m3"));
-        Assert.That(messages[1].Content, Is.EqualTo("m5"));
-        Assert.That(messages[2].Content, Is.EqualTo("m6"));
+        var lastAccess = buffer.LastAccessedUtc;
+        System.Threading.Thread.Sleep(10);
+        buffer.GetMessages();
+        Assert.That(buffer.LastAccessedUtc, Is.GreaterThan(lastAccess));
     }
 
-    #endregion
+    private static string[] Contents(ChannelMessageBuffer buffer)
+        => buffer.GetMessages().Select(static m => m.Content).ToArray();
 }

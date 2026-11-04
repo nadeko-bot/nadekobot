@@ -117,27 +117,6 @@ public sealed class BotPresenceTests
     }
 
     [Test]
-    public async Task SetStatusCommand_SavesEachChoiceAsTheStatusWhichDiscordShows()
-    {
-        (SelfCommands.SettableUserStatus Choice, UserStatus Expected)[] choices =
-        [
-            (SelfCommands.SettableUserStatus.Online, UserStatus.Online),
-            (SelfCommands.SettableUserStatus.Idle, UserStatus.Idle),
-            (SelfCommands.SettableUserStatus.Dnd, UserStatus.DoNotDisturb),
-            (SelfCommands.SettableUserStatus.Invisible, UserStatus.Invisible)
-        ];
-        Assert.That(choices.Select(static c => c.Choice), Is.EquivalentTo(Enum.GetValues<SelfCommands.SettableUserStatus>()));
-
-        foreach (var (choice, expected) in choices)
-        {
-            Assert.That(await _svc.SetStatusAsync(SelfCommands.SettableUserStatusToUserStatus(choice)),
-                Is.EqualTo(PresenceError.None),
-                choice.ToString());
-            Assert.That(_svc.GetPresence().Status, Is.EqualTo(expected));
-        }
-    }
-
-    [Test]
     public async Task SetPresence_SavesTheStatusStopsTheRotationAndKeepsItAfterARestart()
     {
         await _svc.AddPlaying(ActivityType.Playing, "rotating");
@@ -189,6 +168,23 @@ public sealed class BotPresenceTests
 
         Assert.That(await _svc.SetActivityAsync(ActivityType.Playing, null), Is.EqualTo(PresenceError.None));
         Assert.That(_svc.GetPresence().Activity, Is.Null);
+
+        (SelfCommands.SettableUserStatus Choice, UserStatus Expected)[] choices =
+        [
+            (SelfCommands.SettableUserStatus.Online, UserStatus.Online),
+            (SelfCommands.SettableUserStatus.Idle, UserStatus.Idle),
+            (SelfCommands.SettableUserStatus.Dnd, UserStatus.DoNotDisturb),
+            (SelfCommands.SettableUserStatus.Invisible, UserStatus.Invisible)
+        ];
+        Assert.That(choices.Select(static c => c.Choice), Is.EquivalentTo(Enum.GetValues<SelfCommands.SettableUserStatus>()));
+
+        foreach (var (choice, expected) in choices)
+        {
+            Assert.That(await _svc.SetStatusAsync(SelfCommands.SettableUserStatusToUserStatus(choice)),
+                Is.EqualTo(PresenceError.None),
+                choice.ToString());
+            Assert.That(_svc.GetPresence().Status, Is.EqualTo(expected));
+        }
     }
 
     [Test]

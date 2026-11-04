@@ -59,7 +59,7 @@ public sealed class ApiConfigTests
         => new(svcs, new BotPolicy(false));
 
     [Test]
-    public void Registry_ExcludesMedusaAndSortsNames()
+    public void Registry_HidesMedusaAndReadsAndSetsPropsInAnyLetterCase()
     {
         var lookup = Lookup(
             new FakeConfigService("xp", new()),
@@ -68,20 +68,12 @@ public sealed class ApiConfigTests
 
         Assert.That(lookup.Names, Is.EqualTo(new[] { "Gambling", "xp" }));
         Assert.That(lookup.TryGet("medusa", out _, out _), Is.False);
-    }
 
-    [Test]
-    public void GetConfig_CaseInsensitive_ReturnsPropsWithValuesAndComments()
-    {
-        var svc = new FakeConfigService(
+        var commented = new FakeConfigService(
             "gambling",
             new() { ["betroll.rolls"] = "3" },
             new() { ["betroll.rolls"] = "how many rolls" });
-        var lookup = Lookup(svc);
-
-        var result = ApiEndpoints.GetConfig("GamBLing", lookup);
-
-        var json = (JsonHttpResult<ConfigDto>)result;
+        var json = (JsonHttpResult<ConfigDto>)ApiEndpoints.GetConfig("GamBLing", Lookup(commented));
         Assert.That(json.Value!.Name, Is.EqualTo("gambling"));
         Assert.That(json.Value.Props, Has.Count.EqualTo(1));
         Assert.That(json.Value.Props[0].Prop, Is.EqualTo("betroll.rolls"));
@@ -89,11 +81,7 @@ public sealed class ApiConfigTests
         Assert.That(json.Value.Props[0].Comment, Is.EqualTo("how many rolls"));
         Assert.That((json.Value.Props[0].Type, json.Value.Props[0].Min, json.Value.Props[0].Max),
             Is.EqualTo(("number", (double?)1, (double?)10)));
-    }
 
-    [Test]
-    public void SetConfig_WritesKnownPropsAndRejectsTheRest()
-    {
         var svc = new FakeConfigService("gambling", new() { ["betroll.rolls"] = "3" });
 
         var ok = (JsonHttpResult<ConfigPropDto>)ApiEndpoints.SetConfig("GAMBLING", "BetRoll.Rolls", new SetConfigRequest("5"), Lookup(svc));

@@ -45,7 +45,7 @@ public class SomethingOnlyChannelServiceTests
     }
 
     [Test]
-    public async Task Toggle_SwitchesTypeAndTurnsOff()
+    public async Task Toggle_SwitchesTypeAndTurnsOff_AndForcedDisableStopsIt()
     {
         Assert.That(await _svc.ToggleAsync(GUILD, CHANNEL, OnlyChannelType.Image), Is.True);
         Assert.That(await _svc.ToggleAsync(GUILD, CHANNEL, OnlyChannelType.Link), Is.True);
@@ -55,15 +55,9 @@ public class SomethingOnlyChannelServiceTests
         Assert.That(await _svc.ToggleAsync(GUILD, CHANNEL, OnlyChannelType.Link), Is.False);
         Assert.That(_svc.GetMode(GUILD, CHANNEL), Is.Null);
         Assert.That(await GetRowsAsync(), Is.Empty);
-    }
 
-    [Test]
-    public async Task ForcedDisable_StopsLinkOnlyChannelInMemoryAndDb()
-    {
         await _svc.ToggleAsync(GUILD, CHANNEL, OnlyChannelType.Link);
-
         await _svc.DisableAsync(GUILD, CHANNEL);
-
         Assert.That(_svc.GetMode(GUILD, CHANNEL), Is.Null);
         Assert.That(await GetRowsAsync(), Is.Empty);
     }

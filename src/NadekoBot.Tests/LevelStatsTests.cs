@@ -7,60 +7,27 @@ namespace NadekoBot.Tests;
 public class LevelStatsTests
 {
     [Test]
-    public void DefaultFormula_MatchesLegacyBehavior()
+    public void Formula_RoundTripsAndChangesWithItsParameters()
     {
-        var stats = new LevelStats(1000);
-        var statsParam = new LevelStats(1000, 9, 27);
+        var legacy = new LevelStats(1000);
+        var withDefaults = new LevelStats(1000, 9, 27);
+        Assert.That(withDefaults.Level, Is.EqualTo(legacy.Level));
+        Assert.That(withDefaults.TotalXp, Is.EqualTo(legacy.TotalXp));
+        Assert.That(withDefaults.LevelXp, Is.EqualTo(legacy.LevelXp));
+        Assert.That(withDefaults.RequiredXp, Is.EqualTo(legacy.RequiredXp));
 
-        Assert.That(statsParam.Level, Is.EqualTo(stats.Level));
-        Assert.That(statsParam.TotalXp, Is.EqualTo(stats.TotalXp));
-        Assert.That(statsParam.LevelXp, Is.EqualTo(stats.LevelXp));
-        Assert.That(statsParam.RequiredXp, Is.EqualTo(stats.RequiredXp));
-    }
-
-    [Test]
-    public void CustomFormula_ChangesLevel()
-    {
-        var defaultStats = new LevelStats(500, 9, 27);
-        var easyStats = new LevelStats(500, 1, 0);
-
-        Assert.That(easyStats.Level, Is.GreaterThan(defaultStats.Level));
-    }
-
-    [Test]
-    public void GetTotalXpReqForLevel_RoundTrips()
-    {
-        const int a = 15;
-        const int c = 50;
+        Assert.That(new LevelStats(500, 1, 0).Level, Is.GreaterThan(new LevelStats(500, 9, 27).Level));
+        Assert.That(LevelStats.GetTotalXpReqForLevel(10, 50, 100),
+            Is.GreaterThan(LevelStats.GetTotalXpReqForLevel(10, 9, 27)));
 
         for (var level = 0; level < 100; level++)
         {
-            var totalXp = LevelStats.GetTotalXpReqForLevel(level, a, c);
-            var computedLevel = LevelStats.GetLevelByTotalXp(totalXp, a, c);
-            Assert.That(computedLevel, Is.EqualTo(level),
-                $"Round-trip failed for level {level}: totalXp={totalXp}, computedLevel={computedLevel}");
+            var totalXp = LevelStats.GetTotalXpReqForLevel(level, 15, 50);
+            Assert.That(LevelStats.GetLevelByTotalXp(totalXp, 15, 50), Is.EqualTo(level), $"level {level}");
         }
-    }
 
-    [Test]
-    public void CreateForLevel_WithCustomParams_ReturnsCorrectTotalXp()
-    {
-        const int a = 20;
-        const int c = 100;
-
-        var stats = LevelStats.CreateForLevel(10, a, c);
-
-        Assert.That(stats.Level, Is.EqualTo(10));
-        Assert.That(stats.LevelXp, Is.EqualTo(0));
-    }
-
-    [Test]
-    public void SteepFormula_RequiresMoreXp()
-    {
-        const long level = 10;
-        var defaultXp = LevelStats.GetTotalXpReqForLevel(level, 9, 27);
-        var steepXp = LevelStats.GetTotalXpReqForLevel(level, 50, 100);
-
-        Assert.That(steepXp, Is.GreaterThan(defaultXp));
+        var created = LevelStats.CreateForLevel(10, 20, 100);
+        Assert.That(created.Level, Is.EqualTo(10));
+        Assert.That(created.LevelXp, Is.EqualTo(0));
     }
 }

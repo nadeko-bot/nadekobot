@@ -14,7 +14,7 @@ namespace NadekoBot.Tests;
 public sealed class MusicNetworkTests
 {
     [Test]
-    public void TryParseRequest_AcceptsOnlyConnectOrAbsoluteHttp()
+    public async Task Proxy_ParsesOnlyConnectOrAbsoluteHttp_ConnectsOnlyToAllowedAddressesAndDropsProxyHeaders()
     {
         Assert.That(PublicOnlyProxy.TryParseRequest("CONNECT example.com:443 HTTP/1.1\r\n\r\n"u8, out var connect), Is.True);
         Assert.That(connect, Is.EqualTo(new PublicOnlyProxy.ProxyRequest(true, "example.com", 443, "CONNECT", string.Empty)));
@@ -38,11 +38,7 @@ public sealed class MusicNetworkTests
         ];
         foreach (var head in refused)
             Assert.That(PublicOnlyProxy.TryParseRequest(Encoding.ASCII.GetBytes(head), out _), Is.False, head);
-    }
 
-    [Test]
-    public async Task Proxy_ConnectsOnlyToAllowedAddressesAndDropsProxyHeaders()
-    {
         using var origin = new TcpListener(IPAddress.Loopback, 0);
         origin.Start();
         var originPort = ((IPEndPoint)origin.LocalEndpoint).Port;

@@ -29,10 +29,22 @@ public sealed class DbUpgradeTests
     }
 
     [Test]
-    public async Task V5Database_ReachesTheSchemaOfANewDatabase()
+    public async Task V5Database_WithRowsOfADeletedServerConfig_ReachesTheSchemaOfANewDatabase()
     {
         var upgraded = NewV5Db();
+        Exec(upgraded, """
+                       INSERT INTO GuildConfigs (Id, GuildId, AutoDeleteSelfAssignedRoleMessages, CleverbotEnabled,
+                           DeleteMessageOnCommand, DeleteStreamOnlineMessage, DisableGlobalExpressions,
+                           ExclusiveSelfAssignedRoles, FilterInvites, FilterLinks, FilterWords, NotifyStreamOffline,
+                           StickyRoles, VerbosePermissions, WarnExpireAction, WarnExpireHours, WarningsInitialized)
+                       VALUES (1, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1);
+                       INSERT INTO FilteredWord (GuildConfigId, Word) VALUES (1, 'kept'), (99, 'orphan');
+                       INSERT INTO FilterChannelId (GuildConfigId, ChannelId) VALUES (99, 5);
+                       """);
         await NadekoDbService.MigrateSqliteAsync(ConnString(upgraded), 1);
+
+        Assert.That(Scalar(upgraded, "SELECT group_concat(Word) FROM FilteredWord"), Is.EqualTo("kept"));
+        Assert.That(Scalar(upgraded, "SELECT count(*) FROM FilterChannelId"), Is.EqualTo(0L));
 
         var fresh = Path.Combine(_dir, "fresh.db");
         await File.WriteAllBytesAsync(fresh, []);
@@ -47,26 +59,6 @@ public sealed class DbUpgradeTests
         }
 
         Assert.That(missing, Is.Empty);
-    }
-
-    [Test]
-    public async Task V5Database_WithRowsOfADeletedServerConfig_Upgrades()
-    {
-        var path = NewV5Db();
-        Exec(path, """
-                   INSERT INTO GuildConfigs (Id, GuildId, AutoDeleteSelfAssignedRoleMessages, CleverbotEnabled,
-                       DeleteMessageOnCommand, DeleteStreamOnlineMessage, DisableGlobalExpressions,
-                       ExclusiveSelfAssignedRoles, FilterInvites, FilterLinks, FilterWords, NotifyStreamOffline,
-                       StickyRoles, VerbosePermissions, WarnExpireAction, WarnExpireHours, WarningsInitialized)
-                   VALUES (1, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1);
-                   INSERT INTO FilteredWord (GuildConfigId, Word) VALUES (1, 'kept'), (99, 'orphan');
-                   INSERT INTO FilterChannelId (GuildConfigId, ChannelId) VALUES (99, 5);
-                   """);
-
-        await NadekoDbService.MigrateSqliteAsync(ConnString(path), 1);
-
-        Assert.That(Scalar(path, "SELECT group_concat(Word) FROM FilteredWord"), Is.EqualTo("kept"));
-        Assert.That(Scalar(path, "SELECT count(*) FROM FilterChannelId"), Is.EqualTo(0L));
     }
 
     [Test]

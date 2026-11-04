@@ -28,41 +28,28 @@ public sealed class FilteredWordSetTests
         => fws.GetType().GetMethod("Clear")!.Invoke(fws, []);
 
     [Test]
-    public void Add_SnapshotContainsWord_CaseInsensitive()
+    public void Snapshot_FollowsAddRemoveAndClear_CaseInsensitive()
     {
         var fws = CreateFilteredWordSet();
 
         Assert.That(InvokeAdd(fws, "BadWord"), Is.True);
+        InvokeAdd(fws, "hello");
 
         var snapshot = GetSnapshot(fws);
         Assert.That(snapshot.Contains("badword"), Is.True);
         Assert.That(snapshot.Contains("BADWORD"), Is.True);
-    }
 
-    [Test]
-    public void Remove_SnapshotDoesNotContainWord()
-    {
-        var fws = CreateFilteredWordSet();
-        InvokeAdd(fws, "hello");
-        InvokeAdd(fws, "world");
+        var lookup = snapshot.GetAlternateLookup<ReadOnlySpan<char>>();
+        Assert.That(lookup.Contains("say badword now".AsSpan(4, 7)), Is.True);
+        Assert.That(lookup.Contains("goodword".AsSpan()), Is.False);
 
         Assert.That(InvokeRemove(fws, "hello"), Is.True);
 
-        var snapshot = GetSnapshot(fws);
+        snapshot = GetSnapshot(fws);
         Assert.That(snapshot.Contains("hello"), Is.False);
-        Assert.That(snapshot.Contains("world"), Is.True);
-    }
-
-    [Test]
-    public void Clear_SnapshotIsEmpty()
-    {
-        var fws = CreateFilteredWordSet();
-        InvokeAdd(fws, "a");
-        InvokeAdd(fws, "b");
+        Assert.That(snapshot.Contains("badword"), Is.True);
 
         InvokeClear(fws);
-
-        var snapshot = GetSnapshot(fws);
-        Assert.That(snapshot, Is.Empty);
+        Assert.That(GetSnapshot(fws), Is.Empty);
     }
 }

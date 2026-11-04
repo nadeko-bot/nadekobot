@@ -59,7 +59,7 @@ public class XkcdServiceTests
         => _handler.Dispose();
 
     [Test]
-    public async Task Random_CoversAllComicsAndSkipsMissingOne()
+    public async Task Random_CoversAllComics_AndSpecificReturnsNullForMissingComics()
     {
         var sawNewComic = false;
         for (var i = 0; i < 200; i++)
@@ -72,11 +72,7 @@ public class XkcdServiceTests
 
         Assert.That(sawNewComic, Is.True);
         Assert.That(_handler.LatestCalls, Is.EqualTo(1));
-    }
 
-    [Test]
-    public async Task Specific_ReturnsNullForMissingComics()
-    {
         Assert.That((await _svc.GetComicAsync(1400))?.Num, Is.EqualTo(1400));
         Assert.That(await _svc.GetComicAsync(404), Is.Null);
         Assert.That(await _svc.GetComicAsync(LATEST + 1), Is.Null);

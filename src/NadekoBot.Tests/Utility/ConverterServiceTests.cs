@@ -91,7 +91,7 @@ public class ConverterServiceTests
         => Assert.That(actual, Is.EqualTo(expected).Within(Math.Abs(expected) * TOLERANCE));
 
     [Test]
-    public void SimplePrefixedAndTemperatureUnits()
+    public void UnitsAndInputForms()
     {
         AssertClose(Ok("m", "km", 1500), 1.5);
         AssertClose(Ok("MiB", "MB", 1), 1.048576);
@@ -108,11 +108,7 @@ public class ConverterServiceTests
         AssertClose(Ok("°F", "K", 32), 273.15);
         AssertClose(Ok("K", "celsius", 0), -273.15);
         AssertClose(Ok("°R", "°F", 491.67), 32);
-    }
 
-    [Test]
-    public void CompoundUnitsFuelEconomyAndErrors()
-    {
         AssertClose(Ok("km/h", "mph", 100), 100 / 1.609344);
         AssertClose(Ok("m/s", "km/h", 10), 36);
         AssertClose(Ok("kWh", "MJ", 1), 3.6);
@@ -135,54 +131,7 @@ public class ConverterServiceTests
         var inCompound = _svc.Convert("km/hourz", "mph", 1);
         Assert.That(inCompound.Status, Is.EqualTo(ConvertStatus.UnknownUnit));
         Assert.That(inCompound.FailedToken, Is.EqualTo("hourz"));
-    }
 
-    [Test]
-    public void CurrencyUsesNewestSnapshot()
-    {
-        Assert.That(_svc.Convert("usd", "eur", 1).Status, Is.EqualTo(ConvertStatus.RatesUnavailable));
-        AssertClose(Ok("cup", "mL", 1), 236.5882365);
-
-        var now = DateTime.UtcNow;
-        ApplyEuroRates(now);
-        ApplyEuroRates(now.AddHours(-1), usd: 2);
-
-        AssertClose(Ok("eur", "usd", 10), 12.5);
-        AssertClose(Ok("USD/gal", "EUR/L", 1), 1 / 1.25 / 3.785411784);
-        AssertClose(Ok("CUP", "EUR", 25), 1);
-        AssertClose(Ok("cup", "mL", 1), 236.5882365);
-
-        ApplyEuroRates(now.AddHours(1), usd: 2);
-        AssertClose(Ok("EUR", "USD", 1), 2);
-    }
-
-    [Test]
-    public void CommonTargetsExcludeSourceAndResolve()
-    {
-        ApplyEuroRates(DateTime.UtcNow);
-
-        var res = _svc.ConvertToCommon("km", 5);
-        Assert.That(res.Status, Is.EqualTo(ConvertStatus.Ok));
-        Assert.That(res.Targets.Select(x => x.Symbol), Does.Contain("mi").And.Not.Contain("km"));
-
-        foreach (var (category, symbols) in UnitCatalog.CommonTargets)
-        {
-            foreach (var symbol in symbols)
-            {
-                Assert.That(UnitExpressionParser.Parse(symbol, _svc.Rates, out var unit, out _),
-                    Is.EqualTo(ResolveStatus.Ok), symbol);
-
-                var actual = unit.Kind == UnitKind.Unit
-                    ? UnitCatalog.Units[unit.UnitIndex].Category
-                    : UnitCatalog.TryGetCategory(unit.Dim, out var c) ? c : (UnitCategory?)null;
-                Assert.That(actual, Is.EqualTo(category), symbol);
-            }
-        }
-    }
-
-    [Test]
-    public void InputFormsAndSignificantDigitFormatting()
-    {
         var en = CultureInfo.GetCultureInfo("en-US");
         var de = CultureInfo.GetCultureInfo("de-DE");
 
@@ -217,6 +166,43 @@ public class ConverterServiceTests
         Assert.That(ConvertFormatter.FormatValue(1e-9, inv), Is.EqualTo("1E-9"));
         Assert.That(ConvertFormatter.FormatValue(6.02214076e23, inv), Is.EqualTo("6.02214076E+23"));
         Assert.That(ConvertFormatter.FormatValue(1e-3 * 1e-3, inv), Is.EqualTo("0.000001"));
+    }
+
+    [Test]
+    public void CurrencyUsesNewestSnapshotAndCommonTargetsResolve()
+    {
+        Assert.That(_svc.Convert("usd", "eur", 1).Status, Is.EqualTo(ConvertStatus.RatesUnavailable));
+        AssertClose(Ok("cup", "mL", 1), 236.5882365);
+
+        var now = DateTime.UtcNow;
+        ApplyEuroRates(now);
+        ApplyEuroRates(now.AddHours(-1), usd: 2);
+
+        AssertClose(Ok("eur", "usd", 10), 12.5);
+        AssertClose(Ok("USD/gal", "EUR/L", 1), 1 / 1.25 / 3.785411784);
+        AssertClose(Ok("CUP", "EUR", 25), 1);
+        AssertClose(Ok("cup", "mL", 1), 236.5882365);
+
+        ApplyEuroRates(now.AddHours(1), usd: 2);
+        AssertClose(Ok("EUR", "USD", 1), 2);
+
+        var res = _svc.ConvertToCommon("km", 5);
+        Assert.That(res.Status, Is.EqualTo(ConvertStatus.Ok));
+        Assert.That(res.Targets.Select(x => x.Symbol), Does.Contain("mi").And.Not.Contain("km"));
+
+        foreach (var (category, symbols) in UnitCatalog.CommonTargets)
+        {
+            foreach (var symbol in symbols)
+            {
+                Assert.That(UnitExpressionParser.Parse(symbol, _svc.Rates, out var unit, out _),
+                    Is.EqualTo(ResolveStatus.Ok), symbol);
+
+                var actual = unit.Kind == UnitKind.Unit
+                    ? UnitCatalog.Units[unit.UnitIndex].Category
+                    : UnitCatalog.TryGetCategory(unit.Dim, out var c) ? c : (UnitCategory?)null;
+                Assert.That(actual, Is.EqualTo(category), symbol);
+            }
+        }
     }
 
     [Test]

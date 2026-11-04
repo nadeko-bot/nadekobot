@@ -55,7 +55,7 @@ public sealed class ApiFeedBackupTests
     }
 
     [Test]
-    public void BackupName_IsStrictAndEncodesItsUtcCreationTime()
+    public void Backups_HaveStrictNamesAndApplyTheirIncludeLists()
     {
         Assert.That(BackupArchive.IsValidBackupFileName("nadeko-backup-20260713-142530.zip"), Is.True);
         Assert.That(BackupArchive.CreatedAt("nadeko-backup-20260713-142530.zip"),
@@ -68,11 +68,7 @@ public sealed class ApiFeedBackupTests
                      "nadeko-backup-20261399-999999.zip"
                  })
             Assert.That(BackupArchive.IsValidBackupFileName(name), Is.False, name);
-    }
 
-    [Test]
-    public void BackupAndRestore_ApplyTheirIncludeLists()
-    {
         (string Path, bool BackedUp, bool Restored)[] cases =
         [
             ("bot.yml", true, true),

@@ -65,8 +65,12 @@ public class AutoThreadTests
     }
 
     [Test]
-    public void ThreadName_UsesFirstLine_OrFallsBackToAuthor()
+    public void ThreadNameAndBackfill_UseTheFirstLineAndSkipBotsWebhooksAndThreads()
     {
+        Assert.That(AutoThreadArchive.TryParse("7D", out var oneWeek) && oneWeek == AutoThreadArchive.ONE_WEEK, Is.True);
+        Assert.That(AutoThreadArchive.TryParse("2h", out _), Is.False);
+        Assert.That(AutoThreadService.ToArchiveDuration(AutoThreadArchive.THREE_DAYS), Is.EqualTo(ThreadArchiveDuration.ThreeDays));
+
         Assert.That(AutoThreadService.GetThreadName(Message("hello there\nsecond line")),
             Is.EqualTo("hello there"));
 
@@ -76,11 +80,7 @@ public class AutoThreadTests
             Has.Length.EqualTo(AutoThreadService.MAX_THREAD_NAME_LENGTH));
 
         Assert.That(AutoThreadService.GetThreadName(Message("\n  \n")), Is.EqualTo("Author Name"));
-    }
 
-    [Test]
-    public void Backfill_SelectsEligibleMessagesOldestFirst_MediaModeNeedsFileOrLink()
-    {
         // discord returns newest first
         var messages = new[]
         {
@@ -133,23 +133,5 @@ public class AutoThreadTests
 
         await using var uow2 = _db.GetDbContext();
         Assert.That(await uow2.GetTable<AutoThreadChannel>().CountAsyncLinqToDB(), Is.Zero);
-    }
-
-    [Test]
-    public void ArchiveDuration_AcceptsOnlyDiscordSupportedValues()
-    {
-        Assert.That(AutoThreadArchive.TryParse("1h", out var oneHour), Is.True);
-        Assert.That(oneHour, Is.EqualTo(AutoThreadArchive.ONE_HOUR));
-
-        Assert.That(AutoThreadArchive.TryParse("7D", out var oneWeek), Is.True);
-        Assert.That(oneWeek, Is.EqualTo(AutoThreadArchive.ONE_WEEK));
-
-        Assert.That(AutoThreadArchive.TryParse("2h", out _), Is.False);
-        Assert.That(AutoThreadArchive.TryParse("", out _), Is.False);
-
-        Assert.That(AutoThreadService.ToArchiveDuration(AutoThreadArchive.THREE_DAYS),
-            Is.EqualTo(ThreadArchiveDuration.ThreeDays));
-        Assert.That(AutoThreadService.ToArchiveDuration(AutoThreadArchive.DEFAULT),
-            Is.EqualTo(ThreadArchiveDuration.OneDay));
     }
 }

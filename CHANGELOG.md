@@ -7,51 +7,37 @@
 ### Added
 
 - `.ga start` picks up to 20 winners, for example `.ga start 1h 3w prize`.
-- `.linkallow` / `.la` lets links to a domain and its subdomains pass the link filter
-    - `.linkallowlist` / `.lal` lists the allowed domains
-    - `.linkallowclear` / `.lac` removes all allowed domains
+- `.linkallow` / `.la` lets links to a domain pass the link filter.
 - `.prune` / `.clear` has filters for bots, humans, links, files, embeds, invites, pings and text.
 - `.feedmessage` / `.feedmsg` changes the message of a feed.
-- Feed messages have the placeholders `%feed.title%`, `%feed.url%`, `%feed.description%`, `%feed.image%` and `%feed.source%`.
-- `.repeat` / `.songrepeat` turns song repeat on or off.
-- `.loop` / `.queueloop` turns queue repeat on or off.
-- `.previous` / `.prev` / `.back` plays the previous song in the queue.
+- `.repeat` / `.songrepeat` and `.loop` / `.queueloop` repeat the song or the queue.
+- `.previous` / `.prev` / `.back` plays the previous song.
 
 ### Changed
 
 - `.stats` shows Breaker as the author.
-- `.xprolereward` / `.xprr` gives several roles at one level
-    - `.xprr <level> <role>` removes the reward of one role
-    - a server has at most 100 role rewards
+- `.xprolereward` / `.xprr` gives several roles at one level.
 - `.srvrfilterlin` / `.sfl` and `.chnlfilterlin` / `.cfl` find links in any part of a message.
-- The repeating message command is `.repeatadd` / `.repadd`.
-- Shop items, aliases, startup and scheduled commands which use `.repeat` must use `.repeatadd`.
-- On a new server, the music queue does not repeat.
-- `.currencytransactions` / `.curtrs` shows the transaction id first, without `#`.
-- The bot has its own fonts. It does not read them from `data/fonts`.
-- `data/fonts` is optional. Fonts there add the characters which the bot's fonts do not have.
-- The default xp card aligns the name, rank, xp bar and club name.
-- The bot does not read TIFF images.
+- The repeating message command is `.repeatadd` / `.repadd`
+    - shop items, aliases and scheduled commands which use `.repeat` must change to `.repeatadd`
 
 ### Fixed
 
 - `.play <number>` plays the chosen song after `.stop` or the end of the queue.
 - `.next` / `.n` plays the next song while song repeat is on.
+- The xp card shows clean text, round icons and solid rank digits.
 - `.exprca` / `.exca` expressions trigger when the word also appears earlier inside a longer word.
 - `%target%` of an `.exprca` / `.exca` expression is correct when the trigger has a different letter case.
 - `%target%` of an `.exprca` / `.exca` expression keeps the first character after a Chinese or Japanese trigger.
-- A missing or broken font in `data/fonts` does not stop the bot.
-- The xp card shows the avatar and the club icon as smooth circles.
-- The xp card shows the rank as solid digits.
-- The xp card keeps a long rank or level on the line of its label.
 
 ### Dev
 
+- The bot has its own fonts. Fonts in `data/fonts` are optional and only add missing characters.
+- The bot does not read TIFF images. AngleSharp 1.9.0 and SQLite 3.54.0 fix known security issues.
+- The medusa project template is in this repo. CI publishes it to MyGet.
 - `NadekoBot.Hosted` has routes for each role reward of a level.
 - The bot does less work and makes fewer allocations for each message.
-- AngleSharp 1.9.0 and SQLite 3.54.0 fix known security issues.
-- The medusa project template is in this repo. CI publishes each new version to MyGet.
-- The docs are shorter and correct, with new screenshots and search engine tags.
+- The test suite has 283 tests instead of 496, with merged tests for the same rules.
 
 ## [7.8.0] - 31.10.2026
 

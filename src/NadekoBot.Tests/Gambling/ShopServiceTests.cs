@@ -57,23 +57,15 @@ public class ShopServiceTests
         Assert.That(left.Select(x => x.Name), Is.EqualTo(new[] { "b", ".say hi", "-" }));
         Assert.That(left.Select(x => x.Index), Is.EqualTo(new[] { 0, 1, 2 }));
         Assert.That(left[0].Price, Is.EqualTo(500));
-    }
-
-    [Test]
-    public async Task SwapAndMove_ChangeTheListedOrder()
-    {
-        await SeedAsync(GUILD_ID, "a", 0);
-        await SeedAsync(GUILD_ID, "b", 1);
-        await SeedAsync(GUILD_ID, "c", 2);
 
         Assert.That(await _svc.SwapEntriesAsync(GUILD_ID, 0, 2), Is.True);
-        Assert.That(await NamesAsync(GUILD_ID), Is.EqualTo(new[] { "c", "b", "a" }));
+        Assert.That(await NamesAsync(GUILD_ID), Is.EqualTo(new[] { "-", ".say hi", "b" }));
 
         Assert.That(await _svc.MoveEntryAsync(GUILD_ID, 0, 2), Is.True);
-        Assert.That(await NamesAsync(GUILD_ID), Is.EqualTo(new[] { "b", "a", "c" }));
+        Assert.That(await NamesAsync(GUILD_ID), Is.EqualTo(new[] { ".say hi", "b", "-" }));
 
-        Assert.That(await _svc.ChangeEntryNameAsync(GUILD_ID, 0, "first"), Is.True);
-        Assert.That(await NamesAsync(GUILD_ID), Is.EqualTo(new[] { "first", "a", "c" }));
+        Assert.That(await _svc.ChangeEntryNameAsync(GUILD_ID, 1, "first"), Is.True);
+        Assert.That(await NamesAsync(GUILD_ID), Is.EqualTo(new[] { ".say hi", "first", "-" }));
     }
 
     [Test]

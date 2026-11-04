@@ -69,43 +69,39 @@ public sealed class ApiHttpTests
     }
 
     [Test]
-    public void Health_ReportsEachState()
+    public async Task Health_ReportsEachStateTheIntentsAndTheLastUpdateResult()
     {
         var time = new FakeTimeProvider();
-        var bridge = new BotBridge(time);
+        var states = new BotBridge(time);
 
-        Assert.That(bridge.Health(hasApiKey: false).Status, Is.EqualTo(HealthStatus.UNCONFIGURED));
+        Assert.That(states.Health(hasApiKey: false).Status, Is.EqualTo(HealthStatus.UNCONFIGURED));
 
-        bridge.SetPhase(BotPhase.NoToken);
-        Assert.That(bridge.Health(true).Status, Is.EqualTo(HealthStatus.NO_TOKEN));
-        bridge.SetPhase(BotPhase.InvalidToken);
-        Assert.That(bridge.Health(true).Status, Is.EqualTo(HealthStatus.INVALID_TOKEN));
-        bridge.SetPhase(BotPhase.Starting);
-        Assert.That(bridge.Health(true), Is.EqualTo(new BotHealth(HealthStatus.STARTING, null)));
-        bridge.SetFailed(FailureReason.DISALLOWED_INTENTS);
-        Assert.That(bridge.Health(true), Is.EqualTo(new BotHealth(HealthStatus.FAILED, FailureReason.DISALLOWED_INTENTS)));
+        states.SetPhase(BotPhase.NoToken);
+        Assert.That(states.Health(true).Status, Is.EqualTo(HealthStatus.NO_TOKEN));
+        states.SetPhase(BotPhase.InvalidToken);
+        Assert.That(states.Health(true).Status, Is.EqualTo(HealthStatus.INVALID_TOKEN));
+        states.SetPhase(BotPhase.Starting);
+        Assert.That(states.Health(true), Is.EqualTo(new BotHealth(HealthStatus.STARTING, null)));
+        states.SetFailed(FailureReason.DISALLOWED_INTENTS);
+        Assert.That(states.Health(true), Is.EqualTo(new BotHealth(HealthStatus.FAILED, FailureReason.DISALLOWED_INTENTS)));
 
         // A gateway close which lands before startup finishes keeps its status.
-        Assert.That(bridge.SetReady(new ServiceCollection().BuildServiceProvider(), null), Is.False);
-        Assert.That(bridge.Health(true).Status, Is.EqualTo(HealthStatus.FAILED));
+        Assert.That(states.SetReady(new ServiceCollection().BuildServiceProvider(), null), Is.False);
+        Assert.That(states.Health(true).Status, Is.EqualTo(HealthStatus.FAILED));
 
-        bridge.SetPhase(BotPhase.Starting);
-        Assert.That(bridge.SetReady(new ServiceCollection().BuildServiceProvider(), null), Is.True);
-        Assert.That(bridge.Health(true), Is.EqualTo(new BotHealth(HealthStatus.OK, null)));
+        states.SetPhase(BotPhase.Starting);
+        Assert.That(states.SetReady(new ServiceCollection().BuildServiceProvider(), null), Is.True);
+        Assert.That(states.Health(true), Is.EqualTo(new BotHealth(HealthStatus.OK, null)));
 
-        bridge.MarkDisconnected();
+        states.MarkDisconnected();
         time.Advance(BotBridge.DisconnectGrace - TimeSpan.FromSeconds(1));
-        Assert.That(bridge.Health(true).Status, Is.EqualTo(HealthStatus.OK));
+        Assert.That(states.Health(true).Status, Is.EqualTo(HealthStatus.OK));
         time.Advance(TimeSpan.FromSeconds(1));
-        Assert.That(bridge.Health(true).Status, Is.EqualTo(HealthStatus.DISCONNECTED));
+        Assert.That(states.Health(true).Status, Is.EqualTo(HealthStatus.DISCONNECTED));
 
-        bridge.MarkConnected();
-        Assert.That(bridge.Health(true).Status, Is.EqualTo(HealthStatus.OK));
-    }
+        states.MarkConnected();
+        Assert.That(states.Health(true).Status, Is.EqualTo(HealthStatus.OK));
 
-    [Test]
-    public async Task Health_OmitsTheReasonUnlessFailedAndReportsTheLastUpdateResult()
-    {
         var bridge = new BotBridge();
         bridge.SetPhase(BotPhase.Starting);
         await StartAsync(API_KEY, bridge);
@@ -158,7 +154,7 @@ public sealed class ApiHttpTests
     }
 
     [Test]
-    public async Task Creds_FirstUseSetsTheKeyAndOwnersAndKeepsTheRest()
+    public async Task Creds_FirstUseSetsTheKeyAndOwnersAndANewTokenDropsTheStoredIntents()
     {
         File.WriteAllText(_paths.Creds, Yaml.Serializer.Serialize(new Creds { Token = "tok" }));
         var bridge = new BotBridge();
@@ -193,27 +189,10 @@ public sealed class ApiHttpTests
             await AssertErrorAsync(noBearer, HttpStatusCode.Unauthorized, "unauthorized");
 
         Authorize();
-        using (var clear = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY, token = "" })))
-            Assert.That(clear.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
-
-        Assert.That(CredsFile.Read(_paths.Creds)!.Token, Is.Empty);
-        Assert.That(CredsFile.Read(_paths.Creds)!.OwnerIds, Is.EqualTo(new[] { ulong.Parse(OWNER_A) }));
-    }
-
-    [Test]
-    public async Task Creds_ANewTokenDeletesTheStoredIntents()
-    {
-        File.WriteAllText(_paths.Creds, Yaml.Serializer.Serialize(new Creds { Token = "tok" }));
         var stored = new IntentState(true, false, true);
         IntentsFile.Write(_paths.Intents, stored);
         IntentsFile.Write(_paths.IntentsRetry, stored);
-
-        var bridge = new BotBridge();
-        bridge.SetPhase(BotPhase.Starting);
-        await StartAsync(API_KEY, bridge);
-        Authorize();
-
-        using (var owners = await _http!.PutAsync("/api/creds", Json(new { apiKey = API_KEY, ownerIds = new[] { OWNER_A } })))
+        using (var owners = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY, ownerIds = new[] { OWNER_A } })))
             Assert.That(owners.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
         using (var same = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY, token = "tok" })))
             Assert.That(same.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
@@ -227,6 +206,12 @@ public sealed class ApiHttpTests
         Assert.That(File.Exists(_paths.Intents), Is.False);
         Assert.That(File.Exists(_paths.IntentsRetry), Is.False);
         Assert.That(CredsFile.Read(_paths.Creds)!.Token, Is.EqualTo("other"));
+
+        using (var clear = await _http.PutAsync("/api/creds", Json(new { apiKey = API_KEY, token = "" })))
+            Assert.That(clear.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
+
+        Assert.That(CredsFile.Read(_paths.Creds)!.Token, Is.Empty);
+        Assert.That(CredsFile.Read(_paths.Creds)!.OwnerIds, Is.EqualTo(new[] { ulong.Parse(OWNER_A) }));
     }
 
     [Test]
@@ -281,7 +266,7 @@ public sealed class ApiHttpTests
     }
 
     [Test]
-    public async Task Presence_SavesTheStatusAndRefusesBadValues()
+    public async Task Presence_SavesTheStatusRefusesBadValuesAndLimitsChanges()
     {
         using var db = new TestDbService();
         using var client = new DiscordSocketClient();
@@ -316,34 +301,14 @@ public sealed class ApiHttpTests
                 await AssertErrorAsync(noActivity, HttpStatusCode.BadRequest, "bad_request");
 
             Assert.That(await _http.GetStringAsync("/api/presence"), Is.EqualTo(saved));
-        }
-        finally
-        {
-            BotPresenceTests.ResetConfig(bss);
-        }
-    }
 
-    [Test]
-    public async Task Presence_RefusesChangesOverTheLimitForOneMinute()
-    {
-        using var db = new TestDbService();
-        using var client = new DiscordSocketClient();
-        var bss = await StartPresenceApiAsync(db, client);
+            Assert.That(1 + refused.Length + 1, Is.EqualTo(ApiLimits.PRESENCE_CHANGES), "refused PUTs count toward the limit too");
 
-        try
-        {
-            var body = new { status = "online", activity = new { type = "playing", text = "x" } };
-            for (var i = 0; i < ApiLimits.PRESENCE_CHANGES; i++)
-            {
-                using var ok = await _http!.PutAsync("/api/presence", Json(body));
-                Assert.That(ok.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            }
+            using (var limited = await _http.PutAsync("/api/presence", Json(valid)))
+                await AssertErrorAsync(limited, (HttpStatusCode)429, "rate_limited");
 
-            using var limited = await _http!.PutAsync("/api/presence", Json(body));
-            await AssertErrorAsync(limited, (HttpStatusCode)429, "rate_limited");
-
-            using var read = await _http.GetAsync("/api/presence");
-            Assert.That(read.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            using (var read = await _http.GetAsync("/api/presence"))
+                Assert.That(read.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
         finally
         {
@@ -439,35 +404,7 @@ public sealed class ApiHttpTests
     }
 
     [Test]
-    public async Task SystemDisk_ReportsTheVolumeBehindTheDataFolder()
-    {
-        await StartAsync(API_KEY, new BotBridge());
-
-        using (var anonymous = await _http!.GetAsync("/api/system/disk"))
-            await AssertErrorAsync(anonymous, HttpStatusCode.Unauthorized, "unauthorized");
-
-        Authorize();
-        using (var json = JsonDocument.Parse(await _http.GetStringAsync("/api/system/disk")))
-        {
-            var root = json.RootElement;
-            Assert.That(root.EnumerateObject().Select(static p => p.Name), Is.EqualTo(new[] { "usedBytes", "totalBytes" }));
-            var used = root.GetProperty("usedBytes").GetInt64();
-            var total = root.GetProperty("totalBytes").GetInt64();
-            Assert.That(total, Is.GreaterThan(0));
-            Assert.That(used, Is.InRange(0, total));
-        }
-
-        // A symlinked data folder is measured where it points, as the container's data volume is.
-        var linked = Path.Combine(_dir, "linked");
-        Directory.CreateSymbolicLink(linked, _paths.DataDir);
-        Assert.That(ManagedEndpoints.ReadDiskUsage(linked)?.TotalBytes,
-            Is.EqualTo(ManagedEndpoints.ReadDiskUsage(_paths.DataDir)?.TotalBytes));
-
-        Assert.That(ManagedEndpoints.ReadDiskUsage(Path.Combine(_dir, "missing")), Is.Null);
-    }
-
-    [Test]
-    public async Task FrameworkErrors_HaveErrorBodies()
+    public async Task FrameworkErrors_HaveErrorBodiesAndDiskReportsTheDataVolume()
     {
         await StartAsync(API_KEY, new BotBridge());
 
@@ -476,6 +413,8 @@ public sealed class ApiHttpTests
             await AssertErrorAsync(probe, HttpStatusCode.Unauthorized, "unauthorized");
         using (var probe = await _http.GetAsync("/api/nope"))
             await AssertErrorAsync(probe, HttpStatusCode.Unauthorized, "unauthorized");
+        using (var anonymous = await _http.GetAsync("/api/system/disk"))
+            await AssertErrorAsync(anonymous, HttpStatusCode.Unauthorized, "unauthorized");
 
         Authorize();
 
@@ -508,30 +447,44 @@ public sealed class ApiHttpTests
 
         using (var notReady = await _http.GetAsync("/api/status"))
             await AssertErrorAsync(notReady, HttpStatusCode.ServiceUnavailable, "not_ready");
-    }
 
-    [Test]
-    public async Task Feed_SendsKeepAlivesToOpenStreams()
-    {
-        var time = new FakeTimeProvider();
-        using var feed = new CommandFeedService(await FakeCommandHandler.CreateAsync(), time);
-        using var sub = feed.Subscribe()!;
-        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-
-        // The keepalive loop starts its timer on another thread, so advance until a tick lands.
-        var read = sub.Reader.ReadAsync(cts.Token).AsTask();
-        while (!read.IsCompleted)
+        using (var json = JsonDocument.Parse(await _http.GetStringAsync("/api/system/disk")))
         {
-            time.Advance(CommandFeedService.KeepAliveInterval);
-            await Task.Delay(10, cts.Token);
+            var root = json.RootElement;
+            Assert.That(root.EnumerateObject().Select(static p => p.Name), Is.EqualTo(new[] { "usedBytes", "totalBytes" }));
+            var used = root.GetProperty("usedBytes").GetInt64();
+            var total = root.GetProperty("totalBytes").GetInt64();
+            Assert.That(total, Is.GreaterThan(0));
+            Assert.That(used, Is.InRange(0, total));
         }
 
-        Assert.That((await read).IsKeepAlive, Is.True);
+        // A symlinked data folder is measured where it points, as the container's data volume is.
+        var linked = Path.Combine(_dir, "linked");
+        Directory.CreateSymbolicLink(linked, _paths.DataDir);
+        Assert.That(ManagedEndpoints.ReadDiskUsage(linked)?.TotalBytes,
+            Is.EqualTo(ManagedEndpoints.ReadDiskUsage(_paths.DataDir)?.TotalBytes));
+
+        Assert.That(ManagedEndpoints.ReadDiskUsage(Path.Combine(_dir, "missing")), Is.Null);
     }
 
     [Test]
-    public async Task Feed_StreamsUnnamedFramesWithoutASinceQuery()
+    public async Task Feed_StreamsUnnamedFramesAndKeepAlives()
     {
+        var time = new FakeTimeProvider();
+        using var idleFeed = new CommandFeedService(await FakeCommandHandler.CreateAsync(), time);
+        using var idleSub = idleFeed.Subscribe()!;
+        using var idleCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+
+        // The keepalive loop starts its timer on another thread, so advance until a tick lands.
+        var keepAlive = idleSub.Reader.ReadAsync(idleCts.Token).AsTask();
+        while (!keepAlive.IsCompleted)
+        {
+            time.Advance(CommandFeedService.KeepAliveInterval);
+            await Task.Delay(10, idleCts.Token);
+        }
+
+        Assert.That((await keepAlive).IsKeepAlive, Is.True);
+
         var handler = await FakeCommandHandler.CreateAsync();
         using var feed = new CommandFeedService(handler, TimeProvider.System);
         var bridge = new BotBridge();
@@ -627,7 +580,7 @@ public sealed class ApiHttpTests
     }
 
     [Test]
-    public async Task MusicSearch_ValidatesTheQueryAndTellsAFailureFromNoResults()
+    public async Task MusicSearchAndNotifications_ValidateTheQueryAndRefuseAGuildTheBotIsNotIn()
     {
         var music = Substitute.For<IMusicService>();
         music.SearchTracksAsync("lofi", 2).Returns(new MusicSearchResult(
@@ -667,14 +620,6 @@ public sealed class ApiHttpTests
             await AssertErrorAsync(noGuild, HttpStatusCode.NotFound, "not_found");
         using (var noGuildAdd = await _http.PostAsync("/api/guilds/123/music/tracks", Json(new { query = "x" })))
             await AssertErrorAsync(noGuildAdd, HttpStatusCode.NotFound, "not_found");
-    }
-
-    [Test]
-    public async Task Notifications_AnswerNotFoundForAGuildTheBotIsNotIn()
-    {
-        using var db = new TestDbService();
-        using var client = new DiscordSocketClient();
-        await StartMusicApiAsync(Substitute.For<IMusicService>(), db, client);
 
         (HttpMethod Method, string Path)[] routes =
         [

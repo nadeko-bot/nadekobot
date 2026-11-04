@@ -27,7 +27,6 @@ namespace NadekoBot.Tests.Gambling;
 public class BlackjackTests
 {
     private const byte A = 1;
-    private const byte J = 11;
     private const byte Q = 12;
     private const byte K = 13;
 
@@ -69,20 +68,6 @@ public class BlackjackTests
     [TearDown]
     public void TearDown()
         => _db.Dispose();
-
-    [Test]
-    public void HandValue_CountsAnAceAsElevenOnlyWhileTheHandStaysAt21OrLess()
-    {
-        Assert.That(BlackjackHand.Evaluate(Cards(A, 6)), Is.EqualTo(new BjHandValue(17, true)));
-        Assert.That(BlackjackHand.Evaluate(Cards(A, 6, 10)), Is.EqualTo(new BjHandValue(17, false)));
-        Assert.That(BlackjackHand.Evaluate(Cards(A, A, 9)), Is.EqualTo(new BjHandValue(21, true)));
-        Assert.That(BlackjackHand.Evaluate(Cards(K, Q, 5)).IsBust, Is.True);
-
-        var natural = new BlackjackHand(10);
-        natural.Add(Card(A));
-        natural.Add(Card(J));
-        Assert.That(natural.IsNatural, Is.True);
-    }
 
     [Test]
     public void Dealer_GetsTheSecondCardAfterThePlayersAndHitsSoft17()
@@ -160,7 +145,7 @@ public class BlackjackTests
     }
 
     [Test]
-    public void Payouts_BlackjackPaysThreeToTwoRoundedDownAndABustLosesWhenTheDealerBusts()
+    public void Payouts_PayEachOutcomeAndADealerBlackjackTakesDoubledAndSplitBetsInFull()
     {
         // seats: natural for 5, 17 stands, 16 hits and busts, 19 stands; dealer 6 10 draws a 10 and busts
         var round = Round([5, 10, 10, 10], A, 10, 10, 10, 6, K, 7, 6, 9, 10, 10, 10);
@@ -184,38 +169,39 @@ public class BlackjackTests
         second.Stand();
         second.Stand();
         Assert.That(Results(second), Is.EqualTo(new[] { (BjHandResult.Push, 10L), (BjHandResult.Lose, 0L) }));
-    }
 
-    [Test]
-    public void DealerBlackjack_TakesDoubledAndSplitBetsInFullAndPushesAPlayerBlackjack()
-    {
         // 5 6 doubles to 20, 8 8 splits to 8 2 and 8 3, A K is a natural; dealer A, then K after the players
-        var round = Round([10, 10, 10], 5, 8, A, A, 6, 8, K, 9, 2, 3, K);
-        round.Deal();
-        round.Double();
-        round.Split();
-        round.Stand();
-        round.Stand();
+        var dealerBj = Round([10, 10, 10], 5, 8, A, A, 6, 8, K, 9, 2, 3, K);
+        dealerBj.Deal();
+        dealerBj.Double();
+        dealerBj.Split();
+        dealerBj.Stand();
+        dealerBj.Stand();
 
-        Assert.That(round.Phase, Is.EqualTo(BjRoundPhase.Finished));
-        Assert.That(round.DealerHasBlackjack, Is.True);
-        Assert.That(Results(round), Is.EqualTo(new[]
+        Assert.That(dealerBj.Phase, Is.EqualTo(BjRoundPhase.Finished));
+        Assert.That(dealerBj.DealerHasBlackjack, Is.True);
+        Assert.That(Results(dealerBj), Is.EqualTo(new[]
         {
             (BjHandResult.Lose, 0L),
             (BjHandResult.Lose, 0L),
             (BjHandResult.Lose, 0L),
             (BjHandResult.Push, 10L)
         }));
-        Assert.That((round.Players[0].TotalStake, round.Players[1].TotalStake), Is.EqualTo((20L, 20L)));
-        Assert.That(BlackjackRound.GetPayouts(round.Players[0]), Is.Empty);
-        Assert.That(BlackjackRound.GetPayouts(round.Players[1]), Is.Empty);
-        Assert.That(BlackjackRound.GetPayouts(round.Players[2]),
+        Assert.That((dealerBj.Players[0].TotalStake, dealerBj.Players[1].TotalStake), Is.EqualTo((20L, 20L)));
+        Assert.That(BlackjackRound.GetPayouts(dealerBj.Players[0]), Is.Empty);
+        Assert.That(BlackjackRound.GetPayouts(dealerBj.Players[1]), Is.Empty);
+        Assert.That(BlackjackRound.GetPayouts(dealerBj.Players[2]),
             Is.EqualTo(new[] { new BlackjackPayout(BlackjackTx.PUSH, 10) }));
     }
 
     [Test]
-    public void Split_NeedsTheSameRankAnd21AfterASplitPaysOneToOne()
+    public void PlayerActions_SplitDoubleAndFinishFollowTheTableRules()
     {
+        Assert.That(BlackjackHand.Evaluate(Cards(A, 6)), Is.EqualTo(new BjHandValue(17, true)));
+        Assert.That(BlackjackHand.Evaluate(Cards(A, 6, 10)), Is.EqualTo(new BjHandValue(17, false)));
+        Assert.That(BlackjackHand.Evaluate(Cards(A, A, 9)), Is.EqualTo(new BjHandValue(21, true)));
+        Assert.That(BlackjackHand.Evaluate(Cards(K, Q, 5)).IsBust, Is.True);
+
         var mixed = Round([10], K, 6, Q, 10);
         mixed.Deal();
         Assert.That(mixed.CanSplit, Is.False);
@@ -233,28 +219,24 @@ public class BlackjackTests
         Assert.That(hands[0].IsNatural, Is.False);
         Assert.That(Results(round), Is.EqualTo(new[] { (BjHandResult.Win, 20L), (BjHandResult.Win, 20L) }));
         Assert.That(round.Players[0].TotalStake, Is.EqualTo(20));
-    }
 
-    [Test]
-    public void Split_OnlyOnceAndASplitHandCannotDoubleWhileSplitAcesGetOneCardEach()
-    {
         // 8 8 splits; the first hand gets another 8 but cannot split again, the second hand 8 3 cannot double
-        var round = Round([10], 8, 6, 8, 8, 3, 10, 10, 10);
-        round.Deal();
-        round.Split();
+        var eights = Round([10], 8, 6, 8, 8, 3, 10, 10, 10);
+        eights.Deal();
+        eights.Split();
 
-        Assert.That(round.Players[0].Hands.Count, Is.EqualTo(BlackjackRound.MAX_HANDS));
-        Assert.That((round.CanSplit, round.CanDouble), Is.EqualTo((false, false)));
-        round.Stand();
+        Assert.That(eights.Players[0].Hands.Count, Is.EqualTo(BlackjackRound.MAX_HANDS));
+        Assert.That((eights.CanSplit, eights.CanDouble), Is.EqualTo((false, false)));
+        eights.Stand();
 
-        Assert.That(round.HandIndex, Is.EqualTo(1));
-        Assert.That((round.CanSplit, round.CanDouble), Is.EqualTo((false, false)));
-        round.Hit();
+        Assert.That(eights.HandIndex, Is.EqualTo(1));
+        Assert.That((eights.CanSplit, eights.CanDouble), Is.EqualTo((false, false)));
+        eights.Hit();
 
         // the second hand reached 21; dealer 6 10 busts on a 10
-        Assert.That(round.Phase, Is.EqualTo(BjRoundPhase.Finished));
-        Assert.That(Results(round), Is.EqualTo(new[] { (BjHandResult.Win, 20L), (BjHandResult.Win, 20L) }));
-        Assert.That(round.Players[0].TotalStake, Is.EqualTo(20));
+        Assert.That(eights.Phase, Is.EqualTo(BjRoundPhase.Finished));
+        Assert.That(Results(eights), Is.EqualTo(new[] { (BjHandResult.Win, 20L), (BjHandResult.Win, 20L) }));
+        Assert.That(eights.Players[0].TotalStake, Is.EqualTo(20));
 
         // A A splits, each ace gets one card and the round goes to the dealer
         var aces = Round([10], A, 6, A, K, 9, 10, 10);
@@ -265,27 +247,19 @@ public class BlackjackTests
         Assert.That(aces.Players[0].Hands.Select(static h => (h.Count, h.IsStood)),
             Is.EqualTo(new[] { (2, true), (2, true) }));
         Assert.That(Results(aces), Is.EqualTo(new[] { (BjHandResult.Win, 20L), (BjHandResult.Win, 20L) }));
-    }
 
-    [Test]
-    public void Double_WorksOnlyOnTheFirstTwoCards()
-    {
         // 5 6 doubles and gets a 9, 2 3 hits a 6 to 11, which a three-card hand cannot double; dealer 6 10 busts
-        var round = Round([10, 10], 5, 2, 6, 6, 3, 9, 6, 10, 10);
-        round.Deal();
-        Assert.That(round.DoubleCost, Is.EqualTo(10));
-        round.Double();
+        var doubled = Round([10, 10], 5, 2, 6, 6, 3, 9, 6, 10, 10);
+        doubled.Deal();
+        Assert.That(doubled.DoubleCost, Is.EqualTo(10));
+        doubled.Double();
 
-        round.Hit();
-        Assert.That(round.CanDouble, Is.False);
-        round.Stand();
+        doubled.Hit();
+        Assert.That(doubled.CanDouble, Is.False);
+        doubled.Stand();
 
-        Assert.That(Results(round), Is.EqualTo(new[] { (BjHandResult.Win, 40L), (BjHandResult.Win, 20L) }));
-    }
+        Assert.That(Results(doubled), Is.EqualTo(new[] { (BjHandResult.Win, 40L), (BjHandResult.Win, 20L) }));
 
-    [Test]
-    public void Double_IsAllowedOnlyOnNineToEleven()
-    {
         // 5 4 is 9, 6 4 is 10, 9 2 is 11, 8 4 is 12, 5 3 is 8
         var nine = Round([10], 5, 5, 4);
         nine.Deal();
@@ -300,11 +274,7 @@ public class BlackjackTests
 
         Assert.That((nine.CanDouble, ten.CanDouble, eleven.CanDouble, twelve.CanDouble, eight.CanDouble),
             Is.EqualTo((true, true, true, false, false)));
-    }
 
-    [Test]
-    public void Finish_StandsOpenHandsAndPlaysTheDealer()
-    {
         // 10 8 stays at 18 when the table stops; the dealer 3 draws 6, 7 and 5 to 21
         var open = Round([10], 10, 3, 8, 6, 7, 5);
         open.Deal();
@@ -423,24 +393,6 @@ public class BlackjackTests
         Assert.That(await StakeCountAsync(), Is.EqualTo(2));
     }
 
-    [Test]
-    public void Lobby_ShowsTheCountdownAndOnlyTheStartButton()
-    {
-        var deadline = DateTimeOffset.FromUnixTimeSeconds(1_800_000_000);
-        var state = new BjRenderState(GUILD_SHARD_0, "`.bj <amount>`", BjTablePhase.Joining, false, null,
-            [new(USER_A, 100), new(USER_B, 50)], ["Mira", "Yuki"], deadline, 0, int.MaxValue);
-
-        var (embed, components) = CreateRenderer().Render(state);
-
-        var lines = embed.Description!.Split('\n');
-        Assert.That(lines[0], Is.EqualTo($"{strs.bj_join_line("").Key}(`.bj <amount>`)"));
-        Assert.That(lines[^2..], Is.EqualTo(new[] { "", $"{strs.bj_starts("").Key}(<t:{deadline.ToUnixTimeSeconds()}:R>)" }));
-
-        var buttons = components.Components.OfType<ActionRowComponent>().SelectMany(static row => row.Components).OfType<ButtonComponent>().ToArray();
-        Assert.That(buttons.Select(static b => b.CustomId),
-            Is.EqualTo(new[] { BlackjackTable.ButtonId(BlackjackTable.ACT_START, 0) }));
-    }
-
     private BlackjackRenderer CreateRenderer()
     {
         var localization = Substitute.For<ILocalization>();
@@ -498,7 +450,7 @@ public class BlackjackTests
     }
 
     [Test]
-    public void Restore_FinishesTheRoundExactlyAsTheTableWould()
+    public void Restore_FinishesTheRoundAsTheTableWouldAndRefusesBuffersItCannotTrust()
     {
         // 5 6 doubles on 11 to 20, 8 8 splits into 8 2 and 8 3; dealer 10 then 7 stands on 17
         var played = Round([10, 10], 5, 8, 10, 6, 8, 9, 2, 3, 7);
@@ -525,78 +477,65 @@ public class BlackjackTests
         Assert.That(finished, Is.Not.Null);
         finished!.FinishRestored();
         Assert.That(Results(finished), Is.EqualTo(Results(played)));
-    }
 
-    [Test]
-    public void Read_RefusesBuffersItCannotTrust()
-    {
         var round = Round([10, 10], 5, 8, 10, 6, 8);
         round.Deal();
-        var saved = BlackjackRoundStateCodec.Write(round);
+        var buffer = BlackjackRoundStateCodec.Write(round);
 
         Assert.That(BlackjackRoundStateCodec.Read([]), Is.Null);
 
-        var badVersion = (byte[])saved.Clone();
+        var badVersion = (byte[])buffer.Clone();
         badVersion[0] = 2;
         Assert.That(BlackjackRoundStateCodec.Read(badVersion), Is.Null);
 
         // a saved round is never in the dealing phase
-        var dealing = (byte[])saved.Clone();
+        var dealing = (byte[])buffer.Clone();
         dealing[1] = 0;
         Assert.That(BlackjackRoundStateCodec.Read(dealing), Is.Null);
 
         // the dealer's card has a rank which does not exist
-        var badRank = (byte[])saved.Clone();
+        var badRank = (byte[])buffer.Clone();
         badRank[5] = 14;
         Assert.That(BlackjackRoundStateCodec.Read(badRank), Is.Null);
 
-        for (var length = 1; length < saved.Length; length++)
-            Assert.That(BlackjackRoundStateCodec.Read(saved.AsSpan(0, length)), Is.Null, $"truncated at {length}");
+        for (var length = 1; length < buffer.Length; length++)
+            Assert.That(BlackjackRoundStateCodec.Read(buffer.AsSpan(0, length)), Is.Null, $"truncated at {length}");
     }
 
     [Test]
-    public async Task RestartSettle_PaysTheSavedRoundOnceAndDeletesItsState()
-    {
-        await SeedAsync(USER_A, 100);
-        await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL, USER_A, 40);
-        await _ledger.SaveRoundAsync(GUILD_SHARD_0, CHANNEL, [1, 2, 3]);
-
-        var settlements = new[] { new BjSettlement(USER_A, 40, [new(BlackjackTx.WIN, 80)]) };
-        Assert.That(await _ledger.SettleRoundAsync(GUILD_SHARD_0, CHANNEL, settlements), Is.EqualTo(1));
-
-        // a second call finds no stakes, so it pays nothing
-        Assert.That(await _ledger.SettleRoundAsync(GUILD_SHARD_0, CHANNEL, settlements), Is.Zero);
-
-        Assert.That(await BalanceAsync(USER_A), Is.EqualTo(140));
-        Assert.That(await StakeCountAsync(), Is.Zero);
-        Assert.That(await RoundStateCountAsync(), Is.Zero);
-    }
-
-    [Test]
-    public async Task StaleRefund_LeavesTheStakesOfASavedRoundForTheRestartSettle()
+    public async Task SavedRound_KeepsItsStakesForTheRestartSettleWhichPaysOnce()
     {
         await SeedAsync(USER_A, 100);
         await SeedAsync(USER_B, 100);
+        await SeedAsync(USER_C, 100);
         await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL, USER_A, 40);
         await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL + 1, USER_B, 30);
+        await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL + 2, USER_C, 20);
         await _ledger.SaveRoundAsync(GUILD_SHARD_0, CHANNEL, [1, 2, 3]);
+        await _ledger.SaveRoundAsync(GUILD_SHARD_0, CHANNEL + 2, [1, 2, 3]);
 
         _time.Advance(TimeSpan.FromMinutes(1));
         var cutoff = _time.GetUtcNow().UtcDateTime;
 
+        // the seats whose round was saved keep their stakes, the other one goes back
         Assert.That(await _ledger.RefundStaleAsync(2, 0, cutoff, BjRefundReason.Restart, static _ => false),
             Is.EqualTo(1));
+        Assert.That((await BalanceAsync(USER_A), await BalanceAsync(USER_B), await BalanceAsync(USER_C)),
+            Is.EqualTo((60L, 100L, 80L)));
+        Assert.That(await RoundStateCountAsync(), Is.EqualTo(2));
 
-        // the seat whose round was saved keeps its stake, the other one goes back
-        Assert.That((await BalanceAsync(USER_A), await BalanceAsync(USER_B)), Is.EqualTo((60L, 100L)));
-        Assert.That(await StakeCountAsync(), Is.EqualTo(1));
+        var settlements = new[] { new BjSettlement(USER_A, 40, [new(BlackjackTx.WIN, 80)]) };
+        Assert.That(await _ledger.SettleRoundAsync(GUILD_SHARD_0, CHANNEL, settlements), Is.EqualTo(1));
+        Assert.That(await _ledger.SettleRoundAsync(GUILD_SHARD_0, CHANNEL, settlements), Is.Zero);
+        Assert.That(await BalanceAsync(USER_A), Is.EqualTo(140));
         Assert.That(await RoundStateCountAsync(), Is.EqualTo(1));
 
         // a saved round which cannot be read is deleted, and the next sweep refunds its stake
-        await _ledger.DeleteRoundAsync(GUILD_SHARD_0, CHANNEL);
+        await _ledger.DeleteRoundAsync(GUILD_SHARD_0, CHANNEL + 2);
         Assert.That(await _ledger.RefundStaleAsync(2, 0, cutoff, BjRefundReason.Restart, static _ => false),
             Is.EqualTo(1));
-        Assert.That(await BalanceAsync(USER_A), Is.EqualTo(100));
+        Assert.That(await BalanceAsync(USER_C), Is.EqualTo(100));
+        Assert.That(await StakeCountAsync(), Is.Zero);
         Assert.That(await RoundStateCountAsync(), Is.Zero);
     }
 

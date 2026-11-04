@@ -79,7 +79,7 @@ public sealed class OpusPassthroughTests
     }
 
     [Test]
-    public async Task Source_ReadsAheadAndRefusesOtherFrameLengths()
+    public async Task Source_ReadsAheadRefusesOtherFrameLengths_AndTheServiceStreamResumesFromTheLastByte()
     {
         var path = WebmOpusDemuxerTests.GetNyanpassuClipPath();
 
@@ -87,18 +87,16 @@ public sealed class OpusPassthroughTests
             "20 ms packets do not fit the 40 ms frames of the medium preset");
         Assert.That(await OpusStreamSource.OpenAsync(new MemoryStream(new byte[64]), FRAME_SAMPLES, default), Is.Null);
 
-        await using var source = await OpusStreamSource.OpenAsync(WebmOpusDemuxer.OpenFile(path), FRAME_SAMPLES, default);
-        Assert.That(source, Is.Not.Null);
-        Assert.That(source!.WaitBufferedAsync().Wait(TimeSpan.FromSeconds(5)), Is.True);
+        await using (var fileSource = await OpusStreamSource.OpenAsync(WebmOpusDemuxer.OpenFile(path), FRAME_SAMPLES, default))
+        {
+            Assert.That(fileSource, Is.Not.Null);
+            Assert.That(fileSource!.WaitBufferedAsync().Wait(TimeSpan.FromSeconds(5)), Is.True);
 
-        var expected = await WebmOpusDemuxerTests.ReadAllPacketsAsync(WebmOpusDemuxer.OpenFile(path));
-        Assert.That(await ReadAllInternalAsync(source), Is.EqualTo(expected));
-    }
+            var fromFile = await WebmOpusDemuxerTests.ReadAllPacketsAsync(WebmOpusDemuxer.OpenFile(path));
+            Assert.That(await ReadAllInternalAsync(fileSource), Is.EqualTo(fromFile));
+        }
 
-    [Test]
-    public async Task ServiceStream_ResumesFromTheLastByteAndLeavesOtherAudioToFfmpeg()
-    {
-        var clip = await File.ReadAllBytesAsync(WebmOpusDemuxerTests.GetNyanpassuClipPath());
+        var clip = await File.ReadAllBytesAsync(path);
         var cut = clip.Length / 2;
         var requests = new List<(string Path, string? Auth, RangeHeaderValue? Range)>();
         var contentType = "audio/webm";

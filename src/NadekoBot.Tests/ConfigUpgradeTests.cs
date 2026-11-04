@@ -14,7 +14,7 @@ public sealed class ConfigUpgradeTests
     private static readonly YamlSeria _seria = new();
 
     [Test]
-    public void XpConfig_FromV4AndV5_KeepsTheTextXpSettings()
+    public void LegacyYaml_FromV4AndV5_KeepsTheXpSettingsAndDropsTheOldPatronQuotas()
     {
         // 4.x and early 5.x: cooldown in minutes
         var v4 = Upgrade("""
@@ -53,14 +53,7 @@ public sealed class ConfigUpgradeTests
                                """;
         Assert.That(XpConfigService.UpgradeLegacyYaml(current), Is.EqualTo(current));
 
-        static XpConfig Upgrade(string yaml)
-            => _seria.Deserialize<XpConfig>(XpConfigService.UpgradeLegacyYaml(yaml));
-    }
-
-    [Test]
-    public void PatronConfig_FromV4_LoadsWithoutTheOldQuotas()
-    {
-        const string v4 = """
+        const string patronV4 = """
                           version: 2
                           isEnabled: true
                           quotas:
@@ -72,19 +65,19 @@ public sealed class ConfigUpgradeTests
                                 V:
                                   PerDay: 15
                           """;
-        Assert.That(() => _seria.Deserialize<PatronConfigData>(v4), Throws.InstanceOf<YamlException>());
+        Assert.That(() => _seria.Deserialize<PatronConfigData>(patronV4), Throws.InstanceOf<YamlException>());
 
-        var upgraded = _seria.Deserialize<PatronConfigData>(PatronageConfig.UpgradeLegacyYaml(v4));
+        var upgraded = _seria.Deserialize<PatronConfigData>(PatronageConfig.UpgradeLegacyYaml(patronV4));
         Assert.That(upgraded.IsEnabled, Is.True);
         Assert.That(upgraded.Quotas, Is.Empty);
 
-        var current = _seria.Deserialize<PatronConfigData>(PatronageConfig.UpgradeLegacyYaml("""
+        var patronCurrent = _seria.Deserialize<PatronConfigData>(PatronageConfig.UpgradeLegacyYaml("""
             version: 3
             quotas:
               V:
                 ai: 50
             """));
-        Assert.That(current.Quotas[PatronTier.V]["ai"], Is.EqualTo(50));
+        Assert.That(patronCurrent.Quotas[PatronTier.V]["ai"], Is.EqualTo(50));
 
         const string noVersion = """
                                  quotas:
@@ -92,5 +85,8 @@ public sealed class ConfigUpgradeTests
                                      ai: 50
                                  """;
         Assert.That(PatronageConfig.UpgradeLegacyYaml(noVersion), Is.EqualTo(noVersion));
+
+        static XpConfig Upgrade(string yaml)
+            => _seria.Deserialize<XpConfig>(XpConfigService.UpgradeLegacyYaml(yaml));
     }
 }

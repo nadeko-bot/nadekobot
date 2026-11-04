@@ -25,22 +25,18 @@ public class MuteRoleLookupTests
     }
 
     [Test]
-    public void FindsRoleIgnoringCase()
+    public void FindsRoleIgnoringCaseAndPrefersTheLowestPosition()
     {
         var guild = GuildWith(Role(1, "member", 5), Role(2, "Nadeko-Mute", 3));
 
         Assert.That(MuteService.FindRoleByName(guild, "nadeko-mute")?.Id, Is.EqualTo(2));
         Assert.That(MuteService.FindRoleByName(guild, "missing"), Is.Null);
-    }
 
-    [Test]
-    public void PrefersLowestPosition_WhenNamesCollide()
-    {
-        var guild = GuildWith(
+        var collide = GuildWith(
             Role(1, "nadeko-mute", 20),
             Role(2, "nadeko-mute", 2),
             Role(3, "nadeko-mute", 11));
 
-        Assert.That(MuteService.FindRoleByName(guild, "nadeko-mute")?.Id, Is.EqualTo(2));
+        Assert.That(MuteService.FindRoleByName(collide, "nadeko-mute")?.Id, Is.EqualTo(2));
     }
 }

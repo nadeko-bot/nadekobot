@@ -54,7 +54,7 @@ public class AiAgentWhitelistTests
     }
 
     [Test]
-    public async Task Types_AreIndependent()
+    public async Task Types_AreIndependent_AndAnyIdOfAListMatches()
     {
         await _svc.ToggleAsync(AiAgentWhitelistType.User, USER_ID);
         await _svc.ToggleAsync(AiAgentWhitelistType.Server, SERVER_ID);
@@ -73,11 +73,7 @@ public class AiAgentWhitelistTests
         await _svc.ToggleAsync(AiAgentWhitelistType.User, USER_ID);
         Assert.That(_svc.IsWhitelisted(AiAgentWhitelistType.User, USER_ID), Is.False);
         Assert.That(_svc.IsWhitelisted(AiAgentWhitelistType.Role, USER_ID), Is.True);
-    }
 
-    [Test]
-    public async Task IsAnyWhitelisted_MatchesAnyOfTheGivenIds()
-    {
         Assert.That(_svc.IsAnyWhitelisted(AiAgentWhitelistType.Role, new[] { ROLE_ID }), Is.False);
 
         await _svc.ToggleAsync(AiAgentWhitelistType.Role, ROLE_ID);

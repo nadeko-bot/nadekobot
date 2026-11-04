@@ -38,7 +38,7 @@ public sealed class IntentTests
     }
 
     [Test]
-    public void MentionPrefix_RunsTheTextAfterTheBotMentionAsACommand()
+    public void MentionPrefix_RunsTheTextAfterTheBotMentionAsACommandAndFeedsPrompts()
     {
         var cases = new (string Content, string? Command)[]
         {
@@ -57,11 +57,7 @@ public sealed class IntentTests
             var ok = MentionPrefix.TryStrip(content, BOT_ID, PREFIX, out var command);
             Assert.That((ok, command), Is.EqualTo((expected is not null, expected)), content);
         }
-    }
 
-    [Test]
-    public void TextAfterMention_FeedsAliasesAndPrompts()
-    {
         Assert.That(MentionPrefix.TryGetText("  <@42>  hi there  ", BOT_ID, out var alias) ? alias : null, Is.EqualTo("hi there"));
         Assert.That(MentionPrefix.TryGetText("<@42>", BOT_ID, out _), Is.False);
         Assert.That(MentionPrefix.TryGetText("hi", BOT_ID, out _), Is.False);
@@ -75,7 +71,7 @@ public sealed class IntentTests
     }
 
     [Test]
-    public void Close4014_RestartsAtOnceOnlyWhenDiscordTookAnAskedIntent()
+    public void Close4014_RestartsOrExitsAtOnceOnlyWhenDiscordTookAnAskedIntent()
     {
         var all = IntentState.All;
         var noPresence = new IntentState(false, true, true);
@@ -92,12 +88,7 @@ public sealed class IntentTests
 
         // One intent swapped for another is also a lost intent.
         Assert.That(HostedProgram.RestartsAtOnce(noMembers, noPresence, lastRetry: null), Is.True);
-    }
 
-    [Test]
-    public void Close4014_SelfHostedBotExitsAtOnceOnlyWhenTheStartKnewTheFlags()
-    {
-        var all = IntentState.All;
         var noContent = new IntentState(true, true, false);
 
         Assert.That(SelfHostIntents.ExitsAtOnce(all, startKnewFlags: true, noContent), Is.True);

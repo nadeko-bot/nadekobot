@@ -26,7 +26,7 @@ public class ClubXpAccumulationTests
         => _db.Dispose();
 
     [Test]
-    public async Task ClubXp_IsAFixedRatePerTick_AndIgnoresManualGrants()
+    public async Task ClubXp_IsAFixedRatePerTick_IgnoresManualGrants_AndQueuedGainsAddUp()
     {
         var alpha = await SeedClubAsync("alpha");
         var beta = await SeedClubAsync("beta");
@@ -51,11 +51,7 @@ public class ClubXpAccumulationTests
         Assert.That(xps[alpha], Is.EqualTo(2 * XP_PER_TICK));
         Assert.That(xps[beta], Is.EqualTo(XP_PER_TICK));
         Assert.That(xps[granted], Is.EqualTo(100 + XP_PER_TICK));
-    }
 
-    [Test]
-    public void QueuedGains_InOneFlushWindowAddUp()
-    {
         var chat = new XpQueueEntry(1, 1, XP_PER_TICK, 9, true);
         var grant = new XpQueueEntry(1, 1, 500, 0, false);
 

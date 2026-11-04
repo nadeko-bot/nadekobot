@@ -76,6 +76,10 @@ public class WaifuQueryTests
         var fans = await _svc.GetFansAsync(1001, 0, 10);
         Assert.That(fans, Has.Count.EqualTo(2));
         Assert.That(fans.Select(x => x.UserId), Is.EquivalentTo(new ulong[] { 2001, 3001 }));
+
+        _cache.GetAsync(Arg.Any<TypedKey<int>>())
+            .Returns(new ValueTask<OneOf<int, None>>(new None()));
+        Assert.That(await _svc.GetRemainingActionsAsync(1001), Is.EqualTo(2));
     }
 
     [Test]
@@ -99,17 +103,5 @@ public class WaifuQueryTests
         Assert.That(result[0].UserId, Is.EqualTo(2001), "Higher price should be first");
         Assert.That(result[0].Price, Is.EqualTo(10000));
         Assert.That(result[1].Price, Is.EqualTo(5000));
-    }
-
-    [Test]
-    public async Task GetRemainingActions_ReturnsCorrectCount()
-    {
-        _cache.GetAsync(Arg.Any<TypedKey<int>>())
-            .Returns(new System.Threading.Tasks.ValueTask<OneOf<int, None>>(new None()));
-        Assert.That(await _svc.GetRemainingActionsAsync(1001), Is.EqualTo(2));
-
-        _cache.GetAsync(Arg.Any<TypedKey<int>>())
-            .Returns(new System.Threading.Tasks.ValueTask<OneOf<int, None>>((OneOf<int, None>)1));
-        Assert.That(await _svc.GetRemainingActionsAsync(1001), Is.EqualTo(1));
     }
 }

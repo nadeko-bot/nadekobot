@@ -42,12 +42,14 @@ public class BankServiceTests
         => _db.Dispose();
 
     [Test]
-    public async Task DepositAndWithdraw_MoveCurrencyBetweenWalletAndBank()
+    public async Task DepositAndWithdraw_MoveCurrencyOnlyWhenTheBalanceIsEnough()
     {
         await SeedWalletAsync(100);
 
         Assert.That(await _svc.DepositAsync(USER_ID, 70), Is.True);
         Assert.That(await _svc.WithdrawAsync(USER_ID, 20), Is.True);
+        Assert.That(await _svc.DepositAsync(USER_ID, 51), Is.False);
+        Assert.That(await _svc.WithdrawAsync(USER_ID, 51), Is.False);
 
         Assert.That(await GetWalletAsync(), Is.EqualTo(50));
         Assert.That(await _svc.GetBalanceAsync(USER_ID), Is.EqualTo(50));
@@ -57,20 +59,6 @@ public class BankServiceTests
             .Where(x => x.UserId == USER_ID && x.Type == "bank")
             .SumAsyncLinqToDB(x => x.Amount);
         Assert.That(txSum, Is.EqualTo(-50));
-    }
-
-    [Test]
-    public async Task InsufficientFunds_ChangeNothing()
-    {
-        await SeedWalletAsync(30);
-
-        Assert.That(await _svc.DepositAsync(USER_ID, 31), Is.False);
-        Assert.That(await _svc.WithdrawAsync(USER_ID, 1), Is.False);
-        Assert.That(await _svc.DepositAsync(USER_ID, 30), Is.True);
-        Assert.That(await _svc.WithdrawAsync(USER_ID, 31), Is.False);
-
-        Assert.That(await GetWalletAsync(), Is.EqualTo(0));
-        Assert.That(await _svc.GetBalanceAsync(USER_ID), Is.EqualTo(30));
     }
 
     [Test]

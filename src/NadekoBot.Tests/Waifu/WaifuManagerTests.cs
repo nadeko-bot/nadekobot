@@ -40,7 +40,7 @@ public class WaifuManagerTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task BuyManager_FirstManager_WaifuGetsHalfOfFullBid()
+    public async Task BuyManager_PaysTheWaifuHalfOfTheSurplusAndRefundsTheOldManager()
     {
         // Price=1000, bid=1150, no old manager
         // Surplus=1150, waifu gets 50%=575, burned=575
@@ -82,25 +82,18 @@ public class WaifuManagerTests
             Assert.That(wi2.ManagerUserId, Is.EqualTo(2001));
             Assert.That(wi2.Price, Is.EqualTo(5000));
         }
-    }
 
-    [Test]
-    public async Task BuyManager_ReplaceExistingManager_OldManagerRefunded()
-    {
-        // Price=2000, bid=2300 (min required=ceil(2000*1.15)=2300)
-        // Old manager refund=2000, surplus=300, waifu gets 50%=150, burned=150
+        // replacing a manager refunds the old one, and the waifu gets half of the surplus
         await using (var ctx = _db.GetDbContext())
-        {
-            await WaifuTestHelper.CreateWaifu(ctx, 1001, price: 2000, managerId: 3001);
-        }
+            await WaifuTestHelper.CreateWaifu(ctx, 1003, price: 2000, managerId: 3001);
 
-        var result = await _svc.BuyManagerAsync(2001, 1001, 2300);
-        Assert.That(result.IsT4, Is.True, "Expected Success");
+        var replaced = await _svc.BuyManagerAsync(2002, 1003, 2300);
+        Assert.That(replaced.IsT4, Is.True, "Expected Success for the replaced manager");
 
-        var info = result.AsT4.Value;
-        Assert.That(info.OldManagerRefund, Is.EqualTo(2000));
-        Assert.That(info.WaifuPayout, Is.EqualTo(150));
-        Assert.That(info.Burned, Is.EqualTo(150));
+        var replacedInfo = replaced.AsT4.Value;
+        Assert.That(replacedInfo.OldManagerRefund, Is.EqualTo(2000));
+        Assert.That(replacedInfo.WaifuPayout, Is.EqualTo(150));
+        Assert.That(replacedInfo.Burned, Is.EqualTo(150));
         await _cs.Received(1).AddAsync(3001, 2000, Arg.Any<TxData?>());
     }
 
@@ -126,13 +119,22 @@ public class WaifuManagerTests
     }
 
     [Test]
-    public async Task ResignManager_OnlyManagerCanResign_ClearsManagerAndDropsPrice()
+    public async Task ResignOrStopBacking_MoveNoMoneyAndOnlyResignClearsTheManager()
     {
         await using (var ctx = _db.GetDbContext())
         {
             await WaifuTestHelper.CreateWaifu(ctx, 1001, price: 10000, managerId: 2001);
             await WaifuTestHelper.CreateWaifu(ctx, 1002, price: 1000, managerId: 3001);
         }
+
+        await using (var ctx = _db.GetDbContext())
+        {
+            await WaifuTestHelper.CreateWaifu(ctx, 1003, price: 10000, managerId: 4001);
+            await WaifuTestHelper.CreateFan(ctx, 4001, 1003);
+        }
+
+        // a manager who stops backing stays the manager
+        Assert.That((await _svc.StopBeingFanAsync(4001)).IsT1, Is.True, "Expected Success");
 
         var notManager = await _svc.ResignManagerAsync(2001, 1002);
         Assert.That(notManager.IsT0, Is.True, "Expected ErrNotManager");
@@ -156,27 +158,9 @@ public class WaifuManagerTests
             var payout = await ctx.GetTable<WaifuPendingPayout>()
                 .FirstOrDefaultAsyncLinqToDB(x => x.UserId == 1001);
             Assert.That(payout, Is.Null);
+
+            var stillManaged = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1003);
+            Assert.That(stillManaged.ManagerUserId, Is.EqualTo(4001));
         }
-    }
-
-    [Test]
-    public async Task StopBacking_DoesNotResignManager()
-    {
-        await using (var ctx = _db.GetDbContext())
-        {
-            await WaifuTestHelper.CreateWaifu(ctx, 1001, price: 10000, managerId: 2001);
-            await WaifuTestHelper.CreateFan(ctx, 2001, 1001);
-        }
-
-        var result = await _svc.StopBeingFanAsync(2001);
-        Assert.That(result.IsT1, Is.True, "Expected Success");
-
-        await using (var ctx = _db.GetDbContext())
-        {
-            var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
-            Assert.That(wi.ManagerUserId, Is.EqualTo(2001));
-        }
-
-        await _cs.DidNotReceive().AddAsync(Arg.Any<ulong>(), Arg.Any<long>(), Arg.Any<TxData?>());
     }
 }

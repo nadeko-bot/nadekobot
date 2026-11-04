@@ -139,60 +139,60 @@ public sealed class ApiHealthActivityTests
     }
 
     [Test]
-    public void Health_CapsTheChecksAndKeepsEachFeature()
+    public void Health_CapsTheChecksAndMarksMemberFeaturesWithoutTheMembersIntent()
     {
-        var repeaters = Enumerable.Range(0, GuildHealth.MAX_CHECKS + 100)
-            .Select(static i => new RepeaterSource((ulong)(1000 + i), "x"))
-            .ToArray();
-        var guild = new FakeGuild(new GuildPermissions(administrator: true),
-            null,
-            new(),
-            new() { [100] = new ChannelPermissions(viewChannel: true, sendMessages: true, embedLinks: true) });
-        var sources = HealthSources.Empty with { Repeaters = repeaters, LogChannels = [100] };
+        {
+            var repeaters = Enumerable.Range(0, GuildHealth.MAX_CHECKS + 100)
+                .Select(static i => new RepeaterSource((ulong)(1000 + i), "x"))
+                .ToArray();
+            var guild = new FakeGuild(new GuildPermissions(administrator: true),
+                null,
+                new(),
+                new() { [100] = new ChannelPermissions(viewChannel: true, sendMessages: true, embedLinks: true) });
+            var sources = HealthSources.Empty with { Repeaters = repeaters, LogChannels = [100] };
 
-        var dto = GuildHealth.Evaluate(guild, sources, new HealthTimersDto(0, 0, 0, null));
+            var dto = GuildHealth.Evaluate(guild, sources, new HealthTimersDto(0, 0, 0, null));
 
-        Assert.That(dto.Checks, Has.Count.EqualTo(GuildHealth.MAX_CHECKS));
-        Assert.That(dto.Checks.Select(static c => c.Feature).Distinct().Count(), Is.EqualTo(Enum.GetValues<HealthFeature>().Length));
-        Assert.That(dto.Checks.Single(static c => c.Feature == "log").Status, Is.EqualTo("ok"));
+            Assert.That(dto.Checks, Has.Count.EqualTo(GuildHealth.MAX_CHECKS));
+            Assert.That(dto.Checks.Select(static c => c.Feature).Distinct().Count(), Is.EqualTo(Enum.GetValues<HealthFeature>().Length));
+            Assert.That(dto.Checks.Single(static c => c.Feature == "log").Status, Is.EqualTo("ok"));
+        }
+
+        {
+            var guild = new FakeGuild(new GuildPermissions(administrator: true),
+                null,
+                new() { [1] = new HealthRole(1, false, false) },
+                new() { [100] = new ChannelPermissions(viewChannel: true, sendMessages: true, embedLinks: true) });
+            var sources = HealthSources.Empty with
+            {
+                Greets = [new(GreetType.Greet, true, 100, "hi"), new(GreetType.GreetDm, true, null, "hi")],
+                AutoAssignRoles = [1],
+                LogChannels = [100],
+                Repeaters = [new(100, "x")]
+            };
+            var timers = new HealthTimersDto(0, 0, 0, null);
+
+            var noMembers = GuildHealth.Evaluate(guild, sources, timers, new NadekoBot.Common.IntentState(true, false, true));
+            var missing = noMembers.Checks.Where(static c => c.Issue == "intent_missing")
+                .Select(static c => (c.Feature, c.Status, c.Intent))
+                .ToArray();
+            Assert.That(missing, Is.EquivalentTo(new (string, string, string?)[]
+            {
+                ("greet", "broken", "members"),
+                ("greetDm", "broken", "members"),
+                ("autoAssign", "broken", "members"),
+                ("log", "warning", "members")
+            }));
+            Assert.That(noMembers.Checks.Single(static c => c.Feature == "repeaters").Status, Is.EqualTo("ok"));
+
+            var all = GuildHealth.Evaluate(guild, sources, timers, NadekoBot.Common.IntentState.All);
+            Assert.That(all.Checks.Select(static c => c.Issue), Has.None.EqualTo("intent_missing"));
+            Assert.That(all.Checks.Select(static c => c.Intent), Is.All.Null);
+        }
     }
 
     [Test]
-    public void Health_MarksMemberFeaturesWithoutTheServerMembersIntent()
-    {
-        var guild = new FakeGuild(new GuildPermissions(administrator: true),
-            null,
-            new() { [1] = new HealthRole(1, false, false) },
-            new() { [100] = new ChannelPermissions(viewChannel: true, sendMessages: true, embedLinks: true) });
-        var sources = HealthSources.Empty with
-        {
-            Greets = [new(GreetType.Greet, true, 100, "hi"), new(GreetType.GreetDm, true, null, "hi")],
-            AutoAssignRoles = [1],
-            LogChannels = [100],
-            Repeaters = [new(100, "x")]
-        };
-        var timers = new HealthTimersDto(0, 0, 0, null);
-
-        var noMembers = GuildHealth.Evaluate(guild, sources, timers, new NadekoBot.Common.IntentState(true, false, true));
-        var missing = noMembers.Checks.Where(static c => c.Issue == "intent_missing")
-            .Select(static c => (c.Feature, c.Status, c.Intent))
-            .ToArray();
-        Assert.That(missing, Is.EquivalentTo(new (string, string, string?)[]
-        {
-            ("greet", "broken", "members"),
-            ("greetDm", "broken", "members"),
-            ("autoAssign", "broken", "members"),
-            ("log", "warning", "members")
-        }));
-        Assert.That(noMembers.Checks.Single(static c => c.Feature == "repeaters").Status, Is.EqualTo("ok"));
-
-        var all = GuildHealth.Evaluate(guild, sources, timers, NadekoBot.Common.IntentState.All);
-        Assert.That(all.Checks.Select(static c => c.Issue), Has.None.EqualTo("intent_missing"));
-        Assert.That(all.Checks.Select(static c => c.Intent), Is.All.Null);
-    }
-
-    [Test]
-    public async Task HealthSources_ReadOnlyTheGuildAndCountOnlyFutureTimers()
+    public async Task HealthSourcesAndWarnings_ReadOnlyTheGuildCountOnlyFutureTimersAndEachUtcDay()
     {
         var now = _start.UtcDateTime;
         await using (var ctx = _db.GetDbContext())
@@ -229,6 +229,24 @@ public sealed class ApiHealthActivityTests
         Assert.That((timers.Mutes, timers.Bans, timers.TempRoles), Is.EqualTo((1, 1, 1)));
         Assert.That(timers.NextExpiry, Is.EqualTo(now.AddHours(1)));
         Assert.That(timers.NextExpiry!.Value.Kind, Is.EqualTo(DateTimeKind.Utc));
+
+        var firstDay = new DateTime(2026, 10, 8, 0, 0, 0, DateTimeKind.Utc);
+        await using (var ctx = _db.GetDbContext())
+        {
+            ctx.AddRange(
+                new Warning { GuildId = GUILD, UserId = 1, Reason = "a", Moderator = "m", DateAdded = firstDay.AddMinutes(-1) },
+                new Warning { GuildId = GUILD, UserId = 1, Reason = "b", Moderator = "m", DateAdded = firstDay },
+                new Warning { GuildId = GUILD, UserId = 2, Reason = "c", Moderator = "m", DateAdded = firstDay.AddHours(23.9) },
+                new Warning { GuildId = GUILD, UserId = 2, Reason = "d", Moderator = "m", DateAdded = firstDay.AddDays(6).AddHours(12) },
+                new Warning { GuildId = GUILD, UserId = 2, Reason = "e", Moderator = "m", DateAdded = firstDay.AddDays(7) },
+                new Warning { GuildId = OTHER_GUILD, UserId = 3, Reason = "f", Moderator = "m", DateAdded = firstDay.AddDays(2) });
+            await ctx.SaveChangesAsync();
+        }
+
+        var unixDay = (long)(firstDay - DateTime.UnixEpoch).TotalDays;
+        var counts = await ActivityEndpoints.CountWarningsPerDayAsync(_db, GUILD, unixDay, ActivityEndpoints.DEFAULT_DAYS);
+
+        Assert.That(counts, Is.EqualTo(new long[] { 2, 0, 0, 0, 0, 0, 1 }));
     }
 
     [Test]
@@ -341,28 +359,6 @@ public sealed class ApiHealthActivityTests
 
         Assert.That(new[] { null, "7", "30", "14", "+7", " 7", "" }.Select(ActivityEndpoints.ParseDays),
             Is.EqualTo(new int?[] { 7, 7, 30, null, null, null, null }));
-    }
-
-    [Test]
-    public async Task Activity_CountsWarningsForEachUtcDayOfTheServer()
-    {
-        var firstDay = new DateTime(2026, 10, 8, 0, 0, 0, DateTimeKind.Utc);
-        await using (var ctx = _db.GetDbContext())
-        {
-            ctx.AddRange(
-                new Warning { GuildId = GUILD, UserId = 1, Reason = "a", Moderator = "m", DateAdded = firstDay.AddMinutes(-1) },
-                new Warning { GuildId = GUILD, UserId = 1, Reason = "b", Moderator = "m", DateAdded = firstDay },
-                new Warning { GuildId = GUILD, UserId = 2, Reason = "c", Moderator = "m", DateAdded = firstDay.AddHours(23.9) },
-                new Warning { GuildId = GUILD, UserId = 2, Reason = "d", Moderator = "m", DateAdded = firstDay.AddDays(6).AddHours(12) },
-                new Warning { GuildId = GUILD, UserId = 2, Reason = "e", Moderator = "m", DateAdded = firstDay.AddDays(7) },
-                new Warning { GuildId = OTHER_GUILD, UserId = 3, Reason = "f", Moderator = "m", DateAdded = firstDay.AddDays(2) });
-            await ctx.SaveChangesAsync();
-        }
-
-        var unixDay = (long)(firstDay - DateTime.UnixEpoch).TotalDays;
-        var counts = await ActivityEndpoints.CountWarningsPerDayAsync(_db, GUILD, unixDay, ActivityEndpoints.DEFAULT_DAYS);
-
-        Assert.That(counts, Is.EqualTo(new long[] { 2, 0, 0, 0, 0, 0, 1 }));
     }
 
     private string DbPath

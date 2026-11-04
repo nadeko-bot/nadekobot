@@ -5,9 +5,11 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Discord.WebSocket;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.Sqlite;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using NadekoBot.Common;
 using NadekoBot.Common.Yml;
 using NadekoBot.Hosted;
@@ -124,172 +126,175 @@ public sealed class ApiHostedTests
     }
 
     [Test]
-    public void ApplyPendingRestore_CanPutTheSettingsBack()
+    public void ApplyPendingRestore_SwapsTheDbAndRestoresOnlyRootSettingsWithOwnerAccess()
     {
-        var (paths, dbPath) = RestorePaths();
-        var botYml = Path.Combine(paths.DataDir, "bot.yml");
-        var newYml = Path.Combine(paths.DataDir, "games.yml");
-        File.WriteAllBytes(dbPath, SqliteBytes("old"));
-        File.WriteAllText(botYml, "old");
-        WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")),
-            ("data/bot.yml", "new"u8.ToArray()),
-            ("data/games.yml", "new"u8.ToArray()));
-        File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
-
-        PendingRestore.Apply(paths, dbPath);
-
-        Assert.That(File.ReadAllText(botYml), Is.EqualTo("new"));
-        Assert.That(File.ReadAllText(newYml), Is.EqualTo("new"));
-        Assert.That(File.ReadAllText(Path.Combine(paths.PreRestoreFiles, "bot.yml")), Is.EqualTo("old"));
-
-        // A restore which keeps crashing after the set-aside gives up and brings back the settings it replaced.
-        var exhausted = new RestoreMarker(BACKUP_NAME, true, PendingRestore.MAX_RESTORE_ATTEMPTS);
-        File.WriteAllText(paths.RestoreMarker, exhausted.ToString());
-
-        PendingRestore.Apply(paths, dbPath);
-
-        Assert.That(ReadTag(dbPath), Is.EqualTo("old"));
-        Assert.That(File.ReadAllText(botYml), Is.EqualTo("old"));
-        Assert.That(File.Exists(newYml), Is.False);
-    }
-
-    [Test]
-    public void ApplyPendingRestore_SwapsDbAndRestoresOnlyRootSettings()
-    {
-        var (paths, dbPath) = RestorePaths();
-        WriteDbWithUncheckpointedWal(dbPath, "old");
-        File.WriteAllText(dbPath + ".pre-restore-wal", "an earlier restore's wal");
-        File.WriteAllText(paths.ApiSettings, "key");
-        File.WriteAllText(paths.Creds, "creds");
-
-        WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")),
-            ("data/bot.yml", "restored"u8.ToArray()),
-            ("data/api.yml", "evil"u8.ToArray()),
-            ("data/creds.yml", "evil"u8.ToArray()),
-            ("data/medusae/evil/evil.dll", "evil"u8.ToArray()));
-
-        File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
-
-        PendingRestore.Apply(paths, dbPath);
-
-        Assert.That(ReadTag(dbPath), Is.EqualTo("new"));
-        Assert.That(File.Exists(dbPath + "-wal"), Is.False);
-        Assert.That(File.Exists(dbPath + ".pre-restore-wal"), Is.False);
-        Assert.That(ReadTag(dbPath + ".pre-restore"), Is.EqualTo("old"));
-        Assert.That(File.ReadAllText(Path.Combine(paths.DataDir, "bot.yml")), Is.EqualTo("restored"));
-        Assert.That(File.ReadAllText(paths.ApiSettings), Is.EqualTo("key"));
-        Assert.That(File.ReadAllText(paths.Creds), Is.EqualTo("creds"));
-        Assert.That(Directory.Exists(Path.Combine(paths.DataDir, "medusae")), Is.False);
-        Assert.That(File.Exists(paths.RestoreMarker), Is.False);
-        Assert.That(Directory.Exists(paths.RestoreStaging), Is.False);
-    }
-
-    // A zip entry can carry any Unix mode, for example setuid and world-writable.
-    [Test]
-    [Platform(Exclude = "Win")]
-    public void ApplyPendingRestore_GivesRestoredFilesOnlyOwnerAccess()
-    {
-        var (paths, dbPath) = RestorePaths();
-        File.WriteAllBytes(dbPath, SqliteBytes("old"));
-        var hostileMode = Convert.ToInt32("104777", 8) << 16;
-        using (var fs = File.Create(Path.Combine(paths.BackupDir, BACKUP_NAME)))
-        using (var archive = new ZipArchive(fs, ZipArchiveMode.Create))
         {
-            foreach (var (name, content) in new[] { ("NadekoBot.db", SqliteBytes("new")), ("data/bot.yml", "new"u8.ToArray()) })
-            {
-                var entry = archive.CreateEntry(name);
-                entry.ExternalAttributes = hostileMode;
-                using var w = entry.Open();
-                w.Write(content);
-            }
+            var (paths, dbPath) = RestorePaths();
+            WriteDbWithUncheckpointedWal(dbPath, "old");
+            File.WriteAllText(dbPath + ".pre-restore-wal", "an earlier restore's wal");
+            File.WriteAllText(paths.ApiSettings, "key");
+            File.WriteAllText(paths.Creds, "creds");
+
+            WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")),
+                ("data/bot.yml", "restored"u8.ToArray()),
+                ("data/api.yml", "evil"u8.ToArray()),
+                ("data/creds.yml", "evil"u8.ToArray()),
+                ("data/medusae/evil/evil.dll", "evil"u8.ToArray()));
+
+            File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
+
+            PendingRestore.Apply(paths, dbPath);
+
+            Assert.That(ReadTag(dbPath), Is.EqualTo("new"));
+            Assert.That(File.Exists(dbPath + "-wal"), Is.False);
+            Assert.That(File.Exists(dbPath + ".pre-restore-wal"), Is.False);
+            Assert.That(ReadTag(dbPath + ".pre-restore"), Is.EqualTo("old"));
+            Assert.That(File.ReadAllText(Path.Combine(paths.DataDir, "bot.yml")), Is.EqualTo("restored"));
+            Assert.That(File.ReadAllText(paths.ApiSettings), Is.EqualTo("key"));
+            Assert.That(File.ReadAllText(paths.Creds), Is.EqualTo("creds"));
+            Assert.That(Directory.Exists(Path.Combine(paths.DataDir, "medusae")), Is.False);
+            Assert.That(File.Exists(paths.RestoreMarker), Is.False);
+            Assert.That(Directory.Exists(paths.RestoreStaging), Is.False);
         }
 
-        File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
+        // The restore takes the database entry which validation accepted.
+        {
+            var (paths, dbPath) = RestorePaths("entry");
+            File.WriteAllBytes(dbPath, SqliteBytes("old"));
+            WriteArchive(paths, ("NadekoBot.db", []), ("data/NadekoBot.db", SqliteBytes("new")));
 
-        Assert.That(PendingRestore.Apply(paths, dbPath), Is.True);
+            Assert.That(BackupArchive.ValidateFile(Path.Combine(paths.BackupDir, BACKUP_NAME), BackupLimits.Restore, out _), Is.Null);
 
-        const UnixFileMode ownerOnly = UnixFileMode.UserRead | UnixFileMode.UserWrite;
-        Assert.That(ReadTag(dbPath), Is.EqualTo("new"));
-        Assert.That(File.GetUnixFileMode(dbPath), Is.EqualTo(ownerOnly));
-        Assert.That(File.GetUnixFileMode(Path.Combine(paths.DataDir, "bot.yml")), Is.EqualTo(ownerOnly));
-    }
+            File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
+            PendingRestore.Apply(paths, dbPath);
 
-    // A managed container links data/ to a volume of its own.
-    [Test]
-    [Platform(Exclude = "Win")]
-    public void ApplyPendingRestore_WorksThroughALinkedDataDir()
-    {
-        var volume = Path.Combine(_dir, "volume");
-        Directory.CreateDirectory(volume);
-        Directory.CreateSymbolicLink(Path.Combine(_dir, "data"), volume);
-        var (paths, dbPath) = RestorePaths();
-        WriteDbWithUncheckpointedWal(dbPath, "old");
-        File.WriteAllText(Path.Combine(paths.DataDir, "bot.yml"), "old");
-        WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")), ("data/bot.yml", "new"u8.ToArray()));
-        File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
+            Assert.That(ReadTag(dbPath), Is.EqualTo("new"));
+        }
 
-        Assert.That(BackupArchive.FreeBytes(paths.DataDir), Is.Not.Null);
-        Assert.That(PendingRestore.Apply(paths, dbPath), Is.True);
+        if (OperatingSystem.IsWindows())
+            return;
 
-        Assert.That(ReadTag(Path.Combine(volume, "NadekoBot.db")), Is.EqualTo("new"));
-        Assert.That(ReadTag(Path.Combine(volume, "NadekoBot.db.pre-restore")), Is.EqualTo("old"));
-        Assert.That(File.ReadAllText(Path.Combine(volume, "bot.yml")), Is.EqualTo("new"));
-        Assert.That(File.Exists(paths.RestoreMarker), Is.False);
-        Assert.That(Directory.Exists(paths.RestoreStaging), Is.False);
-        Assert.That(new DirectoryInfo(Path.Combine(_dir, "data")).LinkTarget, Is.EqualTo(volume));
-    }
+        // A zip entry can carry any Unix mode, for example setuid and world-writable.
+        {
+            var (paths, dbPath) = RestorePaths("modes");
+            File.WriteAllBytes(dbPath, SqliteBytes("old"));
+            var hostileMode = Convert.ToInt32("104777", 8) << 16;
+            using (var fs = File.Create(Path.Combine(paths.BackupDir, BACKUP_NAME)))
+            using (var archive = new ZipArchive(fs, ZipArchiveMode.Create))
+            {
+                foreach (var (name, content) in new[] { ("NadekoBot.db", SqliteBytes("new")), ("data/bot.yml", "new"u8.ToArray()) })
+                {
+                    var entry = archive.CreateEntry(name);
+                    entry.ExternalAttributes = hostileMode;
+                    using var w = entry.Open();
+                    w.Write(content);
+                }
+            }
 
-    [Test]
-    public void ApplyPendingRestore_KeepsTheLiveDatabaseWhenTheRestoreCannotWork()
-    {
-        var (paths, dbPath) = RestorePaths();
-        File.WriteAllText(dbPath, "old");
+            File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
 
-        // The marker names no valid archive.
-        File.WriteAllText(paths.RestoreMarker, "../creds.yml");
-        PendingRestore.Apply(paths, dbPath);
-        Assert.That(File.ReadAllText(dbPath), Is.EqualTo("old"));
-        Assert.That(File.Exists(paths.RestoreMarker), Is.False);
+            Assert.That(PendingRestore.Apply(paths, dbPath), Is.True);
 
-        // The database has a valid header but damaged pages.
-        var damaged = SqliteBytes("new");
-        Array.Fill(damaged, (byte)0xFF, 100, damaged.Length - 100);
-        WriteArchive(paths, ("NadekoBot.db", damaged));
-        File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
-        PendingRestore.Apply(paths, dbPath);
-        Assert.That(File.ReadAllText(dbPath), Is.EqualTo("old"));
-        Assert.That(File.Exists(paths.RestoreMarker), Is.False);
-        Assert.That(Directory.Exists(paths.RestoreStaging), Is.False);
+            const UnixFileMode ownerOnly = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+            Assert.That(ReadTag(dbPath), Is.EqualTo("new"));
+            Assert.That(File.GetUnixFileMode(dbPath), Is.EqualTo(ownerOnly));
+            Assert.That(File.GetUnixFileMode(Path.Combine(paths.DataDir, "bot.yml")), Is.EqualTo(ownerOnly));
+        }
 
-        // Earlier attempts crashed the process; after the last one the restore gives up and puts the original back.
-        WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")));
-        File.Move(dbPath, dbPath + ".pre-restore");
-        File.WriteAllText(dbPath, "partial");
-        var exhausted = new RestoreMarker(BACKUP_NAME, true, PendingRestore.MAX_RESTORE_ATTEMPTS);
-        File.WriteAllText(paths.RestoreMarker, exhausted.ToString());
-        PendingRestore.Apply(paths, dbPath);
-        Assert.That(File.ReadAllText(dbPath), Is.EqualTo("old"));
-        Assert.That(File.Exists(paths.RestoreMarker), Is.False);
-    }
+        // A managed container links data/ to a volume of its own.
+        {
+            var volume = Path.Combine(_dir, "volume");
+            Directory.CreateDirectory(volume);
+            Directory.CreateSymbolicLink(Path.Combine(_dir, "linked"), volume);
+            var (paths, dbPath) = RestorePaths("linked");
+            WriteDbWithUncheckpointedWal(dbPath, "old");
+            File.WriteAllText(Path.Combine(paths.DataDir, "bot.yml"), "old");
+            WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")), ("data/bot.yml", "new"u8.ToArray()));
+            File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
 
-    [Test]
-    public void ApplyPendingRestore_UsesTheEntryValidationAccepted()
-    {
-        var (paths, dbPath) = RestorePaths();
-        File.WriteAllBytes(dbPath, SqliteBytes("old"));
-        WriteArchive(paths, ("NadekoBot.db", []), ("data/NadekoBot.db", SqliteBytes("new")));
+            Assert.That(BackupArchive.FreeBytes(paths.DataDir), Is.Not.Null);
+            Assert.That(PendingRestore.Apply(paths, dbPath), Is.True);
 
-        Assert.That(BackupArchive.ValidateFile(Path.Combine(paths.BackupDir, BACKUP_NAME), BackupLimits.Restore, out _), Is.Null);
-
-        File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
-        PendingRestore.Apply(paths, dbPath);
-
-        Assert.That(ReadTag(dbPath), Is.EqualTo("new"));
+            Assert.That(ReadTag(Path.Combine(volume, "NadekoBot.db")), Is.EqualTo("new"));
+            Assert.That(ReadTag(Path.Combine(volume, "NadekoBot.db.pre-restore")), Is.EqualTo("old"));
+            Assert.That(File.ReadAllText(Path.Combine(volume, "bot.yml")), Is.EqualTo("new"));
+            Assert.That(File.Exists(paths.RestoreMarker), Is.False);
+            Assert.That(Directory.Exists(paths.RestoreStaging), Is.False);
+            Assert.That(new DirectoryInfo(Path.Combine(_dir, "linked")).LinkTarget, Is.EqualTo(volume));
+        }
     }
 
     [Test]
-    public void ApplyPendingRestore_RetryKeepsTheOriginalDatabase()
+    public void ApplyPendingRestore_KeepsTheLiveDatabaseAndSettingsWhenTheRestoreCannotWork()
     {
+        {
+            var (paths, dbPath) = RestorePaths();
+            File.WriteAllText(dbPath, "old");
+
+            // The marker names no valid archive.
+            File.WriteAllText(paths.RestoreMarker, "../creds.yml");
+            PendingRestore.Apply(paths, dbPath);
+            Assert.That(File.ReadAllText(dbPath), Is.EqualTo("old"));
+            Assert.That(File.Exists(paths.RestoreMarker), Is.False);
+
+            // The database has a valid header but damaged pages.
+            var damaged = SqliteBytes("new");
+            Array.Fill(damaged, (byte)0xFF, 100, damaged.Length - 100);
+            WriteArchive(paths, ("NadekoBot.db", damaged));
+            File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
+            PendingRestore.Apply(paths, dbPath);
+            Assert.That(File.ReadAllText(dbPath), Is.EqualTo("old"));
+            Assert.That(File.Exists(paths.RestoreMarker), Is.False);
+            Assert.That(Directory.Exists(paths.RestoreStaging), Is.False);
+
+            // Earlier attempts crashed the process; after the last one the restore gives up and puts the original back.
+            WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")));
+            File.Move(dbPath, dbPath + ".pre-restore");
+            File.WriteAllText(dbPath, "partial");
+            var exhausted = new RestoreMarker(BACKUP_NAME, true, PendingRestore.MAX_RESTORE_ATTEMPTS);
+            File.WriteAllText(paths.RestoreMarker, exhausted.ToString());
+            PendingRestore.Apply(paths, dbPath);
+            Assert.That(File.ReadAllText(dbPath), Is.EqualTo("old"));
+            Assert.That(File.Exists(paths.RestoreMarker), Is.False);
+        }
+
+        // A restore which keeps crashing after the set-aside gives up and brings back the settings it replaced.
+        {
+            var (paths, dbPath) = RestorePaths("settings");
+            var botYml = Path.Combine(paths.DataDir, "bot.yml");
+            var newYml = Path.Combine(paths.DataDir, "games.yml");
+            File.WriteAllBytes(dbPath, SqliteBytes("old"));
+            File.WriteAllText(botYml, "old");
+            WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")),
+                ("data/bot.yml", "new"u8.ToArray()),
+                ("data/games.yml", "new"u8.ToArray()));
+            File.WriteAllText(paths.RestoreMarker, RestoreMarker.Request(BACKUP_NAME).ToString());
+
+            PendingRestore.Apply(paths, dbPath);
+
+            Assert.That(File.ReadAllText(botYml), Is.EqualTo("new"));
+            Assert.That(File.ReadAllText(newYml), Is.EqualTo("new"));
+            Assert.That(File.ReadAllText(Path.Combine(paths.PreRestoreFiles, "bot.yml")), Is.EqualTo("old"));
+
+            var exhausted = new RestoreMarker(BACKUP_NAME, true, PendingRestore.MAX_RESTORE_ATTEMPTS);
+            File.WriteAllText(paths.RestoreMarker, exhausted.ToString());
+
+            PendingRestore.Apply(paths, dbPath);
+
+            Assert.That(ReadTag(dbPath), Is.EqualTo("old"));
+            Assert.That(File.ReadAllText(botYml), Is.EqualTo("old"));
+            Assert.That(File.Exists(newYml), Is.False);
+        }
+    }
+
+    [Test]
+    public void ApplyPendingRestore_RetryKeepsTheOriginalDatabaseAndReadsEveryMarkerFormat()
+    {
+        Assert.That(RestoreMarker.Parse("a.zip"), Is.EqualTo(new RestoreMarker("a.zip", false, 0)));
+        Assert.That(RestoreMarker.Parse("a.zip\nset-aside"), Is.EqualTo(new RestoreMarker("a.zip", true, 0)));
+        var marker = new RestoreMarker("a.zip", true, 2);
+        Assert.That(RestoreMarker.Parse(marker.ToString()), Is.EqualTo(marker));
+
         var (paths, dbPath) = RestorePaths();
         WriteArchive(paths, ("NadekoBot.db", SqliteBytes("new")));
 
@@ -329,33 +334,15 @@ public sealed class ApiHostedTests
     }
 
     [Test]
-    public void RestoreMarker_ReadsEveryFormat()
+    public async Task Gate_MatchesOnlyTheExactKeyThenAppliesShardAndReadinessAndHidesUnknownGuilds()
     {
-        Assert.That(RestoreMarker.Parse("a.zip"), Is.EqualTo(new RestoreMarker("a.zip", false, 0)));
-        Assert.That(RestoreMarker.Parse("a.zip\nset-aside"), Is.EqualTo(new RestoreMarker("a.zip", true, 0)));
-        var marker = new RestoreMarker("a.zip", true, 2);
-        Assert.That(RestoreMarker.Parse(marker.ToString()), Is.EqualTo(marker));
-    }
+        var apiKey = new ApiKey(KEY);
+        Assert.That(apiKey.Matches($"Bearer {KEY}"), Is.True);
+        Assert.That(apiKey.Matches($"bearer  {KEY}"), Is.True);
+        foreach (var header in new[] { "", KEY, "Bearer wrong-key", $"Bearer {KEY}extra", $"Basic {KEY}", "Bearer " + new string('x', 4096) })
+            Assert.That(apiKey.Matches(header), Is.False, header.Length > 40 ? "long header" : header);
 
-    [Test]
-    public void ApiSettings_RoundTripWithoutDerivedFields()
-    {
-        var path = Path.Combine(_dir, "api.yml");
-        ApiSettingsFile.Save(path, new ApiSettings().WithKey(KEY));
-
-        var yml = File.ReadAllText(path);
-        var loaded = ApiSettingsFile.LoadOrCreate(path);
-
-        Assert.That(yml, Does.Not.Contain("hasKey"));
-        Assert.That(loaded.ApiKey, Is.EqualTo(KEY));
-        Assert.That(loaded.Address, Is.EqualTo("127.0.0.1"));
-        if (!OperatingSystem.IsWindows())
-            Assert.That(File.GetUnixFileMode(path), Is.EqualTo(UnixFileMode.UserRead | UnixFileMode.UserWrite));
-    }
-
-    [Test]
-    public async Task Gate_AppliesKeyShardAndReadinessInOrder()
-    {
+        Assert.That(new ApiKey(string.Empty).Matches("Bearer "), Is.False);
         const ApiAccess guild = ApiAccess.Key | ApiAccess.Bot | ApiAccess.Guild;
         (ApiAccess Access, string Key, string? Auth, BotPhase Phase, int Expected)[] cases =
         [
@@ -392,11 +379,41 @@ public sealed class ApiHostedTests
 
             Assert.That(http.Response.StatusCode, Is.EqualTo(expected), $"{access} key={key.Length > 0} auth={auth is not null} {phase}");
         }
+
+        var ready = new BotBridge();
+        ready.AttachClient(new DiscordSocketClient());
+        ready.SetPhase(BotPhase.Starting);
+        ready.SetReady(new ServiceCollection().BuildServiceProvider(), null);
+        var reached = false;
+        var standalone = new ApiGateMiddleware(
+            _ =>
+            {
+                reached = true;
+                return Task.CompletedTask;
+            },
+            new ApiKey(string.Empty),
+            ready,
+            new HostContext(HostMode.Standalone, 0, 1));
+
+        foreach (var guildId in new[] { "123", "not-a-number" })
+        {
+            var http = new DefaultHttpContext();
+            http.SetEndpoint(new Endpoint(null,
+                new EndpointMetadataCollection(new ApiAccessMetadata(ApiAccess.Bot | ApiAccess.Guild)),
+                "test"));
+            http.Request.RouteValues[ApiGateMiddleware.GUILD_ID_ROUTE_VALUE] = guildId;
+
+            await standalone.InvokeAsync(http);
+
+            Assert.That(http.Response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound), guildId);
+        }
+
+        Assert.That(reached, Is.False);
     }
 
-    private (HostPaths Paths, string DbPath) RestorePaths()
+    private (HostPaths Paths, string DbPath) RestorePaths(string dataDir = "data")
     {
-        var paths = new HostPaths(Path.Combine(_dir, "data"));
+        var paths = new HostPaths(Path.Combine(_dir, dataDir));
         Directory.CreateDirectory(paths.BackupDir);
         return (paths, Path.Combine(paths.DataDir, "NadekoBot.db"));
     }

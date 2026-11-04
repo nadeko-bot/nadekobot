@@ -49,7 +49,7 @@ public class AnimeSearchTests
         => _handler.Dispose();
 
     [Test]
-    public async Task Anime_MapsTheAniListMediaAndCachesIt()
+    public async Task AnimeAndManga_MapTheAniListMedia_AndAnimeIsCached()
     {
         var description = new string('a', 600);
         _handler.Respond = () => Json("""
@@ -80,11 +80,7 @@ public class AnimeSearchTests
         var again = await _svc.GetAnimeData("  FRIEREN ");
         Assert.That(again?.Id, Is.EqualTo(154587));
         Assert.That(_handler.Calls, Is.EqualTo(1));
-    }
 
-    [Test]
-    public async Task Manga_MapsChaptersVolumesStatusAndMissingValues()
-    {
         _handler.Respond = () => Json("""
             {"data":{"Media":{
               "id":30002,"siteUrl":"https://anilist.co/manga/30002","status":"RELEASING",
@@ -103,7 +99,7 @@ public class AnimeSearchTests
         Assert.That(manga.AverageScore, Is.EqualTo(0));
         Assert.That(manga.ImageUrlLge, Is.EqualTo("https://img/l.jpg"));
         Assert.That(manga.Synopsis, Is.Empty);
-        Assert.That(_handler.Bodies[0], Does.Contain("\"type\":\"MANGA\""));
+        Assert.That(_handler.Bodies[^1], Does.Contain("\"type\":\"MANGA\""));
     }
 
     [Test]

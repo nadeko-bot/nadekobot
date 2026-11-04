@@ -34,7 +34,7 @@ public sealed class DownloadTrackerTests
         }, force);
 
     [Test]
-    public async Task Ensure_SharesOneDownloadAndSkipsLargeServersAndMissingIntent()
+    public async Task Ensure_SharesOneDownload_SkipsLargeServersAndMissingIntent_AndStopsAStuckDownload()
     {
         var tracker = NewTracker(new FakeTimeProvider());
         var gate = new TaskCompletionSource();
@@ -57,32 +57,28 @@ public sealed class DownloadTrackerTests
         var other = new FakeGuild();
         Assert.That(await EnsureInternal(noIntent, other, force: true), Is.False);
         Assert.That(other.Downloads, Is.Zero);
-    }
 
-    [Test]
-    public async Task Ensure_StopsAStuckDownloadAtTheTimeoutAndWaitsBeforeTheNextRequest()
-    {
         var time = new FakeTimeProvider();
-        var tracker = NewTracker(time);
-        var guild = new FakeGuild { Pending = new TaskCompletionSource().Task };
+        var stuckTracker = NewTracker(time);
+        var stuckGuild = new FakeGuild { Pending = new TaskCompletionSource().Task };
 
-        var stuck = EnsureInternal(tracker, guild);
+        var stuck = EnsureInternal(stuckTracker, stuckGuild);
         Assert.That(stuck.IsCompleted, Is.False);
         time.Advance(DownloadTracker.Timeout);
         Assert.That(await stuck, Is.False);
 
-        await EnsureInternal(tracker, guild);
-        Assert.That(guild.Downloads, Is.EqualTo(1));
+        await EnsureInternal(stuckTracker, stuckGuild);
+        Assert.That(stuckGuild.Downloads, Is.EqualTo(1));
 
         // The owner may ask again once Discord's 30 seconds for the server are over, but not sooner.
-        guild.Pending = Task.CompletedTask;
-        await EnsureInternal(tracker, guild, force: true);
-        await EnsureInternal(tracker, guild, force: true);
-        Assert.That(guild.Downloads, Is.EqualTo(2));
+        stuckGuild.Pending = Task.CompletedTask;
+        await EnsureInternal(stuckTracker, stuckGuild, force: true);
+        await EnsureInternal(stuckTracker, stuckGuild, force: true);
+        Assert.That(stuckGuild.Downloads, Is.EqualTo(2));
 
         time.Advance(DownloadTracker.Cooldown);
-        await EnsureInternal(tracker, guild);
-        Assert.That(guild.Downloads, Is.EqualTo(3));
+        await EnsureInternal(stuckTracker, stuckGuild);
+        Assert.That(stuckGuild.Downloads, Is.EqualTo(3));
     }
 
     [Test]

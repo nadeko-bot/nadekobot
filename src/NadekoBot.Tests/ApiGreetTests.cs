@@ -28,7 +28,7 @@ public sealed class ApiGreetTests
         => _db?.Dispose();
 
     [Test]
-    public void CheckGreetChannel_EnablingNeedsAUsableChannelExceptForDms()
+    public async Task Greets_NeedAUsableChannelExceptForDmsAndListEveryTypeWithDefaults()
     {
         Assert.That(GreetEndpoints.CheckGreetChannel(GreetType.Greet, null, false, true, false),
             Is.SameAs(ApiErrors.ChannelRequired));
@@ -41,11 +41,7 @@ public sealed class ApiGreetTests
         Assert.That(GreetEndpoints.CheckGreetChannel(GreetType.Greet, 5, false, false, false), Is.Null,
             "disabling with a stale stored channel");
         Assert.That(GreetEndpoints.CheckGreetChannel(GreetType.Boost, 5, true, true, true), Is.Null);
-    }
 
-    [Test]
-    public async Task ReadGreetDtos_ListsEveryTypeWithDefaultsForUnsetOnes()
-    {
         await using (var ctx = _db!.GetDbContext())
         {
             await ctx.GetTable<GreetSettings>()

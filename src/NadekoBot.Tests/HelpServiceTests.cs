@@ -46,7 +46,7 @@ public sealed class HelpServiceTests
         });
 
     [Test]
-    public void Keywords_IgnoreCase_AndAnEmptyListMatchesEveryDm()
+    public void Keywords_IgnoreCase_AnEmptyListMatchesEveryDm_AndNoTextSendsNothing()
     {
         Assert.That(_svc.TryStartReply(1, "Help"), Is.True);
         Assert.That(_svc.TryStartReply(2, "show me COMMANDS"), Is.True);
@@ -57,6 +57,12 @@ public sealed class HelpServiceTests
 
         _bcs.ModifyConfig(static c => c.DmHelpTextKeywords = null!);
         Assert.That(_svc.TryStartReply(5, "hi"), Is.True);
+
+        _bcs.ModifyConfig(static c => c.DmHelpText = "-");
+        Assert.That(_svc.TryStartReply(6, "help"), Is.False);
+
+        _bcs.ModifyConfig(static c => c.DmHelpText = "");
+        Assert.That(_svc.TryStartReply(7, "help"), Is.False);
     }
 
     [Test]
@@ -75,15 +81,5 @@ public sealed class HelpServiceTests
 
         _time.Advance(TimeSpan.FromSeconds(HelpService.DM_HELP_COOLDOWN_SECONDS));
         Assert.That(_svc.TryStartReply(1, "help"), Is.True);
-    }
-
-    [Test]
-    public void NoDmHelpText_SendsNothing()
-    {
-        _bcs.ModifyConfig(static c => c.DmHelpText = "-");
-        Assert.That(_svc.TryStartReply(1, "help"), Is.False);
-
-        _bcs.ModifyConfig(static c => c.DmHelpText = "");
-        Assert.That(_svc.TryStartReply(2, "help"), Is.False);
     }
 }

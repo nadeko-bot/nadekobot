@@ -48,8 +48,16 @@ public class WaifuGiftTests
         => WaifuGiftItems.GetTodaysItems(_allItems).First(x => x.Type == GiftItemType.Mood);
 
     [Test]
-    public async Task Gift_RaisesStatsCappedAt1000_CountsRepeatGifts()
+    public async Task Gift_RaisesStatsCappedAt1000CountsRepeatsAndRefusesUnknownItemsOrNoMoney()
     {
+        // each day offers 3 food and 3 mood items, one from each price tier
+        var today = WaifuGiftItems.GetTodaysItems(_allItems);
+        Assert.That(today.Count(x => x.Type == GiftItemType.Food), Is.EqualTo(3));
+        Assert.That(today.Select(x => x.Price).OrderBy(x => x), Is.EqualTo(new long[] { 10, 50, 250, 1000, 2500, 5000 }));
+        Assert.That(WaifuGiftItems.GetTodaysItems(_allItems).Select(x => x.Id), Is.EqualTo(today.Select(x => x.Id)));
+        Assert.That(WaifuGiftItems.FindTodaysItem(_allItems, today[0].Name.ToUpperInvariant())?.Id, Is.EqualTo(today[0].Id));
+        Assert.That(_allItems.Count(x => x.Price > 0), Is.EqualTo(24));
+
         var food = GetTodaysFoodItem();
         var mood = GetTodaysMoodItem();
 
@@ -78,20 +86,13 @@ public class WaifuGiftTests
         Assert.That(gifts, Has.Count.EqualTo(2));
         Assert.That(gifts.First(g => g.Item.Id == food.Id).Count, Is.EqualTo(2));
         Assert.That(gifts.First(g => g.Item.Id == mood.Id).Count, Is.EqualTo(3));
-    }
-
-    [Test]
-    public async Task Gift_UnknownItemOrInsufficientFunds_ReturnsError()
-    {
-        await using (var ctx = _db.GetDbContext())
-            await WaifuTestHelper.CreateWaifu(ctx, 1001);
 
         var unknown = await _svc.GiftAsync(2001, 1001, "NonExistentItemXYZ");
         Assert.That(unknown.IsT3, Is.True, "Expected ErrItemNotAvailable");
 
         _cs.RemoveAsync(Arg.Any<ulong>(), Arg.Any<long>(), Arg.Any<TxData?>()).Returns(false);
 
-        var broke = await _svc.GiftAsync(2001, 1001, GetTodaysFoodItem().Name);
+        var broke = await _svc.GiftAsync(2001, 1001, food.Name);
         Assert.That(broke.IsT1, Is.True, "Expected ErrInsufficientFunds");
     }
 }

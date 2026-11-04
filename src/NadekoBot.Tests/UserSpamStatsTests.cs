@@ -27,38 +27,19 @@ public class UserSpamStatsTests
     }
 
     [Test]
-    public void RepeatedTextSpam_IncrementsCount()
+    public void RepeatedTextOrAttachments_RaiseTheCount_AndADifferentAttachmentResetsIt()
     {
-        var msg = CreateMessage("spam");
-        var stats = new UserSpamStats(msg);
+        var text = new UserSpamStats(CreateMessage("spam"));
+        text.ApplyNextMessage(CreateMessage("spam"));
+        text.ApplyNextMessage(CreateMessage("spam"));
+        Assert.That(text.Count, Is.EqualTo(3));
 
-        stats.ApplyNextMessage(CreateMessage("spam"));
-        stats.ApplyNextMessage(CreateMessage("spam"));
+        var image = new UserSpamStats(CreateMessage("", ("image.png", 1024)));
+        image.ApplyNextMessage(CreateMessage("", ("image.png", 1024)));
+        image.ApplyNextMessage(CreateMessage("", ("image.png", 1024)));
+        Assert.That(image.Count, Is.EqualTo(3));
 
-        Assert.That(stats.Count, Is.EqualTo(3));
-    }
-
-    [Test]
-    public void RepeatedAttachmentSpam_IncrementsCount()
-    {
-        var msg = CreateMessage("", ("image.png", 1024));
-        var stats = new UserSpamStats(msg);
-
-        stats.ApplyNextMessage(CreateMessage("", ("image.png", 1024)));
-        stats.ApplyNextMessage(CreateMessage("", ("image.png", 1024)));
-
-        Assert.That(stats.Count, Is.EqualTo(3));
-    }
-
-    [Test]
-    public void DifferentAttachments_ResetsCount()
-    {
-        var msg = CreateMessage("", ("image.png", 1024));
-        var stats = new UserSpamStats(msg);
-
-        stats.ApplyNextMessage(CreateMessage("", ("image.png", 1024)));
-        stats.ApplyNextMessage(CreateMessage("", ("other.jpg", 2048)));
-
-        Assert.That(stats.Count, Is.EqualTo(1));
+        image.ApplyNextMessage(CreateMessage("", ("other.jpg", 2048)));
+        Assert.That(image.Count, Is.EqualTo(1));
     }
 }

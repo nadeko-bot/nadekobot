@@ -380,7 +380,7 @@ VI. Gigue 15:19</media:description>
     }
 
     [Test]
-    public void PollInterval_FollowsCacheHeaders()
+    public void Schedule_FollowsCacheHeadersAndRetryAfter_AndAForbiddenFeedDoesNotBlockItsHost()
     {
         var now = _start;
 
@@ -404,10 +404,56 @@ VI. Gigue 15:19</media:description>
             Is.EqualTo(FeedHealth.MaxPollInterval));
         Assert.That(FeedHealth.GetPollInterval(FeedHealth.GetFreshness(noStore, now)),
             Is.EqualTo(FeedHealth.MinPollInterval));
+
+        Assert.That(FeedHealth.GetHostPause(null, 0), Is.EqualTo(FeedHealth.FirstHostPause));
+        Assert.That(FeedHealth.GetHostPause(null, 1), Is.EqualTo(FeedHealth.FirstHostPause * 2));
+        Assert.That(FeedHealth.GetHostPause(null, 10), Is.EqualTo(FeedHealth.MaxHostPause));
+        Assert.That(FeedHealth.GetHostPause(TimeSpan.FromSeconds(1), 3), Is.EqualTo(FeedHealth.MinHostPause));
+        Assert.That(FeedHealth.GetHostPause(TimeSpan.FromDays(1), 0), Is.EqualTo(FeedHealth.MaxHostPause));
+
+        var time = new FakeTimeProvider(_start);
+        var health = CreateHealth(time,
+            ("a", "https://www.youtube.com/feeds/videos.xml?channel_id=UCa"),
+            ("b", "https://www.youtube.com/feeds/videos.xml?channel_id=UCb"),
+            ("other", "https://other.example.com/rss"));
+
+        health.OnFailure("a", 429, TimeSpan.FromSeconds(120));
+        Assert.That(health.IsDue("b"), Is.False);
+        Assert.That(health.IsDue("other"), Is.True);
+
+        time.Advance(TimeSpan.FromSeconds(121));
+        Assert.That(health.IsDue("b"), Is.True);
+
+        // The success resets the doubling, so the next pause without Retry-After is the first one again.
+        health.OnSuccess("b", null);
+        health.OnFailure("b", 403, null);
+        time.Advance(FeedHealth.FirstHostPause - TimeSpan.FromMinutes(1));
+        Assert.That(health.IsDue("a"), Is.False);
+        time.Advance(TimeSpan.FromMinutes(2));
+        Assert.That(health.IsDue("a"), Is.True);
+
+        var redditTime = new FakeTimeProvider(_start);
+        var reddit = CreateHealth(redditTime,
+            ("bad", "https://www.reddit.com/r/private/.rss"),
+            ("good", "https://www.reddit.com/r/public/.rss"));
+
+        reddit.OnFailure("bad", 403, null);
+        Assert.That(reddit.IsDue("good"), Is.False);
+
+        redditTime.Advance(FeedHealth.FirstHostPause);
+        Assert.That(reddit.IsDue("good"), Is.True);
+        Assert.That(reddit.IsDue("bad"), Is.False);
+
+        reddit.OnSuccess("good", null);
+        redditTime.Advance(FeedHealth.GetFailureBackoff(1));
+        Assert.That(reddit.IsDue("bad"), Is.True);
+
+        reddit.OnFailure("bad", 403, null);
+        Assert.That(reddit.IsDue("good"), Is.True);
     }
 
     [Test]
-    public void FailingFeed_IsRemovedAfterDays_ButNotWhileItsHostIsDown()
+    public void FailingFeed_IsRemovedAfterDays_ButNotWhileItsHostIsDownOrRightAfterARestart()
     {
         var time = new FakeTimeProvider(_start);
         (string, string)[] feeds =
@@ -442,53 +488,55 @@ VI. Gigue 15:19</media:description>
         }
 
         Assert.That(dead.StreakStarted, Is.False);
+
+        var restoredTime = new FakeTimeProvider(_start);
+        var restored = new FeedHealth(restoredTime);
+        restored.BeginTick();
+        restored.Touch("solo", "https://blog.example.com/rss", _start.UtcDateTime.AddDays(-5));
+        restored.EndTick();
+
+        Assert.That(restored.OnFailure("solo", 500, null).Remove, Is.False, "a restored streak needs failures in this run");
+
+        restoredTime.Advance(FeedHealth.MinObservedStreak);
+        Assert.That(restored.OnFailure("solo", 500, null).Remove, Is.True);
     }
 
     private static FeedsService CreateMessageService()
         => new(null!, null!, null!, null!, null!, null!, null!, new ReplacementService(new ReplacementPatternStore()));
 
     [Test]
-    public async Task FeedMessage_PlainText_FillsPlaceholdersAndKeepsDefaultEmbed()
+    public async Task FeedMessage_FillsPlaceholdersOnce_CannotPing_AndFitsDiscord()
     {
         var post = FeedsService.GetFeedPost(_feed.Items.First());
 
-        var msg = await CreateMessageService().BuildFeedMessageAsync(
+        var plain = await CreateMessageService().BuildFeedMessageAsync(
             "New: %feed.title% %feed.url% (%feed.source%) %feed.unknown%",
             post,
             RSS_URL,
             new ReplacementContext());
 
-        Assert.That(msg.WithDefaultEmbed, Is.True);
-        Assert.That(msg.Text, Is.EqualTo(new SmartPlainText(
+        Assert.That(plain.WithDefaultEmbed, Is.True);
+        Assert.That(plain.Text, Is.EqualTo(new SmartPlainText(
             $"New: Johannes Brahms - Cello Sonata No. 1 in E Minor, Op. 38 https://www.youtube.com/watch?v=-gmGalwAe5A ({RSS_URL}) %feed.unknown%")));
-    }
 
-    [Test]
-    public async Task FeedMessage_EmbedJson_FillsPlaceholdersAndReplacesDefaultEmbed()
-    {
-        var post = FeedsService.GetFeedPost(_feed.Items.First()) with { ImageUrl = null };
-
-        var msg = await CreateMessageService().BuildFeedMessageAsync(
+        var noImage = post with { ImageUrl = null };
+        var embed = await CreateMessageService().BuildFeedMessageAsync(
             """
             { "content": "Upload!", "embeds": [ { "title": "%feed.title%", "url": "%feed.url%", "image": "%feed.image%" } ] }
             """,
-            post,
+            noImage,
             RSS_URL,
             new ReplacementContext());
 
-        Assert.That(msg.WithDefaultEmbed, Is.False);
-        var arr = msg.Text as SmartEmbedTextArray;
+        Assert.That(embed.WithDefaultEmbed, Is.False);
+        var arr = embed.Text as SmartEmbedTextArray;
         Assert.That(arr, Is.Not.Null);
         Assert.That(arr!.Content, Is.EqualTo("Upload!"));
         Assert.That(arr.Embeds[0].Title, Is.EqualTo(post.Title));
         Assert.That(arr.Embeds[0].Url, Is.EqualTo(post.Link));
         Assert.That(arr.GetEmbedBuilders()[0].ImageUrl, Is.Null.Or.Empty);
-    }
 
-    [Test]
-    public async Task FeedMessage_ValuesCannotPingOrFormPlaceholders_AndTheMessageFitsDiscord()
-    {
-        var post = FeedsService.GetFeedPost(_feed.Items.First()) with
+        var hostile = post with
         {
             Title = "<@123> <@&456> @everyone %feed.url%",
             Description = new string('x', 2048)
@@ -496,7 +544,7 @@ VI. Gigue 15:19</media:description>
 
         var msg = await CreateMessageService().BuildFeedMessageAsync(
             "%feed.title% %feed.description%",
-            post,
+            hostile,
             RSS_URL,
             new ReplacementContext());
 
@@ -508,82 +556,6 @@ VI. Gigue 15:19</media:description>
         Assert.That(text.Contains("%feed.url%", StringComparison.Ordinal), Is.True);
         Assert.That(text.Length, Is.EqualTo(DiscordConfig.MaxMessageSize));
     }
-
-    [Test]
-    public void HostPause_FollowsRetryAfter_AndSuccessResetsIt()
-    {
-        var time = new FakeTimeProvider(_start);
-        (string, string)[] feeds =
-        [
-            ("a", "https://www.youtube.com/feeds/videos.xml?channel_id=UCa"),
-            ("b", "https://www.youtube.com/feeds/videos.xml?channel_id=UCb"),
-            ("other", "https://other.example.com/rss")
-        ];
-        var health = CreateHealth(time, feeds);
-
-        health.OnFailure("a", 429, TimeSpan.FromSeconds(120));
-        Assert.That(health.IsDue("b"), Is.False);
-        Assert.That(health.IsDue("other"), Is.True);
-
-        time.Advance(TimeSpan.FromSeconds(121));
-        Assert.That(health.IsDue("b"), Is.True);
-
-        // The success resets the doubling, so the next pause without Retry-After is the first one again.
-        health.OnSuccess("b", null);
-        health.OnFailure("b", 403, null);
-        time.Advance(FeedHealth.FirstHostPause - TimeSpan.FromMinutes(1));
-        Assert.That(health.IsDue("a"), Is.False);
-        time.Advance(TimeSpan.FromMinutes(2));
-        Assert.That(health.IsDue("a"), Is.True);
-
-        Assert.That(FeedHealth.GetHostPause(null, 0), Is.EqualTo(FeedHealth.FirstHostPause));
-        Assert.That(FeedHealth.GetHostPause(null, 1), Is.EqualTo(FeedHealth.FirstHostPause * 2));
-        Assert.That(FeedHealth.GetHostPause(null, 10), Is.EqualTo(FeedHealth.MaxHostPause));
-        Assert.That(FeedHealth.GetHostPause(TimeSpan.FromSeconds(1), 3), Is.EqualTo(FeedHealth.MinHostPause));
-        Assert.That(FeedHealth.GetHostPause(TimeSpan.FromDays(1), 0), Is.EqualTo(FeedHealth.MaxHostPause));
-    }
-
-    [Test]
-    public void RestoredStreak_NeedsAnHourOfFailuresInThisRun()
-    {
-        var time = new FakeTimeProvider(_start);
-        var health = new FeedHealth(time);
-        health.BeginTick();
-        health.Touch("solo", "https://blog.example.com/rss", _start.UtcDateTime.AddDays(-5));
-        health.EndTick();
-
-        Assert.That(health.OnFailure("solo", 500, null).Remove, Is.False);
-
-        time.Advance(FeedHealth.MinObservedStreak);
-        Assert.That(health.OnFailure("solo", 500, null).Remove, Is.True);
-    }
-
-    [Test]
-    public void ForbiddenFeed_DoesNotBlockItsHost()
-    {
-        var time = new FakeTimeProvider(_start);
-        (string, string)[] feeds =
-        [
-            ("bad", "https://www.reddit.com/r/private/.rss"),
-            ("good", "https://www.reddit.com/r/public/.rss")
-        ];
-        var health = CreateHealth(time, feeds);
-
-        health.OnFailure("bad", 403, null);
-        Assert.That(health.IsDue("good"), Is.False);
-
-        time.Advance(FeedHealth.FirstHostPause);
-        Assert.That(health.IsDue("good"), Is.True);
-        Assert.That(health.IsDue("bad"), Is.False);
-
-        health.OnSuccess("good", null);
-        time.Advance(FeedHealth.GetFailureBackoff(1));
-        Assert.That(health.IsDue("bad"), Is.True);
-
-        health.OnFailure("bad", 403, null);
-        Assert.That(health.IsDue("good"), Is.True);
-    }
-
     [Test]
     public async Task Streaks_AreSavedAndCleared_AndTheOldestStartLoadsBack()
     {

@@ -55,7 +55,7 @@ public sealed class ApiUpdateTests
     }
 
     [Test]
-    public async Task Update_NeedsTheKeyAGzipBodyAndValidHeaders()
+    public async Task Update_RefusesEachBadRequestAndStagesNothing()
     {
         await StartAsync();
         var package = Package(ValidEntries());
@@ -85,6 +85,60 @@ public sealed class ApiUpdateTests
             await AssertErrorAsync(tooOld, HttpStatusCode.BadRequest, "invalid_value");
 
         AssertNothingStaged();
+
+        var limit = (long)ApiSettings.MIN_UPDATE_MB * 1024 * 1024;
+
+        // Expect: 100-continue, so the client sends nothing once the server has answered from the length alone.
+        using (var declared = UpdateRequest(new LazyContent(limit + 1, knownLength: true), new string('0', 64)))
+        {
+            declared.Headers.ExpectContinue = true;
+            using var res = await _http.SendAsync(declared);
+            await AssertErrorAsync(res, HttpStatusCode.RequestEntityTooLarge, "too_large");
+        }
+
+        // Without a length the limit is enforced while the body is read.
+        using (var chunked = await _http.SendAsync(UpdateRequest(new LazyContent(limit + 1, knownLength: false), new string('0', 64))))
+            await AssertErrorAsync(chunked, HttpStatusCode.RequestEntityTooLarge, "too_large");
+
+        AssertNothingStaged();
+
+        using (var wrongSha = await _http.SendAsync(UpdateRequest(package, sha256: new string('0', 64))))
+            await AssertErrorAsync(wrongSha, HttpStatusCode.BadRequest, "checksum_mismatch");
+
+        AssertNothingStaged();
+
+        if (!OperatingSystem.IsWindows())
+        {
+            using var otherVersion = await _http.SendAsync(UpdateRequest(package, version: "9.9.8"));
+            await AssertErrorAsync(otherVersion, HttpStatusCode.BadRequest, "version_mismatch");
+            AssertNothingStaged();
+        }
+
+        var packages = new[]
+        {
+            Package(ValidEntries().Append(File($"{TOP}/../escape.txt", "x"))),
+            Package(ValidEntries().Append(File("/etc/evil", "x"))),
+            Package([Dir(TOP), File($"{TOP}/NadekoBot.dll", "dll")]),
+            Package(ValidEntries().Append(File("other/file.txt", "x"))),
+            Package(ValidEntries().Append(Link(TarEntryType.SymbolicLink, $"{TOP}/out", "../../outside"))),
+            Package(ValidEntries().Append(Link(TarEntryType.SymbolicLink, $"{TOP}/abs", "/etc/passwd"))),
+            Package(ValidEntries().Append(Link(TarEntryType.HardLink, $"{TOP}/hard", "/etc/passwd"))),
+            Package(ValidEntries().Append(new PaxTarEntry(TarEntryType.Fifo, $"{TOP}/fifo"))),
+            Package(ValidEntries().Append(File($"{TOP}/NadekoBot.Hosted", "dup"))),
+            Package(ValidEntries().Append(Link(TarEntryType.SymbolicLink, $"{TOP}/alias", "strings"))
+                .Append(File($"{TOP}/alias/en-US.yml", "clash"))),
+            Gzip(Encoding.UTF8.GetBytes("not a tar at all, but long enough to be read as one block or more"))
+        };
+
+        foreach (var bad in packages)
+        {
+            using var res = await _http.SendAsync(UpdateRequest(bad));
+            await AssertErrorAsync(res, HttpStatusCode.BadRequest, "bad_package");
+            AssertNothingStaged();
+        }
+
+        Assert.That(System.IO.File.Exists(Path.Combine(_dir, "escape.txt")), Is.False);
+        Assert.That(System.IO.File.Exists(Path.Combine(_paths.DataDir, ".update", "escape.txt")), Is.False);
     }
 
     [Test]
@@ -107,78 +161,6 @@ public sealed class ApiUpdateTests
             => UpdatePackage.ExtractAsync(package, Path.Combine(_dir, "b"), long.MaxValue, fitsOnDisk - 1, CancellationToken.None));
         await UpdatePackage.ExtractAsync(package, Path.Combine(_dir, "c"), fits, fitsOnDisk, CancellationToken.None);
         Assert.That(System.IO.File.ReadAllText(Path.Combine(_dir, "c", "big2.bin")), Is.EqualTo(content));
-    }
-
-    [Test]
-    public async Task Update_RejectsABodyAboveMaxUpdateMb()
-    {
-        await StartAsync();
-        Authorize();
-        var limit = (long)ApiSettings.MIN_UPDATE_MB * 1024 * 1024;
-
-        // Expect: 100-continue, so the client sends nothing once the server has answered from the length alone.
-        using (var declared = UpdateRequest(new LazyContent(limit + 1, knownLength: true), new string('0', 64)))
-        {
-            declared.Headers.ExpectContinue = true;
-            using var res = await _http!.SendAsync(declared);
-            await AssertErrorAsync(res, HttpStatusCode.RequestEntityTooLarge, "too_large");
-        }
-
-        // Without a length the limit is enforced while the body is read.
-        using (var chunked = await _http!.SendAsync(UpdateRequest(new LazyContent(limit + 1, knownLength: false), new string('0', 64))))
-            await AssertErrorAsync(chunked, HttpStatusCode.RequestEntityTooLarge, "too_large");
-
-        AssertNothingStaged();
-    }
-
-    [Test]
-    public async Task Update_RejectsAWrongChecksumOrAnUnsafeOrIncompletePackage()
-    {
-        await StartAsync();
-        Authorize();
-
-        using (var wrongSha = await _http!.SendAsync(UpdateRequest(Package(ValidEntries()), sha256: new string('0', 64))))
-            await AssertErrorAsync(wrongSha, HttpStatusCode.BadRequest, "checksum_mismatch");
-
-        AssertNothingStaged();
-
-        var packages = new[]
-        {
-            Package(ValidEntries().Append(File($"{TOP}/../escape.txt", "x"))),
-            Package(ValidEntries().Append(File("/etc/evil", "x"))),
-            Package([Dir(TOP), File($"{TOP}/NadekoBot.dll", "dll")]),
-            Package(ValidEntries().Append(File("other/file.txt", "x"))),
-            Package(ValidEntries().Append(Link(TarEntryType.SymbolicLink, $"{TOP}/out", "../../outside"))),
-            Package(ValidEntries().Append(Link(TarEntryType.SymbolicLink, $"{TOP}/abs", "/etc/passwd"))),
-            Package(ValidEntries().Append(Link(TarEntryType.HardLink, $"{TOP}/hard", "/etc/passwd"))),
-            Package(ValidEntries().Append(new PaxTarEntry(TarEntryType.Fifo, $"{TOP}/fifo"))),
-            Package(ValidEntries().Append(File($"{TOP}/NadekoBot.Hosted", "dup"))),
-            Package(ValidEntries().Append(Link(TarEntryType.SymbolicLink, $"{TOP}/alias", "strings"))
-                .Append(File($"{TOP}/alias/en-US.yml", "clash"))),
-            Gzip(Encoding.UTF8.GetBytes("not a tar at all, but long enough to be read as one block or more"))
-        };
-
-        foreach (var package in packages)
-        {
-            using var res = await _http.SendAsync(UpdateRequest(package));
-            await AssertErrorAsync(res, HttpStatusCode.BadRequest, "bad_package");
-            AssertNothingStaged();
-        }
-
-        Assert.That(System.IO.File.Exists(Path.Combine(_dir, "escape.txt")), Is.False);
-        Assert.That(System.IO.File.Exists(Path.Combine(_paths.DataDir, ".update", "escape.txt")), Is.False);
-    }
-
-    [Test]
-    [Platform(Exclude = "Win")]
-    public async Task Update_RejectsAPackageWhichReportsAnotherVersion()
-    {
-        await StartAsync();
-        Authorize();
-
-        using var res = await _http!.SendAsync(UpdateRequest(Package(ValidEntries()), version: "9.9.8"));
-        await AssertErrorAsync(res, HttpStatusCode.BadRequest, "version_mismatch");
-        AssertNothingStaged();
     }
 
     [TestCase(false)]
@@ -220,7 +202,7 @@ public sealed class ApiUpdateTests
     }
 
     [Test]
-    public async Task Update_WaitsForTheUpdateTrialAndOtherBackupWork()
+    public async Task Update_WaitsForTheUpdateTrialAndOtherBackupWorkAndAStartDiscardsLeftovers()
     {
         await StartAsync();
         Authorize();
@@ -243,25 +225,8 @@ public sealed class ApiUpdateTests
 
         backups.EndUpdate();
         AssertNothingStaged();
-    }
 
-    [Test]
-    public void BootGuard_MarkReadyEndsTheUpdateTrial()
-    {
-        var guard = new BootGuard(_paths, new FakeTimeProvider());
-        System.IO.File.WriteAllText(_paths.UpdateTrial, "1");
-        guard.TryBeginAttempt();
-
-        guard.MarkReady();
-
-        Assert.That(System.IO.File.Exists(_paths.UpdateTrial), Is.False);
-        Assert.That(System.IO.File.Exists(_paths.BootAttempts), Is.False);
-        Assert.DoesNotThrow(guard.MarkReady);
-    }
-
-    [Test]
-    public void DiscardLeftovers_KeepsTheSupervisorsSnapshots()
-    {
+        // A start discards an unfinished update but keeps the supervisor's snapshots.
         var snapshot = Path.Combine(_paths.UpdateDir, "db-before", "NadekoBot.db");
         Directory.CreateDirectory(Path.GetDirectoryName(snapshot)!);
         Directory.CreateDirectory(_paths.UpdateStaged);
@@ -276,7 +241,7 @@ public sealed class ApiUpdateTests
     }
 
     [Test]
-    public void UpdateResult_ParsesOnlyTheLinesTheApplyStepWrites()
+    public void UpdateResult_ParsesOnlyTheLinesTheApplyStepWritesFromASmallRegularFile()
     {
         (string Text, UpdateResultDto Result)[] valid =
         [
@@ -305,12 +270,7 @@ public sealed class ApiUpdateTests
         Assert.That(UpdateResultFile.Parse($"failed:{max}:{max}"), Is.EqualTo(new UpdateResultDto("failed", max, max)));
         Assert.That(UpdateResultFile.Parse($"applied:{max}a"), Is.Null);
         Assert.That(UpdateResultFile.Parse($"failed:1:{max}a"), Is.Null);
-    }
 
-    [Test]
-    [Platform(Exclude = "Win")]
-    public void UpdateResult_ReadsOnlyASmallRegularFile()
-    {
         var path = _paths.UpdateResult;
         Assert.That(UpdateResultFile.Read(path), Is.Null);
 
@@ -324,11 +284,14 @@ public sealed class ApiUpdateTests
         Assert.That(UpdateResultFile.Read(path), Is.Null);
 
         // A valid result behind a link is still refused.
-        var target = Path.Combine(_dir, "elsewhere");
-        System.IO.File.WriteAllText(target, "applied:7.6.1\n");
-        System.IO.File.Delete(path);
-        System.IO.File.CreateSymbolicLink(path, target);
-        Assert.That(UpdateResultFile.Read(path), Is.Null);
+        if (!OperatingSystem.IsWindows())
+        {
+            var target = Path.Combine(_dir, "elsewhere");
+            System.IO.File.WriteAllText(target, "applied:7.6.1\n");
+            System.IO.File.Delete(path);
+            System.IO.File.CreateSymbolicLink(path, target);
+            Assert.That(UpdateResultFile.Read(path), Is.Null);
+        }
 
         System.IO.File.Delete(path);
         Directory.CreateDirectory(path);

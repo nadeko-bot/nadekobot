@@ -23,8 +23,17 @@ public class AiAgentPromptCacheTests
         => new(id, 100, "Alice", text, DateTimeOffset.UnixEpoch.AddSeconds(id));
 
     [Test]
-    public void HistoryFeed_SnapshotThenOnlyNewMessages()
+    public void HistoryFeed_SnapshotThenOnlyNewMessagesAfterTheTrigger()
     {
+        var empty = new ChannelMessageBuffer(10);
+        var emptyFeed = new ChannelHistoryFeed(empty, CHANNEL_ID, "general", TRIGGER_ID);
+
+        Assert.That(emptyFeed.GetSnapshot(), Is.Null);
+
+        empty.Push(Msg(TRIGGER_ID, "trigger"));
+        empty.Push(Msg(13, "reply"));
+        Assert.That(emptyFeed.GetUpdate(), Does.Contain("reply").And.Not.Contain("trigger"));
+
         var buffer = new ChannelMessageBuffer(10);
         buffer.Push(Msg(10, "old-a"));
         buffer.Push(Msg(11, "old-b"));
@@ -51,21 +60,6 @@ public class AiAgentPromptCacheTests
         var lateUpdate = feed.GetUpdate();
         Assert.That(lateUpdate, Does.Contain("newest").And.Contain("late").And.Not.Contain("new-a"));
         Assert.That(feed.GetUpdate(), Is.Null);
-    }
-
-    [Test]
-    public void HistoryFeed_EmptyBuffer_UpdateStartsAfterTrigger()
-    {
-        var buffer = new ChannelMessageBuffer(10);
-        var feed = new ChannelHistoryFeed(buffer, CHANNEL_ID, "general", TRIGGER_ID);
-
-        Assert.That(feed.GetSnapshot(), Is.Null);
-
-        buffer.Push(Msg(TRIGGER_ID, "trigger"));
-        buffer.Push(Msg(13, "reply"));
-
-        var update = feed.GetUpdate();
-        Assert.That(update, Does.Contain("reply").And.Not.Contain("trigger"));
     }
 
     [Test]

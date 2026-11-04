@@ -37,8 +37,30 @@ public class WaifuOptInOutTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task OptIn_ChargesFeeOnce_CreatesWaifuWithDefaults()
+    public async Task OptInAndOut_ChargeTheFeeOnceAndKeepAWaifuWithFans()
     {
+        await using (var ctx = _db.GetDbContext())
+        {
+            await WaifuTestHelper.CreateWaifu(ctx, 1001);
+            await WaifuTestHelper.CreateWaifu(ctx, 1003);
+            await WaifuTestHelper.CreateFan(ctx, 2001, 1003);
+        }
+
+        var notOptedIn = await _svc.OptOutAsync(9999);
+        Assert.That(notOptedIn.IsT0, Is.True, "Expected ErrNotOptedIn");
+
+        var hasFans = await _svc.OptOutAsync(1003);
+        Assert.That(hasFans.IsT1, Is.True, "Expected ErrHasFans");
+
+        var optedOut = await _svc.OptOutAsync(1001);
+        Assert.That(optedOut.IsT2, Is.True, "Expected Success");
+
+        await using (var ctx = _db.GetDbContext())
+        {
+            var wi = await ctx.GetTable<WaifuInfo>().FirstOrDefaultAsyncLinqToDB(x => x.UserId == 1001);
+            Assert.That(wi, Is.Null);
+        }
+
         _cs.RemoveAsync(Arg.Any<ulong>(), Arg.Any<long>(), Arg.Any<TxData?>()).Returns(true);
 
         var result = await _svc.OptInAsync(1001);
@@ -70,32 +92,6 @@ public class WaifuOptInOutTests
         await using (var ctx = _db.GetDbContext())
         {
             var wi = await ctx.GetTable<WaifuInfo>().FirstOrDefaultAsyncLinqToDB(x => x.UserId == 1002);
-            Assert.That(wi, Is.Null);
-        }
-    }
-
-    [Test]
-    public async Task OptOut_DeletesWaifuOnlyWhenOptedInWithoutFans()
-    {
-        await using (var ctx = _db.GetDbContext())
-        {
-            await WaifuTestHelper.CreateWaifu(ctx, 1001);
-            await WaifuTestHelper.CreateWaifu(ctx, 1002);
-            await WaifuTestHelper.CreateFan(ctx, 2001, 1002);
-        }
-
-        var notOptedIn = await _svc.OptOutAsync(9999);
-        Assert.That(notOptedIn.IsT0, Is.True, "Expected ErrNotOptedIn");
-
-        var hasFans = await _svc.OptOutAsync(1002);
-        Assert.That(hasFans.IsT1, Is.True, "Expected ErrHasFans");
-
-        var result = await _svc.OptOutAsync(1001);
-        Assert.That(result.IsT2, Is.True, "Expected Success");
-
-        await using (var ctx = _db.GetDbContext())
-        {
-            var wi = await ctx.GetTable<WaifuInfo>().FirstOrDefaultAsyncLinqToDB(x => x.UserId == 1001);
             Assert.That(wi, Is.Null);
         }
     }

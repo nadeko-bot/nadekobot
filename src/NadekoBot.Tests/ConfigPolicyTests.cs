@@ -28,7 +28,7 @@ public sealed class ConfigPolicyTests
         => new(new YamlSeria(), Substitute.For<IPubSub>(), new BotPolicy(managed));
 
     [Test]
-    public void Props_ReportTheirTypeAndLimitsInTheDashboardFields()
+    public void Props_ReportTheirTypeAndLimitsAndRefuseValuesOutsideThem()
     {
         var bot = Bot();
         var gambling = new GamblingConfigService(new YamlSeria(), Substitute.For<IPubSub>(), new BotPolicy(false));
@@ -63,12 +63,7 @@ public sealed class ConfigPolicyTests
         using var consoleJson = JsonDocument.Parse(JsonSerializer.Serialize(consoleDto, ApiJsonContext.Default.ConfigPropDto));
         Assert.That(consoleJson.RootElement.GetProperty("type").GetString(), Is.EqualTo("choice"));
         Assert.That(consoleJson.RootElement.GetProperty("options").GetArrayLength(), Is.GreaterThan(1));
-    }
 
-    [Test]
-    public void SetSetting_RefusesValuesOutsideTheLimits()
-    {
-        var bot = Bot();
         var fish = new FishConfigService(new YamlSeria(), Substitute.For<IPubSub>(), new BotPolicy(false));
         var searches = new SearchesConfigService(new YamlSeria(), Substitute.For<IPubSub>(), new BotPolicy(false));
         var waifu = WaifuTestHelper.CreateConfigService();
@@ -88,7 +83,7 @@ public sealed class ConfigPolicyTests
     }
 
     [Test]
-    public void Policy_LocksHostSettingsOnlyOnManagedBots()
+    public void Policy_LocksHostSettingsOnlyOnManagedBotsWhereTheRegistryHidesAndRefusesThem()
     {
         var managed = new BotPolicy(true);
         var selfHosted = new BotPolicy(false);
@@ -115,13 +110,9 @@ public sealed class ConfigPolicyTests
         Assert.That(SearchEngineChoice.Img(new SearchesConfig { ImgSearchEngine = ImgSearchEngine.Google }, selfHosted),
             Is.EqualTo(ImgSearchEngine.Google));
         Assert.That(Patron(true).IsEnabled, Is.False);
-    }
 
-    [Test]
-    public void ManagedRegistry_HidesLockedSettingsAndRefusesToSetThem()
-    {
         var bot = Bot();
-        var registry = new ConfigRegistry([bot, Patron(true)], new BotPolicy(true));
+        var registry = new ConfigRegistry([bot, Patron(true)], managed);
 
         Assert.That(registry.Names, Is.EqualTo(new[] { "bot" }));
 
@@ -135,9 +126,9 @@ public sealed class ConfigPolicyTests
         AssertError(ApiEndpoints.GetConfig("patron", registry), 404, "not_found");
         AssertError(ApiEndpoints.SetConfig("patron", "nope", new SetConfigRequest("true"), registry), 404, "not_found");
 
-        var selfHosted = new ConfigRegistry([bot, Patron(false)], new BotPolicy(false));
-        Assert.That(selfHosted.Names, Is.EqualTo(new[] { "bot", "patron" }));
-        Assert.That(selfHosted.IsLocked("bot", "checkforupdates"), Is.False);
+        var selfHostedRegistry = new ConfigRegistry([bot, Patron(false)], selfHosted);
+        Assert.That(selfHostedRegistry.Names, Is.EqualTo(new[] { "bot", "patron" }));
+        Assert.That(selfHostedRegistry.IsLocked("bot", "checkforupdates"), Is.False);
     }
 
     private static void AssertError(Microsoft.AspNetCore.Http.IResult result, int status, string code)
@@ -147,11 +138,14 @@ public sealed class ConfigPolicyTests
     }
 
     [Test]
-    public void FileValues_OutsideTheLimits_ResetOnManagedBots_AndOnlyBreakingOnesOnSelfHost_ClampedOnBoth()
+    public void FileValues_OutsideTheLimitsResetOnManagedBotsAndNullLikeTextSurvivesASave()
     {
+        const string botPath = "data/bot.yml";
         var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"nadeko-cfg-{System.Guid.NewGuid():N}.yml");
+        var botBackup = System.IO.File.Exists(botPath) ? System.IO.File.ReadAllText(botPath) : null;
         try
         {
+            // Self-hosted bots reset only the breaking values; both clamp.
             System.IO.File.WriteAllText(path, "version: 1\nlimit: 500\npercent: 150\nsize: 0\nname: way too long\ntitle: ' '\n");
 
             var managed = new LimitedConfigService(path, new BotPolicy(true));
@@ -171,21 +165,7 @@ public sealed class ConfigPolicyTests
             managed.Reload();
             Assert.That(managed.Data.Title, Is.EqualTo("title"));
             Assert.That(new LimitedConfigService(path, new BotPolicy(false)).Data.Title, Is.EqualTo("title"));
-        }
-        finally
-        {
-            System.IO.File.Delete(path);
-        }
-    }
 
-    [Test]
-    public void TextValues_WhichYamlReadsAsNull_SurviveASave_AndALostPrefixIsRestored()
-    {
-        const string botPath = "data/bot.yml";
-        var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"nadeko-cfg-{System.Guid.NewGuid():N}.yml");
-        var botBackup = System.IO.File.Exists(botPath) ? System.IO.File.ReadAllText(botPath) : null;
-        try
-        {
             System.IO.File.WriteAllText(path, "version: 1\nname: '~'\ntitle: 'null'\n");
             var service = new LimitedConfigService(path, new BotPolicy(false));
             service.ModifyConfig(static c => c.Version = 2);

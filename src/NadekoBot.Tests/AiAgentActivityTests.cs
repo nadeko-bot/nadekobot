@@ -44,7 +44,7 @@ public class AiAgentActivityTests
     }
 
     [Test]
-    public void Formatter_DescribesStepsInPlainWords()
+    public void Formatter_DescribesStepsInPlainWordsAndKeepsNewestStepsWithinLimit()
     {
         var strings = CreateStrings();
 
@@ -75,12 +75,7 @@ public class AiAgentActivityTests
         var note = AgentActivityFormatter.FormatNote("First line\n\nsecond   line " + new string('x', 300));
         Assert.That(note, Does.StartWith("💭 First line second line").And.EndWith("...").And.Not.Contain("\n"));
         Assert.That(note.Length, Is.LessThan(220));
-    }
 
-    [Test]
-    public void Formatter_Render_KeepsNewestStepsWithinLimit()
-    {
-        var strings = CreateStrings();
         var lines = Enumerable.Range(0, 64).Select(static i => $"line{i:00} " + new string('x', 140)).ToList();
 
         var text = AgentActivityFormatter.Render(lines, 10, 2000, "**Working**", true, strings, GUILD_ID);

@@ -86,7 +86,7 @@ public sealed class ApiLogStreamTests
     }
 
     [Test]
-    public async Task Lines_SendTheTemplateAndEachValueAsTheTextShowsIt()
+    public async Task Lines_SendTheTemplateAndPropsWithinTheLimitsAndWhereTheExceptionStarts()
     {
         using var logs = new LogStreamService(TimeProvider.System);
         logs.AddSecrets(TOKEN, API_KEY);
@@ -97,7 +97,23 @@ public sealed class ApiLogStreamTests
         logger.Warning("login " + TOKEN + " {Key}", API_KEY);
         logger.ForContext<ApiLogStreamTests>().ForContext("LogSource", 3).Information("plain");
 
-        var lines = await ReadLinesAsync(logs, 4);
+        logger.Error(new InvalidOperationException("boom"), "failed {Name}", "x");
+        logger.Error(new InvalidOperationException("boom " + TOKEN), "failed {Name}\r\nagain", TOKEN);
+        logger.Error(new InvalidOperationException("boom"), "{Long}", new string('a', LogStreamService.MAX_TEXT_LENGTH));
+
+        const string awkward = "a\r\nb\"c\\d\te";
+        logger.Information("m {Body} {Pad,6} {@Point} {0}", awkward, "x", new { X = 1, Y = "z" }, 7);
+        logger.Information(new string('t', LogStreamService.MAX_TEMPLATE_LENGTH + 1));
+        var many = Enumerable.Range(0, LogStreamService.MAX_PROPS + 5).Aggregate((ILogger)logger, static (l, i) => l.ForContext("P" + i, i));
+        many.Information("many");
+        var longValue = new string('v', LogStreamService.MAX_PROP_LENGTH);
+        logger.Information("{A} {B} {C} {D} {E} {F} {G} {H} {I}", longValue, longValue, longValue, longValue, longValue,
+            longValue, longValue, longValue, longValue);
+        const string secretName = "HiddenProxyPassword";
+        logs.AddSecret(secretName);
+        logger.Information("{" + secretName + "} {Cut}", 1, new string('c', LogStreamService.MAX_PROP_LENGTH - 3) + TOKEN);
+
+        var lines = await ReadLinesAsync(logs, 12);
 
         Assert.That(lines[0].Dto.Template, Is.EqualTo("Shard {ShardId} ready in {Elapsed:F2}s"));
         Assert.That(lines[0].Dto.Props, Is.EquivalentTo(new Dictionary<string, string> { ["ShardId"] = "0", ["Elapsed"] = "1.23" }));
@@ -115,72 +131,36 @@ public sealed class ApiLogStreamTests
         Assert.That(lines[3].Dto.Props!["SourceContext"], Is.EqualTo(typeof(ApiLogStreamTests).FullName));
 
         // A field which is left out has no key, not a null.
-        foreach (var line in lines)
-            Assert.That(line.Raw, Does.Not.Contain("exceptionAt").And.Not.Contain("null"));
-    }
+        for (var i = 0; i < 4; i++)
+            Assert.That(lines[i].Raw, Does.Not.Contain("exceptionAt").And.Not.Contain("null"));
 
-    [Test]
-    public async Task ExceptionAt_PointsAtTheNewlineAndIsLeftOutWhenTheCutRemovesIt()
-    {
-        using var logs = new LogStreamService(TimeProvider.System);
-        logs.AddSecrets(TOKEN, API_KEY);
-        using var logger = new LoggerConfiguration().WriteTo.Sink(logs.Sink).CreateLogger();
-
-        logger.Error(new InvalidOperationException("boom"), "failed {Name}", "x");
-        logger.Error(new InvalidOperationException("boom " + TOKEN), "failed {Name}\r\nagain", TOKEN);
-        logger.Error(new InvalidOperationException("boom"), "{Long}", new string('a', LogStreamService.MAX_TEXT_LENGTH));
-
-        var lines = await ReadLinesAsync(logs, 3);
-
-        Assert.That(lines[0].Dto.ExceptionAt, Is.EqualTo(8));
-        Assert.That(lines[0].Dto.Text[8], Is.EqualTo('\n'));
+        Assert.That(lines[4].Dto.ExceptionAt, Is.EqualTo(8));
+        Assert.That(lines[4].Dto.Text[8], Is.EqualTo('\n'));
 
         var redacted = $"failed {LogStreamService.REDACTED}\nagain";
-        Assert.That(lines[1].Dto.ExceptionAt, Is.EqualTo(redacted.Length));
-        Assert.That(lines[1].Dto.Text, Does.StartWith(redacted + "\nSystem.InvalidOperationException: boom " + LogStreamService.REDACTED));
+        Assert.That(lines[5].Dto.ExceptionAt, Is.EqualTo(redacted.Length));
+        Assert.That(lines[5].Dto.Text, Does.StartWith(redacted + "\nSystem.InvalidOperationException: boom " + LogStreamService.REDACTED));
 
-        Assert.That(lines[2].Dto.ExceptionAt, Is.Null);
-        Assert.That(lines[2].Raw, Does.Not.Contain("exceptionAt"));
-        Assert.That(lines[2].Dto.Props!["Long"], Has.Length.EqualTo(LogStreamService.MAX_PROP_LENGTH));
-    }
+        Assert.That(lines[6].Dto.ExceptionAt, Is.Null);
+        Assert.That(lines[6].Raw, Does.Not.Contain("exceptionAt"));
+        Assert.That(lines[6].Dto.Props!["Long"], Has.Length.EqualTo(LogStreamService.MAX_PROP_LENGTH));
 
-    [Test]
-    public async Task Props_MatchTheTextAndStayWithinTheLimits()
-    {
-        using var logs = new LogStreamService(TimeProvider.System);
-        logs.AddSecrets(TOKEN, API_KEY);
-        using var logger = new LoggerConfiguration().WriteTo.Sink(logs.Sink).CreateLogger();
-
-        const string awkward = "a\r\nb\"c\\d\te";
-        logger.Information("m {Body} {Pad,6} {@Point} {0}", awkward, "x", new { X = 1, Y = "z" }, 7);
-        logger.Information(new string('t', LogStreamService.MAX_TEMPLATE_LENGTH + 1));
-        var many = Enumerable.Range(0, LogStreamService.MAX_PROPS + 5).Aggregate((ILogger)logger, static (l, i) => l.ForContext("P" + i, i));
-        many.Information("many");
-        var longValue = new string('v', LogStreamService.MAX_PROP_LENGTH);
-        logger.Information("{A} {B} {C} {D} {E} {F} {G} {H} {I}", longValue, longValue, longValue, longValue, longValue,
-            longValue, longValue, longValue, longValue);
-        const string secretName = "HiddenProxyPassword";
-        logs.AddSecret(secretName);
-        logger.Information("{" + secretName + "} {Cut}", 1, new string('c', LogStreamService.MAX_PROP_LENGTH - 3) + TOKEN);
-
-        var lines = await ReadLinesAsync(logs, 5);
-
-        var props = lines[0].Dto.Props!;
+        var props = lines[7].Dto.Props!;
         Assert.That(props["Body"], Is.EqualTo("a\nb\"c\\d\te"));
         Assert.That(props["Pad"], Is.EqualTo("     x"));
-        Assert.That(lines[0].Dto.Text, Is.EqualTo($"m {props["Body"]} {props["Pad"]} {props["Point"]} {props["0"]}"));
+        Assert.That(lines[7].Dto.Text, Is.EqualTo($"m {props["Body"]} {props["Pad"]} {props["Point"]} {props["0"]}"));
 
-        Assert.That(lines[1].Dto.Template, Is.Null);
-        Assert.That(lines[1].Raw, Does.Not.Contain("template"));
+        Assert.That(lines[8].Dto.Template, Is.Null);
+        Assert.That(lines[8].Raw, Does.Not.Contain("template"));
 
-        Assert.That(lines[2].Dto.Props, Has.Count.EqualTo(LogStreamService.MAX_PROPS));
+        Assert.That(lines[9].Dto.Props, Has.Count.EqualTo(LogStreamService.MAX_PROPS));
 
-        Assert.That(lines[3].Dto.Props!.Values.Sum(static v => v.Length), Is.LessThanOrEqualTo(LogStreamService.MAX_PROPS_CHARS));
+        Assert.That(lines[10].Dto.Props!.Values.Sum(static v => v.Length), Is.LessThanOrEqualTo(LogStreamService.MAX_PROPS_CHARS));
 
-        Assert.That(lines[4].Dto.Props!.Keys, Is.EquivalentTo(new[] { "Cut" }));
-        Assert.That(lines[4].Raw, Does.Not.Contain(secretName));
-        Assert.That(lines[4].Dto.Props!["Cut"], Does.Not.Contain("[redac").And.Not.EndWith("["));
-        Assert.That(lines[4].Dto.Props!["Cut"], Has.Length.LessThanOrEqualTo(LogStreamService.MAX_PROP_LENGTH));
+        Assert.That(lines[11].Dto.Props!.Keys, Is.EquivalentTo(new[] { "Cut" }));
+        Assert.That(lines[11].Raw, Does.Not.Contain(secretName));
+        Assert.That(lines[11].Dto.Props!["Cut"], Does.Not.Contain("[redac").And.Not.EndWith("["));
+        Assert.That(lines[11].Dto.Props!["Cut"], Has.Length.LessThanOrEqualTo(LogStreamService.MAX_PROP_LENGTH));
     }
 
     private static async Task<(LogLineDto Dto, string Raw)[]> ReadLinesAsync(LogStreamService logs, int count)

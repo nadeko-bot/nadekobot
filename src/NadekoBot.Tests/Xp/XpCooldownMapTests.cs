@@ -14,36 +14,19 @@ public class XpCooldownMapTests
         => _map = new XpCooldownMap();
 
     [Test]
-    public void ZeroCooldown_AlwaysReturnsTrue()
+    public void Cooldown_AllowsOneCallPerMemberUntilItEnds_AndZeroAlwaysAllows()
     {
         Assert.That(_map.TryAddCooldown(1, 0f), Is.True);
         Assert.That(_map.TryAddCooldown(1, 0f), Is.True);
-        Assert.That(_map.TryAddCooldown(1, 0f), Is.True);
-    }
 
-    [Test]
-    public void SecondCallWithinCooldown_ReturnsFalse()
-    {
-        Assert.That(_map.TryAddCooldown(1, 5f), Is.True);
-        Assert.That(_map.TryAddCooldown(1, 5f), Is.False);
-    }
-
-    [Test]
-    public void DifferentUsers_BothSucceed()
-    {
-        Assert.That(_map.TryAddCooldown(1, 5f), Is.True);
         Assert.That(_map.TryAddCooldown(2, 5f), Is.True);
-    }
+        Assert.That(_map.TryAddCooldown(2, 5f), Is.False);
+        Assert.That(_map.TryAddCooldown(3, 5f), Is.True);
 
-    [Test]
-    public void ConcurrentCallers_OnlyOneSucceeds()
-    {
-        const ulong userId = 42;
         var successCount = 0;
-
         Parallel.For(0, 100, _ =>
         {
-            if (_map.TryAddCooldown(userId, 5f))
+            if (_map.TryAddCooldown(42, 5f))
                 Interlocked.Increment(ref successCount);
         });
 

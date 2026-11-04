@@ -24,54 +24,31 @@ public class MessageSplitterTests
     }
 
     [Test]
-    public void SplitsAtWordBoundary()
+    public void LongText_SplitsAtNewlinesAndWordsElseHardBreaks()
     {
+        var results = new List<string>();
+
         var first = new string('a', 95);
         var second = new string('b', 50);
-        var text = $"{first} {second}";
-        var results = new List<string>();
-        MessageSplitter.Split(text, 200, results);
+        MessageSplitter.Split($"{first} {second}", 200, results);
+        Assert.That(results, Is.EqualTo(new[] { first, second }));
 
+        results.Clear();
+        var line = new string('a', 90);
+        MessageSplitter.Split($"{line}\n{second}", 200, results);
         Assert.That(results, Has.Count.EqualTo(2));
-        Assert.That(results[0], Is.EqualTo(first));
-        Assert.That(results[1], Is.EqualTo(second));
-    }
+        Assert.That(results[0], Is.EqualTo(line));
 
-    [Test]
-    public void NoWhitespace_HardBreaksAtLimit()
-    {
-        var text = new string('x', 300);
-        var results = new List<string>();
-        MessageSplitter.Split(text, 200, results);
+        results.Clear();
+        MessageSplitter.Split(new string('x', 300), 200, results);
+        Assert.That(results, Is.EqualTo(new[] { new string('x', 100), new string('x', 100), new string('x', 100) }));
 
-        Assert.That(results, Has.Count.EqualTo(3));
-        Assert.That(results[0], Is.EqualTo(new string('x', 100)));
-        Assert.That(results[1], Is.EqualTo(new string('x', 100)));
-        Assert.That(results[2], Is.EqualTo(new string('x', 100)));
-    }
-
-    [Test]
-    public void SplitsAtNewline()
-    {
-        var first = new string('a', 90);
-        var second = new string('b', 50);
-        var text = $"{first}\n{second}";
-        var results = new List<string>();
-        MessageSplitter.Split(text, 200, results);
-
-        Assert.That(results, Has.Count.EqualTo(2));
-        Assert.That(results[0], Is.EqualTo(first));
-    }
-
-    [Test]
-    public void MultipleSplits_PreservesAllContentUnderMaxLength()
-    {
         var words = new List<string>();
         for (var i = 0; i < 100; i++)
             words.Add($"word{i:D3}");
 
         var text = string.Join(" ", words);
-        var results = new List<string>();
+        results.Clear();
         MessageSplitter.Split(text, 200, results);
 
         Assert.That(results, Has.Count.GreaterThan(1));

@@ -21,7 +21,7 @@ public sealed class LinkAllowTests
         => _db.Dispose();
 
     [Test]
-    public void EveryLinkMustGoToAnAllowedDomain()
+    public void EveryLinkMustGoToAnAllowedDomain_AndDomainsNormalizeToTheHost()
     {
         var allowed = new[] { "youtube.com", "tenor.com" }.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
 
@@ -54,11 +54,7 @@ public sealed class LinkAllowTests
 
         var idn = new[] { "xn--bcher-kva.de" }.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
         Assert.That(LinkHosts.HasBlockedLink("https://www.bücher.de/x", idn), Is.False);
-    }
 
-    [Test]
-    public void NormalizeDomain_KeepsOnlyTheHost()
-    {
         Assert.That(LinkHosts.NormalizeDomain(" https://www.YouTube.com/watch?v=1 "), Is.EqualTo("www.youtube.com"));
         Assert.That(LinkHosts.NormalizeDomain("*.tenor.com"), Is.EqualTo("tenor.com"));
         Assert.That(LinkHosts.NormalizeDomain("bücher.de"), Is.EqualTo("xn--bcher-kva.de"));

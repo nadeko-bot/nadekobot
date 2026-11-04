@@ -30,7 +30,7 @@ public sealed class MusicServiceSettingTests
     }
 
     [Test]
-    public void Setting_SeesEachWriteAtOnceAndRefusesAnOversizedFile()
+    public void Setting_SeesEachWriteAtOnce_RefusesAnOversizedFile_AndIsSharedForTheBotsFile()
     {
         var setting = new MusicServiceSetting(Path.Combine(_dir, ".music-service"));
         var stale = setting.FilePath + ".old.tmp";
@@ -58,11 +58,7 @@ public sealed class MusicServiceSettingTests
 
         File.WriteAllText(setting.FilePath, valid + new string('#', MusicServiceSetting.MAX_FILE_BYTES - valid.Length));
         Assert.That(setting.Current?.Key, Is.EqualTo(new string('c', MusicServiceSetting.MIN_KEY_LENGTH)), "exactly the limit");
-    }
 
-    [Test]
-    public void For_GivesTheBotsInstanceForTheBotsFile()
-    {
         Assert.That(MusicServiceSetting.For(MusicServiceSetting.Default.FilePath), Is.SameAs(MusicServiceSetting.Default));
         Assert.That(MusicServiceSetting.For(Path.Combine("data", ".music-service")), Is.SameAs(MusicServiceSetting.Default));
         Assert.That(MusicServiceSetting.For(Path.Combine(_dir, ".music-service")), Is.Not.SameAs(MusicServiceSetting.Default));

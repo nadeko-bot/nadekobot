@@ -35,19 +35,7 @@ public class AliasServiceTests
     }
 
     [Test]
-    public async Task AddedAlias_IsCaseInsensitive()
-    {
-        using var db = new TestDbService();
-        var svc = CreateService(db);
-
-        await svc.AddAliasAsync(1, "hi", ".say hello");
-
-        var aliases = await svc.GetAliasesAsync(1);
-        Assert.That(aliases!.ContainsKey("HI"), Is.True);
-    }
-
-    [Test]
-    public async Task AddAlias_StopsAtTheLimitButStillUpdates()
+    public async Task AddAlias_IgnoresCaseAndStopsAtTheLimitButStillUpdates()
     {
         using var db = new TestDbService();
         var svc = CreateService(db);
@@ -63,6 +51,7 @@ public class AliasServiceTests
         Assert.That(aliases!.Count, Is.EqualTo(AliasService.MAX_ALIASES));
         Assert.That(aliases.ContainsKey("extra"), Is.False);
         Assert.That(aliases["a0"], Is.EqualTo(".stats"));
+        Assert.That(aliases.ContainsKey("A0"), Is.True);
 
         await using var ctx = db.GetDbContext();
         Assert.That(await ctx.GetTable<CommandAlias>().CountAsyncLinqToDB(x => x.GuildId == 1),

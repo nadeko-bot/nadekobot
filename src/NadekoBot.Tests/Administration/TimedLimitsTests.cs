@@ -26,7 +26,7 @@ public class TimedLimitsTests
         => _db.Dispose();
 
     [Test]
-    public void TimedAction_WaitsAtMostADay_AndRetriesOnlyErrorsWhichCanGoAway()
+    public void TimedActionAndAutoCommand_UseTheirLimitsAndRetryOnlyErrorsWhichCanGoAway()
     {
         Assert.That(TimedAction.GetWait(_now.AddDays(90), _now), Is.EqualTo(TimedAction.MaxWait));
         Assert.That(TimedAction.GetWait(_now.AddHours(3), _now), Is.EqualTo(TimeSpan.FromHours(3)));
@@ -40,11 +40,7 @@ public class TimedLimitsTests
         Assert.That(TimedAction.ShouldRetry(new HttpException(HttpStatusCode.ServiceUnavailable, null!)), Is.True);
         Assert.That(TimedAction.ShouldRetry(new HttpException(HttpStatusCode.TooManyRequests, null!)), Is.True);
         Assert.That(TimedAction.ShouldRetry(new TimeoutException()), Is.True);
-    }
 
-    [Test]
-    public void AutoCommandInterval_IsFiveSecondsToThirtyDays()
-    {
         var max = SelfService.MAX_AUTOCMD_INTERVAL_DAYS * 24 * 60 * 60;
 
         Assert.That(SelfService.IsValidAutoCommandInterval(SelfService.MIN_AUTOCMD_INTERVAL), Is.True);

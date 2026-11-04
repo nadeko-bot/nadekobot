@@ -19,96 +19,62 @@ public partial class ShardFilteredCoverageTests
     [GeneratedRegex(@"(?:/\s*4194304|>>\s*22|Math\.Pow\s*\(\s*2\s*,\s*22\s*\))")]
     private static partial Regex RawShardMathRegex();
 
-    [Test]
-    public void AllShardFilteredEntitiesHaveGuildIdProperty()
+    private static string GetSourceDir()
     {
-        var missing = _nadekoAssembly.GetTypes()
+        var srcDir = Path.GetFullPath(Path.Combine(
+            TestContext.CurrentContext.TestDirectory,
+            "..", "..", "..", "..", "NadekoBot"));
+
+        if (!Directory.Exists(srcDir))
+            Assert.Inconclusive($"Source directory not found: {srcDir}");
+
+        return srcDir;
+    }
+
+    [Test]
+    public void ShardFilteredEntitiesHaveGuildIdAndMatchGuildOnShardCallSites()
+    {
+        var shardFiltered = _nadekoAssembly.GetTypes()
             .Where(static t => t.GetCustomAttribute<ShardFilteredAttribute>() is not null)
+            .ToList();
+
+        var missingGuildId = shardFiltered
             .Where(static t => t.GetProperty("GuildId") is null)
             .Select(static t => t.Name)
             .ToList();
 
-        Assert.That(missing, Is.Empty,
-            $"[ShardFiltered] types without GuildId property: {string.Join(", ", missing)}");
-    }
+        Assert.That(missingGuildId, Is.Empty,
+            $"[ShardFiltered] types without GuildId property: {string.Join(", ", missingGuildId)}");
 
-    [Test]
-    public void AllGuildOnShardCallSiteTypesAreMarkedShardFiltered()
-    {
-        var srcDir = Path.GetFullPath(Path.Combine(
-            TestContext.CurrentContext.TestDirectory,
-            "..", "..", "..", "..", "NadekoBot"));
-
-        if (!Directory.Exists(srcDir))
-            Assert.Inconclusive($"Source directory not found: {srcDir}");
-
-        var csFiles = Directory.EnumerateFiles(srcDir, "*.cs", SearchOption.AllDirectories);
         var regex = GuildOnShardCallSiteRegex();
-
         var referencedTypeNames = new HashSet<string>(StringComparer.Ordinal);
-        foreach (var file in csFiles)
+        foreach (var file in Directory.EnumerateFiles(GetSourceDir(), "*.cs", SearchOption.AllDirectories))
         {
             var content = File.ReadAllText(file);
             foreach (Match m in regex.Matches(content))
                 referencedTypeNames.Add(m.Groups[1].Value);
         }
 
-        var shardFilteredTypes = _nadekoAssembly.GetTypes()
-            .Where(static t => t.GetCustomAttribute<ShardFilteredAttribute>() is not null)
+        var shardFilteredNames = shardFiltered
             .Select(static t => t.Name)
             .ToHashSet(StringComparer.Ordinal);
 
-        var missingAttribute = referencedTypeNames
-            .Where(name => !shardFilteredTypes.Contains(name))
-            .ToList();
+        var missingAttribute = referencedTypeNames.Where(name => !shardFilteredNames.Contains(name)).ToList();
+        var unused = shardFilteredNames.Where(name => !referencedTypeNames.Contains(name)).ToList();
 
-        Assert.That(missingAttribute, Is.Empty,
-            $"Types used in Queries.GuildOnShard<T> but missing [ShardFiltered]: {string.Join(", ", missingAttribute)}");
-    }
-
-    [Test]
-    public void AllShardFilteredEntitiesAreUsedInGuildOnShard()
-    {
-        var srcDir = Path.GetFullPath(Path.Combine(
-            TestContext.CurrentContext.TestDirectory,
-            "..", "..", "..", "..", "NadekoBot"));
-
-        if (!Directory.Exists(srcDir))
-            Assert.Inconclusive($"Source directory not found: {srcDir}");
-
-        var csFiles = Directory.EnumerateFiles(srcDir, "*.cs", SearchOption.AllDirectories);
-        var regex = GuildOnShardCallSiteRegex();
-
-        var referencedTypeNames = new HashSet<string>(StringComparer.Ordinal);
-        foreach (var file in csFiles)
+        Assert.Multiple(() =>
         {
-            var content = File.ReadAllText(file);
-            foreach (Match m in regex.Matches(content))
-                referencedTypeNames.Add(m.Groups[1].Value);
-        }
-
-        var shardFilteredTypes = _nadekoAssembly.GetTypes()
-            .Where(static t => t.GetCustomAttribute<ShardFilteredAttribute>() is not null)
-            .Select(static t => t.Name)
-            .ToHashSet(StringComparer.Ordinal);
-
-        var unused = shardFilteredTypes
-            .Where(name => !referencedTypeNames.Contains(name))
-            .ToList();
-
-        Assert.That(unused, Is.Empty,
-            $"Types marked [ShardFiltered] but never used in Queries.GuildOnShard<T>: {string.Join(", ", unused)}");
+            Assert.That(missingAttribute, Is.Empty,
+                $"Types used in Queries.GuildOnShard<T> but missing [ShardFiltered]: {string.Join(", ", missingAttribute)}");
+            Assert.That(unused, Is.Empty,
+                $"Types marked [ShardFiltered] but never used in Queries.GuildOnShard<T>: {string.Join(", ", unused)}");
+        });
     }
 
     [Test]
     public void NoRawShardMathOutsideAllowedFiles()
     {
-        var srcDir = Path.GetFullPath(Path.Combine(
-            TestContext.CurrentContext.TestDirectory,
-            "..", "..", "..", "..", "NadekoBot"));
-
-        if (!Directory.Exists(srcDir))
-            Assert.Inconclusive($"Source directory not found: {srcDir}");
+        var srcDir = GetSourceDir();
 
         // Files allowed to use raw shard-snowflake math:
         // - Linq2DbExpressions.cs: canonical form of Queries.GuildOnShard<T>

@@ -36,7 +36,7 @@ public class WaifuFeeTests
     public void TearDown() => _db.Dispose();
 
     [Test]
-    public async Task SetFee_ValidPercent_UpdatesSuccessfully()
+    public async Task SetFee_UpdatesOnlyAnOptedInWaifuWithinTheRange()
     {
         await using (var ctx = _db.GetDbContext())
             await WaifuTestHelper.CreateWaifu(ctx, 1001, fee: 5);
@@ -49,22 +49,9 @@ public class WaifuFeeTests
             var wi = await ctx.GetTable<WaifuInfo>().FirstAsyncLinqToDB(x => x.UserId == 1001);
             Assert.That(wi.WaifuFeePercent, Is.EqualTo(3));
         }
-    }
-
-    [Test]
-    public async Task SetFee_OutOfRange_ReturnsInvalidPercent()
-    {
-        await using (var ctx = _db.GetDbContext())
-            await WaifuTestHelper.CreateWaifu(ctx, 1001);
 
         Assert.That((await _svc.SetWaifuFeeAsync(1001, 0)).IsT2, Is.True);
         Assert.That((await _svc.SetWaifuFeeAsync(1001, 6)).IsT2, Is.True);
-    }
-
-    [Test]
-    public async Task SetFee_NotOptedIn_ReturnsError()
-    {
-        var result = await _svc.SetWaifuFeeAsync(9999, 3);
-        Assert.That(result.IsT1, Is.True, "Expected ErrNotOptedIn");
+        Assert.That((await _svc.SetWaifuFeeAsync(9999, 3)).IsT1, Is.True, "Expected ErrNotOptedIn");
     }
 }

@@ -49,8 +49,14 @@ public sealed class ApiWarnXpTests
     }
 
     [Test]
-    public void WarnDtos_UseTheWireFormatTheDashboardReads()
+    public void Warns_UseTheWireFormatTheDashboardReadsAndAcceptWhatWarnPunishAccepts()
     {
+        var levels = new NadekoBot.Db.LevelStats(1000, 9, 27);
+        var xpUser = XpEndpoints.ToXpUserDto(new UserXpStats { UserId = 123456789012345678UL, GuildId = 1, Xp = 1000 },
+            new XpFormula(9, 27), rank: 7, username: "bob");
+        Assert.That((xpUser.Rank, xpUser.UserId, xpUser.Username, xpUser.Level, xpUser.LevelXp, xpUser.RequiredXp, xpUser.TotalXp),
+            Is.EqualTo((7, "123456789012345678", "bob", levels.Level, levels.LevelXp, levels.RequiredXp, 1000L)));
+
         var warn = new Warning
         {
             Id = 5,
@@ -77,11 +83,7 @@ public sealed class ApiWarnXpTests
         };
         Assert.That(WarnEndpoints.ToWarnPunishmentDto(withRole),
             Is.EqualTo(new WarnPunishmentDto(4, "addrole", 30, "987654321098765432")));
-    }
 
-    [Test]
-    public void WarnPunishment_AcceptsWhatTheWarnPunishCommandAccepts()
-    {
         Assert.That(WarnEndpoints.TryParsePunishment("BAN", out var ban), Is.True);
         Assert.That(ban, Is.EqualTo(PunishmentAction.Ban));
         Assert.That(WarnEndpoints.TryParsePunishment("removeroles", out var removeRoles), Is.True);
@@ -89,23 +91,5 @@ public sealed class ApiWarnXpTests
 
         foreach (var input in new[] { "", "nope", "99", "kick,ban", " ban", "warn" })
             Assert.That(WarnEndpoints.TryParsePunishment(input, out _), Is.False, input);
-    }
-
-    [Test]
-    public void ToXpUserDto_ComputesLevelStatsForFormula()
-    {
-        var formula = new XpFormula(9, 27);
-        var stats = new UserXpStats { UserId = 123456789012345678UL, GuildId = 1, Xp = 1000 };
-        var expected = new NadekoBot.Db.LevelStats(1000, 9, 27);
-
-        var dto = XpEndpoints.ToXpUserDto(stats, formula, rank: 7, username: "bob");
-
-        Assert.That(dto.Rank, Is.EqualTo(7));
-        Assert.That(dto.UserId, Is.EqualTo("123456789012345678"));
-        Assert.That(dto.Username, Is.EqualTo("bob"));
-        Assert.That(dto.Level, Is.EqualTo(expected.Level));
-        Assert.That(dto.LevelXp, Is.EqualTo(expected.LevelXp));
-        Assert.That(dto.RequiredXp, Is.EqualTo(expected.RequiredXp));
-        Assert.That(dto.TotalXp, Is.EqualTo(1000));
     }
 }

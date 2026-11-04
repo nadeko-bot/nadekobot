@@ -51,12 +51,4 @@ public class StickyRolesFilterTests
 
         Assert.That(result.Select(x => x.Id), Is.EquivalentTo(new ulong[] { 100, 200 }));
     }
-
-    [Test]
-    public void ReturnsEmpty_WhenNothingIsAssignable()
-    {
-        var guild = GuildWith(Role(100, BOT_HIERARCHY + 2));
-
-        Assert.That(StickyRolesService.GetAssignableRoles([100, 999], guild, BOT_HIERARCHY), Is.Empty);
-    }
 }

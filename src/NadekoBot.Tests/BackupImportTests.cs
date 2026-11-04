@@ -43,26 +43,22 @@ public sealed class BackupImportTests
     }
 
     [Test]
-    public void Detect_NamesEachFormatByItsFirstBytes()
+    public async Task Import_ReadsEachFormatKeepsTheWalWritesAndOnlyTheFilesARestoreTakes()
     {
-        var (db, _) = DbWithWal();
+        var (db, wal) = DbWithWal();
+        var sevenZip = File.ReadAllBytes(Path.Combine(_fixtures, "wal-import.7z"));
 
         Assert.That(BackupImport.Detect(Zip(("NadekoBot.db", db))), Is.EqualTo(ImportFormat.Zip));
         Assert.That(BackupImport.Detect(Zip()), Is.EqualTo(ImportFormat.Zip));
         Assert.That(BackupImport.Detect(Gzip(db)), Is.EqualTo(ImportFormat.Gzip));
-        Assert.That(BackupImport.Detect(File.ReadAllBytes(Path.Combine(_fixtures, "wal-import.7z"))),
-            Is.EqualTo(ImportFormat.SevenZip));
+        Assert.That(BackupImport.Detect(sevenZip), Is.EqualTo(ImportFormat.SevenZip));
         Assert.That(BackupImport.Detect(db), Is.EqualTo(ImportFormat.Sqlite));
         Assert.That(BackupImport.Detect(Tar(("NadekoBot.db", db))), Is.EqualTo(ImportFormat.Tar));
         Assert.That(BackupImport.Detect("hello"u8), Is.EqualTo(ImportFormat.Unknown));
         Assert.That(BackupImport.Detect([]), Is.EqualTo(ImportFormat.Unknown));
-    }
 
-    [Test]
-    public async Task Import_TarGz_KeepsTheWalWritesAndOnlyTheFilesARestoreTakes()
-    {
-        var (db, wal) = DbWithWal();
-        var upload = Gzip(Tar(
+        // Each check deletes its archive: the bot tries only a few backup names in one second.
+        var tarGz = await ImportOkAsync(Gzip(Tar(
             ("./NadekoBot.db", db),
             ("./NadekoBot.db-wal", wal),
             ("./NadekoBot.db-shm", new byte[32]),
@@ -71,58 +67,48 @@ public sealed class BackupImportTests
             ("./creds.yml", "token: secret"u8.ToArray()),
             ("./data/api.yml", "apiKey: x"u8.ToArray()),
             ("./data/medusae/x.dll", "MZ"u8.ToArray()),
-            ("./NadekoBot/data/NadekoBot.db", "not this one"u8.ToArray())));
+            ("./NadekoBot/data/NadekoBot.db", "not this one"u8.ToArray()))));
 
-        var archive = await ImportOkAsync(upload);
+        Assert.That(Entries(tarGz), Is.EquivalentTo(new[] { "NadekoBot.db", "data/bot.yml", "data/games.yml" }));
+        Assert.That(ReadTags(tarGz), Is.EqualTo("main,wal"));
+        Assert.That(BackupArchive.ValidateFile(tarGz, BackupLimits.Restore, out _), Is.Null);
+        using (var zip = ZipFile.OpenRead(tarGz))
+        using (var stored = zip.GetEntry("NadekoBot.db")!.Open())
+        {
+            var header = new byte[20];
+            stored.ReadExactly(header);
+            Assert.That(header[18], Is.EqualTo(1), "the stored database needs no -wal");
+        }
 
-        Assert.That(Entries(archive), Is.EquivalentTo(new[] { "NadekoBot.db", "data/bot.yml", "data/games.yml" }));
-        Assert.That(ReadTags(archive), Is.EqualTo("main,wal"));
-        Assert.That(BackupArchive.ValidateFile(archive, BackupLimits.Restore, out _), Is.Null);
-        using var zip = ZipFile.OpenRead(archive);
-        using var stored = zip.GetEntry("NadekoBot.db")!.Open();
-        var header = new byte[20];
-        stored.ReadExactly(header);
-        Assert.That(header[18], Is.EqualTo(1), "the stored database needs no -wal");
-    }
+        File.Delete(tarGz);
 
-    [Test]
-    public async Task Import_PlainTarBareDatabaseAndGzippedDatabase_AreStoredAsBackups()
-    {
-        var (db, wal) = DbWithWal();
-
-        Assert.That(ReadTags(await ImportOkAsync(Tar(("data/NadekoBot.db", db), ("data/NadekoBot.db-wal", wal)))),
-            Is.EqualTo("main,wal"));
-        Assert.That(ReadTags(await ImportOkAsync(db)), Is.EqualTo("main"));
-        Assert.That(ReadTags(await ImportOkAsync(Gzip(db))), Is.EqualTo("main"));
-    }
-
-    [Test]
-    public async Task Import_AZipWithAWalIsRewrittenAndAPlainZipIsStoredAsUploaded()
-    {
-        var (db, wal) = DbWithWal();
+        (byte[] Upload, string Tags)[] databases =
+        [
+            (Tar(("data/NadekoBot.db", db), ("data/NadekoBot.db-wal", wal)), "main,wal"),
+            (db, "main"),
+            (Gzip(db), "main")
+        ];
+        foreach (var (upload, tags) in databases)
+        {
+            var archive = await ImportOkAsync(upload);
+            Assert.That(ReadTags(archive), Is.EqualTo(tags));
+            File.Delete(archive);
+        }
 
         var rewritten = await ImportOkAsync(Zip(("data/NadekoBot.db", db), ("data/NadekoBot.db-wal", wal),
             ("data/bot.yml", "a: 1"u8.ToArray())));
         Assert.That(Entries(rewritten), Is.EquivalentTo(new[] { "NadekoBot.db", "data/bot.yml" }));
         Assert.That(ReadTags(rewritten), Is.EqualTo("main,wal"));
+        File.Delete(rewritten);
 
         var plain = Zip(("NadekoBot.db", db), ("data/bot.yml", "a: 1"u8.ToArray()));
-        Assert.That(File.ReadAllBytes(await ImportOkAsync(plain)), Is.EqualTo(plain));
-    }
+        var asUploaded = await ImportOkAsync(plain);
+        Assert.That(File.ReadAllBytes(asUploaded), Is.EqualTo(plain));
+        File.Delete(asUploaded);
 
-    [Test]
-    public async Task Import_SevenZip_IsReadAndAnEncryptedOneIsRefused()
-    {
-        var archive = await ImportOkAsync(File.ReadAllBytes(Path.Combine(_fixtures, "wal-import.7z")));
-
-        Assert.That(Entries(archive), Is.EquivalentTo(new[] { "NadekoBot.db", "data/bot.yml" }));
-        Assert.That(ReadTags(archive), Is.EqualTo("main,wal"));
-
-        foreach (var name in new[] { "encrypted.7z", "encrypted-header.7z" })
-        {
-            var result = await ImportAsync(File.ReadAllBytes(Path.Combine(_fixtures, name)));
-            Assert.That(result.Error, Is.EqualTo("encrypted_archive"), name);
-        }
+        var fromSevenZip = await ImportOkAsync(sevenZip);
+        Assert.That(Entries(fromSevenZip), Is.EquivalentTo(new[] { "NadekoBot.db", "data/bot.yml" }));
+        Assert.That(ReadTags(fromSevenZip), Is.EqualTo("main,wal"));
     }
 
     [Test]
@@ -151,24 +137,25 @@ public sealed class BackupImportTests
             Assert.That(result.Status, Is.EqualTo(400), error);
         }
 
-        Assert.That(Directory.GetFileSystemEntries(_paths.BackupDir), Is.Empty);
-    }
+        foreach (var name in new[] { "encrypted.7z", "encrypted-header.7z" })
+        {
+            var result = await ImportAsync(File.ReadAllBytes(Path.Combine(_fixtures, name)));
+            Assert.That(result.Error, Is.EqualTo("encrypted_archive"), name);
+        }
 
-    [Test]
-    public void Stage_StopsAtTheUnpackedSizeLimit()
-    {
-        var (db, _) = DbWithWal();
+        Assert.That(Directory.GetFileSystemEntries(_paths.BackupDir), Is.Empty);
+
         var limits = BackupLimits.ForImport(16 * 1024);
         var big = new byte[1024 * 1024];
         BackupArchive.SqliteHeader.CopyTo(big);
 
-        (byte[] Upload, ImportFormat Format)[] cases =
+        (byte[] Upload, ImportFormat Format)[] tooLarge =
         [
             (Tar(("NadekoBot.db", db), ("skipped/large.bin", big)), ImportFormat.Tar),
             (Gzip(big), ImportFormat.Gzip)
         ];
 
-        foreach (var (upload, format) in cases)
+        foreach (var (upload, format) in tooLarge)
         {
             var path = Path.Combine(_dir, Guid.NewGuid().ToString("N"));
             File.WriteAllBytes(path, upload);

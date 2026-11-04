@@ -14,58 +14,24 @@ public class NewDeckTests
     }
 
     [Test]
-    public void TestDeckDraw()
+    public void DeckDrawsInOrderUntilEmpty()
     {
-        Assert.That(52, Is.EqualTo(_deck.TotalCount));
-        Assert.That(52, Is.EqualTo(_deck.CurrentCount));
+        Assert.That(_deck.TotalCount, Is.EqualTo(52));
+        Assert.That(_deck.Peek(), Is.EqualTo(new RegularCard(RegularSuit.Hearts, RegularValue.Ace)));
+        Assert.That(_deck.Peek(48), Is.EqualTo(new RegularCard(RegularSuit.Spades, RegularValue.Ten)));
 
-        var card = _deck.Draw();
-        
-        Assert.That(card, Is.Not.Null);
-        Assert.That(card.Suit, Is.EqualTo(RegularSuit.Hearts));
-        Assert.That(card.Value, Is.EqualTo(RegularValue.Ace));
+        Assert.That(_deck.Draw()!.GetName(), Is.EqualTo("Ace of Hearts"));
         Assert.That(_deck.CurrentCount, Is.EqualTo(_deck.TotalCount - 1));
-        Assert.That("Ace of Hearts", Is.EqualTo(card.GetName()));
-        Assert.That("Two of Hearts", Is.EqualTo(_deck.Draw()!.GetName()));
-    }
+        Assert.That(_deck.Draw()!.GetName(), Is.EqualTo("Two of Hearts"));
 
-    [Test]
-    public void TestDeckSpent()
-    {
-        for (var i = 0; i < _deck.TotalCount - 1; ++i)
-        {
+        while (_deck.CurrentCount > 1)
             _deck.Draw();
-        }
 
-        var lastCard = _deck.Draw();
-        
-        Assert.That(lastCard, Is.Not.Null);
-        Assert.That(lastCard, Is.EqualTo(new RegularCard(RegularSuit.Spades, RegularValue.King)));
+        Assert.That(_deck.Draw(), Is.EqualTo(new RegularCard(RegularSuit.Spades, RegularValue.King)));
+        Assert.That(_deck.Draw(), Is.Null);
 
-        var noCard = _deck.Draw();
-        
-        Assert.That(noCard, Is.Null);
-    }
-
-    [Test]
-    public void TestPeek()
-    {
-        var ace = _deck.Peek()!;
-
-        var tenOfSpades = _deck.Peek(48);
-        Assert.That(new RegularCard(RegularSuit.Hearts, RegularValue.Ace), Is.EqualTo(ace));
-        Assert.That(new RegularCard(RegularSuit.Spades, RegularValue.Ten), Is.EqualTo(tenOfSpades));
-    }
-
-    [Test]
-    public void TestMultipleDeck()
-    {
         var quadDeck = new MultipleRegularDeck(4);
-        var count = quadDeck.TotalCount;
-        
-        Assert.That(52 * 4, Is.EqualTo(count));
-
-        var card = quadDeck.Peek(54);
-        Assert.That(new RegularCard(RegularSuit.Hearts, RegularValue.Three), Is.EqualTo(card));
+        Assert.That(quadDeck.TotalCount, Is.EqualTo(52 * 4));
+        Assert.That(quadDeck.Peek(54), Is.EqualTo(new RegularCard(RegularSuit.Hearts, RegularValue.Three)));
     }
 }
