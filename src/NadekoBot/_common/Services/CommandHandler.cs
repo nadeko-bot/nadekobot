@@ -251,9 +251,9 @@ public sealed partial class CommandHandler : INService, ICommandHandler
             && MentionPrefix.TryStrip(messageContent, _client.CurrentUser.Id, prefix, out var mentioned))
             messageContent = mentioned;
 
-        var isPrefixCommand = messageContent.StartsWith(".prefix", StringComparison.InvariantCultureIgnoreCase);
+        var isPrefixCommand = messageContent.StartsWith(".prefix", StringComparison.OrdinalIgnoreCase);
         // execute the command and measure the time it took
-        if (isPrefixCommand || messageContent.StartsWith(prefix, StringComparison.InvariantCulture))
+        if (isPrefixCommand || messageContent.StartsWith(prefix, StringComparison.Ordinal))
         {
             var context = new CommandContext(_client, cmdMsg);
             var (success, error, info) = await ExecuteCommandAsync(context,

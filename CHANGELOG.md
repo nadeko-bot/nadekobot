@@ -48,6 +48,7 @@
 ### Dev
 
 - `NadekoBot.Hosted` has routes for each role reward of a level.
+- The bot does less work and makes fewer allocations for each message.
 - AngleSharp 1.9.0 and SQLite 3.54.0 fix known security issues.
 - The medusa project template is in this repo. CI publishes each new version to MyGet.
 - The docs are shorter and correct, with new screenshots and search engine tags.

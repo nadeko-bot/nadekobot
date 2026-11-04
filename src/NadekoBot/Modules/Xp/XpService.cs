@@ -686,6 +686,10 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
         if (_xpExcl.IsExcluded(guild.Id, XpExcludedItemType.User, user.Id))
             return true;
 
+        // user.Roles builds a new collection on each call
+        if (!_xpExcl.HasRoleExclusions(guild.Id))
+            return false;
+
         foreach (var role in user.Roles)
         {
             if (_xpExcl.IsExcluded(guild.Id, XpExcludedItemType.Role, role.Id))

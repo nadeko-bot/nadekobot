@@ -6,20 +6,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NadekoBot.Modules.Xp;
 
-public class XpExclusionService(DbService db, ShardData shardData) : IReadyExecutor, INService
+public sealed class XpExclusionService(DbService db, ShardData shardData) : IReadyExecutor, INService
 {
     private ConcurrentHashSet<(ulong GuildId, XpExcludedItemType ItemType, ulong ItemId)> _exclusions = new();
+
+    // Lets the xp check skip the roles of a member in servers which exclude no role.
+    private ConcurrentDictionary<ulong, int> _roleExclusionCounts = new();
 
     public async Task OnReadyAsync()
     {
         await using var uow = db.GetDbContext();
-        _exclusions = await uow.GetTable<XpExcludedItem>()
+        var items = await uow.GetTable<XpExcludedItem>()
             .Where(Queries.GuildOnShard<XpExcludedItem>(x => x.GuildId, shardData.TotalShards, shardData.ShardId))
-            .ToListAsyncLinqToDB()
-            .Pipe(x => x
-                .Select(x => (x.GuildId, x.ItemType, x.ItemId))
-                .ToHashSet()
-                .ToConcurrentSet());
+            .Select(x => new { x.GuildId, x.ItemType, x.ItemId })
+            .ToListAsyncLinqToDB();
+
+        var exclusions = new ConcurrentHashSet<(ulong GuildId, XpExcludedItemType ItemType, ulong ItemId)>();
+        var roleCounts = new ConcurrentDictionary<ulong, int>();
+        foreach (var item in items)
+        {
+            if (exclusions.Add((item.GuildId, item.ItemType, item.ItemId)) && item.ItemType == XpExcludedItemType.Role)
+                roleCounts.AddOrUpdate(item.GuildId, 1, static (_, c) => c + 1);
+        }
+
+        _exclusions = exclusions;
+        _roleExclusionCounts = roleCounts;
     }
     
     /// <summary>
@@ -46,7 +57,8 @@ public class XpExclusionService(DbService db, ShardData shardData) : IReadyExecu
                        && x.ItemId == itemId)
                 .DeleteAsync();
             
-            _exclusions.TryRemove(key);
+            if (_exclusions.TryRemove(key) && itemType == XpExcludedItemType.Role)
+                _roleExclusionCounts.AddOrUpdate(guildId, 0, static (_, c) => Math.Max(0, c - 1));
         }
         else
         {
@@ -67,7 +79,8 @@ public class XpExclusionService(DbService db, ShardData shardData) : IReadyExecu
                     ItemId = itemId
                 });
             
-            _exclusions.Add(key);
+            if (_exclusions.Add(key) && itemType == XpExcludedItemType.Role)
+                _roleExclusionCounts.AddOrUpdate(guildId, 1, static (_, c) => c + 1);
         }
 
         return isExcluded;
@@ -96,4 +109,7 @@ public class XpExclusionService(DbService db, ShardData shardData) : IReadyExecu
     /// <returns>True if the item is excluded, otherwise false</returns>
     public bool IsExcluded(ulong guildId, XpExcludedItemType itemType, ulong itemId)
         => _exclusions.Contains((guildId, itemType, itemId));
+
+    public bool HasRoleExclusions(ulong guildId)
+        => _roleExclusionCounts.TryGetValue(guildId, out var count) && count > 0;
 }

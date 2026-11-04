@@ -147,7 +147,11 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
     public async ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
 #nullable disable
     {
-        if (msg.Author is not IGuildUser gu || gu.GuildPermissions.Administrator)
+        if (guild is null || msg.Author is not IGuildUser gu)
+            return false;
+
+        // Most servers have no filter, and the permissions of a member come from all of their roles.
+        if (!HasAnyFilter(guild.Id, msg.Channel.Id) || gu.GuildPermissions.Administrator)
             return false;
 
         var invites = FilterInvites(guild, msg);
@@ -169,6 +173,14 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
 
         return false;
     }
+
+    private bool HasAnyFilter(ulong guildId, ulong channelId)
+        => InviteFilteringServers.Contains(guildId)
+           || WordFilteringServers.Contains(guildId)
+           || LinkFilteringServers.Contains(guildId)
+           || InviteFilteringChannels.Contains(channelId)
+           || WordFilteringChannels.Contains(channelId)
+           || LinkFilteringChannels.Contains(channelId);
 
     private bool FilterWords(IGuild guild, IUserMessage usrMsg)
     {
@@ -197,6 +209,11 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
             HashSet<string> channelWords,
             HashSet<string> serverWords)
         {
+            var hasChannelWords = channelWords is { Count: > 0 };
+            var hasServerWords = serverWords is { Count: > 0 };
+            var channelLookup = hasChannelWords ? channelWords.GetAlternateLookup<ReadOnlySpan<char>>() : default;
+            var serverLookup = hasServerWords ? serverWords.GetAlternateLookup<ReadOnlySpan<char>>() : default;
+
             var span = content.AsSpan();
             foreach (var range in span.Split(' '))
             {
@@ -204,9 +221,8 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
                 if (word.IsEmpty)
                     continue;
 
-                var wordStr = content[range];
-                if ((channelWords is not null && channelWords.Contains(wordStr))
-                    || (serverWords is not null && serverWords.Contains(wordStr)))
+                if ((hasChannelWords && channelLookup.Contains(word))
+                    || (hasServerWords && serverLookup.Contains(word)))
                 {
                     Log.Information("User {UserName} [{UserId}] used a filtered word in {ChannelId} channel",
                         usrMsg.Author.ToString(),
@@ -228,11 +244,13 @@ public sealed class FilterService : IExecOnMessage, IReadyExecutor
         if (usrMsg is null)
             return false;
 
+        if (!InviteFilteringChannels.Contains(usrMsg.Channel.Id) && !InviteFilteringServers.Contains(guild.Id))
+            return false;
+
         if (usrMsg.Channel is ITextChannel ch && usrMsg.Author is IGuildUser gu && gu.GetPermissions(ch).ManageMessages)
             return false;
 
-        if ((InviteFilteringChannels.Contains(usrMsg.Channel.Id) || InviteFilteringServers.Contains(guild.Id))
-            && (usrMsg.Content.IsDiscordInvite() || ForwardedHasInvite(usrMsg.ForwardedMessages)))
+        if (usrMsg.Content.IsDiscordInvite() || ForwardedHasInvite(usrMsg.ForwardedMessages))
         {
             Log.Information("User {UserName} [{UserId}] sent a filtered invite to {ChannelId} channel",
                 usrMsg.Author.ToString(),

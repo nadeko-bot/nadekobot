@@ -792,7 +792,7 @@ public partial class Administration
         {
             var bans = await ctx.Guild.GetBansAsync().FlattenAsync();
 
-            var bun = bans.FirstOrDefault(x => x.User.ToString()!.ToLowerInvariant() == user.ToLowerInvariant());
+            var bun = bans.FirstOrDefault(x => string.Equals(x.User.ToString(), user, StringComparison.OrdinalIgnoreCase));
 
             if (bun is null)
             {
