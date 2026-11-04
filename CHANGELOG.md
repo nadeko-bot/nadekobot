@@ -36,6 +36,9 @@
 
 - `.play <number>` plays the chosen song after `.stop` or the end of the queue.
 - `.next` / `.n` plays the next song while song repeat is on.
+- `.exprca` / `.exca` expressions trigger when the word also appears earlier inside a longer word.
+- `%target%` of an `.exprca` / `.exca` expression is correct when the trigger has a different letter case.
+- `%target%` of an `.exprca` / `.exca` expression keeps the first character after a Chinese or Japanese trigger.
 - A missing or broken font in `data/fonts` does not stop the bot.
 - The xp card shows the avatar and the club icon as smooth circles.
 - The xp card shows the rank as solid digits.

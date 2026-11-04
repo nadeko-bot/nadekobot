@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Common.Yml;
 using NadekoBot.Db.Models;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Modules.Permissions.Services;
@@ -16,6 +17,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     public const int MAX_IMPORT_CHARS = 1024 * 1024;
     private const int MAX_IMPORT_EXPRESSIONS = 1000;
     private const string MENTION_PH = "%bot.mention%";
+    private const int MATCH_STACK_LIMIT = 256;
 
     private const string PREPEND_EXPORT =
         """
@@ -182,62 +184,56 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
         return MatchExpressions(content, globalExpressions);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private NadekoExpression? MatchExpressions(in ReadOnlySpan<char> content, NadekoExpression[] exprs)
+    // A matching "-" expression cancels the others; otherwise one match is picked at random.
+    private NadekoExpression? MatchExpressions(ReadOnlySpan<char> content, NadekoExpression[] exprs)
     {
-        var result = new List<NadekoExpression>(1);
-        for (var i = 0; i < exprs.Length; i++)
-        {
-            var expr = exprs[i];
-            var trigger = expr.Trigger;
-            if (content.Length > trigger.Length)
-            {
-                // if input is greater than the trigger, it can only work if:
-                // it has CA enabled
-                if (expr.ContainsAnywhere)
-                {
-                    // if ca is enabled, we have to check if it is a word within the content
-                    var wp = content.GetWordPosition(trigger);
-
-                    // if it is, then that's valid
-                    if (wp != WordPosition.None)
-                        result.Add(expr);
-
-                    // if it's not, then it cant' work under any circumstance,
-                    // because content is greater than the trigger length
-                    // so it can't be equal, and it's not contained as a word
-                    continue;
-                }
-
-                // if CA is disabled, and expr has AllowTarget, then the
-                // content has to start with the trigger followed by a space
-                if (expr.AllowTarget
-                    && content.StartsWith(trigger, StringComparison.InvariantCultureIgnoreCase)
-                    && content[trigger.Length] == ' ')
-                    result.Add(expr);
-            }
-            else if (content.Length < expr.Trigger.Length)
-            {
-                // if input length is less than trigger length, it means
-                // that the reaction can never be triggered
-            }
-            else
-            {
-                // if input length is the same as trigger length
-                // reaction can only trigger if the strings are equal
-                if (content.Equals(expr.Trigger, StringComparison.InvariantCultureIgnoreCase))
-                    result.Add(expr);
-            }
-        }
-
-        if (result.Count == 0)
+        if (exprs.Length == 0)
             return null;
 
-        var cancelled = result.FirstOrDefault(x => x.Response == "-");
-        if (cancelled is not null)
-            return cancelled;
+        int[]? rented = null;
+        var matches = exprs.Length <= MATCH_STACK_LIMIT
+            ? stackalloc int[exprs.Length]
+            : (rented = ArrayPool<int>.Shared.Rent(exprs.Length));
 
-        return result[_rng.Next(0, result.Count)];
+        try
+        {
+            var count = 0;
+            for (var i = 0; i < exprs.Length; i++)
+            {
+                var expr = exprs[i];
+                if (!IsMatchInternal(content, expr))
+                    continue;
+
+                if (expr.Response == "-")
+                    return expr;
+
+                matches[count++] = i;
+            }
+
+            return count == 0 ? null : exprs[matches[_rng.Next(count)]];
+        }
+        finally
+        {
+            if (rented is not null)
+                ArrayPool<int>.Shared.Return(rented);
+        }
+    }
+
+    private static bool IsMatchInternal(ReadOnlySpan<char> content, NadekoExpression expr)
+    {
+        var trigger = expr.Trigger;
+        if (content.Length > trigger.Length)
+        {
+            if (expr.ContainsAnywhere)
+                return content.GetWordPosition(trigger, out _) != WordPosition.None;
+
+            return expr.AllowTarget
+                   && content[trigger.Length] == ' '
+                   && content.StartsWith(trigger, StringComparison.OrdinalIgnoreCase);
+        }
+
+        return content.Length == trigger.Length
+               && content.Equals(trigger, StringComparison.OrdinalIgnoreCase);
     }
 
     public async ValueTask<bool> ExecOnMessageAsync(IGuild? guild, IUserMessage msg)
@@ -363,17 +359,7 @@ public sealed class NadekoExpressionsService : IExecOnMessage, IReadyExecutor, I
     )
     {
         var trigger = ResolveTriggerString(cr.Trigger);
-        var substringIndex = trigger.Length;
-        if (cr.ContainsAnywhere)
-        {
-            var pos = ctx.Content.AsSpan().GetWordPosition(trigger);
-            if (pos == WordPosition.Start)
-                substringIndex += 1;
-            else if (pos == WordPosition.End)
-                substringIndex = ctx.Content.Length;
-            else if (pos == WordPosition.Middle)
-                substringIndex += ctx.Content.IndexOf(trigger, StringComparison.InvariantCulture);
-        }
+        var substringIndex = ctx.Content.AsSpan().GetTargetStart(trigger, cr.ContainsAnywhere);
 
         var canMentionEveryone = (ctx.Author as IGuildUser)?.GuildPermissions.MentionEveryone ?? true;
 
