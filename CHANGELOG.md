@@ -26,9 +26,10 @@
 - `.play <number>` plays the chosen song after `.stop` or the end of the queue.
 - `.next` / `.n` plays the next song while song repeat is on.
 - The xp card shows clean text, round icons and solid rank digits.
-- `.exprca` / `.exca` expressions trigger when the word also appears earlier inside a longer word.
-- `%target%` of an `.exprca` / `.exca` expression is correct when the trigger has a different letter case.
-- `%target%` of an `.exprca` / `.exca` expression keeps the first character after a Chinese or Japanese trigger.
+- `.exprca` / `.exca` expressions trigger correctly
+    - trigger when the word also appears earlier inside a longer word
+    - do not trigger inside words with accents or non-Latin letters
+    - `%target%` is correct with any letter case and after Chinese or Japanese triggers
 
 ### Dev
 

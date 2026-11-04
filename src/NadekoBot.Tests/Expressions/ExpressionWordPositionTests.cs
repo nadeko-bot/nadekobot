@@ -19,6 +19,12 @@ public sealed class ExpressionWordPositionTests
             ("concatenate", "cat", WordPosition.None, -1),
             ("cat", "cat", WordPosition.None, -1),
             ("no match", "cat", WordPosition.None, -1),
+            ("котик спит", "кот", WordPosition.None, -1),
+            ("мой кот спит", "КОТ", WordPosition.Middle, 4),
+            ("café ouvert", "caf", WordPosition.None, -1),
+            ("cafe\u0301 ouvert", "cafe", WordPosition.None, -1),
+            ("你好朋友", "你好", WordPosition.Start, 0),
+            ("สวัสดีครับ", "สวัสดี", WordPosition.Start, 0),
         ];
 
         foreach (var (text, word, position, index) in cases)
