@@ -5,7 +5,6 @@ ar:
   autocmd_add: 'سيتم تنفيذ الأمر {0} كل {1} ثانية في هذه القناة.'
   autocmd_interval_range: 'يجب أن تكون الفترة بين {0} ثانية و{1} يومًا.'
   autocmdlist_none: لا توجد أوامر تلقائية في هذه الصفحة.
-  bot_name: 'تم تغيير اسم البوت إلى {0}'
   bot_status: 'تم تغيير حالة البوت إلى {0}'
   bot_strings_reloaded: تم إعادة تحميل نصوص البوت.
   cache_users_done: 'تمت إضافة {0} مستخدم وتحديث {1} مستخدم.'
@@ -30,8 +29,6 @@ ar:
   scrm_fail: لم يتم العثور على أمر بدء التشغيل.
   server: السيرفر
   set_activity: تم تعيين نشاط جديد!
-  set_avatar: تم تعيين صورة رمزية جديدة!
-  set_banner: تم تعيين بانر جديد!
   set_stream: تم تعيين بث جديد!
   shard_reconnecting: 'جارٍ إعادة اتصال الشارد {0}.'
   shutting_down: جارٍ الإيقاف
@@ -46,7 +43,6 @@ de-DE:
   autocmd_add: 'Der Befehl {0} wird alle {1}s in diesem Kanal ausgeführt.'
   autocmd_interval_range: 'Das Intervall muss zwischen {0} Sekunden und {1} Tagen liegen.'
   autocmdlist_none: Keine automatischen Befehle auf dieser Seite.
-  bot_name: 'Der Name des Bots wurde zu {0} geändert.'
   bot_status: 'Der Status des Bots wurde zu {0} geändert.'
   bot_strings_reloaded: Bot Strings wurden neu geladen.
   cache_users_done: '{0} Benutzer wurden hinzugefügt und {1} Benutzer wurden aktualisiert.'
@@ -71,8 +67,6 @@ de-DE:
   scrm_fail: Startbefehl nicht gefunden.
   server: Server
   set_activity: Neue Aktivität festgelegt!
-  set_avatar: Neuer Avatar festgelegt!
-  set_banner: Neues Banner festgelegt!
   set_stream: Neuer Stream festgelegt!
   shard_reconnecting: 'Shard {0} verbindet wieder'
   shutting_down: Sich schließen.
@@ -87,7 +81,6 @@ es-ES:
   autocmd_add: 'El comando {0} se ejecutará cada {1}s en este canal.'
   autocmd_interval_range: 'El intervalo debe estar entre {0} segundos y {1} días.'
   autocmdlist_none: No hay comandos automáticos en esta página.
-  bot_name: 'El nombre del bot fue cambiado a {0}'
   bot_status: 'Estado del bot cambiado a {0}'
   bot_strings_reloaded: Se han recargado las cadenas del bots.
   cache_users_done: '{0} usuarios fueron añadidos y {1} usuarios fueron actualizados.'
@@ -112,8 +105,6 @@ es-ES:
   scrm_fail: Comando de inicio no encontrado.
   server: Servidor
   set_activity: ¡Nueva actividad establecida!
-  set_avatar: ¡Nuevo avatar establecido!
-  set_banner: ¡Nuevo banner establecido!
   set_stream: ¡Nuevo stream establecido!
   shard_reconnecting: 'Reconectando fragmento {0}.'
   shutting_down: Apagando...
@@ -128,7 +119,6 @@ fr-FR:
   autocmd_add: 'La commande {0} s''exécutera toutes les {1} secondes dans ce salon.'
   autocmd_interval_range: 'L''intervalle doit être compris entre {0} secondes et {1} jours.'
   autocmdlist_none: Aucune commande automatique sur cette page.
-  bot_name: 'Le nom du bot a été changé pour {0}'
   bot_status: 'Le statut du bot a été changé pour {0}'
   bot_strings_reloaded: Les chaînes de caractères du bot ont été mises à jour.
   cache_users_done: '{0} utilisateurs ont été ajoutés et {1} utilisateurs ont été mis à jour.'
@@ -153,8 +143,6 @@ fr-FR:
   scrm_fail: Commande de démarrage non trouvée.
   server: Serveur
   set_activity: Nouvelle activité définie !
-  set_avatar: Nouvel avatar défini!
-  set_banner: Nouveau banner défini !
   set_stream: Nouveau stream défini!
   shard_reconnecting: 'Le fragment {0} se reconnecte.'
   shutting_down: Arrêt
@@ -169,7 +157,6 @@ id-ID:
   autocmd_add: 'Perintah {0} akan dijalankan setiap {1} detik di channel ini.'
   autocmd_interval_range: 'Interval harus antara {0} detik dan {1} hari.'
   autocmdlist_none: Tidak ada auto command di halaman ini.
-  bot_name: 'Nama bot diubah menjadi {0}'
   bot_status: 'Status bot diubah menjadi {0}'
   bot_strings_reloaded: String bot telah dimuat ulang.
   cache_users_done: '{0} pengguna ditambahkan dan {1} pengguna diperbarui.'
@@ -194,8 +181,6 @@ id-ID:
   scrm_fail: Startup command tidak ditemukan.
   server: Server
   set_activity: Aktivitas baru disetel!
-  set_avatar: Avatar baru disetel!
-  set_banner: Banner baru disetel!
   set_stream: Stream baru disetel!
   shard_reconnecting: 'Shard {0} sedang reconnecting.'
   shutting_down: Mematikan
@@ -210,7 +195,6 @@ ja-JP:
   autocmd_add: 'コマンド{0}がこのチャンネルで{1}秒ごとに実行されます。'
   autocmd_interval_range: '間隔は{0}秒から{1}日の間で指定してください。'
   autocmdlist_none: このページには自動コマンドがありません。
-  bot_name: 'Bot名が《{0}》に変更されました'
   bot_status: 'Botのステータスが{0}に変更されました'
   bot_strings_reloaded: Botの文字列が再読み込みされました。
   cache_users_done: '{0}人のユーザーが追加され、{1}人のユーザーが更新されました。'
@@ -235,8 +219,6 @@ ja-JP:
   scrm_fail: 起動コマンドが見つかりません。
   server: サーバー
   set_activity: 新しいアクティビティが設定されました！
-  set_avatar: 新しいアバターが設定されました！
-  set_banner: 新しいバナーが設定されました！
   set_stream: 新しいストリームが設定されました！
   shard_reconnecting: 'Shard {0}は再接続中です。'
   shutting_down: シャットダウンしています
@@ -251,7 +233,6 @@ ko-KR:
   autocmd_add: '명령어 {0}이(가) 이 채널에서 {1}초마다 실행돼요.'
   autocmd_interval_range: '간격은 {0}초에서 {1}일 사이여야 해요.'
   autocmdlist_none: 이 페이지에 자동 명령이 없어요.
-  bot_name: '봇 이름이 {0}(으)로 변경되었어요'
   bot_status: '봇 상태가 {0}(으)로 변경되었어요'
   bot_strings_reloaded: 봇 문자열이 다시 로드되었어요.
   cache_users_done: '{0}명의 유저가 추가되고 {1}명의 유저가 업데이트되었어요.'
@@ -276,8 +257,6 @@ ko-KR:
   scrm_fail: 시작 명령을 찾을 수 없어요.
   server: 서버
   set_activity: 새 활동이 설정되었어요!
-  set_avatar: 새 아바타가 설정되었어요!
-  set_banner: 새 배너가 설정되었어요!
   set_stream: 새 스트림이 설정되었어요!
   shard_reconnecting: '샤드 {0} 재연결 중.'
   shutting_down: 종료 중
@@ -292,7 +271,6 @@ pl-PL:
   autocmd_add: 'Komenda {0} będzie wykonywana co {1}s na tym kanale.'
   autocmd_interval_range: 'Interwał musi wynosić od {0} sekund do {1} dni.'
   autocmdlist_none: Brak automatycznych komend na tej stronie.
-  bot_name: 'Nazwa bota zmieniona na {0}'
   bot_status: 'Status bota zmieniony na {0}'
   bot_strings_reloaded: Ciągi tekstowe bota zostały przeładowane.
   cache_users_done: 'Dodano {0} użytkowników i zaktualizowano {1} użytkowników.'
@@ -317,8 +295,6 @@ pl-PL:
   scrm_fail: Nie znaleziono komendy startowej.
   server: Serwer
   set_activity: Nowa aktywność ustawiona!
-  set_avatar: Nowy avatar ustawiony!
-  set_banner: Nowy baner ustawiony!
   set_stream: Nowy stream ustawiony!
   shard_reconnecting: 'Shard {0} ponownie się łączy.'
   shutting_down: Wyłączanie
@@ -333,7 +309,6 @@ pt-BR:
   autocmd_add: 'O comando {0} será executado a cada {1}s neste canal.'
   autocmd_interval_range: 'O intervalo deve ficar entre {0} segundos e {1} dias.'
   autocmdlist_none: Nenhum comando automático nessa página.
-  bot_name: 'O nome do bot foi alterado para {0}'
   bot_status: 'O status do bot foi alterado para {0}'
   bot_strings_reloaded: As strings do bot foram recarregadas.
   cache_users_done: '{0} usuários foram adicionados e {1} usuários foram atualizados.'
@@ -358,8 +333,6 @@ pt-BR:
   scrm_fail: Comando de inicialização não encontrado.
   server: Servidor
   set_activity: Nova atividade definida!
-  set_avatar: Nova foto selecionada!
-  set_banner: Novo banner definido!
   set_stream: Nova stream selecionada!
   shard_reconnecting: 'Shard {0} reconectando.'
   shutting_down: Desligando
@@ -374,7 +347,6 @@ ru-RU:
   autocmd_add: 'Команда {0} будет выполняться каждые {1} в этом канале.'
   autocmd_interval_range: 'Интервал должен быть от {0} секунд до {1} дней.'
   autocmdlist_none: На этой странице нет автоматических команд.
-  bot_name: 'Имя бота изменено на {0}'
   bot_status: 'Статус бота изменен на {0}'
   bot_strings_reloaded: Строки бота были перезагружены.
   cache_users_done: '{0} пользователей добавлено и {1} пользователей обновлено.'
@@ -399,8 +371,6 @@ ru-RU:
   scrm_fail: Команда авто-запуска не найдена.
   server: Сервер
   set_activity: Новая активность установлена!
-  set_avatar: Новый аватар установлен!
-  set_banner: Новый баннер установлен!
   set_stream: Новый стрим установлен!
   shard_reconnecting: 'Осколок {0} повторно подключается.'
   shutting_down: Выключаюсь
@@ -415,7 +385,6 @@ sr-Cyrl-RS:
   autocmd_add: 'Команда {0} ће се извршавати сваких {1}с у овом каналу.'
   autocmd_interval_range: 'Интервал мора бити између {0} секунди и {1} дана.'
   autocmdlist_none: Нема аутоматских команди на овој страници.
-  bot_name: 'Име бота промењено у {0}'
   bot_status: 'Статус бота промењен у {0}'
   bot_strings_reloaded: Стрингови бота су поново учитани.
   cache_users_done: '{0} корисника је додато и {1} корисника је ажурирано.'
@@ -440,8 +409,6 @@ sr-Cyrl-RS:
   scrm_fail: Стартна команда није пронађена.
   server: Сервер
   set_activity: Нова активност постављена!
-  set_avatar: Нови аватар постављен!
-  set_banner: Нови банер постављен!
   set_stream: Нови стрим постављен!
   shard_reconnecting: 'Шард {0} се поново повезује.'
   shutting_down: Гашење
@@ -456,7 +423,6 @@ tr-TR:
   autocmd_add: '{0} komutu bu kanalda her {1} saniyede bir çalıştırılacak.'
   autocmd_interval_range: 'Aralık {0} saniye ile {1} gün arasında olmalı.'
   autocmdlist_none: Bu sayfada otomatik komut yok.
-  bot_name: 'Botun adı {0} olarak değiştirildi'
   bot_status: 'Bot durumu {0} olarak değiştirildi'
   bot_strings_reloaded: Bot dizeleri yeniden yüklendi.
   cache_users_done: '{0} kullanıcı eklendi ve {1} kullanıcı güncellendi.'
@@ -481,8 +447,6 @@ tr-TR:
   scrm_fail: Başlangıç komutu bulunamadı.
   server: Sunucu
   set_activity: Yeni aktivite ayarlandı!
-  set_avatar: Yeni avatar ayarlandı!
-  set_banner: Yeni banner ayarlandı!
   set_stream: Yeni yayın ayarlandı!
   shard_reconnecting: 'Shard {0} yeniden bağlanıyor.'
   shutting_down: Kapatılıyor
@@ -497,7 +461,6 @@ ts-TS:
   autocmd_add: 'The command {0} will execute every {1}s in this channel.'
   autocmd_interval_range: 'The interval must be between {0} seconds and {1} days. Hmph, pick a real number.'
   autocmdlist_none: No auto commands on this page.
-  bot_name: 'Bot''s name changed to {0}. I-it''s a nice name, I guess.'
   bot_status: 'Bot status changed to {0}'
   bot_strings_reloaded: Bot strings have been reloaded.
   cache_users_done: '{0} users were added and {1} users were updated.'
@@ -522,8 +485,6 @@ ts-TS:
   scrm_fail: Startup command not found. Pay attention!
   server: Server
   set_activity: New activity set!
-  set_avatar: New avatar set!
-  set_banner: New banner set!
   set_stream: New stream set!
   shard_reconnecting: 'Shard {0} reconnecting.'
   shutting_down: Shutting down. I-I'll be back!
@@ -538,7 +499,6 @@ uk-UA:
   autocmd_add: 'Команда {0} виконуватиметься кожні {1}с у цьому каналі.'
   autocmd_interval_range: 'Інтервал має бути від {0} секунд до {1} днів.'
   autocmdlist_none: На цій сторінці немає автокоманд.
-  bot_name: 'Ім''я бота змінено на {0}'
   bot_status: 'Статус бота змінено на {0}'
   bot_strings_reloaded: Рядки бота перезавантажено.
   cache_users_done: '{0} користувачів додано та {1} користувачів оновлено.'
@@ -563,8 +523,6 @@ uk-UA:
   scrm_fail: Команду запуску не знайдено.
   server: Сервер
   set_activity: Нову активність встановлено!
-  set_avatar: Новий аватар встановлено!
-  set_banner: Новий банер встановлено!
   set_stream: Новий стрім встановлено!
   shard_reconnecting: 'Шард {0} перепідключається.'
   shutting_down: Вимкнення
@@ -579,7 +537,6 @@ vi-VN:
   autocmd_add: 'Lệnh {0} sẽ được thực thi mỗi {1} giây trong kênh này.'
   autocmd_interval_range: 'Khoảng thời gian phải từ {0} giây đến {1} ngày.'
   autocmdlist_none: Không có lệnh tự động nào trên trang này.
-  bot_name: 'Tên bot đã được đổi thành {0}'
   bot_status: 'Trạng thái bot đã được đổi thành {0}'
   bot_strings_reloaded: Đã tải lại chuỗi bot.
   cache_users_done: 'Đã thêm {0} người dùng và cập nhật {1} người dùng.'
@@ -604,8 +561,6 @@ vi-VN:
   scrm_fail: Không tìm thấy lệnh khởi động.
   server: Máy chủ
   set_activity: Đã thiết lập hoạt động mới!
-  set_avatar: Đã thiết lập ảnh đại diện mới!
-  set_banner: Đã thiết lập banner mới!
   set_stream: Đã thiết lập stream mới!
   shard_reconnecting: 'Shard {0} đang kết nối lại.'
   shutting_down: Đang tắt
@@ -620,7 +575,6 @@ zh-CN:
   autocmd_add: '命令 {0} 將在此頻道中每隔 {1} 執行一次。'
   autocmd_interval_range: '间隔必须在 {0} 秒到 {1} 天之间。'
   autocmdlist_none: 此頁面上沒有自動命令。
-  bot_name: '機器人的名稱更改為 {0}'
   bot_status: '機器人狀態更改為 {0}'
   bot_strings_reloaded: 機器人字串已重新加載。
   cache_users_done: '已新增 {0} 位使用者，已更新 {1} 位使用者。'
@@ -645,8 +599,6 @@ zh-CN:
   scrm_fail: 未找到啟動命令。
   server: 伺服器
   set_activity: 已設定新活動！
-  set_avatar: 新頭像套裝！
-  set_banner: 已設定新橫幅！
   set_stream: 新實況設置！
   shard_reconnecting: '分片 {0} 重新連接。'
   shutting_down: 正在關閉

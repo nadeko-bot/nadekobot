@@ -453,51 +453,12 @@ public partial class Owner
 
         [Cmd]
         [OwnerOnly]
-        public async Task SetName([Leftover] string newName)
-        {
-            if (string.IsNullOrWhiteSpace(newName))
-                return;
-
-            try
-            {
-                await _client.CurrentUser.ModifyAsync(u => u.Username = newName);
-            }
-            catch (RateLimitedException)
-            {
-                Log.Warning("You've been ratelimited. Wait 2 hours to change your name");
-            }
-
-            await Response().Confirm(strs.bot_name(Format.Bold(newName))).SendAsync();
-        }
-
-        [Cmd]
-        [OwnerOnly]
         public async Task SetStatus([Leftover] SettableUserStatus status)
         {
             if (!await ReplyPresenceErrorAsync(await _bas.SetStatusAsync(SettableUserStatusToUserStatus(status))))
                 return;
 
             await Response().Confirm(strs.bot_status(Format.Bold(status.ToString()))).SendAsync();
-        }
-
-        [Cmd]
-        [OwnerOnly]
-        public async Task SetAvatar([Leftover] string img = null)
-        {
-            var success = await _service.SetAvatar(img);
-
-            if (success)
-                await Response().Confirm(strs.set_avatar).SendAsync();
-        }
-
-        [Cmd]
-        [OwnerOnly]
-        public async Task SetBanner([Leftover] string img = null)
-        {
-            var success = await _service.SetBanner(img);
-
-            if (success)
-                await Response().Confirm(strs.set_banner).SendAsync();
         }
 
         [Cmd]

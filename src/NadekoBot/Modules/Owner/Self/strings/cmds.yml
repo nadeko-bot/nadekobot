@@ -142,29 +142,6 @@ setactivity:
           The activity type: Playing, Listening, Watching, or Competing.
       game:
         desc: The status text to display.
-setavatar:
-  desc: |-
-    Sets a new avatar image for the NadekoBot. Parameter is a direct link to an image.
-  ex:
-    - https://i.imgur.com/xTG3a1I.jpg
-  params:
-    - img:
-        desc: The URL of the image file to be displayed as the bot's avatar.
-setbanner:
-  desc: |-
-    Sets a new banner image for the NadekoBot. Parameter is a direct link to an image. Supports gifs.
-  ex:
-    - https://i.imgur.com/xTG3a1I.jpg
-  params:
-    - img:
-        desc: The URL of the image file to be displayed as the bot's banner.
-setname:
-  desc: Gives the bot a new name.
-  ex:
-    - BotName
-  params:
-    - newName:
-        desc: The new name given to the bot.
 setstatus:
   desc: |-
     Sets the bot's status: `Online`, `Idle`, `Dnd` or `Invisible`. The bot keeps it after a restart.

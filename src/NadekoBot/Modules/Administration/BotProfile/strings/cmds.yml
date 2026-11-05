@@ -1,0 +1,36 @@
+setavatar:
+  desc: |-
+    Sets the bot's avatar to the image which you attach to the message.
+    - In a server, the bot changes its avatar only in this server. Without an image, the bot uses its global avatar again.
+    - In a DM, the bot owner changes the bot's global avatar.
+  ex:
+    - ''
+  params:
+    - { }
+setbanner:
+  desc: |-
+    Sets the bot's banner to the image which you attach to the message.
+    - In a server, the bot changes its banner only in this server. Without an image, the bot uses its global banner again.
+    - In a DM, the bot owner changes the bot's global banner.
+  ex:
+    - ''
+  params:
+    - { }
+setbio:
+  desc: |-
+    Sets the bot's bio in this server. Without text, the bot clears the bio.
+  ex:
+    - I play music and count your xp.
+  params:
+    - bio:
+        desc: "The new bio for the bot."
+setname:
+  desc: |-
+    Gives the bot a new name.
+    - In a server, the bot sets its nickname in this server. Without a name, the bot removes the nickname.
+    - In a DM, the bot owner changes the bot's global username.
+  ex:
+    - BotName
+  params:
+    - newName:
+        desc: "The new name for the bot."

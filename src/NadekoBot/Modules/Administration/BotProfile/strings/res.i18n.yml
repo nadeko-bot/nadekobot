@@ -1,0 +1,271 @@
+ar:
+  bot_avatar_reset: يستخدم البوت صورته الرمزية العامة في هذا الخادم مرة أخرى.
+  bot_banner_reset: يستخدم البوت البانر العام في هذا الخادم مرة أخرى.
+  bot_bio_cleared: تم مسح نبذة البوت في هذا الخادم.
+  bot_bio_set: تم تغيير نبذة البوت في هذا الخادم.
+  bot_name: 'تم تغيير اسم البوت إلى {0}'
+  bot_nick_reset: تمت إزالة لقب البوت في هذا الخادم.
+  bot_profile_bad_image: 'يجب أن تكون الصورة ملف png أو jpeg أو gif أو webp بحجم {0} ميغابايت على الأكثر.'
+  bot_profile_no_image: أرفق صورة png أو jpeg أو gif أو webp برسالتك.
+  bot_profile_no_name: 'اكتب الاسم الجديد بعد الأمر.'
+  bot_profile_no_nick_perm: يحتاج البوت إلى صلاحية تغيير اللقب.
+  bot_profile_refused: رفض Discord التغيير. انتظر قليلا، أو جرّب صورة أو نصا آخر.
+  bot_profile_too_long: 'يمكن أن يحتوي النص على {0} حرفا على الأكثر.'
+  bot_profile_wait: 'يمكنك تغيير ملف البوت في هذا الخادم مرة أخرى بعد {0} ثانية.'
+  set_avatar: تم تعيين صورة رمزية جديدة!
+  set_banner: تم تعيين بانر جديد!
+
+de-DE:
+  bot_avatar_reset: Der Bot nutzt auf diesem Server wieder seinen globalen Avatar.
+  bot_banner_reset: Der Bot nutzt auf diesem Server wieder sein globales Banner.
+  bot_bio_cleared: Die Bio des Bots auf diesem Server wurde gelöscht.
+  bot_bio_set: Die Bio des Bots auf diesem Server wurde geändert.
+  bot_name: 'Der Name des Bots wurde zu {0} geändert.'
+  bot_nick_reset: Der Nickname des Bots auf diesem Server wurde entfernt.
+  bot_profile_bad_image: 'Das Bild muss eine png-, jpeg-, gif- oder webp-Datei mit höchstens {0} MB sein.'
+  bot_profile_no_image: Hänge ein png-, jpeg-, gif- oder webp-Bild an deine Nachricht an.
+  bot_profile_no_name: 'Schreib den neuen Namen hinter den Befehl.'
+  bot_profile_no_nick_perm: Der Bot braucht die Berechtigung Nickname ändern.
+  bot_profile_refused: Discord hat die Änderung abgelehnt. Warte eine Weile oder versuch ein anderes Bild oder einen anderen Text.
+  bot_profile_too_long: 'Der Text darf höchstens {0} Zeichen haben.'
+  bot_profile_wait: 'Du kannst das Profil des Bots auf diesem Server in {0} Sekunden wieder ändern.'
+  set_avatar: Neuer Avatar festgelegt!
+  set_banner: Neues Banner festgelegt!
+
+es-ES:
+  bot_avatar_reset: El bot vuelve a usar su avatar global en este servidor.
+  bot_banner_reset: El bot vuelve a usar su banner global en este servidor.
+  bot_bio_cleared: La bio del bot en este servidor se ha borrado.
+  bot_bio_set: La bio del bot en este servidor se ha cambiado.
+  bot_name: 'El nombre del bot fue cambiado a {0}'
+  bot_nick_reset: El apodo del bot en este servidor se ha quitado.
+  bot_profile_bad_image: 'La imagen debe ser un archivo png, jpeg, gif o webp de {0} MB como máximo.'
+  bot_profile_no_image: Adjunta una imagen png, jpeg, gif o webp a tu mensaje.
+  bot_profile_no_name: 'Escribe el nuevo nombre después del comando.'
+  bot_profile_no_nick_perm: El bot necesita el permiso Cambiar apodo.
+  bot_profile_refused: Discord rechazó el cambio. Espera un poco o prueba con otra imagen u otro texto.
+  bot_profile_too_long: 'El texto puede tener como máximo {0} caracteres.'
+  bot_profile_wait: 'Podrás volver a cambiar el perfil del bot en este servidor en {0} segundos.'
+  set_avatar: ¡Nuevo avatar establecido!
+  set_banner: ¡Nuevo banner establecido!
+
+fr-FR:
+  bot_avatar_reset: Le bot utilise de nouveau son avatar global sur ce serveur.
+  bot_banner_reset: Le bot utilise de nouveau sa bannière globale sur ce serveur.
+  bot_bio_cleared: La bio du bot sur ce serveur a été effacée.
+  bot_bio_set: La bio du bot sur ce serveur a été modifiée.
+  bot_name: 'Le nom du bot a été changé pour {0}'
+  bot_nick_reset: Le surnom du bot sur ce serveur a été supprimé.
+  bot_profile_bad_image: 'L''image doit être un fichier png, jpeg, gif ou webp de {0} Mo maximum.'
+  bot_profile_no_image: Joins une image png, jpeg, gif ou webp à ton message.
+  bot_profile_no_name: 'Écris le nouveau nom après la commande.'
+  bot_profile_no_nick_perm: Le bot a besoin de la permission Changer le pseudo.
+  bot_profile_refused: Discord a refusé le changement. Attends un peu, ou essaie une autre image ou un autre texte.
+  bot_profile_too_long: 'Le texte peut contenir au maximum {0} caractères.'
+  bot_profile_wait: 'Tu pourras de nouveau modifier le profil du bot sur ce serveur dans {0} secondes.'
+  set_avatar: Nouvel avatar défini!
+  set_banner: Nouveau banner défini !
+
+id-ID:
+  bot_avatar_reset: Bot kembali memakai avatar globalnya di server ini.
+  bot_banner_reset: Bot kembali memakai banner globalnya di server ini.
+  bot_bio_cleared: Bio bot di server ini sudah dihapus.
+  bot_bio_set: Bio bot di server ini sudah diubah.
+  bot_name: 'Nama bot diubah menjadi {0}'
+  bot_nick_reset: Nickname bot di server ini sudah dihapus.
+  bot_profile_bad_image: 'Gambar harus berupa file png, jpeg, gif, atau webp dengan ukuran maksimal {0} MB.'
+  bot_profile_no_image: Lampirkan gambar png, jpeg, gif, atau webp ke pesanmu.
+  bot_profile_no_name: 'Tulis nama baru setelah perintahnya.'
+  bot_profile_no_nick_perm: Bot butuh izin Ubah Nama Panggilan.
+  bot_profile_refused: Discord menolak perubahan ini. Tunggu sebentar, atau coba gambar atau teks lain.
+  bot_profile_too_long: 'Teks maksimal {0} karakter.'
+  bot_profile_wait: 'Kamu bisa mengubah profil bot di server ini lagi dalam {0} detik.'
+  set_avatar: Avatar baru disetel!
+  set_banner: Banner baru disetel!
+
+ja-JP:
+  bot_avatar_reset: このサーバーでは、ボットはまたグローバルのアバターを使います。
+  bot_banner_reset: このサーバーでは、ボットはまたグローバルのバナーを使います。
+  bot_bio_cleared: このサーバーでのボットの自己紹介を消しました。
+  bot_bio_set: このサーバーでのボットの自己紹介を変更しました。
+  bot_name: 'Bot名が《{0}》に変更されました'
+  bot_nick_reset: このサーバーでのボットのニックネームを外しました。
+  bot_profile_bad_image: '画像は {0} MB 以下の png、jpeg、gif、webp ファイルにしてください。'
+  bot_profile_no_image: メッセージに png、jpeg、gif、webp の画像を添付してください。
+  bot_profile_no_name: 'コマンドの後に新しい名前を書いてください。'
+  bot_profile_no_nick_perm: ボットには「ニックネームの変更」権限が必要です。
+  bot_profile_refused: Discord に変更を拒否されました。少し待つか、別の画像やテキストを試してください。
+  bot_profile_too_long: 'テキストは最大 {0} 文字までです。'
+  bot_profile_wait: 'このサーバーでのボットのプロフィールは {0} 秒後にまた変更できます。'
+  set_avatar: 新しいアバターが設定されました！
+  set_banner: 新しいバナーが設定されました！
+
+ko-KR:
+  bot_avatar_reset: 이 서버에서 봇이 다시 전체 아바타를 사용해요.
+  bot_banner_reset: 이 서버에서 봇이 다시 전체 배너를 사용해요.
+  bot_bio_cleared: 이 서버에서 봇의 소개를 지웠어요.
+  bot_bio_set: 이 서버에서 봇의 소개를 바꿨어요.
+  bot_name: '봇 이름이 {0}(으)로 변경되었어요'
+  bot_nick_reset: 이 서버에서 봇의 닉네임을 지웠어요.
+  bot_profile_bad_image: '이미지는 최대 {0} MB의 png, jpeg, gif 또는 webp 파일이어야 해요.'
+  bot_profile_no_image: 메시지에 png, jpeg, gif 또는 webp 이미지를 첨부해 주세요.
+  bot_profile_no_name: '명령어 뒤에 새 이름을 적어 주세요.'
+  bot_profile_no_nick_perm: 봇에게 별명 변경 권한이 필요해요.
+  bot_profile_refused: Discord가 변경을 거부했어요. 잠시 기다리거나 다른 이미지나 텍스트로 시도해 주세요.
+  bot_profile_too_long: '텍스트는 최대 {0}자까지 쓸 수 있어요.'
+  bot_profile_wait: '{0}초 후에 이 서버에서 봇의 프로필을 다시 바꿀 수 있어요.'
+  set_avatar: 새 아바타가 설정되었어요!
+  set_banner: 새 배너가 설정되었어요!
+
+pl-PL:
+  bot_avatar_reset: Bot znowu używa na tym serwerze swojego globalnego avatara.
+  bot_banner_reset: Bot znowu używa na tym serwerze swojego globalnego banera.
+  bot_bio_cleared: Bio bota na tym serwerze zostało wyczyszczone.
+  bot_bio_set: Bio bota na tym serwerze zostało zmienione.
+  bot_name: 'Nazwa bota zmieniona na {0}'
+  bot_nick_reset: Nick bota na tym serwerze został usunięty.
+  bot_profile_bad_image: 'Obraz musi być plikiem png, jpeg, gif lub webp o rozmiarze maksymalnie {0} MB.'
+  bot_profile_no_image: Dołącz do wiadomości obraz png, jpeg, gif lub webp.
+  bot_profile_no_name: 'Wpisz nową nazwę po komendzie.'
+  bot_profile_no_nick_perm: Bot potrzebuje uprawnienia Zmień pseudonim.
+  bot_profile_refused: Discord odrzucił zmianę. Poczekaj chwilę albo spróbuj innego obrazu lub tekstu.
+  bot_profile_too_long: 'Tekst może mieć maksymalnie {0} znaków.'
+  bot_profile_wait: 'Profil bota na tym serwerze możesz znowu zmienić za {0} s.'
+  set_avatar: Nowy avatar ustawiony!
+  set_banner: Nowy baner ustawiony!
+
+pt-BR:
+  bot_avatar_reset: O bot voltou a usar o avatar global neste servidor.
+  bot_banner_reset: O bot voltou a usar o banner global neste servidor.
+  bot_bio_cleared: A bio do bot neste servidor foi apagada.
+  bot_bio_set: A bio do bot neste servidor foi alterada.
+  bot_name: 'O nome do bot foi alterado para {0}'
+  bot_nick_reset: O nickname do bot neste servidor foi removido.
+  bot_profile_bad_image: 'A imagem precisa ser um arquivo png, jpeg, gif ou webp de no máximo {0} MB.'
+  bot_profile_no_image: Anexe uma imagem png, jpeg, gif ou webp na sua mensagem.
+  bot_profile_no_name: 'Escreva o novo nome depois do comando.'
+  bot_profile_no_nick_perm: O bot precisa da permissão Alterar apelido.
+  bot_profile_refused: O Discord recusou a alteração. Espere um pouco ou tente outra imagem ou texto.
+  bot_profile_too_long: 'O texto pode ter no máximo {0} caracteres.'
+  bot_profile_wait: 'Você pode alterar o perfil do bot neste servidor de novo em {0} segundos.'
+  set_avatar: Nova foto selecionada!
+  set_banner: Novo banner definido!
+
+ru-RU:
+  bot_avatar_reset: Бот снова использует свой общий аватар на этом сервере.
+  bot_banner_reset: Бот снова использует свой общий баннер на этом сервере.
+  bot_bio_cleared: Описание бота на этом сервере очищено.
+  bot_bio_set: Описание бота на этом сервере изменено.
+  bot_name: 'Имя бота изменено на {0}'
+  bot_nick_reset: Псевдоним бота на этом сервере удалён.
+  bot_profile_bad_image: 'Картинка должна быть файлом png, jpeg, gif или webp размером не больше {0} МБ.'
+  bot_profile_no_image: Прикрепи к сообщению картинку png, jpeg, gif или webp.
+  bot_profile_no_name: 'Напиши новое имя после команды.'
+  bot_profile_no_nick_perm: Боту нужно право «Изменить никнейм».
+  bot_profile_refused: Discord отклонил изменение. Подожди немного или попробуй другую картинку или текст.
+  bot_profile_too_long: 'Текст может содержать не больше {0} символов.'
+  bot_profile_wait: 'Снова изменить профиль бота на этом сервере можно через {0} сек.'
+  set_avatar: Новый аватар установлен!
+  set_banner: Новый баннер установлен!
+
+sr-Cyrl-RS:
+  bot_avatar_reset: Бот поново користи свој глобални аватар на овом серверу.
+  bot_banner_reset: Бот поново користи свој глобални банер на овом серверу.
+  bot_bio_cleared: Опис бота на овом серверу је обрисан.
+  bot_bio_set: Опис бота на овом серверу је промењен.
+  bot_name: 'Име бота промењено у {0}'
+  bot_nick_reset: Надимак бота на овом серверу је уклоњен.
+  bot_profile_bad_image: 'Слика мора бити png, jpeg, gif или webp фајл од највише {0} MB.'
+  bot_profile_no_image: Приложи png, jpeg, gif или webp слику уз поруку.
+  bot_profile_no_name: 'Напиши ново име после команде.'
+  bot_profile_no_nick_perm: Боту је потребна дозвола Промени надимак.
+  bot_profile_refused: Discord је одбио промену. Сачекај мало или пробај другу слику или текст.
+  bot_profile_too_long: 'Текст може имати највише {0} карактера.'
+  bot_profile_wait: 'Профил бота на овом серверу можеш поново да промениш за {0} с.'
+  set_avatar: Нови аватар постављен!
+  set_banner: Нови банер постављен!
+
+tr-TR:
+  bot_avatar_reset: Bot bu sunucuda yine genel avatarını kullanıyor.
+  bot_banner_reset: Bot bu sunucuda yine genel bannerını kullanıyor.
+  bot_bio_cleared: Botun bu sunucudaki biyografisi temizlendi.
+  bot_bio_set: Botun bu sunucudaki biyografisi değiştirildi.
+  bot_name: 'Botun adı {0} olarak değiştirildi'
+  bot_nick_reset: Botun bu sunucudaki takma adı kaldırıldı.
+  bot_profile_bad_image: 'Görsel en fazla {0} MB boyutunda png, jpeg, gif veya webp dosyası olmalı.'
+  bot_profile_no_image: Mesajına png, jpeg, gif veya webp bir görsel ekle.
+  bot_profile_no_name: 'Yeni adı komuttan sonra yaz.'
+  bot_profile_no_nick_perm: Botun Kullanıcı Adını Değiştir iznine ihtiyacı var.
+  bot_profile_refused: Discord değişikliği reddetti. Biraz bekle ya da başka bir görsel veya metin dene.
+  bot_profile_too_long: 'Metin en fazla {0} karakter olabilir.'
+  bot_profile_wait: 'Botun bu sunucudaki profilini {0} saniye sonra yeniden değiştirebilirsin.'
+  set_avatar: Yeni avatar ayarlandı!
+  set_banner: Yeni banner ayarlandı!
+
+ts-TS:
+  bot_avatar_reset: Fine, I'm back to my global avatar in this server.
+  bot_banner_reset: My global banner is back in this server.
+  bot_bio_cleared: My bio in this server is cleared. Hmph, it was a good one.
+  bot_bio_set: My bio in this server is changed.
+  bot_name: 'Bot''s name changed to {0}. I-it''s a nice name, I guess.'
+  bot_nick_reset: My nickname in this server is gone. Not that I cared about it.
+  bot_profile_bad_image: 'The image must be a png, jpeg, gif or webp file of at most {0} MB.'
+  bot_profile_no_image: Attach a png, jpeg, gif or webp image to your message.
+  bot_profile_no_name: 'Write the new name after the command.'
+  bot_profile_no_nick_perm: I need the Change Nickname permission.
+  bot_profile_refused: Discord refused the change. Wait a while, or try a different image or text.
+  bot_profile_too_long: 'The text can have at most {0} characters. Keep it short.'
+  bot_profile_wait: 'S-slow down! You can change my profile in this server again in {0} seconds.'
+  set_avatar: New avatar set!
+  set_banner: New banner set!
+
+uk-UA:
+  bot_avatar_reset: Бот знову використовує свій загальний аватар на цьому сервері.
+  bot_banner_reset: Бот знову використовує свій загальний банер на цьому сервері.
+  bot_bio_cleared: Опис бота на цьому сервері очищено.
+  bot_bio_set: Опис бота на цьому сервері змінено.
+  bot_name: 'Ім''я бота змінено на {0}'
+  bot_nick_reset: Нікнейм бота на цьому сервері видалено.
+  bot_profile_bad_image: 'Зображення має бути файлом png, jpeg, gif або webp розміром не більше {0} МБ.'
+  bot_profile_no_image: Додай до повідомлення зображення png, jpeg, gif або webp.
+  bot_profile_no_name: 'Напиши нове ім''я після команди.'
+  bot_profile_no_nick_perm: Боту потрібен дозвіл «Змінювати нікнейм».
+  bot_profile_refused: Discord відхилив зміну. Зачекай трохи або спробуй інше зображення чи текст.
+  bot_profile_too_long: 'Текст може містити не більше {0} символів.'
+  bot_profile_wait: 'Знову змінити профіль бота на цьому сервері можна через {0} с.'
+  set_avatar: Новий аватар встановлено!
+  set_banner: Новий банер встановлено!
+
+vi-VN:
+  bot_avatar_reset: Bot lại dùng ảnh đại diện chung trong server này.
+  bot_banner_reset: Bot lại dùng banner chung trong server này.
+  bot_bio_cleared: Đã xóa tiểu sử của bot trong server này.
+  bot_bio_set: Đã đổi tiểu sử của bot trong server này.
+  bot_name: 'Tên bot đã được đổi thành {0}'
+  bot_nick_reset: Đã xóa biệt danh của bot trong server này.
+  bot_profile_bad_image: 'Ảnh phải là tệp png, jpeg, gif hoặc webp, tối đa {0} MB.'
+  bot_profile_no_image: Hãy đính kèm một ảnh png, jpeg, gif hoặc webp vào tin nhắn.
+  bot_profile_no_name: 'Hãy viết tên mới sau lệnh.'
+  bot_profile_no_nick_perm: Bot cần quyền Đổi biệt danh.
+  bot_profile_refused: Discord đã từ chối thay đổi. Hãy đợi một lúc, hoặc thử ảnh hay nội dung khác.
+  bot_profile_too_long: 'Nội dung chỉ được tối đa {0} ký tự.'
+  bot_profile_wait: 'Bạn có thể đổi hồ sơ của bot trong server này lại sau {0} giây.'
+  set_avatar: Đã thiết lập ảnh đại diện mới!
+  set_banner: Đã thiết lập banner mới!
+
+zh-CN:
+  bot_avatar_reset: 机器人在这个服务器中重新使用全局头像。
+  bot_banner_reset: 机器人在这个服务器中重新使用全局横幅。
+  bot_bio_cleared: 机器人在这个服务器中的简介已清除。
+  bot_bio_set: 机器人在这个服务器中的简介已更改。
+  bot_name: '机器人的名称已更改为 {0}'
+  bot_nick_reset: 机器人在这个服务器中的昵称已移除。
+  bot_profile_bad_image: '图片必须是 png、jpeg、gif 或 webp 文件，最大 {0} MB。'
+  bot_profile_no_image: 请在消息中附上一张 png、jpeg、gif 或 webp 图片。
+  bot_profile_no_name: '请在命令后面写上新名称。'
+  bot_profile_no_nick_perm: 机器人需要「更改昵称」权限。
+  bot_profile_refused: Discord 拒绝了这次更改。请稍等一会儿，或者换一张图片或文字再试。
+  bot_profile_too_long: '文字最多只能有 {0} 个字符。'
+  bot_profile_wait: '{0} 秒后才能再次更改机器人在这个服务器中的资料。'
+  set_avatar: 已设置新头像！
+  set_banner: 已设置新横幅！

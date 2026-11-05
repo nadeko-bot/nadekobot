@@ -1,0 +1,15 @@
+bot_avatar_reset: The bot uses its global avatar in this server again.
+bot_banner_reset: The bot uses its global banner in this server again.
+bot_bio_cleared: The bot's bio in this server is cleared.
+bot_bio_set: The bot's bio in this server is changed.
+bot_name: Bot's name changed to {0}
+bot_nick_reset: The bot's nickname in this server is removed.
+bot_profile_bad_image: The image must be a png, jpeg, gif or webp file of at most {0} MB.
+bot_profile_no_image: Attach a png, jpeg, gif or webp image to your message.
+bot_profile_no_name: Write the new name after the command.
+bot_profile_no_nick_perm: The bot needs the Change Nickname permission.
+bot_profile_refused: Discord refused the change. Wait a while, or try a different image or text.
+bot_profile_too_long: The text can have at most {0} characters.
+bot_profile_wait: You can change the bot's profile in this server again in {0} seconds.
+set_avatar: New avatar set!
+set_banner: New banner set!

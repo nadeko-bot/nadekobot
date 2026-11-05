@@ -41,14 +41,6 @@ send:
 setactivity:
   - setactivity
   - setgame
-setavatar:
-  - setavatar
-  - setav
-setbanner:
-  - setbanner
-setname:
-  - setname
-  - newnm
 setstatus:
   - setstatus
 setstream:

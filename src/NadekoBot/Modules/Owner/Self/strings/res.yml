@@ -4,7 +4,6 @@ activity_use_setstream: Use {0} to show a stream.
 autocmd_add: The command {0} will execute every {1}s in this channel.
 autocmd_interval_range: "The interval must be between {0} seconds and {1} days."
 autocmdlist_none: No auto commands on this page.
-bot_name: Bot's name changed to {0}
 bot_status: Bot status changed to {0}
 bot_strings_reloaded: Bot strings have been reloaded.
 cache_users_done: '{0} users were added and {1} users were updated.'
@@ -31,8 +30,6 @@ scrm: Startup command successfully removed.
 scrm_fail: Startup command not found.
 server: Server
 set_activity: New activity set!
-set_avatar: New avatar set!
-set_banner: New banner set!
 set_stream: New stream set!
 shard_reconnecting: Shard {0} reconnecting.
 shutting_down: Shutting down

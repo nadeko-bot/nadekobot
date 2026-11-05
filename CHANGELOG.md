@@ -12,10 +12,13 @@
 - `.feedmessage` / `.feedmsg` changes the message of a feed.
 - `.repeat` / `.songrepeat` and `.loop` / `.queueloop` repeat the song or the queue.
 - `.previous` / `.prev` / `.back` plays the previous song.
+- `.setavatar` / `.setav`, `.setbanner` and `.setname` / `.newnm` change the bot's server profile when you use them in a server.
+- `.setbio` sets the bot's bio in a server.
 
 ### Changed
 
 - `.stats` shows Breaker as the author.
+- `.setavatar` / `.setav` and `.setbanner` take an attached image instead of a link.
 - `.xprolereward` / `.xprr` gives several roles at one level.
 - `.srvrfilterlin` / `.sfl` and `.chnlfilterlin` / `.cfl` find links in any part of a message.
 - The repeating message command is `.repeatadd` / `.repadd`

@@ -22,9 +22,6 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
 
     private ConcurrentDictionary<ulong?, ConcurrentDictionary<int, Timer>> autoCommands = new();
 
-    private const int MAX_PROFILE_IMAGE_BYTES = 8 * 1024 * 1024;
-
-    private readonly IHttpClientFactory _httpFactory;
     private readonly BotConfigService _bss;
     private readonly IPubSub _pubSub;
     private readonly IMessageSenderService _sender;
@@ -38,7 +35,6 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
         DbService db,
         IBotStrings strings,
         IBotCreds creds,
-        IHttpClientFactory factory,
         BotConfigService bss,
         IPubSub pubSub,
         IMessageSenderService sender)
@@ -48,7 +44,6 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
         _strings = strings;
         _client = client;
         _creds = creds;
-        _httpFactory = factory;
         _bss = bss;
         _pubSub = pubSub;
         _sender = sender;
@@ -312,63 +307,6 @@ public sealed class SelfService : IExecNoCommand, IReadyExecutor, INService
 
         return false;
     }
-
-    public async Task<bool> SetAvatar(string img)
-    {
-        if (string.IsNullOrWhiteSpace(img))
-            return false;
-
-        if (!Uri.IsWellFormedUriString(img, UriKind.Absolute))
-            return false;
-
-        var uri = new Uri(img);
-
-        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
-        using var sr = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
-        if (!sr.IsImage())
-            return false;
-
-        await using var imgStream = await ExternalHttp.ReadLimitedStreamAsync(sr.Content, MAX_PROFILE_IMAGE_BYTES);
-        if (imgStream is null)
-            return false;
-
-        await _client.CurrentUser.ModifyAsync(u => u.Avatar = new Image(imgStream));
-
-        return true;
-    }
-
-    public async Task<bool> SetBanner(string img)
-    {
-        if (string.IsNullOrWhiteSpace(img))
-        {
-            return false;
-        }
-
-        if (!Uri.IsWellFormedUriString(img, UriKind.Absolute))
-        {
-            return false;
-        }
-
-        var uri = new Uri(img);
-
-        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
-        using var sr = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
-
-        if (!sr.IsImage())
-        {
-            return false;
-        }
-
-        await using var imageStream = await ExternalHttp.ReadLimitedStreamAsync(sr.Content, MAX_PROFILE_IMAGE_BYTES);
-        if (imageStream is null)
-        {
-            return false;
-        }
-
-        await _client.CurrentUser.ModifyAsync(x => x.Banner = new Image(imageStream));
-        return true;
-    }
-
 
     public void ClearStartupCommands()
     {

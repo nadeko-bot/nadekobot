@@ -139,6 +139,9 @@ public sealed class CommandsUtilityService : ICommandsUtilityService, INService
         if (cmd.Preconditions.Any(x => x is OwnerOnlyAttribute))
             toReturn.Add("Bot Owner Only");
 
+        if (cmd.Preconditions.Any(x => x is BotProfilePermAttribute))
+            toReturn.Add(BotProfilePermAttribute.REQUIREMENT);
+
         var patronAttr = cmd.Preconditions
                             .OfType<PatronOnlyAttribute>()
                             .FirstOrDefault()
