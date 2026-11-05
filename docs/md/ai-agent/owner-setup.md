@@ -71,6 +71,8 @@ The bot owner can always use the agent. Other people can use it only when you al
 
 If patronage is on (`isEnabled: true` in `data/patron.yml`), active patrons can also use the agent.
 
+An alias, a scheduled command or a command which the agent runs never starts the agent.
+
 ## Edit the prompts
 
 Two files in `data/ai/prompts/` control how the agent talks. The bot creates them on the first start.

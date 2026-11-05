@@ -40,8 +40,8 @@ A server keeps the bot online all day. [Get a Linux server](guides/linux-server.
 
 ## Features
 
-- [AI agent](ai-agent/overview.md): members ask the bot for things in plain language.
-- [Waifu system](waifu-guide.md): an economy game with waifus, fans and managers.
+- [AI agent](https://nadeko.bot/features/ai-agent): members ask the bot for things in plain language. To turn it on for your own bot, read [Owner setup](ai-agent/owner-setup.md).
+- [Waifu system](https://nadeko.bot/features/waifus): an economy game with waifus, fans and managers.
 - [Medusa plugins](medusa/getting-started.md): add your own commands to a self-hosted bot.
 
 ## Get help

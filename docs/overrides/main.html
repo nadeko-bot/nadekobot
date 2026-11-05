@@ -12,13 +12,11 @@
     'guides': 'NadekoBot install guides: Upeko, the CLI installer, Docker or the source code',
     'ai-agent': 'NadekoBot AI agent: talk to the bot in plain language',
     'medusa': 'NadekoBot medusa plugins: add your own commands to a self-hosted bot',
-    'waifu': 'NadekoBot waifu system: become a waifu, back one and collect the payout',
     'donate': 'Donate to NadekoBot on Patreon or PayPal',
   } -%}
   {%- if nk_src.startswith('guides/') or nk_src == 'creds-guide.md' -%}{%- set nk_card = 'guides' -%}
   {%- elif nk_src.startswith('ai-agent/') -%}{%- set nk_card = 'ai-agent' -%}
   {%- elif nk_src.startswith('medusa/') -%}{%- set nk_card = 'medusa' -%}
-  {%- elif nk_src == 'waifu-guide.md' -%}{%- set nk_card = 'waifu' -%}
   {%- elif nk_src == 'donate.md' -%}{%- set nk_card = 'donate' -%}
   {%- else -%}{%- set nk_card = 'home' -%}
   {%- endif -%}

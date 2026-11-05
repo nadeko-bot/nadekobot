@@ -5,6 +5,8 @@ description: Start the NadekoBot AI agent with a mention, .agent, a reply or the
 
 # Usage and skills
 
+The AI agent reads your request in plain language, runs the commands for it as you and replies with the result.
+
 The bot owner turns on the AI agent and chooses who can use it. If the agent does not answer, ask the owner of the bot. The agent works only in a server channel, not in a direct message.
 
 ## Start the agent
@@ -74,5 +76,5 @@ A channel skill works only in the channel where you add it. Use it for a channel
 
 ## Related pages
 
-- [AI agent overview](overview.md)
+- [AI agent overview](https://nadeko.bot/features/ai-agent)
 - [Owner setup](owner-setup.md)

@@ -54,6 +54,9 @@ plugins:
           # The placeholder list is on the site's embed builder (nadeko.bot redirects /placeholders too).
           'placeholders.md': 'https://nadeko.bot/tools/embed-builder#placeholders'
           'en/latest/placeholders.md': 'https://nadeko.bot/tools/embed-builder#placeholders'
+          # Pages for members are feature pages on nadeko.bot; the docs keep what a bot owner needs.
+          'waifu-guide.md': 'https://nadeko.bot/features/waifus'
+          'ai-agent/overview.md': 'https://nadeko.bot/features/ai-agent'
 
 markdown_extensions:
     - attr_list
@@ -89,9 +92,9 @@ nav:
         - Database: guides/database.md
     - Commands: https://nadeko.bot/commands/
     - Features:
-        - Waifu system: waifu-guide.md
+        - Waifu system: https://nadeko.bot/features/waifus
         - AI agent:
-            - Overview: ai-agent/overview.md
+            - Overview: https://nadeko.bot/features/ai-agent
             - Owner setup: ai-agent/owner-setup.md
             - Usage and skills: ai-agent/usage.md
         - Medusa plugins:
