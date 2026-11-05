@@ -88,7 +88,7 @@ If the log shows `401: Unauthorized`, the token is wrong, and the container rest
 
 ## Change the settings
 
-The bot puts its files in the `data` folder: `creds.yml`, the config files and the database `NadekoBot.db`. To change `creds.yml`, edit the file, then restart the bot:
+The bot puts its files in the `data` folder: `creds.yml`, the [config files](config.md) and the [database](database.md) file `NadekoBot.db`. To change `creds.yml`, edit the file, then restart the bot:
 
 ```sh
 nano data/creds.yml

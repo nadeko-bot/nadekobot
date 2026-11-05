@@ -85,6 +85,8 @@ nav:
         - CLI guide: guides/cli-guide.md
         - Docker guide: guides/docker-guide.md
         - Source guide: guides/source-guide.md
+        - Bot settings (.config): guides/config.md
+        - Database: guides/database.md
     - Commands: https://nadeko.bot/commands/
     - Features:
         - Waifu system: waifu-guide.md
