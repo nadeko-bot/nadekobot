@@ -457,4 +457,55 @@ public sealed class Bot : IBot
         await RunAsync();
         await Task.Delay(-1);
     }
+
+    // `NadekoBot --commandlist <path>`: loads the services and modules as startup does, without a Discord
+    // login or medusae, and writes data/commandlist.json to <path>. Services read their config files and
+    // the database when they are created, so this runs in an empty temporary folder with a new database
+    // and a placeholder token which is never used. `bot_*` environment variables would override those
+    // creds (and could point the setup at a real database), so this mode ignores them.
+    public static async Task WriteCommandListAsync(string path)
+    {
+        var fullPath = Path.GetFullPath(path);
+        foreach (var key in Environment.GetEnvironmentVariables().Keys.Cast<string>())
+        {
+            if (key.StartsWith("bot_", StringComparison.OrdinalIgnoreCase))
+                Environment.SetEnvironmentVariable(key, null);
+        }
+
+        var originalDir = Directory.GetCurrentDirectory();
+        var workDir = Directory.CreateTempSubdirectory("nadeko-commandlist-");
+        try
+        {
+            Directory.SetCurrentDirectory(workDir.FullName);
+            Directory.CreateDirectory("data");
+            // The database setup reads the sql migrations from the working directory.
+            var migrations = Path.Combine(AppContext.BaseDirectory, Db.DbMigrator.MIGRATIONS_DIR);
+            Directory.CreateDirectory(Db.DbMigrator.MIGRATIONS_DIR);
+            foreach (var file in Directory.GetFiles(migrations))
+                File.Copy(file, Path.Combine(Db.DbMigrator.MIGRATIONS_DIR, Path.GetFileName(file)));
+            await File.WriteAllTextAsync(BotCredsProvider.CREDS_FILE_NAME, "token: commandlist-only\ntotalShards: 1\n");
+
+            var bot = new Bot(0, 1);
+            await bot._db.SetupAsync();
+            await bot.AddServices();
+            foreach (var a in bot._loadedAssemblies)
+                await bot._commandService.AddModulesAsync(a, bot.Services);
+
+            await bot.Services.GetRequiredService<Modules.Help.CommandListGenerator>().WriteCommandListFileAsync(fullPath);
+            Log.Information("Wrote {Count} commands to {Path}", bot._commandService.Commands.Count(), fullPath);
+        }
+        finally
+        {
+            // Windows does not delete the current directory of a process.
+            Directory.SetCurrentDirectory(originalDir);
+            try
+            {
+                workDir.Delete(true);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Could not delete {Dir}", workDir.FullName);
+            }
+        }
+    }
 }

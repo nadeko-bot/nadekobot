@@ -4,6 +4,20 @@ if (args.Length > 0 && args[0] == "--version")
     return;
 }
 
+if (args.Length > 0 && args[0] == "--commandlist")
+{
+    if (args.Length != 2)
+    {
+        Console.Error.WriteLine("Usage: NadekoBot --commandlist <path>");
+        Environment.ExitCode = 1;
+        return;
+    }
+
+    await Bot.WriteCommandListAsync(args[1]);
+    // Some services (a Redis connection, for example) keep threads alive, so the process ends here.
+    Environment.Exit(0);
+}
+
 var shardId = 0;
 int? totalShards = null; // 0 to read from creds.yml
 if (args.Length > 0 && args[0] != "run")

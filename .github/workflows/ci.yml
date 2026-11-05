@@ -32,6 +32,16 @@ jobs:
     - name: Test
       run: dotnet test -c Release --verbosity normal
 
+    # nadeko.bot shows the data/commandlist.json of each release tag, so the file must match the commands.
+    - name: Check data/commandlist.json
+      run: |
+        dotnet run -c Release --project src/NadekoBot -- --commandlist "$RUNNER_TEMP/commandlist.json"
+        if ! diff -u src/NadekoBot/data/commandlist.json "$RUNNER_TEMP/commandlist.json" > "$RUNNER_TEMP/commandlist.diff"; then
+          head -n 200 "$RUNNER_TEMP/commandlist.diff"
+          echo "::error file=src/NadekoBot/data/commandlist.json::data/commandlist.json does not match the commands. Run 'dotnet run -c Release --project src/NadekoBot -- --commandlist data/commandlist.json' and commit the file."
+          exit 1
+        fi
+
   build:
     name: Build Package
     needs: test

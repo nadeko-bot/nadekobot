@@ -33,15 +33,22 @@ public sealed partial class CommandListGenerator(
     // Persisted list consumed by the AI agent's command search (and external docs).
     public async Task RefreshCommandListFileAsync()
     {
-        var readableData = BuildCommandListJsonInternal(DefaultPrefix, CultureInfo.InvariantCulture);
-
-        const string finalPath = "data/commandlist.json";
-        var tempPath = finalPath + ".tmp";
-        await File.WriteAllTextAsync(tempPath, readableData);
-        File.Move(tempPath, finalPath, overwrite: true);
+        await WriteCommandListFileAsync("data/commandlist.json");
 
         // Shards which became ready before this write indexed the previous list.
         await pubSub.Pub(CommandSearchService.ReloadKey, true);
+    }
+
+    // The same bytes on every OS, so the copy in the repository (which nadeko.bot shows and CI
+    // compares with `NadekoBot --commandlist`) changes only when a command or its strings change.
+    public async Task WriteCommandListFileAsync(string path)
+    {
+        var readableData = BuildCommandListJsonInternal(DefaultPrefix, CultureInfo.InvariantCulture)
+            .ReplaceLineEndings("\n") + "\n";
+
+        var tempPath = path + ".tmp";
+        await File.WriteAllTextAsync(tempPath, readableData);
+        File.Move(tempPath, path, overwrite: true);
     }
 
     // Human-readable downloadable list for .commandlist. Includes the prefix; not persisted.

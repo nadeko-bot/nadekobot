@@ -2,6 +2,14 @@
 
 *a,c,f,r,o,d*
 
+## [7.9.1] - 05.11.2026
+
+### Dev
+
+- `NadekoBot --commandlist <path>` writes the command list without logging in to Discord.
+- CI fails when `data/commandlist.json` does not match the bot commands.
+- `data/commandlist.json` in this repo lists the current commands.
+
 ## [7.9.0] - 05.11.2026
 
 ### Added

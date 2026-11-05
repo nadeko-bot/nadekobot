@@ -19,6 +19,72 @@
     },
     {
       "Aliases": [
+        ".setavatar",
+        ".setav"
+      ],
+      "Description": "Sets the bot's avatar to the image which you attach to the message.\n- In a server, the bot changes its avatar only in this server. Without an image, the bot uses its global avatar again.\n- In a DM, the bot owner changes the bot's global avatar.",
+      "Usage": [
+        ".setavatar"
+      ],
+      "Submodule": "BotProfileCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner (DM) / ManageGuild Server Permission (server)",
+        "No AI Agent"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setbanner"
+      ],
+      "Description": "Sets the bot's banner to the image which you attach to the message.\n- In a server, the bot changes its banner only in this server. Without an image, the bot uses its global banner again.\n- In a DM, the bot owner changes the bot's global banner.",
+      "Usage": [
+        ".setbanner"
+      ],
+      "Submodule": "BotProfileCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner (DM) / ManageGuild Server Permission (server)",
+        "No AI Agent"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setname",
+        ".newnm"
+      ],
+      "Description": "Gives the bot a new name.\n- In a server, the bot sets its nickname in this server. Without a name, the bot removes the nickname.\n- In a DM, the bot owner changes the bot's global username.",
+      "Usage": [
+        ".setname BotName"
+      ],
+      "Submodule": "BotProfileCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner (DM) / ManageGuild Server Permission (server)",
+        "No AI Agent"
+      ]
+    },
+    {
+      "Aliases": [
+        ".setbio"
+      ],
+      "Description": "Sets the bot's bio in this server. Without text, the bot clears the bio.",
+      "Usage": [
+        ".setbio I play music and count your xp."
+      ],
+      "Submodule": "BotProfileCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner (DM) / ManageGuild Server Permission (server)",
+        "No AI Agent"
+      ]
+    },
+    {
+      "Aliases": [
         ".imageonlychannel",
         ".imageonly",
         ".imagesonly"
@@ -792,16 +858,12 @@
         ".prune",
         ".clear"
       ],
-      "Description": "`.prune` removes all Nadeko's messages in the last 100 messages. `.prune X` removes last `X` number of messages from the channel (up to 1000). `.prune @Someone` removes all Someone's messages in the last 100 messages. `.prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. Only messages from the last 2 weeks can be pruned. Use `--safe` or `-s` to skip pinned messages. Use `--after` or `-a` followed by a message ID to only prune messages after that message. The progress message has a Cancel button which stops the prune.",
+      "Description": "Removes messages from the channel.\n- `.prune` removes the bot's messages from the last 100 messages.\n- `.prune X` removes the last `X` messages (up to 1000).\n- `.prune @Someone [X]` removes the last `X` messages of that user from the last 2 weeks (default 100).\n- `.prune ID [X]` removes the messages after that message, or the messages of the user with that ID.\nOptions: `--safe` / `-s` skips pinned messages. `--after` / `-a` with a message ID removes only later messages.\nFilters remove only messages which match all of them. `X` then counts matching messages.\n- `--bots` / `-b`, `--humans` / `-u`\n- `--links` / `-l`, `--files` / `-f`, `--embeds` / `-e`\n- `--invites` / `-i` server invites\n- `--pings` / `-p` mentions of members, roles or everyone\n- `--contains` / `-c` followed by a text",
       "Usage": [
-        ".prune",
-        ".prune -s",
-        ".prune 5",
-        ".prune 5 --safe",
-        ".prune @Someone",
-        ".prune @Someone --safe",
-        ".prune @Someone X",
-        ".prune @Someone X -s"
+        ".prune --bots",
+        ".prune 100 --links --humans",
+        ".prune @Someone 10 -s",
+        ".prune 1234567890123456789 -c \"free nitro\""
       ],
       "Submodule": "PruneCommands",
       "Module": "Administration",
@@ -1763,6 +1825,23 @@
     },
     {
       "Aliases": [
+        ".warnedit",
+        ".warnreason"
+      ],
+      "Description": "Changes the reason of a user's warning.\nThe index is the number of the warning in `.warnlog`.",
+      "Usage": [
+        ".warnedit @Someone 2 Spam in #general",
+        ".warnedit 123123123123 1 Rude to other members"
+      ],
+      "Submodule": "UserPunishCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "BanMembers Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".warnclear",
         ".warnc"
       ],
@@ -1783,7 +1862,7 @@
         ".warnpunish",
         ".warnp"
       ],
-      "Description": "Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or 'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut",
+      "Description": "Sets a punishment for a certain number of warnings. You can specify a time string after 'Ban' or 'Mute' punishments to make it a temporary mute/ban. Provide no punishment to remove. Available punishments: Ban, Kick, Softban, Mute, VoiceMute, ChatMute, AddRole, RemoveRoles, TimeOut\nA TimeOut can be at most 28 days.",
       "Usage": [
         ".warnpunish 3",
         ".warnpunish 5 Ban",
@@ -1997,7 +2076,7 @@
       "Aliases": [
         ".timeout"
       ],
-      "Description": "Times the user out for the specified amount of time. You may optionally specify a reason, which will be sent to the user.",
+      "Description": "Times the user out for the specified amount of time. You may optionally specify a reason, which will be sent to the user.\nA timeout can be at most 28 days.",
       "Usage": [
         ".timeout @Someone 3h Shut up!",
         ".timeout @Someone 1h30m"
@@ -2943,50 +3022,11 @@
         ".blackjack",
         ".bj"
       ],
-      "Description": "Start or join a blackjack game by specifying the amount you're betting. \nYou must specify the amount you're betting. \nUse `.hit`, `.stand` and `.double` commands to play. \nGame is played with 4 decks. \nDealer hits on soft 17 and wins draws.",
+      "Description": "Opens a blackjack table in this channel with your bet, or joins the open table.\nOther members join for 20 seconds. The round starts when this time ends, when all 5 seats are full, or when the member in the first seat presses Start.\nThe players act in seat order with the buttons. Each decision has a time limit of 30 seconds, then the hand stands.\nActions:\n- `Hit` takes one more card\n- `Stand` keeps the hand\n- `Double` doubles the bet, takes one card and stands. It works only on 9, 10 or 11, on the first two cards of a hand which is not split\n- `Split` makes two hands from two cards of the same rank, for example K and K. The new hand costs the bet again. A player can split once. A split hand can only hit or stand. A split ace gets one card\nThe dealer hits soft 17. A dealer blackjack takes the full bet of every hand, except a player blackjack, which is a push.\nBlackjack pays 3:2. A win pays 1:1. A push refunds the bet.",
       "Usage": [
-        ".blackjack 50"
+        ".blackjack 100"
       ],
-      "Submodule": "BlackJackCommands",
-      "Module": "Gambling",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".hit"
-      ],
-      "Description": "In the blackjack game, ask the dealer for an extra card.",
-      "Usage": [
-        ".hit"
-      ],
-      "Submodule": "BlackJackCommands",
-      "Module": "Gambling",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".stand"
-      ],
-      "Description": "Finish your turn in the blackjack game.",
-      "Usage": [
-        ".stand"
-      ],
-      "Submodule": "BlackJackCommands",
-      "Module": "Gambling",
-      "Options": null,
-      "Requirements": []
-    },
-    {
-      "Aliases": [
-        ".double"
-      ],
-      "Description": "In the blackjack game, double your bet in order to receive exactly one more card, and your turn ends.",
-      "Usage": [
-        ".double"
-      ],
-      "Submodule": "BlackJackCommands",
+      "Submodule": "BlackjackCommands",
       "Module": "Gambling",
       "Options": null,
       "Requirements": []
@@ -3011,11 +3051,12 @@
       "Aliases": [
         ".roll"
       ],
-      "Description": "Rolls 1-100. If you supply a number `X` it rolls up to 30 normal dice. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`. `Y` can be a letter 'F' if you want to roll fate dice instead of dnd.",
+      "Description": "Rolls 1-100. If you supply a number `X` it rolls up to 30 normal dice.\nThe format `XdY` rolls `X` dice (1-50) with `Y` sides (1-100000). `dY` rolls one die.\nYou can add or subtract numbers, for example `d20+3` or `2d6+1-2`.\n`XdF` rolls `X` fate dice (1-100).",
       "Usage": [
         ".roll",
         ".roll 7",
         ".roll 3d5",
+        ".roll d20+3",
         ".roll 5dF"
       ],
       "Submodule": "DiceRollCommands",
@@ -3027,7 +3068,7 @@
       "Aliases": [
         ".rolluo"
       ],
-      "Description": "Rolls `X` normal dice (up to 30) unordered. If you split 2 numbers with letter `d` (`xdy`) it will roll `X` dice from 1 to `y`.",
+      "Description": "Rolls `X` normal dice (up to 30) and shows them in the order the bot rolled them.\nThe format `XdY` rolls `X` dice (1-50) with `Y` sides (1-100000). `dY` rolls one die.\nYou can add or subtract numbers, for example `d20+3` or `2d6+1-2`.\n`XdF` rolls `X` fate dice (1-100).",
       "Usage": [
         ".rolluo",
         ".rolluo 7",
@@ -3042,10 +3083,11 @@
       "Aliases": [
         ".nroll"
       ],
-      "Description": "Rolls in a given range. If you specify just one number instead of the range, it will roll from 0 to that number.",
+      "Description": "Rolls a random number in a range.\nIf you give one number, the bot rolls a number between 0 and that number.",
       "Usage": [
         ".nroll 5",
-        ".nroll 5-15"
+        ".nroll 5-15",
+        ".nroll -10-10"
       ],
       "Submodule": "DiceRollCommands",
       "Module": "Gambling",
@@ -4088,7 +4130,7 @@
         ".destroy",
         ".d"
       ],
-      "Description": "Completely stops the music and unbinds the bot from the channel. (may cause weird behaviour)",
+      "Description": "Stops the music, clears the queue and makes the bot leave the voice channel.\nYou must be in the same voice channel as the bot.",
       "Usage": [
         ".destroy"
       ],
@@ -4174,7 +4216,7 @@
         ".next",
         ".n"
       ],
-      "Description": "Goes to the next song in the queue. You have to be in the same voice channel as the bot.",
+      "Description": "Goes to the next song in the queue. You must be in the same voice channel as the bot.",
       "Usage": [
         ".next"
       ],
@@ -4261,11 +4303,60 @@
         ".qrp",
         ".rpl"
       ],
-      "Description": "Sets music player repeat strategy for this server.\n- `n` / `no` - player will stop once it reaches the end of the queue\n- `s` / `song` - player will repeat current song\n- `q` / `queue` or empty - player will repeat entire music queue",
+      "Description": "Sets music player repeat strategy for this server.\n- `n` / `no` - player will stop once it reaches the end of the queue\n- `s` / `song` - player will repeat current song\n- `q` / `queue` or empty - player will repeat entire music queue\nUse `.loop` or `.repeat` to turn queue or song repeat on and off.",
       "Usage": [
         ".queuerepeat",
         ".queuerepeat n",
         ".queuerepeat song"
+      ],
+      "Submodule": "Music",
+      "Module": "Music",
+      "Options": null,
+      "Requirements": [
+        "Patron Tier X+"
+      ]
+    },
+    {
+      "Aliases": [
+        ".repeat",
+        ".songrepeat"
+      ],
+      "Description": "Turns song repeat on or off. While it is on, the bot repeats the current song.\nTurning it on turns queue repeat off.\nYou must be in the same voice channel as the bot.\nUse `.repeatadd` to repeat a message.",
+      "Usage": [
+        ".repeat"
+      ],
+      "Submodule": "Music",
+      "Module": "Music",
+      "Options": null,
+      "Requirements": [
+        "Patron Tier X+"
+      ]
+    },
+    {
+      "Aliases": [
+        ".loop",
+        ".queueloop"
+      ],
+      "Description": "Turns queue repeat on or off. While it is on, the bot plays the queue again after the last song.\nTurning it on turns song repeat off.\nYou must be in the same voice channel as the bot.",
+      "Usage": [
+        ".loop"
+      ],
+      "Submodule": "Music",
+      "Module": "Music",
+      "Options": null,
+      "Requirements": [
+        "Patron Tier X+"
+      ]
+    },
+    {
+      "Aliases": [
+        ".previous",
+        ".prev",
+        ".back"
+      ],
+      "Description": "Plays the previous song in the queue. When the current song is the first in the queue, the bot plays the last song.\nYou must be in the same voice channel as the bot.",
+      "Usage": [
+        ".previous"
       ],
       "Submodule": "Music",
       "Module": "Music",
@@ -4477,29 +4568,10 @@
     },
     {
       "Aliases": [
-        ".musicquality",
-        ".mquality"
-      ],
-      "Description": "Gets or sets the default music player quality. Available settings: Highest, High, Medium, Low. Default is **Highest**. Provide no argument to see current setting.",
-      "Usage": [
-        ".musicquality",
-        ".musicquality High",
-        ".musicquality Low"
-      ],
-      "Submodule": "Music",
-      "Module": "Music",
-      "Options": null,
-      "Requirements": [
-        "Patron Tier X+",
-        "Administrator Server Permission"
-      ]
-    },
-    {
-      "Aliases": [
         ".queueautoplay",
         ".qap"
       ],
-      "Description": "Toggles autoplay - When the song is finished, automatically queue a related Youtube song. (Works only for Youtube songs)",
+      "Description": "Turns autoplay on or off. When the last song in the queue starts, the bot adds a related YouTube song.\nAutoplay works only for YouTube songs. Turning it on turns repeat off.",
       "Usage": [
         ".queueautoplay"
       ],
@@ -4561,9 +4633,10 @@
         ".playlists",
         ".pls"
       ],
-      "Description": "Lists all playlists. Paginated, 20 per page.",
+      "Description": "Lists the saved playlists, 20 on each page.\nYou can specify a member to list only that member's saved playlists.",
       "Usage": [
-        ".playlists 1"
+        ".playlists 1",
+        ".playlists @Someone 2"
       ],
       "Submodule": "PlaylistCommands",
       "Module": "Music",
@@ -4612,7 +4685,7 @@
         ".plsave",
         ".psave"
       ],
-      "Description": "Saves a playlist under a certain name. Playlist name must be no longer than 20 characters.",
+      "Description": "Saves the current queue as a playlist under a name of at most 20 characters.\nEach member can have at most 25 saved playlists.",
       "Usage": [
         ".playlistsave classical1"
       ],
@@ -4630,7 +4703,7 @@
         ".plload",
         ".pll"
       ],
-      "Description": "Loads a saved playlist using its ID. Use `.pls` to list all saved playlists and `.save` to save new ones. Use `--shuffle` to load in random order.",
+      "Description": "Loads a saved playlist using its ID. Use `.pls` to list all saved playlists and `.plsave` to save new ones. Use `--shuffle` to load in random order.",
       "Usage": [
         ".playlistload 5",
         ".playlistload 5 --shuffle"
@@ -4792,57 +4865,9 @@
     },
     {
       "Aliases": [
-        ".cleanupguilddata"
-      ],
-      "Description": "Deletes data for all servers bot is no longer a member of from the database.\nThis is a highly destructive and irreversible command.",
-      "Usage": [
-        ".cleanupguilddata"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sqlselect"
-      ],
-      "Description": "Executes provided sql query and returns the results. Dangerous.",
-      "Usage": [
-        ".sqlselect SELECT * FROM DiscordUser LIMIT 5"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".sqlselectcsv"
-      ],
-      "Description": "Executes provided sql query and returns the results in a csv file. Dangerous.",
-      "Usage": [
-        ".sqlselectcsv SELECT * FROM DiscordUser LIMIT 5"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
         ".sqlexec"
       ],
-      "Description": "Executes provided sql command and returns the number of affected rows. Dangerous.",
+      "Description": "Runs SQL which changes the database, and shows the number of changed rows.\nOn a NadeKloud bot, the bot stops the SQL after 60 seconds.",
       "Usage": [
         ".sqlexec UPDATE DiscordUser SET CurrencyAmount=CurrencyAmount+1234"
       ],
@@ -4851,23 +4876,8 @@
       "Options": null,
       "Requirements": [
         "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".purgeuser"
-      ],
-      "Description": "Purge user from the database completely. This includes currency, xp, clubs that user owns, waifu info.",
-      "Usage": [
-        ".purgeuser @Oblivion"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
+        "No Public Bot",
+        "No AI Agent"
       ]
     },
     {
@@ -4883,40 +4893,8 @@
       "Options": null,
       "Requirements": [
         "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".deletewaifus"
-      ],
-      "Description": "Deletes everything from WaifuUpdates, WaifuItem and WaifuInfo tables.",
-      "Usage": [
-        ".deletewaifus"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
-      ]
-    },
-    {
-      "Aliases": [
-        ".deletewaifu"
-      ],
-      "Description": "Deletes waifu data for the specified user, including waifu info, fans, and cycles. Also frees the user's waifus.",
-      "Usage": [
-        ".deletewaifu @Someone",
-        ".deletewaifu 123456789012345678"
-      ],
-      "Submodule": "DangerousCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only",
-        "No Public Bot"
+        "No Public Bot",
+        "No AI Agent"
       ]
     },
     {
@@ -4932,7 +4910,40 @@
       "Options": null,
       "Requirements": [
         "Bot Owner Only",
-        "No Public Bot"
+        "No Public Bot",
+        "No AI Agent"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sqlselect"
+      ],
+      "Description": "Runs a SQL query which only reads the database, and shows the results.\nThe bot runs the command only in DMs. It stops a query after 15 seconds.",
+      "Usage": [
+        ".sqlselect SELECT * FROM DiscordUser LIMIT 5"
+      ],
+      "Submodule": "SqlCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No AI Agent"
+      ]
+    },
+    {
+      "Aliases": [
+        ".sqlselectcsv"
+      ],
+      "Description": "Runs a SQL query which only reads the database, and sends the results as a CSV file.\nThe bot runs the command only in DMs. It stops a query after 15 seconds.",
+      "Usage": [
+        ".sqlselectcsv SELECT * FROM DiscordUser LIMIT 5"
+      ],
+      "Submodule": "SqlCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only",
+        "No AI Agent"
       ]
     },
     {
@@ -4940,7 +4951,7 @@
         ".rotateplaying",
         ".ropl"
       ],
-      "Description": "Toggles rotation of playing status of the dynamic strings you previously specified.",
+      "Description": "Toggles rotation of playing status of the dynamic strings you previously specified.\nWhen the rotation stops, the bot shows the activity which `.setactivity` or `.setstream` set.",
       "Usage": [
         ".rotateplaying"
       ],
@@ -5055,7 +5066,7 @@
         ".acadd",
         ".autocmdadd"
       ],
-      "Description": "Adds a command to the list of commands which will be executed automatically every X seconds.",
+      "Description": "Adds a command to the list of commands which will be executed automatically every X seconds.\nThe interval is 5 seconds to 30 days.",
       "Usage": [
         ".acadd 60 .prune 1000"
       ],
@@ -5291,58 +5302,11 @@
     },
     {
       "Aliases": [
-        ".setname",
-        ".newnm"
-      ],
-      "Description": "Gives the bot a new name.",
-      "Usage": [
-        ".setname BotName"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
         ".setstatus"
       ],
-      "Description": "Sets the bot's status. (Online/Idle/Dnd/Invisible)",
+      "Description": "Sets the bot's status: `Online`, `Idle`, `Dnd` or `Invisible`. The bot keeps it after a restart.",
       "Usage": [
         ".setstatus Idle"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setavatar",
-        ".setav"
-      ],
-      "Description": "Sets a new avatar image for the NadekoBot. Parameter is a direct link to an image.",
-      "Usage": [
-        ".setavatar https://i.imgur.com/xTG3a1I.jpg"
-      ],
-      "Submodule": "SelfCommands",
-      "Module": "Owner",
-      "Options": null,
-      "Requirements": [
-        "Bot Owner Only"
-      ]
-    },
-    {
-      "Aliases": [
-        ".setbanner"
-      ],
-      "Description": "Sets a new banner image for the NadekoBot. Parameter is a direct link to an image. Supports gifs.",
-      "Usage": [
-        ".setbanner https://i.imgur.com/xTG3a1I.jpg"
       ],
       "Submodule": "SelfCommands",
       "Module": "Owner",
@@ -5356,7 +5320,7 @@
         ".setactivity",
         ".setgame"
       ],
-      "Description": "Sets the bot's activity status. Optionally specify a type (Playing, Listening, Watching, Competing). Defaults to Custom status if no type given.",
+      "Description": "Sets the bot's activity. The bot keeps it after a restart and turns off `.ropl`.\nTypes: `Playing`, `Listening`, `Watching`, `Competing`. Without a type, the bot shows a custom status.\nWithout text, the bot removes the activity.\nThe text can have at most 128 characters and can use bot placeholders, for example `%bot.name%`.",
       "Usage": [
         ".setactivity Just chilling",
         ".setactivity Playing with snakes",
@@ -5373,9 +5337,9 @@
       "Aliases": [
         ".setstream"
       ],
-      "Description": "Sets the bots stream. First parameter is the twitch link, second parameter is stream name.",
+      "Description": "Sets the bot's stream. The bot keeps it after a restart and turns off `.ropl`.\nThe link must start with `https://` and point to twitch.tv or youtube.com.",
       "Usage": [
-        ".setstream TWITCHLINK Hello"
+        ".setstream https://twitch.tv/nadeko Hello"
       ],
       "Submodule": "SelfCommands",
       "Module": "Owner",
@@ -5439,6 +5403,22 @@
         ".credsreload"
       ],
       "Submodule": "SelfCommands",
+      "Module": "Owner",
+      "Options": null,
+      "Requirements": [
+        "Bot Owner Only"
+      ]
+    },
+    {
+      "Aliases": [
+        ".purgeuser"
+      ],
+      "Description": "Removes the personal data of a user from the database.\nThe bot replaces the name of the user, and deletes the waifu profile text, todos, reminders and scheduled commands of the user.\nCurrency, xp, waifus, clubs, warnings and other records of the user stay.",
+      "Usage": [
+        ".purgeuser 123456789012345678",
+        ".purgeuser @Oblivion"
+      ],
+      "Submodule": "UserDataCommands",
       "Module": "Owner",
       "Options": null,
       "Requirements": [
@@ -5810,7 +5790,7 @@
         ".srvrfilterinv",
         ".sfi"
       ],
-      "Description": "Toggles automatic deletion of invites posted in the server. Does not affect users with the Administrator permission.",
+      "Description": "Toggles automatic deletion of invites posted in the server. Does not affect users with the Administrator permission or with Manage Messages in the channel.",
       "Usage": [
         ".srvrfilterinv"
       ],
@@ -5824,7 +5804,7 @@
         ".chnlfilterinv",
         ".cfi"
       ],
-      "Description": "Toggles automatic deletion of invites posted in the channel. Does not negate the `.srvrfilterinv` enabled setting. Does not affect users with the Administrator permission.",
+      "Description": "Toggles automatic deletion of invites posted in the channel. Does not negate the `.srvrfilterinv` enabled setting. Does not affect users with the Administrator permission or with Manage Messages in the channel.",
       "Usage": [
         ".chnlfilterinv"
       ],
@@ -5838,7 +5818,7 @@
         ".srvrfilterlin",
         ".sfl"
       ],
-      "Description": "Toggles automatic deletion of links posted in the server. Does not affect users with the Administrator permission.",
+      "Description": "Toggles automatic deletion of links posted in the server. Does not affect users with the Administrator permission or with Manage Messages in the channel.\nUse `.linkallow` to let the links of one domain pass the filter.",
       "Usage": [
         ".srvrfilterlin"
       ],
@@ -5852,7 +5832,7 @@
         ".chnlfilterlin",
         ".cfl"
       ],
-      "Description": "Toggles automatic deletion of links posted in the channel. Does not negate the `.srvrfilterlin` enabled setting. Does not affect users with the Administrator permission.",
+      "Description": "Toggles automatic deletion of links posted in the channel. Does not negate the `.srvrfilterlin` enabled setting. Does not affect users with the Administrator permission or with Manage Messages in the channel.\nUse `.linkallow` to let the links of one domain pass the filter.",
       "Usage": [
         ".chnlfilterlin"
       ],
@@ -5860,6 +5840,52 @@
       "Module": "Permissions",
       "Options": null,
       "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".linkallow",
+        ".la"
+      ],
+      "Description": "Lets links to a domain and its subdomains through the link filter, or removes the domain if the server already allows it.\nFor example, `youtube.com` also allows `www.youtube.com` and `m.youtube.com`.\nA message passes only if every link in it goes to an allowed domain.\nA server can allow up to 50 domains.",
+      "Usage": [
+        ".linkallow youtube.com"
+      ],
+      "Submodule": "FilterCommands",
+      "Module": "Permissions",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".linkallowlist",
+        ".lal"
+      ],
+      "Description": "Shows the domains whose links pass the link filter.",
+      "Usage": [
+        ".linkallowlist"
+      ],
+      "Submodule": "FilterCommands",
+      "Module": "Permissions",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".linkallowclear",
+        ".lac"
+      ],
+      "Description": "Removes all domains which pass the link filter.",
+      "Usage": [
+        ".linkallowclear"
+      ],
+      "Submodule": "FilterCommands",
+      "Module": "Permissions",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
     },
     {
       "Aliases": [
@@ -6169,10 +6195,10 @@
         ".ytuploadnotif",
         ".yun"
       ],
-      "Description": "Subscribe to a youtube channel's upload rss feed.\nYou can optionally specify a message which will be posted with an update.\nThis is just a shortcut for `.feed` with a url of the youtube channel's rss feed.",
+      "Description": "Subscribes to a YouTube channel's uploads. The bot posts a message when the channel uploads a video.\nGive the channel link, its @handle or its channel ID.\nThe bot checks the channel every 5 minutes.\nYou can optionally specify a message which will be posted with an update.\nThe message can use the same placeholders and embed json as `.feed`.",
       "Usage": [
         ".ytuploadnotif https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow",
-        ".ytuploadnotif https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow New video is posted"
+        ".ytuploadnotif https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow #videos New video is posted"
       ],
       "Submodule": "FeedCommands",
       "Module": "Searches",
@@ -6186,11 +6212,10 @@
         ".feed",
         ".feedadd"
       ],
-      "Description": "Subscribes to a feed.\nBot will post an update up to once every 10 seconds.\nYou can have up to 10 feeds on one server.\nAll feeds must have unique URLs.\nSet a channel as a second optional parameter to specify where to send the updates.\nYou can optionally specify a message after the channel name which will be posted with an update.",
+      "Description": "Subscribes to a feed. The bot posts each new item of the feed.\nThe bot checks a YouTube channel for uploads every 5 minutes.\nYou can have up to 10 feeds on one server.\nAll feeds must have unique URLs.\nSet a channel after the url to send the updates to another channel.\nYou can give a message after the url or after the channel. The bot posts it with each update.\nUse `.feedmessage` to change the message later.\nThe message can contain these placeholders:\n- `%feed.title%` is the title of the post\n- `%feed.url%` is the link to the post\n- `%feed.description%` is the text of the post\n- `%feed.image%` is the image url of the post\n- `%feed.source%` is the url of the feed\nServer placeholders also work.\nIf the message is embed json, the bot posts it instead of the default embed.",
       "Usage": [
         ".feed https://blog.playstation.com/feed/",
-        ".feed https://blog.playstation.com/feed/ #updates",
-        ".feed https://blog.playstation.com/feed/ #updates New playstation rss feed post!"
+        ".feed https://blog.playstation.com/feed/ #updates New post: %feed.title% %feed.url%"
       ],
       "Submodule": "FeedCommands",
       "Module": "Searches",
@@ -6208,6 +6233,22 @@
       "Description": "Stops tracking a feed on the given index. Use `.feeds` command to see a list of feeds and their indexes.",
       "Usage": [
         ".feedremove 3"
+      ],
+      "Submodule": "FeedCommands",
+      "Module": "Searches",
+      "Options": null,
+      "Requirements": [
+        "ManageMessages Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".feedmessage",
+        ".feedmsg"
+      ],
+      "Description": "Changes the message which the bot posts with each update of a feed.\nThe message can use the same placeholders and embed json as `.feed`.\nLeave out the message to remove it.\nUse `.feeds` to see the numbers of the feeds.",
+      "Usage": [
+        ".feedmessage 1 New post: %feed.title% %feed.url%"
       ],
       "Submodule": "FeedCommands",
       "Module": "Searches",
@@ -6603,7 +6644,7 @@
         ".streamremove",
         ".strm"
       ],
-      "Description": "Stops following the stream on the specified index. (use `.stl` to see indexes)",
+      "Description": "Stops following the stream with the specified ID. (use `.stl` to see IDs)",
       "Usage": [
         ".streamremove 2"
       ],
@@ -6636,7 +6677,7 @@
         ".stl",
         ".streamslist"
       ],
-      "Description": "Lists all streams you are following on this server and their respective indexes.",
+      "Description": "Lists all streams you are following on this server and their IDs.",
       "Usage": [
         ".streamlist"
       ],
@@ -6684,7 +6725,7 @@
         ".stm",
         ".stmsg"
       ],
-      "Description": "Sets the message which will show when the stream on the specified index comes online. You can use %user% and %platform% placeholders.",
+      "Description": "Sets the message which will show when the stream with the specified ID comes online. (use `.stl` to see IDs) You can use %user% and %platform% placeholders.",
       "Usage": [
         ".streammsg 1 Hey @erryone %user% is back online on %platform%!1!!"
       ],
@@ -7268,7 +7309,7 @@
         ".agent",
         ".ai"
       ],
-      "Description": "Runs an AI agent that can use tools to accomplish complex tasks on your behalf.\nThe agent can read messages, send messages to channels, split long texts, and more.\nAll actions respect your permissions. You can also trigger this by @mentioning the bot.",
+      "Description": "Runs an AI agent that can use tools to accomplish complex tasks on your behalf.\nThe agent can read messages, send messages to channels, split long texts, and more.\nAll actions respect your permissions.\nYou can also start it when you mention the bot, or when you reply to an agent answer with the reply ping on.",
       "Usage": [
         ".agent split the last long message in this channel and send the parts to #general",
         ".agent get the message with ID 123456789 from #rules and post it in #announcements"
@@ -7637,11 +7678,9 @@
       "Aliases": [
         ".ga start"
       ],
-      "Description": "Starts a giveaway. Specify the duration (between 1 minute and 30 days) followed by the prize.",
+      "Description": "Starts a giveaway. Specify the duration (up to 30 days) followed by the prize.\nTo pick more than one winner, put the number of winners and `w` before the prize, for example `3w`. The maximum is 20 winners.",
       "Usage": [
-        ".ga start 12h We are giving away one copy of our latest album!",
-        ".ga start 15m Quick giveaway for a free course!",
-        ".ga start 1d Join to win 1000$!"
+        ".ga start 12h 3w We are giving away three copies of our latest album!"
       ],
       "Submodule": "Giveaways",
       "Module": "Utility",
@@ -7654,7 +7693,7 @@
       "Aliases": [
         ".ga end"
       ],
-      "Description": "Prematurely ends a giveaway and selects a winner. Specify the ID of the giveaway to end.",
+      "Description": "Ends a giveaway now and picks the winners. Specify the ID of the giveaway to end.",
       "Usage": [
         ".ga end ab3"
       ],
@@ -7669,7 +7708,7 @@
       "Aliases": [
         ".ga reroll"
       ],
-      "Description": "Rerolls a giveaway. Specify the ID of the giveaway to reroll. This is only active within 24h after the giveaway has ended or until the bot restarts.",
+      "Description": "Rerolls a giveaway. Specify the ID of the giveaway to reroll. The bot picks one new winner who did not win before.\nThis is only active within 24h after the giveaway has ended or until the bot restarts.",
       "Usage": [
         ".ga reroll cd3"
       ],
@@ -7684,7 +7723,7 @@
       "Aliases": [
         ".ga cancel"
       ],
-      "Description": "Cancels a giveaway. Specify the ID of the giveaway to cancel. The winner will not be chosen.",
+      "Description": "Cancels a giveaway. Specify the ID of the giveaway to cancel. The bot does not pick winners.",
       "Usage": [
         ".ga cancel ab3"
       ],
@@ -8415,16 +8454,17 @@
     },
     {
       "Aliases": [
-        ".repeat"
+        ".repeatadd",
+        ".repadd"
       ],
       "Description": "Repeat a message once per specified time increment in the current channel.\nYou can specify a different channel as the first argument instead.\nYou can also specify time of day for the message to be repeated daily (make sure you've set your server's `.timezone`).\nIf you specify time of day, you can still override the default daily interval with your own interval.\nYou can have up to 5 repeating messages on one server in total (configurable via `.config utility maxRepeaters`).",
       "Usage": [
-        ".repeat Hello there",
-        ".repeat #other-channel hello there",
-        ".repeat 1h5m Hello @erryone",
-        ".repeat 10:00 Daily have a nice day! This will execute once every 24h.",
-        ".repeat #other-channel 10:00 Daily have a nice day! This will execute once every 24h.",
-        ".repeat 21:00 30m Starting at 21 and every 30 minutes after that i will send this message!"
+        ".repeatadd Hello there",
+        ".repeatadd #other-channel hello there",
+        ".repeatadd 1h5m Hello @erryone",
+        ".repeatadd 10:00 Daily have a nice day! This will execute once every 24h.",
+        ".repeatadd #other-channel 10:00 Daily have a nice day! This will execute once every 24h.",
+        ".repeatadd 21:00 30m Starting at 21 and every 30 minutes after that i will send this message!"
       ],
       "Submodule": "RepeatCommands",
       "Module": "Utility",
@@ -8943,7 +8983,7 @@
         ".waifu",
         ".w"
       ],
-      "Description": "Shows waifu/hubby information including stats, fans, and returns.\nIf you're a fan and use it without arguments, it shows your target waifu's card.",
+      "Description": "Shows waifu/hubby information including stats, fans, and returns.\nIf you're a fan and use it without arguments, it shows your target waifu's card.\nThe card has a Fans button when the waifu has fans.\nIf you're a fan, the card also has a button which shows your bank balance.",
       "Usage": [
         ".waifu",
         ".waifu @user"
@@ -8958,7 +8998,7 @@
         ".waifufans",
         ".wfans"
       ],
-      "Description": "Shows all fans backing a waifu and their last cycle earnings.",
+      "Description": "Shows all fans backing a waifu.",
       "Usage": [
         ".waifufans",
         ".waifufans @user"
@@ -9735,12 +9775,11 @@
         ".xprolereward",
         ".xprr"
       ],
-      "Description": "Add or remove a role from the user who reaches the specified level.\nProvide no action and role name in order to remove the role reward.",
+      "Description": "Adds or removes a role when the user reaches the specified level.\nOne level can add and remove several roles.\nProvide only the level to clear all role rewards at that level.\nProvide the level and a role to clear the reward for that role.",
       "Usage": [
-        ".xprolereward 1 rm Newbie",
-        ".xprolereward 3 add Social",
-        ".xprolereward 5 add Member",
-        ".xprolereward 5"
+        ".xprolereward 5",
+        ".xprolereward 5 Newbie",
+        ".xprolereward 5 add Member"
       ],
       "Submodule": "XpRewards",
       "Module": "Xp",
