@@ -3,16 +3,41 @@
 {% block extrahead %}
   {%- set nk_title = page.meta.title if page.meta and page.meta.title else (page.title if page.title and not page.is_homepage else config.site_name) -%}
   {%- set nk_desc = page.meta.description if page.meta and page.meta.description else config.site_description -%}
+  {#- The link preview card of the page's section, in assets/og/. The cards and their alt texts come
+      from nwebsite (src/lib/og-cards.ts, DOCS_OG_CARDS; `bun run og:docs-cards` makes the PNGs).
+      Keep the alt texts here in step with that file. -#}
+  {%- set nk_src = page.file.src_uri if page and page.file else '' -%}
+  {%- set nk_cards = {
+    'home': 'NadekoBot Docs: guides to install and host your own NadekoBot',
+    'guides': 'NadekoBot install guides: Upeko, the CLI installer, Docker or the source code',
+    'ai-agent': 'NadekoBot AI agent: talk to the bot in plain language',
+    'medusa': 'NadekoBot medusa plugins: add your own commands to a self-hosted bot',
+    'waifu': 'NadekoBot waifu system: become a waifu, back one and collect the payout',
+    'donate': 'Donate to NadekoBot on Patreon or PayPal',
+  } -%}
+  {%- if nk_src.startswith('guides/') or nk_src == 'creds-guide.md' -%}{%- set nk_card = 'guides' -%}
+  {%- elif nk_src.startswith('ai-agent/') -%}{%- set nk_card = 'ai-agent' -%}
+  {%- elif nk_src.startswith('medusa/') -%}{%- set nk_card = 'medusa' -%}
+  {%- elif nk_src == 'waifu-guide.md' -%}{%- set nk_card = 'waifu' -%}
+  {%- elif nk_src == 'donate.md' -%}{%- set nk_card = 'donate' -%}
+  {%- else -%}{%- set nk_card = 'home' -%}
+  {%- endif -%}
+  {%- set nk_image = config.site_url ~ 'assets/og/' ~ nk_card ~ '.png' -%}
+  <meta name="theme-color" content="#ec4899">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{{ config.site_name }} Docs">
   <meta property="og:title" content="{{ nk_title | striptags | e }}">
   <meta property="og:description" content="{{ nk_desc | striptags | e }}">
   {% if page.canonical_url %}<meta property="og:url" content="{{ page.canonical_url }}">{% endif %}
-  <meta property="og:image" content="{{ config.extra.og_image }}">
-  <meta property="og:image:width" content="1024">
-  <meta property="og:image:height" content="1024">
-  <meta property="og:image:alt" content="Nadeko, the NadekoBot mascot">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="{{ nk_image }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ nk_cards[nk_card] | e }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ nk_title | striptags | e }}">
+  <meta name="twitter:description" content="{{ nk_desc | striptags | e }}">
+  <meta name="twitter:image" content="{{ nk_image }}">
+  <meta name="twitter:image:alt" content="{{ nk_cards[nk_card] | e }}">
   {% if page.is_homepage %}
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"NadekoBot Docs","url":"{{ config.site_url }}","about":{"@type":"SoftwareApplication","name":"NadekoBot","applicationCategory":"CommunicationApplication","operatingSystem":"Discord","url":"https://nadeko.bot/","license":"https://www.gnu.org/licenses/agpl-3.0.html"}}</script>
   {% endif %}

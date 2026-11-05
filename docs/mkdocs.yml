@@ -1,5 +1,5 @@
 site_name: 'NadekoBot'
-site_description: 'Guides to host your own NadekoBot, the free, open source Discord bot, and to use its AI agent, waifu system and medusa plugins.'
+site_description: 'Guides to host your own NadekoBot, the open source Discord bot, and to use its AI agent, waifu system and medusa plugins.'
 site_url: 'https://docs.nadeko.bot/'
 repo_url: 'https://github.com/nadeko-bot/nadekobot'
 site_author: 'Breaker'
@@ -37,7 +37,6 @@ theme:
 
 extra:
     homepage: https://nadeko.bot
-    og_image: https://nadeko.bot/img/og-nadeko.png
 
 extra_css:
     - assets/stylesheets/fonts.css
@@ -52,6 +51,9 @@ plugins:
         redirect_maps:
           'medusa/snek-lifecycle.md': 'medusa/creating-a-medusa.md#lifecycle'
           'guides/vps-linux-guide.md': 'guides/linux-server.md'
+          # The placeholder list is on the site's embed builder (nadeko.bot redirects /placeholders too).
+          'placeholders.md': 'https://nadeko.bot/tools/embed-builder#placeholders'
+          'en/latest/placeholders.md': 'https://nadeko.bot/tools/embed-builder#placeholders'
 
 markdown_extensions:
     - attr_list

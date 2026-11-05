@@ -1,11 +1,11 @@
 ---
 title: Install and host your own Discord bot
-description: Host your own NadekoBot, the free, open source Discord bot. Pick a guide for Upeko, the CLI installer, Docker or the source code.
+description: Host your own NadekoBot, the open source Discord bot. Pick a guide for Upeko, the CLI installer, Docker or the source code.
 ---
 
 # NadekoBot docs
 
-NadekoBot is a free, open source Discord bot for moderation, games, XP and leveling, an economy with Nadeko Flowers, and hundreds of utility commands.
+NadekoBot is an open source Discord bot for moderation, games, XP and leveling, an economy with Nadeko Flowers, and hundreds of utility commands.
 
 ## Use the public bot
 
