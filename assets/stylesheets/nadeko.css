@@ -1,0 +1,347 @@
+/* NadeKloud look for the docs: the light "washi" and dark "ink" palettes, notched panels and the seal. */
+[data-md-color-scheme="default"] { color-scheme: light; }
+[data-md-color-scheme="slate"] { color-scheme: dark; }
+html:has([data-md-color-scheme="slate"]) { color-scheme: dark; }
+
+[data-md-color-scheme] {
+  --bg: light-dark(#edebf0, #0a0810);
+  --bg-2: light-dark(#e2dfe4, #100c18);
+  --text: light-dark(#1a1420, #f5efe7);
+  --text-2: light-dark(#2f2735, #e6dfea);
+  --text-subtle: light-dark(#5a5064, #d2cadb);
+  --text-quiet: light-dark(#665c71, #c2b9cf);
+  --accent: light-dark(#e0568a, #ff7eab);
+  --accent-strong: light-dark(#a8265f, #ffb0cc);
+  --accent-text: light-dark(#b8306b, #ff7eab);
+  --kicker: light-dark(#c4245f, #e8508a);
+  --ornament: light-dark(#9a7420, #e6c07a);
+  --sakura: #ffb7c5;
+  --edge: light-dark(rgba(35, 25, 45, 0.16), rgba(255, 255, 255, 0.13));
+  --edge-strong: light-dark(rgba(35, 25, 45, 0.34), rgba(255, 255, 255, 0.26));
+  --hairline: light-dark(rgba(35, 25, 45, 0.1), rgba(255, 255, 255, 0.09));
+  --panel-bg: linear-gradient(158deg,
+    light-dark(rgba(255, 255, 255, 0.96), rgba(28, 22, 38, 0.94)),
+    light-dark(rgba(246, 244, 249, 0.96), rgba(15, 12, 21, 0.96)));
+  --surface: light-dark(#ffffff, #16111f);
+  --surface-quiet: light-dark(#f8f6fa, #1d1727);
+  --sweep-a: #a3175a;
+  --sweep-b: #c42a66;
+  --on-fill: #ffffff;
+  --focus-ring: light-dark(#c2306f, #ffb7c5);
+  --glow-1: light-dark(rgba(255, 120, 155, 0.22), rgba(255, 60, 110, 0.2));
+  --glow-2: light-dark(rgba(150, 130, 255, 0.14), rgba(120, 90, 255, 0.14));
+  --text-shadow-brand:
+    0 -1px 0 light-dark(rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.5)),
+    0 1px 0 light-dark(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.06));
+  --notch: 1.125rem;
+  --notch-sm: 0.6875rem;
+  --clip-notch: polygon(0 0, calc(100% - var(--notch)) 0, 100% var(--notch), 100% 100%, var(--notch) 100%, 0 calc(100% - var(--notch)));
+  --clip-notch-inner: polygon(0 0, calc(100% - var(--notch) + 1px) 0, 100% calc(var(--notch) - 1px), 100% 100%, calc(var(--notch) - 1px) 100%, 0 calc(100% - var(--notch) + 1px));
+  --clip-notch-sm: polygon(0 0, calc(100% - var(--notch-sm)) 0, 100% var(--notch-sm), 100% 100%, var(--notch-sm) 100%, 0 calc(100% - var(--notch-sm)));
+  --clip-notch-sm-inner: polygon(0 0, calc(100% - var(--notch-sm) + 1px) 0, 100% calc(var(--notch-sm) - 1px), 100% 100%, calc(var(--notch-sm) - 1px) 100%, 0 calc(100% - var(--notch-sm) + 1px));
+  --ease: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --md-text-font: 'Zen Kaku Gothic New';
+  --md-code-font: 'JetBrains Mono';
+  --md-default-bg-color: var(--bg);
+  --md-default-fg-color: var(--text);
+  --md-default-fg-color--light: var(--text-subtle);
+  --md-default-fg-color--lighter: var(--text-quiet);
+  --md-default-fg-color--lightest: var(--edge);
+  --md-primary-fg-color: var(--accent);
+  --md-primary-fg-color--light: var(--accent);
+  --md-primary-fg-color--dark: var(--accent-strong);
+  --md-primary-bg-color: var(--text);
+  --md-primary-bg-color--light: var(--text-subtle);
+  --md-accent-fg-color: var(--kicker);
+  --md-accent-fg-color--transparent: light-dark(rgba(196, 36, 95, 0.1), rgba(255, 126, 171, 0.12));
+  --md-accent-bg-color: var(--on-fill);
+  --md-typeset-color: var(--text-2);
+  --md-typeset-a-color: var(--accent-strong);
+  --md-code-bg-color: var(--surface-quiet);
+  --md-code-fg-color: var(--text-2);
+  --md-footer-bg-color: transparent;
+  --md-footer-bg-color--dark: transparent;
+  --md-footer-fg-color: var(--text-2);
+  --md-footer-fg-color--light: var(--text-subtle);
+  --md-footer-fg-color--lighter: var(--text-quiet);
+  --md-admonition-bg-color: var(--surface);
+  --md-admonition-fg-color: var(--text-2);
+}
+
+body {
+  background-color: transparent;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: #c4245f; color: #fff; }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* Decoration behind the page: glow, the uroko scale pattern, film grain and a few sakura petals. */
+.nk-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(1000px 700px at 78% -8%, var(--glow-1), transparent 62%),
+    radial-gradient(900px 800px at 4% 108%, var(--glow-2), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 55%, var(--bg) 100%);
+}
+.nk-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='40' viewBox='0 0 46 40'%3E%3Cpath d='M23 40 L0 8 L46 8 Z' fill='none' stroke='%23808080' stroke-opacity='.10' stroke-width='1'/%3E%3C/svg%3E") 0 0 / 46px 40px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 20%, transparent 78%);
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 20%, transparent 78%);
+}
+.nk-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.nk-petal {
+  position: absolute;
+  top: -2rem;
+  left: var(--x);
+  width: var(--s, 12px);
+  height: var(--s, 12px);
+  border-radius: 150% 0 150% 0;
+  background: var(--sakura);
+  opacity: 0.45;
+  animation: nk-fall var(--d, 22s) linear var(--delay, 0s) infinite, nk-sway 5.5s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+}
+.nk-petal:nth-child(1) { --x: 6%;  --s: 11px; --d: 26s; --delay: -3s; }
+.nk-petal:nth-child(2) { --x: 24%; --s: 8px;  --d: 21s; --delay: -11s; }
+.nk-petal:nth-child(3) { --x: 47%; --s: 10px; --d: 29s; --delay: -18s; }
+.nk-petal:nth-child(4) { --x: 71%; --s: 9px;  --d: 23s; --delay: -6s; }
+.nk-petal:nth-child(5) { --x: 92%; --s: 12px; --d: 27s; --delay: -14s; }
+@keyframes nk-fall { to { top: 105%; rotate: 540deg; } }
+@keyframes nk-sway { from { translate: -18px 0; } to { translate: 18px 0; } }
+
+/* Header: frosted glass with the seal and the two-tone wordmark. */
+.md-header {
+  background-color: light-dark(rgba(237, 235, 240, 0.78), rgba(10, 8, 16, 0.78));
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  color: var(--text);
+  box-shadow: 0 1px 0 var(--hairline);
+}
+.md-header--shadow { box-shadow: 0 1px 0 var(--hairline), 0 6px 20px light-dark(rgba(60, 40, 50, 0.08), rgba(0, 0, 0, 0.4)); }
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.7rem;
+  width: auto;
+  filter: drop-shadow(0 4px 10px light-dark(rgba(168, 18, 76, 0.25), rgba(0, 0, 0, 0.5)));
+}
+.nk-wordmark { font-weight: 900; letter-spacing: 0.02em; }
+.nk-ink { color: var(--text); text-shadow: var(--text-shadow-brand); }
+.nk-pink { color: var(--accent); text-shadow: var(--text-shadow-brand); }
+.nk-sep {
+  display: inline-block;
+  width: 1px;
+  height: 1.1em;
+  margin: 0 0.6rem;
+  vertical-align: -0.2em;
+  background: var(--edge-strong);
+}
+.nk-note {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-quiet);
+}
+.md-search__form {
+  border-radius: 0;
+  background-color: light-dark(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.06));
+  box-shadow: inset 0 0 0 1px var(--edge);
+}
+.md-search__form:hover { background-color: light-dark(#ffffff, rgba(255, 255, 255, 0.1)); }
+.md-search__input::placeholder { color: var(--text-quiet); }
+.md-search__output { border-radius: 0; }
+
+/* The page itself sits in a notched glass panel. */
+.md-content {
+  position: relative;
+  isolation: isolate;
+  margin: 1.2rem 0 1.6rem;
+}
+.md-content::before,
+.md-content::after { content: ''; position: absolute; z-index: -1; pointer-events: none; }
+.md-content::before { inset: 0; background: var(--edge); clip-path: var(--clip-notch); }
+.md-content::after { inset: 1px; background: var(--panel-bg); clip-path: var(--clip-notch-inner); }
+.md-content .md-content__inner { margin: 0 1.6rem; padding: 1rem 0 1.8rem; }
+@media screen and (max-width: 44.984375em) {
+  .md-content { margin: 0.8rem 0.6rem 1.2rem; }
+  .md-content .md-content__inner { margin: 0 1rem; }
+}
+
+/* Type. */
+.md-typeset { line-height: 1.7; }
+.md-typeset h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(1.6em, 1.2em + 1.4vw, 2.1em);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-wrap: balance;
+}
+.md-typeset h2 { font-weight: 900; letter-spacing: 0.01em; color: var(--text); }
+.md-typeset h3,
+.md-typeset h4 { font-weight: 700; color: var(--text); }
+.md-typeset h2::before {
+  content: '';
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-right: 0.6rem;
+  vertical-align: 0.2em;
+  background: var(--ornament);
+  rotate: 45deg;
+}
+.md-typeset strong { color: var(--text); font-weight: 700; }
+.md-typeset a:is(:hover, :focus) { color: var(--accent-text); }
+.md-typeset hr { border-bottom-color: var(--hairline); }
+.md-typeset code { border-radius: 0; box-shadow: inset 0 0 0 1px var(--hairline); }
+.md-typeset pre > code { box-shadow: inset 0 0 0 1px var(--edge); }
+.md-typeset kbd { border-radius: 0; }
+
+/* Tables, admonitions and details: square and framed. */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--edge);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+.md-typeset table:not([class]) th {
+  background: var(--surface-quiet);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+.md-typeset .admonition,
+.md-typeset details {
+  border-width: 1px 1px 1px 0.2rem;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Buttons: a notched frame and a fill; the accent sweep fills from the left on hover. */
+.md-typeset .md-button {
+  --btn-edge: var(--edge-strong);
+  --btn-fill: var(--surface);
+  --sweep: 0%;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.4rem;
+  margin: 0.2rem 0.5rem 0.2rem 0;
+  padding: 0 1.2rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--text-2);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 240ms var(--ease), transform 150ms var(--ease), filter 240ms var(--ease);
+}
+.md-typeset .md-button::before,
+.md-typeset .md-button::after { content: ''; position: absolute; z-index: -1; pointer-events: none; }
+.md-typeset .md-button::before { inset: 0; background: var(--btn-edge); clip-path: var(--clip-notch-sm); transition: background-color 240ms var(--ease); }
+.md-typeset .md-button::after {
+  inset: 1px;
+  clip-path: var(--clip-notch-sm-inner);
+  background: linear-gradient(100deg, var(--sweep-a), var(--sweep-b)) no-repeat 0 0 / var(--sweep) 100%, var(--btn-fill);
+  transition: background-size 420ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.md-typeset .md-button:is(:hover, :focus-visible) {
+  --sweep: 100%;
+  --btn-edge: var(--sweep-b);
+  border: 0;
+  background: none;
+  color: var(--on-fill);
+}
+.md-typeset .md-button:hover { transform: translateY(-2px); filter: drop-shadow(0 10px 14px rgba(196, 42, 102, 0.35)); }
+.md-typeset .md-button--primary { --sweep: 100%; --btn-edge: var(--sweep-b); color: var(--on-fill); }
+.md-typeset .md-button--primary:hover { --btn-edge: light-dark(#7a0f42, #ff9fc0); }
+
+/* Navigation. */
+.md-sidebar .md-nav__title { background: transparent; box-shadow: none; }
+.md-nav__title {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-quiet);
+}
+.md-nav--primary .md-nav__item--nested > .md-nav__link { font-weight: 700; color: var(--text); }
+.md-nav__link--active,
+.md-nav__link:is(:focus, :hover) { color: var(--accent-strong); }
+.md-nav--primary .md-nav__link--active { font-weight: 700; }
+@media screen and (max-width: 76.234375em) {
+  .md-nav--primary .md-nav__title[for='__drawer'] { background-color: var(--surface-quiet); color: var(--text); }
+}
+
+/* Footer. */
+.md-footer { border-top: 1px solid var(--hairline); color: var(--text-subtle); }
+.md-footer-meta { background: transparent; }
+
+/* The NadeKloud panel on the home page. */
+.md-typeset .nk-panel {
+  position: relative;
+  isolation: isolate;
+  margin: 1.6rem 0;
+  padding: 0 1.2rem 1rem;
+}
+.md-typeset .nk-panel::before,
+.md-typeset .nk-panel::after { content: ''; position: absolute; z-index: -1; pointer-events: none; }
+.md-typeset .nk-panel::before { inset: 0; background: var(--edge); clip-path: var(--clip-notch); }
+.md-typeset .nk-panel::after { inset: 1px; background: var(--surface-quiet); clip-path: var(--clip-notch-inner); }
+.md-typeset .nk-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 -1.2rem 0.8rem;
+  padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid var(--hairline);
+}
+.md-typeset .nk-panel-head svg { width: 1.2rem; height: 1.2rem; flex: none; color: var(--kicker); }
+.md-typeset .nk-panel-title { font-size: 0.8rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.md-typeset .nk-panel-aside {
+  margin-inline-start: auto;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-quiet);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nk-petal { display: none; }
+  .md-typeset .md-button,
+  .md-typeset .md-button::after { transition: none; }
+  .md-typeset .md-button:hover { transform: none; }
+}
+@media (forced-colors: active) {
+  .md-content, .md-typeset .md-button, .md-typeset .nk-panel { border: 1px solid CanvasText; }
+  .md-content::before, .md-content::after,
+  .md-typeset .md-button::before, .md-typeset .md-button::after,
+  .md-typeset .nk-panel::before, .md-typeset .nk-panel::after { display: none; }
+}
