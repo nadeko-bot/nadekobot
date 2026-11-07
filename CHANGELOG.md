@@ -13,6 +13,9 @@
 ### Changed
 
 - The logs for deleted and updated messages show their details in fields.
+- `.blackjack` / `.bj` has a shorter cooldown
+    - no cooldown after you open or join a table
+    - the bot ignores it for 2 seconds after an error
 
 ### Fixed
 
