@@ -48,11 +48,12 @@ dmHelpTextKeywords:
   - cmds
   - module
   - can you do
-# This is the response for the .h command
+# This is the response for the .h command.
+# In this text, %bot.clientid% is the client id of the bot, for the invite link.
 helpText: |-
   {
     "title": "To invite me to your server, use this link",
-    "description": "https://discordapp.com/oauth2/authorize?client_id={0}&scope=bot&permissions=66186303",
+    "description": "https://discordapp.com/oauth2/authorize?client_id=%bot.clientid%&scope=bot&permissions=66186303",
     "color": 53380,
     "thumbnail": "https://i.imgur.com/nKYyqMK.png",
     "fields": [

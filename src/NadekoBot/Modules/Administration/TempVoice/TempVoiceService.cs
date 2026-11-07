@@ -579,17 +579,51 @@ public sealed class TempVoiceService(
                  .DeleteAsync();
     }
 
-    private async Task OnChannelDestroyedAsync(SocketChannel channel)
+    private Task OnChannelDestroyedAsync(SocketChannel channel)
     {
-        await ForgetTempInternalAsync(channel.Id);
-        await RemoveHubInternalAsync(channel.Id);
+        var channelId = channel.Id;
+        var wasTemp = _temps.TryRemove(channelId, out var info);
+        if (wasTemp)
+            UntrackTemp(channelId, info);
+
+        var wasHub = _hubs.TryRemove(channelId, out _);
+        if (!wasTemp && !wasHub)
+            return Task.CompletedTask;
+
+        _ = Task.Run(() => DeleteChannelRowsInternalAsync(channelId, wasTemp, wasHub));
+        return Task.CompletedTask;
     }
 
-    private async Task OnLeftGuildAsync(SocketGuild guild)
+    private async Task DeleteChannelRowsInternalAsync(ulong channelId, bool temp, bool hub)
     {
-        foreach (var (channelId, guildId) in _hubs)
+        try
         {
-            if (guildId == guild.Id)
+            await using var uow = db.GetDbContext();
+            if (temp)
+            {
+                await uow.GetTable<TempVoiceChannel>()
+                         .Where(x => x.ChannelId == channelId)
+                         .DeleteAsync();
+            }
+
+            if (hub)
+            {
+                await uow.GetTable<TempVoiceHub>()
+                         .Where(x => x.ChannelId == channelId)
+                         .DeleteAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to remove the deleted temp voice channel or hub {ChannelId}", channelId);
+        }
+    }
+
+    private Task OnLeftGuildAsync(SocketGuild guild)
+    {
+        foreach (var (channelId, hubGuildId) in _hubs)
+        {
+            if (hubGuildId == guild.Id)
                 _hubs.TryRemove(channelId, out _);
         }
 
@@ -601,13 +635,27 @@ public sealed class TempVoiceService(
 
         _guildTempCount.TryRemove(guild.Id, out _);
 
-        await using var uow = db.GetDbContext();
-        await uow.GetTable<TempVoiceHub>()
-                 .Where(x => x.GuildId == guild.Id)
-                 .DeleteAsync();
-        await uow.GetTable<TempVoiceChannel>()
-                 .Where(x => x.GuildId == guild.Id)
-                 .DeleteAsync();
+        var guildId = guild.Id;
+        _ = Task.Run(() => DeleteGuildRowsInternalAsync(guildId));
+        return Task.CompletedTask;
+    }
+
+    private async Task DeleteGuildRowsInternalAsync(ulong guildId)
+    {
+        try
+        {
+            await using var uow = db.GetDbContext();
+            await uow.GetTable<TempVoiceHub>()
+                     .Where(x => x.GuildId == guildId)
+                     .DeleteAsync();
+            await uow.GetTable<TempVoiceChannel>()
+                     .Where(x => x.GuildId == guildId)
+                     .DeleteAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to remove the temp voice settings of the left server {GuildId}", guildId);
+        }
     }
 
     public async Task<TempVoiceHubResult> ToggleHubAsync(ulong guildId, ulong channelId)

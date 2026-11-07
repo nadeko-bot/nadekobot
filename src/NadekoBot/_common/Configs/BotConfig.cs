@@ -9,7 +9,7 @@ namespace NadekoBot.Common.Configs;
 public sealed class BotConfig
 {
     [Comment("DO NOT CHANGE THE VERSION MANUALLY")]
-    public int Version { get; set; } = 14;
+    public int Version { get; set; } = 15;
 
     [Comment("""
         Most commands, when executed, have a small colored line
@@ -74,7 +74,10 @@ public sealed class BotConfig
         """)]
     public List<string> DmHelpTextKeywords { get; set; }
 
-    [Comment("""This is the response for the .h command""")]
+    [Comment("""
+        This is the response for the .h command.
+        In this text, %bot.clientid% is the client id of the bot, for the invite link.
+        """)]
     [YamlMember(ScalarStyle = ScalarStyle.Literal)]
     public string HelpText { get; set; }
 
@@ -111,7 +114,7 @@ public sealed class BotConfig
         HelpText = """
             {
               "title": "To invite me to your server, use this link",
-              "description": "https://discordapp.com/oauth2/authorize?client_id={0}&scope=bot&permissions=66186303",
+              "description": "https://discordapp.com/oauth2/authorize?client_id=%bot.clientid%&scope=bot&permissions=66186303",
               "color": 53380,
               "thumbnail": "https://i.imgur.com/nKYyqMK.png",
               "fields": [

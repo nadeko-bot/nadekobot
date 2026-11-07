@@ -17,12 +17,14 @@
 ### Fixed
 
 - The server log shows deleted and updated messages longer than 1024 characters.
+- The invite link in `.h` / `.help` shows the client id of the bot.
 - `.autothread` / `.ath` fixes
     - `--backfill` / `-b` threads use the chosen archive time
     - `media` mode also creates threads for messages with an embed
 
 ### Dev
 
+- Channel delete handlers no longer block the gateway or stop the server log handler.
 - The hosted API lists TikTok as a stream platform.
 
 ## [7.9.1] - 05.11.2026

@@ -55,13 +55,27 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         _client.ChannelDestroyed += ClientOnChannelDestroyed;
     }
 
-    private async Task ClientOnChannelDestroyed(SocketChannel ch)
+    private Task ClientOnChannelDestroyed(SocketChannel ch)
     {
-        if (ch is not IGuildChannel gch)
-            return;
+        if (ch is not IGuildChannel gch || GetMode(gch.GuildId, gch.Id) is null)
+            return Task.CompletedTask;
 
-        if (GetMode(gch.GuildId, ch.Id) is not null)
-            await DisableAsync(gch.GuildId, ch.Id);
+        var guildId = gch.GuildId;
+        var channelId = gch.Id;
+        _ = Task.Run(() => DisableDeletedChannelInternalAsync(guildId, channelId));
+        return Task.CompletedTask;
+    }
+
+    private async Task DisableDeletedChannelInternalAsync(ulong guildId, ulong channelId)
+    {
+        try
+        {
+            await DisableAsync(guildId, channelId);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to turn off the deleted image-only or link-only channel {ChannelId}", channelId);
+        }
     }
 
     private async Task DeleteQueueRunner()

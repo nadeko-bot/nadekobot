@@ -55,6 +55,19 @@ public sealed class HelpService(
     public bool TryStartReply(ulong userId, string? content)
         => TryStartReplyInternal(bss.Data, userId, content);
 
+    public async ValueTask<SmartText?> GetHelpTextAsync(ReplacementContext repCtx, ulong clientId, string prefix)
+    {
+        var helpText = bss.Data.HelpText;
+        if (string.IsNullOrWhiteSpace(helpText) || helpText == "-")
+            return null;
+
+        repCtx.WithOverride(BotConfigService.HELP_CLIENT_ID_PLACEHOLDER, () => clientId.ToString())
+              .WithOverride("%prefix%", () => prefix)
+              .WithOverride("%bot.prefix%", () => prefix);
+
+        return await repSvc.ReplaceAsync(SmartText.CreateFrom(helpText), repCtx);
+    }
+
     private bool TryStartReplyInternal(BotConfig settings, ulong userId, string? content)
     {
         if (string.IsNullOrWhiteSpace(settings.DmHelpText) || settings.DmHelpText == "-")

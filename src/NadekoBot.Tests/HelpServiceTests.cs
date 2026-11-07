@@ -28,7 +28,7 @@ public sealed class HelpServiceTests
         ResetDmHelp();
         _time = new FakeTimeProvider();
         _svc = new HelpService(_bcs,
-            Substitute.For<IReplacementService>(),
+            new ReplacementService(new ReplacementPatternStore()),
             Substitute.For<IMessageSenderService>(),
             _time);
     }
@@ -43,11 +43,29 @@ public sealed class HelpServiceTests
             var defaults = new BotConfig();
             c.DmHelpText = defaults.DmHelpText;
             c.DmHelpTextKeywords = defaults.DmHelpTextKeywords;
+            c.HelpText = defaults.HelpText;
         });
 
     [Test]
-    public void Keywords_IgnoreCase_AnEmptyListMatchesEveryDm_AndNoTextSendsNothing()
+    public async Task HelpTexts_KeywordsIgnoreCase_NoTextSendsNothing_AndOldPlaceholdersWork()
     {
+        _bcs.ModifyConfig(static c =>
+        {
+            c.Version = 14;
+            c.HelpText = """{"description": "id={0} p={1} %bot.prefix%"}""";
+        });
+        var upgraded = new BotConfigService(new YamlSeria(), Substitute.For<IPubSub>(), new BotPolicy(false));
+        var svc = new HelpService(upgraded, new ReplacementService(new ReplacementPatternStore()), Substitute.For<IMessageSenderService>(), _time);
+        var help = await svc.GetHelpTextAsync(new ReplacementContext(), 42, "!");
+        Assert.That(((SmartEmbedTextArray)help!).Embeds[0].Description, Is.EqualTo("id=42 p=! !"));
+
+        _bcs.ModifyConfig(static c => c.HelpText = new BotConfig().HelpText);
+        var def = await _svc.GetHelpTextAsync(new ReplacementContext(), 42, "!");
+        Assert.That(((SmartEmbedTextArray)def!).Embeds[0].Description, Does.Contain("client_id=42&"));
+
+        _bcs.ModifyConfig(static c => c.HelpText = "-");
+        Assert.That(await _svc.GetHelpTextAsync(new ReplacementContext(), 42, "!"), Is.Null);
+
         Assert.That(_svc.TryStartReply(1, "Help"), Is.True);
         Assert.That(_svc.TryStartReply(2, "show me COMMANDS"), Is.True);
         Assert.That(_svc.TryStartReply(3, "hi"), Is.False);

@@ -12,6 +12,7 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
     // The help texts are embed JSON, and an embed description alone can hold 4096 characters.
     public const int MAX_HELP_TEXT_LENGTH = 4000;
     public const int MAX_PREFIX_LENGTH = 10;
+    public const string HELP_CLIENT_ID_PLACEHOLDER = "%bot.clientid%";
     private const string UNQUOTED_PREFIX = "~";
 
     private readonly BotPolicy _policy;
@@ -176,6 +177,16 @@ public sealed class BotConfigService : ConfigServiceBase<BotConfig>
                 c.Version = 14;
                 RenameBlockedCommandInternal(c.Blocked?.Commands);
                 RenameBlockedCommandInternal(c.DmBlocked?.Commands);
+            });
+
+        // Help texts used {0} for the client id and {1} for the prefix.
+        if (Data.Version < 15)
+            ModifyConfig(static c =>
+            {
+                c.Version = 15;
+                c.HelpText = c.HelpText?
+                              .Replace("{0}", HELP_CLIENT_ID_PLACEHOLDER, StringComparison.Ordinal)
+                              .Replace("{1}", "%prefix%", StringComparison.Ordinal)!;
             });
     }
 

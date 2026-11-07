@@ -83,23 +83,41 @@ public sealed class StarboardService(
     }
 
     // A deleted board channel is handled by the sync, which also catches a deletion made while offline.
-    private async Task OnChannelDestroyedAsync(SocketChannel channel)
+    private Task OnChannelDestroyedAsync(SocketChannel channel)
     {
         if (channel is not SocketTextChannel tch)
-            return;
+            return Task.CompletedTask;
 
         var guildId = tch.Guild.Id;
         var channelId = tch.Id;
 
         if (!_ignoredChannels.TryGetValue(guildId, out var ignored) || !ignored.Contains(channelId))
-            return;
+            return Task.CompletedTask;
 
-        await using var uow = db.GetDbContext();
-        await uow.GetTable<StarboardIgnoredChannel>()
-                 .Where(x => x.GuildId == guildId && x.ChannelId == channelId)
-                 .DeleteAsync();
+        _ = Task.Run(() => RemoveIgnoredChannelInternalAsync(guildId, channelId));
+        return Task.CompletedTask;
+    }
 
-        _ignoredChannels[guildId] = ignored.Where(x => x != channelId).ToFrozenSet();
+    private async Task RemoveIgnoredChannelInternalAsync(ulong guildId, ulong channelId)
+    {
+        try
+        {
+            await using var uow = db.GetDbContext();
+            await uow.GetTable<StarboardIgnoredChannel>()
+                     .Where(x => x.GuildId == guildId && x.ChannelId == channelId)
+                     .DeleteAsync();
+
+            // A .starboardignore change can replace the set at the same time; retry on the new set.
+            while (_ignoredChannels.TryGetValue(guildId, out var current)
+                   && current.Contains(channelId)
+                   && !_ignoredChannels.TryUpdate(guildId, current.Where(x => x != channelId).ToFrozenSet(), current))
+            {
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to remove the deleted starboard ignored channel {ChannelId}", channelId);
+        }
     }
 
     private async Task DisableBoardInternalAsync(ulong guildId, StarboardSettings settings)

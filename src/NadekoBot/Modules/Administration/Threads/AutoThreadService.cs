@@ -122,29 +122,57 @@ public sealed class AutoThreadService(
         return setting.Mode != AutoThreadMode.Media || HasMedia(msg);
     }
 
-    private async Task OnLeftGuildAsync(SocketGuild guild)
+    private Task OnLeftGuildAsync(SocketGuild guild)
     {
+        var guildId = guild.Id;
         foreach (var (channelId, setting) in _channels)
         {
-            if (setting.GuildId == guild.Id)
+            if (setting.GuildId == guildId)
                 _channels.TryRemove(channelId, out _);
         }
 
-        await using var uow = db.GetDbContext();
-        await uow.GetTable<AutoThreadChannel>()
-                 .Where(x => x.GuildId == guild.Id)
-                 .DeleteAsync();
+        _ = Task.Run(() => DeleteGuildSettingsInternalAsync(guildId));
+        return Task.CompletedTask;
     }
 
-    private async Task OnChannelDestroyedAsync(SocketChannel channel)
+    private async Task DeleteGuildSettingsInternalAsync(ulong guildId)
     {
-        if (!_channels.TryRemove(channel.Id, out _))
-            return;
+        try
+        {
+            await using var uow = db.GetDbContext();
+            await uow.GetTable<AutoThreadChannel>()
+                     .Where(x => x.GuildId == guildId)
+                     .DeleteAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to remove the auto thread settings of the left server {GuildId}", guildId);
+        }
+    }
 
-        await using var uow = db.GetDbContext();
-        await uow.GetTable<AutoThreadChannel>()
-                 .Where(x => x.ChannelId == channel.Id)
-                 .DeleteAsync();
+    private Task OnChannelDestroyedAsync(SocketChannel channel)
+    {
+        var channelId = channel.Id;
+        if (!_channels.TryRemove(channelId, out _))
+            return Task.CompletedTask;
+
+        _ = Task.Run(() => DeleteSettingInternalAsync(channelId));
+        return Task.CompletedTask;
+    }
+
+    private async Task DeleteSettingInternalAsync(ulong channelId)
+    {
+        try
+        {
+            await using var uow = db.GetDbContext();
+            await uow.GetTable<AutoThreadChannel>()
+                     .Where(x => x.ChannelId == channelId)
+                     .DeleteAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to remove the auto thread setting of the deleted channel {ChannelId}", channelId);
+        }
     }
 
     public async ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)

@@ -14,7 +14,6 @@ public sealed partial class Help : NadekoModule<HelpService>
 
     private readonly ICommandsUtilityService _cus;
     private readonly CommandService _cmds;
-    private readonly BotConfigService _bss;
     private readonly IPermissionChecker _perms;
     private readonly IServiceProvider _services;
     private readonly DiscordSocketClient _client;
@@ -28,7 +27,6 @@ public sealed partial class Help : NadekoModule<HelpService>
         ICommandsUtilityService _cus,
         IPermissionChecker perms,
         CommandService cmds,
-        BotConfigService bss,
         IServiceProvider services,
         DiscordSocketClient client,
         IBotStrings strings,
@@ -37,7 +35,6 @@ public sealed partial class Help : NadekoModule<HelpService>
     {
         this._cus = _cus;
         _cmds = cmds;
-        _bss = bss;
         _perms = perms;
         _services = services;
         _client = client;
@@ -49,21 +46,7 @@ public sealed partial class Help : NadekoModule<HelpService>
     }
 
     public async Task<SmartText> GetHelpString()
-    {
-        var botSettings = _bss.Data;
-        if (string.IsNullOrWhiteSpace(botSettings.HelpText) || botSettings.HelpText == "-")
-            return default;
-
-        var clientId = await _lazyClientId.Value;
-        var repCtx = new ReplacementContext(Context)
-            .WithOverride("{0}", () => clientId.ToString())
-            .WithOverride("{1}", () => prefix)
-            .WithOverride("%prefix%", () => prefix)
-            .WithOverride("%bot.prefix%", () => prefix);
-
-        var text = SmartText.CreateFrom(botSettings.HelpText);
-        return await repSvc.ReplaceAsync(text, repCtx);
-    }
+        => await _service.GetHelpTextAsync(new ReplacementContext(Context), await _lazyClientId.Value, prefix);
 
     [Cmd]
     public async Task Modules(int page = 1)
