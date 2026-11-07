@@ -333,15 +333,61 @@ body {
   color: var(--text-quiet);
 }
 
+/* The NadeKloud card: under the contents in the right sidebar, or at the bottom of the phone menu drawer. */
+.nk-side-ad--right { margin: 1.2rem 0.6rem 1rem; }
+.nk-side-ad--menu { display: none; }
+.nk-side-ad__link {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.7rem 0.8rem 0.8rem;
+  color: var(--text-2);
+}
+.nk-side-ad__link::before,
+.nk-side-ad__link::after { content: ''; position: absolute; z-index: -1; pointer-events: none; }
+.nk-side-ad__link::before { inset: 0; background: var(--edge); clip-path: var(--clip-notch-sm); transition: background-color 240ms var(--ease); }
+.nk-side-ad__link::after { inset: 1px; background: var(--surface-quiet); clip-path: var(--clip-notch-sm-inner); }
+.nk-side-ad__link:is(:hover, :focus-visible)::before { background: var(--sweep-b); }
+.nk-side-ad__head { display: flex; align-items: center; gap: 0.4rem; }
+.nk-side-ad__head svg { width: 1rem; height: 1rem; flex: none; color: var(--kicker); }
+.nk-side-ad__title { font-size: 0.7rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.nk-side-ad__text { font-size: 0.64rem; line-height: 1.45; }
+.nk-side-ad__trial { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.04em; color: var(--text-quiet); }
+.nk-side-ad__cta {
+  margin-top: 0.2rem;
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+.nk-side-ad__cta::after { content: ' \2192'; }
+.nk-side-ad__link:is(:hover, :focus-visible) .nk-side-ad__cta { color: var(--accent-text); }
+/* Below 60em the right sidebar is gone. Each menu level in the drawer is a full-height layer, so the card sits on top of them. */
+@media screen and (max-width: 59.984375em) and (min-height: 30em) {
+  .nk-side-ad--menu { display: block; position: absolute; inset: auto 0 0; z-index: 4; padding: 0.6rem 0.6rem 0.8rem; background-color: var(--bg); }
+  .md-sidebar--primary .md-nav--primary .md-nav__list { padding-bottom: 10rem; }
+}
+
+/* The GitHub button: the docs font sits low in its line box, so the fact icons need centering. */
+.md-source__fact { display: inline-flex; align-items: center; gap: 0.15rem; }
+[dir] .md-source .md-source__fact::before { margin: 0; vertical-align: baseline; translate: 0 0.08em; }
+.md-source__icon svg { margin-top: 0.7rem; }
+.md-nav__source { background: linear-gradient(100deg, var(--sweep-a), var(--sweep-b)); color: var(--on-fill); }
+
 @media (prefers-reduced-motion: reduce) {
   .nk-petal { display: none; }
   .md-typeset .md-button,
-  .md-typeset .md-button::after { transition: none; }
+  .md-typeset .md-button::after,
+  .nk-side-ad__link::before { transition: none; }
   .md-typeset .md-button:hover { transform: none; }
 }
 @media (forced-colors: active) {
-  .md-content, .md-typeset .md-button, .md-typeset .nk-panel { border: 1px solid CanvasText; }
+  .md-content, .md-typeset .md-button, .md-typeset .nk-panel, .nk-side-ad__link { border: 1px solid CanvasText; }
   .md-content::before, .md-content::after,
   .md-typeset .md-button::before, .md-typeset .md-button::after,
-  .md-typeset .nk-panel::before, .md-typeset .nk-panel::after { display: none; }
+  .md-typeset .nk-panel::before, .md-typeset .nk-panel::after,
+  .nk-side-ad__link::before, .nk-side-ad__link::after { display: none; }
 }

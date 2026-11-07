@@ -20,7 +20,7 @@ Each option below needs your own Discord bot. First, [create a Discord bot](cred
 
 | Your setup | Guide |
 |---|---|
-| No server and no setup (paid hosting, free trial) | [NadeKloud](https://cloud.nadeko.bot/) |
+| No server and no setup (paid hosting, free trial) | [NadeKloud](https://cloud.nadeko.bot/?utm_source=docs&utm_content=home-table) |
 | Use a window app on Windows, Linux or macOS | [Desktop guide (Upeko)][desktop-guide] |
 | Use the terminal on Linux or macOS | [CLI guide][cli-guide] |
 | Run the bot in a Docker container | [Docker guide][docker-guide] |
@@ -35,7 +35,7 @@ A server keeps the bot online all day. [Get a Linux server](guides/linux-server.
 <span class="nk-panel-aside">Hosted NadekoBot</span>
 </div>
 <p>Want your own bot without the setup? <strong>NadeKloud</strong> is paid hosting for NadekoBot, with a free trial. It runs your bot for you, and you set it up in a web dashboard.</p>
-<a class="md-button" href="https://cloud.nadeko.bot/">Try NadeKloud</a>
+<a class="md-button" href="https://cloud.nadeko.bot/?utm_source=docs&amp;utm_content=home">Try NadeKloud</a>
 </div>
 
 ## Features
