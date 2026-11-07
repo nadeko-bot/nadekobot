@@ -1,4 +1,5 @@
 using System.Collections.Frozen;
+using System.Text;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -1013,21 +1014,36 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 return;
 
             var resolvedMessage = msg.Resolve(TagHandling.FullName);
-            var embed = _sender.CreateEmbed()
+            var embed = _sender.CreateEmbed(channel.Guild.Id)
                 .WithOkColor()
-                .WithTitle("🗑 " + GetText(logChannel.Guild, strs.msg_del(((ITextChannel)msg.Channel).Name)))
-                .WithDescription(msg.Author.ToString()!)
-                .AddField(GetText(logChannel.Guild, strs.content),
-                    !string.IsNullOrWhiteSpace(resolvedMessage) ? resolvedMessage
-                    : _intents.MessageContent ? "-"
-                    : GetText(logChannel.Guild, strs.log_text_unavailable))
-                .AddField("Id", msg.Id.ToString())
-                .WithFooter(CurrentTime(channel.Guild));
+                .WithTitle(GetText(logChannel.Guild, strs.msg_deleted))
+                .WithDescription(!string.IsNullOrWhiteSpace(resolvedMessage)
+                    ? QuoteTrimmed(resolvedMessage, EmbedBuilder.MaxDescriptionLength)
+                    : _intents.MessageContent
+                        ? "-"
+                        : GetText(logChannel.Guild, strs.log_text_unavailable))
+                .WithCurrentTimestamp();
 
-            if (msg.Attachments.Any())
+            AddMessageFields(embed, logChannel.Guild, msg, channel);
+
+            if (msg.Attachments.Count > 0)
             {
+                var urls = new StringBuilder();
+                foreach (var a in msg.Attachments)
+                {
+                    var sep = urls.Length > 0 ? 1 : 0;
+                    if (urls.Length + sep + a.Url.Length > EmbedFieldBuilder.MaxFieldValueLength)
+                        break;
+
+                    if (sep > 0)
+                        urls.Append('\n');
+                    urls.Append(a.Url);
+                }
+
                 embed.AddField(GetText(logChannel.Guild, strs.attachments),
-                    string.Join(", ", msg.Attachments.Select(a => a.Url)));
+                    urls.Length > 0
+                        ? urls.ToString()
+                        : msg.Attachments.First().Url.TrimTo(EmbedFieldBuilder.MaxFieldValueLength));
             }
 
             await _sender.Response(logChannel).Embed(embed).SendAsync();
@@ -1047,16 +1063,23 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
                 || logChannel.Id == after.Channel.Id)
                 return;
 
-            var embed = _sender.CreateEmbed()
+            var embed = _sender.CreateEmbed(channel.Guild.Id)
                 .WithOkColor()
-                .WithTitle("📝 " + GetText(logChannel.Guild, strs.msg_update(((ITextChannel)after.Channel).Name)))
-                .WithDescription(after.Author.ToString()!)
+                .WithTitle(GetText(logChannel.Guild, strs.msg_updated))
+                .WithUrl(after.GetJumpUrl())
+                .WithCurrentTimestamp();
+
+            AddMessageFields(embed, logChannel.Guild, after, channel);
+
+            embed
                 .AddField(GetText(logChannel.Guild, strs.old_msg),
-                    string.IsNullOrWhiteSpace(before.Content) ? "-" : before.Resolve(TagHandling.FullName))
+                    string.IsNullOrWhiteSpace(before.Content)
+                        ? "-"
+                        : QuoteTrimmed(before.Resolve(TagHandling.FullName), EmbedFieldBuilder.MaxFieldValueLength))
                 .AddField(GetText(logChannel.Guild, strs.new_msg),
-                    string.IsNullOrWhiteSpace(after.Content) ? "-" : after.Resolve(TagHandling.FullName))
-                .AddField("Id", after.Id.ToString())
-                .WithFooter(CurrentTime(channel.Guild));
+                    string.IsNullOrWhiteSpace(after.Content)
+                        ? "-"
+                        : QuoteTrimmed(after.Resolve(TagHandling.FullName), EmbedFieldBuilder.MaxFieldValueLength));
 
             await _sender.Response(logChannel).Embed(embed).SendAsync();
         }
@@ -1405,6 +1428,41 @@ public sealed class LogCommandService : ILogCommandService, IReadyExecutor
 
     private string GetText(IGuild guild, LocStr str)
         => _strings.GetText(str, guild.Id);
+
+    private void AddMessageFields(EmbedBuilder embed, IGuild logGuild, IUserMessage msg, ITextChannel channel)
+        => embed
+            .AddField(GetText(logGuild, strs.channel), $"{channel.Mention}\n#{Format.Sanitize(channel.Name)}", true)
+            .AddField(GetText(logGuild, strs.author), $"{msg.Author.Mention}\n{Format.Sanitize(msg.Author.Username)}", true)
+            .AddField(GetText(logGuild, strs.sent_at), $"<t:{msg.Timestamp.ToUnixTimeSeconds()}:f>", true)
+            .AddField(GetText(logGuild, strs.message_id), msg.Id.ToString(), true)
+            .AddField(GetText(logGuild, strs.author_id), msg.Author.Id.ToString(), true);
+
+    private static string QuoteTrimmed(string text, int maxLength)
+    {
+        var sb = new StringBuilder(Math.Min(maxLength, text.Length + 16));
+        foreach (var line in text.AsSpan().EnumerateLines())
+        {
+            if (sb.Length > 0)
+                sb.Append('\n');
+
+            sb.Append("> ").Append(line);
+            if (sb.Length > maxLength)
+            {
+                var cut = maxLength - 1;
+                if (cut > 0 && char.IsHighSurrogate(sb[cut - 1]))
+                    cut--;
+
+                while (cut > 0 && sb[cut - 1] == '\n')
+                    cut--;
+
+                sb.Length = cut;
+                sb.Append('…');
+                break;
+            }
+        }
+
+        return sb.ToString();
+    }
 
     private string PrettyCurrentTime(IGuild? g)
     {

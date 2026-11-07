@@ -2,6 +2,16 @@
 
 *a,c,f,r,o,d*
 
+## [7.9.2] - TBD
+
+### Changed
+
+- The logs for deleted and updated messages show their details in fields.
+
+### Fixed
+
+- The server log shows deleted and updated messages longer than 1024 characters.
+
 ## [7.9.1] - 05.11.2026
 
 ### Dev

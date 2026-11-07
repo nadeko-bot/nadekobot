@@ -4,7 +4,6 @@ ar:
   ch_name_change: تم تغيير اسم القناة
   ch_old_name: الاسم القديم
   ch_topic_change: تم تغيير موضوع القناة
-  content: المحتوى
   kicked_pl: تم طردهم
   log: 'يتم تسجيل حدث {0} في هذه القناة.'
   log_all: يتم تسجيل جميع الأحداث في هذه القناة.
@@ -20,8 +19,10 @@ ar:
   log_not_ignore_chan: 'لن يتجاهل التسجيل القناة {0} بعد الآن'
   log_not_ignore_user: 'لن يتجاهل التسجيل المستخدم {0} بعد الآن'
   log_stop: 'تم إيقاف تسجيل حدث {0}.'
-  msg_del: 'تم حذف رسالة في #{0}'
-  msg_update: 'تم تعديل رسالة في #{0}'
+  message_id: معرّف الرسالة
+  author_id: معرّف المؤلف
+  msg_deleted: تم حذف رسالة
+  msg_updated: تم تعديل رسالة
   muted_pl: تم كتمهم
   muted_sn: تم الكتم
   new_msg: رسالة جديدة
@@ -32,6 +33,7 @@ ar:
   old_nick: اللقب القديم
   old_topic: الموضوع القديم
   presence_updates: تحديثات الحالة
+  sent_at: أُرسلت في
   remove_roles_pl: تمت إزالة أدوارهم
   soft_banned_pl: تم حظرهم مؤقتًا
   text_chan_created: تم إنشاء قناة نصية.
@@ -68,7 +70,6 @@ de-DE:
   ch_name_change: Der Name des Channels wurde geändert.
   ch_old_name: Alter Name
   ch_topic_change: Kanal Thema geändert
-  content: Inhalt
   kicked_pl: Gekickt
   log: 'Protokolliert Ereignis {0} in diesem Channel.'
   log_all: Alle Events werden nun in diesem Channel geloggt.
@@ -84,8 +85,10 @@ de-DE:
   log_not_ignore_chan: 'Logging wird nicht länger Kanal {0} ignorieren'
   log_not_ignore_user: 'Logging wird nicht länger User {0} ignorieren'
   log_stop: 'Protokollierung des {0} Ereignisses wurde gestoppt.'
-  msg_del: 'Nachricht in {0} wurde gelöscht.'
-  msg_update: 'Nachricht in {0} wurde aktualisiert.'
+  message_id: Nachrichten-ID
+  author_id: Autor-ID
+  msg_deleted: Nachricht gelöscht
+  msg_updated: Nachricht bearbeitet
   muted_pl: Stummgeschaltet
   muted_sn: Stummgeschaltet
   new_msg: Neue Nachricht
@@ -96,6 +99,7 @@ de-DE:
   old_nick: Alter Nichname
   old_topic: Altes Thema
   presence_updates: Gegenwärtige Updates
+  sent_at: Gesendet
   remove_roles_pl: wurden seine Rollen entfernt
   soft_banned_pl: soft-banned
   text_chan_created: Text channel erstellt
@@ -132,7 +136,6 @@ es-ES:
   ch_name_change: Nombre del canal cambiado
   ch_old_name: Nombre anterior
   ch_topic_change: Tema del canal cambiado
-  content: Contenido
   kicked_pl: Expulsado
   log: 'Registrando el evento {0} en este canal.'
   log_all: Registrando todos los eventos en este canal.
@@ -148,8 +151,10 @@ es-ES:
   log_not_ignore_chan: 'El registro ya no ignorará el canal {0}'
   log_not_ignore_user: 'El registró ya no ignorará al usuario {0}'
   log_stop: 'Se detuvo el registro del evento {0}.'
-  msg_del: 'Mensaje borrado en #{0}'
-  msg_update: 'Mensaje editado en #{0}'
+  message_id: ID del mensaje
+  author_id: ID del autor
+  msg_deleted: Mensaje borrado
+  msg_updated: Mensaje editado
   muted_pl: Silenciado
   muted_sn: Silenciado
   new_msg: Mensaje nuevo
@@ -160,6 +165,7 @@ es-ES:
   old_nick: Anterior apodo
   old_topic: Anterior tema
   presence_updates: Actualizaciones de presencia
+  sent_at: Enviado
   remove_roles_pl: se les han retirado los roles
   soft_banned_pl: bloqueado levemente
   text_chan_created: Canal de texto creado.
@@ -196,7 +202,6 @@ fr-FR:
   ch_name_change: Nom de salon modifié
   ch_old_name: Ancien nom
   ch_topic_change: Sujet du salon modifié
-  content: Contenu
   kicked_pl: Kick
   log: 'Journalisation des évènements de {0} dans ce salon.'
   log_all: Journalisation de tous les évènements dans ce salon.
@@ -212,8 +217,10 @@ fr-FR:
   log_not_ignore_chan: 'La journalisation n''ignorera plus le salon {0}'
   log_not_ignore_user: 'La journalisation n''ignorera plus le membre {0}'
   log_stop: 'La journalisation de l''évènement {0} arrêtée.'
-  msg_del: 'Message supprimé dans #{0}'
-  msg_update: 'Message mis à jour dans #{0}'
+  message_id: ID du message
+  author_id: ID de l'auteur
+  msg_deleted: Message supprimé
+  msg_updated: Message modifié
   muted_pl: Muets
   muted_sn: Muet
   new_msg: Nouveau message
@@ -224,6 +231,7 @@ fr-FR:
   old_nick: Ancien surnom
   old_topic: Ancien sujet
   presence_updates: Présence de mises à jour
+  sent_at: Envoyé
   remove_roles_pl: ont eu leurs rôles supprimés
   soft_banned_pl: radié·e·s
   text_chan_created: Salon textuel créé.
@@ -260,7 +268,6 @@ id-ID:
   ch_name_change: Nama Channel Diubah
   ch_old_name: Nama Lama
   ch_topic_change: Topik Channel Diubah
-  content: Konten
   kicked_pl: Di-kick
   log: 'Mencatat event {0} di channel ini.'
   log_all: Mencatat semua event di channel ini.
@@ -276,8 +283,10 @@ id-ID:
   log_not_ignore_chan: 'Pencatatan log tidak lagi mengabaikan channel {0}'
   log_not_ignore_user: 'Pencatatan log tidak lagi mengabaikan user {0}'
   log_stop: 'Berhenti mencatat event {0}.'
-  msg_del: 'Pesan dihapus di #{0}'
-  msg_update: 'Pesan diperbarui di #{0}'
+  message_id: ID pesan
+  author_id: ID penulis
+  msg_deleted: Pesan dihapus
+  msg_updated: Pesan diubah
   muted_pl: Di-mute
   muted_sn: Di-mute
   new_msg: Pesan baru
@@ -288,6 +297,7 @@ id-ID:
   old_nick: Nickname lama
   old_topic: Topik lama
   presence_updates: Update kehadiran
+  sent_at: Dikirim
   remove_roles_pl: role-nya sudah dihapus
   soft_banned_pl: di-softban
   text_chan_created: Channel teks dibuat.
@@ -324,7 +334,6 @@ ja-JP:
   ch_name_change: チャンネル名が変更されました
   ch_old_name: 古い名前
   ch_topic_change: チャンネルトピックが変更されました
-  content: 内容
   kicked_pl: キックド
   log: 'このチャンネルに{0}イベントを記録します。'
   log_all: このチャンネルのすべてのイベントを記録します。
@@ -340,8 +349,10 @@ ja-JP:
   log_not_ignore_chan: 'ログはチャンネル{0}を無視しなくなります'
   log_not_ignore_user: 'ログはユーザー{0}を無視しなくなります'
   log_stop: '{0}イベントの記録が停止されました。'
-  msg_del: '#{0} 内のメッセージが削除されました'
-  msg_update: '#{0} 内のメッセージが更新されました'
+  message_id: メッセージID
+  author_id: 投稿者ID
+  msg_deleted: メッセージが削除されました
+  msg_updated: メッセージが編集されました
   muted_pl: がミュートにされました
   muted_sn: がミュートにされました
   new_msg: 新しいメッセージ
@@ -352,6 +363,7 @@ ja-JP:
   old_nick: 古いニックネーム
   old_topic: 古いトピック
   presence_updates: ステータスが更新されました
+  sent_at: 送信日時
   remove_roles_pl: ロールが削除されました
   soft_banned_pl: がソフトBANされました
   text_chan_created: テキストチャンネルが作成されました。
@@ -388,7 +400,6 @@ ko-KR:
   ch_name_change: 채널 이름 변경됨
   ch_old_name: 이전 이름
   ch_topic_change: 채널 주제 변경됨
-  content: 내용
   kicked_pl: 추방됨
   log: '이 채널에서 {0} 이벤트를 기록해요.'
   log_all: 이 채널에서 모든 이벤트를 기록해요.
@@ -404,8 +415,10 @@ ko-KR:
   log_not_ignore_chan: '로깅이 더 이상 채널 {0}을(를) 무시하지 않아요'
   log_not_ignore_user: '로깅이 더 이상 사용자 {0}을(를) 무시하지 않아요'
   log_stop: '{0} 이벤트 기록을 중단했어요.'
-  msg_del: '#{0}에서 메시지가 삭제됨'
-  msg_update: '#{0}에서 메시지가 수정됨'
+  message_id: 메시지 ID
+  author_id: 작성자 ID
+  msg_deleted: 메시지가 삭제됨
+  msg_updated: 메시지가 수정됨
   muted_pl: 뮤트됨
   muted_sn: 뮤트됨
   new_msg: 새 메시지
@@ -416,6 +429,7 @@ ko-KR:
   old_nick: 이전 닉네임
   old_topic: 이전 주제
   presence_updates: 접속 상태 업데이트
+  sent_at: 보낸 시간
   remove_roles_pl: 역할이 제거되었어요
   soft_banned_pl: 소프트 밴됨
   text_chan_created: 텍스트 채널이 생성되었어요.
@@ -452,7 +466,6 @@ pl-PL:
   ch_name_change: Zmieniono nazwę kanału
   ch_old_name: Stara nazwa
   ch_topic_change: Zmieniono temat kanału
-  content: Treść
   kicked_pl: Wyrzuceni
   log: 'Logowanie zdarzenia {0} na tym kanale.'
   log_all: Logowanie wszystkich zdarzeń na tym kanale.
@@ -468,8 +481,10 @@ pl-PL:
   log_not_ignore_chan: 'Logowanie nie będzie już ignorować kanału {0}'
   log_not_ignore_user: 'Logowanie nie będzie już ignorować użytkownika {0}'
   log_stop: 'Zatrzymano logowanie zdarzenia {0}.'
-  msg_del: 'Wiadomość usunięta w #{0}'
-  msg_update: 'Wiadomość zaktualizowana w #{0}'
+  message_id: ID wiadomości
+  author_id: ID autora
+  msg_deleted: Wiadomość usunięta
+  msg_updated: Wiadomość edytowana
   muted_pl: Wyciszeni
   muted_sn: Wyciszony
   new_msg: Nowa wiadomość
@@ -480,6 +495,7 @@ pl-PL:
   old_nick: Stary pseudonim
   old_topic: Stary temat
   presence_updates: Aktualizacje obecności
+  sent_at: Wysłano
   remove_roles_pl: mieli usunięte role
   soft_banned_pl: miękko zbanowani
   text_chan_created: Utworzono kanał tekstowy.
@@ -516,7 +532,6 @@ pt-BR:
   ch_name_change: Nome do canal alterado
   ch_old_name: Nome Antigo
   ch_topic_change: Tópico do canal alterado
-  content: Conteúdo
   kicked_pl: Expulso
   log: 'Registrando evento {0} nesse canal.'
   log_all: Registrando todos os eventos nesse canal.
@@ -532,8 +547,10 @@ pt-BR:
   log_not_ignore_chan: 'O registro de logs não vai mais ignorar o canal {0}'
   log_not_ignore_user: 'O registro de logs não vai mais ignorar o usuário {0}'
   log_stop: 'Parando de registrar evento {0}.'
-  msg_del: 'Mensagem excluída em # {0}'
-  msg_update: 'Mensagem atualizada em # {0}'
+  message_id: ID da mensagem
+  author_id: ID do autor
+  msg_deleted: Mensagem excluída
+  msg_updated: Mensagem editada
   muted_pl: Silenciado
   muted_sn: Silenciado
   new_msg: Nova mensagem
@@ -544,6 +561,7 @@ pt-BR:
   old_nick: Apelido antigo
   old_topic: Tópico antigo
   presence_updates: Atualizações de presença
+  sent_at: Enviada em
   remove_roles_pl: tiveram seus cargos removidos
   soft_banned_pl: Banimento leve
   text_chan_created: Canal de texto criado.
@@ -580,7 +598,6 @@ ru-RU:
   ch_name_change: Название канала изменено
   ch_old_name: Старое название
   ch_topic_change: Тема канала изменена
-  content: Содержание
   kicked_pl: Изгнан
   log: 'Регистрация события {0} на этом канале.'
   log_all: Регистрация всех событий в этом канале.
@@ -596,8 +613,10 @@ ru-RU:
   log_not_ignore_chan: 'Логирование больше не будет игнорировать канал {0}'
   log_not_ignore_user: 'Логирование больше не будет игнорировать пользователя {0}'
   log_stop: 'Прекращено ведение журнала события {0}.'
-  msg_del: 'Сообщение удалено в #{0}'
-  msg_update: 'Сообщение обновлено в № {0}'
+  message_id: ID сообщения
+  author_id: ID автора
+  msg_deleted: Сообщение удалено
+  msg_updated: Сообщение изменено
   muted_pl: Приглушенный
   muted_sn: Приглушенный
   new_msg: Новое сообщение
@@ -608,6 +627,7 @@ ru-RU:
   old_nick: Старый ник
   old_topic: Старая тема
   presence_updates: Обновления присутствия
+  sent_at: Отправлено
   remove_roles_pl: были удалены их роли
   soft_banned_pl: мягкий бан
   text_chan_created: Текстовый канал создан.
@@ -644,7 +664,6 @@ sr-Cyrl-RS:
   ch_name_change: Име канала промењено
   ch_old_name: Старо име
   ch_topic_change: Тема канала промењена
-  content: Садржај
   kicked_pl: Избачен(и)
   log: 'Логовање догађаја {0} у овом каналу.'
   log_all: Логовање свих догађаја у овом каналу.
@@ -660,8 +679,10 @@ sr-Cyrl-RS:
   log_not_ignore_chan: 'Логовање више неће игнорисати канал {0}'
   log_not_ignore_user: 'Логовање више неће игнорисати корисника {0}'
   log_stop: 'Заустављено логовање догађаја {0}.'
-  msg_del: 'Порука обрисана у #{0}'
-  msg_update: 'Порука ажурирана у #{0}'
+  message_id: ИД поруке
+  author_id: ИД аутора
+  msg_deleted: Порука обрисана
+  msg_updated: Порука измењена
   muted_pl: Мјутован(и)
   muted_sn: Мјутован
   new_msg: Нова порука
@@ -672,6 +693,7 @@ sr-Cyrl-RS:
   old_nick: Стари надимак
   old_topic: Стара тема
   presence_updates: Ажурирања присуства
+  sent_at: Послато
   remove_roles_pl: улоге су им уклоњене
   soft_banned_pl: софт-банован(и)
   text_chan_created: Текстуални канал креиран.
@@ -708,7 +730,6 @@ tr-TR:
   ch_name_change: Kanal Adı Değiştirildi
   ch_old_name: Eski Ad
   ch_topic_change: Kanal Konusu Değiştirildi
-  content: İçerik
   kicked_pl: Atıldı
   log: '{0} olayı bu kanalda kaydediliyor.'
   log_all: Tüm olaylar bu kanalda kaydediliyor.
@@ -724,8 +745,10 @@ tr-TR:
   log_not_ignore_chan: 'Kayıt sistemi artık {0} kanalını yok saymayacak'
   log_not_ignore_user: 'Kayıt sistemi artık {0} kullanıcısını yok saymayacak'
   log_stop: '{0} olayının kaydı durduruldu.'
-  msg_del: '#{0} kanalında mesaj silindi'
-  msg_update: '#{0} kanalında mesaj güncellendi'
+  message_id: Mesaj ID'si
+  author_id: Yazar ID'si
+  msg_deleted: Mesaj silindi
+  msg_updated: Mesaj düzenlendi
   muted_pl: Susturuldu
   muted_sn: Susturuldu
   new_msg: Yeni mesaj
@@ -736,6 +759,7 @@ tr-TR:
   old_nick: Eski takma ad
   old_topic: Eski konu
   presence_updates: Durum güncellemeleri
+  sent_at: Gönderildi
   remove_roles_pl: rolleri kaldırıldı
   soft_banned_pl: geçici olarak yasaklandı
   text_chan_created: Yazı kanalı oluşturuldu.
@@ -772,7 +796,6 @@ ts-TS:
   ch_name_change: Channel Name Changed
   ch_old_name: Old Name
   ch_topic_change: Channel Topic Changed
-  content: Content
   kicked_pl: Kicked
   log: 'Logging {0} event in this channel.'
   log_all: Logging all events in this channel. I-I'm just being thorough.
@@ -788,8 +811,10 @@ ts-TS:
   log_not_ignore_chan: 'Logging will no longer ignore channel {0}'
   log_not_ignore_user: 'Logging will no longer ignore user {0}'
   log_stop: 'Stopped logging {0} event.'
-  msg_del: 'Message deleted in #{0}'
-  msg_update: 'Message updated in #{0}'
+  message_id: Message ID
+  author_id: Author ID
+  msg_deleted: Message deleted
+  msg_updated: Message updated
   muted_pl: Muted
   muted_sn: Muted
   new_msg: New message
@@ -800,6 +825,7 @@ ts-TS:
   old_nick: Old nickname
   old_topic: Old topic
   presence_updates: Presence updates
+  sent_at: Sent
   remove_roles_pl: have had their roles removed
   soft_banned_pl: soft-banned
   text_chan_created: Text channel created.
@@ -836,7 +862,6 @@ uk-UA:
   ch_name_change: Назву каналу змінено
   ch_old_name: Стара назва
   ch_topic_change: Тему каналу змінено
-  content: Вміст
   kicked_pl: Кікнуто
   log: 'Логування події {0} у цьому каналі.'
   log_all: Логування всіх подій у цьому каналі.
@@ -852,8 +877,10 @@ uk-UA:
   log_not_ignore_chan: 'Логування більше не ігноруватиме канал {0}'
   log_not_ignore_user: 'Логування більше не ігноруватиме користувача {0}'
   log_stop: 'Логування події {0} зупинено.'
-  msg_del: 'Повідомлення видалено в #{0}'
-  msg_update: 'Повідомлення оновлено в #{0}'
+  message_id: ID повідомлення
+  author_id: ID автора
+  msg_deleted: Повідомлення видалено
+  msg_updated: Повідомлення змінено
   muted_pl: Замучено
   muted_sn: Замучено
   new_msg: Нове повідомлення
@@ -864,6 +891,7 @@ uk-UA:
   old_nick: Старий нікнейм
   old_topic: Стара тема
   presence_updates: Оновлення присутності
+  sent_at: Надіслано
   remove_roles_pl: було знято ролі
   soft_banned_pl: софт-банено
   text_chan_created: Текстовий канал створено.
@@ -900,7 +928,6 @@ vi-VN:
   ch_name_change: Tên kênh đã thay đổi
   ch_old_name: Tên cũ
   ch_topic_change: Chủ đề kênh đã thay đổi
-  content: Nội dung
   kicked_pl: Đã bị đuổi
   log: 'Đang ghi log sự kiện {0} trong kênh này.'
   log_all: Đang ghi log tất cả sự kiện trong kênh này.
@@ -916,8 +943,10 @@ vi-VN:
   log_not_ignore_chan: 'Ghi log sẽ không còn bỏ qua kênh {0} nữa'
   log_not_ignore_user: 'Ghi log sẽ không còn bỏ qua người dùng {0} nữa'
   log_stop: 'Đã dừng ghi log sự kiện {0}.'
-  msg_del: 'Tin nhắn đã bị xóa trong #{0}'
-  msg_update: 'Tin nhắn đã được cập nhật trong #{0}'
+  message_id: ID tin nhắn
+  author_id: ID tác giả
+  msg_deleted: Tin nhắn đã bị xóa
+  msg_updated: Tin nhắn đã được sửa
   muted_pl: Đã bị tắt tiếng
   muted_sn: Đã tắt tiếng
   new_msg: Tin nhắn mới
@@ -928,6 +957,7 @@ vi-VN:
   old_nick: Biệt danh cũ
   old_topic: Chủ đề cũ
   presence_updates: Cập nhật trạng thái hiện diện
+  sent_at: Đã gửi
   remove_roles_pl: đã bị gỡ vai trò
   soft_banned_pl: đã bị cấm tạm
   text_chan_created: Đã tạo kênh văn bản.
@@ -964,7 +994,6 @@ zh-CN:
   ch_name_change: 頻道名稱已更改
   ch_old_name: 舊名稱
   ch_topic_change: 頻道主題已更改
-  content: 內容
   kicked_pl: 被踢
   log: '在此頻道中記錄 {0} 事件。'
   log_all: 記錄此頻道中的所有事件。
@@ -980,8 +1009,10 @@ zh-CN:
   log_not_ignore_chan: '日誌記錄將不再忽略頻道 {0}'
   log_not_ignore_user: '日誌記錄將不再忽略用戶 {0}'
   log_stop: '已停止記錄 {0} 事件。'
-  msg_del: '#{0} 中刪除的訊息'
-  msg_update: '訊息在 #{0} 中更新'
+  message_id: 訊息 ID
+  author_id: 作者 ID
+  msg_deleted: 訊息已刪除
+  msg_updated: 訊息已編輯
   muted_pl: 靜音
   muted_sn: 靜音
   new_msg: 新消息
@@ -992,6 +1023,7 @@ zh-CN:
   old_nick: 舊暱稱
   old_topic: 舊主題
   presence_updates: 狀態更新
+  sent_at: 傳送時間
   remove_roles_pl: 的身分組受到剝奪
   soft_banned_pl: 封禁
   text_chan_created: 已創建文字通道。

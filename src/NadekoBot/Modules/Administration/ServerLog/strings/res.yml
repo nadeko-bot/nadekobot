@@ -3,7 +3,6 @@ banned_pl: banned
 ch_name_change: Channel Name Changed
 ch_old_name: Old Name
 ch_topic_change: Channel Topic Changed
-content: Content
 kicked_pl: Kicked
 log: Logging {0} event in this channel.
 log_all: Logging all events in this channel.
@@ -19,8 +18,10 @@ log_not_ignore_category: Logging will no longer ignore category {0}
 log_not_ignore_chan: Logging will no longer ignore channel {0}
 log_not_ignore_user: Logging will no longer ignore user {0}
 log_stop: Stopped logging {0} event.
-msg_del: 'Message deleted in #{0}'
-msg_update: 'Message updated in #{0}'
+message_id: Message ID
+author_id: Author ID
+msg_deleted: Message deleted
+msg_updated: Message updated
 muted_pl: Muted
 muted_sn: Muted
 new_msg: New message
@@ -31,6 +32,7 @@ old_msg: Old message
 old_nick: Old nickname
 old_topic: Old topic
 presence_updates: Presence updates
+sent_at: Sent
 remove_roles_pl: have had their roles removed
 soft_banned_pl: soft-banned
 text_chan_created: Text channel created.
