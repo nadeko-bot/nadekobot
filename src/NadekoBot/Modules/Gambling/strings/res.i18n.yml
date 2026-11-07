@@ -9,6 +9,13 @@ ar:
   curtr_gift: 'هدية من {0} [{1}]'
   curtr_take: 'أُخذ من مالك البوت {0} [{1}]'
   gifted: '{2} أهدى {0} لـ {1}'
+  give_role_confirm: 'هل تريد إعطاء {0} لكل عضو في {2}؟ عدد الأعضاء: {1}. التكلفة الإجمالية: {3}.'
+  give_role_cooldown: 'يمكنك إعطاء العملة لدور مرة أخرى بعد {0} ثانية.'
+  give_role_done: 'أعطى {0} مبلغ {1} لكل عضو في {3}. عدد الأعضاء: {2}.'
+  give_role_everyone: لا يمكنك إعطاء العملة لدور everyone.
+  give_role_incomplete: لا يرى البوت كل أعضاء هذا الخادم، لذلك قد لا يحصل بعض أعضاء الدور على العملة.
+  give_role_none: 'لا يوجد عضو في {0} يمكنه الحصول على عملتك. يتخطى البوت البوتات ويتخطاك أنت.'
+  give_role_too_many: 'أكثر من {1} عضو في {0} يمكنهم الحصول على عملتك. يمكنك إعطاء العملة لـ {1} عضو كحد أقصى في المرة الواحدة.'
   has: '{0} لديه {1}'
   mass_award: 'تم منح {0} لـ {1} مستخدم من دور {2}.'
   mass_take: 'تم أخذ {0} من {1} مستخدم في دور {2}.'
@@ -50,6 +57,13 @@ de-DE:
   curtr_gift: 'Geschenk von {0} [{1}]'
   curtr_take: 'Genommen von Bot-Besitzer {0} [{1}]'
   gifted: '{2} hat {0} an {1} verschenkt'
+  give_role_confirm: 'Jedem Mitglied von {2} {0} geben? Mitglieder: {1}. Gesamtkosten: {3}.'
+  give_role_cooldown: 'Du kannst einer Rolle in {0} Sekunden wieder Währung geben.'
+  give_role_done: '{0} hat jedem Mitglied von {3} {1} gegeben. Mitglieder: {2}.'
+  give_role_everyone: Du kannst der everyone-Rolle keine Währung geben.
+  give_role_incomplete: Der Bot sieht nicht alle Mitglieder dieses Servers, daher bekommen manche Mitglieder der Rolle vielleicht keine Währung.
+  give_role_none: 'Kein Mitglied von {0} kann deine Währung bekommen. Der Bot überspringt Bots und dich.'
+  give_role_too_many: 'Mehr als {1} Mitglieder von {0} können deine Währung bekommen. Du kannst höchstens {1} Mitgliedern auf einmal Währung geben.'
   has: '{0} hat {1}'
   mass_award: 'Es wurden {0} an {1} Nutzer von der Rolle {2} verteilt'
   mass_take: 'Habe {0} von {1} Nutzern in {2} Rolle genommen.'
@@ -91,6 +105,13 @@ es-ES:
   curtr_gift: 'Regalo de {0} [{1}]'
   curtr_take: 'Retiradas por el dueño del bot {0} [{1}]'
   gifted: '{2} le regaló {0} a {1}'
+  give_role_confirm: '¿Dar {0} a cada miembro de {2}? Miembros: {1}. Coste total: {3}.'
+  give_role_cooldown: 'Puedes volver a dar moneda a un rol en {0} segundos.'
+  give_role_done: '{0} le dio {1} a cada miembro de {3}. Miembros: {2}.'
+  give_role_everyone: No puedes dar moneda al rol everyone.
+  give_role_incomplete: El bot no ve a todos los miembros de este servidor, así que algunos miembros del rol pueden no recibir moneda.
+  give_role_none: 'Ningún miembro de {0} puede recibir tu moneda. El bot omite a los bots y a ti.'
+  give_role_too_many: 'Más de {1} miembros de {0} pueden recibir tu moneda. Puedes dar moneda a {1} miembros como máximo a la vez.'
   has: '{0} tiene {1}.'
   mass_award: 'Regalados {0} a {1} usuarios en el rol {2}.'
   mass_take: 'Tomado {0} de {1} usuarios en el rol {2}.'
@@ -132,6 +153,13 @@ fr-FR:
   curtr_gift: 'Cadeau de {0} [{1}]'
   curtr_take: 'Pris par le propriétaire du bot {0} [{1}]'
   gifted: '{2} a offert {0} à {1}'
+  give_role_confirm: 'Donner {0} à chaque membre de {2} ? Membres : {1}. Coût total : {3}.'
+  give_role_cooldown: 'Vous pourrez donner de la monnaie à un rôle dans {0} secondes.'
+  give_role_done: '{0} a donné {1} à chaque membre de {3}. Membres : {2}.'
+  give_role_everyone: Vous ne pouvez pas donner de monnaie au rôle everyone.
+  give_role_incomplete: Le bot ne voit pas tous les membres de ce serveur, donc certains membres du rôle peuvent ne pas recevoir de monnaie.
+  give_role_none: 'Aucun membre de {0} ne peut recevoir votre monnaie. Le bot ignore les bots et vous.'
+  give_role_too_many: 'Plus de {1} membres de {0} peuvent recevoir votre monnaie. Vous pouvez donner de la monnaie à {1} membres maximum à la fois.'
   has: '{0} a {1}'
   mass_award: 'Une récompense de {0} sera accordée aux {1} utilisateurs disposant du rôle {2}.'
   mass_take: 'Pris {0} de {1} utilisateurs du rôle {2}.'
@@ -173,6 +201,13 @@ id-ID:
   curtr_gift: 'Hadiah dari {0} [{1}]'
   curtr_take: 'Diambil oleh pemilik bot {0} [{1}]'
   gifted: '{2} telah menghadiahkan {0} kepada {1}'
+  give_role_confirm: 'Berikan {0} ke setiap anggota {2}? Anggota: {1}. Total biaya: {3}.'
+  give_role_cooldown: 'Kamu bisa memberikan mata uang ke role lagi dalam {0} detik.'
+  give_role_done: '{0} memberikan {1} ke setiap anggota {3}. Anggota: {2}.'
+  give_role_everyone: Kamu tidak bisa memberikan mata uang ke role everyone.
+  give_role_incomplete: Bot tidak bisa melihat semua anggota server ini, jadi beberapa anggota role mungkin tidak mendapat mata uang.
+  give_role_none: 'Tidak ada anggota {0} yang bisa menerima mata uangmu. Bot melewati bot dan kamu.'
+  give_role_too_many: 'Lebih dari {1} anggota {0} bisa menerima mata uangmu. Kamu bisa memberikan mata uang ke paling banyak {1} anggota sekaligus.'
   has: '{0} memiliki {1}'
   mass_award: 'Memberikan {0} kepada {1} pengguna dari role {2}.'
   mass_take: 'Mengambil {0} dari {1} pengguna di role {2}.'
@@ -214,6 +249,13 @@ ja-JP:
   curtr_gift: '{0}からのギフト [{1}]'
   curtr_take: 'Bot所有者{0}により取得 [{1}]'
   gifted: '{2}は{1}に{0}をプレゼントしました'
+  give_role_confirm: '{2}の各メンバーに{0}をあげますか？メンバー数: {1}。合計: {3}。'
+  give_role_cooldown: '{0}秒後にまたロールに通貨をあげられます。'
+  give_role_done: '{0}は{3}の各メンバーに{1}をあげました。メンバー数: {2}。'
+  give_role_everyone: everyoneロールには通貨をあげられません。
+  give_role_incomplete: Botはこのサーバーの全メンバーを把握できないため、ロールの一部のメンバーは通貨を受け取れない場合があります。
+  give_role_none: '{0}には通貨を受け取れるメンバーがいません。Botは他のBotとあなた自身を除外します。'
+  give_role_too_many: '{0}で通貨を受け取れるメンバーが{1}人を超えています。一度に通貨をあげられるのは最大{1}人までです。'
   has: '{0}は{1}持っています。'
   mass_award: '役割《{2}》の{1}人のユーザーに{0}を授与しました。'
   mass_take: 'ロール{2}の{1}人のユーザーから{0}を取得しました。'
@@ -255,6 +297,13 @@ ko-KR:
   curtr_gift: '{0}의 선물 [{1}]'
   curtr_take: '봇 소유자 {0}이(가) 회수 [{1}]'
   gifted: '{2}님이 {1}에게 {0}을(를) 선물했어요'
+  give_role_confirm: '{2}의 각 멤버에게 {0}을(를) 줄까요? 멤버 수: {1}. 총 비용: {3}.'
+  give_role_cooldown: '{0}초 후에 다시 역할에 화폐를 줄 수 있어요.'
+  give_role_done: '{0}님이 {3}의 각 멤버에게 {1}을(를) 줬어요. 멤버 수: {2}.'
+  give_role_everyone: everyone 역할에는 화폐를 줄 수 없어요.
+  give_role_incomplete: 봇이 이 서버의 모든 멤버를 볼 수 없어서, 역할의 일부 멤버는 화폐를 받지 못할 수 있어요.
+  give_role_none: '{0}에는 화폐를 받을 수 있는 멤버가 없어요. 봇은 봇과 본인을 제외해요.'
+  give_role_too_many: '{0}에서 화폐를 받을 수 있는 멤버가 {1}명보다 많아요. 한 번에 최대 {1}명에게만 화폐를 줄 수 있어요.'
   has: '{0}님은 {1}을(를) 가지고 있어요'
   mass_award: '{2} 역할의 {1}명의 유저에게 {0}을(를) 지급했어요.'
   mass_take: '{2} 역할의 {1}명의 유저에게서 {0}을(를) 회수했어요.'
@@ -296,6 +345,13 @@ pl-PL:
   curtr_gift: 'Prezent od {0} [{1}]'
   curtr_take: 'Zabrane przez właściciela bota {0} [{1}]'
   gifted: '{2} podarował/a {0} dla {1}'
+  give_role_confirm: 'Dać {0} każdemu członkowi {2}? Członkowie: {1}. Łączny koszt: {3}.'
+  give_role_cooldown: 'Możesz znowu dać walutę roli za {0} s.'
+  give_role_done: '{0} dał/a {1} każdemu członkowi {3}. Członkowie: {2}.'
+  give_role_everyone: Nie możesz dać waluty roli everyone.
+  give_role_incomplete: Bot nie widzi wszystkich członków tego serwera, więc niektórzy członkowie roli mogą nie dostać waluty.
+  give_role_none: 'Żaden członek {0} nie może dostać twojej waluty. Bot pomija boty i ciebie.'
+  give_role_too_many: 'Ponad {1} członków {0} może dostać twoją walutę. Możesz dać walutę najwyżej {1} członkom naraz.'
   has: '{0} ma {1}'
   mass_award: 'Przyznano {0} dla {1} użytkowników z roli {2}.'
   mass_take: 'Zabrano {0} od {1} użytkowników z roli {2}.'
@@ -337,6 +393,13 @@ pt-BR:
   curtr_gift: 'Presente de {0} [{1}]'
   curtr_take: 'Levado pelo dono do bot {0} [{1}]'
   gifted: '{2} presenteou {0} para {1}'
+  give_role_confirm: 'Dar {0} para cada membro de {2}? Membros: {1}. Custo total: {3}.'
+  give_role_cooldown: 'Você pode dar moedas para um cargo de novo em {0} segundos.'
+  give_role_done: '{0} deu {1} para cada membro de {3}. Membros: {2}.'
+  give_role_everyone: Você não pode dar moedas para o cargo everyone.
+  give_role_incomplete: O bot não consegue ver todos os membros deste servidor, então alguns membros do cargo podem não receber moedas.
+  give_role_none: 'Nenhum membro de {0} pode receber suas moedas. O bot ignora bots e você.'
+  give_role_too_many: 'Mais de {1} membros de {0} podem receber suas moedas. Você pode dar moedas para no máximo {1} membros de uma vez.'
   has: '{0} tem {1}'
   mass_award: 'Concedeu {0} a {1} usuários do cargo {2}.'
   mass_take: '{0} tirados de {1} usuários com cargo {2}.'
@@ -378,6 +441,13 @@ ru-RU:
   curtr_gift: 'Подарок от {0} [{1}]'
   curtr_take: 'Забрано владельцем бота {0} [{1}]'
   gifted: '{2} подарил {0} пользователю {1}'
+  give_role_confirm: 'Дать {0} каждому участнику {2}? Участников: {1}. Всего: {3}.'
+  give_role_cooldown: 'Вы сможете снова дать валюту роли через {0} с.'
+  give_role_done: '{0} дал {1} каждому участнику {3}. Участников: {2}.'
+  give_role_everyone: Нельзя дать валюту роли everyone.
+  give_role_incomplete: Бот не видит всех участников этого сервера, поэтому некоторые участники роли могут не получить валюту.
+  give_role_none: 'Ни один участник {0} не может получить вашу валюту. Бот пропускает ботов и вас.'
+  give_role_too_many: 'Вашу валюту могут получить больше {1} участников {0}. За один раз можно дать валюту не более чем {1} участникам.'
   has: 'У {0} есть {1}'
   mass_award: '{1} пользователей с ролью {2} получили вознаграждение в виде {0}'
   mass_take: 'Взято {0} от {1} пользователей в роли {2}.'
@@ -419,6 +489,13 @@ sr-Cyrl-RS:
   curtr_gift: 'Поклон од {0} [{1}]'
   curtr_take: 'Одузео власник бота {0} [{1}]'
   gifted: '{2} је поклонио/ла {0} кориснику {1}'
+  give_role_confirm: 'Дати {0} сваком члану улоге {2}? Чланова: {1}. Укупно: {3}.'
+  give_role_cooldown: 'Можеш поново дати валуту улози за {0} с.'
+  give_role_done: '{0} је дао/ла {1} сваком члану улоге {3}. Чланова: {2}.'
+  give_role_everyone: Не можеш дати валуту улози everyone.
+  give_role_incomplete: Бот не види све чланове овог сервера, па неки чланови улоге можда неће добити валуту.
+  give_role_none: 'Ниједан члан улоге {0} не може да добије твоју валуту. Бот прескаче ботове и тебе.'
+  give_role_too_many: 'Више од {1} чланова улоге {0} може да добије твоју валуту. Можеш дати валуту највише {1} чланова одједном.'
   has: '{0} има {1}'
   mass_award: 'Додељено {0} за {1} корисника из {2} улоге.'
   mass_take: 'Одузето {0} од {1} корисника у {2} улози.'
@@ -460,6 +537,13 @@ tr-TR:
   curtr_gift: '{0} tarafından hediye [{1}]'
   curtr_take: 'Bot sahibi {0} tarafından alındı [{1}]'
   gifted: '{2}, {1} kullanıcısına {0} hediye etti'
+  give_role_confirm: '{2} rolündeki her üyeye {0} verilsin mi? Üye sayısı: {1}. Toplam: {3}.'
+  give_role_cooldown: '{0} saniye sonra bir role yine para verebilirsin.'
+  give_role_done: '{0}, {3} rolündeki her üyeye {1} verdi. Üye sayısı: {2}.'
+  give_role_everyone: everyone rolüne para veremezsin.
+  give_role_incomplete: Bot bu sunucunun tüm üyelerini göremiyor, bu yüzden roldeki bazı üyeler para almayabilir.
+  give_role_none: '{0} rolünde paranı alabilecek üye yok. Bot, botları ve seni atlar.'
+  give_role_too_many: '{0} rolünde paranı alabilecek {1} üyeden fazla kişi var. Bir seferde en fazla {1} üyeye para verebilirsin.'
   has: '{0} kullanıcısının {1} var'
   mass_award: '{2} rolündeki {1} kullanıcıya {0} ödüllendirildi.'
   mass_take: '{2} rolündeki {1} kullanıcıdan {0} alındı.'
@@ -501,6 +585,13 @@ ts-TS:
   curtr_gift: 'Gift from {0} [{1}]'
   curtr_take: 'Taken by bot owner {0} [{1}]'
   gifted: '{2} has gifted {0} to {1}'
+  give_role_confirm: 'Give {0} to each member of {2}? Members: {1}. Total cost: {3}. Think before you click.'
+  give_role_cooldown: 'Slow down. You can give currency to a role again in {0} seconds.'
+  give_role_done: '{0} gave {1} to each member of {3}. Members: {2}. N-not that I''m impressed.'
+  give_role_everyone: You can't give currency to the everyone role. Pick an actual role.
+  give_role_incomplete: I can't see every member of this server, so some members of the role may not get currency.
+  give_role_none: 'Nobody in {0} can get your currency. Bots and you don''t count, obviously.'
+  give_role_too_many: 'More than {1} members of {0} can get your currency. Hmph, {1} members at once is the limit.'
   has: '{0} has {1}'
   mass_award: 'Awarded {0} to {1} users from {2} role.'
   mass_take: 'Taken {0} from {1} users in {2} role.'
@@ -542,6 +633,13 @@ uk-UA:
   curtr_gift: 'Подарунок від {0} [{1}]'
   curtr_take: 'Забрано власником бота {0} [{1}]'
   gifted: '{2} подарував {0} для {1}'
+  give_role_confirm: 'Дати {0} кожному учаснику {2}? Учасників: {1}. Загалом: {3}.'
+  give_role_cooldown: 'Ти зможеш знову дати валюту ролі через {0} с.'
+  give_role_done: '{0} дав {1} кожному учаснику {3}. Учасників: {2}.'
+  give_role_everyone: Не можна дати валюту ролі everyone.
+  give_role_incomplete: Бот не бачить усіх учасників цього сервера, тому деякі учасники ролі можуть не отримати валюту.
+  give_role_none: 'Жоден учасник {0} не може отримати твою валюту. Бот пропускає ботів і тебе.'
+  give_role_too_many: 'Твою валюту можуть отримати більше ніж {1} учасників {0}. За один раз можна дати валюту щонайбільше {1} учасникам.'
   has: '{0} має {1}'
   mass_award: 'Нагороджено {0} для {1} користувачів з ролі {2}.'
   mass_take: 'Забрано {0} у {1} користувачів з ролі {2}.'
@@ -583,6 +681,13 @@ vi-VN:
   curtr_gift: 'Quà tặng từ {0} [{1}]'
   curtr_take: 'Bị thu bởi chủ bot {0} [{1}]'
   gifted: '{2} đã tặng {0} cho {1}'
+  give_role_confirm: 'Tặng {0} cho mỗi thành viên của {2}? Số thành viên: {1}. Tổng chi phí: {3}.'
+  give_role_cooldown: 'Bạn có thể tặng tiền cho một vai trò lần nữa sau {0} giây.'
+  give_role_done: '{0} đã tặng {1} cho mỗi thành viên của {3}. Số thành viên: {2}.'
+  give_role_everyone: Bạn không thể tặng tiền cho vai trò everyone.
+  give_role_incomplete: Bot không thấy hết thành viên của máy chủ này, nên một số thành viên của vai trò có thể không nhận được tiền.
+  give_role_none: 'Không thành viên nào của {0} có thể nhận tiền của bạn. Bot bỏ qua các bot và chính bạn.'
+  give_role_too_many: 'Hơn {1} thành viên của {0} có thể nhận tiền của bạn. Bạn chỉ có thể tặng tiền cho tối đa {1} thành viên mỗi lần.'
   has: '{0} có {1}'
   mass_award: 'Đã thưởng {0} cho {1} người dùng từ role {2}.'
   mass_take: 'Đã thu {0} từ {1} người dùng trong role {2}.'
@@ -624,6 +729,13 @@ zh-CN:
   curtr_gift: '{0} [{1}] 的禮物'
   curtr_take: '由機器人所有者 {0} [{1}] 拍攝'
   gifted: '{2} 已将 {0} 赠送给 {1}'
+  give_role_confirm: '要给 {2} 的每位成员 {0} 吗？成员数：{1}。总花费：{3}。'
+  give_role_cooldown: '你可以在 {0} 秒后再次给身份组发放货币。'
+  give_role_done: '{0} 给了 {3} 的每位成员 {1}。成员数：{2}。'
+  give_role_everyone: 你不能给 everyone 身份组发放货币。
+  give_role_incomplete: 机器人看不到这个服务器的所有成员，所以该身份组的部分成员可能拿不到货币。
+  give_role_none: '{0} 中没有成员可以收到你的货币。机器人会跳过机器人和你自己。'
+  give_role_too_many: '{0} 中可以收到你货币的成员超过 {1} 名。你一次最多只能给 {1} 名成员发放货币。'
   has: '{0} 擁有 {1}'
   mass_award: '獎勵了 {0} 予 {2} 身分組中的 {1} 位使用者'
   mass_take: '已從身分組 {2} 中的使用者 {1} 上取走 {0}'

@@ -133,21 +133,34 @@ gamblestatsreset:
     - {}
 give:
   desc: |-
-    Give someone a certain amount of currency. You can specify the reason after the mention.
+    Gives a certain amount of currency to a member, or to each member of a role. You can add a reason after the mention or the role.
+    When you specify a role, the bot shows the total cost and asks you to confirm. The bot gives currency to at most 100 members at once. It skips bots and you.
   ex:
-    - 1 @Someone
     - 5 @CootGurl Ur so pwetty
+    - 1 @Someone
+    - 100 @Helpers thanks for the help
+    - 50 Event Winners
   params:
     - amount:
         desc: The total value of the gift being bestowed.
-      msg:
-        desc: The message explaining why you're giving them the currency.
       receiver:
         desc: The user receiving the currency, such as a gift or reward.
+      msg:
+        desc: The message explaining why you're giving them the currency.
     - amount:
         desc: The total value of the gift being bestowed.
       receiver:
         desc: The user receiving the currency, such as a gift or reward.
+    - amount:
+        desc: The amount of currency which each member of the role gets.
+      role:
+        desc: The role whose members get the currency.
+      msg:
+        desc: The message explaining why you're giving them the currency.
+    - amount:
+        desc: The amount of currency which each member of the role gets.
+      role:
+        desc: The role whose members get the currency.
 leaderboard:
   desc: |-
     Displays the bot's currency leaderboard, or in other words, the richest users.

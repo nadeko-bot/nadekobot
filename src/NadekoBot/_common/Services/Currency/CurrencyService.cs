@@ -163,6 +163,33 @@ public sealed class CurrencyService(DbService db, ITxTracker txTracker) : ICurre
         return false;
     }
 
+    public async Task<bool> TransferToManyAsync(
+        ulong fromId,
+        IReadOnlyCollection<ulong> toIds,
+        long amount,
+        TxData fromTx,
+        TxData toTx)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount);
+
+        if (toIds.Count == 0)
+            return false;
+
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(amount, long.MaxValue / toIds.Count);
+
+        await using var ctx = db.GetDbContext();
+        await using var tx = await ctx.Database.BeginTransactionAsync();
+
+        if (!await DefaultWallet.TakeAsync(ctx, fromId, amount * toIds.Count, fromTx))
+            return false;
+
+        foreach (var toId in toIds)
+            await DefaultWallet.AddAsync(ctx, toId, amount, toTx);
+
+        await tx.CommitAsync();
+        return true;
+    }
+
     public async Task<long> GetBalanceAsync(ulong userId)
     {
         var wallet = await GetWalletAsync(userId);

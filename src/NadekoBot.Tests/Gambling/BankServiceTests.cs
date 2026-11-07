@@ -42,30 +42,25 @@ public class BankServiceTests
         => _db.Dispose();
 
     [Test]
-    public async Task DepositAndWithdraw_MoveCurrencyOnlyWhenTheBalanceIsEnough()
+    public async Task DepositAndWithdraw_MoveCurrencyOnlyWhenEnough_AndRollBackAFailureMidway()
     {
         await SeedWalletAsync(100);
 
         Assert.That(await _svc.DepositAsync(USER_ID, 70), Is.True);
-        Assert.That(await _svc.WithdrawAsync(USER_ID, 20), Is.True);
-        Assert.That(await _svc.DepositAsync(USER_ID, 51), Is.False);
-        Assert.That(await _svc.WithdrawAsync(USER_ID, 51), Is.False);
+        Assert.That(await _svc.WithdrawAsync(USER_ID, 10), Is.True);
+        Assert.That(await _svc.DepositAsync(USER_ID, 41), Is.False);
+        Assert.That(await _svc.WithdrawAsync(USER_ID, 61), Is.False);
 
-        Assert.That(await GetWalletAsync(), Is.EqualTo(50));
-        Assert.That(await _svc.GetBalanceAsync(USER_ID), Is.EqualTo(50));
+        Assert.That(await GetWalletAsync(), Is.EqualTo(40));
+        Assert.That(await _svc.GetBalanceAsync(USER_ID), Is.EqualTo(60));
 
-        await using var ctx = _db.GetDbContext();
-        var txSum = await ctx.GetTable<CurrencyTransaction>()
-            .Where(x => x.UserId == USER_ID && x.Type == "bank")
-            .SumAsyncLinqToDB(x => x.Amount);
-        Assert.That(txSum, Is.EqualTo(-50));
-    }
-
-    [Test]
-    public async Task FailureMidway_RollsBackWalletBankAndTransactions()
-    {
-        await SeedWalletAsync(100);
-        Assert.That(await _svc.DepositAsync(USER_ID, 60), Is.True);
+        await using (var sumCtx = _db.GetDbContext())
+        {
+            var txSum = await sumCtx.GetTable<CurrencyTransaction>()
+                .Where(x => x.UserId == USER_ID && x.Type == "bank")
+                .SumAsyncLinqToDB(x => x.Amount);
+            Assert.That(txSum, Is.EqualTo(-60));
+        }
 
         // withdraw fails on its last step, after the bank and wallet rows already changed
         await ExecAsync($"CREATE TRIGGER fail_tx BEFORE INSERT ON \"{TableName<CurrencyTransaction>()}\" "
@@ -86,7 +81,7 @@ public class BankServiceTests
         var txCount = await ctx.GetTable<CurrencyTransaction>()
             .Where(x => x.UserId == USER_ID)
             .CountAsyncLinqToDB();
-        Assert.That(txCount, Is.EqualTo(1));
+        Assert.That(txCount, Is.EqualTo(2));
     }
 
     private string TableName<T>()

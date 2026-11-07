@@ -2696,10 +2696,12 @@
       "Aliases": [
         ".give"
       ],
-      "Description": "Give someone a certain amount of currency. You can specify the reason after the mention.",
+      "Description": "Gives a certain amount of currency to a member, or to each member of a role. You can add a reason after the mention or the role.\nWhen you specify a role, the bot shows the total cost and asks you to confirm. The bot gives currency to at most 100 members at once. It skips bots and you.",
       "Usage": [
+        ".give 5 @CootGurl Ur so pwetty",
         ".give 1 @Someone",
-        ".give 5 @CootGurl Ur so pwetty"
+        ".give 100 @Helpers thanks for the help",
+        ".give 50 Event Winners"
       ],
       "Submodule": "Gambling",
       "Module": "Gambling",

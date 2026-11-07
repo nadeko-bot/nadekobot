@@ -4,6 +4,10 @@
 
 ## [7.9.2] - TBD
 
+### Added
+
+- `.give` gives currency to each member of a role after a confirmation.
+
 ### Changed
 
 - The logs for deleted and updated messages show their details in fields.

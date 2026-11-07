@@ -714,6 +714,129 @@ public partial class Gambling : GamblingModule<GamblingService>
     public Task Give([OverrideTypeReader(typeof(BalanceTypeReader))] long amount, [Leftover] IGuildUser receiver)
         => Give(amount, receiver, null);
 
+    private const int MAX_ROLE_GIVE_MEMBERS = 100;
+    private const int MAX_GIFT_NOTE_LENGTH = 200;
+    private static readonly TimeSpan _roleGiveCooldown = TimeSpan.FromSeconds(10);
+
+    [Cmd]
+    [SpendsCurrency]
+    [RequireContext(ContextType.Guild)]
+    [BotPerm(ChannelPerm.EmbedLinks)]
+    [Priority(-2)]
+    public async Task Give(long amount, IRole role, [Leftover] string msg)
+    {
+        if (amount <= 0 || role is not SocketRole sr)
+            return;
+
+        if (sr.IsEveryone)
+        {
+            await Response().Error(strs.give_role_everyone).SendAsync();
+            return;
+        }
+
+        // refuse a role which is already too big before the member download
+        if (CollectRoleReceiversInternal(sr).Count > MAX_ROLE_GIVE_MEMBERS)
+        {
+            await Response().Error(strs.give_role_too_many(Format.Bold(role.Name), MAX_ROLE_GIVE_MEMBERS)).SendAsync();
+            return;
+        }
+
+        var wait = await _cache.GetRatelimitAsync(new($"give:role:{ctx.User.Id}"), _roleGiveCooldown);
+        if (wait is { } w)
+        {
+            await Response().Error(strs.give_role_cooldown(Math.Ceiling(w.TotalSeconds))).SendAsync();
+            return;
+        }
+
+        await ctx.Channel.TriggerTypingAsync();
+        var incomplete = !await _tracker.EnsureUsersDownloadedAsync(ctx.Guild);
+        var receivers = CollectRoleReceiversInternal(sr);
+
+        if (receivers.Count == 0)
+        {
+            var none = GetText(strs.give_role_none(Format.Bold(role.Name)));
+            if (incomplete)
+                none += "\n" + GetText(strs.give_role_incomplete);
+
+            await Response().Error(none).SendAsync();
+            return;
+        }
+
+        if (receivers.Count > MAX_ROLE_GIVE_MEMBERS)
+        {
+            await Response().Error(strs.give_role_too_many(Format.Bold(role.Name), MAX_ROLE_GIVE_MEMBERS)).SendAsync();
+            return;
+        }
+
+        if (amount > long.MaxValue / receivers.Count)
+        {
+            await Response().Error(strs.not_enough(CurrencySign)).SendAsync();
+            return;
+        }
+
+        var total = amount * receivers.Count;
+        if (await _cs.GetBalanceAsync(ctx.User.Id) < total)
+        {
+            await Response().Error(strs.not_enough(CurrencySign)).SendAsync();
+            return;
+        }
+
+        var desc = GetText(strs.give_role_confirm(N(amount),
+            Format.Bold(receivers.Count.ToString()),
+            Format.Bold(role.Name),
+            N(total)));
+
+        if (incomplete)
+            desc += "\n" + GetText(strs.give_role_incomplete);
+
+        if (!await PromptUserConfirmAsync(CreateEmbed().WithDescription(desc)))
+            return;
+
+        if (msg is { Length: > MAX_GIFT_NOTE_LENGTH })
+            msg = msg[..(char.IsHighSurrogate(msg[MAX_GIFT_NOTE_LENGTH - 1]) ? MAX_GIFT_NOTE_LENGTH - 1 : MAX_GIFT_NOTE_LENGTH)];
+
+        var giver = ctx.User.ToString()!;
+        var fromTx = new TxData("gift", $"@{role.Name} ({receivers.Count})", msg);
+        var toTx = new TxData("gift", giver, msg, ctx.User.Id);
+
+        if (!await _cs.TransferToManyAsync(ctx.User.Id, receivers, amount, fromTx, toTx))
+        {
+            await Response().Error(strs.not_enough(CurrencySign)).SendAsync();
+            return;
+        }
+
+        await Response()
+            .Confirm(strs.give_role_done(giver,
+                N(amount),
+                Format.Bold(receivers.Count.ToString()),
+                Format.Bold(role.Name)))
+            .SendAsync();
+    }
+
+    [Cmd]
+    [SpendsCurrency]
+    [RequireContext(ContextType.Guild)]
+    [BotPerm(ChannelPerm.EmbedLinks)]
+    [Priority(-1)]
+    public Task Give(long amount, [Leftover] IRole role)
+        => Give(amount, role, null);
+
+    // Stops after one member over the limit, which is enough to refuse.
+    private List<ulong> CollectRoleReceiversInternal(SocketRole role)
+    {
+        var receivers = new List<ulong>(MAX_ROLE_GIVE_MEMBERS + 1);
+        foreach (var user in role.Members)
+        {
+            if (user.IsBot || user.Id == ctx.User.Id)
+                continue;
+
+            receivers.Add(user.Id);
+            if (receivers.Count > MAX_ROLE_GIVE_MEMBERS)
+                break;
+        }
+
+        return receivers;
+    }
     [Cmd]
     [RequireContext(ContextType.Guild)]
     [OwnerOnly]

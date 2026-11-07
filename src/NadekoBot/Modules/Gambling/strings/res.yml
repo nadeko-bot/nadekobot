@@ -8,6 +8,13 @@ curtr_award: Awarded by bot owner {0} [{1}]
 curtr_gift: Gift from {0} [{1}]
 curtr_take: Taken by bot owner {0} [{1}]
 gifted: '{2} has gifted {0} to {1}'
+give_role_confirm: 'Give {0} to each member of {2}? Members: {1}. Total cost: {3}.'
+give_role_cooldown: You can give currency to a role again in {0} seconds.
+give_role_done: '{0} gave {1} to each member of {3}. Members: {2}.'
+give_role_everyone: You can't give currency to the everyone role.
+give_role_incomplete: The bot can't see all members of this server, so some members of the role may not get currency.
+give_role_none: No member of {0} can get your currency. The bot skips bots and you.
+give_role_too_many: More than {1} members of {0} can get your currency. You can give currency to at most {1} members at once.
 has: '{0} has {1}'
 mass_award: Awarded {0} to {1} users from {2} role.
 mass_take: Taken {0} from {1} users in {2} role.

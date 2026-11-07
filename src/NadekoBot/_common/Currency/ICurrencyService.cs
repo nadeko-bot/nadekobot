@@ -56,5 +56,13 @@ public interface ICurrencyService
         string? note,
         string formattedAmount);
 
+    // Takes amount * toIds.Count from the giver and gives amount to each id, all or nothing.
+    Task<bool> TransferToManyAsync(
+        ulong fromId,
+        IReadOnlyCollection<ulong> toIds,
+        long amount,
+        TxData fromTx,
+        TxData toTx);
+
     Task<long> GetBalanceAsync(ulong userId);
 }
