@@ -25,6 +25,13 @@ public class AutoThreadOptions : INadekoCommandOptions
         HelpText = "Also create threads for this many recent messages. 1 to 10.")]
     public int Backfill { get; set; }
 
+    [Option('i',
+        "include-bots",
+        Required = false,
+        Default = false,
+        HelpText = "Also create threads for messages from bots, webhooks and this bot.")]
+    public bool IncludeBots { get; set; }
+
     public void NormalizeOptions()
     {
     }

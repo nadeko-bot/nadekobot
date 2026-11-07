@@ -302,6 +302,9 @@ namespace NadekoBot.Migrations
                     b.Property<ulong>("GuildId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IncludeBots")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Mode")
                         .HasColumnType("INTEGER");
 

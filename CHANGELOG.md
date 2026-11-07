@@ -7,6 +7,7 @@
 ### Added
 
 - `.give` gives currency to each member of a role after a confirmation.
+- `.autothread` / `.ath` has `--include-bots` / `-i`, which also creates threads for messages from bots and webhooks.
 
 ### Changed
 
@@ -15,6 +16,9 @@
 ### Fixed
 
 - The server log shows deleted and updated messages longer than 1024 characters.
+- `.autothread` / `.ath` fixes
+    - `--backfill` / `-b` threads use the chosen archive time
+    - `media` mode also creates threads for messages with an embed
 
 ## [7.9.1] - 05.11.2026
 

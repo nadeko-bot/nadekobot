@@ -154,7 +154,8 @@ namespace NadekoBot.Migrations
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     Mode = table.Column<int>(type: "INTEGER", nullable: false),
-                    ArchiveDurationMinutes = table.Column<int>(type: "INTEGER", nullable: false)
+                    ArchiveDurationMinutes = table.Column<int>(type: "INTEGER", nullable: false),
+                    IncludeBots = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

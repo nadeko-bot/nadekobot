@@ -45,7 +45,8 @@ public class AutoThreadTests
         ulong id = 1,
         bool isBot = false,
         bool isWebhook = false,
-        bool hasThread = false)
+        bool hasThread = false,
+        int embeds = 0)
     {
         var author = Substitute.For<IGuildUser>();
         author.DisplayName.Returns("Author Name");
@@ -61,11 +62,14 @@ public class AutoThreadTests
         msg.Attachments.Returns(Enumerable.Range(0, attachments)
                                           .Select(_ => Substitute.For<IAttachment>())
                                           .ToList());
+        msg.Embeds.Returns(Enumerable.Range(0, embeds)
+                                     .Select(_ => Substitute.For<IEmbed>())
+                                     .ToList());
         return msg;
     }
 
     [Test]
-    public void ThreadNameAndBackfill_UseTheFirstLineAndSkipBotsWebhooksAndThreads()
+    public void ThreadNameAndBackfill_UseTheFirstLineAndSkipThreadsAndBotsUnlessIncluded()
     {
         Assert.That(AutoThreadArchive.TryParse("7D", out var oneWeek) && oneWeek == AutoThreadArchive.ONE_WEEK, Is.True);
         Assert.That(AutoThreadArchive.TryParse("2h", out _), Is.False);
@@ -92,30 +96,34 @@ public class AutoThreadTests
             Message("oldest", id: 10)
         };
 
-        var targets = AutoThreadService.SelectBackfillTargets(messages, AutoThreadMode.All, 10);
+        var targets = AutoThreadService.SelectBackfillTargets(messages, AutoThreadMode.All, false, 10);
         Assert.That(targets.Select(x => x.Id), Is.EqualTo(new ulong[] { 10, 20, 60 }));
 
-        var capped = AutoThreadService.SelectBackfillTargets(messages, AutoThreadMode.All, 2);
+        var withBots = AutoThreadService.SelectBackfillTargets(messages, AutoThreadMode.All, true, 10);
+        Assert.That(withBots.Select(x => x.Id), Is.EqualTo(new ulong[] { 10, 20, 40, 50, 60 }));
+
+        var capped = AutoThreadService.SelectBackfillTargets(messages, AutoThreadMode.All, false, 2);
         Assert.That(capped.Select(x => x.Id), Is.EqualTo(new ulong[] { 20, 60 }));
 
         var mediaMessages = new[]
         {
+            Message("feed post", id: 5, isBot: true, embeds: 1),
             Message("http is a protocol", id: 4),
             Message("plain text", id: 3),
             Message("see HTTPS://EXAMPLE.COM", id: 2),
             Message("with file", attachments: 1, id: 1)
         };
 
-        var media = AutoThreadService.SelectBackfillTargets(mediaMessages, AutoThreadMode.Media, 10);
+        var media = AutoThreadService.SelectBackfillTargets(mediaMessages, AutoThreadMode.Media, true, 10);
 
-        Assert.That(media.Select(x => x.Id), Is.EqualTo(new ulong[] { 1, 2 }));
+        Assert.That(media.Select(x => x.Id), Is.EqualTo(new ulong[] { 1, 2, 5 }));
     }
 
     [Test]
     public async Task Enable_Overwrites_AndDisable_RemovesChannel()
     {
-        await _svc.EnableAsync(GUILD_ID, CHANNEL_ID, AutoThreadMode.All, AutoThreadArchive.DEFAULT);
-        await _svc.EnableAsync(GUILD_ID, CHANNEL_ID, AutoThreadMode.Media, AutoThreadArchive.ONE_WEEK);
+        await _svc.EnableAsync(GUILD_ID, CHANNEL_ID, AutoThreadMode.All, AutoThreadArchive.DEFAULT, true);
+        await _svc.EnableAsync(GUILD_ID, CHANNEL_ID, AutoThreadMode.Media, AutoThreadArchive.ONE_WEEK, false);
 
         await using (var uow = _db.GetDbContext())
         {
@@ -124,6 +132,7 @@ public class AutoThreadTests
             Assert.That(rows, Has.Count.EqualTo(1));
             Assert.That(rows[0].Mode, Is.EqualTo(AutoThreadMode.Media));
             Assert.That(rows[0].ArchiveDurationMinutes, Is.EqualTo(AutoThreadArchive.ONE_WEEK));
+            Assert.That(rows[0].IncludeBots, Is.False);
             Assert.That(_svc.IsEnabled(CHANNEL_ID), Is.True);
         }
 

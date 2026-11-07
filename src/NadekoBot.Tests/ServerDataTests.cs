@@ -272,6 +272,7 @@ public sealed class ServerDataTests
                     WHERE Name = 'IX_XpRoleReward_XpSettingsId_Level_RoleId';
                     DELETE FROM __ServerExportIndex WHERE TableName = 'AllowedLinkDomain';
                     DROP TABLE AllowedLinkDomain;
+                    ALTER TABLE AutoThreadChannel DROP COLUMN IncludeBots;
                     DELETE FROM __EFMigrationsHistory;
                     INSERT INTO __EFMigrationsHistory VALUES ('20261009084103_reminder-user-guild-index', '9.0.1');
                     """);

@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20261031160231_init")]
+    [Migration("20261107211631_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -303,6 +303,9 @@ namespace NadekoBot.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IncludeBots")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Mode")

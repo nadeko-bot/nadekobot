@@ -1,5 +1,6 @@
 ar:
   autothread_enabled: 'سيتم إنشاء المواضيع تلقائيًا في هذه القناة. الوضع: {0}، الأرشفة بعد: {1}'
+  autothread_bots_included: سينشئ البوت أيضًا مواضيع لرسائل البوتات والويب هوك ورسائله هو.
   autothread_disabled: لن يتم إنشاء المواضيع تلقائيًا في هذه القناة بعد الآن.
   autothread_invalid_duration: مدة الأرشفة غير صالحة. استخدم `1h` أو `24h` أو `3d` أو `7d`.
   autothread_invalid_mode: الوضع غير صالح. استخدم `all` أو `media`.
@@ -12,6 +13,7 @@ ar:
 
 de-DE:
   autothread_enabled: 'Threads werden in diesem Kanal automatisch erstellt. Modus: {0}, Archivierung nach: {1}'
+  autothread_bots_included: Der Bot erstellt auch Threads für Nachrichten von Bots, Webhooks und sich selbst.
   autothread_disabled: Threads werden in diesem Kanal nicht mehr automatisch erstellt.
   autothread_invalid_duration: Ungültige Archivierungsdauer. Nutze `1h`, `24h`, `3d` oder `7d`.
   autothread_invalid_mode: Ungültiger Modus. Nutze `all` oder `media`.
@@ -24,6 +26,7 @@ de-DE:
 
 es-ES:
   autothread_enabled: 'Los hilos se crearán automáticamente en este canal. Modo: {0}, archivar tras: {1}'
+  autothread_bots_included: El bot también crea hilos para los mensajes de bots, webhooks y los suyos.
   autothread_disabled: Los hilos ya no se crearán automáticamente en este canal.
   autothread_invalid_duration: Duración de archivado no válida. Usa `1h`, `24h`, `3d` o `7d`.
   autothread_invalid_mode: Modo no válido. Usa `all` o `media`.
@@ -36,6 +39,7 @@ es-ES:
 
 fr-FR:
   autothread_enabled: 'Les fils seront créés automatiquement dans ce salon. Mode : {0}, archivage après : {1}'
+  autothread_bots_included: Le bot crée aussi des fils pour les messages des bots, des webhooks et les siens.
   autothread_disabled: Les fils ne seront plus créés automatiquement dans ce salon.
   autothread_invalid_duration: Durée d'archivage invalide. Utilise `1h`, `24h`, `3d` ou `7d`.
   autothread_invalid_mode: Mode invalide. Utilise `all` ou `media`.
@@ -48,6 +52,7 @@ fr-FR:
 
 id-ID:
   autothread_enabled: 'Thread akan dibuat otomatis di channel ini. Mode: {0}, arsip setelah: {1}'
+  autothread_bots_included: Bot juga membuat thread untuk pesan dari bot, webhook, dan dirinya sendiri.
   autothread_disabled: Thread tidak akan dibuat otomatis lagi di channel ini.
   autothread_invalid_duration: Durasi arsip tidak valid. Gunakan `1h`, `24h`, `3d`, atau `7d`.
   autothread_invalid_mode: Mode tidak valid. Gunakan `all` atau `media`.
@@ -60,6 +65,7 @@ id-ID:
 
 ja-JP:
   autothread_enabled: 'このチャンネルではスレッドが自動的に作成されます。モード: {0}、アーカイブまで: {1}'
+  autothread_bots_included: ボット、ウェブフック、そしてこのボット自身のメッセージにもスレッドを作成します。
   autothread_disabled: このチャンネルでスレッドが自動的に作成されなくなりました。
   autothread_invalid_duration: アーカイブ時間が無効です。`1h`、`24h`、`3d`、`7d` のいずれかを使ってください。
   autothread_invalid_mode: モードが無効です。`all` または `media` を使ってください。
@@ -72,6 +78,7 @@ ja-JP:
 
 ko-KR:
   autothread_enabled: '이 채널에서 스레드가 자동으로 만들어집니다. 모드: {0}, 보관까지: {1}'
+  autothread_bots_included: 봇, 웹후크, 그리고 이 봇 자신의 메시지에도 스레드를 만듭니다.
   autothread_disabled: 이제 이 채널에서 스레드가 자동으로 만들어지지 않습니다.
   autothread_invalid_duration: 보관 시간이 올바르지 않습니다. `1h`, `24h`, `3d`, `7d` 중 하나를 사용하세요.
   autothread_invalid_mode: 모드가 올바르지 않습니다. `all` 또는 `media`를 사용하세요.
@@ -84,6 +91,7 @@ ko-KR:
 
 pl-PL:
   autothread_enabled: 'Wątki będą tworzone automatycznie na tym kanale. Tryb: {0}, archiwizacja po: {1}'
+  autothread_bots_included: Bot tworzy też wątki dla wiadomości botów, webhooków i własnych.
   autothread_disabled: Wątki nie będą już tworzone automatycznie na tym kanale.
   autothread_invalid_duration: Nieprawidłowy czas archiwizacji. Użyj `1h`, `24h`, `3d` lub `7d`.
   autothread_invalid_mode: Nieprawidłowy tryb. Użyj `all` lub `media`.
@@ -96,6 +104,7 @@ pl-PL:
 
 pt-BR:
   autothread_enabled: 'As threads serão criadas automaticamente neste canal. Modo: {0}, arquivar após: {1}'
+  autothread_bots_included: O bot também cria threads para mensagens de bots, webhooks e dele mesmo.
   autothread_disabled: As threads não serão mais criadas automaticamente neste canal.
   autothread_invalid_duration: Duração de arquivamento inválida. Use `1h`, `24h`, `3d` ou `7d`.
   autothread_invalid_mode: Modo inválido. Use `all` ou `media`.
@@ -108,6 +117,7 @@ pt-BR:
 
 ru-RU:
   autothread_enabled: 'В этом канале ветки будут создаваться автоматически. Режим: {0}, архивировать через: {1}'
+  autothread_bots_included: Бот также создаёт ветки для сообщений ботов, вебхуков и своих собственных.
   autothread_disabled: Ветки в этом канале больше не создаются автоматически.
   autothread_invalid_duration: Неверное время архивации. Используй `1h`, `24h`, `3d` или `7d`.
   autothread_invalid_mode: Неверный режим. Используй `all` или `media`.
@@ -120,6 +130,7 @@ ru-RU:
 
 sr-Cyrl-RS:
   autothread_enabled: 'Теме ће се аутоматски правити у овом каналу. Режим: {0}, архивирај после: {1}'
+  autothread_bots_included: Бот прави теме и за поруке ботова, вебхукова и своје поруке.
   autothread_disabled: Теме се више неће аутоматски правити у овом каналу.
   autothread_invalid_duration: Неисправно време архивирања. Користи `1h`, `24h`, `3d` или `7d`.
   autothread_invalid_mode: Неисправан режим. Користи `all` или `media`.
@@ -132,6 +143,7 @@ sr-Cyrl-RS:
 
 tr-TR:
   autothread_enabled: 'Bu kanalda başlıklar otomatik olarak oluşturulacak. Mod: {0}, arşivleme süresi: {1}'
+  autothread_bots_included: Bot, botların, webhookların ve kendi mesajları için de başlık oluşturur.
   autothread_disabled: Bu kanalda başlıklar artık otomatik olarak oluşturulmayacak.
   autothread_invalid_duration: Geçersiz arşivleme süresi. `1h`, `24h`, `3d` veya `7d` kullan.
   autothread_invalid_mode: Geçersiz mod. `all` veya `media` kullan.
@@ -144,6 +156,7 @@ tr-TR:
 
 ts-TS:
   autothread_enabled: 'F-fine, I''ll make a thread for every message here. Mode: {0}, archive after: {1}'
+  autothread_bots_included: Messages from bots, webhooks and me get threads too. Don't expect special treatment.
   autothread_disabled: Threads won't be created automatically here anymore. Hmph.
   autothread_invalid_duration: That archive duration is invalid. Use `1h`, `24h`, `3d` or `7d`.
   autothread_invalid_mode: That mode is invalid. Use `all` or `media`.
@@ -156,6 +169,7 @@ ts-TS:
 
 uk-UA:
   autothread_enabled: 'У цьому каналі гілки створюватимуться автоматично. Режим: {0}, архівувати через: {1}'
+  autothread_bots_included: Бот також створює гілки для повідомлень ботів, вебхуків і своїх власних.
   autothread_disabled: Гілки в цьому каналі більше не створюються автоматично.
   autothread_invalid_duration: Некоректний час архівування. Використовуй `1h`, `24h`, `3d` або `7d`.
   autothread_invalid_mode: Некоректний режим. Використовуй `all` або `media`.
@@ -168,6 +182,7 @@ uk-UA:
 
 vi-VN:
   autothread_enabled: 'Các luồng sẽ được tạo tự động trong kênh này. Chế độ: {0}, lưu trữ sau: {1}'
+  autothread_bots_included: Bot cũng tạo luồng cho tin nhắn của bot, webhook và của chính nó.
   autothread_disabled: Các luồng sẽ không còn được tạo tự động trong kênh này.
   autothread_invalid_duration: Thời gian lưu trữ không hợp lệ. Dùng `1h`, `24h`, `3d` hoặc `7d`.
   autothread_invalid_mode: Chế độ không hợp lệ. Dùng `all` hoặc `media`.
@@ -180,6 +195,7 @@ vi-VN:
 
 zh-CN:
   autothread_enabled: '此频道将自动创建子区。模式：{0}，存档时间：{1}'
+  autothread_bots_included: 机器人也会为其他机器人、webhook 和自己的消息创建子区。
   autothread_disabled: 此频道将不再自动创建子区。
   autothread_invalid_duration: 存档时长无效。请使用 `1h`、`24h`、`3d` 或 `7d`。
   autothread_invalid_mode: 模式无效。请使用 `all` 或 `media`。

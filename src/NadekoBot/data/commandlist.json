@@ -1678,19 +1678,21 @@
         ".autothread",
         ".ath"
       ],
-      "Description": "Makes the bot create a thread for each new message in this channel.\nUse the command without options to turn the feature on or off.\nModes:\n- `all` (default) creates a thread for any message\n- `media` creates a thread only for messages with an attachment or a link\nArchive durations: `1h`, `24h` (default), `3d`, `7d`. `3d` and `7d` need a boosted server.\nUse `--backfill` to also create threads for recent messages.",
+      "Description": "Makes the bot create a thread for each new message in this channel.\nUse the command without options to turn the feature on or off.\nModes:\n- `all` (default) creates a thread for any message\n- `media` creates a thread only for messages with an attachment, an embed or a link\nArchive durations: `1h`, `24h` (default), `3d`, `7d`. `3d` and `7d` need a boosted server.\nThe bot ignores messages from bots and webhooks. Use `--include-bots` to create threads for them too.\nUse `--backfill` to also create threads for recent messages.",
       "Usage": [
         ".autothread",
         ".autothread -m media",
         ".autothread --mode all --archive 3d",
-        ".autothread -m media -b 5"
+        ".autothread -m media -b 5",
+        ".autothread -i"
       ],
       "Submodule": "ThreadCommands",
       "Module": "Administration",
       "Options": [
         "`--mode` (`-m`)   Which messages start a thread. all or media. Default all.  ",
         "`--archive` (`-a`)   Inactive time after which the bot archives the thread. 1h, 24h, 3d or 7d. Default 24h.  ",
-        "`--backfill` (`-b`)   Also create threads for this many recent messages. 1 to 10.  "
+        "`--backfill` (`-b`)   Also create threads for this many recent messages. 1 to 10.  ",
+        "`--include-bots` (`-i`)   Also create threads for messages from bots, webhooks and this bot.  "
       ],
       "Requirements": [
         "ManageThreads Server Permission"

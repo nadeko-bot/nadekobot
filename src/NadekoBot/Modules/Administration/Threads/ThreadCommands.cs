@@ -93,12 +93,15 @@ public partial class Administration
                 return;
             }
 
-            await ats.EnableAsync(ctx.Guild.Id, stc.Id, mode, minutes);
+            await ats.EnableAsync(ctx.Guild.Id, stc.Id, mode, minutes, opts.IncludeBots);
 
-            await Response()
-                .Confirm(strs.autothread_enabled(Format.Bold(mode.ToString()),
-                    Format.Bold(AutoThreadArchive.Pretty(minutes))))
-                .SendAsync();
+            var enabledText = GetText(strs.autothread_enabled(Format.Bold(mode.ToString()),
+                Format.Bold(AutoThreadArchive.Pretty(minutes))));
+
+            if (opts.IncludeBots)
+                enabledText += "\n" + GetText(strs.autothread_bots_included);
+
+            await Response().Confirm(enabledText).SendAsync();
 
             if (mode == AutoThreadMode.Media)
                 await WarnIfNoMessageContentAsync("autothread");
@@ -106,7 +109,7 @@ public partial class Administration
             if (opts.Backfill == 0)
                 return;
 
-            var created = await ats.BackfillAsync(stc, mode, opts.Backfill, ctx.Message.Id);
+            var created = await ats.BackfillAsync(stc, mode, minutes, opts.IncludeBots, opts.Backfill, ctx.Message.Id);
             await Response().Confirm(strs.autothread_backfill_done(created)).SendAsync();
         }
 
@@ -142,8 +145,13 @@ public partial class Administration
                     var sb = new StringBuilder();
                     foreach (var item in pageItems)
                     {
-                        sb.AppendLine($"<#{item.ChannelId}> - `{item.Mode}` - "
-                                      + $"`{AutoThreadArchive.Pretty(item.ArchiveDurationMinutes)}`");
+                        sb.Append($"<#{item.ChannelId}> - `{item.Mode}` - "
+                                  + $"`{AutoThreadArchive.Pretty(item.ArchiveDurationMinutes)}`");
+
+                        if (item.IncludeBots)
+                            sb.Append(" - `bots`");
+
+                        sb.AppendLine();
                     }
 
                     return CreateEmbed()

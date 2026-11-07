@@ -21,20 +21,23 @@ autothread:
     Use the command without options to turn the feature on or off.
     Modes:
     - `all` (default) creates a thread for any message
-    - `media` creates a thread only for messages with an attachment or a link
+    - `media` creates a thread only for messages with an attachment, an embed or a link
     Archive durations: `1h`, `24h` (default), `3d`, `7d`. `3d` and `7d` need a boosted server.
+    The bot ignores messages from bots and webhooks. Use `--include-bots` to create threads for them too.
     Use `--backfill` to also create threads for recent messages.
   ex:
     - ''
     - '-m media'
     - '--mode all --archive 3d'
     - '-m media -b 5'
+    - '-i'
   params:
     - args:
         desc: |-
           Options. `-m`, `--mode` sets the messages that start a thread. Available values: `all`, `media`.
           `-a`, `--archive` sets the time after which the bot archives an inactive thread. Available values: `1h`, `24h`, `3d`, `7d`.
           `-b`, `--backfill` creates threads for that many recent messages. Available values: `1` to `10`.
+          `-i`, `--include-bots` also creates threads for messages from bots, webhooks and this bot.
 autothreadlist:
   desc: Shows the channels in which the bot creates threads automatically.
   ex:

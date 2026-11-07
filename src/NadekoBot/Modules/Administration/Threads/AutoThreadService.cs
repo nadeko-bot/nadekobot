@@ -3,6 +3,7 @@ using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
 using System.Net;
+using System.Threading.Channels;
 
 namespace NadekoBot.Modules.Administration.Services;
 
@@ -17,8 +18,22 @@ public sealed class AutoThreadService(
     private const int BACKFILL_DELAY_MS = 3000;
     private const int BACKFILL_FETCH_MULTIPLIER = 10;
     private const int MAX_BACKFILL_FETCH = 100;
+    private const int BOT_QUEUE_CAPACITY = 256;
+    private const int BOT_QUEUE_WORKERS = 2;
+    private const long DROP_WARNING_INTERVAL_MS = 60_000;
 
     private ConcurrentDictionary<ulong, AutoThreadSetting> _channels = new();
+
+    private readonly Channel<IUserMessage> _botQueue = Channel.CreateBounded<IUserMessage>(
+        new BoundedChannelOptions(BOT_QUEUE_CAPACITY)
+        {
+            FullMode = BoundedChannelFullMode.Wait,
+            SingleReader = false,
+            SingleWriter = false
+        });
+
+    private long _lastDropWarning = -DROP_WARNING_INTERVAL_MS;
+    private int _droppedSinceWarning;
 
     public async Task OnReadyAsync()
     {
@@ -31,12 +46,80 @@ public sealed class AutoThreadService(
 
         var dict = new ConcurrentDictionary<ulong, AutoThreadSetting>();
         foreach (var item in items)
-            dict[item.ChannelId] = new(item.GuildId, item.Mode, ToArchiveDuration(item.ArchiveDurationMinutes));
+            dict[item.ChannelId] = new(item.GuildId,
+                item.Mode,
+                ToArchiveDuration(item.ArchiveDurationMinutes),
+                item.IncludeBots);
 
         _channels = dict;
 
+        for (var i = 0; i < BOT_QUEUE_WORKERS; i++)
+            _ = Task.Run(BotQueueWorkerInternalAsync);
+
         client.LeftGuild += OnLeftGuildAsync;
         client.ChannelDestroyed += OnChannelDestroyedAsync;
+        client.MessageReceived += OnMessageReceivedAsync;
+    }
+
+    // the command handler drops other bots (ignoreOtherBots) and always drops the bot's own messages
+    private Task OnMessageReceivedAsync(SocketMessage msg)
+    {
+        if (!msg.Author.IsBot && !msg.Author.IsWebhook)
+            return Task.CompletedTask;
+
+        if (msg is not SocketUserMessage usrMsg || !ShouldThread(usrMsg, fromBot: true))
+            return Task.CompletedTask;
+
+        if (!_botQueue.Writer.TryWrite(usrMsg))
+            WarnDroppedInternal(usrMsg.Channel.Id);
+
+        return Task.CompletedTask;
+    }
+
+    private void WarnDroppedInternal(ulong channelId)
+    {
+        Interlocked.Increment(ref _droppedSinceWarning);
+
+        var now = Environment.TickCount64;
+        var last = Interlocked.Read(ref _lastDropWarning);
+        if (now - last < DROP_WARNING_INTERVAL_MS
+            || Interlocked.CompareExchange(ref _lastDropWarning, now, last) != last)
+            return;
+
+        var dropped = Interlocked.Exchange(ref _droppedSinceWarning, 0);
+        Log.Warning("Auto-thread bot message queue is full, dropped {Count} messages, last in channel {ChannelId}",
+            dropped,
+            channelId);
+    }
+
+    private async Task BotQueueWorkerInternalAsync()
+    {
+        await foreach (var msg in _botQueue.Reader.ReadAllAsync())
+        {
+            try
+            {
+                if (ShouldThread(msg, fromBot: true))
+                    await CreateThreadInternalAsync(msg);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Auto-thread worker failed for message {MessageId}", msg.Id);
+            }
+        }
+    }
+
+    private bool ShouldThread(IUserMessage msg, bool fromBot)
+    {
+        if (msg.Channel is not ITextChannel tch || msg.Channel is IThreadChannel)
+            return false;
+
+        if (!_channels.TryGetValue(tch.Id, out var setting))
+            return false;
+
+        if (fromBot && !setting.IncludeBots)
+            return false;
+
+        return setting.Mode != AutoThreadMode.Media || HasMedia(msg);
     }
 
     private async Task OnLeftGuildAsync(SocketGuild guild)
@@ -72,13 +155,16 @@ public sealed class AutoThreadService(
         if (msg.Author.IsBot || msg.Author.IsWebhook)
             return;
 
-        if (msg.Channel is not ITextChannel tch || msg.Channel is IThreadChannel)
+        if (!ShouldThread(msg, fromBot: false))
             return;
 
-        if (!_channels.TryGetValue(tch.Id, out var setting))
-            return;
+        await CreateThreadInternalAsync(msg);
+    }
 
-        if (setting.Mode == AutoThreadMode.Media && !HasMedia(msg))
+    private async Task CreateThreadInternalAsync(IUserMessage msg)
+    {
+        // the setting may have changed while the message waited
+        if (msg.Channel is not ITextChannel tch || !_channels.TryGetValue(tch.Id, out var setting))
             return;
 
         try
@@ -96,7 +182,18 @@ public sealed class AutoThreadService(
             Log.Warning("Auto-thread disabled in channel {ChannelId} because the bot can't create threads there",
                 tch.Id);
 
-            await DisableAsync(tch.GuildId, tch.Id);
+            try
+            {
+                await DisableAsync(tch.GuildId, tch.Id);
+            }
+            catch (Exception disableEx)
+            {
+                Log.Warning(disableEx, "Unable to turn off auto-thread in channel {ChannelId}", tch.Id);
+            }
+        }
+        catch (RateLimitedException)
+        {
+            Log.Debug("Auto-thread was rate limited in channel {ChannelId}", tch.Id);
         }
         catch (Exception ex)
         {
@@ -107,13 +204,16 @@ public sealed class AutoThreadService(
     public async Task<int> BackfillAsync(
         ITextChannel channel,
         AutoThreadMode mode,
+        int archiveMinutes,
+        bool includeBots,
         int count,
         ulong beforeMessageId)
     {
+        var archive = ToArchiveDuration(archiveMinutes);
         var fetchLimit = Math.Min(count * BACKFILL_FETCH_MULTIPLIER, MAX_BACKFILL_FETCH);
         var messages = await channel.GetMessagesAsync(beforeMessageId, Direction.Before, fetchLimit)
                                     .FlattenAsync();
-        var targets = SelectBackfillTargets(messages, mode, count);
+        var targets = SelectBackfillTargets(messages, mode, includeBots, count);
 
         var created = 0;
         for (var i = 0; i < targets.Count; i++)
@@ -124,6 +224,7 @@ public sealed class AutoThreadService(
             try
             {
                 await channel.CreateThreadAsync(GetThreadName(targets[i]),
+                    autoArchiveDuration: archive,
                     message: targets[i],
                     options: new()
                     {
@@ -147,6 +248,7 @@ public sealed class AutoThreadService(
     public static List<IUserMessage> SelectBackfillTargets(
         IEnumerable<IMessage> messages,
         AutoThreadMode mode,
+        bool includeBots,
         int count)
     {
         var targets = new List<IUserMessage>();
@@ -156,7 +258,7 @@ public sealed class AutoThreadService(
             if (msg is not IUserMessage userMsg)
                 continue;
 
-            if (msg.Author.IsBot || msg.Author.IsWebhook)
+            if (!includeBots && (msg.Author.IsBot || msg.Author.IsWebhook))
                 continue;
 
             if (msg.Flags.GetValueOrDefault().HasFlag(MessageFlags.HasThread))
@@ -177,19 +279,19 @@ public sealed class AutoThreadService(
     }
 
     public static bool HasMedia(IUserMessage msg)
-        => msg.Attachments.Count > 0 || ContainsLink(msg.Content);
+        => msg.Attachments.Count > 0 || msg.Embeds.Count > 0 || ContainsLink(msg.Content);
 
     private static bool ContainsLink(ReadOnlySpan<char> content)
     {
         while (!content.IsEmpty)
         {
-            var idx = content.IndexOf("http", StringComparison.InvariantCultureIgnoreCase);
+            var idx = content.IndexOf("http", StringComparison.OrdinalIgnoreCase);
             if (idx == -1)
                 return false;
 
             var rest = content[idx..];
-            if (rest.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase)
-                || rest.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+            if (rest.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                || rest.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                 return true;
 
             content = rest[4..];
@@ -226,7 +328,12 @@ public sealed class AutoThreadService(
             _ => ThreadArchiveDuration.OneDay
         };
 
-    public async Task EnableAsync(ulong guildId, ulong channelId, AutoThreadMode mode, int archiveMinutes)
+    public async Task EnableAsync(
+        ulong guildId,
+        ulong channelId,
+        AutoThreadMode mode,
+        int archiveMinutes,
+        bool includeBots)
     {
         await using var uow = db.GetDbContext();
         await uow.GetTable<AutoThreadChannel>()
@@ -235,19 +342,21 @@ public sealed class AutoThreadService(
                          GuildId = guildId,
                          ChannelId = channelId,
                          Mode = mode,
-                         ArchiveDurationMinutes = archiveMinutes
+                         ArchiveDurationMinutes = archiveMinutes,
+                         IncludeBots = includeBots
                      },
                      old => new()
                      {
                          Mode = mode,
-                         ArchiveDurationMinutes = archiveMinutes
+                         ArchiveDurationMinutes = archiveMinutes,
+                         IncludeBots = includeBots
                      },
                      () => new()
                      {
                          ChannelId = channelId
                      });
 
-        _channels[channelId] = new(guildId, mode, ToArchiveDuration(archiveMinutes));
+        _channels[channelId] = new(guildId, mode, ToArchiveDuration(archiveMinutes), includeBots);
     }
 
     public async Task<bool> DisableAsync(ulong guildId, ulong channelId)
@@ -278,7 +387,8 @@ public sealed class AutoThreadService(
 public readonly record struct AutoThreadSetting(
     ulong GuildId,
     AutoThreadMode Mode,
-    ThreadArchiveDuration ArchiveDuration);
+    ThreadArchiveDuration ArchiveDuration,
+    bool IncludeBots);
 
 public static class AutoThreadArchive
 {
