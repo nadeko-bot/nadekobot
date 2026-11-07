@@ -6632,7 +6632,7 @@
         ".sta",
         ".stadd"
       ],
-      "Description": "Notifies this channel when the stream on the specified URL goes online or offline. Offline notifications will only show if you enable `.streamoff`. Maximum 10 per server.",
+      "Description": "Notifies this channel when the stream on the specified URL goes online or offline. Offline notifications will only show if you enable `.streamoff`. Maximum 10 per server.\nPlatforms: Twitch, YouTube, Picarto, Trovo and TikTok.",
       "Usage": [
         ".streamadd twitch.tv/someguy"
       ],
@@ -6762,7 +6762,7 @@
         ".streamcheck",
         ".stc"
       ],
-      "Description": "Retrieves information about a stream.",
+      "Description": "Retrieves information about a stream.\nPlatforms: Twitch, YouTube, Picarto, Trovo and TikTok.",
       "Usage": [
         ".streamcheck https://twitch.tv/somedude"
       ],

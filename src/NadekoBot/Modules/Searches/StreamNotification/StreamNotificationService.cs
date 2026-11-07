@@ -618,7 +618,7 @@ public sealed class StreamNotificationService : INService, IReadyExecutor
             embed.WithThumbnailUrl(status.AvatarUrl);
 
         if (!string.IsNullOrWhiteSpace(status.Preview))
-            embed.WithImageUrl(status.Preview + "?dv=" + _rng.Next());
+            embed.WithImageUrl(status.Preview + (status.Preview.Contains('?') ? "&dv=" : "?dv=") + _rng.Next());
 
         return embed;
     }

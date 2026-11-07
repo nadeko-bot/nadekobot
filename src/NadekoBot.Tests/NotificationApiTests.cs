@@ -443,7 +443,8 @@ public sealed class NotificationApiTests
             [FollowedStream.FType.Youtube] = ("youtube", "https://www.youtube.com/channel/x"),
             [FollowedStream.FType.Facebook] = ("facebook", "https://facebook.com/x"),
             [FollowedStream.FType.Trovo] = ("trovo", "https://trovo.live/x"),
-            [FollowedStream.FType.Kick] = ("kick", "https://kick.com/x")
+            [FollowedStream.FType.Kick] = ("kick", "https://kick.com/x"),
+            [FollowedStream.FType.TikTok] = ("tiktok", "https://www.tiktok.com/@x/live")
         };
 
         foreach (var type in Enum.GetValues<FollowedStream.FType>())
@@ -468,7 +469,7 @@ public sealed class NotificationApiTests
     }
 
     [Test]
-    public async Task YouTubeLive_UsesTheServiceAndOnlyMissingChannelsAreDeletedAfter12Hours()
+    public async Task YouTubeLive_UsesTheServiceOnlyMissingChannelsAreDeletedAndLookupsTellMissingFromUnavailable()
     {
         var time = new FakeTimeProvider(DateTimeOffset.UtcNow);
         var provider = new YouTubeProvider(_factory, _config, _music);
@@ -512,11 +513,8 @@ public sealed class NotificationApiTests
         Assert.That(await provider.GetStreamDataAsync(many), Has.Count.EqualTo(many.Count));
         Assert.That(_handler.Requests.Select(static r => (r.Method, r.PathAndQuery)), Is.All.EqualTo((HttpMethod.Post, "/v1/live")));
         Assert.That(_handler.Requests, Has.Count.EqualTo(2));
-    }
 
-    [Test]
-    public async Task YouTubeLookup_TellsAMissingChannelFromAServiceWhichCannotAnswer()
-    {
+        // A lookup tells a missing channel from a service which cannot answer.
         var channel = ChannelId('c');
         var resolve = HttpStatusCode.OK;
         var liveStatus = "unknown";
@@ -525,35 +523,150 @@ public sealed class NotificationApiTests
             : resolve == HttpStatusCode.OK
                 ? Json(HttpStatusCode.OK, $$"""{"id":"{{channel}}","name":"Nadeko","avatar":"https://yt3.ggpht.com/a.jpg"}""")
                 : Json(resolve, resolve == HttpStatusCode.NotFound ? """{"error":"unavailable"}""" : """{"error":"x"}""");
-        var checker = new NotifChecker([new YouTubeProvider(_factory, _config, _music)]);
+        var lookups = new NotifChecker([new YouTubeProvider(_factory, _config, _music)]);
         const string link = "https://www.youtube.com/@nadeko";
 
         // The channel exists but the service could not check it now: the bot follows it with the name of the resolve.
-        var unknown = await checker.LookupByUrlAsync(link);
+        var unknown = await lookups.LookupByUrlAsync(link);
         Assert.That((unknown.Status, unknown.Platform, unknown.Data?.UniqueName, unknown.Data?.Name, unknown.Data?.IsLive),
             Is.EqualTo((StreamLookupStatus.Found, (FollowedStream.FType?)FollowedStream.FType.Youtube, channel, "Nadeko", (bool?)false)));
 
         // An offline channel which never streamed has no name in the live answer, and links with a tab or on m.youtube.com work.
         liveStatus = "offline";
-        var offline = await checker.LookupByUrlAsync("https://m.youtube.com/c/nadeko/live");
-        Assert.That((offline.Status, offline.Data?.Name, offline.Data?.AvatarUrl),
+        var offlineLookup = await lookups.LookupByUrlAsync("https://m.youtube.com/c/nadeko/live");
+        Assert.That((offlineLookup.Status, offlineLookup.Data?.Name, offlineLookup.Data?.AvatarUrl),
             Is.EqualTo((StreamLookupStatus.Found, "Nadeko", "https://yt3.ggpht.com/a.jpg")));
 
         liveStatus = "missing";
-        Assert.That((await checker.LookupByUrlAsync(link)).Status, Is.EqualTo(StreamLookupStatus.NotFound));
+        Assert.That((await lookups.LookupByUrlAsync(link)).Status, Is.EqualTo(StreamLookupStatus.NotFound));
 
         resolve = HttpStatusCode.NotFound;
-        Assert.That((await checker.LookupByUrlAsync(link)).Status, Is.EqualTo(StreamLookupStatus.NotFound));
+        Assert.That((await lookups.LookupByUrlAsync(link)).Status, Is.EqualTo(StreamLookupStatus.NotFound));
         resolve = HttpStatusCode.BadGateway;
-        Assert.That((await checker.LookupByUrlAsync(link)).Status, Is.EqualTo(StreamLookupStatus.Unavailable));
+        Assert.That((await lookups.LookupByUrlAsync(link)).Status, Is.EqualTo(StreamLookupStatus.Unavailable));
         _handler.Respond = (_, _) => Json(HttpStatusCode.NotFound, """{"error":"not_found"}""");
         Assert.That((await _music.ResolveChannelAsync("@x")).Status, Is.EqualTo(MusicServiceStatus.Failed));
 
-        Assert.That((await checker.LookupByUrlAsync("https://kick.com/nadeko")).Status, Is.EqualTo(StreamLookupStatus.Unsupported));
+        Assert.That((await lookups.LookupByUrlAsync("https://kick.com/nadeko")).Status, Is.EqualTo(StreamLookupStatus.Unsupported));
 
         var noService = new MusicServiceClient(_factory, _config, new BotPolicy(false)) { Key = string.Empty };
         var unconfigured = new NotifChecker([new YouTubeProvider(_factory, _config, noService)]);
         Assert.That(await unconfigured.LookupByUrlAsync(link),
             Is.EqualTo(new StreamLookup(StreamLookupStatus.Unavailable, null, FollowedStream.FType.Youtube)));
+    }
+
+    private static string NameOf((HttpMethod Method, string PathAndQuery, string? Body) r)
+        => r.PathAndQuery[(r.PathAndQuery.IndexOf("uniqueId=", StringComparison.Ordinal) + "uniqueId=".Length)..];
+
+    private static HttpResponseMessage TikTokAnswer(HttpRequestMessage req, bool refuse)
+    {
+        var uri = req.RequestUri!;
+        if (uri.Host == "webcast.tiktok.com")
+            return Json(HttpStatusCode.OK, """{"data":{"game_tag":[{"id":3,"show_name":"Other"},{"id":7,"show_name":"Valorant","full_name":""}]}}""");
+
+        if (refuse)
+            return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) };
+
+        var name = uri.Query[(uri.Query.IndexOf("uniqueId=", StringComparison.Ordinal) + "uniqueId=".Length)..];
+        if (name == "ghost" || name.Any(char.IsUpper))
+            return Json(HttpStatusCode.OK, """{"data":null,"message":"user_not_found","statusCode":19881007}""");
+
+        var live = name == "gamer.one";
+        var id = live ? "gamer.one" : name;
+        var room = $$"""
+            "liveRoom":{"status":{{(live ? 2 : 4)}},"title":"{{(live ? "Ranked" : "Old")}}","coverUrl":"https://p16.tiktokcdn.com/c.webp?x-expires=1",
+            "gameTagId":{{(live ? 7 : 0)}},"liveRoomStats":{"userCount":{{(live ? 321 : 9)}}
+            """;
+        return Json(HttpStatusCode.OK, $$"""
+            {"data":{"user":{"uniqueId":"{{id}}","nickname":"{{(live ? "Gamer" : "")}}","avatarMedium":"https://p16.tiktokcdn.com/a.webp","roomId":"77"},{{room}}
+            """ + """}}},"message":"","statusCode":0}""");
+    }
+
+    [Test]
+    public async Task TikTokLive_ReadsTikTokAtAPaceAndPausesWhenRefusedOrUsesTheServiceWhenItHasTheRoute()
+    {
+        var time = new FakeTimeProvider(DateTimeOffset.UtcNow);
+        var noService = new MusicServiceClient(_factory, _config, new BotPolicy(false)) { Key = string.Empty };
+        var provider = new TikTokProvider(_factory, noService, TimeSpan.Zero);
+        var checker = new NotifChecker([provider], time);
+        var refuse = false;
+        _handler.Respond = (req, _) => TikTokAnswer(req, refuse);
+
+        foreach (var bad in new[] { "https://vm.tiktok.com/ZM8abc/", "https://nottiktok.com/@gamer", "https://tiktok.com/@a" })
+            Assert.That((await checker.LookupByUrlAsync(bad)).Status, Is.EqualTo(StreamLookupStatus.Unsupported), bad);
+
+        var found = await checker.LookupByUrlAsync("https://www.tiktok.com/@Gamer.One/live?lang=en");
+        Assert.That((found.Status, found.Platform), Is.EqualTo((StreamLookupStatus.Found, (FollowedStream.FType?)FollowedStream.FType.TikTok)));
+        var d = found.Data!;
+        Assert.That((d.UniqueName, d.Name, d.IsLive, d.Title, d.Viewers, d.Game, d.Preview, d.AvatarUrl, d.StreamUrl),
+            Is.EqualTo(("gamer.one", "Gamer", true, "Ranked", 321, "Valorant", "https://p16.tiktokcdn.com/c.webp?x-expires=1",
+                "https://p16.tiktokcdn.com/a.webp", "https://www.tiktok.com/@gamer.one/live")));
+
+        // An ended room keeps an old title and viewer count, which the bot does not show. The category is read once.
+        var data = await provider.GetStreamDataAsync(["Gamer.One", "quiet", "ghost"]);
+        var quiet = data.Single(static x => x.UniqueName == "quiet");
+        Assert.That((quiet.Name, quiet.IsLive, quiet.Title, quiet.Viewers, quiet.Preview), Is.EqualTo(("quiet", false, (string?)null, 0, (string?)null)));
+        Assert.That(data.Single(static x => x.IsLive).UniqueName, Is.EqualTo("Gamer.One"));
+        Assert.That(provider.FailingStreams.Keys, Is.EqualTo(new[] { "ghost" }));
+        Assert.That(_handler.Requests.Count(static r => r.PathAndQuery.StartsWith("/webcast/", StringComparison.Ordinal)), Is.EqualTo(1));
+
+        // Each check reads at most 5 accounts, the ones which waited longest first.
+        var many = Enumerable.Range(0, TikTokProvider.CHECKS_PER_TICK + 2).Select(static i => "user" + i).ToList();
+        _handler.Requests.Clear();
+        Assert.That(await provider.GetStreamDataAsync(many), Has.Count.EqualTo(TikTokProvider.CHECKS_PER_TICK));
+        var waited = many.Except(_handler.Requests.Select(NameOf)).ToList();
+        _handler.Requests.Clear();
+        await provider.GetStreamDataAsync(many);
+        Assert.That(_handler.Requests.Take(2).Select(NameOf), Is.EquivalentTo(waited));
+
+        // An answer in an unknown shape is not a refusal, so the next request still goes out.
+        _handler.Respond = (_, _) => Json(HttpStatusCode.OK, """{"data":{"user":{"uniqueId":5}}}""");
+        Assert.That((await checker.LookupByUrlAsync("https://tiktok.com/@quiet")).Status, Is.EqualTo(StreamLookupStatus.Unavailable));
+        _handler.Respond = (req, _) => TikTokAnswer(req, refuse);
+        Assert.That((await checker.LookupByUrlAsync("https://tiktok.com/@quiet")).Status, Is.EqualTo(StreamLookupStatus.Found));
+
+        // An empty answer pauses TikTok checks for a minute and marks no account as failing.
+        refuse = true;
+        Assert.That(await provider.GetStreamDataAsync(["quiet"]), Is.Empty);
+        refuse = false;
+        _handler.Requests.Clear();
+        Assert.That((await checker.LookupByUrlAsync("https://tiktok.com/@quiet")).Status, Is.EqualTo(StreamLookupStatus.Unavailable));
+        Assert.That(_handler.Requests, Is.Empty);
+        time.Advance(TimeSpan.FromSeconds(61));
+        Assert.That(await provider.GetStreamDataAsync(["quiet"]), Has.Count.EqualTo(1));
+        Assert.That(provider.FailingStreams.Keys, Is.EqualTo(new[] { "ghost" }));
+
+        // Requests wait for a slot of the pace.
+        var paced = new TikTokProvider(_factory, noService) { Time = time };
+        var first = paced.GetStreamDataAsync("quiet");
+        var second = paced.GetStreamDataAsync("quiet");
+        Assert.That(await first, Is.Not.Null);
+        Assert.That(second.IsCompleted, Is.False);
+        time.Advance(TikTokProvider.DefaultPace);
+        Assert.That(await second, Is.Not.Null);
+
+        // A service without the route sends the bot to TikTok; a service with it answers for every account.
+        var serviceHasRoute = false;
+        _handler.Respond = (req, _) => req.RequestUri!.AbsolutePath != "/v1/tiktok/live"
+            ? TikTokAnswer(req, false)
+            : serviceHasRoute
+                ? Json(HttpStatusCode.OK, """
+                    {"users":[{"user":"star","status":"live","name":"Star","avatar":"https://p16.tiktokcdn.com/s.webp","live":{"roomId":"1","title":"Hi","cover":"https://p16.tiktokcdn.com/sc.webp","viewers":50,"game":"Chess","startedAt":null}},
+                    {"user":"gone","status":"missing","name":null,"avatar":null,"live":null},{"user":"busy","status":"unknown","name":null,"avatar":null,"live":null}]}
+                    """)
+                : Json(HttpStatusCode.NotFound, """{"error":"not_found"}""");
+        var viaService = new TikTokProvider(_factory, _music, TimeSpan.Zero) { Time = time };
+        Assert.That((await viaService.GetStreamDataAsync("quiet"))?.UniqueName, Is.EqualTo("quiet"));
+        serviceHasRoute = true;
+        _handler.Requests.Clear();
+        await viaService.GetStreamDataAsync(["quiet"]);
+        Assert.That(_handler.Requests.Select(static r => r.PathAndQuery), Has.None.StartsWith("/v1/"));
+
+        time.Advance(TimeSpan.FromHours(1));
+        var fromService = await viaService.GetStreamDataAsync(["star", "gone", "busy"]);
+        var star = fromService.Single();
+        Assert.That((star.UniqueName, star.Name, star.IsLive, star.Title, star.Viewers, star.Game, star.Preview, star.StreamUrl),
+            Is.EqualTo(("star", "Star", true, "Hi", 50, "Chess", "https://p16.tiktokcdn.com/sc.webp", "https://www.tiktok.com/@star/live")));
+        Assert.That(viaService.FailingStreams.Keys, Is.EqualTo(new[] { "gone" }));
     }
 }

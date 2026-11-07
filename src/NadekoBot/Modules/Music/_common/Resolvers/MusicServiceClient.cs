@@ -27,6 +27,16 @@ public sealed record MusicServiceLiveChannel(
 
 public sealed record MusicServiceUpload(string? Id, string? Title, string? Thumbnail);
 
+public sealed record MusicServiceTikTokLive(string? Title, string? Cover, int? Viewers, string? Game);
+
+// Status is "live", "offline", "missing" (no such account) or "unknown" (the service could not check it now).
+public sealed record MusicServiceTikTokUser(
+    string? User,
+    string? Status,
+    string? Name,
+    string? Avatar,
+    MusicServiceTikTokLive? Live);
+
 public enum MusicServiceStatus
 {
     Ok,
@@ -37,6 +47,9 @@ public enum MusicServiceStatus
 public readonly record struct MusicServiceChannelResult(MusicServiceStatus Status, MusicServiceChannel? Channel);
 
 public readonly record struct MusicServiceUploadsResult(MusicServiceStatus Status, MusicServiceUpload[] Videos);
+
+// NotFound means that the service has no TikTok route (an older service), not that an account is missing.
+public readonly record struct MusicServiceTikTokResult(MusicServiceStatus Status, MusicServiceTikTokUser[] Users);
 
 // The NadekoBot music service (ndkloud docs/specs/music-service.md). It looks songs up and downloads them through
 // its own exits, so a bot which uses it never connects to YouTube.
@@ -50,6 +63,7 @@ public sealed class MusicServiceClient(
     public const int MAX_SEARCH_LIMIT = 10;
     public const int MAX_RELATED_LIMIT = 25;
     public const int MAX_LIVE_CHANNELS = 50;
+    public const int MAX_TIKTOK_USERS = 50;
 
     private const int MAX_RESPONSE_BYTES = 2 * 1024 * 1024;
     private const int MAX_QUERY_LENGTH = 200;
@@ -76,8 +90,13 @@ public sealed class MusicServiceClient(
 
     private sealed record UploadList(string? Id, MusicServiceUpload[]? Videos);
 
+    private sealed record TikTokBody(IReadOnlyList<string> Users);
+
+    private sealed record TikTokList(MusicServiceTikTokUser[]? Users);
+
     // A 404 with another code, such as not_found for a route which an older service lacks, is not a missing channel.
     private const string ERROR_UNAVAILABLE = "unavailable";
+    private const string ERROR_NOT_FOUND = "not_found";
 
     public static bool IsVideoId(ReadOnlySpan<char> id)
         => YoutubeHelpers.IsVideoId(id);
@@ -308,6 +327,22 @@ public sealed class MusicServiceClient(
         var body = JsonSerializer.Serialize(new LiveBody(channelIds), JsonSerializerOptions.Web);
         var (res, _, _) = await SendInternalAsync<LiveList>(HttpMethod.Post, "/v1/live", body, "live");
         return res is null ? null : res.Channels ?? [];
+    }
+
+    // The live state of up to MAX_TIKTOK_USERS TikTok accounts.
+    public async Task<MusicServiceTikTokResult> GetTikTokLiveAsync(IReadOnlyList<string> users)
+    {
+        if (users.Count is 0 or > MAX_TIKTOK_USERS)
+            return new(MusicServiceStatus.Failed, []);
+
+        var body = JsonSerializer.Serialize(new TikTokBody(users), JsonSerializerOptions.Web);
+        var (res, status, error) = await SendInternalAsync<TikTokList>(HttpMethod.Post, "/v1/tiktok/live", body, "tiktok live");
+        if (res is not null)
+            return new(MusicServiceStatus.Ok, res.Users ?? []);
+
+        return status == HttpStatusCode.NotFound && string.Equals(error, ERROR_NOT_FOUND, StringComparison.Ordinal)
+            ? new(MusicServiceStatus.NotFound, [])
+            : new(MusicServiceStatus.Failed, []);
     }
 
     // Asks the service to download a song before it plays. A failure only means the song downloads when it plays.

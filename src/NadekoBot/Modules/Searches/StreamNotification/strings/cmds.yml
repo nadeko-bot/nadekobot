@@ -1,13 +1,16 @@
 streamadd:
   desc: |-
     Notifies this channel when the stream on the specified URL goes online or offline. Offline notifications will only show if you enable `{0}streamoff`. Maximum 10 per server.
+    Platforms: Twitch, YouTube, Picarto, Trovo and TikTok.
   ex:
     - twitch.tv/someguy
   params:
     - link:
         desc: The URL of a live streaming service that triggers the notification.
 streamcheck:
-  desc: Retrieves information about a stream.
+  desc: |-
+    Retrieves information about a stream.
+    Platforms: Twitch, YouTube, Picarto, Trovo and TikTok.
   ex:
     - https://twitch.tv/somedude
   params:

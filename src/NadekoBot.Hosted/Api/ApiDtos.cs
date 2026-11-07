@@ -375,7 +375,7 @@ public sealed record CreateFeedRequest(string? Url = null, string? ChannelId = n
 // Message is a JsonElement so that a missing field keeps the message and null clears it.
 public sealed record UpdateFeedRequest(string? ChannelId = null, JsonElement Message = default);
 
-// Platform is "twitch", "picarto", "youtube", "facebook", "trovo" or "kick".
+// Platform is "twitch", "picarto", "youtube", "facebook", "trovo", "kick" or "tiktok".
 public sealed record FollowedStreamDto(int Id, string Platform, string Name, string Url, string ChannelId, string? Message);
 
 public sealed record StreamListDto(

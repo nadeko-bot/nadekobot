@@ -94,4 +94,10 @@ public abstract class Provider
     /// <param name="login"></param>
     public virtual void ClearErrorsFor(string login)
         => _failingStreams.TryRemove(login, out _);
+
+    // Discord refuses an embed with an image link which is not http(s).
+    protected static string? HttpUrlOrNull(string? url)
+        => Uri.TryCreate(url, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp)
+            ? url
+            : null;
 }

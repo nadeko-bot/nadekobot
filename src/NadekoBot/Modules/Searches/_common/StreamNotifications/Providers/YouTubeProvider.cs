@@ -347,13 +347,8 @@ public sealed partial class YouTubeProvider : Provider
             StreamUrl = isLive ? WATCH_URL + video!.VideoId : CHANNEL_URL + id
         };
     }
-
-    // Discord refuses an embed with an image link which is not http(s).
-    private static string? HttpUrlOrNull(string? url)
-        => Uri.TryCreate(url, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp)
-            ? url
-            : null;
 }
+
 public sealed class InvidiousChannelResponse
 {
     [JsonPropertyName("authorId")]

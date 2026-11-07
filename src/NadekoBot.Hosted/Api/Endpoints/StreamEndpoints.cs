@@ -18,6 +18,7 @@ public static class StreamEndpoints
     public const string PLATFORM_FACEBOOK = "facebook";
     public const string PLATFORM_TROVO = "trovo";
     public const string PLATFORM_KICK = "kick";
+    public const string PLATFORM_TIKTOK = "tiktok";
 
     public static RouteGroupBuilder MapStreamEndpoints(this RouteGroupBuilder guild)
     {
@@ -146,6 +147,7 @@ public static class StreamEndpoints
             FollowedStream.FType.Youtube => PLATFORM_YOUTUBE,
             FollowedStream.FType.Facebook => PLATFORM_FACEBOOK,
             FollowedStream.FType.Trovo => PLATFORM_TROVO,
+            FollowedStream.FType.TikTok => PLATFORM_TIKTOK,
             _ => PLATFORM_KICK
         };
 
@@ -159,6 +161,7 @@ public static class StreamEndpoints
             FollowedStream.FType.Youtube => "https://www.youtube.com/channel/" + escaped,
             FollowedStream.FType.Facebook => "https://facebook.com/" + escaped,
             FollowedStream.FType.Trovo => "https://trovo.live/" + escaped,
+            FollowedStream.FType.TikTok => "https://www.tiktok.com/@" + escaped + "/live",
             _ => "https://kick.com/" + escaped
         };
     }

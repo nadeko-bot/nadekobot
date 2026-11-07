@@ -24,7 +24,8 @@ public class NotifChecker
             new TwitchHelixProvider(httpClientFactory, credsProvider),
             new PicartoProvider(httpClientFactory),
             new TrovoProvider(httpClientFactory, credsProvider),
-            new YouTubeProvider(httpClientFactory, scs, music)
+            new YouTubeProvider(httpClientFactory, scs, music),
+            new TikTokProvider(httpClientFactory, music)
         ])
     {
     }
@@ -67,6 +68,8 @@ public class NotifChecker
         {
             while (true)
             {
+                // The wait starts with the check, so a slow platform does not delay the next check of the others.
+                var delay = Task.Delay(30_000);
                 try
                 {
                     var allStreamData = GetAllData();
@@ -99,10 +102,7 @@ public class NotifChecker
                     var newlyOffline = new List<StreamData>();
                     ApplyCheck(newStreamData.SelectMany(static x => x), newlyOnline, newlyOffline);
 
-                    var tasks = new List<Task>
-                    {
-                        Task.Delay(30_000)
-                    };
+                    var tasks = new List<Task> { delay };
 
                     if (newlyOnline.Count > 0)
                         tasks.Add(OnStreamsOnline(newlyOnline));

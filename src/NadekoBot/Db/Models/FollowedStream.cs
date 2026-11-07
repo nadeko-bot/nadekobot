@@ -15,6 +15,7 @@ public class FollowedStream
         Facebook = 5,
         Trovo = 6,
         Kick = 7,
+        TikTok = 8,
     }
     public int Id { get; set; }
     public ulong GuildId { get; set; }

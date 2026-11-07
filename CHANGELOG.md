@@ -8,6 +8,7 @@
 
 - `.give` gives currency to each member of a role after a confirmation.
 - `.autothread` / `.ath` has `--include-bots` / `-i`, which also creates threads for messages from bots and webhooks.
+- `.streamadd` / `.sta` / `.stadd` follows TikTok live streams.
 
 ### Changed
 
@@ -19,6 +20,10 @@
 - `.autothread` / `.ath` fixes
     - `--backfill` / `-b` threads use the chosen archive time
     - `media` mode also creates threads for messages with an embed
+
+### Dev
+
+- The hosted API lists TikTok as a stream platform.
 
 ## [7.9.1] - 05.11.2026
 
