@@ -1,9 +1,9 @@
 ---
-title: Install NadekoBot on Linux or macOS with the CLI installer
+title: NadekoBot CLI Guide (via Bash Installer)
 description: Install your own NadekoBot on Linux or macOS with the bash installer. Add the token, install the music tools, and keep the bot online with tmux or systemd.
 ---
 
-# CLI guide (Linux and macOS)
+# NadekoBot CLI Guide (via Bash Installer)
 
 The bash installer downloads NadekoBot, adds your token, installs the music tools and starts the bot. Use it on a Linux server or on your own Linux or macOS computer.
 

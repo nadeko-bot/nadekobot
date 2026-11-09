@@ -1,6 +1,6 @@
 ---
-title: Donate to NadekoBot - support the bot on Patreon or PayPal
-description: Support NadekoBot, the open source Discord bot, with Patreon or PayPal. Donors get a Patron role, private channels and flowers.
+title: Donate
+description: Support NadekoBot with Patreon or PayPal.
 ---
 
 # Donate

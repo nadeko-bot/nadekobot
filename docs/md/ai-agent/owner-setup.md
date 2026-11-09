@@ -1,9 +1,9 @@
 ---
-title: Set up the NadekoBot AI agent on your own bot
+title: AI Agent Owner Setup
 description: Turn on the NadekoBot AI agent on a self-hosted bot. Add an OpenAI-compatible API key, pick a model, choose who can use it and edit the prompts.
 ---
 
-# Owner setup
+# AI Agent Owner Setup
 
 This page is for the owner of a self-hosted NadekoBot. To use the agent on a bot which someone else hosts, read [Usage and skills](usage.md).
 

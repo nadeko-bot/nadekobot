@@ -1,9 +1,9 @@
 ---
-title: Create a Discord bot and get its token
+title: Creating your own Discord bot
 description: Create a Discord application for your own NadekoBot, copy the bot token, turn on the privileged intents and invite the bot to your server.
 ---
 
-# Create a Discord bot
+# Creating your own Discord bot
 
 Before you install NadekoBot, you need a Discord bot account and its token. This page shows how to create the bot, get the token and invite the bot to your server.
 

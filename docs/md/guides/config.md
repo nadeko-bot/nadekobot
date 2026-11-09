@@ -1,9 +1,9 @@
 ---
-title: Change NadekoBot settings with .config and the config files
+title: Config Guide (.config)
 description: Change the settings of your self-hosted NadekoBot in Discord with .config, or edit the files in the data folder and reload them with .configreload.
 ---
 
-# Bot settings (.config)
+# Config Guide (.config)
 
 The bot keeps its settings in `.yml` files in the `data` folder, for example `data/bot.yml` and `data/gambling.yml`. You can change most settings in Discord with `.config`. Only the bot owner can use `.config` and `.configreload`.
 

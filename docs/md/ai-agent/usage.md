@@ -1,9 +1,9 @@
 ---
-title: Use the NadekoBot AI agent and add skills
+title: AI Agent Usage and Skills
 description: Start the NadekoBot AI agent with a mention, .agent, a reply or the bot's name. Server admins add skills to change how it answers in their server.
 ---
 
-# Usage and skills
+# AI Agent Usage and Skills
 
 The AI agent reads your request in plain language, runs the commands for it as you and replies with the result.
 

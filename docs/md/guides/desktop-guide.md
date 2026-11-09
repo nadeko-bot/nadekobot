@@ -1,9 +1,9 @@
 ---
-title: Install NadekoBot with Upeko (Windows, Linux, macOS)
+title: NadekoBot Desktop Guide (via Upeko)
 description: Install and run your own NadekoBot with Upeko, the desktop app for Windows, Linux and macOS. Download the bot, add the token and start it.
 ---
 
-# Desktop guide (Upeko)
+# NadekoBot Desktop Guide (via Upeko)
 
 Upeko is a desktop app which installs, starts and updates NadekoBot. Use it on your own computer. The bot is online only while Upeko runs.
 

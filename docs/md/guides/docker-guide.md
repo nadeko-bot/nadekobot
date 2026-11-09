@@ -1,9 +1,9 @@
 ---
-title: Run your own NadekoBot with Docker or Docker Compose
+title: NadekoBot Docker Guide
 description: Run your own NadekoBot in a Docker container. Start it with Docker Compose or docker run, keep the data in a folder on your server and update it with one pull.
 ---
 
-# Docker guide
+# NadekoBot Docker Guide
 
 The NadekoBot image is `ghcr.io/nadeko-bot/nadekobot:v6`. It has ffmpeg, yt-dlp and Deno, so music works without more steps. The bot keeps its database and config files in `/app/data`.
 

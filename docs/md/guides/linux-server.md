@@ -1,9 +1,9 @@
 ---
-title: Get a Linux server (DigitalOcean VPS)
+title: Linux Server Guide
 description: Rent a small Linux server to keep your NadekoBot online all day. Create a DigitalOcean droplet for $6 per month and connect to it with SSH.
 ---
 
-# Get a Linux server
+# Linux Server Guide
 
 The bot stops when the computer that runs it stops. To keep the bot online all day, rent a small Linux server (a VPS). This page uses DigitalOcean. Other providers work the same way.
 

@@ -1,9 +1,9 @@
 ---
-title: Find, open and edit the NadekoBot database
+title: Database Guide
 description: Where your self-hosted NadekoBot keeps NadekoBot.db, how to open it with DB Browser for SQLite or sqlite3, and how to change it safely with a backup.
 ---
 
-# Database
+# Database Guide
 
 NadekoBot keeps all server settings and member data in one SQLite file, `NadekoBot.db`. This page is for the owner of a self-hosted bot.
 

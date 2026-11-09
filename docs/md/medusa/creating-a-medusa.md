@@ -1,9 +1,9 @@
 ---
-title: Create a NadekoBot medusa plugin in C#
+title: Creating a Medusa
 description: Create a NadekoBot medusa with the dotnet template. Build it, load it in your bot, and learn sneks, commands, parsers, services, strings and the lifecycle.
 ---
 
-# Create a medusa
+# Creating a Medusa
 
 This page shows how to make, build and load a medusa. The project template has example commands. You can see the template [on GitHub](https://github.com/nadeko-bot/nadekobot/tree/v6/src/Nadeko.Medusa.Template/content/nadeko-medusa).
 

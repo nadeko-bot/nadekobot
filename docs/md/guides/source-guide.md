@@ -1,9 +1,9 @@
 ---
-title: Build and run NadekoBot from source (Windows, Linux, macOS)
+title: Setting Up NadekoBot from Source
 description: Build your own NadekoBot from source with the .NET 9 SDK on Windows, Linux or macOS. Clone the repository, add the token, run and update the bot.
 ---
 
-# Source guide (Windows, Linux and macOS)
+# Setting Up NadekoBot from Source
 
 Build NadekoBot from its source code. Use this guide if you want to change the code. For a normal install, use the [desktop guide](desktop-guide.md), the [CLI guide](cli-guide.md) or the [Docker guide](docker-guide.md).
 

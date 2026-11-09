@@ -1,9 +1,9 @@
 ---
-title: NadekoBot medusa plugins - add your own commands
+title: Getting Started with Medusa
 description: Medusae are plugins for a self-hosted NadekoBot. They add commands and features without a change to the bot's code, and you load them while the bot runs.
 ---
 
-# Medusa plugins
+# Getting Started with Medusa
 
 A medusa is a plugin for a self-hosted NadekoBot. It adds commands and features without a change to the bot's code. You can load, unload and update a medusa while the bot runs.
 
