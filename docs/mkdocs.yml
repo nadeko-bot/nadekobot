@@ -58,6 +58,10 @@ plugins:
           'waifu-guide.md': 'https://nadeko.bot/features/waifus'
           'ai-agent/overview.md': 'https://nadeko.bot/features/ai-agent'
 
+# Each page's sitemap date is the date of its last Git commit (needs the full history in CI).
+hooks:
+    - hooks/lastmod.py
+
 markdown_extensions:
     - attr_list
     - codehilite:

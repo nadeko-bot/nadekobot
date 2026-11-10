@@ -6,6 +6,11 @@ on:
     paths:
       - 'docs/**'
   workflow_dispatch:
+    inputs:
+      send_all:
+        description: 'Send all docs pages to IndexNow, not only the changed pages'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -18,6 +23,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # The sitemap date of each page is the date of its last commit (docs/hooks/lastmod.py).
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,6 +37,9 @@ jobs:
       - name: Install project dependencies
         run: pip install -r docs/mkdocs-requirements.txt
 
+      - name: Save the live sitemap
+        run: curl -fsS "https://docs.nadeko.bot/sitemap.xml?v=${GITHUB_RUN_ID}" -o "$RUNNER_TEMP/old-sitemap.xml" || echo "No live sitemap. IndexNow gets all pages."
+
       - name: Build the site with MkDocs
         working-directory: ./docs
         run: mkdocs build --strict
@@ -36,3 +47,7 @@ jobs:
       - name: Deploy to GitHub Pages
         working-directory: ./docs
         run: mkdocs gh-deploy --force
+
+      - name: Send the changed pages to IndexNow
+        working-directory: ./docs
+        run: python indexnow.py --old "$RUNNER_TEMP/old-sitemap.xml" --new site/sitemap.xml ${{ inputs.send_all && '--all' || '' }}
