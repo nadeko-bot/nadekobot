@@ -1198,7 +1198,7 @@
 <p><code>.creload</code>, <code>.confreload</code> and <code>.crel</code> are short forms of <code>.configreload</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Reload before you set a value with .config</p>
-<p>Until you reload, the bot uses the old values. If you set a value with <code>.config</code> on that config before you reload, the bot writes all its old values to the file, and your edits are lost.</p>
+<p>Until you reload, the bot uses the old values. If you set a value with <code>.config</code> on that config before you reload, the bot writes all its old values to the file. The old values replace your edits.</p>
 </div>
 <p>The files are YAML. Keep the indentation and the quotes as they are. If the file has a mistake, the reload fails, the bot keeps the old values and writes the error in its log. The bot does not start with a broken file. Make a copy of the file before you edit it.</p>
 <p>A wrong setting name does not stop the reload. The bot ignores a name which it does not know, and the next <code>.config</code> change removes it from the file. Check the names with <code>.config &lt;config&gt;</code>.</p>

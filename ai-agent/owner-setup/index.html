@@ -1204,7 +1204,7 @@
 <li>OpenRouter, which can send a request to other models if one fails</li>
 <li>A local server (vLLM, llama.cpp) with an OpenAI-compatible API and a model with tool calling</li>
 </ul>
-<p>A provider or model without tool calling refuses the requests of the agent, and the agent does not answer.</p>
+<p>A provider or model without tool calling returns an error for each request of the agent, and the agent does not answer.</p>
 <h2 id="turn-on-the-agent">Turn on the agent<a class="headerlink" href="#turn-on-the-agent" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Put your API key in <code>aiApiKey</code> in <code>data/creds.yml</code>, then restart the bot.</li>

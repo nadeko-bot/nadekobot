@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.nadeko.bot/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://docs.nadeko.bot/creds-guide/</loc>
@@ -14,11 +14,11 @@
     </url>
     <url>
          <loc>https://docs.nadeko.bot/ai-agent/owner-setup/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://docs.nadeko.bot/ai-agent/usage/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://docs.nadeko.bot/guides/cli-guide/</loc>
@@ -26,11 +26,11 @@
     </url>
     <url>
          <loc>https://docs.nadeko.bot/guides/config/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://docs.nadeko.bot/guides/database/</loc>
-         <lastmod>2026-11-09</lastmod>
+         <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://docs.nadeko.bot/guides/desktop-guide/</loc>
