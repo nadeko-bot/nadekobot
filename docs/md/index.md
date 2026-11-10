@@ -48,7 +48,7 @@ A server keeps the bot online all day. [Get a Linux server](guides/linux-server.
 
 - Ask in the [NadekoBot Discord server][discord-server].
 - Report a bug on [GitHub][issues]. If you are not sure that it is a bug, ask in the Discord server first.
-- NadekoBot is [open source][github]. [Donations][donate] keep the project alive.
+- NadekoBot is [open source][github]. [Donations][donate] pay for development, hosting and the website.
 
 [invite]: https://invite.nadeko.bot/
 [commands]: https://nadeko.bot/commands/

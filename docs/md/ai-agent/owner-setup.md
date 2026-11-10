@@ -15,7 +15,7 @@ The agent needs an OpenAI-compatible chat API with tool calling (function callin
 - OpenRouter, which can send a request to other models if one fails
 - A local server (vLLM, llama.cpp) with an OpenAI-compatible API and a model with tool calling
 
-A provider or model without tool calling refuses the requests of the agent, and the agent does not answer.
+A provider or model without tool calling returns an error for each request of the agent, and the agent does not answer.
 
 ## Turn on the agent
 

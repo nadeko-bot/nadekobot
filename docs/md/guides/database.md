@@ -87,7 +87,11 @@ On Fedora, use `sudo dnf install sqlite`. You can also use DB Browser for SQLite
 
 4. Start the bot.
 
-If the bot does not start after your change, restore the backup: stop the bot, move `NadekoBot.db`, `NadekoBot.db-wal` and `NadekoBot.db-shm` to a different folder, then copy your backup files back.
+If the bot does not start after your change, restore the backup:
+
+1. Stop the bot.
+2. Move `NadekoBot.db`, `NadekoBot.db-wal` and `NadekoBot.db-shm` to a different folder.
+3. Copy your backup files back.
 
 ## Use SQL from Discord
 

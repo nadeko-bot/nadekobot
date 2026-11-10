@@ -41,7 +41,7 @@ Some settings are only in the files, not in `.config`. To change them, edit the 
 `.creload`, `.confreload` and `.crel` are short forms of `.configreload`.
 
 !!! warning "Reload before you set a value with .config"
-    Until you reload, the bot uses the old values. If you set a value with `.config` on that config before you reload, the bot writes all its old values to the file, and your edits are lost.
+    Until you reload, the bot uses the old values. If you set a value with `.config` on that config before you reload, the bot writes all its old values to the file. The old values replace your edits.
 
 The files are YAML. Keep the indentation and the quotes as they are. If the file has a mistake, the reload fails, the bot keeps the old values and writes the error in its log. The bot does not start with a broken file. Make a copy of the file before you edit it.
 

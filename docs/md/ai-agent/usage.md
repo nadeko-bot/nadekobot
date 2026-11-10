@@ -70,7 +70,7 @@ A channel skill works only in the channel where you add it. Use it for a channel
 
 ## Privacy
 
-- The agent keeps the conversation only in memory, not in the database. It forgets the recent messages of a channel after 30 minutes without activity, and after a restart of the bot.
+- The agent keeps the conversation only in memory, not in the database. It removes the recent messages of a channel from memory after 30 minutes without activity, and when the bot restarts.
 - The agent reads your private data (for example your reminders) only for you. It cannot read the private data of another member.
 - The bot removes hidden tags and control characters from names and messages before the AI model sees them.
 
