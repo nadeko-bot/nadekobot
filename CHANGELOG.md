@@ -16,6 +16,14 @@
 - `.blackjack` / `.bj` has a shorter cooldown
     - no cooldown after you open or join a table
     - the bot ignores it for 2 seconds after an error
+- The coordinator, the bot and VotesApi use HTTP/2 instead of gRPC
+    - update all three together
+- Shards keep running when the coordinator restarts or crashes
+    - a shard without a coordinator for 5 minutes exits
+    - `.die` stops every shard, and `.die true` stops only the coordinator
+- Vote rewards go through the coordinator
+    - VotesApi sends each vote to `CoordinatorUrl`
+    - a bot without the coordinator gives no vote rewards
 
 ### Fixed
 
@@ -24,11 +32,22 @@
 - `.autothread` / `.ath` fixes
     - `--backfill` / `-b` threads use the chosen archive time
     - `media` mode also creates threads for messages with an embed
+- Test webhooks from top.gg and discords.com do not give a vote reward.
+- Server count fixes
+    - discords.com gets the count also without a discordbotlist.com key
+    - discordbotlist.com gets the count of the right bot
+
+### Removed
+
+- `votes.host` and `votes.port` in `creds.yml`.
+- `BotGrpcHost` in the VotesApi `appsettings.json`.
+- The gRPC packages and the native gRPC library.
 
 ### Dev
 
 - Channel delete handlers no longer block the gateway or stop the server log handler.
 - The hosted API lists TikTok as a stream platform.
+- The coordinator has a dashboard API, which sends each server request to the shard of that server.
 
 ## [7.9.1] - 05.11.2026
 

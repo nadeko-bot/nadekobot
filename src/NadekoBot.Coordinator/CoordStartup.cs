@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NadekoBot.Coordinator.Api;
 
 namespace NadekoBot.Coordinator
 {
@@ -16,31 +18,39 @@ namespace NadekoBot.Coordinator
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGrpc();
+            services.ConfigureHttpJsonOptions(static o =>
+                o.SerializerOptions.TypeInfoResolverChain.Insert(0, CoordJsonContext.Default));
             services.AddSingleton<CoordinatorRunner>();
             services.AddSingleton<IHostedService, CoordinatorRunner>(
                 serviceProvider => serviceProvider.GetRequiredService<CoordinatorRunner>());
+            services.AddSingleton<VoteRelay>();
+            services.AddCoordApi();
         }
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            CoordApiEndpoint api,
+            IHostApplicationLifetime lifetime,
+            IServer server)
         {
+            lifetime.ApplicationStarted.Register(() => ShardProtocol.WarnIfNotLoopback(server.Features.Get<IServerAddressesFeature>(), api));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCoordApiGate(api);
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<CoordinatorService>();
+                endpoints.MapShardProtocol();
 
-                endpoints.MapGet("/",
-                    async context =>
-                    {
-                        await context.Response.WriteAsync(
-                            "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-                    });
+                if (api.Enabled)
+                    endpoints.MapCoordApi();
             });
         }
     }

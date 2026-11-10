@@ -343,7 +343,7 @@ public sealed class ApiContractTests
         var time = new Microsoft.Extensions.Time.Testing.FakeTimeProvider();
         var coord = new HostedCoordinator(lifetime, new DiscordSocketClient(), time);
 
-        Assert.That(coord.RestartBot(), Is.True);
+        Assert.That(await coord.RestartBotAsync(), Is.True);
 
         // Whether or not the delay has started yet, less than the delay must not stop the host.
         time.Advance(HostedCoordinator.StopDelay - TimeSpan.FromMilliseconds(1));

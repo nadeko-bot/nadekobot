@@ -50,7 +50,10 @@ public sealed class Creds : IBotCreds
         """)]
     public GoogleApiConfig Google { get; set; }
 
-    [Comment("""Settings for voting system for discordbots. Meant for use on global Nadeko.""")]
+    [Comment("""
+             Server count reports to discordbotlist.com and discords.com. Meant for use on global Nadeko.
+             Vote rewards come from NadekoBot.VotesApi through NadekoBot.Coordinator.
+             """)]
     public VotesSettings Votes { get; set; }
 
     [Comment("""
@@ -245,8 +248,6 @@ public sealed class Creds : IBotCreds
 
     public sealed record VotesSettings : IVotesSettings
     {
-        public string Host { get; set; }
-        public int Port {get; set; }
         public string DblApiKey { get; set; }
         public string DiscordsApiKey { get; set; }
     }

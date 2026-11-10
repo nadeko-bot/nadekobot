@@ -10,3 +10,7 @@ ShardStartCommand: dotnet
 ShardStartArgs: run -p "..\NadekoBot\NadekoBot.csproj" --no-build -- {0} {1}
 # How long does it take for the shard to be forcefully restarted once it stops reporting its state
 UnresponsiveSec: 30
+# Address and port of the dashboard API. Leave both empty to turn it off.
+# The key and the shard base port come from data/api.yml, which the shards read too.
+ApiAddress: 
+ApiPort: 0

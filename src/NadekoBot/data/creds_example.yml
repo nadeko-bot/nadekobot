@@ -33,22 +33,11 @@ googleApiKey: ''
 google:
   searchId: 
   imageSearchId: 
-# Settings for voting system for discordbots. Meant for use on global Nadeko.
+# Server count reports to discordbotlist.com and discords.com. Meant for use on global Nadeko.
+# Vote rewards come from NadekoBot.VotesApi through NadekoBot.Coordinator.
 votes:
-  # top.gg votes service url
-  # This is the url of your instance of the NadekoBot.Votes api
-  # Example: https://votes.my.cool.bot.com
-  topggServiceUrl: ''
-  # Authorization header value sent to the TopGG service url with each request
-  # This should be equivalent to the TopggKey in your NadekoBot.Votes api appsettings.json file
-  topggKey: ''
-  # discords.com votes service url
-  # This is the url of your instance of the NadekoBot.Votes api
-  # Example: https://votes.my.cool.bot.com
-  discordsServiceUrl: ''
-  # Authorization header value sent to the Discords service url with each request
-  # This should be equivalent to the DiscordsKey in your NadekoBot.Votes api appsettings.json file
-  discordsKey: ''
+  dblApiKey: 
+  discordsApiKey: 
 # Patreon auto reward system settings.
 # go to https://www.patreon.com/portal -> my clients -> create client
 patreon:

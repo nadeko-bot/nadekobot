@@ -1,8 +1,6 @@
 using System.Globalization;
 using System.Net.Http.Json;
-using Grpc.Core;
 using NadekoBot.Common.ModuleBehaviors;
-using NadekoBot.GrpcVotesApi;
 
 namespace NadekoBot.Modules.Gambling.Services;
 
@@ -36,7 +34,7 @@ public sealed class ServerCountRewardService(
                         httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", dblApiKey);
                         httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
                         await httpClient.PostAsJsonAsync(
-                            $"https://discordbotlist.com/api/v1/bots/{116275390695079945}/stats",
+                            $"https://discordbotlist.com/api/v1/bots/{client.CurrentUser.Id}/stats",
                             new
                             {
                                 users = client.Guilds.Sum(x => x.MemberCount),
@@ -53,44 +51,48 @@ public sealed class ServerCountRewardService(
                     await Task.Delay(TimeSpan.FromHours(12));
                 }
             });
-
-            if (shardData.ShardId != 0)
-                return Task.CompletedTask;
-
-            if (!string.IsNullOrWhiteSpace(creds.Votes.DiscordsApiKey))
-            {
-                discordsTask = Task.Run(async () =>
-                {
-                    var discordsApiKey = creds.Votes.DiscordsApiKey;
-                    while (true)
-                    {
-                        try
-                        {
-                            using var httpClient = httpFactory.CreateClient();
-                            httpClient.DefaultRequestHeaders.Clear();
-                            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", discordsApiKey);
-                            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type",
-                                "application/json");
-                            await httpClient.PostAsJsonAsync(
-                                $"https://discords.com/bots/api/bot/{client.CurrentUser.Id}/setservers",
-                                new
-                                {
-                                    server_count = client.Guilds.Count * shardData.TotalShards,
-                                });
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Warning(ex, "Unable to send server count to Discords");
-                        }
-
-                        await Task.Delay(TimeSpan.FromHours(12));
-                    }
-                });
-            }
         }
+
+        if (shardData.ShardId != 0 || string.IsNullOrWhiteSpace(creds.Votes.DiscordsApiKey))
+            return Task.CompletedTask;
+
+        discordsTask = Task.Run(async () =>
+        {
+            var discordsApiKey = creds.Votes.DiscordsApiKey;
+            while (true)
+            {
+                try
+                {
+                    using var httpClient = httpFactory.CreateClient();
+                    httpClient.DefaultRequestHeaders.Clear();
+                    httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", discordsApiKey);
+                    httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+                    await httpClient.PostAsJsonAsync(
+                        $"https://discords.com/bots/api/bot/{client.CurrentUser.Id}/setservers",
+                        new
+                        {
+                            server_count = client.Guilds.Count * shardData.TotalShards,
+                        });
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Unable to send server count to Discords");
+                }
+
+                await Task.Delay(TimeSpan.FromHours(12));
+            }
+        });
 
         return Task.CompletedTask;
     }
+}
+
+// The names are also the transaction notes and the text of the reward message.
+public enum VoteType
+{
+    Topgg,
+    Discordbotlist,
+    Discords
 }
 
 public class VoteRewardService(
@@ -100,10 +102,11 @@ public class VoteRewardService(
     CurrencyService cs,
     DiscordSocketClient client,
     IMessageSenderService sender,
-    IBotCreds creds
+    ICoordinator coordinator
 ) : INService, IReadyExecutor
 {
-    private Server? _app;
+    private static readonly TimeSpan _retryDelay = TimeSpan.FromSeconds(5);
+
     private IMessageChannel? _voteFeedChannel;
 
     public async Task OnReadyAsync()
@@ -111,26 +114,85 @@ public class VoteRewardService(
         if (shardData.ShardId != 0)
             return;
 
-        if (creds.Votes is null || creds.Votes.Host is null || creds.Votes.Port == 0)
-            return;
-
-        var serverCreds = ServerCredentials.Insecure;
-        var ssd = VoteService.BindService(new VotesGrpcService(this));
-
-        _app = new()
-        {
-            Ports =
-            {
-                new(creds.Votes.Host, creds.Votes.Port, serverCreds),
-            }
-        };
-
-        _app.Services.Add(ssd);
-        _app.Start();
+        // NadekoBot.VotesApi gives each vote to the coordinator, and shard 0 takes them from there.
+        if (coordinator is RemoteHttpCoordinator remote)
+            _ = Task.Run(() => TakeVotesLoopAsync(remote));
 
         if (gcs.Data.VoteFeedChannelId is ulong cid)
         {
             _voteFeedChannel = await client.GetChannelAsync(cid) as IMessageChannel;
+        }
+    }
+
+    private async Task TakeVotesLoopAsync(RemoteHttpCoordinator remote)
+    {
+        var failing = false;
+        while (true)
+        {
+            CoordVote[] votes;
+            try
+            {
+                votes = await remote.TakeVotesAsync();
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
+            catch (OperationCanceledException) when (remote.IsStopped)
+            {
+                return;
+            }
+            catch (Exception ex)
+            {
+                if (!failing)
+                    Log.Warning("Could not take votes from the coordinator: {Message}", ex.Message);
+
+                failing = true;
+                await Task.Delay(_retryDelay);
+                continue;
+            }
+
+            if (failing)
+                Log.Information("Shard 0 takes votes from the coordinator again");
+
+            failing = false;
+            foreach (var vote in votes)
+            {
+                if (!ulong.TryParse(vote.UserId, NumberStyles.None, CultureInfo.InvariantCulture, out var userId)
+                    || !TryParseVoteType(vote.Type, out var type))
+                {
+                    Log.Warning("The coordinator gave a vote which is not valid: {UserId} on {Platform}", vote.UserId, vote.Type);
+                    continue;
+                }
+
+                try
+                {
+                    await UserVotedAsync(userId, type);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Could not give the vote reward to {UserId} for {Platform}", userId, type);
+                }
+            }
+        }
+    }
+
+    private static bool TryParseVoteType(string? text, out VoteType type)
+    {
+        switch (text)
+        {
+            case "topgg":
+                type = VoteType.Topgg;
+                return true;
+            case "discordbotlist":
+                type = VoteType.Discordbotlist;
+                return true;
+            case "discords":
+                type = VoteType.Discords;
+                return true;
+            default:
+                type = default;
+                return false;
         }
     }
 
@@ -188,15 +250,4 @@ public class VoteRewardService(
 
     private string N(long amount)
         => CurrencyHelper.N(amount, CultureInfo.InvariantCulture, gcs.Data.Currency.Sign);
-}
-
-public sealed class VotesGrpcService(VoteRewardService vrs)
-    : VoteService.VoteServiceBase, INService
-{
-    public override async Task<GrpcVoteResult> VoteReceived(GrpcVoteData request, ServerCallContext context)
-    {
-        await vrs.UserVotedAsync(ulong.Parse(request.UserId), request.Type);
-
-        return new();
-    }
 }

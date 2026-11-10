@@ -3,11 +3,11 @@ namespace NadekoBot.Services;
 
 public interface ICoordinator
 {
-    bool RestartBot();
-    void Die(bool graceful);
-    bool RestartShard(int shardId);
-    IList<ShardStatus> GetAllShardStatuses();
-    int GetGuildCount();
+    ValueTask<bool> RestartBotAsync();
+    ValueTask DieAsync(bool graceful);
+    ValueTask<bool> RestartShardAsync(int shardId);
+    ValueTask<IList<ShardStatus>> GetAllShardStatusesAsync();
+    ValueTask<int> GetGuildCountAsync();
     Task Reload();
 }
 

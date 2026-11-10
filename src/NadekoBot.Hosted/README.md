@@ -52,7 +52,9 @@ stops with exit code 2.
   The routes which set xp currency rewards and the server activity route
   are only in standalone mode.
   For a server of a different shard, the shard answers `421 wrong_shard`.
-  A shard without an `apiKey` runs with no API.
+  A shard without an `apiKey` runs with no API. A dashboard calls the
+  coordinator's API, which sends each server request to the right shard
+  (`src/NadekoBot.Coordinator/README.md`).
 
 ## Health
 

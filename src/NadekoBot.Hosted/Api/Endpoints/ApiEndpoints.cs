@@ -66,9 +66,9 @@ public static class ApiEndpoints
         return ownerGuild;
     }
 
-    private static IResult GetStatus(ICoordinator coord, IStatsService stats, ShardData shardData)
+    private static async Task<IResult> GetStatus(ICoordinator coord, IStatsService stats, ShardData shardData)
     {
-        var statuses = coord.GetAllShardStatuses();
+        var statuses = await coord.GetAllShardStatusesAsync();
         var shards = new ShardStatusDto[statuses.Count];
         long guildCount = 0;
         for (var i = 0; i < statuses.Count; i++)

@@ -95,4 +95,5 @@ namespace NadekoBot.Hosted;
 [JsonSerializable(typeof(CreateStreamRequest))]
 [JsonSerializable(typeof(UpdateStreamRequest))]
 [JsonSerializable(typeof(StreamSettingsDto))]
-[JsonSerializable(typeof(UpdateStreamSettingsRequest))]public sealed partial class ApiJsonContext : JsonSerializerContext;
+[JsonSerializable(typeof(UpdateStreamSettingsRequest))]
+public sealed partial class ApiJsonContext : JsonSerializerContext;

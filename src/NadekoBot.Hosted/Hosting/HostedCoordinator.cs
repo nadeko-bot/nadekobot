@@ -19,20 +19,23 @@ public sealed class HostedCoordinator(
             Reuse.Singleton,
             ifAlreadyRegistered: IfAlreadyRegistered.Replace);
 
-    public bool RestartBot()
+    public ValueTask<bool> RestartBotAsync()
     {
         _ = Task.Run(StopInternalAsync);
-        return true;
+        return ValueTask.FromResult(true);
     }
 
-    public void Die(bool graceful)
-        => _ = Task.Run(StopInternalAsync);
+    public ValueTask DieAsync(bool graceful)
+    {
+        _ = Task.Run(StopInternalAsync);
+        return ValueTask.CompletedTask;
+    }
 
-    public bool RestartShard(int shardId)
-        => RestartBot();
+    public ValueTask<bool> RestartShardAsync(int shardId)
+        => RestartBotAsync();
 
-    public IList<ShardStatus> GetAllShardStatuses()
-        =>
+    public ValueTask<IList<ShardStatus>> GetAllShardStatusesAsync()
+        => ValueTask.FromResult<IList<ShardStatus>>(
         [
             new ShardStatus
             {
@@ -43,10 +46,10 @@ public sealed class HostedCoordinator(
                 // Only fills the bot's ShardStatus contract; the API does not expose it.
                 UptimePercent = FULL_UPTIME_PERCENT
             }
-        ];
+        ]);
 
-    public int GetGuildCount()
-        => client.Guilds.Count;
+    public ValueTask<int> GetGuildCountAsync()
+        => ValueTask.FromResult(client.Guilds.Count);
 
     public Task Reload()
         => Task.CompletedTask;

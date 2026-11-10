@@ -1,17 +1,19 @@
 using System;
-using Grpc.Core;
+using System.Net;
+using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NadekoBot.GrpcVotesApi;
 
 namespace NadekoBot.VotesApi
 {
     public class Startup
     {
+        private const string DEFAULT_COORDINATOR_URL = "http://localhost:3442";
+
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -23,14 +25,24 @@ namespace NadekoBot.VotesApi
         {
             services.AddControllers();
 
-            services.AddGrpcClient<VoteService.VoteServiceClient>(options =>
+            var url = Configuration[ConfKeys.COORDINATOR_URL];
+            if (!Uri.TryCreate(string.IsNullOrWhiteSpace(url) ? DEFAULT_COORDINATOR_URL : url, UriKind.Absolute, out var coordinatorUrl)
+                || !string.Equals(coordinatorUrl.Scheme, Uri.UriSchemeHttp, StringComparison.Ordinal))
+                throw new InvalidOperationException($"{ConfKeys.COORDINATOR_URL} must be the http url of the coordinator, like {DEFAULT_COORDINATOR_URL}");
+
+            // The coordinator's port speaks only HTTP/2, without TLS, and only on loopback.
+            services.AddHttpClient<BotVoteClient>(c =>
                 {
-                    options.Address = new Uri(Configuration["BotGrpcHost"]!);
+                    c.BaseAddress = coordinatorUrl;
+                    c.DefaultRequestVersion = HttpVersion.Version20;
+                    c.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionExact;
+                    c.Timeout = TimeSpan.FromSeconds(15);
                 })
-                .ConfigureChannel((sp, c) =>
+                .ConfigurePrimaryHttpMessageHandler(static () => new SocketsHttpHandler
                 {
-                    c.Credentials = ChannelCredentials.Insecure;
-                    c.ServiceProvider = sp;
+                    UseProxy = false,
+                    AllowAutoRedirect = false,
+                    ConnectTimeout = TimeSpan.FromSeconds(5)
                 });
 
             services

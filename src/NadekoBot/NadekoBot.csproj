@@ -35,11 +35,6 @@
         <PackageReference Include="Google.Apis.YouTube.v3" Version="1.68.0.3653" />
         <PackageReference Include="Google.Apis.Customsearch.v1" Version="1.49.0.2084" />
 
-        <PackageReference Include="Google.Protobuf" Version="3.29.3" />
-        <PackageReference Include="Grpc" Version="2.46.6" />
-        <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
-        <PackageReference Include="Grpc.Tools" Version="2.68.1" PrivateAssets="All" />
-
 
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.1" />
@@ -125,16 +120,6 @@
     <ItemGroup>
         <None Remove="assets/fonts/*.ttf" />
         <EmbeddedResource Include="assets/fonts/*.ttf" LogicalName="NadekoBot.Fonts.%(Filename)%(Extension)" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Protobuf Include="../NadekoBot.Coordinator/Protos/coordinator.proto">
-            <Link>_common\CoordinatorProtos\coordinator.proto</Link>
-            <GrpcServices>Client</GrpcServices>
-        </Protobuf>
-        <Protobuf Include="../NadekoBot.VotesApi/Protos/*.proto">
-            <GrpcServices>Server</GrpcServices>
-        </Protobuf>
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'GlobalNadeko' ">

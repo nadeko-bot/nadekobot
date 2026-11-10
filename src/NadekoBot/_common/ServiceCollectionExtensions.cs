@@ -140,6 +140,20 @@ public static class ServiceCollectionExtensions
                 ConnectTimeout = TimeSpan.FromSeconds(10)
             });
 
+        proxySvcs.AddHttpClient(RemoteHttpCoordinator.HTTP_CLIENT_NAME, static c =>
+            {
+                c.Timeout = RemoteHttpCoordinator.RequestTimeout;
+                c.DefaultRequestVersion = HttpVersion.Version20;
+                // Without TLS there is no protocol negotiation, so HTTP/2 must be asked for exactly.
+                c.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionExact;
+            })
+            .ConfigurePrimaryHttpMessageHandler(static () => new SocketsHttpHandler
+            {
+                UseProxy = false,
+                AllowAutoRedirect = false,
+                ConnectTimeout = TimeSpan.FromSeconds(5)
+            });
+
         proxySvcs.AddHttpClient("memelist")
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {

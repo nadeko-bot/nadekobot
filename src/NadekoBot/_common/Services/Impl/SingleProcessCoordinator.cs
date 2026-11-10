@@ -14,7 +14,10 @@ public class SingleProcessCoordinator : ICoordinator
         _client = client;
     }
 
-    public bool RestartBot()
+    public ValueTask<bool> RestartBotAsync()
+        => ValueTask.FromResult(RestartBotInternal());
+
+    private bool RestartBotInternal()
     {
         if (string.IsNullOrWhiteSpace(_creds.RestartCommand?.Cmd)
             || string.IsNullOrWhiteSpace(_creds.RestartCommand?.Args))
@@ -27,19 +30,22 @@ public class SingleProcessCoordinator : ICoordinator
         _ = Task.Run(async () =>
         {
             await Task.Delay(2000);
-            Die();
+            Environment.Exit(0);
         });
         return true;
     }
 
-    public void Die(bool graceful = false)
-        => Environment.Exit(0);
+    public ValueTask DieAsync(bool graceful)
+    {
+        Environment.Exit(0);
+        return ValueTask.CompletedTask;
+    }
 
-    public bool RestartShard(int shardId)
-        => RestartBot();
+    public ValueTask<bool> RestartShardAsync(int shardId)
+        => RestartBotAsync();
 
-    public IList<ShardStatus> GetAllShardStatuses()
-        => new[]
+    public ValueTask<IList<ShardStatus>> GetAllShardStatusesAsync()
+        => ValueTask.FromResult<IList<ShardStatus>>(new[]
         {
             new ShardStatus
             {
@@ -49,10 +55,10 @@ public class SingleProcessCoordinator : ICoordinator
                 ShardId = _client.ShardId,
                 UptimePercent = 100
             }
-        };
+        });
 
-    public int GetGuildCount()
-        => _client.Guilds.Count;
+    public ValueTask<int> GetGuildCountAsync()
+        => ValueTask.FromResult(_client.Guilds.Count);
 
     public Task Reload()
         => Task.CompletedTask;

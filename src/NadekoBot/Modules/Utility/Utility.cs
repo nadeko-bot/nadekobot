@@ -378,7 +378,7 @@ public partial class Utility : NadekoModule
             .AddField(GetText(strs.owner_ids), ownerIds, true)
             .AddField(GetText(strs.uptime), _stats.GetUptimeString("\n"), true)
             .AddField(GetText(strs.presence),
-                GetText(strs.presence_txt(_coord.GetGuildCount(),
+                GetText(strs.presence_txt(await _coord.GetGuildCountAsync(),
                     _stats.TextChannels,
                     _stats.VoiceChannels)),
                 true);

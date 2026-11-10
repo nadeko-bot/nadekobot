@@ -1,46 +1,33 @@
 ﻿## Votes Api
 
-This api is used if you want your bot to be able to reward users who vote for it on discords.com or top.gg   
+Rewards users who vote for the bot on top.gg, discordbotlist.com or discords.com.
+The vote sites call the webhooks below. VotesApi checks the key of each site, then gives the vote to
+NadekoBot.Coordinator (`POST /coord/votes`). Shard 0 takes the votes from the coordinator and gives the reward
+(`voteReward` in `gambling.yml`). A bot without the coordinator gives no vote rewards.
 
-#### [GET] `/discords/new`
-    Get the discords votes received after previous call to this endpoint.
-    Input full url of this endpoint in your creds.yml file under Discords url field.
-    For example "https://api.my.cool.bot/discords/new"
-#### [GET] `/topgg/new`
-    Get the topgg votes received after previous call to this endpoint.
-    Input full url of this endpoint in your creds.yml file under Topgg url field.
-    For example "https://api.my.cool.bot/topgg/new"
-
-#### [POST] `/discordswebhook`
-    Input this endpoint as the webhook on discords.com bot edit page
-    model: https://docs.botsfordiscord.com/methods/receiving-votes
-    For example "https://api.my.cool.bot/topggwebhook"
 #### [POST] `/topggwebhook`
-    Input this endpoint as the webhook https://top.gg/bot/:your-bot-id/webhooks (replace :your-bot-id with your bot's id)
-    model: https://docs.top.gg/resources/webhooks/#schema
-    For example "https://api.my.cool.bot/discordswebhook"
+    Set it as the webhook on https://top.gg/bot/:your-bot-id/webhooks, with TopGGKey as the authorization.
+#### [POST] `/discordbotlistwebhook`
+    Set it as the webhook on discordbotlist.com, with DiscordBotListKey as the authorization.
+#### [POST] `/discordswebhook`
+    Set it as the webhook on the discords.com bot edit page, with DiscordsKey as the authorization.
 
-Input your super-secret header value in appsettings.json's DiscordsKey and TopGGKey fields
-They must match your DiscordsKey and TopGG key respectively, as well as your secrets in the discords.com and top.gg webhook setup pages
+Test webhooks (top.gg type `test`, discords.com types other than `vote`) answer `200` and give no reward.
 
-Full Example:
+When the coordinator does not take the vote (it restarts, or 1,000 votes wait), the webhook answers `503`,
+so the vote site sends it again later. A vote which the coordinator refuses as not valid answers `200`.
 
-⚠ Change TopggKey and DiscordsKey to a secure long string  
-⚠ You can use https://www.random.org/strings/?num=1&len=20&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new to generate it
-
-`creds.yml`
-```yml
-votes:
-    TopggServiceUrl: "https://api.my.cool.bot/topgg"
-    TopggKey: "my_topgg_key"
-    DiscordsServiceUrl: "https://api.my.cool.bot/discords"
-    DiscordsKey: "my_discords_key"
-```
-
-`appsettings.json`
+`appsettings.json` (or environment variables of the same names):
 ```json
 ...
   "DiscordsKey": "my_discords_key",
   "TopGGKey": "my_topgg_key",
+  "DiscordBotListKey": "my_discordbotlist_key",
+  "CoordinatorUrl": "http://localhost:3442",
 ...
 ```
+
+- `CoordinatorUrl` is the url of the coordinator's shard port (default `http://localhost:3442`). It must match the
+  url in the coordinator's `appsettings.json`. That port has no key and stays on loopback, so run VotesApi on the
+  same machine.
+- Use long random strings for the three site keys.

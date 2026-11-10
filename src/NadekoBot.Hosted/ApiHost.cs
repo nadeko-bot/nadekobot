@@ -42,6 +42,10 @@ public static class ApiHost
             ContentRootPath = Directory.GetCurrentDirectory()
         });
 
+        // Coordinated shards share the coordinator's folder, whose appsettings.json binds Kestrel to the shard protocol port.
+        if (host.Mode == HostMode.Coordinated)
+            builder.Configuration.Sources.Clear();
+
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilog();
         builder.Logging.AddFilter("Microsoft", LogLevel.Warning);

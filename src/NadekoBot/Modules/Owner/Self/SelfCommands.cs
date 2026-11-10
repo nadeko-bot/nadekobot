@@ -320,7 +320,7 @@ public partial class Owner
             if (--page < 0)
                 return;
 
-            var statuses = _coord.GetAllShardStatuses();
+            var statuses = await _coord.GetAllShardStatusesAsync();
 
             var status = string.Join(" : ",
                 statuses.Select(x => (ConnectionStateToEmoji(x), x))
@@ -374,7 +374,7 @@ public partial class Owner
         [OwnerOnly]
         public async Task RestartShard(int shardId)
         {
-            var success = _coord.RestartShard(shardId);
+            var success = await _coord.RestartShardAsync(shardId);
             if (success)
                 await Response().Confirm(strs.shard_reconnecting(Format.Bold("#" + shardId))).SendAsync();
             else
@@ -433,14 +433,14 @@ public partial class Owner
             }
 
             await Task.Delay(2000);
-            _coord.Die(graceful);
+            await _coord.DieAsync(graceful);
         }
 
         [Cmd]
         [OwnerOnly]
         public async Task Restart()
         {
-            var success = _coord.RestartBot();
+            var success = await _coord.RestartBotAsync();
             if (!success)
             {
                 await Response().Error(strs.restart_fail).SendAsync();

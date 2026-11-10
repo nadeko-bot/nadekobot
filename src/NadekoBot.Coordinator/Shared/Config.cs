@@ -8,14 +8,8 @@
         public string ShardStartArgs { get; init; }
         public double UnresponsiveSec { get; init; }
 
-        public Config(int totalShards, int recheckIntervalMs, string shardStartCommand, string shardStartArgs, double unresponsiveSec)
-        {
-            TotalShards = totalShards;
-            RecheckIntervalMs = recheckIntervalMs;
-            ShardStartCommand = shardStartCommand;
-            ShardStartArgs = shardStartArgs;
-            UnresponsiveSec = unresponsiveSec;
-        }
-
+        // Both must be set, and data/api.yml must have a key, or the dashboard API stays off.
+        public string ApiAddress { get; init; }
+        public int ApiPort { get; init; }
     }
 }

@@ -54,7 +54,7 @@ public sealed class GamblingConfig
 
     [Comment("""
              Currency reward per vote.
-             This will work only if you've set up VotesApi and correct credentials for topgg and/or discords voting
+             It works only with the coordinator and VotesApi, with the keys of the vote sites.
              """)]
     public long VoteReward { get; set; } = 100;
 
@@ -67,7 +67,7 @@ public sealed class GamblingConfig
                       List of platforms for which the bot will give currency rewards.
                       Format: PLATFORM|URL
                       Supported platforms: topgg, discords, discordbotlist
-                      You will have to have VotesApi running on the same machine.
+                      VotesApi must run on the same machine as the coordinator.
                       Format example: Top.gg|https://top.gg/bot/YOUR_BOT_ID/vote
              """)]
     public string[] VotePlatforms { get; set; } = [];

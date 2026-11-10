@@ -1,52 +1,51 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NadekoBot.GrpcVotesApi;
 
 namespace NadekoBot.VotesApi.Controllers
 {
     [ApiController]
-    public class WebhookController(ILogger<WebhookController> logger, VoteService.VoteServiceClient client)
+    public class WebhookController(ILogger<WebhookController> logger, BotVoteClient bot)
         : ControllerBase
     {
         [HttpPost("/discordswebhook")]
         [Authorize(Policy = Policies.DiscordsAuth)]
         public async Task<IActionResult> DiscordsWebhook([FromBody] DiscordsVoteWebhookModel data)
         {
-            if ((data.Type?.Contains("vote") ?? false) == false)
+            if (!string.Equals(data.Type, "vote", StringComparison.Ordinal))
+            {
+                logger.LogInformation("Ignored a discords.com webhook of type {Type}", data.Type);
                 return Ok();
+            }
 
             logger.LogInformation("User {UserId} has voted for Bot {BotId} on {Platform}",
                 data.User,
                 data.Bot,
                 "discords.com");
 
-            await client.VoteReceivedAsync(new GrpcVoteData()
-            {
-                Type = VoteType.Discords,
-                UserId = data.User,
-            });
-
-            return Ok();
+            return await SendAsync(data.User, "discords");
         }
 
         [HttpPost("/topggwebhook")]
         [Authorize(Policy = Policies.TopggAuth)]
         public async Task<IActionResult> TopggWebhook([FromBody] TopggVoteWebhookModel data)
         {
+            // The "Send test" button on top.gg sends type "test" with the presser's user id.
+            if (!string.Equals(data.Type, "upvote", StringComparison.Ordinal))
+            {
+                logger.LogInformation("Ignored a top.gg webhook of type {Type}", data.Type);
+                return Ok();
+            }
+
             logger.LogInformation("User {UserId} has voted for Bot {BotId} on {Platform}",
                 data.User,
                 data.Bot,
                 "top.gg");
 
-            await client.VoteReceivedAsync(new GrpcVoteData()
-            {
-                Type = VoteType.Topgg,
-                UserId = data.User,
-            });
-
-            return Ok();
+            return await SendAsync(data.User, "topgg");
         }
 
         [HttpPost("/discordbotlistwebhook")]
@@ -57,13 +56,12 @@ namespace NadekoBot.VotesApi.Controllers
                 data.Id,
                 "discordbotlist.com");
 
-            await client.VoteReceivedAsync(new GrpcVoteData()
-            {
-                Type = VoteType.Discordbotlist,
-                UserId = data.Id,
-            });
-
-            return Ok();
+            return await SendAsync(data.Id, "discordbotlist");
         }
+
+        private async Task<IActionResult> SendAsync(string userId, string type)
+            => await bot.SendAsync(userId, type)
+                ? Ok()
+                : StatusCode(StatusCodes.Status503ServiceUnavailable);
     }
 }

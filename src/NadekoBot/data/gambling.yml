@@ -251,7 +251,7 @@ waifu:
 # 1 = 100 currency per $. Used almost exclusively on public nadeko.
 patreonCurrencyPerCent: 1
 # Currency reward per vote.
-# This will work only if you've set up VotesApi and correct credentials for topgg and/or discords voting
+# It works only with the coordinator and VotesApi, with the keys of the vote sites.
 voteReward: 0
 # Id of the channel to send a message to after a user votes
 voteFeedChannelId: 

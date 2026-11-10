@@ -179,9 +179,10 @@ public sealed class Bot : IBot
         }
         else
         {
-            svcs.AddSingleton<RemoteGrpcCoordinator>();
-            svcs.AddSingleton<ICoordinator>(_ => svcs.GetRequiredService<RemoteGrpcCoordinator>());
-            svcs.AddSingleton<IReadyExecutor>(_ => svcs.GetRequiredService<RemoteGrpcCoordinator>());
+            RemoteHttpCoordinator.IgnoreHangup();
+            svcs.AddSingleton<RemoteHttpCoordinator>();
+            svcs.AddSingleton<ICoordinator>(_ => svcs.GetRequiredService<RemoteHttpCoordinator>());
+            svcs.AddSingleton<IReadyExecutor>(_ => svcs.GetRequiredService<RemoteHttpCoordinator>());
         }
 
         _configureServices?.Invoke(svcs);

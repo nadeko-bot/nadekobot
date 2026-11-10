@@ -35,8 +35,6 @@ public interface IBotCreds
 
 public interface IVotesSettings
 {
-    string Host { get; set; }
-    int Port { get; set; }
     string DblApiKey { get; set; }
     string DiscordsApiKey { get; set; }
 }
