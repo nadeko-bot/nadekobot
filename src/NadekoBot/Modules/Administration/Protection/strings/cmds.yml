@@ -114,10 +114,10 @@ honeypot:
     Softban bans and immediately unbans the user. Ban permanently bans the user.
 
     This is useful for automatically getting rid of spam bots.
+    To get a report of each catch in a channel, use `{0}servernotify honeypot #channel <message>`.
   ex:
     - ''
     - 'ban'
-    - 'softban'
   params:
     - {}
     - action:

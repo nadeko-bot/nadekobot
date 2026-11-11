@@ -25,4 +25,5 @@ public enum NotifyType
     NiceCatch = 4,
     // BigWin = 4,
     FishCurrency = 5,
+    Honeypot = 6,
 }

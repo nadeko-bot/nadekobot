@@ -1,4 +1,5 @@
-﻿using LinqToDB;
+﻿using System.Net;
+using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
 using NadekoBot.Db.Models;
@@ -17,6 +18,9 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
     private readonly IPubSub _pubSub;
 
     private ConcurrentDictionary<NotifyType, ConcurrentDictionary<ulong, Notify>> _events = new();
+
+    // one warning for each server and event until a post works again, so a busy event does not flood the log
+    private readonly ConcurrentDictionary<(ulong GuildId, NotifyType Type), byte> _noPermsLogged = new();
 
     public NotifyService(
         DbService db,
@@ -42,6 +46,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         RegisterModel<RemoveRoleRewardNotifyModel>();
         RegisterModel<NiceCatchNotifyModel>();
         RegisterModel<FishCurrencyNotifyModel>();
+        RegisterModel<HoneypotNotifyModel>();
     }
 
     public async Task OnReadyAsync()
@@ -72,7 +77,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         {
             if (isShardLocal)
             {
-                _ = Task.Run(async () => await OnEvent(data));
+                _ = Task.Run(() => OnEvent(data));
                 return;
             }
 
@@ -100,7 +105,18 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
             if (!subs.TryGetValue(gid, out var conf))
                 return;
 
-            await HandleNotifyEvent(conf, model);
+            try
+            {
+                await HandleNotifyEvent(conf, model);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex,
+                    "Error occured while sending notification {NotifyEvent} to guild {GuildId}",
+                    T.NotifyType,
+                    gid);
+            }
+
             return;
         }
 
@@ -131,10 +147,14 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         where T : struct, INotifyModel<T>
     {
         var guild = _client.GetGuild(conf.GuildId);
+        var logKey = (conf.GuildId, T.NotifyType);
 
         // bot probably left the guild, cleanup?
         if (guild is null)
+        {
+            _noPermsLogged.TryRemove(logKey, out _);
             return;
+        }
 
         IMessageChannel? channel;
         // if notify channel is specified for this event, send the event to that channel
@@ -153,6 +173,20 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
 
         if (channel is null)
             return;
+
+        if (!CanPost(guild, channel))
+        {
+            if (_noPermsLogged.TryAdd(logKey, 0))
+            {
+                Log.Warning("The bot can not post the {NotifyEvent} notification in channel {ChannelId} of guild {GuildId}: "
+                            + "it needs View Channel, Send Messages (Send Messages in Threads in a thread) and Embed Links",
+                    T.NotifyType,
+                    channel.Id,
+                    conf.GuildId);
+            }
+
+            return;
+        }
 
         IUser? user = null;
         if (model.TryGetUserId(out var userId))
@@ -178,18 +212,43 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
         }
 
         st = await _repSvc.ReplaceAsync(st, rctx);
-        if (st is SmartPlainText spt)
+        var response = st is SmartPlainText spt
+            ? _mss.Response(channel).Confirm(spt.Text)
+            : _mss.Response(channel).Text(st).Mentions(TemplateMentions.FromTemplate(template));
+
+        try
         {
-            await _mss.Response(channel)
-                .Confirm(spt.Text)
-                .SendAsync();
+            await response.SendAsync();
+        }
+        catch (HttpException ex) when (ex.HttpCode is HttpStatusCode.Forbidden or HttpStatusCode.NotFound)
+        {
+            if (_noPermsLogged.TryAdd(logKey, 0))
+            {
+                Log.Warning(ex,
+                    "Discord refused the {NotifyEvent} notification in channel {ChannelId} of guild {GuildId}",
+                    T.NotifyType,
+                    channel.Id,
+                    conf.GuildId);
+            }
+
             return;
         }
 
-        await _mss.Response(channel)
-            .Text(st)
-            .Mentions(TemplateMentions.FromTemplate(template))
-            .SendAsync();
+        _noPermsLogged.TryRemove(logKey, out _);
+    }
+
+    private static bool CanPost(SocketGuild guild, IMessageChannel channel)
+    {
+        if (channel is not SocketGuildChannel gch)
+            return false;
+
+        // a thread has no overwrites of its own, it uses the parent channel's
+        var isThread = gch is SocketThreadChannel;
+        var permsChannel = gch is SocketThreadChannel { ParentChannel: { } parent } ? parent : gch;
+        var perms = guild.CurrentUser.GetPermissions(permsChannel);
+        var canSend = isThread ? perms.SendMessagesInThreads : perms.SendMessages;
+
+        return perms.ViewChannel && canSend && perms.EmbedLinks;
     }
 
     private static string GetPhToken(string name)
@@ -239,6 +298,7 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
             Message = message
         };
 
+        _noPermsLogged.TryRemove((guildId, nType), out _);
         return true;
     }
 
@@ -251,6 +311,8 @@ public sealed class NotifyService : IReadyExecutor, INotifySubscriber, INService
 
         if (deleted == 0)
             return;
+
+        _noPermsLogged.TryRemove((guildId, nType), out _);
 
         if (!_events.TryGetValue(nType, out var guildsDict))
             return;

@@ -14,6 +14,7 @@
 - `.lock` / `.lockch` stops members from sending messages in a channel.
 - `.unlock` / `.unlockch` gives the channel its permissions from before the lock.
 - `.warnhidemod` / `.whm` hides the moderator from warned members.
+- `.servernotify` / `.snotify` / `.sn` has a `honeypot` event, which posts a message for each member that the honeypot catches.
 
 ### Changed
 
@@ -42,6 +43,8 @@
 - Server count fixes
     - discords.com gets the count also without a discordbotlist.com key
     - discordbotlist.com gets the count of the right bot
+- `.honeypot <action>` in a new channel stops the honeypot in the old channel.
+- `.servernotify` / `.snotify` / `.sn` shows a description for each event.
 
 ### Removed
 

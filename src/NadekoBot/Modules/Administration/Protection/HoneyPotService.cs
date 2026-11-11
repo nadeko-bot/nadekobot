@@ -10,10 +10,11 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
 {
     private readonly DbService _db;
     private readonly ILogCommandService _logService;
+    private readonly INotifySubscriber _notify;
 
     private ConcurrentDictionary<ulong, HoneypotAction> _channels = new();
 
-    private readonly record struct PunishmentEntry(SocketGuildUser User, HoneypotAction Action);
+    private readonly record struct PunishmentEntry(SocketGuildUser User, ulong ChannelId, HoneypotAction Action);
 
     private readonly Channel<PunishmentEntry> _punishments = Channel.CreateBounded<PunishmentEntry>(
         new BoundedChannelOptions(100)
@@ -23,10 +24,11 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
             SingleWriter = false,
         });
 
-    public HoneyPotService(DbService db, ILogCommandService logService)
+    public HoneyPotService(DbService db, ILogCommandService logService, INotifySubscriber notify)
     {
         _db = db;
         _logService = logService;
+        _notify = notify;
     }
 
     public async Task<bool> ToggleHoneypotChannel(ulong guildId, ulong channelId)
@@ -61,9 +63,9 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
     {
         await using var uow = _db.GetDbContext();
 
-        await uow.HoneyPotChannels
-                  .Where(x => x.GuildId == guildId)
-                  .DeleteAsync();
+        var deleted = await uow.HoneyPotChannels
+                               .Where(x => x.GuildId == guildId)
+                               .DeleteWithOutputAsync(x => x.ChannelId);
 
         await uow.HoneyPotChannels
                   .ToLinqToDBTable()
@@ -73,6 +75,13 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
                       ChannelId = channelId,
                       Action = action,
                   });
+
+        // a server has one honeypot, so the old channel stops catching members
+        foreach (var oldChannelId in deleted)
+        {
+            if (oldChannelId != channelId)
+                _channels.TryRemove(oldChannelId, out _);
+        }
 
         _channels[channelId] = action;
     }
@@ -112,6 +121,12 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
                     }
 
                     await _logService.LogHoneypot(entry.User.Guild, entry.User);
+
+                    await _notify.NotifyAsync(new HoneypotNotifyModel(entry.User.Guild.Id,
+                            entry.User.Id,
+                            entry.ChannelId,
+                            entry.Action),
+                        isShardLocal: true);
                 }
                 catch (Exception e)
                 {
@@ -128,7 +143,7 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
         if (_channels.TryGetValue(msg.Channel.Id, out var action) && msg.Author is SocketGuildUser sgu)
         {
             if (!sgu.GuildPermissions.BanMembers)
-                await _punishments.Writer.WriteAsync(new(sgu, action));
+                await _punishments.Writer.WriteAsync(new(sgu, msg.Channel.Id, action));
         }
     }
 }

@@ -1,6 +1,8 @@
 notify_available: List of available notify events
 notify_cant_set: This event doesn't support origin channel. Please specify a channel.
 notify_desc_addrolerew: Triggers when a user gets a role as a reward for reaching a level (xprew).
+notify_desc_fishcurrency: Triggers when a user on any server of the bot catches currency while fishing.
+notify_desc_honeypot: Triggers when the honeypot bans or softbans a user on this server.
 notify_desc_levelup: Triggers when a user levels up on this server.
 notify_desc_nicecatch: Triggers when a user catches quality fish.
 notify_desc_not_found: No description found for this notify event. Please report this.

@@ -656,7 +656,10 @@
       ],
       "Description": "Sends a message to the specified channel once the specified event occurs.\n\nIf no channel is specified, the message will be sent to the channel from\nwhich the event originated.\n\n*note: this is only possible for events that have an origin channel (for\nexample `levelup`)*\n\nStandard placeholders like `%user.name%`, `%user.mention%`, `%user.avatar%`\nand `%server.name%` work in any notify message in addition to the\nevent-specific `%event.*%` placeholders shown by `.servernotifyphs`.\n\nProvide no parameters to see all available events.",
       "Usage": [
-        ".servernotify levelup Congratulations to user %user.name% for reaching level\n%event.level%"
+        ".servernotify",
+        ".servernotify levelup",
+        ".servernotify honeypot #mod-log %user.mention% was caught in %event.channel% (%event.action%)",
+        ".servernotify levelup Congratulations to %user.name% for reaching level %event.level%"
       ],
       "Submodule": "NotifyCommands",
       "Module": "Administration",
@@ -876,11 +879,10 @@
       "Aliases": [
         ".honeypot"
       ],
-      "Description": "Toggles honeypot on the current channel (softban by default), or sets a specific action.\n\nAnyone sending a message in this channel will be punished with the configured action.\nSoftban bans and immediately unbans the user. Ban permanently bans the user.\n\nThis is useful for automatically getting rid of spam bots.",
+      "Description": "Toggles honeypot on the current channel (softban by default), or sets a specific action.\n\nAnyone sending a message in this channel will be punished with the configured action.\nSoftban bans and immediately unbans the user. Ban permanently bans the user.\n\nThis is useful for automatically getting rid of spam bots.\nTo get a report of each catch in a channel, use `.servernotify honeypot #channel <message>`.",
       "Usage": [
         ".honeypot",
-        ".honeypot ban",
-        ".honeypot softban"
+        ".honeypot ban"
       ],
       "Submodule": "ProtectionCommands",
       "Module": "Administration",

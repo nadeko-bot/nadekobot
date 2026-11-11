@@ -2,6 +2,8 @@ ar:
   notify_available: قائمة أحداث الإشعارات المتاحة
   notify_cant_set: هذا الحدث لا يدعم القناة المصدر. يرجى تحديد قناة.
   notify_desc_addrolerew: يُفعَّل عندما يحصل مستخدم على دور كمكافأة لوصوله إلى مستوى معين (xprew).
+  notify_desc_fishcurrency: يُفعَّل عندما يصطاد مستخدم عملة أثناء الصيد على أي خادم يستخدم البوت.
+  notify_desc_honeypot: يُفعَّل عندما تحظر مصيدة العسل مستخدمًا على هذا الخادم حظرًا كاملًا أو حظرًا ناعمًا.
   notify_desc_levelup: يُفعَّل عندما يرتقي مستخدم في المستوى على هذا الخادم.
   notify_desc_nicecatch: يُفعَّل عندما يصطاد مستخدم سمكة ذات جودة عالية.
   notify_desc_not_found: لم يُعثر على وصف لهذا الحدث. يرجى الإبلاغ عن ذلك.
@@ -21,6 +23,8 @@ de-DE:
   notify_available: Liste der verfügbaren Benachrichtigungsereignisse
   notify_cant_set: Dieses Ereignis unterstützt keinen Ursprungskanal. Bitte gib einen Kanal an.
   notify_desc_addrolerew: Wird ausgelöst, wenn ein Benutzer eine Rolle als Belohnung für das Erreichen eines Levels erhält (xprew).
+  notify_desc_fishcurrency: Wird ausgelöst, wenn ein Benutzer auf irgendeinem Server des Bots beim Angeln Währung fängt.
+  notify_desc_honeypot: Wird ausgelöst, wenn der Honeypot einen Benutzer auf diesem Server bannt oder softbannt.
   notify_desc_levelup: Wird ausgelöst, wenn ein Benutzer auf diesem Server ein Level aufsteigt.
   notify_desc_nicecatch: Wird ausgelöst, wenn ein Benutzer einen Qualitätsfisch fängt.
   notify_desc_not_found: Keine Beschreibung für dieses Ereignis gefunden. Bitte melde dies.
@@ -40,6 +44,8 @@ es-ES:
   notify_available: Lista de eventos de notificación disponibles
   notify_cant_set: Este evento no soporta canal de origen. Por favor, especifica un canal.
   notify_desc_addrolerew: Se activa cuando un usuario recibe un rol como recompensa por alcanzar un nivel (xprew).
+  notify_desc_fishcurrency: Se activa cuando un usuario de cualquier servidor del bot pesca monedas.
+  notify_desc_honeypot: Se activa cuando el honeypot banea o aplica softban a un usuario en este servidor.
   notify_desc_levelup: Se activa cuando un usuario sube de nivel en este servidor.
   notify_desc_nicecatch: Se activa cuando un usuario pesca un pez de calidad.
   notify_desc_not_found: No se encontró descripción para este evento. Por favor, repórtalo.
@@ -59,6 +65,8 @@ fr-FR:
   notify_available: Liste des événements de notification disponibles
   notify_cant_set: Cet événement ne supporte pas le salon d'origine. Veuillez spécifier un salon.
   notify_desc_addrolerew: Se déclenche quand un utilisateur reçoit un rôle en récompense pour avoir atteint un niveau (xprew).
+  notify_desc_fishcurrency: Se déclenche quand un utilisateur pêche de la monnaie sur n'importe quel serveur du bot.
+  notify_desc_honeypot: Se déclenche quand le honeypot bannit ou softban un utilisateur sur ce serveur.
   notify_desc_levelup: Se déclenche quand un utilisateur monte de niveau sur ce serveur.
   notify_desc_nicecatch: Se déclenche quand un utilisateur attrape un poisson de qualité.
   notify_desc_not_found: Aucune description trouvée pour cet événement. Veuillez le signaler.
@@ -78,6 +86,8 @@ id-ID:
   notify_available: Daftar event notifikasi yang tersedia
   notify_cant_set: Event ini tidak mendukung channel asal. Silakan tentukan channel.
   notify_desc_addrolerew: Terpicu saat user mendapat role sebagai hadiah karena mencapai level (xprew).
+  notify_desc_fishcurrency: Terpicu saat user di server mana pun mendapat mata uang saat memancing.
+  notify_desc_honeypot: Terpicu saat honeypot memban atau softban user di server ini.
   notify_desc_levelup: Terpicu saat user naik level di server ini.
   notify_desc_nicecatch: Terpicu saat user menangkap ikan berkualitas.
   notify_desc_not_found: Deskripsi tidak ditemukan untuk event notifikasi ini. Silakan laporkan ini.
@@ -97,6 +107,8 @@ ja-JP:
   notify_available: 利用可能な通知イベントの一覧
   notify_cant_set: このイベントはオリジンチャンネルをサポートしていません。チャンネルを指定してください。
   notify_desc_addrolerew: ユーザーがレベル到達の報酬としてロールを獲得したときにトリガーされます（xprew）。
+  notify_desc_fishcurrency: ボットのどのサーバーでも、ユーザーが釣りで通貨を獲得したときにトリガーされます。
+  notify_desc_honeypot: ハニーポットがこのサーバーのユーザーをBANまたはソフトBANしたときにトリガーされます。
   notify_desc_levelup: ユーザーがこのサーバーでレベルアップしたときにトリガーされます。
   notify_desc_nicecatch: ユーザーが質の高い魚を釣ったときにトリガーされます。
   notify_desc_not_found: この通知イベントの説明が見つかりません。報告してください。
@@ -116,6 +128,8 @@ ko-KR:
   notify_available: 사용 가능한 알림 이벤트 목록
   notify_cant_set: 이 이벤트는 원본 채널을 지원하지 않습니다. 채널을 지정해주세요.
   notify_desc_addrolerew: 유저가 레벨에 도달하여 보상으로 역할을 받을 때 발동합니다 (xprew).
+  notify_desc_fishcurrency: 봇의 모든 서버에서 유저가 낚시로 화폐를 얻을 때 발동해요.
+  notify_desc_honeypot: 허니팟이 이 서버의 유저를 차단하거나 소프트 밴할 때 발동해요.
   notify_desc_levelup: 이 서버에서 유저가 레벨업할 때 발동합니다.
   notify_desc_nicecatch: 유저가 고급 물고기를 잡았을 때 발동합니다.
   notify_desc_not_found: 이 알림 이벤트에 대한 설명을 찾을 수 없습니다. 제보해주세요.
@@ -135,6 +149,8 @@ pl-PL:
   notify_available: Lista dostępnych zdarzeń powiadomień
   notify_cant_set: To zdarzenie nie obsługuje kanału źródłowego. Proszę podać kanał.
   notify_desc_addrolerew: Wyzwalane, gdy użytkownik otrzymuje rolę jako nagrodę za osiągnięcie poziomu (xprew).
+  notify_desc_fishcurrency: Wyzwalane, gdy użytkownik na dowolnym serwerze bota złowi walutę.
+  notify_desc_honeypot: Wyzwalane, gdy honeypot zbanuje użytkownika na tym serwerze lub da mu softban.
   notify_desc_levelup: Wyzwalane, gdy użytkownik awansuje na wyższy poziom na tym serwerze.
   notify_desc_nicecatch: Wyzwalane, gdy użytkownik złowi dobrą rybę.
   notify_desc_not_found: Nie znaleziono opisu dla tego zdarzenia. Proszę to zgłosić.
@@ -154,6 +170,8 @@ pt-BR:
   notify_available: Lista de eventos de notificação disponíveis
   notify_cant_set: Este evento não suporta canal de origem. Por favor, especifique um canal.
   notify_desc_addrolerew: Ativa quando um usuário recebe um cargo como recompensa por atingir um nível (xprew).
+  notify_desc_fishcurrency: Ativa quando um usuário em qualquer servidor do bot pesca moedas.
+  notify_desc_honeypot: Ativa quando o honeypot bane ou aplica softban em um usuário neste servidor.
   notify_desc_levelup: Ativa quando um usuário sobe de nível neste servidor.
   notify_desc_nicecatch: Ativa quando um usuário pesca um peixe de qualidade.
   notify_desc_not_found: Nenhuma descrição encontrada para este evento. Por favor, reporte isso.
@@ -173,6 +191,8 @@ ru-RU:
   notify_available: Список доступных событий уведомлений
   notify_cant_set: Это событие не поддерживает исходный канал. Пожалуйста, укажите канал.
   notify_desc_addrolerew: Срабатывает, когда пользователь получает роль в качестве награды за достижение уровня (xprew).
+  notify_desc_fishcurrency: Срабатывает, когда пользователь на любом сервере бота вылавливает валюту.
+  notify_desc_honeypot: Срабатывает, когда ловушка банит пользователя или выдаёт softban на этом сервере.
   notify_desc_levelup: Срабатывает, когда пользователь повышает уровень на этом сервере.
   notify_desc_nicecatch: Срабатывает, когда пользователь ловит качественную рыбу.
   notify_desc_not_found: Описание для этого события не найдено. Пожалуйста, сообщите об этом.
@@ -192,6 +212,8 @@ sr-Cyrl-RS:
   notify_available: Листа доступних обавештајних догађаја
   notify_cant_set: Овај догађај не подржава изворни канал. Молим вас наведите канал.
   notify_desc_addrolerew: Покреће се када корисник добије улогу као награду за достигнути ниво (xprew).
+  notify_desc_fishcurrency: Покреће се када корисник на било ком серверу бота улови новац.
+  notify_desc_honeypot: Покреће се када Honeypot банује или софтбанује корисника на овом серверу.
   notify_desc_levelup: Покреће се када корисник напредује на нови ниво на овом серверу.
   notify_desc_nicecatch: Покреће се када корисник ухвати квалитетну рибу.
   notify_desc_not_found: Опис за овај обавештајни догађај није пронађен. Молимо пријавите ово.
@@ -211,6 +233,8 @@ tr-TR:
   notify_available: Kullanılabilir bildirim olaylarının listesi
   notify_cant_set: Bu olay kaynak kanalı desteklemiyor. Lütfen bir kanal belirt.
   notify_desc_addrolerew: Bir kullanıcı seviye atlayarak rol ödülü aldığında tetiklenir (xprew).
+  notify_desc_fishcurrency: Botun herhangi bir sunucusundaki bir kullanıcı balık tutarken para yakaladığında tetiklenir.
+  notify_desc_honeypot: Honeypot bu sunucuda bir kullanıcıyı yasakladığında veya softban uyguladığında tetiklenir.
   notify_desc_levelup: Bir kullanıcı bu sunucuda seviye atladığında tetiklenir.
   notify_desc_nicecatch: Bir kullanıcı kaliteli balık yakaladığında tetiklenir.
   notify_desc_not_found: Bu bildirim olayı için açıklama bulunamadı. Lütfen bunu bildir.
@@ -230,6 +254,8 @@ ts-TS:
   notify_available: List of available notify events
   notify_cant_set: This event doesn't support origin channel. Specify a channel.
   notify_desc_addrolerew: Triggers when a user gets a role as a reward for reaching a level (xprew).
+  notify_desc_fishcurrency: Triggers when a user on any server of the bot catches currency while fishing.
+  notify_desc_honeypot: Triggers when the honeypot bans or softbans a user on this server. They walked right into it.
   notify_desc_levelup: Triggers when a user levels up on this server.
   notify_desc_nicecatch: Triggers when a user catches quality fish. I-I could catch better ones, obviously.
   notify_desc_not_found: No description found for this notify event. Please report this.
@@ -249,6 +275,8 @@ uk-UA:
   notify_available: Список доступних подій сповіщень
   notify_cant_set: Ця подія не підтримує канал-джерело. Будь ласка, вкажіть канал.
   notify_desc_addrolerew: Спрацьовує, коли користувач отримує роль як нагороду за досягнення рівня (xprew).
+  notify_desc_fishcurrency: Спрацьовує, коли користувач на будь-якому сервері бота виловлює валюту під час риболовлі.
+  notify_desc_honeypot: Спрацьовує, коли пастка банить або софтбанить користувача на цьому сервері.
   notify_desc_levelup: Спрацьовує, коли користувач підвищує рівень на цьому сервері.
   notify_desc_nicecatch: Спрацьовує, коли користувач ловить якісну рибу.
   notify_desc_not_found: Опис для цієї події не знайдено. Будь ласка, повідомте про це.
@@ -268,6 +296,8 @@ vi-VN:
   notify_available: Danh sách các sự kiện thông báo có sẵn
   notify_cant_set: Sự kiện này không hỗ trợ kênh gốc. Vui lòng chỉ định một kênh.
   notify_desc_addrolerew: Kích hoạt khi người dùng nhận role làm phần thưởng khi đạt cấp độ (xprew).
+  notify_desc_fishcurrency: Kích hoạt khi người dùng trên bất kỳ máy chủ nào của bot câu được tiền tệ trong lúc câu cá.
+  notify_desc_honeypot: Kích hoạt khi honeypot cấm hoặc softban người dùng trên máy chủ này.
   notify_desc_levelup: Kích hoạt khi người dùng lên cấp trên server này.
   notify_desc_nicecatch: Kích hoạt khi người dùng câu được cá chất lượng.
   notify_desc_not_found: Không tìm thấy mô tả cho sự kiện thông báo này. Vui lòng báo cáo lỗi này.
@@ -287,6 +317,8 @@ zh-CN:
   notify_available: 可用的通知事件列表
   notify_cant_set: 此事件不支援來源頻道。請指定一個頻道。
   notify_desc_addrolerew: 當使用者獲得等級獎勵身分組時觸發（xprew）。
+  notify_desc_fishcurrency: 当用户在机器人的任意服务器钓鱼获得货币时触发。
+  notify_desc_honeypot: 当蜜罐在此服务器封禁或软封禁用户时触发。
   notify_desc_levelup: 當使用者在此伺服器升級時觸發。
   notify_desc_nicecatch: 當使用者釣到高品質的魚時觸發。
   notify_desc_not_found: 找不到此通知事件的說明。請回報此問題。

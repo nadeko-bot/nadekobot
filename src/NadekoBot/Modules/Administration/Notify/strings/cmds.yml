@@ -10,13 +10,14 @@ servernotify:
 
     Standard placeholders like `%user.name%`, `%user.mention%`, `%user.avatar%`
     and `%server.name%` work in any notify message in addition to the
-    event-specific `%event.*%` placeholders shown by `.servernotifyphs`.
+    event-specific `%event.*%` placeholders shown by `{0}servernotifyphs`.
 
     Provide no parameters to see all available events.
   ex:
-    - |-
-      levelup Congratulations to user %user.name% for reaching level
-      %event.level%
+    - ''
+    - levelup
+    - 'honeypot #mod-log %user.mention% was caught in %event.channel% (%event.action%)'
+    - 'levelup Congratulations to %user.name% for reaching level %event.level%'
   params:
     - {}
     - event:
