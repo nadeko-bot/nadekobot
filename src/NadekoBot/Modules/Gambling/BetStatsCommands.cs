@@ -10,6 +10,8 @@ public partial class Gambling
     [Group]
     public sealed class BetStatsCommands : GamblingModule<UserBetStatsService>
     {
+        private const int MAX_LB_PAGES = 100;
+
         private readonly GamblingTxTracker _gamblingTxTracker;
         private readonly IBotCache _cache;
         private readonly IUserService _userService;
@@ -164,13 +166,14 @@ public partial class Gambling
         [Cmd]
         public async Task WinLb(int page = 1)
         {
-            if (--page < 0)
+            if (--page < 0 || page >= MAX_LB_PAGES)
                 return;
 
             await Response()
                   .Paginated()
                   .PageItems(p => GetCachedWinLbAsync(p))
                   .PageSize(9)
+                  .CurrentPage(page)
                   .Page((items, curPage) =>
                   {
                       var eb = CreateEmbed()

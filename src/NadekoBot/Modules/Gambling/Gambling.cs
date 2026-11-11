@@ -431,8 +431,9 @@ public partial class Gambling : GamblingModule<GamblingService>
                 return await uow.Set<CurrencyTransaction>()
                     .GetPageFor(userId, curPage);
             })
-            .PageSize(15)
+            .PageSize(CurrencyTransactionExtensions.PAGE_SIZE)
             .TotalElements(count)
+            .CurrentPage(Math.Min(page, (count - 1) / CurrencyTransactionExtensions.PAGE_SIZE))
             .Page((trs, _) =>
             {
                 var sb = new StringBuilder();

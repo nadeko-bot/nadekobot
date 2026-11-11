@@ -679,6 +679,7 @@ public partial class Utility : NadekoModule
             .Paginated()
             .Items(allGuilds)
             .PageSize(9)
+            .CurrentPage(page)
             .Page((guilds, _) =>
             {
                 if (!guilds.Any())

@@ -18,6 +18,8 @@ public partial class Games
         ICurrencyProvider cp,
         ImagesConfig ic) : NadekoModule
     {
+        private const int MAX_LB_PAGES = 100;
+
         private static readonly NadekoRandom _rng = new();
 
         private TypedKey<bool> FishingWhitelistKey(ulong userId)
@@ -238,20 +240,24 @@ public partial class Games
         [RequireContext(ContextType.Guild)]
         public async Task FishLb(int page = 1)
         {
-            if (--page < 0)
+            if (--page < 0 || page >= MAX_LB_PAGES)
                 return;
 
             await Response()
                 .Paginated()
                 .PageItems(async p => await fs.GetFishLbAsync(p))
                 .PageSize(10)
-                .Page(async (items, page) =>
+                .CurrentPage(page)
+                .Page(async (items, curPage) =>
                 {
-                    var users = await us.GetUsersAsync(items.Select(x => x.UserId).ToArray());
-
                     var eb = CreateEmbed()
                         .WithTitle(GetText(strs.fish_lb_title))
                         .WithOkColor();
+
+                    if (items.Count == 0)
+                        return eb.WithDescription(GetText(strs.empty_page));
+
+                    var users = await us.GetUsersAsync(items.Select(x => x.UserId).ToArray());
 
                     for (var i = 0; i < items.Count; i++)
                     {
@@ -266,7 +272,7 @@ public partial class Games
                                *{GetText(strs.fish_catches(data.Catches))}*
                              """;
 
-                        eb.AddField("#" + (page * 10 + i + 1) + " | " + user,
+                        eb.AddField("#" + (curPage * 10 + i + 1) + " | " + user,
                             text,
                             false);
                     }
@@ -280,20 +286,24 @@ public partial class Games
         [RequireContext(ContextType.Guild)]
         public async Task FishStarsLb(int page = 1)
         {
-            if (--page < 0)
+            if (--page < 0 || page >= MAX_LB_PAGES)
                 return;
 
             await Response()
                 .Paginated()
                 .PageItems(async p => await fs.GetFishStarsLbAsync(p))
                 .PageSize(10)
-                .Page(async (items, page) =>
+                .CurrentPage(page)
+                .Page(async (items, curPage) =>
                 {
-                    var users = await us.GetUsersAsync(items.Select(x => x.UserId).ToArray());
-
                     var eb = CreateEmbed()
                         .WithTitle(GetText(strs.fish_lb_title))
                         .WithOkColor();
+
+                    if (items.Count == 0)
+                        return eb.WithDescription(GetText(strs.empty_page));
+
+                    var users = await us.GetUsersAsync(items.Select(x => x.UserId).ToArray());
 
                     for (var i = 0; i < items.Count; i++)
                     {
@@ -307,7 +317,7 @@ public partial class Games
                              {GetText(strs.fish_stars(Format.Bold(data.Stars.ToString()), fs.GetStarText(1, 1)))}
                              """;
 
-                        eb.AddField("#" + (page * 10 + i + 1) + " | " + user,
+                        eb.AddField("#" + (curPage * 10 + i + 1) + " | " + user,
                             text,
                             false);
                     }

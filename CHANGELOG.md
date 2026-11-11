@@ -2,7 +2,7 @@
 
 *a,c,f,r,o,d*
 
-## [7.9.2] - TBD
+## [7.10.0] - 11.11.2026
 
 ### Added
 
@@ -45,6 +45,8 @@
     - discordbotlist.com gets the count of the right bot
 - `.honeypot <action>` in a new channel stops the honeypot in the old channel.
 - `.servernotify` / `.snotify` / `.sn` shows a description for each event.
+- `.fishlb` / `.filb`, `.fishstarslb` / `.fislb` / `.fistarslb`, `.winlb` / `.wins`, `.curtrs` and `.listservers` open the page that you give.
+- Fish items show the correct bonus percent.
 
 ### Removed
 

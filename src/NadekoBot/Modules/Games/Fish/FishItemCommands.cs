@@ -150,7 +150,7 @@ public partial class Games
 
         private static string AsPercent(double multiplier)
         {
-            var percentage = (int)((multiplier - 1.0f) * 100);
+            var percentage = (int)Math.Round((multiplier - 1.0) * 100, MidpointRounding.AwayFromZero);
             return percentage >= 0 ? $"**+{percentage}%**" : $"**{percentage}%**";
         }
 
