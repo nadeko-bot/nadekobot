@@ -1,0 +1,8 @@
+rep_bot: You can't give reputation to a bot.
+rep_cooldown: You can give reputation again {0}.
+rep_given: '{0} now has {1} reputation.'
+rep_lb: Reputation leaderboard
+rep_lb_empty: Nobody on this server has reputation yet.
+rep_ready: You can give reputation now.
+rep_self: You can't give reputation to yourself.
+rep_show: You have {0} reputation.

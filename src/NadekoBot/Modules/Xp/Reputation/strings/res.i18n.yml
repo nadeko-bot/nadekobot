@@ -1,0 +1,159 @@
+ar:
+  rep_bot: لا يمكنك إعطاء السمعة لبوت.
+  rep_cooldown: 'يمكنك إعطاء السمعة مجددًا {0}.'
+  rep_given: 'أصبح لدى {0} الآن {1} من السمعة.'
+  rep_lb: لوحة متصدري السمعة
+  rep_lb_empty: لا أحد على هذا الخادم لديه سمعة بعد.
+  rep_ready: يمكنك إعطاء السمعة الآن.
+  rep_self: لا يمكنك إعطاء السمعة لنفسك.
+  rep_show: 'لديك {0} من السمعة.'
+
+de-DE:
+  rep_bot: Du kannst einem Bot keinen Ruf geben.
+  rep_cooldown: 'Du kannst {0} wieder Ruf vergeben.'
+  rep_given: '{0} hat jetzt {1} Ruf.'
+  rep_lb: Ruf-Rangliste
+  rep_lb_empty: Niemand auf diesem Server hat bisher Ruf.
+  rep_ready: Du kannst jetzt Ruf vergeben.
+  rep_self: Du kannst dir nicht selbst Ruf geben.
+  rep_show: 'Du hast {0} Ruf.'
+
+es-ES:
+  rep_bot: No puedes dar reputación a un bot.
+  rep_cooldown: 'Puedes volver a dar reputación {0}.'
+  rep_given: '{0} ahora tiene {1} de reputación.'
+  rep_lb: Marcador de reputación
+  rep_lb_empty: Nadie en este servidor tiene reputación todavía.
+  rep_ready: Ya puedes dar reputación.
+  rep_self: No puedes darte reputación a ti mismo.
+  rep_show: 'Tienes {0} de reputación.'
+
+fr-FR:
+  rep_bot: Tu ne peux pas donner de la réputation à un bot.
+  rep_cooldown: 'Tu peux redonner de la réputation {0}.'
+  rep_given: '{0} a désormais {1} points de réputation.'
+  rep_lb: Classement de réputation
+  rep_lb_empty: Personne sur ce serveur n'a encore de réputation.
+  rep_ready: Tu peux donner de la réputation maintenant.
+  rep_self: Tu ne peux pas te donner de la réputation.
+  rep_show: 'Tu as {0} points de réputation.'
+
+id-ID:
+  rep_bot: Kamu tidak bisa memberi reputasi ke bot.
+  rep_cooldown: 'Kamu bisa memberi reputasi lagi {0}.'
+  rep_given: '{0} sekarang punya {1} reputasi.'
+  rep_lb: Papan Peringkat Reputasi
+  rep_lb_empty: Belum ada yang punya reputasi di server ini.
+  rep_ready: Kamu bisa memberi reputasi sekarang.
+  rep_self: Kamu tidak bisa memberi reputasi ke diri sendiri.
+  rep_show: 'Kamu punya {0} reputasi.'
+
+ja-JP:
+  rep_bot: ボットに評価を与えることはできません。
+  rep_cooldown: '{0}にまた評価をあげられます。'
+  rep_given: '{0}の評価は{1}になりました。'
+  rep_lb: 評価リーダーボード
+  rep_lb_empty: このサーバーにはまだ評価を持つユーザーがいません。
+  rep_ready: 今すぐ評価をあげられます。
+  rep_self: 自分自身に評価を与えることはできません。
+  rep_show: 'あなたの評価は{0}です。'
+
+ko-KR:
+  rep_bot: 봇에게 평판을 줄 수 없어요.
+  rep_cooldown: '{0}에 다시 평판을 줄 수 있어요.'
+  rep_given: '{0}의 평판은 이제 {1}이에요.'
+  rep_lb: 평판 리더보드
+  rep_lb_empty: 아직 이 서버에서 평판을 가진 유저가 없어요.
+  rep_ready: 이제 평판을 줄 수 있어요.
+  rep_self: 자신에게 평판을 줄 수 없어요.
+  rep_show: '당신의 평판은 {0}이에요.'
+
+pl-PL:
+  rep_bot: Nie możesz dać reputacji botowi.
+  rep_cooldown: 'Możesz znowu dać reputację {0}.'
+  rep_given: '{0} ma teraz {1} reputacji.'
+  rep_lb: Ranking reputacji
+  rep_lb_empty: Nikt na tym serwerze nie ma jeszcze reputacji.
+  rep_ready: Możesz teraz dać reputację.
+  rep_self: Nie możesz dać reputacji samemu sobie.
+  rep_show: 'Masz {0} reputacji.'
+
+pt-BR:
+  rep_bot: Você não pode dar reputação a um bot.
+  rep_cooldown: 'Você pode dar reputação de novo {0}.'
+  rep_given: '{0} agora tem {1} de reputação.'
+  rep_lb: Ranking de reputação
+  rep_lb_empty: Ninguém neste servidor tem reputação ainda.
+  rep_ready: Você pode dar reputação agora.
+  rep_self: Você não pode dar reputação a si mesmo.
+  rep_show: 'Você tem {0} de reputação.'
+
+ru-RU:
+  rep_bot: Вы не можете дать репутацию боту.
+  rep_cooldown: 'Вы сможете дать репутацию снова {0}.'
+  rep_given: '{0} теперь имеет {1} репутации.'
+  rep_lb: Таблица лидеров репутации
+  rep_lb_empty: Ни у кого на этом сервере пока нет репутации.
+  rep_ready: Теперь вы можете дать репутацию.
+  rep_self: Вы не можете дать репутацию себе.
+  rep_show: 'У вас {0} репутации.'
+
+sr-Cyrl-RS:
+  rep_bot: Не можеш дати репутацију боту.
+  rep_cooldown: 'Можеш поново дати репутацију {0}.'
+  rep_given: '{0} сада има {1} репутације.'
+  rep_lb: Ранг листа репутације
+  rep_lb_empty: Нико на овом серверу још нема репутацију.
+  rep_ready: Сада можеш дати репутацију.
+  rep_self: Не можеш дати репутацију себи.
+  rep_show: 'Имаш {0} репутације.'
+
+tr-TR:
+  rep_bot: Bir bota itibar veremezsin.
+  rep_cooldown: '{0} tekrar itibar verebilirsin.'
+  rep_given: '{0} artık {1} itibara sahip.'
+  rep_lb: İtibar sıralaması
+  rep_lb_empty: Bu sunucuda henüz kimsenin itibarı yok.
+  rep_ready: Artık itibar verebilirsin.
+  rep_self: Kendine itibar veremezsin.
+  rep_show: '{0} itibarın var.'
+
+ts-TS:
+  rep_bot: You can't give reputation to a bot.
+  rep_cooldown: 'You can give reputation again {0}.'
+  rep_given: '{0} now has {1} reputation.'
+  rep_lb: Reputation leaderboard
+  rep_lb_empty: Nobody on this server has reputation yet. N-not that I care.
+  rep_ready: You can give reputation now.
+  rep_self: You can't give reputation to yourself.
+  rep_show: 'You have {0} reputation. D-don''t let it go to your head.'
+
+uk-UA:
+  rep_bot: Ти не можеш дати репутацію боту.
+  rep_cooldown: 'Ти зможеш дати репутацію знову {0}.'
+  rep_given: 'Тепер {0} має {1} репутації.'
+  rep_lb: Таблиця лідерів репутації
+  rep_lb_empty: На цьому сервері ще ніхто не має репутації.
+  rep_ready: Тепер ти можеш дати репутацію.
+  rep_self: Ти не можеш дати репутацію самому собі.
+  rep_show: 'У тебе {0} репутації.'
+
+vi-VN:
+  rep_bot: Bạn không thể trao uy tín cho bot.
+  rep_cooldown: 'Bạn có thể trao uy tín lại {0}.'
+  rep_given: '{0} giờ có {1} uy tín.'
+  rep_lb: Bảng xếp hạng uy tín
+  rep_lb_empty: Chưa ai trên máy chủ này có uy tín.
+  rep_ready: Bạn có thể trao uy tín ngay bây giờ.
+  rep_self: Bạn không thể trao uy tín cho chính mình.
+  rep_show: 'Bạn có {0} uy tín.'
+
+zh-CN:
+  rep_bot: 你不能给机器人声望。
+  rep_cooldown: '你可以在 {0} 再次给出声望。'
+  rep_given: '{0} 现在有 {1} 声望。'
+  rep_lb: 声望排行榜
+  rep_lb_empty: 这个服务器上还没有人有声望。
+  rep_ready: 你现在可以给出声望了。
+  rep_self: 你不能给自己声望。
+  rep_show: '你有 {0} 声望。'

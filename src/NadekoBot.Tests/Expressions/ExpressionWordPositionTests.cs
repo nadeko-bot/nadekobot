@@ -8,7 +8,7 @@ namespace NadekoBot.Tests.Expressions;
 public sealed class ExpressionWordPositionTests
 {
     [Test]
-    public void GetWordPosition_FindsTheFirstStandaloneWordInAnyCase()
+    public void WordPositionAndTargetStart_FindTheFirstStandaloneWordAndPointAfterItInAnyCase()
     {
         (string Text, string Word, WordPosition Position, int Index)[] cases =
         [
@@ -32,12 +32,8 @@ public sealed class ExpressionWordPositionTests
             var actual = text.AsSpan().GetWordPosition(word, out var actualIndex);
             Assert.That((actual, actualIndex), Is.EqualTo((position, index)), $"'{word}' in '{text}'");
         }
-    }
 
-    [Test]
-    public void GetTargetStart_PointsAfterTheTriggerInAnyCase()
-    {
-        (string Text, string Trigger, bool ContainsAnywhere, string Target)[] cases =
+        (string Text, string Trigger, bool ContainsAnywhere, string Target)[] targetCases =
         [
             ("Say HI now", "hi", true, "now"),
             ("hi @someone", "hi", true, "@someone"),
@@ -48,7 +44,7 @@ public sealed class ExpressionWordPositionTests
             ("hi, @someone", "hi", true, "@someone"),
         ];
 
-        foreach (var (text, trigger, ca, target) in cases)
+        foreach (var (text, trigger, ca, target) in targetCases)
         {
             var start = text.AsSpan().GetTargetStart(trigger, ca);
             Assert.That(text[start..].Trim(), Is.EqualTo(target), $"'{trigger}' in '{text}'");

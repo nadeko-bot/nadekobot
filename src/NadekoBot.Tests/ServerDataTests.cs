@@ -273,8 +273,9 @@ public sealed class ServerDataTests
                     DELETE FROM __ServerExportIndex WHERE TableName = 'AllowedLinkDomain';
                     DROP TABLE AllowedLinkDomain;
                     ALTER TABLE AutoThreadChannel DROP COLUMN IncludeBots;
-                    DELETE FROM __ServerExportIndex WHERE TableName IN ('HiddenWarnModGuild');
+                    DELETE FROM __ServerExportIndex WHERE TableName IN ('HiddenWarnModGuild', 'UserReputation');
                     DROP TABLE HiddenWarnModGuild;
+                    DROP TABLE UserReputation;
                     DELETE FROM __EFMigrationsHistory;
                     INSERT INTO __EFMigrationsHistory VALUES ('20261009084103_reminder-user-guild-index', '9.0.1');
                     """);

@@ -1,0 +1,20 @@
+rep:
+  desc: |-
+    Gives one reputation point to the specified user.
+    You can give one point every 24 hours.
+    Provide no user to see your reputation and when you can give the next point.
+  ex:
+    - ''
+    - '@Someone'
+  params:
+    - { }
+    - user:
+        desc: "The user who gets the reputation point."
+repleaderboard:
+  desc: |-
+    Shows the members of this server with the most reputation.
+  ex:
+    - '2'
+  params:
+    - page:
+        desc: "The page number to show."

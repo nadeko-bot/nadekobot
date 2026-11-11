@@ -9679,6 +9679,35 @@
     },
     {
       "Aliases": [
+        ".rep",
+        ".reputation"
+      ],
+      "Description": "Gives one reputation point to the specified user.\nYou can give one point every 24 hours.\nProvide no user to see your reputation and when you can give the next point.",
+      "Usage": [
+        ".rep",
+        ".rep @Someone"
+      ],
+      "Submodule": "ReputationCommands",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
+        ".repleaderboard",
+        ".replb"
+      ],
+      "Description": "Shows the members of this server with the most reputation.",
+      "Usage": [
+        ".repleaderboard 2"
+      ],
+      "Submodule": "ReputationCommands",
+      "Module": "Xp",
+      "Options": null,
+      "Requirements": []
+    },
+    {
+      "Aliases": [
         ".xpexclusion",
         ".xpexl"
       ],

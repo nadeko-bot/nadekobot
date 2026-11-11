@@ -97,6 +97,7 @@ public static class ServerDataTables
         new("TempVoiceHub"),
         new("UnbanTimer"),
         new("UnmuteTimer"),
+        new("UserReputation"),
         new("UserRole", HasIdentity: false),
         new(XP_TABLE, IsXp: true),
         new("VcRoleInfo"),

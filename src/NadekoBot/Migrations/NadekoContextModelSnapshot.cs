@@ -2374,6 +2374,34 @@ namespace NadekoBot.Migrations
                     b.ToTable("UserQuest");
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.UserReputation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("LastGivenAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Reputation")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "Reputation");
+
+                    b.HasIndex("GuildId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserReputation");
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.UserXpStats", b =>
                 {
                     b.Property<int>("Id")
