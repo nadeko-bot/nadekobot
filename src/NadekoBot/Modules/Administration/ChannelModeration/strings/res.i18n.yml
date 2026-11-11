@@ -9,6 +9,9 @@ ar:
   imageonly_enable: أصبحت هذه القناة مقتصرة على الصور فقط.
   linkonly_disable: لم تعد هذه القناة مقتصرة على الروابط فقط.
   linkonly_enable: أصبحت هذه القناة مقتصرة على الروابط فقط.
+  onlych_mode_lock: 'الوضع: `lock`. يحذف البوت الرسائل الأخرى، ويمنع العضو من الكتابة هنا بعد 3 منها.'
+  onlych_mode_delete: 'الوضع: `delete`. يحذف البوت الرسائل الأخرى.'
+  onlych_lock_perms: يحتاج وضع `lock` إلى صلاحيتي إدارة القنوات وإدارة الصلاحيات للبوت في هذه القناة. امنح البوت هذه الصلاحيات، أو استخدم وضع `delete`.
   nsfw_set_false: تم تعطيل محتوى NSFW في هذه القناة.
   nsfw_set_true: تم تفعيل محتوى NSFW في هذه القناة.
   server_delmsgoncmd: إعداد الخادم
@@ -24,6 +27,9 @@ de-DE:
   imageonly_enable: Dieser Kanal ist jetzt auf Bilder beschränkt.
   linkonly_disable: Dieser Kanal ist nicht mehr auf Links beschränkt.
   linkonly_enable: Dieser Kanal ist jetzt auf Links beschränkt.
+  onlych_mode_lock: 'Modus: `lock`. Der Bot löscht andere Nachrichten und hindert ein Mitglied nach 3 davon am Schreiben.'
+  onlych_mode_delete: 'Modus: `delete`. Der Bot löscht andere Nachrichten.'
+  onlych_lock_perms: Der Modus `lock` braucht für den Bot in diesem Kanal die Berechtigungen Kanäle verwalten und Berechtigungen verwalten. Gib dem Bot diese Berechtigungen oder nutze den Modus `delete`.
   nsfw_set_false: NSFW wurde in diesem Kanal deaktiviert.
   nsfw_set_true: NSFW wurde in diesem Kanal aktiviert.
   server_delmsgoncmd: Server Einstellung
@@ -39,6 +45,9 @@ es-ES:
   imageonly_enable: Este canal ahora es exclusivo para imágenes.
   linkonly_disable: Este canal ya no es solo para enlaces.
   linkonly_enable: Este canal ahora es solo para enlaces.
+  onlych_mode_lock: 'Modo: `lock`. El bot borra los demás mensajes y evita que un miembro escriba aquí después de 3 de ellos.'
+  onlych_mode_delete: 'Modo: `delete`. El bot borra los demás mensajes.'
+  onlych_lock_perms: El modo `lock` necesita los permisos Gestionar canales y Gestionar permisos para el bot en este canal. Dale estos permisos al bot o usa el modo `delete`.
   nsfw_set_false: NSFW ha sido prohibido en este canal.
   nsfw_set_true: NSFW ha sido permitido en este canal.
   server_delmsgoncmd: Configuración del servidor
@@ -54,6 +63,9 @@ fr-FR:
   imageonly_enable: Ce salon est maintenant exclusivement pour les images.
   linkonly_disable: Ce channel n'est désormais plus limité aux liens.
   linkonly_enable: Ce channel est désormais limité aux liens.
+  onlych_mode_lock: 'Mode : `lock`. Le bot supprime les autres messages, et empêche un membre d''écrire ici après 3 messages.'
+  onlych_mode_delete: 'Mode : `delete`. Le bot supprime les autres messages.'
+  onlych_lock_perms: Le mode `lock` demande les permissions Gérer les salons et Gérer les permissions pour le bot dans ce salon. Donne ces permissions au bot, ou utilise le mode `delete`.
   nsfw_set_false: Le NSFW a été **désactivé** sur ce salon.
   nsfw_set_true: Le NSFW a été **activé** sur ce salon.
   server_delmsgoncmd: Paramètres du serveur
@@ -69,6 +81,9 @@ id-ID:
   imageonly_enable: Channel ini sekarang hanya untuk gambar.
   linkonly_disable: Channel ini tidak lagi hanya untuk link.
   linkonly_enable: Channel ini sekarang hanya untuk link.
+  onlych_mode_lock: 'Mode: `lock`. Bot menghapus pesan lain, dan menghentikan member mengetik di sini setelah 3 pesan.'
+  onlych_mode_delete: 'Mode: `delete`. Bot menghapus pesan lain.'
+  onlych_lock_perms: Mode `lock` membutuhkan izin Kelola Saluran dan Kelola Izin untuk bot di channel ini. Beri bot izin tersebut, atau gunakan mode `delete`.
   nsfw_set_false: NSFW telah dinonaktifkan di channel ini.
   nsfw_set_true: NSFW telah diaktifkan di channel ini.
   server_delmsgoncmd: Pengaturan Server
@@ -84,6 +99,9 @@ ja-JP:
   imageonly_enable: このチャンネルは画像専用になりました。
   linkonly_disable: このチャンネルはリンク専用ではなくなりました。
   linkonly_enable: このチャンネルはリンク専用になりました。
+  onlych_mode_lock: 'モード: `lock`。ボットは他のメッセージを削除し、3回投稿したメンバーはここに書き込めなくなります。'
+  onlych_mode_delete: 'モード: `delete`。ボットは他のメッセージを削除します。'
+  onlych_lock_perms: '`lock` モードでは、このチャンネルでボットに「チャンネルの管理」と「権限の管理」の権限が必要です。ボットにこの権限を与えるか、`delete` モードを使ってください。'
   nsfw_set_false: このチャンネルのNSFWが無効になりました。
   nsfw_set_true: このチャンネルのNSFWが有効になりました。
   server_delmsgoncmd: サーバー設定
@@ -99,6 +117,9 @@ ko-KR:
   imageonly_enable: 이 채널이 이미지 전용 모드로 설정되었습니다.
   linkonly_disable: 이 채널의 링크 전용 모드가 해제되었습니다.
   linkonly_enable: 이 채널이 링크 전용 모드로 설정되었습니다.
+  onlych_mode_lock: '모드: `lock`. 봇이 다른 메시지를 삭제하고, 3개를 쓰면 유저가 여기에 입력하지 못하게 해요.'
+  onlych_mode_delete: '모드: `delete`. 봇이 다른 메시지를 삭제해요.'
+  onlych_lock_perms: '`lock` 모드는 이 채널에서 봇에게 채널 관리, 권한 관리 권한이 필요해요. 봇에게 이 권한을 주거나 `delete` 모드를 사용해 주세요.'
   nsfw_set_false: 이 채널에서 NSFW가 비활성화되었습니다.
   nsfw_set_true: 이 채널에서 NSFW가 활성화되었습니다.
   server_delmsgoncmd: 서버 설정
@@ -114,6 +135,9 @@ pl-PL:
   imageonly_enable: Ten kanał jest teraz ograniczony do samych obrazów.
   linkonly_disable: Ten kanał nie jest już ograniczony do samych linków.
   linkonly_enable: Ten kanał jest teraz ograniczony do samych linków.
+  onlych_mode_lock: 'Tryb: `lock`. Bot usuwa inne wiadomości i po 3 takich wiadomościach blokuje użytkownikowi pisanie tutaj.'
+  onlych_mode_delete: 'Tryb: `delete`. Bot usuwa inne wiadomości.'
+  onlych_lock_perms: Tryb `lock` wymaga uprawnień Zarządzanie kanałami i Zarządzanie uprawnieniami dla bota na tym kanale. Daj botowi te uprawnienia albo użyj trybu `delete`.
   nsfw_set_false: NSFW zostało wyłączone na tym kanale.
   nsfw_set_true: NSFW zostało włączone na tym kanale.
   server_delmsgoncmd: Ustawienia serwera
@@ -129,6 +153,9 @@ pt-BR:
   imageonly_enable: Agora este canal é exclusivo para imagens.
   linkonly_disable: Este canal nao e mais somente links.
   linkonly_enable: Este canal agora e somente links.
+  onlych_mode_lock: 'Modo: `lock`. O bot apaga as outras mensagens e impede um membro de escrever aqui depois de 3 delas.'
+  onlych_mode_delete: 'Modo: `delete`. O bot apaga as outras mensagens.'
+  onlych_lock_perms: O modo `lock` precisa das permissões Gerenciar canais e Gerenciar permissões para o bot neste canal. Dê essas permissões ao bot ou use o modo `delete`.
   nsfw_set_false: NSFW foi desativado neste canal.
   nsfw_set_true: NSFW foi habilitado neste canal.
   server_delmsgoncmd: Configuração do servidor
@@ -144,6 +171,9 @@ ru-RU:
   imageonly_enable: Этот канал теперь только для изображений.
   linkonly_disable: Этот канал больше не только для ссылок.
   linkonly_enable: Теперь этот канал только для ссылок.
+  onlych_mode_lock: 'Режим: `lock`. Бот удаляет остальные сообщения и запрещает участнику писать здесь после 3 таких сообщений.'
+  onlych_mode_delete: 'Режим: `delete`. Бот удаляет остальные сообщения.'
+  onlych_lock_perms: Режиму `lock` нужны разрешения Управление каналами и Управление разрешениями для бота в этом канале. Дайте боту эти разрешения или используйте режим `delete`.
   nsfw_set_false: NSFW отключен на этом канале.
   nsfw_set_true: На этом канале включен NSFW.
   server_delmsgoncmd: Настройка сервера
@@ -159,6 +189,9 @@ sr-Cyrl-RS:
   imageonly_enable: Овај канал је сада само за слике.
   linkonly_disable: Овај канал више није само за линкове.
   linkonly_enable: Овај канал је сада само за линкове.
+  onlych_mode_lock: 'Режим: `lock`. Бот брише остале поруке и спречава члана да пише овде после 3 таквих порука.'
+  onlych_mode_delete: 'Режим: `delete`. Бот брише остале поруке.'
+  onlych_lock_perms: Режим `lock` захтева дозволе Управљање каналима и Управљање дозволама за бота на овом каналу. Дајте боту ове дозволе или користите режим `delete`.
   nsfw_set_false: NSFW је искључен на овом каналу.
   nsfw_set_true: NSFW је укључен на овом каналу.
   server_delmsgoncmd: Подешавање сервера
@@ -174,6 +207,9 @@ tr-TR:
   imageonly_enable: Bu kanal artık yalnızca resim kanalı.
   linkonly_disable: Bu kanal artık yalnızca link kanalı değil.
   linkonly_enable: Bu kanal artık yalnızca link kanalı.
+  onlych_mode_lock: 'Mod: `lock`. Bot diğer mesajları siler ve 3 tanesinden sonra üyenin buraya yazmasını engeller.'
+  onlych_mode_delete: 'Mod: `delete`. Bot diğer mesajları siler.'
+  onlych_lock_perms: '`lock` modu, botun bu kanalda Kanalları Yönet ve İzinleri Yönet izinlerine sahip olmasını gerektirir. Bota bu izinleri ver veya `delete` modunu kullan.'
   nsfw_set_false: Bu kanalda NSFW devre dışı bırakıldı.
   nsfw_set_true: Bu kanalda NSFW etkinleştirildi.
   server_delmsgoncmd: Sunucu Ayarı
@@ -189,6 +225,9 @@ ts-TS:
   imageonly_enable: This channel is now image-only. I-I'm just enforcing the rules.
   linkonly_disable: This channel is no longer link-only.
   linkonly_enable: This channel is now link-only. Only links allowed.
+  onlych_mode_lock: 'Mode: `lock`. The bot deletes other messages, and stops a member from typing here after 3 such messages.'
+  onlych_mode_delete: 'Mode: `delete`. The bot deletes other messages.'
+  onlych_lock_perms: The `lock` mode needs Manage Channels and Manage Permissions for the bot in this channel. Give the bot these permissions, or use the `delete` mode.
   nsfw_set_false: NSFW has been disabled on this channel.
   nsfw_set_true: NSFW has been enabled on this channel. D-don't get any weird ideas!
   server_delmsgoncmd: Server Setting
@@ -204,6 +243,9 @@ uk-UA:
   imageonly_enable: Тепер у цьому каналі дозволено лише зображення.
   linkonly_disable: Цей канал більше не обмежений лише посиланнями.
   linkonly_enable: Тепер у цьому каналі дозволено лише посилання.
+  onlych_mode_lock: 'Режим: `lock`. Бот видаляє інші повідомлення та забороняє учаснику писати тут після 3 таких.'
+  onlych_mode_delete: 'Режим: `delete`. Бот видаляє інші повідомлення.'
+  onlych_lock_perms: Режим `lock` потребує від бота дозволів Керування каналами та Керування дозволами в цьому каналі. Дай боту ці дозволи або використай режим `delete`.
   nsfw_set_false: NSFW вимкнено для цього каналу.
   nsfw_set_true: NSFW увімкнено для цього каналу.
   server_delmsgoncmd: Налаштування сервера
@@ -219,6 +261,9 @@ vi-VN:
   imageonly_enable: Kênh này giờ chỉ cho phép hình ảnh.
   linkonly_disable: Kênh này không còn chỉ cho phép liên kết nữa.
   linkonly_enable: Kênh này giờ chỉ cho phép liên kết.
+  onlych_mode_lock: 'Chế độ: `lock`. Bot xóa các tin nhắn khác và chặn thành viên nhắn ở đây sau 3 tin nhắn như vậy.'
+  onlych_mode_delete: 'Chế độ: `delete`. Bot xóa các tin nhắn khác.'
+  onlych_lock_perms: Chế độ `lock` cần bot có quyền Quản lý kênh và Quản lý quyền trong kênh này. Hãy cấp các quyền này cho bot, hoặc dùng chế độ `delete`.
   nsfw_set_false: NSFW đã được tắt trên kênh này.
   nsfw_set_true: NSFW đã được bật trên kênh này.
   server_delmsgoncmd: Cài đặt Server
@@ -234,6 +279,9 @@ zh-CN:
   imageonly_enable: 該頻道現在是純圖像的。
   linkonly_disable: 此频道不再是仅链接模式。
   linkonly_enable: 此频道现在是仅链接模式。
+  onlych_mode_lock: 模式：`lock`。机器人会删除其他消息，并在出现 3 条后禁止成员在此发言。
+  onlych_mode_delete: 模式：`delete`。机器人会删除其他消息。
+  onlych_lock_perms: '`lock` 模式需要机器人在此频道拥有管理频道和管理权限。请给机器人这些权限，或改用 `delete` 模式。'
   nsfw_set_false: NSFW 已在此頻道上禁用。
   nsfw_set_true: NSFW 已在此頻道上啟用。
   server_delmsgoncmd: 伺服器設置

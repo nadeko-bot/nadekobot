@@ -636,6 +636,17 @@ namespace NadekoBot.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HiddenWarnModGuild",
+                columns: table => new
+                {
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HiddenWarnModGuild", x => x.GuildId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HoneyPotChannels",
                 columns: table => new
                 {
@@ -658,6 +669,7 @@ namespace NadekoBot.Migrations
                     GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    Punishment = table.Column<int>(type: "INTEGER", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -708,6 +720,22 @@ namespace NadekoBot.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LiveChannelConfig", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LockedChannel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    AllowMask = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    DenyMask = table.Column<ulong>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LockedChannel", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1379,6 +1407,22 @@ namespace NadekoBot.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserQuest", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserReputation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Reputation = table.Column<int>(type: "INTEGER", nullable: false),
+                    LastGivenAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserReputation", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -2367,6 +2411,17 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_LockedChannel_ChannelId",
+                table: "LockedChannel",
+                column: "ChannelId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LockedChannel_GuildId",
+                table: "LockedChannel",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LogChannels_GuildId_LogType",
                 table: "LogChannels",
                 columns: new[] { "GuildId", "LogType" },
@@ -2660,6 +2715,17 @@ namespace NadekoBot.Migrations
                 name: "IX_UserQuest_UserId_QuestNumber_DateAssigned",
                 table: "UserQuest",
                 columns: new[] { "UserId", "QuestNumber", "DateAssigned" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserReputation_GuildId_Reputation",
+                table: "UserReputation",
+                columns: new[] { "GuildId", "Reputation" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserReputation_GuildId_UserId",
+                table: "UserReputation",
+                columns: new[] { "GuildId", "UserId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -2979,6 +3045,9 @@ namespace NadekoBot.Migrations
                 name: "GuildXpConfig");
 
             migrationBuilder.DropTable(
+                name: "HiddenWarnModGuild");
+
+            migrationBuilder.DropTable(
                 name: "HoneyPotChannels");
 
             migrationBuilder.DropTable(
@@ -2992,6 +3061,9 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "LiveChannelConfig");
+
+            migrationBuilder.DropTable(
+                name: "LockedChannel");
 
             migrationBuilder.DropTable(
                 name: "LogChannels");
@@ -3118,6 +3190,9 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserQuest");
+
+            migrationBuilder.DropTable(
+                name: "UserReputation");
 
             migrationBuilder.DropTable(
                 name: "UserRole");

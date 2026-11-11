@@ -60,5 +60,17 @@ public class SomethingOnlyChannelServiceTests
         await _svc.DisableAsync(GUILD, CHANNEL);
         Assert.That(_svc.GetMode(GUILD, CHANNEL), Is.Null);
         Assert.That(await GetRowsAsync(), Is.Empty);
+
+        // a mode turns the channel on or changes the mode, and never turns it off
+        Assert.That(await _svc.ToggleAsync(GUILD, CHANNEL, OnlyChannelType.Image, OnlyChannelPunishment.Delete), Is.True);
+        Assert.That(await _svc.ToggleAsync(GUILD, CHANNEL, OnlyChannelType.Image, OnlyChannelPunishment.Delete), Is.True);
+        Assert.That(await _svc.ToggleAsync(GUILD, CHANNEL, OnlyChannelType.Link), Is.True);
+        Assert.That(_svc.GetSetting(GUILD, CHANNEL),
+            Is.EqualTo(new OnlyChannelSetting(GUILD, OnlyChannelType.Link, OnlyChannelPunishment.Delete)));
+        Assert.That(_svc.GetSetting(GUILD + 1, CHANNEL), Is.Null);
+
+        await using var ctx = _db.GetDbContext();
+        Assert.That(await ctx.GetTable<ImageOnlyChannel>().Select(x => x.Punishment).ToArrayAsyncLinqToDB(),
+            Is.EqualTo(new[] { OnlyChannelPunishment.Delete }));
     }
 }

@@ -29,6 +29,7 @@
 - Vote rewards go through the coordinator
     - VotesApi sends each vote to `CoordinatorUrl`
     - a bot without the coordinator gives no vote rewards
+- `.imageonlychannel` / `.imageonly` and `.linkonlychannel` / `.linkonly` have a `delete` mode, which only deletes messages.
 
 ### Fixed
 

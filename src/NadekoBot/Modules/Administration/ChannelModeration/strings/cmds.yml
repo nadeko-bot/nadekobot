@@ -6,20 +6,32 @@ agerestricttoggle:
     - {}
 imageonlychannel:
   desc: |-
-    Toggles whether the channel only allows images.
-    Users who send more than a few non-image messages will be banned from using the channel.
+    Toggles whether the current channel only allows images. The bot deletes other messages.
+    Give a mode to turn the channel on in that mode, or to change the mode of a channel which is already on.
+    Modes:
+    - `lock` (default) also stops a member from typing in the channel after 3 such messages
+    - `delete` only deletes the messages
   ex:
     - ''
+    - 'delete'
   params:
     - {}
+    - mode:
+        desc: "What the bot does to a member who posts a message without an image."
 linkonlychannel:
   desc: |-
-    Toggles whether the channel only allows links.
-    Users who send more than a few non-link messages will be banned from using the channel.
+    Toggles whether the current channel only allows links. The bot deletes other messages.
+    Give a mode to turn the channel on in that mode, or to change the mode of a channel which is already on.
+    Modes:
+    - `lock` (default) also stops a member from typing in the channel after 3 such messages
+    - `delete` only deletes the messages
   ex:
     - ''
+    - 'delete'
   params:
     - {}
+    - mode:
+        desc: "What the bot does to a member who posts a message without a link."
 slowmode:
   desc: |-
     Toggles slowmode on the current channel with the specified amount of time. Maximum is 6 hours. Provide no parameters to disable.

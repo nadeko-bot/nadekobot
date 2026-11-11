@@ -277,6 +277,7 @@ public sealed class ServerDataTests
                     DROP TABLE HiddenWarnModGuild;
                     DROP TABLE UserReputation;
                     DROP TABLE LockedChannel;
+                    ALTER TABLE ImageOnlyChannels DROP COLUMN Punishment;
                     DELETE FROM __EFMigrationsHistory;
                     INSERT INTO __EFMigrationsHistory VALUES ('20261009084103_reminder-user-guild-index', '9.0.1');
                     """);

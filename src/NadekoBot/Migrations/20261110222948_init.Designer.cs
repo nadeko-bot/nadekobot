@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20261107211631_init")]
+    [Migration("20261110222948_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -1174,6 +1174,16 @@ namespace NadekoBot.Migrations
                     b.ToTable("GuildFilterConfig");
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.HiddenWarnModGuild", b =>
+                {
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("GuildId");
+
+                    b.ToTable("HiddenWarnModGuild");
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.HoneypotChannel", b =>
                 {
                     b.Property<ulong>("GuildId")
@@ -1204,6 +1214,9 @@ namespace NadekoBot.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Punishment")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Type")
@@ -1268,6 +1281,34 @@ namespace NadekoBot.Migrations
                         .IsUnique();
 
                     b.ToTable("LiveChannelConfig");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.LockedChannel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("AllowMask")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("DenyMask")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId");
+
+                    b.ToTable("LockedChannel");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.LogChannel", b =>
@@ -2365,6 +2406,34 @@ namespace NadekoBot.Migrations
                         .IsUnique();
 
                     b.ToTable("UserQuest");
+                });
+
+            modelBuilder.Entity("NadekoBot.Db.Models.UserReputation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("LastGivenAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Reputation")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "Reputation");
+
+                    b.HasIndex("GuildId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserReputation");
                 });
 
             modelBuilder.Entity("NadekoBot.Db.Models.UserXpStats", b =>

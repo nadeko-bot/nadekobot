@@ -9,6 +9,8 @@ using NadekoBot.Db.Models;
 
 namespace NadekoBot.Modules.Administration.Services;
 
+public readonly record struct OnlyChannelSetting(ulong GuildId, OnlyChannelType Type, OnlyChannelPunishment Punishment);
+
 public sealed class SomethingOnlyChannelService : IExecOnMessage
 {
     public int Priority { get; } = 0;
@@ -16,8 +18,9 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
     private readonly DiscordSocketClient _client;
     private readonly DbService _db;
     private readonly IntentState _intents;
-    private readonly ConcurrentDictionary<ulong, ConcurrentHashSet<ulong>> _imageOnly;
-    private readonly ConcurrentDictionary<ulong, ConcurrentHashSet<ulong>> _linkOnly;
+
+    // channel ids are unique across servers, so one map keyed by channel serves every server
+    private readonly ConcurrentDictionary<ulong, OnlyChannelSetting> _channels;
 
     private readonly Channel<IUserMessage> _deleteQueue = Channel.CreateBounded<IUserMessage>(
         new BoundedChannelOptions(100)
@@ -36,20 +39,14 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         _intents = intents;
 
         using var uow = _db.GetDbContext();
-        _imageOnly = uow.Set<ImageOnlyChannel>()
-            .Where(x => x.Type == OnlyChannelType.Image)
-            .ToList()
-            .GroupBy(x => x.GuildId)
-            .ToDictionary(x => x.Key, x => new ConcurrentHashSet<ulong>(x.Select(y => y.ChannelId)))
-            .ToConcurrent();
+        var rows = uow.Set<ImageOnlyChannel>()
+            .Select(x => new { x.ChannelId, x.GuildId, x.Type, x.Punishment })
+            .ToList();
 
-        _linkOnly = uow.Set<ImageOnlyChannel>()
-            .Where(x => x.Type == OnlyChannelType.Link)
-            .ToList()
-            .GroupBy(x => x.GuildId)
-            .ToDictionary(x => x.Key, x => new ConcurrentHashSet<ulong>(x.Select(y => y.ChannelId)))
-            .ToConcurrent();
-        
+        _channels = new();
+        foreach (var row in rows)
+            _channels[row.ChannelId] = new(row.GuildId, row.Type, row.Punishment);
+
         _ = Task.Run(DeleteQueueRunner);
 
         _client.ChannelDestroyed += ClientOnChannelDestroyed;
@@ -108,28 +105,29 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         }
     }
 
-    private ConcurrentDictionary<ulong, ConcurrentHashSet<ulong>> GetSet(OnlyChannelType type)
-        => type == OnlyChannelType.Image ? _imageOnly : _linkOnly;
+    public OnlyChannelSetting? GetSetting(ulong guildId, ulong channelId)
+        => _channels.TryGetValue(channelId, out var setting) && setting.GuildId == guildId
+            ? setting
+            : null;
 
     public OnlyChannelType? GetMode(ulong guildId, ulong channelId)
+        => GetSetting(guildId, channelId)?.Type;
+
+    // Without a punishment, the same type turns the channel off. Returns true when the channel now has the type.
+    public async Task<bool> ToggleAsync(
+        ulong guildId,
+        ulong channelId,
+        OnlyChannelType type,
+        OnlyChannelPunishment? punishment = null)
     {
-        if (_imageOnly.TryGetValue(guildId, out var chs) && chs.Contains(channelId))
-            return OnlyChannelType.Image;
-
-        if (_linkOnly.TryGetValue(guildId, out chs) && chs.Contains(channelId))
-            return OnlyChannelType.Link;
-
-        return null;
-    }
-
-    // returns true when the channel now has the specified type
-    public async Task<bool> ToggleAsync(ulong guildId, ulong channelId, OnlyChannelType type)
-    {
-        if (GetMode(guildId, channelId) == type)
+        var current = GetSetting(guildId, channelId);
+        if (punishment is null && current?.Type == type)
         {
             await DisableAsync(guildId, channelId);
             return false;
         }
+
+        var newPunishment = punishment ?? current?.Punishment ?? OnlyChannelPunishment.Lock;
 
         await using (var uow = _db.GetDbContext())
         {
@@ -145,32 +143,28 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
                     GuildId = guildId,
                     ChannelId = channelId,
                     Type = type,
+                    Punishment = newPunishment,
                     DateAdded = DateTime.UtcNow
                 });
 
             await tx.CommitAsync();
         }
 
-        var other = type == OnlyChannelType.Image ? OnlyChannelType.Link : OnlyChannelType.Image;
-        if (GetSet(other).TryGetValue(guildId, out var otherChannels))
-            otherChannels.TryRemove(channelId);
-
-        GetSet(type).GetOrAdd(guildId, static _ => new()).Add(channelId);
+        _channels[channelId] = new(guildId, type, newPunishment);
         return true;
     }
 
     public async Task DisableAsync(ulong guildId, ulong channelId)
     {
-        if (_imageOnly.TryGetValue(guildId, out var chs))
-            chs.TryRemove(channelId);
+        await using (var uow = _db.GetDbContext())
+        {
+            await uow.GetTable<ImageOnlyChannel>()
+                .Where(x => x.GuildId == guildId && x.ChannelId == channelId)
+                .DeleteAsync();
+        }
 
-        if (_linkOnly.TryGetValue(guildId, out chs))
-            chs.TryRemove(channelId);
-
-        await using var uow = _db.GetDbContext();
-        await uow.GetTable<ImageOnlyChannel>()
-            .Where(x => x.ChannelId == channelId)
-            .DeleteAsync();
+        if (_channels.TryGetValue(channelId, out var setting) && setting.GuildId == guildId)
+            _channels.TryRemove(channelId, out _);
     }
 
 #nullable enable
@@ -181,18 +175,15 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         if (!_intents.MessageContent || msg.Channel is not ITextChannel tch)
             return false;
 
-        if (_imageOnly.TryGetValue(tch.GuildId, out var chs) && chs.Contains(msg.Channel.Id))
-            return await HandleOnlyChannel(tch, msg, OnlyChannelType.Image);
-        
-        if (_linkOnly.TryGetValue(tch.GuildId, out chs) && chs.Contains(msg.Channel.Id))
-            return await HandleOnlyChannel(tch, msg, OnlyChannelType.Link);
+        if (!_channels.TryGetValue(msg.Channel.Id, out var setting) || setting.GuildId != tch.GuildId)
+            return false;
 
-        return false;
+        return await HandleOnlyChannel(tch, msg, setting);
     }
 
-    private async Task<bool> HandleOnlyChannel(ITextChannel tch, IUserMessage msg, OnlyChannelType type)
+    private async Task<bool> HandleOnlyChannel(ITextChannel tch, IUserMessage msg, OnlyChannelSetting setting)
     {
-        if (type == OnlyChannelType.Image)
+        if (setting.Type == OnlyChannelType.Image)
         {
             if (msg.Attachments.Any(x => x is { Height: > 0, Width: > 0 }))
                 return false;
@@ -212,7 +203,7 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         // ignore owner and admin
         if (user.Id == tch.Guild.OwnerId || user.GuildPermissions.Administrator)
         {
-            Log.Information("{Type}-Only Channel: Ignoring owner or admin ({ChannelId})", type, msg.Channel.Id);
+            Log.Information("{Type}-Only Channel: Ignoring owner or admin ({ChannelId})", setting.Type, msg.Channel.Id);
             return false;
         }
 
@@ -221,16 +212,17 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
         if (user.GetRoles().Max(x => x.Position) >= botUser.GetRoles().Max(x => x.Position))
             return false;
 
-        // manage roles is the channel's Manage Permissions, needed for the overwrite which stops the user
         var botPerms = botUser.GetPermissions(tch);
-        if (!botPerms.ManageChannel || !botPerms.ManageRoles)
+        var isLock = setting.Punishment == OnlyChannelPunishment.Lock;
+
+        // manage roles is the channel's Manage Permissions, needed for the overwrite which stops the user
+        if (!botPerms.ManageMessages || (isLock && (!botPerms.ManageChannel || !botPerms.ManageRoles)))
         {
             await DisableAsync(tch.GuildId, tch.Id);
             return false;
         }
 
-        var shouldLock = AddUserTicket(tch.GuildId, msg.Author.Id);
-        if (shouldLock)
+        if (isLock && AddUserTicket(tch.GuildId, msg.Author.Id))
         {
             try
             {
@@ -243,7 +235,7 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
             }
 
             Log.Warning("{Type}-Only Channel: User {User} [{UserId}] has been banned from typing in the channel [{ChannelId}]",
-                type,
+                setting.Type,
                 msg.Author,
                 msg.Author.Id,
                 msg.Channel.Id);

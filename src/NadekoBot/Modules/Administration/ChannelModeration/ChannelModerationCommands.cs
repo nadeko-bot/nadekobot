@@ -41,37 +41,64 @@ public partial class Administration
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.Administrator)]
-        [BotPerm(ChannelPerm.ManageChannels)]
         [BotPerm(ChannelPerm.ManageMessages)]
-        [BotPerm(ChannelPerm.ManageRoles)]
-        public async Task ImageOnlyChannel()
-        {
-            var newValue = await somethingOnly.ToggleAsync(ctx.Guild.Id, ctx.Channel.Id, OnlyChannelType.Image);
-            if (newValue)
-            {
-                await Response().Confirm(strs.imageonly_enable).SendAsync();
-                await WarnIfNoMessageContentAsync("imageonlychannel");
-            }
-            else
-                await Response().Pending(strs.imageonly_disable).SendAsync();
-        }
+        public Task ImageOnlyChannel()
+            => OnlyChannelInternalAsync(OnlyChannelType.Image, null);
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.Administrator)]
-        [BotPerm(ChannelPerm.ManageChannels)]
         [BotPerm(ChannelPerm.ManageMessages)]
-        [BotPerm(ChannelPerm.ManageRoles)]
-        public async Task LinkOnlyChannel()
+        public Task ImageOnlyChannel(OnlyChannelPunishment mode)
+            => OnlyChannelInternalAsync(OnlyChannelType.Image, mode);
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.Administrator)]
+        [BotPerm(ChannelPerm.ManageMessages)]
+        public Task LinkOnlyChannel()
+            => OnlyChannelInternalAsync(OnlyChannelType.Link, null);
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.Administrator)]
+        [BotPerm(ChannelPerm.ManageMessages)]
+        public Task LinkOnlyChannel(OnlyChannelPunishment mode)
+            => OnlyChannelInternalAsync(OnlyChannelType.Link, mode);
+
+        private async Task OnlyChannelInternalAsync(OnlyChannelType type, OnlyChannelPunishment? mode)
         {
-            var newValue = await somethingOnly.ToggleAsync(ctx.Guild.Id, ctx.Channel.Id, OnlyChannelType.Link);
-            if (newValue)
+            var current = somethingOnly.GetSetting(ctx.Guild.Id, ctx.Channel.Id);
+            var turnsOff = mode is null && current?.Type == type;
+            var punishment = mode ?? current?.Punishment ?? OnlyChannelPunishment.Lock;
+
+            if (!turnsOff && punishment == OnlyChannelPunishment.Lock)
             {
-                await Response().Confirm(strs.linkonly_enable).SendAsync();
-                await WarnIfNoMessageContentAsync("linkonlychannel");
+                // the lock is a member overwrite, which needs Manage Channels and Manage Permissions
+                var botPerms = ((SocketGuild)ctx.Guild).CurrentUser.GetPermissions((IGuildChannel)ctx.Channel);
+                if (!botPerms.ManageChannel || !botPerms.ManageRoles)
+                {
+                    await Response().Error(strs.onlych_lock_perms).SendAsync();
+                    return;
+                }
             }
-            else
-                await Response().Pending(strs.linkonly_disable).SendAsync();
+
+            var isOn = await somethingOnly.ToggleAsync(ctx.Guild.Id, ctx.Channel.Id, type, mode);
+            if (!isOn)
+            {
+                await Response()
+                    .Pending(type == OnlyChannelType.Image ? strs.imageonly_disable : strs.linkonly_disable)
+                    .SendAsync();
+                return;
+            }
+
+            var enabled = GetText(type == OnlyChannelType.Image ? strs.imageonly_enable : strs.linkonly_enable);
+            var modeText = GetText(punishment == OnlyChannelPunishment.Delete
+                ? strs.onlych_mode_delete
+                : strs.onlych_mode_lock);
+
+            await Response().Confirm(enabled + "\n" + modeText).SendAsync();
+            await WarnIfNoMessageContentAsync(type == OnlyChannelType.Image ? "imageonlychannel" : "linkonlychannel");
         }
 
         [Cmd]
