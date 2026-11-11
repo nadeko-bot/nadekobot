@@ -11,6 +11,8 @@
 - `.streamadd` / `.sta` / `.stadd` follows TikTok live streams.
 - `.rep` / `.reputation` lets each member give one reputation point a day on each server.
 - `.repleaderboard` / `.replb` shows the members with the most reputation.
+- `.lock` / `.lockch` stops members from sending messages in a channel.
+- `.unlock` / `.unlockch` gives the channel its permissions from before the lock.
 - `.warnhidemod` / `.whm` hides the moderator from warned members.
 
 ### Changed

@@ -1,0 +1,8 @@
+lock_done: "{0} is now locked."
+lock_already: "{0} is already locked."
+lock_notice: "🔒 The staff locked this channel."
+lock_no_threads: The bot cannot lock or unlock threads. Lock the parent channel.
+lock_bot_perms: "The bot needs View Channel and Manage Permissions in {0}."
+unlock_done: "{0} is now unlocked."
+unlock_not_locked: "{0} is not locked."
+unlock_notice: "🔓 The staff unlocked this channel."

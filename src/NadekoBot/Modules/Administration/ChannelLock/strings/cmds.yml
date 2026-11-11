@@ -1,0 +1,18 @@
+lock:
+  desc: |-
+    Locks a channel. Members cannot send messages or create threads in it until you unlock it.
+    Without a channel, the command locks the current channel.
+  ex:
+    - '#general'
+  params:
+    - channel:
+        desc: "The channel to lock."
+unlock:
+  desc: |-
+    Unlocks a channel which you locked with `{0}lock`. The bot restores the permissions which the channel had before the lock.
+    Without a channel, the command unlocks the current channel.
+  ex:
+    - '#general'
+  params:
+    - channel:
+        desc: "The channel to unlock."

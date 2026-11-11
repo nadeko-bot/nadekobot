@@ -85,6 +85,38 @@
     },
     {
       "Aliases": [
+        ".lock",
+        ".lockch"
+      ],
+      "Description": "Locks a channel. Members cannot send messages or create threads in it until you unlock it.\nWithout a channel, the command locks the current channel.",
+      "Usage": [
+        ".lock #general"
+      ],
+      "Submodule": "ChannelLockCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageChannels Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
+        ".unlock",
+        ".unlockch"
+      ],
+      "Description": "Unlocks a channel which you locked with `.lock`. The bot restores the permissions which the channel had before the lock.\nWithout a channel, the command unlocks the current channel.",
+      "Usage": [
+        ".unlock #general"
+      ],
+      "Submodule": "ChannelLockCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "ManageChannels Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".imageonlychannel",
         ".imageonly",
         ".imagesonly"

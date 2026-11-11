@@ -1,0 +1,159 @@
+ar:
+  lock_done: 'تم قفل {0} الآن.'
+  lock_already: '{0} مقفل بالفعل.'
+  lock_notice: 🔒 قام طاقم الإدارة بقفل هذه القناة.
+  lock_no_threads: لا يمكن للبوت قفل الخيوط أو فتحها. اقفل القناة الرئيسية.
+  lock_bot_perms: 'يحتاج البوت إلى صلاحيتي مشاهدة القنوات وإدارة الصلاحيات في {0}.'
+  unlock_done: 'تم إلغاء قفل {0} الآن.'
+  unlock_not_locked: '{0} غير مقفل.'
+  unlock_notice: 🔓 ألغى طاقم الإدارة قفل هذه القناة.
+
+de-DE:
+  lock_done: '{0} ist jetzt gesperrt.'
+  lock_already: '{0} ist bereits gesperrt.'
+  lock_notice: 🔒 Das Team hat diesen Kanal gesperrt.
+  lock_no_threads: Der Bot kann Threads nicht sperren oder entsperren. Sperre den übergeordneten Kanal.
+  lock_bot_perms: 'Der Bot braucht in {0} die Berechtigungen Kanäle ansehen und Berechtigungen verwalten.'
+  unlock_done: '{0} ist jetzt entsperrt.'
+  unlock_not_locked: '{0} ist nicht gesperrt.'
+  unlock_notice: 🔓 Das Team hat diesen Kanal entsperrt.
+
+es-ES:
+  lock_done: '{0} ahora está bloqueado.'
+  lock_already: '{0} ya está bloqueado.'
+  lock_notice: 🔒 El staff bloqueó este canal.
+  lock_no_threads: El bot no puede bloquear ni desbloquear hilos. Bloquea el canal principal.
+  lock_bot_perms: 'El bot necesita los permisos Ver canales y Gestionar permisos en {0}.'
+  unlock_done: '{0} ahora está desbloqueado.'
+  unlock_not_locked: '{0} no está bloqueado.'
+  unlock_notice: 🔓 El staff desbloqueó este canal.
+
+fr-FR:
+  lock_done: '{0} est maintenant verrouillé.'
+  lock_already: '{0} est déjà verrouillé.'
+  lock_notice: 🔒 Le staff a verrouillé ce salon.
+  lock_no_threads: Le bot ne peut pas verrouiller ou déverrouiller les fils. Verrouille le salon parent.
+  lock_bot_perms: 'Le bot a besoin des permissions Voir les salons et Gérer les permissions dans {0}.'
+  unlock_done: '{0} est maintenant déverrouillé.'
+  unlock_not_locked: '{0} n''est pas verrouillé.'
+  unlock_notice: 🔓 Le staff a déverrouillé ce salon.
+
+id-ID:
+  lock_done: '{0} sekarang terkunci.'
+  lock_already: '{0} sudah terkunci.'
+  lock_notice: 🔒 Staf mengunci channel ini.
+  lock_no_threads: Bot tidak bisa mengunci atau membuka kunci thread. Kunci channel induknya.
+  lock_bot_perms: 'Bot butuh izin Lihat Saluran dan Kelola Izin di {0}.'
+  unlock_done: '{0} sekarang tidak terkunci.'
+  unlock_not_locked: '{0} tidak terkunci.'
+  unlock_notice: 🔓 Staf membuka kunci channel ini.
+
+ja-JP:
+  lock_done: '{0}をロックしました。'
+  lock_already: '{0}はすでにロックされています。'
+  lock_notice: 🔒 スタッフがこのチャンネルをロックしました。
+  lock_no_threads: ボットはスレッドをロックしたりロック解除したりできません。親チャンネルをロックしてください。
+  lock_bot_perms: 'ボットには {0} で「チャンネルを見る」と「権限の管理」の権限が必要です。'
+  unlock_done: '{0}のロックを解除しました。'
+  unlock_not_locked: '{0}はロックされていません。'
+  unlock_notice: 🔓 スタッフがこのチャンネルのロックを解除しました。
+
+ko-KR:
+  lock_done: '{0}을(를) 잠갔어요.'
+  lock_already: '{0}은(는) 이미 잠겨 있어요.'
+  lock_notice: 🔒 운영진이 이 채널을 잠갔어요.
+  lock_no_threads: 봇은 스레드를 잠그거나 잠금 해제할 수 없어요. 상위 채널을 잠가 주세요.
+  lock_bot_perms: '봇은 {0}에서 채널 보기, 권한 관리 권한이 필요해요.'
+  unlock_done: '{0}의 잠금을 해제했어요.'
+  unlock_not_locked: '{0}은(는) 잠겨 있지 않아요.'
+  unlock_notice: 🔓 운영진이 이 채널의 잠금을 해제했어요.
+
+pl-PL:
+  lock_done: '{0} jest teraz zablokowany.'
+  lock_already: '{0} jest już zablokowany.'
+  lock_notice: 🔒 Moderacja zablokowała ten kanał.
+  lock_no_threads: Bot nie może blokować ani odblokowywać wątków. Zablokuj kanał nadrzędny.
+  lock_bot_perms: 'Bot potrzebuje uprawnień Wyświetlanie kanałów i Zarządzanie uprawnieniami w {0}.'
+  unlock_done: '{0} jest teraz odblokowany.'
+  unlock_not_locked: '{0} nie jest zablokowany.'
+  unlock_notice: 🔓 Moderacja odblokowała ten kanał.
+
+pt-BR:
+  lock_done: '{0} agora está bloqueado.'
+  lock_already: '{0} já está bloqueado.'
+  lock_notice: 🔒 A equipe bloqueou este canal.
+  lock_no_threads: O bot não pode bloquear nem desbloquear threads. Bloqueie o canal pai.
+  lock_bot_perms: 'O bot precisa das permissões Ver canais e Gerenciar permissões em {0}.'
+  unlock_done: '{0} agora está desbloqueado.'
+  unlock_not_locked: '{0} não está bloqueado.'
+  unlock_notice: 🔓 A equipe desbloqueou este canal.
+
+ru-RU:
+  lock_done: '{0} теперь заблокирован.'
+  lock_already: '{0} уже заблокирован.'
+  lock_notice: 🔒 Модераторы заблокировали этот канал.
+  lock_no_threads: Бот не может блокировать или разблокировать ветки. Заблокируйте родительский канал.
+  lock_bot_perms: 'Боту нужны разрешения Просмотр канала и Управление разрешениями в {0}.'
+  unlock_done: '{0} теперь разблокирован.'
+  unlock_not_locked: '{0} не заблокирован.'
+  unlock_notice: 🔓 Модераторы разблокировали этот канал.
+
+sr-Cyrl-RS:
+  lock_done: '{0} је сада закључан.'
+  lock_already: '{0} је већ закључан.'
+  lock_notice: 🔒 Модератори су закључали овај канал.
+  lock_no_threads: Бот не може да закључа или откључа теме. Закључајте родитељски канал.
+  lock_bot_perms: 'Боту су потребне дозволе Преглед канала и Управљање дозволама у {0}.'
+  unlock_done: '{0} је сада откључан.'
+  unlock_not_locked: '{0} није закључан.'
+  unlock_notice: 🔓 Модератори су откључали овај канал.
+
+tr-TR:
+  lock_done: '{0} artık kilitlendi.'
+  lock_already: '{0} zaten kilitli.'
+  lock_notice: 🔒 Bu kanalı yetkililer kilitledi.
+  lock_no_threads: Bot konuları kilitleyemez veya kilidini açamaz. Ana kanalı kilitle.
+  lock_bot_perms: 'Botun {0} kanalında Kanalı Görüntüle ve İzinleri Yönet izinlerine ihtiyacı var.'
+  unlock_done: '{0} artık kilitli değil.'
+  unlock_not_locked: '{0} kilitli değil.'
+  unlock_notice: 🔓 Bu kanalın kilidini yetkililer açtı.
+
+ts-TS:
+  lock_done: '{0} is now locked.'
+  lock_already: '{0} is already locked. Hmph, keep up.'
+  lock_notice: 🔒 The staff locked this channel.
+  lock_no_threads: The bot cannot lock or unlock threads. Lock the parent channel.
+  lock_bot_perms: 'The bot needs View Channel and Manage Permissions in {0}.'
+  unlock_done: '{0} is now unlocked. Don''t make me do this twice.'
+  unlock_not_locked: '{0} is not locked.'
+  unlock_notice: 🔓 The staff unlocked this channel.
+
+uk-UA:
+  lock_done: '{0} тепер заблоковано.'
+  lock_already: '{0} вже заблоковано.'
+  lock_notice: 🔒 Модератори заблокували цей канал.
+  lock_no_threads: Бот не може блокувати або розблоковувати гілки. Заблокуй батьківський канал.
+  lock_bot_perms: 'Боту потрібні дозволи Перегляд каналу та Керування дозволами в {0}.'
+  unlock_done: '{0} тепер розблоковано.'
+  unlock_not_locked: '{0} не заблоковано.'
+  unlock_notice: 🔓 Модератори розблокували цей канал.
+
+vi-VN:
+  lock_done: '{0} đã bị khóa.'
+  lock_already: '{0} đã bị khóa rồi.'
+  lock_notice: 🔒 Ban quản trị đã khóa kênh này.
+  lock_no_threads: Bot không thể khóa hoặc mở khóa chủ đề. Hãy khóa kênh cha.
+  lock_bot_perms: 'Bot cần quyền Xem kênh và Quản lý quyền trong {0}.'
+  unlock_done: '{0} đã được mở khóa.'
+  unlock_not_locked: '{0} không bị khóa.'
+  unlock_notice: 🔓 Ban quản trị đã mở khóa kênh này.
+
+zh-CN:
+  lock_done: '{0} 现在已锁定。'
+  lock_already: '{0} 已经锁定。'
+  lock_notice: 🔒 管理员锁定了此频道。
+  lock_no_threads: 机器人无法锁定或解锁子区。请锁定父频道。
+  lock_bot_perms: '机器人在 {0} 需要这些权限：查看频道和管理权限。'
+  unlock_done: '{0} 现在已解锁。'
+  unlock_not_locked: '{0} 未被锁定。'
+  unlock_notice: 🔓 管理员解锁了此频道。

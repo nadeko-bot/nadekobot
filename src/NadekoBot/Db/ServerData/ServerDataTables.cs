@@ -74,6 +74,7 @@ public static class ServerDataTables
         new("LineUpUser", HasIdentity: false),
         new("LinkFix"),
         new("LiveChannelConfig"),
+        new("LockedChannel"),
         new("LogChannels"),
         new("LogIgnores"),
         new("MusicPlayerSettings"),

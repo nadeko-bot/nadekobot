@@ -7,27 +7,22 @@ namespace NadekoBot.Tests;
 public class MessageSplitterTests
 {
     [Test]
-    public void TextUnderLimit_ReturnsSingleChunkOrNone()
+    public void Split_KeepsShortTextWhole_AndSplitsLongTextAtNewlinesAndWordsElseHardBreaks()
     {
         var results = new List<string>();
         MessageSplitter.Split("", 2000, results);
         Assert.That(results, Is.Empty);
 
-        foreach (var text in new[] { "hello world", new string('a', 1900) })
+        foreach (var shortText in new[] { "hello world", new string('a', 1900) })
         {
             results.Clear();
-            MessageSplitter.Split(text, 2000, results);
+            MessageSplitter.Split(shortText, 2000, results);
 
-            Assert.That(results, Has.Count.EqualTo(1), text);
-            Assert.That(results[0], Is.EqualTo(text));
+            Assert.That(results, Has.Count.EqualTo(1), shortText);
+            Assert.That(results[0], Is.EqualTo(shortText));
         }
-    }
 
-    [Test]
-    public void LongText_SplitsAtNewlinesAndWordsElseHardBreaks()
-    {
-        var results = new List<string>();
-
+        results.Clear();
         var first = new string('a', 95);
         var second = new string('b', 50);
         MessageSplitter.Split($"{first} {second}", 200, results);

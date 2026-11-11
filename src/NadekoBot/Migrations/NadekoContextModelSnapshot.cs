@@ -1277,6 +1277,34 @@ namespace NadekoBot.Migrations
                     b.ToTable("LiveChannelConfig");
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.LockedChannel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("AllowMask")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("DenyMask")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId");
+
+                    b.ToTable("LockedChannel");
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.LogChannel", b =>
                 {
                     b.Property<int>("Id")
