@@ -9,6 +9,7 @@
 - `.give` gives currency to each member of a role after a confirmation.
 - `.autothread` / `.ath` has `--include-bots` / `-i`, which also creates threads for messages from bots and webhooks.
 - `.streamadd` / `.sta` / `.stadd` follows TikTok live streams.
+- `.warnhidemod` / `.whm` hides the moderator from warned members.
 
 ### Changed
 

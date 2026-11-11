@@ -62,6 +62,9 @@ ar:
   warnpl_none: لا توجد عقوبات محددة.
   warns_dont_expire: التحذيرات ليس لها تاريخ انتهاء.
   warns_expire_in: 'ستنتهي صلاحية التحذيرات خلال {0} يوم.'
+  warn_mod_hidden: المشرف
+  warn_mod_hidden_on: لم يعد المستخدمون المحذرون يرون أي مشرف حذرهم أو مسح تحذيراتهم.
+  warn_mod_hidden_off: يمكن للمستخدمين المحذرين رؤية المشرف الذي حذرهم أو مسح تحذيراتهم مرة أخرى.
 
 de-DE:
   ban_prune: 'Der Bot wird bis zu {0} Tag(e) Nachrichten des gebannten Benutzers löschen.'
@@ -127,6 +130,9 @@ de-DE:
   warnpl_none: Keine Bestrafungen definiert.
   warns_dont_expire: Warnung haben keinen Verfall eingestellt.
   warns_expire_in: 'Warnungen verfallen in {0} Tagen.'
+  warn_mod_hidden: ein Moderator
+  warn_mod_hidden_on: Verwarnte Benutzer sehen nicht mehr, welcher Moderator sie verwarnt oder ihre Warnungen gelöscht hat.
+  warn_mod_hidden_off: Verwarnte Benutzer sehen wieder, welcher Moderator sie verwarnt oder ihre Warnungen gelöscht hat.
 
 es-ES:
   ban_prune: 'El bot eliminará hasta {0} día(s) de mensajes del usuario baneado.'
@@ -192,6 +198,9 @@ es-ES:
   warnpl_none: No hay castigos configurados.
   warns_dont_expire: Las advertencias no tienen expiración configurada.
   warns_expire_in: 'Las advertencias expirarán en {0} días.'
+  warn_mod_hidden: un moderador
+  warn_mod_hidden_on: Los usuarios advertidos ya no ven qué moderador les puso o les quitó las advertencias.
+  warn_mod_hidden_off: Los usuarios advertidos vuelven a ver qué moderador les puso o les quitó las advertencias.
 
 fr-FR:
   ban_prune: 'Le bot supprimera jusqu''à {0} jour(s) de messages de l''utilisateur banni.'
@@ -257,6 +266,9 @@ fr-FR:
   warnpl_none: Aucun châtiment réglé.
   warns_dont_expire: Les avertissements n'ont pas de date d'expiration définie.
   warns_expire_in: 'Les avertissements expireront dans {0} jours.'
+  warn_mod_hidden: un modérateur
+  warn_mod_hidden_on: Les utilisateurs avertis ne voient plus quel modérateur les a avertis ou a effacé leurs avertissements.
+  warn_mod_hidden_off: Les utilisateurs avertis voient à nouveau quel modérateur les a avertis ou a effacé leurs avertissements.
 
 id-ID:
   ban_prune: 'Bot akan menghapus pesan hingga {0} hari dari user yang dibanned.'
@@ -322,6 +334,9 @@ id-ID:
   warnpl_none: Tidak ada hukuman yang diatur.
   warns_dont_expire: Peringatan tidak memiliki batas kedaluwarsa.
   warns_expire_in: 'Peringatan akan kedaluwarsa dalam {0} hari.'
+  warn_mod_hidden: moderator
+  warn_mod_hidden_on: User yang diperingatkan tidak lagi melihat moderator mana yang memberi peringatan atau menghapus peringatannya.
+  warn_mod_hidden_off: User yang diperingatkan bisa melihat lagi moderator mana yang memberi peringatan atau menghapus peringatannya.
 
 ja-JP:
   ban_prune: 'Botはバンされたユーザーの{0}日分のメッセージを削除します。'
@@ -387,6 +402,9 @@ ja-JP:
   warnpl_none: 罰は設定されていません。
   warns_dont_expire: 警告に期限は設定されていません。
   warns_expire_in: '警告は{0}日後に期限切れになります。'
+  warn_mod_hidden: モデレータ
+  warn_mod_hidden_on: 警告されたユーザーは、どのモデレータが警告したか、または警告をクリアしたかを見られなくなります。
+  warn_mod_hidden_off: 警告されたユーザーは、どのモデレータが警告したか、または警告をクリアしたかを再び見られるようになります。
 
 ko-KR:
   ban_prune: '봇이 차단된 사용자의 최대 {0}일치 메시지를 삭제해요.'
@@ -452,6 +470,9 @@ ko-KR:
   warnpl_none: 설정된 처벌이 없어요.
   warns_dont_expire: 경고에 만료 기한이 설정되어 있지 않아요.
   warns_expire_in: '경고가 {0}일 후 만료돼요.'
+  warn_mod_hidden: 관리자
+  warn_mod_hidden_on: 경고를 받은 유저는 어떤 관리자가 경고를 주었는지 또는 경고를 해제했는지 더 이상 볼 수 없어요.
+  warn_mod_hidden_off: 경고를 받은 유저가 어떤 관리자가 경고를 주었는지 또는 경고를 해제했는지 다시 볼 수 있어요.
 
 pl-PL:
   ban_prune: 'Bot usunie wiadomości zbanowanego użytkownika z ostatnich {0} dni.'
@@ -517,6 +538,9 @@ pl-PL:
   warnpl_none: Brak ustawionych kar.
   warns_dont_expire: Ostrzeżenia nie mają ustawionego wygasania.
   warns_expire_in: 'Ostrzeżenia wygasną za {0} dni.'
+  warn_mod_hidden: moderator
+  warn_mod_hidden_on: Ostrzeżeni użytkownicy nie widzą już, który moderator ich ostrzegł lub usunął ich ostrzeżenia.
+  warn_mod_hidden_off: Ostrzeżeni użytkownicy znów widzą, który moderator ich ostrzegł lub usunął ich ostrzeżenia.
 
 pt-BR:
   ban_prune: 'O bot excluirá até {0} dia(s) de mensagens do usuário banido.'
@@ -582,6 +606,9 @@ pt-BR:
   warnpl_none: Nenhuma punição foi definida.
   warns_dont_expire: As advertências não possuem validade estabelecida.
   warns_expire_in: 'Advertências expirarão em {0} dias.'
+  warn_mod_hidden: um moderador
+  warn_mod_hidden_on: Usuários advertidos não veem mais qual moderador os advertiu ou removeu suas advertências.
+  warn_mod_hidden_off: Usuários advertidos voltam a ver qual moderador os advertiu ou removeu suas advertências.
 
 ru-RU:
   ban_prune: 'Бот удалит до {0} дней сообщений забаненного пользователя.'
@@ -647,6 +674,9 @@ ru-RU:
   warnpl_none: Никаких наказаний не установлено.
   warns_dont_expire: Предупреждения не имеют срока действия.
   warns_expire_in: 'Срок действия предупреждений истечет через {0} дн.'
+  warn_mod_hidden: модератор
+  warn_mod_hidden_on: Пользователи с предупреждениями больше не видят, какой модератор выдал или снял предупреждение.
+  warn_mod_hidden_off: Пользователи с предупреждениями снова видят, какой модератор выдал или снял предупреждение.
 
 sr-Cyrl-RS:
   ban_prune: 'Бот ће обрисати до {0} дан(а) порука од банованог корисника.'
@@ -712,6 +742,9 @@ sr-Cyrl-RS:
   warnpl_none: Нема постављених казни.
   warns_dont_expire: Упозорења немају рок истека.
   warns_expire_in: 'Упозорења ће истећи за {0} дана.'
+  warn_mod_hidden: модератор
+  warn_mod_hidden_on: Корисници са упозорењима више не виде који модератор им је дао или обрисао упозорења.
+  warn_mod_hidden_off: Корисници са упозорењима поново виде који модератор им је дао или обрисао упозорења.
 
 tr-TR:
   ban_prune: 'Bot, yasaklanan kullanıcının en fazla {0} günlük mesajlarını silecek.'
@@ -777,6 +810,9 @@ tr-TR:
   warnpl_none: Ayarlanmış ceza yok.
   warns_dont_expire: Uyarıların süre sınırı yok.
   warns_expire_in: 'Uyarılar {0} gün içinde sona erecek.'
+  warn_mod_hidden: bir moderatör
+  warn_mod_hidden_on: Uyarılan kullanıcılar artık onları hangi moderatörün uyardığını veya uyarılarını kimin temizlediğini göremeyecek.
+  warn_mod_hidden_off: Uyarılan kullanıcılar onları hangi moderatörün uyardığını veya uyarılarını kimin temizlediğini tekrar görebilecek.
 
 ts-TS:
   ban_prune: 'Bot will prune up to {0} day(s) worth of messages from banned user.'
@@ -842,6 +878,9 @@ ts-TS:
   warnpl_none: No punishments set.
   warns_dont_expire: Warnings have no expiry set.
   warns_expire_in: 'Warnings will expire in {0} days.'
+  warn_mod_hidden: a moderator
+  warn_mod_hidden_on: Warned users no longer see which moderator warned them or cleared their warnings. Took them long enough to ask.
+  warn_mod_hidden_off: Warned users can see which moderator warned them or cleared their warnings again.
 
 uk-UA:
   ban_prune: 'Бот видалить повідомлення забаненого користувача за останні {0} день(днів).'
@@ -907,6 +946,9 @@ uk-UA:
   warnpl_none: Покарання не встановлені.
   warns_dont_expire: Попередження не мають терміну дії.
   warns_expire_in: 'Попередження закінчаться через {0} днів.'
+  warn_mod_hidden: модератор
+  warn_mod_hidden_on: Попереджені користувачі більше не бачать, який модератор попередив їх або зняв їхні попередження.
+  warn_mod_hidden_off: Попереджені користувачі знову бачать, який модератор попередив їх або зняв їхні попередження.
 
 vi-VN:
   ban_prune: 'Bot sẽ xóa tin nhắn trong {0} ngày gần nhất của người dùng bị cấm.'
@@ -972,6 +1014,9 @@ vi-VN:
   warnpl_none: Chưa đặt hình phạt nào.
   warns_dont_expire: Cảnh cáo chưa được đặt thời hạn hết hạn.
   warns_expire_in: 'Cảnh cáo sẽ hết hạn sau {0} ngày.'
+  warn_mod_hidden: một người kiểm duyệt
+  warn_mod_hidden_on: Người dùng bị cảnh cáo không còn thấy người kiểm duyệt nào đã cảnh cáo hoặc xóa cảnh cáo của họ.
+  warn_mod_hidden_off: Người dùng bị cảnh cáo lại thấy được người kiểm duyệt nào đã cảnh cáo hoặc xóa cảnh cáo của họ.
 
 zh-CN:
   ban_prune: '機器人將刪除被封禁使用者最多 {0} 天的訊息。'
@@ -1037,3 +1082,6 @@ zh-CN:
   warnpl_none: 沒有設置懲罰。
   warns_dont_expire: 警告將不會自動解除
   warns_expire_in: '警告將在 {0} 天後解除'
+  warn_mod_hidden: 主持人
+  warn_mod_hidden_on: 被警告的用户不再能看到是哪个主持人警告或清除了他们的警告。
+  warn_mod_hidden_off: 被警告的用户又可以看见是哪个主持人警告或清除了他们的警告。

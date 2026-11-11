@@ -2011,6 +2011,22 @@
     },
     {
       "Aliases": [
+        ".warnhidemod",
+        ".whm"
+      ],
+      "Description": "Toggles whether warned users see which moderator warned them.\nWhen on, the bot hides the moderator in the warn message and in the user's own `.warnlog`.\nUsers with the Ban Members permission still see the moderator.",
+      "Usage": [
+        ".warnhidemod"
+      ],
+      "Submodule": "UserPunishCommands",
+      "Module": "Administration",
+      "Options": null,
+      "Requirements": [
+        "Administrator Server Permission"
+      ]
+    },
+    {
+      "Aliases": [
         ".warnmsgtest"
       ],
       "Description": "If warn message is not disabled, bot will send you the message as if you\nwere warned by yourself. Used for testing the warn message.",

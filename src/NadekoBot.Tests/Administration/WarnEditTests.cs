@@ -47,8 +47,14 @@ public class WarnEditTests
     }
 
     [Test]
-    public async Task WarnEdit_ChangesOnlyTheWarningAtTheWarnlogIndex()
+    public async Task WarnEdit_ChangesOnlyTheWarningAtTheWarnlogIndex_AndHideModIsPerServer()
     {
+        Assert.That(await _svc.ToggleHideWarnModAsync(GUILD_ID), Is.True);
+        Assert.That(await _svc.IsWarnModHiddenAsync(GUILD_ID), Is.True);
+        Assert.That(await _svc.IsWarnModHiddenAsync(GUILD_ID + 1), Is.False);
+        Assert.That(await _svc.ToggleHideWarnModAsync(GUILD_ID), Is.False);
+        Assert.That(await _svc.IsWarnModHiddenAsync(GUILD_ID), Is.False);
+
         await AddWarningAsync(USER_ID, "oldest", 3);
         await AddWarningAsync(USER_ID, "middle", 2);
         await AddWarningAsync(USER_ID, "newest", 1);

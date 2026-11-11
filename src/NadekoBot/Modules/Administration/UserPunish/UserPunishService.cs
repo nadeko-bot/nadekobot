@@ -10,6 +10,8 @@ namespace NadekoBot.Modules.Administration.Services;
 
 public class UserPunishService : INService, IReadyExecutor
 {
+    public const string EXPIRY_FORGIVER = "expiry";
+
     private readonly MuteService _mute;
     private readonly DbService _db;
     private readonly BlacklistService _blacklistService;
@@ -269,7 +271,7 @@ public class UserPunishService : INService, IReadyExecutor
                                .UpdateAsync(_ => new()
                                {
                                    Forgiven = true,
-                                   ForgivenBy = "expiry"
+                                   ForgivenBy = EXPIRY_FORGIVER
                                });
 
         var toDelete = await uow.GetTable<Warning>()
@@ -315,7 +317,7 @@ public class UserPunishService : INService, IReadyExecutor
                      .UpdateAsync(_ => new()
                      {
                          Forgiven = true,
-                         ForgivenBy = "expiry"
+                         ForgivenBy = EXPIRY_FORGIVER
                      });
         }
         else if (config.WarnExpireAction == WarnExpireAction.Delete)
@@ -732,6 +734,39 @@ public class UserPunishService : INService, IReadyExecutor
         return (latest, totalCount);
     }
 
+    public async Task<bool> ToggleHideWarnModAsync(ulong guildId)
+    {
+        await using var uow = _db.GetDbContext();
+
+        var deleted = await uow.GetTable<HiddenWarnModGuild>()
+                               .Where(x => x.GuildId == guildId)
+                               .DeleteAsync();
+
+        if (deleted > 0)
+            return false;
+
+        // a null update setter makes a parallel toggle a no-op instead of a unique key error
+        await uow.GetTable<HiddenWarnModGuild>()
+                 .InsertOrUpdateAsync(() => new()
+                     {
+                         GuildId = guildId
+                     },
+                     null,
+                     () => new()
+                     {
+                         GuildId = guildId
+                     });
+
+        return true;
+    }
+
+    public async Task<bool> IsWarnModHiddenAsync(ulong guildId)
+    {
+        await using var uow = _db.GetDbContext();
+        return await uow.GetTable<HiddenWarnModGuild>()
+                        .AnyAsyncLinqToDB(x => x.GuildId == guildId);
+    }
+
     public async Task<string> GetWarnTemplateAsync(ulong guildId)
     {
         await using var uow = _db.GetDbContext();
@@ -780,19 +815,22 @@ public class UserPunishService : INService, IReadyExecutor
         string localizedDescription,
         string localizedModLabel,
         string localizedReasonLabel,
+        string localizedHiddenMod,
         string warnReason,
         long weight,
         long totalCount)
     {
         var template = await GetWarnTemplateAsync(guild.Id);
+        var hideMod = await IsWarnModHiddenAsync(guild.Id);
+        var modFullName = hideMod ? localizedHiddenMod : moderator.ToString();
 
         warnReason = string.IsNullOrWhiteSpace(warnReason) ? "-" : warnReason;
 
         var repCtx = new ReplacementContext(client, guild)
-                     .WithOverride("%warn.mod%", () => moderator.ToString())
-                     .WithOverride("%warn.mod.fullname%", () => moderator.ToString())
-                     .WithOverride("%warn.mod.name%", () => moderator.Username)
-                     .WithOverride("%warn.mod.discrim%", () => moderator.Discriminator)
+                     .WithOverride("%warn.mod%", () => modFullName)
+                     .WithOverride("%warn.mod.fullname%", () => modFullName)
+                     .WithOverride("%warn.mod.name%", () => hideMod ? localizedHiddenMod : moderator.Username)
+                     .WithOverride("%warn.mod.discrim%", () => hideMod ? string.Empty : moderator.Discriminator)
                      .WithOverride("%warn.user%", () => target.ToString())
                      .WithOverride("%warn.user.fullname%", () => target.ToString())
                      .WithOverride("%warn.user.name%", () => target.Username)
@@ -805,15 +843,14 @@ public class UserPunishService : INService, IReadyExecutor
         if (string.IsNullOrWhiteSpace(template))
         {
             var errorColor = _bcs.Data.Color.Error.PackedValue >> 8;
+            var reasonField = new { name = localizedReasonLabel, value = warnReason, inline = false };
             template = JsonConvert.SerializeObject(new
             {
                 color = errorColor,
                 description = localizedDescription,
-                fields = new[]
-                {
-                    new { name = localizedModLabel, value = moderator.ToString(), inline = false },
-                    new { name = localizedReasonLabel, value = warnReason, inline = false }
-                }
+                fields = hideMod
+                    ? new[] { reasonField }
+                    : new[] { new { name = localizedModLabel, value = modFullName, inline = false }, reasonField }
             });
         }
         else if (template == "-")
@@ -837,6 +874,7 @@ public class UserPunishService : INService, IReadyExecutor
         string localizedDescription,
         string localizedModLabel,
         string localizedReasonLabel,
+        string localizedHiddenMod,
         string warnReason,
         long weight,
         long totalCount)
@@ -847,6 +885,7 @@ public class UserPunishService : INService, IReadyExecutor
             localizedDescription,
             localizedModLabel,
             localizedReasonLabel,
+            localizedHiddenMod,
             warnReason,
             weight,
             totalCount);

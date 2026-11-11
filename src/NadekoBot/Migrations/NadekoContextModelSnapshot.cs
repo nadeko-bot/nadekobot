@@ -1171,6 +1171,16 @@ namespace NadekoBot.Migrations
                     b.ToTable("GuildFilterConfig");
                 });
 
+            modelBuilder.Entity("NadekoBot.Db.Models.HiddenWarnModGuild", b =>
+                {
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("GuildId");
+
+                    b.ToTable("HiddenWarnModGuild");
+                });
+
             modelBuilder.Entity("NadekoBot.Db.Models.HoneypotChannel", b =>
                 {
                     b.Property<ulong>("GuildId")

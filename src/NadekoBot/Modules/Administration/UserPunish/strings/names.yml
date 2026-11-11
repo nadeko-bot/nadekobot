@@ -52,6 +52,9 @@ warnmessage:
   - warnmsg
   - warntemplate
   - warntemp
+warnhidemod:
+  - warnhidemod
+  - whm
 warnmessagetest:
   - warnmsgtest
 warnmsgreset:

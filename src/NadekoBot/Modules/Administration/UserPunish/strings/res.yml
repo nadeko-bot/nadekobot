@@ -61,3 +61,6 @@ warnlog_for: Warnlog for {0}
 warnpl_none: No punishments set.
 warns_dont_expire: Warnings have no expiry set.
 warns_expire_in: Warnings will expire in {0} days.
+warn_mod_hidden: a moderator
+warn_mod_hidden_on: Warned users no longer see which moderator warned them or cleared their warnings.
+warn_mod_hidden_off: Warned users can see which moderator warned them or cleared their warnings again.

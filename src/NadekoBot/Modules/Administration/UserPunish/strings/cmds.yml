@@ -177,6 +177,15 @@ warnmessage:
   params:
     - message:
         desc: The custom message to be displayed when a user is warned.
+warnhidemod:
+  desc: |-
+    Toggles whether warned users see which moderator warned them.
+    When on, the bot hides the moderator in the warn message and in the user's own `{0}warnlog`.
+    Users with the Ban Members permission still see the moderator.
+  ex:
+    - ''
+  params:
+    - { }
 warnmessagetest:
   desc: |-
     If warn message is not disabled, bot will send you the message as if you

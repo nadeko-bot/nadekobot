@@ -68,6 +68,7 @@ public static class ServerDataTables
         new("GreetSettings"),
         new("GuildColors"),
         new("GuildXpConfig"),
+        new("HiddenWarnModGuild", HasIdentity: false),
         new("HoneyPotChannels", HasIdentity: false),
         new("ImageOnlyChannels"),
         new("LineUpUser", HasIdentity: false),

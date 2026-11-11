@@ -72,6 +72,7 @@ public partial class Administration
                         GetText(strs.warned_on(ctx.Guild.ToString())),
                         GetText(strs.moderator),
                         GetText(strs.reason),
+                        GetText(strs.warn_mod_hidden),
                         reason,
                         weight,
                         totalCount);
@@ -216,6 +217,10 @@ public partial class Administration
                 return;
 
             var allWarnings = _service.UserWarnings(ctx.Guild.Id, userId);
+            var hiddenMod = !((IGuildUser)ctx.User).GuildPermissions.BanMembers
+                            && await _service.IsWarnModHiddenAsync(ctx.Guild.Id)
+                ? GetText(strs.warn_mod_hidden)
+                : null;
 
             await Response()
                 .Paginated()
@@ -243,10 +248,15 @@ public partial class Administration
                             i++;
                             var name = GetText(strs.warned_on_by(w.DateAdded?.ToString("dd.MM.yyy"),
                                 w.DateAdded?.ToString("HH:mm"),
-                                w.Moderator));
+                                hiddenMod ?? w.Moderator));
 
                             if (w.Forgiven)
-                                name = $"{Format.Strikethrough(name)} {GetText(strs.warn_cleared_by(w.ForgivenBy))}";
+                            {
+                                var forgivenBy = hiddenMod is null || w.ForgivenBy == UserPunishService.EXPIRY_FORGIVER
+                                    ? w.ForgivenBy
+                                    : hiddenMod;
+                                name = $"{Format.Strikethrough(name)} {GetText(strs.warn_cleared_by(forgivenBy))}";
+                            }
 
 
                             embed.AddField($"#`{i}` " + name,
@@ -751,6 +761,18 @@ public partial class Administration
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
+        [UserPerm(GuildPerm.Administrator)]
+        public async Task WarnHideMod()
+        {
+            var hidden = await _service.ToggleHideWarnModAsync(ctx.Guild.Id);
+            if (hidden)
+                await Response().Confirm(strs.warn_mod_hidden_on).SendAsync();
+            else
+                await Response().Confirm(strs.warn_mod_hidden_off).SendAsync();
+        }
+
+        [Cmd]
+        [RequireContext(ContextType.Guild)]
         [UserPerm(GuildPerm.BanMembers)]
         public async Task WarnMessageTest([Leftover] string reason = null)
         {
@@ -762,6 +784,7 @@ public partial class Administration
                 GetText(strs.warned_on(ctx.Guild.ToString())),
                 GetText(strs.moderator),
                 GetText(strs.reason),
+                GetText(strs.warn_mod_hidden),
                 reason,
                 1,
                 totalCount);
