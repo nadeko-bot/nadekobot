@@ -43,7 +43,16 @@ public sealed class BraveSearchService : SearchServiceBase, INService
         response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync();
-        var result = await JsonSerializer.DeserializeAsync<BraveWebSearchResponse>(stream);
+        BraveWebSearchResponse? result;
+        try
+        {
+            result = await JsonSerializer.DeserializeAsync<BraveWebSearchResponse>(stream);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Brave", ex);
+            return null;
+        }
 
         var elapsed = Stopwatch.GetElapsedTime(startTime);
 
@@ -82,7 +91,16 @@ public sealed class BraveSearchService : SearchServiceBase, INService
         response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync();
-        var result = await JsonSerializer.DeserializeAsync<BraveImageSearchResponse>(stream);
+        BraveImageSearchResponse? result;
+        try
+        {
+            result = await JsonSerializer.DeserializeAsync<BraveImageSearchResponse>(stream);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Brave", ex);
+            return null;
+        }
 
         var elapsed = Stopwatch.GetElapsedTime(startTime);
 

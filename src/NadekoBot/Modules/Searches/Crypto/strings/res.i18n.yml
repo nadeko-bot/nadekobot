@@ -1,143 +1,223 @@
 ar:
+  change: التغيير
   change_7d_24h: التغيير (7 أيام / 24 ساعة)
   circulating_supply: العرض المتداول
   crypto_not_found: لم يتم العثور على عملة رقمية بهذا الاسم.
+  day_range: نطاق اليوم
   did_you_mean: 'هل تقصد {0}؟'
   market_cap: القيمة السوقية
   market_cap_dominance: الهيمنة
+  stock_unavailable: لا يستطيع البوت جلب بيانات السهم الآن. حاول مرة أخرى لاحقًا.
+  volume: الحجم
   volume_24h: الحجم (24 ساعة)
+  year_range: نطاق 52 أسبوعًا
 
 de-DE:
-  change_7d_24h: Ändere (7d/24h)
+  change: Veränderung
+  change_7d_24h: Veränderung (7d/24h)
   circulating_supply: Umlaufmenge
   crypto_not_found: Kryptowährung mit dem Namen wurde nicht gefunden.
+  day_range: Tagesspanne
   did_you_mean: 'Meintest du {0}?'
   market_cap: Markt Obergrenze
   market_cap_dominance: Dominanz
+  stock_unavailable: Der Bot kann die Aktiendaten gerade nicht abrufen. Versuch es später noch mal.
+  volume: Volumen
   volume_24h: Volumen (24h)
+  year_range: 52-Wochen-Spanne
 
 es-ES:
+  change: Cambio
   change_7d_24h: Cambio (7d/24h)
   circulating_supply: Acciones en circulación
   crypto_not_found: No encontré una criptomoneda con ese nombre.
+  day_range: Rango del día
   did_you_mean: '¿Quisiste decir {0}?'
   market_cap: Capitalización del mercado
   market_cap_dominance: Dominio
+  stock_unavailable: El bot no puede obtener los datos de la acción ahora. Inténtalo más tarde.
+  volume: Volumen
   volume_24h: Volumen (24h)
+  year_range: Rango de 52 semanas
 
 fr-FR:
-  change_7d_24h: Change (7j/24h)
+  change: Variation
+  change_7d_24h: Variation (7j/24h)
   circulating_supply: Devises en circulation
   crypto_not_found: Aucune cryptomonnaie trouvée avec ce nom.
+  day_range: Fourchette du jour
   did_you_mean: 'Vouliez-vous dire {0} ?'
   market_cap: Capitalisation Boursière
   market_cap_dominance: Prédominance
+  stock_unavailable: Le bot n'arrive pas à récupérer les données de l'action pour le moment. Réessaie plus tard.
+  volume: Volume
   volume_24h: Volume (24h)
+  year_range: Fourchette sur 52 semaines
 
 id-ID:
+  change: Perubahan
   change_7d_24h: Perubahan (7h / 24j)
   circulating_supply: Suplai Beredar
   crypto_not_found: CryptoCurrency dengan nama tersebut tidak ditemukan.
+  day_range: Rentang Harian
   did_you_mean: 'Maksud kamu {0}?'
   market_cap: Kapitalisasi Pasar
   market_cap_dominance: Dominasi
+  stock_unavailable: Bot tidak bisa mengambil data saham sekarang. Coba lagi nanti.
+  volume: Volume
   volume_24h: Volume (24j)
+  year_range: Rentang 52 Minggu
 
 ja-JP:
+  change: 前日比
   change_7d_24h: 変動 (7日 / 24時間)
   circulating_supply: 流通供給量
   crypto_not_found: その名前の暗号通貨は見つかりませんでした。
+  day_range: 当日レンジ
   did_you_mean: 'もしかして: {0}?'
   market_cap: 時価総額
   market_cap_dominance: ドミナンス
+  stock_unavailable: 今は株価データを取得できません。しばらくしてからもう一度試してください。
+  volume: 出来高
   volume_24h: 出来高 (24時間)
+  year_range: 52週レンジ
 
 ko-KR:
+  change: 변동
   change_7d_24h: 변동률 (7일 / 24시간)
   circulating_supply: 유통량
   crypto_not_found: 해당 이름의 암호화폐를 찾을 수 없어요.
+  day_range: 일일 범위
   did_you_mean: '혹시 {0}을(를) 찾으셨나요?'
   market_cap: 시가총액
   market_cap_dominance: 점유율
+  stock_unavailable: 지금은 주식 데이터를 가져올 수 없어요. 나중에 다시 시도해 주세요.
+  volume: 거래량
   volume_24h: 거래량 (24시간)
+  year_range: 52주 범위
 
 pl-PL:
+  change: Zmiana
   change_7d_24h: Zmiana (7d / 24h)
   circulating_supply: Podaż w obiegu
   crypto_not_found: Nie znaleziono kryptowaluty o tej nazwie.
+  day_range: Zakres dzienny
   did_you_mean: 'Czy chodziło ci o {0}?'
   market_cap: Kapitalizacja rynkowa
   market_cap_dominance: Dominacja
+  stock_unavailable: Bot nie może teraz pobrać danych o akcjach. Spróbuj ponownie później.
+  volume: Wolumen
   volume_24h: Wolumen (24h)
+  year_range: Zakres 52 tygodni
 
 pt-BR:
+  change: Variação
   change_7d_24h: Variação (7d / 24h)
   circulating_supply: Circulating Supply
   crypto_not_found: Uma criptomoeda com esse nome não foi encontrada.
+  day_range: Faixa do dia
   did_you_mean: 'Você quis dizer {0}?'
   market_cap: Valor de mercado
   market_cap_dominance: Dominância
+  stock_unavailable: O bot não consegue pegar os dados da ação agora. Tente de novo mais tarde.
+  volume: Volume
   volume_24h: Volume (24h)
+  year_range: Faixa de 52 semanas
 
 ru-RU:
+  change: Изменение
   change_7d_24h: Изменения (7д/24ч)
   circulating_supply: Объем в обращении
   crypto_not_found: Криптовалюта с этим названием не была найдена.
+  day_range: Дневной диапазон
   did_you_mean: 'Вы имеете в виду {0}?'
   market_cap: Рыночная капитализация
   market_cap_dominance: Доминирование
+  stock_unavailable: Бот сейчас не может получить данные по акции. Попробуй позже.
+  volume: Объем
   volume_24h: Объем (24ч)
+  year_range: Диапазон за 52 недели
 
 sr-Cyrl-RS:
+  change: Промена
   change_7d_24h: Промена (7д / 24ч)
   circulating_supply: Укупна количина у оптицају
   crypto_not_found: Криптовалута са тим именом није пронађена.
+  day_range: Дневни распон
   did_you_mean: 'Да ли си мислио/ла на {0}?'
   market_cap: Тржишна капитализација
   market_cap_dominance: Доминација
+  stock_unavailable: Бот тренутно не може да преузме податке о акцији. Покушај поново касније.
+  volume: Обим
   volume_24h: Обим (24ч)
+  year_range: Распон за 52 недеље
 
 tr-TR:
+  change: Değişim
   change_7d_24h: Değişim (7g / 24s)
   circulating_supply: Dolaşımdaki Arz
   crypto_not_found: O isimde bir kripto para bulunamadı.
+  day_range: Günlük Aralık
   did_you_mean: '{0} mu demek istedin?'
   market_cap: Piyasa Değeri
   market_cap_dominance: Pazar Hakimiyeti
+  stock_unavailable: Bot şu anda hisse verilerini alamıyor. Daha sonra tekrar dene.
+  volume: Hacim
   volume_24h: Hacim (24s)
+  year_range: 52 Haftalık Aralık
 
 ts-TS:
+  change: Change
   change_7d_24h: Change (7d / 24h)
   circulating_supply: Circulating Supply
   crypto_not_found: Couldn't find a cryptocurrency with that name.
+  day_range: Day Range
   did_you_mean: 'Did you mean {0}?'
   market_cap: Market Cap
   market_cap_dominance: Dominance
+  stock_unavailable: Hmph, the stock data won't load right now. Try again later.
+  volume: Volume
   volume_24h: Volume (24h)
+  year_range: 52 Week Range
 
 uk-UA:
+  change: Зміна
   change_7d_24h: Зміна (7д / 24г)
   circulating_supply: В обігу
   crypto_not_found: Криптовалюту з такою назвою не знайдено.
+  day_range: Денний діапазон
   did_you_mean: 'Можливо, ви мали на увазі {0}?'
   market_cap: Ринкова капіталізація
   market_cap_dominance: Домінування
+  stock_unavailable: Бот зараз не може отримати дані про акцію. Спробуй пізніше.
+  volume: Обсяг
   volume_24h: Обсяг (24г)
+  year_range: Діапазон за 52 тижні
 
 vi-VN:
+  change: Thay Đổi
   change_7d_24h: Thay đổi (7 ngày / 24 giờ)
   circulating_supply: Lượng Lưu Hành
   crypto_not_found: Không tìm thấy tiền mã hóa với tên đó.
+  day_range: Biên Độ Ngày
   did_you_mean: 'Bạn có phải ý là {0} không?'
   market_cap: Vốn Hóa Thị Trường
   market_cap_dominance: Thống Trị
+  stock_unavailable: Bot hiện không lấy được dữ liệu cổ phiếu. Thử lại sau nhé.
+  volume: Khối Lượng
   volume_24h: Khối Lượng (24 giờ)
+  year_range: Biên Độ 52 Tuần
 
 zh-CN:
-  change_7d_24h: 變化（7 天 / 24 小時）
-  circulating_supply: 流通供應
-  crypto_not_found: 未找到具有該名稱的 CryptoCurrency。
-  did_you_mean: '您是說 {0} 嗎？'
+  change: 涨跌
+  change_7d_24h: 涨跌（7天 / 24小时）
+  circulating_supply: 流通供应量
+  crypto_not_found: 未找到该名称的加密货币。
+  day_range: 当日区间
+  did_you_mean: '您是说 {0} 吗？'
   market_cap: 市值
   market_cap_dominance: 支配地位
-  volume_24h: 體積（24 小時）
+  stock_unavailable: 机器人现在拿不到股票数据，请稍后再试。
+  volume: 成交量
+  volume_24h: 成交量（24小时）
+  year_range: 52周区间

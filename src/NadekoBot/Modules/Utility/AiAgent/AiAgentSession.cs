@@ -156,7 +156,7 @@ public sealed class AiAgentSession(
             if (choice?.Message is null)
                 return new Error<string>("Received empty response from AI provider.");
 
-            var assistantMsg = choice.Message;
+            var assistantMsg = WithValidToolCallsInternal(choice.Message, step);
             messages.Add(assistantMsg);
 
             if (assistantMsg.ToolCalls is not { Count: > 0 })
@@ -187,17 +187,19 @@ public sealed class AiAgentSession(
 
                 string result;
                 JsonElement args = default;
-                if (!toolMap.TryGetValue(toolCall.Function.Name, out var tool))
+                var function = toolCall.Function;
+                var toolName = function?.Name ?? string.Empty;
+                if (!toolMap.TryGetValue(toolName, out var tool))
                 {
-                    result = $"Error: Unknown tool '{toolCall.Function.Name}'";
+                    result = $"Error: Unknown tool '{toolName}'";
                 }
                 else
                 {
                     try
                     {
-                        if (!string.IsNullOrWhiteSpace(toolCall.Function.Arguments))
+                        if (!string.IsNullOrWhiteSpace(function?.Arguments))
                         {
-                            using var doc = JsonDocument.Parse(toolCall.Function.Arguments);
+                            using var doc = JsonDocument.Parse(function.Arguments);
                             args = doc.RootElement.Clone();
                         }
 
@@ -214,12 +216,12 @@ public sealed class AiAgentSession(
                     }
                     catch (Exception ex)
                     {
-                        Log.Warning(ex, "Error executing AI tool {ToolName}", toolCall.Function.Name);
+                        Log.Warning(ex, "Error executing AI tool {ToolName}", toolName);
                         result = $"Error: {ex.Message}";
                     }
                 }
 
-                progress?.OnToolCall(toolCall.Function.Name, args, IsErrorResult(result));
+                progress?.OnToolCall(toolName, args, IsErrorResult(result));
 
                 // A tool result can hold text from members or web pages, which must not pose as a <channel_update>.
                 messages.Add(new()
@@ -259,6 +261,53 @@ public sealed class AiAgentSession(
             Response = "Reached the maximum number of steps. The task may be incomplete.",
             ToolCallCount = totalToolCalls,
             WasCancelled = false
+        };
+    }
+
+    // The next request sends this message back, and OpenAI-compatible APIs need the id, the name and the arguments of each tool call.
+    private static AgentChatMessage WithValidToolCallsInternal(AgentChatMessage msg, int step)
+    {
+        if (msg.ToolCalls is not { Count: > 0 } calls)
+            return msg;
+
+        var valid = true;
+        foreach (var call in calls)
+        {
+            if (call is not { Id: not null, Function: { Name.Length: > 0, Arguments: not null } })
+            {
+                valid = false;
+                break;
+            }
+        }
+
+        if (valid)
+            return msg;
+
+        var validCalls = new List<AgentToolCall>(calls.Count);
+        for (var i = 0; i < calls.Count; i++)
+        {
+            if (calls[i] is not { Function: { Name: { Length: > 0 } name } function } call)
+                continue;
+
+            validCalls.Add(new()
+            {
+                Id = call.Id ?? $"call_{step}_{i}",
+                Type = call.Type ?? "function",
+                Function = new()
+                {
+                    Name = name,
+                    Arguments = function.Arguments ?? "{}"
+                }
+            });
+        }
+
+        return new()
+        {
+            Role = msg.Role,
+            Content = msg.Content,
+            Name = msg.Name,
+            ToolCalls = validCalls.Count > 0 ? validCalls : null,
+            ToolCallId = msg.ToolCallId
         };
     }
 
@@ -332,6 +381,11 @@ public sealed class AiAgentSession(
         catch (OperationCanceledException)
         {
             throw;
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable(provider.Url, ex);
+            return null;
         }
         catch (Exception ex)
         {

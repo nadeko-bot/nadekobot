@@ -174,6 +174,11 @@ public sealed class TwitchHelixProvider : Provider
                     }
                 }
             }
+            catch (System.Text.Json.JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("Twitch", ex);
+                return ([], false);
+            }
             catch (Exception ex)
             {
                 Log.Warning(ex, "Something went wrong retreiving {StreamPlatform} streams", Platform);
@@ -211,6 +216,11 @@ public sealed class TwitchHelixProvider : Provider
                         dataDict[login] = FillStreamData(old, helixStreamData);
                     }
                 }
+            }
+            catch (System.Text.Json.JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("Twitch", ex);
+                return ([], false);
             }
             catch (Exception ex)
             {

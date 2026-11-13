@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NadekoBot.Modules.Music;
 using NadekoBot.Modules.Music.Resolvers;
 using NadekoBot.Modules.Music.Services;
+using NadekoBot.Modules.Searches;
 using StackExchange.Redis;
 using System.Net;
 using System.Reflection;
@@ -165,6 +166,9 @@ public static class ServiceCollectionExtensions
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
+
+        proxySvcs.AddHttpClient(FinanceHttp.CLIENT_NAME, FinanceHttp.Configure)
+            .ConfigurePrimaryHttpMessageHandler(FinanceHttp.CreateHandler);
 
         proxySvcs.AddHttpClient("brave")
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()

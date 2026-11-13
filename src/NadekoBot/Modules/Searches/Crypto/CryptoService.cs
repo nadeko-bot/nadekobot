@@ -1,103 +1,53 @@
 ﻿#nullable enable
-using NadekoBot.Modules.Searches.Common;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
+using System.Buffers;
 using System.Globalization;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Xml;
-using Color = SixLabors.ImageSharp.Color;
+using NadekoBot.Modules.Searches.Charts;
+using NadekoBot.Modules.Searches.Common;
 
 namespace NadekoBot.Modules.Searches.Services;
 
-public class CryptoService : INService
+public class CryptoService(
+    IBotCache cache,
+    IHttpClientFactory httpFactory,
+    IBotCreds creds,
+    CandleChart charts,
+    TimeProvider? timeProvider = null) : INService
 {
     public const int MAX_COINS_PAGE = 24;
+    private const int CHART_DAYS = 90;
+    private const int MAX_LOOKUPS = 20;
+    private const int CHART_CACHE_SIZE = 32;
+    private const int USD_ID = 2781;
+    private const int SECONDS_PER_DAY = 86_400;
+    private const string VENUE = "CoinMarketCap";
+    private const string HISTORY_URL = "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/historical";
+    private const string TOP_COINS_URL =
+        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250";
 
-    private readonly IBotCache _cache;
-    private readonly IHttpClientFactory _httpFactory;
-    private readonly IBotCreds _creds;
+    private static readonly TimeSpan _candleExpiry = TimeSpan.FromMinutes(15);
+    private static readonly TimeSpan _chartExpiry = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan _topCoinsExpiry = TimeSpan.FromHours(1);
+    private static readonly TypedKey<IReadOnlyCollection<GeckoCoinsResult>> _topCoinsKey = new("crypto:top_coins");
+
+    private static readonly TimeSpan _cryptoDataExpiry = TimeSpan.FromHours(2);
+    private static readonly TimeSpan _cryptoRetryDelay = TimeSpan.FromMinutes(5);
+    private static readonly TypedKey<CryptoResponse> _cryptoDataKey = new("nadeko:crypto_data");
 
     private readonly SemaphoreSlim _getCryptoLock = new(1, 1);
 
-    public CryptoService(IBotCache cache, IHttpClientFactory httpFactory, IBotCreds creds)
-    {
-        _cache = cache;
-        _httpFactory = httpFactory;
-        _creds = creds;
-    }
+    // Only read and written while the bot holds _getCryptoLock.
+    private long _cryptoRetryAt;
+    private readonly TimeProvider _time = timeProvider ?? TimeProvider.System;
+    private readonly SingleFlight<int, Candle[]?> _candleLoads = new();
+    private readonly LookupGate _gate = new(MAX_LOOKUPS,
+        TimeSpan.FromSeconds(10),
+        TimeSpan.FromSeconds(30),
+        timeProvider ?? TimeProvider.System);
 
-    private PointF[] GetSparklinePointsFromSvgText(string svgText)
-    {
-        var xml = new XmlDocument();
-        xml.LoadXml(svgText);
-
-        var gElement = xml["svg"]?["g"];
-        if (gElement is null)
-            return [];
-
-        Span<PointF> points = new PointF[gElement.ChildNodes.Count];
-        var cnt = 0;
-
-        bool GetValuesFromAttributes(
-            XmlAttributeCollection attrs,
-            out float x1,
-            out float y1,
-            out float x2,
-            out float y2)
-        {
-            (x1, y1, x2, y2) = (0, 0, 0, 0);
-            return attrs["x1"]?.Value is string x1Str
-                   && float.TryParse(x1Str, NumberStyles.Any, CultureInfo.InvariantCulture, out x1)
-                   && attrs["y1"]?.Value is string y1Str
-                   && float.TryParse(y1Str, NumberStyles.Any, CultureInfo.InvariantCulture, out y1)
-                   && attrs["x2"]?.Value is string x2Str
-                   && float.TryParse(x2Str, NumberStyles.Any, CultureInfo.InvariantCulture, out x2)
-                   && attrs["y2"]?.Value is string y2Str
-                   && float.TryParse(y2Str, NumberStyles.Any, CultureInfo.InvariantCulture, out y2);
-        }
-
-        PointF? last = null;
-        foreach (XmlElement x in gElement.ChildNodes)
-        {
-            if (x.Name != "line")
-                continue;
-
-            if (GetValuesFromAttributes(x.Attributes, out var x1, out var y1, out var x2, out var y2))
-            {
-                points[cnt++] = new(x1, y1);
-                last = new(x2, y2);
-            }
-        }
-
-        if (cnt == 0)
-            return [];
-
-        var result = new PointF[cnt + 1];
-        points.Slice(0, cnt).CopyTo(result);
-        result[cnt] = last!.Value;
-        return result;
-    }
-
-    private SixLabors.ImageSharp.Image<Rgba32> GenerateSparklineChart(PointF[] points, bool up)
-    {
-        const int width = 164;
-        const int height = 48;
-
-        var img = new Image<Rgba32>(width, height, Color.Transparent);
-        var color = up
-            ? Color.Green
-            : Color.FromRgb(220, 0, 0);
-
-        img.Mutate(x =>
-        {
-            x.DrawLine(color, 2, points);
-        });
-
-        return img;
-    }
+    private readonly ChartCache _charts = new(CHART_CACHE_SIZE, _chartExpiry, timeProvider ?? TimeProvider.System);
 
     public async Task<(CmcResponseData? Data, CmcResponseData? Nearest)> GetCryptoData(string name)
     {
@@ -134,142 +84,308 @@ public class CryptoService : INService
         return (null, bestDistance <= 2 ? nearest : null);
     }
 
+    // After a failure the bot waits 5 minutes, so a bot without a working key does not call the site for each command.
     public async Task<List<CmcResponseData>?> GetCryptoDataInternal()
     {
-        await _getCryptoLock.WaitAsync();
         try
         {
-            var data = await _cache.GetOrAddAsync(new("nadeko:crypto_data"),
-                async () =>
+            if ((await cache.GetAsync(_cryptoDataKey)).TryPickT0(out var cached, out _))
+                return cached.Data;
+
+            await _getCryptoLock.WaitAsync();
+            try
+            {
+                if ((await cache.GetAsync(_cryptoDataKey)).TryPickT0(out cached, out _))
+                    return cached.Data;
+
+                if (_time.GetUtcNow().UtcTicks < _cryptoRetryAt)
+                    return null;
+
+                var data = await LoadCryptoDataInternalAsync();
+                if (data is null)
                 {
-                    try
-                    {
-                        using var http = _httpFactory.CreateClient();
-                        var data = await http.GetFromJsonAsync<CryptoResponse>(
-                            "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?"
-                            + $"CMC_PRO_API_KEY={_creds.CoinmarketcapApiKey}"
-                            + "&start=1"
-                            + "&limit=5000"
-                            + "&convert=USD");
+                    _cryptoRetryAt = (_time.GetUtcNow() + _cryptoRetryDelay).UtcTicks;
+                    return null;
+                }
 
-                        return data;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Error getting crypto data: {Message}", ex.Message);
-                        return default;
-                    }
-                },
-                TimeSpan.FromHours(2));
-
-            if (data is null)
-                return default;
-
-            return data.Data;
+                await cache.AddAsync(_cryptoDataKey, data, _cryptoDataExpiry);
+                return data.Data;
+            }
+            finally
+            {
+                _getCryptoLock.Release();
+            }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Error retreiving crypto data: {Message}", ex.Message);
-            return default;
+            Log.Error(ex, "Error retrieving crypto data: {Message}", ex.Message);
+            return null;
+        }
+    }
+
+    private async Task<CryptoResponse?> LoadCryptoDataInternalAsync()
+    {
+        try
+        {
+            using var http = httpFactory.CreateClient();
+            var data = await http.GetFromJsonAsync<CryptoResponse>(
+                "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?"
+                + $"CMC_PRO_API_KEY={creds.CoinmarketcapApiKey}"
+                + "&start=1"
+                + "&limit=5000"
+                + "&convert=USD");
+
+            if (data?.Data is null)
+                return null;
+
+            data.Data.RemoveAll(static x => x is null
+                                            || string.IsNullOrWhiteSpace(x.Name)
+                                            || string.IsNullOrWhiteSpace(x.Symbol)
+                                            || string.IsNullOrWhiteSpace(x.Slug)
+                                            || x.Quote is null
+                                            || !x.Quote.TryGetValue("USD", out var usd)
+                                            || usd is null);
+            return data;
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("CoinMarketCap", ex);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error getting crypto data: {Message}", ex.Message);
+            return null;
+        }
+    }
+
+    // A daily candle chart of the last 90 days. The last candle closes at the price of the coin list.
+    public async Task<byte[]?> GetChartAsync(CmcResponseData crypto, CmcQuote usd)
+    {
+        Candle[]? history;
+        try
+        {
+            history = await GetCandlesInternalAsync(crypto.Id);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to load the candles of {Coin}", crypto.Slug);
+            return null;
+        }
+
+        if (history is not { Length: > 0 })
+            return null;
+
+        var buffer = ArrayPool<Candle>.Shared.Rent(history.Length);
+        try
+        {
+            var candles = buffer.AsSpan(0, history.Length);
+            history.CopyTo(candles);
+
+            ref var last = ref candles[^1];
+            if (usd.Price is { } price && price > 0)
+            {
+                last = last with
+                {
+                    High = Math.Max(last.High, price),
+                    Low = Math.Min(last.Low, price),
+                    Close = price,
+                    Volume = usd.Volume24h is { } volume && volume > 0 ? volume : last.Volume
+                };
+            }
+
+            var key = crypto.Id.ToString(CultureInfo.InvariantCulture);
+            var image = _charts.Get(key, last);
+            if (image is not null)
+                return image;
+
+            image = charts.Render(candles, new(crypto.Symbol, crypto.Name, VENUE));
+            _charts.Set(key, last, image);
+            return image;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to draw the chart of {Coin}", crypto.Slug);
+            return null;
         }
         finally
         {
-            _getCryptoLock.Release();
+            ArrayPool<Candle>.Shared.Return(buffer);
         }
     }
 
-    private static TypedKey<byte[]> GetSparklineKey(int id, bool up)
-        => new($"crypto:sparkline:{id}:{(up ? "up" : "down")}");
-
-    public async Task<Stream?> GetSparklineAsync(int id, bool up)
+    private async Task<Candle[]?> GetCandlesInternalAsync(int id)
     {
+        var key = new TypedKey<Candle[]>($"crypto:candles:{id}");
+        if ((await cache.GetAsync(key)).TryPickT0(out var cached, out _))
+            return cached;
+
+        return await _candleLoads.RunAsync(id,
+            (self: this, key),
+            static (state, coin) => state.self.LoadCandlesInternalAsync(coin, state.key));
+    }
+
+    // Daily candles of the last 90 days, and a candle for today from the hourly candles since 00:00 UTC.
+    private async Task<Candle[]?> LoadCandlesInternalAsync(int id, TypedKey<Candle[]> key)
+    {
+        if (!_gate.TryEnter())
+        {
+            Log.Warning("Crypto chart lookups are paused or over their limit");
+            return null;
+        }
+
         try
         {
-            var bytes = await _cache.GetOrAddAsync(GetSparklineKey(id, up),
-                async () =>
-                {
-                    // if it fails, generate a new one
-                    var points = await DownloadSparklinePointsAsync(id);
-                    var sparkline = GenerateSparklineChart(points, up);
+            var now = _time.GetUtcNow().ToUnixTimeSeconds();
+            var today = now - (now % SECONDS_PER_DAY);
+            var dailyTask = FinanceHttp.GetJsonAsync(httpFactory,
+                HistoryUrl(id, today - (CHART_DAYS * SECONDS_PER_DAY), now, "1d"),
+                FinanceJsonContext.Default.CmcHistoryEnvelope);
+            var hourlyTask = FinanceHttp.GetJsonAsync(httpFactory,
+                HistoryUrl(id, today, now, "1h"),
+                FinanceJsonContext.Default.CmcHistoryEnvelope);
 
-                    using var stream = await sparkline.ToStreamAsync();
-                    return stream.ToArray();
-                },
-                TimeSpan.FromHours(1));
+            await Task.WhenAll(dailyTask, hourlyTask);
+            var daily = (await dailyTask)?.Data?.Quotes ?? [];
+            var hourly = (await hourlyTask)?.Data?.Quotes ?? [];
 
-            if (bytes is { Length: > 0 })
+            var candles = new Candle[daily.Length + 1];
+            var count = 0;
+            foreach (ref readonly var item in daily.AsSpan())
             {
-                return bytes.ToStream();
+                var time = item.TimeOpen.ToUnixTimeSeconds();
+                var q = item.Quote;
+                if (time >= today
+                    || (count > 0 && time <= candles[count - 1].Time)
+                    || !(q.Open > 0 && q.High > 0 && q.Low > 0 && q.Close > 0))
+                    continue;
+
+                candles[count++] = new(time,
+                    q.Open,
+                    Math.Max(q.High, Math.Max(q.Open, q.Close)),
+                    Math.Min(q.Low, Math.Min(q.Open, q.Close)),
+                    q.Close,
+                    q.Volume);
             }
 
-            return default;
+            double open = 0, high = 0, low = double.MaxValue, close = 0, volume = 0;
+            foreach (ref readonly var item in hourly.AsSpan())
+            {
+                var q = item.Quote;
+                if (!(q.Open > 0 && q.High > 0 && q.Low > 0 && q.Close > 0))
+                    continue;
+
+                if (open == 0)
+                    open = q.Open;
+
+                high = Math.Max(high, q.High);
+                low = Math.Min(low, q.Low);
+                close = q.Close;
+                volume = q.Volume;
+            }
+
+            if (open == 0 && count > 0)
+            {
+                open = close = high = low = candles[count - 1].Close;
+                volume = candles[count - 1].Volume;
+            }
+
+            if (open > 0)
+            {
+                candles[count++] = new(today,
+                    open,
+                    Math.Max(high, Math.Max(open, close)),
+                    Math.Min(low, Math.Min(open, close)),
+                    close,
+                    volume);
+            }
+
+            var result = count == candles.Length ? candles : candles[..count];
+            await cache.AddAsync(key, result, _candleExpiry);
+            return result;
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("CoinMarketCap", ex);
+            _gate.Pause();
+            return null;
         }
         catch (Exception ex)
         {
-            Log.Warning(ex,
-                "Exception occurred while downloading sparkline points: {ErrorMessage}",
-                ex.Message);
-            return default;
+            Log.Warning("CoinMarketCap history of {Coin} failed: {ErrorMessage}", id, ex.Message);
+            _gate.Pause();
+            return null;
         }
     }
 
-    private async Task<PointF[]> DownloadSparklinePointsAsync(int id)
-    {
-        using var http = _httpFactory.CreateClient();
-        var str = await http.GetStringAsync(
-            $"https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/{id}.svg");
-        var points = GetSparklinePointsFromSvgText(str);
-        return points;
-    }
-
-    private static TypedKey<IReadOnlyCollection<GeckoCoinsResult>> GetTopCoinsKey()
-        => new($"crypto:top_coins");
+    private static string HistoryUrl(int id, long start, long end, string interval)
+        => string.Create(CultureInfo.InvariantCulture,
+            $"{HISTORY_URL}?id={id}&convertId={USD_ID}&timeStart={start}&timeEnd={end}&interval={interval}");
 
     public async Task<IReadOnlyCollection<GeckoCoinsResult>?> GetTopCoins(int page)
     {
         if (page > MAX_COINS_PAGE)
             page = MAX_COINS_PAGE;
 
-        using var http = _httpFactory.CreateClient();
+        var coins = (await cache.GetAsync(_topCoinsKey)).TryPickT0(out var cached, out _)
+            ? cached
+            : await LoadTopCoinsInternalAsync();
 
+        return coins?.Skip(page * 10).Take(10).ToList();
+    }
+
+    // Not through GetOrAddAsync, because the memory cache keeps a null result until it expires.
+    private async Task<IReadOnlyCollection<GeckoCoinsResult>?> LoadTopCoinsInternalAsync()
+    {
+        using var http = httpFactory.CreateClient();
         http.AddFakeHeaders();
 
-        var result = await _cache.GetOrAddAsync<IReadOnlyCollection<GeckoCoinsResult>>(GetTopCoinsKey(),
-            async () => await http.GetFromJsonAsync<List<GeckoCoinsResult>>(
-                            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250")
-                        ?? [],
-            expiry: TimeSpan.FromHours(1));
+        List<GeckoCoinsResult>? coins;
+        try
+        {
+            coins = await http.GetFromJsonAsync<List<GeckoCoinsResult>>(TOP_COINS_URL);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("CoinGecko", ex);
+            return null;
+        }
 
-        return result!.Skip(page * 10).Take(10).ToList();
+        if (coins is null)
+            return null;
+
+        coins.RemoveAll(static x => x is null || string.IsNullOrWhiteSpace(x.Name) || string.IsNullOrWhiteSpace(x.Symbol));
+        await cache.AddAsync(_topCoinsKey, coins, _topCoinsExpiry);
+        return coins;
     }
 }
 
 public sealed class GeckoCoinsResult
 {
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public string? Id { get; init; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public string? Name { get; init; }
 
     [JsonPropertyName("symbol")]
-    public required string Symbol { get; init; }
+    public string? Symbol { get; init; }
 
     [JsonPropertyName("current_price")]
-    public required decimal CurrentPrice { get; init; }
+    public decimal? CurrentPrice { get; init; }
 
     [JsonPropertyName("price_change_percentage_24h")]
-    public required decimal PercentChange24h { get; init; }
+    public decimal? PercentChange24h { get; init; }
 
     [JsonPropertyName("market_cap")]
-    public required decimal MarketCap { get; init; }
+    public decimal? MarketCap { get; init; }
 
     [JsonPropertyName("circulating_supply")]
-    public required decimal? CirculatingSupply { get; init; }
+    public decimal? CirculatingSupply { get; init; }
 
     [JsonPropertyName("total_supply")]
-    public required decimal? TotalSupply { get; init; }
+    public decimal? TotalSupply { get; init; }
 
     [JsonPropertyName("market_cap_rank")]
-    public required int MarketCapRank { get; init; }
+    public int? MarketCapRank { get; init; }
 }

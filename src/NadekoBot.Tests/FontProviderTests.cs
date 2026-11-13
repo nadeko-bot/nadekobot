@@ -1,3 +1,4 @@
+using NadekoBot.Modules.Searches.Charts;
 using NadekoBot.Services;
 using NUnit.Framework;
 using SixLabors.ImageSharp;
@@ -41,5 +42,18 @@ public class FontProviderTests
         });
 
         Assert.That(drawn, Is.True);
+
+        var asm = typeof(ChartFonts).Assembly;
+        foreach (var file in new[] { ChartFonts.REGULAR_FILE, ChartFonts.SEMIBOLD_FILE })
+        {
+            using var stream = asm.GetManifestResourceStream("NadekoBot.Fonts." + file);
+            Assert.That(stream?.Length, Is.LessThan(40 * 1024), file);
+        }
+
+        var chart = new ChartFonts();
+        var glyph = chart.Title.Get('N', 0);
+        Assert.That(glyph.Width * glyph.Height, Is.GreaterThan(0));
+        Assert.That(glyph.Coverage, Has.Some.GreaterThan(0));
+        Assert.That(chart.Title.Get('é', 0), Is.SameAs(chart.Title.Get('?', 0)), "the chart draws other characters as ?");
     }
 }

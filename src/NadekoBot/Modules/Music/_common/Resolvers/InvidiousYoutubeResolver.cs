@@ -1,5 +1,6 @@
 ﻿using NadekoBot.Modules.Searches;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Music;
@@ -25,29 +26,22 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
 
     public async Task<ITrackInfo?> ResolveByQueryAsync(string query)
     {
-        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
-
-        var items = await http.GetFromJsonAsync<List<InvidiousSearchResponse>>(
-            $"{InvidiousApiUrl}/api/v1/search"
+        var instance = InvidiousApiUrl;
+        var items = await GetJsonInternalAsync<List<InvidiousSearchResponse>>(instance,
+            $"{instance}/api/v1/search"
             + $"?q={Uri.EscapeDataString(query)}"
             + $"&type=video");
 
-        if (items is null || items.Count == 0)
+        if (items is null)
             return null;
 
-
-        var res = items.First();
-        
-        return new InvTrackInfo()
+        foreach (var item in items)
         {
-            Id = res.VideoId,
-            Title = res.Title,
-            Url = $"https://youtube.com/watch?v={res.VideoId}",
-            Thumbnail = res.Thumbnails?.Select(x => x.Url).FirstOrDefault() ?? string.Empty,
-            Duration = TimeSpan.FromSeconds(res.LengthSeconds),
-            Platform = MusicPlatform.Youtube,
-            StreamUrl = null,
-        };
+            if (!string.IsNullOrWhiteSpace(item?.VideoId))
+                return ToTrackInfoInternal(item.VideoId, item.Title, item.Thumbnails, item.LengthSeconds, null);
+        }
+
+        return null;
     }
 
     public async Task<ITrackInfo?> ResolveByIdAsync(string id)
@@ -55,28 +49,54 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
     
     private async Task<InvTrackInfo?> InternalResolveByIdAsync(string id)
     {
-        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
-
-        var res = await http.GetFromJsonAsync<InvidiousVideoResponse>(
-            $"{InvidiousApiUrl}/api/v1/videos/{id}");
-
+        var instance = InvidiousApiUrl;
+        var res = await GetJsonInternalAsync<InvidiousVideoResponse>(instance, $"{instance}/api/v1/videos/{id}");
         if (res is null)
             return null;
 
-        return new InvTrackInfo()
-        {
-            Id = res.VideoId,
-            Title = res.Title,
-            Url = $"https://youtube.com/watch?v={res.VideoId}",
-            Thumbnail = res.Thumbnails?.Select(x => x.Url).FirstOrDefault() ?? string.Empty,
-            Duration = TimeSpan.FromSeconds(res.LengthSeconds),
-            Platform = MusicPlatform.Youtube,
-            StreamUrl = GetBestOpusStreamUrl(res.AdaptiveFormats)
-        };
+        return ToTrackInfoInternal(string.IsNullOrWhiteSpace(res.VideoId) ? id : res.VideoId,
+            res.Title,
+            res.Thumbnails,
+            res.LengthSeconds,
+            GetBestOpusStreamUrl(res.AdaptiveFormats));
     }
 
-    private static string? GetBestOpusStreamUrl(List<InvidiousAdaptiveFormat> formats)
+    private static InvTrackInfo ToTrackInfoInternal(
+        string videoId,
+        string? title,
+        List<InvidiousThumbnail>? thumbnails,
+        int? lengthSeconds,
+        string? streamUrl)
+        => new()
+        {
+            Id = videoId,
+            Title = string.IsNullOrWhiteSpace(title) ? videoId : title,
+            Url = $"https://youtube.com/watch?v={videoId}",
+            Thumbnail = InvidiousThumbnail.FirstUrl(thumbnails) ?? string.Empty,
+            Duration = TimeSpan.FromSeconds(lengthSeconds ?? 0),
+            Platform = MusicPlatform.Youtube,
+            StreamUrl = streamUrl
+        };
+
+    private async Task<T?> GetJsonInternalAsync<T>(string instance, string url)
     {
+        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
+        try
+        {
+            return await http.GetFromJsonAsync<T>(url);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable(instance, ex);
+            return default;
+        }
+    }
+
+    private static string? GetBestOpusStreamUrl(List<InvidiousAdaptiveFormat>? formats)
+    {
+        if (formats is null)
+            return null;
+
         // prefer Opus (WebM) for direct passthrough compatibility
         var opusFormats = formats
             .Where(f => f.AudioQuality is not null
@@ -103,25 +123,19 @@ public sealed class InvidiousYoutubeResolver : IYoutubeResolver
         if (playlistId is null)
             yield break;
 
-        using var http = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
-        var res = await http.GetFromJsonAsync<InvidiousPlaylistResponse>(
-            $"{InvidiousApiUrl}/api/v1/playlists/{Uri.EscapeDataString(playlistId)}");
+        var instance = InvidiousApiUrl;
+        var res = await GetJsonInternalAsync<InvidiousPlaylistResponse>(instance,
+            $"{instance}/api/v1/playlists/{Uri.EscapeDataString(playlistId)}");
 
-        if (res is null)
+        if (res?.Videos is null)
             yield break;
 
         foreach (var video in res.Videos)
         {
-            yield return new InvTrackInfo()
-            {
-                Id = video.VideoId,
-                Title = video.Title,
-                Url = $"https://youtube.com/watch?v={video.VideoId}",
-                Thumbnail = video.Thumbnails?.Select(x => x.Url).FirstOrDefault() ?? string.Empty,
-                Duration = TimeSpan.FromSeconds(video.LengthSeconds),
-                Platform = MusicPlatform.Youtube,
-                StreamUrl = null
-            };
+            if (string.IsNullOrWhiteSpace(video?.VideoId))
+                continue;
+
+            yield return ToTrackInfoInternal(video.VideoId, video.Title, video.Thumbnails, video.LengthSeconds, null);
         }
     }
 

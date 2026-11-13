@@ -221,6 +221,11 @@ public sealed class AnimeSearchService(IBotCache cache, IHttpClientFactory httpF
             {
                 return JsonSerializer.Deserialize<T>(body.Buffer.AsSpan(0, body.Length));
             }
+            catch (JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("AniList", ex);
+                return null;
+            }
             finally
             {
                 ArrayPool<byte>.Shared.Return(body.Buffer);

@@ -35,26 +35,46 @@ public partial class Searches
         {
             var res = await _service.GetQuranVerseAsync(ayah);
 
-            if (!res.TryPickT0(out var qr, out var error))
+            if (!res.TryPickT0(out var verse, out var error))
             {
                 await Response().Error(error.Value).SendAsync();
                 return;
             }
 
-            var english = qr.Data[0];
-            var arabic = qr.Data[1];
+            var embed = CreateEmbed()
+                        .WithOkColor()
+                        .AddField("Arabic", verse.Arabic)
+                        .AddField("English", verse.English);
 
-            using var http = _httpFactory.CreateClient();
-            await using var audio = await http.GetStreamAsync(arabic.Audio);
+            if (verse.Number is { } number)
+                embed.WithFooter(number.ToString());
 
-            await Response()
-                  .Embed(CreateEmbed()
-                                .WithOkColor()
-                                .AddField("Arabic", arabic.Text)
-                                .AddField("English", english.Text)
-                                .WithFooter(arabic.Number.ToString()))
-                  .File(audio, Uri.EscapeDataString(ayah) + ".mp3")
-                  .SendAsync();
+            if (verse.AudioUrl is null)
+            {
+                await Response().Embed(embed).SendAsync();
+                return;
+            }
+
+            using var http = _httpFactory.CreateClient(ExternalHttp.CLIENT_NAME);
+            Stream audio;
+            try
+            {
+                audio = await http.GetStreamAsync(verse.AudioUrl);
+            }
+            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+            {
+                Log.Warning("Unable to download the audio of ayah {Ayah}: {ErrorMessage}", ayah, ex.Message);
+                await Response().Embed(embed).SendAsync();
+                return;
+            }
+
+            await using (audio)
+            {
+                await Response()
+                      .Embed(embed)
+                      .File(audio, Uri.EscapeDataString(ayah) + ".mp3")
+                      .SendAsync();
+            }
         }
     }
 }

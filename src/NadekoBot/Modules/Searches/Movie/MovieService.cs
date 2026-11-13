@@ -94,6 +94,11 @@ public sealed class MovieService(IHttpClientFactory httpFactory, IBotCache cache
             {
                 movie = JsonSerializer.Deserialize<OmdbMovie>(body.Buffer.AsSpan(0, body.Length));
             }
+            catch (JsonException ex) when (res.IsSuccessStatusCode)
+            {
+                SiteAnswer.LogUnreadable("OMDb", ex);
+                return MovieError.NotFound;
+            }
             catch (JsonException)
             {
                 movie = null;

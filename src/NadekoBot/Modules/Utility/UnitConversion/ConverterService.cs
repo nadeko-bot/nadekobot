@@ -181,7 +181,12 @@ public sealed class ConverterService(
 
             return (dto, rates);
         }
-        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException)
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable(source.Name, ex);
+            return default;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
         {
             Log.Warning("Currency rate source {Source} failed: {Message}", source.Name, ex.Message);
             return default;

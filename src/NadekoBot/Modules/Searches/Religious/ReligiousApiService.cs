@@ -2,11 +2,14 @@
 using OneOf.Types;
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace NadekoBot.Modules.Searches;
 
 public sealed class ReligiousApiService : INService
 {
+    private const string NO_VERSE = "No verse found.";
+
     private readonly IHttpClientFactory _httpFactory;
 
     public ReligiousApiService(IHttpClientFactory httpFactory)
@@ -28,20 +31,23 @@ public sealed class ReligiousApiService : INService
         {
             var res = await http.GetFromJsonAsync<BibleVerses>($"https://bible-api.com/{book} {chapterAndVerse}");
 
-            if (res is null || res.Error is not null || res.Verses is null || res.Verses.Length == 0)
-            {
-                return new Error<string>(res?.Error ?? "No verse found.");
-            }
+            if (res is null || res.Error is not null || res.Verses is not [{ Text: { Length: > 0 } } verse, ..])
+                return new Error<string>(res?.Error ?? NO_VERSE);
 
-            return res.Verses[0];
+            return verse;
         }
         catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
         {
-            return new Error<string>("No verse found.");
+            return new Error<string>(NO_VERSE);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("bible-api.com", ex);
+            return new Error<string>(NO_VERSE);
         }
     }
 
-    public async Task<OneOf<QuranResponse<QuranAyah>, Error<LocStr>>> GetQuranVerseAsync(string ayah)
+    public async Task<OneOf<QuranVerse, Error<LocStr>>> GetQuranVerseAsync(string ayah)
     {
         if (string.IsNullOrWhiteSpace(ayah))
             return new Error<LocStr>(strs.invalid_input);
@@ -49,14 +55,26 @@ public sealed class ReligiousApiService : INService
         ayah = Uri.EscapeDataString(ayah);
 
         using var http = _httpFactory.CreateClient();
-        var res = await http.GetFromJsonAsync<QuranResponse<QuranAyah>>(
-            $"https://api.alquran.cloud/v1/ayah/{ayah}/editions/en.asad,ar.alafasy");
-
-        if (res is null or not { Code: 200 })
+        QuranResponse<QuranAyah>? res;
+        try
+        {
+            res = await http.GetFromJsonAsync<QuranResponse<QuranAyah>>(
+                $"https://api.alquran.cloud/v1/ayah/{ayah}/editions/en.asad,ar.alafasy");
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.BadRequest)
         {
             return new Error<LocStr>(strs.not_found);
         }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("alquran.cloud", ex);
+            return new Error<LocStr>(strs.not_found);
+        }
 
-        return res;
+        // The site sends the editions in the order of the url: English, then Arabic.
+        if (res is not { Code: 200, Data: [{ Text: { Length: > 0 } english }, { Text: { Length: > 0 } arabic } arabicAyah, ..] })
+            return new Error<LocStr>(strs.not_found);
+
+        return new QuranVerse(arabicAyah.Number, arabic, english, arabicAyah.Audio);
     }
 }

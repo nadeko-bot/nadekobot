@@ -2,12 +2,12 @@ using System.Text.Json.Serialization;
 
 namespace NadekoBot.Modules.Searches;
 
-public class BibleVerse
+public sealed class BibleVerse
 {
     [JsonPropertyName("book_name")]
-    public required string BookName { get; set; }
+    public string? BookName { get; set; }
 
-    public required int Chapter { get; set; }
-    public required int Verse { get; set; }
-    public required string Text { get; set; }
+    public int? Chapter { get; set; }
+    public int? Verse { get; set; }
+    public string? Text { get; set; }
 }

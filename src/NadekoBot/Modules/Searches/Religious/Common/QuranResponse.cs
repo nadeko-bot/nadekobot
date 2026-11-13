@@ -5,11 +5,13 @@ namespace NadekoBot.Modules.Searches;
 public sealed class QuranResponse<T>
 {
     [JsonPropertyName("code")]
-    public required int Code { get; set; }
+    public int Code { get; set; }
 
     [JsonPropertyName("status")]
-    public required string Status { get; set; }
+    public string? Status { get; set; }
 
     [JsonPropertyName("data")]
-    public required T[] Data { get; set; }
+    public T[]? Data { get; set; }
 }
+
+public sealed record QuranVerse(int? Number, string Arabic, string English, string? AudioUrl);

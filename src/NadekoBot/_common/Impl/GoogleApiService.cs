@@ -220,7 +220,18 @@ public sealed partial class GoogleApiService : IGoogleApiService, INService
             text = await http.GetStringAsync(url);
         }
 
-        return string.Concat(JArray.Parse(text)[0].Select(x => x[0]));
+        try
+        {
+            return string.Concat(JArray.Parse(text)[0].Select(x => x[0]));
+        }
+        catch (Exception ex) when (ex is Newtonsoft.Json.JsonException
+                                       or InvalidOperationException
+                                       or ArgumentException
+                                       or InvalidCastException)
+        {
+            SiteAnswer.LogUnreadable("Google Translate", ex);
+            return string.Empty;
+        }
     }
 
     private string ConvertToLanguageCode(string language)

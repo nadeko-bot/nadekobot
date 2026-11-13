@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
 using NadekoBot.Common.ModuleBehaviors;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace NadekoBot.Modules.Owner.Self;
@@ -8,7 +9,7 @@ namespace NadekoBot.Modules.Owner.Self;
 public sealed class GithubReleaseModel
 {
     [JsonPropertyName("tag_name")]
-    public required string TagName { get; init; }
+    public string? TagName { get; init; }
 }
 
 public sealed class CheckForUpdatesService(
@@ -48,7 +49,8 @@ public sealed class CheckForUpdatesService(
                     continue;
 
                 var latest = githubRelease.TagName;
-                var latestVersion = Version.Parse(latest);
+                if (!Version.TryParse(latest, out var latestVersion))
+                    continue;
                 var lastKnownVersion = GetLastKnownVersion();
 
                 if (lastKnownVersion is null)
@@ -69,7 +71,7 @@ public sealed class CheckForUpdatesService(
                     if (string.IsNullOrWhiteSpace(thisVersionChangelog))
                     {
                         Log.Warning("New version {BotVersion} was found but changelog is unavailable",
-                            thisVersionChangelog);
+                            latestVersion);
                         continue;
                     }
 
@@ -94,6 +96,10 @@ public sealed class CheckForUpdatesService(
                                })
                                .WhenAll();
                 }
+            }
+            catch (JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("GitHub", ex);
             }
             catch (Exception ex)
             {

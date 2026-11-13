@@ -2,47 +2,45 @@
 
 namespace NadekoBot.Modules.Searches;
 
+// Invidious instances run different versions, so each field can be missing.
 public sealed class InvidiousSearchResponse
 {
     [JsonPropertyName("videoId")]
-    public required string VideoId { get; init; } 
-    
+    public string? VideoId { get; init; }
+
     [JsonPropertyName("title")]
-    public required string Title { get; init; }
-    
+    public string? Title { get; init; }
+
     [JsonPropertyName("videoThumbnails")]
-    public required List<InvidiousThumbnail> Thumbnails { get; init; }
-    
+    public List<InvidiousThumbnail>? Thumbnails { get; init; }
+
     [JsonPropertyName("lengthSeconds")]
-    public required int LengthSeconds { get; init; }
-    
-    [JsonPropertyName("description")]
-    public required string Description { get; init; }
+    public int? LengthSeconds { get; init; }
 }
 
 public sealed class InvidiousVideoResponse
 {
     [JsonPropertyName("title")]
-    public required string Title { get; init; }
-    
+    public string? Title { get; init; }
+
     [JsonPropertyName("videoId")]
-    public required string VideoId { get; init; }
-    
+    public string? VideoId { get; init; }
+
     [JsonPropertyName("lengthSeconds")]
-    public required int LengthSeconds { get; init; }
+    public int? LengthSeconds { get; init; }
 
     [JsonPropertyName("videoThumbnails")]
-    public required List<InvidiousThumbnail> Thumbnails { get; init; }
-    
+    public List<InvidiousThumbnail>? Thumbnails { get; init; }
+
     [JsonPropertyName("adaptiveFormats")]
-    public required List<InvidiousAdaptiveFormat> AdaptiveFormats { get; init; }
+    public List<InvidiousAdaptiveFormat>? AdaptiveFormats { get; init; }
 }
 
 public sealed class InvidiousAdaptiveFormat
 {
     [JsonPropertyName("url")]
-    public required string Url { get; init; }
-    
+    public string? Url { get; init; }
+
     [JsonPropertyName("audioQuality")]
     public string? AudioQuality { get; init; }
 
@@ -53,22 +51,22 @@ public sealed class InvidiousAdaptiveFormat
 public sealed class InvidiousPlaylistResponse
 {
     [JsonPropertyName("title")]
-    public required string Title { get; init; }
-    
+    public string? Title { get; init; }
+
     [JsonPropertyName("videos")]
-    public required List<InvidiousPlaylistVideo> Videos { get; init; }
+    public List<InvidiousPlaylistVideo>? Videos { get; init; }
 }
 
 public sealed class InvidiousPlaylistVideo
 {
     [JsonPropertyName("title")]
-    public required string Title { get; init; }
+    public string? Title { get; init; }
 
     [JsonPropertyName("videoId")]
-    public required string VideoId { get; init; }
+    public string? VideoId { get; init; }
 
     [JsonPropertyName("lengthSeconds")]
-    public required int LengthSeconds { get; init; }
+    public int? LengthSeconds { get; init; }
 
     [JsonPropertyName("videoThumbnails")]
     public List<InvidiousThumbnail>? Thumbnails { get; init; }
@@ -77,5 +75,20 @@ public sealed class InvidiousPlaylistVideo
 public sealed class InvidiousThumbnail
 {
     [JsonPropertyName("url")]
-    public required string Url { get; init; }
+    public string? Url { get; init; }
+
+    public static string? FirstUrl(List<InvidiousThumbnail>? thumbnails, int start = 0)
+    {
+        if (thumbnails is null)
+            return null;
+
+        for (var i = start; i < thumbnails.Count; i++)
+        {
+            var url = thumbnails[i]?.Url;
+            if (!string.IsNullOrWhiteSpace(url))
+                return url;
+        }
+
+        return null;
+    }
 }

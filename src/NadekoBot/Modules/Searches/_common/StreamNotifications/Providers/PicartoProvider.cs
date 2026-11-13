@@ -84,6 +84,11 @@ public class PicartoProvider : Provider
             _failingStreams.TryRemove(login, out _);
             return StreamLookup.Found(ToStreamData(userData));
         }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Picarto", ex);
+            return StreamLookup.Unavailable;
+        }
         catch (Exception ex)
         {
             Log.Warning("Something went wrong retreiving {StreamPlatform} stream data for {Login}: {ErrorMessage}",

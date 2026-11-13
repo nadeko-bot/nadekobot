@@ -89,7 +89,7 @@
         <!-- Used by stream notifications -->
         <PackageReference Include="TwitchLib.Api" Version="3.4.1" />
 
-        <!-- sqlselectcsv and stock -->
+        <!-- sqlselectcsv -->
         <PackageReference Include="CsvHelper" Version="33.0.1" />
 
     </ItemGroup>

@@ -41,7 +41,16 @@ public sealed class SearxSearchService : SearchServiceBase, INService
                                                         + $"&strict=2");
 
         var elapsed = Stopwatch.GetElapsedTime(startTime);
-        var dat = await JsonSerializer.DeserializeAsync<SearxSearchResult>(res);
+        SearxSearchResult? dat;
+        try
+        {
+            dat = await JsonSerializer.DeserializeAsync<SearxSearchResult>(res);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable(instanceUrl, ex);
+            dat = null;
+        }
 
         if (dat is null)
             return new SearxSearchResult();
@@ -66,7 +75,16 @@ public sealed class SearxSearchService : SearchServiceBase, INService
                                                         + $"&strict=2");
 
         var elapsed = Stopwatch.GetElapsedTime(startTime);
-        var dat = await JsonSerializer.DeserializeAsync<SearxImageSearchResult>(res);
+        SearxImageSearchResult? dat;
+        try
+        {
+            dat = await JsonSerializer.DeserializeAsync<SearxImageSearchResult>(res);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable(instanceUrl, ex);
+            dat = null;
+        }
 
         if (dat is null)
             return new SearxImageSearchResult();

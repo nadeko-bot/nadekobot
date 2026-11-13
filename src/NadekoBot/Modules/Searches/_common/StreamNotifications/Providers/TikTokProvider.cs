@@ -275,10 +275,7 @@ public sealed partial class TikTokProvider : Provider
             }
 
             if (answer is null)
-            {
-                Log.Warning("TikTok sent a live answer for {TikTokUser} which the bot cannot read", name);
                 return (StreamLookup.Unavailable, true);
-            }
 
             if (answer.Data is not { User: { } user } room)
             {
@@ -429,8 +426,9 @@ public sealed partial class TikTokProvider : Provider
 
             return (JsonSerializer.Deserialize<T>(json, JsonSerializerOptions.Web), BodyKind.Json);
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
+            SiteAnswer.LogUnreadable("TikTok", ex);
             return (null, BodyKind.Unreadable);
         }
         finally
@@ -468,8 +466,9 @@ public sealed partial class TikTokProvider : Provider
 
             return null;
         }
-        catch (JsonException)
+        catch (Exception ex) when (ex is JsonException or InvalidOperationException)
         {
+            SiteAnswer.LogUnreadable("TikTok", ex);
             return null;
         }
 

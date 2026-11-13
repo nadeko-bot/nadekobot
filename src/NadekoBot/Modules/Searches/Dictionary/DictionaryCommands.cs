@@ -50,7 +50,16 @@ public partial class Searches
             using var http = _httpFactory.CreateClient();
             var res = await http.GetStringAsync($"https://api.urbandictionary.com/v0/define?"
                                              + $"term={Uri.EscapeDataString(query ?? "")}");
-            var allItems = JsonConvert.DeserializeObject<UrbanResponse>(res)?.List;
+            UrbanDef[]? allItems;
+            try
+            {
+                allItems = JsonConvert.DeserializeObject<UrbanResponse>(res)?.List;
+            }
+            catch (JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("Urban Dictionary", ex);
+                allItems = null;
+            }
 
             if (allItems is null or { Length: 0 })
             {

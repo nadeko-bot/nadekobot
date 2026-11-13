@@ -88,6 +88,11 @@ public class SearchesService : INService
 
             return JsonConvert.DeserializeObject<WeatherData>(data);
         }
+        catch (Newtonsoft.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("OpenWeatherMap", ex);
+            return null;
+        }
         catch (Exception ex)
         {
             Log.Warning(ex, "Error getting weather data");
@@ -123,7 +128,17 @@ public class SearchesService : INService
                 },
                 TimeSpan.FromHours(1));
 
-            var responses = JsonConvert.DeserializeObject<LocationIqResponse[]>(res);
+            LocationIqResponse[] responses;
+            try
+            {
+                responses = JsonConvert.DeserializeObject<LocationIqResponse[]>(res);
+            }
+            catch (Newtonsoft.Json.JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("LocationIQ", ex);
+                return (default, ErrorType.NotFound);
+            }
+
             if (responses is null || responses.Length == 0)
             {
                 Log.Warning("Geocode lookup failed for: {Query}", query);
@@ -152,6 +167,11 @@ public class SearchesService : INService
         {
             Log.Warning("TimezoneDB request failed: {Message}", ex.Message);
             return (default, ex.KeyProblem ? ErrorType.ApiKeyInactive : ErrorType.Unknown);
+        }
+        catch (Newtonsoft.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("TimezoneDB", ex);
+            return (default, ErrorType.Unknown);
         }
         catch (Exception ex)
         {
@@ -233,40 +253,67 @@ public class SearchesService : INService
         // }
     }
 
-    public async Task<(string Setup, string Punchline)> GetRandomJoke()
+    public async Task<(string Setup, string Punchline)?> GetRandomJoke()
     {
         using var http = _httpFactory.CreateClient();
         var res = await http.GetStringAsync("https://official-joke-api.appspot.com/random_joke");
-        var resObj = JsonConvert.DeserializeAnonymousType(res,
-            new
-            {
-                setup = "",
-                punchline = ""
-            });
-        return (resObj.setup, resObj.punchline);
+        try
+        {
+            var resObj = JsonConvert.DeserializeAnonymousType(res,
+                new
+                {
+                    setup = "",
+                    punchline = ""
+                });
+
+            if (string.IsNullOrWhiteSpace(resObj?.setup) || string.IsNullOrWhiteSpace(resObj.punchline))
+                return null;
+
+            return (resObj.setup, resObj.punchline);
+        }
+        catch (Newtonsoft.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Official Joke API", ex);
+            return null;
+        }
     }
 
     public async Task<string> GetChuckNorrisJoke()
     {
         using var http = _httpFactory.CreateClient();
         var response = await http.GetStringAsync(new Uri("https://api.chucknorris.io/jokes/random"));
-        return JObject.Parse(response)["value"] + " 😆";
+        try
+        {
+            var joke = JObject.Parse(response)["value"]?.ToString();
+            return string.IsNullOrWhiteSpace(joke) ? null : joke + " 😆";
+        }
+        catch (Newtonsoft.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("chucknorris.io", ex);
+            return null;
+        }
     }
 
     public async Task<MtgData> GetMtgCardAsync(string search)
     {
         search = search.Trim().ToLowerInvariant();
-        var data = await _c.GetOrAddAsync(new($"mtg:{search}"),
-            async () => await GetMtgCardFactory(search),
-            TimeSpan.FromDays(1));
+        var key = new TypedKey<MtgData[]>($"mtg:{search}");
+        if (!(await _c.GetAsync(key)).TryPickT0(out var data, out _))
+        {
+            data = await GetMtgCardInternalAsync(search);
+            if (data is null)
+                return null;
 
-        if (data is null || data.Length == 0)
+            await _c.AddAsync(key, data, TimeSpan.FromDays(1));
+        }
+
+        if (data.Length == 0)
             return null;
 
         return data[_rng.Next(0, data.Length)];
     }
 
-    private async Task<MtgData[]> GetMtgCardFactory(string search)
+    private async Task<MtgData[]> GetMtgCardInternalAsync(string search)
     {
         async Task<MtgData> GetMtgDataAsync(MtgResponse.Data card)
         {
@@ -287,7 +334,7 @@ public class SearchesService : INService
                 Name = card.Name,
                 ImageUrl = card.ImageUrl,
                 StoreUrl = storeUrl,
-                Types = string.Join(",\n", card.Types),
+                Types = string.Join(",\n", card.Types ?? []),
                 ManaCost = card.ManaCost
             };
         }
@@ -297,13 +344,25 @@ public class SearchesService : INService
         var response =
             await http.GetStringAsync($"https://api.magicthegathering.io/v1/cards?name={Uri.EscapeDataString(search)}");
 
-        var responseObject = JsonConvert.DeserializeObject<MtgResponse>(response);
-        if (responseObject is null)
-            return Array.Empty<MtgData>();
+        MtgResponse responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<MtgResponse>(response);
+        }
+        catch (Newtonsoft.Json.JsonException ex)
+        {
+            // The caller does not cache null, so the next search asks the site again.
+            SiteAnswer.LogUnreadable("magicthegathering.io", ex);
+            return null;
+        }
 
-        var cards = responseObject.Cards.Take(5).ToArray();
+        // The site sends "cards": [] when nothing matches, so an answer without cards is not a result.
+        if (responseObject?.Cards is null)
+            return null;
+
+        var cards = responseObject.Cards.Where(static x => x is not null).Take(5).ToArray();
         if (cards.Length == 0)
-            return Array.Empty<MtgData>();
+            return [];
 
         return await cards.Select(GetMtgDataAsync).WhenAll();
     }
@@ -342,6 +401,11 @@ public class SearchesService : INService
 
             return data;
         }
+        catch (Newtonsoft.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Hearthstone API", ex);
+            return null;
+        }
         catch (Exception ex)
         {
             Log.Error(ex, "Error getting Hearthstone Card: {ErrorMessage}", ex.Message);
@@ -359,40 +423,39 @@ public class SearchesService : INService
            return -1;
         }
 
-        var gamesMap = await _c.GetOrAddAsync(new(steamGameIdsKey),
-            async () =>
-            {
-                var apps = await FetchAllSteamApps(steamApiKey);
+        var mapKey = new TypedKey<Dictionary<string, int>>(steamGameIdsKey);
+        if (!(await _c.GetAsync(mapKey)).TryPickT0(out var gamesMap, out _))
+        {
+            var apps = await FetchAllSteamAppsInternalAsync(steamApiKey);
+            if (apps is null)
+                return -1;
 
-                return apps
-                    .OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
-                    .GroupBy(x => x.Name)
-                    .ToDictionary(x => x.Key, x => x.First().AppId);
-            },
-            TimeSpan.FromHours(24)
-        );
+            gamesMap = apps
+                .Where(static x => !string.IsNullOrEmpty(x?.Name))
+                .OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
+                .GroupBy(x => x.Name)
+                .ToDictionary(x => x.Key, x => x.First().AppId);
 
-        if (gamesMap is null)
-            return -1;
+            await _c.AddAsync(mapKey, gamesMap, TimeSpan.FromHours(24));
+        }
 
         query = query.Trim();
 
-        var keyList = gamesMap.Keys.ToList();
-
-        var key = keyList.FirstOrDefault(x => x.Equals(query, StringComparison.OrdinalIgnoreCase));
-
-        if (key == default)
+        int? startsWith = null;
+        foreach (var (name, appId) in gamesMap)
         {
-            key = keyList.FirstOrDefault(x => x.StartsWith(query, StringComparison.OrdinalIgnoreCase));
-            if (key == default)
-                return -1;
+            if (name.Equals(query, StringComparison.OrdinalIgnoreCase))
+                return appId;
+
+            if (startsWith is null && name.StartsWith(query, StringComparison.OrdinalIgnoreCase))
+                startsWith = appId;
         }
 
-        return gamesMap[key];
+        return startsWith ?? -1;
     }
 
 
-    private async Task<List<SteamGameId>> FetchAllSteamApps(string steamApiKey)
+    private async Task<List<SteamGameId>> FetchAllSteamAppsInternalAsync(string steamApiKey)
     {
         using var http = _httpFactory.CreateClient();
 
@@ -406,24 +469,40 @@ public class SearchesService : INService
 
             string gamesStr = await http.GetStringAsync(url);
 
-            var result = JsonConvert.DeserializeAnonymousType(gamesStr,
-                new
+            var template = new
+            {
+                response = new
                 {
-                    response = new
-                    {
-                        apps = new List<SteamGameId>(),
-                        have_more_results = (bool?)null,
-                        last_appid = (int?)null
-                    }
+                    apps = new List<SteamGameId>(),
+                    have_more_results = (bool?)null,
+                    last_appid = (int?)null
                 }
-            );
+            };
 
-            allApps.AddRange(result.response.apps);
+            try
+            {
+                template = JsonConvert.DeserializeAnonymousType(gamesStr, template);
+            }
+            catch (Newtonsoft.Json.JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("Steam", ex);
+                return null;
+            }
 
-            if (!result.response.have_more_results.HasValue)
+            // A part of the list would stay in the cache for a day, so a page without apps fails the whole load.
+            if (template?.response?.apps is not { } apps)
+                return null;
+
+            allApps.AddRange(apps);
+
+            if (template.response.have_more_results is not true || template.response.last_appid is not { } last)
                 break;
 
-            lastAppId = result.response.last_appid.Value;
+            // A page which does not move forward would repeat forever.
+            if (last <= lastAppId)
+                return null;
+
+            lastAppId = last;
         }
 
         return allApps;
@@ -474,6 +553,11 @@ public class SearchesService : INService
                 }
             };
         }
+        catch (Newtonsoft.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Wikipedia", ex);
+            return ErrorType.NotFound;
+        }
         catch (Exception ex)
         {
             Log.Error(ex, "Error retrieving wikipedia data for: '{Query}'", query);
@@ -487,15 +571,22 @@ public class SearchesService : INService
         using var http = _httpFactory.CreateClient();
         var response = await http.GetStringAsync("https://catfact.ninja/fact").ConfigureAwait(false);
 
-        var doc = JsonDocument.Parse(response);
-
-
-        if (!doc.RootElement.TryGetProperty("fact", out var factElement))
+        try
         {
+            using var doc = JsonDocument.Parse(response);
+
+            if (!doc.RootElement.TryGetProperty("fact", out var factElement))
+            {
+                return ErrorType.Unknown;
+            }
+
+            return factElement.ToString();
+        }
+        catch (Exception ex) when (ex is System.Text.Json.JsonException or InvalidOperationException)
+        {
+            SiteAnswer.LogUnreadable("catfact.ninja", ex);
             return ErrorType.Unknown;
         }
-
-        return factElement.ToString();
     }
 
     public async Task<OneOf<WikiaResponse, ErrorType>> GetWikiaPageAsync(string target, string query)
@@ -537,6 +628,11 @@ public class SearchesService : INService
                 Url = url,
                 Title = title,
             };
+        }
+        catch (Exception ex) when (ex is Newtonsoft.Json.JsonException or InvalidOperationException)
+        {
+            SiteAnswer.LogUnreadable("Fandom", ex);
+            return ErrorType.NotFound;
         }
         catch (Exception ex)
         {
@@ -601,6 +697,11 @@ public class SearchesService : INService
 
             return items.OrderByDescending(x => !string.IsNullOrWhiteSpace(x.Example)).ToList();
         }
+        catch (Newtonsoft.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Pearson Dictionaries", ex);
+            return ErrorType.NotFound;
+        }
         catch (Exception ex)
         {
             Log.Error(ex, "Error retrieving definition data for: {Word}", query);
@@ -630,6 +731,11 @@ public class SearchesService : INService
                     var data = JsonConvert.DeserializeObject<ShortenData>(content);
 
                     return string.IsNullOrWhiteSpace(data?.ResultUrl) ? null : data.ResultUrl;
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    SiteAnswer.LogUnreadable("goolnk", ex);
+                    return null;
                 }
                 catch (Exception ex)
                 {

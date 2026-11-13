@@ -52,6 +52,11 @@ public sealed class InvidiousYtSearchService : IYoutubeSearchService, INService
             res = JsonSerializer.Deserialize<List<InvidiousSearchResponse>>(body.Buffer.AsSpan(0, body.Length),
                 JsonSerializerOptions.Web);
         }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable(instance, ex);
+            return null;
+        }
         finally
         {
             ArrayPool<byte>.Shared.Return(body.Buffer);
@@ -60,11 +65,20 @@ public sealed class InvidiousYtSearchService : IYoutubeSearchService, INService
         if (res is null or { Count: 0 })
             return null;
 
-        var count = Math.Min(res.Count, MAX_RESULTS);
-        var videos = new VideoInfo[count];
-        for (var i = 0; i < count; i++)
-            videos[i] = new VideoInfo(res[i].VideoId);
+        var videos = new VideoInfo[Math.Min(res.Count, MAX_RESULTS)];
+        var count = 0;
+        foreach (var item in res)
+        {
+            if (string.IsNullOrWhiteSpace(item?.VideoId))
+                continue;
 
-        return videos;
+            videos[count++] = new VideoInfo(item.VideoId);
+            if (count == videos.Length)
+                break;
+        }
+
+        return count == 0 ? null
+            : count == videos.Length ? videos
+            : videos[..count];
     }
 }

@@ -76,7 +76,12 @@ public sealed class XkcdService(IHttpClientFactory httpFactory) : INService
         {
             return null;
         }
-        catch (Exception ex) when (ex is HttpRequestException or System.Text.Json.JsonException or TaskCanceledException)
+        catch (System.Text.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("xkcd", ex);
+            return null;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
         {
             Log.Warning(ex, "Unable to fetch xkcd comic from {Url}", url);
             return null;

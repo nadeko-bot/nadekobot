@@ -141,6 +141,11 @@ public sealed partial class FlagTranslateService : IReadyExecutor, INService
             var msg = await arg1.GetOrDownloadAsync();
 
             var response = await _ts.Translate("", lang, msg.Content).ConfigureAwait(false);
+            if (string.IsNullOrWhiteSpace(response))
+            {
+                _msgLangs.TryRemove((reaction.MessageId, lang));
+                return;
+            }
 
             await msg.ReplyAsync(embed: _sender.CreateEmbed(tc.Guild?.Id)
                                                .WithOkColor()

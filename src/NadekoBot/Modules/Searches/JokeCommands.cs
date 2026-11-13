@@ -15,13 +15,27 @@ public partial class Searches
         [Cmd]
         public async Task Randjoke()
         {
-            var (setup, punchline) = await _service.GetRandomJoke();
+            if (await _service.GetRandomJoke() is not var (setup, punchline))
+            {
+                await Response().Error(strs.jokes_not_loaded).SendAsync();
+                return;
+            }
+
             await Response().Confirm(setup, punchline).SendAsync();
         }
 
         [Cmd]
         public async Task ChuckNorris()
-            => await Response().Confirm(await _service.GetChuckNorrisJoke()).SendAsync();
+        {
+            var joke = await _service.GetChuckNorrisJoke();
+            if (joke is null)
+            {
+                await Response().Error(strs.jokes_not_loaded).SendAsync();
+                return;
+            }
+
+            await Response().Confirm(joke).SendAsync();
+        }
 
         [Cmd]
         public async Task WowJoke()

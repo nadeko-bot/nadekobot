@@ -49,7 +49,7 @@ public class AnimeSearchTests
         => _handler.Dispose();
 
     [Test]
-    public async Task AnimeAndManga_MapTheAniListMedia_AndAnimeIsCached()
+    public async Task AnimeAndManga_MapTheAniListMedia_AnimeIsCached_AndFailuresPauseTheSearches()
     {
         var description = new string('a', 600);
         _handler.Respond = () => Json("""
@@ -100,11 +100,7 @@ public class AnimeSearchTests
         Assert.That(manga.ImageUrlLge, Is.EqualTo("https://img/l.jpg"));
         Assert.That(manga.Synopsis, Is.Empty);
         Assert.That(_handler.Bodies[^1], Does.Contain("\"type\":\"MANGA\""));
-    }
 
-    [Test]
-    public async Task Failures_ReturnNullAndARateLimitPausesTheSearches()
-    {
         _handler.Respond = () => Json("""{"errors":[{"message":"Not Found.","status":404}],"data":{"Media":null}}""",
             HttpStatusCode.NotFound);
         Assert.That(await _svc.GetAnimeData("no such anime"), Is.Null);

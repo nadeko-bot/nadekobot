@@ -4,6 +4,7 @@ using NadekoBot.Modules.Searches.Services;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace NadekoBot.Modules.Searches.Common.StreamNotifications.Providers;
@@ -156,14 +157,13 @@ public sealed partial class YouTubeProvider : Provider
         if (!UseInvidious)
             return (await GetServiceDataInternalAsync([channelId])).FirstOrDefault();
 
+        var instances = _scs.Data.InvidiousInstances;
+        if (instances is not { Count: > 0 })
+            return null;
+
+        var invInstance = instances[_rng.Next(0, instances.Count)];
         try
         {
-            var instances = _scs.Data.InvidiousInstances;
-
-            if (instances is not { Count: > 0 })
-                return null;
-
-            var invInstance = instances[_rng.Next(0, instances.Count)];
             using var client = _httpFactory.CreateClient(ExternalHttp.OWNER_CLIENT_NAME);
             client.BaseAddress = new Uri(invInstance);
 
@@ -188,41 +188,51 @@ public sealed partial class YouTubeProvider : Provider
 
             var response =
                 await client.GetFromJsonAsync<InvChannelStreamsResponse>($"/api/v1/channels/{channelId}/streams");
-            if (response is null)
+            if (response?.Videos is not { } videos)
                 return null;
 
-            var vid = response.Videos.FirstOrDefault(x => !x.IsUpcoming && x.LengthSeconds == 0);
+            // A live stream has no length yet. Without a length the bot cannot tell, so the video does not count as live.
+            InvidiousStreamResponse? vid = null;
             var isLive = false;
-            if (vid is null)
+            foreach (var v in videos)
             {
-                vid = response.Videos.FirstOrDefault(x => !x.IsUpcoming);
-            }
-            else
-            {
-                isLive = true;
+                if (v is null || v.IsUpcoming == true || string.IsNullOrWhiteSpace(v.VideoId))
+                    continue;
+
+                if (v.LengthSeconds == 0)
+                {
+                    vid = v;
+                    isLive = true;
+                    break;
+                }
+
+                vid ??= v;
             }
 
             if (vid is null)
                 return null;
 
-            var avatarUrl = channel?.AuthorThumbnails?.Select(x => x.Url).LastOrDefault();
+            var avatarUrl = channel.AuthorThumbnails?.LastOrDefault(static x => !string.IsNullOrWhiteSpace(x?.Url))?.Url;
+            var preview = InvidiousThumbnail.FirstUrl(vid.Thumbnails, start: 1);
 
             return new StreamData()
             {
                 Game = LIVE_GAME,
-                Name = vid.Author,
-                Preview = vid.Thumbnails
-                    .Skip(1)
-                    .Select(x => "https://i.ytimg.com/" + x.Url)
-                    .FirstOrDefault(),
+                Name = vid.Author ?? channelId,
+                Preview = preview is null ? null : "https://i.ytimg.com/" + preview,
                 Title = vid.Title,
-                Viewers = vid.ViewCount,
+                Viewers = vid.ViewCount ?? 0,
                 AvatarUrl = avatarUrl,
                 IsLive = isLive,
                 StreamType = FollowedStream.FType.Youtube,
                 StreamUrl = WATCH_URL + vid.VideoId,
-                UniqueName = vid.AuthorId,
+                UniqueName = vid.AuthorId ?? channel.AuthorId ?? channelId,
             };
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable(invInstance, ex);
+            return null;
         }
         catch (Exception ex)
         {
@@ -352,46 +362,47 @@ public sealed partial class YouTubeProvider : Provider
 public sealed class InvidiousChannelResponse
 {
     [JsonPropertyName("authorId")]
-    public required string AuthorId { get; init; }
+    public string? AuthorId { get; init; }
 
     [JsonPropertyName("authorThumbnails")]
-    public required List<InvAuthorThumbnail> AuthorThumbnails { get; init; }
+    public List<InvAuthorThumbnail>? AuthorThumbnails { get; init; }
 
     public sealed class InvAuthorThumbnail
     {
         [JsonPropertyName("url")]
-        public required string Url { get; init; }
+        public string? Url { get; init; }
     }
 }
 
 public sealed class InvChannelStreamsResponse
 {
-    public required List<InvidiousStreamResponse> Videos { get; init; }
+    [JsonPropertyName("videos")]
+    public List<InvidiousStreamResponse>? Videos { get; init; }
 }
 
 public sealed class InvidiousStreamResponse
 {
     [JsonPropertyName("title")]
-    public required string Title { get; init; }
+    public string? Title { get; init; }
 
     [JsonPropertyName("videoId")]
-    public required string VideoId { get; init; }
+    public string? VideoId { get; init; }
 
     [JsonPropertyName("lengthSeconds")]
-    public required int LengthSeconds { get; init; }
+    public int? LengthSeconds { get; init; }
 
     [JsonPropertyName("videoThumbnails")]
-    public required List<InvidiousThumbnail> Thumbnails { get; init; }
+    public List<InvidiousThumbnail>? Thumbnails { get; init; }
 
     [JsonPropertyName("author")]
-    public required string Author { get; init; }
+    public string? Author { get; init; }
 
     [JsonPropertyName("authorId")]
-    public required string AuthorId { get; init; }
+    public string? AuthorId { get; init; }
 
     [JsonPropertyName("isUpcoming")]
-    public bool IsUpcoming { get; set; }
+    public bool? IsUpcoming { get; init; }
 
     [JsonPropertyName("viewCount")]
-    public int ViewCount { get; set; }
+    public int? ViewCount { get; init; }
 }

@@ -83,56 +83,94 @@ public sealed partial class YtLoader : INService
         // this will result in the json being cut off
 
         var mem = GetScriptResponseSpan(response);
-        var root = JsonDocument.Parse(mem).RootElement;
-
-        using var tracksJsonItems = root
-                              .GetProperty("contents")
-                              .GetProperty("twoColumnSearchResultsRenderer")
-                              .GetProperty("primaryContents")
-                              .GetProperty("sectionListRenderer")
-                              .GetProperty("contents")[0]
-                              .GetProperty("itemSectionRenderer")
-                              .GetProperty("contents")
-                              .EnumerateArray();
-
-        var tracks = new List<TrackInfo>();
-        foreach (var track in tracksJsonItems)
+        try
         {
-            if (!track.TryGetProperty("videoRenderer", out var elem))
-                continue;
+            using var doc = JsonDocument.Parse(mem);
 
-            var videoId = elem.GetProperty("videoId").GetString();
-            var thumb = elem.GetProperty("thumbnail").GetProperty("thumbnails")[0].GetProperty("url").GetString();
-            var title = elem.GetProperty("title").GetProperty("runs")[0].GetProperty("text").GetString();
-            var durationString = elem.GetProperty("lengthText").GetProperty("simpleText").GetString();
+            using var tracksJsonItems = doc.RootElement
+                                  .GetProperty("contents")
+                                  .GetProperty("twoColumnSearchResultsRenderer")
+                                  .GetProperty("primaryContents")
+                                  .GetProperty("sectionListRenderer")
+                                  .GetProperty("contents")[0]
+                                  .GetProperty("itemSectionRenderer")
+                                  .GetProperty("contents")
+                                  .EnumerateArray();
 
-            if (!TimeSpan.TryParseExact(durationString,
-                    _durationFormats,
-                    CultureInfo.InvariantCulture,
-                    out var duration))
+            var tracks = new List<TrackInfo>();
+            foreach (var track in tracksJsonItems)
             {
-                Log.Warning("Cannot parse duration: {DurationString}", durationString);
-                continue;
+                if (!track.TryGetProperty("videoRenderer", out var elem))
+                    continue;
+
+                // A live stream has no lengthText, so the bot skips it.
+                var videoId = StringInternal(PropertyInternal(elem, "videoId"));
+                var durationString = StringInternal(PropertyInternal(PropertyInternal(elem, "lengthText"), "simpleText"));
+                if (videoId is null || durationString is null)
+                    continue;
+
+                var title = StringInternal(PropertyInternal(
+                                FirstInternal(PropertyInternal(PropertyInternal(elem, "title"), "runs")), "text"))
+                            ?? videoId;
+                var thumb = StringInternal(PropertyInternal(
+                                FirstInternal(PropertyInternal(PropertyInternal(elem, "thumbnail"), "thumbnails")), "url"))
+                            ?? string.Empty;
+
+                if (!TimeSpan.TryParseExact(durationString,
+                        _durationFormats,
+                        CultureInfo.InvariantCulture,
+                        out var duration))
+                {
+                    Log.Warning("Cannot parse duration: {DurationString}", durationString);
+                    continue;
+                }
+
+                tracks.Add(new YtTrackInfo(title, videoId, thumb, duration));
+                if (tracks.Count >= 5)
+                    break;
             }
 
-            tracks.Add(new YtTrackInfo(title, videoId, thumb, duration));
-            if (tracks.Count >= 5)
-                break;
+            return tracks;
         }
-
-        return tracks;
+        catch (Exception ex) when (ex is JsonException
+                                       or KeyNotFoundException
+                                       or InvalidOperationException
+                                       or IndexOutOfRangeException)
+        {
+            SiteAnswer.LogUnreadable("YouTube", ex);
+            return null;
+        }
     }
 
+    private static JsonElement PropertyInternal(JsonElement elem, string name)
+        => elem.ValueKind == JsonValueKind.Object && elem.TryGetProperty(name, out var value) ? value : default;
+
+    private static JsonElement FirstInternal(JsonElement elem)
+        => elem.ValueKind == JsonValueKind.Array && elem.GetArrayLength() > 0 ? elem[0] : default;
+
+    private static string StringInternal(JsonElement elem)
+        => elem.ValueKind == JsonValueKind.String ? elem.GetString() : null;
+
+    // An empty result makes the parse fail, so a short page (consent or block page) gets the unreadable answer warning.
     private Memory<byte> GetScriptResponseSpan(byte[] response)
     {
+        if (response.Length <= 140_000)
+            return default;
+
         var responseSpan = response.AsSpan()[140_000..];
         var startIndex = responseSpan.IndexOf(_ytResultInitialData);
         if (startIndex == -1)
-            return null; // FUTURE try selecting html
+            return default; // FUTURE try selecting html
         startIndex += _ytResultInitialData.Length;
 
-        var endIndex =
-            140_000 + startIndex + responseSpan[(startIndex + 20_000)..].IndexOf(_ytResultJsonEnd) + 20_000;
+        if (startIndex + 20_000 > responseSpan.Length)
+            return default;
+
+        var end = responseSpan[(startIndex + 20_000)..].IndexOf(_ytResultJsonEnd);
+        if (end == -1)
+            return default;
+
+        var endIndex = 140_000 + startIndex + end + 20_000;
         startIndex += 140_000;
         return response.AsMemory(startIndex, endIndex - startIndex);
     }

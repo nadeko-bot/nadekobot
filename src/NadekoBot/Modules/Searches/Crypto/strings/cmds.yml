@@ -11,7 +11,9 @@ coins:
         desc: Page number to show. Starts at 1.
 crypto:
   desc: |-
-    Shows basic stats about a cryptocurrency from coinmarketcap.com. You can use either a name or an abbreviation of the currency.
+    Shows the price, market cap, volume and supply of a cryptocurrency from coinmarketcap.com.
+    The bot also shows a daily candle chart of the last 3 months.
+    You can use the name or the symbol of the cryptocurrency.
   ex:
     - btc
     - bitcoin
@@ -19,7 +21,10 @@ crypto:
     - name:
         desc: "The symbol or abbreviated name of the cryptocurrency to retrieve statistics for."
 stock:
-  desc: Shows basic information about a stock. You can use a symbol or company name
+  desc: |-
+    Shows the price, change, volume, market cap, day range and 52 week range of a stock or an ETF.
+    The bot also shows a daily candle chart of the last 3 months.
+    You can use a ticker symbol or a company name.
   ex:
     - tsla
     - advanced micro devices

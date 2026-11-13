@@ -34,9 +34,15 @@ public sealed class GoogleSearchService : SearchServiceBase, INService
             + $"&searchType=image"
             + $"&safe=active");
         
-        var result = await System.Text.Json.JsonSerializer.DeserializeAsync<GoogleImageResult>(stream);
-
-        return result;
+        try
+        {
+            return await System.Text.Json.JsonSerializer.DeserializeAsync<GoogleImageResult>(stream);
+        }
+        catch (System.Text.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Google", ex);
+            return null;
+        }
     }
 
     public override async ITask<GoogleCustomSearchResult?> SearchAsync(string? query)
@@ -59,8 +65,14 @@ public sealed class GoogleSearchService : SearchServiceBase, INService
             + $"&key={creds.GoogleApiKey}"
             + $"&safe=active");
         
-        var result = await System.Text.Json.JsonSerializer.DeserializeAsync<GoogleCustomSearchResult>(stream);
-
-        return result;
+        try
+        {
+            return await System.Text.Json.JsonSerializer.DeserializeAsync<GoogleCustomSearchResult>(stream);
+        }
+        catch (System.Text.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Google", ex);
+            return null;
+        }
     }
 }

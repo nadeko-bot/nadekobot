@@ -156,7 +156,16 @@ public sealed class DuckDuckGoScrapeService : SearchServiceBase, INService
             return null;
 
         await using var imgStream = await imgResponse.Content.ReadAsStreamAsync();
-        var imgResult = await System.Text.Json.JsonSerializer.DeserializeAsync<DdgImageApiResponse>(imgStream);
+        DdgImageApiResponse? imgResult;
+        try
+        {
+            imgResult = await System.Text.Json.JsonSerializer.DeserializeAsync<DdgImageApiResponse>(imgStream);
+        }
+        catch (System.Text.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("DuckDuckGo", ex);
+            return null;
+        }
 
         if (imgResult?.Results is null or { Count: 0 })
             return null;

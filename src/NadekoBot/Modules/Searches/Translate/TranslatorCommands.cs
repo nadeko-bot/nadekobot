@@ -27,6 +27,11 @@ public partial class Searches
             {
                 await ctx.Channel.TriggerTypingAsync();
                 var translation = await _service.Translate(fromLang, toLang, text);
+                if (string.IsNullOrWhiteSpace(translation))
+                {
+                    await Response().Error(strs.bad_input_format).SendAsync();
+                    return;
+                }
 
                 var embed = CreateEmbed()
                             .WithOkColor()

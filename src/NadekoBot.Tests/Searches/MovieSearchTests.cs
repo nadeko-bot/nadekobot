@@ -69,7 +69,7 @@ public class MovieSearchTests
     }
 
     [Test]
-    public async Task TheEnvironmentKeyWinsOverCredsAndTheFieldsMap()
+    public async Task TheEnvironmentKeyWinsOverCreds_TheFieldsMap_AndFailuresMapToTheirErrorWithoutCache()
     {
         var result = await CreateService("env-key", "creds-key").GetMovieDataAsync("  The Matrix ");
 
@@ -89,17 +89,14 @@ public class MovieSearchTests
 
         await CreateService("", "creds-key").GetMovieDataAsync("other");
         Assert.That(_handler.LastUri!.Query, Does.Contain("apikey=creds-key"));
-    }
 
-    [Test]
-    public async Task MissingKeyAndFailuresMapToTheirErrorAndAreNotCached()
-    {
+        var calls = _handler.Calls;
         var noKey = await CreateService("", "  ").GetMovieDataAsync("the matrix");
         Assert.That(noKey.TryPickT1(out var error, out _), Is.True);
         Assert.That(error, Is.EqualTo(MovieError.MissingKey));
-        Assert.That(_handler.Calls, Is.Zero, "no key sends no request");
+        Assert.That(_handler.Calls, Is.EqualTo(calls), "no key sends no request");
 
-        var svc = CreateService("key", "");
+        svc = CreateService("key", "");
 
         _handler.Body = """{"Response":"False","Error":"Movie not found!"}""";
         Assert.That((await svc.GetMovieDataAsync("nothing")).AsT1, Is.EqualTo(MovieError.NotFound));

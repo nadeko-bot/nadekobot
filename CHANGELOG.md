@@ -4,9 +4,31 @@
 
 ## [7.10.1] - TBD
 
+### Changed
+
+- `.stock` and `.crypto` / `.c` show a daily candle chart of the last 3 months
+    - `.stock` also finds ETFs
+    - `.stock` also shows the day range and the 52 week range
+
+### Fixed
+
+- `.stock` shows the stock data again.
+- Commands and alerts which read an outside site work when the site leaves out a field
+    - `.crypto` / `.c`, `.coins` / `.cryptos`, `.magicthegathering` / `.mtg`, `.osu5`, `.bible` and `.quran`
+    - the AI agent
+    - music, `.youtube` / `.yt` and YouTube stream alerts
+- `.crypto` / `.c` tries the site again 5 minutes after an error.
+- `.quran` gives an error message for an ayah which does not exist.
+- `.magicthegathering` / `.mtg` shows cards without a mana cost, for example lands.
+- `.chucknorris` / `.cn` and `.randjoke` / `.rj` give an error message when the joke site fails.
+
 ### Removed
 
 - The `gamestatus` event of `.eventstart`.
+
+### Dev
+
+- The bot logs a warning with the site, the JSON path and the reason when it cannot read an answer.
 
 ## [7.10.0] - 11.11.2026
 

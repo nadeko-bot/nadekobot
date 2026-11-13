@@ -107,6 +107,11 @@ public class TrovoProvider : Provider
                 Preview = data.Thumbnail
             });
         }
+        catch (System.Text.Json.JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Trovo", ex);
+            return StreamLookup.Unavailable;
+        }
         catch (Exception ex)
         {
             // an outage says nothing about the channel, so it does not count toward the 12-hour delete

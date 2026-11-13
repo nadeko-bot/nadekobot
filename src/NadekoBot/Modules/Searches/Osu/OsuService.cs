@@ -25,9 +25,18 @@ public sealed class OsuService : INService
 
         if (string.IsNullOrWhiteSpace(userResString))
             return null;
-        var objs = JsonConvert.DeserializeObject<List<OsuUserData>>(userResString);
+        List<OsuUserData> objs;
+        try
+        {
+            objs = JsonConvert.DeserializeObject<List<OsuUserData>>(userResString);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("osu!", ex);
+            return null;
+        }
 
-        if (objs.Count == 0)
+        if (objs is null || objs.Count == 0)
         {
             return null;
         }
@@ -84,18 +93,39 @@ public sealed class OsuService : INService
 
         var resString = await http.GetStringAsync($"https://api.gatari.pw/user/stats?u={Uri.EscapeDataString(user)}&mode={modeNumber}");
 
-        var statsResponse = JsonConvert.DeserializeObject<GatariUserStatsResponse>(resString);
-        if (statsResponse.Code != 200 || statsResponse.Stats.Id == 0)
+        GatariUserStatsResponse statsResponse;
+        try
+        {
+            statsResponse = JsonConvert.DeserializeObject<GatariUserStatsResponse>(resString);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Gatari", ex);
+            return default;
+        }
+
+        if (statsResponse?.Stats is null || statsResponse.Code != 200 || statsResponse.Stats.Id == 0)
         {
             return default;
         }
 
         var usrResString = await http.GetStringAsync($"https://api.gatari.pw/users/get?u={Uri.EscapeDataString(user)}");
 
-        var userData = JsonConvert.DeserializeObject<GatariUserResponse>(usrResString).Users[0];
-        var userStats = statsResponse.Stats;
+        GatariUserResponse usersResponse;
+        try
+        {
+            usersResponse = JsonConvert.DeserializeObject<GatariUserResponse>(usrResString);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Gatari", ex);
+            return default;
+        }
 
-        return (userData, userStats);
+        if (usersResponse?.Users is not { Count: > 0 } users)
+            return default;
+
+        return (users[0], statsResponse.Stats);
     }
 
     public async Task<(string title, string desc)[]> GetOsuPlay(string user, string mode)
@@ -113,7 +143,19 @@ public sealed class OsuService : INService
                         + $"&m={m}";
 
         var resString = await http.GetStringAsync(reqString);
-        var obj = JsonConvert.DeserializeObject<List<OsuUserBests>>(resString);
+        List<OsuUserBests> obj;
+        try
+        {
+            obj = JsonConvert.DeserializeObject<List<OsuUserBests>>(resString);
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("osu!", ex);
+            return [];
+        }
+
+        if (obj is null)
+            return [];
 
         var mapTasks = obj.Select(async item =>
         {
@@ -122,7 +164,17 @@ public sealed class OsuService : INService
                                + $"&b={item.BeatmapId}";
 
             var mapResString = await http.GetStringAsync(mapReqString);
-            var map = JsonConvert.DeserializeObject<List<OsuMapData>>(mapResString).FirstOrDefault();
+            OsuMapData map;
+            try
+            {
+                map = JsonConvert.DeserializeObject<List<OsuMapData>>(mapResString).FirstOrDefault();
+            }
+            catch (JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("osu!", ex);
+                return default;
+            }
+
             if (map is null)
                 return default;
             var pp = Math.Round(item.Pp, 2);
@@ -139,7 +191,8 @@ public sealed class OsuService : INService
             return (title, desc);
         });
 
-        return await Task.WhenAll(mapTasks);
+        // A play without its map has no title, and Discord does not take a field without a name.
+        return (await Task.WhenAll(mapTasks)).Where(static p => p.title is not null).ToArray();
     }
 
     //https://osu.ppy.sh/wiki/Accuracy

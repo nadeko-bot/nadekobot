@@ -31,10 +31,11 @@ public sealed class AgentChatRequest
     public string? ReasoningEffort { get; init; }
 }
 
+// The provider's answer also goes into these types, so a field which a provider leaves out must not throw.
 public sealed class AgentChatMessage
 {
     [JsonPropertyName("role")]
-    public required string Role { get; init; }
+    public string Role { get; init; } = "assistant";
 
     [JsonPropertyName("content")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -56,22 +57,25 @@ public sealed class AgentChatMessage
 public sealed class AgentToolCall
 {
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Id { get; init; }
 
     [JsonPropertyName("type")]
     public string Type { get; init; } = "function";
 
     [JsonPropertyName("function")]
-    public required AgentFunctionCall Function { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public AgentFunctionCall? Function { get; init; }
 }
 
 public sealed class AgentFunctionCall
 {
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public string? Name { get; init; }
 
     [JsonPropertyName("arguments")]
-    public required string Arguments { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Arguments { get; init; }
 }
 
 public sealed class AgentChatResponse

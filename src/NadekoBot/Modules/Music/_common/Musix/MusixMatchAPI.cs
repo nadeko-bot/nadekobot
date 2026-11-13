@@ -103,16 +103,32 @@ namespace Musix
             var endpoint =
                 $"track.search?app_id=community-app-v1.0&format=json&q={UrlEncode(trackQuery)}&f_has_lyrics=true&page_size=100&page={page}";
             var jsonResponse = await MakeRequestAsync(endpoint);
-            return JsonSerializer.Deserialize<MusixMatchResponse<TrackSearchResponse>>(jsonResponse, _jsonOptions)
-                   ?? throw new JsonException("Failed to deserialize track search response");
+            try
+            {
+                return JsonSerializer.Deserialize<MusixMatchResponse<TrackSearchResponse>>(jsonResponse, _jsonOptions)
+                       ?? throw new JsonException("Failed to deserialize track search response");
+            }
+            catch (JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("Musixmatch", ex);
+                return new() { Message = new() { Body = new() } };
+            }
         }
 
         public async Task<MusixMatchResponse<LyricsResponse>> GetTrackLyricsAsync(int trackId)
         {
             var endpoint = $"track.lyrics.get?app_id=community-app-v1.0&format=json&track_id={trackId}";
             var jsonResponse = await MakeRequestAsync(endpoint);
-            return JsonSerializer.Deserialize<MusixMatchResponse<LyricsResponse>>(jsonResponse, _jsonOptions)
-                   ?? throw new JsonException("Failed to deserialize lyrics response");
+            try
+            {
+                return JsonSerializer.Deserialize<MusixMatchResponse<LyricsResponse>>(jsonResponse, _jsonOptions)
+                       ?? throw new JsonException("Failed to deserialize lyrics response");
+            }
+            catch (JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("Musixmatch", ex);
+                return new() { Message = new() { Body = new() { Lyrics = new() } } };
+            }
         }
 
         private async Task<string> MakeRequestAsync(string endpoint)

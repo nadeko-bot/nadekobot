@@ -57,6 +57,11 @@ public sealed class PatreonClient(
             _refreshAt = DateTime.UtcNow.AddSeconds(data.ExpiresIn - 5.Minutes().TotalSeconds);
             return new Success();
         }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Patreon", ex);
+            return new Error<string>("Invalid data retrieved from Patreon.");
+        }
         catch (Exception ex)
         {
             return new Error<string>($"Error during deserialization: {ex.Message}");
@@ -112,7 +117,15 @@ public sealed class PatreonClient(
             response.EnsureSuccessStatusCode();
 
             await using var stream = await response.Content.ReadAsStreamAsync();
-            data = await JsonSerializer.DeserializeAsync<PatreonMembersResponse>(stream);
+            try
+            {
+                data = await JsonSerializer.DeserializeAsync<PatreonMembersResponse>(stream);
+            }
+            catch (JsonException ex)
+            {
+                SiteAnswer.LogUnreadable("Patreon", ex);
+                data = null;
+            }
 
             if (data is null)
                 break;

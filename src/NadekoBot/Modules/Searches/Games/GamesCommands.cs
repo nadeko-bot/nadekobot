@@ -38,8 +38,8 @@ public partial class Searches
                         .WithDescription(card.Description)
                         .WithImageUrl(card.ImageUrl)
                         .AddField(GetText(strs.store_url), card.StoreUrl, true)
-                        .AddField(GetText(strs.cost), card.ManaCost, true)
-                        .AddField(GetText(strs.types), card.Types, true);
+                        .AddField(GetText(strs.cost), string.IsNullOrWhiteSpace(card.ManaCost) ? "-" : card.ManaCost, true)
+                        .AddField(GetText(strs.types), string.IsNullOrWhiteSpace(card.Types) ? "-" : card.Types, true);
 
             await Response().Embed(embed).SendAsync();
         }
