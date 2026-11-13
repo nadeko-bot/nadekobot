@@ -145,6 +145,7 @@ Run the tests with `dotnet test` in the repository folder. For music, the bot al
 |---|---|
 | [`src/NadekoBot`](src/NadekoBot) | The bot. Each module is in `Modules/<Module>/` |
 | [`src/NadekoBot.Coordinator`](src/NadekoBot.Coordinator) | Starts the shards of a sharded bot, checks them and restarts them |
+| [`src/NadekoBot.VotesApi`](src/NadekoBot.VotesApi) | Takes the vote webhooks of top.gg, discordbotlist.com and discords.com and gives the votes to the coordinator |
 | [`src/NadekoBot.Hosted`](src/NadekoBot.Hosted) | Runs the bot with the REST API which NadeKloud uses |
 | [`src/NadekoBot.Voice`](src/NadekoBot.Voice) | Discord voice and audio for music |
 | [`src/Nadeko.Medusa`](src/Nadeko.Medusa), [`src/Nadeko.Medusa.Template`](src/Nadeko.Medusa.Template) | The medusa plugin API and the `dotnet new` template |

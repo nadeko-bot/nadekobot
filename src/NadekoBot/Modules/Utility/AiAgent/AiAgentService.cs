@@ -649,6 +649,10 @@ public sealed class AiAgentService(
         if (!string.IsNullOrWhiteSpace(msg.Content))
             sb.Append("text: ").Append(msg.Content).Append('\n');
 
+        var layout = LayoutText.Read(msg.Components);
+        if (layout.Length > 0)
+            sb.Append("text: ").Append(layout).Append('\n');
+
         foreach (var embed in msg.Embeds)
             AppendEmbedInternal(sb, embed);
 

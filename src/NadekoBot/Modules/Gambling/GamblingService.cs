@@ -1,5 +1,6 @@
 #nullable disable
 using System.Globalization;
+using System.Text;
 using LinqToDB;
 using LinqToDB.EntityFrameworkCore;
 using NadekoBot.Common.ModuleBehaviors;
@@ -184,7 +185,7 @@ public class GamblingService : INService, IReadyExecutor
     private string N(long amount)
         => CurrencyHelper.N(amount, CultureInfo.InvariantCulture, _gcs.Data.Currency.Sign);
 
-    public async Task<(long val, string msg)> GetAmountAndMessage(ulong userId, long baseAmount)
+    public async Task<RewardBreakdown> GetRewardBreakdownAsync(ulong userId, long baseAmount)
     {
         var totalAmount = baseAmount;
         var gcsData = _gcs.Data;
@@ -221,34 +222,30 @@ public class GamblingService : INService, IReadyExecutor
 
         totalAmount += (long)(totalAmount * percentBonus);
 
-        var msg = $"**{N(baseAmount)}** base reward\n\n";
+        var bonuses = new StringBuilder();
+        bonuses.Append("**").Append(N(baseAmount)).Append("** base reward");
+        if (boostGuilds.Count > 0 || _ps.IsEnabled)
+            bonuses.Append('\n');
+
         if (boostGuilds.Count > 0)
         {
-            if (booster)
-                msg += $"✅ *+{N(gcsData.BoostBonus.BaseTimelyBonus)} bonus for boosting {userInfo.guild}!*\n";
-            else
-                msg += $"❌ *+0 bonus for boosting {userInfo.guild}*\n";
+            var boostGuild = booster ? userInfo.guild : guildUsers.FirstOrDefault(x => x.guild is not null).guild;
+            bonuses.Append('\n').Append(booster
+                ? $"✅ *+{N(gcsData.BoostBonus.BaseTimelyBonus)} bonus for boosting {boostGuild}!*"
+                : $"❌ *+0 bonus for boosting {boostGuild}*");
         }
 
         if (_ps.IsEnabled)
         {
-            if (percentBonus > float.Epsilon)
-                msg +=
-                    $"✅ *+{percentBonus:P0} bonus for the [Patreon](https://patreon.com/nadekobot) pledge! <:hart:746995901758832712>*\n";
-            else
-                msg += $"❌ *+0 bonus for the [Patreon](https://patreon.com/nadekobot) pledge*\n";
+            bonuses.Append('\n').Append(percentBonus > float.Epsilon
+                ? $"✅ *+{percentBonus:P0} bonus for the [Patreon](https://patreon.com/nadekobot) pledge! <:hart:746995901758832712>*"
+                : "❌ *+0 bonus for the [Patreon](https://patreon.com/nadekobot) pledge*");
         }
 
-        if (hasCompletedDailies)
-        {
-            msg += $"✅ *+50% bonus for completing daily quests*\n";
-        }
-        else
-        {
-            msg += $"❌ *+0 bonus for completing daily quests*\n";
-        }
+        var questLine = hasCompletedDailies
+            ? "✅ *+50% bonus for completing daily quests*"
+            : "❌ *+0 bonus for completing daily quests*";
 
-
-        return (totalAmount, msg);
+        return new(totalAmount, bonuses.ToString(), questLine, hasCompletedDailies);
     }
 }

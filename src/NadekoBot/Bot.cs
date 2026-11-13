@@ -378,7 +378,7 @@ public sealed class Bot : IBot
         if (arg.Message?.Contains("unknown dispatch", StringComparison.InvariantCultureIgnoreCase) ?? false)
             return Task.CompletedTask;
 
-        if (arg.Exception is { InnerException: WebSocketClosedException { CloseCode: SelfHostIntents.DISALLOWED_INTENTS_CLOSE_CODE } })
+        if (GatewayClose.CodeOf(arg.Exception) == SelfHostIntents.DISALLOWED_INTENTS_CLOSE_CODE)
         {
             Log.Error("""
                       Discord refused a privileged intent which the bot asked for (gateway close 4014).
@@ -417,7 +417,7 @@ public sealed class Bot : IBot
     // Discord refuses the same intents on each reconnect, and each try uses one of the bot's daily logins.
     private Task OnDisconnected(Exception ex)
     {
-        if ((ex as WebSocketClosedException)?.CloseCode != SelfHostIntents.DISALLOWED_INTENTS_CLOSE_CODE
+        if (GatewayClose.CodeOf(ex) != SelfHostIntents.DISALLOWED_INTENTS_CLOSE_CODE
             || Interlocked.Exchange(ref _refusedIntents, 1) == 1)
             return Task.CompletedTask;
 

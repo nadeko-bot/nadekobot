@@ -123,6 +123,8 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
 
         if (!string.IsNullOrWhiteSpace(msg.Content))
             sb.AppendLine($"Content:\n{msg.Content}");
+        else if (LayoutText.Read(msg.Components) is { Length: > 0 } layout)
+            sb.AppendLine($"Content:\n{layout}");
         else if (!intents.MessageContent && msg.Author.Id != (await ctx.Guild.GetCurrentUserAsync()).Id)
             sb.AppendLine($"Content: {TEXT_UNAVAILABLE}");
 

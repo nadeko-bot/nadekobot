@@ -6,12 +6,17 @@
 
 ### Changed
 
+- `.timely`, `.vote` and the vote reward message have a `Daily quests` button
+    - shows the quest log only to the member who clicks it
 - `.stock` and `.crypto` / `.c` show a daily candle chart of the last 3 months
     - `.stock` also finds ETFs
     - `.stock` also shows the day range and the 52 week range
 
 ### Fixed
 
+- When Discord takes away a privileged intent while the bot runs, the bot does not stay offline
+    - a self-hosted bot stops and names the intent
+    - a NadeKloud bot starts again without the intent
 - `.stock` shows the stock data again.
 - Commands and alerts which read an outside site work when the site leaves out a field
     - `.crypto` / `.c`, `.coins` / `.cryptos`, `.magicthegathering` / `.mtg`, `.osu5`, `.bible` and `.quran`
@@ -28,6 +33,9 @@
 
 ### Dev
 
+- `NadekoBot.Hosted` reports a token which Discord rejects while the bot runs.
+- `ResponseBuilder.Layout` sends Components V2 messages.
+- The AI agent reads the text of a Components V2 message.
 - The bot logs a warning with the site, the JSON path and the reason when it cannot read an answer.
 
 ## [7.10.0] - 11.11.2026

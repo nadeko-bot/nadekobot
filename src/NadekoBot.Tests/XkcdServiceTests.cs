@@ -49,17 +49,22 @@ public class XkcdServiceTests
     public void Setup()
     {
         _handler = new FakeXkcdHandler();
-        var factory = Substitute.For<IHttpClientFactory>();
-        factory.CreateClient(Arg.Any<string>()).Returns(_ => new HttpClient(_handler, false));
-        _svc = new XkcdService(factory);
+        _svc = CreateService(_handler);
     }
 
     [TearDown]
     public void TearDown()
         => _handler.Dispose();
 
+    private static XkcdService CreateService(FakeXkcdHandler handler)
+    {
+        var factory = Substitute.For<IHttpClientFactory>();
+        factory.CreateClient(Arg.Any<string>()).Returns(_ => new HttpClient(handler, false));
+        return new XkcdService(factory);
+    }
+
     [Test]
-    public async Task Random_CoversAllComics_AndSpecificReturnsNullForMissingComics()
+    public async Task Random_CoversAllComicsAlsoWhenTheLatestFails_AndSpecificReturnsNullForMissingComics()
     {
         var sawNewComic = false;
         for (var i = 0; i < 200; i++)
@@ -77,20 +82,16 @@ public class XkcdServiceTests
         Assert.That(await _svc.GetComicAsync(404), Is.Null);
         Assert.That(await _svc.GetComicAsync(LATEST + 1), Is.Null);
         Assert.That(await _svc.GetComicAsync(0), Is.Null);
-    }
 
-    [Test]
-    public async Task Random_WorksWhenTheLatestComicCanNotBeFetched()
-    {
-        _handler.LatestFails = true;
-
+        using var failing = new FakeXkcdHandler { LatestFails = true };
+        var failingSvc = CreateService(failing);
         for (var i = 0; i < 20; i++)
         {
-            var comic = await _svc.GetRandomAsync();
+            var comic = await failingSvc.GetRandomAsync();
             Assert.That(comic, Is.Not.Null);
             Assert.That(comic!.Num, Is.InRange(1, LATEST));
         }
 
-        Assert.That(_handler.LatestCalls, Is.EqualTo(1));
+        Assert.That(failing.LatestCalls, Is.EqualTo(1));
     }
 }

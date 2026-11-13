@@ -2,78 +2,94 @@ ar:
   dailies_done: لقد أكملت مهامك اليومية!
   dailies_reset: 'تم إعادة تعيين {0}'
   quest_log: سجل المهام
+  daily_quests: المهام اليومية
 
 de-DE:
   dailies_done: Du hast deine täglichen Aufgaben abgeschlossen!
   dailies_reset: 'Zurücksetzen {0}'
   quest_log: Aufgabenjournal
+  daily_quests: Tägliche Aufgaben
 
 es-ES:
   dailies_done: ¡Has completado tus misiones diarias!
   dailies_reset: 'Reiniciar {0}'
   quest_log: Registro de Misiones
+  daily_quests: Misiones diarias
 
 fr-FR:
   dailies_done: Vous avez complété vos missions quotidiennes !
   dailies_reset: 'Réinitialiser {0}'
   quest_log: Journal de Quêtes
+  daily_quests: Quêtes quotidiennes
 
 id-ID:
   dailies_done: Kamu sudah menyelesaikan daily-mu!
   dailies_reset: 'Reset {0}'
   quest_log: Catatan Quest
+  daily_quests: Quest Harian
 
 ja-JP:
   dailies_done: デイリーミッションを完了しました！
   dailies_reset: 'リセット {0}'
   quest_log: クエストログ
+  daily_quests: デイリークエスト
 
 ko-KR:
   dailies_done: 일일 퀘스트를 완료했어요!
   dailies_reset: '{0} 초기화'
   quest_log: 퀘스트 목록
+  daily_quests: 일일 퀘스트
 
 pl-PL:
   dailies_done: Wykonałeś swoje dzienne zadania!
   dailies_reset: 'Zresetowano {0}'
   quest_log: Dziennik zadań
+  daily_quests: Dzienne zadania
 
 pt-BR:
   dailies_done: Você completou suas missões diárias!
   dailies_reset: 'Reiniciar {0}'
   quest_log: Registro de Missões
+  daily_quests: Missões diárias
 
 ru-RU:
   dailies_done: Вы выполнили свои ежедневные задания!
   dailies_reset: 'Сбросить {0}'
   quest_log: Журнал Заданий
+  daily_quests: Ежедневные задания
 
 sr-Cyrl-RS:
   dailies_done: Завршио/ла си дневне задатке!
   dailies_reset: 'Ресетовано {0}'
   quest_log: Дневник задатака
+  daily_quests: Дневни задаци
 
 tr-TR:
   dailies_done: Günlük görevlerini tamamladın!
   dailies_reset: '{0} sıfırlandı'
   quest_log: Görev Günlüğü
+  daily_quests: Günlük görevler
 
 ts-TS:
   dailies_done: You've completed your dailies!
   dailies_reset: 'Reset {0}'
   quest_log: Quest Log
+  daily_quests: Daily quests, obviously
 
 uk-UA:
   dailies_done: Ти виконав свої щоденні завдання!
   dailies_reset: 'Скинуто {0}'
   quest_log: Журнал завдань
+  daily_quests: Щоденні завдання
 
 vi-VN:
   dailies_done: Bạn đã hoàn thành nhiệm vụ hàng ngày!
   dailies_reset: 'Đã đặt lại {0}'
   quest_log: Nhật ký nhiệm vụ
+  daily_quests: Nhiệm vụ hàng ngày
 
 zh-CN:
-  dailies_done: 你已完成每日任務！
+  dailies_done: 你已完成每日任务！
   dailies_reset: '重置 {0}'
-  quest_log: 任務日誌
+  quest_log: 任务日志
+  daily_quests: 每日任务

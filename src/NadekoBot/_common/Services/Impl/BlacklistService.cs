@@ -88,6 +88,11 @@ public sealed class BlacklistService : IExecOnMessage, IReadyExecutor, INService
         return new(false);
     }
 
+    public bool IsBlacklisted(ulong? guildId, ulong? channelId, ulong userId)
+        => blacklistedUsers.Contains(userId)
+           || (guildId is { } gid && blacklistedGuilds.Contains(gid))
+           || (channelId is { } cid && blacklistedChannels.Contains(cid));
+
     public async Task<IReadOnlyList<BlacklistEntry>> GetBlacklist(BlacklistType type)
     {
         await using var uow = _db.GetDbContext();

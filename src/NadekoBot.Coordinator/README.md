@@ -38,32 +38,42 @@ VotesApi gives each vote to the coordinator, and shard 0 takes the votes in a lo
 - After each shard start, the coordinator writes `coord-state.json`: the pid, the start time and the token of each shard.
 - At each start, the coordinator takes over each saved shard which still runs with the same start time. When the shard count in `coord.yml` changed, it stops those shards and starts new ones.
 - A shard keeps running while the coordinator does not answer. After 5 minutes alone it exits.
-- The coordinator's systemd unit needs `KillMode=process`. Else systemd kills the shards when the coordinator stops or crashes.
-- A unit which starts the coordinator in tmux (`Type=forking`) also needs `PIDFile=`. After a takeover, the old shards are children of systemd too, so without the file systemd cannot tell which process is the main one: `systemctl stop` stops nothing, and `Restart=` misses a crash. Write the file with `tmux new-session -d -P -F '#{pid}' ... > <file>`.
+- The coordinator's systemd unit needs `KillMode=process`. Otherwise systemd kills the shards when the coordinator stops or crashes.
+- A unit which starts the coordinator in tmux (`Type=forking`) also needs `PIDFile=`. After a takeover, the shards which the coordinator took over are children of systemd too. Without the file, systemd cannot tell which process is the main one. Then `systemctl stop` stops nothing, and `Restart=` misses a crash. Write the file with `tmux new-session -d -P -F '#{pid}' ... > <file>`.
 - The shards and their ffmpeg processes ignore SIGHUP, so they keep running when a coordinator which runs in a terminal (tmux, screen) exits.
 - After `systemctl stop <unit>`, the shards keep running. To stop them at once, kill their processes, for example with `pkill -x NadekoBot`. Ctrl-C in the coordinator's terminal stops the coordinator and the shards which it started, but not the shards which it took over.
+- While the coordinator runs, it starts each shard whose process ends. Thus, stop the coordinator first and the shards after it. A `pkill` while the coordinator runs only restarts the shards.
+- With `Restart=always`, systemd starts the coordinator again when it exits for any reason other than `systemctl stop`: Ctrl-C, `kill`, `.die` or a crash.
 - The terminal of a new coordinator does not show the console output of the shards which it took over. Read their logs in Seq (`seq` in `creds.yml`). Without Seq, their console output is lost.
 
 ## Update from the gRPC coordinator
 
-The old shards speak gRPC, the new coordinator does not. No full outage is needed, unless the old coordinator runs in a terminal (tmux, screen): then the old shards stop with it, because they do not ignore SIGHUP. In that case, run `systemctl stop <unit>`, install the new files, and start the unit again. Every shard starts again.
+The old shards speak gRPC. The new coordinator speaks only HTTP/2 and cannot read their heartbeats. When it starts an old bot, it restarts each shard after `UnresponsiveSec`, again and again. Thus, `ShardStartCommand` must start the new bot.
 
-Else:
+No full outage is needed, unless the old coordinator runs in a terminal (tmux, screen). Then the old shards stop with it, because they do not ignore SIGHUP. In that case:
 
-1. Set `KillMode=process` (and `PIDFile=` for tmux, see above) in the coordinator's systemd unit and run `systemctl daemon-reload`. Without it, systemd stops every shard when the old coordinator exits.
-2. Install the new coordinator, the new bot and the new VotesApi.
+1. Run `systemctl stop <unit>`. Do not stop the coordinator with Ctrl-C or `kill`: with `Restart=always`, systemd starts it again.
+2. Check that no old shard runs (`pgrep -x NadekoBot`). Stop the rest with `pkill -x NadekoBot`.
+3. Install the new coordinator, the new bot and the new VotesApi. Point `ShardStartCommand` in `coord.yml` to the new bot.
+4. Start the unit again. Every shard starts again, one at a time.
+5. Restart VotesApi.
+
+Otherwise:
+
+1. Set `KillMode=process` in the coordinator's systemd unit and run `systemctl daemon-reload`. Without it, systemd stops every shard when the old coordinator exits.
+2. Install the new coordinator, the new bot and the new VotesApi. If the new bot is in another folder, point `ShardStartCommand` in `coord.yml` to it.
 3. Keep `TotalShards` in `coord.yml` at the old count.
-4. Run `.die true` (graceful). The old shards keep running and wait for a coordinator. If the unit has `Restart=always`, also run `systemctl stop <unit>`, or systemd starts the old coordinator again.
-5. Start the new coordinator in the old coordinator's folder (`~/coord`), which holds `graceful.json` and `coord.yml`. From another folder it finds no `coord.yml` and stops. With a copied `coord.yml` but no `graceful.json`, it starts a second process for each shard. It takes over the shards in `graceful.json`, writes `coord-state.json` and then renames `graceful.json` to `graceful_old.json`. The log says "Took over N of M shards of the gRPC coordinator".
+4. Run `.die true` (graceful). The old shards keep running and wait for a coordinator. If the unit has `Restart=always`, also run `systemctl stop <unit>`. Otherwise systemd starts a coordinator again by itself.
+5. Start the new coordinator in the old coordinator's working folder, which holds `graceful.json` and `coord.yml`. From another folder it finds no `coord.yml` and stops. With a copied `coord.yml` but no `graceful.json`, it starts a second process for each shard. It takes over the shards in `graceful.json`, writes `coord-state.json` and then renames `graceful.json` to `graceful_old.json`. The log says "Took over N of M shards of the gRPC coordinator".
 6. The old shards send no heartbeat to the new coordinator. After `UnresponsiveSec` the coordinator restarts them one at a time on the new bot, about every `RecheckIntervalMs` + 5 s. With 32 shards and the default settings, this takes about 6 minutes.
 7. Check with `ps` that one process runs for each shard, never two.
-8. Restart VotesApi. It sends the votes to `CoordinatorUrl` in its `appsettings.json` (default `http://localhost:3442`).
+8. Restart VotesApi. It sends the votes to `CoordinatorUrl` in its `appsettings.json` (default `http://localhost:3442`). It ignores the old `BotGrpcHost`, so you can delete that line.
 
 When something does not match:
 - A different `TotalShards`: the coordinator stops every old shard at once and starts the new count one at a time. The bot is offline until the new shards connect.
-- A `graceful.json` which it cannot read, or which has no shard list: the coordinator stops at once and kills nothing. The old shards keep running. Repair the file, or stop the old shards by hand (`ps`, `kill`) and then remove it. Never remove a `graceful.json` which lists running shards: the next start would begin a second process for each of them.
+- A `graceful.json` which it cannot read, or which has no shard list: the coordinator stops at once and kills nothing. The old shards keep running. Repair the file, or stop the old shards by hand (`ps`, `kill`) and then remove it. Never remove a `graceful.json` which lists running shards: the next start begins a second process for each of them.
 - A shard process whose environment it cannot read in `/proc`: the coordinator stops at once and kills nothing.
-- A `coord.yml` with `TotalShards` below 1, an empty `ShardStartCommand`, a negative `RecheckIntervalMs` or an `UnresponsiveSec` of 0: the coordinator stops at once and touches nothing. `.coordreload` keeps the old config.
+- A `coord.yml` with `TotalShards` below 1, an empty `ShardStartCommand`, a negative `RecheckIntervalMs` or an `UnresponsiveSec` of 0 or less: the coordinator stops at once and touches nothing. `.coordreload` keeps the old config.
 
 ## Dashboard API
 

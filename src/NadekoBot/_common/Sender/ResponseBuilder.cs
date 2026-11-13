@@ -25,6 +25,7 @@ public sealed partial class ResponseBuilder
     private EmbedColor color = EmbedColor.Ok;
     private LocStr? embedLocDesc;
     private bool splitOnOverflow;
+    private MessageComponent? layout;
 
     public DiscordSocketClient Client { get; set; }
 
@@ -58,8 +59,24 @@ public sealed partial class ResponseBuilder
 
     public async Task<ResponseMessageModel> BuildAsync(bool ephemeral)
     {
+        if (layout is not null)
+            EnsureOnlyLayoutInternal();
+
         var targetChannel = await InternalResolveChannel() ?? throw new ArgumentNullException(nameof(channel));
         var msgReference = CreateMessageReference(targetChannel);
+
+        if (layout is not null)
+        {
+            return new()
+            {
+                TargetChannel = targetChannel,
+                MessageReference = msgReference,
+                User = user ?? ctx?.User,
+                SanitizeMentions = allowedMentions ?? AllowedMentions.None,
+                Ephemeral = ephemeral,
+                Layout = layout
+            };
+        }
 
         var txt = GetText(locTxt, targetChannel);
 
@@ -93,6 +110,19 @@ public sealed partial class ResponseBuilder
         return buildModel;
     }
 
+    // Discord refuses text or an embed in a V2 message, and a handler would clear its components.
+    private void EnsureOnlyLayoutInternal()
+    {
+        if (locTxt is not null
+            || plainText is not null
+            || embedLocDesc is not null
+            || embedBuilder is not null
+            || embeds is not null
+            || fileStream is not null
+            || inters is { Count: > 0 })
+            throw new InvalidOperationException("A layout message cannot have text, an embed, a file or an interaction handler.");
+    }
+
     public Task<IUserMessage> SendAsync(bool ephemeral = false)
         => SendInternalAsync(ephemeral, null);
 
@@ -114,6 +144,14 @@ public sealed partial class ResponseBuilder
 
     public async Task<IUserMessage> SendAsync(ResponseMessageModel model)
     {
+        if (model.Layout is { } layoutComponents)
+        {
+            return await model.TargetChannel.SendMessageAsync(
+                components: layoutComponents,
+                allowedMentions: model.SanitizeMentions,
+                messageReference: model.MessageReference);
+        }
+
         var components = model.InteractionGroup?.CreateComponent();
 
         IUserMessage sentMsg;
@@ -442,6 +480,13 @@ public sealed partial class ResponseBuilder
     {
         if (interactions.Length > 0)
             (inters ??= []).AddRange(interactions);
+        return this;
+    }
+
+    // Components V2: the message has only components, for example a container with text displays and sections.
+    public ResponseBuilder Layout(MessageComponent components)
+    {
+        layout = components;
         return this;
     }
 

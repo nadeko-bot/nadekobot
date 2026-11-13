@@ -370,7 +370,7 @@ public static class HostedProgram
         bridge.MarkDisconnected();
 
         var retry = false;
-        switch ((ex as WebSocketClosedException)?.CloseCode)
+        switch (GatewayClose.CodeOf(ex))
         {
             case DISALLOWED_INTENTS_CLOSE_CODE:
                 Log.Error("Discord refused a privileged intent which the bot asked for");

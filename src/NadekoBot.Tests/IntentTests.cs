@@ -1,8 +1,10 @@
 #nullable enable
 using System;
 using System.IO;
+using System.Net.WebSockets;
 using System.Text.Json;
 using Discord;
+using Discord.Net;
 using NadekoBot.Common;
 using NadekoBot.Hosted;
 using NUnit.Framework;
@@ -88,6 +90,13 @@ public sealed class IntentTests
 
         // One intent swapped for another is also a lost intent.
         Assert.That(HostedProgram.RestartsAtOnce(noMembers, noPresence, lastRetry: null), Is.True);
+
+        // Discord.Net's ConnectionManager wraps every gateway close like this before Disconnected sees it.
+        var wrapped = new WebSocketException(WebSocketError.ConnectionClosedPrematurely, "WebSocket connection was closed",
+            new WebSocketClosedException(4014, "Disallowed intent(s)."));
+        Assert.That(GatewayClose.CodeOf(wrapped), Is.EqualTo(SelfHostIntents.DISALLOWED_INTENTS_CLOSE_CODE));
+        Assert.That(GatewayClose.CodeOf(new WebSocketClosedException(4004)), Is.EqualTo(4004));
+        Assert.That(GatewayClose.CodeOf(new WebSocketException("closed", new TimeoutException())), Is.Null);
 
         var noContent = new IntentState(true, true, false);
 

@@ -54,6 +54,9 @@ public class NadekoEmbedBuilder : EmbedBuilder
         _pendingColor = guildColors?.Warn ?? bcColors.Pending.ToDiscordColor();
     }
 
+    public Color OkColor
+        => _okColor;
+
     public EmbedBuilder WithOkColor()
         => WithColor(_okColor);
 

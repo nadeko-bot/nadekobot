@@ -9,4 +9,5 @@
     public IUser? User { get; set; }
     public bool Ephemeral { get; set; }
     public NadekoInteractionGroup? InteractionGroup { get; set; }
+    public MessageComponent? Layout { get; set; }
 }

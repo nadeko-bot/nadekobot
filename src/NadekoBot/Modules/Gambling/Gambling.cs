@@ -40,6 +40,9 @@ public partial class Gambling : GamblingModule<GamblingService>
     private readonly VoteRewardService _vrs;
     private readonly QuestService _quests;
     private readonly WaifuService _waifus;
+    private readonly QuestLogService _questLog;
+
+    private const int VOTE_REMIND_HOURS = 12;
 
     public Gambling(
         IGamblingService gs,
@@ -58,9 +61,11 @@ public partial class Gambling : GamblingModule<GamblingService>
         CaptchaService captchaService,
         VoteRewardService vrs,
         QuestService quests,
-        WaifuService waifus)
+        WaifuService waifus,
+        QuestLogService questLog)
         : base(configService)
     {
+        _questLog = questLog;
         _gs = gs;
         _db = db;
         _cs = currency;
@@ -107,19 +112,19 @@ public partial class Gambling : GamblingModule<GamblingService>
         await smc.RespondConfirmAsync(_sender, GetText(strs.remind_timely(tt)), ephemeral: true);
     }
 
-    // Creates timely reminder button, parameter in hours.
-    private NadekoInteractionBase CreateRemindMeInteraction(int period)
-        => _inter
-            .Create(ctx.User.Id,
-                new ButtonBuilder(
-                    label: "Remind me",
-                    emote: Emoji.Parse("⏰"),
-                    customId: "timely:remind_me"),
-                (smc) => RemindTimelyAction(smc, DateTime.UtcNow.Add(TimeSpan.FromHours(period)))
-            );
+    // The reward layout removes this button itself, because Discord refuses a V2 message without components.
+    private NadekoButtonInteractionHandler CreateRemindMeInHours(int hours)
+        => new(_client,
+            ctx.User.Id,
+            new ButtonBuilder(
+                label: "Remind me",
+                emote: Emoji.Parse("⏰"),
+                customId: "timely:remind_me"),
+            smc => RemindTimelyAction(smc, DateTime.UtcNow.Add(TimeSpan.FromHours(hours))),
+            onlyAuthor: true,
+            clearAfter: false);
 
-    // Creates timely reminder button, parameter in milliseconds.
-    private NadekoInteractionBase CreateRemindMeInteraction(double ms)
+    private NadekoInteractionBase CreateRemindMeInMilliseconds(double ms)
         => _inter
             .Create(ctx.User.Id,
                 new ButtonBuilder(
@@ -156,50 +161,49 @@ public partial class Gambling : GamblingModule<GamblingService>
             return;
         }
 
-        var (amount, msg) = await _service.GetAmountAndMessage(ctx.User.Id, reward);
+        var breakdown = await _service.GetRewardBreakdownAsync(ctx.User.Id, reward);
+        var header = GetText(strs.vote_suggest(Format.Bold(N(breakdown.Amount))));
+        var remind = await _service.UserHasTimelyReminderAsync(ctx.User.Id)
+            ? null
+            : CreateRemindMeInHours(VOTE_REMIND_HOURS);
 
-        var prepend = GetText(strs.vote_suggest(Format.Bold(N(amount))));
-        msg = prepend + "\n\n" + msg;
+        await SendRewardInternalAsync(header, breakdown, RewardMessage.CreateLinkRows(Config.VotePlatforms), remind);
+    }
 
-        var inter = CreateRemindMeInteraction(12) as NadekoButtonInteractionHandler;
-        var eb = CreateEmbed()
-          .WithOkColor()
-          .WithDescription(msg);
+    private async Task SendRewardInternalAsync(
+        string header,
+        RewardBreakdown reward,
+        IReadOnlyList<ActionRowBuilder> linkRows,
+        NadekoButtonInteractionHandler remind)
+    {
+        var accent = _sender.CreateEmbed(ctx.Guild?.Id).OkColor;
+        var questButton = _questLog.CreateButton(ctx.Guild?.Id);
 
-        var cb = new ComponentBuilder();
-
-        // Add vote platform buttons if any are configured
-        if (Config.VotePlatforms.Length > 0)
+        MessageComponent BuildLayout(bool withRemind)
         {
-            var row = new ActionRowBuilder();
-            // Loop through each vote platform and create a URL button for it
-            foreach (var platform in Config.VotePlatforms)
-            {
-                // Create a URL button for each platform
-                // The platform string should be in format "Label|URL"
-                var parts = platform.Split('|', 2);
-                if (parts.Length == 2)
-                {
-                    var label = parts[0];
-                    var url = parts[1];
+            var layout = RewardMessage.Build(header, reward, accent, questButton);
+            foreach (var row in linkRows)
+                layout.WithActionRow(row);
 
-                    // Add a URL button to the component builder
-                    row.WithButton(label, style: ButtonStyle.Link, url: url);
-                }
-            }
-            cb.AddRow(row);
+            if (withRemind)
+                layout.WithActionRow(new ActionRowBuilder().WithButton(remind.Button));
+
+            return layout.Build();
         }
-        if (!await _service.UserHasTimelyReminderAsync(ctx.User.Id))
+
+        var msg = await Response().Layout(BuildLayout(remind is not null)).SendAsync();
+        if (remind is null)
+            return;
+
+        await remind.RunAsync(msg);
+
+        try
         {
-            var secondRow = new ActionRowBuilder();
-            secondRow.WithButton(inter.Button);
-            cb.AddRow(secondRow);
-            var sent = await ctx.Channel.SendMessageAsync(embed: eb.Build(), components: cb?.Build());
-            await inter.RunAsync(sent);
+            await msg.ModifyAsync(m => m.Components = BuildLayout(false));
         }
-        else
+        catch (Exception ex) when (ex is HttpException or TimeoutException or OperationCanceledException)
         {
-            await ctx.Channel.SendMessageAsync(embed: eb.Build(), components: cb?.Build());
+            Log.Debug(ex, "Could not remove the Remind me button from reward message {MessageId}", msg.Id);
         }
     }
 
@@ -274,7 +278,7 @@ public partial class Gambling : GamblingModule<GamblingService>
         if (await _service.ClaimTimelyAsync(ctx.User.Id, period) is { } remainder)
         {
             // Get correct time form remainder
-            var interaction = CreateRemindMeInteraction(remainder.TotalMilliseconds);
+            var interaction = CreateRemindMeInMilliseconds(remainder.TotalMilliseconds);
 
             // Removes timely button if there is a timely reminder in DB
             if (await _service.UserHasTimelyReminderAsync(ctx.User.Id))
@@ -290,16 +294,15 @@ public partial class Gambling : GamblingModule<GamblingService>
 
 
         var val = Config.Timely.Amount;
-        var inter = CreateRemindMeInteraction(period);
+        var reward = await _service.GetRewardBreakdownAsync(ctx.User.Id, val);
 
-        var prepend = GetText(strs.timely(N(val), period));
-        var (newVal, msg) = await _service.GetAmountAndMessage(ctx.User.Id, val);
+        await _cs.AddAsync(ctx.User.Id, reward.Amount, new("timely", "claim"));
 
-        msg = prepend + "\n\n" + msg;
+        var remind = await _service.UserHasTimelyReminderAsync(ctx.User.Id)
+            ? null
+            : CreateRemindMeInHours(period);
 
-        await _cs.AddAsync(ctx.User.Id, newVal, new("timely", "claim"));
-
-        await Response().Confirm(msg).Interaction(inter).SendAsync();
+        await SendRewardInternalAsync(GetText(strs.timely(N(val), period)), reward, [], remind);
     }
 
 

@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Net.Http.Json;
 using NadekoBot.Common.ModuleBehaviors;
+using NadekoBot.Modules.Games.Quests;
 
 namespace NadekoBot.Modules.Gambling.Services;
 
@@ -102,7 +103,8 @@ public class VoteRewardService(
     CurrencyService cs,
     DiscordSocketClient client,
     IMessageSenderService sender,
-    ICoordinator coordinator
+    ICoordinator coordinator,
+    QuestLogService questLog
 ) : INService, IReadyExecutor
 {
     private static readonly TimeSpan _retryDelay = TimeSpan.FromSeconds(5);
@@ -209,7 +211,8 @@ public class VoteRewardService(
         if (reward <= 0)
             return;
 
-        (reward, var msg) = await gs.GetAmountAndMessage(userId, reward);
+        var breakdown = await gs.GetRewardBreakdownAsync(userId, reward);
+        reward = breakdown.Amount;
         await cs.AddAsync(userId, reward, new("vote", requestType.ToString()));
 
         _ = Task.Run(async () =>
@@ -217,10 +220,16 @@ public class VoteRewardService(
             try
             {
                 var user = await client.GetUserAsync(userId);
+                var layout = RewardMessage.Build(
+                        $"You've received {N(reward)} for voting on {requestType}!",
+                        breakdown,
+                        sender.CreateEmbed().OkColor,
+                        questLog.CreateButton(null))
+                    .Build();
 
                 await sender
                     .Response(user)
-                    .Confirm($"You've received{N(reward)} for voting on {requestType}!\n\n{msg}")
+                    .Layout(layout)
                     .SendAsync();
             }
             catch (Exception ex)
