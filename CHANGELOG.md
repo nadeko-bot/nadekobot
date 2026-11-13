@@ -2,6 +2,12 @@
 
 *a,c,f,r,o,d*
 
+## [7.10.1] - TBD
+
+### Removed
+
+- The `gamestatus` event of `.eventstart`.
+
 ## [7.10.0] - 11.11.2026
 
 ### Added

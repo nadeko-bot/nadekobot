@@ -3,7 +3,7 @@ using CommandLine;
 
 namespace NadekoBot.Modules.Gambling.Common.Events;
 
-public class EventOptions : INadekoCommandOptions
+public sealed class EventOptions : INadekoCommandOptions
 {
     [Option('a', "amount", Required = false, Default = 100, HelpText = "Amount of currency each user receives.")]
     public long Amount { get; set; } = 100;
@@ -15,8 +15,6 @@ public class EventOptions : INadekoCommandOptions
         HelpText = "The maximum amount of currency that can be rewarded. 0 means no limit.")]
     public long PotSize { get; set; }
 
-    //[Option('t', "type", Required = false, Default = "reaction", HelpText = "Type of the event. reaction, gamestatus or joinserver.")]
-    //public string TypeString { get; set; } = "reaction";
     [Option('d',
         "duration",
         Required = false,

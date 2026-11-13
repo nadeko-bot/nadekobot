@@ -3213,7 +3213,7 @@
       "Aliases": [
         ".eventstart"
       ],
-      "Description": "Starts one of the events seen on public Nadeko.\nEvents: `reaction`, `gamestatus`",
+      "Description": "Starts one of the events seen on public Nadeko.\nEvents: `reaction`",
       "Usage": [
         ".eventstart reaction",
         ".eventstart reaction -d 1 -a 50 --pot-size 1500"

@@ -198,11 +198,6 @@ public sealed class BotPresenceTests
         Assert.That(((StreamingGame)_client.Activity).Name, Is.EqualTo("Nadeko live"));
         Assert.That(((StreamingGame)_client.Activity).Url, Is.EqualTo(TWITCH));
 
-        // A gamestatus event shows its code, and the saved activity comes back when it ends.
-        await _client.SetGameAsync("code");
-        await _svc.ApplySavedAsync();
-        Assert.That(_client.Activity, Is.TypeOf<StreamingGame>());
-
         await _svc.SetActivityAsync(null, "hi");
         await _svc.ApplySavedAsync();
         Assert.That(_client.Activity, Is.TypeOf<CustomStatusGame>());

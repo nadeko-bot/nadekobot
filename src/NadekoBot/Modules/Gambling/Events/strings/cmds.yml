@@ -1,7 +1,7 @@
 eventstart:
   desc: |-
     Starts one of the events seen on public Nadeko.
-    Events: `reaction`, `gamestatus`
+    Events: `reaction`
   ex:
     - reaction
     - reaction -d 1 -a 50 --pot-size 1500
