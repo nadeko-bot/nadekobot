@@ -2,7 +2,7 @@
 
 *a,c,f,r,o,d*
 
-## [7.10.1] - TBD
+## [7.10.1] - 14.11.2026
 
 ### Changed
 
@@ -22,7 +22,7 @@
     - `.crypto` / `.c`, `.coins` / `.cryptos`, `.magicthegathering` / `.mtg`, `.osu5`, `.bible` and `.quran`
     - the AI agent
     - music, `.youtube` / `.yt` and YouTube stream alerts
-- `.crypto` / `.c` tries the site again 5 minutes after an error.
+- `.crypto` / `.c` and `.coins` / `.cryptos` try the site again 5 minutes after an error.
 - `.quran` gives an error message for an ayah which does not exist.
 - `.magicthegathering` / `.mtg` shows cards without a mana cost, for example lands.
 - `.chucknorris` / `.cn` and `.randjoke` / `.rj` give an error message when the joke site fails.

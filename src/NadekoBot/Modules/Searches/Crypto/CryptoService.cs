@@ -33,13 +33,15 @@ public class CryptoService(
     private static readonly TypedKey<IReadOnlyCollection<GeckoCoinsResult>> _topCoinsKey = new("crypto:top_coins");
 
     private static readonly TimeSpan _cryptoDataExpiry = TimeSpan.FromHours(2);
-    private static readonly TimeSpan _cryptoRetryDelay = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan _retryDelay = TimeSpan.FromMinutes(5);
     private static readonly TypedKey<CryptoResponse> _cryptoDataKey = new("nadeko:crypto_data");
 
     private readonly SemaphoreSlim _getCryptoLock = new(1, 1);
 
     // Only read and written while the bot holds _getCryptoLock.
     private long _cryptoRetryAt;
+
+    private long _coinsRetryAt;
     private readonly TimeProvider _time = timeProvider ?? TimeProvider.System;
     private readonly SingleFlight<int, Candle[]?> _candleLoads = new();
     private readonly LookupGate _gate = new(MAX_LOOKUPS,
@@ -104,7 +106,7 @@ public class CryptoService(
                 var data = await LoadCryptoDataInternalAsync();
                 if (data is null)
                 {
-                    _cryptoRetryAt = (_time.GetUtcNow() + _cryptoRetryDelay).UtcTicks;
+                    _cryptoRetryAt = (_time.GetUtcNow() + _retryDelay).UtcTicks;
                     return null;
                 }
 
@@ -337,22 +339,33 @@ public class CryptoService(
     // Not through GetOrAddAsync, because the memory cache keeps a null result until it expires.
     private async Task<IReadOnlyCollection<GeckoCoinsResult>?> LoadTopCoinsInternalAsync()
     {
-        using var http = httpFactory.CreateClient();
-        http.AddFakeHeaders();
+        // CoinGecko answers 429 to too many requests, so after a failure the bot waits before it asks again.
+        if (_time.GetUtcNow().UtcTicks < Interlocked.Read(ref _coinsRetryAt))
+            return null;
 
         List<GeckoCoinsResult>? coins;
         try
         {
+            using var http = httpFactory.CreateClient();
+            http.AddFakeHeaders();
             coins = await http.GetFromJsonAsync<List<GeckoCoinsResult>>(TOP_COINS_URL);
         }
         catch (JsonException ex)
         {
             SiteAnswer.LogUnreadable("CoinGecko", ex);
-            return null;
+            coins = null;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+        {
+            Log.Warning("CoinGecko did not send the coin list: {Message}", ex.Message);
+            coins = null;
         }
 
         if (coins is null)
+        {
+            Interlocked.Exchange(ref _coinsRetryAt, (_time.GetUtcNow() + _retryDelay).UtcTicks);
             return null;
+        }
 
         coins.RemoveAll(static x => x is null || string.IsNullOrWhiteSpace(x.Name) || string.IsNullOrWhiteSpace(x.Symbol));
         await cache.AddAsync(_topCoinsKey, coins, _topCoinsExpiry);

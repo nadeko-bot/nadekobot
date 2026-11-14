@@ -147,6 +147,13 @@ public class StockDataTests
 
         // .coins shows a coin with missing values, and skips a coin without a name.
         var crypto = new CryptoService(new MemoryBotCache(), factory, Substitute.For<IBotCreds>(), new CandleChart(), time);
+        handler.Fail = true;
+        Assert.That(await crypto.GetTopCoins(0), Is.Null);
+        handler.Fail = false;
+        calls = handler.Calls;
+        Assert.That(await crypto.GetTopCoins(0), Is.Null, "after an error the bot waits 5 minutes");
+        Assert.That(handler.Calls, Is.EqualTo(calls));
+        time.Advance(TimeSpan.FromMinutes(5));
         var coins = (await crypto.GetTopCoins(0))!.ToArray();
         Assert.That(coins.Select(x => x.Name), Is.EqualTo(new[] { "Bitcoin", "New Coin" }));
         Assert.That(coins[0].CurrentPrice, Is.EqualTo(91234.5m));
