@@ -26,6 +26,10 @@ ar:
   rakeback_claimed: 'لقد طالبت بـ {0} كاسترداد!'
   rakeback_none: ليس لديك أي استرداد للمطالبة به بعد.
   remind_timely: 'سأذكرك بمكافأتك الدورية {0}'
+  reward_base: '{0} مكافأة أساسية'
+  reward_boost: '+{0} مكافأة مقابل تعزيز {1}'
+  reward_patreon: '+{0}% مكافأة مقابل عضوية {1}'
+  reward_quests: '+{0}% مكافأة لإكمال المهام اليومية'
   roll2: رمي
   rps_draw: 'تعادل! كلاكما اختار {0}'
   rps_win: '{0} فاز! {1} يتغلب على {2}'
@@ -42,6 +46,7 @@ ar:
   timely_time: حان وقت مكافأتك الدورية.
   transaction: معاملة عملة
   transactions: 'معاملات المستخدم {0}'
+  vote_reward_received: 'لقد حصلت على {0} مقابل التصويت على {1}!'
   vote_suggest: 'التصويت للبوت سيمنحك {0}!'
   winlb: لوحة متصدري أكبر المكاسب
   won: فاز
@@ -74,6 +79,10 @@ de-DE:
   rakeback_claimed: 'Du hast {0} als Rakeback erhalten!'
   rakeback_none: Du hast noch kein Rakeback zum Abholen.
   remind_timely: 'Ich werde dich an deine Timely-Belohnung erinnern {0}'
+  reward_base: '{0} Grundbelohnung'
+  reward_boost: '+{0} Bonus fürs Boosten von {1}'
+  reward_patreon: '+{0}% Bonus für deine {1}-Mitgliedschaft'
+  reward_quests: '+{0}% Bonus für erledigte tägliche Aufgaben'
   roll2: Würfeln
   rps_draw: 'Es ist Unentschieden! Beide haben {0} gewählt'
   rps_win: '{0} gewinnt! {1} schlägt {2}'
@@ -90,6 +99,7 @@ de-DE:
   timely_time: Es ist Zeit für deine Timely-Belohnung.
   transaction: Währungstransaktion
   transactions: 'Transaktion von dem Nutzer {0}'
+  vote_reward_received: 'Du hast {0} für deine Stimme auf {1} erhalten!'
   vote_suggest: 'Für den Bot zu stimmen bringt dir {0}!'
   winlb: Rangliste der Größten Gewinne
   won: Gewonnen
@@ -122,6 +132,10 @@ es-ES:
   rakeback_claimed: '¡Has reclamado {0} como rakeback!'
   rakeback_none: Aún no tienes rakeback para reclamar.
   remind_timely: 'Te recordare tu recompensa de timely {0}'
+  reward_base: '{0} de recompensa base'
+  reward_boost: '+{0} de bonificación por mejorar {1}'
+  reward_patreon: '+{0}% de bonificación por tu apoyo en {1}'
+  reward_quests: '+{0}% de bonificación por completar misiones diarias'
   roll2: Tirada
   rps_draw: '¡Es un empate! Ambos escogieron {0}'
   rps_win: '¡{0} gana! {1} vence a {2}'
@@ -138,6 +152,7 @@ es-ES:
   timely_time: Es hora de tu recompensa de timely.
   transaction: Transacciones de moneda
   transactions: 'Transacciones del usuario {0}'
+  vote_reward_received: '¡Has recibido {0} por votar en {1}!'
   vote_suggest: '¡Votar por el bot te dará {0}!'
   winlb: Ranking de Mayores Victorias
   won: Ganó
@@ -170,6 +185,10 @@ fr-FR:
   rakeback_claimed: 'Vous avez réclamé {0} en rakeback !'
   rakeback_none: Vous n'avez pas encore de rakeback à réclamer.
   remind_timely: 'Je vous notifierai afin d''obtenir votre prochaine récompense {0}'
+  reward_base: '{0} de récompense de base'
+  reward_boost: '+{0} de bonus pour le boost de {1}'
+  reward_patreon: '+{0} % de bonus pour votre abonnement {1}'
+  reward_quests: '+{0} % de bonus pour les quêtes quotidiennes'
   roll2: Lancé
   rps_draw: 'C''est un match nul! Les deux ont choisi {0}'
   rps_win: '{0} a gagné! {1} bat {2}'
@@ -186,6 +205,7 @@ fr-FR:
   timely_time: C'est l'heure votre récompense opportune.
   transaction: Transaction monétaire
   transactions: 'Transactions de l''utilisateur {0}'
+  vote_reward_received: 'Vous avez reçu {0} pour votre vote sur {1} !'
   vote_suggest: 'Voter pour le bot vous donnera {0} !'
   winlb: Classement des Plus Grandes Victoires
   won: Gagné
@@ -218,6 +238,10 @@ id-ID:
   rakeback_claimed: 'Kamu telah mengklaim {0} sebagai rakeback!'
   rakeback_none: Kamu belum punya rakeback yang bisa diklaim.
   remind_timely: 'Aku akan mengingatkanmu tentang hadiah timely-mu {0}'
+  reward_base: '{0} hadiah dasar'
+  reward_boost: '+{0} bonus karena boost {1}'
+  reward_patreon: '+{0}% bonus untuk dukungan {1}'
+  reward_quests: '+{0}% bonus karena menyelesaikan quest harian'
   roll2: Roll
   rps_draw: 'Seri! Keduanya memilih {0}'
   rps_win: '{0} menang! {1} mengalahkan {2}'
@@ -234,6 +258,7 @@ id-ID:
   timely_time: Waktunya hadiah timely-mu.
   transaction: Transaksi Mata Uang
   transactions: 'Transaksi pengguna {0}'
+  vote_reward_received: 'Kamu mendapat {0} karena voting di {1}!'
   vote_suggest: 'Voting untuk bot ini akan memberimu {0}!'
   winlb: Papan Peringkat Kemenangan Terbesar
   won: Menang
@@ -266,6 +291,10 @@ ja-JP:
   rakeback_claimed: '{0}をレーキバックとして受け取りました！'
   rakeback_none: まだ受け取れるレーキバックはありません。
   remind_timely: 'タイムリー報酬について{0}にリマインドします'
+  reward_base: '基本報酬 {0}'
+  reward_boost: '{1} のブーストボーナス +{0}'
+  reward_patreon: '+{0}% ボーナス（{1} 支援者）'
+  reward_quests: 'デイリークエスト達成で +{0}% ボーナス'
   roll2: ロール
   rps_draw: '引き分け! 両方とも{0}を出しました'
   rps_win: '{0}の勝ち! {1}は{2}に勝ちます'
@@ -282,6 +311,7 @@ ja-JP:
   timely_time: タイムリー報酬の時間です。
   transaction: 通貨取引
   transactions: 'ユーザー{0}の取引履歴'
+  vote_reward_received: '{1} での投票で {0} を受け取りました！'
   vote_suggest: 'Botに投票すると{0}がもらえます！'
   winlb: 最大勝利ランキング
   won: 勝利
@@ -314,6 +344,10 @@ ko-KR:
   rakeback_claimed: '레이크백 {0}을(를) 수령했어요!'
   rakeback_none: 아직 받을 수 있는 레이크백이 없어요.
   remind_timely: '{0} 후에 타임리 보상을 알려드릴게요'
+  reward_base: '기본 보상 {0}'
+  reward_boost: '{1} 부스트 보너스 +{0}'
+  reward_patreon: '{1} 후원 보너스 +{0}%'
+  reward_quests: '일일 퀘스트 완료 보너스 +{0}%'
   roll2: 굴리기
   rps_draw: '무승부! 둘 다 {0}을(를) 선택했어요'
   rps_win: '{0} 승리! {1}이(가) {2}을(를) 이겼어요'
@@ -330,6 +364,7 @@ ko-KR:
   timely_time: 타임리 보상을 받을 시간이에요.
   transaction: 화폐 거래
   transactions: '사용자 {0}의 거래 내역'
+  vote_reward_received: '{1}에서 투표해서 {0}을(를) 받았어요!'
   vote_suggest: '봇에 투표하면 {0}을(를) 받을 수 있어요!'
   winlb: 최고 승리 리더보드
   won: 승리
@@ -362,6 +397,10 @@ pl-PL:
   rakeback_claimed: 'Odebrałeś/aś {0} jako rakeback!'
   rakeback_none: Nie masz jeszcze żadnego rakeback do odebrania.
   remind_timely: 'Przypomnę ci o nagrodzie timely {0}'
+  reward_base: '{0} podstawowej nagrody'
+  reward_boost: '+{0} bonusu za boostowanie {1}'
+  reward_patreon: '+{0}% bonusu za wsparcie {1}'
+  reward_quests: '+{0}% bonusu za ukończenie dziennych zadań'
   roll2: Rzut
   rps_draw: 'Remis! Oboje wybrali {0}'
   rps_win: '{0} wygrał! {1} bije {2}'
@@ -378,6 +417,7 @@ pl-PL:
   timely_time: Czas na twoją nagrodę timely.
   transaction: Transakcja walutowa
   transactions: 'Transakcje użytkownika {0}'
+  vote_reward_received: 'Otrzymujesz {0} za głos na {1}!'
   vote_suggest: 'Głosowanie na bota da ci {0}!'
   winlb: Ranking największych wygranych
   won: Wygrana
@@ -410,6 +450,10 @@ pt-BR:
   rakeback_claimed: 'Você resgatou {0} como rakeback!'
   rakeback_none: Você ainda não tem rakeback para resgatar.
   remind_timely: 'Vou te lembrar da sua recompensa periodica {0}'
+  reward_base: '{0} de recompensa base'
+  reward_boost: '+{0} de bônus por impulsionar {1}'
+  reward_patreon: '+{0}% de bônus pelo apoio no {1}'
+  reward_quests: '+{0}% de bônus por completar missões diárias'
   roll2: Rolar
   rps_draw: 'Um empate! Ambos escolheram {0}'
   rps_win: '{0} ganhou! {1} derrota {2}'
@@ -426,6 +470,7 @@ pt-BR:
   timely_time: Esta na hora da sua recompensa periodica.
   transaction: Transação Monetária
   transactions: 'Transações do usuário {0}'
+  vote_reward_received: 'Você recebeu {0} por votar no {1}!'
   vote_suggest: 'Votar pelo bot vai te dar {0}!'
   winlb: Ranking de Maiores Vitórias
   won: Ganhou
@@ -458,6 +503,10 @@ ru-RU:
   rakeback_claimed: 'Вы забрали {0} рейкбэка!'
   rakeback_none: У вас пока нет рейкбэка для получения.
   remind_timely: 'Я напомню вам о вашей ежедневной награде {0}'
+  reward_base: '{0} базовой награды'
+  reward_boost: '+{0} бонуса за буст {1}'
+  reward_patreon: '+{0}% бонуса за поддержку {1}'
+  reward_quests: '+{0}% бонуса за выполнение ежедневных заданий'
   roll2: Бросок
   rps_draw: 'Это ничья! Двое выбрали {0}'
   rps_win: '{0} выигрывает! {1} побеждает {2}'
@@ -474,6 +523,7 @@ ru-RU:
   timely_time: Пора получить вашу ежедневную награду.
   transaction: Транзакция валюты
   transactions: 'Операции пользователя {0}'
+  vote_reward_received: 'Вы получили {0} за голосование на {1}!'
   vote_suggest: 'Голосование за бота принесёт вам {0}!'
   winlb: Рейтинг Крупнейших Выигрышей
   won: Выиграл
@@ -506,6 +556,10 @@ sr-Cyrl-RS:
   rakeback_claimed: 'Преузео/ла си {0} као рејкбек!'
   rakeback_none: Немаш још рејкбек за преузимање.
   remind_timely: 'Подсетићу те на твоју временску награду {0}'
+  reward_base: '{0} основне награде'
+  reward_boost: '+{0} бонуса за буст {1}'
+  reward_patreon: '+{0}% бонуса за подршку {1}'
+  reward_quests: '+{0}% бонуса за извршавање дневних задатака'
   roll2: Баци
   rps_draw: 'Нерешено! Обоје сте изабрали {0}'
   rps_win: '{0} победи! {1} побеђује {2}'
@@ -522,6 +576,7 @@ sr-Cyrl-RS:
   timely_time: Време је за твоју временску награду.
   transaction: Валутна трансакција
   transactions: 'Трансакције корисника {0}'
+  vote_reward_received: 'Добио/ла си {0} за гласање на {1}!'
   vote_suggest: 'Гласање за бота ти доноси {0}!'
   winlb: Листа највећих добитака
   won: Добитак
@@ -554,6 +609,10 @@ tr-TR:
   rakeback_claimed: 'Rakeback olarak {0} talep ettin!'
   rakeback_none: Henüz talep edebileceğin bir rakeback yok.
   remind_timely: 'Zamanında ödülünü hatırlatacağım {0}'
+  reward_base: '{0} temel ödül'
+  reward_boost: '{1} takviyesi için +{0} bonus'
+  reward_patreon: '{1} desteği için +{0}% bonus'
+  reward_quests: 'Günlük görevleri tamamlama için +{0}% bonus'
   roll2: Zar At
   rps_draw: 'Berabere! İkiniz de {0} seçti'
   rps_win: '{0} kazandı! {1}, {2} yener'
@@ -570,6 +629,7 @@ tr-TR:
   timely_time: Zamanında ödülünü alma vakti geldi.
   transaction: Para İşlemi
   transactions: '{0} kullanıcısının işlemleri'
+  vote_reward_received: '{1} sitesinde oy verdiğin için {0} aldın!'
   vote_suggest: 'Bota oy vermek sana {0} kazandıracak!'
   winlb: En Büyük Kazançlar Sıralaması
   won: Kazandı
@@ -602,6 +662,10 @@ ts-TS:
   rakeback_claimed: 'You''ve claimed {0} as rakeback! D-don''t spend it all at once.'
   rakeback_none: You don't have any rakeback to claim yet.
   remind_timely: 'I will remind you about your timely reward {0}'
+  reward_base: '{0} base reward'
+  reward_boost: '+{0} bonus for boosting {1}'
+  reward_patreon: '+{0}% bonus for the {1} pledge'
+  reward_quests: '+{0}% bonus for completing daily quests'
   roll2: Roll
   rps_draw: 'It''s a draw! Both picked {0}'
   rps_win: '{0} won! {1} beats {2}'
@@ -618,6 +682,7 @@ ts-TS:
   timely_time: It's time for your timely reward.
   transaction: Currency Transaction
   transactions: 'Transactions of user {0}'
+  vote_reward_received: 'You''ve received {0} for voting on {1}!'
   vote_suggest: 'Voting for the bot will get you {0}!'
   winlb: Biggest Wins Leaderboard
   won: Won
@@ -650,6 +715,10 @@ uk-UA:
   rakeback_claimed: 'Ти забрав {0} як рейкбек!'
   rakeback_none: В тебе поки немає рейкбеку для отримання.
   remind_timely: 'Я нагадаю тобі про нагороду за час {0}'
+  reward_base: '{0} базової нагороди'
+  reward_boost: '+{0} бонусу за буст {1}'
+  reward_patreon: '+{0}% бонусу за підтримку {1}'
+  reward_quests: '+{0}% бонусу за виконання щоденних завдань'
   roll2: Кидок
   rps_draw: 'Нічия! Обидва обрали {0}'
   rps_win: '{0} переміг! {1} б''є {2}'
@@ -666,6 +735,7 @@ uk-UA:
   timely_time: Час для твоєї нагороди за час.
   transaction: Валютна транзакція
   transactions: 'Транзакції користувача {0}'
+  vote_reward_received: 'Ти отримав {0} за голосування на {1}!'
   vote_suggest: 'Голосування за бота принесе тобі {0}!'
   winlb: Таблиця найбільших виграшів
   won: Виграв
@@ -698,6 +768,10 @@ vi-VN:
   rakeback_claimed: 'Bạn đã nhận {0} tiền rakeback!'
   rakeback_none: Bạn chưa có rakeback nào để nhận.
   remind_timely: 'Mình sẽ nhắc bạn về phần thưởng timely {0}'
+  reward_base: '{0} phần thưởng cơ bản'
+  reward_boost: '+{0} thưởng thêm khi boost {1}'
+  reward_patreon: '+{0}% thưởng thêm khi ủng hộ qua {1}'
+  reward_quests: '+{0}% thưởng thêm khi hoàn thành nhiệm vụ hàng ngày'
   roll2: Tung xúc xắc
   rps_draw: 'Hòa rồi! Cả hai đều chọn {0}'
   rps_win: '{0} thắng! {1} thắng {2}'
@@ -714,6 +788,7 @@ vi-VN:
   timely_time: Đã đến lúc nhận phần thưởng timely rồi.
   transaction: Giao dịch tiền tệ
   transactions: 'Giao dịch của người dùng {0}'
+  vote_reward_received: 'Bạn đã nhận {0} nhờ vote trên {1}!'
   vote_suggest: 'Vote cho bot sẽ giúp bạn nhận được {0}!'
   winlb: Bảng xếp hạng thắng lớn nhất
   won: Thắng
@@ -746,6 +821,10 @@ zh-CN:
   rakeback_claimed: '你已領取 {0} 返水！'
   rakeback_none: 你還沒有可領取的返水。
   remind_timely: '我会在 {0} 提醒你领取每日奖励'
+  reward_base: '{0} 基础奖励'
+  reward_boost: '为 {1} 加成获得 +{0} 额外奖励'
+  reward_patreon: '+{0}% 加成来自 {1} 会员'
+  reward_quests: '完成每日任务获得 +{0}% 加成'
   roll2: 掷骰
   rps_draw: '平手!兩邊都出{0}'
   rps_win: '{0}勝利! {1}對上{2}'
@@ -762,6 +841,7 @@ zh-CN:
   timely_time: 你的每日奖励时间到了。
   transaction: 貨幣交易
   transactions: '{0} 的交易紀錄'
+  vote_reward_received: '你在 {1} 上投票，获得了 {0}！'
   vote_suggest: '為機器人投票將獲得 {0}！'
   winlb: 最大勝利排行榜
   won: 勝利

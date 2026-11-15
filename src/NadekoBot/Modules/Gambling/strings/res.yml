@@ -25,6 +25,10 @@ rakeback_available: You have {0} rakeback available. Click the button to claim.
 rakeback_claimed: You've claimed {0} as rakeback!
 rakeback_none: You don't have any rakeback to claim yet.
 remind_timely: I will remind you about your timely reward {0}
+reward_base: '{0} base reward'
+reward_boost: +{0} bonus for boosting {1}
+reward_patreon: +{0}% bonus for the {1} pledge
+reward_quests: +{0}% bonus for completing daily quests
 roll2: Roll
 rps_draw: It's a draw! Both picked {0}
 rps_win: '{0} won! {1} beats {2}'
@@ -41,6 +45,7 @@ timely_set_none: Users will not be able to claim any timely currency.
 timely_time: It's time for your timely reward.
 transaction: Currency Transaction
 transactions: Transactions of user {0}
+vote_reward_received: You've received {0} for voting on {1}!
 vote_suggest: Voting for the bot will get you {0}!
 winlb: Biggest Wins Leaderboard
 won: Won

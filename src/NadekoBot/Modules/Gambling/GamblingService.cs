@@ -24,6 +24,11 @@ public class GamblingService : INService, IReadyExecutor
     private readonly QuestService _quests;
     private readonly NadekoRandom _rng;
     private readonly TimelyClaimStore _timely;
+    private readonly IBotStrings _strings;
+
+    private const int DAILIES_BONUS_PERCENT = 50;
+    private const string PATREON_LINK = "[Patreon](https://patreon.com/nadekobot)";
+    private const string PATREON_EMOJI = "<:hart:746995901758832712>";
 
     private static readonly TypedKey<long> _curDecayKey = new("currency:last_decay");
 
@@ -33,8 +38,10 @@ public class GamblingService : INService, IReadyExecutor
         IBotCache cache,
         GamblingConfigService gcs,
         IPatronageService ps,
-        QuestService quests)
+        QuestService quests,
+        IBotStrings strings)
     {
+        _strings = strings;
         _db = db;
         _client = client;
         _cache = cache;
@@ -185,7 +192,7 @@ public class GamblingService : INService, IReadyExecutor
     private string N(long amount)
         => CurrencyHelper.N(amount, CultureInfo.InvariantCulture, _gcs.Data.Currency.Sign);
 
-    public async Task<RewardBreakdown> GetRewardBreakdownAsync(ulong userId, long baseAmount)
+    public async Task<RewardBreakdown> GetRewardBreakdownAsync(ulong userId, long baseAmount, ulong? guildId)
     {
         var totalAmount = baseAmount;
         var gcsData = _gcs.Data;
@@ -215,37 +222,40 @@ public class GamblingService : INService, IReadyExecutor
         var hasCompletedDailies = await _quests.UserCompletedDailies(userId);
 
         if (hasCompletedDailies)
-            totalAmount = (long)(1.5 * totalAmount);
+            totalAmount = (long)(totalAmount * (1 + (DAILIES_BONUS_PERCENT / 100d)));
 
         var patron = await _ps.GetPatronAsync(userId);
-        var percentBonus = (_ps.PercentBonus(patron) / 100f);
+        var patronPercent = _ps.PercentBonus(patron);
 
-        totalAmount += (long)(totalAmount * percentBonus);
+        totalAmount += (long)(totalAmount * (patronPercent / 100f));
 
-        var bonuses = new StringBuilder();
-        bonuses.Append("**").Append(N(baseAmount)).Append("** base reward");
-        if (boostGuilds.Count > 0 || _ps.IsEnabled)
-            bonuses.Append('\n');
+        var bonuses = new StringBuilder(_strings.GetText(strs.reward_base(Format.Bold(N(baseAmount))), guildId));
+        var baseLength = bonuses.Length;
 
-        if (boostGuilds.Count > 0)
+        void AddBonusLine(bool active, string text)
+            => bonuses.Append(bonuses.Length == baseLength ? "\n\n" : "\n").Append(BonusLine(active, text));
+
+        var boostGuild = booster ? userInfo.guild : guildUsers.FirstOrDefault(x => x.guild is not null).guild;
+        if (boostGuild is not null)
         {
-            var boostGuild = booster ? userInfo.guild : guildUsers.FirstOrDefault(x => x.guild is not null).guild;
-            bonuses.Append('\n').Append(booster
-                ? $"✅ *+{N(gcsData.BoostBonus.BaseTimelyBonus)} bonus for boosting {boostGuild}!*"
-                : $"❌ *+0 bonus for boosting {boostGuild}*");
+            var boostBonus = booster ? N(gcsData.BoostBonus.BaseTimelyBonus) : "0";
+            AddBonusLine(booster,
+                _strings.GetText(strs.reward_boost(boostBonus, boostGuild.Name.SanitizeAllMentions()), guildId));
         }
 
         if (_ps.IsEnabled)
         {
-            bonuses.Append('\n').Append(percentBonus > float.Epsilon
-                ? $"✅ *+{percentBonus:P0} bonus for the [Patreon](https://patreon.com/nadekobot) pledge! <:hart:746995901758832712>*"
-                : "❌ *+0 bonus for the [Patreon](https://patreon.com/nadekobot) pledge*");
+            var isPatron = patronPercent > 0;
+            var patronText = _strings.GetText(strs.reward_patreon(patronPercent, PATREON_LINK), guildId);
+            AddBonusLine(isPatron, isPatron ? $"{patronText} {PATREON_EMOJI}" : patronText);
         }
 
-        var questLine = hasCompletedDailies
-            ? "✅ *+50% bonus for completing daily quests*"
-            : "❌ *+0 bonus for completing daily quests*";
+        var questLine = BonusLine(hasCompletedDailies,
+            _strings.GetText(strs.reward_quests(hasCompletedDailies ? DAILIES_BONUS_PERCENT : 0), guildId));
 
         return new(totalAmount, bonuses.ToString(), questLine, hasCompletedDailies);
     }
+
+    private static string BonusLine(bool active, string text)
+        => (active ? "✅ *" : "❌ *") + text + "*";
 }

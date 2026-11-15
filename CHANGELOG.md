@@ -6,6 +6,7 @@
 
 ### Changed
 
+- `.timely` and `.vote` show their reward lines in the language of the server.
 - `.stock` answers faster
     - for ETFs and company names
     - for a repeated symbol while the US market is closed

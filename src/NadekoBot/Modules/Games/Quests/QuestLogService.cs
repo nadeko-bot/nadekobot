@@ -50,7 +50,7 @@ public sealed class QuestLogService(
     }
 
     public ButtonBuilder CreateButton(ulong? guildId)
-        => CreateButtonWithLabel(GetText(strs.daily_quests, guildId));
+        => CreateButtonWithLabel(strings.GetText(strs.daily_quests, guildId));
 
     public static ButtonBuilder CreateButtonWithLabel(string label)
         => new(label: label, customId: BUTTON_ID, style: ButtonStyle.Secondary, emote: _emote);
@@ -65,13 +65,13 @@ public sealed class QuestLogService(
             allDone &= userQuest.IsCompleted;
 
         var reset = TimestampTag.FromDateTime(now.AddDays(1).Date, TimestampTagStyles.Relative);
-        var desc = GetText(strs.dailies_reset(reset), guildId);
+        var desc = strings.GetText(strs.dailies_reset(reset), guildId);
         if (allDone)
-            desc = GetText(strs.dailies_done, guildId) + "\n" + desc;
+            desc = strings.GetText(strs.dailies_done, guildId) + "\n" + desc;
 
         var embed = sender.CreateEmbed(guildId)
             .WithOkColor()
-            .WithTitle(GetText(strs.quest_log, guildId))
+            .WithTitle(strings.GetText(strs.quest_log, guildId))
             .WithDescription(desc);
 
         foreach (var (quest, userQuest) in userQuests)
@@ -160,8 +160,6 @@ public sealed class QuestLogService(
         await smc.FollowupAsync(embed: embed.Build(), ephemeral: true, allowedMentions: AllowedMentions.None);
     }
 
-    private string GetText(LocStr str, ulong? guildId)
-        => strings.GetText(str.Key, guildId, str.Params);
 
     private static TypedKey<bool> CooldownKey(ulong userId)
         => new($"quests:log:{userId}");

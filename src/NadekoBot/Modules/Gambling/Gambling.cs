@@ -161,7 +161,7 @@ public partial class Gambling : GamblingModule<GamblingService>
             return;
         }
 
-        var breakdown = await _service.GetRewardBreakdownAsync(ctx.User.Id, reward);
+        var breakdown = await _service.GetRewardBreakdownAsync(ctx.User.Id, reward, ctx.Guild?.Id);
         var header = GetText(strs.vote_suggest(Format.Bold(N(breakdown.Amount))));
         var remind = await _service.UserHasTimelyReminderAsync(ctx.User.Id)
             ? null
@@ -294,7 +294,7 @@ public partial class Gambling : GamblingModule<GamblingService>
 
 
         var val = Config.Timely.Amount;
-        var reward = await _service.GetRewardBreakdownAsync(ctx.User.Id, val);
+        var reward = await _service.GetRewardBreakdownAsync(ctx.User.Id, val, ctx.Guild?.Id);
 
         await _cs.AddAsync(ctx.User.Id, reward.Amount, new("timely", "claim"));
 

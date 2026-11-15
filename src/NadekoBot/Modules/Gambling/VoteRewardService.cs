@@ -104,7 +104,8 @@ public class VoteRewardService(
     DiscordSocketClient client,
     IMessageSenderService sender,
     ICoordinator coordinator,
-    QuestLogService questLog
+    QuestLogService questLog,
+    IBotStrings strings
 ) : INService, IReadyExecutor
 {
     private static readonly TimeSpan _retryDelay = TimeSpan.FromSeconds(5);
@@ -211,7 +212,7 @@ public class VoteRewardService(
         if (reward <= 0)
             return;
 
-        var breakdown = await gs.GetRewardBreakdownAsync(userId, reward);
+        var breakdown = await gs.GetRewardBreakdownAsync(userId, reward, null);
         reward = breakdown.Amount;
         await cs.AddAsync(userId, reward, new("vote", requestType.ToString()));
 
@@ -221,7 +222,7 @@ public class VoteRewardService(
             {
                 var user = await client.GetUserAsync(userId);
                 var layout = RewardMessage.Build(
-                        $"You've received {N(reward)} for voting on {requestType}!",
+                        strings.GetText(strs.vote_reward_received(N(reward), requestType.ToString())),
                         breakdown,
                         sender.CreateEmbed().OkColor,
                         questLog.CreateButton(null))
