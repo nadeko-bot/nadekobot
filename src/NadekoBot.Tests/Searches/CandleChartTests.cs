@@ -1,5 +1,4 @@
 using System;
-using System.IO.Compression;
 using NadekoBot.Modules.Searches.Charts;
 using NUnit.Framework;
 using SixLabors.ImageSharp;
@@ -59,7 +58,7 @@ public class CandleChartTests
             pixels[(5 * width) + x] = x % 2 == 0 ? 0x808080u : 0x000000u;
         }
 
-        foreach (var level in new[] { CompressionLevel.Fastest, CompressionLevel.Optimal })
+        foreach (var level in new[] { 2, 6 })
         {
             using var decoded = Image.Load<Rgba32>(PngWriter.Encode(pixels, width, height, level));
             var wrong = 0;

@@ -2,6 +2,15 @@
 
 *a,c,f,r,o,d*
 
+## [7.10.2] - TBD
+
+### Changed
+
+- `.stock` answers faster
+    - for ETFs and company names
+    - for a repeated symbol while the US market is closed
+- `.stock` and `.crypto` / `.c` send a smaller chart file.
+
 ## [7.10.1] - 14.11.2026
 
 ### Changed

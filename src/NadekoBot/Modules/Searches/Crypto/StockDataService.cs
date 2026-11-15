@@ -37,6 +37,9 @@ public sealed class StockDataService(
 {
     public const int MAX_SYMBOL_LENGTH = 10;
     public const int MAX_QUERY_LENGTH = 50;
+
+    // US symbols have at most 5 characters before a class or series suffix (BRK.B), so a longer word is a name.
+    private const int MAX_ROOT_LENGTH = 5;
     private const int CHART_MONTHS = 3;
     private const int MAX_LOOKUPS = 20;
     private const int MAX_DAILY_ROWS = 100;
@@ -55,7 +58,15 @@ public sealed class StockDataService(
 
     private static readonly int _unixEpochDay = DateOnly.FromDateTime(DateTime.UnixEpoch).DayNumber;
     private static readonly TimeSpan _quoteExpiry = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan _closedExpiry = TimeSpan.FromMinutes(30);
     private static readonly TimeSpan _missingExpiry = TimeSpan.FromMinutes(10);
+    private static readonly TimeSpan _classExpiry = TimeSpan.FromDays(7);
+    private static readonly TimeSpan _gateWindow = TimeSpan.FromSeconds(10);
+    private static readonly TimeSpan _gatePause = TimeSpan.FromSeconds(30);
+
+    // Nasdaq data changes from 4:00 to 20:00 New York time on weekdays.
+    private static readonly TimeSpan _dataStart = TimeSpan.FromHours(4);
+    private static readonly TimeSpan _dataEnd = TimeSpan.FromHours(20);
 
     // A quote without daily candles or without its summary, so the missing part comes back soon after a failure.
     private static readonly TimeSpan _partialExpiry = TimeSpan.FromMinutes(1);
@@ -69,12 +80,12 @@ public sealed class StockDataService(
     private readonly TimeProvider _time = timeProvider ?? TimeProvider.System;
     private readonly SingleFlight<string, OneOf<StockQuote, StockError>> _loads = new();
     private readonly SingleFlight<string, OneOf<StockMatch, StockError>> _searches = new();
-    private readonly LookupGate _gate = new(MAX_LOOKUPS,
-        TimeSpan.FromSeconds(10),
-        TimeSpan.FromSeconds(30),
-        timeProvider ?? TimeProvider.System);
+    private readonly LookupGate _gate = new(MAX_LOOKUPS, _gateWindow, _gatePause, timeProvider ?? TimeProvider.System);
 
-    private readonly ChartCache _charts = new(CHART_CACHE_SIZE, _quoteExpiry, timeProvider ?? TimeProvider.System);
+    // The search has its own gate, so a failed search does not stop the quotes.
+    private readonly LookupGate _searchGate = new(MAX_LOOKUPS, _gateWindow, _gatePause, timeProvider ?? TimeProvider.System);
+
+    private readonly ChartCache _charts = new(CHART_CACHE_SIZE, _closedExpiry, timeProvider ?? TimeProvider.System);
 
     private enum FetchStatus
     {
@@ -88,6 +99,10 @@ public sealed class StockDataService(
     public static bool IsSymbol(ReadOnlySpan<char> text)
     {
         if (text.Length is 0 or > MAX_SYMBOL_LENGTH || !char.IsAsciiLetterOrDigit(text[0]))
+            return false;
+
+        var suffix = text.IndexOfAny('.', '-');
+        if ((suffix < 0 ? text.Length : suffix) > MAX_ROOT_LENGTH)
             return false;
 
         foreach (var c in text)
@@ -105,12 +120,7 @@ public sealed class StockDataService(
         if (!IsSymbol(trimmed))
             return StockError.NotFound;
 
-        var symbol = trimmed.ContainsAnyInRange('a', 'z')
-            ? string.Create(trimmed.Length, text, static (dst, src) => src.AsSpan().Trim().ToUpperInvariant(dst))
-            : trimmed.Length == text.Length
-                ? text
-                : trimmed.ToString();
-
+        var symbol = InCapitals(trimmed.Length == text.Length ? text : trimmed.ToString());
         if ((await cache.GetAsync(QuoteKey(symbol))).TryPickT0(out var cached, out _))
             return cached;
 
@@ -135,31 +145,51 @@ public sealed class StockDataService(
             static (state, _) => state.self.SearchInternalAsync(state.query, state.key));
     }
 
+    // Also keeps the asset class of the match, and of the item which has the text as its symbol.
     private async Task<OneOf<StockMatch, StockError>> SearchInternalAsync(string query, TypedKey<StockMatch> key)
     {
         try
         {
-            if (!TryEnterInternal())
+            charts.WarmUp();
+            if (!TryEnterInternal(_searchGate))
                 return StockError.Unavailable;
 
             var found = await GetNasdaqInternalAsync($"{API}autocomplete/slookup/10?search={Uri.EscapeDataString(query)}",
-                FinanceJsonContext.Default.NasdaqEnvelopeNasdaqSearchItemArray);
+                FinanceJsonContext.Default.NasdaqEnvelopeNasdaqSearchItemArray,
+                _searchGate);
 
             if (found.Status == FetchStatus.Failed)
                 return StockError.Unavailable;
 
             var match = new StockMatch("", "");
+            var matchEtf = false;
+            string? exact = null;
+            var exactEtf = false;
             foreach (var item in found.Data ?? [])
             {
-                if (item.Symbol is not { } symbol
-                    || !IsSymbol(symbol)
-                    || !(string.Equals(item.Asset, "STOCKS", StringComparison.OrdinalIgnoreCase)
-                         || string.Equals(item.Asset, "ETF", StringComparison.OrdinalIgnoreCase)))
+                if (item.Symbol is not { } symbol || !IsSymbol(symbol) || !TryReadClass(item.Asset, out var etf))
                     continue;
 
-                match = new(symbol, CleanName(item.Name ?? symbol));
-                break;
+                symbol = InCapitals(symbol);
+                if (match.Symbol.Length == 0)
+                {
+                    match = new(symbol, CleanName(item.Name ?? symbol));
+                    matchEtf = etf;
+                }
+
+                if (string.Equals(symbol, query, StringComparison.OrdinalIgnoreCase))
+                {
+                    exact = symbol;
+                    exactEtf = etf;
+                    break;
+                }
             }
+
+            if (match.Symbol.Length > 0)
+                await cache.AddAsync(EtfKey(match.Symbol), matchEtf, _classExpiry);
+
+            if (exact is not null && !string.Equals(exact, match.Symbol, StringComparison.Ordinal))
+                await cache.AddAsync(EtfKey(exact), exactEtf, _classExpiry);
 
             await cache.AddAsync(key, match, _missingExpiry);
             return match.Symbol.Length > 0 ? match : StockError.NotFound;
@@ -199,15 +229,20 @@ public sealed class StockDataService(
     {
         try
         {
-            if (!TryEnterInternal())
+            charts.WarmUp();
+            if (!TryEnterInternal(_gate))
                 return StockError.Unavailable;
 
-            var assetClass = STOCKS;
-            var set = await LoadSetInternalAsync(symbol, assetClass);
-            if (!set.Found && set.Missing)
+            var known = (await cache.GetAsync(EtfKey(symbol))).TryPickT0(out var memo, out _);
+            var etf = known && memo;
+
+            // The class of a new symbol is unknown, so the search, which knows it, runs during the stock requests.
+            var search = known ? null : SearchSucceededInternalAsync(symbol);
+            var set = await LoadSetInternalAsync(symbol, etf);
+            if (!set.Found && set.Missing && await TryOtherClassInternalAsync(symbol, search))
             {
-                assetClass = ETF;
-                set = await LoadSetInternalAsync(symbol, assetClass);
+                etf = !etf;
+                set = await LoadSetInternalAsync(symbol, etf);
             }
 
             if (!set.Found)
@@ -219,10 +254,16 @@ public sealed class StockDataService(
                 return StockError.NotFound;
             }
 
+            if (!known || memo != etf)
+                await cache.AddAsync(EtfKey(symbol), etf, _classExpiry);
+
+            var assetClass = etf ? ETF : STOCKS;
+
             // Nasdaq has no intraday chart for some class shares (BRK.B), but it has their info.
             var live = set.Intraday.Data is { } intraday ? LiveQuote.From(intraday) : null;
             live ??= LiveQuote.From((await GetNasdaqInternalAsync($"{API}quote/{symbol}/info?assetclass={assetClass}",
-                FinanceJsonContext.Default.NasdaqEnvelopeNasdaqInfo)).Data);
+                FinanceJsonContext.Default.NasdaqEnvelopeNasdaqInfo,
+                _gate)).Data);
 
             if (live is not { } now)
                 return StockError.Unavailable;
@@ -259,7 +300,7 @@ public sealed class StockDataService(
             GetChart(quote);
 
             var complete = candles.Length > 0 && set.Summary.Status == FetchStatus.Ok;
-            await cache.AddAsync(QuoteKey(symbol), quote, complete ? _quoteExpiry : _partialExpiry);
+            await cache.AddAsync(QuoteKey(symbol), quote, complete ? QuoteExpiryInternal() : _partialExpiry);
 
             return quote;
         }
@@ -323,18 +364,60 @@ public sealed class StockDataService(
             => double.IsFinite(value) ? value : 0;
     }
 
-    // The three requests go out together, so a stock costs one round trip.
-    private async Task<QuoteSet> LoadSetInternalAsync(string symbol, string assetClass)
+    // After "symbol not exists": a known class can be out of date, and a new symbol is an ETF when the search names it so or failed.
+    private async Task<bool> TryOtherClassInternalAsync(string symbol, Task<bool>? search)
     {
+        if (search is null || !await search)
+            return true;
+
+        return (await cache.GetAsync(EtfKey(symbol))).TryPickT0(out var etf, out _) && etf;
+    }
+
+    private async Task<bool> SearchSucceededInternalAsync(string symbol)
+    {
+        try
+        {
+            return !(await SearchAsync(symbol)).TryPickT1(out var error, out _) || error != StockError.Unavailable;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to search the stocks for {Query}", symbol);
+            return false;
+        }
+    }
+
+    private TimeSpan QuoteExpiryInternal()
+    {
+        if (_newYork is null)
+            return _quoteExpiry;
+
+        var local = TimeZoneInfo.ConvertTime(_time.GetUtcNow(), _newYork);
+        if (local.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday || local.TimeOfDay >= _dataEnd)
+            return _closedExpiry;
+
+        if (local.TimeOfDay >= _dataStart)
+            return _quoteExpiry;
+
+        var untilStart = _dataStart - local.TimeOfDay;
+        return untilStart < _quoteExpiry ? _quoteExpiry : untilStart > _closedExpiry ? _closedExpiry : untilStart;
+    }
+
+    // The three requests go out together, so a stock costs one round trip.
+    private async Task<QuoteSet> LoadSetInternalAsync(string symbol, bool etf)
+    {
+        var assetClass = etf ? ETF : STOCKS;
         var today = DateOnly.FromDateTime(_time.GetUtcNow().UtcDateTime);
         var daily = GetNasdaqInternalAsync(
             string.Create(CultureInfo.InvariantCulture,
                 $"{API}quote/{symbol}/historical?assetclass={assetClass}&fromdate={today.AddMonths(-CHART_MONTHS):yyyy-MM-dd}&todate={today:yyyy-MM-dd}&limit={MAX_DAILY_ROWS}"),
-            FinanceJsonContext.Default.NasdaqEnvelopeNasdaqHistory);
+            FinanceJsonContext.Default.NasdaqEnvelopeNasdaqHistory,
+            _gate);
         var intraday = GetNasdaqInternalAsync($"{API}quote/{symbol}/chart?assetclass={assetClass}",
-            FinanceJsonContext.Default.NasdaqEnvelopeNasdaqIntradayChart);
+            FinanceJsonContext.Default.NasdaqEnvelopeNasdaqIntradayChart,
+            _gate);
         var summary = GetNasdaqInternalAsync($"{API}quote/{symbol}/summary?assetclass={assetClass}",
-            FinanceJsonContext.Default.NasdaqEnvelopeNasdaqSummary);
+            FinanceJsonContext.Default.NasdaqEnvelopeNasdaqSummary,
+            _gate);
 
         return new(await daily, await intraday, await summary);
     }
@@ -429,7 +512,7 @@ public sealed class StockDataService(
         return true;
     }
 
-    private async Task<Fetched<T>> GetNasdaqInternalAsync<T>(string url, JsonTypeInfo<NasdaqEnvelope<T>> info)
+    private async Task<Fetched<T>> GetNasdaqInternalAsync<T>(string url, JsonTypeInfo<NasdaqEnvelope<T>> info, LookupGate gate)
         where T : class
     {
         try
@@ -443,24 +526,37 @@ public sealed class StockDataService(
         catch (JsonException ex)
         {
             SiteAnswer.LogUnreadable("Nasdaq", ex);
-            _gate.Pause();
+            gate.Pause();
             return new(FetchStatus.Failed, null);
         }
         catch (Exception ex)
         {
             Log.Warning("Nasdaq request {Url} failed: {ErrorMessage}", url, ex.Message);
-            _gate.Pause();
+            gate.Pause();
             return new(FetchStatus.Failed, null);
         }
     }
 
-    private bool TryEnterInternal()
+    private static bool TryEnterInternal(LookupGate gate)
     {
-        if (_gate.TryEnter())
+        if (gate.TryEnter())
             return true;
 
         Log.Warning("Stock lookups are paused or over their limit");
         return false;
+    }
+
+    // Symbols are keys in capitals. A symbol without small letters stays the same string.
+    private static string InCapitals(string symbol)
+        => symbol.AsSpan().ContainsAnyInRange('a', 'z')
+            ? string.Create(symbol.Length, symbol, static (dst, src) => src.AsSpan().ToUpperInvariant(dst))
+            : symbol;
+
+    // The bot reads quotes only of stocks and ETFs.
+    private static bool TryReadClass(string? asset, out bool etf)
+    {
+        etf = string.Equals(asset, ETF, StringComparison.OrdinalIgnoreCase);
+        return etf || string.Equals(asset, STOCKS, StringComparison.OrdinalIgnoreCase);
     }
 
     public static string CleanName(string name)
@@ -498,6 +594,9 @@ public sealed class StockDataService(
 
     private static TypedKey<bool> MissingKey(string symbol)
         => new($"stock:missing:{symbol}");
+
+    private static TypedKey<bool> EtfKey(string symbol)
+        => new($"stock:etf:{symbol}");
 
     private static TypedKey<StockMatch> SearchKey(string query)
         => new(string.Create(SEARCH_KEY_PREFIX.Length + query.Length,

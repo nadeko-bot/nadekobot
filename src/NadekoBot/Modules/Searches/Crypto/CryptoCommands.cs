@@ -20,27 +20,27 @@ public partial class Searches
             if (query.Length == 0)
                 return;
 
-            OneOf<StockQuote, StockError> result;
-            OneOf<StockMatch, StockError>? search = null;
-            using (ctx.Channel.EnterTypingState())
+            var typing = false;
+            OneOf<StockQuote, StockError> result = StockError.NotFound;
+            if (StockDataService.IsSymbol(query))
             {
-                result = StockDataService.IsSymbol(query)
-                    ? await stocks.GetQuoteAsync(query)
-                    : StockError.NotFound;
-
-                if (result.TryPickT1(out var notFound, out _) && notFound == StockError.NotFound)
-                    search = await stocks.SearchAsync(query);
+                var load = stocks.GetQuoteAsync(query);
+                TypeIfPendingInternal(load, ref typing);
+                result = await load;
             }
 
-            StockError error;
-            if (search is { } found)
+            if (result.TryPickT1(out var error, out _) && error == StockError.NotFound)
             {
-                if (found.TryPickT1(out error, out var match))
+                var search = stocks.SearchAsync(query);
+                TypeIfPendingInternal(search, ref typing);
+                if ((await search).TryPickT1(out error, out var match))
                 {
                     await SendStockErrorInternalAsync(error);
                     return;
                 }
 
+                // The quote loads while the member reads the prompt.
+                var load = stocks.GetQuoteAsync(match.Symbol);
                 if (!string.Equals(match.Symbol, query, StringComparison.OrdinalIgnoreCase))
                 {
                     var prompt = CreateEmbed()
@@ -49,10 +49,12 @@ public partial class Searches
 
                     if (!await PromptUserConfirmAsync(prompt))
                         return;
+
+                    typing = false;
                 }
 
-                using (ctx.Channel.EnterTypingState())
-                    result = await stocks.GetQuoteAsync(match.Symbol);
+                TypeIfPendingInternal(load, ref typing);
+                result = await load;
             }
 
             if (result.TryPickT1(out error, out var quote))
@@ -107,6 +109,16 @@ public partial class Searches
             eb.WithImageUrl($"attachment://{fileName}");
             await using var image = new MemoryStream(chart, false);
             await Response().Embed(eb).File(image, fileName).SendAsync();
+        }
+
+        // One typing notice shows for about 10 seconds, longer than a lookup. A cached answer needs none.
+        private void TypeIfPendingInternal(Task lookup, ref bool typing)
+        {
+            if (typing || lookup.IsCompleted)
+                return;
+
+            typing = true;
+            _ = ctx.Channel.TriggerTypingAsync();
         }
 
         private string FormatRange(PriceRange range, string format)

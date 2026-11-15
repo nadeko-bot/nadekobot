@@ -56,6 +56,7 @@ public class CryptoService(
         if (string.IsNullOrWhiteSpace(name))
             return (null, null);
 
+        charts.WarmUp();
         var cryptos = await GetCryptoDataInternal();
 
         if (cryptos is null or { Count: 0 })

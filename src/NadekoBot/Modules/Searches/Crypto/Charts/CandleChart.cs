@@ -1,6 +1,5 @@
 using System.Buffers;
 using System.Globalization;
-using System.IO.Compression;
 
 namespace NadekoBot.Modules.Searches.Charts;
 
@@ -57,8 +56,16 @@ public sealed class CandleChart : INService
     private const int LINE_BUFFER = 160;
     private const string INTERVAL = "1D";
 
-    // Half the time of Optimal (about 5 ms instead of 11 ms) for a file of about 73 KB instead of 48 KB.
-    private const CompressionLevel PNG_LEVEL = CompressionLevel.Fastest;
+    // zlib level 2 writes about 52 KB in 1.2 ms. Level 1 writes 75 KB in 0.9 ms, level 6 writes 49 KB in 6.5 ms.
+    private const int PNG_LEVEL = 2;
+    private const string WARM_UP_CHARS = "0123456789.,+-%()";
+    private const int WARM_UP_DAYS = 90;
+    private const double WARM_UP_PRICE = 100;
+    private const double WARM_UP_SWING = 10;
+    private const double WARM_UP_WAVE_DAYS = 6;
+    private const double WARM_UP_WICK = 1;
+    private const double WARM_UP_VOLUME = 1e6;
+    private const int WARM_UP_VOLUME_STEPS = 5;
     private const string SEPARATOR = " \u00B7 ";
     private const string ELLIPSIS = "...";
 
@@ -67,10 +74,70 @@ public sealed class CandleChart : INService
     private static readonly string[] _months =
         ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    private readonly Lazy<ChartFonts> _fonts = new(static () => new ChartFonts(), LazyThreadSafetyMode.PublicationOnly);
+    private readonly Lazy<ChartFonts> _fonts = new(static () => new ChartFonts(), LazyThreadSafetyMode.ExecutionAndPublication);
+    private int _warmUp;
 
     public ChartFonts Fonts
         => _fonts.Value;
+
+    // Loads the fonts, draws the digit glyphs and one chart on a pool thread, while the bot waits for the data of its first chart.
+    public void WarmUp()
+    {
+        if (Volatile.Read(ref _warmUp) != 0 || Interlocked.Exchange(ref _warmUp, 1) != 0)
+            return;
+
+        _ = Task.Run(WarmUpInternal);
+    }
+
+    private void WarmUpInternal()
+    {
+        try
+        {
+            var fonts = _fonts.Value;
+            WarmUpGlyphsInternal(fonts.Symbol);
+            WarmUpGlyphsInternal(fonts.Title);
+            WarmUpGlyphsInternal(fonts.Legend);
+            WarmUpGlyphsInternal(fonts.Axis);
+            WarmUpGlyphsInternal(fonts.AxisStrong);
+
+            // The first chart also compiles the drawing and the PNG code, and draws the labels which every chart has.
+            Render(WarmUpCandlesInternal(), new("NVDA", "NVIDIA Corporation", "NASDAQ-GS"));
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Unable to warm up the chart drawing");
+        }
+    }
+
+    // Made-up daily prices up to today, so the chart has the month labels which real charts show now.
+    private static Candle[] WarmUpCandlesInternal()
+    {
+        var candles = new Candle[WARM_UP_DAYS];
+        var today = DateTimeOffset.UtcNow.ToUnixTimeSeconds() / SECONDS_PER_DAY;
+        var close = WARM_UP_PRICE;
+        for (var i = 0; i < candles.Length; i++)
+        {
+            var open = close;
+            close = WARM_UP_PRICE + (WARM_UP_SWING * Math.Sin(i / WARM_UP_WAVE_DAYS));
+            candles[i] = new((today - candles.Length + 1 + i) * SECONDS_PER_DAY,
+                open,
+                Math.Max(open, close) + WARM_UP_WICK,
+                Math.Min(open, close) - WARM_UP_WICK,
+                close,
+                WARM_UP_VOLUME * (1 + (i % WARM_UP_VOLUME_STEPS)));
+        }
+
+        return candles;
+    }
+
+    private static void WarmUpGlyphsInternal(ChartFont font)
+    {
+        foreach (var c in WARM_UP_CHARS)
+        {
+            for (var phase = 0; phase < font.Phases; phase++)
+                font.Get(c, phase);
+        }
+    }
 
     public byte[] Render(ReadOnlySpan<Candle> candles, in ChartHeader header)
     {

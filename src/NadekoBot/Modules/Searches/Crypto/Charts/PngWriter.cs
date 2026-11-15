@@ -21,7 +21,7 @@ public static class PngWriter
 
     private static ReadOnlySpan<byte> Signature => [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
 
-    public static byte[] Encode(ReadOnlySpan<uint> pixels, int width, int height, CompressionLevel level)
+    public static byte[] Encode(ReadOnlySpan<uint> pixels, int width, int height, int zlibLevel)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(pixels.Length, width * height);
 
@@ -47,7 +47,7 @@ public static class PngWriter
             output.Write(placeholder);
             output.Write("IDAT"u8);
 
-            using (var zlib = new ZLibStream(output, level, leaveOpen: true))
+            using (var zlib = new ZLibStream(output, new ZLibCompressionOptions { CompressionLevel = zlibLevel }, leaveOpen: true))
             {
                 var previous = rows.AsSpan(0, rowStride);
                 var current = rows.AsSpan(rowStride, rowStride);
@@ -87,7 +87,8 @@ public static class PngWriter
         }
     }
 
-    // 0x00RRGGBB in memory is B, G, R, 0. Each step reads 4 pixels and writes 16 bytes, of which the next step overwrites the last 4.
+    // 0x00RRGGBB in memory is B, G, R, 0. Each step reads 4 pixels and writes 16 bytes. The next step or the 4 slack bytes of the row take the last 4.
+    // The order stays a constant in the call: from a local, .NET 9 runs Shuffle in software, 15 times slower.
     private static void ToRgbInternal(ReadOnlySpan<uint> source, Span<byte> row)
     {
         var bytes = MemoryMarshal.AsBytes(source);
@@ -95,9 +96,12 @@ public static class PngWriter
         var o = 0;
         if (Vector128.IsHardwareAccelerated)
         {
-            var order = Vector128.Create((byte)2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13, 12, 15, 15, 15, 15);
             for (; x + 4 <= source.Length && o + Vector128<byte>.Count <= row.Length; x += 4, o += 4 * BYTES_PER_PIXEL)
-                Vector128.Shuffle(Vector128.Create(bytes.Slice(x * 4, Vector128<byte>.Count)), order).CopyTo(row[o..]);
+            {
+                Vector128.Shuffle(Vector128.Create(bytes.Slice(x * 4, Vector128<byte>.Count)),
+                        Vector128.Create((byte)2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13, 12, 15, 15, 15, 15))
+                    .CopyTo(row[o..]);
+            }
         }
 
         for (; x < source.Length; x++, o += BYTES_PER_PIXEL)

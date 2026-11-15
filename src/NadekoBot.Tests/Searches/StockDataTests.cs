@@ -33,6 +33,8 @@ public class StockDataTests
         ]
         """;
 
+    private const string QQQ_SEARCH = """{"data":[{"symbol":"QQQ","name":"Invesco QQQ Trust, Series 1","asset":"ETF"}],"status":{"rCode":200}}""";
+
     private sealed class FakeNasdaqHandler : HttpMessageHandler
     {
         public int Calls;
@@ -49,8 +51,16 @@ public class StockDataTests
             if (request.RequestUri.AbsolutePath == "/api/v3/coins/markets")
                 return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(COINGECKO_COINS) });
 
-            var file = request.RequestUri!.AbsolutePath switch
+            if (request.RequestUri.PathAndQuery == "/api/autocomplete/slookup/10?search=QQQ")
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(QQQ_SEARCH) });
+
+            // QQQ is an ETF with the answers of NVDA.
+            var etf = request.RequestUri.Query.Contains("assetclass=etf", StringComparison.Ordinal);
+            var file = request.RequestUri.AbsolutePath switch
             {
+                "/api/quote/QQQ/historical" when etf => "nvda-historical.json",
+                "/api/quote/QQQ/chart" when etf => "nvda-chart.json",
+                "/api/quote/QQQ/summary" when etf => "nvda-summary.json",
                 "/api/quote/NVDA/historical" => "nvda-historical.json",
                 "/api/quote/NVDA/chart" => "nvda-chart.json",
                 "/api/quote/NVDA/summary" => "nvda-summary.json",
@@ -116,12 +126,28 @@ public class StockDataTests
         Assert.That(brk.Candles, Has.Length.EqualTo(65));
         Assert.That(brk.Candles[^1].Close, Is.EqualTo(589.83));
 
+        // A new symbol: the search runs with the stock requests. It names QQQ as an ETF, so the bot then asks for the ETF data.
         calls = handler.Calls;
-        Assert.That((await svc.GetQuoteAsync("ZZZZQQ")).AsT1, Is.EqualTo(StockError.NotFound));
-        Assert.That(handler.Requests, Has.Some.EqualTo("/api/quote/ZZZZQQ/chart?assetclass=stocks")
-            .And.Some.EqualTo("/api/quote/ZZZZQQ/chart?assetclass=etf"));
+        Assert.That((await svc.GetQuoteAsync("QQQ")).AsT0.Price, Is.EqualTo(160.995));
+        Assert.That(handler.Requests, Has.Some.EqualTo("/api/autocomplete/slookup/10?search=QQQ")
+            .And.Some.EqualTo("/api/quote/QQQ/chart?assetclass=etf"));
+        Assert.That(handler.Calls, Is.EqualTo(calls + 7));
+
+        // A symbol of known class costs one round: here the search named QQQ as an ETF before the lookup.
+        var known = new StockDataService(factory, new MemoryBotCache(), new CandleChart(), time);
+        await known.SearchAsync("QQQ");
         calls = handler.Calls;
-        Assert.That((await svc.GetQuoteAsync("zzzzqq")).AsT1, Is.EqualTo(StockError.NotFound));
+        Assert.That((await known.GetQuoteAsync("QQQ")).IsT0);
+        Assert.That(handler.Calls, Is.EqualTo(calls + 3));
+
+        // The search does not name ZZZQ, so the bot does not ask for ETF data.
+        calls = handler.Calls;
+        Assert.That((await svc.GetQuoteAsync("ZZZQ")).AsT1, Is.EqualTo(StockError.NotFound));
+        Assert.That(handler.Requests, Has.Some.EqualTo("/api/autocomplete/slookup/10?search=ZZZQ")
+            .And.None.EqualTo("/api/quote/ZZZQ/chart?assetclass=etf"));
+        Assert.That(handler.Calls, Is.EqualTo(calls + 4));
+        calls = handler.Calls;
+        Assert.That((await svc.GetQuoteAsync("zzzq")).AsT1, Is.EqualTo(StockError.NotFound));
         Assert.That(handler.Calls, Is.EqualTo(calls));
         Assert.That((await svc.GetQuoteAsync("<script>")).AsT1, Is.EqualTo(StockError.NotFound));
         Assert.That(handler.Calls, Is.EqualTo(calls), "text which is not a symbol sends no request");
