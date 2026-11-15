@@ -11,6 +11,7 @@
     - for ETFs and company names
     - for a repeated symbol while the US market is closed
 - `.stock` and `.crypto` / `.c` send a smaller chart file.
+- `.blackjack` / `.bj` has a shorter and clearer description.
 
 ## [7.10.1] - 14.11.2026
 
