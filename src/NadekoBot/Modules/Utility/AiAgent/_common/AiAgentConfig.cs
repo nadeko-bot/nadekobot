@@ -51,10 +51,10 @@ public sealed class AiAgentConfig
     [Comment("Minutes of inactivity before channel memory expires and stops observing. Default 30")]
     public int MemoryIdleExpiryMinutes { get; set; } = 30;
 
-    [Comment("Enable triggering the agent by saying the bot's name (with intent classification). Default true")]
+    [Comment("Start the agent when a message starts with the bot's name. Default true")]
     public bool NameTriggerEnabled { get; set; } = true;
 
-    [Comment("Seconds after an agent response during which the user's messages go directly to the agent. Default 120")]
+    [Comment("Seconds after an agent answer in which the user's messages go to the agent without a mention. The newest answer has an End session button. 0 turns sessions off. Default 120")]
     public int FollowUpWindowSeconds { get; set; } = 120;
 
     [Comment("""

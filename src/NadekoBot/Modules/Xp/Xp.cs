@@ -86,7 +86,7 @@ public partial class Xp : NadekoModule<XpService>
         var (img, fmt) = await _service.GenerateXpImageAsync((IGuildUser)user);
         await using (img)
         {
-            await ctx.Channel.SendFileAsync(img, $"{ctx.Guild.Id}_{user.Id}_xp.{fmt.FileExtensions.FirstOrDefault()}");
+            await Response().File(img, $"{ctx.Guild.Id}_{user.Id}_xp.{fmt.FileExtensions.FirstOrDefault()}").NoReply().SendAsync();
         }
     }
 

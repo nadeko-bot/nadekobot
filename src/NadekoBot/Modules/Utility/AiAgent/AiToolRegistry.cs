@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-// Discovers the tools through DI and caches their schemas.
 public sealed class AiToolRegistry : IAiToolRegistry, INService
 {
     private readonly Dictionary<string, IAiTool> _tools;

@@ -39,9 +39,7 @@ public partial class Gambling
                 .AddField(GetText(strs.roll2), gen)
                 .WithImageUrl($"attachment://{fileName}");
 
-            await ctx.Channel.SendFileAsync(ms,
-                fileName,
-                embed: eb.Build());
+            await Response().File(ms, fileName).Embed(eb).NoReply().SendAsync();
         }
 
         [Cmd]
@@ -118,9 +116,7 @@ public partial class Gambling
                 .WithDescription(GetText(strs.dice_rolled_num(Format.Bold(values.Count.ToString()))))
                 .WithImageUrl($"attachment://{imageName}");
 
-            await ctx.Channel.SendFileAsync(ms,
-                imageName,
-                embed: eb.Build());
+            await Response().File(ms, imageName).Embed(eb).NoReply().SendAsync();
         }
 
         private async Task InternallDndRoll(string arg, bool ordered)

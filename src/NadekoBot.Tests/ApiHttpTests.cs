@@ -840,7 +840,7 @@ public sealed class ApiHttpTests
         public string SetPrefix(IGuild ctxGuild, string toSet)
             => toSet;
 
-        public Task TryRunCommand(SocketGuild? guild, ISocketMessageChannel channel, IUserMessage usrMsg)
-            => Task.CompletedTask;
+        public Task<CommandRunResult> TryRunCommand(SocketGuild? guild, ISocketMessageChannel channel, IUserMessage usrMsg)
+            => Task.FromResult(new CommandRunResult(CommandRunStatus.NotFound));
     }
 }

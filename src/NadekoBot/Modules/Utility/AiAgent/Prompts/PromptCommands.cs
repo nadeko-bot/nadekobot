@@ -61,9 +61,7 @@ public partial class Utility
                 .WithButton(soulBtn)
                 .WithButton(operatorBtn);
 
-            var msg = await ctx.Channel.SendMessageAsync(
-                embed: eb.Build(),
-                components: components.Build());
+            var msg = await Response().Embed(eb).Components(components.Build()).NoReply().SendAsync();
 
             await Task.WhenAll(soulHandler.RunAsync(msg), operatorHandler.RunAsync(msg));
         }

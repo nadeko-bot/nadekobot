@@ -18,6 +18,9 @@ public sealed class DoAsUserMessage : IUserMessage
     // Set when someone other than the user chose the text, such as the AI agent or a shop entry.
     public bool BlocksOwnerCommands { get; init; }
 
+    // Set by the AI agent. Only messages sent through a ResponseBuilder reach it.
+    public CommandOutputSink? Output { get; init; }
+
     public ulong Id
         => _msg.Id;
 
@@ -29,9 +32,13 @@ public sealed class DoAsUserMessage : IUserMessage
         return _msg.DeleteAsync(options);
     }
 
-    public Task AddReactionAsync(IEmote emote, RequestOptions? options = null)
+    public async Task AddReactionAsync(IEmote emote, RequestOptions? options = null)
     {
-        return _msg.AddReactionAsync(emote, options);
+        await _msg.AddReactionAsync(emote, options);
+
+        // An alias wraps the agent's message, and then the inner message already recorded the reaction.
+        if (Output is not null && !(_msg is DoAsUserMessage inner && ReferenceEquals(inner.Output, Output)))
+            Output.AddReaction(emote);
     }
 
     public Task RemoveReactionAsync(IEmote emote, IUser user, RequestOptions? options = null)

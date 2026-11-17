@@ -4,7 +4,9 @@ public static class CommandContextExtensions
 {
     private static readonly Emoji _okEmoji = new Emoji("✅");
     private static readonly Emoji _warnEmoji = new Emoji("⚠️");
-    private static readonly Emoji _errorEmoji = new Emoji("❌");
+    public const string ERROR_EMOJI = "❌";
+
+    private static readonly Emoji _errorEmoji = new Emoji(ERROR_EMOJI);
 
     public static Task ReactAsync(this ICommandContext ctx, MsgType type)
     {

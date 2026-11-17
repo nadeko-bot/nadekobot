@@ -4,13 +4,11 @@ using System.Text.RegularExpressions;
 
 namespace NadekoBot.Modules.Utility.AiAgent;
 
-// Turns agent steps into short lines for members who do not know what a tool is.
 public static partial class AgentActivityFormatter
 {
     private const int MAX_ARG_LENGTH = 60;
     private const int MAX_NOTE_LENGTH = 200;
     private const int MAX_COMMAND_NAME_LENGTH = 32;
-    private const int MAX_CHAIN_COMMANDS = 5;
     private const string ELLIPSIS = "...";
     private const string SUBTEXT = "-# ";
 
@@ -29,7 +27,7 @@ public static partial class AgentActivityFormatter
     private static partial Regex ChannelMentionRegex();
 
     public static string FormatNote(string text)
-        => NOTE_EMOJI + " " + OneLine(text, MAX_NOTE_LENGTH);
+        => NOTE_EMOJI + " " + OneLineInternal(text, MAX_NOTE_LENGTH);
 
     // Null for a tool which only serves other tools, or which shows its own message.
     public static string? FormatToolCall(
@@ -53,7 +51,6 @@ public static partial class AgentActivityFormatter
         return emoji + " " + text;
     }
 
-    // Keeps the newest lines which fit, and counts the rest in one line at the top.
     public static string Render(
         IReadOnlyList<string> lines,
         int dropped,
@@ -66,7 +63,7 @@ public static partial class AgentActivityFormatter
         var linePrefix = subtext ? SUBTEXT : string.Empty;
         var reserve = (header?.Length + 1 ?? 0)
                       + linePrefix.Length
-                      + EarlierText(dropped + lines.Count, strings, guildId).Length
+                      + EarlierTextInternal(dropped + lines.Count, strings, guildId).Length
                       + 1;
 
         var budget = maxLength - reserve;
@@ -89,7 +86,7 @@ public static partial class AgentActivityFormatter
             sb.Append(header).Append('\n');
 
         if (hidden > 0)
-            sb.Append(linePrefix).Append(EarlierText(hidden, strings, guildId)).Append('\n');
+            sb.Append(linePrefix).Append(EarlierTextInternal(hidden, strings, guildId)).Append('\n');
 
         for (var i = first; i < lines.Count; i++)
             sb.Append(linePrefix).Append(lines[i]).Append('\n');
@@ -100,7 +97,7 @@ public static partial class AgentActivityFormatter
         return sb.ToString();
     }
 
-    private static string EarlierText(int count, IBotStrings strings, ulong guildId)
+    private static string EarlierTextInternal(int count, IBotStrings strings, ulong guildId)
     {
         var loc = strs.agent_activity_earlier(count);
         return "*" + strings.GetText(loc.Key, guildId, loc.Params) + "*";
@@ -118,27 +115,24 @@ public static partial class AgentActivityFormatter
 
         switch (name)
         {
-            case "describe_data_tool":
             case "ask_user":
             case "close_session":
+            case "unknown":
                 return false;
-            case "search_commands" when GetString(args, "query") is { } query:
-                (emoji, label) = (SEARCH_EMOJI, strs.agent_step_search_commands(Arg(query)));
+            case "search_commands" when GetStringInternal(args, "query") is { } query:
+                (emoji, label) = (SEARCH_EMOJI, strs.agent_step_search_commands(ArgInternal(query)));
                 return true;
-            case "search_data_tools" when GetString(args, "query") is { } query:
-                (emoji, label) = (SEARCH_EMOJI, strs.agent_step_search_data(Arg(query)));
+            case "search_data_tools" when GetStringInternal(args, "query") is { } query:
+                (emoji, label) = (SEARCH_EMOJI, strs.agent_step_search_data(ArgInternal(query)));
                 return true;
-            case "invoke_data_tool" when GetString(args, "name") is { } tool:
-                (emoji, label) = (DATA_EMOJI, strs.agent_step_data(Humanize(tool)));
+            case "invoke_data_tool" when GetStringInternal(args, "name") is { } tool:
+                (emoji, label) = (DATA_EMOJI, strs.agent_step_data(HumanizeInternal(tool)));
                 return true;
-            case "run_command" when CommandName(GetString(args, "command"), prefix) is { } command:
+            case "run_command" when CommandNameInternal(GetStringInternal(args, "command"), prefix) is { } command:
                 (emoji, label) = (RUN_EMOJI, strs.agent_step_run_command(command));
                 return true;
-            case "run_command_chain" when CommandNames(args, prefix) is { } commands:
-                (emoji, label) = (RUN_EMOJI, strs.agent_step_run_command(commands));
-                return true;
-            case "send_message" when GetString(args, "channel") is { } channel:
-                (emoji, label) = (MESSAGE_EMOJI, strs.agent_step_send_message(Channel(channel)));
+            case "send_message" when GetStringInternal(args, "channel") is { } channel:
+                (emoji, label) = (MESSAGE_EMOJI, strs.agent_step_send_message(ChannelInternal(channel)));
                 return true;
             case "edit_message":
                 (emoji, label) = (MESSAGE_EMOJI, strs.agent_step_edit_message);
@@ -152,19 +146,19 @@ public static partial class AgentActivityFormatter
             case "search_messages":
                 (emoji, label) = (MESSAGE_EMOJI, strs.agent_step_search_messages);
                 return true;
-            case "web_search" when GetString(args, "query") is { } query:
-                (emoji, label) = (WEB_EMOJI, strs.agent_step_web_search(Arg(query)));
+            case "web_search" when GetStringInternal(args, "query") is { } query:
+                (emoji, label) = (WEB_EMOJI, strs.agent_step_web_search(ArgInternal(query)));
                 return true;
             case "compute_timestamp":
                 (emoji, label) = (TIME_EMOJI, strs.agent_step_time);
                 return true;
             default:
-                label = strs.agent_step_other(Humanize(name));
+                label = strs.agent_step_other(HumanizeInternal(name));
                 return true;
         }
     }
 
-    private static string? GetString(JsonElement args, string property)
+    private static string? GetStringInternal(JsonElement args, string property)
         => args.ValueKind == JsonValueKind.Object
            && args.TryGetProperty(property, out var value)
            && value.ValueKind == JsonValueKind.String
@@ -173,11 +167,11 @@ public static partial class AgentActivityFormatter
             ? text
             : null;
 
-    private static string Arg(string text)
-        => Format.Sanitize(OneLine(text, MAX_ARG_LENGTH));
+    private static string ArgInternal(string text)
+        => Format.Sanitize(OneLineInternal(text, MAX_ARG_LENGTH));
 
     // "get_user_xp" becomes "user xp".
-    private static string Humanize(string toolName)
+    private static string HumanizeInternal(string toolName)
     {
         var span = toolName.AsSpan();
         foreach (var verb in _verbPrefixes)
@@ -189,11 +183,11 @@ public static partial class AgentActivityFormatter
             }
         }
 
-        return Arg(span.ToString().Replace('_', ' '));
+        return ArgInternal(span.ToString().Replace('_', ' '));
     }
 
     // Only the name of the command, because its arguments can hold mentions and text of other members.
-    private static string? CommandName(string? command, string prefix)
+    private static string? CommandNameInternal(string? command, string prefix)
     {
         if (command is null)
             return null;
@@ -220,33 +214,7 @@ public static partial class AgentActivityFormatter
         return string.Concat("`", prefix, span, "`");
     }
 
-    private static string? CommandNames(JsonElement args, string prefix)
-    {
-        if (args.ValueKind != JsonValueKind.Object
-            || !args.TryGetProperty("commands", out var commands)
-            || commands.ValueKind != JsonValueKind.Array)
-            return null;
-
-        var sb = new StringBuilder();
-        var count = 0;
-        foreach (var item in commands.EnumerateArray())
-        {
-            if (count == MAX_CHAIN_COMMANDS)
-                break;
-
-            if (item.ValueKind != JsonValueKind.String || CommandName(item.GetString(), prefix) is not { } name)
-                continue;
-
-            if (sb.Length > 0)
-                sb.Append(", ");
-            sb.Append(name);
-            count++;
-        }
-
-        return sb.Length == 0 ? null : sb.ToString();
-    }
-
-    private static string Channel(string input)
+    private static string ChannelInternal(string input)
     {
         var trimmed = input.Trim();
 
@@ -257,11 +225,10 @@ public static partial class AgentActivityFormatter
         if (ulong.TryParse(trimmed, out var id))
             return $"<#{id}>";
 
-        return "#" + Arg(trimmed.TrimStart('#'));
+        return "#" + ArgInternal(trimmed.TrimStart('#'));
     }
 
-    // Collapses all whitespace, and cuts at a word boundary when the text is too long.
-    private static string OneLine(string text, int maxLength)
+    private static string OneLineInternal(string text, int maxLength)
     {
         var source = text.AsSpan().Trim();
         var sb = new StringBuilder(Math.Min(source.Length, maxLength + ELLIPSIS.Length));

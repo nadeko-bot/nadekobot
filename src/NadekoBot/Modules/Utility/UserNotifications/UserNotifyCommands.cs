@@ -183,9 +183,7 @@ public partial class Utility
 
             var (embed, components) = BuildPanel(blocked, currentPage);
 
-            var msg = await ctx.Channel.SendMessageAsync(
-                embed: embed.Build(),
-                components: components.Build());
+            var msg = await Response().Embed(embed).Components(components.Build()).NoReply().SendAsync();
 
             await RunHandlersInternalAsync(msg);
         }

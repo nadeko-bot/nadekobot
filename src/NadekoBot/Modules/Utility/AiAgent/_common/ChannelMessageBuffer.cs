@@ -1,13 +1,14 @@
 namespace NadekoBot.Modules.Utility.AiAgent;
 
+// Quoted holds the text of others in the message (a reply excerpt, link embeds, file and sticker names), empty when there is none.
 public readonly record struct MessageSnapshot(
     ulong MessageId,
     ulong AuthorId,
     string AuthorName,
     string Content,
-    DateTimeOffset Timestamp);
+    DateTimeOffset Timestamp,
+    string Quoted = "");
 
-// Fixed-size ring buffer of the recent messages of one channel.
 public sealed class ChannelMessageBuffer
 {
     private readonly MessageSnapshot[] _buffer;
@@ -16,7 +17,6 @@ public sealed class ChannelMessageBuffer
     private int _writeIndex;
     private readonly Lock _lock = new();
 
-    // Drives the idle expiry of the buffer.
     public DateTime LastAccessedUtc { get; private set; }
 
     public ChannelMessageBuffer(int capacity)
@@ -28,7 +28,6 @@ public sealed class ChannelMessageBuffer
         LastAccessedUtc = DateTime.UtcNow;
     }
 
-    // A full buffer overwrites the oldest entry.
     public void Push(MessageSnapshot snapshot)
     {
         lock (_lock)
@@ -41,7 +40,6 @@ public sealed class ChannelMessageBuffer
         }
     }
 
-    // Returns the messages in chronological order.
     public MessageSnapshot[] GetMessages()
     {
         lock (_lock)
@@ -118,8 +116,12 @@ public sealed class ChannelMessageBuffer
     }
 
     // Every value is escaped, so Discord markup cannot break the structure.
-    // Skips the ids in sentIds and adds the ids it writes.
-    public string? BuildHistoryXml(ulong channelId, string channelName, HashSet<ulong> sentIds)
+    public string? BuildHistoryXml(
+        ulong channelId,
+        string channelName,
+        HashSet<ulong> sentIds,
+        List<string>? contents = null,
+        ulong memberId = 0)
     {
         var snapshots = GetMessages();
         if (snapshots.Length == 0)
@@ -130,8 +132,11 @@ public sealed class ChannelMessageBuffer
 
         foreach (ref readonly var s in snapshots.AsSpan())
         {
-            if (sentIds.Add(s.MessageId))
-                AppendMessageXml(sb, in s);
+            if (!sentIds.Add(s.MessageId))
+                continue;
+
+            AppendMessageXml(sb, in s);
+            AddUntrustedInternal(contents, in s, memberId);
         }
 
         sb.Append("</channel_history>");
@@ -139,7 +144,7 @@ public sealed class ChannelMessageBuffer
     }
 
     // Uses the set of sent ids and not the highest id, because the gateway can deliver an older message late.
-    public string? BuildUpdateXml(ulong channelId, HashSet<ulong> sentIds)
+    public string? BuildUpdateXml(ulong channelId, HashSet<ulong> sentIds, List<string>? contents = null, ulong memberId = 0)
     {
         var snapshots = GetMessages();
 
@@ -152,10 +157,24 @@ public sealed class ChannelMessageBuffer
             sb ??= new System.Text.StringBuilder()
                 .AppendLine($"<channel_update channel_id=\"{channelId}\" note=\"messages posted in the channel since your previous step\">");
             AppendMessageXml(sb, in s);
+            AddUntrustedInternal(contents, in s, memberId);
         }
 
         return sb?.Append("</channel_update>").ToString();
     }
+
+    // The member chose the words of their own messages, but not what they quote.
+    private static void AddUntrustedInternal(List<string>? contents, in MessageSnapshot s, ulong memberId)
+    {
+        if (s.AuthorId != memberId)
+            contents?.Add(UntrustedTextInternal(in s));
+        else if (s.Quoted.Length > 0)
+            contents?.Add(s.Quoted);
+    }
+
+    // The model reads the author too, so a name or id which only an author attribute holds is untrusted as well.
+    private static string UntrustedTextInternal(in MessageSnapshot s)
+        => $"{s.AuthorName} <@{s.AuthorId}> {s.Content}";
 
     private static void AppendMessageXml(System.Text.StringBuilder sb, in MessageSnapshot s)
         => sb.AppendLine($"<msg id=\"{s.MessageId}\" author=\"{PromptSanitizer.XmlEscape(s.AuthorName)}\" author_id=\"{s.AuthorId}\" time=\"{s.Timestamp.ToUnixTimeSeconds()}\">{PromptSanitizer.XmlEscape(s.Content)}</msg>");

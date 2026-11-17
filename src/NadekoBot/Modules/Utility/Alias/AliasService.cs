@@ -65,7 +65,7 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
 
         if (_aliases.TryGetValue(guild.Id, out var maps))
         {
-            var newInput = FindMapping(maps, input, out var mapping);
+            var newInput = FindMappingInternal(maps, input, out var mapping, out _);
 
             if (newInput is not null && mapping is not null)
             {
@@ -102,14 +102,32 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
     }
 
     public static string? FindMapping(ConcurrentDictionary<string, string> maps, string input)
-        => FindMapping(maps, input, out _);
+        => FindMappingInternal(maps, input, out _, out _);
 
-    private static string? FindMapping(ConcurrentDictionary<string, string> maps, string input, out string? usedMapping)
+    public AliasMatch? FindAlias(IGuild guild, string input)
+    {
+        if (!_aliases.TryGetValue(guild.Id, out var maps)
+            || FindMappingInternal(maps, input, out var mapping, out var trigger) is not { } resolved
+            || mapping is null
+            || trigger is null
+            || GivesArgsToSpendingCommand(guild, mapping))
+            return null;
+
+        return new(trigger, resolved);
+    }
+
+    private static string? FindMappingInternal(
+        ConcurrentDictionary<string, string> maps,
+        string input,
+        out string? usedMapping,
+        out string? usedTrigger)
     {
         usedMapping = null;
+        usedTrigger = null;
         if (maps.TryGetValue(input, out var exact))
         {
             usedMapping = exact;
+            usedTrigger = input;
             return exact;
         }
 
@@ -132,6 +150,7 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
             return null;
 
         usedMapping = bestMapping;
+        usedTrigger = bestTrigger;
         var rest = input.AsSpan(bestTrigger.Length);
         if (bestMapping.Contains(TARGET_PLACEHOLDER, StringComparison.Ordinal))
             return bestMapping.Replace(TARGET_PLACEHOLDER, rest.ToString(), StringComparison.Ordinal);
@@ -146,7 +165,7 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
     public static bool GivesArgsToSpendingCommand(CommandService cmds, string prefix, string mapping)
     {
         var text = mapping.AsSpan().Trim();
-        if (!text.StartsWith(prefix, StringComparison.InvariantCulture))
+        if (!text.StartsWith(prefix, StringComparison.Ordinal))
             return false;
 
         var body = text[prefix.Length..].TrimStart().ToString();
@@ -156,32 +175,21 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
 
         foreach (var match in result.Commands)
         {
-            if (!SpendsCurrency(match.Command))
+            if (!SpendsCurrencyAttribute.IsMarked(match.Command))
                 continue;
 
             var args = match.Alias.Length < body.Length
                 ? body.AsSpan(match.Alias.Length)
                 : ReadOnlySpan<char>.Empty;
 
-            if (HasFixedArgs(args))
+            if (HasFixedArgsInternal(args))
                 return true;
         }
 
         return false;
     }
 
-    private static bool SpendsCurrency(CommandInfo cmd)
-    {
-        foreach (var attr in cmd.Attributes)
-        {
-            if (attr is SpendsCurrencyAttribute)
-                return true;
-        }
-
-        return false;
-    }
-
-    private static bool HasFixedArgs(ReadOnlySpan<char> args)
+    private static bool HasFixedArgsInternal(ReadOnlySpan<char> args)
     {
         while (true)
         {
@@ -275,3 +283,6 @@ public class AliasService : IInputTransformer, IReadyExecutor, INService
         return null;
     }
 }
+
+// Resolved is the command text which the alias runs, with the prefix.
+public readonly record struct AliasMatch(string Trigger, string Resolved);

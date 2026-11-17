@@ -17,7 +17,7 @@ public sealed partial class CommandHandler
         public bool ParseOk;
     }
 
-    public Task<(bool Success, string? Error, CommandInfo? Info)> ExecuteCommandAsync(
+    public Task<(bool Success, string? Error, CommandInfo? Info, CommandRunStatus Status)> ExecuteCommandAsync(
         ICommandContext context,
         string input,
         int argPos,
@@ -25,7 +25,8 @@ public sealed partial class CommandHandler
         MultiMatchHandling multiMatchHandling = MultiMatchHandling.Exception)
         => ExecuteCommand(context, input[argPos..], serviceProvider, multiMatchHandling);
 
-    public async Task<(bool Success, string? Error, CommandInfo? Info)> ExecuteCommand(
+    // Success is true when the command code ran, also when it threw. Status tells the two apart.
+    public async Task<(bool Success, string? Error, CommandInfo? Info, CommandRunStatus Status)> ExecuteCommand(
         ICommandContext context,
         string input,
         IServiceProvider services,
@@ -33,7 +34,7 @@ public sealed partial class CommandHandler
     {
         var searchResult = _commandService.Search(context, input);
         if (!searchResult.IsSuccess)
-            return (false, null, null);
+            return (false, null, null, CommandRunStatus.NotFound);
 
         var commands = searchResult.Commands;
         var count = commands.Count;
@@ -73,7 +74,7 @@ public sealed partial class CommandHandler
                     }
                 }
 
-                return (false, candidates[bestIdx].Precondition.ErrorReason, commands[0].Command);
+                return (false, candidates[bestIdx].Precondition.ErrorReason, commands[0].Command, CommandRunStatus.Refused);
             }
 
             // 3) Parse successful preconditions + compute score once per entry
@@ -120,7 +121,8 @@ public sealed partial class CommandHandler
 
                 return (false,
                     bestIdx >= 0 ? candidates[bestIdx].Parse.ErrorReason : null,
-                    commands[0].Command);
+                    commands[0].Command,
+                    CommandRunStatus.BadArguments);
             }
 
             // 5) Pick best successful parse (max score)
@@ -141,16 +143,18 @@ public sealed partial class CommandHandler
 
             var intercepted = await _behaviorHandler.RunPreCommandAsync(context, cmd);
             if (intercepted)
-                return (false, null, cmd);
+                return (false, null, cmd, CommandRunStatus.Refused);
 
             var execResult = (ExecuteResult)await winner.Match.ExecuteAsync(context, winner.Parse, services);
 
-            if (execResult.Exception is not null
-                && (execResult.Exception is not HttpException he
-                    || he.DiscordCode != DiscordErrorCode.InsufficientPermissions))
-                Log.Warning(execResult.Exception, "Command Error");
+            if (execResult.Exception is null)
+                return (true, null, cmd, CommandRunStatus.Ran);
 
-            return (true, null, cmd);
+            if (execResult.Exception is HttpException { DiscordCode: DiscordErrorCode.InsufficientPermissions })
+                return (true, "The bot is missing a Discord permission for this.", cmd, CommandRunStatus.Error);
+
+            Log.Warning(execResult.Exception, "Command Error");
+            return (true, null, cmd, CommandRunStatus.Error);
         }
         finally
         {

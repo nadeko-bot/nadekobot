@@ -2,8 +2,7 @@ using System.Text;
 
 namespace NadekoBot.Modules.Utility.AiAgent.Prompts;
 
-// Per-turn values in SOUL or OPERATOR. The rest of the system prompt is the same for every server,
-// so providers can cache it once for all requests.
+// Per-turn values in SOUL or OPERATOR; the rest of the prompt is the same for every server, so providers cache it once.
 public readonly record struct TurnTokens(string GuildName, string ChannelName, string UserName);
 
 public sealed class SystemPromptBuilder(
@@ -60,19 +59,36 @@ public sealed class SystemPromptBuilder(
         var botUser = await context.Guild.GetCurrentUserAsync();
         var channels = await context.Guild.GetTextChannelsAsync();
 
+        // The same check as the message tools, so a thread of a hidden channel does not show either.
         var visible = new List<ITextChannel>(channels.Count);
         foreach (var c in channels)
         {
-            if (context.User.GetPermissions(c).ViewChannel)
+            if (AgentPermissions.Access(context.User, botUser, c, context.SourceChannel.Id) is not null)
                 visible.Add(c);
         }
 
-        visible.Sort(static (a, b) => a.Position.CompareTo(b.Position));
+        // Threads have no position, so they go after the channels and do not fill the list.
+        visible.Sort(static (a, b) =>
+        {
+            var thread = (a is IThreadChannel).CompareTo(b is IThreadChannel);
+            if (thread != 0)
+                return thread;
+
+            return a.Position != b.Position ? a.Position.CompareTo(b.Position) : a.Id.CompareTo(b.Id);
+        });
+
+        // Admins, thread starters and members with Manage Nicknames choose these names, and the model reads them sanitized.
+        var guildName = PromptSanitizer.Sanitize(context.Guild.Name);
+        var botName = PromptSanitizer.Sanitize(botUser.DisplayName);
+        context.Session.AddUntrusted(guildName, inPrompt: true);
+        context.Session.AddUntrusted(PromptSanitizer.Sanitize(context.SourceChannel.Name), inPrompt: true);
+        context.Session.AddUntrusted(botName, inPrompt: true);
+        context.Session.AddUntrusted(PromptSanitizer.Sanitize(context.User.DisplayName), inPrompt: true);
 
         var sb = new StringBuilder(1024);
         sb.AppendLine("CONTEXT:");
-        sb.Append("- Server: ").AppendLine(PromptSanitizer.Sanitize(context.Guild.Name));
-        sb.Append("- Bot identity: ").Append(PromptSanitizer.Sanitize(botUser.DisplayName))
+        sb.Append("- Server: ").AppendLine(guildName);
+        sb.Append("- Bot identity: ").Append(botName)
           .Append(" (ID: ").Append(botUser.Id).AppendLine(")");
         sb.AppendLine("- Available channels:");
 
@@ -80,13 +96,15 @@ public sealed class SystemPromptBuilder(
         for (var i = 0; i < count; i++)
         {
             var ch = visible[i];
-            sb.Append('#').Append(PromptSanitizer.Sanitize(ch.Name)).Append(" (ID: ").Append(ch.Id).AppendLine(")");
+            var name = PromptSanitizer.Sanitize(ch.Name);
+            context.Session.AddUntrusted(name, inPrompt: true);
+            sb.Append('#').Append(name).Append(" (ID: ").Append(ch.Id).AppendLine(")");
         }
 
         return sb.ToString();
     }
 
-    // Changes on every turn, so it goes after the history. It is a separate message from the text of the user.
+    // Changes on every turn, so it goes after the history.
     public static string BuildTurn(AiToolContext context, DateTimeOffset now)
     {
         var sb = new StringBuilder(256);

@@ -10,5 +10,5 @@ public interface ICommandHandler
     string SetDefaultPrefix(string toSet);
     string SetPrefix(IGuild ctxGuild, string toSet);
 
-    Task TryRunCommand(SocketGuild? guild, ISocketMessageChannel channel, IUserMessage usrMsg);
+    Task<CommandRunResult> TryRunCommand(SocketGuild? guild, ISocketMessageChannel channel, IUserMessage usrMsg);
 }

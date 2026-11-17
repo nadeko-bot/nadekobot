@@ -368,7 +368,7 @@ public partial class Utility
             var text = PREPEND_EXPORT + _exportSerializer.Serialize(exprsDict).UnescapeUnicodeCodePoints();
 
             await using var stream = await text.ToStream();
-            await ctx.Channel.SendFileAsync(stream, "quote-export.yml");
+            await Response().File(stream, "quote-export.yml").NoReply().SendAsync();
         }
 
         [Cmd]

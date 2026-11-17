@@ -2,6 +2,51 @@
 
 *a,c,f,r,o,d*
 
+## [7.11.0] - TBD
+
+### Added
+
+- The AI agent can run the aliases of the server.
+- The AI agent can delete the messages of the member who asks.
+- The AI agent shows an **End session** button during a session.
+
+### Changed
+
+- The AI agent is more reliable
+    - tells the member when a command fails, and why
+    - posts no extra reply when the command output answers the member
+- The AI agent is safer
+    - runs no command which only another message or a web page asks for
+    - spends currency only with the amount and the target which the member wrote
+    - checks the permissions of the member and the bot, also slow mode, before it posts, edits or deletes a message
+- The AI agent finds the right command more often.
+- The AI agent answers a simple request with fewer steps.
+- The AI agent handles a stop or an error better
+    - says why it stopped and which steps ran
+    - tries again when the AI service is busy or slow
+    - works with AI models which do not take a temperature or a token limit
+- The AI agent pings the member when it asks a question.
+- The AI agent shows its steps only during a slow request.
+- The AI agent makes a member or a server wait when they send too many requests.
+- The AI agent has simpler start rules
+    - starts on the name of the bot only at the start of a message
+    - always starts on a reply to its message with the ping on
+    - starts a session only when it answers or asks a question
+- `.agentcancel` / `.aicancel` / `.aic` also ends an open session of the AI agent.
+
+### Fixed
+
+- The AI agent works in a channel where the bot cannot read the message history or post embeds.
+
+### Removed
+
+- The intent model of the AI agent and its file `data/ai/intent-head.bin`.
+
+### Dev
+
+- `data/commandlist.json` has the parameters of each command.
+- `NadekoBot.AgentEval` tests the AI agent offline with a scripted model.
+
 ## [7.10.2] - 15.11.2026
 
 ### Changed

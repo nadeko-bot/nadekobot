@@ -15,21 +15,34 @@ The bot owner turns on the AI agent and chooses who can use it. If the agent doe
 |---|---|
 | Mention the bot at the start of your message | `@Nadeko what is my balance?` |
 | Use the `.agent` / `.ai` command | `.agent show the top 5 xp members` |
-| Reply to an answer of the agent, with the reply ping on | `and Bob?` |
-| Say the name of the bot | `hey Nadeko, warn @Bob for spam` |
+| Reply to an answer or a question of the agent, with the reply ping on | `and Bob?` |
+| Start your message with the name of the bot | `Nadeko, warn @Bob for spam` |
 
-A mention and `.agent` start the agent for each request. A reply and the name of the bot start it only when your message looks like a request. "lol" or "thanks" does not start it.
+The name of the bot is its nickname in the server, its display name or its username, in any letter case. The name must be at the start of your message. A space follows the name, or a sign such as `,` `:` `!` `?` and then a space. "Nadeko, roll a die" starts the agent. "hey Nadeko, roll a die", "Nadeko's music" and "I asked Nadeko" do not start it.
 
-After the agent answers, you can continue in the same channel without a mention. This works for 2 minutes (the bot owner can change this time). In this time, each message which you send in that channel goes to the agent:
+## Sessions
+
+When the agent answers you or asks you a question, a session starts. In a session, each message which you send in that channel goes to the agent, without a mention:
 
 ```text
 @Nadeko how many flowers does Alice have?
   Alice has 5,000 flowers.
 and Bob?
-  Bob has 1,200 flowers.
+  Bob has 1,200 flowers.  [End session]
 ```
 
-To stop an answer which is running, type `.agentcancel` / `.aic`.
+The newest answer of the session has an **End session** button. While the session is open, the agent reads each message which you send in that channel. Only you can use the button on your session.
+
+The session ends when one of these things occurs:
+
+- You click **End session**.
+- You say goodbye or thanks, and the agent ends the session.
+- You type `.agentcancel` / `.aicancel` / `.aic`.
+- 2 minutes pass after the last answer of the agent, or after your last request in the session. The bot owner can change this time.
+
+Then the bot removes the button within a few seconds. **End session** and `.agentcancel` end your sessions in all channels. A request which only runs a command, for example `@Nadeko roll a die`, does not start a session.
+
+To stop an answer which is running, type `.agentcancel` / `.aicancel` / `.aic`, or click **End session** on the last answer.
 
 ## Skills
 

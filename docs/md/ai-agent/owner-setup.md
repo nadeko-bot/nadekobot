@@ -31,7 +31,7 @@ A provider or model without tool calling returns an error for each request of th
 
 3. Type `.configreload aiagent` in Discord, or restart the bot.
 
-The bot needs the **Message Content** intent (see [Create a Discord bot](../creds-guide.md#turn-on-the-privileged-intents)). Without it, only a mention of the bot starts the agent. The name trigger, the follow-up time and the channel memory then do not work.
+The bot needs the **Message Content** intent (see [Create a Discord bot](../creds-guide.md#turn-on-the-privileged-intents)). Without it, only a mention at the start of a message and a reply to the agent with the ping on start the agent. The name trigger, sessions with the **End session** button and the channel memory then do not work.
 
 You can also change most settings in Discord with `.config aiagent <setting> <value>`. For example: `.config aiagent model openai/gpt-5.4`. Type `.config aiagent` to see all settings.
 
@@ -53,8 +53,8 @@ In `data/ai-agent.yml`, some of these settings have longer names, for example `m
 These settings are only in `data/ai-agent.yml`:
 
 - `models`: a list of models for providers like OpenRouter. When the first model fails, the provider tries the next one.
-- `nameTriggerEnabled`: the agent starts when a member says the name of the bot. Default `true`.
-- `followUpWindowSeconds`: the seconds after an answer in which a member can continue without a mention. Default `120`. `0` turns it off.
+- `nameTriggerEnabled`: the agent starts when a message starts with the name of the bot. Default `true`.
+- `followUpWindowSeconds`: the seconds after an answer in which a member can continue without a mention. The answer shows an **End session** button in this time. Default `120`. `0` turns sessions off.
 - `allowedTools`: the tools which the agent can use. Empty means all tools.
 - `customHeaders`: extra HTTP headers for each request to the provider.
 

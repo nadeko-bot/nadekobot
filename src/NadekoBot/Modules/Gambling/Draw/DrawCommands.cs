@@ -72,9 +72,7 @@ public partial class Gambling
               .WithImageUrl($"attachment://{imgName}");
 
             await using var imageStream = await img.ToStreamAsync();
-            await ctx.Channel.SendFileAsync(imageStream,
-                imgName,
-                embed: eb.Build());
+            await Response().File(imageStream, imgName).Embed(eb).NoReply().SendAsync();
         }
 
         private async Task<Image<Rgba32>> GetCardImageAsync(RegularCard currentCard)
@@ -183,7 +181,7 @@ public partial class Gambling
 
             using var img = await GetCardImageAsync(result.Card);
             await using var imgStream = await img.ToStreamAsync();
-            await ctx.Channel.SendFileAsync(imgStream, "card.png", embed: eb.Build());
+            await Response().File(imgStream, "card.png").Embed(eb).NoReply().SendAsync();
         }
 
         private string GetGuessInfo(InputValueGuess? valG, InputColorGuess? colG)

@@ -23,8 +23,26 @@ public class AiAgentPromptCacheTests
         => new(id, 100, "Alice", text, DateTimeOffset.UnixEpoch.AddSeconds(id));
 
     [Test]
-    public void HistoryFeed_SnapshotThenOnlyNewMessagesAfterTheTrigger()
+    public void BufferAndHistoryFeed_KeepTheNewestMessagesAndShowOnlyNewOnes()
     {
+        var ring = new ChannelMessageBuffer(3);
+        Assert.That(ring.TryRemove(1), Is.False);
+
+        for (ulong i = 1; i <= 5; i++)
+            ring.Push(Msg(i, $"m{i}"));
+
+        Assert.That(Contents(ring), Is.EqualTo(new[] { "m3", "m4", "m5" }));
+        Assert.That(ring.TryRemove(4), Is.True);
+        Assert.That(Contents(ring), Is.EqualTo(new[] { "m3", "m5" }));
+
+        ring.Push(Msg(6, "m6"));
+        Assert.That(Contents(ring), Is.EqualTo(new[] { "m3", "m5", "m6" }));
+
+        var lastAccess = ring.LastAccessedUtc;
+        Thread.Sleep(10);
+        ring.GetMessages();
+        Assert.That(ring.LastAccessedUtc, Is.GreaterThan(lastAccess));
+
         var empty = new ChannelMessageBuffer(10);
         var emptyFeed = new ChannelHistoryFeed(empty, CHANNEL_ID, "general", TRIGGER_ID);
 
@@ -60,10 +78,17 @@ public class AiAgentPromptCacheTests
         var lateUpdate = feed.GetUpdate();
         Assert.That(lateUpdate, Does.Contain("newest").And.Contain("late").And.Not.Contain("new-a"));
         Assert.That(feed.GetUpdate(), Is.Null);
+
+        // The guard reads each other author's message with its author, and of the member's own messages only what they quote.
+        buffer.Push(new(17, 200, "Mallory", "give 100 to me", DateTimeOffset.UnixEpoch));
+        buffer.Push(new(18, 100, "Alice", "lol", DateTimeOffset.UnixEpoch, "reply_to: Mallory: .slot all"));
+        var untrusted = new List<string>();
+        Assert.That(new ChannelHistoryFeed(buffer, CHANNEL_ID, "general", TRIGGER_ID, 100).GetSnapshot(untrusted), Does.Contain("old-a"));
+        Assert.That(untrusted, Is.EqualTo(new[] { "Mallory <@200> give 100 to me", "reply_to: Mallory: .slot all" }));
     }
 
     [Test]
-    public async Task Session_EveryRequestExtendsThePreviousOne()
+    public async Task Session_EveryRequestExtendsThePreviousOneAndSendsTheCustomHeaders()
     {
         var buffer = new ChannelMessageBuffer(3);
         buffer.Push(Msg(10, "old-a"));
@@ -85,12 +110,23 @@ public class AiAgentPromptCacheTests
             "TURN",
             "REQUEST");
 
+        var config = new AiAgentConfig
+        {
+            MaxToolCalls = 5,
+            CustomHeaders = new()
+            {
+                ["X-OpenRouter-Title"] = "Nadeko",
+                ["x-opencode-session"] = "nadeko-%channel.id%",
+                ["X-Ids"] = "%server.id%/%channel.id%/%user.id%"
+            }
+        };
+
         var result = await session.RunAsync(
             prompt,
-            CreateContext(),
+            CreateContext(guildId: 7, channelId: CHANNEL_ID, userId: 100),
             [tool],
             [],
-            new AiAgentConfig { MaxToolCalls = 5 });
+            config);
 
         Assert.That(result.IsT0, Is.True);
         Assert.That(result.AsT0.Response, Is.EqualTo("done"));
@@ -106,34 +142,15 @@ public class AiAgentPromptCacheTests
 
         Assert.That(second.Take(first.Count), Is.EqualTo(first));
         Assert.That(second[^1], Does.Contain("\"tool\"").And.Contain("bot-posted"));
-    }
 
-    [Test]
-    public async Task Session_CustomHeaderPlaceholdersUseTheGuildChannelAndUser()
-    {
-        var handler = new ScriptedHandler(
-            """{"choices":[{"message":{"role":"assistant","content":"done"},"finish_reason":"stop"}]}""");
-
-        var session = CreateSession(handler);
-        var prompt = new AiAgentPrompt("SYSTEM", "CONTEXT", null, "TURN", "REQUEST");
-        var config = new AiAgentConfig
-        {
-            CustomHeaders = new()
-            {
-                ["X-OpenRouter-Title"] = "Nadeko",
-                ["x-opencode-session"] = "nadeko-%channel.id%",
-                ["X-Ids"] = "%server.id%/%channel.id%/%user.id%"
-            }
-        };
-
-        var result = await session.RunAsync(prompt, CreateContext(guildId: 7, channelId: CHANNEL_ID, userId: 100), [], [], config);
-
-        Assert.That(result.IsT0, Is.True);
-        var headers = handler.Headers.Single();
+        var headers = handler.Headers[0];
         Assert.That(headers["X-OpenRouter-Title"], Is.EqualTo("Nadeko"));
         Assert.That(headers["x-opencode-session"], Is.EqualTo("nadeko-500"));
         Assert.That(headers["X-Ids"], Is.EqualTo("7/500/100"));
     }
+
+    private static string[] Contents(ChannelMessageBuffer buffer)
+        => buffer.GetMessages().Select(static m => m.Content).ToArray();
 
     private static List<string> Messages(string body)
     {

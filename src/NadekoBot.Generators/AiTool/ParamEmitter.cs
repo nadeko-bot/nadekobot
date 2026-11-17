@@ -121,11 +121,22 @@ internal static class ParamEmitter
         var v = Var(p);
         var el = ElVar(p);
         var def = p.HasDefault && p.DefaultValue is bool bv && bv ? "true" : "false";
+        var pv = ParsedVar(p);
         w.WriteLine($"var {v} = {def};");
-        w.WriteLine($"if (_args.TryGetProperty(\"{p.Name}\", out var {el}) && {el}.ValueKind is JsonValueKind.True or JsonValueKind.False)");
+        w.WriteLine($"if (_args.TryGetProperty(\"{p.Name}\", out var {el}))");
+        w.WriteLine("{");
+        w.Indent++;
+        w.WriteLine($"if ({el}.ValueKind is JsonValueKind.True or JsonValueKind.False)");
         w.Indent++;
         w.WriteLine($"{v} = {el}.GetBoolean();");
         w.Indent--;
+        // Small models often send "true" as a string.
+        w.WriteLine($"else if ({el}.ValueKind == JsonValueKind.String && bool.TryParse({el}.GetString(), out var {pv}))");
+        w.Indent++;
+        w.WriteLine($"{v} = {pv};");
+        w.Indent--;
+        w.Indent--;
+        w.WriteLine("}");
     }
 
     private static void EmitString(IndentedTextWriter w, ToolParamInfo p)

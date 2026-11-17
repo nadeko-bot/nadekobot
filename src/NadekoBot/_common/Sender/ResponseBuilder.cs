@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using NadekoBot.Modules.Administration;
 
 namespace NadekoBot.Extensions;
 
@@ -26,6 +27,7 @@ public sealed partial class ResponseBuilder
     private LocStr? embedLocDesc;
     private bool splitOnOverflow;
     private MessageComponent? layout;
+    private MessageComponent? components;
 
     public DiscordSocketClient Client { get; set; }
 
@@ -119,6 +121,7 @@ public sealed partial class ResponseBuilder
             || embedBuilder is not null
             || embeds is not null
             || fileStream is not null
+            || components is not null
             || inters is { Count: > 0 })
             throw new InvalidOperationException("A layout message cannot have text, an embed, a file or an interaction handler.");
     }
@@ -146,13 +149,16 @@ public sealed partial class ResponseBuilder
     {
         if (model.Layout is { } layoutComponents)
         {
-            return await model.TargetChannel.SendMessageAsync(
+            var layoutMsg = await model.TargetChannel.SendMessageAsync(
                 components: layoutComponents,
                 allowedMentions: model.SanitizeMentions,
                 messageReference: model.MessageReference);
+
+            RecordOutputInternal(layoutMsg);
+            return layoutMsg;
         }
 
-        var components = model.InteractionGroup?.CreateComponent();
+        var msgComponents = model.InteractionGroup?.CreateComponent() ?? components;
 
         IUserMessage sentMsg;
         if (fileStream is Stream stream)
@@ -161,7 +167,7 @@ public sealed partial class ResponseBuilder
                 filename: fileName,
                 model.Text,
                 embed: model.Embed,
-                components: components,
+                components: msgComponents,
                 allowedMentions: model.SanitizeMentions,
                 messageReference: model.MessageReference);
         }
@@ -171,10 +177,12 @@ public sealed partial class ResponseBuilder
                 model.Text,
                 embed: model.Embed,
                 embeds: model.Embeds,
-                components: components,
+                components: msgComponents,
                 allowedMentions: model.SanitizeMentions,
                 messageReference: model.MessageReference);
         }
+
+        RecordOutputInternal(sentMsg);
 
         if (model.InteractionGroup is not null)
         {
@@ -182,6 +190,12 @@ public sealed partial class ResponseBuilder
         }
 
         return sentMsg;
+    }
+
+    private void RecordOutputInternal(IUserMessage sent)
+    {
+        if ((msg ?? ctx?.Message) is DoAsUserMessage { Output: { } output })
+            output.Add(sent, color == EmbedColor.Error);
     }
 
     private async Task<IUserMessage> SendSplitAsync(ResponseMessageModel model, List<ulong>? sentIds)
@@ -203,18 +217,21 @@ public sealed partial class ResponseBuilder
                     messageReference: i == 0 ? model.MessageReference : null);
 
                 sentIds?.Add(part.Id);
+                RecordOutputInternal(part);
 
                 await Task.Delay(500);
             }
 
             var lastEb = embed.ToEmbedBuilder().WithDescription(chunks[^1]);
-            var components = model.InteractionGroup?.CreateComponent();
+            var lastComponents = model.InteractionGroup?.CreateComponent() ?? components;
 
             var lastMsg = await model.TargetChannel.SendMessageAsync(
                 model.Text,
                 embed: lastEb.Build(),
-                components: components,
+                components: lastComponents,
                 allowedMentions: model.SanitizeMentions);
+
+            RecordOutputInternal(lastMsg);
 
             if (model.InteractionGroup is not null)
                 await model.InteractionGroup.RunAsync(lastMsg);
@@ -232,20 +249,24 @@ public sealed partial class ResponseBuilder
                 allowedMentions: model.SanitizeMentions,
                 messageReference: model.MessageReference);
 
+            RecordOutputInternal(firstMsg);
+
             IUserMessage lastMsg = firstMsg;
             for (var i = 1; i < chunks.Count; i++)
             {
                 sentIds?.Add(lastMsg.Id);
                 await Task.Delay(500);
 
-                var components = i == chunks.Count - 1
-                    ? model.InteractionGroup?.CreateComponent()
+                var lastComponents = i == chunks.Count - 1
+                    ? model.InteractionGroup?.CreateComponent() ?? components
                     : null;
 
                 lastMsg = await model.TargetChannel.SendMessageAsync(
                     chunks[i],
-                    components: components,
+                    components: lastComponents,
                     allowedMentions: model.SanitizeMentions);
+
+                RecordOutputInternal(lastMsg);
             }
 
             if (model.InteractionGroup is not null)
@@ -487,6 +508,13 @@ public sealed partial class ResponseBuilder
     public ResponseBuilder Layout(MessageComponent components)
     {
         layout = components;
+        return this;
+    }
+
+    // Components which the command handles itself, for example a panel which edits its own message.
+    public ResponseBuilder Components(MessageComponent messageComponents)
+    {
+        components = messageComponents;
         return this;
     }
 

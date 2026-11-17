@@ -85,7 +85,7 @@ public partial class Searches
             }
 
             await using var ms = await img.ToStreamAsync();
-            await ctx.Channel.SendFileAsync(ms, "colors.png");
+            await Response().File(ms, "colors.png").NoReply().SendAsync();
         }
     }
 }

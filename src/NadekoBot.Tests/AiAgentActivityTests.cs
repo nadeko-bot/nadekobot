@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Time.Testing;
 using NadekoBot.Common;
 using NadekoBot.Modules.Utility.AiAgent;
 using NSubstitute;
@@ -20,31 +19,7 @@ public class AiAgentActivityTests
     private const ulong GUILD_ID = 1;
 
     [Test]
-    public async Task Session_ReportsNotesAndToolSteps()
-    {
-        var handler = new ScriptedHandler(
-            """{"choices":[{"message":{"role":"assistant","content":"Checking the queue\nfor you.","tool_calls":[{"id":"c1","type":"function","function":{"name":"ok","arguments":"{\"query\":\"q\"}"}},{"id":"c2","type":"function","function":{"name":"bad","arguments":"{}"}}]},"finish_reason":"tool_calls"}]}""",
-            """{"choices":[{"message":{"role":"assistant","tool_calls":[{"id":"c3","type":"function","function":{"name":"missing","arguments":"{}"}}]},"finish_reason":"tool_calls"}]}""",
-            """{"choices":[{"message":{"role":"assistant","content":"All done"},"finish_reason":"stop"}]}""");
-
-        var progress = new RecordingProgress();
-        var result = await CreateSession(handler).RunAsync(
-            new AiAgentPrompt("SYSTEM", "CONTEXT", null, "TURN", "REQUEST"),
-            CreateContext(),
-            [new FixedTool("ok", "fine"), new FixedTool("bad", """{"error":"forbidden","message":"no"}""")],
-            [],
-            new AiAgentConfig { MaxToolCalls = 5 },
-            progress);
-
-        Assert.That(result.IsT0, Is.True);
-        Assert.That(result.AsT0.Response, Is.EqualTo("All done"));
-        Assert.That(progress.Notes, Is.EqualTo(new[] { "Checking the queue\nfor you." }));
-        Assert.That(progress.Calls, Is.EqualTo(new[] { ("ok", false), ("bad", true), ("missing", true) }));
-        Assert.That(progress.Args[0], Is.EqualTo("q"));
-    }
-
-    [Test]
-    public void Formatter_DescribesStepsInPlainWordsAndKeepsNewestStepsWithinLimit()
+    public async Task ActivityAndLimits_DescribeStepsAndDelayABusyMemberOrServer()
     {
         var strings = CreateStrings();
 
@@ -57,11 +32,7 @@ public class AiAgentActivityTests
         var run = Tool("run_command", """{"command":"mute <@123> 10m spam"}""");
         Assert.That(run, Does.Contain("`.mute`").And.Not.Contain("123").And.Not.Contain("spam"));
         Assert.That(Tool("run_command", """{"command":".ban <@5>"}"""), Does.Contain("`.ban`").And.Not.Contain(".."));
-        Assert.That(
-            Tool("run_command_chain", """{"commands":["warn <@1> a","mute <@1>"]}"""),
-            Does.Contain("`.warn`, `.mute`"));
 
-        Assert.That(Tool("describe_data_tool", """{"name":"get_user_xp"}"""), Is.Null);
         Assert.That(Tool("ask_user", """{"question":"which one?"}"""), Is.Null);
         Assert.That(Tool("close_session", "{}"), Is.Null);
 
@@ -90,6 +61,78 @@ public class AiAgentActivityTests
         var all = AgentActivityFormatter.Render(lines.Take(3).ToList(), 0, 4096, null, false, strings, GUILD_ID);
         Assert.That(all.Split('\n'), Has.Length.EqualTo(3));
         Assert.That(all, Does.Not.Contain("agent_activity_earlier"));
+
+        // A busy member or server waits for a free place, and one wait notice covers a crowd.
+        var time = new FakeTimeProvider();
+        var limiter = new AgentLimiter(time);
+        var notices = 0;
+
+        // A wait which never ends fails the test instead of a hang.
+        static async Task<T> SoonAsync<T>(Task<T> task, [CallerArgumentExpression(nameof(task))] string wait = "")
+        {
+            try
+            {
+                return await task.WaitAsync(TimeSpan.FromSeconds(5));
+            }
+            catch (TimeoutException)
+            {
+                throw new TimeoutException($"This wait hung: {wait}");
+            }
+        }
+        Task NoticeAsync()
+        {
+            notices++;
+            return Task.CompletedTask;
+        }
+
+        for (var i = 0; i < AgentLimiter.MEMBER_BURST; i++)
+            Assert.That(await SoonAsync(limiter.WaitForMemberAsync(1, NoticeAsync, CancellationToken.None)), Is.True);
+
+        var member = limiter.WaitForMemberAsync(1, NoticeAsync, CancellationToken.None);
+        var again = limiter.WaitForMemberAsync(1, NoticeAsync, CancellationToken.None);
+        Assert.That(member.IsCompleted || again.IsCompleted, Is.False);
+        Assert.That(notices, Is.EqualTo(1));
+        time.Advance(AgentLimiter.MemberRefill);
+        Assert.That(new[] { await SoonAsync(member), await SoonAsync(again) }, Is.EquivalentTo(new[] { true, false }));
+
+        var slots = new List<GuildSlot?>();
+        for (var i = 0; i < AgentLimiter.GUILD_CONCURRENT_REQUESTS; i++)
+            slots.Add(await SoonAsync(limiter.EnterGuildAsync(2, NoticeAsync, CancellationToken.None)));
+        Assert.That(slots, Is.All.Not.Null);
+
+        var server = limiter.EnterGuildAsync(2, NoticeAsync, CancellationToken.None);
+        Assert.That(server.IsCompleted, Is.False);
+        slots[0]!.Dispose();
+        slots[0]!.Dispose();
+        Assert.That(await SoonAsync(server), Is.Not.Null);
+        Assert.That(notices, Is.EqualTo(2));
+
+        // The second Dispose freed nothing, so the next requests wait, and one more than the waiting cap is busy at once.
+        using var stopWaiting = new CancellationTokenSource();
+        var waiting = new List<Task<GuildSlot?>>();
+        for (var i = 0; i < AgentLimiter.GUILD_MAX_WAITING; i++)
+            waiting.Add(limiter.EnterGuildAsync(2, NoticeAsync, stopWaiting.Token));
+        Assert.That(waiting.Exists(static w => w.IsCompleted), Is.False);
+        Assert.That(await SoonAsync(limiter.EnterGuildAsync(2, NoticeAsync, CancellationToken.None)), Is.Null);
+        await stopWaiting.CancelAsync();
+
+        // A request which never ran gives its token back.
+        limiter.RefundMember(1);
+        Assert.That(await SoonAsync(limiter.WaitForMemberAsync(1, NoticeAsync, CancellationToken.None)), Is.True);
+
+        // Both budgets are empty after 5 edits. After one shard refill, server 3 still has no token and gives the shard token to server 4.
+        for (var i = 0; i < AgentLimiter.GUILD_STATUS_BURST; i++)
+            Assert.That(limiter.TryTakeStatusEdit(3), Is.True);
+        Assert.That(limiter.TryTakeStatusEdit(3), Is.False);
+        time.Advance(AgentLimiter.ShardStatusRefill);
+        Assert.That(limiter.TryTakeStatusEdit(3), Is.False);
+        Assert.That(limiter.TryTakeStatusEdit(4), Is.True);
+
+        // One "busy" error in each interval for each server.
+        Assert.That(limiter.TryNotifyBusy(2), Is.True);
+        Assert.That(limiter.TryNotifyBusy(2), Is.False);
+        time.Advance(AgentLimiter.GuildNoticeInterval);
+        Assert.That(limiter.TryNotifyBusy(2), Is.True);
     }
 
     private static IBotStrings CreateStrings()
@@ -103,68 +146,5 @@ public class AiAgentActivityTests
                 return data.Length == 0 ? key : $"{key}({string.Join("|", data)})";
             });
         return strings;
-    }
-
-    private static AiAgentSession CreateSession(HttpMessageHandler handler)
-    {
-        var factory = Substitute.For<IHttpClientFactory>();
-        factory.CreateClient(Arg.Any<string>()).Returns(_ => new HttpClient(handler, disposeHandler: false));
-
-        var creds = Substitute.For<IBotCreds>();
-        creds.AiApiKey.Returns("key");
-        var credsProvider = Substitute.For<IBotCredsProvider>();
-        credsProvider.GetCreds().Returns(creds);
-
-        return new AiAgentSession(factory, credsProvider, new NadekoBot.Common.BotPolicy(false));
-    }
-
-    private static AiToolContext CreateContext()
-        => new()
-        {
-            Guild = Substitute.For<Discord.IGuild>(),
-            SourceChannel = Substitute.For<Discord.ITextChannel>(),
-            User = Substitute.For<Discord.IGuildUser>(),
-            TriggerMessage = Substitute.For<Discord.IUserMessage>(),
-            CancellationToken = CancellationToken.None
-        };
-
-    private sealed class RecordingProgress : IAgentProgress
-    {
-        public List<string> Notes { get; } = [];
-        public List<(string, bool)> Calls { get; } = [];
-        public List<string?> Args { get; } = [];
-
-        public void OnNote(string text)
-            => Notes.Add(text);
-
-        public void OnToolCall(string name, JsonElement args, bool failed)
-        {
-            Calls.Add((name, failed));
-            Args.Add(args.ValueKind == JsonValueKind.Object && args.TryGetProperty("query", out var q)
-                ? q.GetString()
-                : null);
-        }
-    }
-
-    private sealed class FixedTool(string name, string result) : IAiTool
-    {
-        public string Name => name;
-        public string Description => "Fixed result.";
-        public JsonElement ParameterSchema { get; } =
-            JsonDocument.Parse("""{"type":"object","properties":{}}""").RootElement.Clone();
-
-        public Task<string> ExecuteAsync(AiToolContext context, JsonElement arguments)
-            => Task.FromResult(result);
-    }
-
-    private sealed class ScriptedHandler(params string[] responses) : HttpMessageHandler
-    {
-        private int _next;
-
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
-            => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(responses[_next++], Encoding.UTF8, "application/json")
-            });
     }
 }

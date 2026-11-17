@@ -154,6 +154,8 @@ public partial class ResponseBuilder
                                      allowedMentions: model.SanitizeMentions,
                                      messageReference: model.MessageReference);
 
+            _builder.RecordOutputInternal(msg);
+
             if (lastPage == 0 && _paginationBuilder.InteractionFunc is null)
                 return;
             

@@ -20,11 +20,22 @@ public sealed class AgentChatRequest
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<JsonElement>? Tools { get; init; }
 
+    // "none" on the last step. The tools stay in the request, so the provider can still reuse its prompt cache.
+    [JsonPropertyName("tool_choice")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ToolChoice { get; init; }
+
     [JsonPropertyName("temperature")]
-    public double Temperature { get; init; } = 0.3;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public double? Temperature { get; init; }
 
     [JsonPropertyName("max_completion_tokens")]
-    public int MaxCompletionTokens { get; init; } = 16384;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? MaxCompletionTokens { get; init; }
+
+    [JsonPropertyName("max_tokens")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? MaxTokens { get; init; }
 
     [JsonPropertyName("reasoning_effort")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -52,6 +63,20 @@ public sealed class AgentChatMessage
     [JsonPropertyName("tool_call_id")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ToolCallId { get; init; }
+
+    // The reasoning goes back unchanged. DeepSeek in thinking mode answers 400 to a request with tools when it is missing.
+    [JsonPropertyName("reasoning_content")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ReasoningContent { get; init; }
+
+    // OpenRouter's names for the same.
+    [JsonPropertyName("reasoning")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public JsonElement? Reasoning { get; init; }
+
+    [JsonPropertyName("reasoning_details")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public JsonElement? ReasoningDetails { get; init; }
 }
 
 public sealed class AgentToolCall
@@ -91,6 +116,10 @@ public sealed class AgentChatUsage
 {
     [JsonPropertyName("prompt_tokens")]
     public long? PromptTokens { get; init; }
+
+    // DeepSeek's own name for the cached part of the prompt.
+    [JsonPropertyName("prompt_cache_hit_tokens")]
+    public long? PromptCacheHitTokens { get; init; }
 
     [JsonPropertyName("prompt_tokens_details")]
     public AgentPromptTokensDetails? PromptTokensDetails { get; init; }

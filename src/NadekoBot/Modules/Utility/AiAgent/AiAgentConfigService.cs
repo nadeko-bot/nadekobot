@@ -124,8 +124,7 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
         if (Data.Version < 7)
             MigrateSystemPromptToFileInternal();
 
-        // Versions 2-6 and 8 only removed properties, which the deserializer ignores,
-        // and version 9 only added one, which gets its default.
+        // Versions 2-6 and 8 only removed properties and 9 only added one, so only the version number changes.
         if (Data.Version < 9)
         {
             ModifyConfig(c =>
@@ -150,7 +149,6 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             if (idx < 0)
                 return;
 
-            // Use YamlDotNet to properly parse the value
             var deserializer = new YamlDotNet.Serialization.DeserializerBuilder()
                 .IgnoreUnmatchedProperties()
                 .Build();
@@ -163,12 +161,10 @@ public sealed class AiAgentConfigService : ConfigServiceBase<AiAgentConfig>
             if (string.IsNullOrWhiteSpace(promptStr))
                 return;
 
-            // Only write if it differs from the old default (first line check)
             if (promptStr.Contains("You are {botName}, a helpful Discord bot assistant", StringComparison.Ordinal)
                 && promptStr.Contains("DISCORD FORMATTING:", StringComparison.Ordinal)
                 && promptStr.Contains("COMMAND EXECUTION:", StringComparison.Ordinal))
             {
-                // This is the stock default - no need to preserve it, the new defaults cover it
                 return;
             }
 

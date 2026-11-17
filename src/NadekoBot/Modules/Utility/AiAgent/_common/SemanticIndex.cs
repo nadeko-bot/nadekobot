@@ -8,12 +8,13 @@ public sealed class SemanticIndex<TEntry>
     private readonly string _cachePath;
     private readonly Func<TEntry, string> _searchTextSelector;
 
-    private TEntry[]? _entries;
-    private float[][]? _embeddings;
-    private byte[]? _currentHash;
-    private volatile bool _ready;
+    // One reference, so a search during a reload never pairs the new entries with the old embeddings.
+    private sealed record Snapshot(TEntry[] Entries, float[][] Embeddings);
 
-    public bool IsReady => _ready;
+    private volatile Snapshot? _snapshot;
+    private byte[]? _currentHash;
+
+    public bool IsReady => _snapshot is not null;
 
     public SemanticIndex(
         EmbeddingService embedder,
@@ -40,10 +41,8 @@ public sealed class SemanticIndex<TEntry>
 
         if (TryLoadCachedEmbeddingsInternal(contentHash, entries.Length, out var cached))
         {
-            _entries = entries;
-            _embeddings = cached;
+            _snapshot = new(entries, cached);
             _currentHash = contentHash;
-            _ready = true;
             sw.Stop();
             return Task.FromResult(new BuildResult(entries.Length, sw.ElapsedMilliseconds, FromCache: true, Skipped: false));
         }
@@ -56,10 +55,8 @@ public sealed class SemanticIndex<TEntry>
 
         SaveCachedEmbeddingsInternal(contentHash, embeddings);
 
-        _entries = entries;
-        _embeddings = embeddings;
+        _snapshot = new(entries, embeddings);
         _currentHash = contentHash;
-        _ready = true;
 
         sw.Stop();
         return Task.FromResult(new BuildResult(entries.Length, sw.ElapsedMilliseconds, FromCache: false, Skipped: false));
@@ -67,14 +64,14 @@ public sealed class SemanticIndex<TEntry>
 
     public (TEntry Entry, float Score)[] Search(string query, int topK = 5)
     {
-        if (!_ready || _embeddings is null || _entries is null)
+        if (_snapshot is not { } snap)
             return [];
 
         var queryEmb = _embedder.Embed(query);
-        var scores = new (float Score, int Index)[_entries.Length];
+        var scores = new (float Score, int Index)[snap.Entries.Length];
 
-        for (var i = 0; i < _entries.Length; i++)
-            scores[i] = (CosineSimilarity(queryEmb, _embeddings[i]), i);
+        for (var i = 0; i < snap.Entries.Length; i++)
+            scores[i] = (CosineSimilarity(queryEmb, snap.Embeddings[i]), i);
 
         Array.Sort(scores, static (a, b) => b.Score.CompareTo(a.Score));
 
@@ -83,10 +80,24 @@ public sealed class SemanticIndex<TEntry>
         for (var i = 0; i < resultCount; i++)
         {
             var (score, idx) = scores[i];
-            results[i] = (_entries[idx], score);
+            results[i] = (snap.Entries[idx], score);
         }
 
         return results;
+    }
+
+    public (TEntry[] Entries, float[] Scores)? ScoreAll(string query)
+    {
+        if (_snapshot is not { } snap)
+            return null;
+
+        var (entries, embeddings) = snap;
+        var queryEmb = _embedder.Embed(query);
+        var scores = new float[entries.Length];
+        for (var i = 0; i < entries.Length; i++)
+            scores[i] = CosineSimilarity(queryEmb, embeddings[i]);
+
+        return (entries, scores);
     }
 
     private bool TryLoadCachedEmbeddingsInternal(byte[] expectedHash, int entryCount, out float[][] embeddings)

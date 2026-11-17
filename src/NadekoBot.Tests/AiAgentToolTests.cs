@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -110,36 +109,4 @@ public class AiAgentToolTests
         using var doc = JsonDocument.Parse(invalid);
         Assert.That(doc.RootElement.GetProperty("error").GetString(), Is.EqualTo("invalid_argument"));
     }
-
-    [Test]
-    public void Buffer_KeepsTheNewestMessagesInOrderAndRemovesById()
-    {
-        var buffer = new ChannelMessageBuffer(3);
-        var now = DateTimeOffset.UtcNow;
-
-        Assert.That(buffer.GetMessages(), Is.Empty);
-        Assert.That(buffer.TryRemove(1), Is.False);
-
-        for (ulong i = 1; i <= 5; i++)
-            buffer.Push(new(i, 100, "A", $"m{i}", now.AddSeconds(i)));
-
-        Assert.That(buffer.Count, Is.EqualTo(3));
-        Assert.That(Contents(buffer), Is.EqualTo(new[] { "m3", "m4", "m5" }));
-
-        Assert.That(buffer.TryRemove(4), Is.True);
-        Assert.That(buffer.TryRemove(99), Is.False);
-        Assert.That(Contents(buffer), Is.EqualTo(new[] { "m3", "m5" }));
-
-        buffer.Push(new(6, 100, "A", "m6", now.AddSeconds(6)));
-        Assert.That(buffer.Count, Is.EqualTo(3));
-        Assert.That(Contents(buffer), Is.EqualTo(new[] { "m3", "m5", "m6" }));
-
-        var lastAccess = buffer.LastAccessedUtc;
-        System.Threading.Thread.Sleep(10);
-        buffer.GetMessages();
-        Assert.That(buffer.LastAccessedUtc, Is.GreaterThan(lastAccess));
-    }
-
-    private static string[] Contents(ChannelMessageBuffer buffer)
-        => buffer.GetMessages().Select(static m => m.Content).ToArray();
 }

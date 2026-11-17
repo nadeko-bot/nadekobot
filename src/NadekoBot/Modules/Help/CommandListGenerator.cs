@@ -76,6 +76,7 @@ public sealed partial class CommandListGenerator(
                             Aliases = com.Aliases.Select(alias => prefix + alias).ToArray(),
                             Description = com.RealSummary(strings, medusae, culture, prefix),
                             Usage = com.RealRemarksArr(strings, medusae, culture, prefix),
+                            Params = GetParamsInternal(com, culture),
                             Submodule = com.Module.Name,
                             Module = com.Module.GetTopLevelModule().Name,
                             Options = optHelpStr,
@@ -85,5 +86,16 @@ public sealed partial class CommandListGenerator(
                     .ToList());
 
         return JsonConvert.SerializeObject(cmdData, Formatting.Indented);
+    }
+
+    // The strings of a command are keyed by its Summary. A medusa keeps its own strings without parameters.
+    private Dictionary<string, string>[] GetParamsInternal(CommandInfo com, CultureInfo culture)
+    {
+        if (com.Remarks?.StartsWith("medusa///", StringComparison.Ordinal) ?? false)
+            return null;
+
+        return strings.GetCommandStrings(com.Summary, culture)?.Params?
+            .Select(static o => o?.ToDictionary(static p => p.Key, static p => p.Value?.Desc ?? "") ?? [])
+            .ToArray();
     }
 }

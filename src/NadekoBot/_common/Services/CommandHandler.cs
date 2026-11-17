@@ -228,13 +228,13 @@ public sealed partial class CommandHandler : INService, ICommandHandler
         return Task.CompletedTask;
     }
 
-    public async Task TryRunCommand(SocketGuild? guild, ISocketMessageChannel channel, IUserMessage usrMsg)
+    public async Task<CommandRunResult> TryRunCommand(SocketGuild? guild, ISocketMessageChannel channel, IUserMessage usrMsg)
     {
         var startTime = Environment.TickCount;
 
         var intercepted = await _behaviorHandler.RunExecOnMessageAsync(guild, usrMsg);
         if (intercepted)
-            return;
+            return new(CommandRunStatus.Intercepted);
 
         var interceptTime = Environment.TickCount - startTime;
 
@@ -256,7 +256,7 @@ public sealed partial class CommandHandler : INService, ICommandHandler
         if (isPrefixCommand || messageContent.StartsWith(prefix, StringComparison.Ordinal))
         {
             var context = new CommandContext(_client, cmdMsg);
-            var (success, error, info) = await ExecuteCommandAsync(context,
+            var (success, error, info, status) = await ExecuteCommandAsync(context,
                 messageContent,
                 isPrefixCommand ? 1 : prefix.Length,
                 _services,
@@ -273,7 +273,7 @@ public sealed partial class CommandHandler : INService, ICommandHandler
                     LogSuccessfulExecution(usrMsg, channel as ITextChannel, interceptTime, startTime);
                     await CommandExecuted(usrMsg, info);
                     await _behaviorHandler.RunPostCommandAsync(context, info.Module.GetTopLevelModule().Name, info);
-                    return;
+                    return new(status, error, info);
                 }
 
                 // if it errored
@@ -285,12 +285,17 @@ public sealed partial class CommandHandler : INService, ICommandHandler
                     if (guild is not null)
                         await CommandErrored(info, channel as ITextChannel, error);
 
-                    return;
+                    return new(status, error, info);
                 }
+
+                // A pre-command behavior (permissions, cooldown, filter) stopped it.
+                await _behaviorHandler.RunOnNoCommandAsync(guild, usrMsg);
+                return new(status, null, info);
             }
         }
 
         await _behaviorHandler.RunOnNoCommandAsync(guild, usrMsg);
+        return new(CommandRunStatus.NotFound);
     }
 
     private string HumanizeError(string error)

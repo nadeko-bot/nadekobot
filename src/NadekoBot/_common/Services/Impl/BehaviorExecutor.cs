@@ -226,7 +226,11 @@ public sealed class BehaviorHandler : IBehaviorHandler
             return usrMsg;
 
         // A server admin wrote the new text (for example an alias), so it must not run with the owner's rights.
-        return new DoAsUserMessage(usrMsg, usrMsg.Author, newContent) { BlocksOwnerCommands = true };
+        return new DoAsUserMessage(usrMsg, usrMsg.Author, newContent)
+        {
+            BlocksOwnerCommands = true,
+            Output = (usrMsg as DoAsUserMessage)?.Output
+        };
     }
 
     private async ValueTask<string?> ExecInputTransformInternalAsync<T>(T[] execs, SocketGuild? guild, IUserMessage usrMsg, string content)

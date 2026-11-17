@@ -2,6 +2,8 @@ ar:
   agent_no_query: يجب عليك تقديم نص للوكيل الذكي.
   agent_cancelled: تم إلغاء جلسة الوكيل الخاصة بك.
   agent_no_session: ليس لديك جلسة وكيل نشطة لإلغائها.
+  agent_end_session: إنهاء الجلسة
+  agent_session_other: يمكن فقط للعضو الذي يتحدث مع وكيل الذكاء الاصطناعي إنهاء هذه الجلسة.
   agent_not_allowed: ليس لديك صلاحية استخدام الوكيل الذكي.
   skill_added: 'تمت إضافة المهارة **{0}** وتفعيلها.'
   skill_add_failed: 'فشل في إضافة المهارة **{0}**. قد تكون موجودة بالفعل أو أنك وصلت إلى الحد الأقصى وهو 10 مهارات.'
@@ -30,13 +32,12 @@ ar:
   aiprompt_updated: 'تم تحديث المطالبة **{0}**.'
   aiprompt_write_failed: 'فشل في كتابة المطالبة: {0}'
   agent_activity_working: جارٍ العمل على ذلك...
-  agent_activity_done: تم
-  agent_activity_waiting: بانتظار إجابتك
-  agent_activity_cancelled: تم الإلغاء
-  agent_activity_failed: توقف بسبب خطأ
-  agent_activity_steps: 'الخطوات: {0}'
   agent_activity_earlier: '{0} من الخطوات السابقة غير معروضة'
   agent_step_failed: '{0} (فشل)'
+  agent_step_failed_reason: 'فشل {0}: {1}'
+  agent_steps_ran: 'تم تنفيذ هذه الخطوات:'
+  agent_steps_maybe: 'كانت هذه الخطوة قيد التنفيذ عندما توقف وكيل الذكاء الاصطناعي. تحقق مما إذا نجحت:'
+  agent_steps_more: '...و{0} أخرى'
   agent_step_search_commands: 'تم البحث في الأوامر عن "{0}"'
   agent_step_search_data: 'تم البحث في بيانات الخادم عن "{0}"'
   agent_step_data: 'تم الاطلاع على {0}'
@@ -49,11 +50,21 @@ ar:
   agent_step_web_search: 'تم البحث في الويب عن "{0}"'
   agent_step_time: تم حساب الوقت
   agent_step_other: 'تم استخدام {0}'
+  agent_failed_provider: لم تُجب خدمة الذكاء الاصطناعي. حاول مرة أخرى لاحقًا.
+  agent_failed_empty: لم يقدّم الذكاء الاصطناعي أي إجابة. حاول مرة أخرى بكلمات أخرى.
+  agent_failed_cutoff: استهلك الذكاء الاصطناعي كامل حد الرموز قبل أن ينتهي. يمكن لمالك البوت رفع الحد عبر إعداد `maxtokens`.
+  agent_failed: توقف وكيل الذكاء الاصطناعي بسبب خطأ.
+  agent_timed_out: توقف وكيل الذكاء الاصطناعي لأن الطلب استغرق أكثر من دقيقتين.
+  agent_wait_member: أرسلت طلبات كثيرة إلى وكيل الذكاء الاصطناعي في وقت قصير. سيبدأ طلبك قريبًا.
+  agent_wait_server: يستخدم كثير من الأعضاء وكيل الذكاء الاصطناعي في هذا الخادم الآن. ينتظر طلبك مكانًا شاغرًا.
+  agent_busy: وكيل الذكاء الاصطناعي مشغول. حاول مرة أخرى بعد دقيقة.
 
 de-DE:
   agent_no_query: Du musst einen Prompt für den KI-Agenten angeben.
   agent_cancelled: Deine Agenten-Sitzung wurde abgebrochen.
   agent_no_session: Du hast keine aktive Agenten-Sitzung zum Abbrechen.
+  agent_end_session: Sitzung beenden
+  agent_session_other: Nur das Mitglied, das mit dem KI-Agenten spricht, kann diese Sitzung beenden.
   agent_not_allowed: Du hast keine Berechtigung, den KI-Agenten zu nutzen.
   skill_added: 'Skill **{0}** wurde hinzugefügt und aktiviert.'
   skill_add_failed: 'Skill **{0}** konnte nicht hinzugefügt werden. Er existiert möglicherweise bereits oder du hast das Limit von 10 Skills erreicht.'
@@ -82,13 +93,12 @@ de-DE:
   aiprompt_updated: 'Prompt **{0}** wurde aktualisiert.'
   aiprompt_write_failed: 'Prompt konnte nicht geschrieben werden: {0}'
   agent_activity_working: Bin dran...
-  agent_activity_done: Fertig
-  agent_activity_waiting: Warte auf deine Antwort
-  agent_activity_cancelled: Abgebrochen
-  agent_activity_failed: Wegen eines Fehlers gestoppt
-  agent_activity_steps: 'Schritte: {0}'
   agent_activity_earlier: '{0} frühere Schritte werden nicht angezeigt'
   agent_step_failed: '{0} (fehlgeschlagen)'
+  agent_step_failed_reason: '{0} ist fehlgeschlagen: {1}'
+  agent_steps_ran: 'Diese Schritte wurden ausgeführt:'
+  agent_steps_maybe: 'Dieser Schritt lief noch, als der KI-Agent stoppte. Prüf, ob er geklappt hat:'
+  agent_steps_more: '...und {0} weitere'
   agent_step_search_commands: 'Befehle nach "{0}" durchsucht'
   agent_step_search_data: 'Serverdaten nach "{0}" durchsucht'
   agent_step_data: '{0} nachgeschlagen'
@@ -101,11 +111,21 @@ de-DE:
   agent_step_web_search: 'Im Web nach "{0}" gesucht'
   agent_step_time: Zeit berechnet
   agent_step_other: '{0} verwendet'
+  agent_failed_provider: Der KI-Dienst hat nicht geantwortet. Versuch es später noch einmal.
+  agent_failed_empty: Die KI hat keine Antwort gegeben. Versuch es mit anderen Worten.
+  agent_failed_cutoff: Die KI hat ihr ganzes Token-Limit verbraucht, bevor sie fertig war. Der Bot-Besitzer kann das Limit mit der Einstellung `maxtokens` erhöhen.
+  agent_failed: Ein Fehler hat den KI-Agenten gestoppt.
+  agent_timed_out: Der KI-Agent hat gestoppt, weil die Anfrage länger als 2 Minuten gedauert hat.
+  agent_wait_member: Du hast in kurzer Zeit viele Anfragen an den KI-Agenten geschickt. Deine Anfrage startet gleich.
+  agent_wait_server: Gerade nutzen viele Mitglieder den KI-Agenten auf diesem Server. Deine Anfrage wartet auf einen freien Platz.
+  agent_busy: Der KI-Agent ist beschäftigt. Versuch es in einer Minute noch einmal.
 
 es-ES:
   agent_no_query: Debes proporcionar un prompt para el agente de IA.
   agent_cancelled: Tu sesión de agente ha sido cancelada.
   agent_no_session: No tienes una sesión de agente activa para cancelar.
+  agent_end_session: Terminar sesión
+  agent_session_other: Solo el miembro que habla con el agente de IA puede terminar esta sesión.
   agent_not_allowed: No tienes permiso para usar el agente de IA.
   skill_added: 'El skill **{0}** ha sido añadido y activado.'
   skill_add_failed: 'No se pudo añadir el skill **{0}**. Puede que ya exista o hayas alcanzado el limite de 10 skills.'
@@ -134,13 +154,12 @@ es-ES:
   aiprompt_updated: 'El prompt **{0}** se ha actualizado.'
   aiprompt_write_failed: 'No se pudo escribir el prompt: {0}'
   agent_activity_working: Trabajando en ello...
-  agent_activity_done: Hecho
-  agent_activity_waiting: Esperando tu respuesta
-  agent_activity_cancelled: Cancelado
-  agent_activity_failed: Se detuvo por un error
-  agent_activity_steps: 'Pasos: {0}'
   agent_activity_earlier: 'No se muestran {0} pasos anteriores'
   agent_step_failed: '{0} (falló)'
+  agent_step_failed_reason: '{0} falló: {1}'
+  agent_steps_ran: 'Estos pasos se ejecutaron:'
+  agent_steps_maybe: 'Este paso se estaba ejecutando cuando el agente de IA se detuvo. Comprueba si funcionó:'
+  agent_steps_more: '...y {0} más'
   agent_step_search_commands: 'Buscó comandos para "{0}"'
   agent_step_search_data: 'Buscó datos del servidor para "{0}"'
   agent_step_data: 'Consultó {0}'
@@ -153,11 +172,21 @@ es-ES:
   agent_step_web_search: 'Buscó en la web "{0}"'
   agent_step_time: Calculó una hora
   agent_step_other: 'Usó {0}'
+  agent_failed_provider: El servicio de IA no respondió. Inténtalo de nuevo más tarde.
+  agent_failed_empty: La IA no dio ninguna respuesta. Inténtalo de nuevo con otras palabras.
+  agent_failed_cutoff: La IA usó todo su límite de tokens antes de terminar. El dueño del bot puede subir el límite con el ajuste `maxtokens`.
+  agent_failed: Un error detuvo al agente de IA.
+  agent_timed_out: El agente de IA se detuvo porque la petición tardó más de 2 minutos.
+  agent_wait_member: Has enviado muchas peticiones al agente de IA en poco tiempo. Tu petición empieza pronto.
+  agent_wait_server: Muchos miembros usan el agente de IA en este servidor ahora. Tu petición espera un hueco libre.
+  agent_busy: El agente de IA está ocupado. Inténtalo de nuevo en un minuto.
 
 fr-FR:
   agent_no_query: Tu dois fournir une requête pour l'agent IA.
   agent_cancelled: Ta session d'agent a été annulée.
   agent_no_session: Tu n'as pas de session d'agent active à annuler.
+  agent_end_session: Terminer la session
+  agent_session_other: Seul le membre qui parle à l'agent IA peut terminer cette session.
   agent_not_allowed: Tu n'as pas la permission d'utiliser l'agent IA.
   skill_added: 'La compétence **{0}** a été ajoutée et activée.'
   skill_add_failed: 'Impossible d''ajouter la compétence **{0}**. Elle existe peut-être déjà ou tu as atteint la limite de 10 compétences.'
@@ -186,13 +215,12 @@ fr-FR:
   aiprompt_updated: 'Le prompt **{0}** a été mis à jour.'
   aiprompt_write_failed: 'Échec de l''écriture du prompt : {0}'
   agent_activity_working: Je m'en occupe...
-  agent_activity_done: Terminé
-  agent_activity_waiting: En attente de ta réponse
-  agent_activity_cancelled: Annulé
-  agent_activity_failed: Arrêté à cause d'une erreur
-  agent_activity_steps: 'Étapes : {0}'
   agent_activity_earlier: '{0} étapes précédentes ne sont pas affichées'
   agent_step_failed: '{0} (échec)'
+  agent_step_failed_reason: '{0} a échoué : {1}'
+  agent_steps_ran: 'Ces étapes ont été exécutées :'
+  agent_steps_maybe: 'Cette étape était en cours quand l''agent IA s''est arrêté. Vérifie si elle a marché :'
+  agent_steps_more: '...et {0} de plus'
   agent_step_search_commands: 'Commandes recherchées pour "{0}"'
   agent_step_search_data: 'Données du serveur recherchées pour "{0}"'
   agent_step_data: 'Consulté : {0}'
@@ -205,11 +233,21 @@ fr-FR:
   agent_step_web_search: 'Recherche web pour "{0}"'
   agent_step_time: Heure calculée
   agent_step_other: 'Utilisé : {0}'
+  agent_failed_provider: Le service d'IA n'a pas répondu. Réessaie plus tard.
+  agent_failed_empty: L'IA n'a donné aucune réponse. Réessaie avec d'autres mots.
+  agent_failed_cutoff: L'IA a utilisé toute sa limite de tokens avant de finir. Le propriétaire du bot peut augmenter la limite avec le réglage `maxtokens`.
+  agent_failed: Une erreur a arrêté l'agent IA.
+  agent_timed_out: L'agent IA s'est arrêté, car la demande a pris plus de 2 minutes.
+  agent_wait_member: Tu as envoyé beaucoup de demandes à l'agent IA en peu de temps. Ta demande démarre bientôt.
+  agent_wait_server: Beaucoup de membres utilisent l'agent IA sur ce serveur en ce moment. Ta demande attend une place libre.
+  agent_busy: L'agent IA est occupé. Réessaie dans une minute.
 
 id-ID:
   agent_no_query: Kamu harus memberikan prompt untuk agen AI.
   agent_cancelled: Sesi agenmu telah dibatalkan.
   agent_no_session: Kamu tidak memiliki sesi agen yang aktif untuk dibatalkan.
+  agent_end_session: Akhiri sesi
+  agent_session_other: Hanya anggota yang berbicara dengan agen AI yang bisa mengakhiri sesi ini.
   agent_not_allowed: Kamu tidak memiliki izin untuk menggunakan agen AI.
   skill_added: 'Skill **{0}** telah ditambahkan dan diaktifkan.'
   skill_add_failed: 'Gagal menambahkan skill **{0}**. Mungkin sudah ada atau kamu sudah mencapai batas 10 skill.'
@@ -238,13 +276,12 @@ id-ID:
   aiprompt_updated: 'Prompt **{0}** sudah diperbarui.'
   aiprompt_write_failed: 'Gagal menulis prompt: {0}'
   agent_activity_working: Sedang dikerjakan...
-  agent_activity_done: Selesai
-  agent_activity_waiting: Menunggu jawabanmu
-  agent_activity_cancelled: Dibatalkan
-  agent_activity_failed: Berhenti karena terjadi error
-  agent_activity_steps: 'Langkah: {0}'
   agent_activity_earlier: '{0} langkah sebelumnya tidak ditampilkan'
   agent_step_failed: '{0} (gagal)'
+  agent_step_failed_reason: '{0} gagal: {1}'
+  agent_steps_ran: 'Langkah-langkah ini sudah dijalankan:'
+  agent_steps_maybe: 'Langkah ini sedang berjalan saat agen AI berhenti. Cek apakah langkah ini berhasil:'
+  agent_steps_more: '...dan {0} lainnya'
   agent_step_search_commands: 'Mencari perintah untuk "{0}"'
   agent_step_search_data: 'Mencari data server untuk "{0}"'
   agent_step_data: 'Melihat {0}'
@@ -257,11 +294,21 @@ id-ID:
   agent_step_web_search: 'Mencari di web untuk "{0}"'
   agent_step_time: Menghitung waktu
   agent_step_other: 'Memakai {0}'
+  agent_failed_provider: Layanan AI tidak menjawab. Coba lagi nanti.
+  agent_failed_empty: AI tidak memberi jawaban. Coba lagi dengan kata-kata lain.
+  agent_failed_cutoff: AI menghabiskan seluruh batas token sebelum selesai. Pemilik bot dapat menaikkan batasnya dengan pengaturan `maxtokens`.
+  agent_failed: Sebuah error menghentikan agen AI.
+  agent_timed_out: Agen AI berhenti karena permintaan memakan waktu lebih dari 2 menit.
+  agent_wait_member: Kamu mengirim banyak permintaan ke agen AI dalam waktu singkat. Permintaanmu segera dimulai.
+  agent_wait_server: Banyak anggota sedang memakai agen AI di server ini. Permintaanmu menunggu tempat kosong.
+  agent_busy: Agen AI sedang sibuk. Coba lagi dalam satu menit.
 
 ja-JP:
   agent_no_query: AIエージェントにプロンプトを入力してください。
   agent_cancelled: エージェントセッションがキャンセルされました。
   agent_no_session: キャンセルするアクティブなエージェントセッションがありません。
+  agent_end_session: セッションを終了
+  agent_session_other: このセッションを終了できるのは、AI エージェントと話しているメンバーだけです。
   agent_not_allowed: AIエージェントを使用する権限がありません。
   skill_added: 'スキル **{0}** が追加され、有効になりました。'
   skill_add_failed: 'スキル **{0}** の追加に失敗しました。既に存在するか、上限の10個に達している可能性があります。'
@@ -290,13 +337,12 @@ ja-JP:
   aiprompt_updated: 'プロンプト **{0}** を更新しました。'
   aiprompt_write_failed: 'プロンプトの書き込みに失敗しました: {0}'
   agent_activity_working: 作業中...
-  agent_activity_done: 完了
-  agent_activity_waiting: あなたの返事を待っています
-  agent_activity_cancelled: キャンセルしました
-  agent_activity_failed: エラーで停止しました
-  agent_activity_steps: 'ステップ: {0}'
   agent_activity_earlier: 'それより前の {0} ステップは表示されていません'
   agent_step_failed: '{0} (失敗)'
+  agent_step_failed_reason: '{0} は失敗しました: {1}'
+  agent_steps_ran: '実行したステップ:'
+  agent_steps_maybe: 'AI エージェントが停止したとき、このステップは実行中でした。成功したか確認してください:'
+  agent_steps_more: '...ほか {0} 件'
   agent_step_search_commands: 'コマンドを検索: "{0}"'
   agent_step_search_data: 'サーバーデータを検索: "{0}"'
   agent_step_data: '{0} を確認'
@@ -309,11 +355,21 @@ ja-JP:
   agent_step_web_search: 'ウェブ検索: "{0}"'
   agent_step_time: 時刻を計算
   agent_step_other: '{0} を使用'
+  agent_failed_provider: AI サービスが応答しませんでした。後でもう一度試してください。
+  agent_failed_empty: AI から回答がありませんでした。別の言い方でもう一度試してください。
+  agent_failed_cutoff: AI は完了する前にトークン上限をすべて使い切りました。ボットのオーナーは `maxtokens` 設定で上限を上げられます。
+  agent_failed: エラーにより AI エージェントが停止しました。
+  agent_timed_out: リクエストに 2 分以上かかったため、AI エージェントは停止しました。
+  agent_wait_member: 短い時間に AI エージェントへ多くのリクエストを送りました。リクエストはまもなく開始されます。
+  agent_wait_server: このサーバーでは今、多くのメンバーが AI エージェントを使っています。リクエストは空きが出るまで待機します。
+  agent_busy: AI エージェントは混み合っています。1 分後にもう一度試してください。
 
 ko-KR:
   agent_no_query: AI 에이전트에 프롬프트를 입력해야 합니다.
   agent_cancelled: 에이전트 세션이 취소되었습니다.
   agent_no_session: 취소할 활성 에이전트 세션이 없습니다.
+  agent_end_session: 세션 종료
+  agent_session_other: AI 에이전트와 대화 중인 멤버만 이 세션을 종료할 수 있습니다.
   agent_not_allowed: AI 에이전트를 사용할 권한이 없습니다.
   skill_added: '스킬 **{0}**이(가) 추가되고 활성화되었습니다.'
   skill_add_failed: '스킬 **{0}** 추가에 실패했습니다. 이미 존재하거나 10개 제한에 도달했을 수 있습니다.'
@@ -342,13 +398,12 @@ ko-KR:
   aiprompt_updated: '프롬프트 **{0}**이(가) 업데이트되었습니다.'
   aiprompt_write_failed: '프롬프트 쓰기에 실패했습니다: {0}'
   agent_activity_working: 작업 중...
-  agent_activity_done: 완료
-  agent_activity_waiting: 답변을 기다리는 중
-  agent_activity_cancelled: 취소됨
-  agent_activity_failed: 오류로 중단됨
-  agent_activity_steps: '단계: {0}'
   agent_activity_earlier: '이전 단계 {0}개는 표시되지 않습니다'
   agent_step_failed: '{0} (실패)'
+  agent_step_failed_reason: '{0} 실패: {1}'
+  agent_steps_ran: '실행된 단계:'
+  agent_steps_maybe: 'AI 에이전트가 중단되었을 때 이 단계가 실행 중이었습니다. 이 단계가 성공했는지 확인하세요:'
+  agent_steps_more: '...외 {0}개'
   agent_step_search_commands: '명령어 검색: "{0}"'
   agent_step_search_data: '서버 데이터 검색: "{0}"'
   agent_step_data: '{0} 조회'
@@ -361,11 +416,21 @@ ko-KR:
   agent_step_web_search: '웹 검색: "{0}"'
   agent_step_time: 시간 계산
   agent_step_other: '{0} 사용'
+  agent_failed_provider: AI 서비스가 응답하지 않았습니다. 나중에 다시 시도하세요.
+  agent_failed_empty: AI가 답변을 내놓지 않았습니다. 다른 말로 다시 시도하세요.
+  agent_failed_cutoff: AI가 끝내기 전에 토큰 한도를 모두 사용했습니다. 봇 소유자는 `maxtokens` 설정으로 한도를 높일 수 있습니다.
+  agent_failed: 오류로 AI 에이전트가 중단되었습니다.
+  agent_timed_out: 요청이 2분 넘게 걸려 AI 에이전트가 중단되었습니다.
+  agent_wait_member: 짧은 시간에 AI 에이전트에게 요청을 많이 보냈습니다. 곧 요청이 시작됩니다.
+  agent_wait_server: 지금 이 서버에서 많은 멤버가 AI 에이전트를 사용하고 있습니다. 요청이 빈자리를 기다립니다.
+  agent_busy: AI 에이전트가 바쁩니다. 1분 뒤에 다시 시도하세요.
 
 pl-PL:
   agent_no_query: Musisz podać zapytanie dla agenta AI.
   agent_cancelled: Twoja sesja agenta została anulowana.
   agent_no_session: Nie masz aktywnej sesji agenta do anulowania.
+  agent_end_session: Zakończ sesję
+  agent_session_other: Tylko członek, który rozmawia z agentem AI, może zakończyć tę sesję.
   agent_not_allowed: Nie masz uprawnień do korzystania z agenta AI.
   skill_added: 'Umiejętność **{0}** została dodana i włączona.'
   skill_add_failed: 'Nie udało się dodać umiejętności **{0}**. Możliwe, że już istnieje lub osiągnięto limit 10 umiejętności.'
@@ -394,13 +459,12 @@ pl-PL:
   aiprompt_updated: 'Prompt **{0}** został zaktualizowany.'
   aiprompt_write_failed: 'Nie udało się zapisać promptu: {0}'
   agent_activity_working: Pracuję nad tym...
-  agent_activity_done: Gotowe
-  agent_activity_waiting: Czekam na twoją odpowiedź
-  agent_activity_cancelled: Anulowano
-  agent_activity_failed: Zatrzymano z powodu błędu
-  agent_activity_steps: 'Kroki: {0}'
   agent_activity_earlier: 'Nie pokazano {0} wcześniejszych kroków'
   agent_step_failed: '{0} (nie udało się)'
+  agent_step_failed_reason: '{0} nie zadziałało: {1}'
+  agent_steps_ran: 'Te kroki zostały wykonane:'
+  agent_steps_maybe: 'Ten krok był w toku, gdy agent AI się zatrzymał. Sprawdź, czy zadziałał:'
+  agent_steps_more: '...i {0} więcej'
   agent_step_search_commands: 'Przeszukano komendy pod kątem "{0}"'
   agent_step_search_data: 'Przeszukano dane serwera pod kątem "{0}"'
   agent_step_data: 'Sprawdzono {0}'
@@ -413,11 +477,21 @@ pl-PL:
   agent_step_web_search: 'Wyszukano w sieci "{0}"'
   agent_step_time: Obliczono czas
   agent_step_other: 'Użyto {0}'
+  agent_failed_provider: Usługa AI nie odpowiedziała. Spróbuj ponownie później.
+  agent_failed_empty: AI nie dało odpowiedzi. Spróbuj ponownie innymi słowami.
+  agent_failed_cutoff: AI wykorzystało cały limit tokenów, zanim skończyło. Właściciel bota może zwiększyć limit ustawieniem `maxtokens`.
+  agent_failed: Błąd zatrzymał agenta AI.
+  agent_timed_out: Agent AI zatrzymał się, bo prośba trwała dłużej niż 2 minuty.
+  agent_wait_member: Do agenta AI trafiło od Ciebie dużo próśb w krótkim czasie. Twoja prośba ruszy za chwilę.
+  agent_wait_server: Teraz wielu członków używa agenta AI na tym serwerze. Twoja prośba czeka na wolne miejsce.
+  agent_busy: Agent AI jest zajęty. Spróbuj ponownie za minutę.
 
 pt-BR:
   agent_no_query: Você precisa fornecer um prompt para o agente de IA.
   agent_cancelled: Sua sessão de agente foi cancelada.
   agent_no_session: Você não tem uma sessão de agente ativa para cancelar.
+  agent_end_session: Encerrar sessão
+  agent_session_other: Só o membro que está falando com o agente de IA pode encerrar esta sessão.
   agent_not_allowed: Você não tem permissão para usar o agente de IA.
   skill_added: 'A skill **{0}** foi adicionada e ativada.'
   skill_add_failed: 'Falha ao adicionar a skill **{0}**. Ela pode já existir ou você atingiu o limite de 10 skills.'
@@ -446,13 +520,12 @@ pt-BR:
   aiprompt_updated: 'O prompt **{0}** foi atualizado.'
   aiprompt_write_failed: 'Falha ao gravar o prompt: {0}'
   agent_activity_working: Trabalhando nisso...
-  agent_activity_done: Pronto
-  agent_activity_waiting: Esperando sua resposta
-  agent_activity_cancelled: Cancelado
-  agent_activity_failed: Parou por causa de um erro
-  agent_activity_steps: 'Etapas: {0}'
   agent_activity_earlier: '{0} etapas anteriores não são mostradas'
   agent_step_failed: '{0} (falhou)'
+  agent_step_failed_reason: '{0} falhou: {1}'
+  agent_steps_ran: 'Estas etapas foram executadas:'
+  agent_steps_maybe: 'Esta etapa estava rodando quando o agente de IA parou. Confira se ela funcionou:'
+  agent_steps_more: '...e mais {0}'
   agent_step_search_commands: 'Procurou comandos para "{0}"'
   agent_step_search_data: 'Procurou dados do servidor para "{0}"'
   agent_step_data: 'Consultou {0}'
@@ -465,11 +538,21 @@ pt-BR:
   agent_step_web_search: 'Pesquisou na web por "{0}"'
   agent_step_time: Calculou um horário
   agent_step_other: 'Usou {0}'
+  agent_failed_provider: O serviço de IA não respondeu. Tente de novo mais tarde.
+  agent_failed_empty: A IA não deu resposta. Tente de novo com outras palavras.
+  agent_failed_cutoff: A IA usou todo o limite de tokens antes de terminar. O dono do bot pode aumentar o limite com a configuração `maxtokens`.
+  agent_failed: Um erro parou o agente de IA.
+  agent_timed_out: O agente de IA parou porque o pedido levou mais de 2 minutos.
+  agent_wait_member: Você mandou muitos pedidos ao agente de IA em pouco tempo. Seu pedido começa em breve.
+  agent_wait_server: Muitos membros estão usando o agente de IA neste servidor agora. Seu pedido espera uma vaga livre.
+  agent_busy: O agente de IA está ocupado. Tente de novo em um minuto.
 
 ru-RU:
   agent_no_query: Вы должны указать запрос для ИИ-агента.
   agent_cancelled: Ваша сессия агента была отменена.
   agent_no_session: У вас нет активной сессии агента для отмены.
+  agent_end_session: Завершить сессию
+  agent_session_other: Завершить эту сессию может только участник, который общается с ИИ-агентом.
   agent_not_allowed: У вас нет прав на использование ИИ-агента.
   skill_added: 'Навык **{0}** был добавлен и включен.'
   skill_add_failed: 'Не удалось добавить навык **{0}**. Возможно, он уже существует или вы достигли лимита в 10 навыков.'
@@ -498,13 +581,12 @@ ru-RU:
   aiprompt_updated: 'Промпт **{0}** обновлён.'
   aiprompt_write_failed: 'Не удалось записать промпт: {0}'
   agent_activity_working: Работаю над этим...
-  agent_activity_done: Готово
-  agent_activity_waiting: Жду твоего ответа
-  agent_activity_cancelled: Отменено
-  agent_activity_failed: Остановлено из-за ошибки
-  agent_activity_steps: 'Шаги: {0}'
   agent_activity_earlier: 'Ещё {0} ранних шагов не показано'
   agent_step_failed: '{0} (ошибка)'
+  agent_step_failed_reason: 'Не удалось выполнить {0}: {1}'
+  agent_steps_ran: 'Выполненные шаги:'
+  agent_steps_maybe: 'Этот шаг выполнялся, когда ИИ-агент остановился. Проверьте, сработал ли этот шаг:'
+  agent_steps_more: '...и ещё {0}'
   agent_step_search_commands: 'Поиск команд по запросу "{0}"'
   agent_step_search_data: 'Поиск данных сервера по запросу "{0}"'
   agent_step_data: 'Просмотрено: {0}'
@@ -517,11 +599,21 @@ ru-RU:
   agent_step_web_search: 'Поиск в интернете по запросу "{0}"'
   agent_step_time: Вычислено время
   agent_step_other: 'Использовано: {0}'
+  agent_failed_provider: Сервис ИИ не ответил. Попробуйте позже.
+  agent_failed_empty: ИИ не дал ответа. Попробуйте сформулировать иначе.
+  agent_failed_cutoff: ИИ израсходовал весь лимит токенов, не закончив ответ. Владелец бота может увеличить лимит настройкой `maxtokens`.
+  agent_failed: Ошибка остановила ИИ-агента.
+  agent_timed_out: ИИ-агент остановился, потому что запрос занял больше 2 минут.
+  agent_wait_member: Вы отправили ИИ-агенту много запросов за короткое время. Ваш запрос скоро начнётся.
+  agent_wait_server: Сейчас многие участники используют ИИ-агента на этом сервере. Ваш запрос ждёт свободного места.
+  agent_busy: ИИ-агент занят. Попробуйте снова через минуту.
 
 sr-Cyrl-RS:
   agent_no_query: Морате да унесете упит за АИ агента.
   agent_cancelled: Ваша сесија агента је отказана.
   agent_no_session: Немате активну сесију агента за отказивање.
+  agent_end_session: Заврши сесију
+  agent_session_other: Само члан који разговара са АИ агентом може да заврши ову сесију.
   agent_not_allowed: Немате дозволу да користите АИ агента.
   skill_added: 'Вештина **{0}** је додата и омогућена.'
   skill_add_failed: 'Није успело додавање вештине **{0}**. Можда већ постоји или сте достигли ограничење од 10 вештина.'
@@ -550,13 +642,12 @@ sr-Cyrl-RS:
   aiprompt_updated: 'Промпт **{0}** је ажуриран.'
   aiprompt_write_failed: 'Неуспешно уписивање промпта: {0}'
   agent_activity_working: Радим на томе...
-  agent_activity_done: Готово
-  agent_activity_waiting: Чекам твој одговор
-  agent_activity_cancelled: Отказано
-  agent_activity_failed: Заустављено због грешке
-  agent_activity_steps: 'Кораци: {0}'
   agent_activity_earlier: '{0} ранијих корака није приказано'
   agent_step_failed: '{0} (неуспешно)'
+  agent_step_failed_reason: 'Није успело {0}: {1}'
+  agent_steps_ran: 'Ови кораци су извршени:'
+  agent_steps_maybe: 'Овај корак се извршавао када је АИ агент стао. Проверите да ли је успео:'
+  agent_steps_more: '...и још {0}'
   agent_step_search_commands: 'Претражене команде за "{0}"'
   agent_step_search_data: 'Претражени подаци сервера за "{0}"'
   agent_step_data: 'Погледано: {0}'
@@ -569,11 +660,21 @@ sr-Cyrl-RS:
   agent_step_web_search: 'Претражен веб за "{0}"'
   agent_step_time: Израчунато време
   agent_step_other: 'Коришћено: {0}'
+  agent_failed_provider: АИ сервис није одговорио. Покушајте поново касније.
+  agent_failed_empty: АИ није дао одговор. Покушајте поново другим речима.
+  agent_failed_cutoff: АИ је потрошио цело ограничење токена пре него што је завршио. Власник бота може да повећа ограничење подешавањем `maxtokens`.
+  agent_failed: Грешка је зауставила АИ агента.
+  agent_timed_out: АИ агент је стао јер је захтев трајао дуже од 2 минута.
+  agent_wait_member: Послали сте много захтева АИ агенту за кратко време. Ваш захтев ускоро почиње.
+  agent_wait_server: Много чланова сада користи АИ агента на овом серверу. Ваш захтев чека слободно место.
+  agent_busy: АИ агент је заузет. Покушајте поново за минут.
 
 tr-TR:
   agent_no_query: Yapay zeka ajanına bir istem belirtmelisin.
   agent_cancelled: Ajan oturumun iptal edildi.
   agent_no_session: İptal edilecek aktif bir ajan oturumun yok.
+  agent_end_session: Oturumu bitir
+  agent_session_other: Bu oturumu yalnızca yapay zeka ajanıyla konuşan üye bitirebilir.
   agent_not_allowed: Yapay zeka ajanını kullanma iznin yok.
   skill_added: '**{0}** becerisi eklendi ve etkinleştirildi.'
   skill_add_failed: '**{0}** becerisi eklenemedi. Zaten mevcut olabilir veya 10 beceri sınırına ulaşmış olabilirsin.'
@@ -602,13 +703,12 @@ tr-TR:
   aiprompt_updated: '**{0}** promptu güncellendi.'
   aiprompt_write_failed: 'Prompt yazılamadı: {0}'
   agent_activity_working: Üzerinde çalışıyorum...
-  agent_activity_done: Bitti
-  agent_activity_waiting: Cevabını bekliyorum
-  agent_activity_cancelled: İptal edildi
-  agent_activity_failed: Bir hata yüzünden durdu
-  agent_activity_steps: 'Adımlar: {0}'
   agent_activity_earlier: 'Önceki {0} adım gösterilmiyor'
   agent_step_failed: '{0} (başarısız)'
+  agent_step_failed_reason: '{0} başarısız oldu: {1}'
+  agent_steps_ran: 'Çalıştırılan adımlar:'
+  agent_steps_maybe: 'Yapay zeka ajanı durduğunda bu adım çalışıyordu. Adımın işe yarayıp yaramadığını kontrol et:'
+  agent_steps_more: '...ve {0} tane daha'
   agent_step_search_commands: '"{0}" için komutlar arandı'
   agent_step_search_data: '"{0}" için sunucu verileri arandı'
   agent_step_data: '{0} kontrol edildi'
@@ -621,11 +721,21 @@ tr-TR:
   agent_step_web_search: 'Web''de "{0}" arandı'
   agent_step_time: Zaman hesaplandı
   agent_step_other: '{0} kullanıldı'
+  agent_failed_provider: Yapay zeka hizmeti yanıt vermedi. Daha sonra tekrar dene.
+  agent_failed_empty: Yapay zeka bir yanıt vermedi. Başka kelimelerle tekrar dene.
+  agent_failed_cutoff: Yapay zeka bitirmeden önce tüm token sınırını kullandı. Bot sahibi sınırı `maxtokens` ayarıyla yükseltebilir.
+  agent_failed: Bir hata yapay zeka ajanını durdurdu.
+  agent_timed_out: İstek 2 dakikadan uzun sürdüğü için yapay zeka ajanı durdu.
+  agent_wait_member: Kısa sürede yapay zeka ajanına çok fazla istek gönderdin. İsteğin birazdan başlayacak.
+  agent_wait_server: Şu anda bu sunucuda birçok üye yapay zeka ajanını kullanıyor. İsteğin boş bir yer bekliyor.
+  agent_busy: Yapay zeka ajanı meşgul. Bir dakika sonra tekrar dene.
 
 ts-TS:
   agent_no_query: You have to give the AI agent a prompt, you know!
   agent_cancelled: Fine, your agent session is cancelled. Hmph.
   agent_no_session: You don't even have an active agent session to cancel!
+  agent_end_session: End session
+  agent_session_other: Only the member who talks to the AI agent can end this session, baka.
   agent_not_allowed: Hmph, you can't use the AI agent!
   skill_added: 'Skill **{0}** has been added and enabled.'
   skill_add_failed: 'Failed to add skill **{0}**. It might already exist or you hit the 10 skill limit. Pay attention!'
@@ -654,13 +764,12 @@ ts-TS:
   aiprompt_updated: 'Prompt **{0}** updated. There, happy now?'
   aiprompt_write_failed: 'Failed to write prompt: {0}'
   agent_activity_working: W-working on it, okay?!
-  agent_activity_done: Done. Obviously.
-  agent_activity_waiting: Waiting for your answer. Hurry up.
-  agent_activity_cancelled: Cancelled
-  agent_activity_failed: Stopped because of an error. Not my fault!
-  agent_activity_steps: 'Steps: {0}'
   agent_activity_earlier: '{0} earlier steps are not shown'
   agent_step_failed: '{0} (failed)'
+  agent_step_failed_reason: '{0} failed: {1}'
+  agent_steps_ran: 'These steps ran:'
+  agent_steps_maybe: 'This step was running when the AI agent stopped. Check if it worked:'
+  agent_steps_more: '...and {0} more'
   agent_step_search_commands: 'Searched commands for "{0}"'
   agent_step_search_data: 'Searched server data for "{0}"'
   agent_step_data: 'Looked up {0}'
@@ -673,11 +782,21 @@ ts-TS:
   agent_step_web_search: 'Searched the web for "{0}"'
   agent_step_time: Worked out a time
   agent_step_other: 'Used {0}'
+  agent_failed_provider: The AI service didn't answer. Try again later.
+  agent_failed_empty: The AI gave no answer. Try again with other words.
+  agent_failed_cutoff: The AI ran out of tokens before it finished. The bot owner can raise the limit with the `maxtokens` setting.
+  agent_failed: An error stopped the AI agent. D-don't look at me!
+  agent_timed_out: The AI agent stopped because the request took more than 2 minutes.
+  agent_wait_member: You sent too many requests to the AI agent too fast. Your request starts soon. Patience!
+  agent_wait_server: Many members use the AI agent in this server now. Your request waits for a free place.
+  agent_busy: I-I'm busy right now! Try again in a minute.
 
 uk-UA:
   agent_no_query: Ви повинні надати запит для ШІ-агента.
   agent_cancelled: Вашу сесію агента було скасовано.
   agent_no_session: У вас немає активної сесії агента для скасування.
+  agent_end_session: Завершити сесію
+  agent_session_other: Завершити цю сесію може лише учасник, який спілкується з ШІ-агентом.
   agent_not_allowed: У вас немає прав на використання ШІ-агента.
   skill_added: 'Навичку **{0}** додано та увімкнено.'
   skill_add_failed: 'Не вдалося додати навичку **{0}**. Можливо, вона вже існує або ви досягли ліміту в 10 навичок.'
@@ -706,13 +825,12 @@ uk-UA:
   aiprompt_updated: 'Підказку **{0}** оновлено.'
   aiprompt_write_failed: 'Не вдалося записати підказку: {0}'
   agent_activity_working: Працюю над цим...
-  agent_activity_done: Готово
-  agent_activity_waiting: Чекаю на твою відповідь
-  agent_activity_cancelled: Скасовано
-  agent_activity_failed: Зупинено через помилку
-  agent_activity_steps: 'Кроки: {0}'
   agent_activity_earlier: 'Ще {0} попередніх кроків не показано'
   agent_step_failed: '{0} (помилка)'
+  agent_step_failed_reason: 'Не вдалося виконати {0}: {1}'
+  agent_steps_ran: 'Виконані кроки:'
+  agent_steps_maybe: 'Цей крок виконувався, коли ШІ-агент зупинився. Перевірте, чи спрацював цей крок:'
+  agent_steps_more: '...і ще {0}'
   agent_step_search_commands: 'Пошук команд за запитом "{0}"'
   agent_step_search_data: 'Пошук даних сервера за запитом "{0}"'
   agent_step_data: 'Переглянуто: {0}'
@@ -725,11 +843,21 @@ uk-UA:
   agent_step_web_search: 'Пошук в інтернеті за запитом "{0}"'
   agent_step_time: Обчислено час
   agent_step_other: 'Використано: {0}'
+  agent_failed_provider: Сервіс ШІ не відповів. Спробуйте пізніше.
+  agent_failed_empty: ШІ не дав відповіді. Спробуйте іншими словами.
+  agent_failed_cutoff: ШІ використав увесь ліміт токенів, перш ніж закінчив. Власник бота може підвищити ліміт налаштуванням `maxtokens`.
+  agent_failed: Помилка зупинила ШІ-агента.
+  agent_timed_out: ШІ-агент зупинився, бо запит тривав понад 2 хвилини.
+  agent_wait_member: Ви надіслали ШІ-агенту багато запитів за короткий час. Ваш запит скоро почнеться.
+  agent_wait_server: Зараз багато учасників користуються ШІ-агентом на цьому сервері. Ваш запит чекає на вільне місце.
+  agent_busy: ШІ-агент зайнятий. Спробуйте ще раз за хвилину.
 
 vi-VN:
   agent_no_query: Bạn phải cung cấp một prompt cho tác nhân AI.
   agent_cancelled: Phiên làm việc với tác nhân của bạn đã bị hủy.
   agent_no_session: Bạn không có phiên tác nhân nào đang hoạt động để hủy.
+  agent_end_session: Kết thúc phiên
+  agent_session_other: Chỉ thành viên đang trò chuyện với tác nhân AI mới có thể kết thúc phiên này.
   agent_not_allowed: Bạn không có quyền sử dụng tác nhân AI.
   skill_added: 'Kỹ năng **{0}** đã được thêm và bật.'
   skill_add_failed: 'Không thể thêm kỹ năng **{0}**. Có thể nó đã tồn tại hoặc bạn đã đạt giới hạn 10 kỹ năng.'
@@ -758,13 +886,12 @@ vi-VN:
   aiprompt_updated: 'Prompt **{0}** đã được cập nhật.'
   aiprompt_write_failed: 'Không thể ghi prompt: {0}'
   agent_activity_working: Đang xử lý...
-  agent_activity_done: Xong
-  agent_activity_waiting: Đang chờ câu trả lời của bạn
-  agent_activity_cancelled: Đã hủy
-  agent_activity_failed: Đã dừng do có lỗi
-  agent_activity_steps: 'Số bước: {0}'
   agent_activity_earlier: '{0} bước trước đó không được hiển thị'
   agent_step_failed: '{0} (thất bại)'
+  agent_step_failed_reason: '{0} thất bại: {1}'
+  agent_steps_ran: 'Các bước đã chạy:'
+  agent_steps_maybe: 'Bước này đang chạy thì tác nhân AI dừng lại. Hãy kiểm tra xem bước này có thành công không:'
+  agent_steps_more: '...và {0} bước nữa'
   agent_step_search_commands: 'Đã tìm lệnh cho "{0}"'
   agent_step_search_data: 'Đã tìm dữ liệu máy chủ cho "{0}"'
   agent_step_data: 'Đã tra cứu {0}'
@@ -777,11 +904,21 @@ vi-VN:
   agent_step_web_search: 'Đã tìm trên web "{0}"'
   agent_step_time: Đã tính thời gian
   agent_step_other: 'Đã dùng {0}'
+  agent_failed_provider: Dịch vụ AI không phản hồi. Hãy thử lại sau.
+  agent_failed_empty: AI không đưa ra câu trả lời. Hãy thử lại bằng cách diễn đạt khác.
+  agent_failed_cutoff: AI đã dùng hết giới hạn token trước khi hoàn thành. Chủ bot có thể tăng giới hạn bằng cài đặt `maxtokens`.
+  agent_failed: Một lỗi đã làm tác nhân AI dừng lại.
+  agent_timed_out: Tác nhân AI đã dừng vì yêu cầu mất hơn 2 phút.
+  agent_wait_member: Bạn đã gửi nhiều yêu cầu đến tác nhân AI trong thời gian ngắn. Yêu cầu của bạn sẽ sớm bắt đầu.
+  agent_wait_server: Hiện có nhiều thành viên đang dùng tác nhân AI trong máy chủ này. Yêu cầu của bạn đang chờ chỗ trống.
+  agent_busy: Tác nhân AI đang bận. Hãy thử lại sau một phút.
 
 zh-CN:
   agent_no_query: 你必须为 AI 代理提供一个提示。
   agent_cancelled: 你的代理会话已被取消。
   agent_no_session: 你没有可取消的活跃代理会话。
+  agent_end_session: 结束会话
+  agent_session_other: 只有正在与 AI 代理对话的成员才能结束此会话。
   agent_not_allowed: 你没有权限使用 AI 代理。
   skill_added: '技能 **{0}** 已添加并启用。'
   skill_add_failed: '添加技能 **{0}** 失败。它可能已存在，或者你已达到 10 个技能的上限。'
@@ -810,13 +947,12 @@ zh-CN:
   aiprompt_updated: '提示词 **{0}** 已更新。'
   aiprompt_write_failed: '写入提示词失败：{0}'
   agent_activity_working: 正在处理...
-  agent_activity_done: 完成
-  agent_activity_waiting: 等你回复
-  agent_activity_cancelled: 已取消
-  agent_activity_failed: 因出错而停止
-  agent_activity_steps: '步骤：{0}'
   agent_activity_earlier: '前面还有 {0} 个步骤未显示'
   agent_step_failed: '{0}（失败）'
+  agent_step_failed_reason: '{0} 失败：{1}'
+  agent_steps_ran: 已执行的步骤：
+  agent_steps_maybe: AI 代理停止时，这一步正在执行。请检查这一步是否成功：
+  agent_steps_more: '...还有 {0} 个'
   agent_step_search_commands: '搜索了命令："{0}"'
   agent_step_search_data: '搜索了服务器数据："{0}"'
   agent_step_data: '查询了 {0}'
@@ -829,3 +965,11 @@ zh-CN:
   agent_step_web_search: '在网上搜索了："{0}"'
   agent_step_time: 计算了时间
   agent_step_other: '使用了 {0}'
+  agent_failed_provider: AI 服务没有响应。请稍后再试。
+  agent_failed_empty: AI 没有给出回答。请换种说法再试一次。
+  agent_failed_cutoff: AI 在完成之前用完了全部 token 上限。机器人所有者可以通过 `maxtokens` 设置提高上限。
+  agent_failed: 出现错误，AI 代理已停止。
+  agent_timed_out: AI 代理已停止，因为请求用时超过 2 分钟。
+  agent_wait_member: 你在短时间内向 AI 代理发送了很多请求。你的请求很快就会开始。
+  agent_wait_server: 现在这个服务器里有很多成员在使用 AI 代理。你的请求正在等待空位。
+  agent_busy: AI 代理正忙。请一分钟后再试。

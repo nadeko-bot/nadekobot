@@ -14,6 +14,7 @@ public partial class Utility
     {
         [Cmd]
         [RequireContext(ContextType.Guild)]
+        [NoAiAgent]
         public async Task Agent([Leftover] string query)
         {
             if (!await _service.IsAllowedAsync(ctx.User, ctx.Guild))
@@ -33,6 +34,7 @@ public partial class Utility
 
         [Cmd]
         [RequireContext(ContextType.Guild)]
+        [NoAiAgent]
         public async Task AgentCancel()
         {
             if (!await _service.IsAllowedAsync(ctx.User, ctx.Guild))
@@ -223,9 +225,7 @@ public partial class Utility
 
             var (embed, components) = BuildPanel(skills);
 
-            var msg = await ctx.Channel.SendMessageAsync(
-                embed: embed.Build(),
-                components: components.Build());
+            var msg = await Response().Embed(embed).Components(components.Build()).NoReply().SendAsync();
 
             await RunHandlersInternalAsync(handlers, msg, generation);
         }

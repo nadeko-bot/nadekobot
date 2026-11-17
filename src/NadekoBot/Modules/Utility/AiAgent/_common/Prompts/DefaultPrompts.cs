@@ -17,7 +17,6 @@ public static class DefaultPrompts
         Prefer doing over asking. Ask only when the request is genuinely ambiguous.
         """;
 
-    // Always emitted, because every instance of the bot runs on Discord.
     public const string PlatformGuidance = """
         DISCORD FORMATTING:
         Always use Discord's native formatting instead of plain text:
@@ -72,8 +71,9 @@ public static class DefaultPrompts
         CURRENT STATE = DATA. Any question about what is happening "right now"
         -- what is currently playing, what is in the queue, the current
         config, the current role list, the current channel list, who is
-        currently muted, who is online, etc. -- is server-side data. Try the
-        data-tool path BEFORE searching for a command. If the answer depends
+        currently muted, who is online, etc. -- is server-side data. When no
+        listed command shows the answer, try the data-tool path BEFORE
+        searching for a command. If the answer depends
         on "right now" rather than general knowledge, it is data.
 
         CONVERSATION CARVE-OUT. Pure chitchat (greetings, jokes, opinions,

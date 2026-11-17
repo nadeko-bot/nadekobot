@@ -90,9 +90,7 @@ public partial class Gambling
                      .WithDescription(msg)
                      .WithImageUrl($"attachment://{imgName}");
 
-            await ctx.Channel.SendFileAsync(stream,
-                imgName,
-                embed: eb.Build());
+            await Response().File(stream, imgName).Embed(eb).NoReply().SendAsync();
         }
 
         [Cmd]

@@ -26,9 +26,9 @@ allowedTools: []
 channelMessageMemory: 20
 # Minutes of inactivity before channel memory expires and stops observing. Default 30
 memoryIdleExpiryMinutes: 30
-# Enable triggering the agent by saying the bot's name (with intent classification). Default true
+# Start the agent when a message starts with the bot's name. Default true
 nameTriggerEnabled: true
-# Seconds after an agent response during which the user's messages go directly to the agent. Default 120
+# Seconds after an agent answer in which the user's messages go to the agent without a mention. The newest answer has an End session button. 0 turns sessions off. Default 120
 followUpWindowSeconds: 120
 # Custom HTTP headers sent with every LLM request.
 # Useful for provider-specific headers like X-OpenRouter-Title.

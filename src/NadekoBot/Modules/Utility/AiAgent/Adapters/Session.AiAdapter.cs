@@ -6,8 +6,17 @@ namespace NadekoBot.Modules.Utility.AiAgent.Adapters;
 public sealed class SessionAiAdapter(
     ConversationWindowTracker tracker,
     AgentMessageTracker agentMessages,
-    IMessageSenderService sender) : IAiCoreToolGroup, INService
+    IMessageSenderService sender,
+    AgentLimiter limiter,
+    AiAgentConfigService configService) : IAiCoreToolGroup, INService
 {
+    public const string ASK_TOOL = "ask_user";
+
+    // With these limits the ping, the question and its options fit one message, so the member and the answer request see the same text.
+    private const int MAX_QUESTION_CHARS = 1000;
+    private const int MAX_OPTIONS = 10;
+    private const int MAX_OPTION_CHARS = 80;
+
     public string GroupName => "session";
     public string GroupDescription => "Conversation lifecycle: ask the user a question, close the current session.";
 
@@ -25,52 +34,101 @@ public sealed class SessionAiAdapter(
     }
 
     [AiTool(
-        "ask_user",
-        "Ask the invoking user a clarifying question before proceeding. "
-        + "The current session will pause after the question is sent. "
-        + "When the user replies, a new session starts with the answer visible in channel history. "
-        + "Use this when the user's request is ambiguous and you need more information to proceed correctly. "
-        + "You can optionally provide multiple-choice options.")]
+        ASK_TOOL,
+        "Ask the member one question before you go on. The request ends after the question, and no other call of the "
+        + "same reply runs. The member's next message starts a new request, which shows your question and their answer. "
+        + "You can give a list of choices.")]
     [AiSystemGuidance("""
         ASKING FOR CLARIFICATION:
-        When the user's request is ambiguous, use the ask_user tool to ask a clarifying question before proceeding.
-        Limit questions to 2-3 per session unless absolutely necessary.
-        If you can make a reasonable assumption, prefer acting over asking.
+        When the request is not clear, call ask_user alone and ask one question. Do not ask again in the request
+        which answers it. When you can make a reasonable assumption, act instead of asking.
         """)]
     public async Task<string> AskUser(
         AiToolContext ctx,
         [AiParam("The question to ask the user")] string question,
-        [AiParam("Optional list of choices. Displayed as a numbered list. The user can reply with a number or free-form text.")]
+        [AiParam("Optional list of up to 10 choices of 80 characters. Displayed as a numbered list. The user can reply with a number or free-form text.")]
         List<string>? options = null)
     {
         if (string.IsNullOrWhiteSpace(question))
             throw ToolException.InvalidArgument("question cannot be empty.");
 
-        var sb = new StringBuilder(question);
+        if (ctx.EarlierRequest is not null)
+            return "Error: not asked. The member's message answers your earlier question. "
+                   + "Do what you can with it, or tell the member what is missing.";
 
-        if (options is { Count: > 0 })
+        var text = BuildQuestion(question, options);
+
+        // Without the permission the ping would arrive without the question, or the call would fail with 403.
+        var bot = await ctx.Guild.GetCurrentUserAsync();
+        if (!AgentPermissions.CanSend(bot, ctx.SourceChannel))
+            throw new ToolException("bot_missing_permission", "The bot cannot send messages in this channel, so it cannot ask.");
+
+        var perms = AgentPermissions.PermissionsIn(bot, ctx.SourceChannel);
+
+        if (!await limiter.TakeSendAsync(ctx.Guild.Id, 1, ctx.CancellationToken))
+            throw new ToolException("busy", "The agents in this server sent too many messages just now. Do not ask in this request.");
+
+        // The ping tells the member that the agent waits for them; it mentions nobody else.
+        var mentions = new AllowedMentions { UserIds = [ctx.User.Id] };
+        var button = ctx.SessionClosed ? null : ctx.EndSessionComponent;
+        IUserMessage sent;
+        if (configService.Data.UseEmbed && perms.EmbedLinks)
         {
-            sb.AppendLine();
-            var i = 1;
-            foreach (var opt in options)
-            {
-                if (string.IsNullOrWhiteSpace(opt))
-                    continue;
-                sb.AppendLine();
-                sb.Append("**").Append(i).Append(".** ").Append(opt);
-                i++;
-            }
+            var eb = sender.CreateEmbed(ctx.Guild.Id)
+                .WithPendingColor()
+                .WithDescription(text);
+            sent = await ctx.SourceChannel.SendMessageAsync(
+                ctx.User.Mention,
+                embed: eb.Build(),
+                allowedMentions: mentions,
+                components: button);
+        }
+        else
+        {
+            sent = await ctx.SourceChannel.SendMessageAsync(
+                ctx.User.Mention + "\n" + text,
+                allowedMentions: mentions,
+                components: button);
         }
 
-        var eb = sender.CreateEmbed(ctx.Guild.Id)
-            .WithPendingColor()
-            .WithDescription(sb.ToString().TrimTo(4096));
-
-        var sent = await ctx.SourceChannel.SendMessageAsync(embed: eb.Build());
         agentMessages.Add(sent.Id);
+        if (button is not null)
+            ctx.QuestionButtonId = sent.Id;
 
+        // The options go with the question, because an answer such as "2" means nothing without them.
         ctx.AskPending = true;
+        ctx.Question = text;
 
-        return "Question sent. The session will now end. The user's reply will be available in channel history on the next invocation.";
+        return "Question sent. The request ends now. The member's next message starts a new request with your question.";
     }
+
+    public static string BuildQuestion(string question, List<string>? options)
+    {
+        var sb = new StringBuilder(CutInternal(question.Trim(), MAX_QUESTION_CHARS));
+        if (options is not { Count: > 0 })
+            return sb.ToString();
+
+        var number = 0;
+        foreach (var option in options)
+        {
+            if (string.IsNullOrWhiteSpace(option))
+                continue;
+
+            if (++number > MAX_OPTIONS)
+                break;
+
+            if (number == 1)
+                sb.AppendLine();
+
+            sb.AppendLine();
+            sb.Append("**").Append(number).Append(".** ").Append(CutInternal(option.Trim(), MAX_OPTION_CHARS));
+        }
+
+        return sb.ToString();
+    }
+
+    private static string CutInternal(string text, int max)
+        => text.Length <= max
+            ? text
+            : string.Concat(text.AsSpan(0, char.IsHighSurrogate(text[max - 1]) ? max - 1 : max), "...");
 }

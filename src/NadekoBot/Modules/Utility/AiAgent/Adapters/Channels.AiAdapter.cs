@@ -28,7 +28,8 @@ public sealed class ChannelsAiAdapter : IAiToolGroup, INService
 
         foreach (var ch in allChannels)
         {
-            if (ch is ICategoryChannel)
+            // A thread takes the permissions of its parent, which GetPermissions does not read.
+            if (ch is ICategoryChannel or IThreadChannel)
                 continue;
 
             if (!ctx.User.GetPermissions(ch).ViewChannel)
@@ -79,10 +80,13 @@ public sealed class ChannelsAiAdapter : IAiToolGroup, INService
     {
         var ch = await ctx.Guild.GetChannelAsync(channelId);
         if (ch is null)
-            return new(0, null!, null, null, null, null, null, null, "Channel not found.");
+            return new(0, null, null, null, null, null, null, null, AgentPermissions.ChannelNotFound().Message);
 
-        if (!ctx.User.GetPermissions(ch).ViewChannel)
-            return new(0, null!, null, null, null, null, null, null, "You do not have permission to view that channel.");
+        var visible = ch is ITextChannel text
+            ? await ctx.Guild.GetCurrentUserAsync() is { } bot && AgentPermissions.Access(ctx.User, bot, text, ctx.SourceChannel.Id) is not null
+            : ctx.User.GetPermissions(ch).ViewChannel;
+        if (!visible)
+            return new(0, null, null, null, null, null, null, null, AgentPermissions.ChannelNotFound().Message);
 
         string? topic = null;
         int? slowMode = null;
@@ -134,7 +138,7 @@ public readonly record struct ChannelEntryDto(ulong Id, string Name, string Type
 
 public sealed record ChannelInfoDto(
     ulong Id,
-    string Name,
+    string? Name,
     string? Type,
     string? Topic,
     int? SlowModeSeconds,

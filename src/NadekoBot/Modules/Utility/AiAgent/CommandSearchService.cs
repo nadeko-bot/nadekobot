@@ -1,3 +1,5 @@
+using System.Collections.Frozen;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.Json;
 using NadekoBot.Common.ModuleBehaviors;
@@ -11,34 +13,42 @@ public sealed class CommandSearchService(
     IPubSub pubSub) : INService, IReadyExecutor
 {
     private const string COMMAND_LIST_PATH = "data/commandlist.json";
-    private const string INTENT_HEAD_PATH = "data/ai/intent-head.bin";
     private const string EMBEDDINGS_CACHE_PATH = "data/ai/embeddings/commands.cache";
     private const string LEGACY_CACHE_PATH = "data/ai/command-embeddings.cache";
-    private const int EMBEDDING_DIM = EmbeddingService.EMBEDDING_DIM;
-    private const int HIDDEN_DIM = 128;
-    private const int NUM_CLASSES = 2;
-    private const float BN_EPS = 1e-5f;
+    private const float ALIAS_BOOST = 0.12f;
+
+    private const float WORD_BOOST = 0.08f;
+
+    private const int MAX_EDIT_NAME_LENGTH = 32;
+
+    // A word which more commands hold tells them apart no better than "the", in any language.
+    private const double MAX_WORD_SHARE = 0.2;
+
+    // A request is a sentence; a longer text adds no better match.
+    private const int MAX_QUERY_WORDS = 32;
+
+    // A short alias such as "at", "la" or "se" is a common word in some language.
+    private const int MIN_WORD_LENGTH = 3;
 
     public static readonly TypedKey<bool> ReloadKey = new("cmdsearch.reload");
 
     // Bumped when the parsing changes but the file does not, to invalidate the cache once.
-    private static readonly byte[] _indexSchemaSalt = "v3-no-ai-agent"u8.ToArray();
+    private static readonly byte[] _indexSchemaSalt = "v4-params"u8.ToArray();
+
+    private static readonly Comparer<float> _descending = Comparer<float>.Create(static (a, b) => b.CompareTo(a));
 
     private readonly SemanticIndex<CommandEntry> _index = new(
         embedder,
         EMBEDDINGS_CACHE_PATH,
         static e => e.SearchText);
 
-    // Classification head weights
-    private float[]? _w1;
-    private float[]? _b1;
-    private float[]? _bnGamma;
-    private float[]? _bnBeta;
-    private float[]? _bnMean;
-    private float[]? _bnVar;
-    private float[]? _w2;
-    private float[]? _b2;
-    private bool _headReady;
+    private volatile FrozenDictionary<string, CommandEntry>? _byAlias;
+
+    private volatile SearchWords? _searchWords;
+
+    // One build at a time, so the index, the alias map and the word counts come from the same list.
+    private readonly SemaphoreSlim _buildGate = new(1, 1);
+
     private byte[]? _currentHash;
 
     public bool IsReady => _index.IsReady;
@@ -74,7 +84,6 @@ public sealed class CommandSearchService(
             MigrateLegacyCacheInternal();
             await embedder.EnsureModelReadyAsync();
             await LoadAndBuildIndexInternalAsync();
-            LoadClassificationHeadInternal();
         }
         catch (Exception ex)
         {
@@ -109,10 +118,6 @@ public sealed class CommandSearchService(
 
             await embedder.EnsureModelReadyAsync();
             await LoadAndBuildIndexInternalAsync();
-
-            if (!_headReady)
-                LoadClassificationHeadInternal();
-
             await pubSub.Pub(ReloadKey, true);
         }
         catch (Exception ex)
@@ -136,9 +141,6 @@ public sealed class CommandSearchService(
 
             await embedder.EnsureModelReadyAsync();
             await LoadAndBuildIndexInternalAsync();
-
-            if (!_headReady)
-                LoadClassificationHeadInternal();
         }
         catch (Exception ex)
         {
@@ -147,8 +149,10 @@ public sealed class CommandSearchService(
     }
 
     private async Task LoadAndBuildIndexInternalAsync()
+        => await IndexCommandListAsync(await File.ReadAllBytesAsync(COMMAND_LIST_PATH));
+
+    public async Task IndexCommandListAsync(byte[] cmdListBytes)
     {
-        var cmdListBytes = await File.ReadAllBytesAsync(COMMAND_LIST_PATH);
         var cmdListHash = ComputeListHashInternal(cmdListBytes);
 
         var commands = ParseCommandList(cmdListBytes);
@@ -165,106 +169,240 @@ public sealed class CommandSearchService(
             return;
         }
 
-        var result = await _index.BuildAsync(commands, cmdListHash);
-        _currentHash = cmdListHash;
+        await _buildGate.WaitAsync();
+        try
+        {
+            if (_currentHash is not null && cmdListHash.AsSpan().SequenceEqual(_currentHash))
+                return;
 
-        if (result.Skipped)
-            return;
+            var result = await _index.BuildAsync(commands, cmdListHash);
+            if (result.Skipped)
+                return;
 
-        if (result.FromCache)
-            Log.Information("CommandSearch: Loaded {Count} commands from cache in {Elapsed}ms", result.Count, result.ElapsedMs);
-        else
-            Log.Information("CommandSearch: Indexed {Count} commands in {Elapsed}ms", result.Count, result.ElapsedMs);
+            _byAlias = BuildAliasMapInternal(commands);
+            _searchWords = BuildSearchWordsInternal(commands);
+            _currentHash = cmdListHash;
+
+            if (result.FromCache)
+                Log.Information("CommandSearch: Loaded {Count} commands from cache in {Elapsed}ms", result.Count, result.ElapsedMs);
+            else
+                Log.Information("CommandSearch: Indexed {Count} commands in {Elapsed}ms", result.Count, result.ElapsedMs);
+        }
+        finally
+        {
+            _buildGate.Release();
+        }
     }
 
+    private static SearchWords BuildSearchWordsInternal(CommandEntry[] commands)
+    {
+        var counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        foreach (var cmd in commands)
+        {
+            foreach (var word in cmd.Words)
+                CollectionsMarshal.GetValueRefOrAddDefault(counts, word, out _)++;
+        }
+
+        var max = Math.Max(1, (int)(commands.Length * MAX_WORD_SHARE));
+        return new(commands, counts.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase), max);
+    }
+
+    // A word which no command holds, or which many hold, does not move a command up.
+    private sealed record SearchWords(CommandEntry[] Source, FrozenDictionary<string, int> Counts, int Max)
+    {
+        public bool Tells(ReadOnlySpan<char> key)
+            => Counts.GetAlternateLookup<ReadOnlySpan<char>>().TryGetValue(key, out var count) && count <= Max;
+    }
+
+    // "roles" and "role" are one word for the boosts.
+    private static ReadOnlySpan<char> KeyOf(ReadOnlySpan<char> word)
+        => word.Length > 3 && word[^1] is 's' or 'S' ? word[..^1] : word;
+
+    private static FrozenDictionary<string, CommandEntry> BuildAliasMapInternal(CommandEntry[] commands)
+    {
+        var map = new Dictionary<string, CommandEntry>(StringComparer.OrdinalIgnoreCase);
+        foreach (var cmd in commands)
+        {
+            foreach (var alias in cmd.Aliases)
+                map.TryAdd(alias, cmd);
+        }
+
+        return map.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+    }
+
+    // The small embedding model misses rare words, so request words which name a command or appear in its description move it up.
     public CommandSearchResult[] Search(string query, int topK = 5)
     {
-        var results = _index.Search(query, topK);
-        var output = new CommandSearchResult[results.Length];
-        for (var i = 0; i < results.Length; i++)
-            output[i] = new(results[i].Entry, results[i].Score);
+        if (_index.ScoreAll(query) is not { } all)
+            return [];
+
+        var (entries, scores) = all;
+        var words = new List<string>();
+        AddWordsInternal(query, words, MAX_QUERY_WORDS);
+        if (words.Count > 0 && _searchWords is { } known && ReferenceEquals(known.Source, entries))
+            BoostInternal(entries, scores, words, known);
+
+        var count = Math.Min(topK, entries.Length);
+        var order = new int[entries.Length];
+        for (var i = 0; i < order.Length; i++)
+            order[i] = i;
+
+        Array.Sort(scores, order, _descending);
+
+        var output = new CommandSearchResult[count];
+        for (var i = 0; i < count; i++)
+            output[i] = new(entries[order[i]], scores[i]);
         return output;
     }
 
-    public bool IsCommandIntent(string normalizedText)
+    private static void BoostInternal(CommandEntry[] entries, float[] scores, List<string> words, SearchWords known)
     {
-        if (!_index.IsReady || !_headReady)
-            return false;
+        var present = new HashSet<string>(words, StringComparer.OrdinalIgnoreCase);
 
-        var emb = embedder.Embed(normalizedText);
-        return ClassifyIntentInternal(emb);
-    }
-
-    private bool ClassifyIntentInternal(float[] embedding)
-    {
-        var hidden = new float[HIDDEN_DIM];
-        for (var j = 0; j < HIDDEN_DIM; j++)
+        var content = new List<string>(words.Count);
+        foreach (var w in words)
         {
-            var sum = _b1![j];
-            var wOffset = j * EMBEDDING_DIM;
-            for (var k = 0; k < EMBEDDING_DIM; k++)
-                sum += embedding[k] * _w1![wOffset + k];
-            hidden[j] = sum;
+            var key = KeyOf(w);
+            if (known.Tells(key))
+                content.Add(key.Length == w.Length ? w : key.ToString());
         }
 
-        for (var j = 0; j < HIDDEN_DIM; j++)
-            hidden[j] = (hidden[j] - _bnMean![j]) / MathF.Sqrt(_bnVar![j] + BN_EPS) * _bnGamma![j] + _bnBeta![j];
-
-        for (var j = 0; j < HIDDEN_DIM; j++)
-            hidden[j] = MathF.Max(0, hidden[j]);
-
-        var output = new float[NUM_CLASSES];
-        for (var j = 0; j < NUM_CLASSES; j++)
+        for (var i = 0; i < entries.Length; i++)
         {
-            var sum = _b2![j];
-            var wOffset = j * HIDDEN_DIM;
-            for (var k = 0; k < HIDDEN_DIM; k++)
-                sum += hidden[k] * _w2![wOffset + k];
-            output[j] = sum;
-        }
+            var entry = entries[i];
+            if (HasAliasInternal(entry, present, known))
+                scores[i] += ALIAS_BOOST;
 
-        return output[1] > output[0];
-    }
+            if (content.Count == 0)
+                continue;
 
-    private void LoadClassificationHeadInternal()
-    {
-        if (!File.Exists(INTENT_HEAD_PATH))
-        {
-            Log.Warning(
-                "CommandSearch: Intent head not found at {Path}. The AI agent will not start from replies or the bot name. "
-                + "Copy data/ai/intent-head.bin from the release into the data/ai folder and restart the bot",
-                INTENT_HEAD_PATH);
-            return;
-        }
+            var found = 0;
+            foreach (var key in content)
+            {
+                if (entry.Words.Contains(key))
+                    found++;
+            }
 
-        try
-        {
-            using var fs = File.OpenRead(INTENT_HEAD_PATH);
-            using var reader = new BinaryReader(fs);
-
-            _w1 = ReadFloatsInternal(reader, HIDDEN_DIM * EMBEDDING_DIM);
-            _b1 = ReadFloatsInternal(reader, HIDDEN_DIM);
-            _bnGamma = ReadFloatsInternal(reader, HIDDEN_DIM);
-            _bnBeta = ReadFloatsInternal(reader, HIDDEN_DIM);
-            _bnMean = ReadFloatsInternal(reader, HIDDEN_DIM);
-            _bnVar = ReadFloatsInternal(reader, HIDDEN_DIM);
-            _w2 = ReadFloatsInternal(reader, NUM_CLASSES * HIDDEN_DIM);
-            _b2 = ReadFloatsInternal(reader, NUM_CLASSES);
-
-            _headReady = true;
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "CommandSearch: Failed to load intent classification head");
+            scores[i] += WORD_BOOST * found / content.Count;
         }
     }
 
-    private static float[] ReadFloatsInternal(BinaryReader reader, int count)
+    // "todo list" counts only when the request holds both words and one of them is rare.
+    private static bool HasAliasInternal(CommandEntry entry, HashSet<string> present, SearchWords known)
     {
-        var arr = new float[count];
-        for (var i = 0; i < count; i++)
-            arr[i] = reader.ReadSingle();
-        return arr;
+        foreach (var tokens in entry.AliasTokens)
+        {
+            var all = tokens.Length > 0;
+            var tells = false;
+            foreach (var token in tokens)
+            {
+                if (token.Length < MIN_WORD_LENGTH || !present.Contains(token))
+                {
+                    all = false;
+                    break;
+                }
+
+                tells |= known.Tells(KeyOf(token));
+            }
+
+            if (all && tells)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static void AddWordsInternal(string text, List<string> words, int max = int.MaxValue)
+    {
+        var span = text.AsSpan();
+        var start = -1;
+        for (var i = 0; i <= span.Length && words.Count < max; i++)
+        {
+            if (i < span.Length && char.IsLetterOrDigit(span[i]))
+            {
+                if (start < 0)
+                    start = i;
+                continue;
+            }
+
+            if (start < 0)
+                continue;
+
+            var word = span[start..i];
+            start = -1;
+            if (word.Length >= MIN_WORD_LENGTH)
+                words.Add(word.ToString());
+        }
+    }
+
+    public CommandEntry? FindByName(string name)
+        => _byAlias is { } map && map.TryGetValue(name, out var entry) ? entry : null;
+
+    public List<string> SuggestNames(string text, int count)
+    {
+        var names = new List<string>(count);
+        var span = text.AsSpan().Trim();
+        var space = span.IndexOfAny(' ', '\n', '\t');
+        var name = space < 0 ? span : span[..space];
+
+        if (_byAlias is { } map && name.Length is > 0 and <= MAX_EDIT_NAME_LENGTH)
+        {
+            var maxDistance = Math.Max(1, name.Length / 3);
+            var close = new List<(int Distance, string Name)>();
+            foreach (var (alias, entry) in map)
+            {
+                if (alias.Length > MAX_EDIT_NAME_LENGTH || Math.Abs(alias.Length - name.Length) > maxDistance)
+                    continue;
+
+                var distance = EditDistanceInternal(name, alias);
+                if (distance <= maxDistance)
+                    close.Add((distance, entry.Aliases[0]));
+            }
+
+            close.Sort(static (a, b) => a.Distance.CompareTo(b.Distance));
+            foreach (var (_, n) in close)
+            {
+                if (names.Count >= count)
+                    return names;
+                if (!names.Contains(n, StringComparer.OrdinalIgnoreCase))
+                    names.Add(n);
+            }
+        }
+
+        foreach (var hit in Search(text, count))
+        {
+            if (names.Count >= count)
+                break;
+            if (!names.Contains(hit.Command.Aliases[0], StringComparer.OrdinalIgnoreCase))
+                names.Add(hit.Command.Aliases[0]);
+        }
+
+        return names;
+    }
+
+    private static int EditDistanceInternal(ReadOnlySpan<char> a, ReadOnlySpan<char> b)
+    {
+        Span<int> prev = stackalloc int[MAX_EDIT_NAME_LENGTH + 1];
+        Span<int> cur = stackalloc int[MAX_EDIT_NAME_LENGTH + 1];
+        for (var j = 0; j <= b.Length; j++)
+            prev[j] = j;
+
+        for (var i = 1; i <= a.Length; i++)
+        {
+            cur[0] = i;
+            var ca = char.ToLowerInvariant(a[i - 1]);
+            for (var j = 1; j <= b.Length; j++)
+            {
+                var cost = ca == char.ToLowerInvariant(b[j - 1]) ? 0 : 1;
+                cur[j] = Math.Min(Math.Min(prev[j] + 1, cur[j - 1] + 1), prev[j - 1] + cost);
+            }
+
+            var tmp = prev;
+            prev = cur;
+            cur = tmp;
+        }
+
+        return prev[b.Length];
     }
 
     private static void MigrateLegacyCacheInternal()
@@ -284,7 +422,6 @@ public sealed class CommandSearchService(
         }
     }
 
-    // The salt is part of the hash, so a change of the parsing alone also invalidates the cache.
     private static byte[] ComputeListHashInternal(byte[] cmdListBytes)
     {
         using var hasher = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
@@ -293,12 +430,51 @@ public sealed class CommandSearchService(
         return hasher.GetHashAndReset();
     }
 
-    // run_command applies the prefix of the guild, so only the leading one is stripped here.
-    // An interior prefix, as in ".doas @x .give", is an argument and stays.
+    // run_command adds the guild prefix; an interior prefix, as in ".doas @x .give", is an argument and stays.
     private static string StripLeadingPrefixInternal(string s)
         => s.StartsWith(CommandListGenerator.DefaultPrefix, StringComparison.Ordinal)
             ? s[CommandListGenerator.DefaultPrefix.Length..]
             : s;
+
+    private static string[] ReadStringsInternal(JsonElement cmd, string property, bool stripPrefix)
+    {
+        if (!cmd.TryGetProperty(property, out var el) || el.ValueKind != JsonValueKind.Array)
+            return [];
+
+        var result = new string[el.GetArrayLength()];
+        var i = 0;
+        foreach (var item in el.EnumerateArray())
+        {
+            var s = item.GetString() ?? "";
+            result[i++] = stripPrefix ? StripLeadingPrefixInternal(s) : s;
+        }
+
+        return result;
+    }
+
+    private static CommandParam[][] ReadParamsInternal(JsonElement cmd)
+    {
+        if (!cmd.TryGetProperty("Params", out var el) || el.ValueKind != JsonValueKind.Array)
+            return [];
+
+        var overloads = new List<CommandParam[]>(el.GetArrayLength());
+        foreach (var overload in el.EnumerateArray())
+        {
+            if (overload.ValueKind != JsonValueKind.Object)
+            {
+                overloads.Add([]);
+                continue;
+            }
+
+            var ps = new List<CommandParam>();
+            foreach (var p in overload.EnumerateObject())
+                ps.Add(new(p.Name, p.Value.ValueKind == JsonValueKind.String ? p.Value.GetString() ?? "" : ""));
+
+            overloads.Add(ps.ToArray());
+        }
+
+        return overloads.ToArray();
+    }
 
     public static CommandEntry[] ParseCommandList(byte[] jsonBytes)
     {
@@ -309,41 +485,54 @@ public sealed class CommandSearchService(
         {
             foreach (var cmd in module.Value.EnumerateArray())
             {
-                var aliases = cmd.TryGetProperty("Aliases", out var aliasEl)
-                    ? aliasEl.EnumerateArray().Select(static a => StripLeadingPrefixInternal(a.GetString() ?? "")).ToArray()
-                    : [];
+                var aliases = ReadStringsInternal(cmd, "Aliases", stripPrefix: true);
 
                 var desc = cmd.TryGetProperty("Description", out var descEl)
                     ? descEl.GetString() ?? ""
                     : "";
 
-                var usage = cmd.TryGetProperty("Usage", out var usageEl)
-                    ? usageEl.EnumerateArray().Select(static u => StripLeadingPrefixInternal(u.GetString() ?? "")).ToArray()
-                    : [];
+                var usage = ReadStringsInternal(cmd, "Usage", stripPrefix: true);
 
                 var submodule = cmd.TryGetProperty("Submodule", out var subEl)
                     ? subEl.GetString() ?? ""
                     : "";
 
                 var moduleName = module.Name;
-
-                var requirements = cmd.TryGetProperty("Requirements", out var reqEl)
-                    ? reqEl.EnumerateArray().Select(static r => r.GetString() ?? "").ToArray()
-                    : [];
+                var requirements = ReadStringsInternal(cmd, "Requirements", stripPrefix: false);
 
                 if (aliases.Length == 0 || requirements.Contains(NoAiAgentAttribute.REQUIREMENT))
                     continue;
 
                 var searchText = $"{string.Join(" ", aliases)} | {moduleName}/{submodule} | {desc}";
 
+                var words = new List<string>();
+                var aliasTokens = new string[aliases.Length][];
+                for (var a = 0; a < aliases.Length; a++)
+                {
+                    aliasTokens[a] = aliases[a].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var token in aliasTokens[a])
+                        words.Add(KeyOf(token).ToString());
+                }
+
+                var descWords = new List<string>();
+                AddWordsInternal(desc, descWords);
+                foreach (var word in descWords)
+                    words.Add(KeyOf(word).ToString());
+
                 entries.Add(new CommandEntry(
                     aliases,
                     desc,
                     usage,
+                    ReadParamsInternal(cmd),
+                    ReadStringsInternal(cmd, "Options", stripPrefix: false),
                     moduleName,
                     submodule,
                     requirements,
-                    searchText));
+                    searchText)
+                {
+                    Words = words.ToFrozenSet(StringComparer.OrdinalIgnoreCase),
+                    AliasTokens = aliasTokens
+                });
             }
         }
 
@@ -351,13 +540,23 @@ public sealed class CommandSearchService(
     }
 }
 
+public sealed record CommandParam(string Name, string Desc);
+
+// Usage holds the examples, and their count can differ from the count of Params overloads.
 public sealed record CommandEntry(
     string[] Aliases,
     string Description,
     string[] Usage,
+    CommandParam[][] Params,
+    string[] Options,
     string Module,
     string Submodule,
     string[] Requirements,
-    string SearchText);
+    string SearchText)
+{
+    public FrozenSet<string> Words { get; init; } = FrozenSet<string>.Empty;
+
+    public string[][] AliasTokens { get; init; } = [];
+}
 
 public sealed record CommandSearchResult(CommandEntry Command, float Score);

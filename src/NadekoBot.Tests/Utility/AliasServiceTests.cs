@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -8,6 +9,7 @@ using NadekoBot.Common;
 using NadekoBot.Common.Attributes;
 using NadekoBot.Db.Models;
 using NadekoBot.Extensions;
+using NadekoBot.Modules.Utility.AiAgent;
 using NadekoBot.Modules.Utility.Services;
 using NadekoBot.Services;
 using NadekoBot.Tests.Waifu;
@@ -59,7 +61,7 @@ public class AliasServiceTests
     }
 
     [Test]
-    public async Task SpendingCommand_TakesOnlyTargetArgsFromAnAlias()
+    public async Task Alias_GuardsSpendingCommandsAndAgentFindFollowsTheHandler()
     {
         var cmds = new CommandService();
         await cmds.AddModuleAsync<SpendingTestModule>(null);
@@ -73,6 +75,39 @@ public class AliasServiceTests
         Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", ".bf %target%"), Is.False);
         Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, ".", ".hug 10 heads"), Is.False);
         Assert.That(AliasService.GivesArgsToSpendingCommand(cmds, "!", ".bf 10 heads"), Is.False);
+
+        // The AI agent runs what the command handler would run: an alias with the prefix hides a command of that name.
+        using var db = new TestDbService();
+        var handler = Substitute.For<ICommandHandler>();
+        handler.GetPrefix(Arg.Any<IGuild>()).Returns(".");
+        var svc = new AliasService(db,
+            Substitute.For<IMessageSenderService>(),
+            new ShardData(null!, Substitute.For<IBotCreds>()),
+            cmds,
+            handler);
+        await svc.AddAliasAsync(1, "pay", ".give %target%");
+        await svc.AddAliasAsync(1, ".hug", ".give %target%");
+        await svc.AddAliasAsync(1, "tip", ".give 5 %target%");
+
+        var guild = Substitute.For<IGuild>();
+        guild.Id.Returns(1UL);
+        var runner = new AgentCommandRunner(handler, cmds, svc);
+
+        Assert.That(svc.FindAlias(guild, "pay 10 <@2>"), Is.EqualTo(new AliasMatch("pay", ".give  10 <@2>")));
+        Assert.That(svc.FindAlias(guild, "tip <@2>"), Is.Null);
+        // The alias trigger is one of the names by which the member asks for the command.
+        IReadOnlyList<string> none = [];
+        AgentCommandMatch? Find(string text)
+            => runner.Find(guild, ".", text) is { } m ? m with { Aliases = none } : null;
+
+        Assert.That(runner.Find(guild, ".", "pay 10 <@2>")?.Aliases, Is.EqualTo(new[] { "pay", "give" }));
+        Assert.That(Find("pay 10 <@2>"),
+            Is.EqualTo(new AgentCommandMatch("pay", "10 <@2>", true, "pay 10 <@2>", "give", "10 <@2>", none)));
+        Assert.That(Find("hug 10 <@2>"),
+            Is.EqualTo(new AgentCommandMatch("hug", "10 <@2>", true, ".hug 10 <@2>", "give", "10 <@2>", none)));
+        Assert.That(Find("betflip 10 heads"),
+            Is.EqualTo(new AgentCommandMatch("betflip", "10 heads", true, ".betflip 10 heads", "betflip", "10 heads", none)));
+        Assert.That(Find("tip <@2>"), Is.Null);
     }
 
     private static AliasService CreateService(TestDbService db)

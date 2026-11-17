@@ -5,7 +5,8 @@ using NadekoBot.AiAgent;
 
 namespace NadekoBot.Modules.Utility.AiAgent.Adapters;
 
-public sealed partial class MessagingAiAdapter(IMessageSenderService sender, IntentState intents) : IAiCoreToolGroup, INService
+public sealed partial class MessagingAiAdapter(IMessageSenderService sender, IntentState intents, AgentLimiter limiter)
+    : IAiCoreToolGroup, INService
 {
     public string GroupName => "messaging";
     public string GroupDescription => "Send, edit, read, delete, and search Discord messages.";
@@ -14,6 +15,9 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
     private const int SEARCH_MAX_COUNT = 50;
     private const int SEARCH_MAX_CONTENT_LENGTH = 300;
     private const string TEXT_UNAVAILABLE = "not available, because the bot does not have the Message Content intent";
+    private const int MESSAGES_PER_PAGE = 100;
+
+    public const int MAX_SEND_PARTS = 4;
 
     [GeneratedRegex(@"<#(\d+)>")]
     private static partial Regex ChannelMentionRegex();
@@ -36,26 +40,61 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
         if (string.IsNullOrWhiteSpace(message))
             throw ToolException.InvalidArgument("`message` must not be empty.");
 
-        var ch = await ResolveChannelInternalAsync(ctx, channel)
-                 ?? throw ToolException.NotFound("Channel not found. Make sure the channel exists and is a text channel.");
-
-        var perms = ctx.User.GetPermissions(ch);
-        if (!perms.SendMessages)
-            throw ToolException.MissingPermission("SendMessages");
+        var bot = await ctx.Guild.GetCurrentUserAsync();
+        var (ch, access) = await ResolveChannelInternalAsync(ctx, channel, bot)
+                           ?? throw ToolException.NotFound("Channel not found. Make sure the channel exists and is a text channel.");
 
         var smart = SmartText.CreateFrom(message);
-        if (smart is SmartEmbedTextArray && !perms.EmbedLinks)
-            throw ToolException.MissingPermission("EmbedLinks");
+        if (AgentPermissions.CheckSend(access, ch.SlowModeInterval > 0, smart is SmartEmbedTextArray { Embeds: { Length: > 0 } }) is { } denied)
+            throw denied;
 
-        var sent = await sender.Response(ch).Text(smart).Split().SendAsync();
-        ctx.SentMessageIds[sent.Id] = true;
+        // The split of ResponseBuilder, so each Discord message of a long text takes one send of the server budget.
+        var splitText = smart switch
+        {
+            SmartPlainText plain => plain.Text,
+            SmartEmbedTextArray array => array.Content,
+            _ => null
+        };
+        var parts = splitText is { Length: > MessageSplitter.MAX_PLAIN_TEXT_LENGTH }
+            ? MessageSplitter.Count(splitText, MessageSplitter.MAX_PLAIN_TEXT_LENGTH)
+            : 1;
+        if (parts > MAX_SEND_PARTS)
+            throw ToolException.InvalidArgument(
+                $"The message is too long: it needs {parts} Discord messages, and the limit is {MAX_SEND_PARTS}. Make it shorter.");
+
+        await TakeInternalAsync(limiter.TakeSendAsync(ctx.Guild.Id, parts, ctx.CancellationToken));
+
+        // A split message which fails in the middle still leaves its first parts, and the member may delete them.
+        var sentIds = new List<ulong>(parts);
+        try
+        {
+            await sender.Response(ch).Text(smart).Split().SendAsync(sentIds);
+        }
+        catch (Exception ex) when (sentIds.Count > 0 && ex is not OperationCanceledException)
+        {
+            Log.Warning(ex, "AI agent posted only part of a message in channel {ChannelId}", ch.Id);
+
+            // The member saw the first parts, so an empty last reply is fine.
+            ctx.Session.AnythingShown = true;
+            throw new ToolException("partly_sent",
+                $"Only the first {sentIds.Count} of {parts} parts were posted. Do not send the whole text again.");
+        }
+        finally
+        {
+            foreach (var id in sentIds)
+            {
+                ctx.SentMessageIds[id] = true;
+                ctx.NoteOutput(ch.Id, id);
+            }
+        }
+
         return $"Message sent to #{ch.Name} successfully.";
     }
 
     [AiTool(
         "edit_message",
         "Edit a message that was previously sent by the bot. "
-        + "Only bot-sent messages can be edited. A message which you did not send in this conversation "
+        + "Only bot-sent messages can be edited. A message which you did not send for the member "
         + "needs the Manage Messages permission. Maximum 2000 characters.")]
     public async Task<string> EditMessage(
         AiToolContext ctx,
@@ -68,30 +107,25 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
     {
         if (string.IsNullOrWhiteSpace(text))
             throw ToolException.InvalidArgument("text is required and cannot be empty.");
-        if (text.Length > 2000)
+        if (text.Length > DiscordConfig.MaxMessageSize)
             throw ToolException.InvalidArgument("Text exceeds Discord's 2000 character limit.");
 
-        var ch = await ctx.Guild.GetTextChannelAsync(channelId)
-                 ?? throw ToolException.NotFound("Channel not found.");
+        var bot = await ctx.Guild.GetCurrentUserAsync();
+        var (ch, access) = await GetChannelInternalAsync(ctx, channelId, bot);
+        if (AgentPermissions.CheckEdit(access, ctx.SentMessageIds.ContainsKey(messageId)) is { } denied)
+            throw denied;
 
-        var perms = ctx.User.GetPermissions(ch);
-        if (!perms.ViewChannel)
-            throw ToolException.MissingPermission("ViewChannel");
-
-        // A bot message can be a greet, a reaction role panel or another user's command result.
-        if (!perms.ManageMessages && !ctx.SentMessageIds.ContainsKey(messageId))
-            throw ToolException.MissingPermission("ManageMessages");
-
+        await TakeInternalAsync(limiter.TakeRestAsync(ctx.Guild.Id, 1, ctx.CancellationToken));
         var msg = await ch.GetMessageAsync(messageId)
                   ?? throw ToolException.NotFound("Message not found.");
 
-        var bot = await ctx.Guild.GetCurrentUserAsync();
         if (msg.Author.Id != bot.Id)
             throw ToolException.Forbidden("Can only edit messages sent by the bot.");
 
         if (msg is not IUserMessage userMessage)
             throw ToolException.Forbidden("This message cannot be edited.");
 
+        await TakeInternalAsync(limiter.TakeRestAsync(ctx.Guild.Id, 1, ctx.CancellationToken));
         await userMessage.ModifyAsync(m => m.Content = text);
         return "Message edited successfully.";
     }
@@ -107,13 +141,12 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
         [AiParam("The ID of the message to fetch")]
         ulong messageId)
     {
-        var ch = await ctx.Guild.GetTextChannelAsync(channelId)
-                 ?? throw ToolException.NotFound("Channel not found.");
+        var bot = await ctx.Guild.GetCurrentUserAsync();
+        var (ch, access) = await GetChannelInternalAsync(ctx, channelId, bot);
+        if (AgentPermissions.CheckRead(access) is { } denied)
+            throw denied;
 
-        var perms = ctx.User.GetPermissions(ch);
-        if (!perms.ViewChannel || !perms.ReadMessageHistory)
-            throw ToolException.MissingPermission("ReadMessageHistory");
-
+        await TakeInternalAsync(limiter.TakeRestAsync(ctx.Guild.Id, 1, ctx.CancellationToken));
         var msg = await ch.GetMessageAsync(messageId)
                   ?? throw ToolException.NotFound("Message not found.");
 
@@ -125,7 +158,7 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
             sb.AppendLine($"Content:\n{msg.Content}");
         else if (LayoutText.Read(msg.Components) is { Length: > 0 } layout)
             sb.AppendLine($"Content:\n{layout}");
-        else if (!intents.MessageContent && msg.Author.Id != (await ctx.Guild.GetCurrentUserAsync()).Id)
+        else if (!intents.MessageContent && msg.Author.Id != bot.Id)
             sb.AppendLine($"Content: {TEXT_UNAVAILABLE}");
 
         foreach (var emb in msg.Embeds)
@@ -145,7 +178,7 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
 
     [AiTool(
         "delete_message",
-        "Delete a message by ID. You can delete a message which you sent in this conversation. "
+        "Delete a message by ID. The member can delete their own messages and the ones which you sent for them. "
         + "Any other message needs the Manage Messages permission.")]
     public async Task<string> DeleteMessage(
         AiToolContext ctx,
@@ -154,19 +187,25 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
         [AiParam("The ID of the message to delete")]
         ulong messageId)
     {
-        var ch = await ctx.Guild.GetTextChannelAsync(channelId)
-                 ?? throw ToolException.NotFound("Channel not found.");
+        var bot = await ctx.Guild.GetCurrentUserAsync();
+        var (ch, access) = await GetChannelInternalAsync(ctx, channelId, bot);
+        var sentForMember = ctx.SentMessageIds.ContainsKey(messageId);
+        if (AgentPermissions.CheckFind(access, sentForMember) is { } hidden)
+            throw hidden;
 
-        var perms = ctx.User.GetPermissions(ch);
-        if (!perms.ViewChannel || !perms.ReadMessageHistory)
-            throw ToolException.MissingPermission("ReadMessageHistory");
-
+        await TakeInternalAsync(limiter.TakeRestAsync(ctx.Guild.Id, 1, ctx.CancellationToken));
         var msg = await ch.GetMessageAsync(messageId)
                   ?? throw ToolException.NotFound("Message not found.");
 
-        if (!perms.ManageMessages && !ctx.SentMessageIds.ContainsKey(msg.Id))
-            throw ToolException.MissingPermission("ManageMessages");
+        // A join or pin notice has the member as its author, but the member cannot delete it.
+        if (AgentPermissions.CheckDelete(
+                access,
+                msg.Author.Id == ctx.User.Id && msg.Source == MessageSource.User,
+                msg.Author.Id == bot.Id,
+                sentForMember) is { } denied)
+            throw denied;
 
+        await TakeInternalAsync(limiter.TakeRestAsync(ctx.Guild.Id, 1, ctx.CancellationToken));
         await ch.DeleteMessageAsync(msg);
         return "Message deleted successfully.";
     }
@@ -186,12 +225,10 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
         [AiParam("Maximum number of results (default 20, max 50)")]
         int count = SEARCH_DEFAULT_COUNT)
     {
-        var ch = await ctx.Guild.GetTextChannelAsync(channelId)
-                 ?? throw ToolException.NotFound("Channel not found.");
-
-        var perms = ctx.User.GetPermissions(ch);
-        if (!perms.ViewChannel || !perms.ReadMessageHistory)
-            throw ToolException.MissingPermission("ReadMessageHistory");
+        var bot = await ctx.Guild.GetCurrentUserAsync();
+        var (ch, access) = await GetChannelInternalAsync(ctx, channelId, bot);
+        if (AgentPermissions.CheckRead(access) is { } denied)
+            throw denied;
 
         if (!intents.MessageContent && !string.IsNullOrWhiteSpace(query))
             throw ToolException.Forbidden($"Text search is {TEXT_UNAVAILABLE}. Search by user ID instead.");
@@ -203,6 +240,9 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
             : count * 5;
         fetchLimit = Math.Min(fetchLimit, 200);
 
+        // Discord returns at most 100 messages for each request.
+        var pages = (fetchLimit + MESSAGES_PER_PAGE - 1) / MESSAGES_PER_PAGE;
+        await TakeInternalAsync(limiter.TakeRestAsync(ctx.Guild.Id, pages, ctx.CancellationToken));
         var messages = await ch.GetMessagesAsync(fetchLimit).FlattenAsync();
 
         var filtered = messages.Where(m =>
@@ -235,24 +275,44 @@ public sealed partial class MessagingAiAdapter(IMessageSenderService sender, Int
         return sb.ToString();
     }
 
-    private static async Task<ITextChannel?> ResolveChannelInternalAsync(AiToolContext ctx, string input)
+    private static async Task TakeInternalAsync(Task<bool> take)
+    {
+        if (!await take)
+            throw new ToolException("busy", "The agents in this server used Discord too much just now. Do not try again in this request.");
+    }
+
+    private static async Task<(ITextChannel Channel, AgentChannelAccess Access)> GetChannelInternalAsync(
+        AiToolContext ctx,
+        ulong channelId,
+        IGuildUser bot)
+        => VisibleInternal(ctx, bot, await ctx.Guild.GetTextChannelAsync(channelId)) ?? throw AgentPermissions.ChannelNotFound();
+
+    private static (ITextChannel Channel, AgentChannelAccess Access)? VisibleInternal(AiToolContext ctx, IGuildUser bot, ITextChannel? ch)
+        => ch is not null && AgentPermissions.Access(ctx.User, bot, ch, ctx.SourceChannel.Id) is { } access ? (ch, access) : null;
+
+    // A hidden channel with the same name must not hide a visible one.
+    private static async Task<(ITextChannel Channel, AgentChannelAccess Access)?> ResolveChannelInternalAsync(
+        AiToolContext ctx,
+        string input,
+        IGuildUser bot)
     {
         input = input.Trim();
 
         var mentionMatch = ChannelMentionRegex().Match(input);
         if (mentionMatch.Success && ulong.TryParse(mentionMatch.Groups[1].Value, out var mentionId))
-            return await ctx.Guild.GetTextChannelAsync(mentionId);
+            return VisibleInternal(ctx, bot, await ctx.Guild.GetTextChannelAsync(mentionId));
 
         if (ulong.TryParse(input, out var rawId))
-            return await ctx.Guild.GetTextChannelAsync(rawId);
+            return VisibleInternal(ctx, bot, await ctx.Guild.GetTextChannelAsync(rawId));
 
         var name = input.TrimStart('#');
         var channels = await ctx.Guild.GetTextChannelsAsync();
         foreach (var c in channels)
         {
-            if (string.Equals(c.Name, name, StringComparison.InvariantCultureIgnoreCase))
-                return c;
+            if (string.Equals(c.Name, name, StringComparison.InvariantCultureIgnoreCase) && VisibleInternal(ctx, bot, c) is { } found)
+                return found;
         }
+
         return null;
     }
 }

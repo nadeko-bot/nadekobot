@@ -80,12 +80,7 @@ public partial class Gambling
                     await Slot(amount);
                 });
 
-            var msg = await ctx.Channel.SendFileAsync(imgStream,
-                "result.png",
-                embed: eb.Build(),
-                components: inter.CreateComponent()
-            );
-            await inter.RunAsync(msg);
+            await Response().File(imgStream, "result.png").Embed(eb).Interaction(inter).NoReply().SendAsync();
         }
 
         // private SlotInteraction CreateSlotInteractionIntenal(long amount)

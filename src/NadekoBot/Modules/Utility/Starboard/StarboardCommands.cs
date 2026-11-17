@@ -86,9 +86,11 @@ public partial class Utility
                 CreateButton(resetBtn, OnResetAsync)
             };
 
-            panelMsg = await ctx.Channel.SendMessageAsync(
-                embed: BuildPanelEmbed(guildId).Build(),
-                components: BuildPanelComponents().Build());
+            panelMsg = await Response()
+                .Embed(BuildPanelEmbed(guildId))
+                .Components(BuildPanelComponents().Build())
+                .NoReply()
+                .SendAsync();
 
             var runTasks = new Task[handlers.Count];
             for (var i = 0; i < handlers.Count; i++)

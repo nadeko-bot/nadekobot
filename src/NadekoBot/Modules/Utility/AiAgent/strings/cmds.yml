@@ -12,7 +12,7 @@ agent:
         desc: "What you want the AI agent to do"
 agentcancel:
   desc: |-
-    Cancels your currently running AI agent session.
+    Stops your running AI agent request and ends your AI agent sessions.
   ex:
     - ''
   params:

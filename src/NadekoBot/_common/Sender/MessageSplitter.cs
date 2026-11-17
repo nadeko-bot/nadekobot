@@ -15,26 +15,43 @@ public static class MessageSplitter
         int maxLength,
         List<string> results)
     {
-        if (text.IsEmpty)
-            return;
+        var effectiveMax = EffectiveMaxInternal(maxLength);
+        while (!text.IsEmpty)
+            results.Add(NextInternal(ref text, effectiveMax).ToString());
+    }
 
-        var effectiveMax = maxLength - BUFFER;
-        if (effectiveMax <= 0)
-            effectiveMax = maxLength;
-
-        while (text.Length > effectiveMax)
+    // The number of parts which Split makes, without the strings.
+    public static int Count(ReadOnlySpan<char> text, int maxLength)
+    {
+        var effectiveMax = EffectiveMaxInternal(maxLength);
+        var count = 0;
+        while (!text.IsEmpty)
         {
-            var chunk = text[..effectiveMax];
-            var splitIndex = chunk.LastIndexOfAny(_whitespace);
-
-            if (splitIndex <= 0)
-                splitIndex = effectiveMax;
-
-            results.Add(text[..splitIndex].ToString());
-            text = text[splitIndex..].TrimStart(' ');
+            NextInternal(ref text, effectiveMax);
+            count++;
         }
 
-        if (text.Length > 0)
-            results.Add(text.ToString());
+        return count;
+    }
+
+    private static int EffectiveMaxInternal(int maxLength)
+        => maxLength - BUFFER > 0 ? maxLength - BUFFER : maxLength;
+
+    private static ReadOnlySpan<char> NextInternal(ref ReadOnlySpan<char> text, int effectiveMax)
+    {
+        if (text.Length <= effectiveMax)
+        {
+            var last = text;
+            text = default;
+            return last;
+        }
+
+        var splitIndex = text[..effectiveMax].LastIndexOfAny(_whitespace);
+        if (splitIndex <= 0)
+            splitIndex = effectiveMax;
+
+        var chunk = text[..splitIndex];
+        text = text[splitIndex..].TrimStart(' ');
+        return chunk;
     }
 }
