@@ -203,11 +203,21 @@ public sealed class AiAgentSession(
         foreach (var text in untrusted)
             state.AddUntrusted(text, inPrompt: true);
 
+        // Two messages, because OpenRouter keeps a conversation on one provider by the first user message, and the history changes with each message.
         messages.Add(new()
         {
             Role = "user",
-            Content = history is null ? prompt.Context : prompt.Context + "\n" + history
+            Content = prompt.Context
         });
+
+        if (history is not null)
+        {
+            messages.Add(new()
+            {
+                Role = "user",
+                Content = history
+            });
+        }
 
         messages.Add(new()
         {

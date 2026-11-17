@@ -21,6 +21,7 @@
     - checks the permissions of the member and the bot, also slow mode, before it posts, edits or deletes a message
 - The AI agent finds the right command more often.
 - The AI agent answers a simple request with fewer steps.
+- The AI agent reuses more of the prompt cache of the AI service.
 - The AI agent handles a stop or an error better
     - says why it stopped and which steps ran
     - tries again when the AI service is busy or slow

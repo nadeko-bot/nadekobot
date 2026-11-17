@@ -62,6 +62,13 @@ public class AiAgentLoopTests
         Assert.That(result.IsT0, Is.True);
         Assert.That(result.AsT0.Response, Is.Empty);
         Assert.That(model.Bodies, Has.Count.EqualTo(3));
+        using (var doc = JsonDocument.Parse(model.Bodies[0]))
+        {
+            // Without channel history the request has no history message.
+            var contents = doc.RootElement.GetProperty("messages").EnumerateArray().Select(static m => m.GetProperty("content").GetString());
+            Assert.That(contents, Is.EqualTo(new[] { "SYSTEM", "CONTEXT", "TURN", "REQUEST" }));
+        }
+
         Assert.That(runner.Runs, Is.EquivalentTo(new Dictionary<string, int>
         {
             ["roll"] = 4,

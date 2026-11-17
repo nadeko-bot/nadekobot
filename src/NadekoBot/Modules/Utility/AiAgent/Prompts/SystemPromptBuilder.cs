@@ -53,8 +53,8 @@ public sealed class SystemPromptBuilder(
         return Compose(snapshot, botName, botId, GetGuidance(), turn);
     }
 
-    // Stays the same for the whole session, so it goes before the channel history.
-    public async Task<string> BuildContextAsync(AiToolContext context)
+    // Changes only with the server, its skills and the channels which the member sees, so it goes before the channel history.
+    public static async Task<string> BuildContextAsync(AiToolContext context, string skills)
     {
         var botUser = await context.Guild.GetCurrentUserAsync();
         var channels = await context.Guild.GetTextChannelsAsync();
@@ -90,6 +90,11 @@ public sealed class SystemPromptBuilder(
         sb.Append("- Server: ").AppendLine(guildName);
         sb.Append("- Bot identity: ").Append(botName)
           .Append(" (ID: ").Append(botUser.Id).AppendLine(")");
+
+        // The channel list changes with the threads and with the member, so the skills go in front of it.
+        if (skills.Length > 0)
+            sb.AppendLine().Append(skills).AppendLine();
+
         sb.AppendLine("- Available channels:");
 
         var count = Math.Min(visible.Count, MAX_LISTED_CHANNELS);

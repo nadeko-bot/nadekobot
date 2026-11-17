@@ -52,6 +52,13 @@ if (mode is "all" or "search")
     unrelatedReport = SearchQuality.RunUnrelated(services.Search, AgentHitFormatter.CANDIDATES);
 }
 
+CacheReport? cacheReport = null;
+if (mode is "all" or "cache")
+{
+    cacheReport = await CacheCheck.RunAsync(services);
+    Console.Error.WriteLine($"cache: {cacheReport.Failure ?? "pass"} ({cacheReport.SharedChars} of {cacheReport.TotalChars} characters shared)");
+}
+
 var loops = new List<(Scenario Scenario, LoopOutcome Outcome, string? Failure)>();
 if (mode is "all" or "loop")
 {
@@ -66,7 +73,7 @@ if (mode is "all" or "loop")
     }
 }
 
-var md = BuildMarkdownInternal(label, searchReport, holdoutReport, unrelatedReport, loops);
+var md = BuildMarkdownInternal(label, cacheReport, searchReport, holdoutReport, unrelatedReport, loops);
 Console.WriteLine(md);
 
 if (outPath is not null)
@@ -79,6 +86,7 @@ if (outPath is not null)
             search = searchReport,
             holdout = holdoutReport,
             unrelated = unrelatedReport,
+            cache = cacheReport,
             loops = loops.Select(static l => new
             {
                 id = l.Scenario.Id,
@@ -143,6 +151,7 @@ static void PrepareWorkDirInternal(string repo)
 
 static string BuildMarkdownInternal(
     string label,
+    CacheReport? cache,
     SearchReport? search,
     SearchReport? holdout,
     SearchReport? unrelated,
@@ -167,6 +176,19 @@ static string BuildMarkdownInternal(
                 $"| {s.Id} | {s.Expected} | {o.ModelRequests} | {o.TotalRuns} | {o.Messages} | {o.Ending} | {o.ElapsedMs} | {(f is null ? "pass" : "FAIL: " + Escape(f))} |");
         }
 
+        sb.AppendLine();
+    }
+
+    if (cache is not null)
+    {
+        sb.AppendLine($"## Prompt cache: {(cache.Failure is null ? "pass" : "FAIL: " + Escape(cache.Failure))}");
+        sb.AppendLine();
+        sb.AppendLine($"In the second request of a member (3 new messages in the channel, the clock 30 s later), the first {cache.SharedChars} of {cache.TotalChars} characters of the tools and messages JSON are the same as in the first request. The first difference is in the {cache.FirstDifference} part.");
+        sb.AppendLine();
+        sb.AppendLine("| Part | Characters | Same in request 2 |");
+        sb.AppendLine("|---|---|---|");
+        foreach (var part in cache.Parts)
+            sb.AppendLine($"| {part.Name} | {part.Chars} | {(part.Same ? "yes" : "no")} |");
         sb.AppendLine();
     }
 

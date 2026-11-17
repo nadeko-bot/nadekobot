@@ -92,6 +92,23 @@ You can use these placeholders in the prompts:
 - `{botName}` and `{botId}`: the name and the ID of the bot.
 - `{guildName}`, `{channelName}` and `{userName}`: these work too, but they make the prompt different for each server, channel and user. Then the provider cannot cache the prompt, and each request costs more. The agent already gets these values in a separate message.
 
+## Prompt cache
+
+Most providers keep the start of a recent request in a cache (prompt caching). A token which the provider reads from its cache costs less, and the answer comes faster. The agent puts the parts which change least at the start of each request:
+
+1. The tools and the prompts (`SOUL.md`, `OPERATOR.md`)
+2. The server and its [skills](usage.md#skills)
+3. The channels which the member can see
+4. The recent channel messages
+5. The time, the member and the request
+
+Each request of the agent writes one line to the log of the bot with `N prompt tokens (M cached)`. N is the sum of the prompt tokens of all model requests. M is the number of tokens which the provider read from its cache. A provider which does not report its cache shows 0.
+
+- The first request in a server has a smaller M.
+- A request in a channel with its own skills, or of a member who sees other channels, has a smaller M.
+- A change of a prompt, a skill or a channel makes M smaller for the next request.
+- The provider decides how long it keeps the cache.
+
 ## Troubleshooting
 
 - **The agent does not answer.** Make sure that `enabled` is `true`, `aiApiKey` is set and the user is allowed. Look for errors from the provider in the bot's log.

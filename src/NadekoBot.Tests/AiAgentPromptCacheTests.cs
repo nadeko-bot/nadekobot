@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using NadekoBot.Db.Models;
 using NadekoBot.Modules.Utility.AiAgent;
 using NSubstitute;
 using NUnit.Framework;
@@ -88,7 +90,7 @@ public class AiAgentPromptCacheTests
     }
 
     [Test]
-    public async Task Session_EveryRequestExtendsThePreviousOneAndSendsTheCustomHeaders()
+    public async Task Session_RequestsKeepTheCacheOrderAndSendTheCustomHeaders()
     {
         var buffer = new ChannelMessageBuffer(3);
         buffer.Push(Msg(10, "old-a"));
@@ -135,19 +137,41 @@ public class AiAgentPromptCacheTests
         var first = Messages(handler.Bodies[0]);
         var second = Messages(handler.Bodies[1]);
 
+        // From the most shared part to the least, and the context alone in its message, so the cache of the server holds.
+        Assert.That(first, Has.Count.EqualTo(5));
         Assert.That(first[0], Does.Contain("SYSTEM"));
-        Assert.That(first[1], Does.Contain("CONTEXT").And.Contain("old-a"));
-        Assert.That(first[2], Does.Contain("TURN").And.Not.Contain("REQUEST"));
-        Assert.That(first[3], Does.Contain("REQUEST"));
+        Assert.That(first[1], Does.Contain("CONTEXT").And.Not.Contain("old-a"));
+        Assert.That(first[2], Does.Contain("old-a").And.Not.Contain("TURN"));
+        Assert.That(first[3], Does.Contain("TURN").And.Not.Contain("REQUEST"));
+        Assert.That(first[4], Does.Contain("REQUEST"));
 
         Assert.That(second.Take(first.Count), Is.EqualTo(first));
         Assert.That(second[^1], Does.Contain("\"tool\"").And.Contain("bot-posted"));
+
+        ImmutableArray<AiAgentGuildSkill> skills =
+        [
+            Skill(4, "other", CHANNEL_ID + 1),
+            Skill(1, "support", CHANNEL_ID),
+            Skill(3, "tone", null),
+            Skill(5, "off", null, enabled: false),
+            Skill(2, "prices", null)
+        ];
+
+        var block = AiAgentService.SkillBlock(skills, CHANNEL_ID);
+        Assert.That(block.IndexOf("[prices]", StringComparison.Ordinal), Is.LessThan(block.IndexOf("[tone]", StringComparison.Ordinal)));
+        Assert.That(block.IndexOf("[tone]", StringComparison.Ordinal), Is.LessThan(block.IndexOf("[support]", StringComparison.Ordinal)));
+        Assert.That(block, Does.Contain("SERVER INSTRUCTIONS").And.Not.Contain("[other]").And.Not.Contain("[off]"));
+        Assert.That(AiAgentService.SkillBlock([..skills.Reverse()], CHANNEL_ID), Is.EqualTo(block));
+        Assert.That(AiAgentService.SkillBlock([Skill(4, "other", CHANNEL_ID + 1)], CHANNEL_ID), Is.Empty);
 
         var headers = handler.Headers[0];
         Assert.That(headers["X-OpenRouter-Title"], Is.EqualTo("Nadeko"));
         Assert.That(headers["x-opencode-session"], Is.EqualTo("nadeko-500"));
         Assert.That(headers["X-Ids"], Is.EqualTo("7/500/100"));
     }
+
+    private static AiAgentGuildSkill Skill(int id, string name, ulong? channelId, bool enabled = true)
+        => new() { Id = id, GuildId = 7, ChannelId = channelId, Name = name, Instruction = name + " rule", IsEnabled = enabled };
 
     private static string[] Contents(ChannelMessageBuffer buffer)
         => buffer.GetMessages().Select(static m => m.Content).ToArray();
