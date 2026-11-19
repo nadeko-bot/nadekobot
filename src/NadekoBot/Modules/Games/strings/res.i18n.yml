@@ -1,63 +1,79 @@
 ar:
   _8ball: كرة 8
   question: السؤال
+  game_restored: أُعيد تشغيل البوت. اللعبة مستمرة.
 
 de-DE:
   _8ball: 8ball
   question: Frage
+  game_restored: Der Bot wurde neu gestartet. Das Spiel geht weiter.
 
 es-ES:
   _8ball: 8ball
   question: Pregunta
+  game_restored: El bot se ha reiniciado. La partida continúa.
 
 fr-FR:
   _8ball: 8ball
   question: Question
+  game_restored: Le bot a redémarré. La partie continue.
 
 id-ID:
   _8ball: 8ball
   question: Pertanyaan
+  game_restored: Bot dimulai ulang. Permainan berlanjut.
 
 ja-JP:
   _8ball: 8ボール
   question: 質問
+  game_restored: ボットが再起動しました。ゲームは続きます。
 
 ko-KR:
   _8ball: 8ball
   question: 질문
+  game_restored: 봇이 재시작되었어요. 게임은 계속돼요.
 
 pl-PL:
   _8ball: 8ball
   question: Pytanie
+  game_restored: Bot został zrestartowany. Gra toczy się dalej.
 
 pt-BR:
   _8ball: 8ball
   question: Pergunta
+  game_restored: O bot reiniciou. O jogo continua.
 
 ru-RU:
   _8ball: 8ball
   question: Вопрос
+  game_restored: Бот перезапустился. Игра продолжается.
 
 sr-Cyrl-RS:
   _8ball: 8ball
   question: Питање
+  game_restored: Бот је рестартован. Игра се наставља.
 
 tr-TR:
   _8ball: 8ball
   question: Soru
+  game_restored: Bot yeniden başladı. Oyun devam ediyor.
 
 ts-TS:
   _8ball: 8ball
   question: Question
+  game_restored: The bot restarted. The game continues.
 
 uk-UA:
   _8ball: 8ball
   question: Питання
+  game_restored: Бот перезапустився. Гра триває.
 
 vi-VN:
   _8ball: 8ball
   question: Câu hỏi
+  game_restored: Bot đã khởi động lại. Trò chơi tiếp tục.
 
 zh-CN:
   _8ball: 8ball
   question: 問題
+  game_restored: 机器人重启了，游戏继续。

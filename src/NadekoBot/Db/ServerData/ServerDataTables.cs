@@ -122,6 +122,9 @@ public static class ServerDataTables
         "PlantedCurrency",
         "BlackjackStake",
         "BlackjackRoundState",
+        "AnimalRaceEntry",
+        // Games which ran in channels of the old bot.
+        "SavedGame",
     ]);
 
     public static readonly FrozenSet<string> Parents = GetParentsInternal();

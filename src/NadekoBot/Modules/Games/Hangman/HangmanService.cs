@@ -1,63 +1,101 @@
+using System.Net;
 using Microsoft.Extensions.Caching.Memory;
 using NadekoBot.Common.ModuleBehaviors;
-using NadekoBot.Modules.Games.Services;
-using System.Diagnostics.CodeAnalysis;
 using NadekoBot.Modules.Games.Quests;
+using NadekoBot.Modules.Games.SavedGames;
+using NadekoBot.Modules.Games.Services;
 
 namespace NadekoBot.Modules.Games.Hangman;
 
-public sealed class HangmanService : IHangmanService, IExecNoCommand
+public sealed class HangmanService(
+    IHangmanSource source,
+    IMessageSenderService sender,
+    GamesConfigService gcs,
+    IMemoryCache cdCache,
+    QuestService quests,
+    IBotStrings strings,
+    SavedGameStore store,
+    DiscordSocketClient client,
+    IntentState intents) : IHangmanService, IExecNoCommand, ISavedGameHandler
 {
+    public const int MAX_GAMES_PER_SERVER = 5;
     private const int REPOST_THRESHOLD = 5;
 
     private readonly ConcurrentDictionary<ulong, HangmanGame> _hangmanGames = new();
     private readonly ConcurrentDictionary<ulong, HangmanMessageState> _messageStates = new();
-    private readonly IHangmanSource _source;
-    private readonly IMessageSenderService _sender;
-    private readonly GamesConfigService _gcs;
-    private readonly ICurrencyService _cs;
-    private readonly IMemoryCache _cdCache;
-    private readonly QuestService _quests;
-    private readonly IBotStrings _strings;
     private readonly Lock _locker = new();
 
-    public HangmanService(
-        IHangmanSource source,
-        IMessageSenderService sender,
-        GamesConfigService gcs,
-        ICurrencyService cs,
-        IMemoryCache cdCache,
-        QuestService quests,
-        IBotStrings strings)
-    {
-        _source = source;
-        _sender = sender;
-        _gcs = gcs;
-        _cs = cs;
-        _cdCache = cdCache;
-        _quests = quests;
-        _strings = strings;
-    }
+    public SavedGameKind Kind
+        => SavedGameKind.Hangman;
 
-    public bool StartHangman(ulong channelId, string? category, [NotNullWhen(true)] out HangmanGame.State? state)
+    public async Task<(HangmanStartResult Result, HangmanGame.State? State)> StartHangmanAsync(
+        ulong guildId,
+        ulong channelId,
+        string? category)
     {
-        state = null;
-        if (!_source.GetTerm(category, out var termData))
-            return false;
+        if (_hangmanGames.ContainsKey(channelId))
+            return (HangmanStartResult.AlreadyRunning, null);
 
-        var game = new HangmanGame(termData.Value.Term, termData.Value.Category);
+        if (!source.GetTerm(category, out var termData))
+            return (HangmanStartResult.NoTerm, null);
+
+        var game = new HangmanGame(termData.Value.Term, termData.Value.Category) { GuildId = guildId };
+        var state = game.Save();
+        var add = await store.AddAsync(guildId, channelId, Kind, MAX_GAMES_PER_SERVER, state);
+
+        // a game in a deleted channel cannot be stopped, so it must not hold a place of the limit
+        if (add.Result == SavedGameAddResult.LimitReached && await EndGamesOfDeletedChannelsInternalAsync(guildId) > 0)
+            add = await store.AddAsync(guildId, channelId, Kind, MAX_GAMES_PER_SERVER, state);
+
+        if (add.Result != SavedGameAddResult.Added)
+        {
+            return (add.Result == SavedGameAddResult.LimitReached
+                ? HangmanStartResult.LimitReached
+                : HangmanStartResult.AlreadyRunning, null);
+        }
+
+        game.SavedGameId = add.Id;
         lock (_locker)
         {
-            var hc = _hangmanGames.GetOrAdd(channelId, game);
-            if (hc == game)
+            if (_hangmanGames.TryAdd(channelId, game))
             {
                 _messageStates[channelId] = new();
-                state = hc.GetState();
-                return true;
+                return (HangmanStartResult.Started, game.GetState());
             }
-
-            return false;
         }
+
+        await store.EndOrRetryAsync(add.Id);
+        return (HangmanStartResult.AlreadyRunning, null);
+    }
+
+    private async Task<int> EndGamesOfDeletedChannelsInternalAsync(ulong guildId)
+    {
+        if (client.GetGuild(guildId) is not { } guild)
+            return 0;
+
+        List<HangmanGame>? gone = null;
+        lock (_locker)
+        {
+            foreach (var (channelId, game) in _hangmanGames)
+            {
+                if (game.GuildId != guildId || guild.GetChannel(channelId) is not null)
+                    continue;
+
+                if (_hangmanGames.TryRemove(channelId, out _))
+                {
+                    _messageStates.TryRemove(channelId, out _);
+                    (gone ??= new()).Add(game);
+                }
+            }
+        }
+
+        if (gone is null)
+            return 0;
+
+        foreach (var game in gone)
+            await store.EndOrRetryAsync(game.SavedGameId);
+
+        return gone.Count;
     }
 
     public void SetLastMessage(ulong channelId, IUserMessage msg)
@@ -66,22 +104,23 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
             ms.SetMessage(msg);
     }
 
-    public ValueTask<bool> StopHangman(ulong channelId)
+    public async ValueTask<bool> StopHangman(ulong channelId)
     {
+        HangmanGame? game;
         lock (_locker)
         {
-            if (_hangmanGames.TryRemove(channelId, out _))
-            {
-                _messageStates.TryRemove(channelId, out _);
-                return new(true);
-            }
+            if (!_hangmanGames.TryRemove(channelId, out game))
+                return false;
+
+            _messageStates.TryRemove(channelId, out _);
         }
 
-        return new(false);
+        await store.EndOrRetryAsync(game.SavedGameId);
+        return true;
     }
 
     public IReadOnlyCollection<string> GetHangmanTypes()
-        => _source.GetCategories();
+        => source.GetCategories();
 
     public async ValueTask ExecOnNoCommandAsync(IGuild? guild, IUserMessage msg)
     {
@@ -91,7 +130,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
         if (string.IsNullOrWhiteSpace(msg.Content))
             return;
 
-        if (_cdCache.TryGetValue("hangman:" + msg.Author.Id, out _))
+        if (cdCache.TryGetValue("hangman:" + msg.Author.Id, out _))
             return;
 
         // Every channel message increments the counter.
@@ -112,28 +151,28 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
 
                 if (currentState is not null)
                 {
-                    var embed = Games.HangmanCommands.GetEmbed(_sender, currentState);
-                    var sent = await _sender.Response((ITextChannel)msg.Channel).Embed(embed).SendAsync();
+                    var embed = Games.HangmanCommands.GetEmbed(sender, currentState);
+                    var sent = await sender.Response((ITextChannel)msg.Channel).Embed(embed).SendAsync();
                     msgState.SetMessage(sent);
                 }
             }
         }
 
         HangmanGame.State state;
-        long rew = 0;
+        HangmanGame? ended = null;
         lock (_locker)
         {
             if (!_hangmanGames.TryGetValue(msg.Channel.Id, out var game))
                 return;
 
-            state = game.Guess(msg.Content.ToLowerInvariant());
+            state = game.Guess(msg.Content);
 
             if (state.GuessResult == HangmanGame.GuessResult.NoAction)
                 return;
 
             if (state.GuessResult is HangmanGame.GuessResult.Incorrect or HangmanGame.GuessResult.AlreadyTried)
             {
-                _cdCache.Set("hangman:" + msg.Author.Id,
+                cdCache.Set("hangman:" + msg.Author.Id,
                     string.Empty,
                     new MemoryCacheEntryOptions
                     {
@@ -141,25 +180,77 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
                     });
             }
 
-            if (state.Phase == HangmanGame.Phase.Ended
-                && _hangmanGames.TryRemove(msg.Channel.Id, out _)
-                && state.GuessResult == HangmanGame.GuessResult.Win)
+            if (state.Phase == HangmanGame.Phase.Ended)
             {
-                rew = _gcs.Data.Hangman.CurrencyReward;
+                if (_hangmanGames.TryRemove(msg.Channel.Id, out _))
+                    ended = game;
+            }
+            else if (state.GuessResult is HangmanGame.GuessResult.Guess or HangmanGame.GuessResult.Incorrect)
+            {
+                // under the lock, so two guesses cannot save their states in the wrong order
+                store.Update(game.SavedGameId, game.Save());
             }
         }
 
-        if (rew > 0)
-            await _cs.AddAsync(msg.Author, rew, new("hangman", "win"));
+        var won = state.GuessResult == HangmanGame.GuessResult.Win;
+        if (ended is not null)
+        {
+            var reward = won ? gcs.Data.Hangman.CurrencyReward : 0;
+            await store.EndOrRetryAsync(ended.SavedGameId, msg.Author.Id, reward, new("hangman", "win"));
+        }
 
-        if (state.GuessResult == HangmanGame.GuessResult.Win)
-            await _quests.ReportActionAsync(msg.Author.Id, QuestEventType.GameWon, new() { { "game", "hangman" } });
+        if (won)
+            await quests.ReportActionAsync(msg.Author.Id, QuestEventType.GameWon, new() { { "game", "hangman" } });
 
         await SendOrEditState((ITextChannel)msg.Channel, msg.Author, msg.Content, state);
 
         if (state.Phase == HangmanGame.Phase.Ended)
             _messageStates.TryRemove(msg.Channel.Id, out _);
     }
+
+    public async Task<SavedGameRestoreResult> RestoreAsync(SavedGame saved)
+    {
+        if (!intents.MessageContent)
+            return SavedGameRestoreResult.Drop;
+
+        if (HangmanGame.Load(saved.State) is not { } game)
+            return SavedGameRestoreResult.Drop;
+
+        if (SavedGameChannel.Find(client, saved, out var retry) is not { } channel)
+            return retry ? SavedGameRestoreResult.Retry : SavedGameRestoreResult.Drop;
+
+        game.SavedGameId = saved.Id;
+        game.GuildId = saved.GuildId;
+
+        IUserMessage sent;
+        try
+        {
+            var embed = Games.HangmanCommands.GetEmbed(sender, game.GetState())
+                .WithDescription(strings.GetText(strs.game_restored, saved.GuildId));
+
+            sent = await sender.Response(channel).Embed(embed).SendAsync();
+        }
+        catch (HttpException ex) when (ex.HttpCode is HttpStatusCode.Forbidden or HttpStatusCode.NotFound)
+        {
+            Log.Warning(ex, "Hangman could not post the game in channel {ChannelId} after a restart", saved.ChannelId);
+            return SavedGameRestoreResult.Drop;
+        }
+
+        lock (_locker)
+        {
+            if (!_hangmanGames.TryAdd(saved.ChannelId, game))
+                return SavedGameRestoreResult.Drop;
+
+            var state = new HangmanMessageState();
+            state.SetMessage(sent);
+            _messageStates[saved.ChannelId] = state;
+        }
+
+        return SavedGameRestoreResult.Restored;
+    }
+
+    public Task DropAsync(SavedGame saved)
+        => store.EndAsync(saved.Id);
 
     private async Task SendOrEditState(
         ITextChannel channel,
@@ -190,7 +281,7 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
             }
         }
 
-        var sent = await _sender.Response(channel).Embed(embed).SendAsync();
+        var sent = await sender.Response(channel).Embed(embed).SendAsync();
 
         if (_messageStates.TryGetValue(channel.Id, out msgState))
             msgState.SetMessage(sent);
@@ -198,19 +289,19 @@ public sealed class HangmanService : IHangmanService, IExecNoCommand
 
     private EmbedBuilder BuildEmbed(ulong guildId, IUser user, string content, HangmanGame.State state)
     {
-        var embed = Games.HangmanCommands.GetEmbed(_sender, state);
+        var embed = Games.HangmanCommands.GetEmbed(sender, state);
         var name = user.ToString();
 
         if (state.GuessResult == HangmanGame.GuessResult.Guess)
-            embed.WithDescription(_strings.GetText(strs.hangman_guessed(name, content), guildId)).WithOkColor();
+            embed.WithDescription(strings.GetText(strs.hangman_guessed(name, content), guildId)).WithOkColor();
         else if (state.GuessResult == HangmanGame.GuessResult.Incorrect && state.Failed)
-            embed.WithDescription(_strings.GetText(strs.hangman_letter_missing_lost(name, content), guildId)).WithErrorColor();
+            embed.WithDescription(strings.GetText(strs.hangman_letter_missing_lost(name, content), guildId)).WithErrorColor();
         else if (state.GuessResult == HangmanGame.GuessResult.Incorrect)
-            embed.WithDescription(_strings.GetText(strs.hangman_letter_missing(name, content), guildId)).WithErrorColor();
+            embed.WithDescription(strings.GetText(strs.hangman_letter_missing(name, content), guildId)).WithErrorColor();
         else if (state.GuessResult == HangmanGame.GuessResult.AlreadyTried)
-            embed.WithDescription(_strings.GetText(strs.hangman_letter_used(name, content), guildId)).WithPendingColor();
+            embed.WithDescription(strings.GetText(strs.hangman_letter_used(name, content), guildId)).WithPendingColor();
         else if (state.GuessResult == HangmanGame.GuessResult.Win)
-            embed.WithDescription(_strings.GetText(strs.hangman_won(name), guildId)).WithOkColor();
+            embed.WithDescription(strings.GetText(strs.hangman_won(name), guildId)).WithOkColor();
 
         if (!string.IsNullOrWhiteSpace(state.ImageUrl) && Uri.IsWellFormedUriString(state.ImageUrl, UriKind.Absolute))
             embed.WithImageUrl(state.ImageUrl);

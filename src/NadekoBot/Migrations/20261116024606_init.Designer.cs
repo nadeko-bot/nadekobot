@@ -11,7 +11,7 @@ using NadekoBot.Db;
 namespace NadekoBot.Migrations
 {
     [DbContext(typeof(NadekoContext))]
-    [Migration("20261110222948_init")]
+    [Migration("20261116024606_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -2788,6 +2788,35 @@ namespace NadekoBot.Migrations
                     b.ToTable("BlackjackStake");
                 });
 
+            modelBuilder.Entity("NadekoBot.Modules.Gambling.Common.AnimalRacing.AnimalRaceEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuildId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("AnimalRaceEntry");
+                });
+
             modelBuilder.Entity("NadekoBot.Modules.Games.Fish.Db.ChannelSpotOverride", b =>
                 {
                     b.Property<ulong>("ChannelId")
@@ -2856,6 +2885,38 @@ namespace NadekoBot.Migrations
                     b.HasAlternateKey("UserId", "FishId");
 
                     b.ToTable("FishCatch");
+                });
+
+            modelBuilder.Entity("NadekoBot.Modules.Games.SavedGames.SavedGame", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("GuildId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte>("Kind")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("State")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId", "Kind")
+                        .IsUnique();
+
+                    b.HasIndex("GuildId", "Kind");
+
+                    b.ToTable("SavedGame");
                 });
 
             modelBuilder.Entity("NadekoBot.Modules.Games.UserFishStats", b =>

@@ -1,15 +1,15 @@
-﻿#nullable disable
-using NadekoBot.Modules.Gambling.Common.AnimalRacing.Exceptions;
-using NadekoBot.Modules.Games.Common;
-using NadekoBot.Modules.Games.Quests;
+﻿using NadekoBot.Modules.Games.Common;
 
 namespace NadekoBot.Modules.Gambling.Common.AnimalRacing;
 
-public sealed class AnimalRace : IDisposable
+// The members, the animals and the run. The service moves the currency and sends the messages.
+public sealed class AnimalRace
 {
     public const double BASE_MULTIPLIER = 0.87;
     public const double MAX_MULTIPLIER = 0.94;
     public const double MULTI_PER_USER = 0.005;
+    public const int FINISH = 60;
+    public static readonly TimeSpan StepDelay = TimeSpan.FromMilliseconds(1750);
 
     public enum Phase
     {
@@ -18,90 +18,94 @@ public sealed class AnimalRace : IDisposable
         Ended
     }
 
-    public event Func<AnimalRace, Task> OnStarted = delegate { return Task.CompletedTask; };
-    public event Func<AnimalRace, Task> OnStartingFailed = delegate { return Task.CompletedTask; };
-    public event Func<AnimalRace, Task> OnStateUpdate = delegate { return Task.CompletedTask; };
-    public event Func<AnimalRace, Task> OnEnded = delegate { return Task.CompletedTask; };
+    public event Func<AnimalRace, Task> OnStarted = static _ => Task.CompletedTask;
+    public event Func<AnimalRace, Task> OnStartingFailed = static _ => Task.CompletedTask;
+    public event Func<AnimalRace, Task> OnStateUpdate = static _ => Task.CompletedTask;
+    public event Func<AnimalRace, Task> OnEnded = static _ => Task.CompletedTask;
 
     public Phase CurrentPhase { get; private set; } = Phase.WaitingForPlayers;
 
-    public IReadOnlyCollection<AnimalRacingUser> Users
-        => _users.ToList();
+    public RaceOptions Options { get; }
+
+    public IReadOnlyList<RaceAnimal> Animals { get; }
+
+    public int MaxUsers
+        => Animals.Count;
+
+    // in join order; changes only before the start
+    public IReadOnlyList<AnimalRacingUser> Users
+        => _users;
 
     public List<AnimalRacingUser> FinishedUsers { get; } = new();
-    public int MaxUsers { get; }
+
+    public double Multi { get; private set; } = BASE_MULTIPLIER;
+
+    public bool Failed { get; private set; }
 
     private readonly SemaphoreSlim _locker = new(1, 1);
-    private readonly HashSet<AnimalRacingUser> _users = new();
-    private readonly ICurrencyService _currency;
-    private readonly RaceOptions _options;
-    private readonly Queue<RaceAnimal> _animalsQueue;
-    private readonly QuestService _quests;
+    private readonly List<AnimalRacingUser> _users = new();
 
-    public AnimalRace(
-        RaceOptions options,
-        ICurrencyService currency,
-        IEnumerable<RaceAnimal> availableAnimals,
-        QuestService quests)
+    public AnimalRace(RaceOptions options, IReadOnlyList<RaceAnimal> animals)
     {
-        _currency = currency;
-        _options = options;
-        _animalsQueue = new(availableAnimals);
-        _quests = quests;
-        MaxUsers = _animalsQueue.Count;
+        Options = options;
+        Animals = animals;
 
-        if (_animalsQueue.Count == 0)
+        if (animals.Count == 0)
             CurrentPhase = Phase.Ended;
     }
 
-    public void Initialize() //lame name
+    // a member who joined before a restart; call it before the race starts
+    public bool AddRestored(ulong userId, string userName, long bet)
+    {
+        if (_users.Count == MaxUsers || FindInternal(userId) is not null)
+            return false;
+
+        _users.Add(new(userName, userId, bet, Animals[_users.Count]));
+        return true;
+    }
+
+    public void Initialize()
         => _ = Task.Run(async () =>
         {
-            await Task.Delay(_options.StartTime * 1000);
-
-            await _locker.WaitAsync();
-            try
-            {
-                if (CurrentPhase != Phase.WaitingForPlayers)
-                    return;
-
-                await Start();
-            }
-            finally
-            {
-                _locker.Release();
-            }
+            await Task.Delay(TimeSpan.FromSeconds(Options.StartTime));
+            await StartLockedInternalAsync();
         });
 
-    public async Task<AnimalRacingUser> JoinRace(ulong userId, string userName, long bet = 0)
+    public void StartNow()
+        => _ = Task.Run(StartLockedInternalAsync);
+
+    // The commit runs under the race lock, so one join at a time moves currency.
+    public async Task<(RaceJoinResult Result, AnimalRacingUser? User)> JoinAsync(
+        ulong userId,
+        string userName,
+        long bet,
+        Func<Task<RaceJoinResult>> commit)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(bet);
-
-        var user = new AnimalRacingUser(userName, userId, bet);
 
         await _locker.WaitAsync();
         try
         {
-            if (_users.Count == MaxUsers)
-                throw new AnimalRaceFullException();
-
             if (CurrentPhase != Phase.WaitingForPlayers)
-                throw new AlreadyStartedException();
+                return (RaceJoinResult.AlreadyStarted, null);
 
-            if (_users.Contains(user))
-                throw new AlreadyJoinedException();
+            if (_users.Count == MaxUsers)
+                return (RaceJoinResult.Full, null);
 
-            if (!await _currency.RemoveAsync(userId, bet, new("animalrace", "bet")))
-                throw new NotEnoughFundsException();
+            if (FindInternal(userId) is not null)
+                return (RaceJoinResult.AlreadyJoined, null);
 
-            var animal = _animalsQueue.Dequeue();
-            user.Animal = animal;
+            var result = await commit();
+            if (result != RaceJoinResult.Joined)
+                return (result, null);
+
+            var user = new AnimalRacingUser(userName, userId, bet, Animals[_users.Count]);
             _users.Add(user);
 
-            if (_animalsQueue.Count == 0) //start if no more spots left
-                await Start();
+            if (_users.Count == MaxUsers)
+                StartInternal();
 
-            return user;
+            return (result, user);
         }
         finally
         {
@@ -109,43 +113,43 @@ public sealed class AnimalRace : IDisposable
         }
     }
 
-    // every path must fire OnStartingFailed or OnEnded, the commands clean up only on those events
-    private async Task Start()
+    private AnimalRacingUser? FindInternal(ulong userId)
+    {
+        foreach (var user in _users)
+        {
+            if (user.UserId == userId)
+                return user;
+        }
+
+        return null;
+    }
+
+    private async Task StartLockedInternalAsync()
+    {
+        await _locker.WaitAsync();
+        try
+        {
+            if (CurrentPhase == Phase.WaitingForPlayers)
+                StartInternal();
+        }
+        finally
+        {
+            _locker.Release();
+        }
+    }
+
+    // every path fires OnStartingFailed or OnEnded, because the service cleans up only on those events
+    private void StartInternal()
     {
         CurrentPhase = Phase.Running;
         if (_users.Count <= 1)
         {
-            foreach (var user in _users)
-            {
-                if (user.Bet <= 0)
-                    continue;
-
-                try
-                {
-                    await _currency.AddAsync(user.UserId, user.Bet, new("animalrace", "refund"));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Animal race refund of {Amount} to {UserId} failed", user.Bet, user.UserId);
-                }
-            }
-
             CurrentPhase = Phase.Ended;
-            _ = OnStartingFailed?.Invoke(this);
+            _ = OnStartingFailed(this);
             return;
         }
 
-        try
-        {
-            foreach (var user in _users)
-                await _quests.ReportActionAsync(user.UserId, QuestEventType.RaceJoined);
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Animal race could not report the race quest");
-        }
-
-        _ = OnStarted?.Invoke(this);
+        _ = OnStarted(this);
         _ = Task.Run(RunInternalAsync);
     }
 
@@ -154,31 +158,37 @@ public sealed class AnimalRace : IDisposable
         try
         {
             var rng = new NadekoRandom();
-            while (!_users.All(x => x.Progress >= 60))
+            var finishedNow = new List<AnimalRacingUser>(_users.Count);
+            while (FinishedUsers.Count < _users.Count)
             {
+                finishedNow.Clear();
                 foreach (var user in _users)
                 {
-                    user.Progress += rng.Next(1, 10);
-                    if (user.Progress >= 60)
-                        user.Progress = 60;
+                    if (user.Progress >= FINISH)
+                        continue;
+
+                    user.Progress = Math.Min(FINISH, user.Progress + rng.Next(1, 10));
+                    if (user.Progress == FINISH)
+                        finishedNow.Add(user);
                 }
 
-                var finished = _users.Where(x => x.Progress >= 60 && !FinishedUsers.Contains(x)).Shuffle();
+                // members who cross the line in the same step get a random order
+                FinishedUsers.AddRange(finishedNow.Shuffle());
 
-                FinishedUsers.AddRange(finished);
+                try
+                {
+                    await OnStateUpdate(this);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Animal race could not show the race");
+                }
 
-                _ = OnStateUpdate?.Invoke(this);
-                await Task.Delay(1750);
+                await Task.Delay(StepDelay);
             }
 
-            if (FinishedUsers[0].Bet > 0)
-            {
-                Multi = FinishedUsers.Count
-                        * Math.Min(MAX_MULTIPLIER, BASE_MULTIPLIER + (MULTI_PER_USER * FinishedUsers.Count));
-                await _currency.AddAsync(FinishedUsers[0].UserId,
-                    (long)(FinishedUsers[0].Bet * Multi),
-                    new("animalrace", "win"));
-            }
+            Multi = FinishedUsers.Count
+                    * Math.Min(MAX_MULTIPLIER, BASE_MULTIPLIER + (MULTI_PER_USER * FinishedUsers.Count));
         }
         catch (Exception ex)
         {
@@ -188,22 +198,7 @@ public sealed class AnimalRace : IDisposable
         finally
         {
             CurrentPhase = Phase.Ended;
-            _ = OnEnded?.Invoke(this);
+            _ = OnEnded(this);
         }
-    }
-
-    public double Multi { get; set; } = BASE_MULTIPLIER;
-
-    public bool Failed { get; private set; }
-
-    public void Dispose()
-    {
-        CurrentPhase = Phase.Ended;
-        OnStarted = null;
-        OnEnded = null;
-        OnStartingFailed = null;
-        OnStateUpdate = null;
-        // the semaphore is not disposed: OnStartingFailed runs while it is held, and the holder still releases it
-        _users.Clear();
     }
 }

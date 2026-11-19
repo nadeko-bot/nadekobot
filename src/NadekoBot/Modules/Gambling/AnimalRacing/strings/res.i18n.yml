@@ -12,6 +12,8 @@ ar:
   animal_race_won: '{0} كـ {1} فاز بالسباق!'
   animal_race_won_money: '{0} كـ {1} فاز بالسباق وحصل على {2}!'
   race_not_exist: لا يوجد سباق على هذا الخادم
+  animal_race_restarted: أُعيد تشغيل البوت. يبدأ السباق من جديد من خط البداية.
+  animal_race_note_refund: استرداد · لم ينتهِ السباق
 
 de-DE:
   animal_race: Tierrennen
@@ -27,6 +29,8 @@ de-DE:
   animal_race_won: '{0} als {1} hat das Rennen gewonnen!'
   animal_race_won_money: '{0} hat als {1} das Rennen und {2} gewonnen!'
   race_not_exist: Auf diesem Server existiert kein Rennen
+  animal_race_restarted: Der Bot wurde neu gestartet. Das Rennen beginnt wieder an der Startlinie.
+  animal_race_note_refund: Rückerstattung · Rennen nicht beendet
 
 es-ES:
   animal_race: Carrera animal
@@ -42,6 +46,8 @@ es-ES:
   animal_race_won: '¡{0} como un {1} ganó la carrera!'
   animal_race_won_money: '¡{0} como {1} ganó la carrera y {2}!'
   race_not_exist: Ninguna carrera existe en este servidor
+  animal_race_restarted: El bot se ha reiniciado. La carrera empieza de nuevo desde la línea de salida.
+  animal_race_note_refund: Reembolso · la carrera no terminó
 
 fr-FR:
   animal_race: Course d'animaux
@@ -57,6 +63,8 @@ fr-FR:
   animal_race_won: '{0} a gagné la course en tant que {1}!'
   animal_race_won_money: '{0} en tant que {1} a gagné la course et {2}!'
   race_not_exist: Aucune course n'existe dans ce serveur
+  animal_race_restarted: Le bot a redémarré. La course repart de la ligne de départ.
+  animal_race_note_refund: Remboursement · course non terminée
 
 id-ID:
   animal_race: Balapan Hewan
@@ -72,6 +80,8 @@ id-ID:
   animal_race_won: '{0} sebagai {1} Memenangkan balapan!'
   animal_race_won_money: '{0} sebagai {1} Memenangkan balapan dan {2}!'
   race_not_exist: Tidak ada balapan di server ini
+  animal_race_restarted: Bot dimulai ulang. Balapan dimulai lagi dari garis start.
+  animal_race_note_refund: Pengembalian dana · balapan tidak selesai
 
 ja-JP:
   animal_race: アニマルレース
@@ -87,6 +97,8 @@ ja-JP:
   animal_race_won: '{1}の{0}がレースに勝利しました！'
   animal_race_won_money: '{1}の{0}がレースに勝利し、{2}獲得しました！'
   race_not_exist: このサーバーでは、レースは開催されていません。
+  animal_race_restarted: ボットが再起動しました。レースはスタートラインからやり直しです。
+  animal_race_note_refund: 返金 · レース未完了
 
 ko-KR:
   animal_race: 동물 레이스
@@ -102,6 +114,8 @@ ko-KR:
   animal_race_won: '{0}님이 {1}(으)로 경주에서 우승했어요!'
   animal_race_won_money: '{0}님이 {1}(으)로 경주에서 우승하고 {2}을(를) 받았어요!'
   race_not_exist: 이 서버에 진행 중인 경주가 없어요
+  animal_race_restarted: 봇이 재시작되었어요. 경주가 출발선에서 다시 시작돼요.
+  animal_race_note_refund: 환불 · 경주 미완료
 
 pl-PL:
   animal_race: Wyścig zwierząt
@@ -117,6 +131,8 @@ pl-PL:
   animal_race_won: '{0} jako {1} wygrał/a wyścig!'
   animal_race_won_money: '{0} jako {1} wygrał/a wyścig i {2}!'
   race_not_exist: Na tym serwerze nie ma żadnego wyścigu
+  animal_race_restarted: Bot został zrestartowany. Wyścig zaczyna się od nowa z linii startu.
+  animal_race_note_refund: Zwrot · wyścig nie został ukończony
 
 pt-BR:
   animal_race: Corrida de animais
@@ -132,6 +148,8 @@ pt-BR:
   animal_race_won: '{0} como {1} venceu a corrida!'
   animal_race_won_money: '{0} como {1} Ganhou a corrida e {2}!'
   race_not_exist: Não há corrida existente nesse servidor
+  animal_race_restarted: O bot reiniciou. A corrida recomeça da linha de largada.
+  animal_race_note_refund: Reembolso · corrida não terminou
 
 ru-RU:
   animal_race: Гонка животных
@@ -147,6 +165,8 @@ ru-RU:
   animal_race_won: '{0} в роли {1} , побеждает в гонке!'
   animal_race_won_money: '{0} в качестве {1} Выиграл гонку и {2}!'
   race_not_exist: На этом сервере нет гонок
+  animal_race_restarted: Бот перезапустился. Гонка начинается заново со стартовой линии.
+  animal_race_note_refund: Возврат · гонка не завершилась
 
 sr-Cyrl-RS:
   animal_race: Трка животиња
@@ -162,6 +182,8 @@ sr-Cyrl-RS:
   animal_race_won: '{0} као {1} је победио/ла у трци!'
   animal_race_won_money: '{0} као {1} је победио/ла у трци и освојио/ла {2}!'
   race_not_exist: Не постоји трка на овом серверу
+  animal_race_restarted: Бот је рестартован. Трка почиње поново од стартне линије.
+  animal_race_note_refund: Повраћај · трка није завршена
 
 tr-TR:
   animal_race: Hayvan yarışı
@@ -177,6 +199,8 @@ tr-TR:
   animal_race_won: '{0} bir {1} olarak yarışı kazandı!'
   animal_race_won_money: '{0} bir {1} olarak yarışı ve {2} kazandı!'
   race_not_exist: Bu sunucuda devam eden bir yarış yok
+  animal_race_restarted: Bot yeniden başladı. Yarış başlangıç çizgisinden yeniden başlıyor.
+  animal_race_note_refund: İade · yarış bitmedi
 
 ts-TS:
   animal_race: Animal race
@@ -192,6 +216,8 @@ ts-TS:
   animal_race_won: '{0} as {1} Won the race!'
   animal_race_won_money: '{0} as {1} Won the race and {2}!'
   race_not_exist: There's no race on this server.
+  animal_race_restarted: Hmph. The bot restarted, so the race starts again from the start line.
+  animal_race_note_refund: Refund · race did not finish
 
 uk-UA:
   animal_race: Перегони тварин
@@ -207,6 +233,8 @@ uk-UA:
   animal_race_won: '{0} як {1} виграв перегони!'
   animal_race_won_money: '{0} як {1} виграв перегони та {2}!'
   race_not_exist: На цьому сервері немає активних перегонів
+  animal_race_restarted: Бот перезапустився. Перегони починаються знову зі стартової лінії.
+  animal_race_note_refund: Повернення · перегони не завершилися
 
 vi-VN:
   animal_race: Cuộc đua động vật
@@ -222,6 +250,8 @@ vi-VN:
   animal_race_won: '{0} với vai trò {1} đã thắng cuộc đua!'
   animal_race_won_money: '{0} với vai trò {1} đã thắng cuộc đua và nhận {2}!'
   race_not_exist: Không có cuộc đua nào trên máy chủ này
+  animal_race_restarted: Bot đã khởi động lại. Cuộc đua bắt đầu lại từ vạch xuất phát.
+  animal_race_note_refund: Hoàn tiền · cuộc đua chưa kết thúc
 
 zh-CN:
   animal_race: 動物賽跑
@@ -237,3 +267,5 @@ zh-CN:
   animal_race_won: '{0} 使用 {1} 贏得了競賽'
   animal_race_won_money: '{0} 作為 {1} 贏得了比賽和 {2}！'
   race_not_exist: 此伺服器上不存在種族
+  animal_race_restarted: 机器人重启了，比赛从起点重新开始。
+  animal_race_note_refund: 退款 · 比赛未完成

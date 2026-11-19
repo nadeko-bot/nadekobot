@@ -11,3 +11,5 @@ animal_race_starting_with_x: Starting with {0} participants.
 animal_race_won: '{0} as {1} Won the race!'
 animal_race_won_money: '{0} as {1} Won the race and {2}!'
 race_not_exist: No race exists on this server
+animal_race_restarted: The bot restarted. The race starts again from the start line.
+animal_race_note_refund: Refund · race did not finish

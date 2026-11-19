@@ -49,6 +49,12 @@ public sealed class DefaultHangmanSource : IHangmanSource
         if (category is null)
         {
             var cats = GetCategories();
+            if (cats.Count == 0)
+            {
+                term = null;
+                return false;
+            }
+
             category = cats.ElementAt(_rng.Next(0, cats.Count));
         }
 

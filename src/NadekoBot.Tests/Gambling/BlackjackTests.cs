@@ -293,7 +293,7 @@ public class BlackjackTests
     }
 
     [Test]
-    public async Task Ledger_TakesStakesOnceAndPaysEachRoundOnlyOnce()
+    public async Task Ledger_TakesStakesOnceAndPaysEachRoundOnlyOnceAlsoAfterARestart()
     {
         await SeedAsync(USER_A, 100);
         await SeedAsync(USER_B, 5);
@@ -330,6 +330,38 @@ public class BlackjackTests
             (10L, BlackjackTx.BET_REFUND, strs.bj_note_mismatch.Key)
         }));
         Assert.That(await StakeCountAsync(), Is.Zero);
+
+        // after a restart, a saved round keeps its stakes for the settle, which pays one time
+        await SeedAsync(USER_D, 100);
+        await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL, USER_A, 40);
+        await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL + 1, USER_D, 30);
+        await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL + 2, USER_C, 20);
+        await _ledger.SaveRoundAsync(GUILD_SHARD_0, CHANNEL, [1, 2, 3]);
+        await _ledger.SaveRoundAsync(GUILD_SHARD_0, CHANNEL + 2, [1, 2, 3]);
+
+        _time.Advance(TimeSpan.FromMinutes(1));
+        var cutoff = _time.GetUtcNow().UtcDateTime;
+
+        // the seats whose round was saved keep their stakes, the other one goes back
+        Assert.That(await _ledger.RefundStaleAsync(2, 0, cutoff, BjRefundReason.Restart, static _ => false),
+            Is.EqualTo(1));
+        Assert.That((await BalanceAsync(USER_A), await BalanceAsync(USER_D), await BalanceAsync(USER_C)),
+            Is.EqualTo((120L, 100L, 80L)));
+        Assert.That(await RoundStateCountAsync(), Is.EqualTo(2));
+
+        var settlements = new[] { new BjSettlement(USER_A, 40, [new(BlackjackTx.WIN, 80)]) };
+        Assert.That(await _ledger.SettleRoundAsync(GUILD_SHARD_0, CHANNEL, settlements), Is.EqualTo(1));
+        Assert.That(await _ledger.SettleRoundAsync(GUILD_SHARD_0, CHANNEL, settlements), Is.Zero);
+        Assert.That(await BalanceAsync(USER_A), Is.EqualTo(200));
+        Assert.That(await RoundStateCountAsync(), Is.EqualTo(1));
+
+        // a saved round which cannot be read is deleted, and the next sweep refunds its stake
+        await _ledger.DeleteRoundAsync(GUILD_SHARD_0, CHANNEL + 2);
+        Assert.That(await _ledger.RefundStaleAsync(2, 0, cutoff, BjRefundReason.Restart, static _ => false),
+            Is.EqualTo(1));
+        Assert.That(await BalanceAsync(USER_C), Is.EqualTo(100));
+        Assert.That(await StakeCountAsync(), Is.Zero);
+        Assert.That(await RoundStateCountAsync(), Is.Zero);
     }
 
     [Test]
@@ -500,43 +532,6 @@ public class BlackjackTests
 
         for (var length = 1; length < buffer.Length; length++)
             Assert.That(BlackjackRoundStateCodec.Read(buffer.AsSpan(0, length)), Is.Null, $"truncated at {length}");
-    }
-
-    [Test]
-    public async Task SavedRound_KeepsItsStakesForTheRestartSettleWhichPaysOnce()
-    {
-        await SeedAsync(USER_A, 100);
-        await SeedAsync(USER_B, 100);
-        await SeedAsync(USER_C, 100);
-        await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL, USER_A, 40);
-        await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL + 1, USER_B, 30);
-        await _ledger.SeatAsync(GUILD_SHARD_0, CHANNEL + 2, USER_C, 20);
-        await _ledger.SaveRoundAsync(GUILD_SHARD_0, CHANNEL, [1, 2, 3]);
-        await _ledger.SaveRoundAsync(GUILD_SHARD_0, CHANNEL + 2, [1, 2, 3]);
-
-        _time.Advance(TimeSpan.FromMinutes(1));
-        var cutoff = _time.GetUtcNow().UtcDateTime;
-
-        // the seats whose round was saved keep their stakes, the other one goes back
-        Assert.That(await _ledger.RefundStaleAsync(2, 0, cutoff, BjRefundReason.Restart, static _ => false),
-            Is.EqualTo(1));
-        Assert.That((await BalanceAsync(USER_A), await BalanceAsync(USER_B), await BalanceAsync(USER_C)),
-            Is.EqualTo((60L, 100L, 80L)));
-        Assert.That(await RoundStateCountAsync(), Is.EqualTo(2));
-
-        var settlements = new[] { new BjSettlement(USER_A, 40, [new(BlackjackTx.WIN, 80)]) };
-        Assert.That(await _ledger.SettleRoundAsync(GUILD_SHARD_0, CHANNEL, settlements), Is.EqualTo(1));
-        Assert.That(await _ledger.SettleRoundAsync(GUILD_SHARD_0, CHANNEL, settlements), Is.Zero);
-        Assert.That(await BalanceAsync(USER_A), Is.EqualTo(140));
-        Assert.That(await RoundStateCountAsync(), Is.EqualTo(1));
-
-        // a saved round which cannot be read is deleted, and the next sweep refunds its stake
-        await _ledger.DeleteRoundAsync(GUILD_SHARD_0, CHANNEL + 2);
-        Assert.That(await _ledger.RefundStaleAsync(2, 0, cutoff, BjRefundReason.Restart, static _ => false),
-            Is.EqualTo(1));
-        Assert.That(await BalanceAsync(USER_C), Is.EqualTo(100));
-        Assert.That(await StakeCountAsync(), Is.Zero);
-        Assert.That(await RoundStateCountAsync(), Is.Zero);
     }
 
     private async Task SeedAsync(ulong userId, long amount)

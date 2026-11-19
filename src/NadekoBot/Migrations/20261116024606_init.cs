@@ -57,6 +57,23 @@ namespace NadekoBot.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnimalRaceEntry",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Amount = table.Column<long>(type: "INTEGER", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnimalRaceEntry", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AntiAltSetting",
                 columns: table => new
                 {
@@ -1040,6 +1057,23 @@ namespace NadekoBot.Migrations
                 {
                     table.PrimaryKey("PK_SarGroup", x => x.Id);
                     table.UniqueConstraint("AK_SarGroup_GuildId_GroupNumber", x => new { x.GuildId, x.GroupNumber });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SavedGame",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Kind = table.Column<byte>(type: "INTEGER", nullable: false),
+                    State = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SavedGame", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -2126,6 +2160,12 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_AnimalRaceEntry_GuildId_UserId",
+                table: "AnimalRaceEntry",
+                columns: new[] { "GuildId", "UserId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AntiAltSetting_GuildId",
                 table: "AntiAltSetting",
                 column: "GuildId",
@@ -2541,6 +2581,17 @@ namespace NadekoBot.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_SavedGame_ChannelId_Kind",
+                table: "SavedGame",
+                columns: new[] { "ChannelId", "Kind" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SavedGame_GuildId_Kind",
+                table: "SavedGame",
+                columns: new[] { "GuildId", "Kind" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ScheduledCommand_GuildId",
                 table: "ScheduledCommand",
                 column: "GuildId");
@@ -2934,6 +2985,9 @@ namespace NadekoBot.Migrations
                 name: "AllowedLinkDomain");
 
             migrationBuilder.DropTable(
+                name: "AnimalRaceEntry");
+
+            migrationBuilder.DropTable(
                 name: "AntiAltSetting");
 
             migrationBuilder.DropTable(
@@ -3121,6 +3175,9 @@ namespace NadekoBot.Migrations
 
             migrationBuilder.DropTable(
                 name: "SarAutoDelete");
+
+            migrationBuilder.DropTable(
+                name: "SavedGame");
 
             migrationBuilder.DropTable(
                 name: "ScheduledCommand");

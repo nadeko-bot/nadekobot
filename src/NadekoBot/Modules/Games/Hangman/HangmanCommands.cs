@@ -66,7 +66,24 @@ public partial class Games
             if (await RefuseWithoutMessageContentAsync("hangman"))
                 return;
 
-            if (!_service.StartHangman(ctx.Channel.Id, type, out var hangman))
+            var (result, hangman) = await _service.StartHangmanAsync(ctx.Guild.Id, ctx.Channel.Id, type);
+            if (result == HangmanStartResult.NoTerm)
+            {
+                await Response()
+                    .Error(GetText(strs.hangman_types(prefix)), _service.GetHangmanTypes().Join('\n'))
+                    .SendAsync();
+                return;
+            }
+
+            if (result == HangmanStartResult.LimitReached)
+            {
+                await Response()
+                    .Error(strs.hangman_limit(HangmanService.MAX_GAMES_PER_SERVER, prefix + "hangmanstop"))
+                    .SendAsync();
+                return;
+            }
+
+            if (hangman is null)
             {
                 await Response().Error(strs.hangman_running).SendAsync();
                 return;
@@ -74,7 +91,19 @@ public partial class Games
 
             var eb = GetEmbed(_sender, hangman);
             eb.WithDescription(GetText(strs.hangman_game_started));
-            var sent = await Response().Embed(eb).SendAsync();
+
+            IUserMessage sent;
+            try
+            {
+                sent = await Response().Embed(eb).SendAsync();
+            }
+            catch
+            {
+                // nobody sees a game without its board, so it must not hold a place of the server limit
+                await _service.StopHangman(ctx.Channel.Id);
+                throw;
+            }
+
             _service.SetLastMessage(ctx.Channel.Id, sent);
         }
 

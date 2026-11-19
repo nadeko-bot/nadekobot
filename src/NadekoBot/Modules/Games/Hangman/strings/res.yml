@@ -7,3 +7,4 @@ hangman_letter_missing: "{0} Letter {1} doesn't exist!"
 hangman_letter_missing_lost: "{0} Letter {1} doesn't exist! Game over!"
 hangman_letter_used: "{0} Letter {1} has already been used."
 hangman_won: "{0} won!"
+hangman_limit: 'This server already has {0} hangman games. Stop one in its channel with {1}.'

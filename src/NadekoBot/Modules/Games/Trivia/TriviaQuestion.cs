@@ -35,6 +35,9 @@ public class TriviaQuestion
     public string CleanAnswer
         => cleanAnswer ?? (cleanAnswer = Clean(Answer));
 
+    public TriviaQuestionModel Model
+        => _qModel;
+
     private string cleanAnswer;
     private readonly TriviaQuestionModel _qModel;
 

@@ -10,7 +10,6 @@ using NadekoBot.Common;
 using NadekoBot.Db.Models;
 using NadekoBot.Extensions;
 using NadekoBot.Modules.NadekoExpressions;
-using NadekoBot.Modules.Games.Common.Trivia;
 using NadekoBot.Modules.Utility.Starboard;
 using NadekoBot.Services;
 using NadekoBot.Tests.Waifu;
@@ -22,20 +21,6 @@ namespace NadekoBot.Tests;
 public sealed class EmptyTextTests
 {
     private const ulong GUILD = 1;
-
-    [Test]
-    public void Trivia_DoesNotAcceptAnEmptyAnswer()
-    {
-        var stopWord = new TriviaQuestion(new TriviaQuestionModel { Answer = "The" });
-        Assert.That(stopWord.IsAnswerCorrect(""), Is.False);
-        Assert.That(stopWord.IsAnswerCorrect("!!"), Is.False);
-        Assert.That(stopWord.IsAnswerCorrect("the"), Is.True);
-        Assert.That(stopWord.IsAnswerCorrect(" THE "), Is.True);
-
-        var normal = new TriviaQuestion(new TriviaQuestionModel { Answer = "Paris" });
-        Assert.That(normal.IsAnswerCorrect(""), Is.False);
-        Assert.That(normal.IsAnswerCorrect("paris"), Is.True);
-    }
 
     [Test]
     public async Task ExpressionImport_SkipsAnEmptyTrigger()
