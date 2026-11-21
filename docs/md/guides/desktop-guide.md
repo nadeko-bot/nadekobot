@@ -58,6 +58,9 @@ Click **Start**. The bot comes online in your server after a few seconds.
 
 **Data Folder** in **Shortcuts** opens the bot's `data` folder, which has the database and the config files.
 
+!!! note "Windows"
+    The [AI agent](../ai-agent/owner-setup.md) needs the [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/cpp/windows/latest-supported-vc-redist). Install the x64 version (the ARM64 version on ARM) before you turn on the agent.
+
 ## Update the bot
 
 1. If the bot runs, click **Stop Instance**.
