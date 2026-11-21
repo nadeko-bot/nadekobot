@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/seal.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -865,6 +865,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sessions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#skills" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1138,6 +1149,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sessions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#skills" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1250,23 +1272,33 @@
 <td><code>.agent show the top 5 xp members</code></td>
 </tr>
 <tr>
-<td>Reply to an answer of the agent, with the reply ping on</td>
+<td>Reply to an answer or a question of the agent, with the reply ping on</td>
 <td><code>and Bob?</code></td>
 </tr>
 <tr>
-<td>Say the name of the bot</td>
-<td><code>hey Nadeko, warn @Bob for spam</code></td>
+<td>Start your message with the name of the bot</td>
+<td><code>Nadeko, warn @Bob for spam</code></td>
 </tr>
 </tbody>
 </table>
-<p>A mention and <code>.agent</code> start the agent for each request. A reply and the name of the bot start it only when your message looks like a request. "lol" or "thanks" does not start it.</p>
-<p>After the agent answers, you can continue in the same channel without a mention. This works for 2 minutes (the bot owner can change this time). In this time, each message which you send in that channel goes to the agent:</p>
+<p>The name of the bot is its nickname in the server, its display name or its username, in any letter case. The name must be at the start of your message. A space follows the name, or a sign such as <code>,</code> <code>:</code> <code>!</code> <code>?</code> and then a space. "Nadeko, roll a die" starts the agent. "hey Nadeko, roll a die", "Nadeko's music" and "I asked Nadeko" do not start it.</p>
+<h2 id="sessions">Sessions<a class="headerlink" href="#sessions" title="Permanent link">&para;</a></h2>
+<p>When the agent answers you or asks you a question, a session starts. In a session, each message which you send in that channel goes to the agent, without a mention:</p>
 <div class="highlight"><pre><span></span><code>@Nadeko how many flowers does Alice have?
   Alice has 5,000 flowers.
 and Bob?
-  Bob has 1,200 flowers.
+  Bob has 1,200 flowers.  [End session]
 </code></pre></div>
-<p>To stop an answer which is running, type <code>.agentcancel</code> / <code>.aic</code>.</p>
+<p>The newest answer of the session has an <strong>End session</strong> button. While the session is open, the agent reads each message which you send in that channel. Only you can use the button on your session.</p>
+<p>The session ends when one of these things occurs:</p>
+<ul>
+<li>You click <strong>End session</strong>.</li>
+<li>You say goodbye or thanks, and the agent ends the session.</li>
+<li>You type <code>.agentcancel</code> / <code>.aicancel</code> / <code>.aic</code>.</li>
+<li>2 minutes pass after the last answer of the agent, or after your last request in the session. The bot owner can change this time.</li>
+</ul>
+<p>Then the bot removes the button within a few seconds. <strong>End session</strong> and <code>.agentcancel</code> end your sessions in all channels. A request which only runs a command, for example <code>@Nadeko roll a die</code>, does not start a session.</p>
+<p>To stop an answer which is running, type <code>.agentcancel</code> / <code>.aicancel</code> / <code>.aic</code>, or click <strong>End session</strong> on the last answer.</p>
 <h2 id="skills">Skills<a class="headerlink" href="#skills" title="Permanent link">&para;</a></h2>
 <p>A skill is an instruction which server admins add for the agent. A server skill works in all channels. A channel skill works only in its channel. A skill changes the style and the topics of the answers. It cannot give a member more permissions.</p>
 <ul>

@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/seal.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -870,6 +870,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#prompt-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt cache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1154,6 +1165,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#prompt-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt cache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1220,7 +1242,7 @@
 <p>Type <code>.configreload aiagent</code> in Discord, or restart the bot.</p>
 </li>
 </ol>
-<p>The bot needs the <strong>Message Content</strong> intent (see <a href="../../creds-guide/#turn-on-the-privileged-intents">Create a Discord bot</a>). Without it, only a mention of the bot starts the agent. The name trigger, the follow-up time and the channel memory then do not work.</p>
+<p>The bot needs the <strong>Message Content</strong> intent (see <a href="../../creds-guide/#turn-on-the-privileged-intents">Create a Discord bot</a>). Without it, only a mention at the start of a message and a reply to the agent with the ping on start the agent. The name trigger, sessions with the <strong>End session</strong> button and the channel memory then do not work.</p>
 <p>You can also change most settings in Discord with <code>.config aiagent &lt;setting&gt; &lt;value&gt;</code>. For example: <code>.config aiagent model openai/gpt-5.4</code>. Type <code>.config aiagent</code> to see all settings.</p>
 <table>
 <thead>
@@ -1283,12 +1305,13 @@
 </tr>
 </tbody>
 </table>
-<p>In <code>data/ai-agent.yml</code>, some of these settings have longer names, for example <code>modelName</code>, <code>maxTokens</code>, <code>reasoningEffort</code> and <code>memoryIdleExpiryMinutes</code>. To turn off reasoning, set <code>reasoningEffort</code> to an empty value in the file.</p>
+<p>In <code>data/ai-agent.yml</code>, some of these settings have longer names, for example <code>modelName</code>, <code>maxTokens</code>, <code>reasoningEffort</code> and <code>memoryIdleExpiryMinutes</code>. When <code>reasoningEffort</code> is empty in the file, the bot sends no reasoning effort, and the model uses its own default. The value <code>none</code> turns reasoning off.</p>
+<p>On the OpenAI API, GPT-5.4 and later models use tools only with the reasoning effort <code>none</code>. When OpenAI returns an error for the reasoning effort, the bot turns reasoning off by itself. Set <code>reasoning</code> to <code>none</code> to skip the failed first requests. GPT-6 Astra and GPT-6.1 Sol do not work with the agent on the OpenAI API, because they use tools only through the Responses API.</p>
 <p>These settings are only in <code>data/ai-agent.yml</code>:</p>
 <ul>
 <li><code>models</code>: a list of models for providers like OpenRouter. When the first model fails, the provider tries the next one.</li>
-<li><code>nameTriggerEnabled</code>: the agent starts when a member says the name of the bot. Default <code>true</code>.</li>
-<li><code>followUpWindowSeconds</code>: the seconds after an answer in which a member can continue without a mention. Default <code>120</code>. <code>0</code> turns it off.</li>
+<li><code>nameTriggerEnabled</code>: the agent starts when a message starts with the name of the bot. Default <code>true</code>.</li>
+<li><code>followUpWindowSeconds</code>: the seconds after an answer in which a member can continue without a mention. The answer shows an <strong>End session</strong> button in this time. Default <code>120</code>. <code>0</code> turns sessions off.</li>
 <li><code>allowedTools</code>: the tools which the agent can use. Empty means all tools.</li>
 <li><code>customHeaders</code>: extra HTTP headers for each request to the provider.</li>
 </ul>
@@ -1338,6 +1361,22 @@
 <ul>
 <li><code>{botName}</code> and <code>{botId}</code>: the name and the ID of the bot.</li>
 <li><code>{guildName}</code>, <code>{channelName}</code> and <code>{userName}</code>: these work too, but they make the prompt different for each server, channel and user. Then the provider cannot cache the prompt, and each request costs more. The agent already gets these values in a separate message.</li>
+</ul>
+<h2 id="prompt-cache">Prompt cache<a class="headerlink" href="#prompt-cache" title="Permanent link">&para;</a></h2>
+<p>Most providers keep the start of a recent request in a cache (prompt caching). A token which the provider reads from its cache costs less, and the answer comes faster. The agent puts the parts which change least at the start of each request:</p>
+<ol>
+<li>The tools and the prompts (<code>SOUL.md</code>, <code>OPERATOR.md</code>)</li>
+<li>The server and its <a href="../usage/#skills">skills</a></li>
+<li>The channels which the member can see</li>
+<li>The recent channel messages</li>
+<li>The time, the member and the request</li>
+</ol>
+<p>Each request of the agent writes one line to the log of the bot with <code>N prompt tokens (M cached)</code>. N is the sum of the prompt tokens of all model requests. M is the number of tokens which the provider read from its cache. A provider which does not report its cache shows 0.</p>
+<ul>
+<li>The first request in a server has a smaller M.</li>
+<li>A request in a channel with its own skills, or of a member who sees other channels, has a smaller M.</li>
+<li>A change of a prompt, a skill or a channel makes M smaller for the next request.</li>
+<li>The provider decides how long it keeps the cache.</li>
 </ul>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
