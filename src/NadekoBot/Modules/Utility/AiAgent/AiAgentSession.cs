@@ -43,6 +43,8 @@ public sealed class AiAgentSession(
     // Optional fields which some models refuse.
     private static readonly string[] _optionalParams = ["max_completion_tokens", "max_tokens", "temperature", "reasoning_effort"];
 
+    private const string EFFORT_OFF = "none";
+
     private static readonly SearchValues<string> _refusalWords = SearchValues.Create(
         [
             "unsupported", "not supported", "unrecognized", "unknown", "does not support", "doesn't support", "isn't supported",
@@ -719,22 +721,26 @@ public sealed class AiAgentSession(
             MaxCompletionTokens = useMaxTokens ? null : config.MaxTokens,
             MaxTokens = useMaxTokens && !noTokenLimit ? config.MaxTokens : null,
             Temperature = (dropped & DroppedParam.Temperature) != 0 ? null : config.Temperature,
-            ReasoningEffort = (dropped & DroppedParam.ReasoningEffort) != 0 ? null : parts.ReasoningEffort
+            ReasoningEffort = (dropped & DroppedParam.ReasoningOff) != 0
+                ? EFFORT_OFF
+                : (dropped & DroppedParam.ReasoningEffort) != 0
+                    ? null
+                    : parts.ReasoningEffort
         };
     }
 
     private DroppedParam GetDroppedInternal(AiAgentConfig config)
         => Volatile.Read(ref _dropped) is { } d && ReferenceEquals(d.Config, config) ? d.Params : DroppedParam.None;
 
-    // The field to leave out of the next request, or None when the failed request already left it out.
-    private DroppedParam DropParamInternal(AiAgentConfig config, string name, DroppedParam used, string model)
+    // The change for the next request, or None when the failed request already sent the last form of the field.
+    private DroppedParam DropParamInternal(AiAgentConfig config, string name, DroppedParam used, string? effort, string model)
     {
         var flag = name switch
         {
             "max_completion_tokens" => DroppedParam.MaxCompletionTokens,
             "max_tokens" => DroppedParam.MaxTokens | DroppedParam.MaxCompletionTokens,
             "temperature" => DroppedParam.Temperature,
-            "reasoning_effort" => DroppedParam.ReasoningEffort,
+            "reasoning_effort" => NextEffortStepInternal(used, effort),
             _ => DroppedParam.None
         };
 
@@ -751,11 +757,33 @@ public sealed class AiAgentSession(
             if (!ReferenceEquals(Interlocked.CompareExchange(ref _dropped, new DroppedParams(config, before | flag), current), current))
                 continue;
 
-            Log.Warning("The AI provider refused the field {Field} for model {Model}. The agent sends its requests without it",
-                name,
-                model);
+            if ((flag & DroppedParam.ReasoningOff) != 0)
+            {
+                Log.Warning(
+                    "The AI provider refused reasoning_effort for model {Model} also in a request without the field. "
+                    + "The agent sends reasoning_effort none, which turns reasoning off",
+                    model);
+            }
+            else
+            {
+                Log.Warning("The AI provider refused the field {Field} for model {Model}. The agent sends its requests without it",
+                    name,
+                    model);
+            }
+
             return flag;
         }
+    }
+
+    // A model which reasons by default refuses tools also without the field, so the last step turns reasoning off.
+    private static DroppedParam NextEffortStepInternal(DroppedParam used, string? effort)
+    {
+        if (effort is not null && (used & DroppedParam.ReasoningEffort) == 0)
+            return DroppedParam.ReasoningEffort;
+
+        return string.Equals(effort, EFFORT_OFF, StringComparison.OrdinalIgnoreCase)
+            ? DroppedParam.None
+            : DroppedParam.ReasoningEffort | DroppedParam.ReasoningOff;
     }
 
     // Only the message counts: the type "invalid_request_error" or a quoted request would make every 400 a refusal.
@@ -965,7 +993,7 @@ public sealed class AiAgentSession(
         RequestParts parts,
         CancellationToken ct)
     {
-        // Each request without a refused field adds one field, so this loop ends after at most four of them.
+        // Each refusal adds at least one of the five flags to the request, so the loop retries at most five times after a refusal.
         var learned = DroppedParam.None;
         for (var attempt = 0;; attempt++)
         {
@@ -975,10 +1003,20 @@ public sealed class AiAgentSession(
             if (response is not null)
                 return response;
 
-            if (refused is not null
-                && DropParamInternal(config, refused, used, parts.Model ?? string.Join(", ", parts.Models ?? [])) is var dropped
-                and not DroppedParam.None)
+            if (refused is not null)
             {
+                var model = parts.Model ?? string.Join(", ", parts.Models ?? []);
+                var dropped = DropParamInternal(config, refused, used, parts.ReasoningEffort, model);
+                if (dropped == DroppedParam.None)
+                {
+                    Log.Error(
+                        "The AI provider refused the field {Field} for model {Model} in each form which the agent can send. "
+                        + "Choose another model or provider",
+                        refused,
+                        model);
+                    return null;
+                }
+
                 learned |= dropped;
                 // A refused field is not one of the retries.
                 attempt--;
@@ -1207,6 +1245,9 @@ public sealed class AiAgentSession(
 
         // Then the request sends max_tokens, which older providers take.
         MaxCompletionTokens = 4,
-        MaxTokens = 8
+        MaxTokens = 8,
+
+        // Always set together with ReasoningEffort. Then the request sends reasoning_effort none.
+        ReasoningOff = 16
     }
 }

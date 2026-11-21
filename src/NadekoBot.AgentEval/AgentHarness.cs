@@ -95,14 +95,14 @@ public sealed class EvalServices
         };
     }
 
-    public static AiAgentConfig CreateConfig()
+    public static AiAgentConfig CreateConfig(string reasoningEffort = "")
         => new()
         {
             Enabled = true,
             ApiUrl = "http://model.eval",
             ModelName = "deepseek-v4.1-flash",
             MaxToolCalls = 10,
-            ReasoningEffort = ""
+            ReasoningEffort = reasoningEffort
         };
 
     public IReadOnlyList<IAiTool> CreateTools(FakeServer server)
@@ -172,6 +172,9 @@ public static class AgentHarness
         var conversation = new AgentConversation(Environment.TickCount64);
         string[] requests = [scenario.Request, ..scenario.FollowUps ?? []];
 
+        // One settings snapshot for the whole conversation, as the bot keeps it, so the fields which the provider refused stay out.
+        var config = EvalServices.CreateConfig(scenario.ReasoningEffort ?? "");
+
         string? final = null;
         var ending = "";
         var sw = Stopwatch.StartNew();
@@ -207,7 +210,7 @@ public static class AgentHarness
                     ctx,
                     tools,
                     registry.GetToolSchemas(),
-                    EvalServices.CreateConfig(),
+                    config,
                     null,
                     cts.Token);
 

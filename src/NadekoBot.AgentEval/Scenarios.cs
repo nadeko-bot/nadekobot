@@ -12,7 +12,8 @@ public sealed record Scenario(
     string Expected,
     string ToolsOffReply = Scenarios.TOOLS_OFF_REPLY,
     string[]? FollowUps = null,
-    string? Untrusted = null);
+    string? Untrusted = null,
+    string? ReasoningEffort = null);
 
 public static class Scenarios
 {
@@ -39,6 +40,12 @@ public static class Scenarios
 
     private static string? Expect(bool ok, string failure)
         => ok ? null : failure;
+
+    private const string EFFORT_NONE = "\"reasoning_effort\":\"none\"";
+
+    // The 400 of OpenAI's Chat Completions for a request with tools to a model which reasons, GPT-5.4 and later.
+    private static string ToolsWithReasoningError(string model)
+        => $$$"""{"error":{"message":"Function tools with reasoning_effort are not supported for {{{model}}} in /v1/chat/completions. To use function tools, use /v1/responses or set reasoning_effort to 'none'.","type":"invalid_request_error","param":"reasoning_effort","code":null}}""";
 
     public static IReadOnlyList<Scenario> All()
         =>
@@ -384,6 +391,31 @@ public static class Scenarios
                         : ModelReply.Call(RUN, CmdFinal("flip")),
                 static o => Expect(o.Runs("flip") == 1 && o.ModelRequests == 3,
                     $"flip ran {o.Runs("flip")} times in {o.ModelRequests} model requests, ending: {o.Ending}"),
-                "1 run, 3 model requests")
+                "1 run, 3 model requests"),
+
+            new("refused-reasoning",
+                "OpenAI takes tools only with the effort none, and the model reasons when the request has no effort (GPT-5.6)",
+                "flip a coin",
+                static t => !t.Body.Contains(EFFORT_NONE, StringComparison.Ordinal)
+                    ? ModelReply.Http(400, ToolsWithReasoningError("gpt-5.6-sol"))
+                    : t.Step == 0
+                        ? ModelReply.Call(RUN, CmdFinal("flip"))
+                        : ModelReply.Say(""),
+                static o => Expect(o.Runs("flip") == 1 && o.ModelRequests == 3,
+                    $"flip ran {o.Runs("flip")} times in {o.ModelRequests} model requests, ending: {o.Ending}"),
+                "1 run, 3 model requests",
+                ReasoningEffort: "low"),
+
+            new("refused-reasoning-always",
+                "OpenAI refuses tools with reasoning and refuses the effort none (GPT-6 Astra)",
+                "flip a coin",
+                static t => ModelReply.Http(400,
+                    t.Body.Contains(EFFORT_NONE, StringComparison.Ordinal)
+                        ? """{"error":{"message":"Unsupported value: 'reasoning_effort' does not support 'none' with this model.","type":"invalid_request_error","param":"reasoning_effort","code":"unsupported_value"}}"""
+                        : ToolsWithReasoningError("gpt-6-astra")),
+                static o => Expect(o.ModelRequests == 3 && o.Ending == "error" && o.Runs("flip") == 0,
+                    $"{o.ModelRequests} model requests, flip ran {o.Runs("flip")} times, ending: {o.Ending}"),
+                "an error after 3 model requests",
+                ReasoningEffort: "low")
         ];
 }

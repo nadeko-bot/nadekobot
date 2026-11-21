@@ -48,7 +48,9 @@ You can also change most settings in Discord with `.config aiagent <setting> <va
 | `useembed` | `true` | `false` sends answers as plain text |
 | `showactivity` | `true` | Shows a live message with the steps of the agent |
 
-In `data/ai-agent.yml`, some of these settings have longer names, for example `modelName`, `maxTokens`, `reasoningEffort` and `memoryIdleExpiryMinutes`. To turn off reasoning, set `reasoningEffort` to an empty value in the file.
+In `data/ai-agent.yml`, some of these settings have longer names, for example `modelName`, `maxTokens`, `reasoningEffort` and `memoryIdleExpiryMinutes`. When `reasoningEffort` is empty in the file, the bot sends no reasoning effort, and the model uses its own default. The value `none` turns reasoning off.
+
+On the OpenAI API, GPT-5.4 and later models use tools only with the reasoning effort `none`. When OpenAI returns an error for the reasoning effort, the bot turns reasoning off by itself. Set `reasoning` to `none` to skip the failed first requests. GPT-6 Astra and GPT-6.1 Sol do not work with the agent on the OpenAI API, because they use tools only through the Responses API.
 
 These settings are only in `data/ai-agent.yml`:
 

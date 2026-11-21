@@ -19,6 +19,10 @@
     - has an **End session** button
 - `.hangman` allows at most 5 games at a time in one server.
 
+### Fixed
+
+- The AI agent works with GPT-5.4 and most later models on the OpenAI API.
+
 ### Removed
 
 - The intent model of the AI agent and its file `data/ai/intent-head.bin`.
