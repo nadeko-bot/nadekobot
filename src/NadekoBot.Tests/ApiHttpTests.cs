@@ -428,9 +428,14 @@ public sealed class ApiHttpTests
         using (var wrongType = await _http.PutAsync("/api/creds", new StringContent("x", Encoding.UTF8, "text/plain")))
             await AssertErrorAsync(wrongType, HttpStatusCode.UnsupportedMediaType, "unsupported_media_type");
 
-        using (var tooBig = await _http.PutAsync("/api/creds",
-                   new StringContent(new string('x', ApiLimits.MAX_REQUEST_BODY_BYTES + 1), Encoding.UTF8, "application/json")))
+        // Without Expect: 100-continue the server can close the connection while the client still sends the body.
+        using (var tooBigRequest = new HttpRequestMessage(HttpMethod.Put, "/api/creds"))
+        {
+            tooBigRequest.Content = new StringContent(new string('x', ApiLimits.MAX_REQUEST_BODY_BYTES + 1), Encoding.UTF8, "application/json");
+            tooBigRequest.Headers.ExpectContinue = true;
+            using var tooBig = await _http.SendAsync(tooBigRequest);
             await AssertErrorAsync(tooBig, HttpStatusCode.RequestEntityTooLarge, "too_large");
+        }
 
         using (var missingField = await _http.PutAsync("/api/creds", Json(new { token = "x" })))
             await AssertErrorAsync(missingField, HttpStatusCode.BadRequest, "bad_request");
