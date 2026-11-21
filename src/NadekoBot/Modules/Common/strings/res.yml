@@ -1,6 +1,5 @@
-cant_dm: >-
-  I can't dm you. Make sure your DMs are open. Go to **options (cog button) ->
-  Privacy & Safety -> Allow direct messages from server members**
+cant_dm: |-
+  I can't dm you. Make sure your DMs are open. Go to **options (cog button) -> Privacy & Safety -> Allow direct messages from server members**
 color: Color
 desc: Description
 empty_page: This page is empty.
@@ -9,9 +8,8 @@ error_occured: Error occurred.
 expr_import_invalid_data: Unable to parse the file. Make sure it's a valid .yml file
 expr_import_no_input: Invalid input. No valid file upload or input text found.
 expr_no_found_id: No expression found with that id.
-hierarchy: >-
-  You can't use this command on users with a role higher or equal than yours (or
-  mine) in the role hierarchy.
+hierarchy: |-
+  You can't use this command on users with a role higher or equal than yours (or mine) in the role hierarchy.
 id: Id
 insuf_perms_i: I have insufficient permissions.
 insuf_perms_u: You have insufficient permissions.

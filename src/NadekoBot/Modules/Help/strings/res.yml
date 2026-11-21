@@ -1,11 +1,9 @@
 cmd_group_commands: '''{0}'' command group'
-command_not_found: >-
-  I can't find that command. Please verify that the command exists before trying
-  again.
+command_not_found: |-
+  I can't find that command. Please verify that the command exists before trying again.
 commandlist_regen: Commandlist regenerated.
-commands_instr: >-
-  Type `{0}h CommandName` to see the help for that specified command. e.g. `{0}h
-  {0}8ball`
+commands_instr: |-
+  Type `{0}h CommandName` to see the help for that specified command. e.g. `{0}h {0}8ball`
 guide: |-
   **List of commands**: <{0}>
   **Hosting guides and docs can be found here**: <{1}>
@@ -27,7 +25,6 @@ module_description_waifus: Back waifus, manage them, send gifts and earn returns
 module_description_xp: Gain xp based on chat activity, check users' xp cards
 module_footer: '{0}cmds {1}'
 module_not_found: That module does not exist.
-module_not_found_or_cant_exec: >-
-  Either the module doesn't exist, or you can't run any of the commands in the
-  specified module.
+module_not_found_or_cant_exec: |-
+  Either the module doesn't exist, or you can't run any of the commands in the specified module.
 module_page_empty: No module on this page.

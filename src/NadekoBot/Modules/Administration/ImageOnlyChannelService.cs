@@ -22,13 +22,16 @@ public sealed class SomethingOnlyChannelService : IExecOnMessage
     // channel ids are unique across servers, so one map keyed by channel serves every server
     private readonly ConcurrentDictionary<ulong, OnlyChannelSetting> _channels;
 
+    private static readonly QueueDropWarning _deleteDropWarning = new("only-channel delete");
+
     private readonly Channel<IUserMessage> _deleteQueue = Channel.CreateBounded<IUserMessage>(
         new BoundedChannelOptions(100)
         {
             FullMode = BoundedChannelFullMode.DropOldest,
             SingleReader = true,
             SingleWriter = false
-        });
+        },
+        static _ => _deleteDropWarning.Dropped());
 
 
     public SomethingOnlyChannelService(IMemoryCache ticketCache, DiscordSocketClient client, DbService db, IntentState intents)

@@ -1,6 +1,5 @@
-atl_not_enabled: >-
-  Automatic translation is not enabled on this channel or you've provided an
-  invalid language.
+atl_not_enabled: |-
+  Automatic translation is not enabled on this channel or you've provided an invalid language.
 atl_removed: your auto-translate language has been removed.
 atl_set: Your auto-translate language has been set to {0}>{1}
 atl_started: Started automatic translation of messages on this channel.
@@ -9,6 +8,5 @@ bad_input_format: Bad input format, or something went wrong.
 invalid_lang: Invalid source or target language.
 supported_languages: Supported Languages
 trfl_disabled: Flag translation disabled.
-trfl_enabled: >-
-  Flag translation enabled on this channel. Reacting to a message with a flag
-  will translate it to that language.
+trfl_enabled: |-
+  Flag translation enabled on this channel. Reacting to a message with a flag will translate it to that language.

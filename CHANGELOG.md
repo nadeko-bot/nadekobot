@@ -31,6 +31,8 @@
 
 - `data/commandlist.json` has the parameters of each command.
 - The bot saves running games in the new `SavedGame` and `AnimalRaceEntry` tables.
+- CI builds the public bot configuration.
+- The bot logs a warning when a full queue drops an item.
 
 ## [7.10.2] - 15.11.2026
 

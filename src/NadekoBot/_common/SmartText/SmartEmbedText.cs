@@ -48,7 +48,7 @@ public sealed record SmartEmbedArrayElementText : SmartEmbedTextBase
 /// saved before the array format existed. Not a <see cref="SmartText"/>; converted to
 /// <see cref="SmartEmbedTextArray"/> on parse via <see cref="ToArray"/>.
 /// </summary>
-internal sealed record LegacySmartEmbedText
+public sealed record LegacySmartEmbedText
 {
     public string Title { get; init; }
     public string Description { get; init; }

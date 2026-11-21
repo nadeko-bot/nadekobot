@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace NadekoBot.Modules.Music;
 
-internal abstract class PrecisionSleeper : IDisposable
+public abstract class PrecisionSleeper : IDisposable
 {
     public abstract void SleepUntil(long targetStopwatchTicks);
 

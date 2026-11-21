@@ -7,11 +7,12 @@ public sealed class QueueRunner
     private readonly Channel<Func<Task>> _channel;
     private readonly int _delayMs;
 
-    public QueueRunner(int delayMs = 0, int maxCapacity = -1)
+    public QueueRunner(int delayMs = 0, int maxCapacity = -1, string name = "queue runner")
     {
         ArgumentOutOfRangeException.ThrowIfNegative(delayMs);
 
         _delayMs = delayMs;
+        var dropWarning = new QueueDropWarning(name);
         _channel = maxCapacity switch
         {
             0 or < -1 => throw new ArgumentOutOfRangeException(nameof(maxCapacity)),
@@ -28,7 +29,8 @@ public sealed class QueueRunner
                 SingleReader = true,
                 SingleWriter = false,
                 AllowSynchronousContinuations = true
-            })
+            },
+            _ => dropWarning.Dropped())
         };
     }
 

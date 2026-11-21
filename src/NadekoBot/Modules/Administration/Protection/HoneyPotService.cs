@@ -16,13 +16,16 @@ public sealed class HoneyPotService : IHoneyPotService, IReadyExecutor, IExecNoC
 
     private readonly record struct PunishmentEntry(SocketGuildUser User, ulong ChannelId, HoneypotAction Action);
 
+    private static readonly QueueDropWarning _punishmentDropWarning = new("honeypot punishment");
+
     private readonly Channel<PunishmentEntry> _punishments = Channel.CreateBounded<PunishmentEntry>(
         new BoundedChannelOptions(100)
         {
             FullMode = BoundedChannelFullMode.DropOldest,
             SingleReader = true,
             SingleWriter = false,
-        });
+        },
+        static _ => _punishmentDropWarning.Dropped());
 
     public HoneyPotService(DbService db, ILogCommandService logService, INotifySubscriber notify)
     {

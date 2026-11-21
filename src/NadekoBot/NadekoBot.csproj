@@ -19,10 +19,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="NadekoBot.Tests" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="AngleSharp" Version="1.9.0">
             <PrivateAssets>all</PrivateAssets>
             <Publish>True</Publish>

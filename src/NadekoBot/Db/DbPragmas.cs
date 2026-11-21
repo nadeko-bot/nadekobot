@@ -2,7 +2,7 @@ using System.Data.Common;
 
 namespace NadekoBot.Db;
 
-internal static class DbPragmas
+public static class DbPragmas
 {
     private const string SETUP_PRAGMAS = "PRAGMA journal_mode=WAL; PRAGMA busy_timeout=30000;";
     private const string RUNTIME_PRAGMAS = "PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=30000;";

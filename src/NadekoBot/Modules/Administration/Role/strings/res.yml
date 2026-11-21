@@ -8,9 +8,8 @@ btnrole_removed: Button role removed.
 cr: Successfully created role {0}
 dr: Role {0} has been deleted.
 invalid_message_id: Invalid Message Id.
-invalid_message_link: >-
-  The message link must be this Bot's message. The bot can't add buttons to
-  other users' messages.
+invalid_message_link: |-
+  The message link must be this Bot's message. The bot can't add buttons to other users' messages.
 rar: Successfully removed all roles from user {0}
 rar_err: Failed to remove roles. I have insufficient permissions.
 rc: Color of {0} role has been changed.
@@ -20,9 +19,8 @@ remrole_err: Failed to remove role. I have insufficient permissions.
 renrole: Role renamed.
 renrole_err: Failed to rename role. I have insufficient permissions.
 renrole_perms: You can't edit roles higher than either your, or my highest role.
-rero_message_not_found: >-
-  The specified message wasn't found. Make sure you've specified the message
-  from this channel.
+rero_message_not_found: |-
+  The specified message wasn't found. Make sure you've specified the message from this channel.
 rero_not_found: No reaction role entry found for that role on the specified message.
 rero_select_to_delete: Select a reaction role entry to delete.
 rero_deleted: Reaction role entry deleted.
@@ -33,7 +31,6 @@ rolehoist_enabled: Role {0} is now displayed separately from online members.
 setrole: Successfully added role {0} to user {1}
 setrole_err: Failed to add role. I have insufficient permissions.
 sticky_roles_disabled: Sticky roles disabled.
-sticky_roles_enabled: >-
-  Sticky roles enabled. Leaving users' roles will be restored when they rejoin
-  the server.
+sticky_roles_enabled: |-
+  Sticky roles enabled. Leaving users' roles will be restored when they rejoin the server.
 temp_role_added: User {0} has been given {1} role temporarily. The role expires {2}

@@ -1,7 +1,5 @@
-anti_alt_status: >-
-  Any user joining the server with an account that is not older than {0} will
-  have the following action applied to them: {1}
-
+anti_alt_status: |-
+  Any user joining the server with an account that is not older than {0} will have the following action applied to them: {1}
   Punished so far: {2}
 prot_active: Active protections
 prot_cant_use_time: You can't specify duration for this punishment action.

@@ -892,7 +892,7 @@ public sealed class WaifuService(
     /// <summary>
     /// Adds an amount to a user's pending payout (upsert).
     /// </summary>
-    internal async Task AddPendingPayoutInternalAsync(NadekoContext ctx, ulong userId, decimal amount)
+    public async Task AddPendingPayoutInternalAsync(NadekoContext ctx, ulong userId, decimal amount)
     {
         await ctx.GetTable<WaifuPendingPayout>()
             .InsertOrUpdateAsync(
@@ -958,7 +958,7 @@ public sealed class WaifuService(
     /// <summary>
     /// Decrements Mood and Food by 1 for all waifus whose LastDecayTime is more than 2 hours ago.
     /// </summary>
-    internal async Task DecayInternalAsync()
+    public async Task DecayInternalAsync()
     {
         await using var ctx = db.GetDbContext();
         var cutoff = _timeProvider.GetUtcNow().UtcDateTime.AddHours(-2);
@@ -1011,7 +1011,7 @@ public sealed class WaifuService(
     /// Creates WaifuCycle records (waifu-level snapshot) and WaifuCycleSnapshot records (fan balances).
     /// Skips if already snapshotted.
     /// </summary>
-    internal async Task SnapshotCycleInternalAsync(int cycleNumber)
+    public async Task SnapshotCycleInternalAsync(int cycleNumber)
     {
         await using var ctx = db.GetDbContext();
 
@@ -1067,7 +1067,7 @@ public sealed class WaifuService(
     /// Processes a cycle's unprocessed waifu snapshots: computes payouts, distributes earnings,
     /// and marks snapshots as processed. All computation is done server-side in SQL.
     /// </summary>
-    internal async Task ProcessCycleInternalAsync(int cycleNumber)
+    public async Task ProcessCycleInternalAsync(int cycleNumber)
     {
         await using var ctx = db.GetDbContext();
 
@@ -1154,7 +1154,7 @@ public sealed class WaifuService(
     /// <summary>
     /// Deletes snapshot and cycle records older than 8 cycles.
     /// </summary>
-    internal async Task CleanupOldCycleDataInternalAsync(int currentCycle)
+    public async Task CleanupOldCycleDataInternalAsync(int currentCycle)
     {
         var cutoff = currentCycle - 8;
         if (cutoff < 0)

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NadekoBot.Db;
 
-internal static class ShardIndexReconciler
+public static class ShardIndexReconciler
 {
     private const int SHARD_DIVISOR = 4194304;
 

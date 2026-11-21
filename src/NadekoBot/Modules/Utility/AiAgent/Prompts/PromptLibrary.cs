@@ -24,11 +24,15 @@ public sealed class PromptLibrary : INService, IReadyExecutor
     {
     }
 
-    internal PromptLibrary(IPubSub pubSub, string promptsDir)
+    // private, because the container expects one public constructor
+    private PromptLibrary(IPubSub pubSub, string promptsDir)
     {
         _pubSub = pubSub;
         _promptsDir = promptsDir;
     }
+
+    public static PromptLibrary Create(IPubSub pubSub, string promptsDir)
+        => new(pubSub, promptsDir);
 
     public PromptSnapshot Snapshot
     {

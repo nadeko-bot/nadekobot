@@ -16,7 +16,7 @@ public class PromptLibraryTests
     {
         _tempDir = Path.Combine(Path.GetTempPath(), "nadeko-prompt-tests-" + Path.GetRandomFileName());
         Directory.CreateDirectory(_tempDir);
-        _lib = new PromptLibrary(new EventPubSub(), _tempDir);
+        _lib = PromptLibrary.Create(new EventPubSub(), _tempDir);
     }
 
     [TearDown]

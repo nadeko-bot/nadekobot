@@ -13,7 +13,11 @@ public sealed class WaifuConfigService : ConfigServiceBase<WaifuConfig>
     public WaifuConfigService(IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
         : this(FILE_PATH, serializer, pubSub, policy) { }
 
-    internal WaifuConfigService(string filePath, IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+    public static WaifuConfigService Create(string filePath, IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
+        => new(filePath, serializer, pubSub, policy);
+
+    // private, because the container expects one public constructor
+    private WaifuConfigService(string filePath, IConfigSeria serializer, IPubSub pubSub, BotPolicy policy)
         : base(filePath, serializer, pubSub, _changeKey, policy)
     {
         AddNumberProp("minprice",

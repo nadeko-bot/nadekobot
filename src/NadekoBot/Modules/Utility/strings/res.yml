@@ -9,9 +9,8 @@ config_list: Config list
 config_locked: The host of this bot controls the {0} setting of the {1} configuration. You cannot change it.
 config_not_found: Configuration {0} not found
 config_prop_not_found: Property {0} not found on {1} configuration
-emoji_add_error: >-
-  Error adding emoji. You either ran out of emoji slots, or image size is
-  inadequate.
+emoji_add_error: |-
+  Error adding emoji. You either ran out of emoji slots, or image size is inadequate.
 emoji_added: 'Added a new emoji: {0}'
 emoji_slots_full_retry_gif: All image emoji slots are full. Would you like to retry as an animated GIF instead?
 emoji_not_removed: 'The following emojis were not removed: {0}'
@@ -44,9 +43,8 @@ shard: Shard
 showemojis: '**Name:** {0} **Link:** {1}'
 showemojis_none: No special emojis found.
 sniped_by: Sniped by {0}
-sticker_error: >-
-  You must either send a sticker along with this command, or upload a 300x300
-  .png or .apng image. Up to 512KB in size.
+sticker_error: |-
+  You must either send a sticker along with this command, or upload a 300x300 .png or .apng image. Up to 512KB in size.
 uptime: Uptime
 userid: '{0} of the user {1} is {2}'
 verbose_errors_disabled: Incorrectly used commands will no longer show errors.

@@ -53,7 +53,7 @@ public class XpService : INService, IReadyExecutor, IExecNoCommand
     private readonly XpExclusionService _xpExcl;
     private readonly XpFormulaService _xpFormula;
 
-    private readonly QueueRunner _levelUpQueue = new QueueRunner(0, 100);
+    private readonly QueueRunner _levelUpQueue = new QueueRunner(0, 100, "xp level-up");
 
     public XpService(
         DiscordSocketClient client,

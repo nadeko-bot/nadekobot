@@ -20,6 +20,44 @@ namespace NadekoBot.Tests
         private const string commandsPath = "strings/commands";
         private const string aliasesPath = "strings/names.yml";
 
+        private static string BotSourcePath
+            => Path.GetFullPath(Path.Combine("../../../..", "NadekoBot"));
+
+        // data/medusae has the files of installed plugins, and git ignores it
+        private static List<string> GetYmlFilesWithFoldedScalar()
+        {
+            var found = new List<string>();
+            foreach (var path in Directory.EnumerateFiles(BotSourcePath, "*.yml", SearchOption.AllDirectories))
+            {
+                var file = Path.GetRelativePath(BotSourcePath, path).Replace('\\', '/');
+                if (file.StartsWith("bin/", StringComparison.Ordinal)
+                    || file.StartsWith("obj/", StringComparison.Ordinal)
+                    || file.StartsWith("data/medusae/", StringComparison.Ordinal))
+                    continue;
+
+                try
+                {
+                    using var reader = new StreamReader(path);
+                    var parser = new YamlDotNet.Core.Parser(reader);
+                    while (parser.MoveNext())
+                    {
+                        if (parser.Current is YamlDotNet.Core.Events.Scalar { Style: YamlDotNet.Core.ScalarStyle.Folded })
+                        {
+                            found.Add(file);
+                            break;
+                        }
+                    }
+                }
+                catch (YamlDotNet.Core.YamlException ex)
+                {
+                    found.Add($"{file} (not valid YAML: {ex.Message})");
+                }
+            }
+
+            found.Sort(StringComparer.Ordinal);
+            return found;
+        }
+
         private static string[] GetCommandMethodNames()
             => typeof(Bot).Assembly
                 .GetExportedTypes()
@@ -58,6 +96,8 @@ namespace NadekoBot.Tests
                 }
             }
 
+            var folded = GetYmlFilesWithFoldedScalar();
+
             if (obsoleteAliases.Count > 0)
                 Assert.Warn($"Entries in strings/names.yml without a command method: {string.Join(", ", obsoleteAliases)}");
 
@@ -67,6 +107,7 @@ namespace NadekoBot.Tests
                 Assert.That(missingStrings, Is.Empty, "Commands without strings in cmds.yml");
                 Assert.That(obsoleteStrings, Is.Empty, "Command strings without a command method");
                 Assert.That(tooLong, Is.Empty, "Command descriptions longer than an embed field");
+                Assert.That(folded, Is.Empty, "YAML files with a folded scalar (>-), use |-");
             });
         }
 
@@ -77,8 +118,7 @@ namespace NadekoBot.Tests
             var allKeys = stringsSource.GetResponseStrings()["en-US"].Keys.ToHashSet();
 
             var usedKeys = new HashSet<string>();
-            var srcPath = Path.GetFullPath(Path.Combine("../../../..", "NadekoBot"));
-            var csFiles = Directory.GetFiles(srcPath, "*.cs", SearchOption.AllDirectories);
+            var csFiles = Directory.GetFiles(BotSourcePath, "*.cs", SearchOption.AllDirectories);
             var strsPattern = new Regex(@"strs\.(\w+)");
 
             foreach (var file in csFiles)

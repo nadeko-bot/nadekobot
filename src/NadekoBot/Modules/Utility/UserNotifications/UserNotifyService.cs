@@ -19,11 +19,14 @@ public sealed class UserNotifyService(
 {
     private const int MAX_FAILURES = 3;
 
+    private static readonly QueueDropWarning _notifyDropWarning = new("user notification");
+
     private readonly Channel<NotifyMessage> _queue =
         Channel.CreateBounded<NotifyMessage>(new BoundedChannelOptions(300)
-        {
-            FullMode = BoundedChannelFullMode.DropOldest
-        });
+            {
+                FullMode = BoundedChannelFullMode.DropOldest
+            },
+            static _ => _notifyDropWarning.Dropped());
 
     private FrozenDictionary<string, UserNotifyEventInfo>? _events;
     private UserNotifyEventInfo[]? _allEvents;

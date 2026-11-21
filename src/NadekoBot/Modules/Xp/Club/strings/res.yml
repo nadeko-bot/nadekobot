@@ -19,9 +19,8 @@ club_desc_update: Club Description Updated
 club_desc_update_failed: Failed changing club description.
 club_disband_error: Error. You are either not in a club, or you are not the owner of your club.
 club_disbanded: Club {0} has been disbanded
-club_icon_invalid_filetype: >-
-  Specified image has an invalid filetype. Make sure you're specifying a direct
-  image url.
+club_icon_invalid_filetype: |-
+  Specified image has an invalid filetype. Make sure you're specifying a direct image url.
 club_icon_set: New club icon set.
 club_icon_too_large: Image is too large.
 club_icon_url_format: You must specify an absolute image url.
@@ -33,9 +32,8 @@ club_name_taken: A club with that name already exists.
 club_name_too_long: Club name is too long.
 club_not_exists: That club doesn't exist.
 club_not_in_a_club: You are not in a club.
-club_owner_cant_leave: >-
-  Club owner can't leave the club - you must either transfer ownership or
-  disband the club.
+club_owner_cant_leave: |-
+  Club owner can't leave the club - you must either transfer ownership or disband the club.
 club_owner_only: This action can only be performed by the club owner.
 club_rejected: The application by {0} has been rejected.
 club_renamed: Club has been renamed to {0}

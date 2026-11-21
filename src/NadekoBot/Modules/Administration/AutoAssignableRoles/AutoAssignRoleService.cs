@@ -30,13 +30,16 @@ public sealed class AutoAssignRoleService(
 
     private readonly ConcurrentDictionary<ulong, IReadOnlyList<ulong>> _autoAssignableRoles = new();
 
+    private static readonly QueueDropWarning _assignDropWarning = new("auto-assign role");
+
     private readonly Channel<PendingJoin> _assignQueue = Channel.CreateBounded<PendingJoin>(
         new BoundedChannelOptions(QUEUE_CAPACITY)
         {
             FullMode = BoundedChannelFullMode.DropOldest,
             SingleReader = true,
             SingleWriter = false
-        });
+        },
+        static _ => _assignDropWarning.Dropped());
 
     public async Task OnReadyAsync()
     {
