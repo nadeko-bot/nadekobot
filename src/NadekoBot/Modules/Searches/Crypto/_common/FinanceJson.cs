@@ -104,6 +104,29 @@ public struct NasdaqHistoryRow
     public double Volume { get; set; }
 }
 
+// The minute prices of the last sessions from charting.nasdaq.com, the oldest first. A symbol without data gives {}.
+public sealed class NasdaqMinuteChart
+{
+    [JsonPropertyName("marketData")]
+    public NasdaqMinute[]? MarketData { get; set; }
+}
+
+public struct NasdaqMinute
+{
+    // "2026-11-20 09:30:00", the New York wall clock.
+    [JsonPropertyName("Date")]
+    [JsonConverter(typeof(NasdaqMinuteTimeConverter))]
+    public long Time { get; set; }
+
+    [JsonPropertyName("Value")]
+    [JsonConverter(typeof(NasdaqNumberConverter))]
+    public double Value { get; set; }
+
+    [JsonPropertyName("Volume")]
+    [JsonConverter(typeof(NasdaqNumberConverter))]
+    public double Volume { get; set; }
+}
+
 public sealed class NasdaqInfo
 {
     [JsonPropertyName("companyName")]
@@ -350,6 +373,38 @@ public sealed class NasdaqDateConverter : JsonConverter<DateOnly>
         => writer.WriteStringValue(value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture));
 }
 
+// Reads "2026-11-20 09:30:00" as the unix time in seconds of that clock in UTC. Other text gives 0.
+public sealed class NasdaqMinuteTimeConverter : JsonConverter<long>
+{
+    private const string FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType is JsonTokenType.StartObject or JsonTokenType.StartArray)
+        {
+            reader.Skip();
+            return 0;
+        }
+
+        if (reader.TokenType != JsonTokenType.String
+            || (reader.HasValueSequence ? reader.ValueSequence.Length : reader.ValueSpan.Length) > NasdaqNumberConverter.MAX_LENGTH)
+            return 0;
+
+        Span<char> text = stackalloc char[NasdaqNumberConverter.MAX_LENGTH];
+        var length = reader.CopyString(text);
+        return DateTime.TryParseExact(text[..length],
+            FORMAT,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
+            out var time)
+            ? new DateTimeOffset(time, TimeSpan.Zero).ToUnixTimeSeconds()
+            : 0;
+    }
+
+    public override void Write(Utf8JsonWriter writer, long value, JsonSerializerOptions options)
+        => writer.WriteStringValue(DateTimeOffset.FromUnixTimeSeconds(value).ToString(FORMAT, CultureInfo.InvariantCulture));
+}
+
 public static class NasdaqText
 {
     public static bool TryCopy(ref Utf8JsonReader reader, scoped Span<byte> buffer, out int length)
@@ -392,6 +447,7 @@ public static class NasdaqText
 [JsonSerializable(typeof(NasdaqEnvelope<NasdaqInfo>))]
 [JsonSerializable(typeof(NasdaqEnvelope<NasdaqSummary>))]
 [JsonSerializable(typeof(NasdaqEnvelope<NasdaqSearchItem[]>))]
+[JsonSerializable(typeof(NasdaqMinuteChart))]
 [JsonSerializable(typeof(CmcHistoryEnvelope))]
 public sealed partial class FinanceJsonContext : JsonSerializerContext
 {

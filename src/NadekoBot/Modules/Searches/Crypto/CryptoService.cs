@@ -9,6 +9,9 @@ using NadekoBot.Modules.Searches.Common;
 
 namespace NadekoBot.Modules.Searches.Services;
 
+// The candles of a coin chart, which all shards share through the cache.
+public sealed record CoinCandles(ChartFrame Frame, Candle[] Candles);
+
 public class CryptoService(
     IBotCache cache,
     IHttpClientFactory httpFactory,
@@ -18,6 +21,10 @@ public class CryptoService(
 {
     public const int MAX_COINS_PAGE = 24;
     private const int CHART_DAYS = 90;
+
+    // A coin with fewer daily candles gets shorter candles, so that its chart has about 40 candles or more.
+    private const int MIN_DAILY_CANDLES = 20;
+    private const int MIN_FRAME_CANDLES = 40;
     private const int MAX_LOOKUPS = 20;
     private const int CHART_CACHE_SIZE = 32;
     private const int USD_ID = 2781;
@@ -28,6 +35,9 @@ public class CryptoService(
         "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250";
 
     private static readonly TimeSpan _candleExpiry = TimeSpan.FromMinutes(15);
+
+    // Daily candles of a young coin after its shorter candles failed, so that the shorter candles come back soon.
+    private static readonly TimeSpan _partialCandleExpiry = TimeSpan.FromMinutes(1);
     private static readonly TimeSpan _chartExpiry = TimeSpan.FromMinutes(5);
     private static readonly TimeSpan _topCoinsExpiry = TimeSpan.FromHours(1);
     private static readonly TypedKey<IReadOnlyCollection<GeckoCoinsResult>> _topCoinsKey = new("crypto:top_coins");
@@ -43,11 +53,19 @@ public class CryptoService(
 
     private long _coinsRetryAt;
     private readonly TimeProvider _time = timeProvider ?? TimeProvider.System;
-    private readonly SingleFlight<int, Candle[]?> _candleLoads = new();
+    private readonly SingleFlight<int, CoinCandles?> _candleLoads = new();
     private readonly LookupGate _gate = new(MAX_LOOKUPS,
         TimeSpan.FromSeconds(10),
         TimeSpan.FromSeconds(30),
         timeProvider ?? TimeProvider.System);
+
+    // The shorter candles of young coins have their own gate, so a failure there does not stop the daily charts.
+    private readonly LookupGate _shorterGate = new(MAX_LOOKUPS,
+        TimeSpan.FromSeconds(10),
+        TimeSpan.FromSeconds(30),
+        timeProvider ?? TimeProvider.System);
+
+    private static readonly ChartFrame[] _coinFrames = [ChartFrame.H4, ChartFrame.H1, ChartFrame.M15];
 
     private readonly ChartCache _charts = new(CHART_CACHE_SIZE, _chartExpiry, timeProvider ?? TimeProvider.System);
 
@@ -162,10 +180,10 @@ public class CryptoService(
         }
     }
 
-    // A daily candle chart of the last 90 days. The last candle closes at the price of the coin list.
+    // Only a daily chart takes the price of the coin list into its last candle, because the list can be 2 hours old.
     public async Task<byte[]?> GetChartAsync(CmcResponseData crypto, CmcQuote usd)
     {
-        Candle[]? history;
+        CoinCandles? history;
         try
         {
             history = await GetCandlesInternalAsync(crypto.Id);
@@ -176,34 +194,44 @@ public class CryptoService(
             return null;
         }
 
-        if (history is not { Length: > 0 })
+        if (history is not { Candles.Length: > 0 })
             return null;
 
-        var buffer = ArrayPool<Candle>.Shared.Rent(history.Length);
+        var frame = history.Frame;
+        var buffer = ArrayPool<Candle>.Shared.Rent(history.Candles.Length);
         try
         {
-            var candles = buffer.AsSpan(0, history.Length);
-            history.CopyTo(candles);
+            var candles = buffer.AsSpan(0, history.Candles.Length);
+            history.Candles.CopyTo(candles);
 
             ref var last = ref candles[^1];
+            double? previousClose = null;
             if (usd.Price is { } price && price > 0)
             {
-                last = last with
+                if (frame == ChartFrame.Day)
                 {
-                    High = Math.Max(last.High, price),
-                    Low = Math.Min(last.Low, price),
-                    Close = price,
-                    Volume = usd.Volume24h is { } volume && volume > 0 ? volume : last.Volume
-                };
+                    last = last with
+                    {
+                        High = Math.Max(last.High, price),
+                        Low = Math.Min(last.Low, price),
+                        Close = price,
+                        Volume = usd.Volume24h is { } volume && volume > 0 ? volume : last.Volume
+                    };
+                }
+                else if (usd.PercentChange24h is { } percent && percent > -100)
+                {
+                    // The title shows the 24h change percent of the embed.
+                    previousClose = last.Close / (1 + (percent / 100));
+                }
             }
 
             var key = crypto.Id.ToString(CultureInfo.InvariantCulture);
-            var image = _charts.Get(key, last);
+            var image = _charts.Get(key, frame, last);
             if (image is not null)
                 return image;
 
-            image = charts.Render(candles, new(crypto.Symbol, crypto.Name, VENUE));
-            _charts.Set(key, last, image);
+            image = charts.Render(candles, new(crypto.Symbol, crypto.Name, VENUE, frame, previousClose));
+            _charts.Set(key, frame, last, image);
             return image;
         }
         catch (Exception ex)
@@ -217,9 +245,9 @@ public class CryptoService(
         }
     }
 
-    private async Task<Candle[]?> GetCandlesInternalAsync(int id)
+    private async Task<CoinCandles?> GetCandlesInternalAsync(int id)
     {
-        var key = new TypedKey<Candle[]>($"crypto:candles:{id}");
+        var key = new TypedKey<CoinCandles>($"crypto:chart:{id}");
         if ((await cache.GetAsync(key)).TryPickT0(out var cached, out _))
             return cached;
 
@@ -229,7 +257,7 @@ public class CryptoService(
     }
 
     // Daily candles of the last 90 days, and a candle for today from the hourly candles since 00:00 UTC.
-    private async Task<Candle[]?> LoadCandlesInternalAsync(int id, TypedKey<Candle[]> key)
+    private async Task<CoinCandles?> LoadCandlesInternalAsync(int id, TypedKey<CoinCandles> key)
     {
         if (!_gate.TryEnter())
         {
@@ -303,9 +331,20 @@ public class CryptoService(
                     volume);
             }
 
-            var result = count == candles.Length ? candles : candles[..count];
-            await cache.AddAsync(key, result, _candleExpiry);
-            return result;
+            var chart = new CoinCandles(ChartFrame.Day, count == candles.Length ? candles : candles[..count]);
+            var expiry = _candleExpiry;
+            if (count is > 0 and < MIN_DAILY_CANDLES)
+            {
+                var (shorter, failed) = await LoadShorterCandlesInternalAsync(id, candles[0].Time, now, hourly);
+                if (failed)
+                    expiry = _partialCandleExpiry;
+
+                if (shorter is not null && shorter.Candles.Length > count)
+                    chart = shorter;
+            }
+
+            await cache.AddAsync(key, chart, expiry);
+            return chart;
         }
         catch (JsonException ex)
         {
@@ -320,6 +359,125 @@ public class CryptoService(
             return null;
         }
     }
+
+    // The first daily candle starts at 00:00 of the first day, so a coin which started later can need the next smaller frame.
+    private async Task<(CoinCandles? Chart, bool Failed)> LoadShorterCandlesInternalAsync(
+        int id,
+        long start,
+        long now,
+        CmcHistoryItem[] hourly)
+    {
+        var age = now - start;
+        var index = age >= MIN_FRAME_CANDLES * ChartFrame.H4.Seconds() ? 0
+            : age >= MIN_FRAME_CANDLES * ChartFrame.H1.Seconds() ? 1
+            : 2;
+
+        CoinCandles? best = null;
+        for (; index < _coinFrames.Length; index++)
+        {
+            var frame = _coinFrames[index];
+            var candles = await LoadFrameCandlesInternalAsync(id, frame, start, now, hourly);
+            if (candles is null)
+                return (best, true);
+
+            if (best is null || candles.Length > best.Candles.Length)
+                best = new(frame, candles);
+
+            if (candles.Length >= MIN_FRAME_CANDLES)
+                break;
+        }
+
+        return (best, false);
+    }
+
+    // Null when the request fails.
+    private async Task<Candle[]?> LoadFrameCandlesInternalAsync(
+        int id,
+        ChartFrame frame,
+        long start,
+        long now,
+        CmcHistoryItem[] hourly)
+    {
+        if (!_shorterGate.TryEnter())
+        {
+            Log.Warning("Crypto chart lookups of shorter candles are paused or over their limit");
+            return null;
+        }
+
+        var interval = frame switch
+        {
+            ChartFrame.H4 => "4h",
+            ChartFrame.H1 => "1h",
+            _ => "15m"
+        };
+
+        try
+        {
+            var answer = await FinanceHttp.GetJsonAsync(httpFactory,
+                HistoryUrl(id, start, now, interval),
+                FinanceJsonContext.Default.CmcHistoryEnvelope);
+
+            var quotes = answer?.Data?.Quotes ?? [];
+            var seconds = frame.Seconds();
+            var candles = new Candle[quotes.Length + hourly.Length];
+            var count = 0;
+            foreach (ref readonly var item in quotes.AsSpan())
+            {
+                var time = item.TimeOpen.ToUnixTimeSeconds();
+                var bucket = time - (time % seconds);
+                if (!IsValid(item.Quote) || (count > 0 && bucket <= candles[count - 1].Time))
+                    continue;
+
+                candles[count++] = ShortCandleInternal(bucket, item.Quote);
+            }
+
+            // The site gives only full 4h candles, so the hours after the last one come from the hourly candles of today.
+            if (frame == ChartFrame.H4 && count > 0)
+            {
+                var end = candles[count - 1].Time + seconds;
+                foreach (ref readonly var item in hourly.AsSpan())
+                {
+                    var time = item.TimeOpen.ToUnixTimeSeconds();
+                    var q = item.Quote;
+                    if (time < end || !IsValid(q))
+                        continue;
+
+                    var bucket = time - (time % seconds);
+                    ref var last = ref candles[count - 1];
+                    if (bucket > last.Time)
+                        candles[count++] = ShortCandleInternal(bucket, q);
+                    else if (bucket == last.Time)
+                        last = last with { High = Math.Max(last.High, q.High), Low = Math.Min(last.Low, q.Low), Close = q.Close };
+                }
+            }
+
+            return count == candles.Length ? candles : candles[..count];
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("CoinMarketCap", ex);
+            _shorterGate.Pause();
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning("CoinMarketCap history of {Coin} failed: {ErrorMessage}", id, ex.Message);
+            _shorterGate.Pause();
+            return null;
+        }
+    }
+
+    private static bool IsValid(in CmcOhlcv q)
+        => q.Open > 0 && q.High > 0 && q.Low > 0 && q.Close > 0;
+
+    // Volume is 0, because the site gives each candle the volume of the 24 hours before its end.
+    private static Candle ShortCandleInternal(long time, in CmcOhlcv q)
+        => new(time,
+            q.Open,
+            Math.Max(q.High, Math.Max(q.Open, q.Close)),
+            Math.Min(q.Low, Math.Min(q.Open, q.Close)),
+            q.Close,
+            0);
 
     private static string HistoryUrl(int id, long start, long end, string interval)
         => string.Create(CultureInfo.InvariantCulture,

@@ -45,6 +45,16 @@ public class CandleChartTests
         Assert.That(up, Is.GreaterThan(1000));
         Assert.That(down, Is.GreaterThan(1000));
 
+        // A 15m chart without volume, with time labels in place of dates.
+        var start = new DateTimeOffset(2026, 11, 19, 11, 45, 0, TimeSpan.Zero).ToUnixTimeSeconds();
+        var shorter = new Candle[candles.Length];
+        for (var i = 0; i < shorter.Length; i++)
+            shorter[i] = candles[i] with { Time = start + (i * 900L), Volume = 0 };
+
+        using var frame = Image.Load<Rgba32>(new CandleChart().Render(shorter, new("ANT", "Anthropic", "NASDAQ-GS", ChartFrame.M15, 97.17)));
+        Assert.That(frame.Width, Is.EqualTo(CandleChart.WIDTH));
+        Assert.That(frame.Height, Is.EqualTo(CandleChart.HEIGHT));
+
         // An odd width and rows where each byte differs by 0x80 from its neighbors.
         const int width = 1201, height = 9;
         var pixels = new uint[width * height];

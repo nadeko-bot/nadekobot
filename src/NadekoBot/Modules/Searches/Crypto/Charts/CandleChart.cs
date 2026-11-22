@@ -3,9 +3,15 @@ using System.Globalization;
 
 namespace NadekoBot.Modules.Searches.Charts;
 
-public readonly record struct ChartHeader(string Symbol, string? Name, string? Venue);
+// Without PreviousClose, the title change of a daily chart uses the close before the last, and a shorter frame the first open.
+public readonly record struct ChartHeader(
+    string Symbol,
+    string? Name,
+    string? Venue,
+    ChartFrame Frame = ChartFrame.Day,
+    double? PreviousClose = null);
 
-// Draws a daily candle chart in the dark style of TradingView.
+// Draws a candle chart in the dark style of TradingView.
 public sealed class CandleChart : INService
 {
     public const int WIDTH = 1200;
@@ -29,6 +35,9 @@ public sealed class CandleChart : INService
     private const int VOLUME_HEIGHT = (PLOT_BOTTOM - PLOT_TOP) / 5;
     private const int PRICE_TOP = PLOT_TOP + 24;
     private const int PRICE_BOTTOM = PLOT_BOTTOM - VOLUME_HEIGHT - 16;
+
+    // A chart without volume uses the volume area for the price.
+    private const int FULL_PRICE_BOTTOM = PLOT_BOTTOM - 24;
     private const int TICK_SPACING = 72;
     private const int MAX_TICKS = 16;
     private const int AXIS_PAD = 14;
@@ -40,6 +49,7 @@ public sealed class CandleChart : INService
     private const int VOLUME_ALPHA = 115;
     private const int WATERMARK_ALPHA = 13;
     private const int MAX_TIME_LABELS = 40;
+    private const int MIN_TIME_LABELS = 6;
     private const int TIME_LABEL_GAP = 28;
     private const int LEGEND_GAP = 18;
     private const int LEGEND_LABEL_GAP = 6;
@@ -52,13 +62,13 @@ public sealed class CandleChart : INService
     private const int LAST_LINE_HEIGHT = 2;
     private const int DASH_LENGTH = 6;
     private const int SECONDS_PER_DAY = 86_400;
+    private const int MINUTES_PER_DAY = 24 * 60;
     private const int TEXT_BUFFER = 128;
     private const int LINE_BUFFER = 160;
-    private const string INTERVAL = "1D";
 
     // zlib level 2 writes about 52 KB in 1.2 ms. Level 1 writes 75 KB in 0.9 ms, level 6 writes 49 KB in 6.5 ms.
     private const int PNG_LEVEL = 2;
-    private const string WARM_UP_CHARS = "0123456789.,+-%()";
+    private const string WARM_UP_CHARS = "0123456789.,+-%():";
     private const int WARM_UP_DAYS = 90;
     private const double WARM_UP_PRICE = 100;
     private const double WARM_UP_SWING = 10;
@@ -73,6 +83,9 @@ public sealed class CandleChart : INService
 
     private static readonly string[] _months =
         ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    // The time label steps of a chart with candles shorter than a day, in seconds. Each step divides the step before it.
+    private static readonly int[] _timeSteps = [43_200, 21_600, 10_800, 3_600, 1_800, 900, 300];
 
     private readonly Lazy<ChartFonts> _fonts = new(static () => new ChartFonts(), LazyThreadSafetyMode.ExecutionAndPublication);
     private int _warmUp;
@@ -158,13 +171,13 @@ public sealed class CandleChart : INService
         }
     }
 
-    private readonly struct PriceScale(double min, double scale)
+    private readonly struct PriceScale(double min, double scale, int bottom)
     {
         public int Y(double price)
-            => (int)Math.Round(PRICE_BOTTOM - ((price - min) * scale));
+            => (int)Math.Round(bottom - ((price - min) * scale));
 
         public double PriceAt(int y)
-            => min + ((PRICE_BOTTOM - y) / scale);
+            => min + ((bottom - y) / scale);
     }
 
     private readonly struct CandleLayout(double slot, int body, int wick)
@@ -198,14 +211,16 @@ public sealed class CandleChart : INService
             high += pad;
         }
 
-        var scale = new PriceScale(low, (PRICE_BOTTOM - PRICE_TOP) / (high - low));
+        var hasVolume = maxVolume > 0;
+        var priceBottom = hasVolume ? PRICE_BOTTOM : FULL_PRICE_BOTTOM;
+        var scale = new PriceScale(low, (priceBottom - PRICE_TOP) / (high - low), priceBottom);
         ref readonly var last = ref candles[^1];
         var lastColor = last.Close >= last.Open ? UP : DOWN;
         var priceDecimals = ChartFormat.PriceDecimals(last.Close);
         var lastY = scale.Y(last.Close);
 
-        var step = NiceStep((high - low) * TICK_SPACING / (PRICE_BOTTOM - PRICE_TOP));
-        var firstTick = Math.Max(0, Math.Ceiling(scale.PriceAt(PLOT_BOTTOM - VOLUME_HEIGHT) / step) * step);
+        var step = NiceStep((high - low) * TICK_SPACING / (priceBottom - PRICE_TOP));
+        var firstTick = Math.Max(0, Math.Ceiling(scale.PriceAt(hasVolume ? PLOT_BOTTOM - VOLUME_HEIGHT : PLOT_BOTTOM) / step) * step);
         var topPrice = scale.PriceAt(PLOT_TOP + fonts.Axis.CapHeight);
         var ticks = Math.Clamp((int)Math.Floor(((topPrice - firstTick) / step) + 1e-9) + 1, 0, MAX_TICKS);
         var axisDecimals = high is >= 1 and < 1000
@@ -232,7 +247,11 @@ public sealed class CandleChart : INService
         Span<int> labelIndex = stackalloc int[MAX_TIME_LABELS];
         Span<int> labelLeft = stackalloc int[MAX_TIME_LABELS];
         Span<int> labelRight = stackalloc int[MAX_TIME_LABELS];
-        var labels = PlaceTimeLabelsInternal(candles, layout, fonts, plotRight, text, labelIndex, labelLeft, labelRight);
+        Span<bool> labelMajor = stackalloc bool[MAX_TIME_LABELS];
+        var intraday = header.Frame != ChartFrame.Day;
+        var labels = intraday
+            ? PlaceIntradayLabelsInternal(candles, layout, fonts, plotRight, text, labelIndex, labelLeft, labelRight, labelMajor)
+            : PlaceTimeLabelsInternal(candles, layout, fonts, plotRight, text, labelIndex, labelLeft, labelRight, labelMajor);
 
         canvas.Clear(BACKGROUND);
 
@@ -319,8 +338,10 @@ public sealed class CandleChart : INService
         for (var i = 0; i < labels; i++)
         {
             var index = labelIndex[i];
-            var major = IsNewMonth(candles, index);
-            var len = TimeLabel(text, DateOf(candles[index].Time), major);
+            var major = labelMajor[i];
+            var len = intraday
+                ? IntradayLabel(text, candles, index, major)
+                : TimeLabel(text, DateOf(candles[index].Time), major);
             canvas.DrawText(major ? fonts.AxisStrong : fonts.Axis, text[..len], labelLeft[i], timeBaseline, TEXT_SOFT);
         }
 
@@ -336,7 +357,8 @@ public sealed class CandleChart : INService
         Span<char> text,
         Span<int> labelIndex,
         Span<int> labelLeft,
-        Span<int> labelRight)
+        Span<int> labelRight,
+        Span<bool> labelMajor)
     {
         var labels = 0;
         for (var pass = 0; pass < 2; pass++)
@@ -367,6 +389,58 @@ public sealed class CandleChart : INService
                 labelIndex[labels] = i;
                 labelLeft[labels] = left;
                 labelRight[labels] = right;
+                labelMajor[labels] = major;
+                labels++;
+            }
+        }
+
+        return labels;
+    }
+
+    // Day labels first, with the date at the left edge, then the steps of _timeSteps until the axis has 6 labels.
+    private static int PlaceIntradayLabelsInternal(
+        ReadOnlySpan<Candle> candles,
+        in CandleLayout layout,
+        ChartFonts fonts,
+        int plotRight,
+        Span<char> text,
+        Span<int> labelIndex,
+        Span<int> labelLeft,
+        Span<int> labelRight,
+        Span<bool> labelMajor)
+    {
+        var labels = 0;
+        for (var level = -1; level < _timeSteps.Length && (level < 0 || labels < MIN_TIME_LABELS); level++)
+        {
+            var major = level < 0;
+            for (var i = 0; i < candles.Length && labels < labelIndex.Length; i++)
+            {
+                var time = candles[i].Time;
+                var newDay = i == 0 || time / SECONDS_PER_DAY != candles[i - 1].Time / SECONDS_PER_DAY;
+                if (major ? !newDay : newDay || time % _timeSteps[level] != 0)
+                    continue;
+
+                var font = major ? fonts.AxisStrong : fonts.Axis;
+                var width = (int)MathF.Ceiling(font.Measure(text[..IntradayLabel(text, candles, i, major)]));
+                var left = layout.Center(i) - (width / 2);
+                if (i == 0)
+                    left = Math.Max(left, SIDE_PAD / 2);
+
+                var right = left + width;
+                if (left < SIDE_PAD / 2 || right > plotRight - AXIS_PAD)
+                    continue;
+
+                var free = true;
+                for (var k = 0; k < labels && free; k++)
+                    free = right + TIME_LABEL_GAP <= labelLeft[k] || left - TIME_LABEL_GAP >= labelRight[k];
+
+                if (!free)
+                    continue;
+
+                labelIndex[labels] = i;
+                labelLeft[labels] = left;
+                labelRight[labels] = right;
+                labelMajor[labels] = major;
                 labels++;
             }
         }
@@ -383,7 +457,13 @@ public sealed class CandleChart : INService
         Span<char> text)
     {
         ref readonly var last = ref candles[^1];
-        var previous = candles.Length > 1 ? candles[^2].Close : last.Open;
+        var previous = header.PreviousClose is { } given && given > 0
+            ? given
+            : header.Frame != ChartFrame.Day
+                ? candles[0].Open
+                : candles.Length > 1
+                    ? candles[^2].Close
+                    : last.Open;
         var change = last.Close - previous;
         var barColor = last.Close >= last.Open ? UP : DOWN;
 
@@ -400,7 +480,7 @@ public sealed class CandleChart : INService
 
         Span<char> line = stackalloc char[LINE_BUFFER];
         var suffix = 0;
-        AppendInternal(line, ref suffix, INTERVAL);
+        AppendInternal(line, ref suffix, header.Frame.Label());
         if (!string.IsNullOrEmpty(header.Venue))
         {
             AppendInternal(line, ref suffix, SEPARATOR);
@@ -522,5 +602,31 @@ public sealed class CandleChart : INService
         var month = _months[date.Month - 1];
         month.CopyTo(dst);
         return month.Length;
+    }
+
+    // "Nov 20" at the first candle, the day or the month at the first candle of a day, and "10:30" at other candles.
+    private static int IntradayLabel(Span<char> dst, ReadOnlySpan<Candle> candles, int index, bool major)
+    {
+        var time = candles[index].Time;
+        if (!major)
+        {
+            var minutes = (int)(time / 60 % MINUTES_PER_DAY);
+            dst[0] = (char)('0' + (minutes / 600));
+            dst[1] = (char)('0' + (minutes / 60 % 10));
+            dst[2] = ':';
+            dst[3] = (char)('0' + (minutes % 60 / 10));
+            dst[4] = (char)('0' + (minutes % 10));
+            return 5;
+        }
+
+        var date = DateOf(time);
+        if (index > 0)
+            return TimeLabel(dst, date, IsNewMonth(candles, index));
+
+        var month = _months[date.Month - 1];
+        month.CopyTo(dst);
+        dst[month.Length] = ' ';
+        var length = month.Length + 1;
+        return date.Day.TryFormat(dst[length..], out var day, provider: CultureInfo.InvariantCulture) ? length + day : 0;
     }
 }

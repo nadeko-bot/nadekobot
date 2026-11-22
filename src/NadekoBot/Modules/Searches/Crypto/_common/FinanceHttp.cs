@@ -34,12 +34,21 @@ public static class FinanceHttp
         };
 
     // Throws HttpRequestException on an error status or a body over the limit, JsonException on bad JSON, and OperationCanceledException after the timeout.
-    public static async Task<T?> GetJsonAsync<T>(IHttpClientFactory factory, string url, JsonTypeInfo<T> info)
+    public static async Task<T?> GetJsonAsync<T>(IHttpClientFactory factory, string url, JsonTypeInfo<T> info, Uri? referer = null)
     {
         // HttpClient.Timeout ends at the headers with ResponseHeadersRead, so this token also limits the body.
         using var timeout = new CancellationTokenSource(_timeout);
         using var http = factory.CreateClient(CLIENT_NAME);
-        using var response = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeout.Token);
+
+        // A new request message does not take the default version of the client, so it gets it here.
+        using var request = new HttpRequestMessage(HttpMethod.Get, url)
+        {
+            Version = http.DefaultRequestVersion,
+            VersionPolicy = http.DefaultVersionPolicy
+        };
+        request.Headers.Referrer = referer;
+
+        using var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, timeout.Token);
         if (!response.IsSuccessStatusCode)
             throw new HttpRequestException($"The site answered {(int)response.StatusCode}.", null, response.StatusCode);
 

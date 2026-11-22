@@ -18,6 +18,7 @@
     - can run server aliases and delete messages
     - has an **End session** button
 - `.hangman` allows at most 5 games at a time in one server.
+- `.stock` and `.crypto` / `.c` show a chart with shorter candles for a new stock or coin.
 
 ### Fixed
 

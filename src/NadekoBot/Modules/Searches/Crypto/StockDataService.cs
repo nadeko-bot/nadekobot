@@ -24,11 +24,12 @@ public sealed record StockQuote(
     PriceRange? DayRange,
     PriceRange? YearRange,
     DateTimeOffset? Time,
-    Candle[] Candles);
+    Candle[] Candles,
+    ChartFrame Frame = ChartFrame.Day);
 
 public sealed record StockMatch(string Symbol, string Name);
 
-// Stock and ETF quotes and daily candles from the Nasdaq site.
+// Stock and ETF quotes and chart candles from the Nasdaq sites.
 public sealed class StockDataService(
     IHttpClientFactory httpFactory,
     IBotCache cache,
@@ -43,15 +44,23 @@ public sealed class StockDataService(
     private const int CHART_MONTHS = 3;
     private const int MAX_LOOKUPS = 20;
     private const int MAX_DAILY_ROWS = 100;
+
+    // A stock with fewer daily candles gets a chart of its last sessions with the largest frame which gives 40 candles.
+    private const int MIN_DAILY_CANDLES = 20;
+    private const int MIN_FRAME_CANDLES = 40;
     private const int CHART_CACHE_SIZE = 32;
     private const int NOT_FOUND = 400;
+    private const long MS_PER_SECOND = 1_000;
     private const long MS_PER_MINUTE = 60_000;
     private const long MS_PER_DAY = 86_400_000;
+    private const int SECONDS_PER_MINUTE = 60;
     private const int SECONDS_PER_DAY = 86_400;
     private const int MINUTES_PER_DAY = 24 * 60;
     private const int SESSION_OPEN = (9 * 60) + 30;
     private const int SESSION_CLOSE = 16 * 60;
     private const string API = "https://api.nasdaq.com/api/";
+    private const string SESSIONS_API = "https://charting.nasdaq.com/data/charting/intraday?symbol=";
+    private const string SESSIONS_QUERY = "&mostRecent=5&includeLatestIntradayData=1";
     private const string STOCKS = "stocks";
     private const string ETF = "etf";
     private const string SEARCH_KEY_PREFIX = "stock:search:";
@@ -68,8 +77,13 @@ public sealed class StockDataService(
     private static readonly TimeSpan _dataStart = TimeSpan.FromHours(4);
     private static readonly TimeSpan _dataEnd = TimeSpan.FromHours(20);
 
-    // A quote without daily candles or without its summary, so the missing part comes back soon after a failure.
+    // A quote without daily candles, without its summary or without the sessions of a young stock, so the missing part comes back soon after a failure.
     private static readonly TimeSpan _partialExpiry = TimeSpan.FromMinutes(1);
+
+    // The charting site answers 403 without this referer.
+    private static readonly Uri _sessionsReferer = new("https://charting.nasdaq.com/dynamic/chart.html");
+
+    private static readonly ChartFrame[] _stockFrames = [ChartFrame.M30, ChartFrame.M15, ChartFrame.M5, ChartFrame.M1];
 
     private static readonly string[] _nameSuffixes =
         [" Common Stock", " Common Shares", " Ordinary Shares", " American Depositary Shares", " Depositary Shares"];
@@ -85,6 +99,9 @@ public sealed class StockDataService(
     // The search has its own gate, so a failed search does not stop the quotes.
     private readonly LookupGate _searchGate = new(MAX_LOOKUPS, _gateWindow, _gatePause, timeProvider ?? TimeProvider.System);
 
+    // The sessions of young stocks come from another site, so a failure there does not stop the quotes.
+    private readonly LookupGate _sessionsGate = new(MAX_LOOKUPS, _gateWindow, _gatePause, timeProvider ?? TimeProvider.System);
+
     private readonly ChartCache _charts = new(CHART_CACHE_SIZE, _closedExpiry, timeProvider ?? TimeProvider.System);
 
     private enum FetchStatus
@@ -95,6 +112,9 @@ public sealed class StockDataService(
     }
 
     private readonly record struct Fetched<T>(FetchStatus Status, T? Data);
+
+    // Time is the New York wall clock written as UTC, in seconds.
+    private readonly record struct MinutePrice(long Time, double Price, double Volume);
 
     public static bool IsSymbol(ReadOnlySpan<char> text)
     {
@@ -207,13 +227,15 @@ public sealed class StockDataService(
             return null;
 
         ref readonly var last = ref quote.Candles[^1];
-        var image = _charts.Get(quote.Symbol, last);
+        var image = _charts.Get(quote.Symbol, quote.Frame, last);
         if (image is not null)
             return image;
 
         try
         {
-            image = charts.Render(quote.Candles, new(quote.Symbol, quote.Name, quote.Exchange));
+            // A shorter frame shows the change of the day in its title, as the embed does.
+            double? previousClose = quote.Frame == ChartFrame.Day ? null : quote.Price - quote.Change;
+            image = charts.Render(quote.Candles, new(quote.Symbol, quote.Name, quote.Exchange, quote.Frame, previousClose));
         }
         catch (Exception ex)
         {
@@ -221,7 +243,7 @@ public sealed class StockDataService(
             return null;
         }
 
-        _charts.Set(quote.Symbol, last, image);
+        _charts.Set(quote.Symbol, quote.Frame, last, image);
         return image;
     }
 
@@ -280,9 +302,19 @@ public sealed class StockDataService(
                     marketCap = summary.MarketCap.Value;
             }
 
-            var candles = set.Daily.Data?.TradesTable?.Rows is { Length: > 0 } rows
+            var daily = set.Daily.Data?.TradesTable?.Rows is { Length: > 0 } rows
                 ? BuildCandlesInternal(rows, now.Points, now.Price, now.Volume, dayRange)
                 : [];
+
+            var frame = ChartFrame.Day;
+            var candles = daily;
+            var sessionsLoaded = true;
+            if (daily.Length < MIN_DAILY_CANDLES)
+            {
+                var sessions = await GetSessionMinutesInternalAsync(symbol);
+                sessionsLoaded = sessions is not null;
+                (frame, candles) = PickFrameInternal(daily, CollectMinutesInternal(sessions, now.Points), now.Points, now.Price);
+            }
 
             var quote = new StockQuote(symbol,
                 CleanName(now.Name ?? symbol),
@@ -295,11 +327,12 @@ public sealed class StockDataService(
                 dayRange,
                 yearRange,
                 ParseNewYorkTime(now.Time),
-                candles);
+                candles,
+                frame);
 
             GetChart(quote);
 
-            var complete = candles.Length > 0 && set.Summary.Status == FetchStatus.Ok;
+            var complete = daily.Length > 0 && sessionsLoaded && set.Summary.Status == FetchStatus.Ok;
             await cache.AddAsync(QuoteKey(symbol), quote, complete ? QuoteExpiryInternal() : _partialExpiry);
 
             return quote;
@@ -510,6 +543,198 @@ public sealed class StockDataService(
             close,
             volume);
         return true;
+    }
+
+    // Null when the request fails.
+    private async Task<NasdaqMinute[]?> GetSessionMinutesInternalAsync(string symbol)
+    {
+        if (!TryEnterInternal(_sessionsGate))
+            return null;
+
+        var url = SESSIONS_API + symbol + SESSIONS_QUERY;
+        try
+        {
+            var chart = await FinanceHttp.GetJsonAsync(httpFactory,
+                url,
+                FinanceJsonContext.Default.NasdaqMinuteChart,
+                _sessionsReferer);
+
+            return chart?.MarketData ?? [];
+        }
+        catch (JsonException ex)
+        {
+            SiteAnswer.LogUnreadable("Nasdaq", ex);
+            _sessionsGate.Pause();
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning("Nasdaq request {Url} failed: {ErrorMessage}", url, ex.Message);
+            _sessionsGate.Pause();
+            return null;
+        }
+    }
+
+    // The minutes of the latest session have no volume.
+    private static MinutePrice[] CollectMinutesInternal(NasdaqMinute[]? sessions, NasdaqIntradayPoint[]? latest)
+    {
+        var minutes = new MinutePrice[(sessions?.Length ?? 0) + (latest?.Length ?? 0)];
+        var count = 0;
+        var lastTime = long.MinValue;
+        foreach (ref readonly var minute in (sessions ?? []).AsSpan())
+        {
+            if (!(minute.Value > 0) || !IsSessionMinute(minute.Time) || minute.Time <= lastTime)
+                continue;
+
+            minutes[count++] = new(minute.Time, minute.Value, minute.Volume > 0 ? minute.Volume : 0);
+            lastTime = minute.Time;
+        }
+
+        foreach (ref readonly var point in (latest ?? []).AsSpan())
+        {
+            var time = point.X / MS_PER_SECOND;
+            if (!(point.Y > 0) || !IsSessionMinute(time) || time <= lastTime)
+                continue;
+
+            minutes[count++] = new(time, point.Y, 0);
+            lastTime = time;
+        }
+
+        return count == minutes.Length ? minutes : minutes[..count];
+    }
+
+    // The largest frame with at least 40 candles, else the series with the most candles.
+    private static (ChartFrame Frame, Candle[] Candles) PickFrameInternal(
+        Candle[] daily,
+        ReadOnlySpan<MinutePrice> minutes,
+        NasdaqIntradayPoint[]? latest,
+        double price)
+    {
+        var best = ChartFrame.Day;
+        var bestCount = daily.Length;
+        foreach (var frame in _stockFrames)
+        {
+            var count = CountCandlesInternal(minutes, frame.Seconds());
+            if (count <= bestCount)
+                continue;
+
+            best = frame;
+            bestCount = count;
+            if (count >= MIN_FRAME_CANDLES)
+                break;
+        }
+
+        if (best == ChartFrame.Day)
+            return (best, daily);
+
+        var candles = BuildFrameCandlesInternal(minutes, best.Seconds(), bestCount);
+        CloseSessionsInternal(candles, daily);
+        ref var last = ref candles[^1];
+        if (price > 0 && IsSessionRunningInternal(latest, last.Time))
+            last = last with { High = Math.Max(last.High, price), Low = Math.Min(last.Low, price), Close = price };
+
+        return (best, candles);
+    }
+
+    // The minute prices do not have the closing auction, so the official close of a day comes from its daily candle.
+    private static void CloseSessionsInternal(Span<Candle> candles, ReadOnlySpan<Candle> daily)
+    {
+        var d = 0;
+        for (var i = 0; i < candles.Length; i++)
+        {
+            var day = candles[i].Time / SECONDS_PER_DAY;
+            if (i + 1 < candles.Length && candles[i + 1].Time / SECONDS_PER_DAY == day)
+                continue;
+
+            while (d < daily.Length && daily[d].Time / SECONDS_PER_DAY < day)
+                d++;
+
+            if (d == daily.Length)
+                return;
+
+            if (daily[d].Time / SECONDS_PER_DAY != day)
+                continue;
+
+            ref var candle = ref candles[i];
+            var close = daily[d].Close;
+            candle = candle with { High = Math.Max(candle.High, close), Low = Math.Min(candle.Low, close), Close = close };
+        }
+    }
+
+    private static int CountCandlesInternal(ReadOnlySpan<MinutePrice> minutes, int seconds)
+    {
+        var count = 0;
+        var bucket = long.MinValue;
+        foreach (ref readonly var minute in minutes)
+        {
+            var start = BucketOf(minute.Time, seconds);
+            if (start == bucket)
+                continue;
+
+            count++;
+            bucket = start;
+        }
+
+        return count;
+    }
+
+    private static Candle[] BuildFrameCandlesInternal(ReadOnlySpan<MinutePrice> minutes, int seconds, int count)
+    {
+        var candles = new Candle[count];
+        var n = -1;
+        var bucket = long.MinValue;
+        foreach (ref readonly var minute in minutes)
+        {
+            var start = BucketOf(minute.Time, seconds);
+            if (start != bucket)
+            {
+                candles[++n] = new(start, minute.Price, minute.Price, minute.Price, minute.Price, minute.Volume);
+                bucket = start;
+                continue;
+            }
+
+            ref var candle = ref candles[n];
+            candle = candle with
+            {
+                High = Math.Max(candle.High, minute.Price),
+                Low = Math.Min(candle.Low, minute.Price),
+                Close = minute.Price,
+                Volume = candle.Volume + minute.Volume
+            };
+        }
+
+        return candles;
+    }
+
+    // The 16:00 price closes the session, so it belongs to the candle before it.
+    private static long BucketOf(long time, int seconds)
+    {
+        if (time / SECONDS_PER_MINUTE % MINUTES_PER_DAY == SESSION_CLOSE)
+            time--;
+
+        return time - (time % seconds);
+    }
+
+    private static bool IsSessionMinute(long time)
+    {
+        var minute = (int)(time / SECONDS_PER_MINUTE % MINUTES_PER_DAY);
+        return time > 0 && minute is >= SESSION_OPEN and <= SESSION_CLOSE;
+    }
+
+    // The session runs while the last minute price of the latest session is in the regular session of the day of the candle.
+    private static bool IsSessionRunningInternal(NasdaqIntradayPoint[]? points, long candleTime)
+    {
+        for (var i = (points?.Length ?? 0) - 1; i >= 0; i--)
+        {
+            ref readonly var point = ref points![i];
+            if (!(point.Y > 0))
+                continue;
+
+            var time = point.X / MS_PER_SECOND;
+            return IsSessionMinute(time) && time / SECONDS_PER_DAY == candleTime / SECONDS_PER_DAY;
+        }
+
+        return false;
     }
 
     private async Task<Fetched<T>> GetNasdaqInternalAsync<T>(string url, JsonTypeInfo<NasdaqEnvelope<T>> info, LookupGate gate)

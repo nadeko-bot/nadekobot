@@ -8364,7 +8364,7 @@
       "Aliases": [
         ".stock"
       ],
-      "Description": "Shows the price, change, volume, market cap, day range and 52 week range of a stock or an ETF.\nThe bot also shows a daily candle chart of the last 3 months.\nYou can use a ticker symbol or a company name.",
+      "Description": "Shows the price, change, volume, market cap, day range and 52 week range of a stock or an ETF.\nThe bot also shows a daily candle chart of the last 3 months.\nA stock with less than 20 days of prices gets a chart with shorter candles.\nYou can use a ticker symbol or a company name.",
       "Usage": [
         ".stock tsla",
         ".stock advanced micro devices",
@@ -8385,7 +8385,7 @@
         ".crypto",
         ".c"
       ],
-      "Description": "Shows the price, market cap, volume and supply of a cryptocurrency from coinmarketcap.com.\nThe bot also shows a daily candle chart of the last 3 months.\nYou can use the name or the symbol of the cryptocurrency.",
+      "Description": "Shows the price, market cap, volume and supply of a cryptocurrency from coinmarketcap.com.\nThe bot also shows a daily candle chart of the last 3 months.\nA coin with less than 20 days of prices gets a chart with shorter candles.\nYou can use the name or the symbol of the cryptocurrency.",
       "Usage": [
         ".crypto btc",
         ".crypto bitcoin"
