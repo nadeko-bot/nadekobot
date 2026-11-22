@@ -2,7 +2,7 @@
 
 *a,c,f,r,o,d*
 
-## [7.11.0] - TBD
+## [7.11.0] - 22.11.2026
 
 ### Added
 
@@ -27,13 +27,6 @@
 ### Removed
 
 - The intent model of the AI agent and its file `data/ai/intent-head.bin`.
-
-### Dev
-
-- `data/commandlist.json` has the parameters of each command.
-- The bot saves running games in the new `SavedGame` and `AnimalRaceEntry` tables.
-- CI builds the public bot configuration.
-- The bot logs a warning when a full queue drops an item.
 
 ## [7.10.2] - 15.11.2026
 
