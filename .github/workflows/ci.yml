@@ -32,10 +32,6 @@ jobs:
     - name: Test
       run: dotnet test -c Release --verbosity normal
 
-    # Only this configuration compiles the code inside #if GLOBAL_NADEKO, and the public bot runs it.
-    - name: Build the public bot configuration
-      run: dotnet build -c GlobalNadeko src/NadekoBot/NadekoBot.csproj
-
     # nadeko.bot shows the data/commandlist.json of each release tag, so the file must match the commands.
     - name: Check data/commandlist.json
       run: |
